@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Blochează încărcarea șabloanelor de urmărire și a anunțurilor în paginile web</translation>
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
 <translation id="7142548388914389999">Permiteți datele de analiză referitoare la produs cu menținerea confidențialități (P3A)</translation>
+<translation id="5254037869598726291">Datele analitice anonime despre produs, cu protejarea confidențialității (P3A), ajută Brave să facă estimări privind utilizarea globală și să se asigure că îmbunătățește funcțiile utilizate la scară largă.</translation>
 <translation id="4272190451231642425">Trimiteți automat rapoarte de blocare</translation>
 <translation id="2239766974964486304">Rapoartele de blocare ajută Brave să îmbunătățească stabilitatea produsului pentru toți utilizatorii.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
@@ -218,6 +219,14 @@ lună...</translation>
 <translation id="7173114856073700355">Deschide Setările</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Nu mai afișa</translation>
+<translation id="1056898198331236512">Avertisment</translation>
+<translation id="1426410128494586442">Da</translation>
+<translation id="7811264919113243207">Astfel, veți distribui datele dvs. Brave (posibil, inclusiv parolele) dispozitivului care a generat aceste cuvinte-cod.
+Verificați încă o dată dacă acest cod QR a fost generat de un dispozitiv deținut de dvs.
+Sigur doriți să faceți acest lucru?</translation>
+<translation id="3097089005389027085">Astfel, veți distribui datele dvs. Brave (posibil, inclusiv parolele) dispozitivului care a generat aceste cuvinte-cod.
+Verificați încă o dată dacă aceste cuvinte-cod au fost generate de un dispozitiv deținut de dvs.
+Sigur doriți să faceți acest lucru?</translation>
 <translation id="597993392929850353">Licență Brave</translation>
 <translation id="6336451774241870485">Pagină nouă privată</translation>
 <translation id="6199596294742117349">Aceasta este o Filă privată</translation>
@@ -375,12 +384,12 @@ lună...</translation>
 <translation id="7427567994475794038">Activați Rapoartele de confidențialitate pentru a vedea câte urmăriri și reclame au fost blocate în ultimele 3 ore.</translation>
 <translation id="2053891538879944400">Ați economisit <ph name="DATA"/> <ph name="DATA_TEXT"/> date cu browserul Brave.</translation>
 <translation id="8640064498452534195">Activați Rapoartele de confidențialitate pentru a vedea câte date ați economisit.</translation>
-<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.&#128267;</translation>
+<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.🔋</translation>
 <translation id="1945330434665345785">Ați blocat <ph name="COUNT"/> (de) urmăriri și reclame cu browserul Brave săptămâna trecută.</translation>
 <translation id="2883868922264431515">Câștigați tokenuri vizualizând reclame care respectă confidențialitate și susțineți website-urile favorite.</translation>
-<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.💨💨</translation>
 <translation id="7408493389591475748">Începeți să navigați pentru a vedea rapoartele de confidențialitate</translation>
 <translation id="9080777565335515917">Setați Brave ca browser prestabilit pentru o navigare privată și sigură.</translation>
 <translation id="1390943217516275883">Permite browserului Brave să afișeze statisticile privind confidențialitatea</translation>
@@ -409,6 +418,8 @@ lună...</translation>
 <translation id="6755546361496900700">Previzualizează schimbul</translation>
 <translation id="2882813124794301799">Colecție widget</translation>
 <translation id="13296465911709339">Textul dumneavoastră a fost copiat în clipboard.</translation>
+<translation id="4670943871783273148">Textul dvs. a fost salvat într-un fișier text.</translation>
+<translation id="4432845796903761592">Fișierul nu a fost salvat.</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
 <translation id="2977461003134694205">Statistici confidențialitate</translation>
 <translation id="4643117005422448078">Site-uri de top</translation>
@@ -470,11 +481,12 @@ lună...</translation>
 <translation id="8037420924417098685">Pentru a iniția un apel gratuit, activați Brave Rewards</translation>
 <translation id="8961724619078500274">Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori puteți susține site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
 <translation id="7307847920988946894">Activare Rewards</translation>
+<translation id="7872993190040589450">Dacă activați opțiunea, acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Pentru a iniția un apel gratuit, activați Brave Private Ads</translation>
 <translation id="7930006085154756245">Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
 <translation id="4992617448154987397">Activați Brave Private Ads</translation>
 <translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
-<translation id="7073631403665023390">Atingeți în orice loc pe ecran pentru a continua la Brave Talk.</translation>
+<translation id="7073631403665023390">Atingeți sau dați clic pe orice loc pe ecran pentru a continua la Brave Talk.</translation>
 <translation id="626339649633171286">Doriți să aflați mai multe despre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
@@ -530,13 +542,15 @@ lună...</translation>
 <translation id="5460364286096798286">Păstrați criptomonede. Tranzacționați active. Vedeți prețurile și performanța portofoliului. Investiți, obțineți și oferiți împrumuturi cu DeFi!</translation>
 <translation id="1748009926009835882">Configurare portofel de criptomonede</translation>
 <translation id="2759836790106646094">Realizați o copie de rezervă după portofelul dvs. acum!</translation>
-<translation id="7685607706678113458">La pasul următor, veți vedea 12 cuvinte care vă permit să recuperați portofelul dvs. pentru criptomonede</translation>
+<translation id="5156354224138379811">La pasul următor, veți vedea 12 cuvinte care vă permit să recuperați portofelul dvs. pentru criptomonede</translation>
 <translation id="2359808026110333948">Continuă</translation>
 <translation id="5024543173656851695">Înțeleg faptul că, dacă pierd cuvintele pentru recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
 <translation id="3933122286596948824">Expresia dvs. de recuperare</translation>
 <translation id="6146351434671268516">Scrieți sau copiați aceste cuvinte în ordinea corectă și salvați-le într-un loc sigur!</translation>
 <translation id="7408247683131762445">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua fondurile definitiv.</translation>
 <translation id="939275786514736244">Am realizat o copie de rezervă după expresia mea într-un loc sigur</translation>
+<translation id="6896758677409633944">Copiază</translation>
+<translation id="5317780077021120954">Salvează</translation>
 <translation id="2604744480284798833">Realizați o copie de rezervă după portofel, pentru a vă proteja portofoliul de criptomonede în cazul pierderii accesului.</translation>
 <translation id="1202920745614909195">Cumpărați criptomonede folosind Apple Pay, un card de credit ori un card de debit</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
@@ -558,13 +572,13 @@ lună...</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activați deblocarea cu amprentă?</translation>
 <translation id="5493402808936397665">Activați datele biometrice, pentru a debloca rapid portofelul fără a introduce parola.</translation>
-<translation id="1544192797660353713">Portofelul Brave</translation>
+<translation id="1544192797660353713">Portofel</translation>
 <translation id="6901810042765869341">Introduceți expresia de recuperare, pentru a restabili contul dvs. de criptomonede Brave Wallet.</translation>
 <translation id="1970161551843843564">Restabiliți contul pentru criptomonede</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
 <translation id="283071225285270357">Introduceți expresia de recuperare</translation>
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
-<translation id="6202787708155200390">Atingeți cuvintele pentru a le pune unele lângă altele în ordinea corectă.</translation>
+<translation id="2718669004132381989">Atingeți cuvintele, pentru a le pune unele lângă altele în ordinea corectă.</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="3157931365184549694">Restabilește</translation>
 <translation id="9111102763498581341">Deblochează</translation>
@@ -572,7 +586,7 @@ lună...</translation>
 <translation id="1569452037668432756">Pentru deblocare, introduceți parola</translation>
 <translation id="224719674509047150">Parola trebuie să conțină cel puțin 7 caractere, dintre care o cifră și un caracter special</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
-<translation id="745115390910697838">Expresiile nu corespund. Încercați din nou!</translation>
+<translation id="5760476995887363522">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
 <translation id="6392640873800632439">Prețul pieței în <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">De la</translation>
@@ -586,6 +600,12 @@ lună...</translation>
 <translation id="1987317783729300807">Conturi</translation>
 <translation id="3535654229833214438">Tranzacții</translation>
 <translation id="4636930964841734540">Informații</translation>
+<translation id="2449682593754783720">1 oră</translation>
+<translation id="969133700726811190">1 zi</translation>
+<translation id="5882300031363619940">1 săptămână</translation>
+<translation id="5698094150392720512">1 lună</translation>
+<translation id="5483736362376139517">1 an</translation>
+<translation id="6979737339423435258">Dintotdeauna</translation>
 <translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
 <translation id="5288333155754958121">Prin acest ping anonim și confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="3819257035322786455">Creați copii de rezervă</translation>
@@ -626,7 +646,7 @@ lună...</translation>
 <translation id="6277055349883621705">Reînnoiți anual și economisiți 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / an.</translation>
 <translation id="4487678670820292781">119,88 $</translation>
-<translation id="5867778679088331977">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
+<translation id="2655185358771731232">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
 <translation id="6053992191006521518">Încercați GRATUIT</translation>
 <translation id="721747358270435486">Instalați VPN-ul</translation>
 <translation id="836074276610740314">Instalați profilul VPN</translation>
@@ -700,4 +720,15 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="275990379543116961">Fonduri insuficiente pentru gas</translation>
 <translation id="3292453499915466604">Lichidități insuficiente</translation>
 <translation id="3380365263193509176">Eroare necunoscută</translation>
+<translation id="5932938770824268122">Cheie privată</translation>
+<translation id="2472882733835903303">Afișați cheia privată</translation>
+<translation id="4391056902675005799">Ascundeți cheia privată</translation>
+<translation id="5929798090073091848">Avertisment: nu dezvăluiți niciodată această cheie. Oricine are cheia dvs. privată poate fura orice activ din contul dvs.</translation>
+<translation id="1133619932669546254">Activați <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">TIPUL FUNCȚIEI: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Nu există date</translation>
+<translation id="7685607706678113458">La pasul următor, veți vedea 12 cuvinte care vă permit să recuperați portofelul dvs. pentru criptomonede</translation>
+<translation id="6202787708155200390">Atingeți cuvintele pentru a le pune unele lângă altele în ordinea corectă.</translation>
+<translation id="745115390910697838">Expresiile nu corespund. Încercați din nou!</translation>
+<translation id="5867778679088331977">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
 </translationbundle>

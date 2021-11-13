@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Evita que los rastreadores y anuncios se carguen y muestren en las páginas web.</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
+<translation id="5254037869598726291">La información P3A anonimizada permite a Brave estimar el uso general y seguir mejorando las funciones más populares.</translation>
 <translation id="4272190451231642425">Enviar automáticamente informes de errores</translation>
 <translation id="2239766974964486304">Los informes de errores ayudan a Brave a mejorar la estabilidad de los productos para todos los usuarios.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
@@ -209,6 +210,14 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="7173114856073700355">Abrir la configuración</translation>
 <translation id="6965382102122355670">Aceptar</translation>
 <translation id="4450893287417543264">No volver a mostrar</translation>
+<translation id="1056898198331236512">Advertencia</translation>
+<translation id="1426410128494586442">Sí</translation>
+<translation id="7811264919113243207">Esta acción compartirá sus datos de Brave con el dispositivo que ha generado este código QR. Es posible que, entre los datos compartidos, estén también sus contraseñas.
+Verifique que ha sido un dispositivo suyo el que ha generado este código QR.
+¿Confirma que quiere hacerlo?</translation>
+<translation id="3097089005389027085">Esta acción compartirá sus datos de Brave con el dispositivo que ha generado estas palabras clave. Es posible que, entre los datos compartidos, estén también sus contraseñas.
+Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clave.
+¿Confirma que quiere hacerlo?</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -321,6 +330,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5617673581653540121">Tu conexión ahora está encriptada.</translation>
 <translation id="4055107796760496928">En caso de estar disponible, Brave te actualiza a una conexión segura de forma automática.</translation>
 <translation id="8869714780588464835">Compartir la noticia</translation>
+<translation id="7427391215172269363">Todos los días ahorro datos navegando por la web con Brave.</translation>
 <translation id="5372054974373489308">¡1000 rastreadores y anuncios bloqueados!</translation>
 <translation id="2338952568654182692">¡5000 rastreadores y anuncios bloqueados!</translation>
 <translation id="5289711064670408815">¡10 000 rastreadores y anuncios bloqueados!</translation>
@@ -366,12 +376,12 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="7427567994475794038">Activa los informes de privacidad para ver cuántos rastreadores y anuncios has bloqueado en las últimas 3 horas.</translation>
 <translation id="2053891538879944400">Has ahorrado <ph name="DATA"/> <ph name="DATA_TEXT"/> datos con el navegador Brave.</translation>
 <translation id="8640064498452534195">Activa los informes de privacidad para ver cuántos datos has ahorrado.</translation>
-<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.🔋</translation>
 <translation id="1945330434665345785">Has bloqueado <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave la semana pasada.</translation>
 <translation id="2883868922264431515">Gana tokens por ver anuncios que respetan la privacidad y apoya a tu sitios web favoritos.</translation>
-<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores y anuncios con el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">¡Genial! Has ahorrado 10 MB con el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">¡Genial! Has ahorrado 10 minutos de tiempo de carga con el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores y anuncios con el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">¡Genial! Has ahorrado 10 MB con el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">¡Genial! Has ahorrado 10 minutos de tiempo de carga con el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Empieza a navegar para ver informes de privacidad</translation>
 <translation id="9080777565335515917">Usa Brave como tu navegador predeterminado para navegar de forma privada y segura.</translation>
 <translation id="1390943217516275883">Permite que Brave muestre tus estadísticas de privacidad</translation>
@@ -400,6 +410,8 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="6755546361496900700">Vista previa de la conversión</translation>
 <translation id="2882813124794301799">Pila de widgets</translation>
 <translation id="13296465911709339">El texto se ha copiado al portapapeles.</translation>
+<translation id="4670943871783273148">El texto se ha guardado en un archivo de texto.</translation>
+<translation id="4432845796903761592">Archivo no guardado.</translation>
 <translation id="7144878232160441200">Volver a intentarlo</translation>
 <translation id="2977461003134694205">Estadísticas de privacidad</translation>
 <translation id="4643117005422448078">Sitios populares</translation>
@@ -461,11 +473,12 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="8037420924417098685">Para iniciar una llamada gratuita, active Recompensas Brave</translation>
 <translation id="8961724619078500274">Con Recompensas Brave, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
 <translation id="7307847920988946894">Activar Rewards</translation>
+<translation id="7872993190040589450">Al activarlo, aceptas las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Para iniciar una llamada gratuita, active Brave Private Ads</translation>
 <translation id="7930006085154756245">Con Brave Private Ads, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
 <translation id="4992617448154987397">Activar Brave Private Ads</translation>
 <translation id="3415016869273103668">Ya puede iniciar una llamada gratuita</translation>
-<translation id="7073631403665023390">Toque en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
+<translation id="7073631403665023390">Haga clic o toque en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
 <translation id="626339649633171286">¿Quiere obtener más información sobre Recompensas Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">¡Convertiste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> a <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verifica la conexión de tu red.</translation>
@@ -521,13 +534,15 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5460364286096798286">Conserva criptomonedas bajo tu custodia. Intercambia activos. Consulta precios y el rendimiento de carteras. Invierte, pide prestado y presta con finanzas descentralizadas.</translation>
 <translation id="1748009926009835882">Configurar criptomonedas</translation>
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
-<translation id="7685607706678113458">En el siguiente paso, verás 12 palabras que te permiten recuperar tu billetera de criptomonedas.</translation>
+<translation id="5156354224138379811">En el siguiente paso, verá 12 palabras que le permitirán recuperar su billetera de criptomonedas.</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="5024543173656851695">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis palabras de recuperación.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
 <translation id="6146351434671268516">Escribe o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
 <translation id="7408247683131762445">ADVERTENCIA: Nunca reveles tu frase de copia de seguridad. Cualquier persona que tenga acceso a esta frase puede llevarse tus fondos permanentemente.</translation>
 <translation id="939275786514736244">He guardado mi copia en un lugar seguro</translation>
+<translation id="6896758677409633944">Copiar</translation>
+<translation id="5317780077021120954">Guardar</translation>
 <translation id="2604744480284798833">Haga una copia de seguridad de su billetera ahora para evitar perder el acceso a su cartera de criptomonedas.</translation>
 <translation id="1202920745614909195">Compra criptomonedas con Apple Pay, tarjeta de crédito o tarjeta de débito.</translation>
 <translation id="841880029259839903">Envía criptomonedas o transfiere de una cuenta a otra.</translation>
@@ -549,13 +564,13 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
 <translation id="5493402808936397665">Habilita los datos biométricos para desbloquear rápidamente tu billetera sin introducir la contraseña.</translation>
-<translation id="1544192797660353713">Billetera de Brave</translation>
+<translation id="1544192797660353713">Billetera</translation>
 <translation id="6901810042765869341">Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu billetera de Brave.</translation>
 <translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
 <translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
 <translation id="283071225285270357">Introduce tu frase de recuperación</translation>
 <translation id="2339124864228588937">Verificar la frase de recuperación</translation>
-<translation id="6202787708155200390">Toca las palabras para ponerlas una al lado de la otra en el orden correcto.</translation>
+<translation id="2718669004132381989">Toque las palabras para colocarlas una al lado de la otra en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
@@ -563,7 +578,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1569452037668432756">Introduce tu contraseña para desbloquear</translation>
 <translation id="224719674509047150">La contraseña debe tener al menos 7 caracteres, un número y un carácter especial</translation>
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
-<translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
+<translation id="5760476995887363522">Las frases no coinciden. Inténtelo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
 <translation id="6392640873800632439">Precio de mercado en <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">De</translation>
@@ -577,6 +592,12 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="3535654229833214438">Transacciones</translation>
 <translation id="4636930964841734540">Información</translation>
+<translation id="2449682593754783720">1 hora</translation>
+<translation id="969133700726811190">1 día</translation>
+<translation id="5882300031363619940">1 semana</translation>
+<translation id="5698094150392720512">1 mes</translation>
+<translation id="5483736362376139517">1 año</translation>
+<translation id="6979737339423435258">Todos</translation>
 <translation id="6284218950354553099">Envía a Brave pings de uso diario automáticamente</translation>
 <translation id="5288333155754958121">Estos pings privados y anónimos le permiten a Brave calcular los usuarios activos.</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
@@ -617,7 +638,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="6277055349883621705">Renueve anualmente y ahorre el 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> por año.</translation>
 <translation id="4487678670820292781">$119,88</translation>
-<translation id="5867778679088331977">Pruébelo gratis durante 7 días. Después de esos 7 días, se le cobrará el precio del plan. Si bien todas las suscripciones se renuevan automáticamente, se pueden cancelar antes de la renovación.</translation>
+<translation id="2655185358771731232">Pruébelo gratis durante 7 días. Después de esos 7 días, se le cobrará el precio del plan. Si bien todas las suscripciones se renuevan automáticamente, se pueden cancelar antes de la renovación.</translation>
 <translation id="6053992191006521518">Pruébelo GRATIS</translation>
 <translation id="721747358270435486">Instalar VPN</translation>
 <translation id="836074276610740314">Instalar perfil de VPN</translation>
@@ -691,4 +712,15 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="275990379543116961">Fondos insuficientes para gas</translation>
 <translation id="3292453499915466604">Liquidez insuficiente</translation>
 <translation id="3380365263193509176">Error desconocido</translation>
+<translation id="5932938770824268122">Clave privada</translation>
+<translation id="2472882733835903303">Mostrar clave privada</translation>
+<translation id="4391056902675005799">Ocultar clave privada</translation>
+<translation id="5929798090073091848">Advertencia: Nunca revele esta clave. Cualquier persona que la tenga en su poder puede robar los activos retenidos en su cuenta.</translation>
+<translation id="1133619932669546254">Activar <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">TIPO DE FUNCIÓN: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">No hay datos</translation>
+<translation id="7685607706678113458">En el siguiente paso, verás 12 palabras que te permiten recuperar tu billetera de criptomonedas.</translation>
+<translation id="6202787708155200390">Toca las palabras para ponerlas una al lado de la otra en el orden correcto.</translation>
+<translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
+<translation id="5867778679088331977">Pruébelo gratis durante 7 días. Después de esos 7 días, se le cobrará el precio del plan. Si bien todas las suscripciones se renuevan automáticamente, se pueden cancelar antes de la renovación.</translation>
 </translationbundle>

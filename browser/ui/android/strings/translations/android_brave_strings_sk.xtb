@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Zabraňuje načítaniu a zobrazeniu trackerov &amp; a reklám na webových stránkach</translation>
 <translation id="1680858055899097121">Neotvárajte karty medzi prehliadanými reláciami</translation>
 <translation id="7142548388914389999">Povoliť analýzu produktov chrániacich súkromie (P3A)</translation>
+<translation id="5254037869598726291">Vďaka anonymným informáciám o P3A môže Brave odhadovať celkové používanie a zlepšovať populárne funkcie.</translation>
 <translation id="4272190451231642425">Automaticky odosielať správy o zlyhaní</translation>
 <translation id="2239766974964486304">Správy o zlyhaní pomáhajú prehliadaču Brave zlepšiť stabilitu produktu pre všetkých používateľov.</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
@@ -218,6 +219,14 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="7173114856073700355">Otvoriť Nastavenia</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Už nezobrazovať</translation>
+<translation id="1056898198331236512">Varování</translation>
+<translation id="1426410128494586442">Áno</translation>
+<translation id="7811264919113243207">Týmto krokom budete zdieľať dáta z Brave, medzi ktorými môžu potenciálne byť aj vaše heslá, so zariadením, ktoré vygenerovalo tento QR kód.
+Preverte si, že tento QR kód vygenerovalo zariadenie, ktoré vlastníte.
+Naozaj chcete pokračovať?</translation>
+<translation id="3097089005389027085">Týmto krokom budete zdieľať dáta z Brave, medzi ktorými môžu potenciálne byť aj vaše heslá, so zariadením, ktoré vygenerovalo tieto kódové slová.
+Preverte si, že tieto kódové slová vygenerovalo zariadenie, ktoré vlastníte.
+Naozaj chcete pokračovať?</translation>
 <translation id="597993392929850353">Licencia Brave</translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6199596294742117349">Toto je súkromná karta</translation>
@@ -376,12 +385,12 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="7427567994475794038">Zapnite si Hlásenia o súkromí a zistite, koľko sledovačov a reklám bolo za posledné 3 hodiny zablokovaných.</translation>
 <translation id="2053891538879944400">Pomocou prehliadača Brave ste ušetrili <ph name="DATA"/> <ph name="DATA_TEXT"/> dát.</translation>
 <translation id="8640064498452534195">Na zobrazenie množstva údajov, ktoré ste ušetrili, zapnite Hlásenia o súkromí.</translation>
-<translation id="2252497442547961651">Prehliadač Brave používa v priemere o 40 % menej batérie.&#128267;</translation>
+<translation id="2252497442547961651">Prehliadač Brave používa v priemere o 40 % menej batérie.🔋</translation>
 <translation id="1945330434665345785">Za posledný týždeň ste pomocou prehliadača Brave zablokovali <ph name="COUNT"/> trackers &amp; reklám.</translation>
 <translation id="2883868922264431515">Získajte tokeny sledovaním reklám rešpektujúcich súkromie a podporte svoje obľúbené webové stránky.</translation>
-<translation id="5678925890616256956">Super! Zablokovali ste 250 sledovačov a reklám pomocou prehliadača Brave.&#128293;</translation>
-<translation id="9199047775708635708">Super! Pomocou Brave ste ušetrili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Super! Zablokovali ste 250 sledovačov a reklám pomocou prehliadača Brave.🔥</translation>
+<translation id="9199047775708635708">Super! Pomocou Brave ste ušetrili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.💨💨</translation>
 <translation id="7408493389591475748">Na zobrazenie hlásenia o súkromí začnite prehliadať</translation>
 <translation id="9080777565335515917">Nastaviť Brave ako predvolený prehliadač pre súkromné a zabezpečené prehliadanie.</translation>
 <translation id="1390943217516275883">Umožňuje prehliadaču Brave zobraziť vaše štatistiky ochrany osobných údajov</translation>
@@ -410,6 +419,8 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="6755546361496900700">Ukážka konverzie</translation>
 <translation id="2882813124794301799">Kopa widgetov</translation>
 <translation id="13296465911709339">Váš text bol skopírovaný.</translation>
+<translation id="4670943871783273148">Váš text sa uložil do textového súboru.</translation>
+<translation id="4432845796903761592">Súbor sa neuložil.</translation>
 <translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="2977461003134694205">Štatistiky súkromnia</translation>
 <translation id="4643117005422448078">Top stránky</translation>
@@ -471,11 +482,12 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="8037420924417098685">Ak chcete začať bezplatný hovor, zapnite Brave Rewards</translation>
 <translation id="8961724619078500274">Pomocou Brave Rewards zarábate tokeny za prezeranie súkromných reklám (vaše údaje sú v bezpečí). Premeňte tokeny na hotovosť, darčekové karty…alebo dokonca prispievajte webovým stránkam, ktoré máte radi. Bez sledovania. A bez spomalenia.</translation>
 <translation id="7307847920988946894">Zapnúť odmeny</translation>
+<translation id="7872993190040589450">Povolením vyjadrujete súhlas so <ph name="TERMS_OF_SERVICE"/> a <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Ak chcete začať bezplatný hovor, povoľte Brave Private Ads.</translation>
 <translation id="7930006085154756245">Pomocou Brave Private Ads zarábate tokeny za prezeranie súkromných reklám (vaše údaje sú v bezpečí). Premeňte tokeny na hotovosť, darčekové karty…alebo dokonca prispievajte webovým stránkam, ktoré máte radi. Bez sledovania. A bez spomalenia.</translation>
 <translation id="4992617448154987397">Zapnúť Brave Private Ads</translation>
 <translation id="3415016869273103668">Teraz môžete začať bezplatný hovor</translation>
-<translation id="7073631403665023390">Ťuknite kamkoľvek na obrazovke a pokračujte na Brave Talk.</translation>
+<translation id="7073631403665023390">Kliknite kamkoľvek na obrazovke a pokračujte na Brave Talk.</translation>
 <translation id="626339649633171286">Chcete sa dozvedieť viac o odmenách Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Previedli ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Skontrolujte svoje sieťové pripojenie.</translation>
@@ -531,13 +543,15 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="5460364286096798286">Uchovajte si krypto vo svojej úschove. Obchodné aktíva. Prezerajte si ceny a výkonnosť portfólia. Investujte, požičajte si a požičiavajte pomocou DeFi.</translation>
 <translation id="1748009926009835882">Nastaviť krypto</translation>
 <translation id="2759836790106646094">Teraz zálohovať peňaženku!</translation>
-<translation id="7685607706678113458">V ďalšom kroku uvidíte 12 slov, ktoré vám umožnia obnoviť vašu krypto peňaženku.</translation>
+<translation id="5156354224138379811">V ďalšom kroku uvidíte 12 slov, ktoré vám umožnia obnoviť vašu kryptopeňaženku.</translation>
 <translation id="2359808026110333948">Pokračovať</translation>
 <translation id="5024543173656851695">Chápem, že ak stratím slová na obnovenie, nebudem mať prístup do svojej krypto peňaženky.</translation>
 <translation id="3933122286596948824">Vaša fráza na obnovenie</translation>
 <translation id="6146351434671268516">Zapíšte alebo skopírujte tieto slová v správnom poradí a uložte si ich na nejaké bezpečné miesto.</translation>
 <translation id="7408247683131762445">VAROVANIE: Nikdy nezverejňujte svoju frázu na zálohovanie. Každý, kto má túto frázu, môže navždy vziať vaše prostriedky.</translation>
 <translation id="939275786514736244">Svoju frázu som zálohoval na bezpečnom mieste</translation>
+<translation id="6896758677409633944">Kopírovať</translation>
+<translation id="5317780077021120954">Uložiť</translation>
 <translation id="2604744480284798833">Zálohujte svoju peňaženku a chráňte svoje kryptoportfólio pred stratou prístupu.</translation>
 <translation id="1202920745614909195">Kúpte krypto pomocou služby Apple Pay, kreditnej alebo debetnej karty.</translation>
 <translation id="841880029259839903">Zasielajte krypto alebo prevádzajte z jedného účtu na druhý.</translation>
@@ -559,13 +573,13 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Povoliť odomykanie odtlačkom prsta?</translation>
 <translation id="5493402808936397665">Povoľte biometriu na rýchle odomykanie svojej peňaženky bez zadania hesla.</translation>
-<translation id="1544192797660353713">Peňaženka Brave</translation>
+<translation id="1544192797660353713">Peňaženka</translation>
 <translation id="6901810042765869341">Zadajte svoju frázu na obnovenie a obnovte svoj krypto účet Brave Wallet.</translation>
 <translation id="1970161551843843564">Obnoviť krypto účet</translation>
 <translation id="4811736040444856406">Zobraziť frázu na obnovenie</translation>
 <translation id="283071225285270357">Zadajte svoju frázu na obnovenie</translation>
 <translation id="2339124864228588937">Overiť frázu na obnovenie</translation>
-<translation id="6202787708155200390">Klepnutím na hornú časť slov ich umiestnite vedľa seba v správnom poradí.</translation>
+<translation id="2718669004132381989">Ťuknutím umiestnite vedľa seba slová v správnom poradí.</translation>
 <translation id="6518133107902771759">Overiť</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="9111102763498581341">Odomknúť</translation>
@@ -573,7 +587,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="1569452037668432756">Zadajte heslo na odomknutie</translation>
 <translation id="224719674509047150">Heslo musí mať aspoň 7 znakov, ktoré obsahujú aspoň jedno číslo a špeciálny znak</translation>
 <translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
-<translation id="745115390910697838">Frázy sa nezhodujú. Prosím, skúste to znova.</translation>
+<translation id="5760476995887363522">Frázy sa nezhodujú. Skúste to znova.</translation>
 <translation id="2360588547830602174">Obnovenie účtu zlyhalo. Prosím, skúste to znova.</translation>
 <translation id="6392640873800632439">Trhová cena v <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Od</translation>
@@ -587,6 +601,12 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="3535654229833214438">Transakcie</translation>
 <translation id="4636930964841734540">Informace</translation>
+<translation id="2449682593754783720">1 hodina</translation>
+<translation id="969133700726811190">1 deň</translation>
+<translation id="5882300031363619940">1 týždeň</translation>
+<translation id="5698094150392720512">1 mesiac</translation>
+<translation id="5483736362376139517">1 rok</translation>
+<translation id="6979737339423435258">Celé obdobie</translation>
 <translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
 <translation id="5288333155754958121">Táto anonymná, súkromná správa umožní Brave odhadnúť počet aktívnych používateľov.</translation>
 <translation id="3819257035322786455">Zálohovať</translation>
@@ -627,7 +647,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="6277055349883621705">Obnovujte ročne a ušetrite 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="4487678670820292781">119,88 USD</translation>
-<translation id="5867778679088331977">Vyskúšajte zadarmo na 7 dní. Po 7 dňoch vám bude účtovaná cena predplatného. Všetky predplatné sa obnovujú automaticky, ale môžu sa zrušiť pred obnovením.</translation>
+<translation id="2655185358771731232">Vyskúšajte si to zadarmo na 7 dní. Po 7 dňoch vám bude účtovaná cena podľa plánu. Všetky predplatné sa obnovujú automaticky, ale môžete ich zrušiť ešte pred obnovením.</translation>
 <translation id="6053992191006521518">Vyskúšajte ZADARMO</translation>
 <translation id="721747358270435486">Inštalovať VPN</translation>
 <translation id="836074276610740314">Nainštalovať profil VPN</translation>
@@ -701,4 +721,15 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="275990379543116961">Nedostatočné prostriedky na palivo</translation>
 <translation id="3292453499915466604">Nedostatočná likvidita</translation>
 <translation id="3380365263193509176">Neznáma chyba</translation>
+<translation id="5932938770824268122">Privátní klíč</translation>
+<translation id="2472882733835903303">Zobraziť súkromný kľúč</translation>
+<translation id="4391056902675005799">Skryť súkromný kľúč</translation>
+<translation id="5929798090073091848">Pozor: Tento kľúč nikomu nezverejňujte. Každý so súkromným kľúčom môže ukradnúť všetky aktíva na vašom účte.</translation>
+<translation id="1133619932669546254">Aktivovať <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">TYP FUNKCIE: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Žiadne dáta</translation>
+<translation id="7685607706678113458">V ďalšom kroku uvidíte 12 slov, ktoré vám umožnia obnoviť vašu krypto peňaženku.</translation>
+<translation id="6202787708155200390">Klepnutím na hornú časť slov ich umiestnite vedľa seba v správnom poradí.</translation>
+<translation id="745115390910697838">Frázy sa nezhodujú. Prosím, skúste to znova.</translation>
+<translation id="5867778679088331977">Vyskúšajte zadarmo na 7 dní. Po 7 dňoch vám bude účtovaná cena predplatného. Všetky predplatné sa obnovujú automaticky, ale môžu sa zrušiť pred obnovením.</translation>
 </translationbundle>

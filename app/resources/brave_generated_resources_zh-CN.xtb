@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
+<translation id="6821903322090655051">Brave 奖励已禁用</translation>
+<translation id="9184430019924125685">单击此处了解更多</translation>
+<translation id="3849957491997306859">自动检测</translation>
+<translation id="8798099450830957504">默认</translation>
+<translation id="4176463684765177261">已停用</translation>
+<translation id="4851215387785619212">Brave 专属广告</translation>
+<translation id="7808122468353671181">通过观看 Brave 广告赚取代币。展示的广告是基于您的兴趣（根据您的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
+<translation id="1758947220824279023">待显示的最大广告个数</translation>
+<translation id="8578912649458880781">状态级别广告靶向</translation>
+<translation id="3678362265519557511">这将允许 Brave 向您显示符合您状态的广告。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">自动贡献</translation>
+<translation id="9132509928968869844">每月自动打赏限制</translation>
+<translation id="7286722244752781970">登录访问前最短页面时间</translation>
+<translation id="4424486208397124985">发布者相关性的最低访问量</translation>
+<translation id="6248554379744796526">显示列表中未经验证的站点</translation>
+<translation id="3241299447027267831">允许打赏视频</translation>
+<translation id="924777189963477634">开启自动打赏即表示您同意<ph name="BEGIN_LINK_TOS"/>服务条款<ph name="END_LINK_TOS"/>和<ph name="BEGIN_LINK_PP"/>隐私政策<ph name="END_LINK_PP"/>。</translation>
+<translation id="5733490796524078528">打赏按钮</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="1988804048511540801">新标签页随及会显示</translation>
 <translation id="2970343821770026391">仪表板</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">Tor 的私人窗口</translation>
 <translation id="1970435562892104727">这是 Tor 的私人窗口</translation>
 <translation id="1037341607922068025">打开 Tor 的私人窗口</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">在 Tor 中打开</translation>
 <translation id="7643538479215207633">用 IPFS 打开</translation>
 <translation id="3094628781200061820">发布并从 IPFS 检索文件</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
+<translation id="406832631167785034">使用 .onion 地址打开</translation>
 <translation id="4901618511712685702">导入到 IPFS</translation>
 <translation id="6794469945030154569">此页面</translation>
 <translation id="5037852323412456577">已选图片</translation>
@@ -95,7 +118,6 @@
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
 <translation id="575838692088926391">使用 IPFS 共享本地文件夹</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -122,13 +144,11 @@
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="4078738236287221428">攻击性</translation>
 <translation id="7740996059027112821">标准</translation>
-<translation id="4176463684765177261">已停用</translation>
 <translation id="5770288601196774623">仅限跨站点</translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="5533533363827555308">严格，可能会破坏网站</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="6165508094623778733">了解更多</translation>
-<translation id="8798099450830957504">默认</translation>
 <translation id="1822560017823072927">默认公共和私人接口</translation>
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
@@ -175,6 +195,11 @@
 <translation id="2339730291919608488">离开同步链</translation>
 <translation id="115699408012835975">如果您重置同步，则您需要重新输入另一台设备的同步代码，以便与其进行同步。您确定想要继续吗？</translation>
 <translation id="6092564993102418148">你确定要从同步链中删除所选设备吗?</translation>
+<translation id="2936582902048232286">警告：这会与生成这些代码单词的设备共享您的 Brave 数据，可能包括您的密码。
+
+请再次确认这些单词由您所拥有的设备生成。
+
+确定要这么做吗？</translation>
 <translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
 <translation id="7473245612074035141">开始设置</translation>
 <translation id="3411013544209536575">支助赏金</translation>
@@ -188,8 +213,11 @@
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>
-<translation id="1274962333945373242">不建议使用的 Crypto Wallets 扩展程序</translation>
+<translation id="1274962333945373242">Crypto Wallets（已废弃）</translation>
+<translation id="3695088618483091287">Brave 钱包（首选扩展）</translation>
 <translation id="9131889008937672866">默认的加密货币钱包</translation>
+<translation id="4718664830805652430">默认基础货币</translation>
+<translation id="7992507032049865603">默认基础加密货币</translation>
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
 <translation id="414639769490080648">自动锁定 Brave 钱包前等待的分钟数</translation>
@@ -220,6 +248,9 @@
 <translation id="616058968889448209">IPFS 服务启动错误，更多信息参见<ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
 <translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
+<translation id="8860039076160511438">重置钱包</translation>
+<translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
+<translation id="1426410128494586442">是</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">启动节点</translation>
@@ -362,6 +393,7 @@
 <translation id="4235920711083356755">显示 VPN 按钮</translation>
 <translation id="4070612712151038707">显示工具栏中的 VPN 按钮</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">开/关 VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">关于 Brave VPN</translation>
 <translation id="4378551569595875038">正在连接…</translation>
@@ -387,4 +419,31 @@
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="2273851479262317744">将 Brave 设为默认浏览器</translation>
 <translation id="8581710194025054669">为了确保最佳的在线隐私，可以考虑将 Brave 设置为您电脑上的默认浏览器。将 Brave 设为默认浏览器后，您点击的任何网络链接都将享有 Brave 的隐私保护功能。</translation>
+<translation id="1241283133946520352">网络</translation>
+<translation id="8205945804087322170">添加新网络</translation>
+<translation id="2156993118928861787">无效地址</translation>
+<translation id="2653659639078652383">提交</translation>
+<translation id="2556708692502648323">钱包网络</translation>
+<translation id="1330032157352961756">新链 ID</translation>
+<translation id="9053905035135220650">前缀为 0x 的十六进制字符串</translation>
+<translation id="726121047592132939">新链名称</translation>
+<translation id="1034112277864078119">输入链名称</translation>
+<translation id="4672314527143443556">链的货币名</translation>
+<translation id="4652114030688989556">输入货币名</translation>
+<translation id="1079960017149736097">链的货币符号</translation>
+<translation id="1288105009659846362">输入货币符号</translation>
+<translation id="665660671251623018">链的货币小数</translation>
+<translation id="2978054488731497946">输入货币小数</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">输入网址</translation>
+<translation id="3047726704186619366">图标 URL</translation>
+<translation id="2487558607408469181">拦截浏览器 URL</translation>
+<translation id="6301398959353668507">此字段不能为空。</translation>
+<translation id="4514843126085243862">无效格式，链 ID 是一个前缀为 0x 的十六进制字符串</translation>
+<translation id="8325036459845654666">已添加此网络。</translation>
+<translation id="650071759190249039">内部错误，无法添加网络。</translation>
+<translation id="868529041590572443">请填写有关原生货币的所有信息</translation>
+<translation id="1062463687579789365">定制钱包网络</translation>
+<translation id="2234108191702901162">无法添加网络</translation>
+<translation id="2618193846561624884">要更新现有网络吗？</translation>
 </translationbundle>

@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Zapobiega ładowaniu trackerów &amp; reklam i wyświetlaniu ich na stronach internetowych</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
+<translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Brave oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
 <translation id="4272190451231642425">Automatycznie wysyłaj raporty o awariach</translation>
 <translation id="2239766974964486304">Raporty o awariach pomagają Brave w poprawie stabilnosci produktu dla wszystkich użytkowników.</translation>
 <translation id="7977176350719484850">Zaoszczędzony transfer danych</translation>
@@ -219,6 +220,14 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="7173114856073700355">Otwórz Ustawienia</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Nie pokazuj ponownie</translation>
+<translation id="1056898198331236512">Uwaga</translation>
+<translation id="1426410128494586442">Tak</translation>
+<translation id="7811264919113243207">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało ten kod QR.
+Sprawdź, czy ten kod QR został wygenerowane przez urządzenie, które należy do Ciebie.
+Czy na pewno chcesz to zrobić?</translation>
+<translation id="3097089005389027085">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało te słowa kodu.
+Sprawdź, czy te słowa kodu zostały wygenerowane przez urządzenie, które należy do Ciebie.
+Czy na pewno chcesz to zrobić?</translation>
 <translation id="597993392929850353">Licencja Brave</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6199596294742117349">To jest karta prywatna</translation>
@@ -376,12 +385,12 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
 <translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.&#128293;</translation>
-<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.🔥</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.🔋</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.💨💨</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="1390943217516275883">Zezwala Brave na pokazywanie statystyk prywatności.</translation>
@@ -410,6 +419,8 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="6755546361496900700">Podgląd wymiany</translation>
 <translation id="2882813124794301799">Widżet – stos</translation>
 <translation id="13296465911709339">Twój tekst został skopiowany do schowka.</translation>
+<translation id="4670943871783273148">Twój tekst został zapisany w pliku tekstowym.</translation>
+<translation id="4432845796903761592">Nie zapisano pliku.</translation>
 <translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="2977461003134694205">Statystyki prywatności</translation>
 <translation id="4643117005422448078">Popularne strony</translation>
@@ -471,11 +482,12 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="8037420924417098685">Aby rozpocząć bezpłatne połączenie, włącz Brave Revards</translation>
 <translation id="8961724619078500274">Brave Rewards nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.</translation>
 <translation id="7307847920988946894">Włącz nagrody</translation>
+<translation id="7872993190040589450">Włączając, wyrażasz zgodę na <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Aby rozpocząć bezpłatne połączenie, włącz reklamy prywatne Brave</translation>
 <translation id="7930006085154756245">Brave Private Ads nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.</translation>
 <translation id="4992617448154987397">Włącz Brave Private Ads</translation>
 <translation id="3415016869273103668">Teraz możesz rozpocząć bezpłatne połączenie</translation>
-<translation id="7073631403665023390">Dotknij dowolne miejsce ekranu, aby kontynuować rozmowę Brave Talk</translation>
+<translation id="7073631403665023390">Kliknij lub dotknij dowolne miejsce ekranu, aby przejść do Brave Talk.</translation>
 <translation id="626339649633171286">Chcesz dowiedzieć się więcej o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Konwertowałeś(-aś) <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> na <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Sprawdź połączenie sieciowe.</translation>
@@ -531,13 +543,15 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="5460364286096798286">Przechowuj kryptowaluty w zatrzymaniu. Handluj aktywami. Zobacz ceny i wydajność portfela. Inwestuj, pożyczaj i udzielaj pożyczek za pomocą DeFi.</translation>
 <translation id="1748009926009835882">Skonfiguruj kryptowalutę</translation>
 <translation id="2759836790106646094">Zrób teraz kopię zapasową swojego portfela!</translation>
-<translation id="7685607706678113458">W następnym kroku zobaczysz 12 słów, które pozwolą Ci odzyskać portfel kryptowalut.</translation>
+<translation id="5156354224138379811">W następnym kroku zobaczysz 12 wyrazów, które pozwolą Ci odzyskać portfel kryptowalut.</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5024543173656851695">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
 <translation id="3933122286596948824">Twoje wyrażenie odzyskiwania</translation>
 <translation id="6146351434671268516">Zapisz lub skopiuj te słowa w odpowiedniej kolejności i zapisz je gdzieś w bezpiecznym miejscu.</translation>
 <translation id="7408247683131762445">OSTRZEŻENIE: Nigdy nie ujawniaj swojego wyrażenia odzyskiwania. Każdy, kto zna to wyrażenie, może zabrać Twoje środki na zawsze.</translation>
 <translation id="939275786514736244">Zrobiłem/-łam kopię zapasową mojego wyrażenia w bezpiecznym miejscu</translation>
+<translation id="6896758677409633944">Kopiuj</translation>
+<translation id="5317780077021120954">Zapisz</translation>
 <translation id="2604744480284798833">Utwórz kopię zapasową portfela, aby chronić swoje kryptoaktywa przed utratą dostępu.</translation>
 <translation id="1202920745614909195">Kupuj kryptowaluty za pomocą Apple Pay, karty kredytowej lub debetowej.</translation>
 <translation id="841880029259839903">Przesyłaj kryptowaluty lub dokonuj przelewów z jednego konta na drugie.</translation>
@@ -559,13 +573,13 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Włączyć odblokowywanie odciskiem palca?</translation>
 <translation id="5493402808936397665">Włącz biometrię, aby szybko odblokować portfel bez wpisywania hasła.</translation>
-<translation id="1544192797660353713">Portfel Brave</translation>
+<translation id="1544192797660353713">Portfel</translation>
 <translation id="6901810042765869341">Wprowadź wyrażenie odzyskiwania, aby przywrócić swoje konto kryptowalutowe Brave Wallet.</translation>
 <translation id="1970161551843843564">Przywróć konto kryptowalutowe</translation>
 <translation id="4811736040444856406">Pokaż wyrażenie odzyskiwania</translation>
 <translation id="283071225285270357">Wprowadź swoje wyrażenie odzyskiwania</translation>
 <translation id="2339124864228588937">Zweryfikuj wyrażenie odzyskiwania</translation>
-<translation id="6202787708155200390">Naciśnij na słowa, aby umieścić je obok siebie w odpowiedniej kolejności</translation>
+<translation id="2718669004132381989">Dotykaj wyrazy, aby umieścić je obok siebie w odpowiedniej kolejności.</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="9111102763498581341">Odblokuj</translation>
@@ -573,7 +587,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="1569452037668432756">Wprowadź swoje hasło, aby odblokować</translation>
 <translation id="224719674509047150">Hasło musi składać się z co najmniej 7 znaków, w tym co najmniej jednej cyfry i jednego znaku specjalnego</translation>
 <translation id="1144810021918451336">Nie chroni przed niebezpiecznymi witrynami internetowymi, pobieranymi plikami ani rozszerzeniami.</translation>
-<translation id="745115390910697838">Wyrażenia nie pasują, spróbuj ponownie.</translation>
+<translation id="5760476995887363522">Wyrażenia się nie zgadzają. Spróbuj ponownie.</translation>
 <translation id="2360588547830602174">Odzyskiwanie konta nie powiodło się. Spróbuj ponownie.</translation>
 <translation id="6392640873800632439">Cena rynkowa w <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Z</translation>
@@ -587,6 +601,12 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="1987317783729300807">Konta</translation>
 <translation id="3535654229833214438">Transakcje</translation>
 <translation id="4636930964841734540">Info</translation>
+<translation id="2449682593754783720">1 godzina</translation>
+<translation id="969133700726811190">1 dzień</translation>
+<translation id="5882300031363619940">1 tydzień</translation>
+<translation id="5698094150392720512">1 miesiąc</translation>
+<translation id="5483736362376139517">1 rok</translation>
+<translation id="6979737339423435258">Od początku</translation>
 <translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
 <translation id="5288333155754958121">Ten anonimowy, prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników</translation>
 <translation id="3819257035322786455">Kopia zapasowa</translation>
@@ -627,7 +647,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="6277055349883621705">Odnawianie co roku pozwala zaoszczędzić 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / rok</translation>
 <translation id="4487678670820292781">119,88 USD</translation>
-<translation id="5867778679088331977">Darmowy siedmiodniowy okres próbny. Po siedmiu dniach zostanie naliczona opłata zgodnie z planem. Wszystkie subskrypcje odnawiają się automatycznie, można je jednak anulować przed odnowieniem.</translation>
+<translation id="2655185358771731232">Darmowy siedmiodniowy okres próbny. Po siedmiu dniach zostanie naliczona opłata zgodnie z planem. Wszystkie subskrypcje odnawiają się automatycznie, można je jednak anulować przed odnowieniem.</translation>
 <translation id="6053992191006521518">Wypróbuj BEZPŁATNIE</translation>
 <translation id="721747358270435486">Zainstaluj VPN</translation>
 <translation id="836074276610740314">Zainstaluj profil VPN</translation>
@@ -701,4 +721,15 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="275990379543116961">Niewystarczające środki na gaz</translation>
 <translation id="3292453499915466604">Niewystarczająca płynność</translation>
 <translation id="3380365263193509176">Nieznany błąd</translation>
+<translation id="5932938770824268122">Klucz prywatny</translation>
+<translation id="2472882733835903303">Pokaż klucz prywatny</translation>
+<translation id="4391056902675005799">Ukryj klucz prywatny</translation>
+<translation id="5929798090073091848">Uwaga: nie ujawniaj nikomu tego klucza. Każda osoba posiadająca Twój prywatny klucz może użyć środków znajdujących się na Twoim koncie.</translation>
+<translation id="1133619932669546254">Aktywuj <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">TYP FUNKCJI: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Brak danych</translation>
+<translation id="7685607706678113458">W następnym kroku zobaczysz 12 słów, które pozwolą Ci odzyskać portfel kryptowalut.</translation>
+<translation id="6202787708155200390">Naciśnij na słowa, aby umieścić je obok siebie w odpowiedniej kolejności</translation>
+<translation id="745115390910697838">Wyrażenia nie pasują, spróbuj ponownie.</translation>
+<translation id="5867778679088331977">Darmowy siedmiodniowy okres próbny. Po siedmiu dniach zostanie naliczona opłata zgodnie z planem. Wszystkie subskrypcje odnawiają się automatycznie, można je jednak anulować przed odnowieniem.</translation>
 </translationbundle>

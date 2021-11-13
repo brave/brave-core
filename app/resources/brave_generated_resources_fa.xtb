@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">از شما در برابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک محافظت نمی‌کند.</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
+<translation id="6821903322090655051">«پاداش‌های Brave» غیرفعال است</translation>
+<translation id="9184430019924125685">برای دریافت اطلاعات بیشتر، اینجا کلیک کنید</translation>
+<translation id="3849957491997306859">به‌طور خودکار شناسایی شد</translation>
+<translation id="8798099450830957504">پیش‌فرض</translation>
+<translation id="4176463684765177261">غیرفعال شد</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">با مشاهده «آگهی‌های Brave»، توکن کسب کنید. آگهی‌های بر اساس علایق شما، که از فعالیت شما هنگام مرور وب شناسایی می‌شوند، ارائه می‌شوند. هیچ داده شخصی یا تاریخچه مروری از مرورگرتان خارج نمی‌شود.</translation>
+<translation id="1758947220824279023">حداکثر تعداد آگهی‌ها برای نمایش</translation>
+<translation id="8578912649458880781">هدف‌گذاری آگهی در سطح ایالت</translation>
+<translation id="3678362265519557511">این کار به Brave اجازه می‌دهد آگهی‌هایی را نمایش دهد که مختص ایالت شما هستند. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">کمک خودکار</translation>
+<translation id="9132509928968869844">محدودیت کمک خودکار ماهانه</translation>
+<translation id="7286722244752781970">حداقل زمان صفحهْ قبل از ثبت بازدید</translation>
+<translation id="4424486208397124985">حداقل بازدید برای ربط ناشر</translation>
+<translation id="6248554379744796526">نشان دادن سایت‌های تأییدنشده در فهرست</translation>
+<translation id="3241299447027267831">اجازه کمک به ویدیوها</translation>
+<translation id="924777189963477634">با روشن کردن کمک خودکار، با <ph name="BEGIN_LINK_TOS"/>شرایط سرویس<ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/>خط مشی حریم خصوصی<ph name="END_LINK_PP"/>موافقت می‌کنید</translation>
+<translation id="5733490796524078528">دکمه‌های انعام</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="1988804048511540801">صفحه برگه جدید نشان می‌دهد</translation>
 <translation id="2970343821770026391">داشبورد</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">پنجره خصوصی با Tor</translation>
 <translation id="1970435562892104727">این پنجره‌ای خصوصی با Tor است</translation>
 <translation id="1037341607922068025">باز کردن پنجره خصوصی با Tor</translation>
+<translation id="5410152065859052603">تور</translation>
 <translation id="1725356094208762656">باز کردن در Tor</translation>
 <translation id="7643538479215207633">باز کردن بااستفاده از IPFS</translation>
 <translation id="3094628781200061820">انتشار و دریافت فایل‌ها از IPFS</translation>
 <translation id="1672270084584211506">Onion دردسترس است</translation>
+<translation id="406832631167785034">باز کردن استفاده از آدرس ‎.onion</translation>
 <translation id="4901618511712685702">وارد کردن به IPFS</translation>
 <translation id="6794469945030154569">این صفحه</translation>
 <translation id="5037852323412456577">تصویر انتخاب‌شده</translation>
@@ -94,7 +117,6 @@
 <translation id="2638041073279639246">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="575838692088926391">اشتراک‌گذاری پوشه محلی با استفاده از IPFS</translation>
-<translation id="5410152065859052603">تور</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -121,13 +143,11 @@
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="4078738236287221428">تهاجمی</translation>
 <translation id="7740996059027112821">استاندارد</translation>
-<translation id="4176463684765177261">غیرفعال شد</translation>
 <translation id="5770288601196774623">فقط بین سایتی</translation>
 <translation id="3587482841069643663">همه</translation>
 <translation id="5533533363827555308">شدید، ممکن است منجر به خرابی سایت‌ها شود</translation>
 <translation id="8792121506918889955">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
-<translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
@@ -174,6 +194,11 @@
 <translation id="2339730291919608488">خروج از زنجیره همگام‌سازی</translation>
 <translation id="115699408012835975">اگر «همگام‌سازی» را بازنشانی کنید، باید کد همگام‌سازی را مجدداً از دستگاه دیگری وارد کنید تا همگام‌سازی با آن انجام شود. مطمئن هستید که می‌خواهید ادامه دهید؟</translation>
 <translation id="6092564993102418148">آیا مطمئن هستید که می‌خواهید دستگاه انتخاب‌شده را از زنجیره همگام‌سازی حذف کنید؟</translation>
+<translation id="2936582902048232286">هشدار: با این کار داده‌های Brave (برای مثال به‌طور محتمل رمزعبورهای شما)، با دستگاهی که این کد واژه‌ها را ایجاد کرده است به اشتراک گذاشته می‌شوند.
+
+لطفاً دقیق بررسی کنید این واژه‌ها با دستگاهی ایجاد شده باشند که متعلق به شما هستند.
+
+مطمئنید می‌خواهید این کار را انجام دهید؟</translation>
 <translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
 <translation id="7473245612074035141">شروع راه‌اندازی</translation>
 <translation id="3411013544209536575">نکات راهنما</translation>
@@ -187,8 +212,11 @@
 <translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="7701040980221191251">هیچ کدام</translation>
-<translation id="1274962333945373242">افزونه منسوخ Crypto Wallets</translation>
+<translation id="1274962333945373242">کیف پول‌های رمز ارز (منسوخ)</translation>
+<translation id="3695088618483091287">کیف پول Brave (افزونه‌های ترجیحی)</translation>
 <translation id="9131889008937672866">کیف پول پیش‌فرض رمزارز</translation>
+<translation id="4718664830805652430">ارز پایه پیش‌فرض</translation>
+<translation id="7992507032049865603">رمزارز پایه پیش‌فرض</translation>
 <translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
@@ -207,6 +235,7 @@
 <translation id="6476061084931271248">برای اعمال تغییرات، گره را مجدداً راه‌اندازی کنید</translation>
 <translation id="3754226427671882382">راه‌اندازی مجدد گره</translation>
 <translation id="949667118776341807">چرخش</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">این نام معتبر نیست</translation>
 <translation id="6758961763875471084">تغییر فهرست همتایان</translation>
 <translation id="1295874070797049002">کلید صدور</translation>
@@ -217,6 +246,9 @@
 <translation id="616058968889448209">خطای راه‌اندازی سرویس IPFS، اطلاعات بیشتر در <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> موجود است</translation>
 <translation id="6912148685459054619">کلید «<ph name="KEY_NAME"/>» وارد نشد</translation>
 <translation id="3364053282600191535">کلید '<ph name="KEY_NAME"/>' صادر نشد</translation>
+<translation id="8860039076160511438">بازنشانی کیف پول</translation>
+<translation id="6369495274982305511">مطمئنید می‌خواهید کیف پول را بازنشانی کنید؟ اگر کیف پولتان پشتیبان‌گیری شده باشد، بازنشانی باعث از بین رفتن همه داده‌های حساب می‌شود (از جمله وجود مربوطه). برای تأیید، «<ph name="CONFIRMATION_PHRASE"/>» را تایپ کنید.</translation>
+<translation id="1426410128494586442">بله</translation>
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="3654980960391973513">ایجاد</translation>
 <translation id="5531501313997312487">شروع گره</translation>
@@ -358,6 +390,7 @@
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">تغییر وضعیت VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">درباره Brave VPN</translation>
 <translation id="4378551569595875038">در حال اتصال...</translation>
@@ -383,4 +416,31 @@
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="2273851479262317744">تنظیم Brave به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="8581710194025054669">برای اطمینان از داشتن بهترین حریم‌خصوصی آنلاین، Brave را به‌عنوان مرورگر پیش‌فرض در رایانه‌تان تنظیم کنید. با Brave، روی هر پیوند وبی که کلیک کنید به‌طور پیش‌فرض با محافظت‌های حریم‌خصوصی Brave باز می‌شود.</translation>
+<translation id="1241283133946520352">شبکه ها</translation>
+<translation id="8205945804087322170">افزودن شبکه جدید</translation>
+<translation id="2156993118928861787">آدرس نامعتبر</translation>
+<translation id="2653659639078652383">ارائه</translation>
+<translation id="2556708692502648323">شبکه‌های کیف پول</translation>
+<translation id="1330032157352961756">شناسه زنجیره جدید</translation>
+<translation id="9053905035135220650">رشته مبنای شانزده با پیشوند 0x</translation>
+<translation id="726121047592132939">نام زنجیره جدید</translation>
+<translation id="1034112277864078119">نام زنجیره را وارد کنید</translation>
+<translation id="4672314527143443556">نام ارز زنجیره</translation>
+<translation id="4652114030688989556">نام ارز را وارد کنید</translation>
+<translation id="1079960017149736097">نماد ارز زنجیره</translation>
+<translation id="1288105009659846362">نماد ارز را وارد کنید</translation>
+<translation id="665660671251623018">اعشار ارز زنجیره</translation>
+<translation id="2978054488731497946">اعشار ارز را وارد کنید</translation>
+<translation id="2727514928168763432">آدرس وب RPC</translation>
+<translation id="7059127752542505809">وارد کردن نشانی وب</translation>
+<translation id="3047726704186619366">آدرس وب نماد</translation>
+<translation id="2487558607408469181">آدرس وب کاوشگر بلوک</translation>
+<translation id="6301398959353668507">این فیلد نباید خالی باشد.</translation>
+<translation id="4514843126085243862">قالب نامعتبر است، شناسه زنجیره یک رشته مبنای شانزده با پیشوند 0x است</translation>
+<translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
+<translation id="650071759190249039">خطای داخلی، افزودن شبکه امکان‌پذیر نیست.</translation>
+<translation id="868529041590572443">لطفاً همه اطلاعات مربوط به ارز بومی را وارد کنید</translation>
+<translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
+<translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
+<translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
 </translationbundle>

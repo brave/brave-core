@@ -40,7 +40,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="7798069806040634998">Brave potrebuje za prenos datotek dostop do shrambe</translation>
 <translation id="8447483940522230788">Pomoč za Brave</translation>
 <translation id="7933006624150961626">Če želite do stvari v Braveu dostopati v vseh svojih napravah, se prijavite, da boste lahko vklopili sinhronizacijo.</translation>
-<translation id="5486618155264784386">Namesti Chrome OS</translation>
 <translation id="7291143854620707672">Podatke v Braveu, ki se ustvarijo med uporabo tega profila (na primer zaznamke, zgodovino, gesla in druge nastavitve), lahko odstrani skrbnik delovnega profila. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Če želite namestiti posodobitev, morate znova zagnati OS Brave.</translation>
 <translation id="7387051847644272380">Napaka v operacijskem sistemu med namestitvijo. Znova prenesite Brave.</translation>
@@ -53,8 +52,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="777113543093865885">Odstranitev iz Bravea ...</translation>
 <translation id="2885378588091291677">Upravitelj opravil</translation>
 <translation id="2176825726964012531">O &amp;Braveu</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Še zadnji opomnik: Z namestitvijo <ph name="BEGIN_BOLD"/>bo izbrisan celotni trdi disk<ph name="END_BOLD"/>. Poskrbite za varnostno kopijo pomembnih podatkov.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Ko se namestitev začne, je ni mogoče preklicati.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave je posodobljen</translation>
 <translation id="2953892977076487219">Brave poskuša urejati gesla.</translation>
 <translation id="8755404239607088219">Brave ne more preveriti gesel. Poskusite pozneje.</translation>
@@ -77,7 +74,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="2711887072399498551">Profil v Braveu s tem računom že obstaja.</translation>
 <translation id="2297290224191497273">Želite preklopiti na obstoječi profil v Braveu?</translation>
 <translation id="2450003541323895471">S profili v Braveu lahko ločite vse stvari v Braveu. Ustvarite profile za prijatelje in svojce ali ustvarite ločene za delo in zabavo.</translation>
-<translation id="7275165473619697274">Namestitev sistema Chrome OS poteka</translation>
 <translation id="9216183508558772570">Brave vas bo obvestil, če se prijavite z ogroženim geslom</translation>
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bližnjica <ph name="SHORTCUT"/> omogoča preklop med profili v Braveu</translation>
@@ -102,7 +98,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8923080813984421771"><ph name="MANAGER"/> zahteva, da preberete in sprejmete pogoje storitve, preden začnete uporabljati napravo. Ti pogoji ne dopolnjujejo, spreminjajo ali omejujejo pogojev za Chrome OS.</translation>
 <translation id="3262506503470845422">Pomoč za Brave</translation>
 <translation id="7691786510374174420">Namestitev ni bila izvedena zaradi nedoločene napake. Če se Brave trenutno izvaja, ga zaprite in poskusite znova.</translation>
-<translation id="429583012151745428">Namestitev je v teku. Ne izklopite naprave. Namestitev naj ne bi trajala več kot dvajset minut. Računalnik se bo po namestitvi samodejno izklopil.</translation>
 <translation id="9183662282810237335">Želite vseeno zapreti Brave?</translation>
 <translation id="4065288863231444640">Naj se Brave izvaja v ozadju</translation>
 <translation id="8148611988012584308">Prilagajanje in nadziranje Bravea</translation>
@@ -194,7 +189,6 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="6666624454809779082">Brave je že nameščen za vse uporabnike v računalniku.</translation>
 <translation id="5360050006043219962">Če želite do stvari v Braveu dostopati v vseh svojih napravah, se prijavite in nato vklopite sinhronizacijo.</translation>
 <translation id="8291513491595858997">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Omogočanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
-<translation id="1810203443153428607">Z namestitvijo sistema Chrome OS bodo prepisani vsi podatki v napravi.</translation>
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopirano v Brave)</translation>
@@ -206,6 +200,7 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="3335606533094650083">Brave potrebuje dovoljenje za dostop do mikrofona za to spletno mesto</translation>
 <translation id="1705567146636171298">Posodobi Brave</translation>
 <translation id="5499063270485366718">Če slika nima koristnega opisa, ga bo Brave poskušal zagotoviti. Opisi se ustvarijo tako, da se slike pošljejo Googlu.</translation>
+<translation id="151916274998710826">Prilagodite nekatere najpomembnejše izbrane možnosti zasebnosti v Braveu</translation>
 <translation id="1008530050039597147">Brave potrebuje dovoljenje za fotoaparat za to spletno mesto.</translation>
 <translation id="1197672524850678392">Bravea ni bilo mogoče zagnati. Poskusite znova.</translation>
 <translation id="3405035915691517126">Brave ne more preveriti gesel. Poskusite znova čez 24 ur.</translation>
@@ -230,10 +225,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
       nastavitve operacijskega sistema Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave uporablja vašo kamero in mikrofon.</translation>
 <translation id="2827121003398607864">Brave je pravkar postal še boljši</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Preden začnemo, poskrbite, da imate aktualno varnostno kopijo podatkov. Z namestitvijo sistema Chrome OS bodo prepisani vsi podatki na trdem disku.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave ni odgovoren za kakršno koli izgubo podatkov in ne jamči, da bo sistem Chrome OS deloval na nepotrjenih modelih naprav. Če želite izvedeti več o potrjenih modelih, obiščite [še ni znano].<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Preberite več o nameščanju sistema Chrome OS in izbrisu podatkov: [URL še ni znan]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Če ste pripravljeni nadaljevati, kliknite »Namesti Chrome OS« in vodili vas bomo skozi namestitev v nekaj preprostih korakih. Preden izvedemo kakršne koli spremembe v računalniku, boste imeli še eno možnost za potrditev.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave ni privzeti brskalnik</translation>
 <translation id="5477319665405831211">V vseh svojih napravah sinhronizirajte in prilagodite Brave</translation>
 <translation id="5419189641394808652">Brave ni mogel sinhronizirati podatkov, ker sinhronizacija ni na voljo za vašo domeno.</translation>
@@ -298,5 +289,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave.}=1{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. Okno brez beleženja zgodovine se ne bo znova odprlo.}one{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okno brez beleženja zgodovine se ne bo znova odprlo.}two{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okni brez beleženja zgodovine se ne bosta znova odprli.}few{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okna brez beleženja zgodovine se ne bodo znova odprla.}other{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # oken brez beleženja zgodovine se ne bo znova odprlo.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave.}=1{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. Okno brez beleženja zgodovine se ne bo znova odprlo.}one{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okno brez beleženja zgodovine se ne bo znova odprlo.}two{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okni brez beleženja zgodovine se ne bosta znova odprli.}few{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okna brez beleženja zgodovine se ne bodo znova odprla.}other{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # oken brez beleženja zgodovine se ne bo znova odprlo.}}</translation>
 <translation id="7914115000169617076">Skoraj je posodobljen. Znova zaženite Brave, da dokončate posodobitev. Zasebna okna se ne bodo znova odprla.</translation>
+<translation id="4703432949110765917">Privzete nastavitve delujejo za večino profilov, vendar jih lahko prilagodite tako, da ustrezajo vašim željam za uporabo Brave</translation>
 <translation id="2176087127109773485">Upravljate lahko prijavljene verige za sinhronizacijo Brave. Vaše verige za sinhronizacijo Brave se uporabljajo za brskalnik Brave, Trgovino Play, Gmail in drugo. Če želite dodati račun za nekoga drugega, na primer družinskega člana, namesto tega dodajte nov profil v svoj <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Več o tem<ph name="LINK_END"/></translation>
 </translationbundle>

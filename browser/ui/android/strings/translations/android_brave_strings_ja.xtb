@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
+<translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、人気のある機能を改善するために役立ちます。</translation>
 <translation id="4272190451231642425">クラッシュレポートを自動送信する</translation>
 <translation id="2239766974964486304">クラッシュレポートにより、すべてのユーザーのBrave製品の安定性を向上できます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
@@ -218,6 +219,14 @@
 <translation id="7173114856073700355">設定を開く</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
+<translation id="1056898198331236512">警告</translation>
+<translation id="1426410128494586442">はい</translation>
+<translation id="7811264919113243207">この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。
+このQRコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。
+続行してよろしいですか？</translation>
+<translation id="3097089005389027085">この操作を行うと、パスワードを含むBraveのデータが、これらのコードを生成したデバイスと共有されます。
+これらのコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。
+続行してよろしいですか？</translation>
 <translation id="597993392929850353">Braveライセンス</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="6199596294742117349">これはプライベートタブです</translation>
@@ -376,12 +385,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
@@ -410,6 +419,8 @@
 <translation id="6755546361496900700">両替の内容を確認する</translation>
 <translation id="2882813124794301799">ウィジェットのスタック</translation>
 <translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
+<translation id="4670943871783273148">テキストがテキストファイルに保存されました。</translation>
+<translation id="4432845796903761592">ファイルは保存されていません。</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="2977461003134694205">プライバシー統計</translation>
 <translation id="4643117005422448078">トップサイト</translation>
@@ -471,11 +482,12 @@
 <translation id="8037420924417098685">無料通話を開始するには、Brave Rewards を有効にします</translation>
 <translation id="8961724619078500274">Brave Rewards を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません。)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
 <translation id="7307847920988946894">「Rewards」をオンにする</translation>
+<translation id="7872993190040589450">有効にすると、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したことになります。</translation>
 <translation id="6128511569382736135">無料通話を開始するには、Brave Private Ads を有効にします</translation>
 <translation id="7930006085154756245">Brave Private Ads を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
 <translation id="4992617448154987397">Brave Private Ads を有効にする</translation>
 <translation id="3415016869273103668">これで無料通話を開始できます</translation>
-<translation id="7073631403665023390">画面上をタップして、Brave Talk に進みます。</translation>
+<translation id="7073631403665023390">画面上をクリックまたはタップして、Brave Talk に進みます。</translation>
 <translation id="626339649633171286">Brave Rewards について詳しく知りたいですか？<ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">あなたは<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>を<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>に変換しました！</translation>
 <translation id="392587271502873865">ネットワーク接続を確認してください。</translation>
@@ -531,13 +543,15 @@
 <translation id="5460364286096798286">仮想通貨の保管、アセットの取引、相場とポートフォリオのパフォーマンス確認などの機能が充実。DeFiでの投資・借入・貸出をぜひお試しください。</translation>
 <translation id="1748009926009835882">仮想通貨ウォレットの設定</translation>
 <translation id="2759836790106646094">ウォレットを今すぐバックアップしましょう！</translation>
-<translation id="7685607706678113458">次のステップでは、暗号化されたウォレットを復元するための12の単語が表示されます。</translation>
+<translation id="5156354224138379811">次のステップでは、暗号化されたウォレットを復元するための12の単語が表示されます。</translation>
 <translation id="2359808026110333948">続ける</translation>
 <translation id="5024543173656851695">リカバリーワードを紛失した場合、自分の仮想通貨ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="6146351434671268516">これらの単語を正しい順序でメモするかコピーして、安全な場所に保存してください。</translation>
 <translation id="7408247683131762445">警告: バックアップフレーズは絶対に公開しないでください。このフレーズであなたの資産が永久に失われてしまう可能性があります。</translation>
 <translation id="939275786514736244">フレーズを安全にバックアップしました</translation>
+<translation id="6896758677409633944">コピー</translation>
+<translation id="5317780077021120954">保存</translation>
 <translation id="2604744480284798833">今すぐウォレットをバックアップして、暗号資産ポートフォリオにアクセスできなくなってしまうことが無いようにしましょう。</translation>
 <translation id="1202920745614909195">Apple Pay、クレジットカード、またはデビットカードで仮想通貨を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ仮想通貨を送信また転送できます。</translation>
@@ -559,13 +573,13 @@
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">指紋によるロック解除を有効にしますか？</translation>
 <translation id="5493402808936397665">生体認証を有効にすると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
-<translation id="1544192797660353713">Braveウォレット</translation>
+<translation id="1544192797660353713">ウォレット</translation>
 <translation id="6901810042765869341">リカバリーフレーズを入力してBraveウォレットの仮想通貨アカウントを復元します。</translation>
 <translation id="1970161551843843564">仮想通貨アカウントを復元</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
 <translation id="283071225285270357">リカバリーフレーズを入力</translation>
 <translation id="2339124864228588937">リカバリーフレーズを確認</translation>
-<translation id="6202787708155200390">単語をタップして正しい順序で並び替えてください。</translation>
+<translation id="2718669004132381989">単語をタップして正しい順序で並び替えてください。</translation>
 <translation id="6518133107902771759">確認</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="9111102763498581341">Unlock</translation>
@@ -573,7 +587,7 @@
 <translation id="1569452037668432756">パスワードを入力してロックを解除</translation>
 <translation id="224719674509047150">パスワードは、少なくとも1つの数字と特殊文字を含む7文字以上で設定してください。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
-<translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
+<translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/> の市場価格</translation>
 <translation id="6748108480210050150">送信元</translation>
@@ -587,6 +601,12 @@
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="3535654229833214438">取引</translation>
 <translation id="4636930964841734540">情報</translation>
+<translation id="2449682593754783720">1時間</translation>
+<translation id="969133700726811190">1日</translation>
+<translation id="5882300031363619940">1週間</translation>
+<translation id="5698094150392720512">1か月</translation>
+<translation id="5483736362376139517">1年</translation>
+<translation id="6979737339423435258">全期間</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
 <translation id="5288333155754958121">この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
 <translation id="3819257035322786455">バックアップ</translation>
@@ -627,7 +647,7 @@
 <translation id="6277055349883621705">年間更新で 16% オフ</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="4487678670820292781">$119.88</translation>
-<translation id="5867778679088331977">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
+<translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
 <translation id="6053992191006521518">無料で試す</translation>
 <translation id="721747358270435486">VPN をインストール</translation>
 <translation id="836074276610740314">VPN プロファイルをインストール</translation>
@@ -701,4 +721,15 @@
 <translation id="275990379543116961">ガス代のための資金が不足しています</translation>
 <translation id="3292453499915466604">不十分な流動性</translation>
 <translation id="3380365263193509176">不明なエラー</translation>
+<translation id="5932938770824268122">秘密鍵</translation>
+<translation id="2472882733835903303">秘密鍵を表示</translation>
+<translation id="4391056902675005799">秘密鍵を非表示</translation>
+<translation id="5929798090073091848">警告: この鍵は絶対に公開しないで下さい。公開すると、誰でもあなたのアカウント内の資産を盗むことができてしまいます。</translation>
+<translation id="1133619932669546254"><ph name="TOKEN"/>を有効にします</translation>
+<translation id="2199215899212542417">機能タイプ: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">データがありません</translation>
+<translation id="7685607706678113458">次のステップでは、暗号化されたウォレットを復元するための12の単語が表示されます。</translation>
+<translation id="6202787708155200390">単語をタップして正しい順序で並び替えてください。</translation>
+<translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
+<translation id="5867778679088331977">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
 </translationbundle>

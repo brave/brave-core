@@ -221,6 +221,14 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="7173114856073700355">Ava seaded</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Ära enam näita</translation>
+<translation id="1056898198331236512">Hoiatus</translation>
+<translation id="1426410128494586442">Jah</translation>
+<translation id="7811264919113243207">See jagab teie Brave'i andmeid, sealhulgas võib-olla ka teie paroole, seadmega, mis genereeris selle QR-koodi.
+Kontrollige üle, kas QR-kood on loodud teile kuuluvas seadmes.
+Kas soovite seda kindlasti teha?</translation>
+<translation id="3097089005389027085">See jagab teie Brave'i andmeid, sealhulgas võib-olla ka teie paroole, seadmega, mis genereeris need koodisõnad.
+Kontrollige üle, kas koodisõnad on loodud teile kuuluvas seadmes.
+Kas soovite seda kindlasti teha?</translation>
 <translation id="597993392929850353">Brave'i litsents</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="6199596294742117349">See on privaatne vahekaart</translation>
@@ -379,12 +387,12 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="7427567994475794038">Lülita sisse privaatsusaruanded, et näha, kui palju jälitajaid ja reklaame on blokeeritud viimase 3 tunni jooksul.</translation>
 <translation id="2053891538879944400">Salvestasid Brave'i brauseris <ph name="DATA"/> <ph name="DATA_TEXT"/> andmed.</translation>
 <translation id="8640064498452534195">Lülita sisse privaatsusaruanded, et näha, kui palju andmemahtu oled säästnud.</translation>
-<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.&#128267;</translation>
+<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.🔋</translation>
 <translation id="1945330434665345785">Blokeerisid eelmisel nädalal Brave'i brauseris <ph name="COUNT"/> jälitajat ja reklaami.</translation>
 <translation id="2883868922264431515">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest ja toeta oma lemmikuid veebilehti.</translation>
-<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.&#128293;</translation>
-<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.&#128267;</translation>
-<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.🔥</translation>
+<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.🔋</translation>
+<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.💨💨</translation>
 <translation id="7408493389591475748">Privaatsusaruannete vaatamiseks alusta sirvimist</translation>
 <translation id="9080777565335515917">Privaatseks ja turvaliseks sirvimiseks määra Brave vaikebrauseriks.</translation>
 <translation id="1390943217516275883">Võimaldab Brave'il kuvada sinu privaatsuse statistikat.</translation>
@@ -413,6 +421,8 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6755546361496900700">Teisendamise eelvaade</translation>
 <translation id="2882813124794301799">Vidina virn</translation>
 <translation id="13296465911709339">Sinu tekst kopeeriti lõikelauale.</translation>
+<translation id="4670943871783273148">Teie tekst salvestati tekstifaili.</translation>
+<translation id="4432845796903761592">Faili ei ole salvestatud.</translation>
 <translation id="7144878232160441200">Proovi uuesti</translation>
 <translation id="2977461003134694205">Privaatsuse statistika</translation>
 <translation id="4643117005422448078">Popid saidid</translation>
@@ -474,6 +484,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="8037420924417098685">Tasuta kõne alustamiseks lülitage sisse Brave Rewards</translation>
 <translation id="8961724619078500274">Brave Rewardsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks…või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
 <translation id="7307847920988946894">Lülita Rewards sisse</translation>
+<translation id="7872993190040589450">Lubamisega nõustute dokumentidega <ph name="TERMS_OF_SERVICE"/> ja <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Tasuta kõne alustamiseks lubage Brave Private Ads</translation>
 <translation id="7930006085154756245">Brave Private Adsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks…või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
 <translation id="4992617448154987397">Lülita Brave Private Ads sisse</translation>
@@ -534,13 +545,15 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="5460364286096798286">Hoidke krüptot oma valduses. Kaubelge varadega. Vaadake hindu ja portfelli tulemuslikkust. Investeerige, laenake ja laenake koos DeFi'ga.</translation>
 <translation id="1748009926009835882">Krüpto seadistamine</translation>
 <translation id="2759836790106646094">Varundage oma rahakott kohe!</translation>
-<translation id="7685607706678113458">Järgmises etapis näete 12 sõna, mis võimaldavad teil taastada oma krüptorahakoti.</translation>
+<translation id="5156354224138379811">Järgmises etapis näete 12 sõna, mille abil saate oma krüptorahakoti taastada.</translation>
 <translation id="2359808026110333948">Jätka</translation>
 <translation id="5024543173656851695">Mõistan, et kui ma kaotan oma taastamise sõnad, ei pääse ma oma krüptorahakotile ligi.</translation>
 <translation id="3933122286596948824">Teie taastamise lause</translation>
 <translation id="6146351434671268516">Märkige või kopeerige need sõnad õiges järjekorras ja talletage need kindlasse kohta.</translation>
 <translation id="7408247683131762445">HOIATUS: Mitte kunagi ei tohi avaldada oma turvalauset. Igaüks, kellel on see lause, võib teie raha igaveseks ära võtta.</translation>
 <translation id="939275786514736244">Ma olen oma lause talletanud kindlasse kohta</translation>
+<translation id="6896758677409633944">Kopeeri</translation>
+<translation id="5317780077021120954">Salvesta</translation>
 <translation id="2604744480284798833">Varundage rahakott kohe, et kaitsta oma krüptoportfelli juurdepääsu kaotsimineku eest.</translation>
 <translation id="1202920745614909195">Ostke krüptot Apple Pay, krediit- või deebetkaardiga.</translation>
 <translation id="841880029259839903">Saatke krüptot või tehke ülekandeid ühelt kontolt teisele.</translation>
@@ -562,13 +575,13 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Kas lubada sõrmejäljeluku avamine?</translation>
 <translation id="5493402808936397665">Lubage biomeetriliste andmete kasutamine, et avada oma rahakott kiiresti ilma parooli sisestamata.</translation>
-<translation id="1544192797660353713">Brave'i rahakott</translation>
+<translation id="1544192797660353713">Rahakott</translation>
 <translation id="6901810042765869341">Sisestage oma taastamise lause, et taastada oma Brave'i rahakoti krüptokonto.</translation>
 <translation id="1970161551843843564">Krüptokonto taastamine</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
 <translation id="283071225285270357">Sisestage oma taastamise lause</translation>
 <translation id="2339124864228588937">Taastamise lause kinnitamine</translation>
-<translation id="6202787708155200390">Koputage sõnade peale, et paigutada need üksteise kõrvale õiges järjestuses.</translation>
+<translation id="2718669004132381989">Puudutage sõnu, et asetada need õiges järjekorras üksteise kõrvale.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="3157931365184549694">Taasta</translation>
 <translation id="9111102763498581341">Ava lukk</translation>
@@ -576,7 +589,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="1569452037668432756">Avamiseks sisestage oma parool</translation>
 <translation id="224719674509047150">Parooli pikkuseks peab olema vähemalt 7 tähemärki, sisaldades vähemalt ühte numbrit ja ühte erimärki.</translation>
 <translation id="1144810021918451336">Ei kaitse sind ohtlike veebisaitide, allalaaditavate failide ja laienduste eest.</translation>
-<translation id="745115390910697838">Laused ei ühildunud, palun proovige uuesti.</translation>
+<translation id="5760476995887363522">Fraasid ei olnud ühesugused. Proovige uuesti.</translation>
 <translation id="2360588547830602174">Konto taastamine ebaõnnestus. Palun proovige uuesti.</translation>
 <translation id="6392640873800632439">Turuhind <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Saatja</translation>
@@ -590,6 +603,12 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="1987317783729300807">Kontod</translation>
 <translation id="3535654229833214438">Tehingud</translation>
 <translation id="4636930964841734540">Teave</translation>
+<translation id="2449682593754783720">1 tund</translation>
+<translation id="969133700726811190">1 päev</translation>
+<translation id="5882300031363619940">1 nädal</translation>
+<translation id="5698094150392720512">1 kuu</translation>
+<translation id="5483736362376139517">1 aasta</translation>
+<translation id="6979737339423435258">Algusest</translation>
 <translation id="6284218950354553099">Igapäevase kasutuse pingi automaatne saatmine Brave'ile</translation>
 <translation id="5288333155754958121">See anonüümne, privaatne ping võimaldab Brave'il hinnata aktiivsete kasutajate arvu.</translation>
 <translation id="3819257035322786455">Varunda</translation>
@@ -630,7 +649,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6277055349883621705">Uuendatakse kord aastas, kokkuhoid 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> aastas</translation>
 <translation id="4487678670820292781">$119,88</translation>
-<translation id="5867778679088331977">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaanile vastav tasu. Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab neid tühistada.</translation>
+<translation id="2655185358771731232">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaani hind. Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab need tühistada.</translation>
 <translation id="6053992191006521518">Proovige TASUTA</translation>
 <translation id="721747358270435486">Installige VPN</translation>
 <translation id="836074276610740314">Installige VPN-i profiil</translation>
@@ -704,4 +723,15 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="275990379543116961">Gaasi jaoks ei ole piisavalt rahalisi vahendeid</translation>
 <translation id="3292453499915466604">Ebapiisav likviidsus</translation>
 <translation id="3380365263193509176">Tundmatu viga</translation>
+<translation id="5932938770824268122">Privaatvõti</translation>
+<translation id="2472882733835903303">Kuva privaatvõti</translation>
+<translation id="4391056902675005799">Peida privaatvõti</translation>
+<translation id="5929798090073091848">Hoiatus: seda võtit ei tohi mingil juhul avaldada. Igaüks, kes teab privaatvõtit, saab varastada kõiki teie kontol olevaid varasid.</translation>
+<translation id="1133619932669546254">Aktiveerige <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">FUNKTSIOONI TÜÜP: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Andmeid pole</translation>
+<translation id="7685607706678113458">Järgmises etapis näete 12 sõna, mis võimaldavad teil taastada oma krüptorahakoti.</translation>
+<translation id="6202787708155200390">Koputage sõnade peale, et paigutada need üksteise kõrvale õiges järjestuses.</translation>
+<translation id="745115390910697838">Laused ei ühildunud, palun proovige uuesti.</translation>
+<translation id="5867778679088331977">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaanile vastav tasu. Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab neid tühistada.</translation>
 </translationbundle>

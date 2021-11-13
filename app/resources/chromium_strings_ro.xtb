@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">Pentru a descărca fișiere, Brave necesită acces la stocare</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7933006624150961626">Pentru a accesa informațiile din Brave pe toate dispozitivele, conectează-te ca să poți activa sincronizarea.</translation>
-<translation id="5486618155264784386">Instalează sistemul de operare Brave</translation>
 <translation id="7291143854620707672">Toate datele Brave generate în timpul folosirii acestui profil (precum marcajele create, istoricul, parolele și alte setări) pot fi eliminate de administratorul profilului de serviciu. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Pentru a se aplica actualizarea, sistemul de operare Brave trebuie să fie repornit.</translation>
 <translation id="7387051847644272380">S-a produs o eroare de sistem de operare în timpul instalării. Descărcați din nou Brave.</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">Elimină din Brave...</translation>
 <translation id="2885378588091291677">Manager de activități</translation>
 <translation id="2176825726964012531">Despre &amp;Brave</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Un ultim memento: instalarea <ph name="BEGIN_BOLD"/>va șterge toate datele de pe hard disk<ph name="END_BOLD"/>. Asigură-te că ai făcut backup datelor pe care vrei să le păstrezi.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Odată ce începe instalarea, nu o poți anula.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave este actualizat</translation>
 <translation id="2953892977076487219">Brave încearcă să modifice parolele.</translation>
 <translation id="8755404239607088219">Brave nu îți poate verifica parolele. Încearcă din nou mai târziu.</translation>
@@ -75,7 +72,6 @@
 <translation id="2711887072399498551">Există deja un profil Brave asociat acestui cont</translation>
 <translation id="2297290224191497273">Schimbi la profilul Brave existent?</translation>
 <translation id="2450003541323895471">Cu ajutorul profilurilor Brave, poți păstra separat toate informațiile din Brave. Creează profiluri pentru prieteni și familie sau pentru muncă și timp liber.</translation>
-<translation id="7275165473619697274">Se instalează sistemul de operare Brave</translation>
 <translation id="9216183508558772570">Brave te va anunța dacă te conectezi folosind o parolă compromisă</translation>
 <translation id="5853262807109651878">Astfel, se vor șterge <ph name="ITEMS_COUNT"/> elemente de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> poate comuta între profilurile Brave</translation>
@@ -100,7 +96,6 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> îți solicită să citești și să accepți Termenii și condițiile următoare înainte de a folosi acest dispozitiv. Aceste condiții nu extind, nu modifică și nu limitează Condițiile sistemului de operare Brave.</translation>
 <translation id="3262506503470845422">Obține ajutor privind Brave</translation>
 <translation id="7691786510374174420">Instalarea a eșuat din cauza unei erori necunoscute. Dacă Brave rulează în acest moment, închideți-l și încercați din nou.</translation>
-<translation id="429583012151745428">Instalarea este în curs. Nu închide dispozitivul. Procesul ar trebui să dureze cel mult 20 de minute. Dispozitivul se va închide automat după instalare.</translation>
 <translation id="9183662282810237335">Ieși din Brave oricum?</translation>
 <translation id="4065288863231444640">Permite Brave să ruleze în fundal</translation>
 <translation id="8148611988012584308">Personalizați și controlați Brave</translation>
@@ -192,7 +187,6 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="6666624454809779082">Brave este instalat deja pentru toți utilizatorii de pe computerul tău.</translation>
 <translation id="5360050006043219962">Pentru a accesa informațiile din Brave pe toate dispozitivele, conectează-te, apoi activează sincronizarea.</translation>
 <translation id="8291513491595858997">Părintele tău a dezactivat opțiunea „Permisiuni pentru site-uri, aplicații și extensii” în Brave. Activarea acestei <ph name="EXTENSION_TYPE_PARAMETER"/> nu este permisă.</translation>
-<translation id="1810203443153428607">Instalarea sistemului de operare Brave va înlocui toate datele de pe dispozitiv.</translation>
 <translation id="8211837073776713955">Brave te anunță dacă parolele tale sunt compromise</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiat în Brave)</translation>
@@ -203,6 +197,7 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="3335606533094650083">Brave are nevoie de permisiune ca să acceseze microfonul pentru acest site</translation>
 <translation id="1705567146636171298">Actualizează Brave</translation>
 <translation id="5499063270485366718">Dacă o imagine nu are o descriere utilă, Brave va încerca să o completeze. Pentru a crea descrieri, imaginile sunt trimise la Brave.</translation>
+<translation id="151916274998710826">Personalizează unele dintre cele mai importante opțiuni de confidențialitate din Brave</translation>
 <translation id="1008530050039597147">Brave are nevoie de acces la cameră pentru acest site</translation>
 <translation id="1197672524850678392">Brave nu a putut fi lansat. Încearcă din nou.</translation>
 <translation id="3405035915691517126">Brave nu îți poate verifica parolele. Încearcă din nou după 24 de ore.</translation>
@@ -227,10 +222,6 @@ Brave nu poate recupera setările.</translation>
     setările sistemului de operare Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave utilizează camera foto și microfonul.</translation>
 <translation id="2827121003398607864">Brave a devenit și mai bun</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Înainte de a începe, asigură-te că ai un backup actualizat al datelor. Instalarea sistemului de operare Brave va înlocui toate datele de pe hard disk.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave nu răspunde pentru pierderea datelor și nu garantează că sistemul de operare Brave va funcționa cu modele care nu sunt certificate. Accesează [TBD] pentru a afla mai multe despre modelele certificate.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Află mai multe despre instalarea sistemului de operare Brave și ștergerea datelor: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Dacă ești gata să continui, dă clic pe Instalează sistemul de operare Brave și te vom îndruma în procesul de instalare prin câțiva pași simpli. Vei avea încă o șansă de a confirma înainte să aducem modificări computerului.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave nu este browserul prestabilit</translation>
 <translation id="5477319665405831211">Sincronizează și personalizează Brave pe toate dispozitivele</translation>
 <translation id="5419189641394808652">Brave nu a putut sincroniza datele, deoarece sincronizarea nu este disponibilă pentru domeniul dvs.</translation>
@@ -295,5 +286,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratorul solicită să relansezi Brave pentru a aplica această actualizare}=1{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Fereastra incognito nu se va mai deschide.}few{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Cele # ferestre incognito nu se vor mai deschide.}other{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Cele # de ferestre incognito nu se vor mai deschide.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratorul solicită să relansezi Brave pentru a aplica o actualizare}=1{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Fereastra incognito nu se va mai deschide.}few{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Cele # ferestre incognito nu se vor mai deschide.}other{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Cele # de ferestre incognito nu se vor mai deschide.}}</translation>
 <translation id="7914115000169617076">Actualizarea este aproape gata! Relansează Brave pentru a finaliza actualizarea. Ferestrele private nu se vor redeschide.</translation>
+<translation id="4703432949110765917">Setările implicite funcționează pentru majoritatea profilurilor, însă le puteți personaliza în funcție de modul în care preferați să folosiți browserul Brave</translation>
 <translation id="2176087127109773485">Puteți gestiona lanțurile de sincronizare conectate Brave. Acestea se utilizează pentru browser-ul Brave, Play Store, Gmail și altele. Dacă doriți să adăugați un cont pentru o altă persoană, precum un membru al familiei, adăugați un nou profil în <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/></translation>
 </translationbundle>

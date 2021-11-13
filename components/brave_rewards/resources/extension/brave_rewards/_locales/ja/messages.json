@@ -8,11 +8,11 @@
     "description": ""
   },
   "unverifiedCreator": {
-    "message": "未認証クリエイター",
+    "message": "未認証",
     "description": ""
   },
   "verifiedCreator": {
-    "message": "認証クリエイター",
+    "message": "認証済",
     "description": ""
   },
   "refreshStatus": {

@@ -247,12 +247,23 @@
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
 <translation id="6805660603861526473">表示済み</translation>
+<translation id="4014166694178311757">認証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。</translation>
+<translation id="1221593978088944142">エラー: デバイスの上限に達しました</translation>
 <translation id="3113653894794167793">すみません、リクエストの処理中に問題が発生しました。再試行してください。</translation>
-<translation id="8832187864682447273">ログインするには認証済みのウォレットが必要です</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>でID認証を完了してからもう一度お試しください。</translation>
+<translation id="8832187864682447273">エラー: ログインするには認証済みのウォレットが必要です</translation>
 <translation id="1501075228659004450">このBrave Rewardsウォレットは、すでに他の<ph name="PROVIDER"/>アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。</translation>
 <translation id="5111921830714291902">エラー: 異なるアカウント</translation>
+<translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
+<translation id="9074594632540931067">エラー: BATの利用不可</translation>
+<translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
+<translation id="3579959767665130790">エラー: アカウントのブロック</translation>
+<translation id="819370426249314592">Upholdのアカウントが保留中です。</translation>
+<translation id="4530453398914580957">エラー: アカウントの保留</translation>
+<translation id="2388470740942086608">現在、Upholdのアカウントが制限されています。</translation>
+<translation id="3605236342612716051">エラー: アカウントの制限</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
+<translation id="901298512318791028"><ph name="AMOUNT"/> が <ph name="DAYS"/> 後以降に順次送付されます。.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>注 <ph name="BOLD_END"/>支払いが処理され、BAT が到着するまでに数日かかる場合があります。</translation>
 <translation id="4672975606583962967">ウォレットサービスを選択</translation>
 <translation id="1815503044492647974">ウォレット管理パートナーを選択します。すでにアカウントをお持ちの場合、ログインして接続するよう求められます。</translation>
@@ -337,6 +348,7 @@
 <translation id="2223892939866251845">ユーザーID</translation>
 <translation id="4235360514405112390">有効</translation>
 <translation id="3902084968737576005">ウォレットアドレス：</translation>
+<translation id="3653417592104122757">ウォレット履歴</translation>
 <translation id="2326487656644542536">ウォレットの情報</translation>
 <translation id="3506182299017414175">ウォレットはまだ作成されていません</translation>
 <translation id="8559420016582377654">ウォレット支払いID：</translation>
@@ -533,6 +545,7 @@
 <translation id="3267911153934785912">回復キーを入力</translation>
 <translation id="1209382772199769572">現在使用中のウォレット内の資金[[funds]]が失われないよう、変更する前にウォレットをバックアップしてください。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
+<translation id="4749947664556704604">ウォレットをリセットすると、<ph name="BAT_AMOUNT"/>とその他の報酬データは恒久的に失われます。ご自身のBATを喪失することのないよう、<ph name="LINK_BEGIN"/>ウォレット認証<ph name="LINK_END"/>が完了しているかをご確認ください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
 <translation id="4914597931214386232">取得済のトークン付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>
@@ -590,7 +603,7 @@
 <translation id="3345432088196080137">人気のある株式や、AAPL、TSLA、AMZNなどの上場投資信託にわずか1ドルを投資</translation>
 <translation id="3787061634640932557">カードを編集</translation>
 <translation id="5977237145327845546">友人や同僚とプライバシーが保護されたビデオ通話を開始する。</translation>
-<translation id="5850325887346946383">ビデオ通話を開始</translation>
+<translation id="8863928195533744356">通話を開始</translation>
 <translation id="3651550649176056334">あなたのデータについて</translation>
 <translation id="223536150967420869">購入</translation>
 <translation id="5110244215256675209">仮想通貨を購入</translation>
@@ -775,11 +788,27 @@
 <translation id="4989163558385430922">すべてを見る</translation>
 <translation id="3026978804849658576">明細を表示</translation>
 <translation id="8494748383523030337">残高</translation>
+<translation id="3343165035032571678">Brave Private Adsの閲覧により<ph name="AMOUNT"/>を獲得しました！</translation>
+<translation id="6618415862402597254">広告報酬を受け取りました</translation>
+<translation id="5981646694027725752">報酬を要請</translation>
+<translation id="2556441076129789027">トークンの獲得</translation>
+<translation id="5544777623605368410">報酬</translation>
+<translation id="3273637494083639780">あなたが今月獲得したトークンは<ph name="DATE"/>に処理が開始されます。</translation>
+<translation id="1029300693989825319">これは、市場のボラティリティに応じて変化する可能性があります。</translation>
+<translation id="8334559352278209120">次の額を還元:</translation>
+<translation id="5095252080770652994">進行状況</translation>
+<translation id="6278643716658443228">Rewards設定</translation>
+<translation id="6777169449483742979">このスポンサー画像を見ることでトークンを獲得できます。</translation>
+<translation id="5486114327664215175">この画像を閲覧することでトークンを獲得し、コンテンツクリエイターをサポートすることができます。</translation>
+<translation id="2940863921746574646">トークン残高</translation>
+<translation id="1714906256929297600">プロモーショントークンを使って、有効期限が切れる前にクリエイターに貢献しましょう！</translation>
+<translation id="2426048501007152001">利用できるトークン</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="1148827340205946630">ユーザーがリクエストを拒否しました。</translation>
 <translation id="2403819048476450281">パラメーターが無効です。</translation>
+<translation id="3955144560853195652">チェーン「<ph name="VALUE"/>」は追加されていません</translation>
 <translation id="9161147058107529840">単一のオブジェクトのパラメーターが必要です。</translation>
 <translation id="1875861420974447980">このチェーンIDは現在使用中です</translation>
 <translation id="167698752210114155">内部エラーが発生しました</translation>
@@ -799,9 +828,11 @@
 <translation id="7381733147588397055">トランザクションデータを変換できませんでした</translation>
 <translation id="3829038878925630240">トランザクションデータ 'from' を指定する必要があります</translation>
 <translation id="4732386285392573809">トランザクションのガス価格を取得できませんでした</translation>
-<translation id="7619826778671319444">トランザクションのガスリミットを取得できませんでした</translation>
 <translation id="4232775951515678071">トランザクションのタイプを取得できませんでした</translation>
-<translation id="7631054302129692654">EIP-1559 トランザクションのガス推定値を取得できませんでした</translation>
+<translation id="2080935885647755539">EIP-1559 トランザクションのガス費用を取得できませんでした</translation>
+<translation id="4843814354611030845">ユーザーがトランザクションを拒否しました</translation>
+<translation id="1462494615260983714">トランザクションの処理中にエラーが発生しました</translation>
+<translation id="4886059598718763020">「<ph name="VALUE"/>」はメッセージの署名を許可されていません</translation>
 <translation id="4958950550253325418">Defi アプリ</translation>
 <translation id="735961408871282410">NFT マーケットプレイス</translation>
 <translation id="7740287852186792672">検索結果</translation>
@@ -836,7 +867,11 @@
 <translation id="2267753748892043616">アカウントを追加</translation>
 <translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
-<translation id="5420730209575475110">サポートされていません</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/>はサポートされていません</translation>
+<translation id="1191686659164947414">トランザクションがフロントランニングされている可能性があります</translation>
+<translation id="632241521608275119">価格変動の許容値</translation>
+<translation id="4500473291496079954">有効期限:</translation>
+<translation id="8093033115658137576">0xアドレスまたはURL</translation>
 <translation id="6518133107902771759">認証する</translation>
 <translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
 <translation id="8303434745767477417">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web 3 DApp とやり取りします。DeFi で取引、投資、借り入れ、貸し出しを行います。Brave プライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
@@ -856,8 +891,8 @@
 <translation id="2813156651070657572">暗号資産をパスワードで保護</translation>
 <translation id="6901073872645365201">パスワードは、7 文字以上で、少なくとも 1 つの数字と 1 つの特殊文字を含む必要があります。</translation>
 <translation id="6657585470893396449">パスワード</translation>
-<translation id="692381016487372902">パスワードを再入力</translation>
-<translation id="3527905866577245691">確認用パスワードが一致しません</translation>
+<translation id="5486261815000869482">パスワードを確認</translation>
+<translation id="467510802200863975">パスワードが一致しません</translation>
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
 <translation id="9111102763498581341">ロック解除</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
@@ -881,6 +916,7 @@
 <translation id="1940465339426637378">アセット</translation>
 <translation id="2236507293802791911">公開アセット</translation>
 <translation id="7525067979554623046">作成</translation>
+<translation id="4771176409524282426">アカウント作成</translation>
 <translation id="4324198334837993695">ハードウェア</translation>
 <translation id="3067168166931605141">アカウント名</translation>
 <translation id="1136772623587250243">クリップボードから秘密鍵を貼り付ける</translation>
@@ -890,9 +926,9 @@
 <translation id="795667975304826397">ファイルが選択されていません</translation>
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
 <translation id="5051929972046200722">ハードウェアウォレットデバイスを選択</translation>
-<translation id="6932355307691676490">ウォレットを</translation>
-<translation id="4513956488935671725">あなたのコンピュータに直接接続。</translation>
+<translation id="5745936663807461565"><ph name="HARDWARE_DEVICE"/>ウォレットをコンピューターに直接接続してください。</translation>
 <translation id="5041211872515579638">デバイスのロックを解除し、イーサリアムアプリを選択します。</translation>
+<translation id="6892232036314454524">台帳デバイスで間違ったアプリケーションを開いている場合、このエラーが発生することがあります。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">台帳</translation>
 <translation id="4378551569595875038">接続しています...</translation>
@@ -910,11 +946,13 @@
 <translation id="6600400596821238377">トークン名</translation>
 <translation id="4432966365400169165">トークン契約アドレス</translation>
 <translation id="4092152169181928870">トークンシンボル</translation>
-<translation id="871696868578199698">小数点桁数</translation>
-<translation id="6637540491667802882">カスタムトークンとして</translation>
+<translation id="4351811224047421378">小数点桁数</translation>
+<translation id="4982060163914604175"><ph name="CONTRACT_ADDRESS"/>をカスタムトークンとして追加</translation>
 <translation id="7978047524114351365">名前の付いたアセットはありません</translation>
 <translation id="9040455159722359521">アセットまたは契約アドレスを検索</translation>
 <translation id="6018178824574796106">カスタムトークンの追加に失敗しました。もう一度やり直してください。</translation>
+<translation id="547122651977318828">トークンID (ERC721のみ)</translation>
+<translation id="7544552854944350190">トークンIDが必要です</translation>
 <translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
@@ -922,7 +960,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">すべて</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">メインネット</translation>
 <translation id="1613627717923045622">テストネットワーク</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -943,7 +981,7 @@
 <translation id="59223531494896848">リミット</translation>
 <translation id="8569380433211549748">価格</translation>
 <translation id="2490428413101944234">Faucet をテスト</translation>
-<translation id="6082785102488657349">Faucet から次の Ether を入手する</translation>
+<translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> の Faucet から Ether を入手する</translation>
 <translation id="7420359180991315365">続けてWyreを使用する</translation>
 <translation id="2581671693710952401">Etherを取得する</translation>
 <translation id="8009571545960303544">署名がリクエストされています。</translation>
@@ -951,12 +989,15 @@
 <translation id="3474375934783434676">ご自身の責任で署名してください</translation>
 <translation id="5488357322146334497">メッセージ</translation>
 <translation id="3586752056660754651">署名</translation>
-<translation id="7065157926159745595">このアプリが次を使うことを許可する</translation>
+<translation id="9032898664193335413">このアプリに<ph name="TOKEN_SYMBOL"/>の使用を許可しますか？</translation>
+<translation id="854606191596163710">この権限を付与することで、お客様はこのアプリに<ph name="VALUE"/>の引き出しと取引の自動化を許可します。</translation>
 <translation id="8786100550345425552">権限を編集する</translation>
 <translation id="7710469167917867539">トランザクション手数料</translation>
 <translation id="9065203028668620118">編集</translation>
 <translation id="7968982339740310781">詳細を表示</translation>
 <translation id="6452181791372256707">拒否</translation>
+<translation id="8904889345035514635">現在のアローワンス</translation>
+<translation id="7073918978411974168">提案されたアローワンス</translation>
 <translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
 <translation id="2521480044079508357">これにより、このネットワークを Brave Wallet 内で使用できるようになります。</translation>
 <translation id="1982257600591932657">ネットワーク名</translation>
@@ -966,6 +1007,9 @@
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">通貨記号</translation>
 <translation id="4693057234255364395">ブロックエクスプローラーURL</translation>
+<translation id="1060221736464994328">このサイトのネットワーク切り替えを許可しますか？</translation>
+<translation id="2478788592457735063">この操作を行うと、現在のネットワークを以前に追加されたネットワークに切り替えます。</translation>
+<translation id="8756686998207163764">ネットワークを切り替え</translation>
 <translation id="3948067511324628726">ガス料金</translation>
 <translation id="7163997622278957886">入札</translation>
 <translation id="1074360622426001342">金額 + ガス</translation>
@@ -973,38 +1017,39 @@
 <translation id="5821668936183240062">次へ</translation>
 <translation id="793994607260936590">first</translation>
 <translation id="4709524402122994378">トランザクション</translation>
+<translation id="523862956770478816">サイトのアクセス許可</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>アカウントを接続しました</translation>
 <translation id="4460220693591349571">機能タイプ</translation>
 <translation id="838933475572692615">HEXデータ</translation>
 <translation id="2240831799756994975">バイト</translation>
 <translation id="4874303883488468190">アカウントを選択</translation>
-<translation id="4015195974325151180">次のアドレスを表示します</translation>
-<translation id="3587259018193837508">許可されたアカウント (必須)</translation>
+<translation id="2018472018751735678">許可されたアカウントのアドレスを表示（必須）</translation>
 <translation id="7029403458170657879">Brave Wallet で接続する</translation>
 <translation id="7982184974053636367">Brave Wallet には、より安全なパスワードが必要です</translation>
 <translation id="2372897697869224590">Brave ウォレットのパスワードを設定する</translation>
 <translation id="7739762330714405363">同じパスワードを使用する</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">インポート元</translation>
-<translation id="4428111176561355185">インポート：</translation>
-<translation id="8929587248006013051">Brave WalletにMetaMaskアカウントを追加します。暗号資産の管理と Web 3 DApp とのやり取りを、より高速で安全に行うことができます。</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/>からインポート</translation>
+<translation id="8897114903450789862">お使いの<ph name="WALLET_EXTENSION"/>アカウントをBraveウォレットにインポートします。仮想通貨の管理やWeb 3 DAppsとのやりとりを、より速く、より安全に行うことができます。</translation>
 <translation id="4237840336687249184">MetaMask パスワード</translation>
 <translation id="2381605201035323535">暗号資産ウォレット</translation>
 <translation id="2770851145415891830">既存の暗号資産ウォレットが検出されました</translation>
 <translation id="4938145712652668388">「開始する」 をクリックすると、以前の暗号資産ウォレットを新しい Brave Walletにインポートし、上記のすべてのメリットを享受できます。ぜひお試しいただき、ご感想をお聞かせください。</translation>
-<translation id="913613743605881268">インポートをスキップして従来のように暗号資産ウォレットを利用したい場合は、Brave Browser に移動してください</translation>
-<translation id="5886242758142314994">デフォルトを暗号資産ウォレットに戻します。また、いつでもインポートして新しい Brave Wallet を試して、元に戻すことができます。</translation>
+<translation id="2237759620789871865">インポートをスキップして以前の仮想通貨ウォレットのエクスペリエンスを維持したい場合は、Braveブラウザの<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>に移動して、デフォルトを仮想通貨ウォレットに戻してください。また、インポートして新しいBraveウォレットを試した後、いつでも元に戻すことができます。</translation>
 <translation id="3301259443293676544">Brave Wallet にインポートする既存の暗号資産ウォレットのパスワードを入力します。暗号資産の管理と Web 3 DApp とのやり取りを、より高速で安全に行うことができます。</translation>
 <translation id="9099900965604225657">暗号資産ウォレットのパスワード</translation>
 <translation id="4020495774166914146">パスワードとリカバリフレーズを紛失しました。新しいウォレットを作成します。</translation>
-<translation id="480319080797177742">接続済み</translation>
-<translation id="4203566092423620442">切断されています</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/>を接続しました</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/>との接続を解除しました</translation>
 <translation id="5317781812114905957">手順</translation>
-<translation id="1952715382071350669">ハードウェアウォレットがトランザクションの確認を要求しています。</translation>
+<translation id="1178198982208000092"><ph name="DEVICE_NAME"/>を接続</translation>
+<translation id="3301417531330431881">ハードウェアウォレットで取引確認が必要です。<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">送信済み</translation>
 <translation id="5013754027092416509">受取済み</translation>
 <translation id="5867988533873716616">ブロックエクスプローラーの URL は使用できません。</translation>
 <translation id="4255623233927788178">ブロックエクスプローラーで表示</translation>
 <translation id="6383204195803840504">トランザクションはここに表示されます</translation>
+<translation id="2916401020782528840">トランザクションが見つかりません</translation>
 <translation id="8941851657764077659">最大優先料金</translation>
 <translation id="8047527352810290817">ガスを編集</translation>
 <translation id="9091334651803050473">保証されているわけではありませんが、あなたがより高い手数料を支払う場合、マイナーはあなたのトランザクションを優先する可能性があります。</translation>
@@ -1021,12 +1066,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">カスタム設定</translation>
 <translation id="7400927223938424379">提案を設定</translation>
+<translation id="1599636444563952897">支出制限の許可は、<ph name="SITE_ORIGIN"/>に次の金額を上限とする引き出しと支出を許可します。</translation>
+<translation id="4512871563176965522">カスタムアローワンス</translation>
+<translation id="749944179568745958">有効なETHアドレスではありません</translation>
+<translation id="882486206986535424">有効なアドレスではありません</translation>
+<translation id="6825399159373612149">ドメイン「<ph name="DOMAIN_NAME"/>」は登録されていません</translation>
+<translation id="862585889767884824">of</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
 <translation id="1118876217803190221">残高不足です</translation>
 <translation id="275990379543116961">ガス代のための資金が不足しています</translation>
 <translation id="3292453499915466604">不十分な流動性</translation>
-<translation id="805808215102934711"><ph name="FROM_ASSET_SYMBOL"/> を有効にします</translation>
+<translation id="805808215102934711"><ph name="FROM_ASSET_SYMBOL"/>を有効にします</translation>
 <translation id="3380365263193509176">不明なエラー</translation>
-<translation id="6687008710463927359">アカウント <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">アカウント<ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">まずウォレットのロックを解除してください</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/>は有効なアドレスではありません</translation>
+<translation id="7340805872138998391">デバイスのロックを解除できません。再接続しています</translation>
+<translation id="1984410139271779110">内部エラーが発生しました。不明なスキームです</translation>
+<translation id="8682200134223578011">承認済み</translation>
+<translation id="4674380028960132654">台帳: 署名が正しいアドレスと一致しません</translation>
+<translation id="3183932890629254743">ハードウェアアカウントが見つかりません</translation>
+<translation id="4287068151777838754">JSONデータはサポート対象外です</translation>
+<translation id="3282936527763045737">パスワードが正しくありません</translation>
+<translation id="1119447706177454957">内部エラー</translation>
+<translation id="3327639091470204775">内部エラーです。iframeブリッジを作成できません</translation>
+<translation id="6672377693827764095">内部エラーが発生しました。アカウントを取得できません</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1035,6 +1099,24 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="1742469581923031760">接続しています...</translation>
+<translation id="1287487756047817908">切断しています...</translation>
+<translation id="2325196879156848326">接続に失敗しました</translation>
+<translation id="745054660363064771">サーバーに接続できません</translation>
+<translation id="3936826714240735937">別のサーバーを選択</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>が<ph name="REGION_NAME"/>サーバーに接続できませんでした。再度お試しいただくか、別のものを選択してください</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>で購入</translation>
+<translation id="1024255913009642477">VPNを購入済みですか？</translation>
+<translation id="8814357473522731680">提供元</translation>
+<translation id="5747552184818312860">有効期限</translation>
+<translation id="1691256669639196606">サブスクリプションを管理</translation>
+<translation id="434523916398030617">テクニカルサポートに連絡する</translation>
+<translation id="1116694919640316211">About</translation>
+<translation id="8670386189340362926">すべてのアプリでトラッカーと広告をブロックする</translation>
+<translation id="4860763498907927955">不要なネットワーク接続からデバイスを保護します</translation>
+<translation id="3181339219453722970">VPNの場所を選択してください</translation>
+<translation id="1751947227857853925">最大 100 Mbps の速度が無制限</translation>
+<translation id="1400240082805528049">24 時間年中無休のサポート</translation>
 <translation id="7586151660465233733">その他の市場を確認するには、<ph name="SITE_NAME"/>へ</translation>
 <translation id="952067063131306699">FTXで暗号通貨の市場を確認し、取引</translation>
 <translation id="5963745988819586370">市場</translation>
@@ -1076,4 +1158,27 @@
 <translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
 <translation id="8511604585939286108">[[title]]をクリックすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
+<translation id="5850325887346946383">ビデオ通話を開始</translation>
+<translation id="7619826778671319444">トランザクションのガスリミットを取得できませんでした</translation>
+<translation id="7631054302129692654">EIP-1559 トランザクションのガス推定値を取得できませんでした</translation>
+<translation id="5420730209575475110">サポートされていません</translation>
+<translation id="692381016487372902">パスワードを再入力</translation>
+<translation id="3527905866577245691">確認用パスワードが一致しません</translation>
+<translation id="6932355307691676490">ウォレットを</translation>
+<translation id="4513956488935671725">あなたのコンピュータに直接接続。</translation>
+<translation id="871696868578199698">小数点桁数</translation>
+<translation id="6637540491667802882">カスタムトークンとして</translation>
+<translation id="6082785102488657349">Faucet から次の Ether を入手する</translation>
+<translation id="7065157926159745595">このアプリが次を使うことを許可する</translation>
+<translation id="4015195974325151180">次のアドレスを表示します</translation>
+<translation id="3587259018193837508">許可されたアカウント (必須)</translation>
+<translation id="8449314044437208543">インポート元</translation>
+<translation id="4428111176561355185">インポート：</translation>
+<translation id="8929587248006013051">Brave WalletにMetaMaskアカウントを追加します。暗号資産の管理と Web 3 DApp とのやり取りを、より高速で安全に行うことができます。</translation>
+<translation id="913613743605881268">インポートをスキップして従来のように暗号資産ウォレットを利用したい場合は、Brave Browser に移動してください</translation>
+<translation id="5886242758142314994">デフォルトを暗号資産ウォレットに戻します。また、いつでもインポートして新しい Brave Wallet を試して、元に戻すことができます。</translation>
+<translation id="480319080797177742">接続済み</translation>
+<translation id="4203566092423620442">切断されています</translation>
+<translation id="1952715382071350669">ハードウェアウォレットがトランザクションの確認を要求しています。</translation>
+<translation id="6687008710463927359">アカウント <ph name="VALUE"/></translation>
 </translationbundle>

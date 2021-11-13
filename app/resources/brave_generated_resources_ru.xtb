@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">Не защищает вас от угроз на опасных веб-сайтах, в загрузках и расширениях.</translation>
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
 <translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
+<translation id="6821903322090655051">Функция Brave Rewards отключена.</translation>
+<translation id="9184430019924125685">Нажмите, чтобы узнать больше.</translation>
+<translation id="3849957491997306859">Автообнаружение</translation>
+<translation id="8798099450830957504">По умолчанию</translation>
+<translation id="4176463684765177261">Отключено</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Получайте баллы за просмотр Brave Ads. Реклама подбирается с учетом ваших интересов, которые определяются на основе ваших действий в Интернете. Ваши персональные данные и история просмотров остаются в браузере.</translation>
+<translation id="1758947220824279023">Максимальное количество рекламы</translation>
+<translation id="8578912649458880781">Таргетинг рекламы на уровне государства</translation>
+<translation id="3678362265519557511">Это позволяет Brave показывать рекламу, подобранную специально для вашей страны. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Автоматический взнос</translation>
+<translation id="9132509928968869844">Лимит на ежемесячный регулярный взнос</translation>
+<translation id="7286722244752781970">Минимальное время нахождения на странице до регистрации посещения</translation>
+<translation id="4424486208397124985">Минимальное количество посещений для релевантности издателя</translation>
+<translation id="6248554379744796526">Показывать в списке сайты, не прошедшие верификацию</translation>
+<translation id="3241299447027267831">Разрешить взносы для видео</translation>
+<translation id="924777189963477634">Подключив регулярный взнос, вы соглашаетесь с <ph name="BEGIN_LINK_TOS"/>Условиями использования<ph name="END_LINK_TOS"/> и <ph name="BEGIN_LINK_PP"/>Политикой конфиденциальности<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Кнопки вознаграждения</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">GitHub</translation>
 <translation id="7781069478569868053">Страница новой вкладки</translation>
 <translation id="1988804048511540801">Страница новой вкладки отображает</translation>
 <translation id="2970343821770026391">Информационную панель</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">Приватный режим в Tor</translation>
 <translation id="1970435562892104727">Это приватное окно для Tor</translation>
 <translation id="1037341607922068025">Открыть Приватное окно с Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Открыть в Tor</translation>
 <translation id="7643538479215207633">Открыть с помощью IPFS</translation>
 <translation id="3094628781200061820">Публиковать и скачивать файлы из IPFS</translation>
 <translation id="1672270084584211506">Доступен Onion</translation>
+<translation id="406832631167785034">Открыть в домене .onion</translation>
 <translation id="4901618511712685702">Импортировать в IPFS</translation>
 <translation id="6794469945030154569">Страницу</translation>
 <translation id="5037852323412456577">Выбранное изображение</translation>
@@ -95,7 +118,6 @@
 <translation id="2638041073279639246">Открыть ссылку в Приватном окне с Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в Приватном окне Brave с Tor</translation>
 <translation id="575838692088926391">Поделиться папкой с помощью IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -122,13 +144,11 @@
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
 <translation id="4078738236287221428">Агрессивный</translation>
 <translation id="7740996059027112821">Стандартный</translation>
-<translation id="4176463684765177261">Отключено</translation>
 <translation id="5770288601196774623">Только между сайтами</translation>
 <translation id="3587482841069643663">Все</translation>
 <translation id="5533533363827555308">Строгий, может нарушить работу сайтов</translation>
 <translation id="8792121506918889955">Политика обработки IP WebRTC</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
-<translation id="8798099450830957504">По умолчанию</translation>
 <translation id="1822560017823072927">Публичные и приватные интерфейсы по умолчанию</translation>
 <translation id="5825943197137337319">Только открытый интерфейс по умолчанию</translation>
 <translation id="1689062823386843231">Отключить непроксируемый протокол UDP</translation>
@@ -175,6 +195,11 @@
 <translation id="2339730291919608488">Выйти из цепочки</translation>
 <translation id="115699408012835975">Если вы сбросите синхронизацию, вам придется повторно ввести код синхронизации на другом устройстве, чтобы выполнять синхронизацию с ним. Уверены, что хотите продолжить?</translation>
 <translation id="6092564993102418148">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
+<translation id="2936582902048232286">Внимание! Устройство, на котором были сгенерированы кодовые слова, получит доступ к вашим данным в Brave, в том числе к паролям.
+
+Убедитесь, что кодовые слова были созданы на вашем устройстве.
+
+Вы уверены, что хотите передать данные?</translation>
 <translation id="3396347744975515056">Синхронизация Brave улучшена и требует настройки</translation>
 <translation id="7473245612074035141">Начать настройку</translation>
 <translation id="3411013544209536575">Полезные советы</translation>
@@ -188,8 +213,11 @@
 <translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="2356070529366658676">Спрашивать</translation>
 <translation id="7701040980221191251">Нет</translation>
-<translation id="1274962333945373242">Устаревшее расширение Crypto Wallets</translation>
+<translation id="1274962333945373242">Криптокошельки (устарело)</translation>
+<translation id="3695088618483091287">Кошелек Brave (предпочтительнее расширения)</translation>
 <translation id="9131889008937672866">Кошелек для криптовалюты по умолчанию</translation>
+<translation id="4718664830805652430">Основная валюта по умолчанию</translation>
+<translation id="7992507032049865603">Основная криптовалюта по умолчанию</translation>
 <translation id="1834467296210148203">Показывает значок кошелька Brave на панели инструментов.</translation>
 <translation id="8239147115686034860">Автоматическая блокировка кошелька Brave</translation>
 <translation id="414639769490080648">Через сколько минут кошелек Brave автоматически блокируется</translation>
@@ -208,6 +236,7 @@
 <translation id="6476061084931271248">Чтобы применить изменения, перезапустите узел.</translation>
 <translation id="3754226427671882382">Перезапустить узел</translation>
 <translation id="949667118776341807">Заменить ключ</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Недействительное название.</translation>
 <translation id="6758961763875471084">Изменить список одноранговых узлов</translation>
 <translation id="1295874070797049002">Экспортировать ключ</translation>
@@ -218,6 +247,9 @@
 <translation id="616058968889448209">Ошибка запуска IPFS. Чтобы узнать больше, посетите <ph name="BEGIN_LINK"/>страницу диагностики<ph name="END_LINK"/>.</translation>
 <translation id="6912148685459054619">Не удалось импортировать ключ '<ph name="KEY_NAME"/>'.</translation>
 <translation id="3364053282600191535">Не удалось экспортировать ключ <ph name="KEY_NAME"/>.</translation>
+<translation id="8860039076160511438">Сбросить</translation>
+<translation id="6369495274982305511">Вы уверены, что хотите сбросить настройки кошелька? Если вы не сделали резервную копию, то можете потерять все данные аккаунта, в том числе любые связанные с ним средства. Для подтверждения введите «<ph name="CONFIRMATION_PHRASE"/>».</translation>
+<translation id="1426410128494586442">Да</translation>
 <translation id="8275038454117074363">Импортировать</translation>
 <translation id="3654980960391973513">Сгенерировать</translation>
 <translation id="5531501313997312487">Запустить узел</translation>
@@ -359,6 +391,7 @@
 <translation id="4235920711083356755">Показать кнопку VPN</translation>
 <translation id="4070612712151038707">Показывает кнопку VPN на панели инструментов</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Вкл./выкл. VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">О Brave VPN</translation>
 <translation id="4378551569595875038">Connecting...</translation>
@@ -384,4 +417,31 @@
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
 <translation id="8581710194025054669">Обеспечить полную конфиденциальность в интернете легко — установите Brave браузером по умолчанию на компьютере. Так переход по любой ссылке будет надежно защищен.</translation>
+<translation id="1241283133946520352">Сети</translation>
+<translation id="8205945804087322170">Добавление сети</translation>
+<translation id="2156993118928861787">Неверный адрес</translation>
+<translation id="2653659639078652383">Отправить</translation>
+<translation id="2556708692502648323">Сети кошелька</translation>
+<translation id="1330032157352961756">Идентификатор новой цепи</translation>
+<translation id="9053905035135220650">Шестнадцатеричная строка с префиксом 0x</translation>
+<translation id="726121047592132939">Название новой цепи</translation>
+<translation id="1034112277864078119">Введите название цепи</translation>
+<translation id="4672314527143443556">Название валюты цепи</translation>
+<translation id="4652114030688989556">Введите название валюты</translation>
+<translation id="1079960017149736097">Знак валюты цепи</translation>
+<translation id="1288105009659846362">Введите знак валюты</translation>
+<translation id="665660671251623018">Доля валюты цепи</translation>
+<translation id="2978054488731497946">Введите долю валюты</translation>
+<translation id="2727514928168763432">URL-адреса RPC</translation>
+<translation id="7059127752542505809">Введите URL-адрес</translation>
+<translation id="3047726704186619366">URL значка</translation>
+<translation id="2487558607408469181">Блокировка ссылок Explorer</translation>
+<translation id="6301398959353668507">Это поле не может быть пустым.</translation>
+<translation id="4514843126085243862">Недействительный формат. Идентификатор цепи — шестнадцатеричная строка с префиксом 0x.</translation>
+<translation id="8325036459845654666">Эта сеть уже добавлена.</translation>
+<translation id="650071759190249039">Внутренняя ошибка. Невозможно добавить сеть.</translation>
+<translation id="868529041590572443">Заполните всю информацию о национальной валюте.</translation>
+<translation id="1062463687579789365">Настройка сетей кошелька</translation>
+<translation id="2234108191702901162">Невозможно добавить сеть.</translation>
+<translation id="2618193846561624884">Вы хотите обновить существующую сеть?</translation>
 </translationbundle>

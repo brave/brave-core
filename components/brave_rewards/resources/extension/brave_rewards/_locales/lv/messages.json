@@ -329,7 +329,7 @@
     "description": ""
   },
   "notificationInsufficientFundsText": {
-    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt iedots nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
+    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -415,7 +415,7 @@
     "description": ""
   },
   "onboardingSetupContributeHeader": {
-    "message": "Cik lielu atbalstu katru mēnesi vēlaties sniegt saviem iecienītākajiem veidotājiem?",
+    "message": "Cik lielu atbalstu katru mēnesi vēlaties sniegt saviem iecienītākajiem satura veidotājiem?",
     "description": ""
   },
   "onboardingSetupContributeSubheader": {

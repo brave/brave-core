@@ -40,7 +40,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="7798069806040634998">Kailangan ng Brave ang access sa storage upang maka-download ng mga file</translation>
 <translation id="8447483940522230788">Helper ng Brave</translation>
 <translation id="7933006624150961626">Para ma-access ang iyong mga bagay sa Brave sa lahat ng device mo, mag-sign in para ma-on mo ang pag-sync.</translation>
-<translation id="5486618155264784386">I-install ang Chrome OS</translation>
 <translation id="7291143854620707672">Puwedeng alisin ng administrator ng profile sa trabaho ang anumang data ng Brave na nabuo sa panahon ng paggamit ng profile na ito (gaya ng paggawa ng mga bookmark, history, mga password, at iba pang setting). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Kailangang ma-restart ang Chrome OS upang mailapat ang update.</translation>
 <translation id="7387051847644272380">May naganap na error sa operating system sa panahon ng pag-install. Mangyaring i-download muli ang Brave.</translation>
@@ -53,8 +52,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="777113543093865885">Alisin sa Brave...</translation>
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">Tungkol sa &amp;Brave</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Huling paalala: mabubura ng pag-install <ph name="BEGIN_BOLD"/>ang buong hard drive mo<ph name="END_BOLD"/>. Pakitiyak na may backup na ang anumang data na mahalaga sa iyo.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Kapag nagsimula na ang pag-install, hindi na ito makakansela.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Napapanahon ang Brave</translation>
 <translation id="2953892977076487219">Sinusubukan ng Brave na i-edit ang mga password.</translation>
 <translation id="8755404239607088219">Hindi masuri ng Brave ang iyong mga password. Subukan ulit sa ibang pagkakataon.</translation>
@@ -77,7 +74,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2711887072399498551">Mayroon nang profile sa Brave na gumagamit ng account na ito</translation>
 <translation id="2297290224191497273">Lumipat sa kasalukuyang profile sa Brave?</translation>
 <translation id="2450003541323895471">Gamit ang mga profile sa Brave, magagawa mong paghiwalayin ang lahat ng iyong bagay-bagay sa Brave. Gumawa ng mga profile para sa mga kaibigan at kapamilya, o gumawa ng magkahiwalay na profile para sa trabaho at kasiyahan.</translation>
-<translation id="7275165473619697274">Kasalukuyang ini-install ang Chrome OS</translation>
 <translation id="9216183508558772570">Aabisuhan ka ng Brave kapag nag-sign in ka gamit ang isang nakompromisong password</translation>
 <translation id="5853262807109651878">Magde-delete ito ng <ph name="ITEMS_COUNT"/> (na) item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Puwedeng magpalipat-lipat sa mga profile sa Brave sa pamamagitan ng <ph name="SHORTCUT"/></translation>
@@ -102,7 +98,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="8923080813984421771">Ipinag-aatas ng <ph name="MANAGER"/> na basahin at tanggapin mo ang sumusunod na Mga Tuntunin ng Serbisyo bago gamitin ang device na ito. Hindi pinapalawak, binabago, o nililimitahan ng mga tuntuning ito ang Mga Tuntunin ng Chrome OS.</translation>
 <translation id="3262506503470845422">Humingi ng tulong sa Brave</translation>
 <translation id="7691786510374174420">Nabigo ang pag-install dahil sa hindi natukoy na error. Kung kasalukuyang tumatakbo ang Brave, pakisara ito at subukang muli.</translation>
-<translation id="429583012151745428">Isinasagawa ang pag-install. Huwag i-off ang device. Hindi dapat tumagal nang mahigit dalawampung minuto ang pag-install. Awtomatikong magsa-shut down ang machine pagkatapos ng pag-install.</translation>
 <translation id="9183662282810237335">Lumabas pa rin sa Brave?</translation>
 <translation id="4065288863231444640">Hayaang Tumakbo ang Brave sa Background</translation>
 <translation id="8148611988012584308">I-customize at kontrolin ang Brave</translation>
@@ -194,7 +189,6 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="6666624454809779082">Naka-install na ang Brave para sa lahat ng user sa iyong computer.</translation>
 <translation id="5360050006043219962">Para ma-access ang iyong mga bagay sa Brave sa lahat ng device mo, mag-sign in, at pagkatapos ay i-on ang pag-sync.</translation>
 <translation id="8291513491595858997">Na-off ng iyong magulang ang "Mga pahintulot para sa mga site, app, at extension" para sa Brave. Hindi pinapayagan ang pag-enable sa <ph name="EXTENSION_TYPE_PARAMETER"/> na ito.</translation>
-<translation id="1810203443153428607">Kapag na-install ang Chrome OS, mao-overwrite ang lahat ng data sa iyong device.</translation>
 <translation id="8211837073776713955">Ipinapaalam sa iyo ng Brave kung nakompromiso ang mga password mo</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kinopya sa Brave)</translation>
@@ -206,6 +200,7 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="3335606533094650083">Kailangan ng Brave ng pahintulot na i-access ang iyong mikropono para sa site na ito</translation>
 <translation id="1705567146636171298">I-update ang Brave</translation>
 <translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave.</translation>
+<translation id="151916274998710826">I-customize ang ilan sa pinakamahalagang opsyon sa privacy ng Brave</translation>
 <translation id="1008530050039597147">Kailangan ng Brave ng pahintulot sa camera para sa site na ito</translation>
 <translation id="1197672524850678392">Hindi mailunsad ang Brave. Subukang muli.</translation>
 <translation id="3405035915691517126">Hindi masuri ng Brave ang iyong mga password. Subukan ulit pagkalipas ng 24 na oras.</translation>
@@ -230,10 +225,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
       mga setting ng Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Ginagamit ng Brave ang iyong camera at mikropono.</translation>
 <translation id="2827121003398607864">Mas mahusay na ang Brave</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Bago tayo magsimula, pakitiyak na mayroon kang up-to-date na backup ng iyong data. Kapag na-install ang Chrome OS, mao-overwrite ang lahat ng data sa iyong hard drive.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Hindi mananagot ang Brave para sa anumang pagkawala ng data, at hindi nito ginagarantiyang gagana ang Chrome OS sa mga modelong hindi certified. Pakibisita ang [TBD] para matuto pa tungkol sa mga certified na modelo.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Matuto pa tungkol sa pag-i-install ng Chrome OS at pagbura ng data: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Kung handa ka nang magpatuloy, i-click ang “I-install ang Chrome OS” at gagabayan ka namin sa proseso ng pag-install sa ilang madadaling hakbang lang. Magkakaroon ka ng isa pang pagkakataong magkumpirma bago kami gumawa ng anumang pagbabago sa iyong computer.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Hindi Brave ang iyong default na browser</translation>
 <translation id="5477319665405831211">I-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
 <translation id="5419189641394808652">Hindi mai-sync ng Brave ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
@@ -298,5 +289,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito}=1{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong Incognito window.}one{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong # Incognito window.}other{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong # na Incognito window.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update}=1{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong Incognito window.}one{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong # Incognito window.}other{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong # na Incognito window.}}</translation>
 <translation id="7914115000169617076">Malapit nang maging up to date! Ilunsad ulit ang Brave para tapusin ang pag-update. Hindi bubukas ulit ang mga pribadong window.</translation>
+<translation id="4703432949110765917">Gumagana ang mga default na setting na ito para sa halos lahat ng profile, pero pwede mo itong i-customize ayon sa paggamit mo ng Brave</translation>
 <translation id="2176087127109773485">Maaari mong pamahalaan ang iyong mga naka-sign in na chain ng pag-sync ng Brave. Ginagamit ang iyong mga chain ng pag-sync ng Brave para sa Brave browser, Play Store, Gmail, at higit pa. Kung gusto mong magdagdag ng account para sa iba pang tao, tulad ng miyembro ng pamilya, magdagdag na lang ng bagong profile sa iyong <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 </translationbundle>
