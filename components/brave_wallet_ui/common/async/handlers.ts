@@ -198,9 +198,12 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
 })
 
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
+  const keyringController = getAPIProxy().keyringController
   const isWalletLocked = getWalletState(store).isWalletLocked
+  if (!isWalletLocked) {
+    keyringController.notifyUserInteraction()
+  }
   interactionNotifier.beginWatchingForInteraction(50000, isWalletLocked, async () => {
-    const keyringController = getAPIProxy().keyringController
     keyringController.notifyUserInteraction()
   })
   // This can be 0 when the wallet is locked
