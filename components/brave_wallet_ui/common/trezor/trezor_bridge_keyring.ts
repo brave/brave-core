@@ -232,7 +232,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
   private getPathForIndex = (index: number, scheme: string) => {
     if (scheme === TrezorDerivationPaths.Default) {
-      return `m/44'/60'/0'/${index}`
+      return `m/44'/60'/0'/0/${index}`
     } else {
       throw Error(getLocale('braveWalletDeviceUnknownScheme'))
     }
