@@ -45,41 +45,31 @@ ProxyServer CreateProxyServerWithAuthInfo(
                                host_and_port.substr(password_component.begin,
                                                     password_component.len)});
     }
-    auth_hostname = auth_str + "@" + auth_hostname;
+    auth_hostname = base::StrCat({auth_str, "@", auth_hostname});
   }
 
   return ProxyServer::FromSchemeHostAndPort(scheme, auth_hostname, port);
 }
 
-}  // namespace
-
-std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
-  std::string scheme_prefix;
-  std::string proxy_uri = ProxyServerToProxyUri_ChromiumImpl(proxy_server);
-  size_t colon = proxy_uri.find(':');
-  if (colon != std::string::npos && proxy_uri.size() - colon >= 3 &&
-      proxy_uri[colon + 1] == '/' && proxy_uri[colon + 2] == '/') {
-    scheme_prefix = proxy_uri.substr(0, colon + 3);
-    proxy_uri = proxy_uri.substr(colon + 3);  // Skip past the "://"
-  }
-
+std::string GetProxyServerAuthString(const ProxyServer& proxy_server) {
   std::string auth_string;
   const HostPortPair& host_port_pair = proxy_server.host_port_pair();
   if (!host_port_pair.username().empty()) {
-    auth_string += host_port_pair.username();
+    auth_string = host_port_pair.username();
     if (!host_port_pair.password().empty()) {
-      auth_string += ':' + host_port_pair.password();
+      base::StrAppend(&auth_string, {":", host_port_pair.password()});
     }
-    auth_string += '@';
+    base::StrAppend(&auth_string, {"@"});
   }
-
-  std::string result = scheme_prefix + auth_string + proxy_uri;
-  return result;
+  return auth_string;
 }
+
+}  // namespace
 
 }  // namespace net
 
 #define ProxyServerToProxyUri ProxyServerToProxyUri_ChromiumImpl
+#define ProxyServerToPacResultElement ProxyServerToPacResultElement_ChromiumImpl
 
 #define ParseAuthority(HOST_AND_PORT, AUTH, USER, PASS, HOST, PORT)            \
   ParseAuthority(host_and_port.data(),                                         \
@@ -94,4 +84,39 @@ std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
 #include "../../../../net/base/proxy_string_util.cc"
 
 #undef ParseAuthority
+#undef ProxyServerToPacResultElement
 #undef ProxyServerToProxyUri
+
+namespace net {
+
+std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
+  std::string scheme_prefix;
+  std::string proxy_uri = ProxyServerToProxyUri_ChromiumImpl(proxy_server);
+  size_t colon = proxy_uri.find(':');
+  if (colon != std::string::npos && proxy_uri.size() - colon >= 3 &&
+      proxy_uri[colon + 1] == '/' && proxy_uri[colon + 2] == '/') {
+    scheme_prefix = proxy_uri.substr(0, colon + 3);
+    proxy_uri = proxy_uri.substr(colon + 3);  // Skip past the "://"
+  }
+
+  std::string result = base::StrCat(
+      {scheme_prefix, GetProxyServerAuthString(proxy_server), proxy_uri});
+  return result;
+}
+
+std::string ProxyServerToPacResultElement(const ProxyServer& proxy_server) {
+  std::string scheme_prefix;
+  std::string proxy_pac =
+      ProxyServerToPacResultElement_ChromiumImpl(proxy_server);
+  size_t space = proxy_pac.find(' ');
+  if (space != std::string::npos && proxy_pac.size() - space >= 1) {
+    scheme_prefix = proxy_pac.substr(0, space + 1);
+    proxy_pac = proxy_pac.substr(space + 1);  // Skip past the space
+  }
+
+  std::string result = base::StrCat(
+      {scheme_prefix, GetProxyServerAuthString(proxy_server), proxy_pac});
+  return result;
+}
+
+}  // namespace net
