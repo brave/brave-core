@@ -115,6 +115,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPrice", IDS_BRAVE_WALLET_PRICE},
     {"braveWalletBack", IDS_BRAVE_WALLET_BACK},
     {"braveWalletAddAccount", IDS_BRAVE_WALLET_ADD_ACCOUNT},
+    {"braveWalletPoweredByCoinGecko", IDS_BRAVE_WALLET_POWERED_BY_COIN_GECKO},
     {"braveWalletBuy", IDS_BRAVE_WALLET_BUY},
     {"braveWalletSend", IDS_BRAVE_WALLET_SEND},
     {"braveWalletSwap", IDS_BRAVE_WALLET_SWAP},
