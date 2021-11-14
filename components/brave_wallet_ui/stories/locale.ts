@@ -65,6 +65,7 @@ provideStrings({
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
   braveWalletAddAccount: 'Add Account',
+  braveWalletPoweredByCoinGecko: 'Price data powered by CoinGecko',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
