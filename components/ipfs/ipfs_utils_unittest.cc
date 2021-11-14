@@ -676,3 +676,30 @@ TEST_F(IpfsUtilsUnitTest, IPNSRegistryDomain) {
   EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://blah.google.com")),
             "google.com");
 }
+
+TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("bafkqaaa"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("k51qzi5uqu5dgutdk6i1ynyzg"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("7testtesttest"));
+
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn=3bA"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("brantly.eth"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "ba-ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "ba%ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("test.com"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("test.net"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("a.b.c.com"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("a.b.c.localhost"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain("a.b.c.com:11112"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain("wrongdomainandcid"));
+}

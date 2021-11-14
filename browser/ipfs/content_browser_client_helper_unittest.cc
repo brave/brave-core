@@ -228,14 +228,16 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
                                            chrome::GetChannel()),
             gateway_url);
 
-  std::string source = "http://test.com.ipns.localhost:8000/";
-  GURL ipns_uri(source);
+  std::string source = "http://test.com.ipns.localhost/#ref";
+  GURL ipns_uri(GURL(source).ReplaceComponents(replacements));
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#ref");
+
+  ipns_uri = GURL("http://wrongcidandbaddomain.ipns.localhost/#ref");
+  ipns_uri = ipns_uri.ReplaceComponents(replacements);
+  source = ipns_uri.spec();
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
-
-  ipns_uri = GURL("http://test.com.ipns.localhost/");
-  ipns_uri = ipns_uri.ReplaceComponents(replacements);
-  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
@@ -277,7 +279,12 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
 
-  source = "http://test.com.ipns.localhost:8080/";
+  source = "http://test.com.ipns.localhost:8080/#some-ref";
+  ipns_uri = GURL(source);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#some-ref");
+
+  source = "https://wrongcidandbaddomain.ipns.localhost:8080/";
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);

@@ -389,6 +389,14 @@ GURL ContentHashToCIDv1URL(const std::string& contenthash) {
   return GURL(scheme + "://" + cidv1);
 }
 
+bool IsValidCIDOrDomain(const std::string& value) {
+  if (ipfs::IsValidCID(value))
+    return true;
+  auto domain = GetDomainAndRegistry(
+      value, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  return !domain.empty();
+}
+
 std::string GetRegistryDomainFromIPNS(const GURL& url) {
   if (!url.SchemeIs(ipfs::kIPNSScheme))
     return std::string();
