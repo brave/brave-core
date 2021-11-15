@@ -233,6 +233,11 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#ref");
 
+  source = "http://test.com.ipns.localhost:8000/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
   ipns_uri = GURL("http://wrongcidandbaddomain.ipns.localhost/#ref");
   ipns_uri = ipns_uri.ReplaceComponents(replacements);
   source = ipns_uri.spec();
