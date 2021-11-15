@@ -6,7 +6,9 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
 
 #include <memory>
+#include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -63,6 +65,14 @@ void BraveAvatarToolbarButton::SetHighlight(
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
+  } else if (browser_->profile()->IsIncognitoProfile()) {
+    // We only want the icon and count for Incognito profiles.
+    revised_highlight_text = std::u16string();
+    const int incognito_window_count = delegate_->GetWindowCount();
+
+    if (incognito_window_count > 1) {
+      revised_highlight_text = base::NumberToString16(incognito_window_count);
+    }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
     revised_highlight_text = std::u16string();
