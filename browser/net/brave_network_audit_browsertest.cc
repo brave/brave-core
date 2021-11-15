@@ -282,5 +282,18 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
+// Loads brave://welcome first to simulate a first run and then loads
+// Brave Wallet, waiting some time after each load to
+// allow gathering network requests.
+IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, WalletTests) {
+  // Load the Welcome page.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
+  // Finally, load brave://wallet
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://wallet")));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+}
+
 }  // namespace
 }  // namespace brave
