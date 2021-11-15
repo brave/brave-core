@@ -73,7 +73,7 @@ async function refreshWalletInfo (store: Store) {
   const state = getWalletState(store)
 
   await store.dispatch(refreshKeyringInfo())
-  const currentNetwork = await store.dispatch(refreshNetworkInfo())
+  await store.dispatch(refreshNetworkInfo())
 
   // Populate tokens from ERC-20 token registry.
   if (state.fullTokenList.length === 0) {
@@ -87,8 +87,6 @@ async function refreshWalletInfo (store: Store) {
   const mmResult = await braveWalletService.isMetaMaskInstalled()
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
-  await store.dispatch(refreshBalancesAndPrices(currentNetwork))
-  await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   await store.dispatch(refreshTransactionHistory())
   await store.dispatch(refreshSitePermissions())
 }
@@ -198,13 +196,19 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
 
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
   const keyringController = getAPIProxy().keyringController
-  const isWalletLocked = getWalletState(store).isWalletLocked
-  if (!isWalletLocked) {
+  const state = getWalletState(store)
+  if (!state.isWalletLocked) {
     keyringController.notifyUserInteraction()
   }
-  interactionNotifier.beginWatchingForInteraction(50000, isWalletLocked, async () => {
+  interactionNotifier.beginWatchingForInteraction(50000, state.isWalletLocked, async () => {
     keyringController.notifyUserInteraction()
   })
+  // Fetch Balances and Prices
+  if (!state.isWalletLocked && state.isWalletCreated) {
+    const currentNetwork = await store.dispatch(refreshNetworkInfo())
+    await store.dispatch(refreshBalancesAndPrices(currentNetwork))
+    await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
+  }
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
     await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
