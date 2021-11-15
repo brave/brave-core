@@ -11,9 +11,9 @@
 #    file under src tree (or grit).
 #
 # 2. Look for #defines that redefine symbols that aren't present in
-#    the overriden file.
+#    the overridden file.
 #
-# 3. Look for #include statements of the overriden file that have
+# 3. Look for #include statements of the overridden file that have
 #    incorrect number of ../ in the path.
 #
 # !!! This script does return false positives, but better check a
@@ -36,19 +36,21 @@ NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s
 FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
 
 EXCLUDES = [
-    'CPPLINT.cfg',
+    '.*/BUILD.gn',
     '.*/DEPS',
     '.*/sources.gni',
-    '_(unit|browser)test(_mac)?.cc',
+    'CPPLINT.cfg',
+    '_(unit|browser)test(_mac)?.(cc|mm)',
+    'base/feature_override.h',
+    'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
+    'chrome/installer/linux/common/brave-browser/chromium-browser.info',
+    'content/browser/tld_ephemeral_lifetime.cc',
+    'content/public/browser/tld_ephemeral_lifetime.h',
     'third_party/blink/renderer/core/origin_trials/origin_trials.cc',
     'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
     'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
     'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
     'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
-    'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
-    'chrome/installer/linux/common/brave-browser/chromium-browser.info',
-    'content/browser/tld_ephemeral_lifetime.cc',
-    'content/public/browser/tld_ephemeral_lifetime.h'
 ]
 
 GRIT_EXCLUDES = [
