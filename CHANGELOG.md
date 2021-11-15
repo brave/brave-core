@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.32.2](https://github.com/brave/brave-ios/releases/tag/v1.32.2)
+
+- [Security] Clarified sync setup instructions. ([#4470](https://github.com/brave/brave-ios/4470))
+
 ## [1.32.1](https://github.com/brave/brave-ios/releases/tag/v1.32.1)
 
 - Added CarPlay support for Brave Playlist. ([#3673](https://github.com/brave/brave-ios/3673))
