@@ -297,21 +297,6 @@ public class BraveToolbarManager extends ToolbarManager {
         }
     }
 
-    protected void updateButtonStatus() {
-        Tab currentTab = mLocationBarModel.getTab();
-        boolean tabCrashed = currentTab != null && SadTab.isShowing(currentTab);
-
-        mToolbar.updateButtonVisibility();
-        mToolbar.updateBackButtonVisibility(currentTab != null && currentTab.canGoBack());
-        mToolbar.updateForwardButtonVisibility(currentTab != null && currentTab.canGoForward());
-        updateReloadState(tabCrashed);
-        updateBookmarkButtonStatus();
-
-        if (mToolbar.getMenuButtonWrapper() != null && !isBottomToolbarVisible()) {
-            mToolbar.getMenuButtonWrapper().setVisibility(View.VISIBLE);
-        }
-    }
-
     protected void updateBookmarkButtonStatus() {
         Tab currentTab = mLocationBarModel.getTab();
         BookmarkBridge bridge = mBookmarkBridgeSupplier.get();
@@ -343,10 +328,6 @@ public class BraveToolbarManager extends ToolbarManager {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .setBottomToolbarVisible(visible);
         }
-    }
-
-    public boolean isBottomToolbarVisible() {
-        return mIsBottomToolbarVisible;
     }
 
     private void updateBottomToolbarVisibility() {
