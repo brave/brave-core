@@ -14,8 +14,6 @@
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
-#include "components/permissions/permission_request.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -23,11 +21,12 @@
 
 using brave_shields::ControlType;
 
-const char kGetLayoutMapScript[] =
-    "(async function testKeyboardAPI() {"
-    "  keyboardLayoutMap = await navigator.keyboard.getLayoutMap();"
-    "  return keyboardLayoutMap.get('KeyA');"
-    "})()";
+namespace {
+
+constexpr char kGetLayoutMapScript[] =
+    R"(navigator.keyboard.getLayoutMap instanceof Function)";
+
+}  // namespace
 
 class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
  public:
@@ -36,11 +35,11 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("a.com", "/");
-    test_url_ = https_server_.GetURL("a.com", "/simple.html");
+    top_level_page_url_ = https_server_.GetURL("a.test", "/");
+    test_url_ = https_server_.GetURL("a.test", "/simple.html");
   }
 
   BraveNavigatorKeyboardAPIBrowserTest(
@@ -49,12 +48,6 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
       const BraveNavigatorKeyboardAPIBrowserTest&) = delete;
 
   ~BraveNavigatorKeyboardAPIBrowserTest() override {}
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -113,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorKeyboardAPIBrowserTest,
   // get real navigator.keyboard.getLayoutMap key
   AllowFingerprinting();
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url()));
-  EXPECT_EQ("a", EvalJs(contents(), kGetLayoutMapScript));
+  EXPECT_EQ(true, EvalJs(contents(), kGetLayoutMapScript));
 
   // Fingerprinting level: standard (default)
   // navigator.keyboard will be null
