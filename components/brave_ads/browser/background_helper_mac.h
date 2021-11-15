@@ -8,7 +8,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/mac/scoped_nsobject.h"
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 

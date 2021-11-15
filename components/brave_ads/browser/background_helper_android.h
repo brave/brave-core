@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/android/application_status_listener.h"
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/browser/background_helper.h"

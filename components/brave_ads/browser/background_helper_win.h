@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
