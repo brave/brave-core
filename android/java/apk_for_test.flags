@@ -138,7 +138,6 @@
     *** mOverviewModeBehaviorSupplier;
     *** mSnackbarManager;
     *** onOrientationChange(...);
-    *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
 }
