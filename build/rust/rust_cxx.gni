@@ -5,7 +5,10 @@
 import("//brave/build/cargo.gni")
 
 cxx_build_path = "$root_build_dir/cxxbridge"
-cxxbridge_path = "$cxx_build_path/$rustc_target/release/cxxbridge"
+cxxbridge_executable = "$cxx_build_path/$rustc_target/release/cxxbridge"
+if (is_win) {
+  cxxbridge_executable = "${cxxbridge_executable}.exe"
+}
 
 set_defaults("rust_cxx") {
   native_header_deps = []
@@ -64,11 +67,6 @@ template("rust_cxx") {
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
     output_cc = "{{source_gen_dir}}/{{source_file_part}}.cc"
 
-    cxxbridge_executable = rebase_path(cxxbridge_path)
-    if (is_win) {
-      cxxbridge_executable = rebase_path("${cxxbridge_executable}.exe")
-    }
-
     script = "//brave/build/rust/run_cxxbridge.py"
     inputs = [
       cxxbridge_executable,
@@ -81,7 +79,7 @@ template("rust_cxx") {
 
     args = [
       "--exe",
-      cxxbridge_executable,
+      rebase_path(cxxbridge_executable),
       "--header",
       output_h,
       "--cc",
