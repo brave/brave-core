@@ -23,6 +23,7 @@
 #include "base/strings/string_util_win.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "base/win/atl.h"
 #include "base/win/registry.h"
 #include "base/win/scoped_co_mem.h"
@@ -407,6 +408,9 @@ std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
 }
 
 bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::MAY_BLOCK);
+
   if (IsDefaultProtocolHandlerFor(protocol)) {
     VLOG(2) << "Already default handler for " << protocol;
     return true;
@@ -443,6 +447,9 @@ bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol) {
 }
 
 bool IsDefaultProtocolHandlerFor(base::WStringPiece protocol) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::MAY_BLOCK);
+
   const auto prog_id = GetBrowserProgId();
   if (!CheckProgIDExists(prog_id)) {
     LOG(ERROR) << "ProgId is not found - " << prog_id;

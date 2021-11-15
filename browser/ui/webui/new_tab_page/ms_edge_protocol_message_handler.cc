@@ -49,7 +49,7 @@ void MSEdgeProtocolMessageHandler::OnRegValChanged() {
 
 void MSEdgeProtocolMessageHandler::CheckMSEdgeProtocolDefaultHandlerState() {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&IsDefaultProtocolHandlerFor, kMSEdgeProtocol),
       base::BindOnce(&MSEdgeProtocolMessageHandler::OnIsDefaultProtocolHandler,
                      weak_factory_.GetWeakPtr()));
@@ -88,7 +88,7 @@ void MSEdgeProtocolMessageHandler::HandleSetAsDefaultMSEdgeProtocolHandler(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_BLOCKING},
       base::BindOnce(&SetDefaultProtocolHandlerFor, kMSEdgeProtocol),
       base::BindOnce(&MSEdgeProtocolMessageHandler::OnSetDefaultProtocolHandler,
                      weak_factory_.GetWeakPtr()));
@@ -121,7 +121,7 @@ void MSEdgeProtocolMessageHandler::LaunchSystemDialog() {
   }
 
   base::ThreadPool::PostTask(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_BLOCKING},
       base::BindOnce(
           [](const base::FilePath& brave_exe) {
             ShellUtil::ShowMakeChromeDefaultProtocolClientSystemUI(
