@@ -56,7 +56,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     await this.makeApp()
 
     if (this.app) {
-      const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+      const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
       const address = await this._getAddress(zeroPath)
       this.deviceId_ = await hardwareDeviceIdFromAddress(address)
     }
