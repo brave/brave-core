@@ -433,7 +433,7 @@ function Container (props: Props) {
   const onCancelConnectHardwareWallet = () => {
     // Navigating to main panel view will unmount ConnectHardwareWalletPanel
     // and therefore forfeit connecting to the hardware wallet.
-    props.walletPanelActions.navigateTo('main')
+    props.walletPanelActions.navigateToMain()
   }
 
   const removeSitePermission = (origin: string, address: string) => {
