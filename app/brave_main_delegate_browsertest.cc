@@ -100,7 +100,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kNavigatorPluginsFixed,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
-    &blink::features::kReportAllJavaScriptFrameworks,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &blink::features::kWebSQLInThirdPartyContextEnabled,

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/page_load_metrics/observers/javascript_frameworks_ukm_observer.cc b/chrome/browser/page_load_metrics/observers/javascript_frameworks_ukm_observer.cc
+index 394f6ad92dc2c337cbd3eb244dee1656478b17b6..7c0588813cda057d1db4d3347535905a3adcfffa 100644
+--- a/chrome/browser/page_load_metrics/observers/javascript_frameworks_ukm_observer.cc
++++ b/chrome/browser/page_load_metrics/observers/javascript_frameworks_ukm_observer.cc
+@@ -59,6 +59,7 @@ void JavascriptFrameworksUkmObserver::RecordJavascriptFrameworkPageLoad() {
+           (frameworks_detected_ &
+            blink::LoadingBehaviorFlag::kLoadingBehaviorVuePressFrameworkUsed) !=
+           0)
++#if 0
+       .SetAngularPageLoad(
+           (frameworks_detected_ &
+            blink::LoadingBehaviorFlag::kLoadingBehaviorAngularFrameworkUsed) !=
+@@ -77,5 +78,7 @@ void JavascriptFrameworksUkmObserver::RecordJavascriptFrameworkPageLoad() {
+       .SetVuePageLoad(
+           (frameworks_detected_ &
+            blink::LoadingBehaviorFlag::kLoadingBehaviorVueFrameworkUsed) != 0);
++#endif
++      ;
+   builder.Record(ukm::UkmRecorder::Get());
+ }
