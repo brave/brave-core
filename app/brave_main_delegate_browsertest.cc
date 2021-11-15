@@ -37,6 +37,7 @@
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/translate/core/common/translate_util.h"
 #endif
 
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
@@ -84,6 +85,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
 #if !defined(OS_ANDROID)
     &apps::kAppDiscoveryRemoteUrlSearch,
+    &translate::kTFLiteLanguageDetectionEnabled,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
