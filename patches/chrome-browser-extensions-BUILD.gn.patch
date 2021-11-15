@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index e53cc16ec645a6664b377cdfb632f853df37cce7..3ea05cfee4cf037d01ab37317ba501fed86aafd3 100644
+index bf86482cb2b7040ea03f366c17dd07e69df459f0..c85214ad4aa6abc6d56366e3a3f8d18ec8e4b4ca 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -1340,6 +1340,7 @@ static_library("extensions") {

@@ -1,11 +1,11 @@
 diff --git a/components/sync/driver/sync_service_impl.h b/components/sync/driver/sync_service_impl.h
-index 098655d28d6d6775e5dd748f148d30c456e1041b..04b3f7a5675fcb55f59d2428819f500b862eb0d8 100644
+index bd32034f3c52819d130b3ae35f4c675f1dd08784..a4ba886d2ad2835dee991b8ed8ec5c22e18bfafd 100644
 --- a/components/sync/driver/sync_service_impl.h
 +++ b/components/sync/driver/sync_service_impl.h
-@@ -259,6 +259,7 @@ class SyncServiceImpl : public SyncService,
- 
+@@ -255,6 +255,7 @@ class SyncServiceImpl : public SyncService,
+
    SyncClient* GetSyncClientForTest();
- 
+
 +  BRAVE_SYNC_SERVICE_IMPL_H_
   private:
    enum UnrecoverableErrorReason {

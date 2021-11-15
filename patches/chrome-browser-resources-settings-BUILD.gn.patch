@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index fb5ef473d4ee1b947cf35ed9aab4e149d016adc3..25e8cc654397049626f0fc56ef7c59ddac3311db 100644
+index 8f383a7fc46033c712db7b7cb606b62560f82666..269f91332c3e6ee1d964a294c5284fe7148de5ce 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -99,6 +99,7 @@ generate_grd("build_grd") {
+@@ -103,6 +103,7 @@ generate_grd("build_grd") {
      deps = [ ":build_ts" ]
      manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
    }
@@ -10,7 +10,7 @@ index fb5ef473d4ee1b947cf35ed9aab4e149d016adc3..25e8cc654397049626f0fc56ef7c59dd
  }
  
  preprocess_if_expr("preprocess") {
-@@ -807,4 +808,6 @@ ts_library("build_ts") {
+@@ -811,4 +812,6 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]

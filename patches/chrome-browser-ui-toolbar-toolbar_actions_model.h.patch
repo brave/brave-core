@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index 9fe96598905858b9e6e1cf13054be39c9feaf3dd..a2b6251311531ec1f6bdc45d13486dfb23b6c7a8 100644
+index e09ba4e5aa9a855bbf44653da778a9b9087a0f30..f66a179f22c41a0ff1b324ef1e2601c75e2c86b2 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-@@ -29,6 +29,7 @@ class Browser;
+@@ -28,6 +28,7 @@ class Browser;
  class PrefService;
  class Profile;
  class ExtensionsContainer;
@@ -10,7 +10,7 @@ index 9fe96598905858b9e6e1cf13054be39c9feaf3dd..a2b6251311531ec1f6bdc45d13486dfb
  
  namespace extensions {
  class ExtensionActionManager;
-@@ -48,6 +49,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+@@ -47,6 +48,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
                              public content::NotificationObserver,
                              public KeyedService {
   public:
@@ -18,7 +18,7 @@ index 9fe96598905858b9e6e1cf13054be39c9feaf3dd..a2b6251311531ec1f6bdc45d13486dfb
    using ActionId = std::string;
  
    ToolbarActionsModel(Profile* profile,
-@@ -167,7 +169,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+@@ -166,7 +168,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
    void RemovePref(const ActionId& action_id);
  
    // Returns true if the given |extension| should be added to the toolbar.

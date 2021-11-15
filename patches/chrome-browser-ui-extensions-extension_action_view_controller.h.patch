@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index b7e62ff328c7f7817853464f1606e4c89568ecba..23c6c83db7be375b3c53e3b75168d3d467427f84 100644
+index 40e1da396a347e98c08364cacf7adfdc8d991e8d..9374301b3772013585a8fa99bca6582cb6c42e04 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
-@@ -17,6 +17,7 @@
+@@ -16,6 +16,7 @@
  #include "extensions/common/extension_id.h"
  #include "ui/gfx/image/image.h"
  
@@ -10,7 +10,7 @@ index b7e62ff328c7f7817853464f1606e4c89568ecba..23c6c83db7be375b3c53e3b75168d3d4
  class Browser;
  class ExtensionActionPlatformDelegate;
  class GURL;
-@@ -42,6 +43,7 @@ class ExtensionActionViewController
+@@ -41,6 +42,7 @@ class ExtensionActionViewController
        public extensions::ExtensionContextMenuModel::PopupDelegate,
        public extensions::ExtensionHostObserver {
   public:
@@ -18,7 +18,7 @@ index b7e62ff328c7f7817853464f1606e4c89568ecba..23c6c83db7be375b3c53e3b75168d3d4
    // The different options for showing a popup.
    enum PopupShowAction { SHOW_POPUP, SHOW_POPUP_AND_INSPECT };
  
-@@ -135,6 +137,7 @@ class ExtensionActionViewController
+@@ -134,6 +136,7 @@ class ExtensionActionViewController
    // In some cases (such as when an action is shown in a menu), a substitute
    // ToolbarActionViewController should be used for showing popups. This
    // returns the preferred controller.
@@ -26,7 +26,7 @@ index b7e62ff328c7f7817853464f1606e4c89568ecba..23c6c83db7be375b3c53e3b75168d3d4
    ExtensionActionViewController* GetPreferredPopupViewController();
  
    // Executes the extension action with |show_action|. If
-@@ -150,6 +153,7 @@ class ExtensionActionViewController
+@@ -149,6 +152,7 @@ class ExtensionActionViewController
    // The popup may not be shown synchronously if the extension is hidden and
    // first needs to slide itself out.
    // Returns true if a popup will be shown.
@@ -34,7 +34,7 @@ index b7e62ff328c7f7817853464f1606e4c89568ecba..23c6c83db7be375b3c53e3b75168d3d4
    bool TriggerPopupWithUrl(PopupShowAction show_action,
                             const GURL& popup_url,
                             bool grant_tab_permissions);
-@@ -160,6 +164,7 @@ class ExtensionActionViewController
+@@ -159,6 +163,7 @@ class ExtensionActionViewController
                   PopupShowAction show_action);
  
    // Handles cleanup after the popup closes.

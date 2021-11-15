@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/proxy_config_monitor.h b/chrome/browser/net/proxy_config_monitor.h
-index 920a956bce5a24c511df293f4156e33c2455e911..ac26cf63c9005bcd883934e01a1f2eab5ee6efa8 100644
+index cc48c2dcb98d49ea3737092e21fdf8a4aa52cb5b..d666014662b50db7673a2c4e8f36ac85f7361978 100644
 --- a/chrome/browser/net/proxy_config_monitor.h
 +++ b/chrome/browser/net/proxy_config_monitor.h
-@@ -66,7 +66,7 @@ class ProxyConfigMonitor : public net::ProxyConfigService::Observer,
+@@ -65,7 +65,7 @@ class ProxyConfigMonitor : public net::ProxyConfigService::Observer,
    // they're received, to allow tests to wait until all pending proxy
    // configuration changes have been applied.
    void FlushForTesting();
