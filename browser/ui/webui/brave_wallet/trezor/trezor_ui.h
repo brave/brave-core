@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/untrusted_web_ui_controller.h"

@@ -6,7 +6,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/macros.h"
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
