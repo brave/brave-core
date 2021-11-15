@@ -32,7 +32,6 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
-#include "third_party/blink/public/common/features.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -1069,84 +1068,4 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
   EXPECT_EQ("", values_after.iframe_1.cookies);
   EXPECT_EQ("", values_after.iframe_2.cookies);
-}
-
-class EphemeralStorageBlinkMemoryCacheBrowserTest
-    : public EphemeralStorageBrowserTest {
- public:
-  EphemeralStorageBlinkMemoryCacheBrowserTest() {
-    features_.InitAndEnableFeature(blink::features::kPartitionBlinkMemoryCache);
-  }
-
-  void NavigateAndWaitForImgLoad(Browser* browser,
-                                 const GURL& url,
-                                 const GURL& img_url) {
-    constexpr char kLoadImgAsync[] = R"(
-      (async () => {
-        let img = document.createElement("img");
-        document.body.appendChild(img);
-        let imgLoadPromise = new Promise((resolve, reject) => {
-          img.addEventListener("load", resolve, {once: true});
-        });
-        img.src = '%s';
-        await imgLoadPromise;
-      })();
-    )";
-
-    auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    EXPECT_TRUE(content::ExecJs(
-        content::ChildFrameAt(rfh, 0),
-        base::StringPrintf(kLoadImgAsync, img_url.spec().c_str())));
-  }
-
- private:
-  base::test::ScopedFeatureList features_;
-};
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBlinkMemoryCacheBrowserTest,
-                       MemoryCacheIsNotUsedForCrossSiteFrame) {
-  const GURL image_url = https_server_.GetURL("b.com", "/logo.png?cache");
-  NavigateAndWaitForImgLoad(browser(), a_site_ephemeral_storage_url_,
-                            image_url);
-  NavigateAndWaitForImgLoad(browser(), c_site_ephemeral_storage_url_,
-                            image_url);
-
-  EXPECT_EQ(http_request_monitor_.GetHttpRequestsCount(image_url), 2);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBlinkMemoryCacheBrowserTest,
-                       MemoryCacheIsNotUsedForCrossSiteFrame_Incognito) {
-  Browser* incognito_browser = CreateIncognitoBrowser();
-
-  const GURL image_url = https_server_.GetURL("b.com", "/logo.png?cache");
-  NavigateAndWaitForImgLoad(incognito_browser, a_site_ephemeral_storage_url_,
-                            image_url);
-  NavigateAndWaitForImgLoad(incognito_browser, c_site_ephemeral_storage_url_,
-                            image_url);
-
-  EXPECT_EQ(http_request_monitor_.GetHttpRequestsCount(image_url), 2);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBlinkMemoryCacheBrowserTest,
-                       MemoryCacheIsUsedForSameSiteFrame) {
-  const GURL image_url = https_server_.GetURL("b.com", "/logo.png?cache");
-  NavigateAndWaitForImgLoad(browser(), b_site_ephemeral_storage_url_,
-                            image_url);
-  NavigateAndWaitForImgLoad(browser(), b_site_ephemeral_storage_url_,
-                            image_url);
-
-  EXPECT_EQ(http_request_monitor_.GetHttpRequestsCount(image_url), 1);
-}
-
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBlinkMemoryCacheBrowserTest,
-                       MemoryCacheIsUsedForSameSiteFrame_Incognito) {
-  const GURL image_url = https_server_.GetURL("b.com", "/logo.png?cache");
-  NavigateAndWaitForImgLoad(browser(), b_site_ephemeral_storage_url_,
-                            image_url);
-  NavigateAndWaitForImgLoad(browser(), b_site_ephemeral_storage_url_,
-                            image_url);
-
-  EXPECT_EQ(http_request_monitor_.GetHttpRequestsCount(image_url), 1);
 }
