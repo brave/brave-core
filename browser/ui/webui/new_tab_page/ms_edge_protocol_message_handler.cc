@@ -15,6 +15,9 @@
 #include "brave/browser/default_protocol_handler_utils_win.h"
 #include "chrome/installer/util/shell_util.h"
 
+using protocol_handler_utils::IsDefaultProtocolHandlerFor;
+using protocol_handler_utils::SetDefaultProtocolHandlerFor;
+
 namespace {
 
 constexpr wchar_t kMSEdgeProtocol[] = L"microsoft-edge";

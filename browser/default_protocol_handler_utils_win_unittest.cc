@@ -11,6 +11,8 @@
 // Below test cases are copied from
 // https://github.com/mozilla/gecko-dev/blob/master/toolkit/mozapps/defaultagent/tests/gtest/SetDefaultBrowserTest.cpp
 
+using protocol_handler_utils::GenerateUserChoiceHash;
+
 TEST(DefaultProtocolHandlerUtilsWinTest, HashTest) {
   // Hashes set by System Settings on 64-bit Windows 10 Pro 20H2 (19042.928).
   const wchar_t* sid = L"S-1-5-21-636376821-3290315252-1794850287-1001";

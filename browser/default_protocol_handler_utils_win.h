@@ -12,6 +12,8 @@
 
 #include "base/strings/string_piece_forward.h"
 
+namespace protocol_handler_utils {
+
 // Exported for testing.
 std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
                                     base::WStringPiece sid,
@@ -20,5 +22,7 @@ std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
 
 bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol);
 bool IsDefaultProtocolHandlerFor(base::WStringPiece protocol);
+
+}  // namespace protocol_handler_utils
 
 #endif  // BRAVE_BROWSER_DEFAULT_PROTOCOL_HANDLER_UTILS_WIN_H_

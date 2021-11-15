@@ -34,6 +34,8 @@
 // Most of source code in this file comes from firefox's SetDefaultBrowser -
 // https://github.com/mozilla/gecko-dev/blob/master/toolkit/mozapps/defaultagent/SetDefaultBrowser.cpp
 
+namespace protocol_handler_utils {
+
 namespace {
 
 constexpr wchar_t kUserChoiceKey[] = L"UserChoice";
@@ -455,3 +457,5 @@ bool IsDefaultProtocolHandlerFor(base::WStringPiece protocol) {
 
   return prog_id == GetProgIdForProtocol(protocol);
 }
+
+}  // namespace protocol_handler_utils
