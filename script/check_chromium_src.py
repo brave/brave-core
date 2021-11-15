@@ -24,15 +24,15 @@ import re
 import os
 import sys
 
-"""
-Look for potential problems in chromium_src overrides.
-"""
+# Look for potential problems in chromium_src overrides.
 
 BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
+# pylint: disable-next=line-too-long
 NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])+([a-zA-Z0-9_]+[^\s\(]*)'
+# pylint: disable-next=line-too-long
 FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
 
 EXCLUDES = [
@@ -79,7 +79,7 @@ def do_check_includes(override_filepath):
         # Check relative includes go up the expected amount of steps.
         for line in override_file:
             # We're only interested in include paths for parent directories.
-            regexp = r'^#include "(\.\./.*{})"'.format(override_filename)
+            regexp = rf'^#include "(\.\./.*{override_filename})"'
             line_match = re.search(regexp, line)
             if not line_match:
                 continue
@@ -91,17 +91,17 @@ def do_check_includes(override_filepath):
 
             # Check actual vs expected.
             if actual_count != expected_count:
-                print("ERROR: while processing {}".format(override_filepath))
+                print(f"ERROR: while processing {override_filepath}")
 
                 # Sanity check
                 saved_cwd = os.getcwd()
                 os.chdir(override_dirpath)
                 if not os.path.isfile(include_path):
-                    print("       File {} doesn't exist".format(include_path))
+                    print(f"       File {include_path} doesn't exist")
                 os.chdir(saved_cwd)
 
-                print("       Expected {} \"..\"".format(expected_count))
-                print("       Found {} \"..\"".format(actual_count))
+                print(f"       Expected {expected_count} \"..\"")
+                print(f"       Found {actual_count} \"..\"")
                 print("-------------------------")
 
 
@@ -143,10 +143,11 @@ def do_check_defines(override_filepath, original_filepath):
                 target = buildflag_match.group(1)
 
             # Report ERROR if target can't be found in the original file.
-            with open(original_filepath, mode='r', encoding='utf-8') as original_file:
+            with open(original_filepath, mode='r', encoding='utf-8') as \
+                original_file:
                 if target not in original_file.read():
-                    print("ERROR: Unable to find symbol {} in {}"
-                          .format(target, original_filepath))
+                    print(f"ERROR: Unable to find symbol {target}" +
+                          f" in {original_filepath}")
                     print("-------------------------")
 
 
@@ -156,13 +157,12 @@ def do_check_overrides(overrides_list, search_dir, check_includes=False):
     the passed in directory (|search_dir|), optionally checking includes too.
     """
     print("--------------------------------------------------")
-    print("Checking overrides in {} ...".format(search_dir))
+    print(f"Checking overrides in {search_dir} ...")
     print("--------------------------------------------------")
     for override_filepath in overrides_list:
         original_filepath = os.path.join(search_dir, override_filepath)
         if not os.path.isfile(original_filepath):
-            print("WARNING: No source for override {}"
-                  .format(override_filepath))
+            print(f"WARNING: No source for override {override_filepath}")
             print("-------------------------")
             continue
 
@@ -204,7 +204,8 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
             # Normalize back slashes to forward slashes just in case we're in
             # Windows before trying to match them against a regular expression.
             normalized_path = relative_path.replace('\\', '/')
-            if include_regexp and not re.search(include_regexp, normalized_path):
+            if include_regexp and not re.search(
+                include_regexp, normalized_path):
                 continue
             if exclude_regexp and re.search(exclude_regexp, normalized_path):
                 continue
@@ -235,9 +236,9 @@ def main(args):
                                          options.arch)
 
     # Check that the required directories exist.
-    for dir in [BRAVE_SRC, gen_buildir]:
-        if not os.path.isdir(dir):
-            print("ERROR: {} is not a valid directory.".format(dir))
+    for directory in [BRAVE_SRC, gen_buildir]:
+        if not os.path.isdir(directory):
+            print(f"ERROR: {directory} is not a valid directory.")
             return 1
 
     # Change into the chromium_src directory for convenience.
@@ -253,6 +254,7 @@ def main(args):
         include_regexp='|'.join(GRIT_INCLUDES + ['.*grit.*']),
         exclude_regexp='|'.join(GRIT_EXCLUDES))
     do_check_overrides(grit_overrides, gen_buildir, False)
+    return 0
 
 
 if __name__ == '__main__':
