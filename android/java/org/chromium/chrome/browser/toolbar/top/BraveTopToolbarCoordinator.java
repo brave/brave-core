@@ -85,8 +85,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
-                        isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
-                        isIncognitoModeEnabledSupplier);
+                        isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier);
             }
         }
     }
