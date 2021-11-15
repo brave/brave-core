@@ -67,7 +67,7 @@ const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
 const char kFieldTrialParameterAdNotificationInsetX[] =
     "ad_notification_inset_x";
 #if defined(OS_WIN)
-const int kDefaultAdNotificationInsetX = -13;
+const int kDefaultAdNotificationInsetX = -370;
 #elif defined(OS_MAC)
 const int kNativeNotificationWidth = 360;
 const int kDefaultAdNotificationInsetX = -(10 + kNativeNotificationWidth);
@@ -81,7 +81,7 @@ const int kDefaultAdNotificationInsetX = -13;
 const char kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateY[] =
     "ad_notification_normalized_display_coordinate_y";
 #if defined(OS_WIN)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
+const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 1.0;
 #elif defined(OS_MAC)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
 #elif defined(OS_LINUX)
@@ -93,7 +93,7 @@ const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
 const char kFieldTrialParameterAdNotificationInsetY[] =
     "ad_notification_inset_y";
 #if defined(OS_WIN)
-const int kDefaultAdNotificationInsetY = 18;
+const int kDefaultAdNotificationInsetY = -10;
 #elif defined(OS_MAC)
 const int kDefaultAdNotificationInsetY = 11;
 #elif defined(OS_LINUX)
