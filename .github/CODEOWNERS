@@ -4,8 +4,10 @@ chromium_src/ @brave/chromium-src-reviewers
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 /README.md @bsclifton
-Jenkinsfile @mihaiplesa
+Jenkinsfile @brave/devops-team
 DEPS @brave/deps-reviewers
+package*.json @brave/js-deps-reviewers
+Cargo.* @brave/rust-deps-reviewers
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
@@ -103,9 +105,8 @@ patches/*.java.patch @samartnik
 third_party/bitcoin-core/BUILD.gn @orspetol
 
 # Network auditor
-browser/net/brave_network_audit_whitelists.h @brave/sec-team
+browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 
 # iOS
 ios/ @brave/ios
 build/ios/ @brave/ios
-
