@@ -114,6 +114,12 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "License": "BSD",
             "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
         },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
+            "Name": "zlib",
+            "URL": "https://zlib.net",
+            "License": "zlib",
+            "License File": "/brave/vendor/omaha/third_party/zlib/README",
+        },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
             "URL": "https://github.com/brave/python-patch",
