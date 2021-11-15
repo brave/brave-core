@@ -76,6 +76,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     PermissionRequestManager* manager = GetPermissionRequestManager();
     prompt_factory_.reset(new MockPermissionLifetimePromptFactory(manager));

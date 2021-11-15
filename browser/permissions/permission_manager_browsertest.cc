@@ -77,6 +77,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   ~PermissionManagerBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
