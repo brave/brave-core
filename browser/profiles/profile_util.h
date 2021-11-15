@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_
 
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/supports_user_data.h"
 // this needs to be here so we don't accidentally override the real method
 #include "chrome/browser/profiles/incognito_helpers.h"

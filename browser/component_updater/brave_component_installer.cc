@@ -13,7 +13,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_string_value_serializer.h"
-#include "base/macros.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "components/component_updater/component_updater_service.h"

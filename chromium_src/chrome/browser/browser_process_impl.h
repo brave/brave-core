@@ -9,7 +9,6 @@
 // Note: Init method name is quite common. To re-define only Init in
 // browser_process_impl.h, all other headers are added.
 #include "base/debug/stack_trace.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/sequence_checker.h"
 #include "base/timer/timer.h"
