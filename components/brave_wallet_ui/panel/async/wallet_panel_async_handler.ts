@@ -91,6 +91,23 @@ async function getPendingSignMessageRequest () {
   return null
 }
 
+handler.on(PanelActions.navigateToMain.getType(), async (store: Store) => {
+  const apiProxy = getWalletPanelApiProxy()
+
+  await store.dispatch(PanelActions.navigateTo('main'))
+  await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+  apiProxy.panelHandler.setCloseOnDeactivate(true)
+  apiProxy.panelHandler.showUI()
+})
+
+async function navigateToConnectHardwareWallet (store: Store) {
+  const apiProxy = getWalletPanelApiProxy()
+
+  await store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+  await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+  apiProxy.panelHandler.setCloseOnDeactivate(false)
+}
+
 handler.on(WalletActions.initialize.getType(), async (store) => {
   const state = getPanelState(store)
   // Sanity check we only initialize once
@@ -153,28 +170,25 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   }
 
   const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.setCloseOnDeactivate(false)
+  await navigateToConnectHardwareWallet(store)
 
   if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
-    await store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
-    await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
-
     const { success, error, deviceError } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
       if (deviceError) {
         if (deviceError === 'transactionRejected') {
           await store.dispatch(WalletActions.rejectTransaction(txInfo))
-          await store.dispatch(PanelActions.navigateTo('main'))
+          await store.dispatch(PanelActions.navigateToMain())
         } else {
           await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
         }
       } else if (error) {
         // TODO: handle non-device errors
         console.log(error)
+        await store.dispatch(PanelActions.navigateToMain())
       }
     } else {
-      await store.dispatch(PanelActions.navigateTo('main'))
-      await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+      await store.dispatch(PanelActions.navigateToMain())
       refreshTransactionHistory(txInfo.fromAddress)
     }
   } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
@@ -185,10 +199,9 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
     } else {
       refreshTransactionHistory(txInfo.fromAddress)
     }
-  }
 
-  apiProxy.panelHandler.setCloseOnDeactivate(true)
-  apiProxy.panelHandler.showUI()
+    await store.dispatch(PanelActions.navigateToMain())
+  }
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
