@@ -1164,25 +1164,39 @@ extension Strings {
       comment: "The title of the edit gas fee screen"
     )
     public static let insufficientBalance = NSLocalizedString(
-      "wallet.InsufficientBalance",
+      "wallet.insufficientBalance",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Insufficient balance",
       comment: "An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
     )
     public static let insufficientFundsForGas = NSLocalizedString(
-      "wallet.InsufficientFundsForGas",
+      "wallet.insufficientFundsForGas",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Insufficient funds for gas",
       comment: "An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
     )
     public static let activateToken = NSLocalizedString(
-      "wallet.InsufficientFundsForGas",
+      "wallet.insufficientFundsForGas",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Activate Token %@",
       comment: "The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC'"
+    )
+    public static let insufficientLiquidity = NSLocalizedString(
+      "wallet.insufficientLiquidity",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Insufficient liquidity",
+      comment: "An error message displayed when the user doesn't have enough liquidity to proceed with a transaction."
+    )
+    public static let unknownError = NSLocalizedString(
+      "wallet.unknownError",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unknown error",
+      comment: "An error message displayed when an unspecified problem occurs."
     )
   }
 }
