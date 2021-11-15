@@ -97,6 +97,11 @@ template("cargo_build") {
   group_target = target_name
   cargo_build_target = target_name + "_cargo_build"
 
+  not_needed(invoker,
+               [
+                 "is_bin"
+               ])
+
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
@@ -137,7 +142,9 @@ template("cargo_build") {
   config_target = target_name + "_staticlib_config"
 
   config(config_target) {
-    libs = [ invoker.output ]
+    if (defined(invoker.is_bin) && !invoker.is_bin) {
+      libs = [ invoker.output ]
+    }
     visibility = [ ":$group_target" ]
   }
 
