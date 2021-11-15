@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/bookmark_model_loaded_observer.h b/chrome/browser/profiles/bookmark_model_loaded_observer.h
-index bb0fffa6e8b3d75f748d1d550312cf0d8d0c63ce..7b1fcd00f0566ec8a48603c78e2294381db1e5ef 100644
+index d67e149b0663c6476194703920ab5616bee6c9ee..639a40e4155f699b3d6b84402a1112217d59b662 100644
 --- a/chrome/browser/profiles/bookmark_model_loaded_observer.h
 +++ b/chrome/browser/profiles/bookmark_model_loaded_observer.h
-@@ -20,6 +20,7 @@ class BookmarkModelLoadedObserver
+@@ -19,6 +19,7 @@ class BookmarkModelLoadedObserver
    BookmarkModelLoadedObserver& operator=(const BookmarkModelLoadedObserver&) =
        delete;
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index a840aee2290ae08d1ac2cc68732e41b01042ae3a..85533abbe9e745784ca13651f9de807c865418bb 100644
+index dd8362b853778887b4f58a8a088722b7f8453ad8..1000a951e284788b0d3953b7685ca46c158bec9a 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -79,6 +79,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+@@ -78,6 +78,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
    bool IsPerUserInstall() const override;
    std::unique_ptr<update_client::ProtocolHandlerFactory>
    GetProtocolHandlerFactory() const override;

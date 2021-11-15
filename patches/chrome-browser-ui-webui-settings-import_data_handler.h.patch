@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.h b/chrome/browser/ui/webui/settings/import_data_handler.h
-index f11411c00f1e6d5dbc5d340f36ba6da3f1376982..2bb161f96f6f78949a9f44f3e331d4e7ebbefd9b 100644
+index de82de000a6be8c3540301279331b6286c2a13cb..29bf4fab4fd60817ded927ead3475a52460f0cfe 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.h
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.h
-@@ -38,6 +38,7 @@ class ImportDataHandler : public SettingsPageUIHandler,
+@@ -37,6 +37,7 @@ class ImportDataHandler : public SettingsPageUIHandler,
    void OnJavascriptAllowed() override {}
    void OnJavascriptDisallowed() override;
  

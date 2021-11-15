@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SingleCategorySettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SingleCategorySettings.java
-index 6aecfcf25142f3ebeb8c2d6027ef12c9925f97ef..ba0cfbbe03e8f3c3263280e11c56a06fb5775df6 100644
+index a629fdd8dd7ee7ecf1dd5927c1994a3014f8a6bd..b8463bdd64ede4e7a5f04f2f1391e64fd3e5b93c 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SingleCategorySettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SingleCategorySettings.java
 @@ -446,7 +446,7 @@ public class SingleCategorySettings extends SiteSettingsPreferenceFragment
@@ -9,5 +9,5 @@ index 6aecfcf25142f3ebeb8c2d6027ef12c9925f97ef..ba0cfbbe03e8f3c3263280e11c56a06f
 -        return false;
 +        return super.onOptionsItemSelected(item);
      }
- 
+
      @Override
