@@ -1,10 +1,10 @@
 diff --git a/content/renderer/render_thread_impl.cc b/content/renderer/render_thread_impl.cc
-index 08ea5ace12e7d4f0b2e1fb5f6ae8768222c9689a..9365c3d2c0214be91e4d8e3e6c2a24258a2a8a09 100644
+index 2ea707e9bacf2649eb7ed160b542f664b3996ee3..5d970c40d39f6e1dee92cef6268064f8695401eb 100644
 --- a/content/renderer/render_thread_impl.cc
 +++ b/content/renderer/render_thread_impl.cc
-@@ -973,6 +973,7 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
+@@ -970,6 +970,7 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
  }
- 
+
  void RenderThreadImpl::RegisterSchemes() {
 +  REGISTER_BRAVE_SCHEMES_DISPLAY_ISOLATED_AND_NO_JS
    // chrome:

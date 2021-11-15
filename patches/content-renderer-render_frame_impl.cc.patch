@@ -1,12 +1,12 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index 05df797d07a16a64182bf74c0dbabc13cd489586..c741f405f7b452c2b7c83db6344928e2d2e49476 100644
+index 454b8a57e6654a07c5ba4798c21a2792730a4de5..f950ad11a4632eb83b47d4dd91c49937fe55fbbf 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
-@@ -4549,6 +4549,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
+@@ -4560,6 +4560,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
    // Temporarily return early and fix properly as part of
    // https://crbug.com/426555.
    if (web_view->MainFrame()->IsWebRemoteFrame())
 +    BRAVE_RENDER_FRAME_IMPL_SHOULD_USE_USER_AGENT_OVERRIDE
      return false;
    const WebLocalFrame* main_frame = web_view->MainFrame()->ToWebLocalFrame();
- 
+

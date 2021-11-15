@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/worker_content_settings_client.h b/chrome/renderer/worker_content_settings_client.h
-index 6885ed0e81acf0431c4b0bd4360441c9197a1b6a..9ca6864170332bc2b7d20392d8d5f87ede24a318 100644
+index a096a3417976a013ab88e90c41ea7d1c0281caed..bd0e8f6b3ef055a6b775bb0651f66aa53fa5739f 100644
 --- a/chrome/renderer/worker_content_settings_client.h
 +++ b/chrome/renderer/worker_content_settings_client.h
-@@ -42,6 +42,7 @@ class WorkerContentSettingsClient : public blink::WebContentSettingsClient {
+@@ -41,6 +41,7 @@ class WorkerContentSettingsClient : public blink::WebContentSettingsClient {
    bool AllowScriptFromSource(bool enabled_per_settings,
                               const blink::WebURL& script_url) override;
    bool ShouldAutoupgradeMixedContent() override;
