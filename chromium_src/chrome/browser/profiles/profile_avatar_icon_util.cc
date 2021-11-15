@@ -169,7 +169,7 @@ bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
   return IsDefaultAvatarIconUrl_ChromiumImpl(url, icon_index);
 }
 
-ui::ImageModel GetGuestAvatar(int size) {
+ui::ImageModel GetGuestAvatar(int size, absl::optional<SkColor> stroke_color) {
   return ui::ImageModel::FromVectorIcon(
       kUserMenuGuestIcon,
       ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
