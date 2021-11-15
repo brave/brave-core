@@ -372,6 +372,20 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests()
+      const {
+    base::RunLoop run_loop;
+    std::vector<mojom::SignMessageRequestPtr> requests_out;
+    service_->GetPendingSignMessageRequests(base::BindLambdaForTesting(
+        [&](std::vector<mojom::SignMessageRequestPtr> requests) {
+          for (const auto& request : requests)
+            requests_out.push_back(request.Clone());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return requests_out;
+  }
+
   void CheckPasswordAndMnemonic(const std::string& new_password,
                                 const std::string& in_mnemonic,
                                 bool* valid_password,
@@ -1207,9 +1221,14 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
                                  ASSERT_TRUE(error.empty());
                                  callback_is_called = true;
                                }));
+  EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageHardwareRequestProcessed(
       true, 1, expected_signature, std::string());
   ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
+  service_->NotifySignMessageHardwareRequestProcessed(
+      true, 1, expected_signature, std::string());
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
@@ -1223,9 +1242,48 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
                                  EXPECT_EQ(error, expected_error);
                                  callback_is_called = true;
                                }));
+  EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageHardwareRequestProcessed(
       false, 2, expected_signature, expected_error);
   ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
+}
+
+TEST_F(BraveWalletServiceUnitTest, SignMessage) {
+  std::string expected_signature = std::string("0xSiGnEd");
+  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string message = "0xAB";
+  auto request1 = mojom::SignMessageRequest::New(
+      1, address, std::string(message.begin(), message.end()));
+  bool callback_is_called = false;
+  service_->AddSignMessageRequest(
+      std::move(request1), base::BindLambdaForTesting(
+                               [&](bool approved, const std::string& signature,
+                                   const std::string& error) {
+                                 ASSERT_TRUE(approved);
+                                 callback_is_called = true;
+                               }));
+  EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
+  service_->NotifySignMessageRequestProcessed(true, 1);
+  ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
+  service_->NotifySignMessageRequestProcessed(true, 1);
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
+  callback_is_called = false;
+  std::string expected_error = "error";
+  auto request2 = mojom::SignMessageRequest::New(
+      2, address, std::string(message.begin(), message.end()));
+  service_->AddSignMessageRequest(
+      std::move(request2), base::BindLambdaForTesting(
+                               [&](bool approved, const std::string& signature,
+                                   const std::string& error) {
+                                 ASSERT_FALSE(approved);
+                                 callback_is_called = true;
+                               }));
+  EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
+  service_->NotifySignMessageRequestProcessed(false, 2);
+  ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
 
 }  // namespace brave_wallet
