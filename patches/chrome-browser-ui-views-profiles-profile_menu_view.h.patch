@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index 2915dbf08be95e500840bdccdb3510d3dc554e87..521f34dff70aa47ac104d4e7a6d1115de2d1b0b0 100644
+index 542ec3eba655b383fcf14999bab6cab93504bed9..70340d5b61184123785c86143572a7e0f5180fc8 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
-@@ -46,6 +46,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
+@@ -45,6 +45,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
    gfx::ImageSkia GetSyncIcon() const override;
  
   private:
 +  BRAVE_PROFILE_MENU_VIEW_H
    friend class ProfileMenuViewExtensionsTest;
    friend class ProfileMenuViewSignoutTest;
-   friend class ProfileMenuInteractiveUiTest;
+   friend class ProfileMenuViewSyncErrorButtonTest;

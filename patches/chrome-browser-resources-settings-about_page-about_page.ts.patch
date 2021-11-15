@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/resources/settings/about_page/about_page.ts b/chrome/browser/resources/settings/about_page/about_page.ts
+index 35c2134b2537b6ad0078a7153aca9fc14bbd4e3e..b9369733733ec834ec157c842cf25449af75e34c 100644
+--- a/chrome/browser/resources/settings/about_page/about_page.ts
++++ b/chrome/browser/resources/settings/about_page/about_page.ts
+@@ -190,7 +190,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
+   }
+ 
+   private onRelaunchTap_() {
++    // <if expr="is_macosx">
++    // Sparkle framework's relaunch api is used.
++    LifetimeBrowserProxyImpl.getInstance().relaunchOnMac();
++    // </if>
++
++    // <if expr="not is_macosx">
+     LifetimeBrowserProxyImpl.getInstance().relaunch();
++    // </if>
+   }
+ 
+   // <if expr="not chromeos">

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 0a196e89092c0c54720e9abb40ddac7384e7d3e4..9fed35f97973c3934e2baef73724efe854241ff3 100644
+index 1d856a01b7e40520e938d0188c0e10ce56d45501..41b693cb7a9bf6c8e2b3827279afd614ee098923 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
-@@ -85,7 +85,7 @@ class ComponentLoader {
+@@ -84,7 +84,7 @@ class ComponentLoader {
    // the loader will skip loading component extensions that weren't supposed to
    // be loaded unless we are in signed user session (ChromeOS). For all other
    // platforms this |skip_session_components| is expected to be unset.
@@ -11,7 +11,7 @@ index 0a196e89092c0c54720e9abb40ddac7384e7d3e4..9fed35f97973c3934e2baef73724efe8
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
-@@ -131,6 +131,7 @@ class ComponentLoader {
+@@ -130,6 +130,7 @@ class ComponentLoader {
    }
  
   private:
@@ -19,7 +19,7 @@ index 0a196e89092c0c54720e9abb40ddac7384e7d3e4..9fed35f97973c3934e2baef73724efe8
    FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
  
    // Information about a registered component extension.
-@@ -177,6 +178,7 @@ class ComponentLoader {
+@@ -176,6 +177,7 @@ class ComponentLoader {
    void AddDefaultComponentExtensionsWithBackgroundPagesForKioskMode();
  
  #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)

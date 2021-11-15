@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/update_dist_package_versions.py b/chrome/installer/linux/debian/update_dist_package_versions.py
-index 5fc6f3a3ef94e690da9742c610b5892b09d9c258..820542ac12a078493981030df1beb6c2a3fc65a4 100755
+index 0c1aa908ee5a88bba9f279fbfb845def654e618b..1492dbae6417b7a3477f48215d40f8b3e8f5ffc0 100755
 --- a/chrome/installer/linux/debian/update_dist_package_versions.py
 +++ b/chrome/installer/linux/debian/update_dist_package_versions.py
 @@ -42,6 +42,7 @@ PACKAGE_FILTER = set([
