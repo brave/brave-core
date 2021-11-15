@@ -589,7 +589,8 @@ void BraveWalletService::GetPendingSignMessageRequests(
 
 void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
                                                            int id) {
-  if (sign_message_requests_.front()->id != id) {
+  if (sign_message_requests_.empty() ||
+      sign_message_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
             << sign_message_requests_.front()->id;
     return;
@@ -606,7 +607,8 @@ void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
     int id,
     const std::string& signature,
     const std::string& error) {
-  if (sign_message_requests_.front()->id != id) {
+  if (sign_message_requests_.empty() ||
+      sign_message_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
             << sign_message_requests_.front()->id;
     return;
