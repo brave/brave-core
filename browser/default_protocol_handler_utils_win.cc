@@ -10,6 +10,7 @@
 #include <wrl/client.h>
 
 #include <memory>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/files/file_path.h"
@@ -46,9 +47,10 @@ inline DWORD WordSwap(DWORD v) {
   return (v >> 16) | (v << 16);
 }
 
-std::wstring HashString(const wchar_t* input_string) {
-  auto* input_bytes = reinterpret_cast<const unsigned char*>(input_string);
-  const int input_byte_count = (::lstrlenW(input_string) + 1) * sizeof(wchar_t);
+std::wstring HashString(base::WStringPiece input_string) {
+  auto* input_bytes =
+      reinterpret_cast<const unsigned char*>(input_string.data());
+  const int input_byte_count = (input_string.length() + 1) * sizeof(wchar_t);
 
   constexpr size_t kDWordsPerBlock = 2;
   constexpr size_t kBlockSize = sizeof(DWORD) * kDWordsPerBlock;
@@ -117,16 +119,16 @@ std::wstring HashString(const wchar_t* input_string) {
   return base::UTF8ToWide(base64_text);
 }
 
-std::unique_ptr<wchar_t[]> FormatUserChoiceString(base::WStringPiece ext,
-                                                  base::WStringPiece sid,
-                                                  base::WStringPiece prog_id,
-                                                  SYSTEMTIME timestamp) {
+std::wstring FormatUserChoiceString(base::WStringPiece ext,
+                                    base::WStringPiece sid,
+                                    base::WStringPiece prog_id,
+                                    SYSTEMTIME timestamp) {
   timestamp.wSecond = 0;
   timestamp.wMilliseconds = 0;
 
   FILETIME file_time = {0};
   if (!::SystemTimeToFileTime(&timestamp, &file_time))
-    return nullptr;
+    return std::wstring();
 
   // This string is built into Windows as part of the UserChoice hash algorithm.
   // It might vary across Windows SKUs (e.g. Windows 10 vs. Windows Server), or
@@ -139,23 +141,20 @@ std::unique_ptr<wchar_t[]> FormatUserChoiceString(base::WStringPiece ext,
       L"{D18B6DD5-6124-4341-9318-804003BAFA0B}";
 
   const wchar_t* user_choice_fmt =
-      L"%s%s%s"
+      L"%ls%ls%ls"
       L"%08lx"
       L"%08lx"
-      L"%s";
-  int user_choice_len = _scwprintf(user_choice_fmt, ext.data(), sid.data(),
-                                   prog_id.data(), file_time.dwHighDateTime,
-                                   file_time.dwLowDateTime, user_experience);
-  user_choice_len += 1;  // _scwprintf does not include the terminator
+      L"%ls";
 
-  auto user_choice = std::make_unique<wchar_t[]>(user_choice_len);
-  _snwprintf_s(user_choice.get(), user_choice_len, _TRUNCATE, user_choice_fmt,
-               ext.data(), sid.data(), prog_id.data(), file_time.dwHighDateTime,
-               file_time.dwLowDateTime, user_experience);
-
-  ::CharLowerW(user_choice.get());
-
-  return user_choice;
+  const std::wstring user_choice = base::StringPrintf(
+      user_choice_fmt, ext.data(), sid.data(), prog_id.data(),
+      file_time.dwHighDateTime, file_time.dwLowDateTime, user_experience);
+  // For using CharLowerW instead of base::ToLowerASCII().
+  // Otherwise, hash test with non-ascii inputs are failed.
+  std::vector<wchar_t> buf(user_choice.begin(), user_choice.end());
+  buf.push_back(0);
+  ::CharLowerW(buf.data());
+  return std::wstring(buf.data());
 }
 
 bool AddMillisecondsToSystemTime(SYSTEMTIME* system_time,
@@ -201,24 +200,19 @@ bool CheckEqualMinutes(SYSTEMTIME system_time1, SYSTEMTIME system_time2) {
          (file_time1.dwHighDateTime == file_time2.dwHighDateTime);
 }
 
-std::unique_ptr<wchar_t[]> GetAssociationKeyPath(const wchar_t* protocol) {
+std::wstring GetAssociationKeyPath(base::WStringPiece protocol) {
   const wchar_t* key_path_fmt;
   if (protocol[0] == L'.') {
     key_path_fmt =
-        L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\%s";
+        L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\%"
+        L"ls";
   } else {
     key_path_fmt =
         L"SOFTWARE\\Microsoft\\Windows\\Shell\\Associations\\"
-        L"UrlAssociations\\%s";
+        L"UrlAssociations\\%ls";
   }
 
-  int key_path_len = _scwprintf(key_path_fmt, protocol);
-  key_path_len += 1;  // _scwprintf does not include the terminator
-
-  auto key_path = std::make_unique<wchar_t[]>(key_path_len);
-  _snwprintf_s(key_path.get(), key_path_len, _TRUNCATE, key_path_fmt, protocol);
-
-  return key_path;
+  return base::StringPrintf(key_path_fmt, protocol.data());
 }
 
 bool SetUserChoice(base::WStringPiece ext,
@@ -251,14 +245,14 @@ bool SetUserChoice(base::WStringPiece ext,
       return false;
   }
 
-  auto assoc_key_path = GetAssociationKeyPath(ext.data());
-  if (!assoc_key_path)
+  auto assoc_key_path = GetAssociationKeyPath(ext);
+  if (assoc_key_path.empty())
     return false;
 
   base::win::RegKey assoc_key(HKEY_CURRENT_USER);
-  if (assoc_key.OpenKey(assoc_key_path.get(), KEY_READ | KEY_WRITE) !=
+  if (assoc_key.OpenKey(assoc_key_path.c_str(), KEY_READ | KEY_WRITE) !=
       ERROR_SUCCESS) {
-    LOG(ERROR) << "Can't open reg key: " << assoc_key_path.get();
+    LOG(ERROR) << "Can't open reg key: " << assoc_key_path;
     return false;
   }
 
@@ -349,11 +343,11 @@ std::wstring GetProgIdForProtocol(base::WStringPiece protocol) {
 // likely not want to replace that other user's key anyway.
 bool CheckUserChoiceHash(base::WStringPiece protocol,
                          base::WStringPiece user_sid) {
-  auto key_path = GetAssociationKeyPath(protocol.data());
-  if (!key_path)
+  auto key_path = GetAssociationKeyPath(protocol);
+  if (key_path.empty())
     return false;
 
-  base::win::RegKey user_choice_key(HKEY_CURRENT_USER, key_path.get(),
+  base::win::RegKey user_choice_key(HKEY_CURRENT_USER, key_path.c_str(),
                                     KEY_READ);
   if (!user_choice_key.Valid())
     return false;
@@ -404,12 +398,12 @@ std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
                                     base::WStringPiece prog_id,
                                     SYSTEMTIME timestamp) {
   auto user_choice = FormatUserChoiceString(ext, sid, prog_id, timestamp);
-  if (!user_choice) {
+  if (user_choice.empty()) {
     LOG(ERROR) << "Didn't get user choice string for generating hash.";
     return std::wstring();
   }
 
-  return HashString(user_choice.get());
+  return HashString(user_choice);
 }
 
 bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol) {
