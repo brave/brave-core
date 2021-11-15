@@ -10,7 +10,9 @@ cargo_build("cxxbridge") {
     "cxx/gen/cmd/src/lib.rs",
   ]
 
+  is_bin = true
+
   build_path = cxx_build_path
-  output = cxxbridge_path
+  output = cxxbridge_executable
   manifest_path = "cxx/gen/cmd/Cargo.toml"
 }
