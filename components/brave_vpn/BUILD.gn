@@ -48,7 +48,6 @@ static_library("brave_vpn") {
       "pref_names.cc",
       "pref_names.h",
       "switches.h",
-      "url_constants.h",
     ]
 
     if (is_win) {

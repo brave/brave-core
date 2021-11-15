@@ -44,9 +44,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
-#include "brave/components/brave_vpn/url_constants.h"
 #endif
 
 using content::WebContents;
