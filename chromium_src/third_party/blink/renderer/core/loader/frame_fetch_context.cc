@@ -14,7 +14,9 @@ String FrameFetchContext::GetCacheIdentifierIfCrossSiteSubframe() const {
   String cache_identifier;
   if (document_->domWindow()->IsCrossSiteSubframeIncludingScheme()) {
     if (auto top_frame_origin = GetTopFrameOrigin()) {
-      cache_identifier = top_frame_origin->Host();
+      cache_identifier = top_frame_origin->RegistrableDomain();
+      if (cache_identifier.IsEmpty())
+        cache_identifier = top_frame_origin->Host();
     }
   }
 
