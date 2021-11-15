@@ -12,6 +12,7 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "base/win/windows_version.h"
 #include "brave/browser/default_protocol_handler_utils_win.h"
 #include "chrome/installer/util/shell_util.h"
 
@@ -27,8 +28,22 @@ constexpr wchar_t kMSEdgeProtocolRegKey[] =
 
 }  // namespace
 
+// static
+bool MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler() {
+  base::win::OSInfo* os_info = base::win::OSInfo::GetInstance();
+  const auto& version_number = os_info->version_number();
+  // MS will not allow setting 3p application as a default microsoft-edge
+  // handler. See
+  // https://www.ctrl.blog/entry/microsoft-edge-protocol-competition.html
+  // Hope this constraint disappeared!
+  if (version_number.major <= 10)
+    return true;
+  return version_number.build < 22494;
+}
+
 MSEdgeProtocolMessageHandler::MSEdgeProtocolMessageHandler()
     : user_choice_key_(HKEY_CURRENT_USER, kMSEdgeProtocolRegKey, KEY_NOTIFY) {
+  DCHECK(CanSetDefaultMSEdgeProtocolHandler());
   StartWatching();
 }
 

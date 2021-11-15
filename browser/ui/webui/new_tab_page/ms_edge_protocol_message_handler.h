@@ -13,6 +13,8 @@
 
 class MSEdgeProtocolMessageHandler : public content::WebUIMessageHandler {
  public:
+  static bool CanSetDefaultMSEdgeProtocolHandler();
+
   MSEdgeProtocolMessageHandler();
   ~MSEdgeProtocolMessageHandler() override;
   MSEdgeProtocolMessageHandler(const MSEdgeProtocolMessageHandler&) = delete;

@@ -69,7 +69,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
 #endif
 #if defined(OS_WIN)
-  web_ui->AddMessageHandler(std::make_unique<MSEdgeProtocolMessageHandler>());
+  if (MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler())
+    web_ui->AddMessageHandler(std::make_unique<MSEdgeProtocolMessageHandler>());
 #endif
 }
 
@@ -112,4 +113,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+#if defined(OS_WIN)
+  html_source->AddBoolean(
+      "canSetDefaultMSEdgeProtocolHandler",
+      MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler());
+#endif
 }

@@ -24,6 +24,7 @@ Polymer({
   properties: {
     // <if expr="is_win">
     isDefaultMSEdgeProtocolHandler_: Boolean,
+    shouldShowDefaultMSEdgeProtocolHandlerOption_: Boolean,
     // </if>
   },
 
@@ -35,16 +36,21 @@ Polymer({
     this.browserProxy_ = BraveSystemPageBrowserProxyImpl.getInstance();
     // <if expr="is_win">
     this.isDefaultMSEdgeProtocolHandler_ = false;
+    this.shouldShowDefaultMSEdgeProtocolHandlerOption_ =
+      loadTimeData.getBoolean('canSetDefaultMSEdgeProtocolHandler');
+    console.error(this.shouldShowDefaultMSEdgeProtocolHandlerOption_);
     // </if>
   },
 
   /** @override */
   ready: function() {
     // <if expr="is_win">
-    this.addWebUIListener('notify-ms-edge-protocol-default-handler-status', (isDefault) => {
-      this.isDefaultMSEdgeProtocolHandler_ = isDefault;
-    })
-    this.browserProxy_.checkDefaultMSEdgeProtocolHandlerState();
+    if (this.shouldShowDefaultMSEdgeProtocolHandlerOption_) {
+      this.addWebUIListener('notify-ms-edge-protocol-default-handler-status', (isDefault) => {
+        this.isDefaultMSEdgeProtocolHandler_ = isDefault;
+      })
+      this.browserProxy_.checkDefaultMSEdgeProtocolHandlerState();
+    }
     // </if>
   },
 
