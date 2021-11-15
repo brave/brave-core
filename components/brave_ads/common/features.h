@@ -18,14 +18,13 @@ namespace brave_ads {
 namespace features {
 
 extern const base::Feature kAdNotifications;
-
 bool IsAdNotificationsEnabled();
 bool ShouldSupportMultipleDisplays();
 bool CanFallbackToCustomAdNotifications();
+bool AllowedToFallbackToCustomAdNotifications();
 int AdNotificationTimeout();
 
 extern const base::Feature kCustomAdNotifications;
-
 bool IsCustomAdNotificationsEnabled();
 #if !defined(OS_ANDROID)
 int AdNotificationFadeDuration();
@@ -36,8 +35,10 @@ double AdNotificationNormalizedDisplayCoordinateY();
 int AdNotificationInsetY();
 #endif  // !defined(OS_ANDROID)
 
-extern const base::Feature kRequestAdsEnabledApi;
+extern const base::Feature kAllowedToFallbackToCustomAdNotifications;
+bool IsAllowedToFallbackToCustomAdNotificationsEnabled();
 
+extern const base::Feature kRequestAdsEnabledApi;
 bool IsRequestAdsEnabledApiEnabled();
 
 }  // namespace features

@@ -16,6 +16,10 @@ const base::Feature kAdNotifications{"AdNotifications",
 const base::Feature kCustomAdNotifications{"CustomAdNotifications",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kAllowedToFallbackToCustomAdNotifications{
+    "AllowedToFallbackToCustomAdNotifications",
+    base::FEATURE_ENABLED_BY_DEFAULT};
+
 const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
                                           base::FEATURE_DISABLED_BY_DEFAULT};
 
@@ -183,6 +187,11 @@ int AdNotificationInsetY() {
 }
 
 #endif  // !defined(OS_ANDROID)
+
+bool IsAllowedToFallbackToCustomAdNotificationsEnabled() {
+  return base::FeatureList::IsEnabled(
+      kAllowedToFallbackToCustomAdNotifications);
+}
 
 bool IsRequestAdsEnabledApiEnabled() {
   return base::FeatureList::IsEnabled(kRequestAdsEnabledApi);

@@ -1082,10 +1082,16 @@ bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
   const bool can_show_native_notifications =
       NotificationHelper::GetInstance()->CanShowNativeNotifications();
 
-  const bool can_fallback_to_custom_ad_notifications =
+  bool can_fallback_to_custom_ad_notifications =
       features::CanFallbackToCustomAdNotifications();
   if (!can_fallback_to_custom_ad_notifications) {
     ClearPref(prefs::kAdNotificationDidFallbackToCustom);
+  } else {
+    const bool allowed_to_fallback_to_custom_ad_notifications =
+        features::IsAllowedToFallbackToCustomAdNotificationsEnabled();
+    if (!allowed_to_fallback_to_custom_ad_notifications) {
+      can_fallback_to_custom_ad_notifications = false;
+    }
   }
 
   const bool should_show = features::IsCustomAdNotificationsEnabled();
