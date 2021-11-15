@@ -71,7 +71,8 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         },
         os.path.join('brave', 'vendor', 'challenge_bypass_ristretto_ffi'): {
             "Name": "challenge-bypass-ristretto-ffi",
-            "URL": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
+            "URL":
+                "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
         os.path.join('brave', 'vendor', 'extension-whitelist'): {
