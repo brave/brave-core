@@ -6,8 +6,8 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
 #include "base/feature_list.h"
+#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/url_constants.h"
 #include "brave/components/skus/browser/skus_utils.h"
 
 namespace brave_vpn {
