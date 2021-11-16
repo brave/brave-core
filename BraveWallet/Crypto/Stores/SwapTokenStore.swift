@@ -43,7 +43,7 @@ public class SwapTokenStore: ObservableObject {
   /// The sell amount in this swap
   @Published var sellAmount = "" {
     didSet {
-      guard !sellAmount.isEmpty else {
+      guard !sellAmount.isEmpty, BDouble(sellAmount) != nil else {
         state = .idle
         return
       }
@@ -58,7 +58,7 @@ public class SwapTokenStore: ObservableObject {
   /// The buy amount in this swap
   @Published var buyAmount = "" {
     didSet {
-      guard !buyAmount.isEmpty else {
+      guard !buyAmount.isEmpty, BDouble(buyAmount) != nil else {
         state = .idle
         return
       }
@@ -94,6 +94,7 @@ public class SwapTokenStore: ObservableObject {
   private let swapController: BraveWalletSwapController
   private let transactionController: BraveWalletEthTxController
   private var accountInfo: BraveWallet.AccountInfo?
+  private var chainId: String = ""
   private var slippage = 0.005 {
     didSet {
       timer?.invalidate()
@@ -166,15 +167,24 @@ public class SwapTokenStore: ObservableObject {
     else { return nil }
     
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    let sellAddress = sellToken.isETH ? BraveWallet.ethSwapAddress : sellToken.contractAddress
-    let buyAddress = buyToken.isETH ? BraveWallet.ethSwapAddress : buyToken.contractAddress
+    let sellAddress = sellToken.swapAddress(in: chainId)
+    let buyAddress = buyToken.swapAddress(in: chainId)
     let sellAmountInWei: String
     let buyAmountInWei: String
     switch base {
     case .perSellAsset:
+      // make sure the base value should not be zero, otherwise, it will always return insufficient liquidity error.
+      // following desktop to make a idle state
+      if let sellAmountValue = BDouble(sellAmount), sellAmountValue == 0 {
+        return nil
+      }
       sellAmountInWei = weiFormatter.weiString(from: sellAmount, radix: .decimal, decimals: Int(sellToken.decimals)) ?? "0"
       buyAmountInWei = ""
     case .perBuyAsset:
+      // same as sell amount. make sure base value should not be zero
+      if let buyAmountValue = BDouble(buyAmount), buyAmountValue == 0 {
+        return nil
+      }
       sellAmountInWei = ""
       buyAmountInWei = weiFormatter.weiString(from: buyAmount, radix: .decimal, decimals: Int(buyToken.decimals)) ?? "0"
     }
@@ -255,8 +265,8 @@ public class SwapTokenStore: ObservableObject {
     switch base {
     case .perSellAsset:
       var decimal = 18
-      if let fromToken = selectedFromToken {
-        decimal = Int(fromToken.decimals)
+      if let buyToken = selectedToToken {
+        decimal = Int(buyToken.decimals)
       }
       let decimalString = weiFormatter.decimalString(for: response.buyAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
@@ -264,8 +274,8 @@ public class SwapTokenStore: ObservableObject {
       }
     case .perBuyAsset:
       var decimal = 18
-      if let toToken = selectedToToken {
-        decimal = Int(toToken.decimals)
+      if let sellToken = selectedFromToken {
+        decimal = Int(sellToken.decimals)
       }
       let decimalString = weiFormatter.decimalString(for: response.sellAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
@@ -407,7 +417,10 @@ public class SwapTokenStore: ObservableObject {
   }
   
   func fetchPriceQuote(base: SwapParamsBase) {
-    guard let swapParams = swapParameters(for: base) else { return }
+    guard let swapParams = swapParameters(for: base) else {
+      state = .idle
+      return
+    }
     
     updatingPriceQuote = true
     swapController.priceQuote(swapParams) { [weak self] success, response, error in
@@ -417,6 +430,14 @@ public class SwapTokenStore: ObservableObject {
         self.handlePriceQuoteResponse(response, base: base)
       } else {
         self.clearAllAmount()
+        
+        // check balance first because error can cause by insufficient balance
+        if let sellTokenBalance = self.selectedFromTokenBalance,
+           let sellAmountValue = BDouble(self.sellAmount),
+           sellTokenBalance < sellAmountValue {
+          self.state = .error(Strings.Wallet.insufficientBalance)
+          return
+        }
         // check if priceQuote fails due to insufficient liquidity
         if let error = error, self.isLiquidityError(error) {
           self.state = .error(Strings.Wallet.insufficientLiquidity)
@@ -430,33 +451,45 @@ public class SwapTokenStore: ObservableObject {
   func prepare(with accountInfo: BraveWallet.AccountInfo, completion: (() -> Void)? = nil) {
     self.accountInfo = accountInfo
     
-    tokenRegistry.allTokens { [self] tokens in
-      let fullList = tokens + [.eth]
-      allTokens = fullList.sorted(by: { $0.symbol < $1.symbol })
-      
+    func updateSelectedTokens(chainId: String) {
       if let fromToken = selectedFromToken { // refresh balance
-        rpcController.balance(for: fromToken, in: accountInfo) { balance in
-          if let value = balance {
-            selectedFromTokenBalance = BDouble(value)
-          }
+        rpcController.balance(for: fromToken, in: accountInfo) { [weak self] balance in
+          self?.selectedFromTokenBalance = BDouble(balance ?? 0)
         }
       } else {
         selectedFromToken = allTokens.first(where: { $0.isETH })
       }
       
-      rpcController.chainId { [self] chainId in
-        if let toToken = selectedToToken {
-          rpcController.balance(for: toToken, in: accountInfo) { balance in
-            selectedToTokenBalance = BDouble(balance ?? 0)
-            completion?()
-          }
-        } else {
-          if chainId == BraveWallet.MainnetChainId {
-            selectedToToken = allTokens.first(where: { $0.symbol == "BAT" })
-          } else if chainId == BraveWallet.RopstenChainId {
-            selectedToToken = allTokens.first(where: { $0.symbol == "DAI" })
-          }
+      if let toToken = selectedToToken {
+        rpcController.balance(for: toToken, in: accountInfo) { [weak self] balance in
+          self?.selectedToTokenBalance = BDouble(balance ?? 0)
           completion?()
+        }
+      } else {
+        if chainId == BraveWallet.MainnetChainId {
+          selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == "BAT" })
+        } else if chainId == BraveWallet.RopstenChainId {
+          selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == "DAI" })
+        }
+        completion?()
+      }
+    }
+    
+    tokenRegistry.allTokens { [weak self] tokens in
+      guard let self = self else { return }
+      
+      self.rpcController.chainId { chainId in
+        self.chainId = chainId
+        if chainId == BraveWallet.RopstenChainId {
+          let supportedAssets = tokens.filter { BraveWallet.assetsSwapInRopsten.contains($0.symbol) } + [.eth]
+          self.allTokens = supportedAssets.sorted(by: { $0.symbol < $1.symbol })
+          updateSelectedTokens(chainId: chainId)
+        } else {
+          self.tokenRegistry.allTokens { [self] tokens in
+            let fullList = tokens + [.eth]
+            self.allTokens = fullList.sorted(by: { $0.symbol < $1.symbol })
+            updateSelectedTokens(chainId: chainId)
+          }
         }
       }
     }

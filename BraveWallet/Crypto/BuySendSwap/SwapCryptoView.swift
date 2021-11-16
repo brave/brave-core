@@ -244,7 +244,7 @@ struct SwapCryptoView: View {
           swapTokensStore.selectedFromToken?.symbol ?? ""))
       ),
       footer: ShortcutAmountGrid(action: { amount in
-        swapTokensStore.sellAmount = ((swapTokensStore.selectedFromTokenBalance ?? 0) * amount.rawValue).decimalDescription
+        swapTokensStore.sellAmount = ((swapTokensStore.selectedFromTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: Int(swapTokensStore.selectedFromToken?.decimals ?? 18))
       })
       .listRowInsets(.zero)
       .padding(.bottom, 8)
