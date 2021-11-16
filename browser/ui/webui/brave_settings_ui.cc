@@ -11,7 +11,6 @@
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
-#include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -30,10 +29,6 @@
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
-
-#if BUILDFLAG(ENABLE_SPARKLE)
-#include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -64,10 +59,6 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
-#if BUILDFLAG(ENABLE_SPARKLE)
-  // Use sparkle's relaunch api for browser relaunch on update.
-  web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
-#endif
 #if defined(OS_WIN)
   if (MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler())
     web_ui->AddMessageHandler(std::make_unique<MSEdgeProtocolMessageHandler>());
