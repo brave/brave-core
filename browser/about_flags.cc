@@ -97,9 +97,15 @@ constexpr char kBraveAdblockDefault1pBlockingDescription[] =
     "blocking mode";
 
 constexpr char kBraveAdsCustomNotificationsName[] =
-    "Enable Brave Ads custom notifications";
+    "Enable Brave Ads custom push notifications";
 constexpr char kBraveAdsCustomNotificationsDescription[] =
-    "Enable Brave Ads custom notifications to support rich media";
+    "Enable Brave Ads custom push notifications to support rich media";
+
+constexpr char kBraveAdsCustomNotificationsFallbackName[] =
+    "Allow Brave Ads to fallback from native to custom push notifications";
+constexpr char kBraveAdsCustomNotificationsFallbackDescription[] =
+    "Allow Brave Ads to fallback from native to custom push notifications on "
+    "operating systems which do not support native notifications";
 
 constexpr char kBraveDarkModeBlockName[] =
     "Enable dark mode blocking fingerprinting protection";
@@ -424,11 +430,17 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
-    {"brave-ads-custom-notifications",                                      \
+    {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
-     kOsDesktop | kOsAndroid,                                               \
+     kOsAll,                                                                \
      FEATURE_VALUE_TYPE(brave_ads::features::kCustomAdNotifications)},      \
+    {"brave-ads-allowed-to-fallback-to-custom-push-notification-ads",       \
+     flag_descriptions::kBraveAdsCustomNotificationsFallbackName,           \
+     flag_descriptions::kBraveAdsCustomNotificationsFallbackDescription,    \
+     kOsAll,                                                                \
+     FEATURE_VALUE_TYPE(                                                    \
+       brave_ads::features::kAllowedToFallbackToCustomAdNotifications)},    \
     {"brave-sync-v2",                                                       \
       flag_descriptions::kBraveSyncName,                                    \
       flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
