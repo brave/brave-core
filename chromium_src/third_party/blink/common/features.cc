@@ -37,5 +37,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};
 
+// Enable blink::MemoryCache partitioning for non SameSite requests.
+const base::Feature kPartitionBlinkMemoryCache{
+    "PartitionBlinkMemoryCache", base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace blink

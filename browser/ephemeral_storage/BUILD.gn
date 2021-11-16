@@ -3,6 +3,7 @@ if (!is_android) {
     testonly = true
     sources = [
       "ephemeral_storage_1p_browsertest.cc",
+      "ephemeral_storage_blink_memory_cache_browsertest.cc",
       "ephemeral_storage_browsertest.cc",
       "ephemeral_storage_browsertest.h",
       "ephemeral_storage_qa_browsertest.cc",

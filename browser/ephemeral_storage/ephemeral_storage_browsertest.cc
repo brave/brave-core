@@ -20,7 +20,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
@@ -62,7 +61,7 @@ GURL GetHttpRequestURL(const HttpRequest& http_request) {
        http_request.relative_url.c_str()}));
 }
 
-std::unique_ptr<HttpResponse> HandleFileRequestWithNetworkCookies(
+std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
     scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner,
     base::WeakPtr<HttpRequestMonitor> http_request_monitor,
     const std::vector<base::FilePath>& server_roots,
@@ -79,12 +78,20 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithNetworkCookies(
   if (http_response) {
     GURL request_url = request.GetURL();
     if (request_url.has_query()) {
-      std::vector<std::string> cookies =
-          base::SplitString(request_url.query(), "&", base::KEEP_WHITESPACE,
-                            base::SPLIT_WANT_ALL);
-      for (const auto& cookie : cookies) {
+      if (request_url.query() == "cache") {
         static_cast<BasicHttpResponse*>(http_response.get())
-            ->AddCustomHeader("Set-Cookie", cookie);
+            ->AddCustomHeader("Cache-Control",
+                              "public, max-age=604800, immutable");
+        static_cast<BasicHttpResponse*>(http_response.get())
+            ->AddCustomHeader("Etag", "etag");
+      } else {
+        std::vector<std::string> cookies =
+            base::SplitString(request_url.query(), "&", base::KEEP_WHITESPACE,
+                              base::SPLIT_WANT_ALL);
+        for (const auto& cookie : cookies) {
+          static_cast<BasicHttpResponse*>(http_response.get())
+              ->AddCustomHeader("Set-Cookie", cookie);
+        }
       }
     }
   }
@@ -116,6 +123,16 @@ bool HttpRequestMonitor::HasHttpRequestWithCookie(
   return false;
 }
 
+int HttpRequestMonitor::GetHttpRequestsCount(const GURL& url) const {
+  int count = 0;
+  for (const auto& http_request : http_requests_) {
+    if (GetHttpRequestURL(http_request) == url) {
+      ++count;
+    }
+  }
+  return count;
+}
+
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
     : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
@@ -125,6 +142,7 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
 
   host_resolver()->AddRule("*", "127.0.0.1");
+  mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
   brave::RegisterPathProvider();
   SetUpHttpsServer();
@@ -148,7 +166,7 @@ void EphemeralStorageBrowserTest::SetUpHttpsServer() {
   base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
 
   https_server_.RegisterDefaultHandler(
-      base::BindRepeating(&HandleFileRequestWithNetworkCookies,
+      base::BindRepeating(&HandleFileRequestWithCustomHeaders,
                           base::SequencedTaskRunnerHandle::Get(),
                           http_request_monitor_.AsWeakPtr(), test_data_dirs));
   https_server_.AddDefaultHandlers(GetChromeTestDataDir());
@@ -159,9 +177,17 @@ void EphemeralStorageBrowserTest::SetUpHttpsServer() {
 void EphemeralStorageBrowserTest::SetUpCommandLine(
     base::CommandLine* command_line) {
   InProcessBrowserTest::SetUpCommandLine(command_line);
+  mock_cert_verifier_.SetUpCommandLine(command_line);
+}
 
-  // This is needed to load pages from "domain.com" without an interstitial.
-  command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {
+  InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+  mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+}
+
+void EphemeralStorageBrowserTest::TearDownInProcessBrowserTestFixture() {
+  mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
 }
 
 void EphemeralStorageBrowserTest::SetValuesInFrame(RenderFrameHost* frame,
