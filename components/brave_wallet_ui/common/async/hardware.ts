@@ -32,7 +32,8 @@ export async function signTrezorTransaction (apiProxy: APIProxyControllers, path
   const deviceKeyring = apiProxy.getKeyringsByType(kTrezorHardwareVendor) as TrezorBridgeKeyring
   const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
-    return { success: false, error: getLocale('braveWalletSignOnDeviceError') }
+    const error = signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')
+    return { success: false, error: error }
   }
   const { v, r, s } = signed.payload
   const result =
