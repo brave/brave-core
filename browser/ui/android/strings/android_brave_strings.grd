@@ -208,11 +208,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>
-      <message name="IDS_ETH_NAME" desc="Name of Ethereum.">
-        Ethereum
-      </message>
-      <message name="IDS_ETH_PRICE" desc="Text for of Ethereum price.">
-        Ethereum Price (ETH)
+      <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
+        <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
       <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
         Ethereum Name Service
@@ -2009,9 +2006,6 @@ Are you sure you want to do this?
     <message name="IDS_TRANSACTIONS" desc="Brave Wallet section text">
       Transactions
     </message>
-    <message name="IDS_INFO" desc="Brave Wallet section text">
-      Info
-    </message>
     <message name="IDS_TREND_1H_TEXT" desc="Brave Wallet assets 1 hour trend text">
       1 Hour
     </message>
@@ -2485,6 +2479,36 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20APPROVE" desc="Brave wallet function type ERC20Approve" translateable="false">
       ERC20Approve
+    </message>
+    <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
+      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="ASSET">%2$s<ex>ETH</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>
+    </message>
+    <message name="IDS_WALLET_TX_INFO_APPROVED" desc="Brave wallet approved assets tx history">
+      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> approved <ph name="ASSET">%2$s<ex>BAT</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>
+    </message>
+    <message name="IDS_WALLET_TX_INFO_APPROVED_UNLIMITED" desc="Brave wallet approved unlimited assets tx history">
+      Approved Unlimited <ph name="ASSET">%1$s<ex>ETH</ex></ph> - <ph name="PROXY">%2$s<ex>0x Exchange Proxy</ex></ph>
+    </message>
+    <message name="IDS_WALLET_TX_INFO_SWAP" desc="Brave wallet swap assets tx history">
+      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> swap - <ph name="DATE">%2$s<ex>2021-11-12 08:38pm</ex></ph>
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_UNAPPROVED" desc="Brave wallet tx status is unapproved">
+      Unapproved
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_APPROVED" desc="Brave wallet tx status is approved">
+      Approved
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_REJECTED" desc="Brave wallet tx status is rejected">
+      Rejected
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_SUBMITTED" desc="Brave wallet tx status is submitted">
+      Submitted
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_CONFIRMED" desc="Brave wallet tx status is confirmed">
+      Confirmed
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
+      Error
     </message>
     </messages>
   </release>

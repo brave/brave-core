@@ -281,7 +281,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
     }
 
     @Override
-    public void onAssetClick() {
+    public void onAssetClick(ErcToken token) {
         List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {

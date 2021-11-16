@@ -14,6 +14,7 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@null"/>
 
     <LinearLayout
@@ -44,6 +45,18 @@
             android:layout_gravity="start"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/wallet_text_color"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:drawablePadding="4dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

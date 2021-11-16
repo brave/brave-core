@@ -209,8 +209,9 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onAssetClick() {
-        Utils.openAssetDetailsActivity(AccountDetailActivity.this);
+    public void onAssetClick(ErcToken asset) {
+        Utils.openAssetDetailsActivity(AccountDetailActivity.this, asset.symbol, asset.name,
+                asset.contractAddress, asset.logo);
     }
 
     @Override

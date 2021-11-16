@@ -36,6 +36,7 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.Predicate;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -64,6 +65,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -93,6 +95,10 @@ public class Utils {
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
+    public static final String ASSET_SYMBOL = "assetSymbol";
+    public static final String ASSET_NAME = "assetName";
+    public static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
+    public static final String ASSET_LOGO = "assetLogo";
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -217,9 +223,14 @@ public class Utils {
         activity.startActivity(buySendSwapActivityIntent);
     }
 
-    public static void openAssetDetailsActivity(Activity activity) {
+    public static void openAssetDetailsActivity(Activity activity, String assetSymbol,
+            String assetName, String contractAddress, String assetLogo) {
         assert activity != null;
         Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
+        assetDetailIntent.putExtra(ASSET_SYMBOL, assetSymbol);
+        assetDetailIntent.putExtra(ASSET_NAME, assetName);
+        assetDetailIntent.putExtra(ASSET_LOGO, assetLogo);
+        assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, contractAddress);
         activity.startActivity(assetDetailIntent);
     }
 
@@ -579,7 +590,8 @@ public class Utils {
     }
 
     public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
-            String iconPath, int iconId, ImageView iconImg, TextView textView) {
+            String iconPath, int iconId, ImageView iconImg, TextView textView,
+            boolean drawCaratDown) {
         if (iconPath == null) {
             if (iconImg != null) {
                 iconImg.setImageResource(iconId);
@@ -606,8 +618,9 @@ public class Utils {
                     } else if (textView != null) {
                         textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
                                 new BitmapDrawable(context.getResources(), bitmap), null,
-                                ApiCompatibilityUtils.getDrawable(
-                                        context.getResources(), R.drawable.ic_carat_down),
+                                drawCaratDown ? ApiCompatibilityUtils.getDrawable(
+                                        context.getResources(), R.drawable.ic_carat_down)
+                                              : null,
                                 null);
                     }
                 });
@@ -751,5 +764,16 @@ public class Utils {
                     getContractAddress(chainId, token.symbol, token.contractAddress);
         }
         return tokens;
+    }
+
+    public static String getAccountName(AccountInfo[] accounts, String address) {
+        String addressLowerCase = address.toLowerCase(Locale.getDefault());
+        for (AccountInfo account : accounts) {
+            if (account.address.toLowerCase(Locale.getDefault()).equals(addressLowerCase)) {
+                return account.name;
+            }
+        }
+
+        return stripAccountAddress(address);
     }
 }

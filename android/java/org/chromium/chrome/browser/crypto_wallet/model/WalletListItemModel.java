@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
+import android.graphics.Bitmap;
+
 import org.chromium.brave_wallet.mojom.ErcToken;
 
 public class WalletListItemModel {
@@ -12,6 +14,8 @@ public class WalletListItemModel {
     private String mIconPath;
     private String mTitle;
     private String mSubTitle;
+    private String mTxStatus;
+    private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
     private ErcToken mErcToken;
@@ -43,6 +47,22 @@ public class WalletListItemModel {
 
     public String getIconPath() {
         return mIconPath;
+    }
+
+    public void setTxStatus(String txStatus) {
+        mTxStatus = txStatus;
+    }
+
+    public String getTxStatus() {
+        return mTxStatus;
+    }
+
+    public void setTxStatusBitmap(Bitmap txStatusBitmap) {
+        mTxStatusBitmap = txStatusBitmap;
+    }
+
+    public Bitmap getTxStatusBitmap() {
+        return mTxStatusBitmap;
     }
 
     public void setErcToken(ErcToken ercToken) {

@@ -47,7 +47,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -276,6 +275,7 @@ public class PortfolioFragment extends Fragment
                             // Amount in current crypto currency/token
                             cryptoBalanceString);
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+            walletListItemModel.setErcToken(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -287,8 +287,9 @@ public class PortfolioFragment extends Fragment
     }
 
     @Override
-    public void onAssetClick() {
-        Utils.openAssetDetailsActivity(getActivity());
+    public void onAssetClick(ErcToken asset) {
+        Utils.openAssetDetailsActivity(
+                getActivity(), asset.symbol, asset.name, asset.contractAddress, asset.logo);
     }
 
     private AssetRatioController getAssetRatioController() {
@@ -459,7 +460,8 @@ public class PortfolioFragment extends Fragment
     }
 
     private void getPendingTx(AccountInfo[] accountInfos) {
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(getEthTxController(), accountInfos);
+        PendingTxHelper pendingTxHelper =
+                new PendingTxHelper(getEthTxController(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

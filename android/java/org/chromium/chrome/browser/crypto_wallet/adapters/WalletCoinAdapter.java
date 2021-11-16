@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -90,6 +90,15 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text2Text.setText(walletListItemModel.getText2());
         }
 
+        if (walletListItemType == Utils.TRANSACTION_ITEM) {
+            holder.txStatus.setVisibility(View.VISIBLE);
+            holder.txStatus.setText(walletListItemModel.getTxStatus());
+            holder.txStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    new BitmapDrawable(
+                            context.getResources(), walletListItemModel.getTxStatusBitmap()),
+                    null, null, null);
+        }
+
         holder.itemView.setOnClickListener(v -> {
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
                 onWalletListItemClick.onTransactionClick();
@@ -106,7 +115,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     }
                 }
                 if (mType != AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                    onWalletListItemClick.onAssetClick();
+                    onWalletListItemClick.onAssetClick(walletListItemModel.getErcToken());
                 }
             } else {
                 onWalletListItemClick.onAccountClick(walletListItemModel);
@@ -147,7 +156,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
         if (mType != AdapterType.ACCOUNTS_LIST) {
             Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
-                    walletListItemModel.getIcon(), holder.iconImg, null);
+                    walletListItemModel.getIcon(), holder.iconImg, null, true);
         } else if (mType == AdapterType.ACCOUNTS_LIST) {
             Utils.setBlockiesBitmapResource(
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
@@ -193,6 +202,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public ImageView iconImg;
         public TextView titleText;
         public TextView subTitleText;
+        public TextView txStatus;
         public TextView text1Text;
         public TextView text2Text;
         public CheckBox assetCheck;
@@ -201,6 +211,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             super(itemView);
             this.iconImg = itemView.findViewById(R.id.icon);
             this.titleText = itemView.findViewById(R.id.title);
+            this.txStatus = itemView.findViewById(R.id.status);
             this.subTitleText = itemView.findViewById(R.id.sub_title);
             this.text1Text = itemView.findViewById(R.id.text1);
             this.text2Text = itemView.findViewById(R.id.text2);

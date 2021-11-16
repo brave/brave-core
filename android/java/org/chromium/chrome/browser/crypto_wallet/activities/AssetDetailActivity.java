@@ -8,7 +8,12 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,49 +30,88 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionStatus;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AssetDetailActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, OnWalletListItemClick {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
+    private EthTxController mEthTxController;
     private int checkedTimeframeType;
+    private String mAssetSymbol;
+    private String mAssetName;
+    private String mContractAddress;
+    private String mAssetLogo;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mKeyringController.close();
         mAssetRatioController.close();
+        mEthTxController.close();
     }
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_asset_detail);
 
+        if (getIntent() != null) {
+            mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
+            mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
+            mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
+            mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
+        }
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
-        assetTitleText.setText(this.getText(R.string.eth_name));
+        assetTitleText.setText(mAssetName);
+        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        String iconPath = mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
+        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                assetTitleText, false);
+
+        TextView assetPriceText = findViewById(R.id.asset_price_text);
+        assetPriceText.setText(String.format(
+                getResources().getString(R.string.asset_price), mAssetName, mAssetSymbol));
 
         Button btnBuy = findViewById(R.id.btn_buy);
         btnBuy.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +147,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             RadioButton button = findViewById(checkedId);
             button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
-            getPriceHistory("eth", timeframeType);
+            getPriceHistory(mAssetSymbol, timeframeType);
             checkedTimeframeType = checkedId;
         });
 
@@ -150,6 +194,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             keyringController.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
+                    setUpTransactionList(accountInfos);
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         walletListItemModelList.add(
@@ -169,18 +214,103 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         }
     }
 
-    private void setUpTransactionList() {
-        RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
-        walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
-        rvTransactions.setAdapter(walletCoinAdapter);
-        rvTransactions.setLayoutManager(new LinearLayoutManager(this));
+    private void setUpTransactionList(AccountInfo[] accountInfos) {
+        assert mEthTxController != null;
+        PendingTxHelper pendingTxHelper =
+                new PendingTxHelper(mEthTxController, accountInfos, true, mContractAddress);
+        pendingTxHelper.fetchTransactions(() -> {
+            HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
+            RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
+            WalletCoinAdapter walletCoinAdapter =
+                    new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+            for (String accountName : pendingTxInfos.keySet()) {
+                TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
+                for (TransactionInfo txInfo : txInfos) {
+                    String valueFiat;
+                    String valueAsset = txInfo.txData.baseData.value;
+                    String to = txInfo.txData.baseData.to;
+                    Date date = new Date(txInfo.createdTime.microseconds / 1000);
+                    DateFormat dateFormat =
+                            new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+                    String strDate = dateFormat.format(date);
+                    String action =
+                            String.format(getResources().getString(R.string.wallet_tx_info_sent),
+                                    accountName, mAssetSymbol, strDate);
+                    String detailInfo =
+                            accountName + " -> " + Utils.getAccountName(accountInfos, to);
+                    if (txInfo.txType == TransactionType.ERC20_TRANSFER
+                            && txInfo.txArgs.length > 1) {
+                        valueAsset = txInfo.txArgs[1];
+                        to = txInfo.txArgs[0];
+                    } else if (txInfo.txType == TransactionType.ERC20_APPROVE) {
+                        action = String.format(
+                                getResources().getString(R.string.wallet_tx_info_approved),
+                                accountName, mAssetSymbol, strDate);
+                        detailInfo =
+                                String.format(getResources().getString(
+                                                      R.string.wallet_tx_info_approved_unlimited),
+                                        mAssetSymbol, "0x Exchange Proxy");
+                    }
+                    if (txInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
+                                    .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
+                                            Locale.getDefault()))) {
+                        action = String.format(
+                                getResources().getString(R.string.wallet_tx_info_swap), accountName,
+                                strDate);
+                        detailInfo = String.format(Locale.getDefault(), "%.4f",
+                                             Utils.fromHexWei(valueAsset, 18))
+                                + " ETH -> "
+                                + "0x Exchange Proxy";
+                    }
+                    WalletListItemModel itemModel = new WalletListItemModel(
+                            R.drawable.ic_eth, action, detailInfo, "$37.92", "0.0009431 ETH");
+                    String txStatus =
+                            getResources().getString(R.string.wallet_tx_status_unapproved);
+                    Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
+                    Canvas c = new Canvas(txStatusBitmap);
+                    Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    switch (txInfo.txStatus) {
+                        case TransactionStatus.UNAPPROVED:
+                            p.setColor(0xFF5E6175);
+                            txStatus =
+                                    getResources().getString(R.string.wallet_tx_status_unapproved);
+                            break;
+                        case TransactionStatus.APPROVED:
+                            p.setColor(0xFF2AC194);
+                            txStatus = getResources().getString(R.string.wallet_tx_status_approved);
+                            break;
+                        case TransactionStatus.REJECTED:
+                            p.setColor(0xFFEE6374);
+                            txStatus = getResources().getString(R.string.wallet_tx_status_rejected);
+                            break;
+                        case TransactionStatus.SUBMITTED:
+                            p.setColor(0xFFFFD43B);
+                            txStatus =
+                                    getResources().getString(R.string.wallet_tx_status_submitted);
+                            break;
+                        case TransactionStatus.CONFIRMED:
+                            p.setColor(0xFF2AC194);
+                            txStatus =
+                                    getResources().getString(R.string.wallet_tx_status_confirmed);
+                            break;
+                        case TransactionStatus.ERROR:
+                        default:
+                            p.setColor(0xFFEE6374);
+                            txStatus = getResources().getString(R.string.wallet_tx_status_error);
+                    }
+                    itemModel.setTxStatus(txStatus);
+                    c.drawCircle(15, 15, 15, p);
+                    itemModel.setTxStatusBitmap(txStatusBitmap);
+                    walletListItemModelList.add(itemModel);
+                }
+            }
+            walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+            walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+            walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
+            rvTransactions.setAdapter(walletCoinAdapter);
+            rvTransactions.setLayoutManager(new LinearLayoutManager(this));
+        });
     }
 
     @Override
@@ -198,21 +328,25 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         super.finishNativeInitialization();
         InitAssetRatioController();
         InitKeyringController();
-        getPriceHistory("eth", AssetPriceTimeframe.LIVE);
+        InitEthTxController();
+        getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
         setUpAccountList();
-        setUpTransactionList();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringController.close();
         mAssetRatioController.close();
+        mEthTxController.close();
 
         mAssetRatioController = null;
         InitAssetRatioController();
 
         mKeyringController = null;
         InitKeyringController();
+
+        mEthTxController = null;
+        InitEthTxController();
     }
 
     private void InitAssetRatioController() {
@@ -222,6 +356,14 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
         mAssetRatioController =
                 AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+    }
+
+    private void InitEthTxController() {
+        if (mEthTxController != null) {
+            return;
+        }
+
+        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
     }
 
     @Override
