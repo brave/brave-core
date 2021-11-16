@@ -96,6 +96,14 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   func erc721TokenBalance(_ contractAddress: String, tokenId: String, accountAddress: String, completion: @escaping (Bool, String) -> Void) {
     completion(false, "")
   }
+  
+  func pendingSwitchChainRequests(_ completion: @escaping ([BraveWallet.SwitchChainRequest]) -> Void) {
+    completion([])
+  }
+  
+  func notifySwitchChainRequestProcessed(_ approved: Bool, origin: URL) {
+    
+  }
 }
 
 extension BraveWallet.EthereumChain {

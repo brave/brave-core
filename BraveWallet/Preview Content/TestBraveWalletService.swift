@@ -11,6 +11,8 @@ import BraveCore
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
 class TestBraveWalletService: BraveWalletBraveWalletService {
   private var assets: [String: [BraveWallet.ERCToken]] = [:]
+  private var defaultCurrency = "usd"
+  private var defaultCryptocurrency = "eth"
   
   func userAssets(_ chainId: String, completion: @escaping ([BraveWallet.ERCToken]) -> Void) {
     completion(assets[chainId] ?? [])
@@ -83,5 +85,21 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
   
   func notifySignMessageHardwareRequestProcessed(_ approved: Bool, id: Int32, signature: String, error: String) {
     // Hardware wallets not supported on iOS
+  }
+  
+  func defaultBaseCurrency(_ completion: @escaping (String) -> Void) {
+    completion(defaultCurrency)
+  }
+  
+  func setDefaultBaseCurrency(_ currency: String) {
+    defaultCurrency = currency.lowercased()
+  }
+  
+  func defaultBaseCryptocurrency(_ completion: @escaping (String) -> Void) {
+    completion(defaultCryptocurrency)
+  }
+  
+  func setDefaultBaseCryptocurrency(_ cryptocurrency: String) {
+    defaultCryptocurrency = cryptocurrency
   }
 }

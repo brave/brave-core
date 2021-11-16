@@ -119,6 +119,10 @@ class TestSwapController: BraveWalletSwapController {
 }
 
 class TestEthTxController: BraveWalletEthTxController {
+  func makeErc721Transfer(fromData from: String, to: String, tokenId: String, contractAddress: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+    completion(false, [])
+  }
+  
   func setDataForUnapprovedTransaction(_ txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
   }
   
