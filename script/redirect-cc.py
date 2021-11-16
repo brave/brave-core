@@ -9,6 +9,7 @@ IS_WIN32 = sys.platform == 'win32'
 
 def main():
     args = sys.argv[1:]
+    append_root_src_include(args)
     brave_path = replace_cc_arg(args)
     if 'CC_WRAPPER' in os.environ:
         args = [os.environ['CC_WRAPPER']] + args
@@ -20,6 +21,13 @@ def main():
         # This is a specially crafted string that ninja will look for to create deps.
         sys.stderr.write('Note: including file: %s\n' % brave_path)
     return cc_retcode
+
+
+def append_root_src_include(args):
+  for arg in args:
+    if arg.startswith('-I') and arg.endswith('brave/chromium_src'):
+        args.append(arg + '/../../..')
+        return
 
 
 def replace_cc_arg(args):
