@@ -57,10 +57,10 @@ where
 
         SDK {
             client,
-            environment: environment,
+            environment,
             base_url: base_url.to_string(),
             remote_sdk_url: remote_sdk_url.to_string(),
-            cache: RefCell::new(CacheNode::new()),
+            cache: RefCell::new(CacheNode::default()),
         }
     }
 

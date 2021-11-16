@@ -84,7 +84,7 @@ where
                 // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
                 rng.gen_range(
                     0,
-                    cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * 1 << current_attempt),
+                    cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)),
                 )
             }
             InternalError::RetryLater(Some(after)) => {
@@ -100,7 +100,7 @@ where
                     after_ms,
                     cmp::max(
                         after_ms,
-                        cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * 1 << current_attempt),
+                        cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)),
                     ),
                 )
             }
@@ -119,8 +119,8 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
     if let Some(headers) = copy.headers_mut() {
         headers.extend(resp.headers().clone())
     }
-    copy.status(resp.status().clone())
-        .version(resp.version().clone())
+    copy.status(resp.status())
+        .version(resp.version())
         .body(resp.body().clone())
         .expect("by nature of this result, an invalid http request cannot be created. thus it should be safe to clone an existing request by recursively cloning it's component parts")
 }
@@ -129,12 +129,10 @@ pub fn delay_from_response<T>(resp: &http::Response<T>) -> Option<Duration> {
     resp.headers()
         .get(http::header::RETRY_AFTER)
         .and_then(|value| {
-            value.to_str().ok().and_then(|value| {
-                value
-                    .parse::<u64>()
-                    .ok()
-                    .and_then(|s| Some(Duration::from_secs(s)))
-            })
+            value
+                .to_str()
+                .ok()
+                .and_then(|value| value.parse::<u64>().ok().map(Duration::from_secs))
         })
 }
 
@@ -187,7 +185,7 @@ impl<U> SDK<U> {
             "recieved response",
         );
 
-        return Ok(Response::from_parts(parts, body));
+        Ok(Response::from_parts(parts, body))
     }
 }
 

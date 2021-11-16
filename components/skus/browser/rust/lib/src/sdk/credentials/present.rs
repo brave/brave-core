@@ -56,8 +56,8 @@ where
                 return Err(InternalError::OrderLocationMismatch.into());
             }
 
-            for item in order.items {
-                // FIXME always uses first item
+            // FIXME only returns summary for first item
+            if let Some(item) = order.items.into_iter().next() {
                 let name = "sku#".to_string() + &item.sku;
 
                 let (expires_at, presentation) = match item.credential_type {
@@ -75,8 +75,7 @@ where
                         let (i, cred) = unblinded_creds
                             .into_iter()
                             .enumerate()
-                            .filter(|(_i, cred)| !cred.spent)
-                            .next()
+                            .find(|(_i, cred)| !cred.spent)
                             .ok_or(InternalError::OutOfCredentials)?;
 
                         let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;

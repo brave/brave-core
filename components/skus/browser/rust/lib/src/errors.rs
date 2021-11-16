@@ -63,7 +63,7 @@ impl Display for InternalError {
                 "Retry later{}",
                 after
                     .map(|a| format!("after {} ms", a.as_millis()))
-                    .unwrap_or("".to_string())
+                    .unwrap_or_else(|| "".to_string())
             ),
             InternalError::NotFound => write!(f, "Resource not found"),
             InternalError::SerializationFailed => write!(f, "Could not (de)serialize"),
@@ -117,7 +117,7 @@ impl Display for RewardsError {
 
 impl Error for RewardsError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
-        return Some(&self.0);
+        Some(&self.0)
     }
 }
 

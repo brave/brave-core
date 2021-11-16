@@ -51,19 +51,13 @@ impl TryFrom<OrderItemResponse> for OrderItem {
     type Error = RewardsError;
 
     fn try_from(order_item: OrderItemResponse) -> Result<Self, Self::Error> {
-        let price = order_item
-            .price
+        let price = order_item.price.parse::<f64>().map_err(|_| {
+            InternalError::InvalidResponse("Could not parse unit price".to_string())
+        })?;
+        let subtotal = order_item
+            .subtotal
             .parse::<f64>()
-            .or(Err(InternalError::InvalidResponse(
-                "Could not parse unit price".to_string(),
-            )))?;
-        let subtotal =
-            order_item
-                .subtotal
-                .parse::<f64>()
-                .or(Err(InternalError::InvalidResponse(
-                    "Could not parse subtotal".to_string(),
-                )))?;
+            .map_err(|_| InternalError::InvalidResponse("Could not parse subtotal".to_string()))?;
         Ok(OrderItem {
             id: order_item.id,
             order_id: order_item.order_id,
@@ -103,10 +97,8 @@ impl TryFrom<OrderResponse> for Order {
     type Error = RewardsError;
 
     fn try_from(order: OrderResponse) -> Result<Self, Self::Error> {
-        let total_price = order.total_price.parse::<f64>().or_else(|_| {
-            Err(InternalError::InvalidResponse(
-                "Could not parse total price".to_string(),
-            ))
+        let total_price = order.total_price.parse::<f64>().map_err(|_| {
+            InternalError::InvalidResponse("Could not parse total price".to_string())
         })?;
         let items: Result<Vec<OrderItem>, _> = order
             .items

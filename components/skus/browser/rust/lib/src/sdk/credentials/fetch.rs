@@ -219,14 +219,18 @@ where
                     let cred = TimeLimitedCredential {
                         item_id: item_id.clone(),
                         issued_at: NaiveDate::parse_from_str(&issued_at, "%Y-%m-%d")
-                            .or(Err(InternalError::InvalidResponse(
-                                "Could not parse issued at".to_string(),
-                            )))?
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse issued at".to_string(),
+                                )
+                            })?
                             .and_hms(0, 0, 0),
                         expires_at: NaiveDate::parse_from_str(&expires_at, "%Y-%m-%d")
-                            .or(Err(InternalError::InvalidResponse(
-                                "Could not parse expires at".to_string(),
-                            )))?
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse expires at".to_string(),
+                                )
+                            })?
                             .and_hms(0, 0, 0),
                         token,
                     };

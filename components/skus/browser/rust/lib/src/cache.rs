@@ -25,22 +25,24 @@ pub struct CacheNode<T> {
     data: Option<ExpiringValue<T>>,
 }
 
-impl<T> CacheNode<T> {
-    pub fn new() -> Self {
+impl<T> Default for CacheNode<T> {
+    fn default() -> Self {
         CacheNode {
             children: HashMap::new(),
             data: None,
         }
     }
+}
 
-    pub fn insert<'a, I>(&mut self, key: I, value: T, ttl: Duration) -> ()
+impl<T> CacheNode<T> {
+    pub fn insert<'a, I>(&mut self, key: I, value: T, ttl: Duration)
     where
         I: IntoIterator<Item = &'a str>,
     {
         let mut node = self;
         for path in key.into_iter() {
             if !node.children.contains_key(path) {
-                node.children.insert(path.to_string(), CacheNode::new());
+                node.children.insert(path.to_string(), CacheNode::default());
             }
             node = node
                 .children
@@ -64,10 +66,10 @@ impl<T> CacheNode<T> {
         node.data
             .as_ref()
             .filter(|d| !d.is_expired())
-            .and_then(|d| Some(&d.value))
+            .map(|d| &d.value)
     }
 
-    pub fn remove_path<'a, I>(&mut self, key: I) -> ()
+    pub fn remove_path<'a, I>(&mut self, key: I)
     where
         I: IntoIterator<Item = &'a str>,
     {
@@ -86,6 +88,7 @@ impl<T> CacheNode<T> {
     }
 }
 
+#[allow(clippy::single_char_pattern)]
 fn cache_path_from_method_and_uri<'a>(
     method: &'a http::Method,
     uri: &'a http::Uri,
@@ -108,7 +111,7 @@ impl<U> SDK<U> {
             .try_borrow()
             .or(Err(InternalError::RetryLater(None)))?
             .get(cache_key)
-            .and_then(|resp| Some(clone_resp(resp))))
+            .map(clone_resp))
     }
 
     pub fn cache_request(
@@ -128,7 +131,7 @@ impl<U> SDK<U> {
                     self.cache
                         .try_borrow_mut()
                         .or(Err(InternalError::RetryLater(None)))?
-                        .insert(cache_key, clone_resp(&resp), delay);
+                        .insert(cache_key, clone_resp(resp), delay);
                 }
             }
             // Cache 200 OK on GET requests for 1 second.
@@ -138,7 +141,7 @@ impl<U> SDK<U> {
                 .cache
                 .try_borrow_mut()
                 .or(Err(InternalError::RetryLater(None)))?
-                .insert(cache_key, clone_resp(&resp), Duration::from_secs(1)),
+                .insert(cache_key, clone_resp(resp), Duration::from_secs(1)),
             _ => match *method {
                 // Mutating methods invalidate cached GET requests by including any parent cached
                 // values on the path to the cache root. For example if there is a cached response

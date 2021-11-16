@@ -341,7 +341,7 @@ where
         if let Some(credentials) = state.credentials.as_mut() {
             let creds = Credentials::TimeLimited(TimeLimitedCredentials {
                 item_id: item_id.to_string(),
-                creds: creds,
+                creds,
             });
 
             // assume that the credentials provided supercede the ones

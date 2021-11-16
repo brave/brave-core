@@ -40,8 +40,8 @@ where
                 return Err(InternalError::OrderLocationMismatch.into());
             }
 
-            for item in order.items {
-                // FIXME always uses first item
+            // FIXME only returns summary for first item
+            if let Some(item) = order.items.into_iter().next() {
                 return Ok(match item.credential_type {
                     CredentialType::SingleUse => self
                         .client
@@ -86,18 +86,16 @@ where
 
                         self.matching_time_limited_credential(&item.id)
                             .await?
-                            .and_then(|_cred| {
-                                Some(CredentialSummary {
-                                    item,
-                                    remaining_credential_count: 1,
-                                    expires_at,
-                                })
+                            .map(|_cred| CredentialSummary {
+                                item,
+                                remaining_credential_count: 1,
+                                expires_at,
                             })
                     }
                 });
             }
         }
-        return Ok(None);
+        Ok(None)
     }
 
     #[instrument]

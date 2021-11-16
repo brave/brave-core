@@ -150,13 +150,13 @@ impl Order {
             // domain we are comparing with must be the location or a subdomain of it
             if domain
                 .strip_suffix(&self.location)
-                .filter(|s| s.is_empty() || s.ends_with("."))
+                .filter(|s| s.is_empty() || s.ends_with('.'))
                 .is_none()
             {
                 return false;
             }
         }
-        return true;
+        true
     }
 
     pub fn is_paid(&self) -> bool {
