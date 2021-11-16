@@ -96,7 +96,7 @@ void shim_scheduleWakeup(
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
     rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx) {
-  LOG(ERROR) << "shim_scheduleWakeup " << delay_ms;
+  VLOG(1) << "shim_scheduleWakeup " << delay_ms;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
@@ -118,7 +118,8 @@ std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
 // static
 void SkusSdkContextImpl::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(prefs::kSkusDictionary);
+  registry->RegisterDictionaryPref(prefs::kSkusState);
+  registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
   registry->RegisterStringPref(prefs::kSkusVPNCredential, "");
 }
 
@@ -135,11 +136,11 @@ SkusSdkContextImpl::CreateFetcher() const {
 }
 
 std::string SkusSdkContextImpl::GetValueFromStore(std::string key) const {
-  LOG(ERROR) << "shim_get: `" << key << "`";
-  const base::Value* dictionary = prefs_->GetDictionary(prefs::kSkusDictionary);
-  DCHECK(dictionary);
-  DCHECK(dictionary->is_dict());
-  const base::Value* value = dictionary->FindKey(key);
+  VLOG(1) << "shim_get: `" << key << "`";
+  const base::Value* state = prefs_->GetDictionary(prefs::kSkusState);
+  DCHECK(state);
+  DCHECK(state->is_dict());
+  const base::Value* value = state->FindKey(key);
   if (value) {
     return value->GetString();
   }
@@ -147,20 +148,20 @@ std::string SkusSdkContextImpl::GetValueFromStore(std::string key) const {
 }
 
 void SkusSdkContextImpl::PurgeStore() const {
-  LOG(ERROR) << "shim_purge";
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
-  DCHECK(dictionary);
-  dictionary->Clear();
+  VLOG(1) << "shim_purge";
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusState);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> state = update.Get();
+  DCHECK(state);
+  state->Clear();
 }
 
 void SkusSdkContextImpl::UpdateStoreValue(std::string key,
                                           std::string value) const {
-  LOG(ERROR) << "shim_set: `" << key << "` = `" << value << "`";
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
-  DCHECK(dictionary);
-  dictionary->SetString(key, value);
+  VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusState);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> state = update.Get();
+  DCHECK(state);
+  state->SetString(key, value);
 }
 
 }  // namespace brave_rewards

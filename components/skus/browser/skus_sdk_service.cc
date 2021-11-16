@@ -7,11 +7,17 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/brave-rewards-cxx/src/shim.h"
+#include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_sdk_context_impl.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "components/prefs/pref_service.h"
+#include "net/cookies/cookie_inclusion_status.h"
+#include "net/cookies/parsed_cookie.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -39,8 +45,22 @@ void OnPrepareCredentialsPresentation(
     brave_rewards::PrepareCredentialsPresentationCallbackState* callback_state,
     brave_rewards::RewardsResult result,
     rust::cxxbridge1::Str presentation) {
+  std::string credential_string = static_cast<std::string>(presentation);
+  net::CookieInclusionStatus status;
+  net::ParsedCookie credential_cookie(credential_string, &status);
+  DCHECK(credential_cookie.IsValid());
+  DCHECK(status.IsInclude());
+
+  if (callback_state->prefs) {
+    if (callback_state->domain == "vpn.brave.com" ||
+        callback_state->domain == "vpn.brave.software") {
+      callback_state->prefs->SetString(brave_rewards::prefs::kSkusVPNCredential,
+                                       credential_cookie.Value());
+    }
+  }
+
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(presentation));
+    std::move(callback_state->cb).Run(credential_string);
   }
   delete callback_state;
 }
@@ -49,8 +69,25 @@ void OnCredentialSummary(
     brave_rewards::CredentialSummaryCallbackState* callback_state,
     brave_rewards::RewardsResult result,
     rust::cxxbridge1::Str summary) {
+  std::string summary_string = static_cast<std::string>(summary);
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+
+  if (records_v && callback_state->prefs) {
+    if (callback_state->domain == "vpn.brave.com" ||
+        callback_state->domain == "vpn.brave.software") {
+      const base::Value* sku = records_v->FindKey("sku");
+      bool has_credential = sku && sku->is_string() &&
+                            sku->GetString() == "brave-firewall-vpn-premium";
+      callback_state->prefs->SetBoolean(
+          brave_rewards::prefs::kSkusVPNHasCredential, has_credential);
+    }
+  }
+
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(summary));
+    std::move(callback_state->cb).Run(summary_string);
   }
   delete callback_state;
 }
@@ -63,8 +100,9 @@ SkusSdkService::SkusSdkService(
     : context_(std::make_unique<brave_rewards::SkusSdkContextImpl>(
           prefs,
           url_loader_factory)),
-      // TODO(bsclifton): load environment properly (don't hardcode)
-      sdk_(initialize_sdk(std::move(context_), "development")),
+      sdk_(
+          initialize_sdk(std::move(context_), brave_rewards::GetEnvironment())),
+      prefs_(prefs),
       weak_factory_(this) {}
 
 SkusSdkService::~SkusSdkService() {}
@@ -85,6 +123,7 @@ void SkusSdkService::FetchOrderCredentials(
   std::unique_ptr<brave_rewards::FetchOrderCredentialsCallbackState> cbs(
       new brave_rewards::FetchOrderCredentialsCallbackState);
   cbs->cb = std::move(callback);
+  cbs->order_id = order_id;
 
   sdk_->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
                                 order_id.c_str());
@@ -97,6 +136,8 @@ void SkusSdkService::PrepareCredentialsPresentation(
   std::unique_ptr<brave_rewards::PrepareCredentialsPresentationCallbackState>
       cbs(new brave_rewards::PrepareCredentialsPresentationCallbackState);
   cbs->cb = std::move(callback);
+  cbs->domain = domain;
+  cbs->prefs = prefs_;
 
   sdk_->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
                                          std::move(cbs), domain, path);
@@ -108,6 +149,8 @@ void SkusSdkService::CredentialSummary(
   std::unique_ptr<brave_rewards::CredentialSummaryCallbackState> cbs(
       new brave_rewards::CredentialSummaryCallbackState);
   cbs->cb = std::move(callback);
+  cbs->domain = domain;
+  cbs->prefs = prefs_;
 
   sdk_->credential_summary(OnCredentialSummary, std::move(cbs), domain);
 }
