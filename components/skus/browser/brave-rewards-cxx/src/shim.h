@@ -13,6 +13,8 @@
 #include "base/callback_helpers.h"
 #include "brave/third_party/rust/cxx/include/cxx.h"
 
+class PrefService;
+
 namespace brave_rewards {
 
 enum class RewardsResult : uint8_t;
@@ -27,6 +29,7 @@ class FetchOrderCredentialsCallbackState {
   FetchOrderCredentialsCallbackState();
   ~FetchOrderCredentialsCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
+  std::string order_id;
 };
 
 class PrepareCredentialsPresentationCallbackState {
@@ -34,6 +37,8 @@ class PrepareCredentialsPresentationCallbackState {
   PrepareCredentialsPresentationCallbackState();
   ~PrepareCredentialsPresentationCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
+  std::string domain;
+  PrefService* prefs;
 };
 
 class CredentialSummaryCallbackState {
@@ -41,6 +46,8 @@ class CredentialSummaryCallbackState {
   CredentialSummaryCallbackState();
   ~CredentialSummaryCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
+  std::string domain;
+  PrefService* prefs;
 };
 
 class RefreshOrderCallbackState {
