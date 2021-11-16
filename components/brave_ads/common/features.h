@@ -20,6 +20,7 @@ namespace features {
 extern const base::Feature kAdNotifications;
 
 bool IsAdNotificationsEnabled();
+bool ShouldSupportMultipleDisplays();
 bool CanFallbackToCustomAdNotifications();
 int AdNotificationTimeout();
 

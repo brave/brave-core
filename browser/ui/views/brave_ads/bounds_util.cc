@@ -33,6 +33,10 @@ gfx::Rect GetDisplayScreenWorkArea(gfx::Rect* bounds,
   return work_area;
 }
 
+gfx::Rect GetPrimaryDisplayScreenWorkArea() {
+  return display::Screen::GetScreen()->GetPrimaryDisplay().work_area();
+}
+
 void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
   DCHECK(bounds);
 
@@ -41,11 +45,19 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 
 }  // namespace
 
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(gfx::NativeView native_view,
-                                                   gfx::Rect* bounds) {
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(
+    gfx::NativeView native_view,
+    gfx::Rect* bounds,
+    bool should_support_multiple_displays) {
   DCHECK(bounds);
 
-  const gfx::Rect work_area = GetDisplayScreenWorkArea(bounds, native_view);
+  gfx::Rect work_area;
+  if (should_support_multiple_displays) {
+    work_area = GetDisplayScreenWorkArea(bounds, native_view);
+  } else {
+    work_area = GetPrimaryDisplayScreenWorkArea();
+  }
+
   AdjustBoundsToFitWorkArea(work_area, bounds);
   SnapBoundsToEdgeOfWorkArea(work_area, bounds);
 }

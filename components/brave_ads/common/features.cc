@@ -21,6 +21,12 @@ const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
 
 namespace {
 
+// Set to true to support multiple displays or false to only support the primary
+// display
+const char kFieldTrialParameterShouldSupportMultipleDisplays[] =
+    "should_support_multiple_displays";
+const bool kDefaultShouldSupportMultipleDisplays = false;
+
 // Set to true to fallback to custom ad notifications if native notifications
 // are disabled or false to never fallback
 const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
@@ -106,6 +112,12 @@ const int kDefaultAdNotificationInsetY = 18;
 
 bool IsAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(kAdNotifications);
+}
+
+bool ShouldSupportMultipleDisplays() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kAdNotifications, kFieldTrialParameterShouldSupportMultipleDisplays,
+      kDefaultShouldSupportMultipleDisplays);
 }
 
 bool CanFallbackToCustomAdNotifications() {

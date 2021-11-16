@@ -14,8 +14,10 @@ class Rect;
 
 namespace brave_ads {
 
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(gfx::NativeView native_view,
-                                                   gfx::Rect* bounds);
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(
+    gfx::NativeView native_view,
+    gfx::Rect* bounds,
+    bool should_support_multiple_displays);
 
 // Exposed here to be available in tests.
 void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds);

@@ -86,7 +86,12 @@ void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
 
   gfx::Rect fit_bounds = bounds;
   const gfx::NativeView native_view = widget->GetNativeView();
-  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &fit_bounds);
+  const bool should_support_multiple_displays =
+      features::ShouldSupportMultipleDisplays();
+
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(
+      native_view, &fit_bounds, should_support_multiple_displays);
+
   widget->SetBounds(fit_bounds);
 }
 
