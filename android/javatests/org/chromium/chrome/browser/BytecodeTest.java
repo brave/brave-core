@@ -259,8 +259,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "onOrientationChange", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "updateButtonStatus", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "updateBookmarkButtonStatus", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "updateReloadState", false, null));
