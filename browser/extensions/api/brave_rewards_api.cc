@@ -973,6 +973,22 @@ void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
   Respond(OneArgument(base::Value(value)));
 }
 
+BraveRewardsIsAutoContributeSupportedFunction::
+    ~BraveRewardsIsAutoContributeSupportedFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsIsAutoContributeSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  return RespondNow(
+      OneArgument(base::Value(rewards_service->IsAutoContributeSupported())));
+}
+
 BraveRewardsFetchBalanceFunction::
 ~BraveRewardsFetchBalanceFunction() {
 }
