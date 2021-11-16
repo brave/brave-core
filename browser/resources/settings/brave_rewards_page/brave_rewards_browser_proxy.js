@@ -10,6 +10,7 @@ export class BraveRewardsBrowserProxy {
   getLocale() { /* Intentionally empty */ }
   getRewardsEnabled() { /* Intentionally empty */ }
   getRewardsParameters() { /* Intentionally empty */ }
+  isAutoContributeSupported() { /* Intentionally empty */ }
 }
 
 /**
@@ -30,6 +31,11 @@ export class BraveRewardsBrowserProxyImpl {
   getRewardsParameters () {
     return new Promise((resolve) => chrome.braveRewards.getRewardsParameters(
       (parameters) => { resolve(parameters) }))
+  }
+  /** @override */
+  isAutoContributeSupported () {
+    return new Promise((resolve) => chrome.braveRewards.isAutoContributeSupported(
+      (supported) => { resolve(supported) }))
   }
 }
 
