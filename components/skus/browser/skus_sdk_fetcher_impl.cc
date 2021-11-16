@@ -14,8 +14,8 @@
 
 namespace {
 
-// TODO(bsclifton): fix me. I set a completely arbitrary size!
-const int kMaxResponseSize = 1000000;  // 1Mb
+// Maximum accepted size of response from SKU SDK server. 1MB.
+const int kMaxResponseSize = 1024 * 1024;
 
 }  // namespace
 

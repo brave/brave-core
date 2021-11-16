@@ -80,6 +80,7 @@ class SkusSdkService : public KeyedService {
  private:
   std::unique_ptr<brave_rewards::SkusSdkContextImpl> context_;
   ::rust::Box<brave_rewards::CppSDK> sdk_;
+  PrefService* prefs_;
   base::WeakPtrFactory<SkusSdkService> weak_factory_;
 };
 
