@@ -54,6 +54,10 @@
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #endif
 
+#if defined(OS_WIN)
+#include "brave/browser/ui/webui/new_tab_page/ms_edge_protocol_message_handler.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -72,6 +76,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
+#endif
+#if defined(OS_WIN)
+  if (MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler())
+    web_ui->AddMessageHandler(std::make_unique<MSEdgeProtocolMessageHandler>());
 #endif
 }
 
@@ -115,5 +123,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+#endif
+
+#if defined(OS_WIN)
+  html_source->AddBoolean(
+      "canSetDefaultMSEdgeProtocolHandler",
+      MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler());
 #endif
 }
