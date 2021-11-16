@@ -7,6 +7,7 @@ use sha2::Sha512;
 use tracing::instrument;
 
 use crate::errors::{InternalError, RewardsError};
+use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
 
@@ -16,7 +17,7 @@ type HmacSha512 = Hmac<Sha512>;
 #[serde(rename_all = "camelCase")]
 struct VerifyCredentialRequest {
     #[serde(rename = "type")]
-    credential_type: String,
+    credential_type: CredentialType,
     version: u8,
     sku: String,
     presentation: String,
@@ -59,8 +60,8 @@ where
                 // FIXME always uses first item
                 let name = "sku#".to_string() + &item.sku;
 
-                let (expires_at, presentation) = match item.credential_type.as_ref() {
-                    "single-use" => {
+                let (expires_at, presentation) = match item.credential_type {
+                    CredentialType::SingleUse => {
                         let creds = self
                             .client
                             .get_single_use_item_creds(&item.id)
@@ -96,9 +97,9 @@ where
 
                         self.client.spend_single_use_item_cred(&item.id, i).await?;
 
-                        Ok((None, presentation))
+                        (None, presentation)
                     }
-                    "time-limited" => {
+                    CredentialType::TimeLimited => {
                         let cred = self
                             .matching_time_limited_credential(&item.id)
                             .await?
@@ -114,20 +115,19 @@ where
                             "token": cred.token,
                         });
 
-                        Ok((
+                        (
                             Some(format!(
                                 "{}",
                                 cred.expires_at.format("%a, %d %b %Y %H:%M:%S GMT")
                             )),
                             base64::encode(&serde_json::to_vec(&presentation)?),
-                        ))
+                        )
                     }
-                    _ => Err(InternalError::UnhandledVariant),
-                }?;
+                };
 
                 let payload = urlencoding::encode(&base64::encode(&serde_json::to_vec(
                     &VerifyCredentialRequest {
-                        credential_type: item.credential_type.to_string(),
+                        credential_type: item.credential_type,
                         // FIXME
                         version: 1,
                         sku: item.sku.to_string(),
@@ -139,7 +139,9 @@ where
                 if let Some(expires_at) = expires_at {
                     value = format!("{};expires={}", value, expires_at);
                 }
-                if self.environment != "local" && self.environment != "testing" {
+                if self.environment != Environment::Local
+                    && self.environment != Environment::Testing
+                {
                     value = format!("__Secure-{};secure", value);
                 }
 

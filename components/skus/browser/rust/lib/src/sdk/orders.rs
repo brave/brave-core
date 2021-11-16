@@ -3,8 +3,10 @@ use core::convert::{TryFrom, TryInto};
 use chrono::{DateTime, Utc};
 use futures_retry::FutureRetry;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, to_vec};
 use tracing::instrument;
+
+#[cfg(feature = "e2e_test")]
+use serde_json::{json, to_vec};
 
 use crate::errors::{InternalError, RewardsError};
 use crate::http::HttpHandler;
@@ -40,7 +42,7 @@ struct OrderItemResponse {
     subtotal: String,
     location: String,
     description: String,
-    credential_type: String,
+    credential_type: CredentialType,
     // TODO add credential_version
     // TODO add accepted payment types
 }
@@ -101,13 +103,11 @@ impl TryFrom<OrderResponse> for Order {
     type Error = RewardsError;
 
     fn try_from(order: OrderResponse) -> Result<Self, Self::Error> {
-        let total_price =
-            order
-                .total_price
-                .parse::<f64>()
-                .or(Err(InternalError::InvalidResponse(
-                    "Could not parse total price".to_string(),
-                )))?;
+        let total_price = order.total_price.parse::<f64>().or_else(|_| {
+            Err(InternalError::InvalidResponse(
+                "Could not parse total price".to_string(),
+            ))
+        })?;
         let items: Result<Vec<OrderItem>, _> = order
             .items
             .into_iter()
@@ -135,7 +135,7 @@ impl<U> SDK<U>
 where
     U: HTTPClient + StorageClient,
 {
-    #[instrument]
+    #[cfg(feature = "e2e_test")]
     pub async fn create_order(&self, kind: &str) -> Result<Order, RewardsError> {
         let sku = match kind {
             "trial" => "AgEVc2VhcmNoLmJyYXZlLnNvZnR3YXJlAh9zZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBkZW1vAAIWc2t1PXNlYXJjaC1iZXRhLWFjY2VzcwACB3ByaWNlPTAAAgxjdXJyZW5jeT1CQVQAAi1kZXNjcmlwdGlvbj1TZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBhY2Nlc3MAAhpjcmVkZW50aWFsX3R5cGU9c2luZ2xlLXVzZQAABiB3uXfAAkNSRQd24jSauRny3VM0BYZ8yOclPTEgPa0xrA==",
@@ -176,7 +176,7 @@ where
             },
             HttpHandler::new(3, "Create order request", &self.client),
         );
-        let (resp, _) = request_with_retries.await.map_err(|(e, _attempt)| e)?;
+        let (resp, _) = request_with_retries.await?;
 
         let order: OrderResponse = serde_json::from_slice(resp.body())?;
         let order: Order = order.try_into()?;
@@ -205,7 +205,7 @@ where
             },
             HttpHandler::new(3, "Fetch order request", &self.client),
         );
-        let (resp, _) = request_with_retries.await.map_err(|(e, _attempt)| e)?;
+        let (resp, _) = request_with_retries.await?;
 
         let order: OrderResponse = serde_json::from_slice(resp.body())?;
         let order: Order = order.try_into()?;

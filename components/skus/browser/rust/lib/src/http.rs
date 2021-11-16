@@ -58,15 +58,21 @@ where
         let mut rng = OsRng;
 
         if current_attempt > self.max_attempts {
-            eprintln!(
-                "[{}] All attempts ({}) have been used",
-                self.display_name, self.max_attempts
+            event!(
+                Level::DEBUG,
+                max_attempts = self.max_attempts,
+                "{}, all attempts failed",
+                self.display_name,
             );
+
             return RetryPolicy::ForwardError(e);
         }
-        eprintln!(
-            "[{}] Attempt {}/{} has failed",
-            self.display_name, current_attempt, self.max_attempts
+        event!(
+            Level::DEBUG,
+            current_attempt = current_attempt,
+            max_attempts = self.max_attempts,
+            "{} attempt failed",
+            self.display_name,
         );
 
         let delay_ms = match e {
@@ -116,19 +122,19 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
     copy.status(resp.status().clone())
         .version(resp.version().clone())
         .body(resp.body().clone())
-        .expect("cloning request should work")
+        .expect("by nature of this result, an invalid http request cannot be created. thus it should be safe to clone an existing request by recursively cloning it's component parts")
 }
 
 pub fn delay_from_response<T>(resp: &http::Response<T>) -> Option<Duration> {
     resp.headers()
         .get(http::header::RETRY_AFTER)
         .and_then(|value| {
-            value
-                .to_str()
-                .expect("server will always return integer seconds")
-                .parse::<u64>()
-                .ok()
-                .and_then(|s| Some(Duration::from_secs(s)))
+            value.to_str().ok().and_then(|value| {
+                value
+                    .parse::<u64>()
+                    .ok()
+                    .and_then(|s| Some(Duration::from_secs(s)))
+            })
         })
 }
 

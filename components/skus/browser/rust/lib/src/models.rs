@@ -1,6 +1,47 @@
+use std::fmt::{self, Display};
+use std::str::FromStr;
+
 use challenge_bypass_ristretto::voprf::*;
 use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
+
+use crate::errors::*;
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum Environment {
+    Local,
+    Testing,
+    Development,
+    Staging,
+    Production,
+}
+
+impl Display for Environment {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Environment::Local => write!(f, "local"),
+            Environment::Testing => write!(f, "testing"),
+            Environment::Development => write!(f, "development"),
+            Environment::Staging => write!(f, "staging"),
+            Environment::Production => write!(f, "production"),
+        }
+    }
+}
+
+impl FromStr for Environment {
+    type Err = InternalError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "local" => Ok(Self::Local),
+            "testing" => Ok(Self::Testing),
+            "development" => Ok(Self::Development),
+            "staging" => Ok(Self::Staging),
+            "production" => Ok(Self::Production),
+            _ => Err(InternalError::UnhandledVariant),
+        }
+    }
+}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Wallet {
@@ -53,6 +94,13 @@ pub struct UnredeemedToken {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "kebab-case")]
+pub enum CredentialType {
+    SingleUse,
+    TimeLimited,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OrderMetadata {
     pub stripe_checkout_session_id: Option<String>,
 }
@@ -70,7 +118,7 @@ pub struct OrderItem {
     pub subtotal: f64,
     pub location: String,
     pub description: String,
-    pub credential_type: String,
+    pub credential_type: CredentialType,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -97,8 +145,8 @@ pub struct Order {
 }
 
 impl Order {
-    pub fn location_matches(&self, environment: &str, domain: &str) -> bool {
-        if environment != "local" && environment != "testing" {
+    pub fn location_matches(&self, environment: &Environment, domain: &str) -> bool {
+        if *environment != Environment::Local && *environment != Environment::Testing {
             // domain we are comparing with must be the location or a subdomain of it
             if domain
                 .strip_suffix(&self.location)

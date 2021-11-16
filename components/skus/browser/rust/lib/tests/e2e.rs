@@ -1,39 +1,49 @@
+use std::cell::RefCell;
+use std::cell::RefMut;
+use std::collections::HashMap;
+use std::fmt;
+use std::io::Read;
+
 use async_std::task;
 use async_trait::async_trait;
-use skus::{errors::InternalError, HTTPClient, KVClient, KVStore};
-
 use isahc::prelude::*;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::io::Read;
 use tracing::{debug, Level};
 use tracing_subscriber::FmtSubscriber;
 
-thread_local! {
-    pub static STORE: RefCell<HashMap<String,String>> = RefCell::new(HashMap::new());
+use skus::{errors::InternalError, Environment, HTTPClient, KVClient, KVStore};
+
+pub struct CLIStore(HashMap<String, String>);
+
+pub struct CLIClient {
+    store: RefCell<CLIStore>,
 }
 
-pub struct CLIClient {}
+impl fmt::Debug for CLIClient {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("CLIClient").finish()
+    }
+}
 
 #[async_trait(?Send)]
 impl HTTPClient for CLIClient {
-    fn get_cookie(name: &str) -> Option<String> {
+    fn get_cookie(&self, name: &str) -> Option<String> {
         debug!("Cookie get: {}", name);
         // FIXME
         None
     }
 
-    fn set_cookie(value: &str) {
+    fn set_cookie(&self, value: &str) {
         // FIXME
         debug!("Cookie set: {}", value);
     }
 
-    fn schedule_wakeup(delay_ms: u64) {
+    fn schedule_wakeup(&self, delay_ms: u64) {
         // FIXME
         debug!("Schedule wakeup: {}", delay_ms);
     }
 
     async fn execute(
+        &self,
         req: http::Request<Vec<u8>>,
     ) -> Result<http::Response<Vec<u8>>, InternalError> {
         let client = HttpClient::default();
@@ -47,31 +57,31 @@ impl HTTPClient for CLIClient {
     }
 }
 
-impl KVClient<CLIClient> for CLIClient {
-    fn get_store() -> Result<Self, InternalError> {
-        Ok(CLIClient {})
+impl KVClient for CLIClient {
+    type Store = CLIStore;
+
+    fn get_store<'a>(&'a self) -> Result<RefMut<'a, CLIStore>, InternalError> {
+        Ok(self.store.borrow_mut())
     }
 }
 
-impl KVStore for CLIClient {
+impl KVStore for CLIStore {
+    fn env(&self) -> &Environment {
+        &Environment::Testing
+    }
+
     fn purge(&mut self) -> Result<(), InternalError> {
-        STORE.with(|store| {
-            store.borrow_mut().clear();
-        });
+        self.0.clear();
         Ok(())
     }
 
     fn set(&mut self, key: &str, value: &str) -> Result<(), InternalError> {
-        STORE.with(|store| {
-            store
-                .borrow_mut()
-                .insert(key.to_string(), value.to_string());
-        });
+        self.0.insert(key.to_string(), value.to_string());
         Ok(())
     }
 
     fn get(&mut self, key: &str) -> Result<Option<String>, InternalError> {
-        STORE.with(|store| Ok(store.borrow().get(key).cloned()))
+        Ok(self.0.get(key).cloned())
     }
 }
 
@@ -83,20 +93,21 @@ fn skus_e2e_works() {
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let sdk = skus::sdk::SDK::new::<CLIClient>("testing", None, None);
-        sdk.initialize::<CLIClient>().await.unwrap();
+        let client = CLIClient {
+            store: RefCell::new(CLIStore(HashMap::new())),
+        };
+        let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
+        sdk.initialize().await.unwrap();
 
-        let order = sdk.create_order::<CLIClient>("trial").await.unwrap();
+        let order = sdk.create_order("trial").await.unwrap();
 
-        sdk.refresh_order::<CLIClient>(&order.id).await.unwrap();
+        sdk.refresh_order(&order.id).await.unwrap();
         // Local cache should return response
-        sdk.refresh_order::<CLIClient>(&order.id).await.unwrap();
+        sdk.refresh_order(&order.id).await.unwrap();
 
-        sdk.fetch_order_credentials::<CLIClient>(&order.id)
-            .await
-            .unwrap();
+        sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-        sdk.present_order_credentials::<CLIClient>(&order.id, &order.location, "/")
+        sdk.present_order_credentials(&order.id, &order.location, "/")
             .await
             .unwrap();
     });

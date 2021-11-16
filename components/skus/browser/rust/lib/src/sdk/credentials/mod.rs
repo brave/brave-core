@@ -42,8 +42,8 @@ where
 
             for item in order.items {
                 // FIXME always uses first item
-                return Ok(match item.credential_type.as_ref() {
-                    "single-use" => self
+                return Ok(match item.credential_type {
+                    CredentialType::SingleUse => self
                         .client
                         .get_single_use_item_creds(&item.id)
                         .await?
@@ -68,7 +68,7 @@ where
                                 expires_at,
                             })
                         }),
-                    "time-limited" => {
+                    CredentialType::TimeLimited => {
                         let expires_at = self
                             .last_matching_time_limited_credential(&item.id)
                             .await?
@@ -94,7 +94,6 @@ where
                                 })
                             })
                     }
-                    _ => None,
                 });
             }
         }

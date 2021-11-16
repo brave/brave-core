@@ -68,8 +68,8 @@ where
         let mut csprng = OsRng;
 
         for item in order.items {
-            match item.credential_type.as_ref() {
-                "single-use" => {
+            match item.credential_type {
+                CredentialType::SingleUse => {
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_single_use_item_creds(&item.id).await? {
                             Some(item_creds) => {
@@ -98,17 +98,17 @@ where
 
                     let request_with_retries = FutureRetry::new(
                         || async {
-                            let mut builder = http::Request::builder();
-                            builder.method("POST");
-                            builder.uri(format!(
-                                "{}/v1/orders/{}/credentials",
-                                self.base_url, order_id
-                            ));
-
                             let body = serde_json::to_vec(&claim_req)
                                 .or(Err(InternalError::SerializationFailed))?;
 
-                            let req = builder.body(body).unwrap();
+                            let req = http::Request::builder()
+                                .method("POST")
+                                .uri(format!(
+                                    "{}/v1/orders/{}/credentials",
+                                    self.base_url, order_id
+                                ))
+                                .body(body)
+                                .unwrap();
                             let resp = self.fetch(req).await?;
 
                             match resp.status() {
@@ -122,10 +122,9 @@ where
                         },
                         HttpHandler::new(3, "Sign order item credentials request", &self.client),
                     );
-                    request_with_retries.await.map_err(|(e, _attempt)| e)?;
+                    request_with_retries.await?;
                 }
-                "time-limited" => (), // Time limited credentials do not require a submission step
-                _ => return Err(InternalError::UnhandledVariant.into()),
+                CredentialType::TimeLimited => (), // Time limited credentials do not require a submission step
             }
         }
         Ok(())
@@ -173,7 +172,7 @@ where
             HttpHandler::new(3, "Fetch order credentials request", &self.client),
         );
 
-        let (resp, _) = request_with_retries.await.map_err(|(e, _attempt)| e)?;
+        let (resp, _) = request_with_retries.await?;
 
         let resp: Vec<ItemCredentialsResponse> = serde_json::from_slice(resp.body())?;
 
@@ -183,12 +182,11 @@ where
             match item_cred {
                 ItemCredentialsResponse::SingleUse {
                     id: item_id,
-                    order_id: _,
-                    blinded_creds: _,
                     signed_creds,
                     batch_proof,
                     public_key,
                     issuer_id,
+                    ..
                 } => {
                     if let Some(item_creds) =
                         self.client.get_single_use_item_creds(&item_id).await?

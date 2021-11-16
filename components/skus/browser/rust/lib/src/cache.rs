@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::iter;
 use std::time::Duration;
 
 use chrono::{DateTime, Utc};
@@ -70,19 +71,28 @@ impl<T> CacheNode<T> {
     where
         I: IntoIterator<Item = &'a str>,
     {
-        (|| {
-            let mut node = self;
-            for path in key.into_iter() {
-                node = node.children.get_mut(path)?;
-                if node.data.is_some() {
-                    node.data = None;
-                    node.children.clear();
-                    return Some(());
-                }
+        if let Some(node) = key.into_iter().try_fold(self, |node, path| {
+            if node.data.is_none() {
+                node.children.get_mut(path)
+            } else {
+                Some(node)
             }
-            None
-        })();
+        }) {
+            if node.data.is_some() {
+                node.data = None;
+                node.children.clear();
+            }
+        }
     }
+}
+
+fn cache_path_from_method_and_uri<'a>(
+    method: &'a http::Method,
+    uri: &'a http::Uri,
+) -> iter::Chain<iter::Take<iter::Repeat<&'a str>>, std::str::Split<'a, &'a str>> {
+    iter::repeat(method.as_str())
+        .take(1)
+        .chain(uri.path().split("/"))
 }
 
 impl<U> SDK<U> {
@@ -91,9 +101,7 @@ impl<U> SDK<U> {
         method: &http::Method,
         uri: &http::Uri,
     ) -> Result<Option<Response<Vec<u8>>>, InternalError> {
-        let uri_path = uri.path().to_string();
-        let uri_path_key: Vec<&str> = uri_path.split("/").collect();
-        let cache_key = [&[method.as_str()], uri_path_key.as_slice()].concat();
+        let cache_key = cache_path_from_method_and_uri(method, uri);
 
         Ok(self
             .cache
@@ -109,11 +117,9 @@ impl<U> SDK<U> {
         uri: &http::Uri,
         resp: &Response<Vec<u8>>,
     ) -> Result<(), InternalError> {
-        let uri_path = uri.path().to_string();
-        let uri_path_key: Vec<&str> = uri_path.split("/").collect();
-        let cache_key = [&[method.as_str()], uri_path_key.as_slice()].concat();
+        let cache_key = cache_path_from_method_and_uri(method, uri);
         // Used for invalidation during mutating methods
-        let get_cache_key = [&["GET"], uri_path_key.as_slice()].concat();
+        let get_cache_key = cache_path_from_method_and_uri(&http::Method::GET, uri);
 
         match resp.status() {
             // Cache 429 responses so we don't exceed advised retry-after
@@ -128,14 +134,11 @@ impl<U> SDK<U> {
             // Cache 200 OK on GET requests for 1 second.
             // This is a safety net to prevent unncessary requests to the server
             // within a short window
-            http::StatusCode::OK => {
-                if *method == http::Method::GET {
-                    self.cache
-                        .try_borrow_mut()
-                        .or(Err(InternalError::RetryLater(None)))?
-                        .insert(cache_key, clone_resp(&resp), Duration::from_secs(1))
-                }
-            }
+            http::StatusCode::OK if *method == http::Method::GET => self
+                .cache
+                .try_borrow_mut()
+                .or(Err(InternalError::RetryLater(None)))?
+                .insert(cache_key, clone_resp(&resp), Duration::from_secs(1)),
             _ => match *method {
                 // Mutating methods invalidate cached GET requests by including any parent cached
                 // values on the path to the cache root. For example if there is a cached response

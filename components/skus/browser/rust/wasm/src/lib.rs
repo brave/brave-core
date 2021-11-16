@@ -14,7 +14,7 @@ use web_sys::{HtmlDocument, Request, RequestInit, RequestMode, Response};
 use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt, registry::Registry};
 use tracing_wasm::{WASMLayer, WASMLayerConfig};
 
-use skus::{errors, http::http, sdk, tracing, HTTPClient, KVClient, KVStore};
+use skus::{errors, http::http, sdk, tracing, Environment, HTTPClient, KVClient, KVStore};
 
 #[wasm_bindgen]
 extern "C" {
@@ -35,6 +35,8 @@ pub fn initialize(
 ) -> js_sys::Promise {
     let future = async move {
         console_error_panic_hook::set_once();
+
+        let env = env.parse::<Environment>().or(Err("invalid environment"))?;
 
         let level_filter = match log_level {
             Some(log_level) => log_level
@@ -60,9 +62,12 @@ pub fn initialize(
         if let Ok(Some(local_storage)) = window.local_storage() {
             let sdk = sdk::SDK::new(
                 JSClient {
-                    local_storage: Rc::new(RefCell::new(JSStorage(local_storage))),
+                    local_storage: Rc::new(RefCell::new(JSStorage {
+                        environment: env.clone(),
+                        store: local_storage,
+                    })),
                 },
-                &env,
+                env,
                 None,
                 None,
             );
@@ -77,7 +82,10 @@ pub fn initialize(
     future_to_promise(future)
 }
 
-pub struct JSStorage(web_sys::Storage);
+pub struct JSStorage {
+    environment: Environment,
+    store: web_sys::Storage,
+}
 
 #[derive(Clone)]
 pub struct JSClient {
@@ -97,17 +105,6 @@ pub struct JSSDK {
 
 #[wasm_bindgen]
 impl JSSDK {
-    pub fn create_test_order(&self, kind: String) -> js_sys::Promise {
-        let sdk = self.sdk.clone();
-
-        let future = async move {
-            let order = sdk.create_order(&kind).await.map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&order).unwrap())
-        };
-
-        future_to_promise(future)
-    }
-
     #[wasm_bindgen]
     pub fn refresh_order(&self, order_id: String) -> js_sys::Promise {
         let sdk = self.sdk.clone();
@@ -274,8 +271,12 @@ impl KVClient for JSClient {
 }
 
 impl KVStore for JSStorage {
+    fn env(&self) -> &Environment {
+        &self.environment
+    }
+
     fn purge(&mut self) -> Result<(), errors::InternalError> {
-        self.0.clear().map_err(|e| {
+        self.store.clear().map_err(|e| {
             errors::InternalError::StorageWriteFailed(
                 e.as_string().unwrap_or("unknown error".to_string()),
             )
@@ -283,7 +284,7 @@ impl KVStore for JSStorage {
     }
 
     fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
-        self.0.set(key, value).map_err(|e| {
+        self.store.set(key, value).map_err(|e| {
             errors::InternalError::StorageWriteFailed(
                 e.as_string().unwrap_or("unknown error".to_string()),
             )
@@ -291,7 +292,7 @@ impl KVStore for JSStorage {
     }
 
     fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
-        self.0.get(key).map_err(|e| {
+        self.store.get(key).map_err(|e| {
             errors::InternalError::StorageReadFailed(
                 e.as_string().unwrap_or("unknown error".to_string()),
             )

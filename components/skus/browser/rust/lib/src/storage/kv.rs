@@ -40,15 +40,21 @@ trait KVStoreHelpers<T: KVStore> {
 pub trait KVClient {
     type Store;
 
+    #[allow(clippy::needless_lifetimes)]
     fn get_store<'a>(&'a self) -> Result<RefMut<'a, Self::Store>, InternalError>
     where
         Self::Store: KVStore;
 }
 
 pub trait KVStore: Sized {
+    fn env(&self) -> &Environment;
     fn purge(&mut self) -> Result<(), InternalError>;
     fn set(&mut self, key: &str, value: &str) -> Result<(), InternalError>;
     fn get(&mut self, key: &str) -> Result<Option<String>, InternalError>;
+}
+
+fn key_from_environment(env: &Environment) -> String {
+    format!("skus:{}", env)
 }
 
 impl<C> KVStoreHelpers<C> for C
@@ -56,17 +62,22 @@ where
     C: KVStore,
 {
     fn get_state(&mut self) -> Result<KVState, InternalError> {
-        // FIXME environment
-        // FIXME shouldn't be rewards
-        let state = self.get("rewards:local")?.unwrap_or("{}".to_string());
+        let key = key_from_environment(self.env());
+        if let Ok(Some(state)) = self.get("rewards:local") {
+            // Perform a one time migration, clearing any old values
+            self.purge()?;
+            // and setting a new key with the prior value
+            self.set(&key, &state)?;
+        }
+        let state = self.get(&key)?.unwrap_or_else(|| "{}".to_string());
         Ok(serde_json::from_str(&state)?)
     }
 
     fn set_state(&mut self, state: &KVState) -> Result<(), InternalError> {
+        let key = key_from_environment(self.env());
         event!(Level::DEBUG, "set state");
         event!(Level::TRACE, state = %format!("{:#?}", state), "set state",);
-        // FIXME shouldn't be rewards
-        self.set("rewards:local", &serde_json::to_string(state)?)
+        self.set(&key, &serde_json::to_string(state)?)
     }
 }
 
@@ -110,7 +121,7 @@ where
         let state: KVState = store.get_state()?;
         let orders = state
             .orders
-            .and_then(|os| Some(os.into_iter().map(|(_, order)| order).collect()));
+            .map(|os| os.into_iter().map(|(_, order)| order).collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
         Ok(orders)
     }
@@ -160,15 +171,13 @@ where
     ) -> Result<Option<SingleUseCredentials>, InternalError> {
         let mut store = self.get_store()?;
         let state: KVState = store.get_state()?;
-        let credentials = if let Some(mut credentials) = state.credentials {
+        let credentials = state.credentials.and_then(|mut credentials| {
             if let Some(Credentials::SingleUse(credentials)) = credentials.items.remove(item_id) {
                 Some(credentials)
             } else {
                 None
             }
-        } else {
-            None
-        };
+        });
         event!(Level::DEBUG, credentials = ?credentials, "got credentials");
         return Ok(credentials);
     }
@@ -202,8 +211,7 @@ where
             {
                 return Err(InternalError::StorageWriteFailed(
                     "Item credentials were already initialized".to_string(),
-                )
-                .into());
+                ));
             }
         }
 
@@ -238,17 +246,15 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        )
-                        .into())
+                        ))
                     }
                 }
                 return store.set_state(&state);
             }
         }
-        Err(
-            InternalError::StorageWriteFailed("Item credentials were not initiated".to_string())
-                .into(),
-        )
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not initiated".to_string(),
+        ))
     }
 
     #[instrument]
@@ -273,16 +279,14 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        )
-                        .into())
+                        ))
                     }
                 }
             }
         }
-        Err(
-            InternalError::StorageWriteFailed("Item credentials were not completed".to_string())
-                .into(),
-        )
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not completed".to_string(),
+        ))
     }
 
     #[instrument]
@@ -309,8 +313,7 @@ where
                     _ => {
                         return Err(InternalError::StorageReadFailed(
                             "Item is not time limited".to_string(),
-                        )
-                        .into())
+                        ))
                     }
                 }
             }

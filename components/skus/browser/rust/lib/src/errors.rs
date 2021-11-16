@@ -127,6 +127,12 @@ impl From<InternalError> for RewardsError {
     }
 }
 
+impl From<(InternalError, usize)> for RewardsError {
+    fn from((e, _attempt): (InternalError, usize)) -> Self {
+        RewardsError(e)
+    }
+}
+
 impl From<serde_json::Error> for RewardsError {
     fn from(e: serde_json::Error) -> Self {
         RewardsError(e.into())
