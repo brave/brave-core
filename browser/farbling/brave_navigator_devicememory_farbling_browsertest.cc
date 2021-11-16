@@ -39,7 +39,7 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
   }
@@ -50,12 +50,6 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
       const BraveDeviceMemoryFarblingBrowserTest&) = delete;
 
   ~BraveDeviceMemoryFarblingBrowserTest() override {}
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -116,8 +110,8 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
                        FarbleDeviceMemory) {
-  std::string domain1 = "b.com";
-  std::string domain2 = "z.com";
+  std::string domain1 = "b.test";
+  std::string domain2 = "d.test";
   GURL url1 = https_server_.GetURL(domain1, "/simple.html");
   GURL url2 = https_server_.GetURL(domain2, "/simple.html");
   // set memory to 10GB
@@ -136,15 +130,15 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   // Farbling level: default
   SetFingerprintingDefault(domain1);
   NavigateToURLUntilLoadStop(url1);
-  EXPECT_EQ(4096, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
   SetFingerprintingDefault(domain2);
   NavigateToURLUntilLoadStop(url2);
-  EXPECT_EQ(2048, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: maximum
   BlockFingerprinting(domain1);
   NavigateToURLUntilLoadStop(url1);
-  EXPECT_EQ(1024, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(2048, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
   NavigateToURLUntilLoadStop(url2);
   EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));

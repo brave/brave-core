@@ -76,13 +76,10 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
   ~PermissionManagerBrowserTest() override = default;
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
-
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
 
@@ -126,7 +123,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                        RequestEthereumPermissions) {
-  const GURL& url = https_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
@@ -220,7 +217,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                        RequestEthereumPermissionsTabClosed) {
-  const GURL& url = https_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
@@ -280,9 +277,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
 
-  GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
+  GURL top_url(https_server()->GetURL("a.test", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
-  GURL iframe_url(https_server()->GetURL("b.com", "/"));
+  GURL iframe_url(https_server()->GetURL("b.test", "/"));
   EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
 
   auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
@@ -299,7 +296,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
-  const GURL& url = https_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   std::vector<std::string> addresses = {

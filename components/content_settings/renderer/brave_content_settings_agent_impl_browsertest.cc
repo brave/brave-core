@@ -55,7 +55,7 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHashFarblingBalanced = 204;
+const int kExpectedImageDataHashFarblingBalanced = 172;
 const int kExpectedImageDataHashFarblingOff = 0;
 const int kExpectedImageDataHashFarblingMaximum =
     kExpectedImageDataHashFarblingBalanced;
@@ -66,13 +66,13 @@ const char kEmptyCookie[] = "";
 
 const char kTestCookie[] = COOKIE_STR;
 
-const char kCookieScript[] =
-    "document.cookie = '" COOKIE_STR "'"
-    "; document.cookie;";
+const char kCookieScript[] = "document.cookie = '" COOKIE_STR
+                             "'"
+                             "; document.cookie;";
 
-const char kCookie3PScript[] =
-    "document.cookie = '" COOKIE_STR ";SameSite=None;Secure'"
-    "; document.cookie;";
+const char kCookie3PScript[] = "document.cookie = '" COOKIE_STR
+                               ";SameSite=None;Secure'"
+                               "; document.cookie;";
 
 const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
@@ -101,6 +101,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     content::SetupCrossSiteRedirector(&https_server_);
@@ -110,32 +111,23 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(https_server_.Start());
 
-    url_ = https_server_.GetURL("a.com", "/iframe.html");
-    cross_site_url_ = https_server_.GetURL("b.com", "/simple.html");
-    cross_site_image_url_ =
-        https_server_.GetURL("b.com", "/logo.png");
-    link_url_ = https_server_.GetURL("a.com", "/simple_link.html");
-    redirect_to_cross_site_url_ = https_server_.GetURL(
-        "a.com", "/cross-site/b.com/simple.html");
+    url_ = https_server_.GetURL("a.test", "/iframe.html");
+    cross_site_url_ = https_server_.GetURL("b.test", "/simple.html");
+    cross_site_image_url_ = https_server_.GetURL("b.test", "/logo.png");
+    link_url_ = https_server_.GetURL("a.test", "/simple_link.html");
+    redirect_to_cross_site_url_ =
+        https_server_.GetURL("a.test", "/cross-site/b.test/simple.html");
     redirect_to_cross_site_image_url_ =
-        https_server_.GetURL("a.com", "/cross-site/b.com/logo.png");
-    same_site_url_ =
-        https_server_.GetURL("sub.a.com", "/simple.html");
-    same_origin_url_ = https_server_.GetURL("a.com", "/simple.html");
-    same_origin_image_url_ =
-        https_server_.GetURL("a.com", "/logo.png");
-    top_level_page_url_ = https_server_.GetURL("a.com", "/");
+        https_server_.GetURL("a.test", "/cross-site/b.test/logo.png");
+    same_site_url_ = https_server_.GetURL("sub.a.test", "/simple.html");
+    same_origin_url_ = https_server_.GetURL("a.test", "/simple.html");
+    same_origin_image_url_ = https_server_.GetURL("a.test", "/logo.png");
+    top_level_page_url_ = https_server_.GetURL("a.test", "/");
     top_level_page_pattern_ =
-        ContentSettingsPattern::FromString("https://a.com/*");
-    iframe_pattern_ = ContentSettingsPattern::FromString("https://b.com/*");
+        ContentSettingsPattern::FromString("https://a.test/*");
+    iframe_pattern_ = ContentSettingsPattern::FromString("https://b.test/*");
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    // This is needed to load pages from "domain.com" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
   void SaveReferrer(const net::test_server::HttpRequest& request) {
@@ -246,24 +238,22 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void BlockCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url());
+    brave_shields::SetCookieControlType(content_settings(), ControlType::BLOCK,
+                                        top_level_page_url());
   }
 
   void AllowCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url());
+    brave_shields::SetCookieControlType(content_settings(), ControlType::ALLOW,
+                                        top_level_page_url());
   }
 
   void ShieldsDown() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(),
-                                          false,
+    brave_shields::SetBraveShieldsEnabled(content_settings(), false,
                                           top_level_page_url());
   }
 
   void ShieldsUp() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(),
-                                          true,
+    brave_shields::SetBraveShieldsEnabled(content_settings(), true,
                                           top_level_page_url());
   }
 
@@ -284,9 +274,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(content_settings(),
-                                                ControlType::DEFAULT,
-                                                top_level_page_url());
+    brave_shields::SetFingerprintingControlType(
+        content_settings(), ControlType::DEFAULT, top_level_page_url());
   }
 
   void BlockScripts() {
@@ -489,7 +478,7 @@ class BraveContentSettingsAgentImplV2BrowserTest
 #endif
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
                        MAYBE_WebGLReadPixels) {
-  std::string origin = "a.com";
+  std::string origin = "a.test";
   std::string path = "/webgl/readpixels.html";
 
   // Farbling level: maximum
@@ -694,8 +683,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             redirect_to_cross_site_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
             redirect_to_cross_site_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            link_url().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -799,8 +787,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
             redirect_to_cross_site_url().GetOrigin().spec());
   // Intermidiate same-origin navigation gets full referrer.
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            link_url().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1132,7 +1119,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Throws in a sandboxed iframe.
   const GURL sandboxed(
-      https_server().GetURL("a.com", "/sandboxed_iframe.html"));
+      https_server().GetURL("a.test", "/sandboxed_iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sandboxed));
   CheckLocalStorageThrows(child_frame());
 }
@@ -1140,14 +1127,14 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockScripts) {
   BlockScripts();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowScripts) {
   AllowScripts();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
@@ -1156,19 +1143,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   BlockScripts();
   ShieldsDown();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockScriptsShieldsDownInOtherTab) {
-  // Turn off shields in a.com.
+  // Turn off shields in a.test.
   ShieldsDown();
-  // Block scripts in b.com.
+  // Block scripts in b.test.
   content_settings()->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
-  NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html");
+  NavigateToURLUntilLoadStop("b.test", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
 }
