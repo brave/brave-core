@@ -5,7 +5,7 @@ use std::fmt;
 use std::rc::Rc;
 
 use async_trait::async_trait;
-use console_error_panic_hook;
+
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::futures_0_3::{future_to_promise, JsFuture};
@@ -197,7 +197,7 @@ impl JSSDK {
 
         let future = async move {
             let presentation = sdk
-                .prepare_credentials_presentation(&origin, &path.unwrap_or("/".to_string()))
+                .prepare_credentials_presentation(&origin, &path.unwrap_or_else(|| "/".to_string()))
                 .await
                 .map_err(|e| e.to_string())?;
             Ok(JsValue::from_serde(&presentation).unwrap())
@@ -222,7 +222,7 @@ impl JSSDK {
             sdk.present_order_credentials(
                 &order_id,
                 &subdomain.unwrap_or(host),
-                &path.unwrap_or("/".to_string()),
+                &path.unwrap_or_else(|| "/".to_string()),
             )
             .await
             .map_err(|e| e.to_string())?;
@@ -245,7 +245,10 @@ impl JSSDK {
             let host = window.location().hostname()?;
 
             if let Some(cred) = sdk
-                .present_credentials(&subdomain.unwrap_or(host), &path.unwrap_or("/".to_string()))
+                .present_credentials(
+                    &subdomain.unwrap_or(host),
+                    &path.unwrap_or_else(|| "/".to_string()),
+                )
                 .await
                 .map_err(|e| e.to_string())?
             {
@@ -262,11 +265,11 @@ impl JSSDK {
 impl KVClient for JSClient {
     type Store = JSStorage;
 
+    #[allow(clippy::needless_lifetimes)]
     fn get_store<'a>(&'a self) -> Result<RefMut<'a, JSStorage>, errors::InternalError> {
-        Ok(self
-            .local_storage
+        self.local_storage
             .try_borrow_mut()
-            .or(Err(errors::InternalError::BorrowFailed))?)
+            .or(Err(errors::InternalError::BorrowFailed))
     }
 }
 
@@ -278,7 +281,7 @@ impl KVStore for JSStorage {
     fn purge(&mut self) -> Result<(), errors::InternalError> {
         self.store.clear().map_err(|e| {
             errors::InternalError::StorageWriteFailed(
-                e.as_string().unwrap_or("unknown error".to_string()),
+                e.as_string().unwrap_or_else(|| "unknown error".to_string()),
             )
         })
     }
@@ -286,7 +289,7 @@ impl KVStore for JSStorage {
     fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
         self.store.set(key, value).map_err(|e| {
             errors::InternalError::StorageWriteFailed(
-                e.as_string().unwrap_or("unknown error".to_string()),
+                e.as_string().unwrap_or_else(|| "unknown error".to_string()),
             )
         })
     }
@@ -294,7 +297,7 @@ impl KVStore for JSStorage {
     fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
         self.store.get(key).map_err(|e| {
             errors::InternalError::StorageReadFailed(
-                e.as_string().unwrap_or("unknown error".to_string()),
+                e.as_string().unwrap_or_else(|| "unknown error".to_string()),
             )
         })
     }
@@ -371,10 +374,8 @@ impl HTTPClient for JSClient {
         let typebuf: js_sys::Uint8Array = js_sys::Uint8Array::new(&body.unwrap());
         let mut body = vec![0; typebuf.length() as usize];
         typebuf.copy_to(&mut body);
-        Ok(response
-            .body(body)
-            .or(Err(errors::InternalError::InvalidResponse(
-                "error getting body".to_string(),
-            )))?)
+        Ok(response.body(body).map_err(|_| {
+            errors::InternalError::InvalidResponse("error getting body".to_string())
+        })?)
     }
 }
