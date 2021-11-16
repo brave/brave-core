@@ -892,7 +892,6 @@ brave_java_resources = [
   "java/res/xml/brave_theme_preferences.xml",
   "java/res/xml/brave_vpn_preferences.xml",
   "java/res/xml/brave_webrtc_policy_preferences.xml",
-  "java/res/xml/clear_browsing_data_preferences_tab.xml",
   "java/res/xml/desktop_mode_preferences.xml",
   "java/res/xml/developer_preferences.xml",
   "java/res/xml/ens_preferences.xml",
