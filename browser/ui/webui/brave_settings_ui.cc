@@ -47,6 +47,10 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
+#if defined(OS_WIN)
+#include "brave/browser/ui/webui/new_tab_page/ms_edge_protocol_message_handler.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -63,6 +67,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_SPARKLE)
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
+#endif
+#if defined(OS_WIN)
+  if (MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler())
+    web_ui->AddMessageHandler(std::make_unique<MSEdgeProtocolMessageHandler>());
 #endif
 }
 
@@ -105,4 +113,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+#if defined(OS_WIN)
+  html_source->AddBoolean(
+      "canSetDefaultMSEdgeProtocolHandler",
+      MSEdgeProtocolMessageHandler::CanSetDefaultMSEdgeProtocolHandler());
+#endif
 }

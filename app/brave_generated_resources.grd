@@ -838,6 +838,19 @@ Are you sure you want to do this?
         <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
           Same as Windows
         </message>
+        <!-- MS-Edge protocol handler setting -->
+        <message name="IDS_SETTINGS_SYSTEM_PAGE_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL" desc="Text for ms-edge protocol handler option">
+          Default microsoft-edge protocol handler
+        </message>
+        <message name="IDS_SETTINGS_SYSTEM_PAGE_MAKE_BRAVE_AS_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL" desc="Text for ms-edge protocol handler option's sublabel">
+          Make Brave the microsoft-edge protocol handler
+        </message>
+        <message name="IDS_SETTINGS_SYSTEM_PAGE_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_MAKE_DEFAULT_BUTTON_LABEL" desc="Text for make default button">
+          Make default
+        </message>
+        <message name="IDS_SETTINGS_SYSTEM_PAGE_BRAVE_IS_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL" desc="Text for option when brave is already set as a default handler">
+          Brave is default microsoft-edge protocol handler
+        </message>
       </if>
       <if expr="is_macosx">
         <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
