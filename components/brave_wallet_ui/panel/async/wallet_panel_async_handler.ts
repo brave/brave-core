@@ -168,9 +168,9 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   }
 
   const apiProxy = await getAPIProxy()
-  await navigateToConnectHardwareWallet(store)
 
   if (hardwareAccount.hardware.vendor === kLedgerHardwareVendor) {
+    await navigateToConnectHardwareWallet(store)
     const { success, error, deviceError } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
       if (deviceError) {
@@ -190,6 +190,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       refreshTransactionHistory(txInfo.fromAddress)
     }
   } else if (hardwareAccount.hardware.vendor === kTrezorHardwareVendor) {
+    apiProxy.setCloseOnDeactivate(false)
     const { success, error } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
       console.log(error)
@@ -198,7 +199,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       refreshTransactionHistory(txInfo.fromAddress)
     }
 
-    await store.dispatch(PanelActions.navigateToMain())
+    apiProxy.setCloseOnDeactivate(true)
   }
 })
 
