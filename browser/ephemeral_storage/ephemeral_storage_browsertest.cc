@@ -186,8 +186,8 @@ void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {
 }
 
 void EphemeralStorageBrowserTest::TearDownInProcessBrowserTestFixture() {
-  InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
 }
 
 void EphemeralStorageBrowserTest::SetValuesInFrame(RenderFrameHost* frame,
