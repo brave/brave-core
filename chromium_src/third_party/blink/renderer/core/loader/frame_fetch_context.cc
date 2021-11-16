@@ -11,12 +11,21 @@ String FrameFetchContext::GetCacheIdentifierIfCrossSiteSubframe() const {
   if (GetResourceFetcherProperties().IsDetached())
     return cache_identifier_if_cross_site_subframe_;
 
+  // Make sure to always use the actual data, because the frame can be reused
+  // and identifiers can be changed.
   String cache_identifier;
   if (document_->domWindow()->IsCrossSiteSubframeIncludingScheme()) {
     if (auto top_frame_origin = GetTopFrameOrigin()) {
-      cache_identifier = top_frame_origin->RegistrableDomain();
-      if (cache_identifier.IsEmpty())
-        cache_identifier = top_frame_origin->Host();
+      if (top_frame_origin_for_cache_identifier_ == top_frame_origin) {
+        return cache_identifier_if_cross_site_subframe_;
+      } else {
+        // Cache top frame origin to skip unnecessary RegistrableDomain/Host
+        // calls when nothing has changed.
+        top_frame_origin_for_cache_identifier_ = top_frame_origin;
+        cache_identifier = top_frame_origin->RegistrableDomain();
+        if (cache_identifier.IsEmpty())
+          cache_identifier = top_frame_origin->Host();
+      }
     }
   }
 

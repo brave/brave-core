@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_FETCHER_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_FETCHER_H_
 
-#define GetCacheIdentifier                                \
-  GetCacheIdentifierIfCrossSiteSubframeOrDefault() const; \
+#define GetCacheIdentifier           \
+  GetContextCacheIdentifier() const; \
   String GetCacheIdentifier
 
 #include "../../../../../../../../third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"

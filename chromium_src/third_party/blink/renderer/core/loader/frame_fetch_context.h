@@ -13,6 +13,8 @@
   String GetCacheIdentifierIfCrossSiteSubframe() const override; \
                                                                  \
  private:                                                        \
+  mutable scoped_refptr<const SecurityOrigin>                    \
+      top_frame_origin_for_cache_identifier_;                    \
   mutable String cache_identifier_if_cross_site_subframe_;       \
                                                                  \
  public:                                                         \

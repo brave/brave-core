@@ -8,10 +8,10 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 
-#define DefaultCacheIdentifier                           \
-  DefaultCacheIdentifier().IsEmpty()                     \
-      ? GetCacheIdentifierIfCrossSiteSubframeOrDefault() \
-      : GetCacheIdentifierIfCrossSiteSubframeOrDefault
+// Replace DefaultCacheIdentifier call with our method using this macro.
+#define DefaultCacheIdentifier                                     \
+  DefaultCacheIdentifier().IsEmpty() ? GetContextCacheIdentifier() \
+                                     : GetContextCacheIdentifier
 
 #include "../../../../../../../../third_party/blink/renderer/platform/loader/fetch/resource_fetcher.cc"
 
@@ -19,7 +19,10 @@
 
 namespace blink {
 
-String ResourceFetcher::GetCacheIdentifierIfCrossSiteSubframeOrDefault() const {
+// This method returns a custom cache identifier for a Context to be used in
+// blink::MemoryCache to properly partition requests from third-party frames
+// when already existing entries in blink::MemoryCache should not be used.
+String ResourceFetcher::GetContextCacheIdentifier() const {
   if (!base::FeatureList::IsEnabled(features::kPartitionBlinkMemoryCache)) {
     return MemoryCache::DefaultCacheIdentifier();
   }

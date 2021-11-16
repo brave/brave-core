@@ -73,7 +73,7 @@ class EphemeralStorageBlinkMemoryCacheSplitBrowserTest
       public testing::WithParamInterface<BlinkMemoryCachePartitionTestCase> {};
 
 IN_PROC_BROWSER_TEST_P(EphemeralStorageBlinkMemoryCacheSplitBrowserTest,
-                       BlinkMemoryCacheIsSplitted) {
+                       BlinkMemoryCacheIsPartitioned) {
   const auto& test_case = GetParam();
   for (Browser* browser_instance : {browser(), CreateIncognitoBrowser()}) {
     const GURL image_url =
