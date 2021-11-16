@@ -877,15 +877,16 @@ TEST_F(EthTxControllerUnitTest, GetNonceForHardwareTransaction) {
   callback_called = false;
   eth_tx_controller_->GetTransactionMessageToSign(
       tx_meta_id,
-      base::BindLambdaForTesting([&](const absl::optional<std::string>&
-                                         result) {
-        EXPECT_EQ(result,
-                  "0xf873808517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a2"
-                  "6051f74c88016345785d8a0000b844095ea7b30000000000000000000000"
-                  "00bfb30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000"
-                  "0000000000000000000000000000003fffffffffffffff8205398080");
-        callback_called = true;
-      }));
+      base::BindLambdaForTesting(
+          [&](const absl::optional<std::string>& result) {
+            EXPECT_EQ(
+                result,
+                "0xf873808517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a2"
+                "6051f74c88016345785d8a0000b844095ea7b30000000000000000000000"
+                "00bfb30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000"
+                "0000000000000000000000000000003fffffffffffffff8205398080");
+            callback_called = true;
+          }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_TRUE(observer.TxStatusChanged());
