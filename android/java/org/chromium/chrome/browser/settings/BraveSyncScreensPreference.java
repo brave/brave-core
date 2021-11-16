@@ -164,6 +164,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private EditText mCodeWords;
     private FrameLayout mLayoutMobile;
     private FrameLayout mLayoutLaptop;
+    private AlertDialog mFinalWarningDialog;
 
     BraveSyncWorker getBraveSyncWorker() {
         return BraveSyncWorker.get();
@@ -761,16 +762,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 (dialog, which) -> {
                     runWhenYes.run();
                     dialog.dismiss();
+                    mFinalWarningDialog = null;
                 });
         confirmDialog.setNegativeButton(
                 getActivity().getResources().getString(android.R.string.cancel),
                 (dialog, which) -> {
                     runWhenCancel.run();
                     dialog.dismiss();
+                    mFinalWarningDialog = null;
                 });
-        confirmDialog.setOnCancelListener((dialog) -> { runWhenCancel.run(); });
+        confirmDialog.setOnCancelListener((dialog) -> {
+            runWhenCancel.run();
+            mFinalWarningDialog = null;
+        });
 
-        confirmDialog.show();
+        mFinalWarningDialog = confirmDialog.show();
     }
 
     private void seedWordsReceivedImpl(String seedWords) {
@@ -901,7 +907,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         } catch (RuntimeException e) {
             Log.e(TAG, "Could not start camera source.", e);
         }
-        setAppropriateView();
+
+        if (mFinalWarningDialog != null) {
+            mFinalWarningDialog.dismiss();
+            synchronized (mQrInProcessingLock) {
+                mQrInProcessing = false;
+            }
+        }
     }
 
     @Override
