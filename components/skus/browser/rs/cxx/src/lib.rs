@@ -76,7 +76,7 @@ mod ffi {
     }
 
     #[derive(Debug)]
-    pub enum RewardsResult {
+    pub enum SkusResult {
         Ok,
         RequestFailed,
         InternalServer,
@@ -109,7 +109,7 @@ mod ffi {
     }
     #[derive(Debug)]
     pub struct HttpResponse<'a> {
-        pub result: RewardsResult,
+        pub result: SkusResult,
         pub return_code: u16,
         pub headers: &'a CxxVector<CxxString>,
         pub body: &'a CxxVector<u8>,
@@ -321,7 +321,7 @@ impl CppSDK {
 pub struct RefreshOrderCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::RefreshOrderCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         order: &str,
     ),
 );
@@ -340,7 +340,7 @@ async fn refresh_order_task(
     match sdk.refresh_order(&order_id).await {
         Ok(order) => {
             let order = serde_json::to_string(&order).unwrap();
-            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &order)
+            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order)
         }
         Err(e) => callback.0(
             callback_state.into_raw(),
@@ -358,7 +358,7 @@ async fn refresh_order_task(
 pub struct FetchOrderCredentialsCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::FetchOrderCredentialsCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
     ),
 );
 
@@ -374,7 +374,7 @@ async fn fetch_order_credentials_task(
     order_id: String,
 ) {
     match sdk.fetch_order_credentials(&order_id).await {
-        Ok(_) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok),
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
         Err(e) => callback.0(
             callback_state.into_raw(),
             e.source()
@@ -390,7 +390,7 @@ async fn fetch_order_credentials_task(
 pub struct PrepareCredentialsPresentationCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::PrepareCredentialsPresentationCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         presentation: &str,
     ),
 );
@@ -410,10 +410,10 @@ async fn prepare_credentials_presentation_task(
     match sdk.prepare_credentials_presentation(&domain, &path).await {
         Ok(Some(presentation)) => callback.0(
             callback_state.into_raw(),
-            ffi::RewardsResult::Ok,
+            ffi::SkusResult::Ok,
             &presentation,
         ),
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
         Err(e) => callback.0(
             callback_state.into_raw(),
             e.source()
@@ -430,7 +430,7 @@ async fn prepare_credentials_presentation_task(
 pub struct CredentialSummaryCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         summary: &str,
     ),
 );
@@ -449,9 +449,9 @@ async fn credential_summary_task(
     match sdk.matching_credential_summary(&domain).await {
         Ok(Some(summary)) => {
             let summary = serde_json::to_string(&summary).unwrap();
-            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &summary)
+            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary)
         }
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
         Err(e) => callback.0(
             callback_state.into_raw(),
             e.source()

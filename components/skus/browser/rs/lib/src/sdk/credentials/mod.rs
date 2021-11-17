@@ -4,7 +4,7 @@ mod present;
 use chrono::Utc;
 use tracing::{error, instrument};
 
-use crate::errors::{InternalError, RewardsError};
+use crate::errors::{InternalError, SkusError};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
@@ -14,7 +14,7 @@ where
     U: HTTPClient + StorageClient,
 {
     #[instrument]
-    pub async fn delete_order_credentials(&self, order_id: &str) -> Result<(), RewardsError> {
+    pub async fn delete_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         let order = self.client.get_order(order_id).await?;
 
         if let Some(order) = order {
@@ -30,7 +30,7 @@ where
         &self,
         order_id: &str,
         domain: &str,
-    ) -> Result<Option<CredentialSummary>, RewardsError> {
+    ) -> Result<Option<CredentialSummary>, SkusError> {
         let order = self.client.get_order(order_id).await?;
 
         if let Some(order) = order {
@@ -102,7 +102,7 @@ where
     pub async fn matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, RewardsError> {
+    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
         Ok(self
             .client
             .get_time_limited_creds(item_id)
@@ -119,7 +119,7 @@ where
     pub async fn last_matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, RewardsError> {
+    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
         Ok(self
             .client
             .get_time_limited_creds(item_id)
@@ -131,7 +131,7 @@ where
     pub async fn matching_credential_summary(
         &self,
         domain: &str,
-    ) -> Result<Option<CredentialSummary>, RewardsError> {
+    ) -> Result<Option<CredentialSummary>, SkusError> {
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {

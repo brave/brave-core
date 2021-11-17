@@ -39,7 +39,7 @@ impl NativeClient {
             &req,
             |context, resp| {
                 let resp = match resp.result {
-                    ffi::RewardsResult::Ok => {
+                    ffi::SkusResult::Ok => {
                         // FIXME implement from
 
                         let mut response = http::Response::builder();

@@ -87,7 +87,7 @@ void SkusSdkFetcherImpl::OnFetchComplete(
   if (!response_body) {
     std::vector<uint8_t> body_bytes;
     skus::HttpResponse resp = {
-        skus::RewardsResult::RequestFailed,
+        skus::SkusResult::RequestFailed,
         500,
         {},
         body_bytes,
@@ -99,7 +99,7 @@ void SkusSdkFetcherImpl::OnFetchComplete(
   std::vector<uint8_t> body_bytes(response_body->begin(), response_body->end());
 
   skus::HttpResponse resp = {
-      skus::RewardsResult::Ok,
+      skus::SkusResult::Ok,
       200,
       {},
       body_bytes,

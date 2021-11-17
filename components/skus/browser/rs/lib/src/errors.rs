@@ -107,34 +107,34 @@ impl From<serde_json::Error> for InternalError {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
-pub struct RewardsError(pub(crate) InternalError);
+pub struct SkusError(pub(crate) InternalError);
 
-impl Display for RewardsError {
+impl Display for SkusError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.0)
     }
 }
 
-impl Error for RewardsError {
+impl Error for SkusError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         Some(&self.0)
     }
 }
 
-impl From<InternalError> for RewardsError {
+impl From<InternalError> for SkusError {
     fn from(e: InternalError) -> Self {
-        RewardsError(e)
+        SkusError(e)
     }
 }
 
-impl From<(InternalError, usize)> for RewardsError {
+impl From<(InternalError, usize)> for SkusError {
     fn from((e, _attempt): (InternalError, usize)) -> Self {
-        RewardsError(e)
+        SkusError(e)
     }
 }
 
-impl From<serde_json::Error> for RewardsError {
+impl From<serde_json::Error> for SkusError {
     fn from(e: serde_json::Error) -> Self {
-        RewardsError(e.into())
+        SkusError(e.into())
     }
 }

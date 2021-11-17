@@ -8,7 +8,7 @@ use tracing::instrument;
 #[cfg(feature = "e2e_test")]
 use serde_json::{json, to_vec};
 
-use crate::errors::{InternalError, RewardsError};
+use crate::errors::{InternalError, SkusError};
 use crate::http::HttpHandler;
 use crate::models::*;
 use crate::sdk::SDK;
@@ -48,7 +48,7 @@ struct OrderItemResponse {
 }
 
 impl TryFrom<OrderItemResponse> for OrderItem {
-    type Error = RewardsError;
+    type Error = SkusError;
 
     fn try_from(order_item: OrderItemResponse) -> Result<Self, Self::Error> {
         let price = order_item.price.parse::<f64>().map_err(|_| {
@@ -94,7 +94,7 @@ struct OrderResponse {
 }
 
 impl TryFrom<OrderResponse> for Order {
-    type Error = RewardsError;
+    type Error = SkusError;
 
     fn try_from(order: OrderResponse) -> Result<Self, Self::Error> {
         let total_price = order.total_price.parse::<f64>().map_err(|_| {
@@ -128,7 +128,7 @@ where
     U: HTTPClient + StorageClient,
 {
     #[cfg(feature = "e2e_test")]
-    pub async fn create_order(&self, kind: &str) -> Result<Order, RewardsError> {
+    pub async fn create_order(&self, kind: &str) -> Result<Order, SkusError> {
         let sku = match kind {
             "trial" => "AgEVc2VhcmNoLmJyYXZlLnNvZnR3YXJlAh9zZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBkZW1vAAIWc2t1PXNlYXJjaC1iZXRhLWFjY2VzcwACB3ByaWNlPTAAAgxjdXJyZW5jeT1CQVQAAi1kZXNjcmlwdGlvbj1TZWFyY2ggY2xvc2VkIGJldGEgcHJvZ3JhbSBhY2Nlc3MAAhpjcmVkZW50aWFsX3R5cGU9c2luZ2xlLXVzZQAABiB3uXfAAkNSRQd24jSauRny3VM0BYZ8yOclPTEgPa0xrA==",
             "paid" => "MDAyOWxvY2F0aW9uIHRvZ2V0aGVyLmJzZy5icmF2ZS5zb2Z0d2FyZQowMDMwaWRlbnRpZmllciBicmF2ZS10b2dldGhlci1wYWlkIHNrdSB0b2tlbiB2MQowMDIwY2lkIHNrdT1icmF2ZS10b2dldGhlci1wYWlkCjAwMTBjaWQgcHJpY2U9NQowMDE1Y2lkIGN1cnJlbmN5PVVTRAowMDQzY2lkIGRlc2NyaXB0aW9uPU9uZSBtb250aCBwYWlkIHN1YnNjcmlwdGlvbiBmb3IgQnJhdmUgVG9nZXRoZXIKMDAyNWNpZCBjcmVkZW50aWFsX3R5cGU9dGltZS1saW1pdGVkCjAwMjZjaWQgY3JlZGVudGlhbF92YWxpZF9kdXJhdGlvbj1QMU0KMDAyZnNpZ25hdHVyZSDKLJ7NuuzP3KdmTdVnn0dI3JmIfNblQKmY+WBJOqnQJAo=",
@@ -179,7 +179,7 @@ where
     }
 
     #[instrument]
-    pub async fn fetch_order(&self, order_id: &str) -> Result<Order, RewardsError> {
+    pub async fn fetch_order(&self, order_id: &str) -> Result<Order, SkusError> {
         let request_with_retries = FutureRetry::new(
             || async {
                 let mut builder = http::Request::builder();
@@ -206,7 +206,7 @@ where
     }
 
     #[instrument]
-    pub async fn refresh_order(&self, order_id: &str) -> Result<Order, RewardsError> {
+    pub async fn refresh_order(&self, order_id: &str) -> Result<Order, SkusError> {
         let order = self.fetch_order(order_id).await?;
         self.client.upsert_order(&order).await?;
         Ok(order)
