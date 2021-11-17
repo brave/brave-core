@@ -5,6 +5,7 @@
 import UIKit
 import WebKit
 import Data
+import Shared
 
 class LinkPreviewViewController: UIViewController {
     
@@ -19,7 +20,11 @@ class LinkPreviewViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) { fatalError() }
     
     override func viewDidLoad() {
-        let wk = WKWebView(frame: view.frame)
+        let configuration = WKWebViewConfiguration().then {
+            $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+        }
+        
+        let wk = WKWebView(frame: view.frame, configuration: configuration)
         
         let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
         

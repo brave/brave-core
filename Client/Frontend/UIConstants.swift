@@ -7,8 +7,6 @@ import Shared
 import BraveShared
 
 public struct UIConstants {
-    static let aboutHomePage = URL(string: "\(WebServer.sharedInstance.base)/about/home/")!
-
     static let defaultPadding: CGFloat = 10
     static let snackbarButtonHeight: CGFloat = 48
     static let topToolbarHeight: CGFloat = 44

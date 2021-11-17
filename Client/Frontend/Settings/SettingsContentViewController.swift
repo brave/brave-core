@@ -65,7 +65,7 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
         } else {
             self.timer = nil
         }
-        self.webView.load(URLRequest(url: url))
+        self.webView.load(PrivilegedRequest(url: url) as URLRequest)
         self.interstitialSpinnerView.startAnimating()
     }
 
@@ -107,7 +107,10 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
 
     func makeWebView() -> BraveWebView {
         let frame = CGRect(width: 1, height: 1)
-        let webView = BraveWebView(frame: frame)
+        let configuration = WKWebViewConfiguration().then {
+            $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+        }
+        let webView = BraveWebView(frame: frame, configuration: configuration)
         webView.allowsLinkPreview = false
         webView.navigationDelegate = self
         return webView

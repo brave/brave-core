@@ -503,10 +503,8 @@ class SettingsViewController: TableViewController {
                     },
                     accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.settingsLicenses, selection: { [unowned self] in
-                    guard let url = URL(string: WebServer.sharedInstance.base) else { return }
-                    
                     let licenses = SettingsContentViewController().then {
-                        $0.url = url.appendingPathComponent("about").appendingPathComponent("license")
+                        $0.url = URL(string: "\(InternalURL.baseUrl)/\(AboutLicenseHandler.path)")
                     }
                     self.navigationController?.pushViewController(licenses, animated: true)
                     }, accessory: .disclosureIndicator)
