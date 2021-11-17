@@ -10,7 +10,7 @@ cxx = "1.0"
 async-trait = { version = "0.1", git = "https://github.com/dtolnay/async-trait" }
 futures-preview = { version = "0.3.0-alpha.17" }
 libc = { version = "0.2" }
-brave-rewards = { git = "ssh://git@github.com/brave-intl/br-rs", branch = "skus" }
+skus = { path = "../lib" }
 serde_json = "1.0"
 tracing-subscriber = "0.2"
 tracing = "0.1"
