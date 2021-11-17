@@ -19,7 +19,7 @@ const int kMaxResponseSize = 1024 * 1024;
 
 }  // namespace
 
-namespace brave_rewards {
+namespace skus {
 
 SkusSdkFetcherImpl::SkusSdkFetcherImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -28,11 +28,11 @@ SkusSdkFetcherImpl::SkusSdkFetcherImpl(
 SkusSdkFetcherImpl::~SkusSdkFetcherImpl() {}
 
 void SkusSdkFetcherImpl::BeginFetch(
-    const brave_rewards::HttpRequest& req,
+    const skus::HttpRequest& req,
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-             brave_rewards::HttpResponse)> callback,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
+        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+             skus::HttpResponse)> callback,
+    rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(static_cast<std::string>(req.url));
   resource_request->method = static_cast<std::string>(req.method).c_str();
@@ -80,14 +80,14 @@ SkusSdkFetcherImpl::GetNetworkTrafficAnnotationTag() {
 
 void SkusSdkFetcherImpl::OnFetchComplete(
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-             brave_rewards::HttpResponse)> callback,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx,
+        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+             skus::HttpResponse)> callback,
+    rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
     std::unique_ptr<std::string> response_body) {
   if (!response_body) {
     std::vector<uint8_t> body_bytes;
-    brave_rewards::HttpResponse resp = {
-        brave_rewards::RewardsResult::RequestFailed,
+    skus::HttpResponse resp = {
+        skus::RewardsResult::RequestFailed,
         500,
         {},
         body_bytes,
@@ -98,8 +98,8 @@ void SkusSdkFetcherImpl::OnFetchComplete(
 
   std::vector<uint8_t> body_bytes(response_body->begin(), response_body->end());
 
-  brave_rewards::HttpResponse resp = {
-      brave_rewards::RewardsResult::Ok,
+  skus::HttpResponse resp = {
+      skus::RewardsResult::Ok,
       200,
       {},
       body_bytes,
@@ -108,4 +108,4 @@ void SkusSdkFetcherImpl::OnFetchComplete(
   callback(std::move(ctx), resp);
 }
 
-}  // namespace brave_rewards
+}  // namespace skus
