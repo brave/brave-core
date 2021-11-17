@@ -12,20 +12,19 @@ export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeU
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
   GetAccounts = 'trezor-get-accounts',
-  SignTransaction = 'trezor-sign-treansaction',
+  SignTransaction = 'trezor-sign-transaction',
   SignMessage = 'trezor-sign-message'
 }
+
+export enum TrezorErrorsCodes {
+  BridgeNotReady = 0,
+  CommandInProgress = 1
+}
+
 export type CommandMessage = {
   command: TrezorCommand
   id: string
   origin: string
-}
-export type UnlockCommand = CommandMessage & {
-  command: TrezorCommand.Unlock
-}
-export type UnlockResponse = CommandMessage & {
-  result: Boolean
-  error?: Unsuccessful
 }
 export type TrezorAccountPath = {
   path: string
@@ -39,15 +38,29 @@ export type TrezorError = {
   error: string
   code?: string | number
 }
-export type TrezorGetPublicKeyResponse = Unsuccessful | Success<HDNodeResponse[]>
+
+// Unlock command
+export type UnlockResponse = Unsuccessful | {
+  success: Boolean
+}
+export type UnlockResponsePayload = CommandMessage & {
+  payload: UnlockResponse
+}
+export type UnlockCommand = CommandMessage & {
+  command: TrezorCommand.Unlock
+}
+
+// GetAccounts command
+export type TrezorGetAccountsResponse = Unsuccessful | Success<HDNodeResponse[]>
 export type GetAccountsResponsePayload = CommandMessage & {
-  payload: TrezorGetPublicKeyResponse
+  payload: TrezorGetAccountsResponse
 }
 export type GetAccountsCommand = CommandMessage & {
   command: TrezorCommand.GetAccounts
   paths: TrezorAccountPath[]
 }
 
+// SignTransaction command
 export type SignTransactionCommandPayload = CommonParams & EthereumSignTransaction
 export type SignTransactionCommand = CommandMessage & {
   command: TrezorCommand.SignTransaction
@@ -58,6 +71,7 @@ export type SignTransactionResponsePayload = CommandMessage & {
   payload: SignTransactionResponse
 }
 
+// SignMessage command
 export type SignMessageCommandPayload = CommonParams & EthereumSignMessage
 export type SignMessageCommand = CommandMessage & {
   command: TrezorCommand.SignMessage
@@ -69,7 +83,7 @@ export type SignMessageResponsePayload = CommandMessage & {
 }
 
 export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand | SignTransactionCommand | SignMessageCommand
-export type TrezorFrameResponse = UnlockResponse | GetAccountsResponsePayload | SignTransactionResponsePayload | SignMessageResponsePayload
+export type TrezorFrameResponse = UnlockResponsePayload | GetAccountsResponsePayload | SignTransactionResponsePayload | SignMessageResponsePayload
 
 // Trezor library is loaded inside the chrome-untrusted webui page
 // and communication is going through posting messages between parent window

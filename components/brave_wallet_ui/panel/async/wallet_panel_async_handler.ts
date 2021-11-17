@@ -45,6 +45,7 @@ import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
+import { TrezorErrorsCodes } from '../../common/trezor/trezor-messages'
 
 const handler = new AsyncActionHandler()
 
@@ -170,7 +171,6 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   }
 
   const apiProxy = getWalletPanelApiProxy()
-
   if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
     await navigateToConnectHardwareWallet(store)
     const { success, error, deviceError } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
@@ -193,8 +193,12 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
     }
   } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
     apiProxy.panelHandler.setCloseOnDeactivate(false)
-    const { success, error } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
+      if (deviceError === 'deviceBusy') {
+        // do nothing as the operation is already in progress
+        return
+      }
       console.log(error)
       await store.dispatch(WalletActions.rejectTransaction(txInfo))
     } else {
@@ -309,20 +313,26 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   }
   const info = hardwareAccount.hardware
   apiProxy.panelHandler.setCloseOnDeactivate(false)
-  const signature = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.address, messageData.message)
-  apiProxy.panelHandler.setCloseOnDeactivate(true)
-  if (!signature || !signature.success) {
-    store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, error: signature.error }))
-    return
+  const signed = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.message)
+  if (!signed.success) {
+    const code = signed.code ? signed.code : undefined
+    if (code === TrezorErrorsCodes.CommandInProgress) {
+      // do nothing as the operation is already in progress
+      return
+    }
   }
-  store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature.payload }))
+  const payload: SignMessageHardwareProcessedPayload =
+    signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
+                   : { success: signed.success, id: messageData.id, error: signed.error }
+  store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
+  apiProxy.panelHandler.setCloseOnDeactivate(true)
   apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature || '', payload.error || '')
+  braveWalletService.notifySignMessageHardwareRequestProcessed(!!payload.success, payload.id, payload.signature || '', payload.error || '')
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

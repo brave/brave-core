@@ -353,4 +353,6 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR" desc="Unable to get raw messagse to sign for hardware transaction during signing process">Error processing the transaction, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR" desc="Unable to sign personal messagse on hardware device">Error signing message, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR" desc="Error when command Trezor is already in progress">Trezor command is already in progress</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR" desc="Error when Trezor bridge is not ready">Trezor bridge is not ready</message>
 </grit-part>
