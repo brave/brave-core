@@ -11,9 +11,6 @@ config("external_config") {
 }
 
 rust_ffi("challenge_bypass_ristretto") {
-  shared_library_define = "CHALLENGE_BYPASS_RISTRETTO_SHARED_LIBRARY"
-  implementation_define = "CHALLENGE_BYPASS_RISTRETTO_IMPLEMENTATION"
-
   public_configs = [ ":external_config" ]
 
   sources = [

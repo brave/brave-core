@@ -13,41 +13,27 @@ declare_args() {
   rustup_path = rebase_path("//brave/build/rustup")
 }
 
+lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
+lib_output_path =
+    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+
 template("rust_ffi") {
-  config_target_name = target_name + "_external_config"
-  cpp_target_name = "rust_ffi"
+  source_set(target_name) {
+    libs = [ lib_output_path ]
 
-  config(config_target_name) {
-    visibility = [ ":*" ]
-    if (is_mac && defined(invoker.shared_library_define)) {
-      defines = [ invoker.shared_library_define ]
-    }
-  }
+    if (is_mac) {
+      frameworks = [
+        "Security.framework",
+      ]
 
-  group(target_name) {
-    public_configs = [ ":$config_target_name" ]
-    public_deps = [
-      "//brave/build/rust",
-      "//brave/build/rust:cxx_cppdeps",
-    ]
-  }
-
-  source_set(cpp_target_name) {
-    visibility = [ "//brave/build/rust:*" ]
-
-    public_configs = [ ":$config_target_name" ]
-
-    if (defined(invoker.public_configs)) {
-      public_configs += invoker.public_configs
+      if (defined(invoker.frameworks)) {
+        frameworks += invoker.frameworks
+      }
     }
 
-    defines = []
-    if (is_mac && defined(invoker.implementation_define)) {
-      defines = [ invoker.implementation_define ]
-    }
-
-    if (defined(invoker.defines)) {
-      defines += invoker.defines
+    deps = [ "//brave/build/rust:rust_lib" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
     }
 
     public_deps = [ "//brave/build/rust:cxx_cppdeps" ]
@@ -61,11 +47,11 @@ template("rust_ffi") {
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [ "//build/config/compiler:no_chromium_code" ]
 
-    forward_variables_from(invoker,
+    forward_variables_from(invoker, "*",
                            [
-                             "sources",
                              "deps",
                              "frameworks",
+                             "public_deps",
                            ])
   }
 }
@@ -105,8 +91,20 @@ template("cargo_build") {
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
-    # make sure rebuilds when files change
-    forward_variables_from(invoker, "*")
+    inputs = [
+      "//brave/script/cargo.py",
+    ]
+
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    _rustflags = rustflags
+    if (defined(invoker.rustflags)) {
+      _rustflags += invoker.rustflags
+    }
+
+    forward_variables_from(invoker, "*", [ "rustflags", "inputs" ])
 
     outputs = [ output ]
 
@@ -129,8 +127,8 @@ template("cargo_build") {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
     }
 
-    if (defined(rust_flags)) {
-      foreach(flag, rust_flags) {
+    if (defined(_rustflags)) {
+      foreach(flag, _rustflags) {
         args += [
           "--rust_flag",
           flag,
@@ -139,17 +137,8 @@ template("cargo_build") {
     }
   }
 
-  config_target = target_name + "_staticlib_config"
-
-  config(config_target) {
-    if (defined(invoker.is_bin) && !invoker.is_bin) {
-      libs = [ invoker.output ]
-    }
-    visibility = [ ":$group_target" ]
-  }
-
+  # TODO(bridiver) - is this still needed?
   group(group_target) {
-    public_configs = [ ":$config_target" ]
     public_deps = [ ":$cargo_build_target" ]
   }
 }
