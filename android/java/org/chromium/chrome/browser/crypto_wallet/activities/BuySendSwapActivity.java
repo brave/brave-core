@@ -274,12 +274,66 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
     }
 
+    private class BuySendSwapUiInfo {
+        public boolean shouldShowBuyControls;
+        public String titleText;
+        public String secondText;
+        public String buttonText;
+        public String linkUrl;
+    }
+
+    private BuySendSwapUiInfo getPerNetworkUiInfo(String chainId) {
+        BuySendSwapUiInfo buySendSwapUiInfo = new BuySendSwapUiInfo();
+
+        if (chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+            buySendSwapUiInfo.shouldShowBuyControls = true;
+            buySendSwapUiInfo.buttonText = getString(R.string.wallet_buy_mainnet_button_text);
+            return buySendSwapUiInfo;
+        }
+
+        buySendSwapUiInfo.shouldShowBuyControls = false;
+        buySendSwapUiInfo.titleText = getString(R.string.wallet_test_faucet_title);
+        buySendSwapUiInfo.buttonText = getString(R.string.wallet_test_faucet_button_text);
+
+        buySendSwapUiInfo.secondText = getString(R.string.wallet_test_faucet_second_text);
+        buySendSwapUiInfo.secondText = String.format(
+                buySendSwapUiInfo.secondText, Utils.getNetworkShortText(this, chainId));
+
+        buySendSwapUiInfo.linkUrl = Utils.getBuyUrlForTestChain(chainId);
+
+        return buySendSwapUiInfo;
+    }
+
+    private void adjustTestFaucetControls(BuySendSwapUiInfo buySendSwapUiInfo) {
+        View testFaucetsBlock = findViewById(R.id.test_faucets_block);
+        assert testFaucetsBlock != null;
+        View paymentParamsBlock = findViewById(R.id.payment_params_block);
+        assert paymentParamsBlock != null;
+
+        if (buySendSwapUiInfo.shouldShowBuyControls) {
+            paymentParamsBlock.setVisibility(View.VISIBLE);
+            testFaucetsBlock.setVisibility(View.GONE);
+        } else {
+            paymentParamsBlock.setVisibility(View.GONE);
+            testFaucetsBlock.setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.test_faucet_tittle)).setText(buySendSwapUiInfo.titleText);
+            ((TextView) findViewById(R.id.test_faucet_message))
+                    .setText(buySendSwapUiInfo.secondText);
+        }
+        ((Button) findViewById(R.id.btn_buy_send_swap)).setText(buySendSwapUiInfo.buttonText);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
+            final String chainId = Utils.getNetworkConst(this, item);
+
+            if (mActivityType == ActivityType.BUY) {
+                adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
+            }
+
             if (mEthJsonRpcController != null) {
-                final String chainId = Utils.getNetworkConst(this, item);
                 mEthJsonRpcController.setNetwork(chainId, (success) -> {
                     if (!success) {
                         Log.e(TAG, "Could not set network");
@@ -736,12 +790,20 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                             mCurrentErcToken.contractAddress);
                 }
             } else if (mActivityType == ActivityType.BUY) {
-                assert mErcTokenRegistry != null;
-                String asset = assetFromDropDown.getText().toString();
-                mErcTokenRegistry.getBuyUrl(from, asset, value, url -> {
-                    TabUtils.openUrlInNewTab(false, url);
-                    TabUtils.bringChromeTabbedActivityToTheTop(this);
-                });
+                if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+                    assert mErcTokenRegistry != null;
+                    String asset = assetFromDropDown.getText().toString();
+                    mErcTokenRegistry.getBuyUrl(from, asset, value, url -> {
+                        TabUtils.openUrlInNewTab(false, url);
+                        TabUtils.bringChromeTabbedActivityToTheTop(this);
+                    });
+                } else {
+                    String url = getPerNetworkUiInfo(mCurrentChainId).linkUrl;
+                    if (url != null && !url.isEmpty()) {
+                        TabUtils.openUrlInNewTab(false, url);
+                        TabUtils.bringChromeTabbedActivityToTheTop(this);
+                    }
+                }
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentErcToken != null) {
                     String btnText = btnBuySendSwap.getText().toString();

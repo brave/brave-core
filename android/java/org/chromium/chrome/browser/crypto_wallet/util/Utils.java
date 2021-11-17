@@ -290,9 +290,9 @@ public class Utils {
         return strNetwork;
     }
 
-    public static CharSequence getNetworkShortText(Activity activity, String chain_id) {
+    public static CharSequence getNetworkShortText(Activity activity, String chainId) {
         CharSequence strNetwork = activity.getText(R.string.mainnet_short);
-        switch (chain_id) {
+        switch (chainId) {
             case BraveWalletConstants.RINKEBY_CHAIN_ID:
                 strNetwork = activity.getText(R.string.rinkeby_short);
                 break;
@@ -314,6 +314,22 @@ public class Utils {
         }
 
         return strNetwork;
+    }
+
+    public static String getBuyUrlForTestChain(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+                return "https://www.rinkeby.io/#stats";
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+                return "https://faucet.ropsten.be/";
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+                return "https://goerli-faucet.slock.it/";
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+                return "https://github.com/kovan-testnet/faucet";
+            default:
+                // Unavailable for MAINNET_CHAIN_ID and LOCALHOST_CHAIN_ID
+                return "";
+        }
     }
 
     public static String getNetworkConst(Activity activity, String network) {
