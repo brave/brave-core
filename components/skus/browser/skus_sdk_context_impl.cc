@@ -22,22 +22,22 @@ namespace {
 
 void OnScheduleWakeup(
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
-    rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx) {
+        void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
+    rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   done(std::move(ctx));
 }
 
-logging::LogSeverity getLogSeverity(brave_rewards::TracingLevel level) {
+logging::LogSeverity getLogSeverity(skus::TracingLevel level) {
   switch (level) {
-    case brave_rewards::TracingLevel::Trace:
+    case skus::TracingLevel::Trace:
       return -2;
-    case brave_rewards::TracingLevel::Debug:
+    case skus::TracingLevel::Debug:
       return logging::LOGGING_VERBOSE;
-    case brave_rewards::TracingLevel::Info:
+    case skus::TracingLevel::Info:
       return logging::LOGGING_INFO;
-    case brave_rewards::TracingLevel::Warn:
+    case skus::TracingLevel::Warn:
       return logging::LOGGING_WARNING;
-    case brave_rewards::TracingLevel::Error:
+    case skus::TracingLevel::Error:
       return logging::LOGGING_ERROR;
   }
   return logging::LOGGING_INFO;
@@ -45,7 +45,7 @@ logging::LogSeverity getLogSeverity(brave_rewards::TracingLevel level) {
 
 }  // namespace
 
-namespace brave_rewards {
+namespace skus {
 
 FetchOrderCredentialsCallbackState::FetchOrderCredentialsCallbackState() {}
 FetchOrderCredentialsCallbackState::~FetchOrderCredentialsCallbackState() {}
@@ -63,7 +63,7 @@ RefreshOrderCallbackState::~RefreshOrderCallbackState() {}
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
-                     brave_rewards::TracingLevel level,
+                     skus::TracingLevel level,
                      rust::cxxbridge1::Str message) {
   const logging::LogSeverity severity = getLogSeverity(level);
   const std::string file_str = static_cast<std::string>(file);
@@ -75,18 +75,18 @@ void shim_logMessage(rust::cxxbridge1::Str file,
   }
 }
 
-void shim_purge(brave_rewards::SkusSdkContext& ctx) {
+void shim_purge(skus::SkusSdkContext& ctx) {
   ctx.PurgeStore();
 }
 
-void shim_set(brave_rewards::SkusSdkContext& ctx,
+void shim_set(skus::SkusSdkContext& ctx,
               rust::cxxbridge1::Str key,
               rust::cxxbridge1::Str value) {
   ctx.UpdateStoreValue(static_cast<std::string>(key),
                        static_cast<std::string>(value));
 }
 
-::rust::String shim_get(brave_rewards::SkusSdkContext& ctx,
+::rust::String shim_get(skus::SkusSdkContext& ctx,
                         rust::cxxbridge1::Str key) {
   return ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)));
 }
@@ -94,8 +94,8 @@ void shim_set(brave_rewards::SkusSdkContext& ctx,
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
-    rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx) {
+        void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
+    rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   VLOG(1) << "shim_scheduleWakeup " << delay_ms;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
@@ -104,12 +104,12 @@ void shim_scheduleWakeup(
 }
 
 std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
-    const brave_rewards::SkusSdkContext& ctx,
-    const brave_rewards::HttpRequest& req,
+    const skus::SkusSdkContext& ctx,
+    const skus::HttpRequest& req,
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-             brave_rewards::HttpResponse)> done,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> rt_ctx) {
+        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+             skus::HttpResponse)> done,
+    rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx) {
   auto fetcher = ctx.CreateFetcher();
   fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
   return fetcher;
@@ -130,7 +130,7 @@ SkusSdkContextImpl::SkusSdkContextImpl(
 
 SkusSdkContextImpl::~SkusSdkContextImpl() {}
 
-std::unique_ptr<brave_rewards::SkusSdkFetcher>
+std::unique_ptr<skus::SkusSdkFetcher>
 SkusSdkContextImpl::CreateFetcher() const {
   return std::make_unique<SkusSdkFetcherImpl>(url_loader_factory_);
 }
@@ -164,4 +164,4 @@ void SkusSdkContextImpl::UpdateStoreValue(std::string key,
   state->SetString(key, value);
 }
 
-}  // namespace brave_rewards
+}  // namespace skus

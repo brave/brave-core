@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_BRAVE_REWARDS_CXX_SRC_SHIM_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_BRAVE_REWARDS_CXX_SRC_SHIM_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_
 
 #include <functional>
 #include <memory>
@@ -15,7 +15,7 @@
 
 class PrefService;
 
-namespace brave_rewards {
+namespace skus {
 
 enum class RewardsResult : uint8_t;
 enum class TracingLevel : uint8_t;
@@ -61,17 +61,17 @@ class SkusSdkFetcher {
  public:
   virtual ~SkusSdkFetcher() = default;
   virtual void BeginFetch(
-      const brave_rewards::HttpRequest& req,
+      const skus::HttpRequest& req,
       rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-               brave_rewards::HttpResponse)> callback,
-      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) = 0;
+          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+               skus::HttpResponse)> callback,
+      rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) = 0;
 };
 
 class SkusSdkContext {
  public:
   virtual ~SkusSdkContext() = default;
-  virtual std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher()
+  virtual std::unique_ptr<skus::SkusSdkFetcher> CreateFetcher()
       const = 0;
   virtual std::string GetValueFromStore(std::string key) const = 0;
   virtual void PurgeStore() const = 0;
@@ -99,26 +99,26 @@ void shim_logMessage(rust::cxxbridge1::Str file,
               TracingLevel level,
               rust::cxxbridge1::Str message);
 
-void shim_purge(brave_rewards::SkusSdkContext& ctx);
-void shim_set(brave_rewards::SkusSdkContext& ctx,
+void shim_purge(skus::SkusSdkContext& ctx);
+void shim_set(skus::SkusSdkContext& ctx,
               rust::cxxbridge1::Str key,
               rust::cxxbridge1::Str value);
-::rust::String shim_get(brave_rewards::SkusSdkContext& ctx,
+::rust::String shim_get(skus::SkusSdkContext& ctx,
                         rust::cxxbridge1::Str key);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
-    rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx);
+        void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
+    rust::cxxbridge1::Box<skus::WakeupContext> ctx);
 
 std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
-    const brave_rewards::SkusSdkContext& ctx,
-    const brave_rewards::HttpRequest& req,
+    const skus::SkusSdkContext& ctx,
+    const skus::HttpRequest& req,
     rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-             brave_rewards::HttpResponse)> done,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> rt_ctx);
-}  // namespace brave_rewards
+        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+             skus::HttpResponse)> done,
+    rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx);
+}  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_BRAVE_REWARDS_CXX_SRC_SHIM_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_

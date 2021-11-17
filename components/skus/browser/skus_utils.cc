@@ -8,7 +8,7 @@
 #include "base/command_line.h"
 #include "brave/components/skus/browser/switches.h"
 
-namespace brave_rewards {
+namespace skus {
 
 std::string GetEnvironment() {
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -26,4 +26,4 @@ std::string GetEnvironment() {
   return value;
 }
 
-}  // namespace brave_rewards
+}  // namespace skus

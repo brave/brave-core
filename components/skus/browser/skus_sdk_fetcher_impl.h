@@ -15,7 +15,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace brave_rewards {
+namespace skus {
 
 struct HttpRequest;
 struct HttpResponse;
@@ -28,11 +28,11 @@ class SkusSdkFetcherImpl : public SkusSdkFetcher {
   ~SkusSdkFetcherImpl() override;
 
   void BeginFetch(
-      const brave_rewards::HttpRequest& req,
+      const skus::HttpRequest& req,
       rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-               brave_rewards::HttpResponse)> callback,
-      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) override;
+          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+               skus::HttpResponse)> callback,
+      rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) override;
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -42,12 +42,12 @@ class SkusSdkFetcherImpl : public SkusSdkFetcher {
 
   void OnFetchComplete(
       rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-               brave_rewards::HttpResponse)> callback,
-      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx,
+          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+               skus::HttpResponse)> callback,
+      rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
       std::unique_ptr<std::string> response_body);
 };
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
