@@ -1,0 +1,43 @@
+[package]
+name = "skus"
+version = "0.1.0"
+authors = ["eV <ev@7pr.xyz>"]
+edition = "2018"
+
+autotests = false
+
+[[test]]
+name = "e2e"
+path = "tests/e2e.rs"
+required-features = ["e2e_test"]
+
+[dependencies]
+http = { version = "0.1" }
+async-trait = "0.1.41"
+rand = { version = "0.7", features = ["wasm-bindgen"] }
+serde_json = "1.0"
+http-signature-rs = { git = "https://github.com/brave-intl/http-signature-rs", rev = "31e4abc" }
+ed25519-dalek = "1.0.1"
+sha2 = "0.9"
+data-encoding = "2.1.2"
+tracing = "0.1"
+bigdecimal = { version = "0.1", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "0.8", features = ["serde"] }
+challenge-bypass-ristretto = { git = "https://github.com/brave-intl/challenge-bypass-ristretto", rev = "17a7922", features = ["serde_base64"] }
+futures-retry = { git = "https://github.com/brave-intl/futures-retry", rev = "2aaaafb" }
+urlencoding = "1.1.1"
+hmac = "0.10"
+base64 = "0.9.3"
+git-version = "0.3.4"
+
+[dev-dependencies]
+isahc = "0.6"
+async-std = "1.5.0"
+tracing-subscriber = "0.2.0"
+
+[features]
+default = []
+e2e_test = []
+wasm = ["chrono/wasmbind", "futures-retry/wasm", "challenge-bypass-ristretto/nightly"]
