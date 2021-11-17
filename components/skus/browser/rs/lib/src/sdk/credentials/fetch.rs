@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use sha2::Sha512;
 use tracing::instrument;
 
-use crate::errors::{InternalError, RewardsError};
+use crate::errors::{InternalError, SkusError};
 use crate::http::HttpHandler;
 use crate::models::*;
 use crate::sdk::SDK;
@@ -52,10 +52,7 @@ where
     U: HTTPClient + StorageClient,
 {
     #[instrument]
-    pub async fn submit_order_credentials_to_sign(
-        &self,
-        order_id: &str,
-    ) -> Result<(), RewardsError> {
+    pub async fn submit_order_credentials_to_sign(&self, order_id: &str) -> Result<(), SkusError> {
         let order = match self.client.get_order(order_id).await {
             Ok(Some(order)) => order,
             _ => self.refresh_order(order_id).await?,
@@ -131,7 +128,7 @@ where
     }
 
     #[instrument]
-    pub async fn refresh_order_credentials(&self, order_id: &str) -> Result<(), RewardsError> {
+    pub async fn refresh_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         let order = self.fetch_order(order_id).await?;
         if let Some(local_order) = self.client.get_order(order_id).await? {
             if order.last_paid_at != local_order.last_paid_at {
@@ -146,7 +143,7 @@ where
     }
 
     #[instrument]
-    pub async fn fetch_order_credentials(&self, order_id: &str) -> Result<(), RewardsError> {
+    pub async fn fetch_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         self.submit_order_credentials_to_sign(order_id).await?;
 
         let request_with_retries = FutureRetry::new(
