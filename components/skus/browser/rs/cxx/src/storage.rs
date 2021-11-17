@@ -1,7 +1,7 @@
 use std::cell::RefMut;
 
 use crate::{ffi, NativeClient, NativeClientContext};
-use brave_rewards::{errors, KVClient, KVStore};
+use skus::{errors, Environment, KVClient, KVStore};
 
 impl KVClient for NativeClient {
     type Store = NativeClientContext;
@@ -15,16 +15,19 @@ impl KVClient for NativeClient {
 }
 
 impl KVStore for NativeClientContext {
+    fn env(&self) -> &Environment {
+        &self.environment
+    }
     fn purge(&mut self) -> Result<(), errors::InternalError> {
-        ffi::shim_purge(self.0.pin_mut());
+        ffi::shim_purge(self.ctx.pin_mut());
         Ok(())
     }
     fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
-        ffi::shim_set(self.0.pin_mut(), key, value);
+        ffi::shim_set(self.ctx.pin_mut(), key, value);
         Ok(())
     }
     fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
-        let ret = ffi::shim_get(self.0.pin_mut(), key);
+        let ret = ffi::shim_get(self.ctx.pin_mut(), key);
         Ok(if ret.len() > 0 {
             Some(ret.to_string())
         } else {

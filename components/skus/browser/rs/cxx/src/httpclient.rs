@@ -1,8 +1,8 @@
 use std::ops::Deref;
 
 use async_trait::async_trait;
-use brave_rewards::{errors, http::http, HTTPClient};
 use futures::channel::oneshot;
+use skus::{errors, http::http, HTTPClient};
 
 use tracing::debug;
 
@@ -35,7 +35,7 @@ impl NativeClient {
                 .or(Err(errors::InternalError::BorrowFailed))?
                 .deref()
                 .deref()
-                .0,
+                .ctx,
             &req,
             |context, resp| {
                 let resp = match resp.result {
