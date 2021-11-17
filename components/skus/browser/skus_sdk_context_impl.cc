@@ -120,7 +120,6 @@ void SkusSdkContextImpl::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusState);
   registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
-  registry->RegisterStringPref(prefs::kSkusVPNCredential, "");
 }
 
 SkusSdkContextImpl::SkusSdkContextImpl(
