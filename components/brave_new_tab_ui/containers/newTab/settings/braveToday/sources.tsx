@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { CaratRightIcon } from 'brave-ui/components/icons'
+import { CaratRightIcon, LoaderIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { Publisher } from '../../../../api/brave_news'
 import {
@@ -13,9 +13,11 @@ import {
   SettingsSectionTitle
 } from '../../../../components/default'
 import NavigateBack from '../../../../components/default/settings/navigateBack'
+import DirectFeedItemMenu from './directFeedMenu'
 import { Props } from './'
 import PublisherPrefs from './publisherPrefs'
 import * as Styled from './style'
+import useManageDirectFeeds, { FeedInputValidity } from './useManageDirectFeeds'
 
 type CategoryListProps = {
   categories: string[]
@@ -73,6 +75,7 @@ function Category (props: CategoryProps) {
 }
 
 const categoryNameAll = getLocale('braveTodayCategoryNameAll')
+const categoryNameDirectFeeds = 'User feeds'
 
 type SourcesProps = Props & {
   category: string
@@ -80,6 +83,7 @@ type SourcesProps = Props & {
 }
 
 export default function Sources (props: SourcesProps) {
+  // Memoisze list of publishers by category
   const publishersByCategory = React.useMemo<Map<string, Publisher[]>>(() => {
     const result = new Map<string, Publisher[]>()
     result.set(categoryNameAll, [])
@@ -87,6 +91,10 @@ export default function Sources (props: SourcesProps) {
       return result
     }
     for (const publisher of Object.values(props.publishers)) {
+      // Do not include user feeds, as they are separated
+      if (publisher.categoryName === categoryNameDirectFeeds) {
+        continue
+      }
       const forAll = result.get(categoryNameAll) || []
       forAll.push(publisher)
       result.set(categoryNameAll, forAll)
@@ -102,9 +110,19 @@ export default function Sources (props: SourcesProps) {
     }
     return result
   }, [props.publishers])
+  const {
+    userFeeds,
+    feedInputIsValid,
+    feedInputText,
+    onRemoveDirectFeed,
+    onChangeFeedInput,
+    onAddSource
+  } = useManageDirectFeeds(props.publishers)
+  // Set blank category on navigation back
   const onBack = React.useCallback(() => {
     props.setCategory('')
   }, [props.setCategory])
+
   // No publishers, could be because hasn't opted-in yet
   // TODO(petemill): error state
   if (!props.publishers) {
@@ -113,10 +131,40 @@ export default function Sources (props: SourcesProps) {
   // Category list
   if (!props.category) {
     return (
-      <CategoryList
-        categories={[...publishersByCategory.keys()]}
-        setCategory={props.setCategory}
-      />
+      <>
+        <Styled.YourSources>
+          <SettingsSectionTitle>
+            {/* getLocale('braveTodayYourSourcesTitle') */}
+            Your Sources
+          </SettingsSectionTitle>
+          {userFeeds && userFeeds.map(publisher => (
+            <SettingsRow key={publisher.publisherId} isInteractive={false}>
+              <SettingsText title={publisher.feedSource.url}>{publisher.publisherName}</SettingsText>
+              <DirectFeedItemMenu key={publisher.publisherId} onRemove={onRemoveDirectFeed.bind(undefined, publisher)} />
+            </SettingsRow>
+          ))}
+          <Styled.FeedInputLabel>
+            Feed Url
+            <Styled.FeedInput type={'text'} value={feedInputText} onChange={onChangeFeedInput} />
+          </Styled.FeedInputLabel>
+          {(feedInputIsValid === FeedInputValidity.NotValid) &&
+            <Styled.FeedUrlError>Sorry, we couldn't find a feed at that address.</Styled.FeedUrlError>
+          }
+          <Styled.TemporaryFixedButton
+            disabled={feedInputIsValid !== FeedInputValidity.Valid}
+            brand='rewards'
+            level='primary'
+            type='default'
+            text={(feedInputIsValid !== FeedInputValidity.Pending) ? 'Add source' : ''}
+            icon={(feedInputIsValid !== FeedInputValidity.Pending) ? undefined : { image: <LoaderIcon />, position: 'before' }}
+            onClick={onAddSource}
+          />
+        </Styled.YourSources>
+        <CategoryList
+          categories={[...publishersByCategory.keys()]}
+          setCategory={props.setCategory}
+        />
+      </>
     )
   }
   const categoryPublishers = publishersByCategory.get(props.category)

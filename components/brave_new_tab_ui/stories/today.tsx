@@ -11,7 +11,7 @@ import BraveTodayErrorCard from '../components/default/braveToday/cards/cardErro
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
 import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
-import { UserEnabled } from '../api/brave_news'
+import * as BraveNews from '../api/brave_news'
 
 const onClick = () => alert('clicked')
 
@@ -50,8 +50,10 @@ export const Publisher = () => (
         publisherId: '123abc',
         publisherName: text('Publisher Name', 'small'),
         categoryName: 'Top News',
+        feedSource: { url: 'http://www.example.com/feed' },
+        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: true,
-        userEnabledStatus: UserEnabled.NOT_MODIFIED
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />
@@ -60,8 +62,10 @@ export const Publisher = () => (
         publisherId: '123abcdef',
         publisherName: text('Publisher Name 2', 'The Miller Chronicle'),
         categoryName: 'Top News',
+        feedSource: { url: 'http://www.example.com/feed' },
+        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: true,
-        userEnabledStatus: UserEnabled.NOT_MODIFIED
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />

@@ -8,7 +8,10 @@
 #include <codecvt>
 #include <string>
 #include <utility>
+#include <vector>
 
+#include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -18,6 +21,8 @@
 #include "url/gurl.h"
 
 namespace brave_news {
+
+namespace {
 
 bool ParseFeedItem(const base::Value& feed_item_raw,
                    mojom::FeedItemPtr* feed_item) {
@@ -105,6 +110,31 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
     // be a future use.
     VLOG(3) << "Unknown content type of: " << content_type;
     return false;
+  }
+  return true;
+}
+
+}  // namespace
+
+bool ParseFeedItems(const std::string& json,
+                    std::vector<mojom::FeedItemPtr>* feed_items) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  if (!records_v->is_list()) {
+    return false;
+  }
+  for (const base::Value& feed_item_raw : records_v->GetList()) {
+    auto item = mojom::FeedItem::New();
+    std::string item_hash;
+    if (ParseFeedItem(feed_item_raw, &item)) {
+      feed_items->push_back(std::move(item));
+    }
   }
   return true;
 }
