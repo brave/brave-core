@@ -287,6 +287,7 @@ const EditGas = (props: Props) => {
         <ButtonRow>
           <NavButton
             buttonType='secondary'
+            needsTopMargin={true}
             text={!isEIP1559Transaction ? getLocale('braveWalletBackupButtonCancel')
               : maxPriorityPanel === MaxPriorityPanels.setCustom ? getLocale('braveWalletEditGasSetSuggested')
                 : getLocale('braveWalletEditGasSetCustom')
