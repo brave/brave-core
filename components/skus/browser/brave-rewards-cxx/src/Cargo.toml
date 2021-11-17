@@ -21,4 +21,4 @@ cxx-build = "1.0"
 [lib]
 name = "brave_rewards_cxx"
 path = "lib.rs"
-crate-type = ["staticlib", "rlib"]
+crate-type = ["rlib"]

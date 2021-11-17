@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/rust/config.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
@@ -348,6 +349,28 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
+
+if (is_mac) {
+  brave_chrome_framework_public_deps = [
+    "//brave:framework_bundle_data",
+    # TODO(bridiver) - this doesn't have to be a public dep
+    "//brave/build/rust:generate_unexport_list"
+  ]
+  brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
+  brave_chrome_framework_contents = [ "Frameworks" ]
+  brave_chrome_framework_ldflags = [
+    # prevent export of all rust symbols
+    "-Wl,-unexported_symbols_list," +
+      rebase_path(unexport_list_path, root_build_dir)
+  ]
+  if (!is_component_build && !use_lld) {
+    brave_chrome_framework_ldflags += [
+      # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
+      # Supposedly this bug was fixed, but it's still happening for us
+      "-Wl,-no_compact_unwind",
+    ]
+  }
+}
 
 brave_chrome_browser_defines = []
 
