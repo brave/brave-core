@@ -182,27 +182,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "brave-rewards-cxx"
-version = "0.1.0"
-dependencies = [
- "async-trait 0.1.51 (git+https://github.com/dtolnay/async-trait)",
- "brave-rewards",
- "cxx",
- "cxx-build",
- "futures-preview",
- "libc",
- "serde_json",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "brave-rust"
 version = "0.1.0"
 dependencies = [
  "adblock-ffi",
- "brave-rewards-cxx",
  "challenge-bypass-ristretto-ffi",
+ "skus-cxx",
  "speedreader-ffi",
 ]
 
@@ -1781,6 +1766,21 @@ name = "siphasher"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cbce6d4507c7e4a3962091436e56e95290cb71fa302d0d270e32130b75fbff27"
+
+[[package]]
+name = "skus-cxx"
+version = "0.1.0"
+dependencies = [
+ "async-trait 0.1.51 (git+https://github.com/dtolnay/async-trait)",
+ "brave-rewards",
+ "cxx",
+ "cxx-build",
+ "futures-preview",
+ "libc",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "slab"

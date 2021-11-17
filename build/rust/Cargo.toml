@@ -7,7 +7,7 @@ edition = "2018"
 adblock-ffi = { path = "../../components/adblock_rust_ffi" }
 challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
-brave-rewards-cxx = { path = "../../components/skus/browser/brave-rewards-cxx/src" }
+skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 [patch.crates-io]
 cssparser = { git = 'https://github.com/AndriusA/rust-cssparser', branch = "glibc" }
 

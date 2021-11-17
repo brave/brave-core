@@ -1,5 +1,5 @@
 [package]
-name = "brave-rewards-cxx"
+name = "skus-cxx"
 version = "0.1.0"
 edition = "2018"
 
@@ -10,7 +10,7 @@ cxx = "1.0"
 async-trait = { version = "0.1", git = "https://github.com/dtolnay/async-trait" }
 futures-preview = { version = "0.3.0-alpha.17" }
 libc = { version = "0.2" }
-brave-rewards = { git = "ssh://git@github.com/brave-intl/br-rs", branch = "skus" }
+skus = { path = "../lib" }
 serde_json = "1.0"
 tracing-subscriber = "0.2"
 tracing = "0.1"
@@ -19,6 +19,5 @@ tracing = "0.1"
 cxx-build = "1.0"
 
 [lib]
-name = "brave_rewards_cxx"
-path = "lib.rs"
+name = "skus_cxx"
 crate-type = ["rlib"]
