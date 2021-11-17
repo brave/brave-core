@@ -42,6 +42,9 @@ def build(args):
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
 
+    if args.ios_deployment_target is not None:
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = args.ios_deployment_target
+
     if is_debug == "false":
         env['NDEBUG'] = "1"
 
@@ -82,6 +85,7 @@ def parse_args():
     parser.add_option('--toolchain')
     parser.add_option('--is_debug')
     parser.add_option('--mac_deployment_target')
+    parser.add_option('--ios_deployment_target')
     parser.add_option("--rust_flag", action="append", dest="rust_flags", default=[])
 
     options, args = parser.parse_args()
