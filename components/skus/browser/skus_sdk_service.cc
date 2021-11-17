@@ -23,7 +23,7 @@
 namespace {
 
 void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
-                    skus::RewardsResult result,
+                    skus::SkusResult result,
                     rust::cxxbridge1::Str order) {
   std::string order_str = static_cast<std::string>(order);
   if (callback_state->cb) {
@@ -34,7 +34,7 @@ void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
 
 void OnFetchOrderCredentials(
     skus::FetchOrderCredentialsCallbackState* callback_state,
-    skus::RewardsResult result) {
+    skus::SkusResult result) {
   if (callback_state->cb) {
     std::move(callback_state->cb).Run("");
   }
@@ -43,7 +43,7 @@ void OnFetchOrderCredentials(
 
 void OnPrepareCredentialsPresentation(
     skus::PrepareCredentialsPresentationCallbackState* callback_state,
-    skus::RewardsResult result,
+    skus::SkusResult result,
     rust::cxxbridge1::Str presentation) {
   std::string credential_string = static_cast<std::string>(presentation);
   net::CookieInclusionStatus status;
@@ -67,7 +67,7 @@ void OnPrepareCredentialsPresentation(
 
 void OnCredentialSummary(
     skus::CredentialSummaryCallbackState* callback_state,
-    skus::RewardsResult result,
+    skus::SkusResult result,
     rust::cxxbridge1::Str summary) {
   std::string summary_string = static_cast<std::string>(summary);
   base::JSONReader::ValueWithError value_with_error =

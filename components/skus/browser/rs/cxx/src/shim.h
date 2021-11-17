@@ -17,7 +17,7 @@ class PrefService;
 
 namespace skus {
 
-enum class RewardsResult : uint8_t;
+enum class SkusResult : uint8_t;
 enum class TracingLevel : uint8_t;
 struct HttpRequest;
 struct HttpResponse;
@@ -79,19 +79,19 @@ class SkusSdkContext {
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
-                                      RewardsResult result,
+                                      SkusResult result,
                                       rust::cxxbridge1::Str order);
 
 using FetchOrderCredentialsCallback =
     void (*)(FetchOrderCredentialsCallbackState* callback_state,
-             RewardsResult result);
+             SkusResult result);
 using PrepareCredentialsPresentationCallback =
     void (*)(PrepareCredentialsPresentationCallbackState* callback_state,
-             RewardsResult result,
+             SkusResult result,
              rust::cxxbridge1::Str presentation);
 using CredentialSummaryCallback =
     void (*)(CredentialSummaryCallbackState* callback_state,
-             RewardsResult result,
+             SkusResult result,
              rust::cxxbridge1::Str summary);
 
 void shim_logMessage(rust::cxxbridge1::Str file,

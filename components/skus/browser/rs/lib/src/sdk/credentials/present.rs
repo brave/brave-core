@@ -6,7 +6,7 @@ use serde_json::json;
 use sha2::Sha512;
 use tracing::instrument;
 
-use crate::errors::{InternalError, RewardsError};
+use crate::errors::{InternalError, SkusError};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
@@ -48,7 +48,7 @@ where
         order_id: &str,
         domain: &str,
         path: &str,
-    ) -> Result<Option<String>, RewardsError> {
+    ) -> Result<Option<String>, SkusError> {
         let order = self.client.get_order(order_id).await?;
 
         if let Some(order) = order {
@@ -159,7 +159,7 @@ where
         &self,
         domain: &str,
         path: &str,
-    ) -> Result<Option<String>, RewardsError> {
+    ) -> Result<Option<String>, SkusError> {
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {
@@ -189,7 +189,7 @@ where
         order_id: &str,
         domain: &str,
         path: &str,
-    ) -> Result<Option<String>, RewardsError> {
+    ) -> Result<Option<String>, SkusError> {
         if let Some(value) = self
             .prepare_order_credentials_presentation(order_id, domain, path)
             .await?
@@ -206,7 +206,7 @@ where
         &self,
         domain: &str,
         path: &str,
-    ) -> Result<Option<String>, RewardsError> {
+    ) -> Result<Option<String>, SkusError> {
         if let Some(value) = self.prepare_credentials_presentation(domain, path).await? {
             // NOTE web server which recieves the cookie should unset it
             self.client.set_cookie(&value);
