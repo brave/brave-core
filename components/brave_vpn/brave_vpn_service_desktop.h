@@ -27,6 +27,8 @@ namespace base {
 class Value;
 }  // namespace base
 
+class SkusSdkService;
+
 class PrefService;
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
@@ -39,7 +41,8 @@ class BraveVpnServiceDesktop
  public:
   BraveVpnServiceDesktop(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs);
+      PrefService* prefs,
+      SkusSdkService* skus_sdk_service);
   ~BraveVpnServiceDesktop() override;
 
   BraveVpnServiceDesktop(const BraveVpnServiceDesktop&) = delete;
@@ -129,7 +132,8 @@ class BraveVpnServiceDesktop
                                  bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
-  void OnPrepareCredentialsPresentation(std::string credential_as_cookie);
+  void OnPrepareCredentialsPresentation(
+      const std::string& credential_as_cookie);
 
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 
@@ -140,6 +144,7 @@ class BraveVpnServiceDesktop
   PrefService* prefs_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   std::string skus_credential_;
+  SkusSdkService* skus_sdk_service_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   brave_vpn::mojom::Region selected_region_;
