@@ -90,8 +90,13 @@ std::string GetProxyServerAuthString(const ProxyServer& proxy_server) {
 namespace net {
 
 std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
-  std::string scheme_prefix;
   std::string proxy_uri = ProxyServerToProxyUri_ChromiumImpl(proxy_server);
+
+  // We only inject AUTH information for SOCKS5 proxies (Tor-only).
+  if (proxy_server.scheme() != ProxyServer::SCHEME_SOCKS5)
+    return proxy_uri;
+
+  std::string scheme_prefix;
   size_t colon = proxy_uri.find(':');
   if (colon != std::string::npos && proxy_uri.size() - colon >= 3 &&
       proxy_uri[colon + 1] == '/' && proxy_uri[colon + 2] == '/') {
@@ -105,9 +110,14 @@ std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
 }
 
 std::string ProxyServerToPacResultElement(const ProxyServer& proxy_server) {
-  std::string scheme_prefix;
   std::string proxy_pac =
       ProxyServerToPacResultElement_ChromiumImpl(proxy_server);
+
+  // We only inject AUTH information for SOCKS5 proxies (Tor-only).
+  if (proxy_server.scheme() != ProxyServer::SCHEME_SOCKS5)
+    return proxy_pac;
+
+  std::string scheme_prefix;
   size_t space = proxy_pac.find(' ');
   if (space != std::string::npos && proxy_pac.size() - space >= 1) {
     scheme_prefix = proxy_pac.substr(0, space + 1);
