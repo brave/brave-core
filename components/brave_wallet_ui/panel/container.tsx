@@ -484,16 +484,16 @@ function Container (props: Props) {
 
   if (selectedPendingTransaction && selectedPanel === 'connectHardwareWallet') {
     return (
-        <PanelWrapper isLonger={false}>
-          <StyledExtensionWrapper>
-            <ConnectHardwareWalletPanel
-                onCancel={onCancelConnectHardwareWallet}
-                walletName={selectedAccount.name}
-                hardwareWalletError={props.panel.hardwareWalletError}
-                retryCallable={onConfirmTransaction}
-            />
-          </StyledExtensionWrapper>
-        </PanelWrapper>
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <ConnectHardwareWalletPanel
+            onCancel={onCancelConnectHardwareWallet}
+            walletName={selectedAccount.name}
+            hardwareWalletError={props.panel.hardwareWalletError}
+            retryCallable={onConfirmTransaction}
+          />
+        </StyledExtensionWrapper>
+      </PanelWrapper>
     )
   }
 
@@ -502,6 +502,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <ConfirmTransactionPanel
+            siteURL={activeOrigin}
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
             onRejectAllTransactions={onRejectAllTransactions}
