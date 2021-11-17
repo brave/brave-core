@@ -23,6 +23,8 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "net/cookies/cookie_inclusion_status.h"
+#include "net/cookies/parsed_cookie.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
@@ -104,7 +106,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      skus::prefs::kSkusVPNCredential,
+      skus::prefs::kSkusVPNHasCredential,
       base::BindRepeating(&BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated,
                           base::Unretained(this)));
 }
@@ -414,6 +416,25 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
   }
 }
 
+void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
+    std::string credential_as_cookie) {
+  net::CookieInclusionStatus status;
+  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
+  DCHECK(credential_cookie.IsValid());
+  DCHECK(status.IsInclude());
+
+  if (skus_credential_ == credential_cookie.Value())
+    return;
+
+  skus_credential_ = credential_cookie.Value();
+
+  if (!skus_credential_.empty()) {
+    VLOG(2) << __func__ << " : "
+            << "Loaded cached skus credentials";
+    SetPurchasedState(PurchasedState::PURCHASED);
+  }
+}
+
 void BraveVpnServiceDesktop::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if !defined(OFFICIAL_BUILD)
@@ -426,18 +447,22 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
   }
 #endif
 
-  const std::string credential =
-      prefs_->GetString(skus::prefs::kSkusVPNCredential);
-  if (skus_credential_ == credential)
-    return;
+  const bool has_credential =
+      prefs_->GetBoolean(skus::prefs::kSkusVPNHasCredential);
 
-  skus_credential_ = credential;
-
-  if (!skus_credential_.empty()) {
-    VLOG(2) << __func__ << " : "
-            << "Loaded cached skus credentials";
-    SetPurchasedState(PurchasedState::PURCHASED);
+  if (!has_credential) {
+    // TODO: we can show logic for person to login
+    // NOTE: we might save (to profile) if person EVER had a valid
+    // credential. If so, we may want to show an expired dialog
+    // instead of the "purchase" dialog.
+    skus_credential_ = "";
   }
+
+  // if a credential is ready, we can present it
+  // name should be environment specific but prefix with "vpn."
+  // for now we can hardcode dev
+  skus_sdk_service_->PrepareCredentialsPresentation("vpn.brave.software", "*",
+    base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation, base::Unretained(this));
 }
 
 void BraveVpnServiceDesktop::LoadSelectedRegion() {
