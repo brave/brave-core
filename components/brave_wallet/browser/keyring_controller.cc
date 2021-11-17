@@ -958,6 +958,11 @@ KeyringController::SignMessageByDefaultKeyring(
 }
 
 void KeyringController::AddAccountsWithDefaultName(size_t number) {
+  if (!default_keyring_) {
+    DCHECK(false) << "Should only be called when default keyring exists";
+    return;
+  }
+
   size_t current_num = default_keyring_->GetAccountsNumber();
   for (size_t i = current_num + 1; i <= current_num + number; ++i) {
     AddAccountForDefaultKeyring(GetAccountName(i));
