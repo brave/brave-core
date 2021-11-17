@@ -22,7 +22,9 @@
 {% endfor %}
 
 {#--- Class Decls #}
+{% if structs %}
 @class {%- for struct in structs %} {{class_prefix}}{{struct.name}}{% if struct != structs|last -%},{%- endif -%}{%- endfor -%};
+{% endif %}
 
 NS_ASSUME_NONNULL_BEGIN
 

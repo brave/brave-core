@@ -11,6 +11,7 @@
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
+#include "brave/ios/browser/skus/skus_sdk_service_factory.h"
 
 namespace brave {
 
@@ -21,6 +22,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   brave_wallet::EthTxServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
+  skus::SkusSdkServiceFactory::GetInstance();
 }
 
 }  // namespace brave
