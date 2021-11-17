@@ -21,6 +21,7 @@ export const Title = styled.span`
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 12px;
+  text-align: center;
 `
 
 export const PanelIcon = styled.div`

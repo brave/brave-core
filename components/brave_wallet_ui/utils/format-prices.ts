@@ -23,6 +23,6 @@ export const formatWithCommasAndDecimals = (value: string) => {
   }
 
   const calculatedDecimalPlace = -Math.floor(Math.log(valueToNumber) / Math.log(10) + 1)
-  const added = Number(calculatedDecimalPlace) + 4
+  const added = Number(calculatedDecimalPlace) + 3
   return addCommas(valueToNumber.toFixed(added))
 }

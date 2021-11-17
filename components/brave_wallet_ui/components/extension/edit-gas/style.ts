@@ -72,6 +72,7 @@ export const ButtonRow = styled.div`
   justify-content: center;
   flex-direction: row;
   width: 100%;
+  flex-wrap: wrap-reverse;
 `
 
 export const Description = styled.span`
