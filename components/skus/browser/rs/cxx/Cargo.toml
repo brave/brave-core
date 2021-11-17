@@ -1,5 +1,5 @@
 [package]
-name = "brave-rewards-cxx"
+name = "skus-cxx"
 version = "0.1.0"
 edition = "2018"
 
@@ -19,6 +19,5 @@ tracing = "0.1"
 cxx-build = "1.0"
 
 [lib]
-name = "brave_rewards_cxx"
-path = "lib.rs"
+name = "skus_cxx"
 crate-type = ["rlib"]
