@@ -1198,5 +1198,103 @@ extension Strings {
       value: "Unknown error",
       comment: "An error message displayed when an unspecified problem occurs."
     )
+    public static let transactionSummaryFee = NSLocalizedString(
+      "wallet.transactionSummaryFee",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Fee: %@ %@ (%@)",
+      comment: "A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\""
+    )
+    public static let transactionApproveSymbolTitle = NSLocalizedString(
+      "wallet.transactionApproveSymbolTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Approved %@ %@",
+      comment: "The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\""
+    )
+    public static let transactionUnknownApprovalTitle = NSLocalizedString(
+      "wallet.transactionUnknownApprovalTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Approved",
+      comment: "The title shown for ERC20 approvals when the user doesn't have the visible asset added"
+    )
+    public static let transactionSwapTitle = NSLocalizedString(
+      "wallet.transactionSwapTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Swapped %@ %@ (%@)",
+      comment: "A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\""
+    )
+    public static let transactionSendTitle = NSLocalizedString(
+      "wallet.transactionSendTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Sent %@ %@ (%@)",
+      comment: "A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\""
+    )
+    public static let transactionUnknownSendTitle = NSLocalizedString(
+      "wallet.transactionUnknownSendTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Sent %@",
+      comment: "A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\""
+    )
+    public static let viewOnBlockExplorer = NSLocalizedString(
+      "wallet.viewOnBlockExplorer",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "View on block explorer",
+      comment: "A button title to view a given transaction on the block explorer for the current network/chain."
+    )
+    public static let transactionStatusConfirmed = NSLocalizedString(
+      "wallet.transactionStatusConfirmed",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Confirmed",
+      comment: "A status that explains that the transaction has been completed/confirmed"
+    )
+    public static let transactionStatusApproved = NSLocalizedString(
+      "wallet.transactionStatusApproved",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Approved",
+      comment: "A status that explains that the transaction has been approved by the user"
+    )
+    public static let transactionStatusRejected = NSLocalizedString(
+      "wallet.transactionStatusRejected",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Rejected",
+      comment: "A status that explains that the transaction has been rejected by the user"
+    )
+    public static let transactionStatusUnapproved = NSLocalizedString(
+      "wallet.transactionStatusUnapproved",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unapproved",
+      comment: "A status that explains that previous approval of the transaction has been revoked"
+    )
+    public static let transactionStatusSubmitted = NSLocalizedString(
+      "wallet.transactionStatusSubmitted",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Submitted",
+      comment: "A status that explains that the transaction has been submitted to the blockchain"
+    )
+    public static let transactionStatusError = NSLocalizedString(
+      "wallet.transactionStatusError",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Error",
+      comment: "A status that explains that the transaction failed due to some error"
+    )
+    public static let transactionStatusUnknown = NSLocalizedString(
+      "wallet.transactionStatusUnknown",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unknown",
+      comment: "A transaction status that the app currently does not support displaying"
+    )
   }
 }

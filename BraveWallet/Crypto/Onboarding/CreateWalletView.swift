@@ -105,8 +105,10 @@ private struct CreateWalletView: View {
             .fixedSize(horizontal: false, vertical: true)
           VStack {
             SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
+              .textContentType(.password)
               .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .requirementsNotMet))
             SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword, onCommit: createWallet)
+              .textContentType(.password)
               .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .inputsDontMatch))
           }
           .font(.subheadline)

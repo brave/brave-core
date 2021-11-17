@@ -113,9 +113,9 @@ extension BraveWallet.EthereumChain {
     blockExplorerUrls: ["https://etherscan.io"],
     iconUrls: [],
     rpcUrls: [],
-    symbol: "",
-    symbolName: "",
-    decimals: 0,
+    symbol: "ETH",
+    symbolName: "Ethereum",
+    decimals: 18,
     isEip1559: false
   )
   static let rinkeby: BraveWallet.EthereumChain = .init(
@@ -124,9 +124,9 @@ extension BraveWallet.EthereumChain {
     blockExplorerUrls: ["https://rinkeby.etherscan.io"],
     iconUrls: [],
     rpcUrls: [],
-    symbol: "",
-    symbolName: "",
-    decimals: 0,
+    symbol: "ETH",
+    symbolName: "Ethereum",
+    decimals: 18,
     isEip1559: false
   )
   static let ropsten: BraveWallet.EthereumChain = .init(
@@ -135,9 +135,9 @@ extension BraveWallet.EthereumChain {
     blockExplorerUrls: ["https://ropsten.etherscan.io"],
     iconUrls: [],
     rpcUrls: [],
-    symbol: "",
-    symbolName: "",
-    decimals: 0,
+    symbol: "ETH",
+    symbolName: "Ethereum",
+    decimals: 18,
     isEip1559: false
   )
 }

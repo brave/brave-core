@@ -11,6 +11,7 @@ import BraveUI
 import struct Shared.Strings
 
 struct AccountsView: View {
+  var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
   @State private var navigationController: UINavigationController?
   
@@ -27,7 +28,11 @@ struct AccountsView: View {
     // Using `NavigationLink` in iOS 14.0 here ends up with a bug where the cell doesn't deselect because
     // the navigation is a UINavigationController and this view is inside of a UIPageViewController
     let view = AccountView(address: account.address, name: account.name)
-    let destination = AccountActivityView(keyringStore: keyringStore, account: account)
+    let destination = AccountActivityView(
+      keyringStore: keyringStore,
+      activityStore: walletStore.accountActivityStore(for: account),
+      networkStore: walletStore.networkStore
+    )
     if #available(iOS 15.0, *) {
       ZStack {
         view
@@ -104,7 +109,7 @@ struct AccountsView: View {
 struct AccountsViewController_Previews: PreviewProvider {
   static var previews: some View {
     Group {
-      AccountsView(keyringStore: .previewStoreWithWalletCreated)
+      AccountsView(walletStore: .previewStore, keyringStore: .previewStoreWithWalletCreated)
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()
