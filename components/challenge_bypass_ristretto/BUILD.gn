@@ -26,9 +26,11 @@ rust_ffi("challenge_bypass_ristretto") {
   }
 }
 
+# this is a giant hacky temporary workaround to an issue with lto and having
+# anything except rlib in the crate-type section
 rust_crate("rust_lib") {
   inputs = [
-    "//brave/vendor/challenge_bypass_ristretto_ffi/Cargo.toml",
+    "Cargo.toml",
     "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.rs",
   ]
 }

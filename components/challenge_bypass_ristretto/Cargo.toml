@@ -1,0 +1,24 @@
+[package]
+authors = ["eV <ev@7pr.xyz>"]
+name = "challenge-bypass-ristretto-ffi"
+version = "1.0.0-pre.2"
+
+[dependencies]
+base64 = "0.9.3"
+challenge-bypass-ristretto = { version = "1.0.0-pre.0", features = ["base64"] }
+hmac = "0.7"
+rand = "0.6.0"
+sha2 = "0.8"
+
+[lib]
+crate-type = [
+    "rlib",
+]
+name = "challenge_bypass_ristretto_ffi"
+path = "../../vendor/challenge_bypass_ristretto_ffi/src/lib.rs"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
