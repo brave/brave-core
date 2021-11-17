@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <windows.h>
+
 #include <versionhelpers.h>
 #include <winhttp.h>
 
@@ -23,9 +25,9 @@ void BraveSetSessionOptions(HINTERNET hSession) {
     return;
 
   // Use TLS 1.0, 1.1, or 1.2.
-  unsigned long secure_protocols = WINHTTP_FLAG_SECURE_PROTOCOL_TLS1 |
-                                   WINHTTP_FLAG_SECURE_PROTOCOL_TLS1_1 |
-                                   WINHTTP_FLAG_SECURE_PROTOCOL_TLS1_2;
+  DWORD secure_protocols = WINHTTP_FLAG_SECURE_PROTOCOL_TLS1 |
+                           WINHTTP_FLAG_SECURE_PROTOCOL_TLS1_1 |
+                           WINHTTP_FLAG_SECURE_PROTOCOL_TLS1_2;
 
   // Set protocols and log an error if we can't. Bailing out on the session due
   // to an error here is not necessary since if TLS 1.1 or 1.2 is required to

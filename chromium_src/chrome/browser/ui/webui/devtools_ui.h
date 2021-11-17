@@ -1,9 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_DEVTOOLS_UI_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_DEVTOOLS_UI_H_
 
 #include "brave/browser/devtools/brave_devtools_ui_bindings.h"
 
 #define DevToolsUIBindings BraveDevToolsUIBindings
 #include "src/chrome/browser/ui/webui/devtools_ui.h"
 #undef DevToolsUIBindings
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_DEVTOOLS_UI_H_
