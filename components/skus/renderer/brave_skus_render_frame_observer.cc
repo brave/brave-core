@@ -53,6 +53,7 @@ void BraveSkusRenderFrameObserver::DidCreateScriptContext(
 
 bool BraveSkusRenderFrameObserver::isSkusSdkAllowed() {
   return url_.host() == "account.brave.com" ||
+         url_.host() == "account.bravesoftware.com" ||
          url_.host() == "account.brave.software";
 }
 
