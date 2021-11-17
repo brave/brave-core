@@ -181,8 +181,10 @@ private struct RestoreWalletView: View {
         Text(Strings.Wallet.restoreWalletNewPasswordTitle)
           .font(.subheadline.weight(.medium))
         SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
+          .textContentType(.password)
           .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .requirementsNotMet))
         SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword)
+          .textContentType(.password)
           .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .inputsDontMatch))
       }
       .font(.subheadline)

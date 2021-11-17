@@ -81,9 +81,26 @@ public class WalletStore {
       assetRatioController: assetRatioController,
       keyringController: keyringController,
       rpcController: rpcController,
+      txController: transactionController,
       token: token
     )
     assetDetailStore = store
+    return store
+  }
+  
+  private var accountActivityStore: AccountActivityStore?
+  func accountActivityStore(for account: BraveWallet.AccountInfo) -> AccountActivityStore {
+    if let store = accountActivityStore, store.account.address == account.address {
+      return store
+    }
+    let store = AccountActivityStore(
+      account: account,
+      walletService: walletService,
+      rpcController: rpcController,
+      assetRatioController: assetRatioController,
+      txController: transactionController
+    )
+    accountActivityStore = store
     return store
   }
 }

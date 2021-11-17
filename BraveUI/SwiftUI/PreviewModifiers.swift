@@ -33,14 +33,14 @@ private struct PreviewContentSizeCategoriesIteratorModifier: ViewModifier {
 
 extension View {
   /// Creates a preview for each ColorScheme provided. Defaults to previewing all colors schemes
-  func previewColorSchemes(
+  public func previewColorSchemes(
     _ schemes: [ColorScheme] = ColorScheme.allCases
   ) -> some View {
     modifier(PreviewColorSchemeIteratorModifier(schemes: schemes))
   }
   /// Creates a preview for each size category provided. Defaults to previewing `small`, `large` and
   /// `accessibilityLarge` categories.
-  func previewSizeCategories(
+  public func previewSizeCategories(
     _ categories: [ContentSizeCategory] = [.small, .large, .accessibilityLarge]
   ) -> some View {
     modifier(PreviewContentSizeCategoriesIteratorModifier(categories: categories))

@@ -80,6 +80,7 @@ struct UnlockWalletView: View {
             .fixedSize(horizontal: false, vertical: true)
           HStack {
             SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
+              .textContentType(.password)
               .font(.subheadline)
               .introspectTextField(customize: { tf in
                 tf.becomeFirstResponder()

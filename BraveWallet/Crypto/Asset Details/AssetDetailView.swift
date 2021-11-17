@@ -20,6 +20,8 @@ struct AssetDetailView: View {
   
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+  
+  @Environment(\.openWalletURLAction) private var openWalletURL
 
   var body: some View {
     List {
@@ -81,8 +83,30 @@ struct AssetDetailView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        Text(Strings.Wallet.noTransactions)
-          .font(.footnote)
+        if assetDetailStore.transactions.isEmpty {
+          Text(Strings.Wallet.noTransactions)
+            .font(.footnote)
+        } else {
+          ForEach(assetDetailStore.transactions, id: \.id) { tx in
+            TransactionView(
+              info: tx,
+              keyringStore: keyringStore,
+              networkStore: networkStore,
+              visibleTokens: [],
+              displayAccountCreator: true,
+              assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
+            )
+            .contextMenu {
+              Button(action: {
+                if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)), let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                  openWalletURL?(url)
+                }
+              }) {
+                Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
+              }
+            }
+          }
+        }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }

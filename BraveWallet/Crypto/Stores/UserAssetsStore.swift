@@ -80,9 +80,7 @@ public class UserAssetsStore: ObservableObject {
     self.rpcController = rpcController
     self.rpcController.add(self)
     
-    rpcController.chainId { chainId in
-      self.updateSelectedAssets(chainId)
-    }
+    fetchVisibleAssets()
   }
   
   private func updateSelectedAssets(_ chainId: String) {
@@ -106,6 +104,12 @@ public class UserAssetsStore: ObservableObject {
   func addUserAsset(token: BraveWallet.ERCToken, chainId: String) {
     walletService.addUserAsset(token, chainId: chainId) { [self] success in
       updateSelectedAssets(chainId)
+    }
+  }
+  
+  func fetchVisibleAssets() {
+    rpcController.chainId { chainId in
+      self.updateSelectedAssets(chainId)
     }
   }
 }
