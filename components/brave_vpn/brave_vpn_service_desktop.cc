@@ -20,6 +20,7 @@
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_sdk_service.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -83,9 +84,13 @@ std::string GetBraveVPNPaymentsEnv() {
 
 BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs)
-    : BraveVpnService(url_loader_factory), prefs_(prefs) {
+    PrefService* prefs,
+    SkusSdkService* skus_sdk_service)
+    : BraveVpnService(url_loader_factory),
+      prefs_(prefs),
+      skus_sdk_service_(skus_sdk_service) {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
+  DCHECK(skus_sdk_service_);
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -417,7 +422,7 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
 }
 
 void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
-    std::string credential_as_cookie) {
+    const std::string& credential_as_cookie) {
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
   DCHECK(credential_cookie.IsValid());
@@ -456,13 +461,16 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
     // credential. If so, we may want to show an expired dialog
     // instead of the "purchase" dialog.
     skus_credential_ = "";
+    return;
   }
 
   // if a credential is ready, we can present it
   // name should be environment specific but prefix with "vpn."
   // for now we can hardcode dev
-  skus_sdk_service_->PrepareCredentialsPresentation("vpn.brave.software", "*",
-    base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation, base::Unretained(this));
+  skus_sdk_service_->PrepareCredentialsPresentation(
+      "vpn.brave.software", "*",
+      base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
+                     base::Unretained(this)));
 }
 
 void BraveVpnServiceDesktop::LoadSelectedRegion() {

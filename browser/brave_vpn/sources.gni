@@ -29,5 +29,7 @@ if (enable_brave_vpn) {
       "//brave/browser/brave_vpn/android/brave_vpn_native_worker.h",
     ]
     brave_browser_brave_vpn_deps += [ "//brave/build/android:jni_headers" ]
+  } else {
+    brave_browser_brave_vpn_deps += [ "//brave/browser/skus" ]
   }
 }
