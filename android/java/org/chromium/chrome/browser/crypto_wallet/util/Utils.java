@@ -196,10 +196,10 @@ public class Utils {
         return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
     }
 
-    public static void disableCryptoOnboarding() {
+    public static void setCryptoOnboarding(boolean enabled) {
         SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, false);
+        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, enabled);
         sharedPreferencesEditor.apply();
     }
 

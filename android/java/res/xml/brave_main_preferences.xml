@@ -27,7 +27,7 @@
         android:key="brave_wallet"
         android:icon="@drawable/ic_crypto_wallets"
         android:order="3"
-        android:title="@string/brave_ui_brave_wallet"/> 
+        android:title="@string/brave_ui_brave_wallet"/>
     <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
         android:key="brave_today"

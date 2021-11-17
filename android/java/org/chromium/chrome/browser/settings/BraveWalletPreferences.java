@@ -5,61 +5,64 @@
 
 package org.chromium.chrome.browser.settings;
 
-import static org.chromium.chrome.browser.settings.BraveWalletAutoLockPreferences.PREF_WALLET_AUTOLOCK_TIME;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.preference.Preference;
-import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
-public class BraveWalletPreferences extends BravePreferenceFragment {
-
+public class BraveWalletPreferences
+        extends BravePreferenceFragment implements ConnectionErrorHandler {
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
 
     private BraveWalletAutoLockPreferences mPrefAutolock;
-    private final SharedPreferencesManager mSharedPreferencesManager = SharedPreferencesManager.getInstance();
-    private SharedPreferencesManager.Observer mPreferenceObserver;
-
-    public BraveWalletPreferences() {
-        super();
-
-        mPreferenceObserver = key -> {
-            if (TextUtils.equals(key, PREF_WALLET_AUTOLOCK_TIME)) updateAutolockSummary();
-        };
-    }
+    private KeyringController mKeyringController;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mPrefAutolock = (BraveWalletAutoLockPreferences) findPreference(PREF_BRAVE_WALLET_AUTOLOCK);
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mSharedPreferencesManager.addObserver(mPreferenceObserver);
+        InitKeyringController();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateAutolockSummary();
+        refreshAutolockView();
     }
 
     @Override
-    public void onStop () {
-        super.onStop();
-        mSharedPreferencesManager.removeObserver(mPreferenceObserver);
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mKeyringController != null) {
+            mKeyringController.close();
+        }
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
     }
 
     @Override
@@ -68,12 +71,18 @@ public class BraveWalletPreferences extends BravePreferenceFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_wallet_preferences);
     }
 
-    public void updateAutolockSummary() {
-        int autoLockTime = BraveWalletAutoLockPreferences.getPrefWalletAutoLockTime();
-        mPrefAutolock.setSummary(getContext().getResources().getQuantityString(R.plurals.time_long_mins, autoLockTime, autoLockTime));
-        RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) getListView().findViewHolderForAdapterPosition(mPrefAutolock.getOrder());
-        if (viewHolder != null) {
-            viewHolder.itemView.invalidate();
+    private void refreshAutolockView() {
+        if (mKeyringController != null) {
+            mKeyringController.getAutoLockMinutes(minutes -> {
+                mPrefAutolock.setSummary(getContext().getResources().getQuantityString(
+                        R.plurals.time_long_mins, minutes, minutes));
+                RecyclerView.ViewHolder viewHolder =
+                        (RecyclerView.ViewHolder) getListView().findViewHolderForAdapterPosition(
+                                mPrefAutolock.getOrder());
+                if (viewHolder != null) {
+                    viewHolder.itemView.invalidate();
+                }
+            });
         }
     }
 }

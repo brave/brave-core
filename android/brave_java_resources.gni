@@ -903,9 +903,7 @@ brave_java_resources = [
 ]
 
 # XML preprocessing
-brave_java_preprocess_xml_sources = [
-    "//chrome/android/java/res/menu/main_menu.xml"
-]
-brave_java_preprocess_module_sources = [
-    "//brave/android/preprocess/xml/menu_main_menu_xml.py"
-]
+brave_java_preprocess_xml_sources =
+    [ "//chrome/android/java/res/menu/main_menu.xml" ]
+brave_java_preprocess_module_sources =
+    [ "//brave/android/preprocess/xml/menu_main_menu_xml.py" ]
