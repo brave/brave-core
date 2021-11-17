@@ -29,12 +29,14 @@ rustflags = [
   # we discover a reason to turn them off.
   "-Coverflow-checks=on",
 ]
+
 if (use_lto_in_rustc_linking) {
   rustflags += [ "-Clinker-plugin-lto" ]
 }
-if (!use_thin_lto) {
-  # Optimization - don't include bitcode if it won't be used.
-  rustflags += [ "-Cembed-bitcode=no" ]
+
+if (!is_debug) {
+  rustflags += [ "-Cembed-bitcode=yes" ]
+  rustflags += [ "-Clto" ]
 }
 
 if (optimize_for_size) {
@@ -50,6 +52,9 @@ if (symbol_level == 1) {
 if (symbol_level == 2) {
   rustflags += [ "-g" ]
 }
+
+# get links flags for rust lib
+# rustflags += [ "--print=native-static-libs" ]
 
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
