@@ -91,9 +91,9 @@ namespace net {
 
 std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
   std::string proxy_uri = ProxyServerToProxyUri_ChromiumImpl(proxy_server);
-  // Doesn't make sense to add the auth information to HostPortPair if the proxy
-  // doesn't have the concept of a host.
-  if (proxy_server.scheme() == ProxyServer::SCHEME_DIRECT)
+
+  // We only inject AUTH information for SOCKS5 proxies (Tor-only).
+  if (proxy_server.scheme() != ProxyServer::SCHEME_SOCKS5)
     return proxy_uri;
 
   std::string scheme_prefix;
@@ -113,9 +113,8 @@ std::string ProxyServerToPacResultElement(const ProxyServer& proxy_server) {
   std::string proxy_pac =
       ProxyServerToPacResultElement_ChromiumImpl(proxy_server);
 
-  // Doesn't make sense to add the auth information to HostPortPair if the proxy
-  // doesn't have the concept of a host.
-  if (proxy_server.scheme() == ProxyServer::SCHEME_DIRECT)
+  // We only inject AUTH information for SOCKS5 proxies (Tor-only).
+  if (proxy_server.scheme() != ProxyServer::SCHEME_SOCKS5)
     return proxy_pac;
 
   std::string scheme_prefix;
