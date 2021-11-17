@@ -103,8 +103,8 @@ program
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
-  .option('--use_goma', 'whether to use Goma for building')
   .option('--force_gn_gen', 'always run gn gen')
+  .option('--use_goma', 'whether to use Goma')
   .option('--target <target>', 'Custom target to build, instead of the default browser target')
   .arguments('[build_config]')
   .action(build)
@@ -147,8 +147,8 @@ program
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)', 'aab')
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
-  .option('--use_goma', 'whether to use Goma for building')
   .option('--force_gn_gen', 'always run gn gen')
+  .option('--use_goma', 'whether to use Goma')
   .arguments('[build_config]')
   .action(createDist)
 
@@ -236,6 +236,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
+  .option('--use_goma', 'whether to use Goma')
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))
 

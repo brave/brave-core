@@ -150,6 +150,7 @@ const Config = function () {
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
+  this.use_goma = false
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
   // os.cpus().length is number of threads not physical cores
   this.gomaJValue = Math.min(40, os.cpus().length * 2)
@@ -225,6 +226,7 @@ Config.prototype.buildArgs = function () {
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
+    use_goma: this.use_goma,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
     proprietary_codecs: true,
@@ -502,6 +504,12 @@ Config.prototype.buildArgs = function () {
   } else {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
   }
+
+  if (args.use_goma) {
+    args.goma_path = args.cc_wrapper
+    delete args.cc_wrapper
+  }
+
   return args
 }
 
@@ -885,13 +893,16 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
+      if (path.basename(env.CC_WRAPPER) === 'ccache') {
         env.CCACHE_CPP2 = 'yes'
         env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
         env.CCACHE_BASEDIR = this.srcDir
         env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party', 'llvm-build', 'Release+Asserts', 'bin'))
       }
+    }
+
+    if (env.CC_WRAPPER !== undefined) {
+      console.log('using cc wrapper ' + env.CC_WRAPPER)
     }
 
     if (process.platform === 'linux') {
