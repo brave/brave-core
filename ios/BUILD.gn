@@ -4,10 +4,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
+import("//build/config/compiler/compiler.gni")
 
 config("internal_config") {
   visibility = [ ":*" ]
-  ldflags = [ "-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
+  ldflags = [ "-Wl,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
   if (!use_lld) {
     ldflags += ["-Wl,-no_compact_unwind"]
   }
@@ -46,6 +47,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/ledger/promotion_solution.h",
   "$root_gen_dir/brave/ios/browser/api/ledger/ledger.mojom.objc.h",
   "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
+  "$root_gen_dir/brave/ios/browser/api/skus/skus_sdk.mojom.objc.h",
 ]
 
 action("brave_core_umbrella_header") {
@@ -78,6 +80,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     "//brave/ios/browser/api/ads:ads_mojom_wrappers",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/api/ledger:ledger_mojom_wrappers",
+    "//brave/ios/browser/api/skus:skus_mojom_wrappers",
   ]
 
   sources = brave_core_public_headers

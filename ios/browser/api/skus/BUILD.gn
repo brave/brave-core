@@ -3,17 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("browser_state") {
-  sources = [
-    "brave_browser_state_keyed_service_factories.cc",
-    "brave_browser_state_keyed_service_factories.h",
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
   ]
-  deps = [
-    "//base",
-    "//brave/ios/browser/brave_wallet",
-    "//brave/ios/browser/skus",
-  ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+mojom_wrappers("skus_mojom_wrappers") {
+  mojom_target = "//brave/components/skus/common:mojom"
+  mojom_file = "//brave/components/skus/common/skus_sdk.mojom"
 }
