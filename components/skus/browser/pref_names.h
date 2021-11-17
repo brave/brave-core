@@ -10,7 +10,6 @@ namespace skus {
 namespace prefs {
 
 constexpr char kSkusState[] = "skus.state";
-constexpr char kSkusVPNCredential[] = "skus.credential.vpn";
 constexpr char kSkusVPNHasCredential[] = "skus.credential.has_vpn";
 
 }  // namespace prefs

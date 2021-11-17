@@ -16,8 +16,6 @@
 #include "brave/components/skus/browser/skus_sdk_context_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
-#include "net/cookies/cookie_inclusion_status.h"
-#include "net/cookies/parsed_cookie.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -45,22 +43,8 @@ void OnPrepareCredentialsPresentation(
     skus::PrepareCredentialsPresentationCallbackState* callback_state,
     skus::SkusResult result,
     rust::cxxbridge1::Str presentation) {
-  std::string credential_string = static_cast<std::string>(presentation);
-  net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_string, &status);
-  DCHECK(credential_cookie.IsValid());
-  DCHECK(status.IsInclude());
-
-  if (callback_state->prefs) {
-    if (callback_state->domain == "vpn.brave.com" ||
-        callback_state->domain == "vpn.brave.software") {
-      callback_state->prefs->SetString(skus::prefs::kSkusVPNCredential,
-                                       credential_cookie.Value());
-    }
-  }
-
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run(credential_string);
+    std::move(callback_state->cb).Run(static_cast<std::string>(presentation));
   }
   delete callback_state;
 }
@@ -75,12 +59,18 @@ void OnCredentialSummary(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
+  // TODO: this logic can be polished; maybe we can set an enum
+  // for the state (ex: ask for user login, credentials ready,
+  // billing problem, etc)
   if (records_v && callback_state->prefs) {
     if (callback_state->domain == "vpn.brave.com" ||
         callback_state->domain == "vpn.brave.software") {
       const base::Value* sku = records_v->FindKey("sku");
+      const base::Value* credential_count = records_v->FindKey("remaining_credential_count");
       bool has_credential = sku && sku->is_string() &&
-                            sku->GetString() == "brave-firewall-vpn-premium";
+                            sku->GetString() == "brave-firewall-vpn-premium" &&
+                            credential_count && credential_count->is_int() &&
+                            credential_count->GetInt() > 0;
       callback_state->prefs->SetBoolean(
           skus::prefs::kSkusVPNHasCredential, has_credential);
     }

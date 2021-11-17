@@ -129,6 +129,7 @@ class BraveVpnServiceDesktop
                                  bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
+  void OnPrepareCredentialsPresentation(std::string credential_as_cookie);
 
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 
