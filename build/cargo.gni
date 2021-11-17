@@ -9,6 +9,10 @@ if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
 }
 
+if (is_ios) {
+  import("//build/config/ios/ios_sdk_overrides.gni")
+}
+
 declare_args() {
   rustup_path = rebase_path("//brave/build/rustup")
 }
@@ -125,6 +129,8 @@ template("cargo_build") {
 
     if (is_mac) {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
+    } else if (is_ios) {
+      args += [ "--ios_deployment_target=" + ios_deployment_target ]
     }
 
     if (defined(_rustflags)) {

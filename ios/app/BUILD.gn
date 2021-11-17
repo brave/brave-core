@@ -10,6 +10,7 @@ import("//ios/public/provider/chrome/browser/build_config.gni")
 source_set("app") {
   configs += [
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
+    "//brave/ios/browser/api/skus:mojom_header_config",
     "//build/config/compiler:enable_arc",
   ]
 
@@ -34,6 +35,7 @@ source_set("app") {
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ledger",
     "//brave/ios/browser/api/sync/driver",
+    "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/component_updater",
     "//components/browser_sync",
