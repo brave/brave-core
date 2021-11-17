@@ -14,11 +14,14 @@ use futures::task::LocalSpawnExt;
 
 use tracing::debug;
 
-pub use brave_rewards;
+pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
-pub struct NativeClientContext(UniquePtr<ffi::SkusSdkContext>);
+pub struct NativeClientContext {
+    environment: skus::Environment,
+    ctx: UniquePtr<ffi::SkusSdkContext>,
+}
 
 #[derive(Clone)]
 pub struct NativeClient {
@@ -46,7 +49,7 @@ impl NativeClient {
 }
 
 #[allow(unused)]
-#[cxx::bridge(namespace = brave_rewards)]
+#[cxx::bridge(namespace = skus)]
 mod ffi {
     #[derive(Debug)]
     pub enum TracingLevel {
@@ -183,7 +186,7 @@ mod ffi {
 }
 
 pub struct CppSDK {
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSDK> {
@@ -192,14 +195,21 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         .with_max_level(tracing::Level::TRACE)
         .init();
 
+    let env = env
+        .parse::<skus::Environment>()
+        .unwrap_or(skus::Environment::Local);
+
     // FIXME
-    let sdk = brave_rewards::sdk::SDK::new(
+    let sdk = skus::sdk::SDK::new(
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(LocalPool::new())),
-            ctx: Rc::new(RefCell::new(NativeClientContext(ctx))),
+            ctx: Rc::new(RefCell::new(NativeClientContext {
+                environment: env.clone(),
+                ctx,
+            })),
         },
-        &env,
+        env,
         None,
         None,
     );
@@ -317,12 +327,12 @@ pub struct RefreshOrderCallback(
 );
 
 unsafe impl ExternType for RefreshOrderCallback {
-    type Id = type_id!("brave_rewards::RefreshOrderCallback");
+    type Id = type_id!("skus::RefreshOrderCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn refresh_order_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: RefreshOrderCallback,
     callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
     order_id: String,
@@ -336,7 +346,7 @@ async fn refresh_order_task(
             callback_state.into_raw(),
             e.source()
                 .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .downcast_ref::<skus::errors::InternalError>()
                 .unwrap()
                 .into(),
             "",
@@ -353,12 +363,12 @@ pub struct FetchOrderCredentialsCallback(
 );
 
 unsafe impl ExternType for FetchOrderCredentialsCallback {
-    type Id = type_id!("brave_rewards::FetchOrderCredentialsCallback");
+    type Id = type_id!("skus::FetchOrderCredentialsCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn fetch_order_credentials_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: FetchOrderCredentialsCallback,
     callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
     order_id: String,
@@ -369,7 +379,7 @@ async fn fetch_order_credentials_task(
             callback_state.into_raw(),
             e.source()
                 .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .downcast_ref::<skus::errors::InternalError>()
                 .unwrap()
                 .into(),
         ),
@@ -386,12 +396,12 @@ pub struct PrepareCredentialsPresentationCallback(
 );
 
 unsafe impl ExternType for PrepareCredentialsPresentationCallback {
-    type Id = type_id!("brave_rewards::PrepareCredentialsPresentationCallback");
+    type Id = type_id!("skus::PrepareCredentialsPresentationCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn prepare_credentials_presentation_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: PrepareCredentialsPresentationCallback,
     callback_state: UniquePtr<ffi::PrepareCredentialsPresentationCallbackState>,
     domain: String,
@@ -408,7 +418,7 @@ async fn prepare_credentials_presentation_task(
             callback_state.into_raw(),
             e.source()
                 .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .downcast_ref::<skus::errors::InternalError>()
                 .unwrap()
                 .into(),
             "",
@@ -426,12 +436,12 @@ pub struct CredentialSummaryCallback(
 );
 
 unsafe impl ExternType for CredentialSummaryCallback {
-    type Id = type_id!("brave_rewards::CredentialSummaryCallback");
+    type Id = type_id!("skus::CredentialSummaryCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn credential_summary_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: CredentialSummaryCallback,
     callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
     domain: String,
@@ -446,7 +456,7 @@ async fn credential_summary_task(
             callback_state.into_raw(),
             e.source()
                 .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .downcast_ref::<skus::errors::InternalError>()
                 .unwrap()
                 .into(),
             "",
