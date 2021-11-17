@@ -261,6 +261,9 @@ public class DataController {
     
     var storeURL: URL {
         let supportDirectory = Preferences.Database.DocumentToSupportDirectoryMigration.completed.value
+        if !supportDirectory {
+            assertionFailure("App wants to use very old document store, this can't be right.")
+        }
         return supportDirectory ? supportStoreURL : oldDocumentStoreURL
     }
     

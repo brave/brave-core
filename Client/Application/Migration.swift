@@ -175,8 +175,12 @@ fileprivate extension Preferences {
             Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
         static let removeLargeFaviconsMigrationCompleted =
             Option<Bool>(key: "migration.remove-large-favicons", default: false)
-        
-        static let coreDataCompleted = Option<Bool>(key: "migration.cd-completed", default: false)
+        // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
+        // It should be called only for users who have not completed the migration beforehand.
+        // The reason for second migration flag is to first do file system migrations like moving database files,
+        // then do CRUD operations on the db if needed.
+        static let coreDataCompleted = Option<Bool>(key: "migration.cd-completed",
+                                                    default: Preferences.Migration.completed.value)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)
