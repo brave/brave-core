@@ -950,6 +950,7 @@
 		CA9A22FE26A71ADA00923D70 /* PlaylistPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A22FD26A71ADA00923D70 /* PlaylistPopoverView.swift */; };
 		CA9A233426B97B4300923D70 /* PlaylistMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A233326B97B4300923D70 /* PlaylistMenuButton.swift */; };
 		CA9A234126B97B8400923D70 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A234026B97B8400923D70 /* MenuButton.swift */; };
+		CA9C9AEC27455D5400D018EF /* Carret.png in Resources */ = {isa = PBXBuildFile; fileRef = CA9C9AE027455D5300D018EF /* Carret.png */; };
 		CAA0BD9026F2562D00F14212 /* PrivilegedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0BD8F26F2562D00F14212 /* PrivilegedRequest.swift */; };
 		CAA0BDE026F4D76600F14212 /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0BDD426F4D76600F14212 /* PlaylistListViewController.swift */; };
 		CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */; };
@@ -2738,6 +2739,7 @@
 		CA9A22FF26A7370C00923D70 /* FontScaling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.swift; sourceTree = "<group>"; };
 		CA9A233326B97B4300923D70 /* PlaylistMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistMenuButton.swift; sourceTree = "<group>"; };
 		CA9A234026B97B8400923D70 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		CA9C9AE027455D5300D018EF /* Carret.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Carret.png; sourceTree = "<group>"; };
 		CAA0BD8F26F2562D00F14212 /* PrivilegedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivilegedRequest.swift; sourceTree = "<group>"; };
 		CAA0BDD426F4D76600F14212 /* PlaylistListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
 		CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchQRCodeScannerController.swift; sourceTree = "<group>"; };
@@ -5270,6 +5272,7 @@
 				CA22029827192912002D3582 /* Info.svg */,
 				CA22029A2719292C002D3582 /* Warning.svg */,
 				CA2202B127199123002D3582 /* DarkWarning.svg */,
+				CA9C9AE027455D5300D018EF /* Carret.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -6996,6 +6999,7 @@
 				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
 				449AC16F26D9008D00A53F33 /* BraveTalkHelper.js in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
+				CA9C9AEC27455D5400D018EF /* Carret.png in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
