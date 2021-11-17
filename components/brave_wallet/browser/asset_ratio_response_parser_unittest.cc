@@ -69,6 +69,14 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
       ParseAssetPrice(json, {"A1", "A2", "A3"}, {"B1", "B2", "B3"}, &prices));
   EXPECT_FALSE(ParseAssetPrice(json, {"A1"}, {"B1", "B2"}, &prices));
   EXPECT_FALSE(ParseAssetPrice(json, {"A1", "A2"}, {"B1"}, &prices));
+
+  // Invalid json input
+  EXPECT_FALSE(ParseAssetPrice("{\"result\": \"no payload property\"}", {"A"},
+                               {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice("3615", {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice("[3615]", {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice("", {"A"}, {"B"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(R"({"payload":{})", {"A"}, {"B"}, &prices));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
