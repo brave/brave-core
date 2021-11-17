@@ -71,6 +71,7 @@ import {
 export type confirmPanelTabs = 'transaction' | 'details'
 
 export interface Props {
+  siteURL: string
   accounts: WalletAccountType[]
   visibleTokens: TokenInfo[]
   fullTokenList: TokenInfo[]
@@ -92,6 +93,7 @@ export interface Props {
 
 function ConfirmTransactionPanel (props: Props) {
   const {
+    siteURL,
     accounts,
     selectedNetwork,
     transactionInfo,
@@ -125,10 +127,6 @@ function ConfirmTransactionPanel (props: Props) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [currentTokenAllowance, setCurrentTokenAllowance] = React.useState<string>('')
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
-
-  // Will remove this hardcoded value once we know
-  // where the site info will be coming from.
-  const siteURL = 'https://app.compound.finance'
 
   const findSpotPrice = usePricing(transactionSpotPrices)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
