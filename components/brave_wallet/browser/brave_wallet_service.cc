@@ -606,6 +606,12 @@ void BraveWalletService::OnGetImportInfo(
           [](ImportFromCryptoWalletsCallback callback,
              size_t number_of_accounts, KeyringController* keyring_controller,
              bool is_valid_mnemonic) {
+            if (!is_valid_mnemonic) {
+              std::move(callback).Run(
+                  false,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
+              return;
+            }
             if (number_of_accounts > 1) {
               keyring_controller->AddAccountsWithDefaultName(
                   number_of_accounts - 1);
