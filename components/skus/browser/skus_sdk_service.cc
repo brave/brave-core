@@ -22,8 +22,8 @@
 
 namespace {
 
-void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
-                    brave_rewards::RewardsResult result,
+void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
+                    skus::RewardsResult result,
                     rust::cxxbridge1::Str order) {
   std::string order_str = static_cast<std::string>(order);
   if (callback_state->cb) {
@@ -33,8 +33,8 @@ void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
 }
 
 void OnFetchOrderCredentials(
-    brave_rewards::FetchOrderCredentialsCallbackState* callback_state,
-    brave_rewards::RewardsResult result) {
+    skus::FetchOrderCredentialsCallbackState* callback_state,
+    skus::RewardsResult result) {
   if (callback_state->cb) {
     std::move(callback_state->cb).Run("");
   }
@@ -42,8 +42,8 @@ void OnFetchOrderCredentials(
 }
 
 void OnPrepareCredentialsPresentation(
-    brave_rewards::PrepareCredentialsPresentationCallbackState* callback_state,
-    brave_rewards::RewardsResult result,
+    skus::PrepareCredentialsPresentationCallbackState* callback_state,
+    skus::RewardsResult result,
     rust::cxxbridge1::Str presentation) {
   std::string credential_string = static_cast<std::string>(presentation);
   net::CookieInclusionStatus status;
@@ -54,7 +54,7 @@ void OnPrepareCredentialsPresentation(
   if (callback_state->prefs) {
     if (callback_state->domain == "vpn.brave.com" ||
         callback_state->domain == "vpn.brave.software") {
-      callback_state->prefs->SetString(brave_rewards::prefs::kSkusVPNCredential,
+      callback_state->prefs->SetString(skus::prefs::kSkusVPNCredential,
                                        credential_cookie.Value());
     }
   }
@@ -66,8 +66,8 @@ void OnPrepareCredentialsPresentation(
 }
 
 void OnCredentialSummary(
-    brave_rewards::CredentialSummaryCallbackState* callback_state,
-    brave_rewards::RewardsResult result,
+    skus::CredentialSummaryCallbackState* callback_state,
+    skus::RewardsResult result,
     rust::cxxbridge1::Str summary) {
   std::string summary_string = static_cast<std::string>(summary);
   base::JSONReader::ValueWithError value_with_error =
@@ -82,7 +82,7 @@ void OnCredentialSummary(
       bool has_credential = sku && sku->is_string() &&
                             sku->GetString() == "brave-firewall-vpn-premium";
       callback_state->prefs->SetBoolean(
-          brave_rewards::prefs::kSkusVPNHasCredential, has_credential);
+          skus::prefs::kSkusVPNHasCredential, has_credential);
     }
   }
 
@@ -97,11 +97,11 @@ void OnCredentialSummary(
 SkusSdkService::SkusSdkService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : context_(std::make_unique<brave_rewards::SkusSdkContextImpl>(
+    : context_(std::make_unique<skus::SkusSdkContextImpl>(
           prefs,
           url_loader_factory)),
       sdk_(
-          initialize_sdk(std::move(context_), brave_rewards::GetEnvironment())),
+          initialize_sdk(std::move(context_), skus::GetEnvironment())),
       prefs_(prefs),
       weak_factory_(this) {}
 
@@ -110,8 +110,8 @@ SkusSdkService::~SkusSdkService() {}
 void SkusSdkService::RefreshOrder(
     const std::string& order_id,
     skus::mojom::SkusSdk::RefreshOrderCallback callback) {
-  std::unique_ptr<brave_rewards::RefreshOrderCallbackState> cbs(
-      new brave_rewards::RefreshOrderCallbackState);
+  std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
+      new skus::RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
 
   sdk_->refresh_order(OnRefreshOrder, std::move(cbs), order_id.c_str());
@@ -120,8 +120,8 @@ void SkusSdkService::RefreshOrder(
 void SkusSdkService::FetchOrderCredentials(
     const std::string& order_id,
     skus::mojom::SkusSdk::FetchOrderCredentialsCallback callback) {
-  std::unique_ptr<brave_rewards::FetchOrderCredentialsCallbackState> cbs(
-      new brave_rewards::FetchOrderCredentialsCallbackState);
+  std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
+      new skus::FetchOrderCredentialsCallbackState);
   cbs->cb = std::move(callback);
   cbs->order_id = order_id;
 
@@ -133,8 +133,8 @@ void SkusSdkService::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback callback) {
-  std::unique_ptr<brave_rewards::PrepareCredentialsPresentationCallbackState>
-      cbs(new brave_rewards::PrepareCredentialsPresentationCallbackState);
+  std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState>
+      cbs(new skus::PrepareCredentialsPresentationCallbackState);
   cbs->cb = std::move(callback);
   cbs->domain = domain;
   cbs->prefs = prefs_;
@@ -146,8 +146,8 @@ void SkusSdkService::PrepareCredentialsPresentation(
 void SkusSdkService::CredentialSummary(
     const std::string& domain,
     skus::mojom::SkusSdk::CredentialSummaryCallback callback) {
-  std::unique_ptr<brave_rewards::CredentialSummaryCallbackState> cbs(
-      new brave_rewards::CredentialSummaryCallbackState);
+  std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
+      new skus::CredentialSummaryCallbackState);
   cbs->cb = std::move(callback);
   cbs->domain = domain;
   cbs->prefs = prefs_;

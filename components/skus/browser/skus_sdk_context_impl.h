@@ -22,11 +22,11 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
-namespace brave_rewards {
+namespace skus {
 class SkusSdkFetcher;
-}  // namespace brave_rewards
+}  // namespace skus
 
-namespace brave_rewards {
+namespace skus {
 
 // Context object used with the SKU SDK to provide 1) key/value pair storage
 // and 2) the fetcher used for contacting the SKU SDK endpoint via HTTPS.
@@ -48,7 +48,7 @@ class SkusSdkContextImpl : public SkusSdkContext {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusSdkContextImpl() override;
 
-  std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher() const override;
+  std::unique_ptr<skus::SkusSdkFetcher> CreateFetcher() const override;
   std::string GetValueFromStore(std::string key) const override;
   void PurgeStore() const override;
   void UpdateStoreValue(std::string key, std::string value) const override;
@@ -61,6 +61,6 @@ class SkusSdkContextImpl : public SkusSdkContext {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_

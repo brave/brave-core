@@ -17,7 +17,7 @@
 
 class PrefService;
 
-namespace brave_rewards {
+namespace skus {
 struct CppSDK;
 }
 
@@ -78,8 +78,8 @@ class SkusSdkService : public KeyedService {
       skus::mojom::SkusSdk::CredentialSummaryCallback callback);
 
  private:
-  std::unique_ptr<brave_rewards::SkusSdkContextImpl> context_;
-  ::rust::Box<brave_rewards::CppSDK> sdk_;
+  std::unique_ptr<skus::SkusSdkContextImpl> context_;
+  ::rust::Box<skus::CppSDK> sdk_;
   PrefService* prefs_;
   base::WeakPtrFactory<SkusSdkService> weak_factory_;
 };
