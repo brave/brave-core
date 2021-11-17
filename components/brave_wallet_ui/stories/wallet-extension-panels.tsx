@@ -170,6 +170,7 @@ export const _ConfirmTransaction = () => {
   return (
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
+        siteURL='https://app.uniswap.org'
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransction={onQueueNextTransction}
         onRejectAllTransactions={onRejectAllTransactions}
