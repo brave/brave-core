@@ -323,6 +323,13 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
+    if (!this.isComponentBuild()) {
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
+      // ld64.lld: error: Option `-no_compact_unwind' is undocumented.
+      // Should lld implement it?
+      args.use_lld = false
+    }
+
     if (this.use_goma && this.gomaServerHost) {
       args.use_system_xcode = false
     }

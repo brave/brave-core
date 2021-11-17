@@ -16,4 +16,4 @@ panic = "abort"
 [lib]
 name = "speedreader_ffi"
 path = "lib.rs"
-crate-type = ["staticlib", "cdylib", "rlib"]
+crate-type = ["rlib"]
