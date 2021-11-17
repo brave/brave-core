@@ -1,14 +1,13 @@
 import("//brave/build/cargo.gni")
 
-lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
-lib_output_path =
-    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+if (is_mac) {
+  import("//build/config/mac/mac_sdk.gni")
+}
 
-# TODO(bridiver) - selectively include these libraries based on buildflags, but
-# in order to do that we have to dynamically create the brave rust lib
 cargo_build("rust_lib") {
   visibility = [ ":*" ]
   inputs = [
+    "Cargo.lock",
     "Cargo.toml",
     "lib.rs",
   ]
@@ -17,6 +16,9 @@ cargo_build("rust_lib") {
   output = lib_output_path
   manifest_path = "Cargo.toml"
 
+  # ensure that we rebuild when the dependent crates change
+  # TODO(bridiver) - selectively include these libraries based on buildflags,
+  # but in order to do that we have to dynamically create the brave rust lib
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
@@ -25,14 +27,26 @@ cargo_build("rust_lib") {
   ]
 }
 
-brave_ffi_deps = [
-  "//brave/components/adblock_rust_ffi:rust_ffi",
-  "//brave/components/challenge_bypass_ristretto:rust_ffi",
-  "//brave/components/skus/browser/brave-rewards-cxx/src:rust_ffi",
-  "//brave/components/speedreader/rust/ffi:rust_ffi",
-]
+action("generate_unexport_list") {
+  script = "//brave/build/rust/generate_unexport_list.py"
 
-brave_rust_deps = brave_ffi_deps + [ ":rust_lib" ]
+  inputs = [
+    "//brave/build/rust/generate_unexport_list.py",
+    lib_output_path,
+  ]
+
+  outputs = [
+    unexport_list_path
+  ]
+
+  args = [
+    "--bin_path=" + mac_bin_path,
+    "--input=" + rebase_path(lib_output_path, root_build_dir),
+    "--output=" + rebase_path(unexport_list_path, root_build_dir)
+  ]
+
+  deps = [ ":rust_lib" ]
+}
 
 # The required config for cxx-generated bindings because Chromium C++ is built
 # with -fno-exceptions.
@@ -50,14 +64,4 @@ source_set("cxx_cppdeps") {
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [ "//build/config/compiler:no_chromium_code" ]
   public_configs = [ ":cxx_cppconfig" ]
-}
-
-config("external_config") {
-  libs = [ lib_output_path ]
-}
-
-group("rust") {
-  public_configs = [ ":external_config" ]
-  deps = brave_rust_deps
-  public_deps = brave_ffi_deps
 }

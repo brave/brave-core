@@ -21,9 +21,6 @@ cargo_cbindgen("speedreader_ffi_header") {
 }
 
 rust_ffi("ffi") {
-  shared_library_define = "SPEEDREADER_SHARED_LIBRARY"
-  implementation_define = "SPEEDREADER_IMPLEMENTATION"
-
   sources = [
     "speedreader.cc",
     "speedreader.h",
