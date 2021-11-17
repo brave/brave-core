@@ -174,7 +174,9 @@ public class PortfolioHelper {
                             context.userAsset = userAsset;
                             contexts.add(context);
                             mEthJsonRpcController.getErc20TokenBalance(
-                                    userAsset.contractAddress, accountInfo.address, context);
+                                    Utils.getContractAddress(
+                                            mChainId, userAsset.symbol, userAsset.contractAddress),
+                                    accountInfo.address, context);
                         }
                     }
                 }

@@ -19,6 +19,8 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -99,6 +101,7 @@ public class Utils {
     public static final String ASSET_NAME = "assetName";
     public static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
     public static final String ASSET_LOGO = "assetLogo";
+    public static final String ASSET_DECIMALS = "assetDecimals";
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -224,13 +227,14 @@ public class Utils {
     }
 
     public static void openAssetDetailsActivity(Activity activity, String assetSymbol,
-            String assetName, String contractAddress, String assetLogo) {
+            String assetName, String contractAddress, String assetLogo, int assetDecimals) {
         assert activity != null;
         Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
         assetDetailIntent.putExtra(ASSET_SYMBOL, assetSymbol);
         assetDetailIntent.putExtra(ASSET_NAME, assetName);
         assetDetailIntent.putExtra(ASSET_LOGO, assetLogo);
         assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, contractAddress);
+        assetDetailIntent.putExtra(ASSET_DECIMALS, assetDecimals);
         activity.startActivity(assetDetailIntent);
     }
 
@@ -632,6 +636,46 @@ public class Utils {
         });
     }
 
+    public static void overlayBitmaps(
+            ExecutorService executor, Handler handler, String[] addresses, ImageView iconImg) {
+        if (addresses == null || addresses.length != 2) {
+            return;
+        }
+        executor.execute(() -> {
+            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true);
+            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true), (float) 0.6);
+            final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
+            handler.post(() -> {
+                if (iconImg != null) {
+                    iconImg.setImageBitmap(bitmap);
+                }
+            });
+        });
+    }
+
+    public static Bitmap scaleDown(Bitmap realImage, float ratio) {
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        return Bitmap.createScaledBitmap(realImage, width, height, true);
+    }
+
+    public static Bitmap overlayBitmapToCenter(Bitmap bitmap1, Bitmap bitmap2) {
+        int bitmap1Width = bitmap1.getWidth();
+        int bitmap1Height = bitmap1.getHeight();
+
+        float marginLeft = (float) (bitmap1Width * 0.6);
+        float marginTop = (float) (bitmap1Height * 0.2);
+
+        int newWidth = Math.round((float) (bitmap1Width * 1.4));
+        Bitmap overlayBitmap = Bitmap.createBitmap(newWidth, bitmap1Height, bitmap1.getConfig());
+        Canvas canvas = new Canvas(overlayBitmap);
+        canvas.drawBitmap(bitmap1, new Matrix(), null);
+        canvas.drawBitmap(bitmap2, marginLeft, marginTop, null);
+
+        return overlayBitmap;
+    }
+
     public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
@@ -703,6 +747,17 @@ public class Utils {
         }
 
         return contractAddress;
+    }
+
+    public static String getRopstenContractAddress(String mainnetContractAddress) {
+        String lowerCaseAddress = mainnetContractAddress.toLowerCase(Locale.getDefault());
+        if (lowerCaseAddress.equals("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48")) {
+            return "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
+        } else if (lowerCaseAddress.equals("0x6b175474e89094c44da98b954eedeac495271d0f")) {
+            return "0xad6d458402f60fd3bd25163575031acdce07538d";
+        }
+
+        return "";
     }
 
     public static int getTimeframeFromRadioButtonId(int radioButtonId) {

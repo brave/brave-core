@@ -21,6 +21,9 @@ public class WalletListItemModel {
     private ErcToken mErcToken;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
+    private double mTotalGas;
+    private double mTotalGasFiat;
+    private String[] mAddressesForBitmap;
 
     public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
             boolean isImportedAccount) {
@@ -41,12 +44,38 @@ public class WalletListItemModel {
         mText2 = text2;
     }
 
+    public void setAddressesForBitmap(String addressFrom, String addressTo) {
+        mAddressesForBitmap = new String[2];
+        mAddressesForBitmap[0] = addressFrom;
+        mAddressesForBitmap[1] = addressTo;
+    }
+
+    public String[] getAddressesForBitmap() {
+        return mAddressesForBitmap;
+    }
+
     public void setIconPath(String iconPath) {
         mIconPath = iconPath;
     }
 
     public String getIconPath() {
         return mIconPath;
+    }
+
+    public void setTotalGas(double totalGas) {
+        mTotalGas = totalGas;
+    }
+
+    public double getTotalGas() {
+        return mTotalGas;
+    }
+
+    public void setTotalGasFiat(double totalGasFiat) {
+        mTotalGasFiat = totalGasFiat;
+    }
+
+    public double getTotalGasFiat() {
+        return mTotalGasFiat;
     }
 
     public void setTxStatus(String txStatus) {

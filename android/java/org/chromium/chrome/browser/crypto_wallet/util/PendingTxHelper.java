@@ -25,6 +25,7 @@ public class PendingTxHelper {
     private HashMap<String, TransactionInfo[]> mTxInfos;
     private boolean mReturnAll;
     private String mFilterByContractAddress;
+    private String mRopstenContractAddress;
 
     public PendingTxHelper(EthTxController ethTxController, AccountInfo[] accountInfos,
             boolean returnAll, String filterByContractAddress) {
@@ -34,6 +35,9 @@ public class PendingTxHelper {
         mFilterByContractAddress = filterByContractAddress;
         mReturnAll = returnAll;
         mTxInfos = new HashMap<String, TransactionInfo[]>();
+        if (mFilterByContractAddress != null && !mFilterByContractAddress.isEmpty()) {
+            mRopstenContractAddress = Utils.getRopstenContractAddress(mFilterByContractAddress);
+        }
     }
 
     public HashMap<String, TransactionInfo[]> getTransactions() {
@@ -69,8 +73,16 @@ public class PendingTxHelper {
                                                     Locale.getDefault()))) {
                                 newValue.add(txInfo);
                             }
+                            if (mRopstenContractAddress != null
+                                    && !mRopstenContractAddress.isEmpty()
+                                    && mRopstenContractAddress.toLowerCase(Locale.getDefault())
+                                               .equals(txInfo.txData.baseData.to.toLowerCase(
+                                                       Locale.getDefault()))) {
+                                newValue.add(txInfo);
+                            }
 
-                        } else if (txInfo.txType != TransactionType.ERC20_APPROVE) {
+                        } else if (txInfo.txType != TransactionType.ERC20_APPROVE
+                                && txInfo.txType != TransactionType.ERC20_TRANSFER) {
                             // Filter by ETH only
                             newValue.add(txInfo);
                         }

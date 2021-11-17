@@ -2481,7 +2481,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       ERC20Approve
     </message>
     <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
-      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="ASSET">%2$s<ex>ETH</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>
+      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
     </message>
     <message name="IDS_WALLET_TX_INFO_APPROVED" desc="Brave wallet approved assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> approved <ph name="ASSET">%2$s<ex>BAT</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>
@@ -2509,6 +2509,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
       Error
+    </message>
+    <message name="IDS_WALLET_TX_FEE" desc="Brave wallet tx fee">
+      Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> ETH ($<ph name="FIAT_VALUE">%2$s<ex>101.22</ex></ph>)
     </message>
     </messages>
   </release>

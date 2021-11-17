@@ -129,15 +129,7 @@ public class PortfolioFragment extends Fragment
         });
 
         mSpinner = view.findViewById(R.id.spinner);
-        // class PortfolioFragment in fact is used both for Portfolio and Apps
-        // screens, see CryptoFragmentPageAdapter.getItem.
-        // Without post task with delay it happens that when 2nd instance is
-        // created, then 1st instance onItemSelected is triggered with
-        // position=0. That makes onItemSelected to switch network, but the
-        // actual displayed value of spinner's item on 1st instance remains
-        // unchanged.
-        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT,
-                () -> { mSpinner.setOnItemSelectedListener(this); }, 500);
+        mSpinner.setOnItemSelectedListener(this);
 
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +143,7 @@ public class PortfolioFragment extends Fragment
         NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
                 Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
         mSpinner.setAdapter(dataAdapter);
-        updatePortfolioGetPendingTx(true);
+        updateNetwork();
 
         return view;
     }
@@ -288,8 +280,8 @@ public class PortfolioFragment extends Fragment
 
     @Override
     public void onAssetClick(ErcToken asset) {
-        Utils.openAssetDetailsActivity(
-                getActivity(), asset.symbol, asset.name, asset.contractAddress, asset.logo);
+        Utils.openAssetDetailsActivity(getActivity(), asset.symbol, asset.name,
+                asset.contractAddress, asset.logo, asset.decimals);
     }
 
     private AssetRatioController getAssetRatioController() {

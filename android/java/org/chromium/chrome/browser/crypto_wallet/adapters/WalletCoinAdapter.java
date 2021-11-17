@@ -97,6 +97,14 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     new BitmapDrawable(
                             context.getResources(), walletListItemModel.getTxStatusBitmap()),
                     null, null, null);
+            holder.feeText.setVisibility(View.VISIBLE);
+            holder.feeText.setText(String.format(
+                    context.getResources().getString(R.string.wallet_tx_fee),
+                    String.format(Locale.getDefault(), "%.6f", walletListItemModel.getTotalGas()),
+                    String.format(
+                            Locale.getDefault(), "%.2f", walletListItemModel.getTotalGasFiat())));
+            Utils.overlayBitmaps(mExecutor, mHandler, walletListItemModel.getAddressesForBitmap(),
+                    holder.iconImg);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -206,6 +214,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public TextView text1Text;
         public TextView text2Text;
         public CheckBox assetCheck;
+        public LinearLayout feeLayout;
+        public TextView feeText;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -216,6 +226,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             this.text1Text = itemView.findViewById(R.id.text1);
             this.text2Text = itemView.findViewById(R.id.text2);
             this.assetCheck = itemView.findViewById(R.id.assetCheck);
+            this.feeText = itemView.findViewById(R.id.fee_text);
         }
 
         public void resetObservers() {
