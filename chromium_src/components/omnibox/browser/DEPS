@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../components/omnibox/browser",
   "+components/omnibox/browser",
   "+content/public/common",
 ]

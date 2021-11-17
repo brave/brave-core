@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../weblayer/browser/url_bar",
   "+components/page_info",
   "+weblayer/browser/url_bar",
 ]

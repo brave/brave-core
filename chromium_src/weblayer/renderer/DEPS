@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../weblayer/renderer",
   "+weblayer/renderer",
   "+media/base/key_system_properties.h",
   "+third_party/widevine/cdm/buildflags.h",

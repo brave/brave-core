@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../extensions/browser",
   "+extensions/common",
   "+extensions/browser",
 ]

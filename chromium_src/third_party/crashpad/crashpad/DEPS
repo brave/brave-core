@@ -1,6 +1,4 @@
 include_rules = [
-  "+../../../../../../../third_party/crashpad/crashpad/util/net",
-  "+../../../../../../third_party/crashpad/crashpad/client",
   "+third_party/crashpad/crashpad",
   "+util/misc/uuid.h",
 ]

@@ -1,9 +1,4 @@
 include_rules = [
-  "+../../../../chrome/common",
-  "+../../../../../chrome/common/extensions",
-  "+../../../../../chrome/common/importer",
-  "+../../../../../chrome/common/media",
-  "+../../../../../../chrome/common/extensions/permissions",
   "+brave/common",
   "+chrome/common",
   "+components/version_info",

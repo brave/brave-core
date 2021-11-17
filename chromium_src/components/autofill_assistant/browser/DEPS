@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../components/autofill_assistant/browser",
   "+base",
   "+components/autofill_assistant/browser",
   "+testing/gtest/include/gtest",

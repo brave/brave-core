@@ -1,6 +1,4 @@
 include_rules = [
-  "+../../../../../third_party/blink/common",
-  "+../../../../../../third_party/blink/common/client_hints",
   "+third_party/blink/common",
   "+third_party/blink/public/common/client_hints",
 ]

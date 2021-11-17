@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../components/component_updater",
   "+components/component_updater",
   "+components/crx_file",
   "+components/update_client",

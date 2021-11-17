@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../components/sync/driver",
   "+components/sync/driver",
   "+components/sync/engine",
 ]

@@ -1,6 +1,5 @@
 include_rules = [
   "+components/services/storage/public/mojom/blob_storage_context.mojom.h",
-  "+../../../../../content/public/browser",
   "+content/browser",
   "+content/common",
   "+content/public/browser",
