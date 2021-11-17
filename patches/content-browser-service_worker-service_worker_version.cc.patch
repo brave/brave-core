@@ -1,0 +1,13 @@
+diff --git a/content/browser/service_worker/service_worker_version.cc b/content/browser/service_worker/service_worker_version.cc
+index 26cdf768f189f054855f351ebfbb427aec049c01..b102140e0501335983d110bbf8080efc48baedd6 100644
+--- a/content/browser/service_worker/service_worker_version.cc
++++ b/content/browser/service_worker/service_worker_version.cc
+@@ -74,7 +74,7 @@ const base::FeatureParam<int> kUpdateDelayParam{
+ // timeout.
+ const base::FeatureParam<int> kTerminationDelayParam{
+     &features::kServiceWorkerTerminationOnNoControllee,
+-    "termination_delay_in_ms", std::numeric_limits<int>::max()};
++    "termination_delay_in_ms", 30000};
+ 
+ const char kClaimClientsStateErrorMesage[] =
+     "Only the active worker can claim clients.";

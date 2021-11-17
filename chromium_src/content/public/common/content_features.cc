@@ -19,6 +19,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kWebOTP, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kServiceWorkerTerminationOnNoControllee, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
