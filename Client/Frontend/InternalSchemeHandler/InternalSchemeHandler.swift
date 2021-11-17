@@ -42,6 +42,7 @@ class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
             "/interstitial-icon/Info.svg": "image/svg+xml",
             "/interstitial-icon/Warning.svg": "image/svg+xml",
             "/interstitial-icon/DarkWarning.svg": "image/svg+xml",
+            "/interstitial-icon/Carret.png": "image/png",
             
            // "/reader-mode/..."
         ]
@@ -50,7 +51,9 @@ class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
         if allowedInternalResources.contains(where: { url.path == $0.key }) {
             let path = url.lastPathComponent
             let mimeType = allowedInternalResources[url.path]
-            if let res = Bundle.main.path(forResource: path, ofType: nil), let str = try? String(contentsOfFile: res, encoding: .utf8), let data = str.data(using: .utf8) {
+            
+            if let res = Bundle.main.url(forResource: path, withExtension: nil),
+                let data = try? Data(contentsOf: res) {
                 urlSchemeTask.didReceive(URLResponse(url: url, mimeType: mimeType, expectedContentLength: -1, textEncodingName: nil))
                 urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
