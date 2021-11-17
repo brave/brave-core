@@ -4,7 +4,6 @@ rust_crate("lib") {
   inputs = [
     # Underlying library code
     "build.rs",
-    "Cargo.lock",
     "Cargo.toml",
     "src/classifier/feature_extractor.rs",
     "src/classifier/mod.rs",

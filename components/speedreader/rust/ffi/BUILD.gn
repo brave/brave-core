@@ -12,7 +12,6 @@ cargo_cbindgen("speedreader_ffi_header") {
   output = "${target_gen_dir}/speedreader_ffi.h"
 
   sources = [
-    "Cargo.lock",
     "Cargo.toml",
     "cbindgen.toml",
     "charbuf.rs",
