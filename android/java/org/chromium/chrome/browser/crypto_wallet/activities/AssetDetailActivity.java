@@ -31,6 +31,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -40,6 +41,7 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
@@ -57,6 +59,7 @@ import org.chromium.mojo.system.MojoException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +73,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
     private EthTxController mEthTxController;
+    private EthJsonRpcController mEthJsonRpcController;
     private int checkedTimeframeType;
     private String mAssetSymbol;
     private String mAssetName;
@@ -85,6 +89,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mKeyringController.close();
         mAssetRatioController.close();
         mEthTxController.close();
+        mEthJsonRpcController.close();
     }
 
     @Override
@@ -227,6 +232,15 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     if (values.length != 0) {
                         tempPrice = values[0].price;
                     }
+                    if (mAssetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+                        try {
+                            workWithTransactions(accountInfos, Double.valueOf(tempPrice),
+                                    Double.valueOf(tempPrice));
+                        } catch (NumberFormatException exc) {
+                        }
+
+                        return;
+                    }
                     final String ethPrice = tempPrice;
                     assets[0] = mAssetSymbol.toLowerCase(Locale.getDefault());
                     toCurr[0] = "usd";
@@ -285,9 +299,15 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                         to = txInfo.txArgs[0];
                         valueToDisplay = String.format(Locale.getDefault(), "%.4f",
                                 Utils.fromHexWei(valueAsset, mAssetDecimals));
+                        try {
+                            actionFiatValue = String.format(Locale.getDefault(), "%.2f",
+                                    Double.valueOf(valueToDisplay) * assetPrice);
+                        } catch (NumberFormatException exc) {
+                        }
                         action = String.format(
                                 getResources().getString(R.string.wallet_tx_info_sent), accountName,
                                 valueToDisplay, mAssetSymbol, actionFiatValue, strDate);
+                        detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
                     } else if (txInfo.txType == TransactionType.ERC20_APPROVE) {
                         action = String.format(
                                 getResources().getString(R.string.wallet_tx_info_approved),
@@ -357,6 +377,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     itemModel.setTotalGas(totalGas);
                     itemModel.setTotalGasFiat(totalGasFiat);
                     itemModel.setAddressesForBitmap(txInfo.fromAddress, to);
+                    itemModel.setTransactionInfo(txInfo);
                     walletListItemModelList.add(itemModel);
                 }
             }
@@ -384,6 +405,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         InitAssetRatioController();
         InitKeyringController();
         InitEthTxController();
+        InitEthJsonRpcController();
         getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
         setUpAccountList();
     }
@@ -393,6 +415,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mKeyringController.close();
         mAssetRatioController.close();
         mEthTxController.close();
+        mEthJsonRpcController.close();
 
         mAssetRatioController = null;
         InitAssetRatioController();
@@ -402,6 +425,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
         mEthTxController = null;
         InitEthTxController();
+
+        mEthJsonRpcController = null;
+        InitEthJsonRpcController();
     }
 
     private void InitAssetRatioController() {
@@ -421,6 +447,15 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
     }
 
+    private void InitEthJsonRpcController() {
+        if (mEthJsonRpcController != null) {
+            return;
+        }
+
+        mEthJsonRpcController =
+                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+    }
+
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
@@ -438,7 +473,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onTransactionClick() {}
+    public void onTransactionClick(TransactionInfo txInfo) {
+        Utils.openTransaction(txInfo, mEthJsonRpcController, this);
+    }
 
     private void InitKeyringController() {
         if (mKeyringController != null) {

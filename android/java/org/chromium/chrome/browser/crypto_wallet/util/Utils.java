@@ -42,6 +42,9 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
@@ -50,6 +53,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
@@ -830,5 +834,32 @@ public class Utils {
         }
 
         return stripAccountAddress(address);
+    }
+
+    public static void openTransaction(
+            TransactionInfo txInfo, EthJsonRpcController ethJsonRpcController, Activity activity) {
+        if (txInfo == null || txInfo.txHash == null || txInfo.txHash.isEmpty()) {
+            return;
+        }
+        assert ethJsonRpcController != null;
+        ethJsonRpcController.getChainId(chainId -> {
+            ethJsonRpcController.getAllNetworks(networks -> {
+                for (EthereumChain network : networks) {
+                    if (!chainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+                    if (blockExplorerUrl.length() > 2) {
+                        blockExplorerUrl =
+                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
+                                + "/tx/" + txInfo.txHash;
+
+                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                        break;
+                    }
+                }
+            });
+        });
     }
 }

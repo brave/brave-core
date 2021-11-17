@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -215,7 +216,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onTransactionClick() {}
+    public void onTransactionClick(TransactionInfo txInfo) {}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

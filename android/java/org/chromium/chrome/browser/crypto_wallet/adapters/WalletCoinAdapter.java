@@ -109,7 +109,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
         holder.itemView.setOnClickListener(v -> {
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
-                onWalletListItemClick.onTransactionClick();
+                onWalletListItemClick.onTransactionClick(walletListItemModel.getTransactionInfo());
             } else if (walletListItemType == Utils.ASSET_ITEM) {
                 if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST
                         || mType == AdapterType.SWAP_ASSETS_LIST) {

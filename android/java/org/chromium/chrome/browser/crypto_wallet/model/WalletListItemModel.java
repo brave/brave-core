@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.model;
 import android.graphics.Bitmap;
 
 import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class WalletListItemModel {
     private int mIcon;
@@ -24,6 +25,7 @@ public class WalletListItemModel {
     private double mTotalGas;
     private double mTotalGasFiat;
     private String[] mAddressesForBitmap;
+    private TransactionInfo mTxInfo;
 
     public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
             boolean isImportedAccount) {
@@ -42,6 +44,14 @@ public class WalletListItemModel {
         mSubTitle = subTitle;
         mText1 = text1;
         mText2 = text2;
+    }
+
+    public void setTransactionInfo(TransactionInfo txInfo) {
+        mTxInfo = txInfo;
+    }
+
+    public TransactionInfo getTransactionInfo() {
+        return mTxInfo;
     }
 
     public void setAddressesForBitmap(String addressFrom, String addressTo) {
