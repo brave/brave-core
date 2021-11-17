@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
+#include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "net/base/load_flags.h"
 #include "url/gurl.h"
 

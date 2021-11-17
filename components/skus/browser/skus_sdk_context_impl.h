@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/skus/browser/brave-rewards-cxx/src/shim.h"
+#include "brave/components/skus/browser/rs/cxx/src/shim.h"
 
 class PrefService;
 
@@ -32,7 +32,7 @@ namespace brave_rewards {
 // and 2) the fetcher used for contacting the SKU SDK endpoint via HTTPS.
 //
 // In the .cc, there are implementations for global methods originally defined
-// in `brave-rewards-cxx/src/shim.h`. These implementations are called from
+// in `rs/cxx/src/shim.h`. These implementations are called from
 // Rust and will pass this context object along, so that the results can be
 // persisted.
 class SkusSdkContextImpl : public SkusSdkContext {
