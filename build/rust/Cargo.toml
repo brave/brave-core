@@ -5,7 +5,7 @@ edition = "2018"
 
 [dependencies]
 adblock-ffi = { path = "../../components/adblock_rust_ffi" }
-challenge-bypass-ristretto-ffi = { path = "../../vendor/challenge_bypass_ristretto_ffi" }
+challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 brave-rewards-cxx = { path = "../../components/skus/browser/brave-rewards-cxx/src" }
 [patch.crates-io]

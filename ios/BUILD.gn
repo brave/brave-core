@@ -7,7 +7,10 @@ import("//build/config/ios/rules.gni")
 
 config("internal_config") {
   visibility = [ ":*" ]
-  ldflags = [ "-Wl,-no_compact_unwind,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
+  ldflags = [ "-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
+  if (!use_lld) {
+    ldflags += ["-Wl,-no_compact_unwind"]
+  }
 }
 
 group("brave_ios") {
