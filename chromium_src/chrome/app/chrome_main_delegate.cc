@@ -7,4 +7,5 @@
 // chrome/BUILD.gn
 #include "brave/app/brave_command_line_helper.cc"
 #include "brave/app/brave_main_delegate.cc"
+
 #include "src/chrome/app/chrome_main_delegate.cc"

@@ -4,4 +4,5 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/brave_profile_manager.h"
+
 #include "src/chrome/browser/profiles/profile_manager.cc"

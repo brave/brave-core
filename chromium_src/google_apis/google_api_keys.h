@@ -6,8 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_GOOGLE_APIS_GOOGLE_API_KEYS_H_
 #define BRAVE_CHROMIUM_SRC_GOOGLE_APIS_GOOGLE_API_KEYS_H_
 
-#include "src/google_apis/google_api_keys.h"
 #include <string>
+
+#include "src/google_apis/google_api_keys.h"
 
 namespace google_apis {
 

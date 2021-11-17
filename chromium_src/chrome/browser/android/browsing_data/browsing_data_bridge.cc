@@ -5,7 +5,7 @@
 
 #define BRAVE_CLEAR_BROWSING_DATA                          \
   remove_mask |= BrowsingDataRemover::DATA_TYPE_DOWNLOADS; \
-  break;                                                   \
+  break;
 
 #include "src/chrome/browser/android/browsing_data/browsing_data_bridge.cc"
 #undef BRAVE_CLEAR_BROWSING_DATA

@@ -63,4 +63,5 @@ bool BrowserContext::IsTor() const {
 }  // namespace content
 
 #include "src/content/browser/browser_context.cc"
+
 #include "content/browser/tld_ephemeral_lifetime.cc"
