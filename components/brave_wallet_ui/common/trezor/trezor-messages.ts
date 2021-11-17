@@ -41,7 +41,7 @@ export type TrezorError = {
 
 // Unlock command
 export type UnlockResponse = Unsuccessful | {
-  success: Boolean
+  success: boolean
 }
 export type UnlockResponsePayload = CommandMessage & {
   payload: UnlockResponse
@@ -96,7 +96,7 @@ export abstract class MessagingTransport {
 
   protected handlers: Map<string, Function>
 
-  addCommandHandler = (id: string, listener: Function): Boolean => {
+  addCommandHandler = (id: string, listener: Function): boolean => {
     if (!this.handlers.size) {
       this.addWindowMessageListener()
       this.handlers.clear()

@@ -22,7 +22,7 @@ import {
 
 import { addTrezorCommandHandler } from '../common/trezor/trezor-command-handler'
 
-const createUnlockResponse = (command: UnlockCommand, result: Boolean, error?: Unsuccessful): UnlockResponsePayload => {
+const createUnlockResponse = (command: UnlockCommand, result: boolean, error?: Unsuccessful): UnlockResponsePayload => {
   const payload: UnlockResponse = (!result && error) ? error : { success: result }
   return { id: command.id, command: command.command, payload: payload, origin: command.origin }
 }

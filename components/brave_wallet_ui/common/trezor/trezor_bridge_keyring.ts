@@ -21,7 +21,6 @@ import {
   SignMessageCommandPayload,
   SignMessageResponsePayload,
   TrezorErrorsCodes,
-  UnlockResponse,
   SignTransactionResponse,
   SignMessageResponse,
   TrezorGetAccountsResponse
@@ -29,19 +28,22 @@ import {
 import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
-import { GetAccountsHardwareOperationResult, HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
+import {
+  GetAccountsHardwareOperationResult,
+  HardwareOperationResult,
+  SignHardwareMessageOperationResult,
+  SignHardwareTransactionOperationResult
+} from '../../common/hardware_operations'
+import { Unsuccessful } from 'trezor-connect'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
-  private unlocked: Boolean = false
-  constructor () {
-    super()
-  }
+  private unlocked: boolean = false
 
   type = () => {
     return TREZOR_HARDWARE_VENDOR
   }
 
-  isUnlocked = (): Boolean => {
+  isUnlocked = (): boolean => {
     return this.unlocked
   }
 
@@ -55,11 +57,11 @@ export default class TrezorBridgeKeyring extends EventEmitter {
         data === TrezorErrorsCodes.CommandInProgress) {
       return this.createErrorFromCode(data)
     }
-    const response: UnlockResponse = data.payload
-    this.unlocked = response.success
-    if (!response.success) {
-      const error = response.payload && response.payload.error ? response.payload.error : getLocale('braveWalletUnlockError')
-      const code = response.payload && response.payload.code ? response.payload.code : ''
+    this.unlocked = data.payload.success
+    if (!data.payload.success) {
+      const response: Unsuccessful = data.payload as Unsuccessful
+      const error = response.payload?.error ?? getLocale('braveWalletUnlockError')
+      const code = response.payload?.code ?? ''
       return { success: false, error: error, code: code }
     }
     return { success: this.unlocked }
@@ -203,7 +205,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return toChecksumAddress(`0x${address}`)
   }
 
-  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: Boolean): Promise<GetAccountsHardwareOperationResult> => {
+  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean): Promise<GetAccountsHardwareOperationResult> => {
     const requestedPaths = []
     for (const path of paths) {
       requestedPaths.push({ path: path })

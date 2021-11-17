@@ -71,8 +71,8 @@ export class TrezorBridgeTransport extends MessagingTransport {
     })
   }
 
-  private readonly hasBridgeCreated = (): Boolean => {
-    return document.getElementById(this.frameId) != null
+  private readonly hasBridgeCreated = (): boolean => {
+    return document.getElementById(this.frameId) !== null
   }
 }
 

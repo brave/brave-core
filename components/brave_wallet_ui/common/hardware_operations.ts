@@ -13,7 +13,7 @@ export interface SignatureVRS {
   s: string
 }
 export type HardwareOperationResult = {
-  success: Boolean
+  success: boolean
   error?: string
   code?: string | number
 }

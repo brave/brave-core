@@ -30,8 +30,7 @@ export async function signTrezorTransaction (apiProxy: WalletApiProxy, path: str
   const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
     const error = signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')
-    const code = signed.code ? signed.code : undefined
-    if (code === TrezorErrorsCodes.CommandInProgress) {
+    if (signed.code === TrezorErrorsCodes.CommandInProgress) {
       return { success: false, error: error, deviceError: 'deviceBusy' }
     }
     return { success: false, error: error }
