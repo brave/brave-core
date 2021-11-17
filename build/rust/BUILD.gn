@@ -27,25 +27,27 @@ cargo_build("rust_lib") {
   ]
 }
 
-action("generate_unexport_list") {
-  script = "//brave/build/rust/generate_unexport_list.py"
+if (is_mac) {
+  action("generate_unexport_list") {
+    script = "//brave/build/rust/generate_unexport_list.py"
 
-  inputs = [
-    "//brave/build/rust/generate_unexport_list.py",
-    lib_output_path,
-  ]
+    inputs = [
+      "//brave/build/rust/generate_unexport_list.py",
+      lib_output_path,
+    ]
 
-  outputs = [
-    unexport_list_path
-  ]
+    outputs = [
+      unexport_list_path
+    ]
 
-  args = [
-    "--bin_path=" + mac_bin_path,
-    "--input=" + rebase_path(lib_output_path, root_build_dir),
-    "--output=" + rebase_path(unexport_list_path, root_build_dir)
-  ]
+    args = [
+      "--bin_path=" + mac_bin_path,
+      "--input=" + rebase_path(lib_output_path, root_build_dir),
+      "--output=" + rebase_path(unexport_list_path, root_build_dir)
+    ]
 
-  deps = [ ":rust_lib" ]
+    deps = [ ":rust_lib" ]
+  }
 }
 
 # The required config for cxx-generated bindings because Chromium C++ is built
