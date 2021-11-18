@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="32dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardCornerRadius="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_tip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:drawablePadding="8dp"
+            android:text="@string/tip"
+            android:textAllCaps="false"
+            android:textColor="#868E96"
+            android:textSize="16sp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            style="?android:attr/buttonBarButtonStyle"
+            app:drawableStartCompat="@drawable/ic_hearts" />
+
+        <TextView
+            android:id="@+id/btn_summary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:drawablePadding="8dp"
+            android:text="@string/summary"
+            android:textAllCaps="false"
+            android:textColor="#868E96"
+            android:textSize="16sp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            style="?android:attr/buttonBarButtonStyle"
+            app:drawableStartCompat="@drawable/ic_bar_chart_20"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#E9E9F4" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_settings"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@null" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

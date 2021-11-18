@@ -209,6 +209,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",

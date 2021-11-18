@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:background="@android:color/transparent">
+
+        <ProgressBar
+            android:id="@+id/publisher_favicon_update"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/publisher_favicon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@null" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/publisher_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:layout_marginBottom="8dp"
+            android:text="washingtonpost.com"
+            android:textColor="#212529"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/publisher_verified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:layout_marginBottom="4dp"
+            android:drawablePadding="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="start"
+            android:text="@string/unverified_creator"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/unverified_48_rounded_bg"
+            android:textColor="#212529"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/ic_unverified_state" />
+
+        <TextView
+            android:id="@+id/refresh_publisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:text="@string/refresh_status"
+            android:textColor="#4E56CD"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
