@@ -1,3 +1,4 @@
+use std::convert::{TryFrom, TryInto};
 use std::ops::Deref;
 
 use async_trait::async_trait;
@@ -17,6 +18,63 @@ pub struct WakeupContext {
     client: NativeClient,
 }
 
+impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
+    type Error = errors::InternalError;
+
+    fn try_from(req: http::Request<Vec<u8>>) -> Result<Self, Self::Error> {
+        let url = req.uri().to_string();
+        let method = req.method().to_string();
+        let mut headers: Vec<String> = Vec::new();
+
+        for (key, value) in req.headers().iter() {
+            let value = value
+                .to_str()
+                .map_err(|_| errors::InternalError::UnhandledVariant)?;
+            let header = format!("{}: {}", key.as_str(), value);
+            headers.push(header);
+        }
+
+        let body = req.body().to_vec();
+
+        Ok(ffi::HttpRequest {
+            url,
+            method,
+            headers,
+            body,
+        })
+    }
+}
+
+impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, errors::InternalError> {
+    fn from(resp: ffi::HttpResponse<'_>) -> Self {
+        match resp.result {
+            ffi::SkusResult::Ok => {
+                let mut response = http::Response::builder();
+
+                response.status(resp.return_code);
+                for header in resp.headers {
+                    let header = header.to_string();
+                    // header: value
+                    let idx = header
+                        .find(':')
+                        .expect("caller must pass headers as `KEY: VALUE`");
+                    let (key, value) = header.split_at(idx);
+                    let value = value
+                        .get(1..)
+                        .expect("caller must pass headers as `KEY: VALUE`");
+
+                    response.header(key, value);
+                }
+
+                Ok(response
+                    .body(resp.body.iter().cloned().collect())
+                    .expect("caller must pass valid body even if zero length"))
+            }
+            _ => Err(errors::InternalError::RequestFailed),
+        }
+    }
+}
+
 impl NativeClient {
     pub async fn execute_request(
         &self,
@@ -32,42 +90,22 @@ impl NativeClient {
             &self
                 .ctx
                 .try_borrow()
-                .or(Err(errors::InternalError::BorrowFailed))?
+                .map_err(|_| errors::InternalError::BorrowFailed)?
                 .deref()
                 .deref()
                 .ctx,
             &req,
             |context, resp| {
-                let resp = match resp.result {
-                    ffi::SkusResult::Ok => {
-                        // FIXME implement from
-
-                        let mut response = http::Response::builder();
-
-                        response.status(resp.return_code);
-                        for header in resp.headers {
-                            let header = header.to_string();
-                            // header: value
-                            let idx = header.find(':').unwrap();
-                            let (key, value) = header.split_at(idx);
-                            let value = value.get(1..).unwrap();
-
-                            response.header(key, value);
-                        }
-
-                        Ok(response.body(resp.body.iter().cloned().collect()).unwrap())
-                    }
-                    _ => Err(errors::InternalError::RequestFailed),
-                };
-
-                let _ = context.tx.send(resp);
+                let _ = context.tx.send(resp.into());
 
                 context.client.try_run_until_stalled();
             },
             context,
         );
 
-        let ret = rx.await.unwrap();
+        let ret = rx
+            .await
+            .map_err(|_| errors::InternalError::FutureCancelled)?;
         drop(fetcher);
         ret
     }
@@ -79,25 +117,7 @@ impl HTTPClient for NativeClient {
         &self,
         req: http::Request<Vec<u8>>,
     ) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
-        // FIXME implement from
-
-        let url = req.uri().to_string();
-        let method = req.method().to_string();
-        let mut headers: Vec<String> = Vec::new();
-
-        for (key, value) in req.headers().iter() {
-            let header = format!("{}: {}", key.as_str(), value.to_str().unwrap());
-            headers.push(header);
-        }
-
-        let body = req.body().to_vec();
-        self.execute_request(ffi::HttpRequest {
-            url,
-            method,
-            headers,
-            body,
-        })
-        .await
+        self.execute_request(req.try_into()?).await
     }
 
     fn schedule_wakeup(&self, delay_ms: u64) {
