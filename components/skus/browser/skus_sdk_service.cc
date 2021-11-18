@@ -49,30 +49,26 @@ void OnPrepareCredentialsPresentation(
   delete callback_state;
 }
 
-void OnCredentialSummary(
-    skus::CredentialSummaryCallbackState* callback_state,
-    skus::SkusResult result,
-    rust::cxxbridge1::Str summary) {
+void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
+                         skus::SkusResult result,
+                         rust::cxxbridge1::Str summary) {
   std::string summary_string = static_cast<std::string>(summary);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  // TODO: this logic can be polished; maybe we can set an enum
-  // for the state (ex: ask for user login, credentials ready,
-  // billing problem, etc)
   if (records_v && callback_state->prefs) {
     if (callback_state->domain == "vpn.brave.com" ||
+        callback_state->domain == "vpn.bravesoftware.com" ||
         callback_state->domain == "vpn.brave.software") {
-      const base::Value* sku = records_v->FindKey("sku");
-      const base::Value* credential_count = records_v->FindKey("remaining_credential_count");
-      bool has_credential = sku && sku->is_string() &&
-                            sku->GetString() == "brave-firewall-vpn-premium" &&
-                            credential_count && credential_count->is_int() &&
-                            credential_count->GetInt() > 0;
-      callback_state->prefs->SetBoolean(
-          skus::prefs::kSkusVPNHasCredential, has_credential);
+      const base::Value* active = records_v->FindKey("active");
+      if (active) {
+        bool has_credential =
+            active && active->is_bool() && active->GetBool();
+        callback_state->prefs->SetBoolean(skus::prefs::kSkusVPNHasCredential,
+                                          has_credential);
+      }
     }
   }
 
