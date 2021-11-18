@@ -128,7 +128,18 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
           ]
         }
       },
-      autoContributeMonthlyLimit_: Array
+      autoContributeMonthlyLimit_: {
+	type: Array,
+	value: []
+      },
+      shouldAllowAdsSubdivisionTargeting_: {
+	type: Boolean,
+	value: false
+      },
+      shouldShowAutoContributeSettings_: {
+        type: Boolean,
+        value: true
+      }
     }
   }
 
@@ -138,12 +149,24 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     super.ready()
     this.openRewardsPanel_ = () => {
       chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html')
+      this.isAutoContributeSupported_()
       this.populateAutoContributeAmountDropdown_()
     }
+    this.browserProxy_.getLocale().then((locale) => {
+      this.shouldAllowAdsSubdivisionTargeting_ = locale === 'en-US'
+    })
     this.browserProxy_.getRewardsEnabled().then((enabled) => {
       if (enabled) {
+        this.isAutoContributeSupported_()
         this.populateAutoContributeAmountDropdown_()
       }
+    })
+  }
+
+  isAutoContributeSupported_() {
+    this.browserProxy_.isAutoContributeSupported().then((supported) => {
+      // Show auto-contribute settings if this profile supports it
+      this.shouldShowAutoContributeSettings_ = supported
     })
   }
 
@@ -160,11 +183,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       })
       this.autoContributeMonthlyLimit_ = autoContributeChoices
     })
-  }
-
-  async shouldAllowAdsSubdivisionTargeting_() {
-    const locale = await this.browserProxy_.getLocale()
-    return locale === 'en-US'
   }
 }
 

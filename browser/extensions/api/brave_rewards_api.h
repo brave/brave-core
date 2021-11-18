@@ -350,6 +350,16 @@ class BraveRewardsGetInlineTippingPlatformEnabledFunction :
   void OnInlineTipSetting(bool value);
 };
 
+class BraveRewardsIsAutoContributeSupportedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isAutoContributeSupported", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsAutoContributeSupportedFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.fetchBalance", UNKNOWN)

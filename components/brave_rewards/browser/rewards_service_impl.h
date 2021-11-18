@@ -288,6 +288,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
 
+  bool IsAutoContributeSupported() const override;
+
   void FetchBalance(FetchBalanceCallback callback) override;
 
   std::string GetLegacyWallet() override;
