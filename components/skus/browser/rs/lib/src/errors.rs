@@ -28,6 +28,7 @@ pub enum InternalError {
     ItemCredentialsExpired,
     InvalidMerchantOrSku,
     BorrowFailed,
+    FutureCancelled,
 }
 
 impl Display for InternalError {
@@ -93,6 +94,9 @@ impl Display for InternalError {
             }
             InternalError::BorrowFailed => {
                 write!(f, "Borrow failed")
+            }
+            InternalError::FutureCancelled => {
+                write!(f, "Future was cancelled")
             }
         }
     }

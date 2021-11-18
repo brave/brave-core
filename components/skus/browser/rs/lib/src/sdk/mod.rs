@@ -5,7 +5,6 @@ pub use credentials::*;
 pub use orders::*;
 
 use std::cell::RefCell;
-use std::error::Error;
 use std::fmt;
 
 use git_version::git_version;
@@ -64,9 +63,11 @@ where
         }
     }
 
-    pub async fn initialize(&self) -> Result<(), Box<dyn Error>> {
+    pub async fn initialize(&self) {
         if self.environment == Environment::Local {
-            self.client.clear().await?;
+            if self.client.clear().await.is_err() {
+                event!(Level::ERROR, "clearing skus storage failed",);
+            }
         }
         event!(
             Level::INFO,
@@ -74,7 +75,5 @@ where
             version = %git_version!(),
             "skus sdk initialized",
         );
-
-        Ok(())
     }
 }
