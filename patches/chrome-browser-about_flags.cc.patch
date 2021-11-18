@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index bba0b1f92d527301375cdf631b33b3b175c12984..6b644e9b1ee6a29bb09e60f3a84df815efa0823c 100644
+index e83595adafe6e8eab7ac1467d715e9cbed49ef8d..cd84c2fa41da8fa89976ecdab66f74161e4092b4 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7746,6 +7746,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7756,6 +7756,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
