@@ -105,6 +105,14 @@ struct TransactionView: View {
     Text("\(namedAddress(for: info.fromAddress)) \(Image(systemName: "arrow.right")) \(namedAddress(for: info.txData.baseData.to))")
   }
   
+  private var metadata: Text {
+    let date = Text(info.createdTime, formatter: timeFormatter)
+    if displayAccountCreator {
+      return date + Text(" · \(namedAddress(for: info.fromAddress))")
+    }
+    return date
+  }
+  
   var body: some View {
     HStack(spacing: 12) {
       BlockieGroup(
@@ -131,15 +139,8 @@ struct TransactionView: View {
         subtitle
           .foregroundColor(Color(.braveLabel))
         HStack {
-          HStack(spacing: 4) {
-            Text(info.createdTime, formatter: timeFormatter)
-            if displayAccountCreator {
-              Text("·")
-                .accessibilityHidden(true)
-              Text(namedAddress(for: info.fromAddress))
-            }
-          }
-          .foregroundColor(Color(.secondaryBraveLabel))
+          metadata
+            .foregroundColor(Color(.secondaryBraveLabel))
           Spacer()
           HStack(spacing: 4) {
             Image(systemName: "circle.fill")
@@ -184,16 +185,19 @@ extension BraveWallet.TransactionStatus {
     switch self {
     case .confirmed, .approved:
       return Color(.braveSuccessLabel)
-    case .rejected, .unapproved, .error:
+    case .rejected, .error:
       return Color(.braveErrorLabel)
     case .submitted:
       return Color(.braveWarningLabel)
+    case .unapproved:
+      return Color(.secondaryButtonTint)
     @unknown default:
       return Color.clear
     }
   }
 }
 
+#if DEBUG
 struct Transaction_Previews: PreviewProvider {
   static var previews: some View {
     Group {
@@ -226,3 +230,4 @@ struct Transaction_Previews: PreviewProvider {
     .previewLayout(.sizeThatFits)
   }
 }
+#endif

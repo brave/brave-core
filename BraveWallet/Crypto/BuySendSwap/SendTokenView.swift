@@ -170,6 +170,7 @@ struct SendTokenView: View {
   }
 }
 
+#if DEBUG
 struct SendTokenView_Previews: PreviewProvider {
     static var previews: some View {
       SendTokenView(
@@ -180,3 +181,4 @@ struct SendTokenView_Previews: PreviewProvider {
         .previewColorSchemes()
     }
 }
+#endif

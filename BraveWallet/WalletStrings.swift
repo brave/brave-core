@@ -1273,7 +1273,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Unapproved",
-      comment: "A status that explains that previous approval of the transaction has been revoked"
+      comment: "A status that explains that a transaction has not yet been approved"
     )
     public static let transactionStatusSubmitted = NSLocalizedString(
       "wallet.transactionStatusSubmitted",
