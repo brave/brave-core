@@ -31,8 +31,6 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +46,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
     public interface NTPWidgetListener {
         void onMenuEdit();
 
-        void onMenuRemove(int position, boolean isBinanceWidget);
-
-        void onMenuLearnMore();
-
-        void onMenuRefreshData();
-
-        void onMenuDisconnect();
+        void onMenuRemove(int position);
     }
 
     public void setNTPWidgetListener(NTPWidgetListener ntpWidgetListener) {
@@ -82,35 +74,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
             }
             if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_PRIVATE_STATS)) {
                 BraveStatsUtil.updateBraveStatsLayout(mainView);
-            } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
-                Button connectButton = mainView.findViewById(R.id.btn_connect);
-                LinearLayout bianceDisconnectLayout =
-                        mainView.findViewById(R.id.binance_disconnect_layout);
-                LinearLayout binanceWidgetLayout =
-                        mainView.findViewById(R.id.binance_widget_layout);
-                TextView binanceBalanceText =
-                        binanceWidgetLayout.findViewById(R.id.binance_balance_text);
-                TextView binanceBtcText = binanceWidgetLayout.findViewById(R.id.binance_btc_text);
-                TextView binanceUSDBalanceText =
-                        binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
-
-                if (BinanceWidgetManager.binanceAccountBalance != null) {
-                    binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
-                            BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
-                    binanceBtcText.setText(BTC);
-
-                    binanceUSDBalanceText.setText(String.format(
-                            mContext.getResources().getString(R.string.usd_balance),
-                            String.format(Locale.getDefault(), "%.2f",
-                                    BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
-                }
-                if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-                    binanceWidgetLayout.setVisibility(View.VISIBLE);
-                    bianceDisconnectLayout.setVisibility(View.GONE);
-                } else {
-                    binanceWidgetLayout.setVisibility(View.GONE);
-                    bianceDisconnectLayout.setVisibility(View.VISIBLE);
-                }
             }
             container.addView(mainView);
         }
@@ -148,12 +111,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
         popup.getMenuInflater().inflate(R.menu.ntp_widget_menu, popup.getMenu());
 
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
-        if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)
-                && BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-            popup.getMenu().findItem(R.id.learn_more).setVisible(true);
-            popup.getMenu().findItem(R.id.refresh_data).setVisible(true);
-            popup.getMenu().findItem(R.id.disconnect).setVisible(true);
-        }
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -163,14 +120,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 } else if (id == R.id.remove) {
                     NTPWidgetItem ntpWidgetItem = widgetList.get(position);
                     removeWidgetItem(position);
-                    ntpWidgetListener.onMenuRemove(position,
-                            ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE));
-                } else if (id == R.id.learn_more) {
-                    ntpWidgetListener.onMenuLearnMore();
-                } else if (id == R.id.refresh_data) {
-                    ntpWidgetListener.onMenuRefreshData();
-                } else if (id == R.id.disconnect) {
-                    ntpWidgetListener.onMenuDisconnect();
                 }
                 return true;
             }

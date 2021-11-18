@@ -120,15 +120,8 @@
     <color name="brave_stats_share_trackers_ads_no">@color/onboarding_indicator_selected_color</color>
 
     <color name="topsite_bg_color">#DADCE8</color>
-    <color name="spinner_bg_color">#DADCE8</color>
 
-    <color name="binance_theme_color">#F0B90B</color>
-    <color name="binance_theme_color_alpha_50">#80F0B90B</color>
-    <color name="binance_text_color">#F8F9FA</color>
-    <color name="binance_bottom_sheet_bg_color">#1F1F1F</color>
-    <color name="binance_widget_bg_color">#17171F</color>
     <color name="white_alpha_50">#80FFFFFF</color>
-    <color name="binance_divider_color">#C0C0C0</color>
 
     <color name="brave_rewards_modal_title_color">#212529</color>
     <color name="brave_rewards_modal_text_color">#495057</color>
