@@ -41,6 +41,7 @@ public class BraveWalletResetPreference
     private String TAG = "BraveWalletResetPreference";
 
     private int mPrefAccentColor;
+    private final String mConfirmationPhrase;
     private KeyringController mKeyringController;
 
     /**
@@ -52,6 +53,8 @@ public class BraveWalletResetPreference
         Resources resources = getContext().getResources();
         mPrefAccentColor =
                 ApiCompatibilityUtils.getColor(resources, R.color.wallet_error_text_color);
+        mConfirmationPhrase =
+                resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);
 
         InitKeyringController();
@@ -82,7 +85,11 @@ public class BraveWalletResetPreference
         LayoutInflater inflater =
                 (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.brave_wallet_reset_content, null);
+        final TextView textView = (TextView) view.findViewById(R.id.brave_wallet_reset_textview);
         final EditText input = (EditText) view.findViewById(R.id.brave_wallet_reset_edittext);
+
+        textView.setText(getContext().getString(
+                R.string.brave_wallet_reset_settings_confirmation, mConfirmationPhrase));
 
         DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -90,7 +97,7 @@ public class BraveWalletResetPreference
                 if (button == AlertDialog.BUTTON_POSITIVE) {
                     if (mKeyringController != null) {
                         String inputText = input.getText().toString().trim();
-                        if (TextUtils.equals(inputText, "Yes")) {
+                        if (TextUtils.equals(inputText, mConfirmationPhrase)) {
                             Log.w(TAG, "Reset");
                             mKeyringController.reset();
                             Utils.setCryptoOnboarding(true);
@@ -136,13 +143,14 @@ public class BraveWalletResetPreference
                 // Disable ok button if input is invalid
                 String inputText = s.toString().trim();
 
-                okButton.setEnabled(TextUtils.equals(inputText, "Yes"));
+                okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
             }
         });
     }
 
     @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
         mKeyringController = null;
         InitKeyringController();
     }

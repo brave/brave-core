@@ -117,6 +117,7 @@ public class BraveWalletAutoLockPreferences
 
     @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
         mKeyringController = null;
         InitKeyringController();
     }
