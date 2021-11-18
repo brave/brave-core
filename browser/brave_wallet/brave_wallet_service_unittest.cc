@@ -275,6 +275,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
                                ImportError error,
                                bool* success_out,
                                std::string* error_message_out) {
+    // People import with a blank default keyring, so clear it out
+    keyring_controller_->Reset();
     base::RunLoop run_loop;
     service_->OnGetImportInfo(
         new_password,
@@ -1076,6 +1078,14 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
     CheckAddresses(expected_addresses, &is_valid_addresses);
     EXPECT_TRUE(is_valid_addresses);
   }
+
+  const char* invalid_mnemonic = "not correct seed word";
+  SimulateOnGetImportInfo(new_password, true,
+                          ImportInfo({invalid_mnemonic, false, 2}),
+                          ImportError::kNone, &success, &error_message);
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {

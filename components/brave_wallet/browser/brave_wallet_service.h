@@ -113,6 +113,7 @@ class BraveWalletService : public KeyedService,
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
 
   absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
