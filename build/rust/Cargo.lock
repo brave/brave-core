@@ -156,32 +156,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "brave-rewards"
-version = "0.1.0"
-source = "git+ssh://git@github.com/brave-intl/br-rs?branch=skus#e0949700a73de295a82a3803f199f6fa828fe621"
-dependencies = [
- "async-trait 0.1.51 (registry+https://github.com/rust-lang/crates.io-index)",
- "base64 0.9.3",
- "bigdecimal",
- "challenge-bypass-ristretto 1.0.0",
- "chrono",
- "data-encoding",
- "ed25519-dalek",
- "futures-retry",
- "git-version",
- "hmac 0.10.1",
- "http",
- "http-signature-rs",
- "rand 0.7.3",
- "serde",
- "serde_json",
- "sha2 0.9.8",
- "tracing",
- "urlencoding",
- "uuid",
-]
-
-[[package]]
 name = "brave-rust"
 version = "0.1.0"
 dependencies = [
@@ -1768,16 +1742,41 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cbce6d4507c7e4a3962091436e56e95290cb71fa302d0d270e32130b75fbff27"
 
 [[package]]
+name = "skus"
+version = "0.1.0"
+dependencies = [
+ "async-trait 0.1.51 (registry+https://github.com/rust-lang/crates.io-index)",
+ "base64 0.9.3",
+ "bigdecimal",
+ "challenge-bypass-ristretto 1.0.0",
+ "chrono",
+ "data-encoding",
+ "ed25519-dalek",
+ "futures-retry",
+ "git-version",
+ "hmac 0.10.1",
+ "http",
+ "http-signature-rs",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
+ "sha2 0.9.8",
+ "tracing",
+ "urlencoding",
+ "uuid",
+]
+
+[[package]]
 name = "skus-cxx"
 version = "0.1.0"
 dependencies = [
  "async-trait 0.1.51 (git+https://github.com/dtolnay/async-trait)",
- "brave-rewards",
  "cxx",
  "cxx-build",
  "futures-preview",
  "libc",
  "serde_json",
+ "skus",
  "tracing",
  "tracing-subscriber",
 ]

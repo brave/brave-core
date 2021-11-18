@@ -103,11 +103,15 @@ impl NativeClient {
             context,
         );
 
-        let ret = rx
-            .await
-            .map_err(|_| errors::InternalError::FutureCancelled)?;
+        let ret = rx.await;
         drop(fetcher);
-        ret
+        match ret {
+            Ok(ret) => ret,
+            Err(_) => {
+                debug!("http response channel was cancelled");
+                Err(errors::InternalError::FutureCancelled)
+            }
+        }
     }
 }
 
