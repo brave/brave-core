@@ -5,7 +5,10 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_proxy_string_util_unittest.cc" ]
+  sources = [
+    "//net/base/proxy_string_util_unittest.cc",
+    "brave_proxy_string_util_unittest.cc",
+  ]
 
   deps = [
     "//net",
