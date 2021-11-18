@@ -4,7 +4,6 @@ mod log;
 mod storage;
 
 use std::cell::RefCell;
-use std::error::Error;
 use std::fmt;
 use std::rc::Rc;
 
@@ -218,11 +217,14 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
     {
         let sdk = sdk.clone();
 
-        spawner
+        if spawner
             .spawn_local(async move {
-                sdk.initialize().await.unwrap();
+                sdk.initialize().await;
             })
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
     }
 
     sdk.client.pool.borrow_mut().run_until_stalled();
@@ -245,14 +247,17 @@ impl CppSDK {
         order_id: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(refresh_order_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 order_id,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
         self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
@@ -264,14 +269,17 @@ impl CppSDK {
         order_id: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 order_id,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
         self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
@@ -284,7 +292,7 @@ impl CppSDK {
         path: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
                 callback,
@@ -292,7 +300,10 @@ impl CppSDK {
                 domain,
                 path,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
         self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
@@ -304,14 +315,17 @@ impl CppSDK {
         domain: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 domain,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
         self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
@@ -337,20 +351,14 @@ async fn refresh_order_task(
     callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
     order_id: String,
 ) {
-    match sdk.refresh_order(&order_id).await {
-        Ok(order) => {
-            let order = serde_json::to_string(&order).unwrap();
-            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order)
-        }
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<skus::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+    match sdk
+        .refresh_order(&order_id)
+        .await
+        .and_then(|order| serde_json::to_string(&order).map_err(|e| e.into()))
+        .map_err(|e| e.into())
+    {
+        Ok(order) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
 
@@ -373,16 +381,13 @@ async fn fetch_order_credentials_task(
     callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
     order_id: String,
 ) {
-    match sdk.fetch_order_credentials(&order_id).await {
+    match sdk
+        .fetch_order_credentials(&order_id)
+        .await
+        .map_err(|e| e.into())
+    {
         Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<skus::errors::InternalError>()
-                .unwrap()
-                .into(),
-        ),
+        Err(e) => callback.0(callback_state.into_raw(), e),
     }
 }
 
@@ -407,22 +412,18 @@ async fn prepare_credentials_presentation_task(
     domain: String,
     path: String,
 ) {
-    match sdk.prepare_credentials_presentation(&domain, &path).await {
+    match sdk
+        .prepare_credentials_presentation(&domain, &path)
+        .await
+        .map_err(|e| e.into())
+    {
         Ok(Some(presentation)) => callback.0(
             callback_state.into_raw(),
             ffi::SkusResult::Ok,
             &presentation,
         ),
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<skus::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
 
@@ -446,20 +447,18 @@ async fn credential_summary_task(
     callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
     domain: String,
 ) {
-    match sdk.matching_credential_summary(&domain).await {
-        Ok(Some(summary)) => {
-            let summary = serde_json::to_string(&summary).unwrap();
-            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary)
-        }
+    match sdk
+        .matching_credential_summary(&domain)
+        .await
+        .and_then(|summary| {
+            summary
+                .map(|summary| serde_json::to_string(&summary).map_err(|e| e.into()))
+                .transpose()
+        })
+        .map_err(|e| e.into())
+    {
+        Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<skus::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
