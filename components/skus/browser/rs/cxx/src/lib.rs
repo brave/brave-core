@@ -8,7 +8,7 @@ use std::fmt;
 use std::rc::Rc;
 
 use cxx::{type_id, ExternType, UniquePtr};
-use futures::executor::LocalPool;
+use futures::executor::{LocalPool, LocalSpawner};
 use futures::task::LocalSpawnExt;
 
 use tracing::debug;
@@ -26,6 +26,7 @@ pub struct NativeClientContext {
 pub struct NativeClient {
     is_shutdown: Rc<RefCell<bool>>,
     pool: Rc<RefCell<LocalPool>>,
+    spawner: Rc<RefCell<LocalSpawner>>,
     ctx: Rc<RefCell<NativeClientContext>>,
 }
 
@@ -199,10 +200,13 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         .parse::<skus::Environment>()
         .unwrap_or(skus::Environment::Local);
 
+    let pool = LocalPool::new();
+    let mut spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
-            pool: Rc::new(RefCell::new(LocalPool::new())),
+            pool: Rc::new(RefCell::new(pool)),
+            spawner: Rc::new(RefCell::new(spawner.clone())),
             ctx: Rc::new(RefCell::new(NativeClientContext {
                 environment: env.clone(),
                 ctx,
@@ -213,7 +217,6 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         None,
     );
     let sdk = Rc::new(sdk);
-    let mut spawner = sdk.client.pool.borrow_mut().spawner();
     {
         let sdk = sdk.clone();
         let init = async move { sdk.initialize().await };
@@ -241,7 +244,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        let mut spawner = self.sdk.client.spawner.borrow_mut();
         if spawner
             .spawn_local(refresh_order_task(
                 self.sdk.clone(),
@@ -263,7 +266,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        let mut spawner = self.sdk.client.spawner.borrow_mut();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -286,7 +289,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        let mut spawner = self.sdk.client.spawner.borrow_mut();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -309,7 +312,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        let mut spawner = self.sdk.client.spawner.borrow_mut();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
