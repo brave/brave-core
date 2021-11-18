@@ -58,4 +58,11 @@ content::WebContents* GetWebContentsFromTabId(Browser** browser,
   return nullptr;
 }
 
+content::WebContents* GetActiveWebContents() {
+  return BrowserList::GetInstance()
+      ->GetLastActive()
+      ->tab_strip_model()
+      ->GetActiveWebContents();
+}
+
 }  // namespace brave_wallet

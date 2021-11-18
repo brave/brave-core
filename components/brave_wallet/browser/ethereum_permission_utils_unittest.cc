@@ -147,11 +147,11 @@ TEST(EthereumPermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
   std::string origin = "https://test.com:123";
-  GURL url_out = GetConnectWithSiteWebUIURL(base_url, 1, addrs, origin);
+  GURL url_out = GetConnectWithSiteWebUIURL(base_url, addrs, origin);
   EXPECT_EQ(url_out.spec(),
             "chrome://wallet-panel.top-chrome/"
             "?addr=0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A&addr="
-            "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B&tabId=1&origin=https://"
+            "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B&origin=https://"
             "test.com:123#connectWithSite");
 }
 

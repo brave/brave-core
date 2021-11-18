@@ -58,13 +58,12 @@ bool GetSubRequestOrigin(const GURL& old_origin,
                          GURL* new_origin);
 
 /**
- * Given tab ID, accounts, and origin, return the WebUI URL for connecting
- * with site (ethereum permission) request.
+ * Given accounts, and origin, return the WebUI URL for connecting with site
+ * (ethereum permission) request.
  * Example output:
- *   chrome://wallet-panel.top-chrome/?addr=0x123&addr=0x456&tabId=1&origin=https://test.com
+ *   chrome://wallet-panel.top-chrome/?addr=0x123&addr=0x456&origin=https://test.com
  */
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
-                                int32_t tab_id,
                                 const std::vector<std::string>& accounts,
                                 const std::string& origin);
 

@@ -11,7 +11,6 @@ export type AccountPayloadType = {
 }
 
 export type ShowConnectToSitePayload = {
-  tabId: number
   accounts: string[]
   origin: string
 }

@@ -13,11 +13,11 @@
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller,
-    GetWebContentsForTabCallback get_web_contents_for_tab,
+    GetActiveWebContentsCallback get_active_web_contents,
     PanelCloseOnDeactivationCallback close_on_deactivation)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      get_web_contents_for_tab_(std::move(get_web_contents_for_tab)),
+      get_active_web_contents_(std::move(get_active_web_contents)),
       close_on_deactivation_(std::move(close_on_deactivation)) {}
 
 WalletPanelHandler::~WalletPanelHandler() {}
@@ -37,9 +37,8 @@ void WalletPanelHandler::CloseUI() {
 }
 
 void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,
-                                       const std::string& origin,
-                                       int32_t tab_id) {
-  content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
+                                       const std::string& origin) {
+  content::WebContents* contents = get_active_web_contents_.Run();
   if (!contents)
     return;
 
@@ -47,9 +46,8 @@ void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,
                                                               contents);
 }
 
-void WalletPanelHandler::CancelConnectToSite(const std::string& origin,
-                                             int32_t tab_id) {
-  content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
+void WalletPanelHandler::CancelConnectToSite(const std::string& origin) {
+  content::WebContents* contents = get_active_web_contents_.Run();
   if (!contents)
     return;
 

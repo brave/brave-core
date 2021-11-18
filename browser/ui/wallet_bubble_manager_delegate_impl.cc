@@ -13,25 +13,12 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
-
-namespace {
-
-content::WebContents* GetActiveWebContents() {
-  return BrowserList::GetInstance()
-      ->GetLastActive()
-      ->tab_strip_model()
-      ->GetActiveWebContents();
-}
-
-}  // namespace
 
 namespace brave_wallet {
 

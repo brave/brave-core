@@ -20,13 +20,13 @@ class WebUI;
 
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  public:
-  using GetWebContentsForTabCallback =
-      base::RepeatingCallback<content::WebContents*(int32_t)>;
+  using GetActiveWebContentsCallback =
+      base::RepeatingCallback<content::WebContents*()>;
   using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
       ui::MojoBubbleWebUIController* webui_controller,
-      GetWebContentsForTabCallback get_web_contents_for_tab,
+      GetActiveWebContentsCallback get_active_web_contents,
       PanelCloseOnDeactivationCallback close_on_deactivation);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
@@ -38,14 +38,13 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   void CloseUI() override;
   void SetCloseOnDeactivate(bool close) override;
   void ConnectToSite(const std::vector<std::string>& accounts,
-                     const std::string& origin,
-                     int32_t tab_id) override;
-  void CancelConnectToSite(const std::string& origin, int32_t tab_id) override;
+                     const std::string& origin) override;
+  void CancelConnectToSite(const std::string& origin) override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
-  const GetWebContentsForTabCallback get_web_contents_for_tab_;
+  const GetActiveWebContentsCallback get_active_web_contents_;
   const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };
 

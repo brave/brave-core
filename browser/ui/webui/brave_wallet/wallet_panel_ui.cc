@@ -100,7 +100,7 @@ void WalletPanelUI::CreatePanelHandler(
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this,
-      base::BindRepeating(&brave_wallet::GetWebContentsFromTabId, nullptr),
+      base::BindRepeating(&brave_wallet::GetActiveWebContents),
       std::move(deactivation_callback_));
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);

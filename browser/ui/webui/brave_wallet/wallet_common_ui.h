@@ -27,6 +27,7 @@ bool IsBraveWalletOrigin(const url::Origin& origin);
 
 content::WebContents* GetWebContentsFromTabId(Browser** browser,
                                               int32_t tab_id);
+content::WebContents* GetActiveWebContents();
 
 }  // namespace brave_wallet
 
