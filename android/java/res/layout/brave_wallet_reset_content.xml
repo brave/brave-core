@@ -10,9 +10,10 @@
     style="@style/AlertDialogContent">
 
     <TextView
+        android:id="@+id/brave_wallet_reset_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/brave_wallet_reset_settings_option_description" />
+        android:text="@string/brave_wallet_reset_settings_confirmation" />
     <org.chromium.components.browser_ui.widget.text.AlertDialogEditText
         android:id="@+id/brave_wallet_reset_edittext"
         android:layout_width="match_parent"
