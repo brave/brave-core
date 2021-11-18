@@ -104,6 +104,18 @@ if (is_win) {
   }
 }
 
+# The rustc target to use when you explcitly want to build and run an executable
+# on the host OS
+rustc_exe_target = rustc_target
+
+if (is_ios) {
+  if (host_cpu == "x64") {
+    rustc_exe_target = "x86_64-apple-darwin"
+  } else if (host_cpu == "arm64") {
+    rustc_exe_target = "aarch64-apple-darwin"
+  }
+}
+
 cargo_lib_prefix = ""
 
 if (rustc_target != "") {
