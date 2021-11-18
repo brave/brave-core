@@ -35,6 +35,7 @@ impl From<&skus::errors::InternalError> for ffi::SkusResult {
                 ffi::SkusResult::InvalidMerchantOrSku
             }
             skus::errors::InternalError::BorrowFailed => ffi::SkusResult::BorrowFailed,
+            skus::errors::InternalError::FutureCancelled => ffi::SkusResult::FutureCancelled,
         }
     }
 }
@@ -84,6 +85,7 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
                 skus::errors::InternalError::InvalidMerchantOrSku
             }
             ffi::SkusResult::BorrowFailed => skus::errors::InternalError::BorrowFailed,
+            ffi::SkusResult::FutureCancelled => skus::errors::InternalError::FutureCancelled,
             _ => skus::errors::InternalError::UnhandledVariant,
         }
     }

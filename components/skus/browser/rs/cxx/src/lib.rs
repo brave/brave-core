@@ -99,6 +99,7 @@ mod ffi {
         InvalidMerchantOrSku,
         UnknownError,
         BorrowFailed,
+        FutureCancelled,
     }
 
     pub struct HttpRequest {
@@ -199,7 +200,6 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         .parse::<skus::Environment>()
         .unwrap_or(skus::Environment::Local);
 
-    // FIXME
     let sdk = skus::sdk::SDK::new(
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
