@@ -254,7 +254,7 @@ impl CppSDK {
             debug!("pool is shutdown");
         }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn fetch_order_credentials(
@@ -276,7 +276,7 @@ impl CppSDK {
             debug!("pool is shutdown");
         }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn prepare_credentials_presentation(
@@ -300,7 +300,7 @@ impl CppSDK {
             debug!("pool is shutdown");
         }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn credential_summary(
@@ -322,7 +322,7 @@ impl CppSDK {
             debug!("pool is shutdown");
         }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 }
 
