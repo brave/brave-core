@@ -68,6 +68,7 @@ import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
+import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
@@ -552,6 +553,58 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
+
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
+        if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
+            RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_14,
+                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                            RetentionNotificationUtil.DORMANT_USERS_DAY_14));
+            RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_25,
+                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                            RetentionNotificationUtil.DORMANT_USERS_DAY_25));
+            RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_40,
+                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                            RetentionNotificationUtil.DORMANT_USERS_DAY_40));
+            OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
+        }
+    }
+
+    private long setTimeInMillis(int timeInMinutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.MINUTE, timeInMinutes);
+
+        Date date = calendar.getTime();
+        return date.getTime();
+    }
+
+    private void setDormantUsersPrefs() {
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
+        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
+        RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                RetentionNotificationUtil.DORMANT_USERS_DAY_14,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_14));
+        RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                RetentionNotificationUtil.DORMANT_USERS_DAY_25,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_25));
+        RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                RetentionNotificationUtil.DORMANT_USERS_DAY_40,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_40));
     }
 
     private final ConnectivityManager.NetworkCallback mNetworkCallback =
@@ -659,6 +712,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.DAY_30:
             case RetentionNotificationUtil.DAY_35:
                 openRewardsPanel();
+                break;
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                showDormantUsersEngagementDialog(notificationType);
                 break;
             }
         }
@@ -902,6 +960,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.setCancelable(false);
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+    }
+
+    public void showDormantUsersEngagementDialog(String notificationType) {
+        DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
+                new DormantUsersEngagementDialogFragment();
+        dormantUsersEngagementDialogFragment.setCancelable(false);
+        dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
+        dormantUsersEngagementDialogFragment.show(
+                getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");
+        setDormantUsersPrefs();
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {

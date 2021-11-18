@@ -23,13 +23,13 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.user_prefs.UserPrefs;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -69,6 +69,20 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.DAY_35:
                     braveActivity.openRewardsPanel();
                     break;
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                    if (System.currentTimeMillis()
+                            > OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                    notificationType)) {
+                        braveActivity.showDormantUsersEngagementDialog(notificationType);
+                    } else {
+                        RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                                notificationType,
+                                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                        notificationType));
+                    }
+                    break;
                 }
             } else {
                 backgroundNotificationAction(context, intent);
@@ -104,6 +118,20 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.EVERY_SUNDAY:
                 if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
                     createNotification(context, intent);
+                }
+                break;
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                if (System.currentTimeMillis()
+                        > OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                notificationType)) {
+                    createNotification(context, intent);
+                } else {
+                    RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                            notificationType,
+                            OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                    notificationType));
                 }
                 break;
             }
