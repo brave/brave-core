@@ -9,13 +9,22 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
-
-#define BRAVE_BROWSER_LIFETIME_HANDLER_HANDLE_RELAUNCH \
-  brave_relaunch_handler::RelaunchOnMac();             \
-  return;
-#else
-#define BRAVE_BROWSER_LIFETIME_HANDLER_HANDLE_RELAUNCH
 #endif
 
+#define BrowserLifetimeHandler BrowserLifetimeHandler_ChromiumImpl
 #include "../../../../../../../chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
-#undef BRAVE_BROWSER_LIFETIME_HANDLER_HANDLE_RELAUNCH
+#undef BrowserLifetimeHandler
+
+namespace settings {
+
+BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
+
+void BrowserLifetimeHandler::HandleRelaunch(const base::ListValue* args) {
+#if BUILDFLAG(ENABLE_SPARKLE)
+  brave_relaunch_handler::RelaunchOnMac();
+  return;
+#endif
+  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
+}
+
+}  // namespace settings
