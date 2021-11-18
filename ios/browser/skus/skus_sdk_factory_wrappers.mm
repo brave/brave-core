@@ -22,7 +22,7 @@
 @implementation SkusSkusSdkFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* controller =
-      SkusSdkServiceFactory::GetForBrowserState(browserState);
+      skus::SkusSdkServiceFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
