@@ -26,7 +26,7 @@ pub struct NativeClientContext {
 pub struct NativeClient {
     is_shutdown: Rc<RefCell<bool>>,
     pool: Rc<RefCell<LocalPool>>,
-    spawner: Rc<RefCell<LocalSpawner>>,
+    spawner: LocalSpawner,
     ctx: Rc<RefCell<NativeClientContext>>,
 }
 
@@ -206,7 +206,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(pool)),
-            spawner: Rc::new(RefCell::new(spawner.clone())),
+            spawner: spawner.clone(),
             ctx: Rc::new(RefCell::new(NativeClientContext {
                 environment: env.clone(),
                 ctx,
@@ -244,7 +244,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.borrow_mut();
+        let mut spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(refresh_order_task(
                 self.sdk.clone(),
@@ -266,7 +266,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.borrow_mut();
+        let mut spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -289,7 +289,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.borrow_mut();
+        let mut spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -312,7 +312,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.borrow_mut();
+        let mut spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
