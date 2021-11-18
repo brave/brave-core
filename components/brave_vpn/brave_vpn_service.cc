@@ -193,10 +193,11 @@ void BraveVpnService::OnGetSubscriberCredential(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   std::string subscriber_credential;
-
   bool success = status == 200;
   if (success) {
     subscriber_credential = GetSubscriberCredentialFromJson(body);
+  } else {
+    LOG(ERROR) << "Response from API was not HTTP 200. Body: " << body;
   }
   std::move(callback).Run(subscriber_credential, success);
 }
