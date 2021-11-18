@@ -216,13 +216,8 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
     let mut spawner = sdk.client.pool.borrow_mut().spawner();
     {
         let sdk = sdk.clone();
-
-        if spawner
-            .spawn_local(async move {
-                sdk.initialize().await;
-            })
-            .is_err()
-        {
+        let init = async move { sdk.initialize().await };
+        if spawner.spawn_local(init).is_err() {
             debug!("pool is shutdown");
         }
     }
