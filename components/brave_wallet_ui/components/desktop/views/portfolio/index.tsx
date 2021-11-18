@@ -15,7 +15,11 @@ import {
 import { getLocale } from '../../../../../common/locale'
 
 // Utils
-import { formatWithCommasAndDecimals } from '../../../../utils/format-prices'
+import {
+  formatWithCommasAndDecimals,
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../../utils/format-prices'
 import { formatBalance } from '../../../../utils/format-balances'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 
@@ -139,6 +143,7 @@ const Portfolio = (props: Props) => {
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
+  const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
@@ -149,7 +154,13 @@ const Portfolio = (props: Props) => {
     setShowNetworkDropdown(!showNetworkDropdown)
   }
 
-  React.useMemo(() => {
+  React.useEffect(() => {
+    if (portfolioBalance !== '') {
+      setFullPortfolioFiatBalance(portfolioBalance)
+    }
+  }, [portfolioBalance])
+
+  React.useEffect(() => {
     setfilteredAssetList(userAssetList)
   }, [userAssetList])
 
@@ -222,12 +233,12 @@ const Portfolio = (props: Props) => {
 
   const getFiatBalance = (account: WalletAccountType, asset: ERCToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-    return (found) ? found.fiatBalance : '0'
+    return (found) ? found.fiatBalance : ''
   }
 
   const getAssetBalance = (account: WalletAccountType, asset: ERCToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-    return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
+    return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : ''
   }
 
   const priceHistory = React.useMemo(() => {
@@ -261,6 +272,10 @@ const Portfolio = (props: Props) => {
 
   const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
 
+  const formatedFullAssetBalance = fullAssetBalances?.assetBalance
+    ? '(' + formatTokenAmountWithCommasAndDecimals(fullAssetBalances?.assetBalance ?? '', selectedAsset?.symbol ?? '') + ')'
+    : ''
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -286,7 +301,7 @@ const Portfolio = (props: Props) => {
       </TopRow>
       {!selectedAsset ? (
         <>
-          <BalanceText>${hoverBalance || portfolioBalance}</BalanceText>
+          <BalanceText>{fullPortfolioFiatBalance !== '' ? '$' : ''}{hoverBalance || fullPortfolioFiatBalance}</BalanceText>
         </>
       ) : (
         <InfoColumn>
@@ -302,7 +317,7 @@ const Portfolio = (props: Props) => {
               <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
-          <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : 0} BTC</DetailText>
+          <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : ''} BTC</DetailText>
         </InfoColumn>
       )}
       <LineChart
@@ -317,7 +332,7 @@ const Portfolio = (props: Props) => {
         <>
           <DividerRow>
             <DividerText>{getLocale('braveWalletAccounts')}</DividerText>
-            <AssetBalanceDisplay>${formatWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '')} ({formatWithCommasAndDecimals(fullAssetBalances?.assetBalance ?? '')} {selectedAsset.symbol})</AssetBalanceDisplay>
+            <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '')} {formatedFullAssetBalance}</AssetBalanceDisplay>
           </DividerRow>
           <SubDivider />
           {accounts.map((account) =>

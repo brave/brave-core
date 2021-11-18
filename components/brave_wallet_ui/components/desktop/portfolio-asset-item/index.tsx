@@ -14,7 +14,10 @@ import {
   NameAndIcon,
   AssetIcon
 } from './style'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 import { withPlaceholderIcon } from '../../shared'
 
 export interface Props {
@@ -31,6 +34,8 @@ const PortfolioAssetItem = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [])
 
+  const formatedAssetBalance = token.isErc721 ? assetBalance : formatTokenAmountWithCommasAndDecimals(assetBalance, token.symbol)
+
   return (
     <>
       {token.visible &&
@@ -42,9 +47,9 @@ const PortfolioAssetItem = (props: Props) => {
           </NameAndIcon>
           <BalanceColumn>
             {!token.isErc721 &&
-              <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+              <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
             }
-            <AssetBalanceText>{token.isErc721 ? assetBalance : formatWithCommasAndDecimals(assetBalance)} {token.symbol}</AssetBalanceText>
+            <AssetBalanceText>{formatedAssetBalance}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }

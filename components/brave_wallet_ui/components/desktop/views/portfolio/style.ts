@@ -36,6 +36,7 @@ export const BalanceText = styled.span`
   font-weight: 600;
   margin-bottom: 20px;
   color: ${(p) => p.theme.color.text01};
+  height: 32px;
 `
 
 export const PriceText = styled.span`
