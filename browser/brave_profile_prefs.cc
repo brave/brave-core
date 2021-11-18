@@ -182,7 +182,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   }
 
   // SKU SDK (can be used on account.brave.com)
-  brave_rewards::SkusSdkContextImpl::RegisterProfilePrefs(registry);
+  skus::SkusSdkContextImpl::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
