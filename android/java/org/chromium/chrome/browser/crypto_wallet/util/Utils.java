@@ -86,6 +86,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -997,7 +998,7 @@ public class Utils {
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
             AssetRatioController assetRatioController) {
         AssetsPricesHelper assetsPricesHelper =
-                new AssetsPricesHelper(assetRatioController, assets);
+                new AssetsPricesHelper(assetRatioController, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
             workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                     context, "", 0, pendingTxInfos, assets, assetsDecimals,

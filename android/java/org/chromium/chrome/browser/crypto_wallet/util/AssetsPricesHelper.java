@@ -14,16 +14,17 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class AssetsPricesHelper {
     private static String TAG = "AssetsPricesHelper";
     private AssetRatioController mAssetRatioController;
-    private HashMap<String, String> mAssets;
+    private HashSet<String> mAssets;
     private HashMap<String, Double> mAssetsPrices;
 
-    public AssetsPricesHelper(
-            AssetRatioController assetRatioController, HashMap<String, String> assets) {
+    public AssetsPricesHelper(AssetRatioController assetRatioController, HashSet<String> assets) {
         assert assetRatioController != null;
         assert assets != null;
         mAssetRatioController = assetRatioController;
@@ -40,8 +41,9 @@ public class AssetsPricesHelper {
                 new AsyncUtils.MultiResponseHandler(mAssets.size());
         ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
                 new ArrayList<AsyncUtils.GetPriceResponseContext>();
-        for (String txId : mAssets.keySet()) {
-            String asset = mAssets.get(txId);
+        Iterator<String> iter = mAssets.iterator();
+        while (iter.hasNext()) {
+            String asset = iter.next();
             String[] fromAssets = new String[] {asset.toLowerCase(Locale.getDefault())};
             String[] toAssets = new String[] {"usd"};
 
