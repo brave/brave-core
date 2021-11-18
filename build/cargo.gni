@@ -87,11 +87,6 @@ template("cargo_build") {
   group_target = target_name
   cargo_build_target = target_name + "_cargo_build"
 
-  not_needed(invoker,
-               [
-                 "is_bin"
-               ])
-
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
