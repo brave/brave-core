@@ -17,12 +17,12 @@ bool IsBraveVPNEnabled() {
 }
 
 std::string GetManageUrl() {
-  const std::string env = brave_rewards::GetEnvironment();
-  if (env == brave_rewards::kEnvProduction)
+  const std::string env = skus::GetEnvironment();
+  if (env == skus::kEnvProduction)
     return brave_vpn::kManageUrlProd;
-  if (env == brave_rewards::kEnvStaging)
+  if (env == skus::kEnvStaging)
     return brave_vpn::kManageUrlStaging;
-  if (env == brave_rewards::kEnvDevelopment)
+  if (env == skus::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
   NOTREACHED();
