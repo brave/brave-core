@@ -41,7 +41,7 @@ where
             }
 
             // FIXME only returns summary for first item
-            if let Some(item) = order.items.into_iter().next() {
+            if let Some(item) = order.items.iter().next() {
                 return Ok(match item.credential_type {
                     CredentialType::SingleUse => self
                         .client
@@ -56,16 +56,14 @@ where
                                 .count()
                                 as u32;
 
-                            if remaining_credential_count < 1 {
-                                return None;
-                            }
-
                             let expires_at = None;
+                            let active = remaining_credential_count > 0;
 
                             Some(CredentialSummary {
-                                item,
+                                order,
                                 remaining_credential_count,
                                 expires_at,
+                                active,
                             })
                         }),
                     CredentialType::TimeLimited => {
@@ -84,13 +82,17 @@ where
                             }
                         }
 
-                        self.matching_time_limited_credential(&item.id)
-                            .await?
-                            .map(|_cred| CredentialSummary {
-                                item,
-                                remaining_credential_count: 1,
-                                expires_at,
-                            })
+                        let active = matches!(
+                            self.matching_time_limited_credential(&item.id).await,
+                            Ok(Some(_))
+                        );
+
+                        Some(CredentialSummary {
+                            order,
+                            remaining_credential_count: 1,
+                            expires_at,
+                            active,
+                        })
                     }
                 });
             }
