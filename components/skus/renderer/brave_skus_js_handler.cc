@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
@@ -58,50 +60,50 @@ void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
                                                v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
 
-  // window.brave
-  v8::Local<v8::Object> brave_obj;
-  v8::Local<v8::Value> brave_value;
-  if (!global->Get(context, gin::StringToV8(isolate, "brave"))
-           .ToLocal(&brave_value) ||
-      !brave_value->IsObject()) {
-    brave_obj = v8::Object::New(isolate);
-    global->Set(context, gin::StringToSymbol(isolate, "brave"), brave_obj)
+  // window.chrome
+  v8::Local<v8::Object> chrome_obj;
+  v8::Local<v8::Value> chrome_value;
+  if (!global->Get(context, gin::StringToV8(isolate, "chrome"))
+           .ToLocal(&chrome_value) ||
+      !chrome_value->IsObject()) {
+    chrome_obj = v8::Object::New(isolate);
+    global->Set(context, gin::StringToSymbol(isolate, "chrome"), chrome_obj)
         .Check();
   } else {
-    brave_obj = brave_value->ToObject(context).ToLocalChecked();
+    chrome_obj = chrome_value->ToObject(context).ToLocalChecked();
   }
 
-  // window.brave.skus
+  // window.chrome.braveSkus
   v8::Local<v8::Object> skus_obj;
   v8::Local<v8::Value> skus_value;
-  if (!brave_obj->Get(context, gin::StringToV8(isolate, "skus"))
+  if (!chrome_obj->Get(context, gin::StringToV8(isolate, "braveSkus"))
            .ToLocal(&skus_value) ||
       !skus_value->IsObject()) {
     skus_obj = v8::Object::New(isolate);
-    brave_obj->Set(context, gin::StringToSymbol(isolate, "skus"), skus_obj)
+    chrome_obj->Set(context, gin::StringToSymbol(isolate, "braveSkus"), skus_obj)
         .Check();
   } else {
     skus_obj = skus_value->ToObject(context).ToLocalChecked();
   }
 
-  // window.brave.skus.refresh_order
+  // window.chrome.braveSkus.refresh_order
   BindFunctionToObject(isolate, skus_obj, "refresh_order",
                        base::BindRepeating(&BraveSkusJSHandler::RefreshOrder,
                                            base::Unretained(this), isolate));
 
-  // window.brave.skus.fetch_order_credentials
+  // window.chrome.braveSkus.fetch_order_credentials
   BindFunctionToObject(
       isolate, skus_obj, "fetch_order_credentials",
       base::BindRepeating(&BraveSkusJSHandler::FetchOrderCredentials,
                           base::Unretained(this), isolate));
 
-  // window.brave.skus.prepare_credentials_presentation
+  // window.chrome.braveSkus.prepare_credentials_presentation
   BindFunctionToObject(
       isolate, skus_obj, "prepare_credentials_presentation",
       base::BindRepeating(&BraveSkusJSHandler::PrepareCredentialsPresentation,
                           base::Unretained(this), isolate));
 
-  // window.brave.skus.credential_summary
+  // window.chrome.braveSkus.credential_summary
   BindFunctionToObject(
       isolate, skus_obj, "credential_summary",
       base::BindRepeating(&BraveSkusJSHandler::CredentialSummary,
@@ -161,10 +163,32 @@ void BraveSkusJSHandler::OnRefreshOrder(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          response, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  const base::DictionaryValue* result_dict;
+  if (!records_v->GetAsDictionary(&result_dict)) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate,
+                                "Error converting response to dictionary")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
 }
 
 // window.brave.skus.fetch_order_credentials
@@ -297,10 +321,32 @@ void BraveSkusJSHandler::OnCredentialSummary(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          response, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  const base::DictionaryValue* result_dict;
+  if (!records_v->GetAsDictionary(&result_dict)) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate,
+                                "Error converting response to dictionary")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
 }
 
 }  // namespace brave_rewards
