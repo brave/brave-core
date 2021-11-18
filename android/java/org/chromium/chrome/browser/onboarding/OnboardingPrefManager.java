@@ -51,6 +51,7 @@ public class OnboardingPrefManager {
     public static final String FROM_NOTIFICATION = "from_notification";
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
+    public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
     public static final String ADS_TRACKERS_NOTIFICATION = "ads_trackers_notification";
     public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
     public static final String TIME_SAVED_NOTIFICATION = "time_saved_notification";
@@ -304,6 +305,27 @@ public class OnboardingPrefManager {
     public void setOneTimeNotificationStarted(boolean isOneTimeNotificationStarted) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(ONE_TIME_NOTIFICATION, isOneTimeNotificationStarted);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isDormantUsersNotificationsStarted() {
+        return mSharedPreferences.getBoolean(DORMANT_USERS_NOTIFICATION, false);
+    }
+
+    public void setDormantUsersNotificationsStarted(boolean isDormantUsersNotificationsStarted) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(
+                DORMANT_USERS_NOTIFICATION, isDormantUsersNotificationsStarted);
+        sharedPreferencesEditor.apply();
+    }
+
+    public long getDormantUsersNotificationTime(String notificationType) {
+        return mSharedPreferences.getLong(notificationType, 0);
+    }
+
+    public void setDormantUsersNotificationTime(String notificationType, long timeInMilliseconds) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(notificationType, timeInMilliseconds);
         sharedPreferencesEditor.apply();
     }
 
