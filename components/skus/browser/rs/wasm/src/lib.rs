@@ -71,7 +71,7 @@ pub fn initialize(
                 None,
                 None,
             );
-            sdk.initialize().await.unwrap();
+            sdk.initialize().await;
 
             Ok(JSSDK { sdk: Rc::new(sdk) }.into())
         } else {
