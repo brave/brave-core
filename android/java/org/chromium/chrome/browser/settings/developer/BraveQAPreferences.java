@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
@@ -71,6 +72,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
     private ChromeSwitchPreference mBraveVpnFeature;
+    private ChromeSwitchPreference mBraveDormantFeatureEngagement;
     private ChromeSwitchPreference mIsStagingServer;
     private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
@@ -94,6 +96,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 (ChromeSwitchPreference) findPreference(BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE);
         if (mBraveVpnFeature != null) {
             mBraveVpnFeature.setOnPreferenceChangeListener(this);
+        }
+
+        mBraveDormantFeatureEngagement = (ChromeSwitchPreference) findPreference(
+                OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT);
+        if (mBraveDormantFeatureEngagement != null) {
+            mBraveDormantFeatureEngagement.setOnPreferenceChangeListener(this);
         }
 
         mIsStagingServer = (ChromeSwitchPreference) findPreference(PREF_USE_REWARDS_STAGING_SERVER);
@@ -288,7 +296,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
-                || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())) {
+                || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())
+                || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
+                        preference.getKey())) {
             setOnPreferenceValue(preference.getKey(), (boolean)newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }

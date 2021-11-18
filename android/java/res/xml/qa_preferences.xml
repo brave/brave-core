@@ -14,6 +14,12 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="dormant_users_engagement"
+        android:title="Enable dormant users engagement"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_rewards_staging_server"
         android:title="Use Rewards staging server"
         android:summaryOn="@string/text_on"
