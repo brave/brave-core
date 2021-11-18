@@ -117,6 +117,7 @@ class BraveWalletService : public KeyedService,
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
 
   void OnDefaultWalletChanged();
   void OnDefaultBaseCurrencyChanged();
