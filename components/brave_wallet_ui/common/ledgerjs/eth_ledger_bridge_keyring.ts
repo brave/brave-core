@@ -14,6 +14,10 @@ import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import { GetAccountsHardwareOperationResult, SignatureVRS, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 
+export enum LedgerErrorsCodes {
+  TransportLocked = 'TransportLocked'
+}
+
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
     super()
@@ -89,7 +93,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
       return { success: true, payload: signature }
     } catch (e) {
-      return { success: false, error: e.message }
+      return { success: false, error: e.message, code: e.id }
     }
   }
 

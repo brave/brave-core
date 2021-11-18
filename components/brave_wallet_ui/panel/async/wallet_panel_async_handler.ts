@@ -46,6 +46,7 @@ import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { TrezorErrorsCodes } from '../../common/trezor/trezor-messages'
+import { LedgerErrorsCodes } from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 
 const handler = new AsyncActionHandler()
 
@@ -314,12 +315,11 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const info = hardwareAccount.hardware
   apiProxy.panelHandler.setCloseOnDeactivate(false)
   const signed = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.message)
-  if (!signed.success) {
-    const code = signed.code ? signed.code : undefined
-    if (code === TrezorErrorsCodes.CommandInProgress) {
+  if (!signed.success &&
+      (signed.code === TrezorErrorsCodes.CommandInProgress ||
+       signed.code === LedgerErrorsCodes.TransportLocked)) {
       // do nothing as the operation is already in progress
       return
-    }
   }
   const payload: SignMessageHardwareProcessedPayload =
     signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
