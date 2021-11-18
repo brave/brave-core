@@ -56,6 +56,7 @@ public class OnboardingPrefManager {
     public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
     public static final String TIME_SAVED_NOTIFICATION = "time_saved_notification";
     public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
+    public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
 
     private static OnboardingPrefManager sInstance;
 
@@ -306,6 +307,10 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(ONE_TIME_NOTIFICATION, isOneTimeNotificationStarted);
         sharedPreferencesEditor.apply();
+    }
+
+    public boolean isDormantUsersEngagementEnabled() {
+        return mSharedPreferences.getBoolean(PREF_DORMANT_USERS_ENGAGEMENT, false);
     }
 
     public boolean isDormantUsersNotificationsStarted() {

@@ -553,27 +553,29 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
-
-        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
-                RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
-        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
-                RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
-        OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
-                RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
-        if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
-            RetentionNotificationUtil.scheduleNotificationWithTime(this,
-                    RetentionNotificationUtil.DORMANT_USERS_DAY_14,
-                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                            RetentionNotificationUtil.DORMANT_USERS_DAY_14));
-            RetentionNotificationUtil.scheduleNotificationWithTime(this,
-                    RetentionNotificationUtil.DORMANT_USERS_DAY_25,
-                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                            RetentionNotificationUtil.DORMANT_USERS_DAY_25));
-            RetentionNotificationUtil.scheduleNotificationWithTime(this,
-                    RetentionNotificationUtil.DORMANT_USERS_DAY_40,
-                    OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                            RetentionNotificationUtil.DORMANT_USERS_DAY_40));
-            OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
+        if (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
+                || getPackageName().equals(BRAVE_PRODUCTION_PACKAGE_NAME)) {
+            OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
+            OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
+            OnboardingPrefManager.getInstance().setDormantUsersNotificationTime(
+                    RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
+            if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
+                RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_14,
+                        OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                RetentionNotificationUtil.DORMANT_USERS_DAY_14));
+                RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_25,
+                        OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                RetentionNotificationUtil.DORMANT_USERS_DAY_25));
+                RetentionNotificationUtil.scheduleNotificationWithTime(this,
+                        RetentionNotificationUtil.DORMANT_USERS_DAY_40,
+                        OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                RetentionNotificationUtil.DORMANT_USERS_DAY_40));
+                OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
+            }
         }
     }
 
