@@ -48,12 +48,18 @@ struct CryptoPagesView: View {
         }
         .hidden()
       )
-      .sheet(isPresented: $isShowingSearch) {
-        AssetSearchView(walletStore: walletStore)
-      }
-      .sheet(isPresented: $isShowingTransactions) {
-        TransactionConfirmationView(transactions: [], networkStore: walletStore.networkStore)
-      }
+      .background(
+        Color.clear
+          .sheet(isPresented: $isShowingSearch) {
+            AssetSearchView(walletStore: walletStore)
+          }
+      )
+      .background(
+        Color.clear
+          .sheet(isPresented: $isShowingTransactions) {
+            TransactionConfirmationView(transactions: [], networkStore: walletStore.networkStore)
+          }
+      )
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
           Button(action: {
