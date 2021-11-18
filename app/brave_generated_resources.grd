@@ -345,7 +345,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Brave Rewards are disabled
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL" desc="The text sublabel for the Rewards disabled state">
-        Click here to learn more
+        Open Rewards panel to enable and get started
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_DETECTED_ITEM" desc="The menu item for auto-detected settings">
         Auto-detected
