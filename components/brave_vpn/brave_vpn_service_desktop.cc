@@ -61,12 +61,11 @@ bool IsValidRegion(const brave_vpn::mojom::Region& region) {
 }
 
 std::string GetBraveVPNPaymentsEnv() {
-  const std::string env = brave_rewards::GetEnvironment();
-  if (env == brave_rewards::kEnvProduction)
+  const std::string env = skus::GetEnvironment();
+  if (env == skus::kEnvProduction)
     return "";
   // Use same value.
-  if (env == brave_rewards::kEnvStaging ||
-      env == brave_rewards::kEnvDevelopment)
+  if (env == skus::kEnvStaging || env == skus::kEnvDevelopment)
     return env;
 
   NOTREACHED();
@@ -105,7 +104,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      brave_rewards::prefs::kSkusVPNCredential,
+      skus::prefs::kSkusVPNCredential,
       base::BindRepeating(&BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated,
                           base::Unretained(this)));
 }
@@ -428,7 +427,7 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
 #endif
 
   const std::string credential =
-      prefs_->GetString(brave_rewards::prefs::kSkusVPNCredential);
+      prefs_->GetString(skus::prefs::kSkusVPNCredential);
   if (skus_credential_ == credential)
     return;
 
