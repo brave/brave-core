@@ -461,6 +461,7 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
     // credential. If so, we may want to show an expired dialog
     // instead of the "purchase" dialog.
     skus_credential_ = "";
+    return;
   }
 
   // if a credential is ready, we can present it
