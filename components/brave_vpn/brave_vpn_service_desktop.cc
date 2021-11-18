@@ -8,12 +8,14 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -27,6 +29,7 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
+#include "url/url_util.h"
 
 namespace {
 
@@ -423,16 +426,27 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
 
 void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
     const std::string& credential_as_cookie) {
+  // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
   DCHECK(credential_cookie.IsValid());
   DCHECK(status.IsInclude());
 
-  if (skus_credential_ == credential_cookie.Value())
+  // Credential value received needs to be URL decoded.
+  // That leaves us with a Base64 encoded JSON blob which is the credential.
+  std::string encoded_credential = credential_cookie.Value();
+  url::RawCanonOutputT<char16_t> unescaped;
+  url::DecodeURLEscapeSequences(
+      encoded_credential.data(), encoded_credential.size(),
+      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+  std::string credential;
+  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+
+  // Only update credential if different
+  if (skus_credential_ == credential)
     return;
 
-  skus_credential_ = credential_cookie.Value();
-
+  skus_credential_ = credential;
   if (!skus_credential_.empty()) {
     VLOG(2) << __func__ << " : "
             << "Loaded cached skus credentials";
