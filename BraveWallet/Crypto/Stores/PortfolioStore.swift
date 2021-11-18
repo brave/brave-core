@@ -73,6 +73,12 @@ public class PortfolioStore: ObservableObject {
     
     self.rpcController.add(self)
     self.keyringController.add(self)
+    
+    keyringController.isLocked { [self] isLocked in
+      if !isLocked {
+        update()
+      }
+    }
   }
   
   private let numberFormatter = NumberFormatter().then {
