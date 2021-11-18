@@ -74,7 +74,7 @@ public class NTPWidgetManager {
     }
 
     public int getBinanceWidget() {
-        return mSharedPreferences.getInt(PREF_BINANCE, 2);
+        return mSharedPreferences.getInt(PREF_BINANCE, -1);
     }
 
     public void setWidget(String widgetType, int position) {
@@ -116,10 +116,10 @@ public class NTPWidgetManager {
         if (getFavoritesWidget() == -1) {
             availableWidgets.add(PREF_FAVORITES);
         }
-        if (getBinanceWidget() == -1
-            && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
-            availableWidgets.add(PREF_BINANCE);
-        }
+        // if (getBinanceWidget() == -1
+        //     && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
+        //     availableWidgets.add(PREF_BINANCE);
+        // }
         return availableWidgets;
     }
 }
