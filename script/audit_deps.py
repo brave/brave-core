@@ -43,8 +43,6 @@ ignored_npm_advisories = [
     # To-Do (@jumde) - Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
     1002401,    # https://github.com/advisories/GHSA-93q8-gq69-wqmw
     1002422,    # https://github.com/advisories/GHSA-hqhp-5p83-hx96
-    1002475,    # https://github.com/advisories/GHSA-4jqc-8m5r-9rpr
-    1002487,    # https://github.com/advisories/GHSA-c36v-fmgq-m8hx
     1002492,    # https://github.com/advisories/GHSA-33f9-j839-rf8h
     1002522,    # https://github.com/advisories/GHSA-whgm-jr23-g3j9
     1002627,    # https://github.com/advisories/GHSA-ww39-953v-wcq6
