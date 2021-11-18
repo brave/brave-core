@@ -20,6 +20,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -243,22 +244,31 @@ bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
   return true;
 }
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url) {
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url) {
   // Don't block if feature is disabled
   if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
-    return false;
+    return DomainBlockingType::kNone;
 
   // Don't block if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
   if (!brave_shields::GetBraveShieldsEnabled(map, url))
-    return false;
+    return DomainBlockingType::kNone;
 
-  // Don't block unless ad blocking is "aggressive"
-  if (brave_shields::GetCosmeticFilteringControlType(map, url) !=
-      ControlType::BLOCK)
-    return false;
+  // Block if ad blocking is "aggressive"
+  if (brave_shields::GetCosmeticFilteringControlType(map, url) ==
+      ControlType::BLOCK) {
+    return DomainBlockingType::kAggressive;
+  }
 
-  return true;
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveDomainBlockVia1PES)) {
+    return DomainBlockingType::k1PES;
+  }
+
+  return DomainBlockingType::kNone;
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,

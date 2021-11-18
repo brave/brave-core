@@ -303,6 +303,18 @@ void EphemeralStorageBrowserTest::ExpectValuesFromFramesAreEmpty(
   EXPECT_EQ("", values.iframe_2.cookies);
 }
 
+void EphemeralStorageBrowserTest::ExpectValuesFromFrameAreEmpty(
+    const base::Location& location,
+    const ValuesFromFrame& values) {
+  testing::ScopedTrace scoped_trace(location.file_name(),
+                                    location.line_number(),
+                                    "Some values are not empty");
+
+  EXPECT_EQ(nullptr, values.local_storage);
+  EXPECT_EQ(nullptr, values.session_storage);
+  EXPECT_EQ("", values.cookies);
+}
+
 void EphemeralStorageBrowserTest::CreateBroadcastChannel(
     RenderFrameHost* frame) {
   EXPECT_TRUE(content::ExecJs(

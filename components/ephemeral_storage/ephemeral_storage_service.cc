@@ -33,6 +33,11 @@ EphemeralStorageService::~EphemeralStorageService() {}
 void EphemeralStorageService::CanEnable1PESForUrl(
     const GURL& url,
     base::OnceCallback<void(bool can_enable_1pes)> callback) const {
+  if (!IsDefaultCookieSetting(url)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   auto site_instance = content::SiteInstance::CreateForURL(context_, url);
   auto* storage_partition = context_->GetStoragePartition(site_instance.get());
   base::SequencedTaskRunnerHandle::Get()->PostTask(
@@ -55,6 +60,40 @@ bool EphemeralStorageService::Is1PESEnabledForUrl(const GURL& url) const {
   return host_content_settings_map_->GetContentSetting(
              url, url, ContentSettingsType::COOKIES) ==
          CONTENT_SETTING_SESSION_ONLY;
+}
+
+void EphemeralStorageService::Enable1PESForUrlIfPossible(
+    const GURL& url,
+    base::OnceCallback<void()> on_ready) {
+  CanEnable1PESForUrl(
+      url,
+      base::BindOnce(&EphemeralStorageService::OnCanEnable1PESForUrl,
+                     weak_ptr_factory_.GetWeakPtr(), url, std::move(on_ready)));
+}
+
+void EphemeralStorageService::OnCanEnable1PESForUrl(
+    const GURL& url,
+    base::OnceCallback<void()> on_ready,
+    bool can_enable_1pes) {
+  if (can_enable_1pes) {
+    Set1PESEnabledForUrl(url, true);
+  }
+  std::move(on_ready).Run();
+}
+
+bool EphemeralStorageService::IsDefaultCookieSetting(const GURL& url) const {
+  ContentSettingsForOneType settings;
+  host_content_settings_map_->GetSettingsForOneType(
+      ContentSettingsType::COOKIES, &settings);
+
+  for (const auto& setting : settings) {
+    if (setting.primary_pattern.Matches(url) &&
+        setting.secondary_pattern.Matches(url)) {
+      return setting.source == "default";
+    }
+  }
+
+  return true;
 }
 
 }  // namespace ephemeral_storage

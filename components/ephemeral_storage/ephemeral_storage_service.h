@@ -39,10 +39,20 @@ class EphemeralStorageService
   void Set1PESEnabledForUrl(const GURL& url, bool enable);
   // Returns current state of first party ephemeral storage mode for |url|.
   bool Is1PESEnabledForUrl(const GURL& url) const;
+  // Enables 1PES for url if nothing is stored for |url|.
+  void Enable1PESForUrlIfPossible(const GURL& url,
+                                  base::OnceCallback<void()> on_ready);
 
  private:
+  void OnCanEnable1PESForUrl(const GURL& url,
+                             base::OnceCallback<void()> on_ready,
+                             bool can_enable_1pes);
+  bool IsDefaultCookieSetting(const GURL& url) const;
+
   content::BrowserContext* context_ = nullptr;
   HostContentSettingsMap* host_content_settings_map_ = nullptr;
+
+  base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };
 
 }  // namespace ephemeral_storage

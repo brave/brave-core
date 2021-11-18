@@ -86,6 +86,8 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   void WaitForCleanupAfterKeepAlive();
   void ExpectValuesFromFramesAreEmpty(const base::Location& location,
                                       const ValuesFromFrames& values);
+  void ExpectValuesFromFrameAreEmpty(const base::Location& location,
+                                     const ValuesFromFrame& values);
 
   void CreateBroadcastChannel(content::RenderFrameHost* frame);
   void SendBroadcastMessage(content::RenderFrameHost* frame,

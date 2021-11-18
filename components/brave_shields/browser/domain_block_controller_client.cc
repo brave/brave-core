@@ -64,11 +64,11 @@ void DomainBlockControllerClient::Proceed() {
     ad_block_custom_filters_service_->UpdateCustomFilters(
         "@@||" + request_url_.host() + "^\n" + custom_filters);
   }
-  if (ephemeral_storage_service_) {
-    ephemeral_storage_service_->CanEnable1PESForUrl(
-        request_url_,
-        base::BindOnce(&DomainBlockControllerClient::OnCanEnable1PESForUrl,
-                       weak_ptr_factory_.GetWeakPtr()));
+
+  if (!dont_warn_again_ && ephemeral_storage_service_) {
+    ephemeral_storage_service_->Enable1PESForUrlIfPossible(
+        request_url_, base::BindOnce(&DomainBlockControllerClient::ReloadPage,
+                                     weak_ptr_factory_.GetWeakPtr()));
   } else {
     ReloadPage();
   }
@@ -76,13 +76,6 @@ void DomainBlockControllerClient::Proceed() {
 
 void DomainBlockControllerClient::ReloadPage() {
   web_contents_->GetController().Reload(content::ReloadType::NORMAL, false);
-}
-
-void DomainBlockControllerClient::OnCanEnable1PESForUrl(bool can_enable_1pes) {
-  if (can_enable_1pes) {
-    ephemeral_storage_service_->Set1PESEnabledForUrl(request_url_, true);
-  }
-  ReloadPage();
 }
 
 void DomainBlockControllerClient::SetDontWarnAgain(bool value) {

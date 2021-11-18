@@ -5,12 +5,14 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -27,13 +29,17 @@ class EphemeralStorage1pDomainBlockBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
   EphemeralStorage1pDomainBlockBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBraveFirstPartyEphemeralStorage);
+    scoped_feature_list_.InitWithFeatures(
+        {net::features::kBraveFirstPartyEphemeralStorage,
+         brave_shields::features::kBraveDomainBlockVia1PES},
+        {});
   }
   ~EphemeralStorage1pDomainBlockBrowserTest() override {}
 
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
+    a_site_simple_url_ = https_server_.GetURL("a.com", "/simple.html");
+    b_site_simple_url_ = https_server_.GetURL("b.com", "/simple.html");
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
@@ -54,7 +60,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
   void BlockDomainByURL(const GURL& url) {
-    UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
+    UpdateAdBlockInstanceWithRules(base::StrCat({"||", url.host(), "^"}));
   }
 
   bool IsShowingInterstitial(WebContents* web_contents) {
@@ -76,115 +82,152 @@ class EphemeralStorage1pDomainBlockBrowserTest
     observer.Wait();
   }
 
-  WebContents* NavigateToBlockedDomain() {
-    brave_shields::SetCosmeticFilteringControlType(
-        content_settings(), brave_shields::ControlType::BLOCK,
-        a_site_ephemeral_storage_url_);
-    BlockDomainByURL(a_site_ephemeral_storage_url_);
-
-    WebContents* first_party_tab =
-        LoadURLInNewTab(a_site_ephemeral_storage_url_);
-    EXPECT_TRUE(IsShowingInterstitial(first_party_tab));
-    Click(first_party_tab, "dont-warn-again-checkbox");
-    ClickAndWaitForNavigation(first_party_tab, "primary-button");
-
-    // We set a value in the page where all the frames are first-party.
-    SetValuesInFrames(first_party_tab, "a.com", "from=a.com");
-
-    {
-      ValuesFromFrames first_party_values =
-          GetValuesFromFrames(first_party_tab);
-      EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
-      EXPECT_EQ("a.com", first_party_values.iframe_1.local_storage);
-      EXPECT_EQ("a.com", first_party_values.iframe_2.local_storage);
-
-      EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
-      EXPECT_EQ("a.com", first_party_values.iframe_1.session_storage);
-      EXPECT_EQ("a.com", first_party_values.iframe_2.session_storage);
-
-      EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
-      EXPECT_EQ("from=a.com", first_party_values.iframe_1.cookies);
-      EXPECT_EQ("from=a.com", first_party_values.iframe_2.cookies);
+  WebContents* BlockAndNavigateToBlockedDomain(const GURL& url,
+                                               bool is_aggressive,
+                                               bool set_dont_warn_again) {
+    BlockDomainByURL(url);
+    if (is_aggressive) {
+      brave_shields::SetCosmeticFilteringControlType(
+          content_settings(), brave_shields::ControlType::BLOCK, url);
     }
+
+    WebContents* first_party_tab = LoadURLInNewTab(url);
+
+    if (is_aggressive) {
+      EXPECT_TRUE(IsShowingInterstitial(first_party_tab));
+      if (set_dont_warn_again) {
+        Click(first_party_tab, "dont-warn-again-checkbox");
+      }
+      ClickAndWaitForNavigation(first_party_tab, "primary-button");
+    }
+
+    RenderFrameHost* main_frame = first_party_tab->GetMainFrame();
+    SetValuesInFrame(main_frame, "a.com", "from=a.com");
+
+    ValuesFromFrame main_frame_values = GetValuesFromFrame(main_frame);
+    EXPECT_EQ("a.com", main_frame_values.local_storage);
+    EXPECT_EQ("a.com", main_frame_values.session_storage);
+    EXPECT_EQ("from=a.com", main_frame_values.cookies);
 
     return first_party_tab;
   }
 
   void NavigateToBlockedDomainAndExpectEphemeralEnabled() {
-    WebContents* first_party_tab = NavigateToBlockedDomain();
+    WebContents* first_party_tab =
+        BlockAndNavigateToBlockedDomain(a_site_simple_url_, false, false);
 
     // After keepalive values should be cleared.
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
     WaitForCleanupAfterKeepAlive();
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
 
-    ExpectValuesFromFramesAreEmpty(FROM_HERE,
-                                   GetValuesFromFrames(first_party_tab));
+    ExpectValuesFromFrameAreEmpty(
+        FROM_HERE, GetValuesFromFrame(first_party_tab->GetMainFrame()));
   }
 
   void NavigateToBlockedDomainAndExpectNotEphemeral() {
-    WebContents* first_party_tab = NavigateToBlockedDomain();
+    WebContents* first_party_tab =
+        BlockAndNavigateToBlockedDomain(a_site_simple_url_, false, false);
 
     // After keepalive main frame values should not be cleared.
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
     WaitForCleanupAfterKeepAlive();
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
 
     {
-      ValuesFromFrames first_party_values =
-          GetValuesFromFrames(first_party_tab);
-      EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
-      EXPECT_EQ(nullptr, first_party_values.iframe_1.local_storage);
-      EXPECT_EQ(nullptr, first_party_values.iframe_2.local_storage);
-
-      EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
-      EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
-      EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
-
-      EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
-      EXPECT_EQ("", first_party_values.iframe_1.cookies);
-      EXPECT_EQ("", first_party_values.iframe_2.cookies);
+      ValuesFromFrame first_party_values =
+          GetValuesFromFrame(first_party_tab->GetMainFrame());
+      EXPECT_EQ("a.com", first_party_values.local_storage);
+      EXPECT_EQ("a.com", first_party_values.session_storage);
+      EXPECT_EQ("from=a.com", first_party_values.cookies);
     }
   }
 
- private:
+ protected:
   base::test::ScopedFeatureList scoped_feature_list_;
+  GURL a_site_simple_url_;
+  GURL b_site_simple_url_;
 };
 
-IN_PROC_BROWSER_TEST_F(
-    EphemeralStorage1pDomainBlockBrowserTest,
-    FirstPartyEphemeralIsEnabledAfterIntersisitalProcessing) {
-  brave_shields::SetCosmeticFilteringControlType(
-      content_settings(), brave_shields::ControlType::BLOCK,
-      a_site_ephemeral_storage_url_);
-  BlockDomainByURL(a_site_ephemeral_storage_url_);
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
+                       FirstPartyEphemeralIsAutoEnabledInNormalBlockingMode) {
+  WebContents* first_party_tab =
+      BlockAndNavigateToBlockedDomain(a_site_simple_url_, false, false);
 
-  NavigateToBlockedDomainAndExpectEphemeralEnabled();
+  EXPECT_TRUE(GetAllCookies().empty());
+
+  // After keepalive values should be cleared.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
+  WaitForCleanupAfterKeepAlive();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
+
+  ExpectValuesFromFrameAreEmpty(
+      FROM_HERE, GetValuesFromFrame(first_party_tab->GetMainFrame()));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
                        FirstPartyEphemeralIsNotEnabledIfCookiesStored) {
-  ASSERT_TRUE(content::SetCookie(browser()->profile(),
-                                 a_site_ephemeral_storage_url_,
+  ASSERT_TRUE(content::SetCookie(browser()->profile(), a_site_simple_url_,
                                  "from=a.com;SameSite=None;Secure"));
 
   NavigateToBlockedDomainAndExpectNotEphemeral();
+  EXPECT_EQ(1u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorage1pDomainBlockBrowserTest,
     FirstPartyEphemeralIsNotEnabledIfLocalStorageDataStored) {
   // Store local storage value in a.com.
-  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_simple_url_);
   SetStorageValueInFrame(first_party_tab->GetMainFrame(), "a.com",
                          StorageType::Local);
   // Navigate away to b.com.
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
+  // Ensure nothing is cleaned up even after keep alive.
+  WaitForCleanupAfterKeepAlive();
 
   NavigateToBlockedDomainAndExpectNotEphemeral();
+  EXPECT_EQ(1u, GetAllCookies().size());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorage1pDomainBlockBrowserTest,
+    FirstPartyEphemeralIsAutoEnabledInAggressiveBlockingMode) {
+  WebContents* first_party_tab =
+      BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, false);
+
+  EXPECT_EQ(0u, GetAllCookies().size());
+
+  // After keepalive values should be cleared.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
+  WaitForCleanupAfterKeepAlive();
+  first_party_tab = WebContents::FromRenderFrameHost(
+      ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
+
+  EXPECT_TRUE(IsShowingInterstitial(first_party_tab));
+  ClickAndWaitForNavigation(first_party_tab, "primary-button");
+
+  ExpectValuesFromFrameAreEmpty(
+      FROM_HERE, GetValuesFromFrame(first_party_tab->GetMainFrame()));
+  EXPECT_EQ(0u, GetAllCookies().size());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
+                       FirstPartyEphemeralIsNotEnabledWhenDontWarnChecked) {
+  WebContents* first_party_tab =
+      BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, true);
+
+  // After keepalive values should be cleared.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
+  WaitForCleanupAfterKeepAlive();
+  first_party_tab = WebContents::FromRenderFrameHost(
+      ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
+  EXPECT_FALSE(IsShowingInterstitial(first_party_tab));
+
+  ValuesFromFrame first_party_values =
+      GetValuesFromFrame(first_party_tab->GetMainFrame());
+  EXPECT_EQ("a.com", first_party_values.local_storage);
+  EXPECT_EQ("a.com", first_party_values.session_storage);
+  EXPECT_EQ("from=a.com", first_party_values.cookies);
+  EXPECT_EQ(1u, GetAllCookies().size());
 }

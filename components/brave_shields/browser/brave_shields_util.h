@@ -32,6 +32,12 @@ enum ControlType {
   AGGRESSIVE
 };
 
+enum class DomainBlockingType {
+  kNone,
+  k1PES,
+  kAggressive,
+};
+
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
@@ -61,7 +67,8 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,

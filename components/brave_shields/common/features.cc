@@ -41,6 +41,8 @@ const base::Feature kBraveAdblockCspRules{
 // ||ads.example.com^
 const base::Feature kBraveDomainBlock{"BraveDomainBlock",
                                       base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kBraveDomainBlockVia1PES{"BraveDomainBlockVia1PES",
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, network requests initiated by extensions will be checked and
 // potentially blocked by Brave Shields.
 const base::Feature kBraveExtensionNetworkBlocking{
