@@ -2544,10 +2544,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Brave = less mobile data on every page
     </message>
     <message name="IDS_BETTER_PRIVACY" desc="Dormant users engagement bullet text">
-      Better privacy
+      &#8226; Better privacy
     </message>
     <message name="IDS_NO_ANNOYING_ADS" desc="Dormant users engagement bullet text">
-      No annoying ads
+      &#8226; No annoying ads
     </message>
     </messages>
   </release>
