@@ -133,7 +133,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                             // Do nothing with recovery phrase for now
                     });
         }
-        Utils.disableCryptoOnboarding();
+        Utils.setCryptoOnboarding(false);
         onNextPage.gotoNextPage(false);
     }
 

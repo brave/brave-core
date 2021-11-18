@@ -285,9 +285,6 @@ public class BraveWalletActivity
 
     @Override
     public void onDestroy() {
-        if (mKeyringController != null) {
-            mKeyringController.lock();
-        }
         mKeyringController.close();
         mAssetRatioController.close();
         mErcTokenRegistry.close();
