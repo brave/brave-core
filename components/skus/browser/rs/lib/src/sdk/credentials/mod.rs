@@ -4,7 +4,7 @@ mod present;
 use chrono::Utc;
 use tracing::{error, instrument};
 
-use crate::errors::{InternalError, RewardsError};
+use crate::errors::{InternalError, SkusError};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
@@ -14,7 +14,7 @@ where
     U: HTTPClient + StorageClient,
 {
     #[instrument]
-    pub async fn delete_order_credentials(&self, order_id: &str) -> Result<(), RewardsError> {
+    pub async fn delete_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         let order = self.client.get_order(order_id).await?;
 
         if let Some(order) = order {
@@ -30,7 +30,7 @@ where
         &self,
         order_id: &str,
         domain: &str,
-    ) -> Result<Option<CredentialSummary>, RewardsError> {
+    ) -> Result<Option<CredentialSummary>, SkusError> {
         let order = self.client.get_order(order_id).await?;
 
         if let Some(order) = order {
@@ -41,7 +41,7 @@ where
             }
 
             // FIXME only returns summary for first item
-            if let Some(item) = order.items.into_iter().next() {
+            if let Some(item) = order.items.iter().next() {
                 return Ok(match item.credential_type {
                     CredentialType::SingleUse => self
                         .client
@@ -56,16 +56,14 @@ where
                                 .count()
                                 as u32;
 
-                            if remaining_credential_count < 1 {
-                                return None;
-                            }
-
                             let expires_at = None;
+                            let active = remaining_credential_count > 0;
 
                             Some(CredentialSummary {
-                                item,
+                                order,
                                 remaining_credential_count,
                                 expires_at,
+                                active,
                             })
                         }),
                     CredentialType::TimeLimited => {
@@ -84,13 +82,17 @@ where
                             }
                         }
 
-                        self.matching_time_limited_credential(&item.id)
-                            .await?
-                            .map(|_cred| CredentialSummary {
-                                item,
-                                remaining_credential_count: 1,
-                                expires_at,
-                            })
+                        let active = matches!(
+                            self.matching_time_limited_credential(&item.id).await,
+                            Ok(Some(_))
+                        );
+
+                        Some(CredentialSummary {
+                            order,
+                            remaining_credential_count: 1,
+                            expires_at,
+                            active,
+                        })
                     }
                 });
             }
@@ -102,7 +104,7 @@ where
     pub async fn matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, RewardsError> {
+    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
         Ok(self
             .client
             .get_time_limited_creds(item_id)
@@ -119,7 +121,7 @@ where
     pub async fn last_matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, RewardsError> {
+    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
         Ok(self
             .client
             .get_time_limited_creds(item_id)
@@ -131,7 +133,7 @@ where
     pub async fn matching_credential_summary(
         &self,
         domain: &str,
-    ) -> Result<Option<CredentialSummary>, RewardsError> {
+    ) -> Result<Option<CredentialSummary>, SkusError> {
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {

@@ -4,7 +4,6 @@ mod log;
 mod storage;
 
 use std::cell::RefCell;
-use std::error::Error;
 use std::fmt;
 use std::rc::Rc;
 
@@ -14,11 +13,14 @@ use futures::task::LocalSpawnExt;
 
 use tracing::debug;
 
-pub use brave_rewards;
+pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
-pub struct NativeClientContext(UniquePtr<ffi::SkusSdkContext>);
+pub struct NativeClientContext {
+    environment: skus::Environment,
+    ctx: UniquePtr<ffi::SkusSdkContext>,
+}
 
 #[derive(Clone)]
 pub struct NativeClient {
@@ -46,7 +48,7 @@ impl NativeClient {
 }
 
 #[allow(unused)]
-#[cxx::bridge(namespace = brave_rewards)]
+#[cxx::bridge(namespace = skus)]
 mod ffi {
     #[derive(Debug)]
     pub enum TracingLevel {
@@ -73,7 +75,7 @@ mod ffi {
     }
 
     #[derive(Debug)]
-    pub enum RewardsResult {
+    pub enum SkusResult {
         Ok,
         RequestFailed,
         InternalServer,
@@ -96,6 +98,7 @@ mod ffi {
         InvalidMerchantOrSku,
         UnknownError,
         BorrowFailed,
+        FutureCancelled,
     }
 
     pub struct HttpRequest {
@@ -106,7 +109,7 @@ mod ffi {
     }
     #[derive(Debug)]
     pub struct HttpResponse<'a> {
-        pub result: RewardsResult,
+        pub result: SkusResult,
         pub return_code: u16,
         pub headers: &'a CxxVector<CxxString>,
         pub body: &'a CxxVector<u8>,
@@ -147,7 +150,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("brave/components/skus/browser/brave-rewards-cxx/src/shim.h");
+        include!("brave/components/skus/browser/rs/cxx/src/shim.h");
 
         type SkusSdkContext;
         type SkusSdkFetcher;
@@ -183,7 +186,7 @@ mod ffi {
 }
 
 pub struct CppSDK {
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSDK> {
@@ -192,14 +195,20 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
         .with_max_level(tracing::Level::TRACE)
         .init();
 
-    // FIXME
-    let sdk = brave_rewards::sdk::SDK::new(
+    let env = env
+        .parse::<skus::Environment>()
+        .unwrap_or(skus::Environment::Local);
+
+    let sdk = skus::sdk::SDK::new(
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(LocalPool::new())),
-            ctx: Rc::new(RefCell::new(NativeClientContext(ctx))),
+            ctx: Rc::new(RefCell::new(NativeClientContext {
+                environment: env.clone(),
+                ctx,
+            })),
         },
-        &env,
+        env,
         None,
         None,
     );
@@ -207,12 +216,10 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
     let mut spawner = sdk.client.pool.borrow_mut().spawner();
     {
         let sdk = sdk.clone();
-
-        spawner
-            .spawn_local(async move {
-                sdk.initialize().await.unwrap();
-            })
-            .unwrap();
+        let init = async move { sdk.initialize().await };
+        if spawner.spawn_local(init).is_err() {
+            debug!("pool is shutdown");
+        }
     }
 
     sdk.client.pool.borrow_mut().run_until_stalled();
@@ -235,16 +242,19 @@ impl CppSDK {
         order_id: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(refresh_order_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 order_id,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn fetch_order_credentials(
@@ -254,16 +264,19 @@ impl CppSDK {
         order_id: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 order_id,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn prepare_credentials_presentation(
@@ -274,7 +287,7 @@ impl CppSDK {
         path: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
                 callback,
@@ -282,9 +295,12 @@ impl CppSDK {
                 domain,
                 path,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 
     fn credential_summary(
@@ -294,16 +310,19 @@ impl CppSDK {
         domain: String,
     ) {
         let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
-        spawner
+        if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
                 callback,
                 callback_state,
                 domain,
             ))
-            .unwrap();
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
 
-        self.sdk.client.pool.borrow_mut().run_until_stalled();
+        self.sdk.client.try_run_until_stalled();
     }
 }
 
@@ -311,36 +330,30 @@ impl CppSDK {
 pub struct RefreshOrderCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::RefreshOrderCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         order: &str,
     ),
 );
 
 unsafe impl ExternType for RefreshOrderCallback {
-    type Id = type_id!("brave_rewards::RefreshOrderCallback");
+    type Id = type_id!("skus::RefreshOrderCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn refresh_order_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: RefreshOrderCallback,
     callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
     order_id: String,
 ) {
-    match sdk.refresh_order(&order_id).await {
-        Ok(order) => {
-            let order = serde_json::to_string(&order).unwrap();
-            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &order)
-        }
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+    match sdk
+        .refresh_order(&order_id)
+        .await
+        .and_then(|order| serde_json::to_string(&order).map_err(|e| e.into()))
+        .map_err(|e| e.into())
+    {
+        Ok(order) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
 
@@ -348,31 +361,28 @@ async fn refresh_order_task(
 pub struct FetchOrderCredentialsCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::FetchOrderCredentialsCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
     ),
 );
 
 unsafe impl ExternType for FetchOrderCredentialsCallback {
-    type Id = type_id!("brave_rewards::FetchOrderCredentialsCallback");
+    type Id = type_id!("skus::FetchOrderCredentialsCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn fetch_order_credentials_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: FetchOrderCredentialsCallback,
     callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
     order_id: String,
 ) {
-    match sdk.fetch_order_credentials(&order_id).await {
-        Ok(_) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
-                .unwrap()
-                .into(),
-        ),
+    match sdk
+        .fetch_order_credentials(&order_id)
+        .await
+        .map_err(|e| e.into())
+    {
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
+        Err(e) => callback.0(callback_state.into_raw(), e),
     }
 }
 
@@ -380,39 +390,35 @@ async fn fetch_order_credentials_task(
 pub struct PrepareCredentialsPresentationCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::PrepareCredentialsPresentationCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         presentation: &str,
     ),
 );
 
 unsafe impl ExternType for PrepareCredentialsPresentationCallback {
-    type Id = type_id!("brave_rewards::PrepareCredentialsPresentationCallback");
+    type Id = type_id!("skus::PrepareCredentialsPresentationCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn prepare_credentials_presentation_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: PrepareCredentialsPresentationCallback,
     callback_state: UniquePtr<ffi::PrepareCredentialsPresentationCallbackState>,
     domain: String,
     path: String,
 ) {
-    match sdk.prepare_credentials_presentation(&domain, &path).await {
+    match sdk
+        .prepare_credentials_presentation(&domain, &path)
+        .await
+        .map_err(|e| e.into())
+    {
         Ok(Some(presentation)) => callback.0(
             callback_state.into_raw(),
-            ffi::RewardsResult::Ok,
+            ffi::SkusResult::Ok,
             &presentation,
         ),
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
 
@@ -420,36 +426,34 @@ async fn prepare_credentials_presentation_task(
 pub struct CredentialSummaryCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
-        result: ffi::RewardsResult,
+        result: ffi::SkusResult,
         summary: &str,
     ),
 );
 
 unsafe impl ExternType for CredentialSummaryCallback {
-    type Id = type_id!("brave_rewards::CredentialSummaryCallback");
+    type Id = type_id!("skus::CredentialSummaryCallback");
     type Kind = cxx::kind::Trivial;
 }
 
 async fn credential_summary_task(
-    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
     callback: CredentialSummaryCallback,
     callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
     domain: String,
 ) {
-    match sdk.matching_credential_summary(&domain).await {
-        Ok(Some(summary)) => {
-            let summary = serde_json::to_string(&summary).unwrap();
-            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &summary)
-        }
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
-        Err(e) => callback.0(
-            callback_state.into_raw(),
-            e.source()
-                .unwrap()
-                .downcast_ref::<brave_rewards::errors::InternalError>()
-                .unwrap()
-                .into(),
-            "",
-        ),
+    match sdk
+        .matching_credential_summary(&domain)
+        .await
+        .and_then(|summary| {
+            summary
+                .map(|summary| serde_json::to_string(&summary).map_err(|e| e.into()))
+                .transpose()
+        })
+        .map_err(|e| e.into())
+    {
+        Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }

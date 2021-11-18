@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/skus/browser/brave-rewards-cxx/src/shim.h"
+#include "brave/components/skus/browser/rs/cxx/src/shim.h"
 
 class PrefService;
 
@@ -22,17 +22,17 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
-namespace brave_rewards {
+namespace skus {
 class SkusSdkFetcher;
-}  // namespace brave_rewards
+}  // namespace skus
 
-namespace brave_rewards {
+namespace skus {
 
 // Context object used with the SKU SDK to provide 1) key/value pair storage
 // and 2) the fetcher used for contacting the SKU SDK endpoint via HTTPS.
 //
 // In the .cc, there are implementations for global methods originally defined
-// in `brave-rewards-cxx/src/shim.h`. These implementations are called from
+// in `rs/cxx/src/shim.h`. These implementations are called from
 // Rust and will pass this context object along, so that the results can be
 // persisted.
 class SkusSdkContextImpl : public SkusSdkContext {
@@ -48,7 +48,7 @@ class SkusSdkContextImpl : public SkusSdkContext {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusSdkContextImpl() override;
 
-  std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher() const override;
+  std::unique_ptr<skus::SkusSdkFetcher> CreateFetcher() const override;
   std::string GetValueFromStore(std::string key) const override;
   void PurgeStore() const override;
   void UpdateStoreValue(std::string key, std::string value) const override;
@@ -61,6 +61,6 @@ class SkusSdkContextImpl : public SkusSdkContext {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_
 
-namespace brave_rewards {
+namespace skus {
 namespace prefs {
 
 constexpr char kSkusState[] = "skus.state";
@@ -14,6 +14,6 @@ constexpr char kSkusVPNCredential[] = "skus.credential.vpn";
 constexpr char kSkusVPNHasCredential[] = "skus.credential.has_vpn";
 
 }  // namespace prefs
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_

@@ -9,16 +9,16 @@ import("//brave/build/rust/rust_cxx.gni")
 rust_crate("rust_lib") {
   inputs = [
     "Cargo.toml",
-    "errors.rs",
-    "httpclient.rs",
-    "lib.rs",
-    "log.rs",
-    "storage.rs",
+    "src/errors.rs",
+    "src/httpclient.rs",
+    "src/lib.rs",
+    "src/log.rs",
+    "src/storage.rs",
   ]
 }
 
 rust_cxx("cxx") {
-  input = [ "lib.rs" ]
+  input = [ "src/lib.rs" ]
   native_header_deps = [ ":shim" ]
 }
 

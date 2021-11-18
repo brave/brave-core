@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace brave_rewards {
+namespace skus {
 
 constexpr char kEnvProduction[] = "production";
 constexpr char kEnvStaging[] = "staging";
@@ -16,6 +16,6 @@ constexpr char kEnvDevelopment[] = "development";
 
 std::string GetEnvironment();
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_UTILS_H_
