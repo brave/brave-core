@@ -144,7 +144,7 @@ std::string SkusSdkContextImpl::GetValueFromStore(std::string key) const {
   if (value) {
     return value->GetString();
   }
-  return "{}";
+  return "";
 }
 
 void SkusSdkContextImpl::PurgeStore() const {
