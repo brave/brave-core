@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use crate::ffi;
 
 impl From<&skus::errors::InternalError> for ffi::SkusResult {
@@ -40,18 +42,28 @@ impl From<&skus::errors::InternalError> for ffi::SkusResult {
     }
 }
 
+impl From<skus::errors::SkusError> for ffi::SkusResult {
+    fn from(e: skus::errors::SkusError) -> Self {
+        e.source()
+            .expect("SkusError wraps an InternalError source")
+            .downcast_ref::<skus::errors::InternalError>()
+            .expect("SkusError wraps an InternalError source")
+            .into()
+    }
+}
+
 impl From<ffi::SkusResult> for skus::errors::InternalError {
     fn from(e: ffi::SkusResult) -> Self {
         match e {
             ffi::SkusResult::RequestFailed => skus::errors::InternalError::RequestFailed,
             ffi::SkusResult::InternalServer => skus::errors::InternalError::InternalServer(
-                skus::http::http::status::StatusCode::from_u16(599).unwrap(),
+                skus::http::http::status::StatusCode::from_u16(599).expect("100 < 599 < 1000"),
             ),
             ffi::SkusResult::BadRequest => skus::errors::InternalError::BadRequest(
-                skus::http::http::StatusCode::from_u16(499).unwrap(),
+                skus::http::http::StatusCode::from_u16(499).expect("100 < 499 < 1000"),
             ),
             ffi::SkusResult::UnhandledStatus => skus::errors::InternalError::UnhandledStatus(
-                skus::http::http::StatusCode::from_u16(699).unwrap(),
+                skus::http::http::StatusCode::from_u16(699).expect("100 < 699 < 1000"),
             ),
             ffi::SkusResult::RetryLater => skus::errors::InternalError::RetryLater(None),
             ffi::SkusResult::NotFound => skus::errors::InternalError::NotFound,
