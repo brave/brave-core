@@ -50,8 +50,8 @@ TEST(BraveProxySpecificationUtilTest, PacResultElementWithAuthToProxyServer) {
     const char* const expected_uri;
   } tests[] = {
       {
-          "PROXY foo:bar@foopy:10",
-          "foo:bar@foopy:10",
+          "SOCKS5 foo:bar@foopy:10",
+          "socks5://foo:bar@foopy:10",
       },
   };
 
