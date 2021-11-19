@@ -11,102 +11,154 @@ import BraveCore
 // MARK: - Onboarding
 
 extension BrowserViewController {
-    
-    func presentOnboardingIntro(_ completion: @escaping () -> Void) {
+
+    func presentOnboardingIntro() {        
         if Preferences.DebugFlag.skipOnboardingIntro == true { return }
         
         // 1. Existing user.
         // 2. User already completed onboarding.
         if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
-            // The user doesn't have ads in their region and they've completed rewards.
-            if !BraveAds.isCurrentLocaleSupported()
-                &&
-                Preferences.General.basicOnboardingProgress.value == OnboardingProgress.rewards.rawValue {
-                return
-            }
-        }
-        
-        // The user either skipped or didn't complete onboarding.
-        let isRewardsEnabled = rewards.isEnabled
-        let currentProgress = OnboardingProgress(rawValue: Preferences.General.basicOnboardingProgress.value) ?? .none
-        
-        // 1. Existing user.
-        // 2. The user skipped onboarding before.
-        // 3. 60 days have passed since they last saw onboarding.
-        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.skipped.rawValue {
-
-            guard let daysUntilNextPrompt = Preferences.General.basicOnboardingNextOnboardingPrompt.value else {
-                return
-            }
-            
-            // 60 days has passed since the user last saw the onboarding.. it's time to show the onboarding again..
-            if daysUntilNextPrompt <= Date() && !isRewardsEnabled {
-                guard let onboarding = OnboardingNavigationController(
-                    profile: profile,
-                    rewards: rewards,
-                    onboardingType: .existingUserRewardsOff(currentProgress)
-                    ) else { return }
-                
-                onboarding.onboardingDelegate = self
-                present(onboarding, animated: true)
-                
-                Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
-            }
-            
-            return
-        }
-        
-        // 1. Rewards are on/off (existing user)
-        // 2. User hasn't seen the rewards part of the onboarding yet.
-        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
-            &&
-            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.searchEngine.rawValue) {
-            
-            guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
-                profile: profile,
-                rewards: rewards,
-                onboardingType: .existingUserRewardsOff(currentProgress)
-                ) else { return }
-            
-            onboarding.onboardingDelegate = self
-            present(onboarding, animated: true)
-            return
-        }
-        
-        // 1. Rewards are on/off (existing user)
-        // 2. User hasn't seen the rewards part of the onboarding yet because their version of the app is insanely OLD and somehow the progress value doesn't exist.
-        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
-            &&
-            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue) {
-            
-            guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
-                profile: profile,
-                rewards: rewards,
-                onboardingType: .existingUserRewardsOff(currentProgress)
-                ) else { return }
-            
-            onboarding.onboardingDelegate = self
-            present(onboarding, animated: true)
             return
         }
         
         // 1. User is brand new
         // 2. User hasn't completed onboarding
-        // 3. We don't care how much progress they made. Onboarding is only complete when ALL of it is complete.
         if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
-            // The user has never completed the onboarding..
+            let onboardingController = WelcomeViewController(profile: profile,
+                                                             rewards: rewards)
+            onboardingController.modalPresentationStyle = .fullScreen
+            onboardingController.onAdsWebsiteSelected = { [weak self] url in
+                guard let self = self else { return }
+                
+                if let url = url {
+                    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+                    self.topToolbar.leaveOverlayMode()
+                    let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest,
+                                                     afterTab: self.tabManager.selectedTab,
+                                                     isPrivate: isPrivate)
+                    self.tabManager.selectTab(tab)
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+                    }
+                }
+            }
             
-            guard let onboarding = OnboardingNavigationController(
-                profile: profile,
-                rewards: rewards,
-                onboardingType: .newUser(currentProgress)
-                ) else { return }
-            
-            onboarding.onboardingDelegate = self
-            present(onboarding, animated: true)
-            completion()
-            
+            present(onboardingController, animated: false)
+            isOnboardingOrFullScreenCalloutPresented = true
+            shouldShowNTPEducation = true
+        }
+    }
+    
+    func presentNTPStatsOnboarding() {
+        guard let ntpController = tabManager.selectedTab?.newTabPageViewController,
+            let statsFrame = ntpController.ntpStatsOnboardingFrame else {
             return
+        }
+        
+        // Project the statsFrame to the current frame
+        let frame = view.convert(statsFrame, from: ntpController.view).insetBy(dx: 15.0, dy: 15.0).offsetBy(dx: 15.0, dy: 5.0)
+        
+        // Create a border view
+        let borderView = UIView().then {
+            let borderLayer = CAShapeLayer().then {
+                let frame = frame.with { $0.origin = .zero }
+                $0.strokeColor = UIColor.white.cgColor
+                $0.fillColor = UIColor.clear.cgColor
+                $0.lineWidth = 2.0
+                $0.strokeEnd = 1.0
+                $0.path = UIBezierPath(roundedRect: frame, cornerRadius: 12.0).cgPath
+            }
+            $0.layer.addSublayer(borderLayer)
+        }
+        
+        view.addSubview(borderView)
+        borderView.frame = frame
+        
+        // Present the popover
+        let controller = WelcomeNTPOnboardingController()
+        controller.setText(details: Strings.Onboarding.ntpOnboardingPopOverTrackerDescription)
+        
+        let popover = PopoverController(contentController: controller)
+        popover.arrowDistance = 10.0
+        popover.present(from: borderView, on: self)
+        
+        // Mask the shadow
+        let maskFrame = view.convert(frame, to: popover.backgroundOverlayView)
+        let maskShape = CAShapeLayer().then {
+            $0.fillRule = .evenOdd
+            $0.fillColor = UIColor.white.cgColor
+            $0.strokeColor = UIColor.clear.cgColor
+        }
+        
+        popover.backgroundOverlayView.layer.mask = maskShape
+        popover.popoverDidDismiss = { [weak self] _ in
+            maskShape.removeFromSuperlayer()
+            borderView.removeFromSuperview()
+            Preferences.FullScreenCallout.ntpCalloutCompleted.value = true
+            self?.presentNTPMenuOnboarding()
+        }
+        
+        DispatchQueue.main.async {
+            maskShape.path = {
+                let path = CGMutablePath()
+                path.addRect(popover.backgroundOverlayView.bounds)
+                path.addRoundedRect(in: maskFrame,
+                                    cornerWidth: 12.0,
+                                    cornerHeight: 12.0)
+                return path
+            }()
+        }
+    }
+    
+    func presentNTPMenuOnboarding() {
+        guard let menuButton = UIDevice.isIpad ? topToolbar.menuButton : toolbar?.menuButton else { return }
+        let controller = WelcomeNTPOnboardingController()
+        controller.setText(
+            title: Strings.Onboarding.ntpOnboardingPopoverDoneTitle,
+            details: Strings.Onboarding.ntpOnboardingPopoverDoneDescription)
+        
+        let popover = PopoverController(contentController: controller)
+        popover.arrowDistance = 7.0
+        popover.present(from: menuButton, on: self)
+        
+        if let icon = menuButton.imageView?.image {
+            let maskedView = controller.maskedPointerView(icon: icon,
+                                                          tint: menuButton.imageView?.tintColor)
+            popover.view.insertSubview(maskedView, aboveSubview: popover.backgroundOverlayView)
+            maskedView.frame = CGRect(width: 45.0, height: 45.0)
+            maskedView.center = view.convert(menuButton.center, from: menuButton.superview)
+            maskedView.layer.cornerRadius = max(maskedView.bounds.width, maskedView.bounds.height) / 2.0
+            
+            popover.popoverDidDismiss = { _ in
+                maskedView.removeFromSuperview()
+            }
+        }
+    }
+    
+    func notifyTrackersBlocked(domain: String, trackers: [String: [String]]) {
+        let controller = WelcomeBraveBlockedAdsController().then {
+            var trackers = trackers
+            let first = trackers.popFirst()
+            let tracker = first?.key
+            let trackerCount = ((first?.value.count ?? 0) - 1) + trackers.reduce(0, { res, values in
+                res + values.value.count
+            })
+            
+            $0.setData(domain: domain, trackerBlocked: tracker ?? "", trackerCount: trackerCount)
+        }
+        
+        let popover = PopoverController(contentController: controller)
+        popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+        
+        let pulseAnimation = RadialPulsingAnimation(ringCount: 3)
+        pulseAnimation.present(icon: topToolbar.locationView.shieldsButton.imageView?.image,
+                               from: topToolbar.locationView.shieldsButton,
+                               on: popover,
+                               browser: self)
+        
+        popover.popoverDidDismiss = { _ in
+            pulseAnimation.removeFromSuperview()
         }
     }
     
@@ -123,40 +175,7 @@ extension BrowserViewController {
 
 // MARK: OnboardingControllerDelegate
 
-extension BrowserViewController: OnboardingControllerDelegate {
-    
-    func onboardingCompleted(_ onboardingController: OnboardingNavigationController) {
-        Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-        Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
-        
-        if BraveRewards.isAvailable {
-            switch onboardingController.onboardingType {
-            case .newUser:
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
-            default:
-                break
-            }
-        } else {
-            switch onboardingController.onboardingType {
-            case .newUser:
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
-            case .existingUserRewardsOff:
-                break
-            default:
-                break
-            }
-        }
-        
-        dismissOnboarding(onboardingController)
-    }
-    
-    func onboardingSkipped(_ onboardingController: OnboardingNavigationController) {
-        Preferences.General.basicOnboardingCompleted.value = OnboardingState.skipped.rawValue
-        Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
-        
-        dismissOnboarding(onboardingController)
-    }
-    
+extension BrowserViewController {
     private func presentEducationNTPIfNeeded() {
         // NTP Education Load after onboarding screen
         if shouldShowNTPEducation,
@@ -166,10 +185,13 @@ extension BrowserViewController: OnboardingControllerDelegate {
         }
     }
     
-    private func dismissOnboarding(_ onboardingController: OnboardingNavigationController) {
+    func dismissOnboarding(_ controller: OnboardingRewardsAgreementViewController,
+                           state: OnboardingRewardsState) {
+        Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        
         // Present NTP Education If Locale is JP and onboading is finished or skipped
         // Present private browsing prompt if necessary when onboarding has been skipped
-        onboardingController.dismiss(animated: true) { [weak self] in
+        controller.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             
             self.presentEducationNTPIfNeeded()
