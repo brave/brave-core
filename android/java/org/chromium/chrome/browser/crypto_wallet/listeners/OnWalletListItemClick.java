@@ -5,12 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
+import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 
 public interface OnWalletListItemClick {
     default public void onAccountClick(WalletListItemModel walletListItemModel){};
-    default public void onAssetClick(){};
-    default public void onTransactionClick(){};
+    default public void onAssetClick(ErcToken asset){};
+    default public void onTransactionClick(TransactionInfo txInfo){};
     default public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, boolean isChecked){};
 }

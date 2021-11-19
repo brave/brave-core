@@ -213,6 +213,7 @@ brave_java_resources = [
   "java/res/drawable-nodpi/eos.png",
   "java/res/drawable-nodpi/etc.png",
   "java/res/drawable-nodpi/eth.png",
+  "java/res/drawable-nodpi/fee_icon.png",
   "java/res/drawable-nodpi/link.png",
   "java/res/drawable-nodpi/loader0.png",
   "java/res/drawable-nodpi/loader0_orange.png",

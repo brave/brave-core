@@ -5,18 +5,27 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
+import android.graphics.Bitmap;
+
 import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class WalletListItemModel {
     private int mIcon;
     private String mIconPath;
     private String mTitle;
     private String mSubTitle;
+    private String mTxStatus;
+    private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
     private ErcToken mErcToken;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
+    private double mTotalGas;
+    private double mTotalGasFiat;
+    private String[] mAddressesForBitmap;
+    private TransactionInfo mTxInfo;
 
     public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
             boolean isImportedAccount) {
@@ -37,12 +46,62 @@ public class WalletListItemModel {
         mText2 = text2;
     }
 
+    public void setTransactionInfo(TransactionInfo txInfo) {
+        mTxInfo = txInfo;
+    }
+
+    public TransactionInfo getTransactionInfo() {
+        return mTxInfo;
+    }
+
+    public void setAddressesForBitmap(String addressFrom, String addressTo) {
+        mAddressesForBitmap = new String[2];
+        mAddressesForBitmap[0] = addressFrom;
+        mAddressesForBitmap[1] = addressTo;
+    }
+
+    public String[] getAddressesForBitmap() {
+        return mAddressesForBitmap;
+    }
+
     public void setIconPath(String iconPath) {
         mIconPath = iconPath;
     }
 
     public String getIconPath() {
         return mIconPath;
+    }
+
+    public void setTotalGas(double totalGas) {
+        mTotalGas = totalGas;
+    }
+
+    public double getTotalGas() {
+        return mTotalGas;
+    }
+
+    public void setTotalGasFiat(double totalGasFiat) {
+        mTotalGasFiat = totalGasFiat;
+    }
+
+    public double getTotalGasFiat() {
+        return mTotalGasFiat;
+    }
+
+    public void setTxStatus(String txStatus) {
+        mTxStatus = txStatus;
+    }
+
+    public String getTxStatus() {
+        return mTxStatus;
+    }
+
+    public void setTxStatusBitmap(Bitmap txStatusBitmap) {
+        mTxStatusBitmap = txStatusBitmap;
+    }
+
+    public Bitmap getTxStatusBitmap() {
+        return mTxStatusBitmap;
     }
 
     public void setErcToken(ErcToken ercToken) {

@@ -9,23 +9,35 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PendingTxHelper {
     private EthTxController mEthTxController;
     private AccountInfo[] mAccountInfos;
     private HashMap<String, TransactionInfo[]> mTxInfos;
+    private boolean mReturnAll;
+    private String mFilterByContractAddress;
+    private String mRopstenContractAddress;
 
-    public PendingTxHelper(EthTxController ethTxController, AccountInfo[] accountInfos) {
+    public PendingTxHelper(EthTxController ethTxController, AccountInfo[] accountInfos,
+            boolean returnAll, String filterByContractAddress) {
         assert ethTxController != null;
         mEthTxController = ethTxController;
         mAccountInfos = accountInfos;
+        mFilterByContractAddress = filterByContractAddress;
+        mReturnAll = returnAll;
         mTxInfos = new HashMap<String, TransactionInfo[]>();
+        if (mFilterByContractAddress != null && !mFilterByContractAddress.isEmpty()) {
+            mRopstenContractAddress = Utils.getRopstenContractAddress(mFilterByContractAddress);
+        }
     }
 
     public HashMap<String, TransactionInfo[]> getTransactions() {
@@ -51,10 +63,41 @@ public class PendingTxHelper {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
                 ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
                 for (TransactionInfo txInfo : allTxContext.txInfos) {
-                    if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
-                        newValue.add(txInfo);
+                    if (mReturnAll || txInfo.txStatus == TransactionStatus.UNAPPROVED) {
+                        if (mFilterByContractAddress == null) {
+                            // Don't filter by contract
+                            newValue.add(txInfo);
+                        } else if (!mFilterByContractAddress.isEmpty()) {
+                            if (mFilterByContractAddress.toLowerCase(Locale.getDefault())
+                                            .equals(txInfo.txData.baseData.to.toLowerCase(
+                                                    Locale.getDefault()))) {
+                                newValue.add(txInfo);
+                            }
+                            if (mRopstenContractAddress != null
+                                    && !mRopstenContractAddress.isEmpty()
+                                    && mRopstenContractAddress.toLowerCase(Locale.getDefault())
+                                               .equals(txInfo.txData.baseData.to.toLowerCase(
+                                                       Locale.getDefault()))) {
+                                newValue.add(txInfo);
+                            }
+
+                        } else if (txInfo.txType != TransactionType.ERC20_APPROVE
+                                && txInfo.txType != TransactionType.ERC20_TRANSFER) {
+                            // Filter by ETH only
+                            newValue.add(txInfo);
+                        }
                     }
                 }
+                Collections.sort(newValue, new Comparator<TransactionInfo>() {
+                    @Override
+                    public int compare(TransactionInfo lhs, TransactionInfo rhs) {
+                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                        return lhs.createdTime.microseconds > rhs.createdTime.microseconds
+                                ? -1
+                                : (lhs.createdTime.microseconds < rhs.createdTime.microseconds) ? 1
+                                                                                                : 0;
+                    }
+                });
                 TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
                 newArray = newValue.toArray(newArray);
                 TransactionInfo[] value = mTxInfos.get(allTxContext.name);
