@@ -68,33 +68,30 @@ void GetPublisherStatusFromMessage(
   info->status = ledger::type::PublisherStatus::CONNECTED;
   for (const auto& wallet : response.wallets()) {
     if (wallet.has_uphold_wallet()) {
-      switch (wallet.uphold_wallet().wallet_state()) {
-        case publishers_pb::UPHOLD_ACCOUNT_KYC:
-          info->status = ledger::type::PublisherStatus::UPHOLD_VERIFIED;
-          info->address = wallet.uphold_wallet().address();
-          return;
-        default:
-          break;
+      auto& uphold = wallet.uphold_wallet();
+      if (uphold.wallet_state() == publishers_pb::UPHOLD_ACCOUNT_KYC &&
+          !uphold.address().empty()) {
+        info->status = ledger::type::PublisherStatus::UPHOLD_VERIFIED;
+        info->address = uphold.address();
+        return;
       }
     }
     if (wallet.has_bitflyer_wallet()) {
-      switch (wallet.bitflyer_wallet().wallet_state()) {
-        case publishers_pb::BITFLYER_ACCOUNT_KYC:
-          info->status = ledger::type::PublisherStatus::BITFLYER_VERIFIED;
-          info->address = wallet.bitflyer_wallet().address();
-          return;
-        default:
-          break;
+      auto& bitflyer = wallet.bitflyer_wallet();
+      if (bitflyer.wallet_state() == publishers_pb::BITFLYER_ACCOUNT_KYC &&
+          !bitflyer.address().empty()) {
+        info->status = ledger::type::PublisherStatus::BITFLYER_VERIFIED;
+        info->address = bitflyer.address();
+        return;
       }
     }
     if (wallet.has_gemini_wallet()) {
-      switch (wallet.gemini_wallet().wallet_state()) {
-        case publishers_pb::GEMINI_ACCOUNT_KYC:
-          info->status = ledger::type::PublisherStatus::GEMINI_VERIFIED;
-          info->address = wallet.gemini_wallet().address();
-          return;
-        default:
-          break;
+      auto& gemini = wallet.gemini_wallet();
+      if (gemini.wallet_state() == publishers_pb::GEMINI_ACCOUNT_KYC &&
+          !gemini.address().empty()) {
+        info->status = ledger::type::PublisherStatus::GEMINI_VERIFIED;
+        info->address = gemini.address();
+        return;
       }
     }
   }
