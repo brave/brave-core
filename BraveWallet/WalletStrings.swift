@@ -197,12 +197,12 @@ extension Strings {
       value: "Add Account",
       comment: "The title of the add account screen"
     )
-    public static let addAccountAddButton = NSLocalizedString(
+    public static let add = NSLocalizedString(
       "wallet.addAccountAddButton",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Add",
-      comment: "The title of the button which when tapped will add a new account to the users list of crypto accounts"
+      comment: "The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree."
     )
     public static let failedToImportAccountErrorTitle = NSLocalizedString(
       "wallet.failedToImportAccountErrorTitle",
@@ -1295,6 +1295,104 @@ extension Strings {
       bundle: .braveWallet,
       value: "Unknown",
       comment: "A transaction status that the app currently does not support displaying"
+    )
+    public static let customTokenTitle = NSLocalizedString(
+      "wallet.customTokenTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Custom",
+      comment: "The title displayed on the add custom token screen"
+    )
+    public static let tokenName = NSLocalizedString(
+      "wallet.tokenName",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Token name",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token name"
+    )
+    public static let enterTokenName = NSLocalizedString(
+      "wallet.enterTokenName",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter token name",
+      comment: "A placeholder for the text field that users will input the custom token name"
+    )
+    public static let tokenContractAddress = NSLocalizedString(
+      "wallet.tokenContractAddress",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Token contract address",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token contract address"
+    )
+    public static let enterContractAddress = NSLocalizedString(
+      "wallet.enterContractAddress",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter contract address",
+      comment: "A placeholder for the text field that users will input the custom token contract address"
+    )
+    public static let tokenSymbol = NSLocalizedString(
+      "wallet.tokenSymbol",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Token symbol",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token symbol"
+    )
+    public static let enterTokenSymbol = NSLocalizedString(
+      "wallet.enterTokenSymbol",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter token symbol",
+      comment: "A placeholder for the text field that users will input the custom token symbol"
+    )
+    public static let decimalsPrecision = NSLocalizedString(
+      "wallet.decimalsPrecision",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Decimals of precision",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token's decimals of precision"
+    )
+    public static let addCustomTokenErrorTitle = NSLocalizedString(
+      "wallet.addCustomTokenErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Cannot add custom token",
+      comment: "The title of the error pop up when there is an error occurs during the process of adding a custom token."
+    )
+    public static let addCustomTokenErrorMessage = NSLocalizedString(
+      "wallet.addCustomTokenErrorMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Please verify the custom token information, check your internet connection, and try again.",
+      comment: "The message of the error pop up when there is an error occurs during the process of adding a custom token."
+    )
+    public static let removeCustomTokenErrorTitle = NSLocalizedString(
+      "wallet.removeCustomTokenErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Cannot remove custom token",
+      comment: "The title of the error pop up when there is an error occurs during the process of removing a custom token."
+    )
+    public static let removeCustomTokenErrorMessage = NSLocalizedString(
+      "wallet.removeCustomTokenErrorMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Please verify this is a new custom asset, check your internet connection, and try again.",
+      comment: "The message in the error pop up when there is an error occurs during the process of removing a custom token."
+    )
+    public static let addCustomAsset = NSLocalizedString(
+      "wallet.addCustomAsset",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Add custom asset",
+      comment: "The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen."
+    )
+    public static let deleteCustomToken = NSLocalizedString(
+      "wallet.deleteCustomToken",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Delete",
+      comment: "The title of the option inside the context menu for custom asset row in edit user asset screen."
     )
   }
 }

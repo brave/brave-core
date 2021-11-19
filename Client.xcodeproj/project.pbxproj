@@ -943,6 +943,7 @@
 		7D2D6EEB2731D6BA000650EA /* SwapTokenSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D6EEA2731D6BA000650EA /* SwapTokenSearchView.swift */; };
 		7D2D6F162735BCDB000650EA /* TokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D6F152735BCDB000650EA /* TokenView.swift */; };
 		7D2D6F232735D627000650EA /* BuySendSwapGridBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D6F222735D627000650EA /* BuySendSwapGridBackgroundView.swift */; };
+		7D3393EA2744200B00265F1A /* AddCustomAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3393E92744200B00265F1A /* AddCustomAssetView.swift */; };
 		7D49CDDD271FA8B5008AB67E /* SendTokenSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D49CDDC271FA8B5008AB67E /* SendTokenSearchView.swift */; };
 		7D49CDDF271FB359008AB67E /* SendTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D49CDDE271FB359008AB67E /* SendTokenStore.swift */; };
 		7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758907271A172C00B643C3 /* BuyTokenView.swift */; };
@@ -2879,6 +2880,7 @@
 		7D2D6EEA2731D6BA000650EA /* SwapTokenSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenSearchView.swift; sourceTree = "<group>"; };
 		7D2D6F152735BCDB000650EA /* TokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenView.swift; sourceTree = "<group>"; };
 		7D2D6F222735D627000650EA /* BuySendSwapGridBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySendSwapGridBackgroundView.swift; sourceTree = "<group>"; };
+		7D3393E92744200B00265F1A /* AddCustomAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomAssetView.swift; sourceTree = "<group>"; };
 		7D49CDDC271FA8B5008AB67E /* SendTokenSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenSearchView.swift; sourceTree = "<group>"; };
 		7D49CDDE271FB359008AB67E /* SendTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenStore.swift; sourceTree = "<group>"; };
 		7D758907271A172C00B643C3 /* BuyTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenView.swift; sourceTree = "<group>"; };
@@ -3945,6 +3947,7 @@
 				271F687026EBD27D00AA2A50 /* BackupNotifyView.swift */,
 				271F687126EBD27D00AA2A50 /* PortfolioView.swift */,
 				27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */,
+				7D3393E92744200B00265F1A /* AddCustomAssetView.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";
@@ -7909,6 +7912,7 @@
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
 				2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */,
+				7D3393EA2744200B00265F1A /* AddCustomAssetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
