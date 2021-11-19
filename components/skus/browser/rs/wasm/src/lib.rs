@@ -188,6 +188,32 @@ impl JSSDK {
     }
 
     #[wasm_bindgen]
+    pub fn order_credential_summary(
+        &self,
+        order_id: String,
+        subdomain: Option<String>,
+    ) -> js_sys::Promise {
+        let sdk = self.sdk.clone();
+
+        let future = async move {
+            let window = web_sys::window().ok_or("couldn't get window")?;
+            let host = window.location().hostname()?;
+
+            if let Some(credential_summary) = sdk
+                .matching_order_credential_summary(&order_id, &subdomain.unwrap_or(host))
+                .await
+                .map_err(|e| e.to_string())?
+            {
+                return Ok(JsValue::from_serde(&credential_summary).unwrap());
+            }
+
+            Ok(JsValue::UNDEFINED)
+        };
+
+        future_to_promise(future)
+    }
+
+    #[wasm_bindgen]
     pub fn prepare_credentials_presentation(
         &self,
         origin: String,
