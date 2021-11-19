@@ -18,7 +18,10 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
@@ -37,7 +40,8 @@ namespace {
 // "external" runner.
 class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
  public:
-  TestingBraveComponentUpdaterDelegate() = default;
+  explicit TestingBraveComponentUpdaterDelegate(PrefService* local_state)
+      : local_state_(local_state) {}
   ~TestingBraveComponentUpdaterDelegate() override = default;
 
   TestingBraveComponentUpdaterDelegate(TestingBraveComponentUpdaterDelegate&) =
@@ -63,9 +67,10 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   }
 
   const std::string locale() const override { return "en"; }
-  PrefService* local_state() override {
-    return nullptr;
-  }
+  PrefService* local_state() override { return local_state_; }
+
+ private:
+  PrefService* local_state_;
 };
 
 }  // namespace
@@ -79,8 +84,12 @@ void FakeAdBlockSubscriptionDownloadManagerGetter(
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
+
     brave_component_updater_delegate_ =
-        std::make_unique<TestingBraveComponentUpdaterDelegate>();
+        std::make_unique<TestingBraveComponentUpdaterDelegate>(
+            local_state_->Get());
 
     base::FilePath user_data_dir;
     DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
@@ -100,6 +109,11 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     resolver_wrapper_ = std::make_unique<network::HostResolver>(
         host_resolver_.get(), net::NetLog::Get());
     brave::SetAdblockCnameHostResolverForTesting(resolver_wrapper_.get());
+
+    stub_resolver_config_reader_ =
+        std::make_unique<StubResolverConfigReader>(local_state_->Get());
+    SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
+        stub_resolver_config_reader_.get());
   }
 
   void TearDown() override {
@@ -129,12 +143,16 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     return rc == net::ERR_IO_PENDING;
   }
 
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
+
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
 
   content::BrowserTaskEnvironment task_environment_;
 
   std::unique_ptr<net::MockHostResolver> host_resolver_;
+
+  std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 
  private:
   std::unique_ptr<network::HostResolver> resolver_wrapper_;
