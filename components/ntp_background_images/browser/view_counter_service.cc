@@ -255,6 +255,7 @@ void ViewCounterService::RegisterPageView() {
   new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
   // This will be no-op when component is not ready.
+  service_->CheckNTPSIComponentUpdateIfNeeded();
   model_.RegisterPageView();
 }
 

@@ -70,6 +70,7 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralCode() const;
 
   std::vector<std::string> GetTopSitesFaviconList() const;
+  void CheckNTPSIComponentUpdateIfNeeded();
 
  private:
   friend class TestNTPBackgroundImagesService;
@@ -144,7 +145,9 @@ class NTPBackgroundImagesService {
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
+  base::Time last_update_check_time_;
   base::RepeatingTimer si_update_check_timer_;
+  base::RepeatingClosure si_update_check_callback_;
   std::vector<std::string> top_site_favicon_list_;
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;

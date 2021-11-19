@@ -41,6 +41,7 @@ namespace ntp_background_images {
 
 namespace {
 
+constexpr int kSIComponentUpdateCheckIntervalMins = 15;
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
@@ -140,9 +141,23 @@ void NTPBackgroundImagesService::Init() {
 #endif
 }
 
+void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
+  // It means component is not ready.
+  if (last_update_check_time_.is_null())
+    return;
+
+  // If previous update check is missed, do update check now.
+  if (base::Time::Now() - last_update_check_time_ >
+      base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins)) {
+    si_update_check_callback_.Run();
+  }
+}
+
 void NTPBackgroundImagesService::CheckImagesComponentUpdate(
     const std::string& component_id) {
   DVLOG(2) << __func__ << ": Check NTP Images component update";
+
+  last_update_check_time_ = base::Time::Now();
   BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
 }
 
@@ -175,13 +190,15 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // SI component checks update more frequently than other components.
   // By default, browser check update status every 5 hours.
   // However, this background interval is too long for SI. Use 15mins interval.
-  constexpr int kSIComponentUpdateCheckIntervalMins = 15;
+  si_update_check_callback_ = base::BindRepeating(
+      &NTPBackgroundImagesService::CheckImagesComponentUpdate,
+      base::Unretained(this), data->component_id);
+
+  last_update_check_time_ = base::Time::Now();
   si_update_check_timer_.Start(
       FROM_HERE,
       base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins),
-      base::BindRepeating(
-          &NTPBackgroundImagesService::CheckImagesComponentUpdate,
-          base::Unretained(this), data->component_id));
+      si_update_check_callback_);
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
