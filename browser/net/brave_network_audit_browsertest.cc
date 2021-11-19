@@ -112,7 +112,11 @@ bool PerformNetworkAuditProcess(base::Value* events) {
     EXPECT_TRUE(url_str);
 
     GURL url(*url_str);
-    EXPECT_TRUE(url.is_valid());
+    if (!url.is_valid()) {
+      // Network requests to invalid URLs don't pose a threat and can happen in
+      // dev-only environments (e.g. building with brave_stats_updater_url="").
+      return true;
+    }
 
     if (RE2::FullMatch(url.host(), "[a-z]+")) {
       // Chromium sometimes sends requests to random non-resolvable hosts.
