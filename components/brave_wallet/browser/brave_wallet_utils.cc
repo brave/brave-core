@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -246,56 +245,6 @@ GetAllKnownNetworksForTesting() {
   return result;
 }
 
-std::string KeccakHash(const std::string& input, bool to_hex) {
-  std::vector<uint8_t> bytes(input.begin(), input.end());
-  std::vector<uint8_t> result = KeccakHash(bytes);
-  std::string result_str(result.begin(), result.end());
-  return to_hex ? ToHex(result_str) : result_str;
-}
-
-std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
-  auto hash = ethash_keccak256(input.data(), input.size());
-  return std::vector<uint8_t>(hash.bytes, hash.bytes + 32);
-}
-
-std::string GetFunctionHash(const std::string& input) {
-  std::string result = KeccakHash(input);
-  return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
-}
-
-// Takes a hex string as input and converts it to a uint256_t
-bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
-  if (!out) {
-    return false;
-  }
-  if (!IsValidHexString(hex_input)) {
-    return false;
-  }
-  *out = 0;
-  for (char c : hex_input.substr(2)) {
-    (*out) <<= 4;
-    (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
-  }
-  return true;
-}
-
-// Takes a uint256_t and converts it to a hex string
-std::string Uint256ValueToHex(uint256_t input) {
-  std::string result;
-  result.reserve(32);
-
-  static constexpr char kHexChars[] = "0123456789abcdef";
-  while (input) {
-    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
-    result.insert(result.begin(), kHexChars[i]);
-    input >>= 4;
-  }
-  if (result.empty()) {
-    return "0x0";
-  }
-  return "0x" + result;
-}
-
 std::string GenerateMnemonic(size_t entropy_size) {
   if (!IsValidEntropySize(entropy_size))
     return "";
@@ -509,19 +458,6 @@ bool DecodeStringArray(const std::string& input,
   }
 
   return true;
-}
-
-std::string Namehash(const std::string& name) {
-  std::string hash(32, '\0');
-  std::vector<std::string> labels =
-      SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  for (auto rit = labels.rbegin(); rit != labels.rend(); rit++) {
-    std::string label_hash = KeccakHash(*rit, false);
-    hash = KeccakHash(hash + label_hash, false);
-  }
-
-  return ToHex(hash);
 }
 
 void SecureZeroData(void* data, size_t size) {
