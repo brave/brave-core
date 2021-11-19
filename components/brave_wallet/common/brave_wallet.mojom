@@ -51,6 +51,9 @@ interface BraveWalletProvider {
   // Used for the connect event
   GetChainId() => (string chain_id);
 
+  // Used for getting current network information.
+  GetNetwork() => (EthereumChain network);
+
   // Used for eth_accounts method requests
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
@@ -468,6 +471,7 @@ interface EthJsonRpcController {
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id) => (bool success);
+  GetNetwork() => (EthereumChain network);
   GetAllNetworks() => (array<EthereumChain> networks);
 
   // Obtains the current network's chain ID
