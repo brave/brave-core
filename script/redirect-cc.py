@@ -9,7 +9,7 @@ IS_WIN32 = sys.platform == 'win32'
 
 def main():
     args = sys.argv[1:]
-    append_root_src_include(args)
+    append_root_dir_to_clang_include_search_path(args)
     brave_path = replace_cc_arg(args)
     if 'CC_WRAPPER' in os.environ:
         args = [os.environ['CC_WRAPPER']] + args
@@ -25,7 +25,13 @@ def main():
     return cc_retcode
 
 
-def append_root_src_include(args):
+# Append a root directory to Clang include search path so we can #include
+# original Chromium files using fixed `src/` prefix instead of a variable
+# relative path.
+# Adding the search path as a last one is important, because it should have the
+# lowest priority to not break compile steps when a path clash is possible,
+# for example: `base/macros.h` and `third_party/v8/src/base/macros.h`.
+def append_root_dir_to_clang_include_search_path(args):
     for arg in args:
         if arg.startswith('-I') and arg.endswith('brave/chromium_src'):
             args.append(arg + '/../../..')
