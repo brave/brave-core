@@ -9,7 +9,7 @@ use async_trait::async_trait;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::futures_0_3::{future_to_promise, JsFuture};
-use web_sys::{HtmlDocument, Request, RequestInit, RequestMode, Response};
+use web_sys::{EventTarget, HtmlDocument, Request, RequestInit, RequestMode, Response};
 
 use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt, registry::Registry};
 use tracing_wasm::{WASMLayer, WASMLayerConfig};
@@ -23,6 +23,30 @@ extern "C" {
 
     #[wasm_bindgen(method, js_name = entries)]
     fn entries(this: &Headers) -> js_sys::Iterator;
+
+    #[wasm_bindgen (extends = EventTarget , extends = :: js_sys :: Object , js_name = Window , typescript_type = "Window")]
+    pub type ChromeWindow;
+
+    #[wasm_bindgen(structural, method, getter, js_class = "Window", js_name = chrome)]
+    pub fn chrome(this: &ChromeWindow) -> Option<Chrome>;
+
+    #[wasm_bindgen(extends = :: js_sys :: Object)]
+    pub type Chrome;
+
+    #[wasm_bindgen(structural, method, getter, js_name = braveSkus)]
+    pub fn braveSkus(this: &Chrome) -> Option<BraveSkus>;
+
+    #[wasm_bindgen(extends = :: js_sys :: Object)]
+    pub type BraveSkus;
+
+    #[wasm_bindgen(method)]
+    pub fn refresh_order(this: &BraveSkus, order_id: &str) -> js_sys::Promise;
+
+    #[wasm_bindgen(method)]
+    pub fn fetch_order_credentials(this: &BraveSkus, order_id: &str) -> js_sys::Promise;
+
+    #[wasm_bindgen(method)]
+    pub fn credential_summary(this: &BraveSkus, subdomain: Option<&str>) -> js_sys::Promise;
 }
 
 // TODO try to update to wasm-bindgen-futures 0.4
@@ -59,6 +83,7 @@ pub fn initialize(
         }
 
         let window = web_sys::window().ok_or("couldn't get window")?;
+
         if let Ok(Some(local_storage)) = window.local_storage() {
             let sdk = sdk::SDK::new(
                 JSClient {
@@ -110,6 +135,16 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
+            let window: ChromeWindow = web_sys::window()
+                .ok_or("couldn't get window")?
+                .dyn_into()
+                .unwrap();
+            if let Some(chrome) = window.chrome() {
+                if let Some(skus) = chrome.braveSkus() {
+                    return JsFuture::from(skus.refresh_order(&order_id)).await;
+                }
+            }
+
             let order = sdk
                 .refresh_order(&order_id)
                 .await
@@ -140,6 +175,16 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
+            let window: ChromeWindow = web_sys::window()
+                .ok_or("couldn't get window")?
+                .dyn_into()
+                .unwrap();
+            if let Some(chrome) = window.chrome() {
+                if let Some(skus) = chrome.braveSkus() {
+                    return JsFuture::from(skus.fetch_order_credentials(&order_id)).await;
+                }
+            }
+
             let order = sdk
                 .fetch_order_credentials(&order_id)
                 .await
@@ -172,9 +217,17 @@ impl JSSDK {
         let future = async move {
             let window = web_sys::window().ok_or("couldn't get window")?;
             let host = window.location().hostname()?;
+            let subdomain = subdomain.unwrap_or(host);
+
+            let window: ChromeWindow = window.dyn_into().unwrap();
+            if let Some(chrome) = window.chrome() {
+                if let Some(skus) = chrome.braveSkus() {
+                    return JsFuture::from(skus.credential_summary(Some(&subdomain))).await;
+                }
+            }
 
             if let Some(credential_summary) = sdk
-                .matching_credential_summary(&subdomain.unwrap_or(host))
+                .matching_credential_summary(&subdomain)
                 .await
                 .map_err(|e| e.to_string())?
             {
