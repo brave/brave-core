@@ -48,7 +48,6 @@
             android:textSize="14sp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/eth_price"
             android:textColor="@color/wallet_secondary_text_color"/>
 
         <TextView
@@ -68,7 +67,7 @@
             android:textSize="14sp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="0.03265 BTC"
+            android:text="0 BTC"
             android:textColor="@color/wallet_secondary_text_color"
             tools:ignore="HardcodedText" />
 
@@ -328,38 +327,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
-            android:text="@string/info"
-            android:textColor="@color/wallet_secondary_text_color"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/info_text"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:gravity="top"
-            android:hint="@string/account_details"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/rounded_wallet_edittext"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:paddingEnd="18dp"
-            android:paddingStart="18dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textCursorDrawable="@null"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_text_color"
-            android:textColorHint="@color/wallet_edittext_outline_color" />
 
     </LinearLayout>
 

@@ -472,7 +472,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             toValueText.setText(String.format(
                     Locale.getDefault(), "%.4f", Utils.fromWei(response.buyAmount, decimals)));
         }
-        marketPriceValueText.setText(response.price);
+        if (calculatePerSellAsset) {
+            marketPriceValueText.setText(response.price);
+        } else {
+            try {
+                double price = Double.parseDouble(response.price);
+                if (price != 0) {
+                    price = 1 / price;
+                }
+                marketPriceValueText.setText(String.format(Locale.getDefault(), "%.18f", price));
+            } catch (NumberFormatException | NullPointerException ex) {
+            }
+        }
         TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
         String symbol = "ETH";
         if (mCurrentErcToken != null) {
@@ -1119,8 +1130,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         String iconPath =
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
-        Utils.setBitmapResource(
-                mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null, assetFromDropDown);
+        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                assetFromDropDown, true);
         updateBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 true);
@@ -1140,8 +1151,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         String iconPath =
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
-        Utils.setBitmapResource(
-                mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null, assetToDropDown);
+        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                assetToDropDown, true);
         updateBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 false);

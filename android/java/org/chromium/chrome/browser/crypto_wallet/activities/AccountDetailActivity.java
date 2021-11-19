@@ -22,12 +22,19 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -53,9 +60,12 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     private ExecutorService mExecutor;
     private Handler mHandler;
 
+    private ErcTokenRegistry mErcTokenRegistry;
+    private EthTxController mEthTxController;
     private EthJsonRpcController mEthJsonRpcController;
     private AssetRatioController mAssetRatioController;
     private BraveWalletService mBraveWalletService;
+    private KeyringController mKeyringController;
 
     @Override
     protected void onDestroy() {
@@ -63,6 +73,9 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mAssetRatioController.close();
         mEthJsonRpcController.close();
         mBraveWalletService.close();
+        mKeyringController.close();
+        mEthTxController.close();
+        mErcTokenRegistry.close();
     }
 
     @Override
@@ -118,72 +131,79 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         InitEthJsonRpcController();
         InitAssetRatioController();
         InitBraveWalletService();
+        InitKeyringController();
+        InitEthTxController();
+        InitErcTokenRegistry();
 
-        setUpAssetList();
-        setUpTransactionList();
+        assert mEthJsonRpcController != null;
+        mEthJsonRpcController.getChainId(chainId -> {
+            setUpAssetList(chainId);
+            fetchAccountInfo(chainId);
+        });
 
         onInitialLayoutInflationComplete();
     }
 
-    private void setUpAssetList() {
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        assert ethJsonRpcController != null;
-        ethJsonRpcController.getChainId(chainId -> {
-            AccountInfo[] accountInfos = new AccountInfo[] {getThisAccountInfo()};
-            PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                    getAssetRatioController(), ethJsonRpcController, accountInfos);
-            portfolioHelper.setChainId(chainId);
-            portfolioHelper.calculateBalances(() -> {
-                RecyclerView rvAssets = findViewById(R.id.rv_assets);
-                WalletCoinAdapter walletCoinAdapter =
-                        new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-                List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+    private void setUpAssetList(String chainId) {
+        AccountInfo[] accountInfos = new AccountInfo[] {getThisAccountInfo()};
+        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                getAssetRatioController(), mEthJsonRpcController, accountInfos);
+        portfolioHelper.setChainId(chainId);
+        portfolioHelper.calculateBalances(() -> {
+            RecyclerView rvAssets = findViewById(R.id.rv_assets);
+            WalletCoinAdapter walletCoinAdapter =
+                    new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
-                String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
 
-                for (ErcToken userAsset : portfolioHelper.getUserAssets()) {
-                    String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
-                    Double fiatBalance = Utils.getOrDefault(
-                            portfolioHelper.getPerTokenFiatSum(), currentAssetSymbol, 0.0d);
-                    String fiatBalanceString =
-                            String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-                    Double cryptoBalance = Utils.getOrDefault(
-                            portfolioHelper.getPerTokenCryptoSum(), currentAssetSymbol, 0.0d);
-                    String cryptoBalanceString = String.format(
-                            Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
+            for (ErcToken userAsset : portfolioHelper.getUserAssets()) {
+                String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
+                Double fiatBalance = Utils.getOrDefault(
+                        portfolioHelper.getPerTokenFiatSum(), currentAssetSymbol, 0.0d);
+                String fiatBalanceString =
+                        String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
+                Double cryptoBalance = Utils.getOrDefault(
+                        portfolioHelper.getPerTokenCryptoSum(), currentAssetSymbol, 0.0d);
+                String cryptoBalanceString = String.format(
+                        Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-                    WalletListItemModel walletListItemModel = new WalletListItemModel(
-                            R.drawable.ic_eth, userAsset.name, userAsset.symbol,
-                            // Amount in USD
-                            fiatBalanceString,
-                            // Amount in current crypto currency/token
-                            cryptoBalanceString);
+                WalletListItemModel walletListItemModel =
+                        new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
+                                // Amount in USD
+                                fiatBalanceString,
+                                // Amount in current crypto currency/token
+                                cryptoBalanceString);
 
-                    walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-                    walletListItemModelList.add(walletListItemModel);
-                }
+                walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+                walletListItemModelList.add(walletListItemModel);
+            }
 
-                walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
-                walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-                rvAssets.setAdapter(walletCoinAdapter);
-                rvAssets.setLayoutManager(new LinearLayoutManager(this));
-            });
+            walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+            walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
+            walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+            rvAssets.setAdapter(walletCoinAdapter);
+            rvAssets.setLayoutManager(new LinearLayoutManager(this));
         });
     }
 
-    private void setUpTransactionList() {
-        RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
-        walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
-        rvTransactions.setAdapter(walletCoinAdapter);
-        rvTransactions.setLayoutManager(new LinearLayoutManager(this));
+    private void fetchAccountInfo(String chainId) {
+        assert mKeyringController != null;
+        mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
+            if (keyringInfo == null) {
+                return;
+            }
+            for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                if (accountInfo.address.equals(mAddress) && accountInfo.name.equals(mName)) {
+                    AccountInfo[] accountInfos = new AccountInfo[1];
+                    accountInfos[0] = accountInfo;
+                    Utils.setUpTransactionList(accountInfos, mAssetRatioController,
+                            mEthTxController, mErcTokenRegistry, null, null, 0,
+                            findViewById(R.id.rv_transactions), this, this, chainId);
+                    break;
+                }
+            }
+        });
     }
 
     @Override
@@ -209,12 +229,15 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onAssetClick() {
-        Utils.openAssetDetailsActivity(AccountDetailActivity.this);
+    public void onAssetClick(ErcToken asset) {
+        Utils.openAssetDetailsActivity(AccountDetailActivity.this, asset.symbol, asset.name,
+                asset.contractAddress, asset.logo, asset.decimals);
     }
 
     @Override
-    public void onTransactionClick() {}
+    public void onTransactionClick(TransactionInfo txInfo) {
+        Utils.openTransaction(txInfo, mEthJsonRpcController, this);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -250,12 +273,45 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mEthJsonRpcController.close();
         mAssetRatioController.close();
         mBraveWalletService.close();
+        mKeyringController.close();
+        mEthTxController.close();
+        mErcTokenRegistry.close();
         mEthJsonRpcController = null;
         mAssetRatioController = null;
         mBraveWalletService = null;
+        mKeyringController = null;
+        mEthTxController = null;
+        mErcTokenRegistry = null;
         InitEthJsonRpcController();
         InitAssetRatioController();
         InitBraveWalletService();
+        InitKeyringController();
+        InitErcTokenRegistry();
+        InitEthTxController();
+    }
+
+    private void InitErcTokenRegistry() {
+        if (mErcTokenRegistry != null) {
+            return;
+        }
+
+        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+    }
+
+    private void InitEthTxController() {
+        if (mEthTxController != null) {
+            return;
+        }
+
+        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
     }
 
     private void InitEthJsonRpcController() {

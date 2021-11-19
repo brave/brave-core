@@ -47,7 +47,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -130,15 +129,7 @@ public class PortfolioFragment extends Fragment
         });
 
         mSpinner = view.findViewById(R.id.spinner);
-        // class PortfolioFragment in fact is used both for Portfolio and Apps
-        // screens, see CryptoFragmentPageAdapter.getItem.
-        // Without post task with delay it happens that when 2nd instance is
-        // created, then 1st instance onItemSelected is triggered with
-        // position=0. That makes onItemSelected to switch network, but the
-        // actual displayed value of spinner's item on 1st instance remains
-        // unchanged.
-        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT,
-                () -> { mSpinner.setOnItemSelectedListener(this); }, 500);
+        mSpinner.setOnItemSelectedListener(this);
 
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +143,7 @@ public class PortfolioFragment extends Fragment
         NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
                 Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
         mSpinner.setAdapter(dataAdapter);
-        updatePortfolioGetPendingTx(true);
+        updateNetwork();
 
         return view;
     }
@@ -276,6 +267,7 @@ public class PortfolioFragment extends Fragment
                             // Amount in current crypto currency/token
                             cryptoBalanceString);
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+            walletListItemModel.setErcToken(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -287,8 +279,9 @@ public class PortfolioFragment extends Fragment
     }
 
     @Override
-    public void onAssetClick() {
-        Utils.openAssetDetailsActivity(getActivity());
+    public void onAssetClick(ErcToken asset) {
+        Utils.openAssetDetailsActivity(getActivity(), asset.symbol, asset.name,
+                asset.contractAddress, asset.logo, asset.decimals);
     }
 
     private AssetRatioController getAssetRatioController() {
@@ -459,7 +452,8 @@ public class PortfolioFragment extends Fragment
     }
 
     private void getPendingTx(AccountInfo[] accountInfos) {
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(getEthTxController(), accountInfos);
+        PendingTxHelper pendingTxHelper =
+                new PendingTxHelper(getEthTxController(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

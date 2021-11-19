@@ -174,7 +174,9 @@ public class PortfolioHelper {
                             context.userAsset = userAsset;
                             contexts.add(context);
                             mEthJsonRpcController.getErc20TokenBalance(
-                                    userAsset.contractAddress, accountInfo.address, context);
+                                    Utils.getContractAddress(
+                                            mChainId, userAsset.symbol, userAsset.contractAddress),
+                                    accountInfo.address, context);
                         }
                     }
                 }
@@ -260,13 +262,6 @@ public class PortfolioHelper {
         }
 
         historyMultiResponse.setWhenAllCompletedAction(() -> {
-            if (pricesHistoryContexts.isEmpty()) {
-                // All history price requests failed
-                mFiatHistory = getZeroPortfolioHistory();
-                runWhenDone.run();
-                return;
-            }
-
             // Algorithm is taken from the desktop:
             // components/brave_wallet_ui/common/reducers/wallet_reducer.ts
             // WalletActions.portfolioPriceHistoryUpdated:
@@ -283,6 +278,13 @@ public class PortfolioHelper {
             //        history. Some histories may have more entries - they are just ignored.
 
             Utils.removeIf(pricesHistoryContexts, phc -> phc.timePrices.length == 0);
+
+            if (pricesHistoryContexts.isEmpty()) {
+                // All history price requests failed
+                mFiatHistory = getZeroPortfolioHistory();
+                runWhenDone.run();
+                return;
+            }
 
             assert !pricesHistoryContexts.isEmpty();
 
