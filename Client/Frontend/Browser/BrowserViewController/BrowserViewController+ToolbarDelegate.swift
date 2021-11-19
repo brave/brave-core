@@ -221,6 +221,9 @@ extension BrowserViewController: TopToolbarDelegate {
         hideSearchController()
         hideFavoritesController()
         updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
+        
+        // Show NTP Onboarding when user selects cancel after retention onboard
+        showNTPOnboarding()
     }
 
     func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {

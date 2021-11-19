@@ -6,6 +6,7 @@ public struct BraveUX {
     public static let bravePrivacyURL = URL(string: "https://brave.com/privacy/")!
     public static let braveNewsPrivacyURL = URL(string: "https://brave.com/privacy/#brave-news")!
     public static let braveOffersURL = URL(string: "https://offers.brave.com/")!
+    public static let bravePlaylistOnboardingURL = URL(string: "https://brave.com/playlist")!
     public static let braveRewardsLearnMoreURL = URL(string: "https://brave.com/rewards-ios/")!
     public static let braveRewardsUnverifiedPublisherLearnMoreURL = URL(string: "https://brave.com/faq-rewards/#unclaimed-funds")!
     public static let braveNewsPartnersURL = URL(string: "https://brave.com/brave-news/")!
@@ -17,5 +18,6 @@ public struct BraveUX {
     
     public static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
     public static let faviconBorderWidth = 1.0 / UIScreen.main.scale
+    public static let baseDimensionValue = 450.0
 }
 

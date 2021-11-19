@@ -92,11 +92,9 @@ public struct PopupView<Content: View>: View {
   public var body: some View {
     content
       .frame(maxWidth: 400)
-      .background(
-        Color(.braveBackground)
-          .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-          .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
-      )
+      .background(Color(.braveBackground))
+      .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+      .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
       .padding()
   }
 }

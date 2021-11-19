@@ -35,7 +35,9 @@ extension Preferences {
             Option<Bool>(key: "dau.first-ping", default: Preferences.DAU.lastLaunchInfo.value == nil)
         /// Date of installation, this preference is removed after 14 days of usage.
         public static let installationDate = Option<Date?>(key: "dau.installation-date", default: nil)
-    }
+        /// The app launch date after retention
+        public static let appRetentionLaunchDate = Option<Date?>(key: "dau.app-retention-launch-date", default: nil)
+     }
     public final class URP {
         static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
         static let retryCountdown = Option<Int?>(key: "urp.retry-countdown", default: nil)

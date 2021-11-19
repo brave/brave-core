@@ -8,6 +8,8 @@ import BraveUI
 import Shared
 import Data
 
+private let log = Logger.browserLogger
+
 // MARK: - ProductNotification
 
 extension BrowserViewController {
@@ -65,7 +67,53 @@ extension BrowserViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
             
+            self.presentOnboardingAdblockNotifications()
             self.presentEducationalProductNotifications()
+        }
+    }
+    
+    private func presentOnboardingAdblockNotifications() {
+        var isAboutHomeUrl = false
+        if let selectedTab = tabManager.selectedTab,
+           let url = selectedTab.url,
+           let internalURL = InternalURL(url) {
+            isAboutHomeUrl = internalURL.isAboutHomeURL
+        }
+        
+        guard let selectedTab = tabManager.selectedTab,
+              !Preferences.General.onboardingAdblockPopoverShown.value,
+              !benchmarkNotificationPresented,
+              !Preferences.AppState.backgroundedCleanly.value,
+              !topToolbar.inOverlayMode,
+              !isTabTrayActive,
+              selectedTab.webView?.scrollView.isDragging == false,
+              isAboutHomeUrl == false else {
+            return
+        }
+        
+        guard let onboardingList = OnboardingDisconnectList.loadFromFile() else {
+            log.error("CANNOT LOAD ONBOARDING DISCONNECT LIST")
+            return
+        }
+        
+        var trackers = [String: [String]]()
+        let urls = selectedTab.contentBlocker.blockedRequests
+        
+        for entity in onboardingList.entities {
+            for url in urls {
+                let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
+                let resources = entity.value.resources.filter({ $0 == domain })
+                
+                if !resources.isEmpty {
+                    trackers[entity.key] = resources
+                }
+            }
+        }
+        
+        if !trackers.isEmpty, let url = selectedTab.url {
+            let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
+            notifyTrackersBlocked(domain: domain, trackers: trackers)
+            Preferences.General.onboardingAdblockPopoverShown.value = true
         }
     }
     
@@ -80,7 +128,9 @@ extension BrowserViewController {
         }
         
         guard let selectedTab = tabManager.selectedTab,
+              Preferences.General.onboardingAdblockPopoverShown.value,
               !benchmarkNotificationPresented,
+              !isOnboardingOrFullScreenCalloutPresented,
               !Preferences.AppState.backgroundedCleanly.value,
               !topToolbar.inOverlayMode,
               !isTabTrayActive,
@@ -175,7 +225,17 @@ extension BrowserViewController {
 
         let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
         popover.addsConvenientDismissalMargins = false
-        popover.present(from: self.topToolbar.locationView.shieldsButton, on: self)
+        popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+        
+        let pulseAnimation = RadialPulsingAnimation(ringCount: 3)
+        pulseAnimation.present(icon: topToolbar.locationView.shieldsButton.imageView?.image,
+                               from: topToolbar.locationView.shieldsButton,
+                               on: popover,
+                               browser: self)
+        
+        popover.popoverDidDismiss = { _ in
+            pulseAnimation.removeFromSuperview()
+        }
     }
     
     // MARK: Actions
@@ -186,6 +246,11 @@ extension BrowserViewController {
                 ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController()
             globalShieldsActivityController.popoverPresentationController?.sourceView = self.view
     
+            globalShieldsActivityController.popoverPresentationController?.sourceRect = self.view.convert(
+                self.topToolbar.locationView.shieldsButton.frame,
+                from: self.topToolbar.locationView.shieldsButton.superview)
+            globalShieldsActivityController.popoverPresentationController?.permittedArrowDirections = [.up]
+            
             self.present(globalShieldsActivityController, animated: true, completion: nil)
         }
     }

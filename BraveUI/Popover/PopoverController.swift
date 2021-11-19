@@ -215,7 +215,7 @@ public class PopoverController: UIViewController {
     
     private let containerView = ContainerView()
     
-    private let backgroundOverlayView = UIView()
+    public let backgroundOverlayView = UIView()
     
     override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         if case .preferredContentSize = contentSizeBehavior {
@@ -340,6 +340,7 @@ public class PopoverController: UIViewController {
         
         if dismissesOnOrientationChanged {
             dismiss(animated: true)
+            popoverDidDismiss?(self)
         }
     }
 }
@@ -421,6 +422,7 @@ extension PopoverController {
             
             if contentController.popoverShouldDismiss(self) && (passedVelocityThreshold || scale < 0.5) {
                 dismiss(animated: true)
+                popoverDidDismiss?(self)
             } else {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction], animations: {
                     self.containerView.transform = .identity

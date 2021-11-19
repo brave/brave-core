@@ -17,7 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var windowProtection: WindowProtection?
     private var sceneInfo: AppDelegate.SceneInfoModel?
-    static var shouldShowIntroScreen = false
     static var shouldHandleUrpLookup = false
     
     private var cancellables: Set<AnyCancellable> = []
@@ -49,9 +48,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                               diskImageStore: sceneInfo.diskImageStore) else {
             fatalError("Failed to create browser instance")
         }
-        
-        // Setup browser state
-        browserViewController.shouldShowIntroScreen = SceneDelegate.shouldShowIntroScreen
         
         if SceneDelegate.shouldHandleUrpLookup {
             // TODO: Find a better way to do this when multiple windows are involved.
