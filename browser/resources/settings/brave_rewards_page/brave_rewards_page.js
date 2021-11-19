@@ -7,13 +7,13 @@
 import {loadTimeData} from '../i18n_setup.js';
 
 import '//resources/js/cr.m.js';
-import {html, mixinBehaviors, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {html, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {I18nBehavior} from '//resources/js/i18n_behavior.m.js';
+import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.m.js';
 
-const SettingsBraveRewardsPageBase =
-    mixinBehaviors([I18nBehavior], PolymerElement);
+const SettingsBraveRewardsPageBase = I18nMixin(PrefsMixin(PolymerElement))
 
 /**
  * 'settings-brave-rewards-page' is the settings page containing settings for
@@ -133,12 +133,28 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
 	value: []
       },
       shouldAllowAdsSubdivisionTargeting_: {
-	type: Boolean,
-	value: false
+        type: Boolean,
+        value: false
       },
       shouldShowAutoContributeSettings_: {
         type: Boolean,
         value: true
+      },
+      isRewardsEnabled_: {
+        type: Boolean,
+        value: false
+      },
+      wasInlineTippingForRedditEnabledOnStartup_: {
+        type: Boolean,
+        value: false,
+      },
+      wasInlineTippingForTwitterEnabledOnStartup_: {
+        type: Boolean,
+        value: false,
+      },
+      wasInlineTippingForGithubEnabledOnStartup_: {
+        type: Boolean,
+        value: false,
       }
     }
   }
@@ -157,6 +173,10 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     })
     this.browserProxy_.getRewardsEnabled().then((enabled) => {
       if (enabled) {
+        this.isRewardsEnabled_ = true
+        this.wasInlineTippingForRedditEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.reddit').value
+        this.wasInlineTippingForTwitterEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.twitter').value
+        this.wasInlineTippingForGithubEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.github').value
         this.isAutoContributeSupported_()
         this.populateAutoContributeAmountDropdown_()
       }
@@ -183,6 +203,35 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       })
       this.autoContributeMonthlyLimit_ = autoContributeChoices
     })
+  }
+
+  shouldShowRestartButtonForReddit_(enabled) {
+    if (!this.isRewardsEnabled_) {
+      return false
+    }
+
+    return enabled !== this.wasInlineTippingForRedditEnabledOnStartup_
+  }
+
+  shouldShowRestartButtonForTwitter_(enabled) {
+    if (!this.isRewardsEnabled_) {
+      return false
+    }
+
+    return enabled !== this.wasInlineTippingForTwitterEnabledOnStartup_
+  }
+
+  shouldShowRestartButtonForGithub_(enabled) {
+    if (!this.isRewardsEnabled_) {
+      return false
+    }
+
+    return enabled !== this.wasInlineTippingForGithubEnabledOnStartup_
+  }
+
+  restartBrowser_(e) {
+    e.stopPropagation();
+    window.open('chrome://restart', '_self');
   }
 }
 
