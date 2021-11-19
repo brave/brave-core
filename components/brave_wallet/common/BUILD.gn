@@ -7,11 +7,17 @@ preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("common") {
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
+
   sources = [
+    "brave_wallet_types.cc",
+    "brave_wallet_types.h",
     "eth_request_helper.cc",
     "eth_request_helper.h",
     "features.cc",
     "features.h",
+    "hash_utils.cc",
+    "hash_utils.h",
     "hex_utils.cc",
     "hex_utils.h",
     "value_conversion_utils.cc",
@@ -21,6 +27,7 @@ static_library("common") {
     ":common_constants",
     ":mojom__generator",
     "//base",
+    "//brave/third_party/ethash",
   ]
 }
 
@@ -53,7 +60,9 @@ mojom("mojom") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "brave_wallet_types_unittest.cc",
     "eth_request_helper_unittest.cc",
+    "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",
   ]
