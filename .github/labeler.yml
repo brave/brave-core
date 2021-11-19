@@ -3,3 +3,29 @@ CI/run-audit-deps:
 - package-lock.json
 - "**/Cargo.toml"
 - "**/Cargo.lock"
+
+potential-layer-violation-fixes:
+- browser/android/BUILD.gn
+- browser/android/preferences/BUILD.gn
+- browser/extensions/BUILD.gn
+- browser/farbling/BUILD.gn
+- browser/gcm_driver/BUILD.gn
+- browser/infobars/BUILD.gn
+- browser/net/BUILD.gn
+- browser/notifications/BUILD.gn
+- browser/profiles/BUILD.gn
+- browser/renderer_context_menu/BUILD.gn
+- browser/tor/BUILD.gn
+- browser/ui/BUILD.gn
+- browser/ui/bookmark/BUILD.gn
+- browser/ui/sidebar/BUILD.gn
+- browser/ui/tabs/BUILD.gn
+- browser/ui/views/infobars/BUILD.gn
+- browser/webcompat_reporter/BUILD.gn
+- browser/widevine/BUILD.gn
+- components/brave_ads/browser/BUILD.gn
+- components/brave_referrals/browser/BUILD.gn
+- components/brave_rewards/browser/BUILD.gn
+- components/brave_sync/BUILD.gn
+- components/brave_webtorrent/browser/BUILD.gn
+- components/content_settings/core/browser/BUILD.gn
