@@ -373,66 +373,84 @@ action("create_symbols_dist") {
 action("create_dist_zips") {
   output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
 
-  script = "//brave/script/create-dist.py"
+  if (is_win) {
+    # Repack a chrome release archive to the brave format.
+    # TODO(atuchin): support other platforms.
 
-  inputs = get_target_outputs(":brave_license_dist_resources")
+    script = "//brave/script/repack-archive.py"
+    outputs = [ output ]
 
-  if (!is_mac && !is_android && !is_ios) {
-    inputs += get_target_outputs(":brave_dist_resources")
-    inputs += get_target_outputs(":brave_locale_dist_resources")
-    if (enable_extensions) {
-      foreach(locale, locales) {
-        inputs += get_target_outputs(":brave_shields_locales_${locale}")
-        inputs += get_target_outputs(":brave_rewards_locales_${locale}")
+    deps = [
+      ":create_symbols_dist",
+      "//chrome/installer/mini_installer:mini_installer_archive",
+    ]
+    target_dir = "Chrome-bin"
+    input = rebase_path("$root_out_dir/chrome.7z")
+
+    args = [
+      "--input=$input",
+      "--output=" + rebase_path(output),
+      "--target_dir=$target_dir",
+      "--build_dir=" + rebase_path(root_out_dir),
+    ]
+  } else {  # !is_win
+    script = "//brave/script/create-dist.py"
+
+    inputs = get_target_outputs(":brave_license_dist_resources")
+
+    if (!is_mac && !is_android && !is_ios) {
+      inputs += get_target_outputs(":brave_dist_resources")
+      inputs += get_target_outputs(":brave_locale_dist_resources")
+      if (enable_extensions) {
+        foreach(locale, locales) {
+          inputs += get_target_outputs(":brave_shields_locales_${locale}")
+          inputs += get_target_outputs(":brave_rewards_locales_${locale}")
+        }
       }
     }
-  }
 
-  if (is_win) {
-    inputs += [ "$brave_dist_dir/chrome_elf.dll" ]
-  }
+    file_inputs = []
+    foreach(input, inputs) {
+      file_inputs += [ rebase_path(input, brave_dist_dir) ]
+    }
 
-  file_inputs = []
-  foreach(input, inputs) {
-    file_inputs += [ rebase_path(input, brave_dist_dir) ]
-  }
+    dir_inputs = []
+    if (is_mac) {
+      dir_inputs += [ "$brave_exe" ]
+    }
 
-  dir_inputs = []
-  if (is_mac) {
-    dir_inputs += [ "$brave_exe" ]
-  }
+    outputs = [ output ]
 
-  outputs = [ output ]
-
-  deps = [
-    ":brave_license_dist_resources",
-    ":create_symbols_dist",
-    "app/$current_os:dist_resources",
-  ]
-
-  if (!is_mac && !is_android && !is_ios) {
-    deps += [
-      ":brave_dist_resources",
-      ":brave_locale_dist_resources",
+    deps = [
+      ":brave_license_dist_resources",
+      ":create_symbols_dist",
+      "app/$current_os:dist_resources",
     ]
 
-    if (enable_extensions) {
-      deps += [ ":brave_extensions_locale_dist_resources" ]
-    }
-  }
+    if (!is_mac && !is_android && !is_ios) {
+      deps += [
+        ":brave_dist_resources",
+        ":brave_locale_dist_resources",
+      ]
 
-  rebase_output = rebase_path(output)
-  if (is_mac) {
-    rebase_base_dir = rebase_path(root_out_dir)
-  } else {
-    rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
-  }
-  args = [
-    "--base-dir=$rebase_base_dir",
-    "--inputs=$file_inputs",
-    "--dir-inputs=$dir_inputs",
-    "--output=$rebase_output",
-  ]
+      if (enable_extensions) {
+        deps += [ ":brave_extensions_locale_dist_resources" ]
+      }
+    }
+
+    rebase_output = rebase_path(output)
+    if (is_mac) {
+      rebase_base_dir = rebase_path(root_out_dir)
+    } else {
+      rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
+    }
+    args = [
+      "--base-dir=$rebase_base_dir",
+      "--inputs=$file_inputs",
+      "--dir-inputs=$dir_inputs",
+      "--output=$rebase_output",
+    ]
+  }  # !is_win
 }
 
 if (is_mac) {
