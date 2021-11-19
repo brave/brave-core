@@ -44,7 +44,12 @@ ignored_npm_advisories = [
     1002522,    # https://github.com/advisories/GHSA-whgm-jr23-g3j9
     1002627,    # https://github.com/advisories/GHSA-ww39-953v-wcq6
     1002655,    # https://github.com/advisories/GHSA-w8qv-6jwh-64r5
-    1002775     # https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
+    1002775,    # https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
+    1004946,    # https://github.com/advisories/GHSA-93q8-gq69-wqmw
+    1005059,    # https://github.com/advisories/GHSA-whgm-jr23-g3j9
+    1005154,    # https://github.com/advisories/GHSA-ww39-953v-wcq6
+    1005174,    # https://github.com/advisories/GHSA-w8qv-6jwh-64r5
+    1005291     # https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
 ]
 
 
