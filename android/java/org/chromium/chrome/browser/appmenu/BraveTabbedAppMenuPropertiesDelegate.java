@@ -123,12 +123,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_rewards));
             }
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            MenuItem braveWallet =
-                    menu.add(Menu.NONE, R.id.brave_wallet_id, 0, R.string.menu_brave_wallet);
-            if (shouldShowIconBeforeItem()) {
-                braveWallet.setIcon(
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets));
+        MenuItem braveWallet = menu.findItem(R.id.brave_wallet_id);
+        if (braveWallet != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+                braveWallet.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    braveWallet.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets));
+                }
+            } else {
+                braveWallet.setVisible(false);
             }
         }
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
