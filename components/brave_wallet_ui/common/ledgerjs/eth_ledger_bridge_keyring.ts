@@ -12,7 +12,11 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
-import { SignatureVRS, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
+import { GetAccountsHardwareOperationResult, SignatureVRS, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
+
+export enum LedgerErrorsCodes {
+  TransportLocked = 'TransportLocked'
+}
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -23,21 +27,26 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return LEDGER_HARDWARE_VENDOR
   }
 
-  getAccounts = (from: number, to: number, scheme: string) => {
-    return new Promise(async (resolve, reject) => {
-      if (from < 0) {
-        from = 0
-      }
-      try {
-        if (!this.isUnlocked() && !(await this.unlock())) {
-          return reject(new Error(getLocale('braveWalletUnlockError')))
-        }
-      } catch (e) {
-        reject(e)
-        return
-      }
-      this._getAccounts(from, to, scheme).then(resolve).catch(reject)
-    })
+  getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    if (from < 0) {
+      from = 0
+    }
+    const accounts = []
+    for (let i = from; i <= to; i++) {
+      const path = this.getPathForIndex(i, scheme)
+      const address = await this._getAddress(path)
+      accounts.push({
+        address: address.address,
+        derivationPath: path,
+        name: this.type(),
+        hardwareVendor: this.type(),
+        deviceId: this.deviceId_
+      })
+    }
+    return { success: true, payload: [...accounts] }
   }
 
   isUnlocked = () => {
@@ -71,7 +80,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return { success: true, payload: signed }
   }
 
-  signPersonalMessage = async (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
     if (!this.isUnlocked() && !(await this.unlock())) {
       return { success: false, error: getLocale('braveWalletUnlockError') }
     }
@@ -84,7 +93,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
       return { success: true, payload: signature }
     } catch (e) {
-      return { success: false, error: e.message }
+      return { success: false, error: e.message, code: e.id }
     }
   }
 
@@ -113,21 +122,5 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       return null
     }
     return this.app.getAddress(path)
-  }
-
-  _getAccounts = async (from: number, to: number, scheme: string) => {
-    const accounts = []
-    for (let i = from; i <= to; i++) {
-      const path = this.getPathForIndex(i, scheme)
-      const address = await this._getAddress(path)
-      accounts.push({
-        address: address.address,
-        derivationPath: path,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId_
-      })
-    }
-    return accounts
   }
 }

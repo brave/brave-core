@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { kTrezorBridgeUrl, MessagingTransport, TrezorFrameCommand } from './trezor-messages'
+import { kTrezorBridgeUrl, MessagingTransport, TrezorErrorsCodes, TrezorFrameCommand } from './trezor-messages'
 
 // Handles sending messages to the Trezor library, creates untrusted iframe,
 // loads library and allows to send commands to the library and subscribe
@@ -18,20 +18,23 @@ export class TrezorBridgeTransport extends MessagingTransport {
 
   private readonly frameId: string
   private readonly bridgeFrameUrl: string
+  private bridge?: HTMLIFrameElement
 
   // T is response type, e.g. UnlockResponse. Resolves as `false` if transport error
-  sendCommandToTrezorFrame = <T> (command: TrezorFrameCommand): Promise<T | false> => {
-    return new Promise<T | false>(async (resolve) => {
-      let bridge = this.getBridge()
-      if (!bridge) {
-        bridge = await this.createBridge()
+  sendCommandToTrezorFrame = <T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> => {
+    return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
+      if (!this.bridge && !this.hasBridgeCreated()) {
+        this.bridge = await this.createBridge()
       }
-      if (!bridge.contentWindow) {
-        resolve(false)
+      if (!this.bridge || !this.bridge.contentWindow) {
+        resolve(TrezorErrorsCodes.BridgeNotReady)
         return
       }
-      this.addCommandHandler(command.id, resolve)
-      bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
+      if (!this.addCommandHandler(command.id, resolve)) {
+        resolve(TrezorErrorsCodes.CommandInProgress)
+        return
+      }
+      this.bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
     })
   }
 
@@ -68,13 +71,13 @@ export class TrezorBridgeTransport extends MessagingTransport {
     })
   }
 
-  private readonly getBridge = (): HTMLIFrameElement | null => {
-    return document.getElementById(this.frameId) as HTMLIFrameElement | null
+  private readonly hasBridgeCreated = (): boolean => {
+    return document.getElementById(this.frameId) !== null
   }
 }
 
 let transport: TrezorBridgeTransport
-export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | false> {
+export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> {
   if (!transport) {
     transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
   }

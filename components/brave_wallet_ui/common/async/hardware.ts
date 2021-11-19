@@ -17,6 +17,7 @@ import WalletApiProxy from '../../common/wallet_api_proxy'
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 import { HardwareWalletErrorType } from '../../constants/types'
+import { TrezorErrorsCodes } from '../trezor/trezor-messages'
 
 export async function signTrezorTransaction (apiProxy: WalletApiProxy, path: string, txInfo: BraveWallet.TransactionInfo): Promise<SignHardwareTransactionType> {
   const chainId = await apiProxy.ethJsonRpcController.getChainId()
@@ -29,6 +30,9 @@ export async function signTrezorTransaction (apiProxy: WalletApiProxy, path: str
   const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
     const error = signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')
+    if (signed.code === TrezorErrorsCodes.CommandInProgress) {
+      return { success: false, error: error, deviceError: 'deviceBusy' }
+    }
     return { success: false, error: error }
   }
   const { v, r, s } = signed.payload
@@ -75,10 +79,10 @@ export async function signLedgerTransaction (apiProxy: WalletApiProxy, path: str
   return { success: result.status }
 }
 
-export async function signMessageWithHardwareKeyring (apiProxy: WalletApiProxy, vendor: string, path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+export async function signMessageWithHardwareKeyring (apiProxy: WalletApiProxy, vendor: string, path: string, message: string): Promise<SignHardwareMessageOperationResult> {
   const deviceKeyring = await apiProxy.getKeyringsByType(vendor)
   if (deviceKeyring instanceof LedgerBridgeKeyring) {
-    return deviceKeyring.signPersonalMessage(path, address, message)
+    return deviceKeyring.signPersonalMessage(path, message)
   } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
     return deviceKeyring.signPersonalMessage(path, message)
   }

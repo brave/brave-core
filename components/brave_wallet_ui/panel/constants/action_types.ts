@@ -37,7 +37,7 @@ export type SignMessageProcessedPayload = {
 }
 
 export type SignMessageHardwareProcessedPayload = {
-  success: boolean
+  success: Boolean
   id: number
   signature?: string
   error?: string
