@@ -42,7 +42,7 @@ public class AssetStore: ObservableObject, Equatable {
 
   private let walletService: BraveWalletBraveWalletService
   private var chainId: String
-  private var isCustomToken: Bool
+  private(set) var isCustomToken: Bool
   
   init(
     walletService: BraveWalletBraveWalletService,
@@ -64,7 +64,7 @@ public class AssetStore: ObservableObject, Equatable {
 }
 
 public class UserAssetsStore: ObservableObject {
-  private(set) var assetStores: [AssetStore] = []
+  @Published private(set) var assetStores: [AssetStore] = []
   
   private let walletService: BraveWalletBraveWalletService
   private let tokenRegistry: BraveWalletERCTokenRegistry
@@ -86,8 +86,9 @@ public class UserAssetsStore: ObservableObject {
   private func updateSelectedAssets(_ chainId: String) {
     walletService.userAssets(chainId) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
+      let isTestnet = chainId != BraveWallet.MainnetChainId
       tokenRegistry.allTokens { registryTokens in
-        let allTokens = registryTokens + [.eth]
+        let allTokens = (isTestnet ? [] : registryTokens) + [.eth]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
@@ -101,9 +102,27 @@ public class UserAssetsStore: ObservableObject {
     }
   }
   
-  func addUserAsset(token: BraveWallet.ERCToken, chainId: String) {
-    walletService.addUserAsset(token, chainId: chainId) { [self] success in
-      updateSelectedAssets(chainId)
+  func addUserAsset(token: BraveWallet.ERCToken, completion: @escaping (_ success: Bool) -> Void) {
+    rpcController.chainId { [weak self] chainId in
+      guard let self = self else { return }
+      self.walletService.addUserAsset(token, chainId: chainId) { success in
+        if success {
+          self.updateSelectedAssets(chainId)
+        }
+        completion(success)
+      }
+    }
+  }
+  
+  func removeUserAsset(token: BraveWallet.ERCToken, completion: @escaping (_ success: Bool) -> Void) {
+    rpcController.chainId { [weak self] chainId in
+      guard let self = self else { return }
+      self.walletService.removeUserAsset(token, chainId: chainId) { success in
+        if success {
+          self.updateSelectedAssets(chainId)
+        }
+        completion(success)
+      }
     }
   }
   

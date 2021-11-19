@@ -63,7 +63,7 @@ struct AddressQRCodeScannerView: View {
               Alert(
                 title: Text(""),
                 message: Text(Strings.scanQRCodeInvalidDataErrorMessage),
-                dismissButton: .default(Text( Strings.scanQRCodeErrorOKButton), action: {
+                dismissButton: .default(Text(Strings.scanQRCodeErrorOKButton), action: {
                   presentationMode.dismiss()
                 })
               )

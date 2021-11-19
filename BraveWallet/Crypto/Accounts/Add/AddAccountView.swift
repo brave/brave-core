@@ -94,7 +94,7 @@ struct AddAccountView: View {
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
       trailing: Button(action: addAccount) {
-        Text(Strings.Wallet.addAccountAddButton)
+        Text(Strings.Wallet.add)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
     )

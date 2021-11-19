@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import struct Shared.Strings
 import BraveShared
+import BraveCore
 
 private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
@@ -40,6 +41,8 @@ struct EditUserAssetsView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var query = ""
+  @State private var isAddingCustomAsset = false
+  @State private var isPresentingAssetRemovalError = false
   
   private var tokenStores: [AssetStore] {
     let query = query.lowercased()
@@ -59,9 +62,20 @@ struct EditUserAssetsView: View {
     NavigationView {
       List {
         Section(
-          header: WalletListHeaderView(
-            title: Text(Strings.Wallet.assetsTitle)
-          )
+          header: HStack {
+            WalletListHeaderView(
+              title: Text(Strings.Wallet.assetsTitle)
+            )
+            Spacer()
+            Button(action: {
+              isAddingCustomAsset = true
+            }) {
+              Text(Strings.Wallet.addCustomAsset)
+                .font(.footnote.weight(.bold))
+                .textCase(.none)
+                .foregroundColor(Color(.braveBlurpleTint))
+            }
+          }
             .osAvailabilityModifiers { content in
               if #available(iOS 15.0, *) {
                 content // Padding already applied
@@ -72,7 +86,32 @@ struct EditUserAssetsView: View {
             }
         ) {
           ForEach(tokenStores, id: \.token.id) { store in
-            EditTokenView(assetStore: store)
+            if store.isCustomToken {
+              EditTokenView(assetStore: store)
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 15.0, *) {
+                    content
+                      .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                          removeCustomToken(store.token)
+                        } label: {
+                          Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+                        }
+                      }
+                  } else {
+                    content
+                      .contextMenu {
+                        Button {
+                          removeCustomToken(store.token)
+                        } label: {
+                          Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+                        }
+                      }
+                  }
+                }
+            } else {
+              EditTokenView(assetStore: store)
+            }
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -92,8 +131,24 @@ struct EditUserAssetsView: View {
           }
         }
       }
+      .sheet(isPresented: $isAddingCustomAsset) {
+        AddCustomAssetView(userAssetStore: userAssetsStore)
+      }
+      .alert(isPresented: $isPresentingAssetRemovalError) {
+        Alert(
+          title: Text(Strings.Wallet.removeCustomTokenErrorTitle),
+          message: Text(Strings.Wallet.removeCustomTokenErrorMessage),
+          dismissButton: .default(Text(Strings.OKString))
+        )
+      }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+  }
+  
+  private func removeCustomToken(_ token: BraveWallet.ERCToken) {
+    userAssetsStore.removeUserAsset(token: token) { [self] success in
+      isPresentingAssetRemovalError = !success
+    }
   }
 }
 

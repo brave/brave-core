@@ -163,7 +163,7 @@ public class PortfolioStore: ObservableObject {
     rpcController.chainId { [self] chainId in
       // Get user assets for the selected chain
       walletService.userAssets(chainId) { [self] tokens in
-        userVisibleAssets = tokens.map {
+        userVisibleAssets =  tokens.filter(\.visible).map {
           .init(token: $0, decimalBalance: 0, price: "", history: [])
         }
         let group = DispatchGroup()
