@@ -127,6 +127,11 @@
       _worker->GetSyncCodeFromHexSeed(base::SysNSStringToUTF8(hexSeed)));
 }
 
+- (NSString*)hexSeedFromSyncCode:(NSString*)syncCode {
+  return base::SysUTF8ToNSString(
+      _worker->GetHexSeedFromSyncCode(base::SysNSStringToUTF8(syncCode)));
+}
+
 - (UIImage*)getQRCodeImage:(CGSize)size {
   std::vector<uint8_t> seed;
   std::string sync_code = _worker->GetOrCreateSyncCode();
