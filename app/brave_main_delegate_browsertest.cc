@@ -15,6 +15,7 @@
 #include "components/language/core/common/language_experiments.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
@@ -118,6 +119,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kFirstPartySets,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
+    &optimization_guide::features::kOptimizationHints,
+    &optimization_guide::features::kRemoteOptimizationGuideFetching,
+    &optimization_guide::features::
+        kRemoteOptimizationGuideFetchingAnonymousDataConsent,
     &reading_list::switches::kReadLater,
   };
 
