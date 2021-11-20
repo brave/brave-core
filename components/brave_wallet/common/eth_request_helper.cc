@@ -135,6 +135,25 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
+bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
+                        bool network_supports_eip1559) {
+  // Network without EIP1559 support.
+  if (!network_supports_eip1559)
+    return false;
+
+  // Network with EIP1559 support and EIP1559 gas fields are specified.
+  if (tx_data_1559 && !tx_data_1559->max_priority_fee_per_gas.empty() &&
+      !tx_data_1559->max_fee_per_gas.empty())
+    return true;
+
+  // Network with EIP1559 support and legacy gas fields are specified.
+  if (tx_data_1559 && !tx_data_1559->base_data->gas_price.empty())
+    return false;
+
+  // Network with EIP1559 support and no gas fields are specified.
+  return true;
+}
+
 bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
