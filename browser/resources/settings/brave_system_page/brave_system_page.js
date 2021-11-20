@@ -5,7 +5,7 @@
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUIListenerBehavior} from 'chrome://resources/js/web_ui_listener_behavior.m.js';
-import {BraveSystemPageBrowserProxy,  BraveSystemPageBrowserProxyImpl} from './brave_system_page_browser_proxy.m.js';
+import {BraveSystemPageBrowserProxyImpl} from './brave_system_page_browser_proxy.m.js';
 
 /**
  * 'settings-brave-system-page' is the settings page area containing

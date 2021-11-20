@@ -5,7 +5,7 @@
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import './wallet_networks_subpage.js';
 
-import {BraveWalletBrowserProxy,  BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
+import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
