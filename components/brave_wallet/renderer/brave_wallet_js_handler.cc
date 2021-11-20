@@ -458,6 +458,52 @@ void BraveWalletJSHandler::BindFunctionToObject(
       .Check();
 }
 
+void BraveWalletJSHandler::ContinueEthSendTransaction(
+    const std::string& normalized_json_request,
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    mojom::EthereumChainPtr chain) {
+  if (!chain) {
+    brave_wallet::ProviderErrors code =
+        brave_wallet::ProviderErrors::kInternalError;
+    std::string message = "Internal JSON-RPC error";
+    std::unique_ptr<base::Value> formed_response =
+        GetProviderErrorDictionary(code, message);
+    SendResponse(std::move(id), std::move(global_context),
+                 std::move(global_callback),
+                 v8::Global<v8::Promise::Resolver>(), isolate, true,
+                 std::move(formed_response), false);
+    return;
+  }
+
+  std::string from;
+  mojom::TxData1559Ptr tx_data_1559 =
+      ParseEthSendTransaction1559Params(normalized_json_request, &from);
+  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559)) {
+    // Set chain_id to current chain_id.
+    tx_data_1559->chain_id = chain->chain_id;
+    brave_wallet_provider_->AddAndApprove1559Transaction(
+        std::move(tx_data_1559), from,
+        base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  } else {
+    brave_wallet_provider_->AddAndApproveTransaction(
+        std::move(tx_data_1559->base_data), from,
+        base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  }
+}
+
 bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     std::unique_ptr<base::Value> input_value,
     v8::Global<v8::Context> global_context,
@@ -513,31 +559,11 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        std::move(promise_resolver), isolate,
                        force_json_response));
   } else if (method == kEthSendTransaction) {
-    std::string from;
-    auto tx_data =
-        ParseEthSendTransactionParams(normalized_json_request, &from);
-    if (tx_data && !tx_data->gas_price.empty()) {
-      brave_wallet_provider_->AddAndApproveTransaction(
-          std::move(tx_data), from,
-          base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(id),
-                         std::move(global_context), std::move(global_callback),
-                         std::move(promise_resolver), isolate,
-                         force_json_response));
-    } else {
-      from.clear();
-      mojom::TxData1559Ptr tx_data_1559 =
-          ParseEthSendTransaction1559Params(normalized_json_request, &from);
-      if (!tx_data_1559)
-        tx_data_1559 = mojom::TxData1559::New();
-      brave_wallet_provider_->AddAndApprove1559Transaction(
-          std::move(tx_data_1559), from,
-          base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(id),
-                         std::move(global_context), std::move(global_callback),
-                         std::move(promise_resolver), isolate,
-                         force_json_response));
-    }
+    brave_wallet_provider_->GetNetwork(base::BindOnce(
+        &BraveWalletJSHandler::ContinueEthSendTransaction,
+        weak_ptr_factory_.GetWeakPtr(), normalized_json_request, std::move(id),
+        std::move(global_context), std::move(global_callback),
+        std::move(promise_resolver), isolate, force_json_response));
   } else if (method == kEthSign || method == kPersonalSign) {
     std::string address;
     std::string message;
@@ -576,8 +602,8 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
 // Same as ethereum.sendAsync()
 //
 // 2) ethereum.send(method: string, params?: Array<unknown>):
-// Promise<JsonRpcResponse>; method and parameters specified instead of inside a
-// JSON-RPC payload
+// Promise<JsonRpcResponse>; method and parameters specified instead of inside
+// a JSON-RPC payload
 //
 // 3) ethereum.send(payload: JsonRpcRequest): unknown;
 // Only valid for: eth_accounts, eth_coinbase, eth_uninstallFilter, etc.

@@ -166,6 +166,10 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
     delegate_->ShowBubble();
 }
 
+void BraveWalletProviderImpl::GetNetwork(GetNetworkCallback callback) {
+  rpc_controller_->GetNetwork(std::move(callback));
+}
+
 void BraveWalletProviderImpl::AddAndApproveTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
