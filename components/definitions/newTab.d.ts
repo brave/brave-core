@@ -184,12 +184,6 @@ declare namespace NewTab {
     depositInfoSaved: boolean
   }
 
-  export interface GeminiAssetAddress {
-    asset: string
-    address: string
-    qrCode: string
-  }
-
   export interface GeminiWidgetState {
     geminiClientUrl: string
     userAuthed: boolean

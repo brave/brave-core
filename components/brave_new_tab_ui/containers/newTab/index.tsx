@@ -40,6 +40,7 @@ import {
 import { generateQRData } from '../../binance-utils'
 
 // Types
+import { GeminiAssetAddress } from '../../actions/gemini_actions'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
@@ -494,7 +495,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   setGeminiAssetAddress = (address: string, asset: string, qrCode: string) => {
-    const assetAddresses: NewTab.GeminiAssetAddress[] = [{ asset, address, qrCode }]
+    const assetAddresses: GeminiAssetAddress[] = [{ asset, address, qrCode }]
     if (asset === 'ETH') {
       // Use ETH's address and qrCode for all other erc tokens.
       geminiData.ercTokens.forEach((ercToken: string) => {

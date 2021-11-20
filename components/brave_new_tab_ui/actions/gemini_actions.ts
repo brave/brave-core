@@ -37,7 +37,13 @@ export const setGeminiAccountBalances = (balances: Record<string, string>) => ac
   balances
 })
 
-export const setGeminiAssetAddress = (assetAddresses: NewTab.GeminiAssetAddress[]) => action(types.SET_ASSET_ADDRESS, {
+export type GeminiAssetAddress = {
+  asset: string
+  address: string
+  qrCode: string
+}
+
+export const setGeminiAssetAddress = (assetAddresses: GeminiAssetAddress[]) => action(types.SET_ASSET_ADDRESS, {
   assetAddresses
 })
 

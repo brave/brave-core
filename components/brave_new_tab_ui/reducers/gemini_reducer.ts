@@ -4,6 +4,7 @@
 
 import { Reducer } from 'redux'
 import { types } from '../constants/gemini_types'
+import { GeminiAssetAddress } from '../actions//gemini_actions'
 import * as storage from '../storage/new_tab_storage'
 
 const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
@@ -59,7 +60,7 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
 
     case types.SET_ASSET_ADDRESS:
       state = { ...state }
-      payload.assetAddresses.forEach((assetAddress: NewTab.GeminiAssetAddress) => {
+      payload.assetAddresses.forEach((assetAddress: GeminiAssetAddress) => {
         state.geminiState.assetAddresses[assetAddress.asset] = assetAddress.address
         state.geminiState.assetAddressQRCodes[assetAddress.asset] = assetAddress.qrCode
       })
