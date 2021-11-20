@@ -107,6 +107,87 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
 }
 
+TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
+  // Test both EIP1559 and legacy gas fee fields are specified.
+  std::string json(
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "to": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7",
+          "gas": "0x146",
+          "gasPrice": "0x123",
+          "value": "0x25F38E9E0000000",
+          "data": "0x010203",
+          "nonce": "0x01",
+          "maxPriorityFeePerGas": "0x1",
+          "maxFeePerGas": "0x2"
+        }]
+      })");
+  std::string from;
+  auto tx_data = ParseEthSendTransaction1559Params(json, &from);
+
+  ASSERT_TRUE(tx_data);
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+
+  // Test only EIP1559 gas fee fields are specified.
+  json =
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "to": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7",
+          "gas": "0x146",
+          "value": "0x25F38E9E0000000",
+          "data": "0x010203",
+          "nonce": "0x01",
+          "maxPriorityFeePerGas": "0x1",
+          "maxFeePerGas": "0x2"
+        }]
+      })";
+
+  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  ASSERT_TRUE(tx_data);
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+
+  // Test only legacy gas field is specified.
+  json =
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "to": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7",
+          "gas": "0x146",
+          "gasPrice": "0x123",
+          "value": "0x25F38E9E0000000",
+          "data": "0x010203",
+          "nonce": "0x01"
+        }]
+      })";
+  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  ASSERT_TRUE(tx_data);
+  EXPECT_FALSE(
+      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+
+  // Test no gas fee fields are specified.
+  json =
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "to": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7",
+          "gas": "0x146",
+          "value": "0x25F38E9E0000000",
+          "data": "0x010203"
+        }]
+      })";
+  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  ASSERT_TRUE(tx_data);
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+}
+
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
   const std::string json(
       R"({

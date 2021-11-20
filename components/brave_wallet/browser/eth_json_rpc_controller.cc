@@ -214,6 +214,10 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id,
     std::move(callback).Run(true);
 }
 
+void EthJsonRpcController::GetNetwork(GetNetworkCallback callback) {
+  std::move(callback).Run(GetChain(prefs_, chain_id_));
+}
+
 void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
   // Only try to update is_eip1559 for localhost or custom chains.
   auto chain = GetKnownChain(prefs_, chain_id);

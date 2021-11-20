@@ -860,6 +860,25 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   EXPECT_EQ(network->is_eip1559, true);
 }
 
+TEST(BraveWalletUtilsUnitTest, GetChain) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain1(
+      "0x5566", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+  auto chain_ptr1 = chain1.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+  UpdateCustomNetworks(&prefs, &values);
+
+  EXPECT_FALSE(GetChain(&prefs, "0x123"));
+  EXPECT_EQ(GetChain(&prefs, "0x5566"), chain1.Clone());
+  EXPECT_EQ(GetChain(&prefs, "0x1"), GetKnownChain(&prefs, "0x1"));
+  EXPECT_EQ(GetChain(&prefs, "0x539"), GetKnownChain(&prefs, "0x539"));
+}
+
 TEST(BraveWalletUtilsUnitTest, GetAllKnownNetworkIds) {
   EXPECT_EQ(GetAllKnownNetworkIds(),
             std::vector<std::string>({"mainnet", "rinkeby", "ropsten", "goerli",
