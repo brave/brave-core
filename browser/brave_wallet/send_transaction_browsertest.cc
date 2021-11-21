@@ -627,6 +627,25 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NetworkVersion) {
             "undefined");
 }
 
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
+  RestoreWallet();
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsUnlocked()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+  LockWallet();
+  EXPECT_FALSE(EvalJs(web_contents(), "getIsUnlocked()",
+                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                   .ExtractBool());
+  UnlockWallet();
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsUnlocked()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+}
+
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
   SetNetworkForTesting("0x1");  // mainnet
