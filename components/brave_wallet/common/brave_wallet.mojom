@@ -56,6 +56,9 @@ interface BraveWalletProvider {
 
   // Used for eth_accounts method requests
   GetAllowedAccounts() => (bool success, array<string> accounts);
+
+  // Determines if the keyring is locked.
+  IsLocked() => (bool isLocked);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

@@ -40,7 +40,8 @@ class BraveWalletJSHandler : public mojom::EventsListener {
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
                              v8::Local<v8::Context> context,
-                             v8::Local<v8::Object> javascript_object);
+                             v8::Local<v8::Object> ethereum_object,
+                             v8::Local<v8::Object> metamask_object);
   void UpdateAndBindJSProperties();
   void UpdateAndBindJSProperties(v8::Isolate* isolate,
                                  v8::Local<v8::Context> context,
@@ -68,6 +69,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       bool force_json_response);
   v8::Local<v8::Value> IsConnected();
   v8::Local<v8::Promise> Enable();
+  v8::Local<v8::Promise> IsUnlocked();
   v8::Local<v8::Promise> Send(gin::Arguments* args);
   void SendAsync(gin::Arguments* args);
   bool CommonRequestOrSendAsync(
@@ -103,6 +105,10 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       bool force_json_response,
       bool success,
       const std::vector<std::string>& accounts);
+  void OnIsUnlocked(v8::Global<v8::Context> global_context,
+                    v8::Global<v8::Promise::Resolver> promise_resolver,
+                    v8::Isolate* isolate,
+                    bool locked);
   void OnGetAllowedAccounts(base::Value id,
                             v8::Global<v8::Context> global_context,
                             std::unique_ptr<v8::Global<v8::Function>> callback,

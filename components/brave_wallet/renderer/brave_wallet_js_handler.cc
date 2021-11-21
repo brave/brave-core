@@ -158,6 +158,22 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
                success && !accounts.empty());
 }
 
+void BraveWalletJSHandler::OnIsUnlocked(
+    v8::Global<v8::Context> global_context,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool locked) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::Context> context = global_context.Get(isolate);
+  base::Value result = base::Value(!locked);
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(&result, context);
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
+}
+
 void BraveWalletJSHandler::OnGetAllowedAccounts(
     base::Value id,
     v8::Global<v8::Context> global_context,
@@ -365,14 +381,19 @@ void BraveWalletJSHandler::CreateEthereumObject(
     v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> ethereum_obj;
+  v8::Local<v8::Object> metamask_obj;
   v8::Local<v8::Value> ethereum_value;
   if (!global->Get(context, gin::StringToV8(isolate, "ethereum"))
            .ToLocal(&ethereum_value) ||
       !ethereum_value->IsObject()) {
     ethereum_obj = v8::Object::New(isolate);
+    metamask_obj = v8::Object::New(isolate);
     global->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
         .Check();
-    BindFunctionsToObject(isolate, context, ethereum_obj);
+    ethereum_obj
+        ->Set(context, gin::StringToSymbol(isolate, "_metamask"), metamask_obj)
+        .Check();
+    BindFunctionsToObject(isolate, context, ethereum_obj, metamask_obj);
     UpdateAndBindJSProperties(isolate, context, ethereum_obj);
   } else {
     render_frame_->GetWebFrame()->AddMessageToConsole(
@@ -445,22 +466,26 @@ void BraveWalletJSHandler::UpdateAndBindJSProperties(
 void BraveWalletJSHandler::BindFunctionsToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context,
-    v8::Local<v8::Object> javascript_object) {
-  BindFunctionToObject(isolate, javascript_object, "request",
+    v8::Local<v8::Object> ethereum_object,
+    v8::Local<v8::Object> metamask_object) {
+  BindFunctionToObject(isolate, ethereum_object, "request",
                        base::BindRepeating(&BraveWalletJSHandler::Request,
                                            base::Unretained(this), isolate));
-  BindFunctionToObject(isolate, javascript_object, "isConnected",
+  BindFunctionToObject(isolate, ethereum_object, "isConnected",
                        base::BindRepeating(&BraveWalletJSHandler::IsConnected,
                                            base::Unretained(this)));
-  BindFunctionToObject(isolate, javascript_object, "enable",
+  BindFunctionToObject(isolate, ethereum_object, "enable",
                        base::BindRepeating(&BraveWalletJSHandler::Enable,
                                            base::Unretained(this)));
-  BindFunctionToObject(isolate, javascript_object, "sendAsync",
+  BindFunctionToObject(isolate, ethereum_object, "sendAsync",
                        base::BindRepeating(&BraveWalletJSHandler::SendAsync,
                                            base::Unretained(this)));
   BindFunctionToObject(
-      isolate, javascript_object, "send",
+      isolate, ethereum_object, "send",
       base::BindRepeating(&BraveWalletJSHandler::Send, base::Unretained(this)));
+  BindFunctionToObject(isolate, metamask_object, "isUnlocked",
+                       base::BindRepeating(&BraveWalletJSHandler::IsUnlocked,
+                                           base::Unretained(this)));
 }
 
 template <typename Sig>
@@ -846,6 +871,29 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
       &BraveWalletJSHandler::OnEthereumPermissionRequested,
       weak_ptr_factory_.GetWeakPtr(), base::Value(), std::move(global_context),
       nullptr, std::move(promise_resolver), isolate, false));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+v8::Local<v8::Promise> BraveWalletJSHandler::IsUnlocked() {
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto global_context(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  brave_wallet_provider_->IsLocked(base::BindOnce(
+      &BraveWalletJSHandler::OnIsUnlocked, weak_ptr_factory_.GetWeakPtr(),
+      std::move(global_context), std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
