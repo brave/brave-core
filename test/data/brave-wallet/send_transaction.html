@@ -82,6 +82,10 @@
   function getNetworkVersion() {
     window.domAutomationController.send(String(window.ethereum.networkVersion))
   }
+  function getIsUnlocked() {
+    window.ethereum._metamask.isUnlocked().then(result =>
+      window.domAutomationController.send(result))
+  }
 </script>
 
 <body>

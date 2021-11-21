@@ -30,6 +30,9 @@ interface BraveWalletProvider {
   GetNetwork() => (EthereumChain network);
 
   GetAllowedAccounts() => (bool success, array<string> accounts);
+
+  // Determines if the keyring is locked.
+  IsLocked() => (bool isLocked);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
