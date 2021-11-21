@@ -269,36 +269,45 @@ TEST_F(SwapControllerUnitTest, GetSwapConfigurationRopsten) {
   std::string swap_api_url = "https://ropsten.api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
   std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  std::string affiliate_address;
   EXPECT_EQ(swap_api_url,
             SwapController::GetBaseSwapURL(mojom::kRopstenChainId));
   EXPECT_EQ(buy_token_percantage_fee,
             SwapController::GetFee(mojom::kRopstenChainId));
   EXPECT_EQ(fee_recipient,
             SwapController::GetFeeRecipient(mojom::kRopstenChainId));
+  EXPECT_EQ(affiliate_address,
+            SwapController::GetAffiliateAddress(mojom::kRopstenChainId));
 }
 
 TEST_F(SwapControllerUnitTest, GetSwapConfigurationMainnet) {
   std::string swap_api_url = "https://api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
   std::string fee_recipient = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+  std::string affiliate_address = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
   EXPECT_EQ(swap_api_url,
             SwapController::GetBaseSwapURL(mojom::kMainnetChainId));
   EXPECT_EQ(buy_token_percantage_fee,
             SwapController::GetFee(mojom::kMainnetChainId));
   EXPECT_EQ(fee_recipient,
             SwapController::GetFeeRecipient(mojom::kMainnetChainId));
+  EXPECT_EQ(affiliate_address,
+            SwapController::GetAffiliateAddress(mojom::kMainnetChainId));
 }
 
 TEST_F(SwapControllerUnitTest, GetSwapConfigurationOtherNet) {
   std::string swap_api_url;
   std::string buy_token_percantage_fee;
   std::string fee_recipient;
+  std::string affiliate_address;
   EXPECT_EQ(swap_api_url,
             SwapController::GetBaseSwapURL(mojom::kRinkebyChainId));
   EXPECT_EQ(buy_token_percantage_fee,
             SwapController::GetFee(mojom::kRinkebyChainId));
   EXPECT_EQ(fee_recipient,
             SwapController::GetFeeRecipient(mojom::kRinkebyChainId));
+  EXPECT_EQ(affiliate_address,
+            SwapController::GetAffiliateAddress(mojom::kRinkebyChainId));
 }
 
 }  // namespace brave_wallet
