@@ -108,6 +108,27 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       const std::vector<std::string>& accounts,
       mojom::ProviderError error,
       const std::string& error_message);
+  void OnRequestPermissionsAccountsRequested(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      const std::vector<std::string>& accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void OnGetGetPermissionsAccountsRequested(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      const std::vector<std::string>& accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+
   void OnIsUnlocked(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
@@ -121,6 +142,15 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                             const std::vector<std::string>& accounts,
                             mojom::ProviderError error,
                             const std::string& error_message);
+  void OnGetPermissions(base::Value id,
+                        v8::Global<v8::Context> global_context,
+                        std::unique_ptr<v8::Global<v8::Function>> callback,
+                        v8::Global<v8::Promise::Resolver> promise_resolver,
+                        v8::Isolate* isolate,
+                        bool force_json_response,
+                        const std::vector<std::string>& accounts,
+                        mojom::ProviderError error,
+                        const std::string& error_message);
   void OnAddOrSwitchEthereumChain(
       base::Value id,
       v8::Global<v8::Context> global_context,

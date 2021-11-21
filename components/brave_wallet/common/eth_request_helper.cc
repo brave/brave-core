@@ -486,7 +486,26 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   *token =
       mojom::ERCToken::New(eth_addr.ToChecksumAddress(), *symbol /* name */,
                            logo, true, false, *symbol, decimals, true, "");
+  return true;
+}
 
+// Parses param request objects from
+// https://eips.ethereum.org/EIPS/eip-2255
+bool ParseRequestPermissionsParams(
+    const std::string& json,
+    std::vector<std::string>* restricted_methods) {
+  // [{
+  //   "eth_accounts": {}
+  // }]
+  if (!restricted_methods)
+    return false;
+  restricted_methods->clear();
+  auto param_obj = GetObjectFromParamsList(json);
+  if (!param_obj)
+    return false;
+  for (auto prop : param_obj->DictItems()) {
+    restricted_methods->push_back(prop.first);
+  }
   return true;
 }
 
