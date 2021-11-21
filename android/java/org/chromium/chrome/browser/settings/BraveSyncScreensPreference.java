@@ -1236,21 +1236,24 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                   Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
                   assert false;
               } else {
-                  fillQrCode(seedHex);
+                  if (!isBarCodeValid(seedHex)) {
+                      Log.e(TAG, "fillQrCode - invalid QR code");
+                      // Normally must not reach here ever, because the code is validated right
+                      // after scan
+                      assert false;
+                      showEndDialog(getResources().getString(R.string.sync_device_failure));
+                      return;
+                  } else {
+                      String qrCodeString = getBraveSyncWorker().GetQrDataJson(seedHex);
+                      assert qrCodeString != null && !qrCodeString.isEmpty();
+                      fillQrCode(qrCodeString);
+                  }
               }
           }
       });
   }
 
   private void fillQrCode(String qrDataFinal) {
-      if (!isBarCodeValid(qrDataFinal)) {
-          Log.e(TAG, "fillQrCode - invalid QR code");
-          // Normally must not reach here ever, because the code is validated right after scan
-          assert false;
-          showEndDialog(getResources().getString(R.string.sync_device_failure));
-          return;
-      }
-
       new Thread(new Runnable() {
           @Override
           public void run() {
