@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
 
+#include <limits>
 #include <utility>
 #include <vector>
 
@@ -12,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -401,14 +403,33 @@ void BraveWalletJSHandler::UpdateAndBindJSProperties(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context,
     v8::Local<v8::Object> ethereum_obj) {
+  v8::Local<v8::Primitive> undefined(v8::Undefined(isolate));
   ethereum_obj
       ->Set(context, gin::StringToSymbol(isolate, "chainId"),
             gin::StringToV8(isolate, chain_id_))
       .Check();
+
+  // We have no easy way to convert a uin256 to a decimal number string yet
+  // and this is a deprecated property so it's not very important.
+  // So we only include it when the chain ID is <= uint64_t max value.
+  uint256_t chain_id_uint256;
+  if (HexValueToUint256(chain_id_, &chain_id_uint256) &&
+      chain_id_uint256 <= (uint256_t)std::numeric_limits<uint64_t>::max()) {
+    uint64_t networkVersion = (uint64_t)chain_id_uint256;
+    ethereum_obj
+        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
+              gin::StringToV8(isolate, std::to_string(networkVersion)))
+        .Check();
+  } else {
+    ethereum_obj
+        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
+              undefined)
+        .Check();
+  }
+
   // Note this does not return the selected account, but it returns the
   // first connected account that was given permissions.
   if (first_allowed_account_.empty()) {
-    v8::Local<v8::Primitive> undefined(v8::Undefined(isolate));
     ethereum_obj
         ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
               undefined)
