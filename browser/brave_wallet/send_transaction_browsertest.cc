@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -238,6 +239,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void AddEthereumChain(const std::string& chain_id) {
+    eth_json_rpc_controller_->AddEthereumChainRequestCompleted(chain_id, true);
+  }
+
   void UserGrantPermission(bool granted) {
     std::string expected_address = "undefined";
     if (granted) {
@@ -313,11 +318,6 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         https_server_for_files()->GetURL("a.com", "/send_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     WaitForLoadStop(web_contents());
-
-    EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
-              chain_id_);
 
     ASSERT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -424,6 +424,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   void SetNetworkForTesting(const std::string& chain_id) {
     eth_json_rpc_controller_->SetCustomNetworkForTesting(
         chain_id, https_server_for_rpc()->base_url());
+    // Needed so ChainChangedEvent observers run
+    base::RunLoop().RunUntilIdle();
     chain_id_ = chain_id;
   }
 
@@ -537,11 +539,6 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   WaitForLoadStop(web_contents());
 
-  EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            chain_id());
-
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
@@ -580,6 +577,54 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
             from(1));
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NetworkVersion) {
+  RestoreWallet();
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(web_contents());
+
+  EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            chain_id());
+  uint256_t chain_id_uint256;
+  EXPECT_TRUE(HexValueToUint256(chain_id(), &chain_id_uint256));
+  EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            std::to_string((uint64_t)chain_id_uint256));
+
+  // Newly added network change
+  std::string chain_id = "0x38";
+  AddEthereumChain(chain_id);
+  SetNetworkForTesting(chain_id);
+  EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            chain_id);
+  EXPECT_TRUE(HexValueToUint256(chain_id, &chain_id_uint256));
+  EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            std::to_string((uint64_t)chain_id_uint256));
+
+  // Make sure chainId > uint64_t has networkVersion undefined. This is
+  // just a current limitation that we will likely get rid of in the future.
+  chain_id = "0x878678326eac900000000";
+  AddEthereumChain(chain_id);
+  SetNetworkForTesting(chain_id);
+  EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            chain_id);
+  EXPECT_TRUE(HexValueToUint256(chain_id, &chain_id_uint256));
+  EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            "undefined");
 }
 
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
