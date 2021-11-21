@@ -99,4 +99,35 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
   return true;
 }
 
+bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
+  if (!out) {
+    return false;
+  }
+  if (!IsValidHexString(hex_input)) {
+    return false;
+  }
+  *out = 0;
+  for (char c : hex_input.substr(2)) {
+    (*out) <<= 4;
+    (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
+  }
+  return true;
+}
+
+std::string Uint256ValueToHex(uint256_t input) {
+  std::string result;
+  result.reserve(32);
+
+  static constexpr char kHexChars[] = "0123456789abcdef";
+  while (input) {
+    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
+    result.insert(result.begin(), kHexChars[i]);
+    input >>= 4;
+  }
+  if (result.empty()) {
+    return "0x0";
+  }
+  return "0x" + result;
+}
+
 }  // namespace brave_wallet
