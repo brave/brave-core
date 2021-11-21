@@ -195,6 +195,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:network_time_helper",
+    "//brave/components/brave_sync:unit_tests",
     "//brave/components/brave_today/browser/test:brave_news_unit_tests",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
