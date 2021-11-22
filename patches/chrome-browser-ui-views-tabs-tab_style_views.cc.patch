@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 612d5649cfab9caa1c7b1744561ba42b0bbe09bc..7718c8d5fa3e760f66b17f5313b1d52e758d22a7 100644
+index 97d140039061041778744cba675b82a089656571..230bef959842ad74749b9bad2d95b6a61c652fbe 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -70,6 +70,7 @@ class GM2TabStyle : public TabStyleViews {
@@ -27,7 +27,7 @@ index 612d5649cfab9caa1c7b1744561ba42b0bbe09bc..7718c8d5fa3e760f66b17f5313b1d52e
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -903,12 +905,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -904,12 +906,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
