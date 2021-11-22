@@ -398,7 +398,7 @@ public class BraveWalletActivity
                         verifyRecoveryPhraseFragment));
     }
 
-    private void backupBannerOnClick() {
+    public void backupBannerOnClick() {
         cryptoOnboardingLayout.setVisibility(View.VISIBLE);
         cryptoLayout.setVisibility(View.GONE);
 
