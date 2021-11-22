@@ -108,7 +108,13 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
 
+  // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
+    if (rpc_controller_->GetChainId() != chain->chain_id) {
+      SwitchEthereumChain(chain->chain_id, std::move(callback));
+      return;
+    }
+
     std::move(callback).Run(0, std::string());
     return;
   }
