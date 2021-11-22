@@ -74,6 +74,10 @@ GURL AppendSwapParams(const GURL& swap_url,
       brave_wallet::SwapController::GetFeeRecipient(chain_id);
   if (!fee_recipient.empty())
     url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
+  std::string affiliate_address =
+      brave_wallet::SwapController::GetAffiliateAddress(chain_id);
+  if (!affiliate_address.empty())
+    url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
   if (!params.gas_price.empty())
     url = net::AppendQueryParameter(url, "gasPrice", params.gas_price);
   return url;
@@ -148,6 +152,17 @@ std::string SwapController::GetFeeRecipient(const std::string& chain_id) {
   }
 
   return feeRecipient;
+}
+
+// static
+std::string SwapController::GetAffiliateAddress(const std::string& chain_id) {
+  std::string affiliateAddress;
+
+  if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+    affiliateAddress = brave_wallet::kAffiliateAddress;
+  }
+
+  return affiliateAddress;
 }
 
 // static

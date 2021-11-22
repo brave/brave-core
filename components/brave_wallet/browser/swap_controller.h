@@ -54,6 +54,8 @@ class SwapController : public KeyedService, public mojom::SwapController {
   static std::string GetFee(const std::string& chain_id);
   static std::string GetBaseSwapURL(const std::string& chain_id);
   static std::string GetFeeRecipient(const std::string& chain_id);
+  static std::string GetAffiliateAddress(const std::string& chain_id);
+
   static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params,
                                const std::string& chain_id);
   static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
