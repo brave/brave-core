@@ -97,6 +97,7 @@ function BuyTab (props: Props) {
       }
       {buyView !== 'buy' &&
         <AccountsAssetsNetworks
+          selectedNetwork={selectedNetwork}
           accounts={accounts}
           networkList={networkList}
           goBack={goBack}

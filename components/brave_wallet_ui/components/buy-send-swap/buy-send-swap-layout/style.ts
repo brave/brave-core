@@ -44,7 +44,6 @@ export const MainContainer = styled.div<Partial<StyleProps>>`
   border-radius: ${(p) =>
     p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'};
   max-height: 525px;
-  overflow: hidden;
 `
 
 export const ButtonRow = styled.div`
@@ -75,6 +74,7 @@ export const TabButton = styled(WalletButton) <Partial<StyleProps>>`
   z-index: ${(p) =>
     p.isSelected ? '2' : '0'};
   position: relative;
+  pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
 `
 
 export const TabButtonText = styled.span<Partial<StyleProps>>`

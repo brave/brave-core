@@ -50,8 +50,8 @@ export const DropDown = styled.div`
   flex-direction: column;
   align-items: center;
   justify-conent: center;
-  width: 225px;
-  padding: 0px 0px 0px 10px;
+  min-width: 275px;
+  padding: 10px 10px 10px 20px;
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);

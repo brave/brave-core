@@ -59,11 +59,12 @@ function SwapHeader (props: Props) {
           </AccountAndAddress>
         </Tooltip>
       </NameAndIcon>
-
-      <OvalButton onClick={onShowNetworks}>
-        <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-        <CaratDownIcon />
-      </OvalButton>
+      <Tooltip text={selectedNetwork.chainName}>
+        <OvalButton onClick={onShowNetworks}>
+          <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
+          <CaratDownIcon />
+        </OvalButton>
+      </Tooltip>
     </StyledWrapper >
   )
 }
