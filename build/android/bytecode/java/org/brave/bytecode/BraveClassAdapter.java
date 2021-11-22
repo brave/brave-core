@@ -12,6 +12,7 @@ public class BraveClassAdapter {
         chain = new BraveActivityClassAdapter(chain);
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveAutofillPopupBridgeClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);

@@ -1034,6 +1034,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return mBrowserControlsManagerSupplier;
     }
 
+    public int getToolbarBottom() {
+        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        assert toolbarShadow != null;
+        if (toolbarShadow != null) {
+            return toolbarShadow.getBottom();
+        }
+        return 0;
+    }
+
     @NativeMethods
     interface Natives {
         void restartStatsUpdater();
