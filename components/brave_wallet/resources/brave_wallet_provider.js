@@ -13,6 +13,8 @@
   window.ethereum.emit = BraveWeb3ProviderEventEmitter.emit
   window.ethereum.removeListener =
       BraveWeb3ProviderEventEmitter.removeListener
+  window.ethereum.removeAllListeners =
+      BraveWeb3ProviderEventEmitter.removeAllListeners
   // For webcompat
   window.ethereum.isMetaMask = true
 })()
