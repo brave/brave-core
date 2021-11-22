@@ -11,6 +11,7 @@ class RadialPulsingAnimation: UIView {
     
     init(ringCount: Int) {
         super.init(frame: .zero)
+        isUserInteractionEnabled = false
         
         // [1, 4] => {Y ∈ ℝ: 1 <= Y <= 4} where Y = Thicc, X = amount of rings
         let idealThicc = 1.5
@@ -93,6 +94,7 @@ class RadialPulsingAnimation: UIView {
             let imageView = UIImageView().then {
                 $0.image = icon
                 $0.contentMode = .scaleAspectFit
+                $0.isUserInteractionEnabled = false
             }
             
             addSubview(imageView)
