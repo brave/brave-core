@@ -6,18 +6,21 @@ import {
   PopupButton,
   PopupButtonText,
   SettingsIcon,
-  LockIcon
+  LockIcon,
+  ExplorerIcon
 } from './style'
 
 export interface Props {
   onClickSetting: () => void
   onClickLock: () => void
+  onClickViewOnBlockExplorer: () => void
 }
 
 const WalletMorePopup = (props: Props) => {
   const {
     onClickLock,
-    onClickSetting
+    onClickSetting,
+    onClickViewOnBlockExplorer
   } = props
 
   return (
@@ -29,6 +32,10 @@ const WalletMorePopup = (props: Props) => {
       <PopupButton onClick={onClickSetting}>
         <SettingsIcon />
         <PopupButtonText>{getLocale('braveWalletWalletPopupSettings')}</PopupButtonText>
+      </PopupButton>
+      <PopupButton onClick={onClickViewOnBlockExplorer}>
+        <ExplorerIcon />
+        <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
       </PopupButton>
     </StyledWrapper>
   )

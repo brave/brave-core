@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { SettingsAdvancedIcon } from 'brave-ui/components/icons'
+import { SettingsAdvancedIcon, OpenNewIcon } from 'brave-ui/components/icons'
 import { LockIconD } from '../../../assets/svg-icons/nav-button-icons'
 import { WalletButton } from '../../shared/style'
 
@@ -15,7 +15,7 @@ export const StyledWrapper = styled.div`
   position: absolute;
   top: 35px;
   right: 15px;
-  z-index: 10;
+  z-index: 20;
  `
 
 export const PopupButton = styled(WalletButton)`
@@ -23,7 +23,7 @@ export const PopupButton = styled(WalletButton)`
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
-  width: 200px;
+  width: 220px;
   border-radius: 8px;
   outline: none;
   border: none;
@@ -46,6 +46,14 @@ export const PopupButtonText = styled.span`
 `
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
+  width: 20px;
+  height: 20px;
+  color: ${(p) => p.theme.color.interactive07};
+  margin-right: 18px;
+  margin-left: 14px;
+`
+
+export const ExplorerIcon = styled(OpenNewIcon)`
   width: 20px;
   height: 20px;
   color: ${(p) => p.theme.color.interactive07};
