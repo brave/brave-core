@@ -202,6 +202,18 @@ mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
   return nullptr;
 }
 
+mojom::EthereumChainPtr GetChain(PrefService* prefs,
+                                 const std::string& chain_id) {
+  std::vector<mojom::EthereumChainPtr> chains;
+  GetAllChains(prefs, &chains);
+  for (const auto& chain : chains) {
+    if (chain->chain_id == chain_id)
+      return chain.Clone();
+  }
+
+  return nullptr;
+}
+
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
   if (kInfuraSubdomains.contains(chain_id))
     return kInfuraSubdomains.at(chain_id);
