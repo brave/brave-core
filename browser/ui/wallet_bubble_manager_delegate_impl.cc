@@ -28,14 +28,13 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
   BraveWebUIBubbleManagerT(views::View* anchor_view,
                            Browser* browser,
                            const GURL& webui_url,
-                           int task_manager_string_id,
-                           bool enable_extension_apis = false)
+                           int task_manager_string_id)
       : WebUIBubbleManagerT<T>(anchor_view,
                                browser->profile(),
                                webui_url,
-                               task_manager_string_id,
-                               enable_extension_apis),
+                               task_manager_string_id),
         browser_(browser) {}
+
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog() override {
     auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog();
     bubble_view_ = bubble_view.get();
@@ -144,8 +143,7 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
   DCHECK(anchor_view);
   webui_bubble_manager_ =
       std::make_unique<BraveWebUIBubbleManagerT<WalletPanelUI>>(
-          anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
-          true);
+          anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON);
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
