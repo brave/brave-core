@@ -76,6 +76,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                         String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
                                 recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
                         if (result.equals(recoveryPhraseToVerify)) {
+                            keyringController.notifyWalletBackupComplete();
                             onNextPage.gotoNextPage(true);
                         } else {
                             phraseNotMatch();
