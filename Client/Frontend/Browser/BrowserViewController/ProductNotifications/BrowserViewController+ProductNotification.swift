@@ -232,7 +232,6 @@ extension BrowserViewController {
                                from: topToolbar.locationView.shieldsButton,
                                on: popover,
                                browser: self)
-        
         popover.popoverDidDismiss = { _ in
             pulseAnimation.removeFromSuperview()
         }

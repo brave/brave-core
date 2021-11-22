@@ -2825,8 +2825,9 @@ extension BrowserViewController: NewTabPageDelegate {
     
     func showNTPOnboarding() {
         if Preferences.General.isNewRetentionUser.value == true,
-            !topToolbar.inOverlayMode,
-            !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
+           !topToolbar.inOverlayMode,
+           topToolbar.currentURL == nil,
+           !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
             presentNTPStatsOnboarding()
         }
     }

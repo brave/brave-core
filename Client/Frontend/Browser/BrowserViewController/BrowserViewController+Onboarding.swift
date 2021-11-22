@@ -23,7 +23,8 @@ extension BrowserViewController {
         
         // 1. User is brand new
         // 2. User hasn't completed onboarding
-        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
+           Preferences.General.isNewRetentionUser.value == true {
             let onboardingController = WelcomeViewController(profile: profile,
                                                              rewards: rewards)
             onboardingController.modalPresentationStyle = .fullScreen
@@ -57,7 +58,7 @@ extension BrowserViewController {
         }
         
         // Project the statsFrame to the current frame
-        let frame = view.convert(statsFrame, from: ntpController.view).insetBy(dx: 15.0, dy: 15.0).offsetBy(dx: 15.0, dy: 5.0)
+        let frame = view.convert(statsFrame, from: ntpController.view).insetBy(dx: 15.0, dy: 15.0)
         
         // Create a border view
         let borderView = UIView().then {
@@ -156,7 +157,6 @@ extension BrowserViewController {
                                from: topToolbar.locationView.shieldsButton,
                                on: popover,
                                browser: self)
-        
         popover.popoverDidDismiss = { _ in
             pulseAnimation.removeFromSuperview()
         }
