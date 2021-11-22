@@ -10,7 +10,6 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
-#include "extensions/buildflags/buildflags.h"
 
 namespace ipfs {
 

@@ -1,5 +1,4 @@
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//extensions/buildflags/buildflags.gni")
 
 static_library("ipfs") {
   sources = [
@@ -47,7 +46,6 @@ static_library("ipfs") {
     "//components/security_interstitials/core",
     "//components/user_prefs",
     "//components/version_info",
-    "//extensions/buildflags",
     "//net",
     "//services/network/public/cpp",
     "//third_party/re2",
@@ -74,15 +72,10 @@ static_library("ipfs") {
       "keys/ipns_keys_manager.h",
     ]
     deps += [
-      "//brave/extensions:common",
       "//components/security_interstitials/content:security_interstitial_page",
       "//content/public/browser",
       "//content/public/common",
       "//ui/native_theme:native_theme",
     ]
-  }
-
-  if (enable_extensions) {
-    deps += [ "//extensions/browser" ]
   }
 }
