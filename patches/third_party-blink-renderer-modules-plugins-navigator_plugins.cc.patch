@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
+index a9d9ce32f9b20543cb03d1c4cc32d1941b60d1ad..b9e1bd02056b5557dc109723703935c1c6443f33 100644
+--- a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
++++ b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
+@@ -32,6 +32,7 @@ bool ShouldReturnFixedPluginData(Navigator& navigator) {
+     }
+   }
+   // Otherwise, return fixed plugin data.
++  BRAVE_NAVIGATOR_PLUGINS_SHOULD_RETURN_FIXED_PLUGIN_DATA
+   return true;
+ }
+ }  // namespace

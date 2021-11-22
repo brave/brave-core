@@ -98,7 +98,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kInterestCohortAPIOriginTrial,
     &blink::features::kInterestCohortFeaturePolicy,
     &blink::features::kInterestGroupStorage,
-    &blink::features::kNavigatorPluginsFixed,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
     &blink::features::kSpeculationRulesPrefetchProxy,
