@@ -22,7 +22,7 @@ class BraveDepsBuilder(DepsBuilder):
       root_src_dir_path_norm = dir_path_norm.replace('/brave/chromium_src', '',
                                                      1)
       directory_rules, _ = super(DepsBuilder, self)._ApplyDirectoryRules(
-          existing_rules, dir_path_local_abs)
+          directory_rules, root_src_dir_path_norm)
 
       # Add `+src/...` rule.
       root_src_relative_dir = 'src/' + posixpath.relpath(
