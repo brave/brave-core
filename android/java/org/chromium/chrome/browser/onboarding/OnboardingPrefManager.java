@@ -8,10 +8,11 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Activity;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -19,12 +20,15 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.lang.System;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -372,5 +376,23 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(SHOW_BADGE_ANIMATION, shouldShowBadgeAnimation);
         sharedPreferencesEditor.apply();
+    }
+
+    public void setDormantUsersPrefs() {
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
+    }
+
+    private long setTimeInMillis(int timeInMinutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.MINUTE, timeInMinutes);
+
+        Date date = calendar.getTime();
+        return date.getTime();
     }
 }
