@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index b8840d0c9ce032ce19738cc2b806161798245a01..992b6514053de0c816ed56d623d36c1cc1ed2fb7 100644
+index 39786e1735187756306778af52b0c21ed482f15b..bf560973a2fe1768222a2020c26cfce7fb1a744c 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -88,6 +88,7 @@ class ChromeBrowsingDataRemoverDelegate
@@ -13,8 +13,8 @@ index b8840d0c9ce032ce19738cc2b806161798245a01..992b6514053de0c816ed56d623d36c1c
 @@ -136,7 +137,8 @@ class ChromeBrowsingDataRemoverDelegate
      kAccountCompromisedCredentials = 39,
      kFaviconCacheExpiration = 40,
-     kSecurePaymentConfirmationInstruments = 41,
--    kMaxValue = kSecurePaymentConfirmationInstruments,
+     kSecurePaymentConfirmationCredentials = 41,
+-    kMaxValue = kSecurePaymentConfirmationCredentials,
 +    kIPFSCache = 42,
 +    kMaxValue = kIPFSCache,
    };
