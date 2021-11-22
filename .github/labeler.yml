@@ -1,6 +1,7 @@
 CI/run-audit-deps:
 - package.json
 - package-lock.json
+- script/audit_deps.py
 - "**/Cargo.toml"
 - "**/Cargo.lock"
 
