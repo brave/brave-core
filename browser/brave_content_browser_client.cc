@@ -893,3 +893,11 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   }
   return changed;
 }
+
+void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
+                                                    WebPreferences* web_prefs) {
+  ChromeContentBrowserClient::OverrideWebkitPrefs(web_contents, web_prefs);
+  // This will stop NavigatorPlugins from returning fixed plugins data and will
+  // allow us to return our farbled data
+  web_prefs->allow_non_empty_navigator_plugins = true;
+}

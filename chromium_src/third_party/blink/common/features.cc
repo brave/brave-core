@@ -25,7 +25,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestCohortAPIOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestCohortFeaturePolicy, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kNavigatorPluginsFixed, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
