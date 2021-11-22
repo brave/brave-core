@@ -81,6 +81,7 @@ export const AssetBalanceText = styled.span`
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 600;
+  height: 36px;
 `
 
 export const FiatBalanceText = styled.span`
@@ -90,6 +91,7 @@ export const FiatBalanceText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 300;
+  height: 20px;
 `
 
 export const NotConnectedIcon = styled.div`

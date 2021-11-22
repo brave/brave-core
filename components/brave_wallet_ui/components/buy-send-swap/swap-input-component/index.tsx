@@ -210,6 +210,10 @@ function SwapInputComponent (props: Props) {
     return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 4, marginRight: 8 })
   }, [])
 
+  const formatedAssetBalance = selectedAssetBalance
+    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')
+    : ''
+
   return (
     <BubbleContainer>
       {componentType !== 'selector' &&
@@ -224,7 +228,7 @@ function SwapInputComponent (props: Props) {
             */}
 
               {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-                <FromBalanceText>{getLocale('braveWalletBalance')}: {formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')}</FromBalanceText>
+                <FromBalanceText>{formatedAssetBalance}</FromBalanceText>
               }
               {componentType === 'toAddress' &&
                 <PasteButton onClick={onPaste}>
