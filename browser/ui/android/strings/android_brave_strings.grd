@@ -2115,6 +2115,9 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_CONFIRM_TEXT" desc="Text for Brave Wallet confirm button text.">
       Confirm
     </message>
+    <message name="IDS_TIME_LONG_MINS" desc="Use an unabbreviated word for minute(s). [ICU Syntax]">
+      {MINUTES, plural, =1 {# minute} other {# minutes}}
+    </message>
     <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
       Brave Firewall + VPN
     </message>
