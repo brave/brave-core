@@ -120,10 +120,12 @@ const signTransactionWithLedger = (vrs?: SignatureVRS, signatureResponse?: boole
   return signLedgerTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo)
 }
 
-const hardwareTransactionErrorResponse = (errorId: string): SignHardwareTransactionType => {
+const hardwareTransactionErrorResponse = (errorId: string, code: string = ''): SignHardwareTransactionType => {
   return { success: false, error: getLocale(errorId) }
 }
-
+const hardwareTransactionErrorResponseWithCode = (errorId: string, code: string = ''): SignHardwareTransactionOperationResult => {
+  return { success: false, error: getLocale(errorId), code: code }
+}
 const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccessful, signatureResponse?: ProcessHardwareSignatureReturnInfo) => {
   const txInfo = getMockedTransactionInfo()
   const expectedPath = 'path'
@@ -149,7 +151,7 @@ test('Test sign Ledger transaction, approved, no message to sign', () => {
 
 test('Test sign Ledger transaction, approved, device error', () => {
   return expect(signTransactionWithLedger()).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletSignOnDeviceError'))
+    hardwareTransactionErrorResponseWithCode('braveWalletSignOnDeviceError'))
 })
 
 test('Test sign Ledger transaction, approved, processing error', () => {
