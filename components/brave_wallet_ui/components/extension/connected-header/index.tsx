@@ -15,11 +15,19 @@ export interface Props {
   onClickMore: () => void
   onClickLock: () => void
   onClickSetting: () => void
+  onClickViewOnBlockExplorer: () => void
   showMore: boolean
 }
 
 const ConnectedHeader = (props: Props) => {
-  const { onClickLock, onClickMore, onClickSetting, onExpand, showMore } = props
+  const {
+    onClickLock,
+    onClickMore,
+    onClickSetting,
+    onExpand,
+    onClickViewOnBlockExplorer,
+    showMore
+  } = props
   return (
     <HeaderWrapper>
       <ExpandIcon onClick={onExpand} />
@@ -29,6 +37,7 @@ const ConnectedHeader = (props: Props) => {
         <WalletMorePopup
           onClickLock={onClickLock}
           onClickSetting={onClickSetting}
+          onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
         />
       }
     </HeaderWrapper>
