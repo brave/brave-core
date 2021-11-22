@@ -80,6 +80,7 @@ class BraveWalletProviderImpl final
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 
   void GetNetwork(GetNetworkCallback callback) override;
+  void IsLocked(IsLockedCallback callback) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest, OnAddEthereumChain);
