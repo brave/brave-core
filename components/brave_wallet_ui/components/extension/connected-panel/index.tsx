@@ -108,6 +108,20 @@ const ConnectedPanel = (props: Props) => {
     ? formatTokenAmountWithCommasAndDecimals(formatedAssetBalance, selectedNetwork.symbol)
     : ''
 
+  const onClickViewOnBlockExplorer = () => {
+    const exporerURL = selectedNetwork.blockExplorerUrls[0]
+    if (exporerURL && selectedAccount.address) {
+      const url = `${exporerURL}/address/${selectedAccount.address}`
+      chrome.tabs.create({ url: url }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
+    } else {
+      alert(getLocale('braveWalletTransactionExplorerMissing'))
+    }
+  }
+
   return (
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
@@ -115,6 +129,7 @@ const ConnectedPanel = (props: Props) => {
         onClickLock={onLockWallet}
         onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
+        onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
         showMore={showMore}
       />
       <CenterColumn>
