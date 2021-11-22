@@ -18,7 +18,7 @@
           android:id="@+id/app_bar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+          android:theme="@style/BraveWalletToolbar"
           app:elevation="10dp">
 
           <androidx.appcompat.widget.Toolbar
