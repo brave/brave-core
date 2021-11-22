@@ -366,6 +366,9 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("uint264", base::Value(1)));
   // exceeds 8 bits maximum
   EXPECT_FALSE(helper->EncodeField("uint8", base::Value(256)));
+  // exceeds Number.MAX_SAFE_INTEGER
+  EXPECT_FALSE(helper->EncodeField(
+      "uint256", base::Value(static_cast<double>(9007199254740991) + 1)));
   {
     auto encoded_field = helper->EncodeField("uint8", base::Value(255));
     ASSERT_TRUE(encoded_field);
@@ -391,6 +394,9 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("int264", base::Value(1)));
   // exceeds 8 bits maximum
   EXPECT_FALSE(helper->EncodeField("int8", base::Value(128)));
+  // exceeds Number.MAX_SAFE_INTEGER
+  EXPECT_FALSE(helper->EncodeField(
+      "int256", base::Value(static_cast<double>(9007199254740991) + 1)));
   {
     auto encoded_field = helper->EncodeField("int8", base::Value(127));
     ASSERT_TRUE(encoded_field);

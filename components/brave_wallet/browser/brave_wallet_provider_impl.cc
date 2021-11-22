@@ -345,10 +345,10 @@ void BraveWalletProviderImpl::SignTypedMessage(
     return;
   }
 
-  // TODO(darkdh): Support FindUint256Key in base::Value
-  auto chain_id = domain.FindIntKey("chainId");
+  auto chain_id = domain.FindDoubleKey("chainId");
   if (chain_id) {
-    const std::string chain_id_hex = Uint256ValueToHex(*chain_id);
+    const std::string chain_id_hex =
+        Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
     if (chain_id_hex != rpc_controller_->GetChainId()) {
       std::move(callback).Run(
           "", static_cast<int>(ProviderErrors::kInternalError),

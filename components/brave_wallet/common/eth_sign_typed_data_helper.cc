@@ -156,6 +156,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
 absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     const std::string& type,
     const base::Value& value) const {
+  // ES6 section 20.1.2.6 Number.MAX_SAFE_INTEGER
+  constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
+  constexpr double kMaxSafeInteger = static_cast<double>(kMaxSafeIntegerUint64);
   std::vector<uint8_t> result;
 
   if (base::EndsWith(type, "]")) {
@@ -238,28 +241,29 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         type_check > 256)
       return absl::nullopt;
 
-    absl::optional<int> value_int = value.GetIfInt();
-    if (!value_int)
+    absl::optional<double> value_double = value.GetIfDouble();
+    if (!value_double)
       return absl::nullopt;
-    uint256_t encoded_value = *value_int;
     // check if value excceeds type bound
     switch (type_check) {
       case 8:
-        if (encoded_value > std::numeric_limits<uint8_t>::max())
+        if (*value_double > std::numeric_limits<uint8_t>::max())
           return absl::nullopt;
         break;
       case 16:
-        if (encoded_value > std::numeric_limits<uint16_t>::max())
+        if (*value_double > std::numeric_limits<uint16_t>::max())
           return absl::nullopt;
         break;
       case 32:
-        if (encoded_value > std::numeric_limits<uint32_t>::max())
+        if (*value_double > std::numeric_limits<uint32_t>::max())
           return absl::nullopt;
         break;
       default:
-        // TODO(darkdh): base::Value needs to support uint256 type
+        if (*value_double > kMaxSafeInteger)
+          return absl::nullopt;
         break;
     }
+    uint256_t encoded_value = (uint256_t)(uint64_t)*value_double;
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back((encoded_value >> i) & 0xFF);
     }
@@ -269,28 +273,29 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!base::StringToUint(type.data() + 3, &type_check) || type_check % 8 ||
         type_check > 256)
       return absl::nullopt;
-    absl::optional<int> value_int = value.GetIfInt();
-    if (!value_int)
+    absl::optional<double> value_double = value.GetIfDouble();
+    if (!value_double)
       return absl::nullopt;
-    int256_t encoded_value = *value_int;
     // check if value excceeds type bound
     switch (type_check) {
       case 8:
-        if (encoded_value > std::numeric_limits<int8_t>::max())
+        if (*value_double > std::numeric_limits<int8_t>::max())
           return absl::nullopt;
         break;
       case 16:
-        if (encoded_value > std::numeric_limits<int16_t>::max())
+        if (*value_double > std::numeric_limits<int16_t>::max())
           return absl::nullopt;
         break;
       case 32:
-        if (encoded_value > std::numeric_limits<int32_t>::max())
+        if (*value_double > std::numeric_limits<int32_t>::max())
           return absl::nullopt;
         break;
       default:
-        // TODO(darkdh): base::Value needs to support int256 type
+        if (*value_double > kMaxSafeInteger)
+          return absl::nullopt;
         break;
     }
+    int256_t encoded_value = (int256_t)(int64_t)*value_double;
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back((encoded_value >> i) & 0xFF);
     }
