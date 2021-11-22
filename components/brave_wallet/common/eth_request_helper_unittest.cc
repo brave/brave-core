@@ -7,6 +7,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -461,6 +463,84 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
       "{\"params\": [{\"chain_id\": \"0x1\"}]}", &chain_id));
   EXPECT_FALSE(ParseSwitchEthereumChainParams("{\"params\": [{}]}", &chain_id));
+}
+
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
+  const std::string json = R"({
+    "params": [
+      "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      "{
+        \"types\" :{
+          \"EIP712Domain\": [
+            { \"name\": \"name\", \"type\": \"string\" },
+            { \"name\": \"version\", \"type\": \"string\" },
+            { \"name\": \"chainId\", \"type\": \"uint256\" },
+            { \"name\": \"verifyingContract\", \"type\": \"address\" },
+          ],
+          \"Mail\": [
+            {\"name\": \"from\", \"type\": \"Person\"},
+            {\"name\": \"to\", \"type\": \"Person\"},
+            {\"name\": \"contents\", \"type\": \"string\"}
+          ],
+          \"Person\": [
+            {\"name\": \"name\", \"type\": \"string\"},
+            {\"name\": \"wallet\", \"type\": \"address\"}
+          ]
+        },
+        \"primaryType\": \"Mail\",
+        \"domain\": {
+          \"name\": \"Ether Mail\",
+          \"version\": \"1\",
+          \"chainId\": 1,
+          \"verifyingContract\": \"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC\",
+        },
+        \"message\": {
+          \"from\": {
+            \"name\":\"Cow\", \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
+          },
+          \"to\": {
+            \"name\":\"Bob\", \"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"
+          },
+          \"contents\":\"Hello, Bob!\"
+        }
+      }"
+    ]
+  })";
+
+  std::string address;
+  std::string message;
+  base::Value domain;
+  std::vector<uint8_t> message_to_sign;
+
+  EXPECT_TRUE(ParseEthSignTypedDataParams(
+      json, &address, &message, &message_to_sign, &domain,
+      EthSignTypedDataHelper::Version::kV4));
+
+  EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
+  EXPECT_EQ(
+      message,
+      "{\"contents\":\"Hello, "
+      "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
+      "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
+      "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}");
+
+  std::string* ds_name = domain.FindStringKey("name");
+  ASSERT_TRUE(ds_name);
+  EXPECT_EQ(*ds_name, "Ether Mail");
+  std::string* ds_version = domain.FindStringKey("version");
+  ASSERT_TRUE(ds_version);
+  EXPECT_EQ(*ds_version, "1");
+  auto chain_id = domain.FindIntKey("chainId");
+  ASSERT_TRUE(chain_id);
+  EXPECT_EQ(*chain_id, 1);
+  std::string* ds_verifying_contract =
+      domain.FindStringKey("verifyingContract");
+  ASSERT_TRUE(ds_verifying_contract);
+  EXPECT_EQ(*ds_verifying_contract,
+            "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC");
+
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
+            "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
 }
 
 }  // namespace brave_wallet
