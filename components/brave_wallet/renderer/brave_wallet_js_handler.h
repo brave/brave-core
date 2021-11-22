@@ -161,7 +161,8 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      mojom::EthereumChainPtr chain);
+      mojom::EthereumChainPtr chain,
+      mojom::KeyringInfoPtr keyring_info);
 
   content::RenderFrame* render_frame_;
   bool brave_use_native_wallet_;

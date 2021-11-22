@@ -79,7 +79,8 @@ class BraveWalletProviderImpl final
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 
-  void GetNetwork(GetNetworkCallback callback) override;
+  void GetNetworkAndDefaultKeyringInfo(
+      GetNetworkAndDefaultKeyringInfoCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
 
  private:
@@ -143,6 +144,14 @@ class BraveWalletProviderImpl final
   void UpdateKnownAccounts();
   void OnUpdateKnownAccounts(bool success,
                              const std::vector<std::string>& allowed_accounts);
+
+  void ContinueGetDefaultKeyringInfo(
+      GetNetworkAndDefaultKeyringInfoCallback callback,
+      mojom::EthereumChainPtr chain);
+  void OnGetNetworkAndDefaultKeyringInfo(
+      GetNetworkAndDefaultKeyringInfoCallback callback,
+      mojom::EthereumChainPtr chain,
+      mojom::KeyringInfoPtr keyring_info);
 
   // content_settings::Observer:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,

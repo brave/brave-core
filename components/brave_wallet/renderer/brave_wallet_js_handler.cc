@@ -512,8 +512,9 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    mojom::EthereumChainPtr chain) {
-  if (!chain) {
+    mojom::EthereumChainPtr chain,
+    mojom::KeyringInfoPtr keyring_info) {
+  if (!chain || !keyring_info) {
     brave_wallet::ProviderErrors code =
         brave_wallet::ProviderErrors::kInternalError;
     std::string message = "Internal JSON-RPC error";
@@ -529,7 +530,8 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
   std::string from;
   mojom::TxData1559Ptr tx_data_1559 =
       ParseEthSendTransaction1559Params(normalized_json_request, &from);
-  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559)) {
+  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
+                         keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     brave_wallet_provider_->AddAndApprove1559Transaction(
@@ -605,7 +607,7 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        std::move(promise_resolver), isolate,
                        force_json_response));
   } else if (method == kEthSendTransaction) {
-    brave_wallet_provider_->GetNetwork(base::BindOnce(
+    brave_wallet_provider_->GetNetworkAndDefaultKeyringInfo(base::BindOnce(
         &BraveWalletJSHandler::ContinueEthSendTransaction,
         weak_ptr_factory_.GetWeakPtr(), normalized_json_request, std::move(id),
         std::move(global_context), std::move(global_callback),
