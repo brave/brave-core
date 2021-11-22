@@ -9,11 +9,11 @@
 
 #include "base/bind.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/shell_integration.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -159,6 +159,6 @@ void BraveDefaultBrowserDialogView::OnAcceptButtonClicked() {
   // The worker pointer is reference counted. While it is running, the
   // message loops of the FILE and UI thread will hold references to it
   // and it will be automatically freed once all its tasks have finished.
-  base::MakeRefCounted<shell_integration::DefaultBrowserWorker>()
+  base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
       ->StartSetAsDefault(base::NullCallback());
 }
