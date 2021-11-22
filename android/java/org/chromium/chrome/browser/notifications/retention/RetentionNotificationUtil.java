@@ -236,4 +236,16 @@ public class RetentionNotificationUtil {
         assert am != null;
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
     }
+
+    public static void scheduleDormantUsersNotifications(Context context) {
+        scheduleNotificationWithTime(context, DORMANT_USERS_DAY_14,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_14));
+        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_25,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_25));
+        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_40,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_40));
+    }
 }
