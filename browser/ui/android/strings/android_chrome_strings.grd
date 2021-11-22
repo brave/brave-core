@@ -2844,10 +2844,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_N_DAYS_AGO" desc="A number of days in the past. [ICU Syntax]">
         {DAYS, plural, =1 {# day ago} other {# days ago}}
       </message>
-      <message name="IDS_TIME_LONG_MINS"
-               desc="Use an unabbreviated word for minute(s). [ICU Syntax]">
-               {MINUTES, plural, =1 {1 minute} other {# minutes}}
-      </message>
       <message name="IDS_JUST_NOW" desc="A time label for an event that happened just now. For example 'Last synced: just now'">
         just now
       </message>
