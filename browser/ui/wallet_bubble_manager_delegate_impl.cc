@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/view.h"
@@ -145,10 +146,15 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
   DCHECK(browser);
 
-  views::View* anchor_view = static_cast<BraveBrowserView*>(browser->window())
-                                 ->GetWalletButtonAnchorView();
-  DCHECK(anchor_view);
+  views::View* anchor_view;
+  if (browser->is_type_normal()) {
+    anchor_view = static_cast<BraveBrowserView*>(browser->window())
+                      ->GetWalletButtonAnchorView();
+  } else {
+    anchor_view = static_cast<BrowserView*>(browser->window())->top_container();
+  }
 
+  DCHECK(anchor_view);
   webui_bubble_manager_ =
       std::make_unique<BraveWebUIBubbleManagerT<WalletPanelUI>>(
           anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
