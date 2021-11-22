@@ -11,18 +11,35 @@
         android:layout_margin="24dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="gravity"
-            android:text="@string/backup"
             android:layout_gravity="center_vertical"
-            android:textSize="16sp"
-            android:textColor="@color/wallet_text_color"
             android:layout_marginBottom="16dp"
-            android:drawablePadding="8dp"
-            app:drawableStartCompat="@drawable/ic_safe"
-            app:drawableEndCompat="@drawable/ic_wallet_settings" />
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/accounts_backup"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="gravity"
+                android:text="@string/backup"
+                android:textSize="16sp"
+                android:textColor="@color/wallet_text_color"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/ic_safe" />
+
+            <ImageView
+                    android:id="@+id/accounts_settings"
+                    android:drawablePadding="8dp"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_wallet_settings"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

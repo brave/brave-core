@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,9 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.settings.BraveWalletPreferences;
+import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +67,16 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         addAccountBtn.setOnClickListener(v -> {
             Intent addAccountActivityIntent = new Intent(getActivity(), AddAccountActivity.class);
             startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
+        });
+
+        TextView backupBtn = view.findViewById(R.id.accounts_backup);
+        backupBtn.setOnClickListener(
+                v -> { ((BraveWalletActivity) getActivity()).backupBannerOnClick(); });
+
+        AppCompatImageView settingsBtn = view.findViewById(R.id.accounts_settings);
+        settingsBtn.setOnClickListener(v -> {
+            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            settingsLauncher.launchSettingsActivity(getContext(), BraveWalletPreferences.class);
         });
 
         setUpAccountList(view);
