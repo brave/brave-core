@@ -151,6 +151,10 @@ public class BraveSyncWorker {
         return BraveSyncWorkerJni.get().getQrDataJson(seedHex);
     }
 
+    public int GetQrCodeValidationString(String jsonQr) {
+        return BraveSyncWorkerJni.get().getQrCodeValidationResult(jsonQr);
+    }
+
     public void RequestSync() {
         BraveSyncWorkerJni.get().requestSync(mNativeBraveSyncWorker);
     }
@@ -194,6 +198,7 @@ public class BraveSyncWorker {
         String getSeedHexFromWords(String passphrase);
         String getWordsFromSeedHex(String seedHex);
         String getQrDataJson(String seedHex);
+        int getQrCodeValidationResult(String jsonQr);
         void saveCodeWords(long nativeBraveSyncWorker, String passphrase);
 
         void finalizeSyncSetup(long nativeBraveSyncWorker);

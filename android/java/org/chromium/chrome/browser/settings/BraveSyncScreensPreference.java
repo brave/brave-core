@@ -962,6 +962,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return true;
     }
 
+    private String getQrCodeValidationString(String jsonQr) {
+        Log.v(TAG, "getQrCodeValidationString jsonQr length=" + jsonQr.length());
+        int validationCode = getBraveSyncWorker().GetQrCodeValidationString(jsonQr);
+        return "invalid";
+    }
+
     private final Object mQrInProcessingLock = new Object();
     private boolean mQrInProcessing;
 
@@ -969,17 +975,27 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
             final String barcodeValue = barcode.displayValue;
-            if (!isBarCodeValid(barcodeValue)) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showEndDialog(
-                                getResources().getString(R.string.brave_sync_wrong_qrcode_error));
-                        showMainSyncScrypt();
-                    }
+
+            String validationError = getQrCodeValidationString(barcodeValue);
+
+            if (!validationError.isEmpty()) {
+                getActivity().runOnUiThread(() -> {
+                    showEndDialog(validationError);
+                    showMainSyncScrypt();
                 });
-                return;
             }
+            // will be deleted before merge
+            // if (!isBarCodeValid(barcodeValue)) {
+            //     getActivity().runOnUiThread(new Runnable() {
+            //         @Override
+            //         public void run() {
+            //             showEndDialog(
+            //                     getResources().getString(R.string.brave_sync_wrong_qrcode_error));
+            //             showMainSyncScrypt();
+            //         }
+            //     });
+            //     return;
+            // }
 
             synchronized (mQrInProcessingLock) {
                 // If camera looks on the QR image and final security warning is shown,

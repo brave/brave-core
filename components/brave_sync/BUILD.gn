@@ -74,6 +74,8 @@ source_set("qr_code_data") {
   sources = [
     "qr_code_data.cc",
     "qr_code_data.h",
+    "qr_code_validator.cc",
+    "qr_code_validator.h",
   ]
 
   deps = [ "//base" ]
@@ -109,7 +111,11 @@ group("constants") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "//brave/components/brave_sync/qr_code_data_unittest.cc" ]
+  sources = [
+    "//brave/components/brave_sync/qr_code_data_unittest.cc",
+    "//brave/components/brave_sync/qr_code_validator_unittest.cc",
+  ]
+
   deps = [
     ":qr_code_data",
     "//base/test:test_support",

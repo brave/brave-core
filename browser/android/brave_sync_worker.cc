@@ -18,6 +18,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_data.h"
+#include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 
@@ -333,6 +334,15 @@ JNI_BraveSyncWorker_GetQrDataJson(
       brave_sync::QrCodeData::CreateWithActualDate(str_seed_hex)->ToJson();
 
   return base::android::ConvertUTF8ToJavaString(env, qr_code_string);
+}
+
+int JNI_BraveSyncWorker_GetQrCodeValidationResult(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& json_qr) {
+  std::string str_json_qr = base::android::ConvertJavaStringToUTF8(json_qr);
+  DCHECK(!str_json_qr.empty());
+  return static_cast<int>(
+      brave_sync::QrCodeDataValidator::ValidateQrDataJson(str_json_qr));
 }
 
 }  // namespace android
