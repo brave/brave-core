@@ -1,5 +1,5 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index 454b8a57e6654a07c5ba4798c21a2792730a4de5..f950ad11a4632eb83b47d4dd91c49937fe55fbbf 100644
+index 69666da3c466336e841f68308d7c9256ae517bc5..5d1802b8f5ad0aee5eb7fd5874aa24d9b7bff641 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
 @@ -4560,6 +4560,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
@@ -9,4 +9,4 @@ index 454b8a57e6654a07c5ba4798c21a2792730a4de5..f950ad11a4632eb83b47d4dd91c49937
 +    BRAVE_RENDER_FRAME_IMPL_SHOULD_USE_USER_AGENT_OVERRIDE
      return false;
    const WebLocalFrame* main_frame = web_view->MainFrame()->ToWebLocalFrame();
-
+ 
