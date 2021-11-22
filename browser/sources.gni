@@ -75,6 +75,8 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_local_state_prefs.h",
   "//brave/browser/brave_profile_prefs.cc",
   "//brave/browser/brave_profile_prefs.h",
+  "//brave/browser/brave_shell_integration.cc",
+  "//brave/browser/brave_shell_integration.h",
   "//brave/browser/brave_tab_helpers.cc",
   "//brave/browser/brave_tab_helpers.h",
   "//brave/browser/browser_context_keyed_service_factories.cc",
