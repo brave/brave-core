@@ -56,7 +56,10 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.settings.BraveWalletPreferences;
+import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -67,7 +70,7 @@ import java.util.List;
 
 public class BraveWalletActivity
         extends AsyncInitializationActivity implements OnNextPage, ConnectionErrorHandler {
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
 
     private View cryptoLayout;
     private ImageView swapButton;
@@ -98,14 +101,24 @@ public class BraveWalletActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
-        toolbar.setTitle("");
-        toolbar.setOverflowIcon(
+        mToolbar = findViewById(R.id.toolbar);
+        mToolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
+        mToolbar.setTitle("");
+        mToolbar.setOverflowIcon(
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         swapButton = findViewById(R.id.swap_button);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

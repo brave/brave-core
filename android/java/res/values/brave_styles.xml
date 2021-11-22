@@ -87,11 +87,16 @@
       <item name="textAllCaps">false</item>
     </style>
 
+    <style name="BraveWalletToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/wallet_text_color</item>
+        <item name="android:textColorPrimary">@color/wallet_text_color</item>
+    </style>
+
     <style name="BraveVpnToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:background">@color/brave_plan_bg</item>
         <item name="titleTextColor">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>s
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="BraveProxyBillingActivityTheme">
