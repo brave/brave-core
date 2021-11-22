@@ -632,8 +632,7 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,
                        force_json_response));
-  } else if (method == kEthSignTypedData || method == kEthSignTypedDataV3 ||
-             method == kEthSignTypedDataV4) {
+  } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
     std::string address;
     std::string message;
     base::Value domain;
