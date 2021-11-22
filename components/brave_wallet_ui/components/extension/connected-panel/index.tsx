@@ -6,7 +6,10 @@ import {
   ConnectedHeader
 } from '../'
 import { Tooltip } from '../../shared'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 import { formatBalance } from '../../../utils/format-balances'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
@@ -99,6 +102,12 @@ const ConnectedPanel = (props: Props) => {
     return !SwapSupportedChains.includes(selectedNetwork.chainId)
   }, [SwapSupportedChains, selectedNetwork])
 
+  const formatedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
+
+  const formatedAssetBalanceWithDecimals = selectedAccount.balance
+    ? formatTokenAmountWithCommasAndDecimals(formatedAssetBalance, selectedNetwork.symbol)
+    : ''
+
   return (
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
@@ -129,8 +138,8 @@ const ConnectedPanel = (props: Props) => {
           </Tooltip>
         </BalanceColumn>
         <BalanceColumn>
-          <AssetBalanceText>{formatBalance(selectedAccount.balance, selectedNetwork.decimals)} {selectedNetwork.symbol}</AssetBalanceText>
-          <FiatBalanceText>${formatWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
+          <AssetBalanceText>{formatedAssetBalanceWithDecimals}</AssetBalanceText>
+          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
       <ConnectedBottomNav
