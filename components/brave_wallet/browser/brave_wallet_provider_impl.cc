@@ -166,8 +166,26 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
     delegate_->ShowBubble();
 }
 
-void BraveWalletProviderImpl::GetNetwork(GetNetworkCallback callback) {
-  rpc_controller_->GetNetwork(std::move(callback));
+void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
+    GetNetworkAndDefaultKeyringInfoCallback callback) {
+  rpc_controller_->GetNetwork(
+      base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
+    GetNetworkAndDefaultKeyringInfoCallback callback,
+    mojom::EthereumChainPtr chain) {
+  keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
+      &BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
+      weak_factory_.GetWeakPtr(), std::move(callback), std::move(chain)));
+}
+
+void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
+    GetNetworkAndDefaultKeyringInfoCallback callback,
+    mojom::EthereumChainPtr chain,
+    mojom::KeyringInfoPtr keyring_info) {
+  std::move(callback).Run(std::move(chain), std::move(keyring_info));
 }
 
 void BraveWalletProviderImpl::IsLocked(IsLockedCallback callback) {
