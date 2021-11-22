@@ -877,6 +877,47 @@
         ]
       },
       {
+        "name": "getAdsData",
+        "type": "function",
+        "description": "Gets whether ads is supported in the user's region",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "adsIsSupported",
+                "type": "boolean"
+              },
+              {
+                "name": "adsEnabled",
+                "type": "boolean"
+              },
+              {
+                "name": "adsPerHour",
+                "type": "number"
+              },
+              {
+                "name": "adsSubdivisionTargeting",
+                "type": "string"
+              },
+              {
+                "name": "automaticallyDetectedAdsSubdivisionTargeting",
+                "type": "string"
+              },
+              {
+                "name": "shouldAllowAdsSubdivisionTargeting",
+                "type": "boolean"
+              },
+              {
+                "name": "adsUIEnabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getACEnabled",
         "type": "function",
         "description": "Gets whether auto contribute is enabled",

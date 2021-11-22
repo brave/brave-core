@@ -167,9 +167,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html')
       this.isAutoContributeSupported_()
     }
-    this.browserProxy_.getLocale().then((locale) => {
-      this.shouldAllowAdsSubdivisionTargeting_ = locale === 'en-US'
-    })
     this.browserProxy_.getRewardsEnabled().then((enabled) => {
       if (enabled) {
         this.onRewardsEnabled_()
@@ -181,6 +178,13 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       if (!this.isRewardsEnabled_) {
         this.onRewardsEnabled_()
       }
+    })
+    chrome.settingsPrivate.onPrefsChanged.addListener((prefs) => {
+      prefs.forEach((pref) => {
+        if (pref.key === 'brave.brave_ads.should_allow_ads_subdivision_targeting') {
+          this.getAdsDataForSubdivisionTargeting_()
+        }
+      }, this)
     })
   }
 
@@ -198,6 +202,13 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     this.wasInlineTippingForGithubEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.github').value
     this.isAutoContributeSupported_()
     this.populateAutoContributeAmountDropdown_()
+    this.getAdsDataForSubdivisionTargeting_()
+  }
+
+  getAdsDataForSubdivisionTargeting_() {
+    this.browserProxy_.getAdsData().then((adsData) => {
+      this.shouldAllowAdsSubdivisionTargeting_ = adsData.shouldAllowAdsSubdivisionTargeting
+    })
   }
 
   populateAutoContributeAmountDropdown_() {
