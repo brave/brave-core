@@ -147,6 +147,15 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                     bool force_json_response,
                     std::unique_ptr<base::Value> formed_response,
                     bool success);
+  void ContinueEthSendTransaction(
+      const std::string& normalized_json_request,
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> global_callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      mojom::EthereumChainPtr chain);
 
   content::RenderFrame* render_frame_;
   bool brave_use_native_wallet_;

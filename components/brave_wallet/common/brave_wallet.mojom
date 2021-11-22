@@ -25,6 +25,10 @@ interface BraveWalletProvider {
   // error will be 0 when success
   SignMessage(string address, string message) => (string signature, int32 error, string error_message);
   GetChainId() => (string chain_id);
+
+  // Used for getting current network information.
+  GetNetwork() => (EthereumChain network);
+
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
 
@@ -332,6 +336,7 @@ interface EthJsonRpcController {
   // UI to native
   NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
   SetNetwork(string chain_id) => (bool success);
+  GetNetwork() => (EthereumChain network);
   GetAllNetworks() => (array<EthereumChain> networks);
   GetChainId() => (string chain_id);
   GetBlockTrackerUrl() => (string block_tracker_url);
