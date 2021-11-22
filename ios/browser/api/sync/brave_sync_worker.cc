@@ -179,11 +179,11 @@ std::string BraveSyncWorker::GetSyncCodeFromHexSeed(
   std::string sync_code_words;
   if (base::HexStringToBytes(hex_code_seed, &bytes)) {
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
-    if (bytes.size(), SEED_BYTES_COUNT) {
+    if (bytes.size() == SEED_BYTES_COUNT) {
       sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
       if (sync_code_words.empty()) {
-        VLOG(1) << __func__
-                << " PassphraseFromBytes32 failed for hex_code_seed";
+        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
+                << hex_code_seed;
       }
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
@@ -194,6 +194,25 @@ std::string BraveSyncWorker::GetSyncCodeFromHexSeed(
     VLOG(1) << __func__ << " HexStringToBytes failed for hex_code_seed";
   }
   return sync_code_words;
+}
+
+std::string BraveSyncWorker::GetHexSeedFromSyncCode(
+    const std::string& code_words) {
+  DCHECK(!code_words.empty());
+
+  std::string sync_code_hex;
+  std::vector<uint8_t> bytes;
+  if (brave_sync::crypto::PassphraseToBytes32(code_words, &bytes)) {
+    DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
+    if (bytes.size() == SEED_BYTES_COUNT) {
+      sync_code_hex = base::HexEncode(&bytes.at(0), bytes.size());
+    } else {
+      LOG(ERROR) << "wrong seed bytes " << bytes.size();
+    }
+  } else {
+    VLOG(1) << __func__ << " PassphraseToBytes32 failed for " << code_words;
+  }
+  return sync_code_hex;
 }
 
 bool BraveSyncWorker::IsFirstSetupComplete() {

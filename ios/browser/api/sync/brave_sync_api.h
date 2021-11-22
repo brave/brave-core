@@ -32,6 +32,8 @@ OBJC_EXPORT
 
 - (NSString*)syncCodeFromHexSeed:(NSString*)hexSeed;
 
+- (NSString*)hexSeedFromSyncCode:(NSString*)syncCode;
+
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString*)getDeviceListJSON;
