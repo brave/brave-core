@@ -51,8 +51,9 @@ interface BraveWalletProvider {
   // Used for the connect event
   GetChainId() => (string chain_id);
 
-  // Used for getting current network information.
-  GetNetwork() => (EthereumChain network);
+  // Used for getting current network and keyring information.
+  GetNetworkAndDefaultKeyringInfo() => (EthereumChain network,
+                                        KeyringInfo keyring_info);
 
   // Used for eth_accounts method requests
   GetAllowedAccounts() => (bool success, array<string> accounts);
