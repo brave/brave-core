@@ -1,6 +1,5 @@
 include_rules = [
   "+chrome/common",
-  "+chrome/installer",
   "+chrome/install_static",
   "+components/version_info",
 ]

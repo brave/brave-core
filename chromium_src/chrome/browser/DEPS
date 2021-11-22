@@ -5,7 +5,6 @@ include_rules = [
   "+brave/services/network/public",
   "+chrome/android",
   "+chrome/app",
-  "+chrome/browser",
   "+chrome/common",
   "+chrome/grit",
   "+chrome/installer",

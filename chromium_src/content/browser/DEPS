@@ -1,5 +1,4 @@
 include_rules = [
-  "+content/browser",
   "+content/public/browser",
   "+content/public/common",
   "+services/network/public/mojom/cookie_manager.mojom.h",

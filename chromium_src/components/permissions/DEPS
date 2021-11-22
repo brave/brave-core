@@ -1,5 +1,4 @@
 include_rules = [
-  "+components/permissions",
   "+components/resources/android",
   "+components/strings/grit/components_strings.h",
   "+components/vector_icons",

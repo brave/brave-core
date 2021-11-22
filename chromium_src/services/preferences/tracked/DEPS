@@ -1,5 +1,4 @@
 include_rules = [
-  "+services/preferences/tracked",
 ]
 
 # Existing exceptions

@@ -1,6 +1,5 @@
 include_rules = [
   "+brave/common",
-  "+chrome/common",
   "+components/version_info",
   "+components/component_updater",
 ]

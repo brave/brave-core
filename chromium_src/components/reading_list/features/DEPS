@@ -1,3 +1,0 @@
-include_rules = [
-  "+components/reading_list/features",
-]

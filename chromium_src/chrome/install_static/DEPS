@@ -1,5 +1,4 @@
 include_rules = [
-  "+chrome/install_static",
   "+chrome/app/chrome_dll_resource.h",
   "+chrome/chrome_elf/nt_registry/nt_registry.h",
   "+chrome/common/chrome_icon_resources_win.h",
