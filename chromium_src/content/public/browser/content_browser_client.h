@@ -10,12 +10,21 @@
 
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
+// Allow the embedder to determine the user-agent according to user preferences.
+// Allow the embedder to control if access to privileged functions that could
+// be used by fingerprinting by a shared worker is allowed.
 #define BRAVE_CONTENT_BROWSER_CLIENT_H                                       \
   virtual void MaybeHideReferrer(                                            \
       BrowserContext* browser_context, const GURL& request_url,              \
       const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}      \
   virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
-                                            const GURL& url);
+                                            const GURL& url);                \
+  virtual bool AllowWorkerFingerprinting(                                    \
+      const GURL& url, BrowserContext* browser_context,                      \
+      const std::vector<GlobalRenderFrameHostId>& render_frames);            \
+  virtual uint8_t WorkerGetBraveFarblingLevel(                               \
+      const GURL& url, BrowserContext* browser_context,                      \
+      const std::vector<GlobalRenderFrameHostId>& render_frames);
 
 #include "src/content/public/browser/content_browser_client.h"
 

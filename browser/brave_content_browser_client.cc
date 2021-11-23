@@ -64,6 +64,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -389,6 +390,34 @@ bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
   }
 
   return false;
+}
+
+bool BraveContentBrowserClient::AllowWorkerFingerprinting(
+    const GURL& url,
+    content::BrowserContext* browser_context,
+    const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
+  return WorkerGetBraveFarblingLevel(url, browser_context, render_frames) !=
+         BraveFarblingLevel::MAXIMUM;
+}
+
+uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
+    const GURL& url,
+    content::BrowserContext* browser_context,
+    const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  const bool shields_up =
+      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
+  if (!shields_up)
+    return BraveFarblingLevel::OFF;
+  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+      host_content_settings_map, url);
+  if (fingerprinting_type == ControlType::BLOCK)
+    return BraveFarblingLevel::MAXIMUM;
+  if (fingerprinting_type == ControlType::ALLOW)
+    return BraveFarblingLevel::OFF;
+  return BraveFarblingLevel::BALANCED;
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

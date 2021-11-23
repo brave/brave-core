@@ -61,6 +61,18 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
       override;
 
+  bool AllowWorkerFingerprinting(
+      const GURL& url,
+      content::BrowserContext* browser_context,
+      const std::vector<content::GlobalRenderFrameHostId>& render_frames)
+      override;
+
+  uint8_t WorkerGetBraveFarblingLevel(
+      const GURL& url,
+      content::BrowserContext* browser_context,
+      const std::vector<content::GlobalRenderFrameHostId>& render_frames)
+      override;
+
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,
       const url::Origin& requesting_origin,

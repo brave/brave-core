@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h b/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h
+index 95a3b6e30bc39443ae60683fb5ad613bb41fca6f..da1aa476bc26e3787337add3fa55055227777cc4 100644
+--- a/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h
++++ b/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h
+@@ -25,6 +25,7 @@ class SharedWorkerContentSettingsProxy : public WebContentSettingsClient {
+ 
+   // WebContentSettingsClient overrides.
+   bool AllowStorageAccessSync(StorageType storage_type) override;
++  BRAVE_SHARED_WORKER_CONTENT_SETTINGS_PROXY_H
+ 
+  private:
+   // To ensure the returned pointer is destructed on the same thread
