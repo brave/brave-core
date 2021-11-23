@@ -52,6 +52,7 @@
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
+using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
@@ -79,6 +80,12 @@ constexpr char kBraveAdblockCollapseBlockedElementsName[] =
 constexpr char kBraveAdblockCollapseBlockedElementsDescription[] =
     "Cause iframe and img elements to be collapsed if the URL of their src "
     "attribute is blocked";
+
+constexpr char kBraveAdblockCookieListDefaultName[] =
+    "Treat 'Easylist-Cookie List' as a default list source";
+constexpr char kBraveAdblockCookieListDefaultDescription[] =
+    "Enables the 'Easylist-Cookie List' regional list regardless of its "
+    "toggle setting in brave://adblock";
 
 constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
@@ -371,6 +378,10 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kBraveAdblockCollapseBlockedElementsName,           \
      flag_descriptions::kBraveAdblockCollapseBlockedElementsDescription,    \
      kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCollapseBlockedElements)},     \
+    {"brave-adblock-cookie-list-default",                                   \
+     flag_descriptions::kBraveAdblockCookieListDefaultName,                 \
+     flag_descriptions::kBraveAdblockCookieListDefaultDescription,          \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCookieListDefault)},           \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
