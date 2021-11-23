@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/global_routing_id.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 namespace content {
 class RenderFrameHost;
@@ -21,6 +20,8 @@ class WebContents;
 }  // namespace content
 
 namespace brave_wallet {
+
+class KeyringController;
 
 class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
  public:
@@ -43,8 +44,6 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
       base::OnceCallback<void()>);
 
  private:
-  void EnsureConnected();
-  void OnConnectionError();
   void ContinueRequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback,
       bool success,
@@ -57,7 +56,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
       BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
       const absl::optional<std::string>& selected_account);
 
-  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
+  KeyringController* keyring_controller_;
   content::WebContents* web_contents_;
   const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
