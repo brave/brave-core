@@ -45,7 +45,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create a browser instance
         guard let browserViewController = createBrowserWindow(scene: windowScene,
                                                               profile: sceneInfo.profile,
-                                                              diskImageStore: sceneInfo.diskImageStore) else {
+                                                              diskImageStore: sceneInfo.diskImageStore,
+                                                              migration: sceneInfo.migration) else {
             fatalError("Failed to create browser instance")
         }
         
@@ -328,7 +329,7 @@ extension SceneDelegate {
 }
 
 extension SceneDelegate {
-    private func createBrowserWindow(scene: UIWindowScene, profile: Profile, diskImageStore: DiskImageStore?) -> BrowserViewController? {
+    private func createBrowserWindow(scene: UIWindowScene, profile: Profile, diskImageStore: DiskImageStore?, migration: Migration?) -> BrowserViewController? {
         // There has to be an application delegate
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return nil
@@ -345,8 +346,8 @@ extension SceneDelegate {
         let browserViewController = BrowserViewController(
             profile: profile,
             diskImageStore: diskImageStore,
-            historyAPI: appDelegate.braveCore.historyAPI,
-            bookmarksAPI: appDelegate.braveCore.bookmarksAPI,
+            braveCore: appDelegate.braveCore,
+            migration: migration,
             crashedLastSession: crashedLastSession)
         
         browserViewController.do {

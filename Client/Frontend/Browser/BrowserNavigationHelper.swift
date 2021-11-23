@@ -84,8 +84,9 @@ class BrowserNavigationHelper {
                                         tabManager: bvc.tabManager,
                                         feedDataSource: bvc.feedDataSource,
                                         rewards: bvc.rewards,
+                                        windowProtection: bvc.windowProtection,
                                         historyAPI: bvc.historyAPI,
-                                        windowProtection: bvc.windowProtection)
+                                        syncAPI: bvc.syncAPI)
         vc.settingsDelegate = bvc
         open(vc, doneButton: DoneButton(style: .done, position: .right),
              allowSwipeToDismiss: false)

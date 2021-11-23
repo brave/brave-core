@@ -125,8 +125,9 @@ extension BrowserViewController {
                                                 feedDataSource: self.feedDataSource,
                                                 rewards: self.rewards,
                                                 legacyWallet: self.legacyWallet,
+                                                windowProtection: self.windowProtection,
                                                 historyAPI: self.historyAPI,
-                                                windowProtection: self.windowProtection)
+                                                syncAPI: self.syncAPI)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
             }

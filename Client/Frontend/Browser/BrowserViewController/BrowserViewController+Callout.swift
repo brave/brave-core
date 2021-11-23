@@ -120,7 +120,7 @@ extension BrowserViewController {
             return
         }
                 
-        if !BraveSyncAPI.shared.isInSyncGroup {
+        if !syncAPI.isInSyncGroup {
             var privacyEverywhereView = PrivacyEverywhereView()
             privacyEverywhereView.dismiss = { [weak self] in
                 self?.dismiss(animated: true)
@@ -129,7 +129,7 @@ extension BrowserViewController {
             privacyEverywhereView.syncNow = { [weak self] in
                 guard let self = self else { return }
                 self.dismiss(animated: true) {
-                    self.openInsideSettingsNavigation(with: SyncWelcomeViewController())
+                    self.openInsideSettingsNavigation(with: SyncWelcomeViewController(syncAPI: self.syncAPI))
                 }
             }
             
