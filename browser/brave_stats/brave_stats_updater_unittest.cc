@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/string_split.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
@@ -279,6 +280,56 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetention) {
   SetCurrentTimeForTest(current_time);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
             "2018-11-04");
+}
+
+TEST_F(BraveStatsUpdaterTest, GetUpdateURLHasFirstAndDtoi) {
+  base::Time current_time, install_time;
+
+  // Set date to 2018-11-04
+  EXPECT_TRUE(base::Time::FromString("2018-11-04", &install_time));
+
+  // Make first run date 15 days earlier (still within 30 day window)
+  current_time = install_time + base::Days(16);
+
+  SetCurrentTimeForTest(install_time);
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
+      kToday, kThisWeek, kThisMonth);
+  SetCurrentTimeForTest(current_time);
+
+  GURL response = brave_stats_updater_params.GetUpdateURL(
+      GURL("https://demo.brave.com"), "platform id here", "channel name here",
+      "full brave version here");
+
+  base::StringPairs kv_pairs;
+  // this will return `false` because at least one argument has no value
+  // ex: `arch` will have an empty value (because of kArchSkip).
+  base::SplitStringIntoKeyValuePairsUsingSubstr(response.query(), '=', "&",
+                                                &kv_pairs);
+  EXPECT_FALSE(kv_pairs.empty());
+
+  bool first_is_true = false;
+  bool has_dtoi = false;
+  for (auto& kv : kv_pairs) {
+    if (kv.first == "first") {
+      EXPECT_EQ(kv.second, "true");
+      first_is_true = true;
+    } else if (kv.first == "dtoi") {
+      EXPECT_EQ(kv.second, "2018-11-04");
+      has_dtoi = true;
+      // Audit passed-through parameters.
+      // Should not be modified (other than url encode).
+    } else if (kv.first == "platform") {
+      EXPECT_EQ(kv.second, "platform+id+here");
+    } else if (kv.first == "channel") {
+      EXPECT_EQ(kv.second, "channel+name+here");
+    } else if (kv.first == "version") {
+      EXPECT_EQ(kv.second, "full+brave+version+here");
+    }
+  }
+
+  EXPECT_EQ(true, first_is_true);
+  EXPECT_EQ(true, has_dtoi);
 }
 
 TEST_F(BraveStatsUpdaterTest, HasDailyRetentionExpiration) {

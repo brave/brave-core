@@ -63,35 +63,10 @@ static constexpr int kMinimumUsageThreshold = 3;
 GURL GetUpdateURL(
     const GURL& base_update_url,
     const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
-  GURL update_url(base_update_url);
-  update_url = net::AppendQueryParameter(update_url, "platform",
-                                         brave_stats::GetPlatformIdentifier());
-  update_url =
-      net::AppendQueryParameter(update_url, "channel", brave::GetChannelName());
-  update_url = net::AppendQueryParameter(
-      update_url, "version",
+  return stats_updater_params.GetUpdateURL(
+      base_update_url, brave_stats::GetPlatformIdentifier(),
+      brave::GetChannelName(),
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  update_url = net::AppendQueryParameter(update_url, "daily",
-                                         stats_updater_params.GetDailyParam());
-  update_url = net::AppendQueryParameter(update_url, "weekly",
-                                         stats_updater_params.GetWeeklyParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "monthly", stats_updater_params.GetMonthlyParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "first", stats_updater_params.GetFirstCheckMadeParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "woi", stats_updater_params.GetWeekOfInstallationParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "dtoi", stats_updater_params.GetDateOfInstallationParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "ref", stats_updater_params.GetReferralCodeParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "adsEnabled", stats_updater_params.GetAdsEnabledParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "arch", stats_updater_params.GetProcessArchParam());
-  update_url = net::AppendQueryParameter(
-      update_url, "walletActive", stats_updater_params.GetWalletEnabledParam());
-  return update_url;
 }
 
 net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
