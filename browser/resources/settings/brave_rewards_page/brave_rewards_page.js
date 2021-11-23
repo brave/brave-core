@@ -166,7 +166,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     this.openRewardsPanel_ = () => {
       chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html')
       this.isAutoContributeSupported_()
-      this.populateAutoContributeAmountDropdown_()
     }
     this.browserProxy_.getLocale().then((locale) => {
       this.shouldAllowAdsSubdivisionTargeting_ = locale === 'en-US'
@@ -178,8 +177,14 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
         this.wasInlineTippingForTwitterEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.twitter').value
         this.wasInlineTippingForGithubEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.github').value
         this.isAutoContributeSupported_()
-        this.populateAutoContributeAmountDropdown_()
       }
+    })
+    chrome.braveRewards.onAdsEnabled.addListener(() => {
+      // Populate the auto contribute amount dropdown when Ads/Rewards is
+      // enabled (we don't have a Rewards-specific listener, but this works for
+      // our purposes as we just want to ensure the dropdown is populated the
+      // first time we enable)
+      this.populateAutoContributeAmountDropdown_()
     })
   }
 
