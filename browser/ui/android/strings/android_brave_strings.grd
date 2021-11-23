@@ -2516,6 +2516,39 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_TX_FEE" desc="Brave wallet tx fee">
       Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> ETH ($<ph name="FIAT_VALUE">%2$s<ex>101.22</ex></ph>)
     </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_1" desc="Dormant users engagement notification text">
+      Are you using the fastest web browser?
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_1" desc="Dormant users engagement notification body">
+      3x faster internet is already on your phone. Use Brave for all your web browsing.
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_1" desc="Dormant users engagement text">
+      Brave = 3x faster web browsing
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_2" desc="Dormant users engagement notification text">
+      Get more battery life on every charge
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_2" desc="Dormant users engagement notification body">
+      Battery savings is just a step away. Use Brave for all your web browsing.
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_2" desc="Dormant users engagement text">
+      Brave = more life on every charge
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_3" desc="Dormant users engagement notification text">
+      Top up your mobile data less often
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_3" desc="Dormant users engagement notification body">
+      Fewer ads = less data on every page you load. Use Brave for all your web browsing.
+    </message>
+    <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_3" desc="Dormant users engagement text">
+      Brave = less mobile data on every page
+    </message>
+    <message name="IDS_BETTER_PRIVACY" desc="Dormant users engagement bullet text">
+      &#8226; Better privacy
+    </message>
+    <message name="IDS_NO_ANNOYING_ADS" desc="Dormant users engagement bullet text">
+      &#8226; No annoying ads
+    </message>
     </messages>
   </release>
 </grit>

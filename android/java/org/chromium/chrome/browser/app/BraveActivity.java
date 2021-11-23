@@ -69,6 +69,7 @@ import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
+import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
@@ -554,6 +555,20 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
+        if (PackageUtils.isFirstInstall(this)
+                && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
+                        || getPackageName().equals(BRAVE_PRODUCTION_PACKAGE_NAME))) {
+            OnboardingPrefManager.getInstance().setDormantUsersPrefs();
+            if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
+                RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
+                OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
+            }
+        }
+    }
+
+    public void setDormantUsersPrefs() {
+        OnboardingPrefManager.getInstance().setDormantUsersPrefs();
+        RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
     }
 
     private final ConnectivityManager.NetworkCallback mNetworkCallback =
@@ -661,6 +676,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.DAY_30:
             case RetentionNotificationUtil.DAY_35:
                 openRewardsPanel();
+                break;
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                showDormantUsersEngagementDialog(notificationType);
                 break;
             }
         }
@@ -904,6 +924,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.setCancelable(false);
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+    }
+
+    public void showDormantUsersEngagementDialog(String notificationType) {
+        DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
+                new DormantUsersEngagementDialogFragment();
+        dormantUsersEngagementDialogFragment.setCancelable(false);
+        dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
+        dormantUsersEngagementDialogFragment.show(
+                getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");
+        setDormantUsersPrefs();
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {

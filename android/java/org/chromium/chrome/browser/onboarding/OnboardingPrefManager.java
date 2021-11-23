@@ -8,10 +8,11 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Activity;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -19,12 +20,15 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.lang.System;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,10 +55,12 @@ public class OnboardingPrefManager {
     public static final String FROM_NOTIFICATION = "from_notification";
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
+    public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
     public static final String ADS_TRACKERS_NOTIFICATION = "ads_trackers_notification";
     public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
     public static final String TIME_SAVED_NOTIFICATION = "time_saved_notification";
     public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
+    public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
 
     private static OnboardingPrefManager sInstance;
 
@@ -307,6 +313,31 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    public boolean isDormantUsersEngagementEnabled() {
+        return mSharedPreferences.getBoolean(PREF_DORMANT_USERS_ENGAGEMENT, false);
+    }
+
+    public boolean isDormantUsersNotificationsStarted() {
+        return mSharedPreferences.getBoolean(DORMANT_USERS_NOTIFICATION, false);
+    }
+
+    public void setDormantUsersNotificationsStarted(boolean isDormantUsersNotificationsStarted) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(
+                DORMANT_USERS_NOTIFICATION, isDormantUsersNotificationsStarted);
+        sharedPreferencesEditor.apply();
+    }
+
+    public long getDormantUsersNotificationTime(String notificationType) {
+        return mSharedPreferences.getLong(notificationType, 0);
+    }
+
+    public void setDormantUsersNotificationTime(String notificationType, long timeInMilliseconds) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(notificationType, timeInMilliseconds);
+        sharedPreferencesEditor.apply();
+    }
+
     public boolean isAdsTrackersNotificationStarted() {
         return mSharedPreferences.getBoolean(ADS_TRACKERS_NOTIFICATION, false);
     }
@@ -345,5 +376,23 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(SHOW_BADGE_ANIMATION, shouldShowBadgeAnimation);
         sharedPreferencesEditor.apply();
+    }
+
+    public void setDormantUsersPrefs() {
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_25, setTimeInMillis(25 * 24 * 60));
+        setDormantUsersNotificationTime(
+                RetentionNotificationUtil.DORMANT_USERS_DAY_40, setTimeInMillis(40 * 24 * 60));
+    }
+
+    private long setTimeInMillis(int timeInMinutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.MINUTE, timeInMinutes);
+
+        Date date = calendar.getTime();
+        return date.getTime();
     }
 }
