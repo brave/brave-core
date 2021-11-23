@@ -19,7 +19,6 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
@@ -58,7 +57,12 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
     content::RenderFrameHost* const render_frame_host)
     : web_contents_(web_contents),
       host_id_(render_frame_host->GetGlobalId()),
-      weak_ptr_factory_(this) {}
+      weak_ptr_factory_(this) {
+  keyring_controller_ =
+      brave_wallet::KeyringControllerFactory::GetControllerForContext(
+          web_contents->GetBrowserContext());
+  DCHECK(keyring_controller_);
+}
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 
@@ -66,24 +70,6 @@ BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 void BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
     base::OnceCallback<void()> callback) {
   g_NewSetupNeededForTestingCallback = std::move(callback);
-}
-
-void BraveWalletProviderDelegateImpl::EnsureConnected() {
-  if (!keyring_controller_) {
-    auto pending =
-        brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
-            web_contents_->GetBrowserContext());
-    keyring_controller_.Bind(std::move(pending));
-  }
-  DCHECK(keyring_controller_);
-  keyring_controller_.set_disconnect_handler(
-      base::BindOnce(&BraveWalletProviderDelegateImpl::OnConnectionError,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveWalletProviderDelegateImpl::OnConnectionError() {
-  keyring_controller_.reset();
-  EnsureConnected();
 }
 
 GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
@@ -100,8 +86,6 @@ void BraveWalletProviderDelegateImpl::ShowBubble() {
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
-  EnsureConnected();
-
   GetAllowedAccounts(base::BindOnce(
       &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -156,7 +140,6 @@ void BraveWalletProviderDelegateImpl::
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     GetAllowedAccountsCallback callback) {
-  EnsureConnected();
   keyring_controller_->GetSelectedAccount(base::BindOnce(
       &BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
