@@ -26,10 +26,14 @@ interface BraveWalletProvider {
   SignMessage(string address, string message) => (string signature, int32 error, string error_message);
   GetChainId() => (string chain_id);
 
-  // Used for getting current network information.
-  GetNetwork() => (EthereumChain network);
+  // Used for getting current network and keyring information.
+  GetNetworkAndDefaultKeyringInfo() => (EthereumChain network,
+                                        KeyringInfo keyring_info);
 
   GetAllowedAccounts() => (bool success, array<string> accounts);
+
+  // Determines if the keyring is locked.
+  IsLocked() => (bool isLocked);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

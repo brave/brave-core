@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+
 namespace brave_wallet {
 
 // Equivalent to web3.utils.toHex(string);
@@ -30,6 +32,11 @@ bool ConcatHexStrings(const std::string& hex_input1,
                       std::string* out);
 bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
                       std::string* out);
+
+// Takes a hex string as input and converts it to a uint256_t
+bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
+// Takes a uint256_t and converts it to a hex string
+std::string Uint256ValueToHex(uint256_t input);
 
 }  // namespace brave_wallet
 

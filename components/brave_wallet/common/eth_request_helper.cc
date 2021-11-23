@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
@@ -136,9 +137,24 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
 }
 
 bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
-                        bool network_supports_eip1559) {
-  // Network without EIP1559 support.
-  if (!network_supports_eip1559)
+                        bool network_supports_eip1559,
+                        const std::vector<mojom::AccountInfoPtr>& account_infos,
+                        const std::string& address) {
+  bool keyring_supports_eip1559 = true;
+  auto account_it = std::find_if(account_infos.begin(), account_infos.end(),
+                                 [&](const mojom::AccountInfoPtr& account) {
+                                   return base::EqualsCaseInsensitiveASCII(
+                                       account->address, address);
+                                 });
+
+  // Only ledger hardware keyring supports EIP-1559 at the moment.
+  if (account_it != account_infos.end() && (*account_it)->hardware &&
+      (*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor) {
+    keyring_supports_eip1559 = false;
+  }
+
+  // Network or keyring without EIP1559 support.
+  if (!network_supports_eip1559 || !keyring_supports_eip1559)
     return false;
 
   // Network with EIP1559 support and EIP1559 gas fields are specified.

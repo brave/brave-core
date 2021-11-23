@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -24,15 +24,6 @@ class GURL;
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
-// Equivalent to web3.utils.keccak256(string)
-std::string KeccakHash(const std::string& input, bool to_hex = true);
-std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
-// Returns the hex encoding of the first 4 bytes of the hash.
-// For example: keccak('balanceOf(address)')
-std::string GetFunctionHash(const std::string& input);
-
-bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
-std::string Uint256ValueToHex(uint256_t input);
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
@@ -59,11 +50,6 @@ bool EncodeStringArray(const std::vector<std::string>& input,
 bool DecodeString(size_t offset, const std::string& input, std::string* output);
 bool DecodeStringArray(const std::string& input,
                        std::vector<std::string>* output);
-
-// Implement namehash algorithm based on EIP-137 spec.
-// Used for converting domain names in the classic format (ex: brave.crypto) to
-// an ERC-721 token for ENS and Unstoppable Domains.
-std::string Namehash(const std::string& name);
 
 // When we call memset in end of function to clean local variables
 // for security reason, compiler optimizer can remove such call.

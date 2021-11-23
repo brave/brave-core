@@ -42,50 +42,6 @@ void UpdateCustomNetworks(PrefService* prefs,
 
 namespace brave_wallet {
 
-TEST(BraveWalletUtilsUnitTest, KeccakHash) {
-  ASSERT_EQ(
-      KeccakHash(""),
-      "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
-  ASSERT_EQ(
-      KeccakHash("hello world"),
-      "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad");
-}
-
-TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
-  ASSERT_EQ(GetFunctionHash("transfer(address,uint256)"), "0xa9059cbb");
-  ASSERT_EQ(GetFunctionHash("approve(address,uint256)"), "0x095ea7b3");
-  ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
-}
-
-TEST(BraveWalletUtilsUnitTest, HexValueToUint256) {
-  uint256_t out;
-  ASSERT_TRUE(HexValueToUint256("0x1", &out));
-  ASSERT_EQ(out, (uint256_t)1);
-  ASSERT_TRUE(HexValueToUint256("0x1234", &out));
-  ASSERT_EQ(out, (uint256_t)4660);
-  ASSERT_TRUE(HexValueToUint256("0xB", &out));
-  ASSERT_EQ(out, (uint256_t)11);
-  uint256_t expected_val = 102400000000000;
-  // "10240000000000000000000000"
-  expected_val *= static_cast<uint256_t>(100000000000);
-  ASSERT_TRUE(HexValueToUint256("0x878678326eac900000000", &out));
-  ASSERT_TRUE(out == (uint256_t)expected_val);
-  // Check padded values too
-  ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
-  ASSERT_EQ(out, (uint256_t)240);
-}
-
-TEST(BraveWalletUtilsUnitTest, Uint256ValueToHex) {
-  ASSERT_EQ(Uint256ValueToHex(1), "0x1");
-  ASSERT_EQ(Uint256ValueToHex(4660), "0x1234");
-  ASSERT_EQ(Uint256ValueToHex(11), "0xb");
-  // "10240000000000000000000000"
-  uint256_t input_val = 102400000000000;
-  input_val *= static_cast<uint256_t>(100000000000);
-  ASSERT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
-  ASSERT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
-}
-
 TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   const struct {
     const char* entropy;
@@ -664,36 +620,6 @@ TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
       // count for "one"
       "0000000000000000000000000000000000000000000000000000000000000003",
       &output));
-}
-
-TEST(BraveWalletUtilsUnitTest, Namehash) {
-  EXPECT_EQ(
-      Namehash(""),
-      "0x0000000000000000000000000000000000000000000000000000000000000000");
-  EXPECT_EQ(
-      Namehash("eth"),
-      "0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae");
-  EXPECT_EQ(
-      Namehash("foo.eth"),
-      "0xde9b09fd7c5f901e23a3f19fecc54828e9c848539801e86591bd9801b019f84f");
-  EXPECT_EQ(
-      Namehash("."),
-      "0x0000000000000000000000000000000000000000000000000000000000000000");
-  EXPECT_EQ(
-      Namehash("crypto"),
-      "0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f");
-  EXPECT_EQ(
-      Namehash("example.crypto"),
-      "0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e");
-  EXPECT_EQ(
-      Namehash("www.example.crypto"),
-      "0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1");
-  EXPECT_EQ(
-      Namehash("a.b.c.crypto"),
-      "0x353ea3e0449067382e0ea7934767470170dcfa9c49b1be0fe708adc4b1f9cf13");
-  EXPECT_EQ(
-      Namehash("brave.crypto"),
-      "0x77252571a99feee8f5e6b2f0c8b705407d395adc00b3c8ebcc7c19b2ea850013");
 }
 
 TEST(BraveWalletUtilsUnitTest, SecureZeroData) {

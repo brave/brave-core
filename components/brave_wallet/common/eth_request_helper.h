@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -22,7 +23,9 @@ mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
                                                        std::string* from);
 bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
-                        bool network_supports_eip1559);
+                        bool network_supports_eip1559,
+                        const std::vector<mojom::AccountInfoPtr>& account_infos,
+                        const std::string& address);
 
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json);
