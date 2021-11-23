@@ -150,33 +150,29 @@ public class SendTokenStore: ObservableObject {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard let token = selectedSendToken, let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: 18) else { return }
     
-    rpcController.chainId { [weak self] chainId in
+    rpcController.network { [weak self] network in
       guard let self = self else { return }
-      self.rpcController.allNetworks { networks in
-        guard let currentNetwork = networks.first(where: { $0.id == chainId }) else { return }
-        
-        if token.isETH {
-          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: address, value: "0x\(weiHexString)", data: .init())
-          if currentNetwork.isEip1559 {
-            self.makeEIP1559Tx(chainId: chainId, baseData: baseData, from: account, completion: completion)
+      if token.isETH {
+        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: address, value: "0x\(weiHexString)", data: .init())
+        if network.isEip1559 {
+          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: account, completion: completion)
+        } else {
+          self.transactionController.addUnapprovedTransaction(baseData, from: account.address) { success, txMetaId, errorMessage in
+            completion(success)
+          }
+        }
+      } else {
+        self.transactionController.makeErc20TransferData(account.address, amount: "0x\(weiHexString)") { success, data in
+          guard success else {
+            completion(false)
+            return
+          }
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+          if network.isEip1559 {
+            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: account, completion: completion)
           } else {
             self.transactionController.addUnapprovedTransaction(baseData, from: account.address) { success, txMetaId, errorMessage in
               completion(success)
-            }
-          }
-        } else {
-          self.transactionController.makeErc20TransferData(account.address, amount: "0x\(weiHexString)") { success, data in
-            guard success else {
-              completion(false)
-              return
-            }
-            let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
-            if currentNetwork.isEip1559 {
-              self.makeEIP1559Tx(chainId: chainId, baseData: baseData, from: account, completion: completion)
-            } else {
-              self.transactionController.addUnapprovedTransaction(baseData, from: account.address) { success, txMetaId, errorMessage in
-                completion(success)
-              }
             }
           }
         }

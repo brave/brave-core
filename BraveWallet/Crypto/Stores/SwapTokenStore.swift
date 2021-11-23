@@ -206,30 +206,32 @@ public class SwapTokenStore: ObservableObject {
       let accountInfo = accountInfo,
       let swapParams = swapParameters(for: .perSellAsset)
     else { return }
-    self.rpcController.allNetworks { [weak self] networks in
-      guard
-        let self = self,
-        let currentNetwork = networks.first(where: { $0.id == self.chainId })
-      else {
+    
+    rpcController.network { [weak self] network in
+      guard let self = self else {
         self?.state = .error(Strings.Wallet.unknownError)
         self?.clearAllAmount()
         return
       }
-      
       self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
         guard success else {
           self.state = .error(Strings.Wallet.unknownError)
           self.clearAllAmount()
           return
         }
-        guard let response = swapResponse else { return }
+        guard let response = swapResponse else {
+          self.state = .error(Strings.Wallet.unknownError)
+          self.clearAllAmount()
+          return
+        }
+        
         let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
         let gasPrice = "0x\(weiFormatter.weiString(from: response.gasPrice, radix: .hex, decimals: 0) ?? "0")" // already in wei
         let gasLimit = "0x\(weiFormatter.weiString(from: response.estimatedGas, radix: .hex, decimals: 0) ?? "0")" // already in wei
         let value = "0x\(weiFormatter.weiString(from: response.value, radix: .hex, decimals: 0) ?? "0")" // already in wei
         let data: [NSNumber] = .init(hexString: response.data) ?? .init()
         
-        if currentNetwork.isEip1559 {
+        if network.isEip1559 {
           let baseData: BraveWallet.TxData = .init(
             nonce: "",
             gasPrice: "", // no gas price in eip1559
@@ -238,7 +240,7 @@ public class SwapTokenStore: ObservableObject {
             value: value,
             data: data
           )
-          self.makeEIP1559Tx(chainId: self.chainId,
+          self.makeEIP1559Tx(chainId: network.chainId,
                              baseData: baseData,
                              from: accountInfo) { success in
             // should be observed
@@ -338,11 +340,9 @@ public class SwapTokenStore: ObservableObject {
         decimals: Int(fromToken.decimals)
       )
     else { return }
-    rpcController.allNetworks { [weak self] networks in
-      guard
-        let self = self,
-        let currentNetwork = networks.first(where: { $0.id == self.chainId })
-      else { return }
+    
+    rpcController.network { [weak self] network in
+      guard let self = self else { return }
       self.transactionController.makeErc20ApproveData(
         spenderAddress,
         amount: balanceInWeiHex
@@ -356,8 +356,8 @@ public class SwapTokenStore: ObservableObject {
           value: "0x0",
           data: data
         )
-        if currentNetwork.isEip1559 {
-          self.makeEIP1559Tx(chainId: self.chainId,
+        if network.isEip1559 {
+          self.makeEIP1559Tx(chainId: network.chainId,
                              baseData: baseData,
                              from: accountInfo) { success in
             guard success else {

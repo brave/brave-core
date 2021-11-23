@@ -142,34 +142,32 @@ class AssetDetailStore: ObservableObject {
   }
   
   func fetchTransactions() {
-    rpcController.chainId { [self] chainId in
-      rpcController.allNetworks { networks in
-        let selectedNetwork = networks.first(where: { $0.chainId == chainId }) ?? .init()
-        keyringController.defaultKeyringInfo { keyring in
-          var transactions: [BraveWallet.TransactionInfo] = []
-          let group = DispatchGroup()
-          for account in keyring.accountInfos {
-            group.enter()
-            txController.allTransactionInfo(account.address) { txs in
-              defer { group.leave() }
-              transactions.append(contentsOf: txs)
-            }
+    rpcController.network { [weak self] network in
+      guard let self = self else { return }
+      self.keyringController.defaultKeyringInfo { keyring in
+        var transactions: [BraveWallet.TransactionInfo] = []
+        let group = DispatchGroup()
+        for account in keyring.accountInfos {
+          group.enter()
+          self.txController.allTransactionInfo(account.address) { txs in
+            defer { group.leave() }
+            transactions.append(contentsOf: txs)
           }
-          group.notify(queue: .main) {
-            self.transactions = transactions
-              .filter { tx in
-                switch tx.txType {
-                case .erc20Approve, .erc20Transfer:
-                  let toAddress = tx.txData.baseData.to
-                  return toAddress == token.contractAddress
-                case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
-                  return selectedNetwork.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-                @unknown default:
-                  return false
-                }
+        }
+        group.notify(queue: .main) {
+          self.transactions = transactions
+            .filter { tx in
+              switch tx.txType {
+              case .erc20Approve, .erc20Transfer:
+                let toAddress = tx.txData.baseData.to
+                return toAddress == self.token.contractAddress
+              case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
+                return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+              @unknown default:
+                return false
               }
-              .sorted(by: { $0.createdTime > $1.createdTime })
-          }
+            }
+            .sorted(by: { $0.createdTime > $1.createdTime })
         }
       }
     }

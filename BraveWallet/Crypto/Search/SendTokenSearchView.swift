@@ -13,7 +13,7 @@ struct SendTokenSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   var body: some View {
-    TokenList(tokens: sendTokenStore.userAssets) { token in
+    TokenList(tokens: sendTokenStore.userAssets.filter({ $0.isErc20 || $0.isETH })) { token in
       Button(action: {
         sendTokenStore.selectedSendToken = token
         presentationMode.dismiss()
