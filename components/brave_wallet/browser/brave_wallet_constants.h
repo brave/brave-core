@@ -423,6 +423,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT},
     {"braveWalletConnectHardwarePanelConfirmation",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION},
+    {"braveWalletConnectHardwarePanelOpenApp",
+     IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP},
     {"braveWalletTransactionSent", IDS_BRAVE_WALLET_TRANSACTION_SENT},
     {"braveWalletTransactionReceived", IDS_BRAVE_WALLET_TRANSACTION_RECEIVED},
     {"braveWalletTransactionExplorerMissing",
