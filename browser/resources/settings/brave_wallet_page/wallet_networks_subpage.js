@@ -64,6 +64,13 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.updateNetworks()
   }
 
+  getNetworkItemClass(chainId) {
+    if (!this.isDefaultNetwork(chainId)) {
+      return "flex cr-padded-text hovered"
+    }
+    return "flex cr-padded-text"
+  }
+
   isDefaultNetwork(chainId) {
     return (chainId ===
         this.getPref('brave.wallet.wallet_current_chain_id').value)
@@ -79,14 +86,20 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   onDeleteActionTapped_(event) {
+    const chainId = this.selectedNetwork.chainId
+    const chainName = this.selectedNetwork.chainName
     this.selectedNetwork = {}
     this.$$('cr-action-menu').close();
+    if (this.isDefaultNetwork(chainId)) {
+      this.updateNetworks()
+      return
+    }
     var message = this.i18n('walletDeleteNetworkConfirmation',
-                            event.model.item.chainName)
+                            chainName)
     if (!window.confirm(message))
       return
 
-    this.browserProxy_.removeEthereumChain(event.model.item.chainId).
+    this.browserProxy_.removeEthereumChain(chainId).
         then(success => { this.updateNetworks() })
   }
 
@@ -95,6 +108,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   onItemDoubleClick(event) {
+    if (this.isDefaultNetwork(event.model.item.chainId)) {
+      this.updateNetworks()
+      return
+    }
     this.selectedNetwork = event.model.item
     this.showAddWalletNetworkDialog_ = true
   }
