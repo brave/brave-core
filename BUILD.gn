@@ -198,7 +198,10 @@ group("create_dist") {
     # zip will be created along with installer
     deps += [ ":create_symbols_dist" ]
   } else {
-    deps += [ ":create_dist_zips" ]
+    deps += [
+      ":create_dist_zips",
+      ":create_symbols_dist",
+    ]
   }
   if (is_win) {
     deps += [ "build/win:create_signed_installer" ]
@@ -372,26 +375,23 @@ action("create_symbols_dist") {
 
 action("create_dist_zips") {
   output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
+  outputs = [ output ]
 
   if (is_win) {
     # Repack a chrome release archive to the brave format.
     # TODO(atuchin): support other platforms.
 
     script = "//brave/script/repack-archive.py"
-    outputs = [ output ]
+    deps = [ "//chrome/installer/mini_installer:mini_installer_archive" ]
 
-    deps = [
-      ":create_symbols_dist",
-      "//chrome/installer/mini_installer:mini_installer_archive",
-    ]
-    target_dir = "Chrome-bin"
-    input = rebase_path("$root_out_dir/chrome.7z")
+    input = "$root_out_dir/chrome.7z"
+    inputs = [ input ]
 
     args = [
-      "--input=$input",
+      "--input=" + rebase_path(input),
       "--output=" + rebase_path(output),
-      "--target_dir=$target_dir",
       "--build_dir=" + rebase_path(root_out_dir),
+      "--target_dir=Chrome-bin",
     ]
   } else {  # !is_win
     script = "//brave/script/create-dist.py"
@@ -419,11 +419,8 @@ action("create_dist_zips") {
       dir_inputs += [ "$brave_exe" ]
     }
 
-    outputs = [ output ]
-
     deps = [
       ":brave_license_dist_resources",
-      ":create_symbols_dist",
       "app/$current_os:dist_resources",
     ]
 

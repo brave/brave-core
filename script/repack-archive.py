@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import optparse
+import argparse
 import sys
 import os
 import subprocess
@@ -17,23 +17,24 @@ def GetLZMAExec(build_dir):
 
 
 def main():
-    parser = optparse.OptionParser()
-    parser.add_option('--output', help='Path to output archive.')
-    parser.add_option('--input', help='Path to input archive.')
-    parser.add_option('--build_dir',
-                      help='Full path to build directory(i.e. <something>/out/Release)')
-    parser.add_option('--target_dir',
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--output', help='Path to output archive.')
+  parser.add_argument('--input', help='Path to input archive.')
+  parser.add_argument('--build_dir',
+                      help=('Full path to build directory',
+                            'i.e. <something>/out/Release)'))
+  parser.add_argument('--target_dir',
                       help='If provided, the paths in the archive will be '
                       'relative to this directory', default='.')
-    options, _ = parser.parse_args()
+  args = parser.parse_args()
 
-    temp_dir = tempdir('brave_archive')
-    lzma_exec = GetLZMAExec(options.build_dir)
-    cmd = [lzma_exec, 'x', options.input, '-y', '-o' + temp_dir]
-    subprocess.check_call(cmd, stdout=subprocess.PIPE, shell=False)
-    with scoped_cwd(os.path.join(temp_dir, options.target_dir)):
-      make_zip(options.output, [], ['.'])
+  temp_dir = tempdir('brave_archive')
+  lzma_exec = GetLZMAExec(args.build_dir)
+  cmd = [lzma_exec, 'x', args.input, '-y', '-o' + temp_dir]
+  subprocess.check_call(cmd, stdout=subprocess.PIPE, shell=False)
+  with scoped_cwd(os.path.join(temp_dir, args.target_dir)):
+    make_zip(args.output, [], ['.'])
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+  sys.exit(main())
