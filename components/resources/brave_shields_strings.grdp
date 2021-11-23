@@ -3,4 +3,100 @@
   <message name="IDS_BRAVE_SHIELDS" translateable="false" desc="Title for Brave Shields">
     Brave Shields
   </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ENABLE" desc="An accessible label for Brave Shields switch button. Do not translate Brave Shields.">
+    Enable Brave Shields
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_UP" desc="Status label for when Brave Shields is enabled.">
+    Brave Shields <ph name="LINK_BEFORE">$1</ph>UP<ph name="LINK_AFTER">$2</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
+    If this site seems broken, try Shields down. Note: this may reduce Brave privacy protections.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are being blocked.">
+    Trackers, ads, and more blocked <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
+    Advanced Controls
+  </message>
+
+  <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
+    These settings affect web compatibility on this site.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS_TITLE" desc="A section title for global settings.">
+    Global Shield settings
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_CHANGE_DEFAULTS" desc="A link that redirects to menu options for changing default Shield settings.">
+    Change global Shield defaults
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists.">
+    Customize Adblock Lists
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_CONNECTIONS_UPGRADED" desc="A label to describe expand/collapse button for the HTTPS section.">
+    Connections upgraded to HTTPS
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_HTTPS_ENABLE" desc="An accessible label for HTTPS switch button.">
+    Enable HTTPS
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option.">
+    Scripts Blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_ENABLE" desc="A label to describe expand/collapse button for the website scripts blocked section.">
+    Enable Scripts Blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS" desc="An accessible label to describe expand/collapse button for the trackers and advertisement section.">
+    Trackers &amp; ads
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts.">
+    Trackers &amp; ads blocked (standard)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts.">
+    Trackers &amp; ads blocked (aggressive)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts">
+    Allow all trackers and ads
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_CROSS_COOKIES_BLOCKED" desc="Menu option that would block cross website cookies.">
+    Cross-site cookies blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
+    Cookies blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED_ALL" desc="Menu option that would allow all cookies.">
+    All cookies blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED" desc="An accessible label for expand/collapse button.">
+    Fingerprinting blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts.">
+    Fingerprinting blocked (standard)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts.">
+    Fingerprinting blocked (strict, sites may break)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts.">
+    Allow all Fingerprinting
+  </message>
 </grit-part>

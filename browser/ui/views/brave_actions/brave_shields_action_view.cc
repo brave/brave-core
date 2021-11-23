@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
+#include "brave/common/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -24,6 +26,7 @@
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view.h"
+#include "url/gurl.h"
 
 namespace {
 class BraveShieldsActionViewHighlightPathGenerator
@@ -42,10 +45,11 @@ class BraveShieldsActionViewHighlightPathGenerator
 };
 }  // namespace
 
-BraveShieldsActionView::BraveShieldsActionView()
+BraveShieldsActionView::BraveShieldsActionView(Profile* profile)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                                       base::Unretained(this)),
-                  std::u16string()) {
+                  std::u16string()),
+      profile_(profile) {
   auto* ink_drop = views::InkDrop::Get(this);
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetBaseColorCallback(base::BindRepeating(
@@ -101,7 +105,18 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
 }
 
 void BraveShieldsActionView::ButtonPressed() {
-  NOTIMPLEMENTED();
+  if (!webui_bubble_manager_) {
+    webui_bubble_manager_ =
+        std::make_unique<WebUIBubbleManagerT<ShieldsPanelUI>>(
+            this, profile_, GURL(kShieldsPanelURL), 1, true);
+  }
+
+  if (webui_bubble_manager_->GetBubbleWidget()) {
+    webui_bubble_manager_->CloseBubble();
+    return;
+  }
+
+  webui_bubble_manager_->ShowBubble();
 }
 
 std::unique_ptr<views::LabelButtonBorder>
