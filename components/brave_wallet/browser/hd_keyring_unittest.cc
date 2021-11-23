@@ -119,28 +119,40 @@ TEST(HDKeyringUnitTest, SignMessage) {
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("deadbeef", &message));
   std::vector<uint8_t> sig =
-      keyring.SignMessage(keyring.GetAddress(0), message, 0);
+      keyring.SignMessage(keyring.GetAddress(0), message, 0, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "1b");
 
-  sig = keyring.SignMessage(keyring.GetAddress(0), message, 3);
+  sig = keyring.SignMessage(keyring.GetAddress(0), message, 3, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "29");
 
-  sig = keyring.SignMessage(keyring.GetAddress(0), message, 300);
+  sig = keyring.SignMessage(keyring.GetAddress(0), message, 300, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "7b");
 
+  EXPECT_TRUE(keyring
+                  .SignMessage("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF",
+                               message, 0, false)
+                  .empty());
+
+  // when message is not Keccak hash
   EXPECT_TRUE(
-      keyring
-          .SignMessage("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", message, 0)
-          .empty());
+      keyring.SignMessage(keyring.GetAddress(0), message, 0, true).empty());
+  message.clear();
+  EXPECT_TRUE(base::HexStringToBytes(
+      "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
+      &message));
+  sig = keyring.SignMessage(keyring.GetAddress(0), message, 3, true);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
+            "789c0e9025bbf9410b58c2ca43ea1add3c6cfed66001300b9c102f78022cf6e21b"
+            "bf3780d68ff28e72c0ccb4f515b3d527c585abf59bc03531f5047b0357ef3329");
 }
 
 TEST(HDKeyringUnitTest, ImportedAccounts) {
@@ -177,7 +189,7 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("68656c6c6f20776f726c64", &message));
   const std::vector<uint8_t> sig = keyring.SignMessage(
-      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message, 0);
+      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message, 0, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
             "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d69561b");
@@ -189,10 +201,10 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));
   EXPECT_FALSE(keyring.RemoveImportedAccount(""));
   EXPECT_FALSE(keyring.RemoveImportedAccount("*****0x*****"));
-  EXPECT_TRUE(
-      keyring
-          .SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message, 0)
-          .empty());
+  EXPECT_TRUE(keyring
+                  .SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
+                               message, 0, false)
+                  .empty());
 
   // Sign Transaction
   EthTransaction tx = *EthTransaction::FromTxData(
