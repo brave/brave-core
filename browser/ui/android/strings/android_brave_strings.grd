@@ -2394,10 +2394,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> ETH
     </message>
     <message name="IDS_GAS_PRICE" desc="Brave crypto wallet gas limit edit box">
-      Gas Price(GWEI)
+      Gas Price (Gwei)
     </message>
     <message name="IDS_GAS_LIMIT" desc="Brave crypto wallet gas limit edit box">
-      Gas Limit(GWEI)
+      Gas Limit
     </message>
     <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
       Disable Sharing Hub
@@ -2548,6 +2548,42 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_NO_ANNOYING_ADS" desc="Dormant users engagement bullet text">
       &#8226; No annoying ads
+    </message>
+    <message name="IDS_WALLET_EDIT_GAS_TITLE" desc="Brave wallet edit gas dialog title">
+      Edit gas
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_TITLE" desc="Brave wallet max priority fee dialog title">
+      Max Priority Fee
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_MSG" desc="Brave wallet msg that appears on max priority fee dialog">
+      While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_LOW" desc="Brave wallet msg that appears on max priority fee dialog">
+      Low
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_OPTIMAL" desc="Brave wallet msg that appears on max priority fee dialog">
+      Optimal
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_HIGH" desc="Brave wallet msg that appears on max priority fee dialog">
+      High
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_FEE_CUSTOM" desc="Brave wallet msg that appears on max priority fee dialog">
+      Custom
+    </message>
+    <message name="IDS_WALLET_MAXIMUM_FEE" desc="Brave wallet msg that appears on max priority fee dialog">
+      Maximum fee: ~$<ph name="FIAT_VALUE">%1$s<ex>140.20</ex></ph> (<ph name="ASSET_VALUE">%2$s<ex>0.000025</ex></ph> ETH)
+    </message>
+    <message name="IDS_WALLET_CURRENT_BASE_FEE" desc="Brave wallet msg that appears on max priority fee dialog">
+      Current base fee: <ph name="ASSET_VALUE">%1$s<ex>150</ex></ph> Gwei
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_GAS_AMOUNT_LIMIT" desc="Brave wallet msg that appears on max priority fee dialog">
+      Gas amount limit
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_PER_GAS_TIP_LIMIT" desc="Brave wallet msg that appears on max priority fee dialog">
+      Per-gas tip limit (Gwei)
+    </message>
+    <message name="IDS_WALLET_MAX_PRIORITY_PER_GAS_PRICE_LIMIT" desc="Brave wallet msg that appears on max priority fee dialog">
+      Per-gas price limit (Gwei)
     </message>
     </messages>
   </release>
