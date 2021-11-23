@@ -475,12 +475,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveSyncInformers.show();
         BraveAndroidSyncDisabledInformer.showInformers();
 
-        if (!PackageUtils.isFirstInstall(this)
-                && !OnboardingPrefManager.getInstance().isP3AEnabledForExistingUsers()) {
-            BravePrefServiceBridge.getInstance().setP3AEnabled(true);
-            OnboardingPrefManager.getInstance().setP3AEnabledForExistingUsers(true);
-        }
-
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
                 && PackageUtils.isFirstInstall(this)) {
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
