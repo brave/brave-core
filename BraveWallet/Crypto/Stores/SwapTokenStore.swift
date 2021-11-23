@@ -206,32 +206,65 @@ public class SwapTokenStore: ObservableObject {
       let accountInfo = accountInfo,
       let swapParams = swapParameters(for: .perSellAsset)
     else { return }
-    swapController.transactionPayload(swapParams) { [weak self] success, swapResponse, error in
-      guard success, let self = self else {
+    self.rpcController.allNetworks { [weak self] networks in
+      guard
+        let self = self,
+        let currentNetwork = networks.first(where: { $0.id == self.chainId })
+      else {
         self?.state = .error(Strings.Wallet.unknownError)
         self?.clearAllAmount()
         return
       }
-      guard let response = swapResponse else { return }
-      let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-      let gasPrice = "0x\(weiFormatter.weiString(from: response.gasPrice, radix: .hex, decimals: 18) ?? "0")"
-      let gasLimit = "0x\(weiFormatter.weiString(from: response.estimatedGas, radix: .hex, decimals: 18) ?? "0")"
-      let value = "0x\(weiFormatter.weiString(from: response.value, radix: .hex, decimals: 18) ?? "0")"
-      let data: [NSNumber] = .init(hexString: response.data) ?? .init()
-      let txData: BraveWallet.TxData = .init(
-        nonce: "",
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        to: response.to,
-        value: value,
-        data: data
-      )
-      self.transactionController.addUnapprovedTransaction(txData, from: accountInfo.address) { [weak self] success, txMetaId, error in
-        // should be observed
+      
+      self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
         guard success else {
-          self?.state = .error(Strings.Wallet.unknownError)
-          self?.clearAllAmount()
+          self.state = .error(Strings.Wallet.unknownError)
+          self.clearAllAmount()
           return
+        }
+        guard let response = swapResponse else { return }
+        let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+        let gasPrice = "0x\(weiFormatter.weiString(from: response.gasPrice, radix: .hex, decimals: 0) ?? "0")" // already in wei
+        let gasLimit = "0x\(weiFormatter.weiString(from: response.estimatedGas, radix: .hex, decimals: 0) ?? "0")" // already in wei
+        let value = "0x\(weiFormatter.weiString(from: response.value, radix: .hex, decimals: 0) ?? "0")" // already in wei
+        let data: [NSNumber] = .init(hexString: response.data) ?? .init()
+        
+        if currentNetwork.isEip1559 {
+          let baseData: BraveWallet.TxData = .init(
+            nonce: "",
+            gasPrice: "", // no gas price in eip1559
+            gasLimit: gasLimit,
+            to: response.to,
+            value: value,
+            data: data
+          )
+          self.makeEIP1559Tx(chainId: self.chainId,
+                             baseData: baseData,
+                             from: accountInfo) { success in
+            // should be observed
+            guard success else {
+              self.state = .error(Strings.Wallet.unknownError)
+              self.clearAllAmount()
+              return
+            }
+          }
+        } else {
+          let baseData: BraveWallet.TxData = .init(
+            nonce: "",
+            gasPrice: gasPrice,
+            gasLimit: gasLimit,
+            to: response.to,
+            value: value,
+            data: data
+          )
+          self.transactionController.addUnapprovedTransaction(baseData, from: accountInfo.address) { success, txMetaId, error in
+            // should be observed
+            guard success else {
+              self.state = .error(Strings.Wallet.unknownError)
+              self.clearAllAmount()
+              return
+            }
+          }
         }
       }
     }
@@ -305,12 +338,17 @@ public class SwapTokenStore: ObservableObject {
         decimals: Int(fromToken.decimals)
       )
     else { return }
-    transactionController.makeErc20ApproveData(
-      spenderAddress,
-      amount: balanceInWeiHex
-    ) { [weak self] success, data in
+    rpcController.allNetworks { [weak self] networks in
+      guard
+        let self = self,
+        let currentNetwork = networks.first(where: { $0.id == self.chainId })
+      else { return }
+      self.transactionController.makeErc20ApproveData(
+        spenderAddress,
+        amount: balanceInWeiHex
+      ) { success, data in
         guard success else { return }
-        let txData = BraveWallet.TxData(
+        let baseData = BraveWallet.TxData(
           nonce: "",
           gasPrice: "",
           gasLimit: "",
@@ -318,19 +356,66 @@ public class SwapTokenStore: ObservableObject {
           value: "0x0",
           data: data
         )
-      self?.transactionController.addUnapprovedTransaction(
-          txData,
-          from: accountInfo.address,
-          completion: { success, txMetaId, error in
-            // should be observed
+        if currentNetwork.isEip1559 {
+          self.makeEIP1559Tx(chainId: self.chainId,
+                             baseData: baseData,
+                             from: accountInfo) { success in
             guard success else {
-              self?.state = .error(Strings.Wallet.unknownError)
-              self?.clearAllAmount()
+              self.state = .error(Strings.Wallet.unknownError)
+              self.clearAllAmount()
               return
             }
           }
-      )
+        } else {
+          self.transactionController.addUnapprovedTransaction(
+              baseData,
+              from: accountInfo.address,
+              completion: { success, txMetaId, error in
+                // should be observed
+                guard success else {
+                  self.state = .error(Strings.Wallet.unknownError)
+                  self.clearAllAmount()
+                  return
+                }
+              }
+          )
+        }
+      }
     }
+  }
+  
+  private func makeEIP1559Tx(
+    chainId: String,
+    baseData: BraveWallet.TxData,
+    from account: BraveWallet.AccountInfo,
+    completion: @escaping (_ success: Bool) -> Void
+  ) {
+    var maxPriorityFeePerGas = ""
+    var maxFeePerGas = ""
+    assetRatioController.gasOracle { [weak self] gasEstimation in
+      guard let self = self else { return }
+      if let gasEstimation = gasEstimation {
+        // Bump fast priority fee and max fee by 1 GWei if same as average fees.
+        if gasEstimation.fastMaxPriorityFeePerGas == gasEstimation.avgMaxPriorityFeePerGas {
+          maxPriorityFeePerGas = "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxPriorityFeePerGas) ?? "0")"
+          maxFeePerGas = "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxFeePerGas) ?? "0")"
+        } else {
+          // Always suggest fast gas fees as default
+          maxPriorityFeePerGas = gasEstimation.fastMaxPriorityFeePerGas
+          maxFeePerGas = gasEstimation.fastMaxFeePerGas
+        }
+      }
+      let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
+      self.transactionController.addUnapproved1559Transaction(eip1559Data, from: account.address) { success, txMetaId, errorMessage in
+        completion(success)
+      }
+    }
+  }
+  
+  private func bumpFeeByOneGWei(with value: String) -> String? {
+    guard let bv = BDouble(value) else { return nil }
+    let bumpedValue = bv + (BDouble(10) ** 9)
+    return bumpedValue.rounded().asString(radix: 16)
   }
   
   private func checkBalanceShowError(swapResponse: BraveWallet.SwapResponse) {
