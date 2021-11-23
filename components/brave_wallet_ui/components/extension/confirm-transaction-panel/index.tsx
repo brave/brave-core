@@ -219,6 +219,13 @@ function ConfirmTransactionPanel (props: Props) {
         : getLocale('braveWalletSend')
     , [transactionDetails])
 
+  const isConfirmButtonDisabled = React.useMemo(() => {
+    return (
+      transactionDetails.contractAddressError ||
+      parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError
+    )
+  }, [transactionDetails])
+
   if (isEditing) {
     return (
       <EditGas
@@ -403,9 +410,9 @@ function ConfirmTransactionPanel (props: Props) {
           {getLocale('braveWalletQueueRejectAll').replace('$1', transactionsQueueLength.toString())}
         </QueueStepButton>
       }
-      {transactionDetails.addressError &&
+      {transactionDetails.contractAddressError &&
         <ErrorText>
-          {transactionDetails.addressError}
+          {transactionDetails.contractAddressError}
         </ErrorText>
       }
       <ButtonRow>
@@ -418,7 +425,7 @@ function ConfirmTransactionPanel (props: Props) {
           buttonType='confirm'
           text={getLocale('braveWalletAllowSpendConfirmButton')}
           onSubmit={onConfirm}
-          disabled={transactionDetails.addressError || parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError}
+          disabled={isConfirmButtonDisabled}
         />
       </ButtonRow>
     </StyledWrapper>
