@@ -37,6 +37,7 @@ export interface RewardsProps {
   rewardsEnabled: boolean
   enabledAds: boolean
   balance: NewTab.RewardsBalance
+  report?: NewTab.RewardsBalanceReport
   adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
   promotions: NewTab.Promotion[]
@@ -75,6 +76,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     )
   }
 
+  const earningsReceived = Number(props.report && props.report.ads || 0) > 0
   const adsInfo = props.adsAccountStatement || null
   const grantInfo = getVisibleGrant(props.promotions)
 
@@ -104,6 +106,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
       earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
       earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}
+      earningsReceived={earningsReceived}
       contributionsThisMonth={props.totalContribution}
       onEnableRewards={props.onStartRewards}
       onEnableAds={props.onStartRewards}

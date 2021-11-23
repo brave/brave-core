@@ -129,4 +129,8 @@ export const pendingBox = styled.div`
   margin-top: 17px;
   border-radius: 0 0 14px 14px;
   overflow: hidden;
+  /* Moving this box down slightly ensures that the underlying background color
+     will not show through the rounded corners. */
+  position: relative;
+  top: 2px;
 `

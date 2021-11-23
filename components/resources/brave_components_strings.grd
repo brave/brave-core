@@ -513,8 +513,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TITLE" desc="">Error: Request could not be validated</message>
 
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE" desc="">Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> payout will begin processing in <ph name="DAYS">$2<ex>4 days</ex></ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>It can take a few days for the payout to process and your BAT to arrive.</message>
 
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose a wallet service</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.</message>

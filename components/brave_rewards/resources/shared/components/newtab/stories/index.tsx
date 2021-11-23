@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import * as knobs from '@storybook/addon-knobs'
 
 import { LocaleContext } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
@@ -26,6 +27,11 @@ function actionLogger (name: string, ...args: any[]) {
 }
 
 export function Card () {
+  const daysUntilPayment = knobs.number('Days Until Payment', 20)
+  const nextPaymentDate = Date.now() + 1000 * 60 * 60 * 24 * daysUntilPayment
+  const showGrant = knobs.boolean('Grant Available', false)
+  const earningsReceived = knobs.boolean('Earnings received', false)
+
   return (
     <LocaleContext.Provider value={localeContext}>
       <WithThemeVariables>
@@ -37,16 +43,17 @@ export function Card () {
             rewardsBalance={91.5812}
             exchangeCurrency='USD'
             exchangeRate={0.82}
-            grantInfo={{
+            grantInfo={showGrant ? {
               id: '',
               amount: 0.15,
-              type: 'ugp',
+              type: 'ads',
               createdAt: Date.now(),
               expiresAt: null
-            }}
-            nextPaymentDate={Date.now() + 1000 * 60 * 60 * 24 * 2}
+            } : null}
+            nextPaymentDate={nextPaymentDate}
             earningsThisMonth={0.142}
             earningsLastMonth={1.25}
+            earningsReceived={earningsReceived}
             contributionsThisMonth={10}
             onEnableRewards={actionLogger('onEnableRewards')}
             onEnableAds={actionLogger('onEnableAds')}

@@ -17,9 +17,7 @@ import {
   StyledTotalContent
 } from './style'
 
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
-import { formatMessage } from '../../shared/lib/locale_context'
-import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
+import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -193,9 +191,11 @@ class AdsBox extends React.Component<Props, {}> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
+    let adEarningsReceived = false
 
     const {
       adsData,
+      balanceReport,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -208,6 +208,10 @@ class AdsBox extends React.Component<Props, {}> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
+    }
+
+    if (balanceReport) {
+      adEarningsReceived = Number(balanceReport.ads || 0) > 0
     }
 
     // disabled / alert state
@@ -235,7 +239,6 @@ class AdsBox extends React.Component<Props, {}> {
     }
 
     const tokenString = getLocale('tokens')
-    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <BoxMobile
@@ -245,20 +248,13 @@ class AdsBox extends React.Component<Props, {}> {
         settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
-        {
-          earningsLastMonth > 0 && estimatedPendingDays &&
-            <StyledArrivingSoon>
-              <MoneyBagIcon />
-              {
-                formatMessage(getLocale('pendingRewardsMessage'), [
-                  <span className='amount' key='amount'>
-                    +{earningsLastMonth} BAT
-                  </span>,
-                  estimatedPendingDays
-                ])
-              }
-            </StyledArrivingSoon>
-        }
+        <StyledArrivingSoon>
+          <PaymentStatusView
+            earningsLastMonth={earningsLastMonth}
+            earningsReceived={adEarningsReceived}
+            nextPaymentDate={nextPaymentDate}
+          />
+        </StyledArrivingSoon>
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens

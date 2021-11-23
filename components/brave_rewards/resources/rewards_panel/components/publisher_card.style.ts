@@ -10,8 +10,8 @@ export const root = styled.div`
   background: var(--brave-palette-white);
   box-shadow: 0px 4px 16px rgba(27, 29, 47, 0.08);
   border-radius: 16px;
-  margin-top: 13px;
-  padding: 18px 35px 33px;
+  margin-top: 12px;
+  padding: 18px 35px 26px;
 
   .brave-theme-dark & {
     background: #1E2029;
@@ -180,7 +180,7 @@ export const refreshStatus = styled.div`
   .icon {
     height: 13px;
     width: auto;
-    margin-left: 35px;
+    margin-left: 14px;
     margin-top: 2px;
     color: var(--brave-color-brandBat);
   }
