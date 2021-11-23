@@ -9,6 +9,18 @@ import BraveCore
 #if DEBUG
 
 class TestEthTxController: BraveWalletEthTxController {
+  func nonce(forHardwareTransaction txMetaId: String, completion: @escaping (String?) -> Void) {
+    completion(nil)
+  }
+  
+  func transactionMessage(toSign txMetaId: String, completion: @escaping (String?) -> Void) {
+    completion(nil)
+  }
+  
+  func processHardwareSignature(_ txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
   func makeErc721Transfer(fromData from: String, to: String, tokenId: String, contractAddress: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
     completion(false, [])
   }

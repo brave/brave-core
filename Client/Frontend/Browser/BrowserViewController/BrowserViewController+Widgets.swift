@@ -21,7 +21,7 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
             for (index, fav) in favs.prefix(16).enumerated() {
                 if let url = fav.url?.asURL {
                     group.enter()
-                    let fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon)
+                    let fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon, persistentCheckOverride: true)
                     widgetFaviconFetchers.append(fetcher)
                     fetcher.load { _, attributes in
                         favData[index] = .init(url: url, favicon: attributes)

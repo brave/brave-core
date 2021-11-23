@@ -52,11 +52,6 @@ class TestAppDelegate: AppDelegate {
             profile = BrowserProfile(localName: "testProfile")
         }
 
-        // Don't show the What's New page.
-        if launchArguments.contains(LaunchArguments.skipWhatsNew) {
-            profile.prefs.setString(AppInfo.appVersion, forKey: LatestAppVersionProfileKey)
-        }
-
         self.profile = profile
         return profile
     }

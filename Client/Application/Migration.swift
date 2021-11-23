@@ -14,14 +14,10 @@ private let log = Logger.browserLogger
 class Migration {
     
     private(set) public var braveCoreSyncObjectsMigrator: BraveCoreMigrator?
-    private let bookmarksAPI: BraveBookmarksAPI
-    private let historyAPI: BraveHistoryAPI
-    private let syncAPI: BraveSyncAPI
+    private let braveCore: BraveCoreMain
     
-    public init(bookmarksAPI: BraveBookmarksAPI, historyAPI: BraveHistoryAPI, syncAPI: BraveSyncAPI) {
-        self.bookmarksAPI = bookmarksAPI
-        self.historyAPI = historyAPI
-        self.syncAPI = syncAPI
+    public init(braveCore: BraveCoreMain) {
+        self.braveCore = braveCore
     }
     
     public static var isChromiumMigrationCompleted: Bool {
@@ -39,9 +35,7 @@ class Migration {
         
         // `.migrate` is called in `BrowserViewController.viewDidLoad()`
         if !Migration.isChromiumMigrationCompleted {
-            braveCoreSyncObjectsMigrator = BraveCoreMigrator(bookmarksAPI: bookmarksAPI,
-                                                             historyAPI: historyAPI,
-                                                             syncAPI: syncAPI)
+            braveCoreSyncObjectsMigrator = BraveCoreMigrator(braveCore: braveCore)
         }
         
         if !Preferences.Migration.playlistV1FileSettingsLocationCompleted.value {
@@ -81,12 +75,12 @@ class Migration {
     }
     
     @objc private func enableUserSelectedTypesForSync() {
-        guard syncAPI.isInSyncGroup else {
+        guard braveCore.syncAPI.isInSyncGroup else {
             log.info("Sync is not active")
             return
         }
         
-        syncAPI.enableSyncTypes()
+        braveCore.syncAPI.enableSyncTypes()
     }
     
     /// Adblock files don't have to be moved, they now have a new directory and will be downloaded there.
@@ -186,8 +180,12 @@ fileprivate extension Preferences {
             Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
         static let removeLargeFaviconsMigrationCompleted =
             Option<Bool>(key: "migration.remove-large-favicons", default: false)
-        
-        static let coreDataCompleted = Option<Bool>(key: "migration.cd-completed", default: false)
+        // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
+        // It should be called only for users who have not completed the migration beforehand.
+        // The reason for second migration flag is to first do file system migrations like moving database files,
+        // then do CRUD operations on the db if needed.
+        static let coreDataCompleted = Option<Bool>(key: "migration.cd-completed",
+                                                    default: Preferences.Migration.completed.value)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)

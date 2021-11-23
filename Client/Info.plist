@@ -72,8 +72,6 @@
 	<true/>
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
-	<key>MozWhatsNewTopic</key>
-	<string></string>
 	<key>NFCReaderUsageDescription</key>
 	<string>The application needs access to NFC reading to communicate with your Yubikey.</string>
 	<key>NSAppTransportSecurity</key>

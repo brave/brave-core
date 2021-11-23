@@ -54,6 +54,8 @@ extension Preferences {
     final class General {
         /// Whether this is the first time user has ever launched Brave after intalling. *Should never be set to `true` manually!*
         static let isFirstLaunch = Option<Bool>(key: "general.first-launch", default: true)
+        /// Whether this is a new user who installed the application after onboarding retention updates
+        static let isNewRetentionUser = Option<Bool?>(key: "general.new-retention", default: nil)
         /// Whether or not to save logins in Brave
         static let saveLogins = Option<Bool>(key: "general.save-logins", default: true)
         /// Whether or not to block popups from websites automaticaly
@@ -91,6 +93,9 @@ extension Preferences {
         
         /// The progress the user has made with onboarding
         static let basicOnboardingProgress = Option<Int>(key: "general.basic-onboarding-progress", default: OnboardingProgress.none.rawValue)
+        /// The preference for determining whether or not to show the adblock onboarding popup
+        static let onboardingAdblockPopoverShown = Option<Bool>(key: "general.basic-onboarding-adblock-popover-shown", default: false)
+        
         /// Whether or not link preview upon long press action should be shown.
         static let enableLinkPreview = Option<Bool>(key: "general.night-mode", default: true)
         
@@ -106,18 +111,33 @@ extension Preferences {
         static let enablePullToRefresh = Option<Bool>(key: "general.enable-pull-to-refresh", default: true)
     }
     
+    final class FullScreenCallout {
+        /// Whether the vpn callout is shown.
+        static let vpnCalloutCompleted =
+            Option<Bool>(key: "fullScreenCallout.full-screen-vpn-callout-completed", default: false)
+        
+        /// Whether the sync callout is shown.
+        static let syncCalloutCompleted =
+            Option<Bool>(key: "fullScreenCallout.full-screen-sync-callout-completed", default: false)
+        
+        /// Whether the rewards callout is shown.
+        static let rewardsCalloutCompleted =
+            Option<Bool>(key: "fullScreenCallout.full-screen-rewards-callout-completed", default: false)
+        
+        /// Whether the whats new callout should be shown.
+        static let whatsNewCalloutOptIn =
+            Option<Bool>(key: "fullScreenCallout.full-screen-whats-new-callout-completed", default: false)
+        
+        /// Whether the ntp callout is shown.
+        static let ntpCalloutCompleted =
+            Option<Bool>(key: "fullScreenCallout.full-screen-ntp-callout-completed", default: false)
+    }
+    
     final class DefaultBrowserIntro {
         /// Whether the default browser onboarding completed. This can happen by opening app settings or after the user
         /// dismissed the intro screen enough amount of times.
         static let completed =
-            Option<Bool>(key: "general.default-browser-intro-completed", default: false)
-        
-        static let appLaunchCount =
-            Option<Int>(key: "general.default-browser-intro-launch-count", default: 0)
-        
-        /// When to show next default browser popup.
-        static let nextShowDate =
-            Option<Date?>(key: "general.default-browser-intro-next-show-date", default: nil)
+            Option<Bool>(key: "defaultBrowserIntro.intro-completed", default: false)
         
         /// Whether system notification showed or not
         static let defaultBrowserNotificationScheduled =
@@ -201,7 +221,6 @@ extension Preferences {
     
     final class VPN {
         static let popupShowed = Option<Bool>(key: "vpn.popup-showed", default: false)
-        static let appLaunchCountForVPNPopup = Option<Int>(key: "vpn.popup-launch-count", default: 0)
         /// We get it from Guardian's servers.
         static let lastPurchaseProductId = Option<String?>(key: "vpn.last-purchase-id", default: nil)
         /// When the current subscription plan expires. It is nil if the user has not bought any vpn plan yet.

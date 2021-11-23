@@ -69,20 +69,19 @@ class SettingsViewController: TableViewController {
          feedDataSource: FeedDataSource,
          rewards: BraveRewards? = nil,
          legacyWallet: BraveLedger? = nil,
+         windowProtection: WindowProtection?,
          historyAPI: BraveHistoryAPI,
          syncAPI: BraveSyncAPI,
-         walletKeyringStore: KeyringStore? = nil,
-         windowProtection: WindowProtection?
-    ) {
+         walletKeyringStore: KeyringStore? = nil) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
         self.rewards = rewards
         self.legacyWallet = legacyWallet
+        self.windowProtection = windowProtection
         self.historyAPI = historyAPI
         self.syncAPI = syncAPI
         self.walletKeyringStore = walletKeyringStore
-        self.windowProtection = windowProtection
         
         super.init(style: .insetGrouped)
     }
@@ -520,10 +519,8 @@ class SettingsViewController: TableViewController {
                     },
                     accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.settingsLicenses, selection: { [unowned self] in
-                    guard let url = URL(string: WebServer.sharedInstance.base) else { return }
-                    
                     let licenses = SettingsContentViewController().then {
-                        $0.url = url.appendingPathComponent("about").appendingPathComponent("license")
+                        $0.url = URL(string: "\(InternalURL.baseUrl)/\(AboutLicenseHandler.path)")
                     }
                     self.navigationController?.pushViewController(licenses, animated: true)
                     }, accessory: .disclosureIndicator)

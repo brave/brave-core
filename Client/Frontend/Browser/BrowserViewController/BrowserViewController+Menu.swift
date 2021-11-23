@@ -161,10 +161,10 @@ extension BrowserViewController {
                                                 feedDataSource: self.feedDataSource,
                                                 rewards: self.rewards,
                                                 legacyWallet: self.legacyWallet,
+                                                windowProtection: self.windowProtection,
                                                 historyAPI: self.historyAPI,
                                                 syncAPI: self.syncAPI,
-                                                walletKeyringStore: keyringStore,
-                                                windowProtection: self.windowProtection)
+                                                walletKeyringStore: keyringStore)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
             }
