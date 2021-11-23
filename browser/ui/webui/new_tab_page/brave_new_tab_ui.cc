@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -37,6 +38,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
         web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
         IDR_BRAVE_NEW_TAB_HTML);
+    // Let frontend know about feature flags
+    source->AddBoolean(
+        "featureFlagBraveNewsEnabled",
+        base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature));
     web_ui->AddMessageHandler(
         base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
     web_ui->AddMessageHandler(
@@ -49,11 +54,11 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 BraveNewTabUI::~BraveNewTabUI() {
 }
 
-if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
-  void BraveNewTabUI::BindInterface(
-      mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
-    auto* profile = Profile::FromWebUI(web_ui());
-    DCHECK(profile);
+void BraveNewTabUI::BindInterface(
+    mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     // Wire up JS mojom to service
     auto* brave_news_controller =
         brave_news::BraveNewsControllerFactory::GetForContext(profile);

@@ -61,6 +61,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
     generateStaticImages(images).SpaceX
   ),
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
+  featureFlagBraveNewsEnabled: true,
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
   showToday: boolean('Show Brave News?', true),

@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TODAY_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_TODAY_COMMON_FEATURES_H_
 
-#include "brave/components/brave_today/common/buildflags/buildflags.h"
-
 namespace base {
 struct Feature;
 }  // namespace base

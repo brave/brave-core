@@ -1,8 +1,5 @@
 import("//brave/build/config.gni")
-import("//brave/components/brave_today/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
-
-assert(brave_news_enabled)
 
 static_library("browser") {
   sources = [

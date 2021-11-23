@@ -147,8 +147,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BraveNewTabPageLayout
-        extends NewTabPageLayout implements ConnectionErrorHandler {
+public class BraveNewTabPageLayout extends NewTabPageLayout implements ConnectionErrorHandler {
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
     private static final int ITEMS_PER_PAGE = 18;

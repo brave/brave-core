@@ -25,12 +25,10 @@ class BraveNewTabUI : public ui::MojoWebUIController {
   BraveNewTabUI(const BraveNewTabUI&) = delete;
   BraveNewTabUI& operator=(const BraveNewTabUI&) = delete;
 
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
-    // Instantiates the implementor of the mojo
-    // interface passing the pending receiver that will be internally bound.
-    void BindInterface(
-        mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
-  }
+  // Instantiates the implementor of the mojo
+  // interface passing the pending receiver that will be internally bound.
+  void BindInterface(
+      mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
