@@ -5,6 +5,11 @@ CI/run-audit-deps:
 - "**/Cargo.toml"
 - "**/Cargo.lock"
 
+CI/run-network-audit:
+- browser/net/*
+- chromium_src/**/*features.cc
+- patches/chrome-VERSION.patch
+
 potential-layer-violation-fixes:
 - browser/android/BUILD.gn
 - browser/android/preferences/BUILD.gn
