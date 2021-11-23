@@ -165,10 +165,11 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
   accounts.forEach((account, index) => {
     if (payload.balances[index].success) {
       accounts[index].balance = payload.balances[index].balance
-      accounts[index].fiatBalance = formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.usdPrice).toString()
+      accounts[index].fiatBalance = payload.usdPrice !== ''
+        ? formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.usdPrice).toString()
+        : ''
     }
   })
-
   return {
     ...state,
     accounts
@@ -186,26 +187,29 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
   const prices = payload.prices
   const findTokenPrice = (symbol: string) => {
     if (prices.success) {
-      return prices.values.find((value) => value.fromAsset === symbol.toLowerCase())?.price ?? '0'
+      return prices.values.find((value) => value.fromAsset === symbol.toLowerCase())?.price ?? ''
     } else {
-      return '0'
+      return ''
     }
   }
   let accounts: WalletAccountType[] = [...state.accounts]
   accounts.forEach((account, accountIndex) => {
     payload.balances[accountIndex].forEach((info, tokenIndex) => {
-      let assetBalance = '0'
-      let fiatBalance = '0'
+      let assetBalance = ''
+      let fiatBalance = ''
 
       if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
         assetBalance = account.balance
         fiatBalance = account.fiatBalance
       } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
         assetBalance = info.balance
-        fiatBalance = '0' // TODO: support estimated market value.
+        fiatBalance = '' // TODO: support estimated market value.
       } else if (info.success) {
+        const tokenPrice = findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol)
         assetBalance = info.balance
-        fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
+        fiatBalance = tokenPrice !== ''
+          ? formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
+          : ''
       } else if (account.tokens[tokenIndex]) {
         assetBalance = account.tokens[tokenIndex].assetBalance
         fiatBalance = account.tokens[tokenIndex].fiatBalance
