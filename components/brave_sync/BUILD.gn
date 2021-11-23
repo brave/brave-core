@@ -78,7 +78,10 @@ source_set("qr_code_data") {
     "qr_code_validator.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    ":crypto",
+    "//base",
+  ]
 }
 
 static_library("sync_service_impl_helper") {
