@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-"""This script runs `npm audit' and `cargo audit' on relevant paths in the repo."""
+"""This script runs `npm audit' and `cargo audit' on relevant paths in the
+repo."""
 
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,16 +19,15 @@ from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
     'build',
-    os.path.join('node_modules'),
-    os.path.join('vendor', 'brave-extension', 'node_modules'),
+    os.path.join('node_modules')
 ]
 
 # Tag @sec-team before adding any advisory to this list
 # Ignore these rust advisories
 IGNORED_CARGO_ADVISORIES = [
-# Remove when:
-# https://github.com/chronotope/chrono/issues/602 is resolved
-# Tracking issue: https://github.com/brave/brave-browser/issues/18838
+    # Remove when:
+    # https://github.com/chronotope/chrono/issues/602 is resolved
+    # Tracking issue: https://github.com/brave/brave-browser/issues/18838
     'RUSTSEC-2020-0071',
     'RUSTSEC-2020-0159'
 ]
@@ -38,20 +38,29 @@ CARGO_INCLUDE_PATHS = [
 ]
 
 # Ping security team before adding to ignored_npm_advisories
-ignored_npm_advisories = [
-    # These are issues in dev depencies, no updates are available yet
-    # To-Do (@jumde) - Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
-    1002401,    # https://github.com/advisories/GHSA-93q8-gq69-wqmw
-    1002422,    # https://github.com/advisories/GHSA-hqhp-5p83-hx96
-    1002492,    # https://github.com/advisories/GHSA-33f9-j839-rf8h
-    1002522,    # https://github.com/advisories/GHSA-whgm-jr23-g3j9
-    1002627,    # https://github.com/advisories/GHSA-ww39-953v-wcq6
-    1002655,    # https://github.com/advisories/GHSA-w8qv-6jwh-64r5
-    1002775     # https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
+IGNORED_NPM_ADVISORIES = [
+    # Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
+    'https://github.com/advisories/GHSA-93q8-gq69-wqmw',  # rxdos
+    'https://github.com/advisories/GHSA-w5p7-h5w8-2hfq',  # rxdos
+    'https://github.com/advisories/GHSA-w8qv-6jwh-64r5',  # rxdos
+    'https://github.com/advisories/GHSA-ww39-953v-wcq6',  # rxdos
+    'https://github.com/advisories/GHSA-whgm-jr23-g3j9'   # rxdos
 ]
+
 
 def main():
     """Audit a specified path, or the whole project."""
+
+    if len(IGNORED_NPM_ADVISORIES) > 0:
+        print(
+            f"Ignoring NPM advisories "
+            f"{', '.join(map(str, IGNORED_NPM_ADVISORIES))}"
+        )
+    if len(IGNORED_CARGO_ADVISORIES) > 0:
+        print(
+            f"Ignoring Cargo advisories "
+            f"{', '.join(map(str, IGNORED_CARGO_ADVISORIES))}"
+        )
 
     args = parse_args()
     errors = 0
@@ -59,10 +68,11 @@ def main():
     if args.input_dir:
         return audit_path(os.path.abspath(args.input_dir), args)
 
-    for path in [os.path.dirname(os.path.dirname(args.source_root)), args.source_root]:
+    for path in [os.path.dirname(os.path.dirname(args.source_root)),
+                 args.source_root]:
         errors += audit_path(path, args)
 
-    for dir_path, dirs, dummy in os.walk(args.source_root):
+    for dir_path, dirs, _ in os.walk(args.source_root):
         for dir_name in dirs:
             full_path = os.path.join(dir_path, dir_name)
             errors += audit_path(full_path, args)
@@ -76,16 +86,15 @@ def audit_path(path, args):
     full_path = os.path.join(os.path.abspath(path), "")
     if os.path.isfile(os.path.join(path, 'package.json')) and \
        os.path.isfile(os.path.join(path, 'package-lock.json')) and \
-       os.path.isdir(os.path.join(path, 'node_modules')) and \
-       not any(full_path.startswith(os.path.join(args.source_root, p, "")) \
+       not any(full_path.startswith(os.path.join(args.source_root, p, ""))
                for p in NPM_EXCLUDE_PATHS):
         print(f'Auditing (npm) {path}')
         return npm_audit_deps(path, args)
 
     if os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
-         os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
-         any(full_path.startswith(os.path.join(args.source_root, p, "")) \
-             for p in CARGO_INCLUDE_PATHS):
+        os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
+        any(full_path.startswith(os.path.join(args.source_root, p, ""))
+            for p in CARGO_INCLUDE_PATHS):
         print(f'Auditing (cargo) {path}')
         return cargo_audit_deps(path, args)
 
@@ -102,9 +111,11 @@ def npm_audit_deps(path, args):
 
     npm_args = [npm_cmd, 'audit', '--json']
     if not args.audit_dev_deps:
-        npm_args.append('--production')
-        print('WARNING: Ignoring npm devDependencies')
-    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
+        # Don't support npm audit --production until dev dependencies are
+        # correctly identified in package.json
+        print('npm audit --production not supported; auditing dev dependencies')
+    audit_process = subprocess.Popen(
+        npm_args, stdout=subprocess.PIPE, cwd=path)
     output, _ = audit_process.communicate()
 
     try:
@@ -116,9 +127,6 @@ def npm_audit_deps(path, args):
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
         return 1
-
-    if len(ignored_npm_advisories) > 0:
-        print('Ignoring NPM advisories ' + ','.join(map(str, ignored_npm_advisories)))
 
     resolutions = extract_resolutions(result)
 
@@ -178,16 +186,18 @@ def extract_resolutions(result):
         for _, v in advisories.items():
             via = v['via']
             for item in via:
-                if isinstance(item, dict) and item['source'] not in ignored_npm_advisories:
-                    resolutions.append(item)
+                if isinstance(item, dict) and \
+                   item['url'] not in IGNORED_NPM_ADVISORIES:
+                    resolutions.append(item['url'])
     # npm 6 and earlier
     if 'advisories' in result:
         advisories = result['advisories']
         if len(advisories) == 0:
             return resolutions
-        for k, v in advisories.items():
-            if int(k) not in ignored_npm_advisories:
-                resolutions.append(v)
+        for _, v in advisories.items():
+            url = v['url']
+            if url not in IGNORED_NPM_ADVISORIES:
+                resolutions.append(url)
     return resolutions
 
 
