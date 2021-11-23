@@ -105,6 +105,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES},
     {"appearanceBraveDefaultImagesOptionLabel",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL},
+#if defined(OS_WIN)
+    {"defaultMSEdgeProtocolHandler",
+     IDS_SETTINGS_SYSTEM_PAGE_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL},
+    {"makeBraveAsDefaultMSEdgeProtocolHandler",
+     IDS_SETTINGS_SYSTEM_PAGE_MAKE_BRAVE_AS_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL},  // NOLINT
+    {"defaultMSEdgeProtocolHandlerMakeDefaultButton",
+     IDS_SETTINGS_SYSTEM_PAGE_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_MAKE_DEFAULT_BUTTON_LABEL},  // NOLINT
+    {"braveIsDefaultMSEdgeProtocolHandler",
+     IDS_SETTINGS_SYSTEM_PAGE_BRAVE_IS_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL},
+#endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
     {"appearanceSettingsShowOptionTitle", IDS_SIDEBAR_SHOW_OPTION_TITLE},
     {"appearanceSettingsShowOptionAlways", IDS_SIDEBAR_SHOW_OPTION_ALWAYS},
