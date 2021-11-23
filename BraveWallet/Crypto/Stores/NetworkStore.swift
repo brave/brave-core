@@ -33,7 +33,9 @@ public class NetworkStore: ObservableObject {
   public init(rpcController: BraveWalletEthJsonRpcController) {
     controller = rpcController
     controller.allNetworks { chains in
-      self.ethereumChains = chains
+      self.ethereumChains = chains.filter {
+        $0.chainId != BraveWallet.LocalhostChainId
+      }
     }
     controller.chainId { chainId in
       let id = chainId.isEmpty ? BraveWallet.MainnetChainId : chainId
