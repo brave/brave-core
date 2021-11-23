@@ -418,6 +418,7 @@
 		2F13B801273311CB00253A4D /* BrowserViewController+Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13B800273311CB00253A4D /* BrowserViewController+Callout.swift */; };
 		2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */; };
 		2F198EE82603FDD900945AB3 /* AddSearchEngineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */; };
+		2F1A835A274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */; };
 		2F26C438267B9F0D00E5AD60 /* BlockSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26C437267B9F0D00E5AD60 /* BlockSummaryTests.swift */; };
 		2F26C43A267B9F9400E5AD60 /* blocking-summary-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 2F26C439267B9F9400E5AD60 /* blocking-summary-test.json */; };
 		2F29FB8B267BE06100B0AD6A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F29FB7E267BE06100B0AD6A /* Model.xcdatamodeld */; };
@@ -2014,6 +2015,7 @@
 		2F13B800273311CB00253A4D /* BrowserViewController+Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+Callout.swift"; sourceTree = "<group>"; };
 		2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSearchEngineActivity.swift; sourceTree = "<group>"; };
+		2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPreferencesDebugMenuViewController.swift; sourceTree = "<group>"; };
 		2F26C437267B9F0D00E5AD60 /* BlockSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSummaryTests.swift; sourceTree = "<group>"; };
 		2F26C439267B9F9400E5AD60 /* blocking-summary-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blocking-summary-test.json"; sourceTree = "<group>"; };
 		2F29FB7F267BE06100B0AD6A /* Model7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model7.xcdatamodel; sourceTree = "<group>"; };
@@ -4273,6 +4275,7 @@
 				2F51767325E4024B00429692 /* PlaylistSettingsViewController.swift */,
 				2F12A175260A3B17005A8C2B /* ShortcutSettingsViewController.swift */,
 				272B862A270BD96F005ED304 /* SandboxInspectorView.swift */,
+				2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -7657,8 +7660,7 @@
 				4422D4E121BFFB7600BF1855 /* filter_block.cc in Sources */,
 				CA2EE0A727349F760089C75F /* OnboardingAdblockDisconnect.swift in Sources */,
 				0A8C69BE225E350300988715 /* IndentedImageTableViewCell.swift in Sources */,
-				5E096180252B63F200F3AFBB /* BraveSyncAPI+Utilities.swift in Sources */,
-				0AE5C69124F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift in Sources */,
+				5E096180252B63F200F3AFBB /* BraveSyncAPIExtensions.swift in Sources */,
 				5E096180252B63F200F3AFBB /* BraveSyncAPIExtensions.swift in Sources */,
 				0A1E843D2190A57F0042F782 /* SyncSettingsTableViewController.swift in Sources */,
 				4422D56C21BFFB7F00BF1855 /* bitstate.cc in Sources */,
@@ -8033,6 +8035,7 @@
 				0A39FE992486604D00290ABC /* GRDGatewayAPI.m in Sources */,
 				0A1DF48424487AA000541FE4 /* GRDGatewayAPIResponse.m in Sources */,
 				4422D4B421BFFB7600BF1855 /* hash.cc in Sources */,
+				2F1A835A274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift in Sources */,
 				0A5CBD3823D4905D00362CC8 /* NTPNotificationView.swift in Sources */,
 				27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
