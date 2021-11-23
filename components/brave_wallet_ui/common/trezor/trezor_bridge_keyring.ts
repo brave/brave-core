@@ -25,7 +25,7 @@ import {
   SignMessageResponse,
   TrezorGetAccountsResponse
 } from '../../common/trezor/trezor-messages'
-import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
+import { sendTrezorCommand, closeTrezorBridge } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
@@ -45,6 +45,10 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
   isUnlocked = (): boolean => {
     return this.unlocked
+  }
+
+  cancelOperation = async () => {
+    closeTrezorBridge()
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {

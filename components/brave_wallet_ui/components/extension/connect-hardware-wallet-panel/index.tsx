@@ -31,8 +31,15 @@ function ConnectHardwareWalletPanel (props: Props) {
   } = props
 
   const isConnected = hardwareWalletError !== undefined && hardwareWalletError !== 'deviceNotConnected'
-  const requestingConfirmation = hardwareWalletError === 'deviceBusy'
-
+  const getTitle = () => {
+    if (hardwareWalletError === 'deviceBusy') {
+      return getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
+    }
+    if (hardwareWalletError === 'openEthereumApp') {
+      return getLocale('braveWalletConnectHardwarePanelOpenApp').replace('$1', walletName)
+    }
+    return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
+  }
   const onClickInstructions = () => {
     window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
   }
@@ -52,11 +59,7 @@ function ConnectHardwareWalletPanel (props: Props) {
         </Description>
       </ConnectionRow>
       <Title>
-        {
-          requestingConfirmation
-            ? getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
-            : getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
-        }
+        {getTitle()}
       </Title>
       <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
       <PageIcon />

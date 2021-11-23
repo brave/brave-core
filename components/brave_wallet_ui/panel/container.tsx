@@ -431,9 +431,10 @@ function Container (props: Props) {
   }
 
   const onCancelConnectHardwareWallet = () => {
-    // Navigating to main panel view will unmount ConnectHardwareWalletPanel
-    // and therefore forfeit connecting to the hardware wallet.
-    props.walletPanelActions.navigateToMain()
+    if (!selectedPendingTransaction) {
+      return
+    }
+    props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
   }
 
   const removeSitePermission = (origin: string, address: string) => {
@@ -482,7 +483,8 @@ function Container (props: Props) {
     )
   }
 
-  if (selectedPendingTransaction && selectedPanel === 'connectHardwareWallet') {
+  if ((selectedPendingTransaction || signMessageData.length) &&
+      selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>

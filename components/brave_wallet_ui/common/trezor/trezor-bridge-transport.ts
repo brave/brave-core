@@ -20,6 +20,14 @@ export class TrezorBridgeTransport extends MessagingTransport {
   private readonly bridgeFrameUrl: string
   private bridge?: HTMLIFrameElement
 
+  closeBridge = () => {
+    if (!this.bridge || !this.hasBridgeCreated()) {
+      return
+    }
+    const element = document.getElementById(this.frameId)
+    element?.parentNode?.removeChild(element)
+  }
+
   // T is response type, e.g. UnlockResponse. Resolves as `false` if transport error
   sendCommandToTrezorFrame = <T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> => {
     return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
@@ -82,4 +90,11 @@ export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promis
     transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
   }
   return transport.sendCommandToTrezorFrame<T>(command)
+}
+
+export async function closeTrezorBridge () {
+  if (!transport) {
+    return
+  }
+  return transport.closeBridge()
 }
