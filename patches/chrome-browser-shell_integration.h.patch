@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
+index 29e98f5b2839a44a488d6baec756b660935302dd..b761dea9fbb8f0009976997a41d9a10b2aaf3df1 100644
+--- a/chrome/browser/shell_integration.h
++++ b/chrome/browser/shell_integration.h
+@@ -235,6 +235,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
+  protected:
+   ~DefaultBrowserWorker() override;
+ 
++  BRAVE_DEFAULT_BROWSER_WORKER_H
+  private:
+   // Check if Chrome is the default browser.
+   DefaultWebClientState CheckIsDefaultImpl() override;

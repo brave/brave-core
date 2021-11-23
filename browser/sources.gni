@@ -75,6 +75,8 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_local_state_prefs.h",
   "//brave/browser/brave_profile_prefs.cc",
   "//brave/browser/brave_profile_prefs.h",
+  "//brave/browser/brave_shell_integration.cc",
+  "//brave/browser/brave_shell_integration.h",
   "//brave/browser/brave_tab_helpers.cc",
   "//brave/browser/brave_tab_helpers.h",
   "//brave/browser/browser_context_keyed_service_factories.cc",
@@ -319,8 +321,14 @@ if (enable_ftx) {
 
 if (is_win) {
   brave_chrome_browser_sources += [
+    "//brave/browser/default_protocol_handler_utils_win.cc",
+    "//brave/browser/default_protocol_handler_utils_win.h",
     "//brave/browser/microsoft_edge_protocol_util.cc",
     "//brave/browser/microsoft_edge_protocol_util.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//chrome/install_static:install_static_util",
+    "//chrome/installer/util:with_no_strings",
   ]
 }
 

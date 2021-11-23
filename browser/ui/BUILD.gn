@@ -523,6 +523,13 @@ source_set("ui") {
     }
   }
 
+  if (is_win) {
+    sources += [
+      "webui/new_tab_page/ms_edge_protocol_message_handler.cc",
+      "webui/new_tab_page/ms_edge_protocol_message_handler.h",
+    ]
+  }
+
   if (is_win && is_official_build) {
     sources += [
       "//chrome/browser/ui/webui/help/version_updater_win.cc",
