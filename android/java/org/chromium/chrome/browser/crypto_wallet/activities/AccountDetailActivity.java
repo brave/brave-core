@@ -176,6 +176,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                                 cryptoBalanceString);
 
                 walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+                walletListItemModel.setErcToken(userAsset);
                 walletListItemModelList.add(walletListItemModel);
             }
 
