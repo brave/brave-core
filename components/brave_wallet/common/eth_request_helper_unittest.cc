@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -108,6 +109,24 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
 }
 
 TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
+  const std::string ledger_address =
+      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C9";
+  const std::string trezor_address =
+      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CA";
+
+  mojom::AccountInfoPtr primary_account = mojom::AccountInfo::New(
+      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", false, nullptr);
+  mojom::AccountInfoPtr ledger_account = mojom::AccountInfo::New(
+      ledger_address, "ledger", false,
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "123"));
+  mojom::AccountInfoPtr trezor_account = mojom::AccountInfo::New(
+      trezor_address, "trezor", false,
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"));
+  std::vector<mojom::AccountInfoPtr> account_infos;
+  account_infos.push_back(std::move(primary_account));
+  account_infos.push_back(std::move(ledger_account));
+  account_infos.push_back(std::move(trezor_account));
+
   // Test both EIP1559 and legacy gas fee fields are specified.
   std::string json(
       R"({
@@ -127,9 +146,21 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   auto tx_data = ParseEthSendTransaction1559Params(json, &from);
 
   ASSERT_TRUE(tx_data);
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
+                                 true /* network_supports_eip1559 */,
+                                 account_infos, from));
   EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+  // From is not found in the account infos, can happen when keyring is locked.
+  EXPECT_TRUE(ShouldCreate1559Tx(
+      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+  // Network don't support EIP1559
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+  // Keyring don't support EIP1559
+  EXPECT_FALSE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                  base::ToLowerASCII(trezor_address)));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -148,9 +179,10 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
 
   tx_data = ParseEthSendTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
+                                 true /* network_supports_eip1559 */,
+                                 account_infos, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
 
   // Test only legacy gas field is specified.
   json =
@@ -167,9 +199,10 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthSendTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_FALSE(
-      ShouldCreate1559Tx(tx_data.Clone(), true /* network_supports_eip1559 */));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(),
+                                  true /* network_supports_eip1559 */,
+                                  account_infos, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
 
   // Test no gas fee fields are specified.
   json =
@@ -184,8 +217,24 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthSendTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, from));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(from)));
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(ledger_address)));
+  // From is not found in the account infos, can happen when keyring is locked.
+  EXPECT_TRUE(ShouldCreate1559Tx(
+      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+  // Keyring don't support EIP1559
+  EXPECT_FALSE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                  base::ToLowerASCII(trezor_address)));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {

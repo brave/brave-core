@@ -4,7 +4,6 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   configs += [ ":infura_config" ]
-  include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
     "asset_ratio_controller.cc",
@@ -22,8 +21,6 @@ static_library("browser") {
     "brave_wallet_service.h",
     "brave_wallet_service_delegate.cc",
     "brave_wallet_service_delegate.h",
-    "brave_wallet_types.cc",
-    "brave_wallet_types.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
     "eip1559_transaction.cc",
@@ -92,7 +89,6 @@ static_library("browser") {
     "//brave/components/resources:strings_grit",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
-    "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/component_updater",
     "//components/content_settings/core/browser",

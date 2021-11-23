@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
