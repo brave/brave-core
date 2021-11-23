@@ -38,6 +38,11 @@ constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
 constexpr char kEthBlockNumber[] = "eth_blockNumber";
 constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
+// We currently don't handle it until MetaMask point it to v3 or v4 other than
+// v1 or v2
+constexpr char kEthSignTypedData[] = "eth_signTypedData";
+constexpr char kEthSignTypedDataV3[] = "eth_signTypedData_v3";
+constexpr char kEthSignTypedDataV4[] = "eth_signTypedData_v4";
 constexpr char kId[] = "id";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
