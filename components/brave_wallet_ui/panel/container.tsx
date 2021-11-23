@@ -609,6 +609,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={false}>
         <SelectContainer>
           <SelectNetwork
+            selectedNetwork={selectedNetwork}
             networks={networkList}
             onBack={onReturnToMain}
             onSelectNetwork={onSelectNetwork}

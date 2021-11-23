@@ -22,6 +22,7 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: EthereumChain[]
   assetOptions: AccountAssetOptionType[]
+  selectedNetwork: EthereumChain
   onClickSelectAccount: (account: UserAccountType) => () => void
   onClickSelectNetwork: (network: EthereumChain) => () => void
   onSelectedAsset: (account: AccountAssetOptionType) => () => void
@@ -34,6 +35,7 @@ function SelectHeader (props: Props) {
     accounts,
     networkList,
     assetOptions,
+    selectedNetwork,
     onClickSelectAccount,
     goBack,
     onSelectedAsset,
@@ -58,6 +60,7 @@ function SelectHeader (props: Props) {
       }
       {selectedView === 'networks' &&
         <SelectNetwork
+          selectedNetwork={selectedNetwork}
           networks={networkList}
           onSelectNetwork={onClickSelectNetwork}
           onBack={goBack}

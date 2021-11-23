@@ -138,10 +138,15 @@ const ConnectedPanel = (props: Props) => {
             {isConnected && <BigCheckMark />}
             <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
           </OvalButton>
-          <OvalButton onClick={navigate('networks')}>
-            <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-            <CaratDownIcon />
-          </OvalButton>
+          <Tooltip
+            text={selectedNetwork.chainName}
+            positionRight={true}
+          >
+            <OvalButton onClick={navigate('networks')}>
+              <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
+              <CaratDownIcon />
+            </OvalButton>
+          </Tooltip>
         </StatusRow>
         <BalanceColumn>
           <AccountCircle orb={orb} onClick={navigate('accounts')}>

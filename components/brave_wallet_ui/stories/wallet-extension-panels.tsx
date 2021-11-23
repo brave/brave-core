@@ -511,6 +511,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {selectedPanel === 'networks' &&
                 <SelectContainer>
                   <SelectNetwork
+                    selectedNetwork={selectedNetwork}
                     networks={mockNetworks}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}

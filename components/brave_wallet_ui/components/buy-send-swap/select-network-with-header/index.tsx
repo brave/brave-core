@@ -11,17 +11,19 @@ import {
 
 export interface Props {
   networks: EthereumChain[]
+  selectedNetwork: EthereumChain
   onSelectNetwork: (network: EthereumChain) => () => void
   onBack: () => void
 }
 
 function SelectNetworkWithHeader (props: Props) {
-  const { networks, onSelectNetwork, onBack } = props
+  const { networks, onSelectNetwork, onBack, selectedNetwork } = props
   return (
     <SelectWrapper>
       <Header title={getLocale('braveWalletSelectNetwork')} onBack={onBack} />
       <SelectScrollContainer>
         <SelectNetwork
+          selectedNetwork={selectedNetwork}
           networks={networks}
           onSelectNetwork={onSelectNetwork}
         />
