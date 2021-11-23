@@ -13,39 +13,65 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/btn_tip"
+        <LinearLayout
+            android:id="@+id/tip_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:drawablePadding="8dp"
-            android:text="@string/tip"
-            android:textAllCaps="false"
-            android:textColor="#868E96"
-            android:textSize="16sp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            style="?android:attr/buttonBarButtonStyle"
-            app:drawableStartCompat="@drawable/ic_hearts" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/btn_summary"
+            <ImageView
+                android:id="@+id/tip_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_hearts"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tip_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tip"
+                android:textAllCaps="false"
+                android:textColor="#868E96"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/summary_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:drawablePadding="8dp"
-            android:text="@string/summary"
-            android:textAllCaps="false"
-            android:textColor="#868E96"
-            android:textSize="16sp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            style="?android:attr/buttonBarButtonStyle"
-            app:drawableStartCompat="@drawable/ic_bar_chart_20"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/summary_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_bar_chart_20"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/summary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/summary"
+                android:textAllCaps="false"
+                android:textColor="#868E96"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width="2dp"
@@ -55,6 +81,7 @@
             android:background="#E9E9F4" />
 
         <ImageView
+            android:id="@+id/btn_rewards_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

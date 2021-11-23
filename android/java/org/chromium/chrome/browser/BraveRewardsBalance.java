@@ -24,7 +24,7 @@ public class BraveRewardsBalance {
     public static final String JSON_TOTAL = "total";
     public static final String JSON_WALLETS = "wallets";
 
-    double mTotal;
+    private double mTotal;
     Map <String, Double> mWallets;
 
     BraveRewardsBalance (String json_balance) throws JSONException {

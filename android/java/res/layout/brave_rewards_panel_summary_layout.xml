@@ -49,27 +49,13 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/month_year_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="April 2021"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
     </LinearLayout>
-
-<!--    <TextView-->
-<!--        android:id="@+id/rewards_history_text"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingStart="16dp"-->
-<!--        android:paddingEnd="16dp"-->
-<!--        android:fontFamily="sans-serif"-->
-<!--        android:paddingTop="8dp"-->
-<!--        android:paddingBottom="8dp"-->
-<!--        android:text="@string/history"-->
-<!--        android:textColor="@color/settings_section_text_color"-->
-<!--        android:textSize="14sp"-->
-<!--        android:background="@drawable/rounded_8_bottom_bg" />-->
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1680,7 +1680,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             if (mBraveRewardsNativeWorker != null) {
                 BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (balance_obj != null) {
-                    walletBalance = balance_obj.mTotal;
+                    walletBalance = balance_obj.getTotal();
                 }
 
                 if (walletBalance > 0 && braveRewardsWelcomeView != null) {
@@ -1819,7 +1819,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
         BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
         if (balance_obj != null) {
-            walletBalance = balance_obj.mTotal;
+            walletBalance = balance_obj.getTotal();
         }
 
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {

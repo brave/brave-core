@@ -24,7 +24,7 @@
             android:id="@+id/attention_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -59,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -110,14 +111,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/rewards_settings_seperator_color" />
 
         <TextView
             android:id="@+id/btn_send_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/blue_48_rounded_bg"
             android:clickable="true"
             android:focusable="true"

@@ -138,7 +138,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         double balance = .0;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null){
-            balance = rewards_balance.mTotal;
+            balance = rewards_balance.getTotal();
         }
 
         DecimalFormat df = new DecimalFormat("#.###");
@@ -167,7 +167,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewards_balance != null){
-                    balance = rewards_balance.mTotal;
+                    balance = rewards_balance.getTotal();
                 }
                 int amount = 0;
                 for (ToggleButton tb : radio_tip_amount){
@@ -474,7 +474,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewardsBalance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewardsBalance != null) {
-                    balance = rewardsBalance.mTotal;
+                    balance = rewardsBalance.getTotal();
                 }
                 DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);

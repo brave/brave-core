@@ -431,6 +431,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void getAdsAccountStatement() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     @CalledByNative
     public void OnRecoverWallet(int errorCode) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -684,5 +690,6 @@ public class BraveRewardsNativeWorker {
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
         void startProcess(long nativeBraveRewardsNativeWorker);
+        void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
     }
 }

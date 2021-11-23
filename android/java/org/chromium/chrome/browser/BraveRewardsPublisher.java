@@ -9,7 +9,7 @@ import androidx.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-class BraveRewardsPublisher {
+public class BraveRewardsPublisher {
     //PublisherStatus @
     //vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom
     @Retention(RetentionPolicy.SOURCE)
