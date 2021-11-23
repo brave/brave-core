@@ -358,6 +358,35 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void SignTypedMessage(absl::optional<bool> user_approved,
+                        const std::string& address,
+                        const std::string& message,
+                        const std::string& message_to_sign,
+                        base::Value&& domain,
+                        std::string* signature_out,
+                        int* error_out,
+                        std::string* error_message_out) {
+    if (!signature_out || !error_out || !error_message_out)
+      return;
+
+    base::RunLoop run_loop;
+    provider()->SignTypedMessage(
+        address, message, message_to_sign, std::move(domain),
+        base::BindLambdaForTesting([&](const std::string& signature, int error,
+                                       const std::string& error_message) {
+          *signature_out = signature;
+          *error_out = error;
+          *error_message_out = error_message;
+          run_loop.Quit();
+        }));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    browser_task_environment_.RunUntilIdle();
+    if (user_approved)
+      brave_wallet_service_->NotifySignMessageRequestProcessed(
+          *user_approved, provider()->sign_message_id_ - 1);
+    run_loop.Run();
+  }
+
   // current request id will be returned
   int SignMessageRequest(const std::string& address,
                          const std::string& message) {
@@ -913,6 +942,118 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   // whent here are no accounts returned.
   SignMessage(absl::nullopt, addresses[0], "0x1234", &signature, &error,
               &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(addresses[0])));
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
+  EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x1");
+  CreateWallet();
+  AddAccount();
+  const std::string valid_message_to_sign =
+      "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2";
+  std::string signature;
+  int error;
+  std::string error_message;
+  base::Value domain(base::Value::Type::DICTIONARY);
+  domain.SetIntKey("chainId", 1);
+  SignTypedMessage(absl::nullopt, "1234", "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  SignTypedMessage(absl::nullopt, "0x12345678", "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  const std::string address = "0x1234567890123456789012345678901234567890";
+  // domain not dict
+  SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
+                   base::Value("not dict"), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // not valid hex
+  SignTypedMessage(absl::nullopt, address, "{...}", "brave", domain.Clone(),
+                   &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // not valid eip712 hash
+  SignTypedMessage(absl::nullopt, address, "{...}", "deadbeef", domain.Clone(),
+                   &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  domain.SetIntKey("chainId", 4);
+  std::string chain_id = "0x4";
+  // not active network
+  SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(
+                IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH,
+                base::ASCIIToUTF16(chain_id)));
+  domain.SetIntKey("chainId", 1);
+
+  SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(address)));
+
+  // No permission
+  const std::vector<std::string> addresses = GetAddresses();
+  ASSERT_FALSE(address.empty());
+  SignTypedMessage(absl::nullopt, addresses[0], "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(addresses[0])));
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
+  SignTypedMessage(true, addresses[0], "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+
+  EXPECT_FALSE(signature.empty());
+  EXPECT_EQ(error, 0);
+  EXPECT_TRUE(error_message.empty());
+
+  // User reject request
+  SignTypedMessage(false, addresses[0], "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+  keyring_controller()->Lock();
+
+  // nullopt for the first param here because we don't AddSignMessageRequest
+  // whent here are no accounts returned.
+  SignTypedMessage(absl::nullopt, addresses[0], "{...}", valid_message_to_sign,
+                   domain.Clone(), &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
   EXPECT_EQ(error_message,

@@ -934,7 +934,8 @@ KeyringController::SignatureWithError::~SignatureWithError() = default;
 KeyringController::SignatureWithError
 KeyringController::SignMessageByDefaultKeyring(
     const std::string& address,
-    const std::vector<uint8_t>& message) {
+    const std::vector<uint8_t>& message,
+    bool is_eip712) {
   SignatureWithError ret;
   if (!default_keyring_) {
     ret.signature = absl::nullopt;
@@ -945,7 +946,7 @@ KeyringController::SignMessageByDefaultKeyring(
 
   // MM currently doesn't provide chain_id when signing message
   std::vector<uint8_t> signature =
-      default_keyring_->SignMessage(address, message, 0);
+      default_keyring_->SignMessage(address, message, 0, is_eip712);
   if (signature.empty()) {
     ret.signature = absl::nullopt;
     ret.error_message =
