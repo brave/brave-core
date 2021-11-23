@@ -1,0 +1,24 @@
+# Copyright 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/cargo.gni")
+
+rust_crate("rust_lib") {
+  inputs = [
+    "Cargo.toml",
+    "src/cache.rs",
+    "src/errors.rs",
+    "src/http.rs",
+    "src/lib.rs",
+    "src/models.rs",
+    "src/sdk/credentials/fetch.rs",
+    "src/sdk/credentials/mod.rs",
+    "src/sdk/credentials/present.rs",
+    "src/sdk/mod.rs",
+    "src/sdk/orders.rs",
+    "src/storage/kv.rs",
+    "src/storage/mod.rs",
+  ]
+}
