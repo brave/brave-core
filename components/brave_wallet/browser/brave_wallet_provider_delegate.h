@@ -27,7 +27,7 @@ class BraveWalletProviderDelegate {
       delete;
   virtual ~BraveWalletProviderDelegate() = default;
 
-  virtual void ShowBubble() {}
+  virtual void ShowPanel() = 0;
   virtual GURL GetOrigin() const = 0;
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;

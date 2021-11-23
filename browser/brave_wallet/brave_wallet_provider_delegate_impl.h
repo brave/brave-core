@@ -36,14 +36,11 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
       const BraveWalletProviderDelegateImpl&) = delete;
   ~BraveWalletProviderDelegateImpl() override;
 
-  void ShowBubble() override;
+  void ShowPanel() override;
   GURL GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
-
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
-  static void SetCallbackForNewSetupNeededForTesting(
-      base::OnceCallback<void()>);
 
  private:
   void ContinueRequestEthereumPermissions(

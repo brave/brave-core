@@ -16,6 +16,7 @@
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
@@ -826,7 +827,7 @@ TEST_F(BraveWalletProviderImplUnitTest,
 
 TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
   bool new_setup_callback_called = false;
-  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+  SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   CreateWallet();
   AddAccount();
@@ -849,7 +850,7 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
 TEST_F(BraveWalletProviderImplUnitTest,
        RequestEthereumPermissionsNoPermission) {
   bool new_setup_callback_called = false;
-  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+  SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   bool permission_callback_called = false;
   CreateWallet();
@@ -867,7 +868,7 @@ TEST_F(BraveWalletProviderImplUnitTest,
 
 TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   bool new_setup_callback_called = false;
-  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+  SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
