@@ -22,7 +22,8 @@
   <div slot="body">
     <cr-input id="chainId"
               label="$i18n{walletAddNetworkDialogChainIdTitle}"
-              type="text"
+              type="number"
+              min="1"
               placeholder="$i18n{walletAddNetworkDialogChainIdPlaceholder}"
               spellcheck="false"
               error-message="{{invalidChainIdMessage_}}"
