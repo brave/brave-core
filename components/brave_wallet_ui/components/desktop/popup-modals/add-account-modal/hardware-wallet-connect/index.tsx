@@ -109,14 +109,25 @@ export default function (props: Props) {
   }
 
   const onSelectLedger = () => {
+    if (selectedHardwareWallet !== LEDGER_HARDWARE_VENDOR) {
+      setConnectionError(undefined)
+    }
+
     selectVendor(LEDGER_HARDWARE_VENDOR)
   }
 
   const onSelectTrezor = () => {
+    if (selectedHardwareWallet !== TREZOR_HARDWARE_VENDOR) {
+      setConnectionError(undefined)
+    }
+
     selectVendor(TREZOR_HARDWARE_VENDOR)
   }
 
-  const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)
+  const onSubmit = () => {
+    setConnectionError(undefined)
+    onConnectHardwareWallet(selectedHardwareWallet)
+  }
 
   if (connectionError) {
     console.error(connectionError)
