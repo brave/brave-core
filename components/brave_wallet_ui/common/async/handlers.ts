@@ -401,13 +401,13 @@ handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, p
 handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const apiProxy = getAPIProxy()
   await apiProxy.ethTxController.approveTransaction(txInfo.id)
-  await refreshWalletInfo(store)
+  await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
 })
 
 handler.on(WalletActions.rejectTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const apiProxy = getAPIProxy()
   await apiProxy.ethTxController.rejectTransaction(txInfo.id)
-  await refreshWalletInfo(store)
+  await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
 })
 
 handler.on(WalletActions.rejectAllTransactions.getType(), async (store) => {
