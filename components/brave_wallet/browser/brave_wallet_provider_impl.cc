@@ -108,7 +108,13 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
 
+  // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
+    if (rpc_controller_->GetChainId() != chain->chain_id) {
+      SwitchEthereumChain(chain->chain_id, std::move(callback));
+      return;
+    }
+
     std::move(callback).Run(0, std::string());
     return;
   }
@@ -467,11 +473,15 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
   if (!chain_callbacks_.contains(chain_id))
     return;
   if (error.empty()) {
-    std::move(chain_callbacks_[chain_id]).Run(0, std::string());
-  } else {
-    std::move(chain_callbacks_[chain_id])
-        .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest), error);
+    // To match MM for webcompat, after adding a chain we should prompt
+    // again to switch to the chain. And the error result only depends on
+    // what the switch action is at that point.
+    SwitchEthereumChain(chain_id, std::move(chain_callbacks_[chain_id]));
+    chain_callbacks_.erase(chain_id);
+    return;
   }
+  std::move(chain_callbacks_[chain_id])
+      .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest), error);
   chain_callbacks_.erase(chain_id);
 }
 

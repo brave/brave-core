@@ -481,11 +481,11 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
+  std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
   BraveWalletService* brave_wallet_service_;
   std::unique_ptr<TestEventsListener> observer_;
 
  private:
-  std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
   KeyringController* keyring_controller_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<EthTxController> eth_tx_controller_;
@@ -1316,6 +1316,34 @@ TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
                                                                GetOrigin());
   run_loop.Run();
   EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x1");
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
+  CreateBraveWalletTabHelper();
+  Navigate(GURL("https://bravesoftware.com"));
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+
+  // AddEthereumChain switches for already added networks
+  std::string params = R"({"params": [{
+        "chainId": "0x3",
+        "chainName": "Ropsten",
+        "rpcUrls": ["https://ropsten-infura.brave.com/"]
+      }]})";
+  base::RunLoop run_loop;
+  provider()->AddEthereumChain(
+      params, base::BindLambdaForTesting(
+                  [&](int error_code, const std::string& error_message) {
+                    EXPECT_EQ(error_code, 0);
+                    EXPECT_TRUE(error_message.empty());
+                    run_loop.Quit();
+                  }));
+  EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+  eth_json_rpc_controller_->NotifySwitchChainRequestProcessed(true,
+                                                              GetOrigin());
+  run_loop.Run();
+  brave_wallet_tab_helper()->CloseBubble();
+  EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
+  EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x3");
 }
 
 }  // namespace brave_wallet
