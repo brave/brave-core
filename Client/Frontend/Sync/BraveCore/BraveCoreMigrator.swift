@@ -52,10 +52,10 @@ class BraveCoreMigrator {
     private var bookmarkObserver: BookmarkModelListener?
     private var historyObserver: HistoryServiceListener?
     
-    public init(bookmarksAPI: BraveBookmarksAPI, historyAPI: BraveHistoryAPI, syncAPI: BraveSyncAPI) {
-        self.bookmarksAPI = bookmarksAPI
-        self.historyAPI = historyAPI
-        self.syncAPI = syncAPI
+    public init(braveCore: BraveCoreMain) {
+        self.bookmarksAPI = braveCore.bookmarksAPI
+        self.historyAPI = braveCore.historyAPI
+        self.syncAPI = braveCore.syncAPI
         
         // Check If Chromium Sync Objects Migration is complete (Bookmarks-History)
         if Migration.isChromiumMigrationCompleted {

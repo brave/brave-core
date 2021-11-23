@@ -37,7 +37,7 @@ class SafeBrowsing {
     }
     
     func showMalwareWarningPage(forUrl url: URL, inWebView webView: WKWebView) {
-        var components = URLComponents(string: WebServer.sharedInstance.base + "/errors/SafeBrowsingError.html")!
+        var components = URLComponents(string: WebServer.sharedInstance.base + "/\(InternalURL.Path.errorpage)/SafeBrowsingError.html")!
         
         // This parameter help us to know what url caused the malware protection to show so we can
         // update url with it(instead of showing localhost error page url).

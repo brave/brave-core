@@ -88,7 +88,7 @@ private class HighlightableButton: UIButton {
 
 class PlaylistToast: Toast {
     private struct DesignUX {
-        static let maxToastWidth: CGFloat = 450.0
+        static let maxToastWidth: CGFloat = BraveUX.baseDimensionValue
     }
     
     private let toastShadowView = ToastShadowView()

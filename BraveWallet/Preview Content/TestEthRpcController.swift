@@ -28,6 +28,10 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion(networkURL?.absoluteString ?? "")
   }
   
+  func network(_ completion: @escaping (BraveWallet.EthereumChain) -> Void) {
+    completion(networks.first(where: { $0.chainId == self.chainId }) ?? .init())
+  }
+  
   func balance(_ address: String, completion: @escaping (Bool, String) -> Void) {
     completion(true, "10")
   }

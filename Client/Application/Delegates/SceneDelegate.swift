@@ -17,7 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var windowProtection: WindowProtection?
     private var sceneInfo: AppDelegate.SceneInfoModel?
-    static var shouldShowIntroScreen = false
     static var shouldHandleUrpLookup = false
     
     private var cancellables: Set<AnyCancellable> = []
@@ -50,9 +49,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                               migration: sceneInfo.migration) else {
             fatalError("Failed to create browser instance")
         }
-        
-        // Setup browser state
-        browserViewController.shouldShowIntroScreen = SceneDelegate.shouldShowIntroScreen
         
         if SceneDelegate.shouldHandleUrpLookup {
             // TODO: Find a better way to do this when multiple windows are involved.
@@ -345,15 +341,12 @@ extension SceneDelegate {
         // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
         // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
         let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug
-        Preferences.AppState.backgroundedCleanly.value = false
         
         // Create a browser instance
         let browserViewController = BrowserViewController(
             profile: profile,
             diskImageStore: diskImageStore,
-            historyAPI: appDelegate.braveCore.historyAPI,
-            bookmarksAPI: appDelegate.braveCore.bookmarksAPI,
-            syncAPI: appDelegate.braveCore.syncAPI,
+            braveCore: appDelegate.braveCore,
             migration: migration,
             crashedLastSession: crashedLastSession)
         

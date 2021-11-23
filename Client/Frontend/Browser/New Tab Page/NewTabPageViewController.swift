@@ -76,12 +76,24 @@ protocol NewTabPageDelegate: AnyObject {
     func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
     func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
     func tappedQRCodeButton(url: URL)
+    func showNTPOnboarding()
 }
 
 /// The new tab page. Shows users a variety of information, including stats and
 /// favourites
 class NewTabPageViewController: UIViewController {
     weak var delegate: NewTabPageDelegate?
+    
+    var ntpStatsOnboardingFrame: CGRect? {
+        guard let section = sections.firstIndex(where: { $0 is StatsSectionProvider }) else {
+            return nil
+        }
+        
+        if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? NewTabCollectionViewCell<BraveShieldStatsView> {
+            return collectionView.convert(cell.contentView.frame, to: view)
+        }
+        return nil
+    }
     
     /// The modules to show on the new tab page
     private var sections: [NTPSectionProvider] = []
@@ -238,6 +250,10 @@ class NewTabPageViewController: UIViewController {
         
         reportSponsoredImageBackgroundEvent(.viewed)
         presentNotification()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
+            self.delegate?.showNTPOnboarding()
+        }
     }
     
     override func viewSafeAreaInsetsDidChange() {

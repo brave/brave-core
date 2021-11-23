@@ -12,9 +12,7 @@ private let log = Logger.browserLogger
 
 /// A static class to handle all things related to the Brave VPN service.
 class BraveVPN {
-    
-    static let appLaunchesToShowVPNPopup = 3
-    
+        
     private static let housekeepingApi = GRDHousekeepingAPI()
     private static let helper = GRDVPNHelper()
     private static let serverManager = GRDServerManager()

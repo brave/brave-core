@@ -75,11 +75,6 @@ open class AppInfo {
         return baseBundleIdentifier
     }
 
-    // Return the MozWhatsNewTopic key from the Info.plist
-    public static var whatsNewTopic: String? {
-        return Bundle.main.infoDictionaryString(forKey: "MozWhatsNewTopic")
-    }
-
     // Return whether the currently executing code is running in an Application
     public static var isApplication: Bool {
         return Bundle.main.infoDictionaryString(forKey: "CFBundlePackageType") == "APPL"

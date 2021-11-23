@@ -4,9 +4,10 @@
 
 import Foundation
 import GCDWebServers
+import Shared
 
 struct SafeBrowsingHandler {
     static func register(_ webServer: WebServer) {
-        webServer.registerMainBundleResource("SafeBrowsingError.html", module: "errors")
+        webServer.registerMainBundleResource("SafeBrowsingError.html", module: "\(InternalURL.Path.errorpage)")
     }
 }

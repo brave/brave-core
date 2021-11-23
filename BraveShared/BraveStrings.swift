@@ -161,6 +161,145 @@ extension Strings {
     }
 }
 
+// MARK:  Callouts
+
+extension Strings {
+    public struct Callout {
+        public static let defaultBrowserCalloutTitle =
+            NSLocalizedString("callout.defaultBrowserTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Make Brave your default browser",
+                              comment: "Title for Default Browser Full Screen Callout")
+        public static let defaultBrowserCalloutDescription =
+            NSLocalizedString("callout.defaultBrowserCalloutDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "With Brave as default, every link you click opens with Brave's privacy protections.",
+                              comment: "Subtitle - Description for Default Browser Full Screen Callout")
+        public static let defaultBrowserCalloutPrimaryButtonTitle =
+            NSLocalizedString("callout.defaultBrowserCalloutPrimaryButtonTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Set as default",
+                              comment: "Title for main button in Default Browser Full Screen Callout")
+        public static let defaultBrowserCalloutSecondaryButtonTitle =
+            NSLocalizedString("callout.defaultBrowserCalloutSecondaryButtonTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Skip this",
+                              comment: "Title for secondary button in Default Browser Full Screen Callout")
+        public static let defaultBrowserCalloutSecondaryButtonDescription =
+            NSLocalizedString("callout.defaultBrowserCalloutSecondaryButtonDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Already default?",
+                              comment: "Description for secondary button in Default Browser Full Screen Callout")
+        public static let privacyEverywhereCalloutTitle =
+            NSLocalizedString("callout.privacyEverywhereCalloutTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Privacy. Everywhere.",
+                              comment: "Title for Privacy Everywhere Full Screen Callout")
+        public static let privacyEverywhereCalloutDescription =
+            NSLocalizedString("callout.privacyEverywhereCalloutDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Get Brave privacy on your computer or tablet, and sync bookmarks & extensions between devices.",
+                              comment: "Subtitle - Description for Privacy Everywhere Full Screen Callout")
+        public static let privacyEverywhereCalloutPrimaryButtonTitle =
+            NSLocalizedString("callout.privacyEverywhereCalloutPrimaryButtonTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Sync now",
+                              comment: "Title for button in Default Browser Full Screen Callout")
+        public static let playlistOnboardingViewTitle =
+            NSLocalizedString("callout.playlistOnboardingViewTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Ad block is just the beginning",
+                              comment: "Title for Playlist Onboarding View")
+        public static let playlistOnboardingViewDescription =
+            NSLocalizedString("callout.playlistOnboardingViewDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "With Brave Playlist, you can play videos in the background, picture-in-picture, or even offline. And, of course, ad-free.",
+                              comment: "Description for Playlist Onboarding View")
+        public static let playlistOnboardingViewButtonTitle =
+            NSLocalizedString("callout.playlistOnboardingViewButtonTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Watch the video",
+                              comment: "Button title for Playlist Onboarding View")
+    }
+}
+
+// MARK:  Onboarding
+
+extension Strings {
+    public struct Onboarding {
+        public static let welcomeScreenTitle =
+            NSLocalizedString("onboarding.welcomeScreenTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Welcome to Brave!",
+                              comment: "Title for Welcome Screen in Onboarding")
+        public static let privacyScreenTitle =
+            NSLocalizedString("onboarding.privacyScreenTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Privacy, simplified",
+                              comment: "Title for Privacy Screen in Onboarding")
+        public static let privacyScreenDescription =
+            NSLocalizedString("onboarding.privacyScreenDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "You're just a step away from the best privacy online. Ready?",
+                              comment: "Description for Privacy Screen in Onboarding")
+        public static let privacyScreenButtonTitle =
+            NSLocalizedString("onboarding.privacyScreenButtonTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Let's go",
+                              comment: "Button Title for Privacy Screen in Onboarding")
+        public static let readyScreenTitle =
+            NSLocalizedString("onboarding.readyScreenTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "You're ready to browse!",
+                              comment: "Title for Ready Screen in Onboarding")
+        public static let readyScreenDescription =
+            NSLocalizedString("onboarding.readyScreenDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Select a popular site below or enter your own...",
+                              comment: "Description for Ready Screen in Onboarding")
+        public static let readyScreenAdditionalDescription =
+            NSLocalizedString("onboarding.readyScreenAdditionalDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "...and watch those trackers & ads disappear.",
+                              comment: "Additional Description for Ready Screen in Onboarding")
+        public static let ntpOnboardingPopOverTrackerDescription =
+            NSLocalizedString("onboarding.ntpOnboardingPopOverTrackerDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "By blocking trackers & ads, websites use less data and load way faster.",
+                              comment: "Description for the NTP pop-over that describes the tracking information on NTP")
+        public static let ntpOnboardingPopoverDoneTitle =
+            NSLocalizedString("onboarding.ntpOnboardingPopoverDoneTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "All set!",
+                              comment: "Title for the NTP pop-over that describes the onboarding is done")
+        public static let ntpOnboardingPopoverDoneDescription =
+            NSLocalizedString("onboarding.ntpOnboardingPopoverDoneDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Check the menu for settings and more great privacy features!",
+                              comment: "DEscription for the NTP pop-over that describes the onboarding is done")
+        public static let searchViewEnterWebsiteRowTitle =
+            NSLocalizedString("onboarding.searchViewEnterWebsiteRowTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Enter a website",
+                              comment: "The title of the row asking user to enter a website url")
+        public static let blockedAdsOnboardingPopoverDescription =
+            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Brave blocked %@ and %d other trackers on: %@.",
+                              comment: "The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
+        public static let blockedAdsOnboardingPopoverDescriptionTwo =
+            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverDescriptionTwo",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Brave blocked %@ on: %@.",
+                              comment: "The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
+        public static let blockedAdsOnboardingPopoverDescriptionThree =
+            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverDescriptionThree",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Tap the Shield from any site to see all the stuff we blocked.",
+                              comment: "The description of the popover showing trackers that were blocked.")
+    }
+}
+
 // MARK:-  ErrorPageHelper.swift
 extension Strings {
     public static let errorPageReloadButtonTitle = NSLocalizedString("ErrorPageReloadButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Reload", comment: "Shown in error pages on a button that will try to load the page again")
@@ -856,10 +995,12 @@ extension Strings {
     public static let OBAdsOptInMessage = NSLocalizedString("OBAdsOptInMessage", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
     public static let OBAdsOptInMessageJapan = NSLocalizedString("OBAdsOptInMessageJapan", bundle: Bundle.braveShared, value: "Earn points and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
     public static let OBRewardsDetailInAdRegion = NSLocalizedString("OBRewardsDetailInAdRegion", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsDetail = NSLocalizedString("OBRewardsDetail", bundle: Bundle.braveShared, value: "Start supporting creators with private and anonymized ads while you browse", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsAgreementTitle = NSLocalizedString("OBRewardsAgreementTitle", bundle: Bundle.braveShared, value: "Brave Rewards supports creators", comment: "Title for rewards agreement onboarding screen")
-    public static let OBRewardsAgreementDetail = NSLocalizedString("OBRewardsAgreementDetail", bundle: Bundle.braveShared, value: "By tapping Start, you agree to the", comment: "Detail text for rewards agreement onboarding screen")
+    public static let OBRewardsDetail = NSLocalizedString("OBRewardsDetail", bundle: Bundle.braveShared, value: "Opting into Brave Private Ads supports publishers and content creators with every ad viewed.", comment: "Detail text for rewards onboarding screen")
+    public static let OBRewardsAgreementTitle = NSLocalizedString("OBRewardsAgreementTitle", bundle: Bundle.braveShared, value: "Brave Rewards", comment: "Title for rewards agreement onboarding screen")
+    public static let OBRewardsAgreementDetail = NSLocalizedString("OBRewardsAgreementDetail", bundle: Bundle.braveShared, value: "By tapping Yes, you agree to the", comment: "Detail text for rewards agreement onboarding screen")
     public static let OBRewardsAgreementDetailLink = NSLocalizedString("OBRewardsAgreementDetailLink", bundle: Bundle.braveShared, value: "Terms of Service", comment: "Detail text for rewards agreement onboarding screen")
+    public static let OBRewardsPrivacyPolicyDetailLink = NSLocalizedString("OBRewardsPrivacyPolicyDetailLink", bundle: Bundle.braveShared, value: "Privacy Policy", comment: "Detail text for rewards agreement onboarding screen")
+    public static let OBRewardsAgreementDetailsAnd = NSLocalizedString("OBRewardsAgreementDetailsAnd", bundle: Bundle.braveShared, value: "and", comment: "Detail text for rewards agreement onboarding screen")
     public static let OBAdsTitle = NSLocalizedString("OBAdsTitle", bundle: Bundle.braveShared, value: "Brave will show your first ad in", comment: "Title for ads onboarding screen")
     public static let OBCompleteTitle = NSLocalizedString("OBCompleteTitle", bundle: Bundle.braveShared, value: "Now you're ready to go.", comment: "Title for when the user completes onboarding")
     public static let OBErrorTitle = NSLocalizedString("OBErrorTitle", bundle: Bundle.braveShared, value: "Sorry", comment: "A generic error title for onboarding")

@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.32.3](https://github.com/brave/brave-ios/releases/tag/v1.32.3)
+
+- Replaced Brave's HTTPSE with Apple's HTTPS upgrades in WKWebView and removed Brave HTTPSE setting from shields, still available as an option in global settings. ([#4335](https://github.com/brave/brave-ios/issues/4335))
+- Updated designs for error and interstitial pages. ([#4338](https://github.com/brave/brave-ios/issues/4338))
+- Fixed crash when closing Brave via the app switcher. ([#4490](https://github.com/brave/brave-ios/issues/4490))
+
+## [1.32.2](https://github.com/brave/brave-ios/releases/tag/v1.32.2)
+
+- [Security] Clarified sync setup instructions. ([#4470](https://github.com/brave/brave-ios/4470))
+
 ## [1.32.1](https://github.com/brave/brave-ios/releases/tag/v1.32.1)
 
 - Added CarPlay support for Brave Playlist. ([#3673](https://github.com/brave/brave-ios/3673))
