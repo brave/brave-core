@@ -152,14 +152,16 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
                                  account_infos, from));
   EXPECT_TRUE(
       ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+  // From is not found in the account infos, can happen when keyring is locked.
+  EXPECT_TRUE(ShouldCreate1559Tx(
+      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
   // Network don't support EIP1559
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
   // Keyring don't support EIP1559
   EXPECT_FALSE(
       ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
-  // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_FALSE(ShouldCreate1559Tx(
-      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                  base::ToLowerASCII(trezor_address)));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -217,14 +219,23 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   tx_data = ParseEthSendTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, from));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(from)));
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(ledger_address)));
+  // From is not found in the account infos, can happen when keyring is locked.
+  EXPECT_TRUE(ShouldCreate1559Tx(
+      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
   // Keyring don't support EIP1559
   EXPECT_FALSE(
       ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
-  // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_FALSE(ShouldCreate1559Tx(
-      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                  base::ToLowerASCII(trezor_address)));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
