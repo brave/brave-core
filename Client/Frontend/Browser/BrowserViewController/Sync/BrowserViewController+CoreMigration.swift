@@ -49,7 +49,9 @@ extension BrowserViewController {
             return BookmarksInterstitialPageHandler.showBookmarksPage(tabManager: self.tabManager, url: url)
         }
         
-        Migration.braveCoreSyncObjectsMigrator?.migrate({ error in
+        guard let migrator = migration?.braveCoreSyncObjectsMigrator else { return }
+        
+        migrator.migrate { error in
             Preferences.Chromium.syncV2ObjectMigrationCount.value += 1
             
             guard let error = error else {
@@ -59,21 +61,21 @@ extension BrowserViewController {
             
             switch error {
                 case .failedBookmarksMigration:
-                    guard let url = BraveCoreMigrator.datedBookmarksURL else {
-                        completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL) ? nil : error)
+                    guard let url = migrator.datedBookmarksURL else {
+                        completion(showInterstitialPage(migrator.bookmarksURL) ? nil : error)
                         return
                     }
 
-                    Migration.braveCoreSyncObjectsMigrator?.exportBookmarks(to: url) { success in
+                    migrator.exportBookmarks(to: url) { success in
                         if success {
                             completion(showInterstitialPage(url) ? nil : error)
                         } else {
-                            completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL) ? nil : error)
+                            completion(showInterstitialPage(migrator.bookmarksURL) ? nil : error)
                         }
                     }
                 default:
                    completion(error)
             }
-        })
+        }
     }
 }

@@ -40,7 +40,7 @@ extension BraveLedger {
                 $0.percent = 1 // exclude 0% sites.
                 $0.orderBy = [sort]
                 $0.nonVerified = allowUnverifiedPublishers
-                $0.reconcileStamp = autoContributeProperties.reconcileStamp
+                $0.reconcileStamp = autoContributeProperties?.reconcileStamp ?? 0
             }
             return filter
         }()

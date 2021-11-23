@@ -13,26 +13,28 @@ class SyncSettingsTableViewController: UITableViewController {
     
     // MARK: Lifecycle
     
-    init(showDoneButton: Bool = false) {
+    init(showDoneButton: Bool = false, syncAPI: BraveSyncAPI) {
         self.showDoneButton = showDoneButton
+        self.syncAPI = syncAPI
         super.init(style: .grouped)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Strings.sync
         
-        syncDeviceObserver = BraveSyncAPI.addDeviceStateObserver { [weak self] in
+        syncDeviceObserver = syncAPI.addDeviceStateObserver { [weak self] in
             self?.updateDeviceList()
         }
         
-        let codeWords = BraveSyncAPI.shared.getSyncCode()
-        BraveSyncAPI.shared.joinSyncGroup(codeWords: codeWords)
-        BraveSyncAPI.shared.syncEnabled = true
+        let codeWords = syncAPI.getSyncCode()
+        syncAPI.joinSyncGroup(codeWords: codeWords)
+        syncAPI.syncEnabled = true
         
         self.updateDeviceList()
         
@@ -53,6 +55,8 @@ class SyncSettingsTableViewController: UITableViewController {
     
     // MARK: Private
     
+    private let syncAPI: BraveSyncAPI
+    
     private struct BraveSyncDevice: Codable {
         let chromeVersion: String
         let hasSharingInfo: Bool
@@ -65,15 +69,6 @@ class SyncSettingsTableViewController: UITableViewController {
         let os: String
         let sendTabToSelfReceivingEnabled: Bool
         let type: String
-        
-        func remove() {
-            // Devices other than `isCurrentDevice` can only be deleted if
-            // `supportsSelfDelete` is true. Attempting to delete another device
-            // from the sync chain that does not support it, will crash or
-            // have undefined behaviour as the other device won't know that
-            // it was deleted.
-            BraveSyncAPI.shared.removeDeviceFromSyncGroup(deviceGuid: self.guid)
-        }
     }
     
     private var syncDeviceObserver: AnyObject?
@@ -133,10 +128,10 @@ class SyncSettingsTableViewController: UITableViewController {
         popup.addButton(title: popupButtonName, type: .destructive, fontSize: fontSize) {
             switch type {
                 case .lastDeviceLeft, .currentDevice:
-                    BraveSyncAPI.shared.leaveSyncGroup()
+                    self.syncAPI.leaveSyncGroup()
                     self.navigationController?.popToRootViewController(animated: true)
                 case .otherDevice:
-                    device.remove()
+                    self.syncAPI.removeDeviceFromSyncGroup(deviceGuid: device.guid)
             }
             return .flyDown
         }
@@ -154,7 +149,7 @@ class SyncSettingsTableViewController: UITableViewController {
                 return
         }
         
-        BraveSyncAPI.shared.enableSyncTypes()
+        syncAPI.enableSyncTypes()
     }
 }
 
@@ -175,7 +170,11 @@ extension SyncSettingsTableViewController {
         }
         
         guard device.isCurrentDevice || (!device.isCurrentDevice && device.supportsSelfDelete) else {
-            // See: `BraveSyncDevice.remove()` for more info.
+            // Devices other than `isCurrentDevice` can only be deleted if
+            // `supportsSelfDelete` is true. Attempting to delete another device
+            // from the sync chain that does not support it, will crash or
+            // have undefined behaviour as the other device won't know that
+            // it was deleted.
             return
         }
         
@@ -352,7 +351,7 @@ extension SyncSettingsTableViewController {
 extension SyncSettingsTableViewController {
     
     private func updateDeviceList() {
-        if let json = BraveSyncAPI.shared.getDeviceListJSON(), let data = json.data(using: .utf8) {
+        if let json = syncAPI.getDeviceListJSON(), let data = json.data(using: .utf8) {
             do {
                 let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
                 self.devices = devices
@@ -365,7 +364,7 @@ extension SyncSettingsTableViewController {
                     // But I don't have a TRUE way to tell if the current device
                     // was removed from the sync chain because `OnSelfDeviceInfoDeleted` has no callback.
                     // So instead, we call `reset_sync` which won't hurt.
-                    BraveSyncAPI.shared.leaveSyncGroup()
+                    syncAPI.leaveSyncGroup()
                     self.navigationController?.popToRootViewController(animated: true)
                 } else {
                     self.tableView.reloadData()
@@ -382,7 +381,7 @@ extension SyncSettingsTableViewController {
         let view = SyncSelectDeviceTypeViewController()
         
         view.syncInitHandler = { title, type in
-            let view = SyncAddDeviceViewController(title: title, type: type)
+            let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
             view.doneHandler = {
                 self.navigationController?.popToViewController(self, animated: true)
             }
@@ -402,7 +401,7 @@ extension SyncSettingsTableViewController {
                 return
             }
             
-            BraveSyncAPI.shared.leaveSyncGroup()
+            self.syncAPI.leaveSyncGroup()
             self.navigationController?.popToRootViewController(animated: true)
         })
         
