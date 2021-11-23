@@ -82,7 +82,8 @@ void BraveWalletProviderDelegateImpl::EnsureConnected() {
 }
 
 void BraveWalletProviderDelegateImpl::OnConnectionError() {
-  keyring_controller_.reset();
+  if (keyring_controller_.is_bound())
+    keyring_controller_.reset();
   EnsureConnected();
 }
 
