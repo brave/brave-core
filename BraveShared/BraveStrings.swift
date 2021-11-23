@@ -235,7 +235,7 @@ extension Strings {
         public static let privacyScreenTitle =
             NSLocalizedString("onboarding.privacyScreenTitle",
                               tableName: "BraveShared", bundle: .braveShared,
-                              value: "Privacy, simplified",
+                              value: "Privacy made easy",
                               comment: "Title for Privacy Screen in Onboarding")
         public static let privacyScreenDescription =
             NSLocalizedString("onboarding.privacyScreenDescription",
@@ -282,8 +282,13 @@ extension Strings {
                               tableName: "BraveShared", bundle: .braveShared,
                               value: "Enter a website",
                               comment: "The title of the row asking user to enter a website url")
-        public static let blockedAdsOnboardingPopoverDescription =
-            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverDescription",
+        public static let blockedAdsOnboardingPopoverSingleTrackerDescription =
+            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Brave blocked %@ and %d other tracker on: %@.",
+                              comment: "The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
+        public static let blockedAdsOnboardingPopoverMultipleTrackerDescription =
+            NSLocalizedString("onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription",
                               tableName: "BraveShared", bundle: .braveShared,
                               value: "Brave blocked %@ and %d other trackers on: %@.",
                               comment: "The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")

@@ -29,7 +29,9 @@ class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponen
         
         if trackerCount > 0 {
             let uuid = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-            let string = String(format: Strings.Onboarding.blockedAdsOnboardingPopoverDescription, "[\(uuid)]", trackerCount, domain)
+            let string = trackerCount == 1 ?
+            String(format: Strings.Onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription, "[\(uuid)]", trackerCount, domain) :
+            String(format: Strings.Onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription, "[\(uuid)]", trackerCount, domain)
             let strings = string.separatedBy("[\(uuid)]")
             guard strings.count == 2 else {
                 label.text = string
