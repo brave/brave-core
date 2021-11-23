@@ -953,6 +953,39 @@ if (!is_android) {
     }
     public_deps = [ ":browser_tests_runner" ]
   }
+
+  test("brave_network_audit_tests") {
+    testonly = true
+
+    # We need to disable the ThinLTO cache or the linker will die with
+    # a "Resource temporarily unavailable" error due to the linking
+    # reaching the vm.max_map_count limit of 65530 memory mappings.
+    configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+
+    sources = [
+      "//brave/browser/net/brave_network_audit_browsertest.cc",
+      "//brave/browser/net/brave_network_audit_whitelists.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/brave_rewards/browser",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//services/network/public/cpp",
+      "//testing/gmock",
+      "//third_party/re2",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    public_deps = [ ":browser_tests_runner" ]
+  }
 } else {  # if (!is_android) {
   test("brave_browser_tests") {
     configs += [ "//build/config:precompiled_headers" ]
