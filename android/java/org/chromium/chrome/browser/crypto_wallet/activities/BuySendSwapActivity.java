@@ -357,7 +357,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             if (mActivityType == ActivityType.SWAP) {
                 updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), false);
             }
-        } else if (parent.getId() == R.id.slippage_tolerance_spinner) {
+        } else if (parent.getId() == R.id.slippage_tolerance_spinner
+                && mActivityType == ActivityType.SWAP) {
             getSendSwapQuota(true, false);
         }
     }
@@ -874,7 +875,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 EditText fromValueText = findViewById(R.id.from_value_text);
                 fromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
                 radioPerPercent.clearCheck();
-                getSendSwapQuota(true, false);
+                if (mActivityType == ActivityType.SWAP) {
+                    getSendSwapQuota(true, false);
+                }
             }
         });
     }
