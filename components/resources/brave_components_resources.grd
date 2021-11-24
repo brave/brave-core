@@ -65,6 +65,7 @@
       <part file="ipfs_resources.grdp" />
       <part file="domain_block_resources.grdp" />
       <part file="decentralized_dns_resources.grdp" />
+      <part file="brave_shields_resources.grdp" />
     </includes>
   </release>
 </grit>

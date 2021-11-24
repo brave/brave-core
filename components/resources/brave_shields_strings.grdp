@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_SHIELDS" translateable="false" desc="Title for Brave Shields">
+    Brave Shields
+  </message>
+</grit-part>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_shields/resources/panel/assets/icon-64.png" type="BINDATA" />
+</grit-part>
