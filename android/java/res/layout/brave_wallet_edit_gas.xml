@@ -6,7 +6,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/edit_gas_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/wallet_edit_gas_title"
+        android:textSize="18sp" />
+
     <LinearLayout
+        android:id="@+id/gas_price_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -34,6 +47,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/gas_limit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -59,6 +73,159 @@
             tools:ignore="LabelFor, Autofill" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/max_priority_fee_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/wallet_max_priority_fee_msg"
+        android:visibility = "gone"
+        android:textSize="14sp" />
+
+    <RadioGroup
+        android:id="@+id/max_priority_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:visibility = "gone"
+        android:orientation="vertical">
+
+        <RadioButton android:id="@+id/radio_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_max_priority_fee_low"/>
+
+        <RadioButton android:id="@+id/radio_optimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/wallet_max_priority_fee_optimal"/>
+
+        <RadioButton android:id="@+id/radio_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_max_priority_fee_high"/>
+
+        <RadioButton android:id="@+id/radio_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_max_priority_fee_custom"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/current_base_fee_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/wallet_current_base_fee"
+        android:visibility = "gone"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/gas_amount_limit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:visibility = "gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wallet_text_color"
+            android:text="@string/wallet_max_priority_gas_amount_limit"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/gas_amount_limit_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp"
+            tools:ignore="LabelFor, Autofill" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/per_gas_tip_limit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:visibility = "gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wallet_text_color"
+            android:text="@string/wallet_max_priority_per_gas_tip_limit"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/per_gas_tip_limit_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp"
+            tools:ignore="LabelFor, Autofill" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/per_gas_price_limit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:visibility = "gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wallet_text_color"
+            android:text="@string/wallet_max_priority_per_gas_price_limit"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/per_gas_price_limit_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp"
+            tools:ignore="LabelFor, Autofill" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/maximum_fee_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/wallet_maximum_fee"
+        android:visibility = "gone"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
