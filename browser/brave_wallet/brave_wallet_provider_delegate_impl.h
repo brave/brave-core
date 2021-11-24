@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/browser/web_contents_observer.h"
 
 namespace content {
 class RenderFrameHost;
@@ -23,7 +24,8 @@ namespace brave_wallet {
 
 class KeyringController;
 
-class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
+class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
+                                        public content::WebContentsObserver {
  public:
   explicit BraveWalletProviderDelegateImpl(
       content::WebContents* web_contents,
@@ -55,6 +57,9 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
   void ContinueGetAllowedAccounts(
       BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
       const absl::optional<std::string>& selected_account);
+
+  // content::WebContentsObserver overrides
+  void WebContentsDestroyed() override;
 
   KeyringController* keyring_controller_;
   content::WebContents* web_contents_;

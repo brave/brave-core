@@ -144,7 +144,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
   rpc_controller_->AddEthereumChain(
       chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&BraveWalletProviderImpl::OnAddEthereumChain,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
