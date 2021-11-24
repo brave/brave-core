@@ -1605,7 +1605,7 @@ Are you sure you want to do this?
         The id of new chain
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_ID_PLACEHOLDER" desc="The placeholder of the chain id input for the wallet network dialog">
-        A 0x-prefixed hexadecimal string
+        A positive decimal number
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_NAME_TITLE" desc="The title of the chain name input for the wallet network dialog">
         The name of new chain
@@ -1647,7 +1647,7 @@ Are you sure you want to do this?
         This field cannot be blank.
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAID_ID_ERROR" desc="The error text of the wallet network dialog for invalid chain id fields">
-        Invalid format, the chain id is a 0x-prefixed hexadecimal string
+        Invalid format, the chain id is a positive number
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
         This network is already added.
