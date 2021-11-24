@@ -290,7 +290,7 @@ function Container (props: Props) {
     const amounts = accounts.map((account) => {
       let fiatBalance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-      if (found) {
+      if (found && found.fiatBalance !== '') {
         fiatBalance = Number(found.fiatBalance)
       }
       return fiatBalance
