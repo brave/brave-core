@@ -658,6 +658,15 @@ const util = {
     const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
     const needsUpdate = ((targetSHA !== headSHA) || (!headSHA && !targetSHA))
     if (needsUpdate) {
+      const gitChromiumRemoteUrl = util.runGit(config.srcDir, ['remote', 'get-url', 'origin'], true)
+      if (config.chromiumRepo != gitChromiumRemoteUrl) {
+        console.log(`Chromium repo's URL ${chalk.blue.bold('needs update')}. Current URL is ${chalk.italic(gitChromiumRemoteUrl)} but it should be ${chalk.italic(config.chromiumRepo)}`)
+        util.runGit(config.srcDir, ['remote', 'set-url', 'origin', config.chromiumRepo], true)
+        // We need to make sure the URL is also updated in the .gclient file to
+        // prevent gclient sync from auto-fixing the URL in .git/config again.
+        util.buildGClientConfig()
+      }
+
       const currentRef = util.getGitReadableLocalRef(config.srcDir)
       console.log(`Chromium repo ${chalk.blue.bold('needs update')}. Target is ${chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'} but current commit is ${chalk.italic(currentRef || '[unknown]')} at commit ${chalk.inverse(headSHA || '[missing]')}.`)
     } else {
