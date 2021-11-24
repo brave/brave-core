@@ -55,7 +55,8 @@ base::OnceCallback<void()> g_NewSetupNeededForTestingCallback;
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
     content::WebContents* web_contents,
     content::RenderFrameHost* const render_frame_host)
-    : web_contents_(web_contents),
+    : WebContentsObserver(web_contents),
+      web_contents_(web_contents),
       host_id_(render_frame_host->GetGlobalId()),
       weak_ptr_factory_(this) {
   keyring_controller_ =
@@ -78,6 +79,9 @@ GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
 }
 
 void BraveWalletProviderDelegateImpl::ShowBubble() {
+  if (!web_contents_)
+    return;
+
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
   if (tab_helper)
@@ -118,7 +122,9 @@ void BraveWalletProviderDelegateImpl::
         const std::vector<std::string>& allowed_accounts,
         brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   if (!keyring_info->is_default_keyring_created) {
-    Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+    Browser* browser = web_contents_
+                           ? chrome::FindBrowserWithWebContents(web_contents_)
+                           : nullptr;
     if (browser) {
       brave::ShowBraveWalletOnboarding(browser);
     } else if (g_NewSetupNeededForTestingCallback) {
@@ -172,6 +178,10 @@ void BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts(
             base::BindOnce(&OnGetAllowedAccounts, std::move(callback)));
       },
       host_id_, std::move(callback), selected_account));
+}
+
+void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
+  web_contents_ = nullptr;
 }
 
 }  // namespace brave_wallet
