@@ -293,22 +293,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnSupportActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/InAppPurchaseWrapper.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceAccountBalance.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceActivity.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceBuyFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceCoinNetworks.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceConvert.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceConvertFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceDepositFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceSpinnerAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceSummaryFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceWidgetManager.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CoinNetworkModel.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/ConvertAsset.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetBottomSheetDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetTabAdapter.java",
 ]
 
 brave_java_sources += brave_ads_java_sources
