@@ -15,6 +15,7 @@ namespace features {
 extern const base::Feature kBraveAdblockDefault1pBlocking;
 extern const base::Feature kBraveAdblockCnameUncloaking;
 extern const base::Feature kBraveAdblockCollapseBlockedElements;
+extern const base::Feature kBraveAdblockCookieListDefault;
 extern const base::Feature kBraveAdblockCosmeticFiltering;
 extern const base::Feature kBraveAdblockCspRules;
 extern const base::Feature kBraveDomainBlock;
