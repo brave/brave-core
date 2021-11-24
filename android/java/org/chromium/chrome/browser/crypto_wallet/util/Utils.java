@@ -103,9 +103,10 @@ public class Utils {
             ".{7,}" + // at least 7 characters
             "$");
 
-    public static int ONBOARDING_ACTION = 1;
-    public static int UNLOCK_WALLET_ACTION = 2;
-    public static int RESTORE_WALLET_ACTION = 3;
+    public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
+    public static int ONBOARDING_ACTION = 2;
+    public static int UNLOCK_WALLET_ACTION = 3;
+    public static int RESTORE_WALLET_ACTION = 4;
 
     public static int ACCOUNT_ITEM = 1;
     public static int ASSET_ITEM = 2;
