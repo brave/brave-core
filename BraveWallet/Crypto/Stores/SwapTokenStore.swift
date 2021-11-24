@@ -47,7 +47,7 @@ public class SwapTokenStore: ObservableObject {
         state = .idle
         return
       }
-      if oldValue != sellAmount && !updatingPriceQuote {
+      if oldValue != sellAmount && !updatingPriceQuote && !addingUnapprovedTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
           self?.fetchPriceQuote(base: .perSellAsset)
@@ -62,7 +62,7 @@ public class SwapTokenStore: ObservableObject {
         state = .idle
         return
       }
-      if oldValue != buyAmount && !updatingPriceQuote {
+      if oldValue != buyAmount && !updatingPriceQuote && !addingUnapprovedTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
           self?.fetchPriceQuote(base: .perBuyAsset)
@@ -104,6 +104,7 @@ public class SwapTokenStore: ObservableObject {
     }
   }
   private var updatingPriceQuote = false
+  private var addingUnapprovedTx = false
   private var timer: Timer?
   
   enum SwapParamsBase {
@@ -213,7 +214,9 @@ public class SwapTokenStore: ObservableObject {
         self?.clearAllAmount()
         return
       }
+      self.addingUnapprovedTx = true
       self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
+        defer { self.addingUnapprovedTx = false }
         guard success else {
           self.state = .error(Strings.Wallet.unknownError)
           self.clearAllAmount()
@@ -343,10 +346,12 @@ public class SwapTokenStore: ObservableObject {
     
     rpcController.network { [weak self] network in
       guard let self = self else { return }
+      self.addingUnapprovedTx = true
       self.transactionController.makeErc20ApproveData(
         spenderAddress,
         amount: balanceInWeiHex
       ) { success, data in
+        defer { self.addingUnapprovedTx = false }
         guard success else { return }
         let baseData = BraveWallet.TxData(
           nonce: "",
@@ -413,7 +418,7 @@ public class SwapTokenStore: ObservableObject {
   }
   
   private func bumpFeeByOneGWei(with value: String) -> String? {
-    guard let bv = BDouble(value) else { return nil }
+    guard let bv = BDouble(value, radix: 16) else { return nil }
     let bumpedValue = bv + (BDouble(10) ** 9)
     return bumpedValue.rounded().asString(radix: 16)
   }
