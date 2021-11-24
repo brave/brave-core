@@ -2,11 +2,14 @@
 
 <script>
   var permissionGranted = false
-  window.ethereum.enable().then(accounts => {
+
+  function ethereumEnable() {
+    window.ethereum.enable().then(accounts => {
       permissionGranted = true
-  }).catch(error => {
+    }).catch(error => {
       permissionGranted = false
-  })
+    })
+  }
 
   function getPermissionGranted() {
     window.domAutomationController.send(permissionGranted)
@@ -35,8 +38,10 @@
         params
       }).then(result => {
         sendTransactionResult = result
+        window.domAutomationController.send('result ready')
       }).catch(error => {
         sendTransactionError = error.message
+        window.domAutomationController.send('result ready')
       })
     } else if (method == 'send1') {
       window.ethereum.send({
@@ -46,13 +51,16 @@
       }, (err, result) => {
         sendTransactionError = err && err.error ? err.error.message : undefined
         sendTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
       })
     } else if (method == 'send2') {
       window.ethereum.send('eth_sendTransaction', params)
         .then(result => {
           sendTransactionResult = result.result
+          window.domAutomationController.send('result ready')
         }).catch(error => {
           sendTransactionError = error.error.message
+          window.domAutomationController.send('result ready')
         })
     } else if (method == 'sendAsync') {
       window.ethereum.sendAsync({
@@ -62,6 +70,7 @@
       }, (err, result) => {
         sendTransactionError = err && err.error ? err.error.message : undefined
         sendTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
       })
     }
   }

@@ -243,6 +243,14 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     eth_json_rpc_controller_->AddEthereumChainRequestCompleted(chain_id, true);
   }
 
+  void CallEthereumEnable() {
+    ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
+    base::RunLoop().RunUntilIdle();
+    ASSERT_TRUE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+  }
+
   void UserGrantPermission(bool granted) {
     std::string expected_address = "undefined";
     if (granted) {
@@ -310,6 +318,13 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void WaitForSendTransactionResultReady() {
+    content::DOMMessageQueue message_queue;
+    std::string message;
+    EXPECT_TRUE(message_queue.WaitForMessage(&message));
+    EXPECT_EQ("\"result ready\"", message);
+  }
+
   void TestUserApproved(const std::string& test_method,
                         bool skip_restore = false) {
     if (!skip_restore)
@@ -317,11 +332,9 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     GURL url =
         https_server_for_files()->GetURL("a.com", "/send_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    WaitForLoadStop(web_contents());
+    EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    CallEthereumEnable();
     UserGrantPermission(true);
     ASSERT_TRUE(
         ExecJs(web_contents(),
@@ -354,6 +367,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(infos[0]->tx_hash.empty());
     EXPECT_EQ(infos[0]->tx_data->base_data->nonce, "0x9604");
 
+    WaitForSendTransactionResultReady();
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
@@ -365,11 +379,9 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     GURL url =
         https_server_for_files()->GetURL("a.com", "/send_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    WaitForLoadStop(web_contents());
+    EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    CallEthereumEnable();
     UserGrantPermission(true);
     ASSERT_TRUE(
         ExecJs(web_contents(),
@@ -401,6 +413,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(infos[0]->tx_hash.empty());
     EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
 
+    WaitForSendTransactionResultReady();
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
@@ -482,18 +495,16 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, InvalidAddress) {
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
-  ASSERT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  CallEthereumEnable();
   UserGrantPermission(true);
   ASSERT_TRUE(ExecJs(web_contents(),
                      "sendTransaction(false, 'request', "
                      "'0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909', "
                      "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');"));
-  base::RunLoop().RunUntilIdle();
 
+  WaitForSendTransactionResultReady();
   EXPECT_FALSE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
@@ -509,18 +520,16 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NoEthPermission) {
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
-  ASSERT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  CallEthereumEnable();
   UserGrantPermission(false);
   ASSERT_TRUE(ExecJs(web_contents(),
                      "sendTransaction(false, 'request', "
                      "'0x084DCb94038af1715963F149079cE011C4B22961', "
                      "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');"));
-  base::RunLoop().RunUntilIdle();
 
+  WaitForSendTransactionResultReady();
   EXPECT_FALSE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
@@ -537,11 +546,9 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  CallEthereumEnable();
   UserGrantPermission(true);
 
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
@@ -584,7 +591,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NetworkVersion) {
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
   EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -632,7 +639,8 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
   EXPECT_TRUE(EvalJs(web_contents(), "getIsUnlocked()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractBool());
