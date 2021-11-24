@@ -86,7 +86,6 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       const signed = await eth.signTransaction(path, rawTxHex)
       return { success: true, payload: signed }
     } catch (e) {
-      console.log(e)
       return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
     }
   }

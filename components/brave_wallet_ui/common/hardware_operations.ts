@@ -1,11 +1,11 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
 import { HardwareWalletAccount } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { HardwareWalletErrorType } from '../constants/types'
+import { HardwareWalletResponseCodeType } from '../constants/types'
 
 export interface SignHardwareTransactionType {
   success: boolean
   error?: string
-  deviceError?: HardwareWalletErrorType
+  deviceError?: HardwareWalletResponseCodeType
 }
 export interface SignatureVRS {
   v: number
