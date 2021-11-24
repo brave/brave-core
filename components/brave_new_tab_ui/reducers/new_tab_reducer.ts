@@ -92,7 +92,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       state = storage.addNewStackWidget(state)
       state = storage.replaceStackWidgets(state)
-      state = storage.updateWidgetVisibility(state)
+      state = storage.updateWidgetVisibility(state, initialDataPayload.ftxUserAuthed)
 
       break
 

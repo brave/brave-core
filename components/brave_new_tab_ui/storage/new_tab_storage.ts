@@ -242,7 +242,7 @@ export const replaceStackWidgets = (state: NewTab.State) => {
   return state
 }
 
-export const updateWidgetVisibility = (state: NewTab.State) => {
+export const updateWidgetVisibility = (state: NewTab.State, ftxUserAuthed: boolean) => {
   // Do visibility migration only once.
   if (state.widgetVisibilityMigrated) {
     return state
@@ -259,10 +259,12 @@ export const updateWidgetVisibility = (state: NewTab.State) => {
     showFTX,
     ftxSupported,
     showGemini,
-    geminiSupported
+    geminiSupported,
+    binanceState,
+    geminiState
   } = state
 
-  const displayLookup = {
+  const widgetLookupTable = {
     'braveTalk': {
       display: braveTalkSupported && showBraveTalk,
       isCrypto: false
@@ -273,28 +275,31 @@ export const updateWidgetVisibility = (state: NewTab.State) => {
     },
     'binance': {
       display: binanceSupported && showBinance,
-      isCrypto: true
+      isCrypto: true,
+      isAuthed: binanceState.userAuthed
     },
     'cryptoDotCom': {
       display: cryptoDotComSupported && showCryptoDotCom,
-      isCrypto: true
+      isCrypto: true,
+      isAuthed: false
     },
     'ftx': {
       display: ftxSupported && showFTX,
-      isCrypto: true
+      isCrypto: true,
+      userAuthed: ftxUserAuthed
     },
     'gemini': {
       display: geminiSupported && showGemini,
-      isCrypto: true
+      isCrypto: true,
+      userAuthed: geminiState.userAuthed
     }
   }
 
-  // Among the crypt widgets, only one crypto widget is visible
-  // if it's foremost widget in the stack.
+  // Find crypto widget that is foremost and visible.
   let foremostVisibleCryptoWidget = ''
-  const lastIndex = state.widgetStackOrder.length - 1;
+  const lastIndex = state.widgetStackOrder.length - 1
   for (let i = lastIndex; i >= 0; --i) {
-    const widget = displayLookup[state.widgetStackOrder[i]]
+    const widget = widgetLookupTable[state.widgetStackOrder[i]]
     if (!widget) {
       console.error('Update above lookup table')
       continue
@@ -318,12 +323,15 @@ export const updateWidgetVisibility = (state: NewTab.State) => {
     'gemini': 'showGemini'
   }
 
-  // Hide all crypto widgets except foremost one.
   for (let key in widgetsShowKey) {
-    if (key === foremostVisibleCryptoWidget) {
+    // Show foremost visible crypto widget regardless of auth state
+    // and show user authed crypto widget.
+    if (key === foremostVisibleCryptoWidget ||
+        widgetLookupTable[key].userAuthed) {
       state[widgetsShowKey[key]] = true
       continue
     }
+
     state[widgetsShowKey[key]] = false
   }
 

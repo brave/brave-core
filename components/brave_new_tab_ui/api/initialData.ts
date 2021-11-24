@@ -11,6 +11,7 @@ import * as wallpaper from './wallpaper'
 
 export type InitialData = {
   preferences: NewTab.Preferences
+  ftxUserAuthed: boolean
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   torTabData: torTabDataAPI.TorTabData
@@ -43,6 +44,7 @@ export async function getInitialData (): Promise<InitialData> {
     console.timeStamp('Getting initial data...')
     const [
       preferences,
+      ftxUserAuthed,
       stats,
       privateTabData,
       torTabData,
@@ -54,6 +56,9 @@ export async function getInitialData (): Promise<InitialData> {
       binanceSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
+      new Promise(resolve => chrome.ftx.getAccountBalances((balances, authInvalid) => {
+        resolve(!authInvalid)
+      })),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       torTabDataAPI.getTorTabData(),
@@ -92,6 +97,7 @@ export async function getInitialData (): Promise<InitialData> {
     console.timeStamp('Got all initial data.')
     return {
       preferences,
+      ftxUserAuthed,
       stats,
       privateTabData,
       torTabData,
