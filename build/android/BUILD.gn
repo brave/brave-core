@@ -200,4 +200,8 @@ generate_jni("jni_headers") {
   ]
 
   deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:jni_headers" ]
+
+  if (brave_news_enabled) {
+    sources += [ "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java" ]
+  }
 }

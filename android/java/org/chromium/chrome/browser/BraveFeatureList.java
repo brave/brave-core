@@ -12,6 +12,7 @@ import org.chromium.base.annotations.NativeMethods;
 public abstract class BraveFeatureList {
     public static final String BRAVE_REWARDS = "BraveRewards";
     public static final String NATIVE_BRAVE_WALLET = "NativeBraveWallet";
+    public static final String BRAVE_NEWS = "BraveNews";
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
     public static final String FORCE_WEB_CONTENTS_DARK_MODE = "WebContentsForceDark";
     public static final String ENABLE_FORCE_DARK = "enable-force-dark";

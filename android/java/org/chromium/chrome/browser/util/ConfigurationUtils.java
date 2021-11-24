@@ -7,8 +7,14 @@
 
 package org.chromium.chrome.browser.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.DisplayMetrics;
+
+import org.chromium.ui.base.DeviceFormFactor;
+
+import java.util.HashMap;
 
 public class ConfigurationUtils {
     public static boolean isLandscape(Context context) {
@@ -18,5 +24,35 @@ public class ConfigurationUtils {
         } else {
             return false;
         }
+    }
+
+    public static boolean isTablet(Context context) {
+        return DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
+    }
+
+    public static HashMap<String, Integer> getDisplayMetrics(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int deviceWidth = displayMetrics.widthPixels;
+        int deviceHeight = displayMetrics.heightPixels;
+
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("width", deviceWidth);
+        map.put("height", deviceHeight);
+
+        return map;
+    }
+
+    public static HashMap<String, Float> getDpDisplayMetrics(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+
+        HashMap<String, Float> map = new HashMap<String, Float>();
+        map.put("width", dpWidth);
+        map.put("height", dpHeight);
+
+        return map;
     }
 }

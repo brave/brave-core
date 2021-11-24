@@ -28,18 +28,18 @@
         android:icon="@drawable/ic_crypto_wallets"
         android:order="3"
         android:title="@string/brave_ui_brave_wallet"/>
-    <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
-        android:key="brave_today"
-        android:icon="@drawable/btn_bat"
+     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferences"
+        android:key="brave_news"
+        android:icon="@drawable/ic_news"
         android:order="3"
-        android:title="@string/brave_today"/> -->
+        android:title="@string/brave_news_title"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveVpnPreferences"
         android:key="brave_vpn"
         android:icon="@drawable/ic_vpn"
         android:order="4"
-        android:title="@string/brave_firewall_vpn"/> 
+        android:title="@string/brave_firewall_vpn"/>
     <PreferenceCategory
         android:key="general_section"
         android:order="5"

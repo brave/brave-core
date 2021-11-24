@@ -29,6 +29,21 @@ BraveNewsController* BraveNewsControllerFactory::GetForContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
+// static
+mojo::PendingRemote<mojom::BraveNewsController>
+BraveNewsControllerFactory::GetRemoteService(content::BrowserContext* context) {
+  return static_cast<BraveNewsController*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeRemote();
+}
+
+// static
+BraveNewsController* BraveNewsControllerFactory::GetControllerForContext(
+    content::BrowserContext* context) {
+  return static_cast<BraveNewsController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 BraveNewsControllerFactory::BraveNewsControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveNewsControllerFactory",

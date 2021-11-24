@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="50dp"
+    android:background="@drawable/rounded_top_corners"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_menu_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="50dp"
+        android:textColor="@color/news_text_color"
+        android:paddingTop="30dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="30dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/news_time_color"
+        android:paddingStart="50dp"
+        android:paddingTop="30dp"
+        android:paddingEnd="50dp" />
+
+    <Button
+        android:id="@+id/new_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:paddingStart="50dp"
+        android:textAllCaps="false"
+        android:paddingTop="30dp"
+        android:paddingEnd="50dp"
+        android:textSize="15sp"
+        android:text="@string/brave_news_open_new_tab"
+        android:textColor="@color/news_text_color" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/news_time_color" />
+
+    <Button
+        android:id="@+id/new_private_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:paddingStart="50dp"
+        android:paddingTop="30dp"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        android:paddingEnd="50dp"
+        android:text="@string/brave_news_open_new_private_tab"
+        android:textColor="@color/news_text_color" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/news_time_color" />
+
+    <Button
+        android:id="@+id/disable_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:textSize="15sp"
+        android:textAllCaps="false"
+        android:text="@string/brave_news_disable_content"
+        android:textColor="@color/news_text_color" />
+</LinearLayout>

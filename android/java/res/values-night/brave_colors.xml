@@ -25,6 +25,13 @@
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
+    <!-- Brave news colors -->
+    <color name="card_background">#F23B3E4F</color>
+    <color name="card_background_solid">#353535</color>
+    <!-- <color name="turn_on_button">#737ADE</color> -->
+    <color name="news_text_color">@android:color/white</color>
+    <color name="news_time_color">#9CD2D5CF</color>
+
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_800</color>
     <color name="brave_sync_border_color">@color/modern_grey_800</color>

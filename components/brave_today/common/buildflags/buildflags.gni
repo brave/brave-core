@@ -1,0 +1,3 @@
+declare_args() {
+  brave_news_enabled = true
+}
