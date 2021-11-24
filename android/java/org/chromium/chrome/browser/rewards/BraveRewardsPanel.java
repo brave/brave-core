@@ -224,8 +224,7 @@ public class BraveRewardsPanel
             Intent intent = new Intent(
                     ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
             intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
-            mActivity.startActivity(intent);
-            // mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+            mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
 
             // BraveRewardsPanelPopup is not an Activity and onActivityResult is not available
             // to dismiss mTippingInProgress. Post a delayed task to flip a mTippingInProgress flag.
@@ -660,6 +659,25 @@ public class BraveRewardsPanel
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.VISIBLE);
         }
         mBraveRewardsNativeWorker.GetRecurringDonations();
+        mBraveRewardsNativeWorker.getAutoContributionAmount();
+    }
+
+    @Override
+    public void onGetAutoContributionAmount(double amount) {
+        Log.e(TAG, "Auto contribution amount : " + amount);
+        TextView monthlyContributionText =
+                mPopupView.findViewById(R.id.monthly_contribution_set_text);
+        monthlyContributionText.setText(String.format(
+                mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
+                (int) amount));
+        monthlyContributionText.setOnClickListener(view -> {
+            Intent intent = new Intent(
+                    ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
+            intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
+            intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
+            dismiss();
+            mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+        });
     }
 
     @Override

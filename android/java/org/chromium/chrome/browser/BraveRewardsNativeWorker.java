@@ -465,6 +465,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void getAutoContributionAmount() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAutoContributionAmount(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void StartProcess() {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().startProcess(mNativeBraveRewardsNativeWorker);
@@ -561,6 +568,13 @@ public class BraveRewardsNativeWorker {
     public void OnGetAutoContributeProperties() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnGetAutoContributeProperties();
+        }
+    }
+
+    @CalledByNative
+    public void OnGetAutoContributionAmount(double amount) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onGetAutoContributionAmount(amount);
         }
     }
 
@@ -689,6 +703,7 @@ public class BraveRewardsNativeWorker {
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
+        void getAutoContributionAmount(long nativeBraveRewardsNativeWorker);
         void startProcess(long nativeBraveRewardsNativeWorker);
         void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
     }

@@ -558,10 +558,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Settings
       </message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="A message that a particular publisher is verified">
-        Brave Verified Publisher
+        Verified Creator
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER" desc="A message that a particular publisher is not verified">
-        Not yet verified
+        Unverified Creator
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
         This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
@@ -2777,6 +2777,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
       ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
+    </message>
+    <message name="IDS_BRAVE_REWARDS_BAT_VALUE_TEXT" desc="BAT value text">
+      <ph name="VALUE">%1$s<ex>0</ex></ph> BAT
     </message>
     </messages>
   </release>

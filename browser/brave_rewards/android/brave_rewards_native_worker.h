@@ -125,6 +125,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void SetAutoContributionAmount(JNIEnv* env, jdouble value);
 
+    void GetAutoContributionAmount(JNIEnv* env);
+
     void GetExternalWallet(JNIEnv* env);
 
     void DisconnectWallet(JNIEnv* env);
@@ -146,6 +148,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetAutoContributeProperties(
         ledger::type::AutoContributePropertiesPtr properties);
+
+    void OnGetAutoContributionAmount(double auto_contribution_amount);
 
     void OnGetPendingContributionsTotal(double amount);
 

@@ -636,6 +636,22 @@ void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
   }
 }
 
+void BraveRewardsNativeWorker::GetAutoContributionAmount(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetAutoContributionAmount(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAutoContributionAmount,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetAutoContributionAmount(
+    double auto_contribution_amount) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnGetAutoContributionAmount(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      auto_contribution_amount);
+}
+
 bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
   if (brave_rewards_service_) {
     return brave_rewards_service_->IsRewardsEnabled();
