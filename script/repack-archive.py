@@ -9,7 +9,9 @@ from lib.util import scoped_cwd, make_zip, tempdir
 
 def GetLZMAExec(build_dir):
     if sys.platform == 'win32':
-        lzma_exec = os.path.join(build_dir, "..", "..", "third_party",
+        root_src_dir = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), *[os.pardir] * 2))
+        lzma_exec = os.path.join(root_src_dir, "third_party",
                                  "lzma_sdk", "Executable", "7za.exe")
     else:
         lzma_exec = '7zr'  # Use system 7zr.

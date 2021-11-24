@@ -194,15 +194,15 @@ group("create_dist") {
   deps = []
   if (is_android) {
     deps += [ "build/android:sign_app" ]
-  } else if (is_linux) {
-    # zip will be created along with installer
-    deps += [ ":create_symbols_dist" ]
   } else {
-    deps += [
-      ":create_dist_zips",
-      ":create_symbols_dist",
-    ]
+    deps += [ ":create_symbols_dist" ]
   }
+
+  # for linux zip will be created along with installer
+  if (!is_linux) {
+    deps += [ ":create_dist_zips" ]
+  }
+
   if (is_win) {
     deps += [ "build/win:create_signed_installer" ]
 
