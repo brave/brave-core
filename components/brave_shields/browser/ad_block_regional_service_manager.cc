@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -23,6 +25,9 @@
 #include "content/public/browser/browser_thread.h"
 
 using adblock::FilterList;
+using brave_shields::features::kBraveAdblockCookieListDefault;
+
+constexpr char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 
 namespace brave_shields {
 
@@ -70,7 +75,9 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     regional_filters_dict->GetDictionary(uuid, &regional_filter_dict);
     if (regional_filter_dict)
       regional_filter_dict->GetBoolean("enabled", &enabled);
-    if (enabled) {
+    if (enabled ||
+        (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
+         uuid == kCookieListUuid)) {
       auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
           regional_catalog_, uuid);
       if (catalog_entry != regional_catalog_.end()) {
@@ -293,6 +300,12 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
 
   auto list_value = std::make_unique<base::ListValue>();
   for (const auto& region_list : regional_catalog_) {
+    // Don't present the cookie list to the UI if it's force-enabled by feature
+    // flag.
+    if (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
+        region_list.uuid == kCookieListUuid) {
+      continue;
+    }
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
     auto dict = std::make_unique<base::DictionaryValue>();
