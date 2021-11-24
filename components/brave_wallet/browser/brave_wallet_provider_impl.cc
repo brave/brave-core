@@ -160,7 +160,7 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
     chain_callbacks_.erase(chain_id);
     return;
   }
-  delegate_->ShowBubble();
+  delegate_->ShowPanel();
 }
 
 void BraveWalletProviderImpl::SwitchEthereumChain(
@@ -169,7 +169,7 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
   // Only show bubble when there is no immediate error
   if (rpc_controller_->AddSwitchEthereumChainRequest(
           chain_id, delegate_->GetOrigin(), std::move(callback)))
-    delegate_->ShowBubble();
+    delegate_->ShowPanel();
 }
 
 void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
@@ -299,7 +299,7 @@ void BraveWalletProviderImpl::OnAddUnapprovedTransaction(
     const std::string& error_message) {
   if (success) {
     add_tx_callbacks_[tx_meta_id] = std::move(callback);
-    delegate_->ShowBubble();
+    delegate_->ShowPanel();
   } else {
     std::move(callback).Run(false, "", error_message);
   }
@@ -405,7 +405,7 @@ void BraveWalletProviderImpl::ContinueSignMessage(
                        weak_factory_.GetWeakPtr(), std::move(callback), address,
                        std::move(message_to_sign), is_eip712));
   }
-  delegate_->ShowBubble();
+  delegate_->ShowPanel();
 }
 
 void BraveWalletProviderImpl::OnSignMessageRequestProcessed(

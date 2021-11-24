@@ -48,32 +48,30 @@ source_set("brave_wallet") {
 }
 
 source_set("brave_wallet_delegate") {
-  sources = [ "brave_wallet_service_delegate_helper.cc" ]
+  sources = [
+    "brave_wallet_provider_delegate_impl.cc",
+    "brave_wallet_provider_delegate_impl.h",
+    "brave_wallet_service_delegate_helper.cc",
+  ]
   deps = [
+    "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common:mojom",
+    "//components/content_settings/core/common",
+    "//components/permissions",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
   ]
   if (is_android) {
-    sources += [
-      "brave_wallet_provider_delegate_impl_android.cc",
-      "brave_wallet_provider_delegate_impl_android.h",
-    ]
+    sources += [ "brave_wallet_provider_delegate_impl_helper_android.cc" ]
   } else {
-    sources += [
-      "brave_wallet_provider_delegate_impl.cc",
-      "brave_wallet_provider_delegate_impl.h",
-    ]
+    sources += [ "brave_wallet_provider_delegate_impl_helper.cc" ]
     deps += [
-      "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/ui",
-      "//brave/components/brave_wallet/common:mojom",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
-      "//components/content_settings/core/common",
-      "//components/permissions",
-      "//mojo/public/cpp/bindings",
     ]
     if (enable_extensions) {
       sources += [

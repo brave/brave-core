@@ -19,6 +19,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
@@ -173,7 +174,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -185,7 +185,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if defined(OS_ANDROID)
 #include "brave/browser/brave_ads/brave_ads_host_android.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // defined(OS_ANDROID)
@@ -278,12 +277,7 @@ void MaybeBindBraveWalletProvider(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
           rpc_controller, std::move(tx_controller), keyring_controller,
           brave_wallet_service,
-#if defined(OS_ANDROID)
-          std::make_unique<
-              brave_wallet::BraveWalletProviderDelegateImplAndroid>(
-#else
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-#endif
               web_contents, frame_host),
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
       std::move(receiver));
