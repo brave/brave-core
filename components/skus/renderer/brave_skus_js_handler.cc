@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
@@ -161,10 +163,32 @@ void BraveSkusJSHandler::OnRefreshOrder(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          response, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  const base::DictionaryValue* result_dict;
+  if (!records_v->GetAsDictionary(&result_dict)) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate,
+                                "Error converting response to dictionary")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
 }
 
 // window.brave.skus.fetch_order_credentials
@@ -297,10 +321,32 @@ void BraveSkusJSHandler::OnCredentialSummary(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          response, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  const base::DictionaryValue* result_dict;
+  if (!records_v->GetAsDictionary(&result_dict)) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate,
+                                "Error converting response to dictionary")
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    return;
+  }
+
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
 }
 
 }  // namespace brave_rewards
