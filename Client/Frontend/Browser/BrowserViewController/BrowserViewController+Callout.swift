@@ -29,7 +29,7 @@ extension BrowserViewController {
     }
     
     func presentVPNAlertCallout() {
-        if Preferences.DebugFlag.skipNTPCallouts == true, isOnboardingOrFullScreenCalloutPresented { return }
+        if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
 
         if !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .vpn) {
             return
@@ -61,7 +61,7 @@ extension BrowserViewController {
     }
     
     func presentDefaultBrowserScreenCallout() {
-        if Preferences.DebugFlag.skipNTPCallouts == true, isOnboardingOrFullScreenCalloutPresented { return }
+        if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
 
         if !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .defaultBrowser) {
             return
@@ -96,7 +96,7 @@ extension BrowserViewController {
     }
     
     func presentBraveRewardsScreenCallout() {
-        if Preferences.DebugFlag.skipNTPCallouts == true, isOnboardingOrFullScreenCalloutPresented { return }
+        if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
 
         if !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .rewards) {
             return
@@ -114,7 +114,7 @@ extension BrowserViewController {
     }
     
     func presentSyncAlertCallout() {
-        if Preferences.DebugFlag.skipNTPCallouts == true, isOnboardingOrFullScreenCalloutPresented { return }
+        if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
 
         if !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .sync) {
             return
