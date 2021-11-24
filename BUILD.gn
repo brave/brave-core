@@ -390,7 +390,6 @@ action("create_dist_zips") {
     args = [
       "--input=" + rebase_path(input),
       "--output=" + rebase_path(output),
-      "--build_dir=" + rebase_path(root_out_dir),
       "--target_dir=Chrome-bin",
     ]
   } else {  # !is_win
