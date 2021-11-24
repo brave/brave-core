@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 // Utils
+import { saveShowBinance, saveShowCryptoDotCom, saveShowFTX, saveShowGemini, saveWidgetVisibilityMigrated } from '../api/preferences'
 import { debounce } from '../../common/debounce'
 import { loadTimeData } from '../../common/loadTimeData'
 
@@ -28,6 +29,7 @@ export const defaultState: NewTab.State = {
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
   showFTX: false,
+  widgetVisibilityMigrated: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
@@ -237,6 +239,100 @@ export const replaceStackWidgets = (state: NewTab.State) => {
       state.widgetStackOrder.unshift(widget)
     }
   }
+  return state
+}
+
+export const updateWidgetVisibility = (state: NewTab.State) => {
+  // Do visibility migration only once.
+  if (state.widgetVisibilityMigrated) {
+    return state
+  }
+
+  const {
+    showRewards,
+    showBraveTalk,
+    braveTalkSupported,
+    showBinance,
+    binanceSupported,
+    showCryptoDotCom,
+    cryptoDotComSupported,
+    showFTX,
+    ftxSupported,
+    showGemini,
+    geminiSupported
+  } = state
+
+  const displayLookup = {
+    'braveTalk': {
+      display: braveTalkSupported && showBraveTalk,
+      isCrypto: false
+    },
+    'rewards': {
+      display: showRewards,
+      isCrypto: false
+    },
+    'binance': {
+      display: binanceSupported && showBinance,
+      isCrypto: true
+    },
+    'cryptoDotCom': {
+      display: cryptoDotComSupported && showCryptoDotCom,
+      isCrypto: true
+    },
+    'ftx': {
+      display: ftxSupported && showFTX,
+      isCrypto: true
+    },
+    'gemini': {
+      display: geminiSupported && showGemini,
+      isCrypto: true
+    }
+  }
+
+  // Among the crypt widgets, only one crypto widget is visible
+  // if it's foremost widget in the stack.
+  let foremostVisibleCryptoWidget = ''
+  const lastIndex = state.widgetStackOrder.length - 1;
+  for (let i = lastIndex; i >= 0; --i) {
+    const widget = displayLookup[state.widgetStackOrder[i]]
+    if (!widget) {
+      console.error('Update above lookup table')
+      continue
+    }
+
+    if (!widget.display) {
+      continue
+    }
+
+    if (widget.isCrypto) {
+      foremostVisibleCryptoWidget = state.widgetStackOrder[i]
+    }
+    // Found visible foremost widget in the widget stack. Go out.
+    break
+  }
+
+  const widgetsShowKey = {
+    'binance': 'showBinance',
+    'cryptoDotCom': 'showCryptoDotCom',
+    'ftx': 'showFTX',
+    'gemini': 'showGemini'
+  }
+
+  // Hide all crypto widgets except foremost one.
+  for (let key in widgetsShowKey) {
+    if (key === foremostVisibleCryptoWidget) {
+      state[widgetsShowKey[key]] = true
+      continue
+    }
+    state[widgetsShowKey[key]] = false
+  }
+
+  saveShowBinance(state.showBinance)
+  saveShowCryptoDotCom(state.showCryptoDotCom)
+  saveShowFTX(state.showFTX)
+  saveShowGemini(state.showGemini)
+  saveWidgetVisibilityMigrated()
+
   return state
 }
 

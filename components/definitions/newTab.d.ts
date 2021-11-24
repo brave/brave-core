@@ -113,6 +113,7 @@ declare namespace NewTab {
     showBinance: boolean
     showGemini: boolean
     showCryptoDotCom: boolean
+    widgetVisibilityMigrated: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
