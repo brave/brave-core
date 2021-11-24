@@ -276,12 +276,12 @@ export const updateWidgetVisibility = (state: NewTab.State, ftxUserAuthed: boole
     'binance': {
       display: binanceSupported && showBinance,
       isCrypto: true,
-      isAuthed: binanceState.userAuthed
+      userAuthed: binanceState.userAuthed
     },
     'cryptoDotCom': {
       display: cryptoDotComSupported && showCryptoDotCom,
       isCrypto: true,
-      isAuthed: false
+      userAuthed: false
     },
     'ftx': {
       display: ftxSupported && showFTX,
