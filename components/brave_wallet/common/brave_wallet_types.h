@@ -12,6 +12,7 @@
 namespace brave_wallet {
 
 typedef unsigned _ExtInt(256) uint256_t;
+typedef _ExtInt(256) int256_t;
 
 struct TransactionReceipt {
   TransactionReceipt();

@@ -14,6 +14,8 @@ static_library("common") {
     "brave_wallet_types.h",
     "eth_request_helper.cc",
     "eth_request_helper.h",
+    "eth_sign_typed_data_helper.cc",
+    "eth_sign_typed_data_helper.h",
     "features.cc",
     "features.h",
     "hash_utils.cc",
@@ -62,6 +64,7 @@ source_set("unit_tests") {
   sources = [
     "brave_wallet_types_unittest.cc",
     "eth_request_helper_unittest.cc",
+    "eth_sign_typed_data_helper_unittest.cc",
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",

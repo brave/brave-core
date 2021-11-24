@@ -24,6 +24,15 @@ interface BraveWalletProvider {
   AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
   // error will be 0 when success
   SignMessage(string address, string message) => (string signature, int32 error, string error_message);
+
+  // Used for eth_signTypedData
+  // message is for displaying the sign request to users
+  // message_to_sign is the hex representation without 0x for eip712 hash
+  // domain is the domain separator defined in eip712
+  SignTypedMessage(string address, string message, string message_to_sign,
+                   mojo_base.mojom.DictionaryValue domain)
+    => (string signature, int32 error, string error_message);
+
   GetChainId() => (string chain_id);
 
   // Used for getting current network and keyring information.

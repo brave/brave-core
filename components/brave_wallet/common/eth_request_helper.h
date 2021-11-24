@@ -11,6 +11,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
 namespace brave_wallet {
 
@@ -36,6 +37,13 @@ bool ParseEthSignParams(const std::string& json,
 bool ParsePersonalSignParams(const std::string& json,
                              std::string* address,
                              std::string* message);
+
+bool ParseEthSignTypedDataParams(const std::string& json,
+                                 std::string* address,
+                                 std::string* message,
+                                 std::vector<uint8_t>* message_to_sign,
+                                 base::Value* domain,
+                                 EthSignTypedDataHelper::Version version);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);
