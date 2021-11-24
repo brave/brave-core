@@ -127,27 +127,17 @@ void HDKeyring::SignTransaction(const std::string& address,
 
 std::vector<uint8_t> HDKeyring::SignMessage(const std::string& address,
                                             const std::vector<uint8_t>& message,
-                                            uint256_t chain_id,
-                                            bool is_eip712) {
+                                            uint256_t chain_id) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return std::vector<uint8_t>();
 
-  std::vector<uint8_t> hash;
-  if (!is_eip712) {
-    std::string prefix("\x19");
-    prefix += std::string("Ethereum Signed Message:\n" +
-                          base::NumberToString(message.size()));
-    std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
-    hash_input.insert(hash_input.end(), message.begin(), message.end());
-    hash = KeccakHash(hash_input);
-  } else {
-    // eip712 hash is Keccak
-    if (message.size() != 32)
-      return std::vector<uint8_t>();
-
-    hash = message;
-  }
+  std::string prefix("\x19");
+  prefix += std::string("Ethereum Signed Message:\n" +
+                        base::NumberToString(message.size()));
+  std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
+  hash_input.insert(hash_input.end(), message.begin(), message.end());
+  const std::vector<uint8_t> hash = KeccakHash(hash_input);
 
   int recid;
   std::vector<uint8_t> signature = hd_key->Sign(hash, &recid);

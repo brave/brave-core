@@ -73,11 +73,6 @@ class BraveWalletProviderImpl final
   void SignMessage(const std::string& address,
                    const std::string& message,
                    SignMessageCallback callback) override;
-  void SignTypedMessage(const std::string& address,
-                        const std::string& message,
-                        const std::string& message_to_sign,
-                        base::Value domain,
-                        SignTypedMessageCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             bool success,
                             const std::vector<std::string>& accounts);
@@ -140,10 +135,8 @@ class BraveWalletProviderImpl final
       bool success,
       const std::vector<std::string>& allowed_accounts);
   void ContinueSignMessage(const std::string& address,
-                           const std::string& message,
-                           std::vector<uint8_t>&& message_to_sign,
+                           std::vector<uint8_t>&& message,
                            SignMessageCallback callback,
-                           bool is_eip712,
                            bool success,
                            const std::vector<std::string>& allowed_accounts);
   bool CheckAccountAllowed(const std::string& account,
@@ -168,14 +161,12 @@ class BraveWalletProviderImpl final
   void OnSignMessageRequestProcessed(SignMessageCallback callback,
                                      const std::string& address,
                                      std::vector<uint8_t>&& message,
-                                     bool is_eip712,
                                      bool approved,
                                      const std::string& signature,
                                      const std::string& error);
   void OnHardwareSignMessageRequestProcessed(SignMessageCallback callback,
                                              const std::string& address,
                                              std::vector<uint8_t>&& message,
-                                             bool is_eip712,
                                              bool approved,
                                              const std::string& signature,
                                              const std::string& error);

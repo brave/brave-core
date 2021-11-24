@@ -164,8 +164,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   };
   SignatureWithError SignMessageByDefaultKeyring(
       const std::string& address,
-      const std::vector<uint8_t>& message,
-      bool is_eip712 = false);
+      const std::vector<uint8_t>& message);
 
   void AddAccountsWithDefaultName(size_t number);
 

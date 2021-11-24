@@ -11,7 +11,6 @@
 
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -627,29 +626,6 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
 
     brave_wallet_provider_->SignMessage(
         address, message,
-        base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
-                       std::move(global_context), std::move(global_callback),
-                       std::move(promise_resolver), isolate,
-                       force_json_response));
-  } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
-    std::string address;
-    std::string message;
-    base::Value domain;
-    std::vector<uint8_t> message_to_sign;
-    if (method == kEthSignTypedDataV4) {
-      if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &message_to_sign, &domain,
-                                       EthSignTypedDataHelper::Version::kV4))
-        return false;
-    } else {
-      if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &message_to_sign, &domain,
-                                       EthSignTypedDataHelper::Version::kV3))
-        return false;
-    }
-    brave_wallet_provider_->SignTypedMessage(
-        address, message, base::HexEncode(message_to_sign), std::move(domain),
         base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
