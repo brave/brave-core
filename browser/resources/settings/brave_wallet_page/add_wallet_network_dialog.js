@@ -119,6 +119,9 @@ Polymer({
     if (this.selected.blockExplorerUrls.length)
       this.blockUrls = this.selected.blockExplorerUrls.map(element => { return {value: element}})
     this.isSubmitButtonEnabled_ = true
+    this.updatePlusButtonState('rpc')
+    this.updatePlusButtonState('icon')
+    this.updatePlusButtonState('block')
   },
 
   validateURL: function(value) {
