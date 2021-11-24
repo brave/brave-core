@@ -10,14 +10,8 @@
 namespace brave_wallet {
 namespace features {
 
-const base::Feature kNativeBraveWalletFeature{
-  "NativeBraveWallet",
-#if !defined(OS_ANDROID)
-      base::FEATURE_ENABLED_BY_DEFAULT
-#else
-      base::FEATURE_DISABLED_BY_DEFAULT
-#endif
-};
+const base::Feature kNativeBraveWalletFeature{"NativeBraveWallet",
+                                              base::FEATURE_ENABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace brave_wallet
