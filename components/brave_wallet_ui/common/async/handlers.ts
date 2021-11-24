@@ -49,7 +49,8 @@ import {
   refreshTokenPriceHistory,
   refreshSitePermissions,
   refreshTransactionHistory,
-  refreshBalancesAndPrices
+  refreshBalances,
+  refreshPrices
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
@@ -64,7 +65,8 @@ function getWalletState (store: Store): WalletState {
 
 async function refreshBalancesPricesAndHistory (store: Store) {
   const state = getWalletState(store)
-  await store.dispatch(refreshBalancesAndPrices(state.selectedNetwork))
+  await store.dispatch(refreshBalances(state.selectedNetwork))
+  await store.dispatch(refreshPrices())
   await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
 }
 
@@ -106,8 +108,8 @@ async function updateAccountInfo (store: Store) {
 
 handler.on(WalletActions.refreshBalancesAndPrices.getType(), async (store: Store) => {
   const state = getWalletState(store)
-
-  await store.dispatch(refreshBalancesAndPrices(state.selectedNetwork))
+  await store.dispatch(refreshBalances(state.selectedNetwork))
+  await store.dispatch(refreshPrices())
 })
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -207,7 +209,8 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
     const currentNetwork = await store.dispatch(refreshNetworkInfo())
-    await store.dispatch(refreshBalancesAndPrices(currentNetwork))
+    await store.dispatch(refreshBalances(currentNetwork))
+    await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   }
   // This can be 0 when the wallet is locked
