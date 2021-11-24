@@ -50,6 +50,8 @@ import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.EthTxControllerObserver;
+import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.SwapController;
@@ -58,6 +60,7 @@ import org.chromium.brave_wallet.mojom.SwapResponse;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
+import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
@@ -448,8 +451,29 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             TxData data = Utils.getTxData("", Utils.toWeiHex(response.gasPrice),
                     Utils.toWeiHex(response.estimatedGas), response.to,
                     Utils.toWeiHex(response.value), Utils.hexStrToNumberArray(response.data));
-            addUnapprovedTransaction(data, from);
+            sendSwapTransaction(data, from);
         }
+    }
+
+    private void sendSwapTransaction(TxData data, String from) {
+        assert mAssetRatioController != null;
+        mAssetRatioController.getGasOracle(estimation -> {
+            String maxPriorityFeePerGas = "";
+            String maxFeePerGas = "";
+            if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
+                // Bump fast priority fee and max fee by 1 GWei if same as average fees.
+                maxPriorityFeePerGas = Utils.concatHexBN(
+                        estimation.fastMaxPriorityFeePerGas, Utils.toHexWei("1", 9));
+                maxFeePerGas =
+                        Utils.concatHexBN(estimation.fastMaxFeePerGas, Utils.toHexWei("1", 9));
+            } else {
+                // Always suggest fast gas fees as default
+                maxPriorityFeePerGas = estimation.fastMaxPriorityFeePerGas;
+                maxFeePerGas = estimation.fastMaxFeePerGas;
+            }
+            data.gasPrice = "";
+            sendTransaction(data, from, maxPriorityFeePerGas, maxFeePerGas);
+        });
     }
 
     private void updateSwapControls(
@@ -794,7 +818,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
                     TxData data =
                             Utils.getTxData("", "", "", to, Utils.toHexWei(value, 18), new byte[0]);
-                    addUnapprovedTransaction(data, from);
+                    sendTransaction(data, from, "", "");
                 } else {
                     addUnapprovedTransactionERC20(to,
                             Utils.toHexWei(value, mCurrentErcToken.decimals), from,
@@ -1062,22 +1086,61 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                             "", "", "", mCurrentErcToken.contractAddress, "0x0", data);
                     String from = mCustomAccountAdapter.getTitleAtPosition(
                             mAccountSpinner.getSelectedItemPosition());
-                    addUnapprovedTransaction(txData, from);
+                    sendTransaction(txData, from, "", "");
                 });
     }
 
-    private void addUnapprovedTransaction(TxData data, String from) {
-        assert mEthTxController != null;
-        if (mEthTxController == null) {
-            return;
-        }
-        mEthTxController.addUnapprovedTransaction(data, from,
-                (success, tx_meta_id, error_message)
-                        -> {
-                                // Do nothing here as we will receive an
-                                // unapproved transaction in
-                                // EthTxControllerObserverImpl
-                        });
+    private void sendTransaction(
+            TxData data, String from, String maxPriorityFeePerGas, String maxFeePerGas) {
+        assert mEthJsonRpcController != null;
+        mEthJsonRpcController.getAllNetworks(networks -> {
+            boolean isEIP1559 = false;
+            // We have hardcoded EIP-1559 gas fields.
+            if (!maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty()) {
+                isEIP1559 = true;
+            } else if (!data.gasPrice.isEmpty()) {
+                // We have hardcoded legacy tx gas fields.
+                isEIP1559 = false;
+            }
+            for (EthereumChain network : networks) {
+                if (!mCurrentChainId.equals(network.chainId)) {
+                    continue;
+                }
+                isEIP1559 = network.isEip1559;
+            }
+
+            assert mEthTxController != null;
+            if (isEIP1559) {
+                TxData1559 txData1559 = new TxData1559();
+                txData1559.baseData = data;
+                txData1559.chainId = mCurrentChainId;
+                txData1559.maxPriorityFeePerGas = maxPriorityFeePerGas;
+                txData1559.maxFeePerGas = maxFeePerGas;
+                txData1559.gasEstimation = new GasEstimation1559();
+                txData1559.gasEstimation.slowMaxPriorityFeePerGas = "";
+                txData1559.gasEstimation.slowMaxFeePerGas = "";
+                txData1559.gasEstimation.avgMaxPriorityFeePerGas = "";
+                txData1559.gasEstimation.avgMaxFeePerGas = "";
+                txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
+                txData1559.gasEstimation.fastMaxFeePerGas = "";
+                txData1559.gasEstimation.baseFeePerGas = "";
+                mEthTxController.addUnapproved1559Transaction(txData1559, from,
+                        (success, tx_meta_id, error_message)
+                                -> {
+                                        // Do nothing here as we will receive an
+                                        // unapproved transaction in
+                                        // EthTxControllerObserverImpl
+                                });
+            } else {
+                mEthTxController.addUnapprovedTransaction(data, from,
+                        (success, tx_meta_id, error_message)
+                                -> {
+                                        // Do nothing here as we will receive an
+                                        // unapproved transaction in
+                                        // EthTxControllerObserverImpl
+                                });
+            }
+        });
     }
 
     private void addUnapprovedTransactionERC20(
@@ -1091,7 +1154,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 return;
             }
             TxData txData = Utils.getTxData("", "", "", contractAddress, "0x0", data);
-            addUnapprovedTransaction(txData, from);
+            sendTransaction(txData, from, "", "");
         });
     }
 
