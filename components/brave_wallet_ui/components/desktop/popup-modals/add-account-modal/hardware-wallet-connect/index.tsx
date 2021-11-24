@@ -153,10 +153,18 @@ export default function (props: Props) {
     <>
       <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
       <HardwareButtonRow>
-        <HardwareButton onClick={onSelectLedger} isSelected={selectedHardwareWallet === LEDGER_HARDWARE_VENDOR}>
+        <HardwareButton
+          onClick={onSelectLedger}
+          isSelected={selectedHardwareWallet === LEDGER_HARDWARE_VENDOR}
+          disabled={isConnecting && selectedHardwareWallet !== LEDGER_HARDWARE_VENDOR}
+        >
           <LedgerIcon />
         </HardwareButton>
-        <HardwareButton onClick={onSelectTrezor} isSelected={selectedHardwareWallet === TREZOR_HARDWARE_VENDOR}>
+        <HardwareButton
+          onClick={onSelectTrezor}
+          isSelected={selectedHardwareWallet === TREZOR_HARDWARE_VENDOR}
+          disabled={isConnecting && selectedHardwareWallet !== TREZOR_HARDWARE_VENDOR}
+        >
           <TrezorIcon />
         </HardwareButton>
       </HardwareButtonRow>

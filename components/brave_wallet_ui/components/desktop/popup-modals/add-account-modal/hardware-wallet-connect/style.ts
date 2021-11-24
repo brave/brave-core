@@ -34,7 +34,7 @@ export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  cursor: pointer;
+  cursor: ${(p) => p.disabled ? 'not-allowed' : 'pointer'};
   outline: none;
   background: none;
   border: ${(p) => (p.isSelected ? `2px solid ${p.theme.color.infoBorder}` : `1px solid ${p.theme.color.disabled}`)};
