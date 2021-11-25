@@ -27,6 +27,8 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -103,6 +105,9 @@ public class BraveWalletResetPreference
                             Utils.setCryptoOnboarding(true);
                         }
                         mKeyringController.close();
+
+                        // Force clear activity stack
+                        launchBraveTabbedActivity();
                     } else {
                         Log.w(TAG, "mKeyringController is null");
                     }
@@ -161,5 +166,12 @@ public class BraveWalletResetPreference
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+    }
+
+    private void launchBraveTabbedActivity() {
+        Intent intent =
+                new Intent(BraveActivity.getChromeTabbedActivity(), ChromeTabbedActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        BraveActivity.getChromeTabbedActivity().startActivity(intent);
     }
 }
