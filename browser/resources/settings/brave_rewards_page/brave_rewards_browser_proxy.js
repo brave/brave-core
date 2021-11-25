@@ -7,7 +7,7 @@ import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
 
 /** @interface */
 export class BraveRewardsBrowserProxy {
-  getLocale() { /* Intentionally empty */ }
+  getAdsData() { /* Intentionally empty */ }
   getRewardsEnabled() { /* Intentionally empty */ }
   getRewardsParameters() { /* Intentionally empty */ }
   isAutoContributeSupported() { /* Intentionally empty */ }
@@ -18,9 +18,9 @@ export class BraveRewardsBrowserProxy {
  */
 export class BraveRewardsBrowserProxyImpl {
   /** @override */
-  getLocale () {
-    return new Promise((resolve) => chrome.braveRewards.getLocale(
-      (locale) => { resolve(locale) }))
+  getAdsData () {
+    return new Promise((resolve) => chrome.braveRewards.getAdsData(
+      (data) => { resolve(data) }))
   }
   /** @override */
   getRewardsEnabled () {
