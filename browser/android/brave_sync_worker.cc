@@ -296,11 +296,7 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
   return base::android::ConvertUTF8ToJavaString(env, sync_code_hex);
 }
 
-static base::android::ScopedJavaLocalRef<jstring>
-JNI_BraveSyncWorker_GetWordsFromSeedHex(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& seed_hex) {
-  std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
+std::string GetWordsFromSeedHex(const std::string& str_seed_hex) {
   DCHECK(!str_seed_hex.empty());
 
   std::vector<uint8_t> bytes;
@@ -310,7 +306,8 @@ JNI_BraveSyncWorker_GetWordsFromSeedHex(
     if (bytes.size(), SEED_BYTES_COUNT) {
       sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
       if (sync_code_words.empty()) {
-        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for " << seed_hex;
+        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
+                << str_seed_hex;
       }
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
@@ -320,6 +317,15 @@ JNI_BraveSyncWorker_GetWordsFromSeedHex(
     VLOG(1) << __func__ << " HexStringToBytes failed for " << str_seed_hex;
   }
 
+  return sync_code_words;
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetWordsFromSeedHex(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& seed_hex) {
+  std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
+  std::string sync_code_words = GetWordsFromSeedHex(str_seed_hex);
   return base::android::ConvertUTF8ToJavaString(env, sync_code_words);
 }
 
@@ -343,6 +349,27 @@ int JNI_BraveSyncWorker_GetQrCodeValidationResult(
   DCHECK(!str_json_qr.empty());
   return static_cast<int>(
       brave_sync::QrCodeDataValidator::ValidateQrDataJson(str_json_qr));
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetSeedHexFromQrJson(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& json_qr) {
+  std::string str_json_qr = base::android::ConvertJavaStringToUTF8(json_qr);
+  DCHECK(!str_json_qr.empty());
+
+  auto qr_data = brave_sync::QrCodeData::FromJson(str_json_qr);
+
+  std::string result;
+  if (qr_data) {
+    result = qr_data->sync_code_hex;
+  } else {
+    result = str_json_qr;
+  }
+
+  DCHECK(!GetWordsFromSeedHex(result).empty());
+
+  return base::android::ConvertUTF8ToJavaString(env, result);
 }
 
 }  // namespace android
