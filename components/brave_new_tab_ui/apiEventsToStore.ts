@@ -48,14 +48,6 @@ export function wireApiEventsToStore () {
       rewardsInitData()
     }
     getActions().setInitialData(initialData)
-    if (!initialData.preferences.widgetVisibilityMigrated) {
-      // Other widget's auth state can be fetched from local storage.
-      // But, need to fetch ftx auth state to migrate.
-      // Start migration when ftx auth state is ready.
-      chrome.ftx.getAccountBalances((balances, authInvalid) => {
-       getActions().setWidgetVisibilityMigrationData(!authInvalid)
-      })
-    }
     // Listen for API changes and dispatch to store
     topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
     topSitesAPI.updateMostVisitedInfo()

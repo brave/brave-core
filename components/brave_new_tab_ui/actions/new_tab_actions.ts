@@ -46,9 +46,6 @@ export const clockWidgetUpdated = (showClockWidget: boolean,
 export const setInitialData = (initialData: InitialData) =>
   action(types.NEW_TAB_SET_INITIAL_DATA, initialData)
 
-export const setWidgetVisibilityMigrationData = (ftxAuthed: boolean) =>
-  action(types.NEW_TAB_SET_WIDGET_VISIBILITY_MIGRATION_DATA, ftxAuthed)
-
 export const setMostVisitedSettings = (showTopSites: boolean, customLinksEnabled: boolean) =>
   action(types.SET_MOST_VISITED_SITES, { showTopSites, customLinksEnabled })
 

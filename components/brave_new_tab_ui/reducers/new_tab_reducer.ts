@@ -92,10 +92,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       state = storage.addNewStackWidget(state)
       state = storage.replaceStackWidgets(state)
-      break
 
-    case types.NEW_TAB_SET_WIDGET_VISIBILITY_MIGRATION_DATA:
-      state = storage.updateWidgetVisibility(state, payload)
       break
 
     case types.NEW_TAB_STATS_UPDATED:
