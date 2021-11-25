@@ -103,11 +103,11 @@ function ConnectWithSite (props: Props) {
             <SelectAddressScrollContainer>
               {accounts.map((account, index) => (
                 <SelectAddressInnerContainer
+                  key={account.id}
                   ref={(ref) => refs.current[index] = (checkIsSelected(account) ? ref : null)}
                 >
                   <SelectAddress
                     action={toggleSelected(account)}
-                    key={account.id}
                     account={account}
                     isSelected={checkIsSelected(account)}
                   />
