@@ -1854,6 +1854,12 @@ Are you sure you want to do this?
     <message name="IDS_ENABLE_FINGERPRINT_TEXT" desc="Brave Wallet onboarding text">
       Enable biometrics to quickly unlock your wallet without entering your password.
     </message>
+    <message name="IDS_FINGERPRINT_UNLOCK" desc="Brave Wallet fingerprint unlock">
+      Fingerprint unlock
+    </message>
+    <message name="IDS_USE_FINGERPRINT_TEXT" desc="Brave Wallet fingerprint unlock">
+      Use biometrics to quickly unlock your wallet without entering your password.
+    </message>
     <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
       Wallet
     </message>

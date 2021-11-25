@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.Executor;
@@ -111,6 +112,8 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                             public void onAuthenticationSucceeded(
                                     BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
+                                KeystoreHelper.useBiometricOnUnlock(
+                                        passwordInput);
                                 onNextPage();
                             }
 
@@ -155,8 +158,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
                         (dialog, which)
                                 -> authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED,
-                                        "User canceled the scanning process by pressing the negative button"))
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
