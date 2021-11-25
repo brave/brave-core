@@ -1145,9 +1145,14 @@ public class Utils {
                 itemModel.setTxStatus(txStatus);
                 c.drawCircle(15, 15, 15, p);
                 itemModel.setTxStatusBitmap(txStatusBitmap);
-                double totalGas =
-                        Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
-                                                 txInfo.txData.baseData.gasPrice),
+                boolean isEIP1559 = !txInfo.txData.maxPriorityFeePerGas.isEmpty()
+                        && !txInfo.txData.maxFeePerGas.isEmpty();
+                double totalGas = isEIP1559
+                        ? Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
+                                                   txInfo.txData.maxFeePerGas),
+                                18)
+                        : Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
+                                                   txInfo.txData.baseData.gasPrice),
                                 18);
                 double totalGasFiat = totalGas * ethPrice;
                 itemModel.setTotalGas(totalGas);
