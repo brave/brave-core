@@ -43,6 +43,16 @@ using brave_ads::AdsServiceFactory;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 
+namespace {
+
+const char kShouldAllowAdsSubdivisionTargeting[] =
+    "shouldAllowAdsSubdivisionTargeting";
+const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
+const char kAutoDetectedAdsSubdivisionTargeting[] =
+    "automaticallyDetectedAdsSubdivisionTargeting";
+
+}  // namespace
+
 namespace extensions {
 namespace api {
 
@@ -1177,6 +1187,46 @@ BraveRewardsGetAdsSupportedFunction::Run() {
 
   const bool supported = ads_service->IsSupportedLocale();
   return RespondNow(OneArgument(base::Value(supported)));
+}
+
+BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() {}
+
+ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+
+  if (!ads_service) {
+    return RespondNow(Error("Ads service is not initialized"));
+  }
+
+  base::DictionaryValue ads_data;
+
+  auto is_supported_locale = ads_service->IsSupportedLocale();
+  ads_data.SetBoolean("adsIsSupported", is_supported_locale);
+
+  auto is_enabled = ads_service->IsEnabled();
+  ads_data.SetBoolean("adsEnabled", is_enabled);
+
+  auto ads_per_hour = ads_service->GetAdsPerHour();
+  ads_data.SetInteger("adsPerHour", ads_per_hour);
+
+  const std::string subdivision_targeting_code =
+      ads_service->GetAdsSubdivisionTargetingCode();
+  ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
+
+  const std::string auto_detected_subdivision_targeting_code =
+      ads_service->GetAutoDetectedAdsSubdivisionTargetingCode();
+  ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
+                     auto_detected_subdivision_targeting_code);
+
+  const bool should_allow_subdivision_ad_targeting =
+      ads_service->ShouldAllowAdsSubdivisionTargeting();
+  ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
+                      should_allow_subdivision_ad_targeting);
+
+  ads_data.SetBoolean("adsUIEnabled", true);
+
+  return RespondNow(OneArgument(std::move(ads_data)));
 }
 
 BraveRewardsGetAnonWalletStatusFunction::
