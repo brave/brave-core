@@ -201,8 +201,8 @@ void CreativeAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 16: {
-      MigrateToV16(transaction);
+    case 19: {
+      MigrateToV19(transaction);
       break;
     }
 
@@ -261,7 +261,7 @@ void CreativeAds::OnGetForCreativeInstanceId(
   callback(/* success */ true, creative_instance_id, creative_ad);
 }
 
-void CreativeAds::MigrateToV16(mojom::DBTransaction* transaction) {
+void CreativeAds::MigrateToV19(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "creative_ads");

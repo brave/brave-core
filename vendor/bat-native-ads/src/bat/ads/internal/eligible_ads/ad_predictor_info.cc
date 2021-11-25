@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 
 namespace ads {
 
@@ -21,5 +22,6 @@ AdPredictorInfo<T>::~AdPredictorInfo() = default;
 
 template struct AdPredictorInfo<CreativeAdNotificationInfo>;
 template struct AdPredictorInfo<CreativeInlineContentAdInfo>;
+template struct AdPredictorInfo<CreativeNewTabPageAdInfo>;
 
 }  // namespace ads

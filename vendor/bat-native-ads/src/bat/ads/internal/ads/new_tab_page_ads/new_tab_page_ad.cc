@@ -11,7 +11,6 @@
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
@@ -44,19 +43,11 @@ void NewTabPageAd::FireEvent(const std::string& uuid,
     return;
   }
 
-  new_tab_page_ads::frequency_capping::PermissionRules permission_rules;
-  if (event_type == mojom::NewTabPageAdEventType::kViewed &&
-      !permission_rules.HasPermission()) {
-    BLOG(1, "New tab page ad: Not allowed due to permission rules");
-    NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
-    return;
-  }
-
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [=](const bool success, const std::string& creative_instance_id,
-          const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
+          const CreativeNewTabPageAdInfo& creative_ad) {
         if (!success) {
           BLOG(1,
                "Failed to fire new tab page ad event due to missing creative "
@@ -66,8 +57,7 @@ void NewTabPageAd::FireEvent(const std::string& uuid,
           return;
         }
 
-        const NewTabPageAdInfo ad =
-            BuildNewTabPageAd(creative_new_tab_page_ad, uuid);
+        const NewTabPageAdInfo& ad = BuildNewTabPageAd(creative_ad, uuid);
 
         FireEvent(ad, uuid, creative_instance_id, event_type);
       });
@@ -92,13 +82,6 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
       BLOG(1, "New tab page ad: Not allowed as already viewed uuid " << uuid);
       NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
       return;
-    }
-
-    if (event_type == mojom::NewTabPageAdEventType::kViewed) {
-      // TODO(tmancey): We need to fire an ad served event until new tab page
-      // ads are served by the ads library
-      FireEvent(uuid, creative_instance_id,
-                mojom::NewTabPageAdEventType::kServed);
     }
 
     const auto ad_event = new_tab_page_ads::AdEventFactory::Build(event_type);

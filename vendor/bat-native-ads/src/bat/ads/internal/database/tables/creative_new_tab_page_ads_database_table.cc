@@ -22,6 +22,7 @@
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
+#include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
@@ -51,6 +52,7 @@ int BindParameters(mojom::DBCommand* command,
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++, creative_ad.campaign_id);
     BindString(command, index++, creative_ad.company_name);
+    BindString(command, index++, creative_ad.image_url);
     BindString(command, index++, creative_ad.alt);
 
     count++;
@@ -82,14 +84,21 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.geo_targets.insert(ColumnString(record, 15));
   creative_ad.target_url = ColumnString(record, 16);
   creative_ad.company_name = ColumnString(record, 17);
-  creative_ad.alt = ColumnString(record, 18);
-  creative_ad.ptr = ColumnDouble(record, 19);
+  creative_ad.image_url = ColumnString(record, 18);
+  creative_ad.alt = ColumnString(record, 19);
+  creative_ad.ptr = ColumnDouble(record, 20);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 20);
-  daypart.start_minute = ColumnInt(record, 21);
-  daypart.end_minute = ColumnInt(record, 22);
+  daypart.dow = ColumnString(record, 21);
+  daypart.start_minute = ColumnInt(record, 22);
+  daypart.end_minute = ColumnInt(record, 23);
   creative_ad.dayparts.push_back(daypart);
+
+  CreativeNewTabPageAdWallpaperInfo wallpaper;
+  wallpaper.image_url = ColumnString(record, 24);
+  wallpaper.focal_point.x = ColumnInt(record, 25);
+  wallpaper.focal_point.y = ColumnInt(record, 26);
+  creative_ad.wallpapers.push_back(wallpaper);
 
   return creative_ad;
 }
@@ -109,14 +118,18 @@ CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
       continue;
     }
 
-    // Creative instance already exists, so append the geo targets and dayparts
-    // to the existing creative ad
+    // Creative instance already exists, so append the geo targets, dayparts and
+    // wallpapers to the existing creative ad
     iter->second.geo_targets.insert(creative_ad.geo_targets.begin(),
                                     creative_ad.geo_targets.end());
 
     iter->second.dayparts.insert(iter->second.dayparts.end(),
                                  creative_ad.dayparts.begin(),
                                  creative_ad.dayparts.end());
+
+    iter->second.wallpapers.insert(iter->second.wallpapers.end(),
+                                   creative_ad.wallpapers.begin(),
+                                   creative_ad.wallpapers.end());
   }
 
   return creative_ads;
@@ -144,6 +157,8 @@ CreativeNewTabPageAds::CreativeNewTabPageAds()
     : batch_size_(kDefaultBatchSize),
       campaigns_database_table_(std::make_unique<Campaigns>()),
       creative_ads_database_table_(std::make_unique<CreativeAds>()),
+      creative_new_tab_page_ad_wallpapers_database_table_(
+          std::make_unique<CreativeNewTabPageAdWallpapers>()),
       dayparts_database_table_(std::make_unique<Dayparts>()),
       geo_targets_database_table_(std::make_unique<GeoTargets>()),
       segments_database_table_(std::make_unique<Segments>()) {}
@@ -169,6 +184,8 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
                                                  creative_ads);
+    creative_new_tab_page_ad_wallpapers_database_table_->InsertOrUpdate(
+        transaction.get(), batch);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
                                                 creative_ads);
@@ -218,11 +235,15 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "gt.geo_target, "
       "ca.target_url, "
       "cntpa.company_name, "
+      "cntpa.image_url, "
       "cntpa.alt, "
       "cam.ptr, "
       "dp.dow, "
       "dp.start_minute, "
-      "dp.end_minute "
+      "dp.end_minute, "
+      "wp.image_url, "
+      "wp.focal_point_x, "
+      "wp.focal_point_y "
       "FROM %s AS cntpa "
       "INNER JOIN campaigns AS cam "
       "ON cam.campaign_id = cntpa.campaign_id "
@@ -234,6 +255,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "ON gt.campaign_id = cntpa.campaign_id "
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cntpa.campaign_id "
+      "INNER JOIN creative_new_tab_page_ad_wallpapers AS wp "
+      "ON wp.creative_instance_id = cntpa.creative_instance_id "
       "WHERE cntpa.creative_instance_id = '%s'",
       GetTableName().c_str(), creative_instance_id.c_str());
 
@@ -260,11 +283,18 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // company_name
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // alt
       mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
       mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::
+          STRING_TYPE,  // creative_new_tab_page_ad_wallpapers->image_url
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE,  // creative_new_tab_page_ad_wallpapers->focal_point->x
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE  // creative_new_tab_page_ad_wallpapers->focal_point->y
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -304,11 +334,15 @@ void CreativeNewTabPageAds::GetForSegments(
       "gt.geo_target, "
       "ca.target_url, "
       "cntpa.company_name, "
+      "cntpa.image_url, "
       "cntpa.alt, "
       "cam.ptr, "
       "dp.dow, "
       "dp.start_minute, "
-      "dp.end_minute "
+      "dp.end_minute, "
+      "wp.image_url, "
+      "wp.focal_point_x, "
+      "wp.focal_point_y "
       "FROM %s AS cntpa "
       "INNER JOIN campaigns AS cam "
       "ON cam.campaign_id = cntpa.campaign_id "
@@ -320,6 +354,8 @@ void CreativeNewTabPageAds::GetForSegments(
       "ON gt.campaign_id = cntpa.campaign_id "
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cntpa.campaign_id "
+      "INNER JOIN creative_new_tab_page_ad_wallpapers AS wp "
+      "ON wp.creative_instance_id = cntpa.creative_instance_id "
       "WHERE s.segment IN %s "
       "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       GetTableName().c_str(),
@@ -355,11 +391,18 @@ void CreativeNewTabPageAds::GetForSegments(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // company_name
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // alt
       mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
       mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::
+          STRING_TYPE,  // creative_new_tab_page_ad_wallpapers->image_url
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE,  // creative_new_tab_page_ad_wallpapers->focal_point->x
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE  // creative_new_tab_page_ad_wallpapers->focal_point->y
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -392,11 +435,15 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       "gt.geo_target, "
       "ca.target_url, "
       "cntpa.company_name, "
+      "cntpa.image_url, "
       "cntpa.alt, "
       "cam.ptr, "
       "dp.dow, "
       "dp.start_minute, "
-      "dp.end_minute "
+      "dp.end_minute, "
+      "wp.image_url, "
+      "wp.focal_point_x, "
+      "wp.focal_point_y "
       "FROM %s AS cntpa "
       "INNER JOIN campaigns AS cam "
       "ON cam.campaign_id = cntpa.campaign_id "
@@ -408,6 +455,8 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       "ON gt.campaign_id = cntpa.campaign_id "
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cntpa.campaign_id "
+      "INNER JOIN creative_new_tab_page_ad_wallpapers AS wp "
+      "ON wp.creative_instance_id = cntpa.creative_instance_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
@@ -434,11 +483,18 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // company_name
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // alt
       mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
       mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->end_minute
+      mojom::DBCommand::RecordBindingType::
+          STRING_TYPE,  // creative_new_tab_page_ad_wallpapers->image_url
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE,  // creative_new_tab_page_ad_wallpapers->focal_point->x
+      mojom::DBCommand::RecordBindingType::
+          INT_TYPE  // creative_new_tab_page_ad_wallpapers->focal_point->y
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -458,8 +514,8 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 16: {
-      MigrateToV16(transaction);
+    case 19: {
+      MigrateToV19(transaction);
       break;
     }
 
@@ -500,9 +556,10 @@ std::string CreativeNewTabPageAds::BuildInsertOrUpdateQuery(
       "creative_set_id, "
       "campaign_id, "
       "company_name, "
+      "image_url, "
       "alt) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(5, count).c_str());
+      BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
 void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
@@ -565,7 +622,7 @@ void CreativeNewTabPageAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeNewTabPageAds::MigrateToV16(mojom::DBTransaction* transaction) {
+void CreativeNewTabPageAds::MigrateToV19(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "creative_new_tab_page_ads");
@@ -577,6 +634,7 @@ void CreativeNewTabPageAds::MigrateToV16(mojom::DBTransaction* transaction) {
       "creative_set_id TEXT NOT NULL, "
       "campaign_id TEXT NOT NULL, "
       "company_name TEXT NOT NULL, "
+      "image_url TEXT NOT NULL, "
       "alt TEXT NOT NULL)";
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
