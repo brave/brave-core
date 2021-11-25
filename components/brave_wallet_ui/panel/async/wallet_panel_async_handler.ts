@@ -335,8 +335,8 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   if (!signed.success &&
       (signed.code === TrezorErrorsCodes.CommandInProgress ||
        signed.code === LedgerErrorsCodes.TransportLocked)) {
-      // do nothing as the operation is already in progress
-      return
+    // do nothing as the operation is already in progress
+    return
   }
   const payload: SignMessageHardwareProcessedPayload =
     signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }

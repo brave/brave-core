@@ -231,8 +231,10 @@ test('Bridge not ready', () => {
   hardwareKeyring.sendTrezorCommand = (command: TrezorFrameCommand, listener: Function) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
-  hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
-  const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
+  // @ts-ignore
+  hardwareKeyring.sendTrezorCommand('command1', console.log).catch(console.log)
+  // @ts-ignore
+  const result = hardwareKeyring.sendTrezorCommand('command1', () => console.log)
   return expect(result).resolves.toStrictEqual(TrezorErrorsCodes.BridgeNotReady)
 })
 
@@ -246,8 +248,10 @@ test('Device is busy', () => {
   hardwareKeyring.sendTrezorCommand = (command: TrezorFrameCommand, listener: Function) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
-  hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
-  const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
+  // @ts-ignore
+  hardwareKeyring.sendTrezorCommand('command1', console.log).catch(console.log)
+  // @ts-ignore
+  const result = hardwareKeyring.sendTrezorCommand('command1', () => console.log)
   return expect(result).resolves.toStrictEqual(TrezorErrorsCodes.CommandInProgress)
 })
 
@@ -278,8 +282,8 @@ test('Extracting accounts from unlocked device fail to access bridge', () => {
   const expectedError = getLocale('braveWalletCreateBridgeError')
   const expectedCode = 'test_code'
   const response = {
-      success: false,
-      payload: { error: expectedError, code: expectedCode }
+    success: false,
+    payload: { error: expectedError, code: expectedCode }
   } as Unsuccessful
   const hardwareKeyring = createTrezorKeyringWithTransport({ success: true }, response)
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))
@@ -309,22 +313,21 @@ test('Extract accounts from unlocked device returned success', () => {
   }
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))
     .resolves.toStrictEqual({
-          payload: [
-          {
-          'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
-                  'derivationPath': 'm/44\'/60\'/0\'/0/0',
-                  'deviceId': '5454545',
-                  'hardwareVendor': 'Trezor',
-                  'name': 'Trezor'
-          },
-                {
-          'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-                  'derivationPath': 'm/44\'/60\'/0\'/0/1',
-                  'deviceId': '5454545',
-                  'hardwareVendor': 'Trezor',
-                  'name': 'Trezor'
-          }],
-          success: true
+      payload: [{
+        'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
+        'derivationPath': 'm/44\'/60\'/0\'/0/0',
+        'deviceId': '5454545',
+        'hardwareVendor': 'Trezor',
+        'name': 'Trezor'
+      },
+      {
+        'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
+        'derivationPath': 'm/44\'/60\'/0\'/0/1',
+        'deviceId': '5454545',
+        'hardwareVendor': 'Trezor',
+        'name': 'Trezor'
+      }],
+      success: true
     })
 })
 
@@ -347,13 +350,12 @@ test('Extracting accounts from unlocked device returned success without zero ind
   }
   return expect(hardwareKeyring.getAccounts(1, 2, TrezorDerivationPaths.Default))
     .resolves.toStrictEqual({
-      payload: [
-      {
+      payload: [{
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-              'derivationPath': 'm/44\'/60\'/0\'/0/1',
-              'deviceId': '5454545',
-              'hardwareVendor': 'Trezor',
-              'name': 'Trezor'
+        'derivationPath': 'm/44\'/60\'/0\'/0/1',
+        'deviceId': '5454545',
+        'hardwareVendor': 'Trezor',
+        'name': 'Trezor'
       }],
       success: true
     })

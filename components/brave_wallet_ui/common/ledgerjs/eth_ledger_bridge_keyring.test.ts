@@ -40,47 +40,43 @@ const createLedgerKeyring = () => {
 test('Extracting accounts from device', () => {
   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
     .resolves.toStrictEqual({
-        payload: [
-          {
-            'address': 'address for m/44\'/60\'/0\'/0/0',
-            'derivationPath': 'm/44\'/60\'/0\'/0/0',
-            'hardwareVendor': 'Ledger',
-            'name': 'Ledger',
-            'deviceId': 'device1'
-          },
-          {
-            'address': 'address for m/44\'/60\'/1\'/0/0',
-            'derivationPath': 'm/44\'/60\'/1\'/0/0',
-            'hardwareVendor': 'Ledger',
-            'name': 'Ledger',
-            'deviceId': 'device1'
-          }],
-        success: true
-      }
-    )
+      payload: [{
+        'address': 'address for m/44\'/60\'/0\'/0/0',
+        'derivationPath': 'm/44\'/60\'/0\'/0/0',
+        'hardwareVendor': 'Ledger',
+        'name': 'Ledger',
+        'deviceId': 'device1'
+      },
+      {
+        'address': 'address for m/44\'/60\'/1\'/0/0',
+        'derivationPath': 'm/44\'/60\'/1\'/0/0',
+        'hardwareVendor': 'Ledger',
+        'name': 'Ledger',
+        'deviceId': 'device1'
+      }],
+      success: true
+    })
 })
 
 test('Extracting accounts from legacy device', () => {
   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Legacy))
     .resolves.toStrictEqual({
-        payload: [
-          {
-            'address': 'address for m/44\'/60\'/0\'/0',
-            'derivationPath': 'm/44\'/60\'/0\'/0',
-            'hardwareVendor': 'Ledger',
-            'name': 'Ledger',
-            'deviceId': 'device1'
-          },
-          {
-            'address': 'address for m/44\'/60\'/1\'/0',
-            'derivationPath': 'm/44\'/60\'/1\'/0',
-            'hardwareVendor': 'Ledger',
-            'name': 'Ledger',
-            'deviceId': 'device1'
-          }],
-        success: true
-      }
-    )
+      payload: [{
+        'address': 'address for m/44\'/60\'/0\'/0',
+        'derivationPath': 'm/44\'/60\'/0\'/0',
+        'hardwareVendor': 'Ledger',
+        'name': 'Ledger',
+        'deviceId': 'device1'
+      },
+      {
+        'address': 'address for m/44\'/60\'/1\'/0',
+        'derivationPath': 'm/44\'/60\'/1\'/0',
+        'hardwareVendor': 'Ledger',
+        'name': 'Ledger',
+        'deviceId': 'device1'
+      }],
+      success: true
+    })
 })
 
 test('Check ledger bridge type', () => {

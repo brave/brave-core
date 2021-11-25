@@ -47,7 +47,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return this.unlocked
   }
 
-  cancelOperation = async () => {
+  cancelOperation = () => {
     closeTrezorBridge()
   }
 

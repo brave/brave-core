@@ -92,7 +92,7 @@ export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promis
   return transport.sendCommandToTrezorFrame<T>(command)
 }
 
-export async function closeTrezorBridge () {
+export function closeTrezorBridge () {
   if (!transport) {
     return
   }
