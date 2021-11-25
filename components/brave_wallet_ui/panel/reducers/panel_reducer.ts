@@ -24,7 +24,6 @@ const defaultState: PanelState = {
   connectToSiteOrigin: '',
   selectedPanel: 'main',
   panelTitle: '',
-  tabId: -1,
   connectingAccounts: [],
   networkPayload: {
     chainId: '0x1',
@@ -69,7 +68,6 @@ reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
 reducer.on(PanelActions.showConnectToSite, (state: any, payload: ShowConnectToSitePayload) => {
   return {
     ...state,
-    tabId: payload.tabId,
     connectToSiteOrigin: payload.origin,
     connectingAccounts: payload.accounts
   }

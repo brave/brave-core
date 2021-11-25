@@ -211,7 +211,6 @@ export interface PanelState {
   connectToSiteOrigin: string
   selectedPanel: PanelTypes
   panelTitle: string
-  tabId: number
   connectingAccounts: string[]
   networkPayload: BraveWallet.EthereumChain
   swapQuote?: BraveWallet.SwapResponse

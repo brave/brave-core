@@ -135,17 +135,14 @@ bool GetSubRequestOrigin(const GURL& old_origin,
 }
 
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
-                                int32_t tab_id,
                                 const std::vector<std::string>& accounts,
                                 const std::string& origin) {
-  DCHECK(webui_base_url.is_valid() && tab_id > 0 && !accounts.empty() &&
-         !origin.empty());
+  DCHECK(webui_base_url.is_valid() && !accounts.empty() && !origin.empty());
 
   std::vector<std::string> query_parts;
   for (const auto& account : accounts) {
     query_parts.push_back(base::StringPrintf("addr=%s", account.c_str()));
   }
-  query_parts.push_back(base::StringPrintf("tabId=%d", tab_id));
   query_parts.push_back(base::StringPrintf("origin=%s", origin.c_str()));
   std::string query_str = base::JoinString(query_parts, "&");
   url::Replacements<char> replacements;

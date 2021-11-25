@@ -14,7 +14,6 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
-#include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
@@ -113,9 +112,8 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   }
   DCHECK(!accounts.empty());
 
-  int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents_).id();
-  webui_url = brave_wallet::GetConnectWithSiteWebUIURL(
-      webui_url, tab_id, accounts, requesting_origin);
+  webui_url = brave_wallet::GetConnectWithSiteWebUIURL(webui_url, accounts,
+                                                       requesting_origin);
   DCHECK(webui_url.is_valid());
 
   return webui_url;
