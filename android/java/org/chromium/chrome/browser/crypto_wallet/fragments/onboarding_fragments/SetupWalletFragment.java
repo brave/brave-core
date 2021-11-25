@@ -28,7 +28,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
-        setupCryptoButton.setOnClickListener(v -> onNextPage.gotoNextPage(false));
+        setupCryptoButton.setOnClickListener(v -> onNextPage.gotoOnboardingPage());
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
         restoreButton.setOnClickListener(v -> onNextPage.gotoRestorePage());
