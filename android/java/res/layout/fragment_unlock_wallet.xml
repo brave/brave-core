@@ -34,6 +34,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/unlock_wallet_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -42,6 +43,7 @@
             android:layout_marginBottom="24dp"
             android:text="@string/unlock_wallet_title"
             android:textColor="@color/wallet_text_color"
+            android:visibility="gone"
             android:textSize="18sp"/>
 
         <EditText
@@ -62,6 +64,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
+            android:visibility="gone"
             android:textColorHint="@color/wallet_edittext_outline_color" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -80,6 +83,7 @@
             android:paddingEnd="16dp"
             android:layout_marginBottom="8dp"
             android:textColor="@android:color/white"
+            android:visibility="gone"
             style="?android:attr/borderlessButtonStyle"/>
 
         <TextView
@@ -95,6 +99,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/restore"
             android:textSize="16sp"
+            android:visibility="gone"
             android:textColor="@color/wallet_text_color"/>
 
     </LinearLayout>
