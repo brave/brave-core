@@ -28,6 +28,7 @@ export const defaultState: NewTab.State = {
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
   showFTX: false,
+  widgetVisibilityMigrated: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
