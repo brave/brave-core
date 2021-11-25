@@ -12,6 +12,9 @@
     margin-bottom: 15px;
     padding-top: 15px;
   }
+  .urls-button-container {
+    margin-bottom: 15px;
+  }
   .error-text {
     color: red;
     margin-bottom: 15px;
@@ -79,13 +82,13 @@
               autofocus>
     </cr-input>
     <div >
-      <div class="settings-row">
+      <div class="settings-row urls-button-container">
         <span>$i18n{walletAddNetworkDialogRpcTitle}</span>
         <cr-icon-button iron-icon="cr:add"
                         class="icon-picture-button"
                         id="rpc-plus-button"
                         on-click="onAddRpcUrlTap_"
-                        disabled="{{isRpcPlusButtonDisabled_}}" ></cr-icon-button>
+                        hidden="{{isRpcPlusButtonDisabled_}}" ></cr-icon-button>
       </div>
       <iron-list items="[[rpcUrls]]" class="urls-list" id="rpc-urls-list" preserve-focus risk-selection>
         <template>
@@ -102,11 +105,11 @@
       </iron-list>
     </div>
     <div>
-      <div class="settings-row">
+      <div class="settings-row urls-button-container">
         <span>$i18n{walletAddNetworkDialogIconsTitle}</span>
         <cr-icon-button iron-icon="cr:add" class="icon-picture-button"
                         id="icon-plus-button" on-click="onAddIconUrlTap_"
-                        disabled="{{isIconPlusButtonDisabled_}}"
+                        hidden="{{isIconPlusButtonDisabled_}}"
                         class="wallet-input"
                         type="url"
         ></cr-icon-button>
@@ -127,13 +130,13 @@
       </iron-list>
     </div>
     <div>
-      <div class="settings-row">
+      <div class="settings-row urls-button-container">
         <span>$i18n{walletAddNetworkDialogBlocksTitle}</span>
         <cr-icon-button iron-icon="cr:add"
                         class="icon-picture-button"
                         id="block-plus-button"
                         on-click="onAddBlockUrlTap_"
-                        disabled="{{isBlockPlusButtonDisabled_}}"
+                        hidden="{{isBlockPlusButtonDisabled_}}"
         ></cr-icon-button>
       </div>
       <iron-list items="[[blockUrls]]" class="urls-list" id="block-urls-list" preserve-focus risk-selection>
