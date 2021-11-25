@@ -50,6 +50,16 @@
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_rewards_theme_color">#392DD1</color>
 
+    <!-- Brave news colors -->
+    <!-- <color name="card_background">#DC353535</color> -->
+    <color name="card_background">#F23B3E4F</color>
+    <color name="card_background_solid">#353535</color>
+    <!-- <color name="turn_on_button">#737ADE</color> -->
+    <color name="news_text_color">@android:color/white</color>
+    <color name="news_time_color">#9CD2D5CF</color>
+    <color name="news_promoted_background_color">#495057</color>
+
+
     <!-- Incognito mode colors -->
     <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
 

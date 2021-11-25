@@ -46,6 +46,7 @@ export interface Props {
   actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
+  featureFlagBraveNewsEnabled: boolean
   onClose: () => void
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
@@ -101,14 +102,26 @@ interface State {
   activeTab: TabType
 }
 
-const allTabTypes = [...Object.values(TabType)]
-const allTabTypesWithoutBackground = [...allTabTypes]
-allTabTypesWithoutBackground.splice(allTabTypesWithoutBackground.indexOf(TabType.BackgroundImage), 1)
-
 export default class Settings extends React.PureComponent<Props, State> {
   settingsMenuRef: React.RefObject<any>
+  allTabTypes: TabType[]
+  allTabTypesWithoutBackground: TabType[]
+
   constructor (props: Props) {
     super(props)
+    // Cache allowed tabs array on instance.
+    // Feature flags won't change during page lifecycle, so we don't need to
+    // change this when props change.
+    this.allTabTypes = [...Object.values(TabType)]
+    if (!props.featureFlagBraveNewsEnabled) {
+      this.allTabTypes.splice(
+        this.allTabTypes.indexOf(TabType.BraveToday), 1
+      )
+    }
+    this.allTabTypesWithoutBackground = [...this.allTabTypes]
+    this.allTabTypesWithoutBackground.splice(
+      this.allTabTypesWithoutBackground.indexOf(TabType.BackgroundImage), 1
+    )
     this.settingsMenuRef = React.createRef()
     this.state = {
       activeTab: this.getInitialTab()
@@ -179,9 +192,9 @@ export default class Settings extends React.PureComponent<Props, State> {
     // mandatory. Maybe that's the only case
     // allowSponsoredWallpaperUI is false?
     if (!this.props.allowSponsoredWallpaperUI) {
-      return allTabTypesWithoutBackground
+      return this.allTabTypesWithoutBackground
     } else {
-      return allTabTypes
+      return this.allTabTypes
     }
   }
 

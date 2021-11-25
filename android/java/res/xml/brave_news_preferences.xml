@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="kBraveTodayOptedIn"
+        android:title="@string/news_turn_on_button"
+        android:summaryOff="@string/brave_news_optin_subtitle" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="kNewTabPageShowToday"
+        android:title="@string/news_show"
+        android:dependency="kBraveTodayOptedIn"
+        android:summaryOn="@string/brave_news_optin_subtitle"
+        android:summaryOff="@string/brave_news_optin_subtitle" />
+
+<!--     <PreferenceCategory
+        android:key="your_sources_section"
+        android:dependency="kNewTabPageShowToday"
+        android:title="@string/news_your_sources_section"/> -->
+
+
+    <PreferenceCategory
+        android:key="default_sources_section"
+        android:dependency="kNewTabPageShowToday"
+        android:title="@string/news_default_sources_section"/>
+
+</androidx.preference.PreferenceScreen>

@@ -25,7 +25,8 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_today/buildflags/buildflags.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
@@ -130,10 +131,6 @@ using extensions::FeatureSwitch;
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-#include "brave/components/brave_today/browser/brave_news_controller.h"
-#endif
-
 namespace brave {
 
 void RegisterProfilePrefsForMigration(
@@ -180,9 +177,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_vpn::prefs::RegisterProfilePrefs(registry);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  brave_news::BraveNewsController::RegisterProfilePrefs(registry);
-#endif
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+    brave_news::BraveNewsController::RegisterProfilePrefs(registry);
+  }
 
   // SKU SDK (can be used on account.brave.com)
   brave_rewards::SkusSdkImpl::RegisterProfilePrefs(registry);

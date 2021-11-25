@@ -1179,7 +1179,7 @@ class NewTabPage extends React.Component<Props, State> {
           </Page.GridItemNavigationBraveToday>
           }
         </Page.Page>
-        { newTabData.showToday &&
+        { newTabData.showToday && newTabData.featureFlagBraveNewsEnabled &&
         <BraveToday
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
@@ -1210,6 +1210,7 @@ class NewTabPage extends React.Component<Props, State> {
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
+          featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}

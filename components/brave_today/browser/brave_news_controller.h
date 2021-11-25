@@ -55,6 +55,7 @@ class BraveNewsController : public KeyedService,
   BraveNewsController(const BraveNewsController&) = delete;
   BraveNewsController& operator=(const BraveNewsController&) = delete;
 
+  mojo::PendingRemote<mojom::BraveNewsController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveNewsController> receiver);
 
   // Remove any cache that would identify user browsing history

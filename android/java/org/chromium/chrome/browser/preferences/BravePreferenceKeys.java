@@ -25,4 +25,8 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Tab_Groups_Enabled";
     public static final String BRAVE_DISABLE_SHARING_HUB =
             "org.chromium.chrome.browser.Brave_Disable_Sharing_Hub";
+    public static final String BRAVE_NEWS_CARDS_VISITED = "brave_news_cards_visited";
+    public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";
+    public static final String BRAVE_NEWS_FEED_HASH = "brave_news_feed_hash";
+    public static final String BRAVE_NEWS_PREF_SHOW_NEWS = "kNewTabPageShowToday";
 }

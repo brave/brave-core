@@ -3,19 +3,22 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
   sources = [
+    "features.cc",
+    "features.h",
     "pref_names.h",
     "switches.cc",
     "switches.h",
   ]
 
-  deps = []
+  deps = [ "//base" ]
 }
 
-mojom("mojo_bindings") {
+mojom("mojom") {
+  generate_java = true
   sources = [ "brave_news.mojom" ]
-  public_deps = [
+
+  deps = [
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",
   ]
-  generate_java = true
 }

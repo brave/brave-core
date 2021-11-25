@@ -229,6 +229,67 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESOLVE_METHOD_ETHEREUM" desc="Text for resolve method Ethereum.">
         Ethereum
       </message>
+      <message name="IDS_BRAVE_NEWS_OPTIN_TITLE" desc="Text for opt in card title">
+        Today’s top stories in a completely private feed, just for you.
+      </message>
+
+       <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
+        Brave News is ad-supported with completely private and anonymized ads matched on your device.
+      </message>
+
+      <message name="IDS_BRAVE_NEWS_AD" desc="Text for Brave ad logo">
+        Ad
+      </message>
+      <message name="IDS_BRAVE_NEWS_OPTIN_BUTTON" desc="Text for opt in card subtitle">
+        Turn on Brave News
+      </message>
+      <message name="IDS_BRAVE_NEWS_OPTIN_LEARN_MORE" desc="Text for opt in card subtitle">
+        Learn more about your data
+      </message>
+      <message name="IDS_BRAVE_NEWS_OPEN_NEW_TAB" desc="Text for opening the link in a new tab option for the long press on title action for Brave news">
+        Open in New Tab
+      </message>
+      <message name="IDS_BRAVE_NEWS_OPEN_NEW_PRIVATE_TAB" desc="Text for opening the link in a new private tab option for the long press on title action for Brave news">
+        Open in New Private Tab
+      </message>
+      <message name="IDS_BRAVE_NEWS_DISABLE_CONTENT" desc="Text for disable content option for the long press on title action">
+        Disable content from <ph name="PUBLISHER">%1$s</ph>
+      </message>
+      <message name="IDS_BRAVE_NEWS_DISABLED_CONTENT" desc="Text for disabled publisher notification">
+        <ph name="PUBLISHER">%1$s</ph> disabled
+      </message>
+      <message name="IDS_BRAVE_NEWS_LOAD_NEW_CONTENT" desc="Text for load new content button for Brave news">
+        Load new content
+      </message>
+      <message name="IDS_BRAVE_NEWS_PROMOTED_TITLE" desc="Text for marking promoted cards ">
+        Promoted
+      </message>
+      <message name="IDS_BRAVE_NEWS_MORE_OFFERS_TITLE" desc="Text for more offers for the Brave News Deals card ">
+        More Brave Offers
+      </message>
+      <message name="IDS_NEWS_TURN_ON_BUTTON" desc="Text for turn on button">
+        Turn on Brave News
+      </message>
+<!--   // for RSS
+      <message name="IDS_NEWS_YOUR_SOURCES_SECTION" desc="Text for custom sources section">
+        Your sources
+      </message>
+      <message name="IDS_NEWS_SOURCES" desc="Text for show brave news toggle">
+        Your sources
+      </message>
+      <message name="IDS_NEWS_FEED_SITE_URL" desc="Text for news feed input">
+        Feed or Site URL
+      </message>
+-->
+      <message name="IDS_NEWS_DEFAULT_SOURCES_SECTION" desc="Text for the default sources section">
+        Default sources
+      </message>
+      <message name="IDS_NEWS_ADD_SOURCE" desc="Text for add source button">
+        Add source
+      </message>
+      <message name="IDS_NEWS_SHOW" desc="Text for news source">
+        Show Brave News
+      </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
       </message>
@@ -478,11 +539,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
         Your wallet
       </message>
-<!--  <message name="IDS_BRAVE_TODAY" desc="Title for Brave today settings">
-        Brave today
-      </message> -->
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
-        Brave VPN
+          Brave VPN
+      </message>
+      <message name="IDS_BRAVE_NEWS_TITLE" desc="Title for Brave news settings">
+        Brave News
       </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>

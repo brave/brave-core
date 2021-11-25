@@ -135,6 +135,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveWallet.setVisible(false);
             }
         }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
+            MenuItem braveNews =
+                    menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
+            if (shouldShowIconBeforeItem()) {
+                braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
+            }
+        }
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
         if (shouldShowIconBeforeItem()) {
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));

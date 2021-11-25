@@ -1,6 +1,5 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
-import("//brave/components/brave_today/buildflags/buildflags.gni")
 
 static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
@@ -44,7 +43,7 @@ static_library("browser") {
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_today/buildflags",
+    "//brave/components/brave_today/common",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
@@ -134,9 +133,5 @@ static_library("browser") {
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]
     deps += [ "//brave/components/brave_adaptive_captcha" ]
-  }
-
-  if (enable_brave_news) {
-    deps += [ "//brave/components/brave_today/common" ]
   }
 }

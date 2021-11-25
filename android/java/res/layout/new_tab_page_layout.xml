@@ -152,6 +152,24 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/newsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="750dp"
+            android:visibility="gone"
+            android:layout_marginTop="-50dp"
+         />
+
+        <include
+            android:id="@+id/optin_layout_id"
+            layout="@layout/optin_layout"
+            android:layout_marginTop="-66dp"
+            android:layout_marginBottom="300dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/image_credit_layout"
             android:layout_width="match_parent"
@@ -179,6 +197,14 @@
         </FrameLayout>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/feed_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_gravity="center" />
 
     <include layout="@layout/ntp_non_disruptive_banner"/>
     <include layout="@layout/bre_bottom_banner"/>
