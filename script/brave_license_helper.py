@@ -71,7 +71,8 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         },
         os.path.join('brave', 'vendor', 'challenge_bypass_ristretto_ffi'): {
             "Name": "challenge-bypass-ristretto-ffi",
-            "URL": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
+            "URL":
+                "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
         os.path.join('brave', 'vendor', 'extension-whitelist'): {
@@ -94,6 +95,30 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/omaha",
             "License": "Apache-2.0",
             "License File": "/brave/vendor/omaha/LICENSE.txt",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad'): {
+            "Name": "Breakpad",
+            "URL": "https://chromium.googlesource.com/breakpad/breakpad",
+            "License File": "/brave/vendor/omaha/third_party/breakpad/LICENSE",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
+            "Name": "GoogleTest",
+            "URL": "https://github.com/google/googletest",
+            "License": "BSD",
+            "License File":
+                "/brave/vendor/omaha/third_party/googletest/LICENSE",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
+            "Name": "libzip",
+            "URL": "https://libzip.org",
+            "License": "BSD",
+            "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
+            "Name": "zlib",
+            "URL": "https://zlib.net",
+            "License": "zlib",
+            "License File": "/brave/vendor/omaha/third_party/zlib/README",
         },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",

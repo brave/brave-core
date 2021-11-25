@@ -6,7 +6,7 @@ deps = {
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
-  "vendor/omaha":  "https://github.com/brave/omaha.git@aa5d8f956d6b4fc929d835995b25df159af6dcf9",
+  "vendor/omaha":  "https://github.com/brave/omaha.git@a199d4a386798c4ecc1a29f1a80f58a1da4755ff",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@07933da3e178265d0f0ba86e02bbde38e701a04d",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@60b7e4574cebdd79f441bdd6f0f3ab469fd7e04c",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
@@ -19,6 +19,10 @@ deps = {
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
 }
+
+recursedeps = [
+  'vendor/omaha'
+]
 
 hooks = [
   {
