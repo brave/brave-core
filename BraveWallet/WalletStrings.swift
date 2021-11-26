@@ -15,6 +15,13 @@ extension Strings {
       value: "Brave Wallet",
       comment: "The title shown on the wallet settings page."
     )
+    public static let wallet = NSLocalizedString(
+      "wallet.wallet",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Wallet",
+      comment: "The title shown on the menu to access Brave Wallet"
+    )
     public static let portfolioPageTitle = NSLocalizedString(
       "wallet.portfolioPageTitle",
       tableName: "BraveWallet",
