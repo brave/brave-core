@@ -256,7 +256,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 @Override
                 public void run() {
                     showEndDialog(
-                            getResources().getString(R.string.sync_device_failure) + messageFinal);
+                            getResources().getString(R.string.sync_device_failure) + messageFinal,
+                            () -> {});
                 }
             });
         } catch (Exception exc) {
@@ -991,24 +992,31 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
-            final String jsonQr = barcode.displayValue;
-            String validationError = getQrCodeValidationString(jsonQr);
-
-            if (!validationError.isEmpty()) {
-                getActivity().runOnUiThread(() -> {
-                    showEndDialog(validationError);
-                });
-                return;
-            }
-
             synchronized (mQrInProcessingLock) {
                 // If camera looks on the QR image and final security warning is shown,
                 // we could arrive here again and show 2nd alert while the 1st is not yet closed
                 if (mQrInProcessing) {
                     return;
                 }
-
                 mQrInProcessing = true;
+            }
+
+            final String jsonQr = barcode.displayValue;
+            String validationError = getQrCodeValidationString(jsonQr);
+
+            if (!validationError.isEmpty()) {
+                getActivity().runOnUiThread(() -> {
+                    showEndDialog(validationError, new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (mQrInProcessingLock) {
+                                assert mQrInProcessing;
+                                mQrInProcessing = false;
+                            }
+                        }
+                    });
+                });
+                return;
             }
 
             String seedHex = getBraveSyncWorker().GetSeedHexFromQrJson(jsonQr);
@@ -1050,7 +1058,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private void showEndDialog(String message) {
+    private void showEndDialog(String message, Runnable runWhenDismissed) {
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
@@ -1066,6 +1074,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         .setPositiveButton(R.string.ok, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.setOnDismissListener((dialog) -> { runWhenDismissed.run(); });
         alertDialog.show();
     }
 
@@ -1261,7 +1270,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                       // Normally must not reach here ever, because the code is validated right
                       // after scan
                       assert false;
-                      showEndDialog(getResources().getString(R.string.sync_device_failure));
+                      showEndDialog(
+                              getResources().getString(R.string.sync_device_failure), () -> {});
                       return;
                   } else {
                       String qrCodeString = getBraveSyncWorker().GetQrDataJson(seedHex);
