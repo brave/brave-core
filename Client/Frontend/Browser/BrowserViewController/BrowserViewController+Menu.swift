@@ -159,6 +159,7 @@ extension BrowserViewController {
                 let keyringStore = BraveWallet.KeyringControllerFactory
                     .get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
                     .map { KeyringStore(keyringController: $0) }
+                
                 let vc = SettingsViewController(profile: self.profile,
                                                 tabManager: self.tabManager,
                                                 feedDataSource: self.feedDataSource,

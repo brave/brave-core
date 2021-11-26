@@ -72,7 +72,8 @@ class SettingsViewController: TableViewController {
          windowProtection: WindowProtection?,
          historyAPI: BraveHistoryAPI,
          syncAPI: BraveSyncAPI,
-         walletKeyringStore: KeyringStore? = nil) {
+         walletKeyringStore: KeyringStore? = nil
+    ) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource

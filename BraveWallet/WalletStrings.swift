@@ -1436,5 +1436,19 @@ extension Strings {
       value: "Edit Gas",
       comment: "A title of the edit gas screen for standard transactions"
     )
+    public static let lock = NSLocalizedString(
+      "wallet.lock",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Lock",
+      comment: "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let settings = NSLocalizedString(
+      "wallet.settings",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Settings",
+      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+    )
   }
 }
