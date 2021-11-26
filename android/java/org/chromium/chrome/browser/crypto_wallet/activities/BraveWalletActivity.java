@@ -180,6 +180,14 @@ public class BraveWalletActivity
     }
 
     @Override
+    public void onUserInteraction() {
+        if (mKeyringController == null) {
+            return;
+        }
+        mKeyringController.notifyUserInteraction();
+    }
+
+    @Override
     public void onConnectionError(MojoException e) {
         mKeyringController.close();
         mAssetRatioController.close();
