@@ -221,6 +221,7 @@ function ConfirmTransactionPanel (props: Props) {
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     return (
+      transactionDetails.sameAddressError ||
       transactionDetails.contractAddressError ||
       parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError
     )
@@ -415,6 +416,13 @@ function ConfirmTransactionPanel (props: Props) {
           {transactionDetails.contractAddressError}
         </ErrorText>
       }
+
+      {transactionDetails.sameAddressError &&
+        <ErrorText>
+          {transactionDetails.sameAddressError}
+        </ErrorText>
+      }
+
       <ButtonRow>
         <NavButton
           buttonType='reject'

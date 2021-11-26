@@ -38,6 +38,7 @@
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
     "test-unit": "jest -t",
+    "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test"
   },
   "repository": {
@@ -268,6 +269,7 @@
     "@storybook/addon-knobs": "6.3.1",
     "@storybook/addons": "6.3.12",
     "@storybook/react": "6.3.12",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.36",
     "@types/chrome": "0.0.147",
