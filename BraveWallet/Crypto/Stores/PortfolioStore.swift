@@ -127,7 +127,7 @@ public class PortfolioStore: ObservableObject {
     group.enter()
     assetRatioController.price(
       userVisibleAssets.map { $0.token.symbol.lowercased() },
-      toAssets: ["usd"], // TODO: Switch to users preferred currency
+      toAssets: ["usd"],
       timeframe: timeframe
     ) { [weak self] success, assetPrices in
       defer { group.leave() }
@@ -163,7 +163,7 @@ public class PortfolioStore: ObservableObject {
     rpcController.chainId { [self] chainId in
       // Get user assets for the selected chain
       walletService.userAssets(chainId) { [self] tokens in
-        userVisibleAssets =  tokens.filter(\.visible).map {
+        userVisibleAssets = tokens.filter(\.visible).map {
           .init(token: $0, decimalBalance: 0, price: "", history: [])
         }
         let group = DispatchGroup()

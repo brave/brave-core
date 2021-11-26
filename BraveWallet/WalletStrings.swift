@@ -7,7 +7,14 @@ import Foundation
 import struct Shared.Strings
 
 extension Strings {
-  struct Wallet {
+  public struct Wallet {
+    public static let braveWallet = NSLocalizedString(
+      "wallet.braveWallet",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Brave Wallet",
+      comment: "The title shown on the wallet settings page."
+    )
     public static let portfolioPageTitle = NSLocalizedString(
       "wallet.portfolioPageTitle",
       tableName: "BraveWallet",

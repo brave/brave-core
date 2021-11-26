@@ -53,8 +53,7 @@ struct DateRangeView: View {
         }
       }
     }
-    .font(Font.caption.bold())
-//    .frame(maxWidth: .infinity)
+    .font(.caption.bold())
   }
 }
 

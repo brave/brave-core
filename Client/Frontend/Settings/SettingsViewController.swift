@@ -250,7 +250,7 @@ class SettingsViewController: TableViewController {
         
         if #available(iOS 14.0, *), let keyringStore = walletKeyringStore {
             section.rows.append(
-                Row(text: "Wallet", selection: { [unowned self] in // NSLocalizedString
+                Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
                     let vc = UIHostingController(rootView: WalletSettingsView(keyringStore: keyringStore))
                     self.navigationController?.pushViewController(vc, animated: true)
                 }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)

@@ -83,7 +83,6 @@ struct AccountDetailsView: View {
                 secondaryButton: .cancel(Text(Strings.no))
               )
             }
-            // TODO: iOS 15/Xcode 13, set button role to `destructive`
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }

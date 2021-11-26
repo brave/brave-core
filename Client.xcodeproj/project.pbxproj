@@ -260,7 +260,6 @@
 		271F68C226EBD27E00AA2A50 /* SwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F689026EBD27E00AA2A50 /* SwapButton.swift */; };
 		271F68C326EBD29500AA2A50 /* ModalPresentationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688326EBD27D00AA2A50 /* ModalPresentationMode.swift */; };
 		271F68C426EBD29500AA2A50 /* EdgeInsetsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688226EBD27D00AA2A50 /* EdgeInsetsExtensions.swift */; };
-		271F68C526EBD29500AA2A50 /* UIKitScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688426EBD27D00AA2A50 /* UIKitScrollView.swift */; };
 		271F68C626EBD29500AA2A50 /* HostingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688826EBD27D00AA2A50 /* HostingTableViewCell.swift */; };
 		271F68C726EBD29500AA2A50 /* UIKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688526EBD27D00AA2A50 /* UIKitController.swift */; };
 		271F68C826EBD29500AA2A50 /* OSAvailabilityModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688726EBD27D00AA2A50 /* OSAvailabilityModifier.swift */; };
@@ -1918,7 +1917,6 @@
 		271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedPageViewController.swift; sourceTree = "<group>"; };
 		271F688226EBD27D00AA2A50 /* EdgeInsetsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsetsExtensions.swift; sourceTree = "<group>"; };
 		271F688326EBD27D00AA2A50 /* ModalPresentationMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalPresentationMode.swift; sourceTree = "<group>"; };
-		271F688426EBD27D00AA2A50 /* UIKitScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitScrollView.swift; sourceTree = "<group>"; };
 		271F688526EBD27D00AA2A50 /* UIKitController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitController.swift; sourceTree = "<group>"; };
 		271F688626EBD27D00AA2A50 /* DocumentOpenerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentOpenerView.swift; sourceTree = "<group>"; };
 		271F688726EBD27D00AA2A50 /* OSAvailabilityModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSAvailabilityModifier.swift; sourceTree = "<group>"; };
@@ -4560,7 +4558,6 @@
 				271F688226EBD27D00AA2A50 /* EdgeInsetsExtensions.swift */,
 				271F688326EBD27D00AA2A50 /* ModalPresentationMode.swift */,
 				270E5F1226F29C320024C70E /* UIKitNavigationView.swift */,
-				271F688426EBD27D00AA2A50 /* UIKitScrollView.swift */,
 				271F688526EBD27D00AA2A50 /* UIKitController.swift */,
 				271F688626EBD27D00AA2A50 /* DocumentOpenerView.swift */,
 				271F688726EBD27D00AA2A50 /* OSAvailabilityModifier.swift */,
@@ -7968,9 +7965,7 @@
 				271F68C326EBD29500AA2A50 /* ModalPresentationMode.swift in Sources */,
 				4457A9C0272070240056388A /* LabelExtensions.swift in Sources */,
 				278C46B123F4A91D0083347F /* PopoverContentComponent.swift in Sources */,
-				271F68C526EBD29500AA2A50 /* UIKitScrollView.swift in Sources */,
 				278C46AF23F4A91C0083347F /* PopoverController.swift in Sources */,
-				271801A7273C55A400F683E3 /* PopupView.swift in Sources */,
 				278C46B523F4A9C80083347F /* POPExtensions.swift in Sources */,
 				271F68C926EBD29500AA2A50 /* DocumentOpenerView.swift in Sources */,
 				27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */,
@@ -8409,8 +8404,7 @@
 				4422D4E121BFFB7600BF1855 /* filter_block.cc in Sources */,
 				CA2EE0A727349F760089C75F /* OnboardingAdblockDisconnect.swift in Sources */,
 				0A8C69BE225E350300988715 /* IndentedImageTableViewCell.swift in Sources */,
-				5E096180252B63F200F3AFBB /* BraveSyncAPI+Utilities.swift in Sources */,
-				0AE5C69124F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift in Sources */,
+				5E096180252B63F200F3AFBB /* BraveSyncAPIExtensions.swift in Sources */,
 				5E096180252B63F200F3AFBB /* BraveSyncAPIExtensions.swift in Sources */,
 				0A1E843D2190A57F0042F782 /* SyncSettingsTableViewController.swift in Sources */,
 				4422D56C21BFFB7F00BF1855 /* bitstate.cc in Sources */,

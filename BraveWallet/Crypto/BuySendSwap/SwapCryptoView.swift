@@ -244,7 +244,8 @@ struct SwapCryptoView: View {
           swapTokensStore.selectedFromToken?.symbol ?? ""))
       ),
       footer: ShortcutAmountGrid(action: { amount in
-        swapTokensStore.sellAmount = ((swapTokensStore.selectedFromTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: Int(swapTokensStore.selectedFromToken?.decimals ?? 18))
+        swapTokensStore.sellAmount = ((swapTokensStore.selectedFromTokenBalance ?? 0) * amount.rawValue)
+          .decimalExpansion(precisionAfterDecimalPoint: Int(swapTokensStore.selectedFromToken?.decimals ?? 18))
       })
       .listRowInsets(.zero)
       .padding(.bottom, 8)
@@ -261,7 +262,9 @@ struct SwapCryptoView: View {
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
-      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken)) {
+      NavigationLink(
+        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken)
+      ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
             AssetIconView(token: token, length: 26)

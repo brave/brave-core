@@ -115,7 +115,10 @@ extension BrowserViewController {
                 menuController.pushInnerMenu(vc)
             }
             if #available(iOS 14.0, *) {
-                MenuItemButton(icon: #imageLiteral(resourceName: "menu-crypto").template, title: "Wallet") { [unowned self] in // NSLocalizedString
+                MenuItemButton(
+                    icon: #imageLiteral(resourceName: "menu-crypto").template,
+                    title: Strings.Wallet.braveWallet
+                ) { [unowned self] in
                     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
                     guard
                         let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
