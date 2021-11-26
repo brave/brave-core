@@ -191,7 +191,7 @@
 		0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */; };
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27012EE924FD80B8002694C3 /* WebcompatReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27012EE824FD80B8002694C3 /* WebcompatReporter.swift */; };
-		2701B14C2735B65300BE6FC6 /* EditGasFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */; };
+		2701B14C2735B65300BE6FC6 /* EditPriorityFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701B14B2735B65300BE6FC6 /* EditPriorityFeeView.swift */; };
 		27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */; };
 		27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EC2256718DA004EF6B6 /* PartnerCardView.swift */; };
 		27036F8725684F64004EF6B6 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F8525684F64004EF6B6 /* Cryptography.swift */; };
@@ -438,6 +438,7 @@
 		27A1AC0924859D0900344503 /* FeedHeadlineViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A1AC0824859D0900344503 /* FeedHeadlineViews.swift */; };
 		27A1AC0C2485A1C200344503 /* FeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A1AC0B2485A1C200344503 /* FeedDataSource.swift */; };
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
+		27AAE241274FFBA900288E90 /* TransactionConfirmationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AAE240274FFBA900288E90 /* TransactionConfirmationStore.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
 		27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */; };
 		27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
@@ -470,6 +471,7 @@
 		27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */; };
 		27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D52358FCA400166534 /* SettingsRowViews.swift */; };
 		27D67CED24D07EB800066D83 /* BraveNewsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D67CEC24D07EB800066D83 /* BraveNewsSettingsViewController.swift */; };
+		27D91E71274D55F0009B1FA3 /* EditGasFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D91E70274D55F0009B1FA3 /* EditGasFeeView.swift */; };
 		27DCB9EC263764EF0067EF4A /* TabTrayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */; };
 		27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */; };
 		27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */; };
@@ -1844,7 +1846,7 @@
 		0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetButton.swift; sourceTree = "<group>"; };
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		27012EE824FD80B8002694C3 /* WebcompatReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebcompatReporter.swift; sourceTree = "<group>"; };
-		2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGasFeeView.swift; sourceTree = "<group>"; };
+		2701B14B2735B65300BE6FC6 /* EditPriorityFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPriorityFeeView.swift; sourceTree = "<group>"; };
 		27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardFooterButton.swift; sourceTree = "<group>"; };
 		27036EC2256718DA004EF6B6 /* PartnerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCardView.swift; sourceTree = "<group>"; };
 		27036F8525684F64004EF6B6 /* Cryptography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
@@ -2180,6 +2182,7 @@
 		27A1AC0B2485A1C200344503 /* FeedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSource.swift; sourceTree = "<group>"; };
 		27A1AC1424884EB300344503 /* Enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enterprise.xcconfig; sourceTree = "<group>"; };
 		27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTest.swift; sourceTree = "<group>"; };
+		27AAE240274FFBA900288E90 /* TransactionConfirmationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionConfirmationStore.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
 		27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedActionAlertView.swift; sourceTree = "<group>"; };
@@ -2207,6 +2210,7 @@
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
 		27D114D52358FCA400166534 /* SettingsRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowViews.swift; sourceTree = "<group>"; };
 		27D67CEC24D07EB800066D83 /* BraveNewsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsSettingsViewController.swift; sourceTree = "<group>"; };
+		27D91E70274D55F0009B1FA3 /* EditGasFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGasFeeView.swift; sourceTree = "<group>"; };
 		27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayCell.swift; sourceTree = "<group>"; };
 		27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPrivateKeyView.swift; sourceTree = "<group>"; };
 		27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStore.swift; sourceTree = "<group>"; };
@@ -3875,6 +3879,7 @@
 				7D49CDDE271FB359008AB67E /* SendTokenStore.swift */,
 				7D2D6EDC2731B7FF000650EA /* SwapTokenStore.swift */,
 				27E17B802744067A00F3C282 /* AccountActivityStore.swift */,
+				27AAE240274FFBA900288E90 /* TransactionConfirmationStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -4150,7 +4155,8 @@
 			isa = PBXGroup;
 			children = (
 				2774303127332C2F00183725 /* TransactionConfirmationView.swift */,
-				2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */,
+				2701B14B2735B65300BE6FC6 /* EditPriorityFeeView.swift */,
+				27D91E70274D55F0009B1FA3 /* EditGasFeeView.swift */,
 			);
 			path = "Transaction Confirmations";
 			sourceTree = "<group>";
@@ -7840,9 +7846,10 @@
 				271F689326EBD27E00AA2A50 /* TestContent.swift in Sources */,
 				275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */,
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
-				2701B14C2735B65300BE6FC6 /* EditGasFeeView.swift in Sources */,
+				2701B14C2735B65300BE6FC6 /* EditPriorityFeeView.swift in Sources */,
 				27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
+				27AAE241274FFBA900288E90 /* TransactionConfirmationStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				7D2D6EEB2731D6BA000650EA /* SwapTokenSearchView.swift in Sources */,
 				271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */,
@@ -7882,6 +7889,7 @@
 				27F3AEF4271DDE0C00F75B7F /* OpenWalletURLAction.swift in Sources */,
 				2762FF32271A2448001EF41D /* BuySendSwapDestination.swift in Sources */,
 				7D2D6EDD2731B7FF000650EA /* SwapTokenStore.swift in Sources */,
+				27D91E71274D55F0009B1FA3 /* EditGasFeeView.swift in Sources */,
 				271F68A426EBD27E00AA2A50 /* AccountsView.swift in Sources */,
 				275C6FBF2731D1A500AB2FC7 /* RpcControllerExtensions.swift in Sources */,
 				2766848B270CDA3500DF45C5 /* UserAssetsStore.swift in Sources */,

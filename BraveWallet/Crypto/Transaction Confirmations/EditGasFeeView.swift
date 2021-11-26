@@ -3,120 +3,115 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import Foundation
 import BraveCore
 import BraveUI
+import SwiftUI
 import struct Shared.Strings
+import BigNumber
 
+/// Allows the user to edit the gas fee structure of an regular transaction before confirming it
+///
+/// If you are looking for editing gas fees for EIP-1559 transactions, see ``EditPriorityFeeView``
 struct EditGasFeeView: View {
-  // var estimate: BraveWallet.GasEstimation1559
+  /// The transaction being confirmed
+  var transaction: BraveWallet.TransactionInfo
+  /// The confirmation store to update gas prices on save
+  @ObservedObject var confirmationStore: TransactionConfirmationStore
   
-  private enum GasFeeKind: Hashable {
-    case low, optimal, high, custom
+  @Environment(\.presentationMode) @Binding private var presentationMode
+  
+  @State private var perGasPrice: String = ""
+  @State private var gasLimit: String = ""
+  
+  private func setup() {
+    perGasPrice = WeiFormatter.weiToDecimalGwei(transaction.txData.baseData.gasPrice.removingHexPrefix, radix: .hex) ?? "0"
+    // Gas limit is already in Gwei…
+    gasLimit = {
+      guard let value = BDouble(transaction.txData.baseData.gasLimit.removingHexPrefix, radix: 16) else {
+        return ""
+      }
+      if value.denominator == [1] {
+        return value.rounded().asString(radix: 10)
+      }
+      return value.decimalExpansion(precisionAfterDecimalPoint: 2)
+    }()
   }
   
-  @State private var gasFeeKind: GasFeeKind = .optimal
+  private func save() {
+    // Gas limit is already in Gwei, so doesn't need additional conversion other than to hex
+    guard let limit = BDouble(gasLimit)?.rounded().asString(radix: 16),
+          let gasFeeInWei = WeiFormatter.gweiToWei(perGasPrice, radix: .decimal, outputRadix: .hex) else {
+            return
+          }
+    let hexGasLimit = "0x\(limit)"
+    let hexGasFee = "0x\(gasFeeInWei)"
+    
+    confirmationStore.updateGasFeeAndLimits(
+      for: transaction,
+      gasPrice: hexGasFee,
+      gasLimit: hexGasLimit
+    ) { success in
+      if success {
+        presentationMode.dismiss()
+      } else {
+         // Show error?
+      }
+    }
+  }
+  
+  private var isSaveButtonDisabled: Bool {
+    guard let gasPrice = BDouble(perGasPrice), gasPrice > 0,
+          let limit = BDouble(gasLimit), limit > 0 else {
+            return true
+          }
+    return false
+  }
   
   var body: some View {
     List {
       Section(
-        header: Text(Strings.Wallet.gasFeeDisclaimer)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .font(.footnote)
-          .resetListHeaderStyle()
-          .padding(.vertical)
-      ) {
-        Picker(selection: $gasFeeKind) {
-          Text(Strings.Wallet.gasFeePredefinedLimitLow).tag(GasFeeKind.low)
-          Text(Strings.Wallet.gasFeePredefinedLimitOptimal).tag(GasFeeKind.optimal)
-          Text(Strings.Wallet.gasFeePredefinedLimitHigh).tag(GasFeeKind.high)
-          Text(Strings.Wallet.gasFeeCustomOption).tag(GasFeeKind.custom)
-        } label: {
-          EmptyView()
-        }
-        .accentColor(Color(.braveBlurpleTint))
-        .pickerStyle(.inline)
-        .foregroundColor(Color(.braveLabel))
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      if gasFeeKind == .custom {
-        Section(
-          header: VStack {
-            HStack {
-              Text(Strings.Wallet.gasCurrentBaseFee)
-              Spacer()
-              Text("150 Gwei")
+        header: WalletListHeaderView(title: Text(Strings.Wallet.perGasPriceTitle))
+          .osAvailabilityModifiers { content in
+            if #available(iOS 15.0, *) {
+              content // Padding already applied
+            } else {
+              content.padding(.top)
             }
           }
-          .font(.headline)
+      ) {
+        TextField("", text: $perGasPrice)
+          .keyboardType(.numberPad)
           .foregroundColor(Color(.braveLabel))
-          .padding(.top)
-          .padding(.bottom, 12)
-          .resetListHeaderStyle()
-        ) {
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.gasAmountLimit)
-              .foregroundColor(Color(.bravePrimary))
-              .font(.footnote.weight(.semibold))
-            TextField("", text: .constant("2100"))
-              .foregroundColor(Color(.braveLabel))
-          }
-          .padding(.vertical, 6)
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.perGasTipLimit)
-              .font(.footnote.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-            TextField("", text: .constant("2"))
-              .foregroundColor(Color(.braveLabel))
-          }
-          .padding(.vertical, 6)
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.perGasPriceLimit)
-              .font(.footnote.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-            TextField("", text: .constant("150"))
-              .foregroundColor(Color(.braveLabel))
-          }
-          .padding(.vertical, 6)
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      Section {
-        VStack {
-          Text(Strings.Wallet.maximumGasFee)
-            .fontWeight(.regular)
-          Text("~$161.24 (0.035731 ETH)")
-            .bold()
-        }
-        .foregroundColor(Color(.braveLabel))
-        .font(.headline)
-        .padding(.vertical)
-        .frame(maxWidth: .infinity)
-        .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section(
+        header: WalletListHeaderView(title: Text(Strings.Wallet.gasAmountLimit))
+      ) {
+        TextField("", text: $gasLimit)
+          .keyboardType(.numberPad)
+          .foregroundColor(Color(.braveLabel))
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
-        Button(action: { }) {
+        Button(action: save) {
           Text(Strings.Wallet.saveGasFee)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
         .frame(maxWidth: .infinity)
+        .disabled(isSaveButtonDisabled)
         .listRowInsets(.zero)
         .listRowBackground(Color(.braveGroupedBackground))
       }
     }
-    .animation(.default, value: gasFeeKind)
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
-  }
-}
-
-struct EditGasFeeView_Previews: PreviewProvider {
-  static var previews: some View {
-    NavigationView {
-      EditGasFeeView()
+    .navigationTitle(Strings.Wallet.editGasTitle)
+    .onAppear {
+      // For some reason we need to delay this for SwiftUI to render the text properly…
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        setup()
+      }
     }
-    .previewColorSchemes()
   }
 }

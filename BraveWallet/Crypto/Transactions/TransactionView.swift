@@ -14,6 +14,9 @@ extension BraveWallet.TransactionInfo {
     txData.baseData.to
       .caseInsensitiveCompare(NamedAddresses.swapExchangeProxyAddress) == .orderedSame
   }
+  var isEIP1559Transaction: Bool {
+    !txData.maxPriorityFeePerGas.isEmpty && !txData.maxFeePerGas.isEmpty
+  }
 }
 
 /// Displays a summary of a given transaction
@@ -40,9 +43,9 @@ struct TransactionView: View {
   }
   
   private var gasFee: (String, fiat: String)? {
-    let isEIP1559Transaction = !info.txData.maxPriorityFeePerGas.isEmpty && !info.txData.maxFeePerGas.isEmpty
+    let isEIP1559Transaction = info.isEIP1559Transaction
     let limit = info.txData.baseData.gasLimit
-    let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: 16))
+    let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: .hex))
     let gasFee = isEIP1559Transaction ? info.txData.maxFeePerGas : info.txData.baseData.gasPrice
     if let value = formatter.decimalString(for: gasFee.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) {
       return (value, {

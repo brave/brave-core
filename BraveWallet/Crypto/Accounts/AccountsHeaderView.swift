@@ -20,7 +20,7 @@ struct AccountsHeaderView: View {
             .foregroundColor(Color(.braveLabel))
           Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))
-            .foregroundColor(Color(.braveLighterBlurple))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
       .background(

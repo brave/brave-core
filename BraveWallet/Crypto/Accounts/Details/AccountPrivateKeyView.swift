@@ -41,7 +41,7 @@ struct AccountPrivateKeyView: View {
         }) {
           Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
             .font(.subheadline)
-            .foregroundColor(Color(.braveBlurple))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
       .padding(20)

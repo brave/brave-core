@@ -7,10 +7,13 @@ import SwiftUI
 import BraveCore
 import BraveUI
 import struct Shared.Strings
+import BigNumber
 
 struct TransactionConfirmationView: View {
   var transactions: [BraveWallet.TransactionInfo]
+  @ObservedObject var confirmationStore: TransactionConfirmationStore
   @ObservedObject var networkStore: NetworkStore
+  @ObservedObject var keyringStore: KeyringStore
   
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -21,21 +24,92 @@ struct TransactionConfirmationView: View {
   }
   
   @State private var viewMode: ViewMode = .transaction
-  @State private var activeTransactionIndex: Int = 0
+  @State private var activeTransactionId: BraveWallet.TransactionInfo.ID = "" {
+    didSet {
+      confirmationStore.fetchDetails(for: activeTransaction)
+    }
+  }
   
   private func next() {
-    activeTransactionIndex += 1
-    if activeTransactionIndex == transactions.endIndex {
-      activeTransactionIndex = 0
+    if let index = transactions.firstIndex(where: { $0.id == activeTransactionId }) {
+      var nextIndex = transactions.index(after: index)
+      if nextIndex == transactions.endIndex {
+        nextIndex = 0
+      }
+      activeTransactionId = transactions[nextIndex].id
+    } else {
+      activeTransactionId = transactions.first!.id
     }
   }
   
   private func rejectAll() {
-    presentationMode.dismiss()
+    for transaction in transactions {
+      confirmationStore.reject(transaction: transaction)
+    }
   }
   
   private var activeTransaction: BraveWallet.TransactionInfo {
-    transactions[activeTransactionIndex]
+    transactions.first(where: { $0.id == activeTransactionId }) ?? transactions.first!
+  }
+  
+  private var fromAccountName: String {
+    NamedAddresses.name(for: activeTransaction.fromAddress, accounts: keyringStore.keyring.accountInfos)
+  }
+  
+  private var toAccountName: String {
+    NamedAddresses.name(for: activeTransaction.txData.baseData.to, accounts: keyringStore.keyring.accountInfos)
+  }
+  
+  private var transactionType: String {
+    switch activeTransaction.txType {
+    case .erc20Approve:
+      return Strings.Wallet.transactionTypeApprove
+    default:
+      if activeTransaction.isSwap {
+        return Strings.Wallet.swap
+      }
+      return Strings.Wallet.send
+    }
+  }
+  
+  private var transactionDetails: String {
+    let data = activeTransaction.txData.baseData.data
+      .map { byte in
+        String(format: "%02X", byte.uint8Value)
+      }
+      .joined()
+    if data.isEmpty {
+      return Strings.Wallet.inputDataPlaceholder
+    }
+    return "0x\(data)"
+  }
+  
+  @ViewBuilder private var editGasFeeButton: some View {
+    let titleView = Text(Strings.Wallet.editGasFeeButtonTitle)
+      .fontWeight(.semibold)
+      .foregroundColor(Color(.braveBlurpleTint))
+    Group {
+      if activeTransaction.isEIP1559Transaction {
+        if let gasEstimation = activeTransaction.txData.gasEstimation {
+          NavigationLink(
+            destination: EditPriorityFeeView(
+              transaction: activeTransaction,
+              gasEstimation: gasEstimation,
+              confirmationStore: confirmationStore
+            )
+          ) {
+            titleView
+          }
+        }
+      } else {
+        NavigationLink(
+          destination: EditGasFeeView(transaction: activeTransaction, confirmationStore: confirmationStore)
+        ) {
+          titleView
+        }
+      }
+    }
+    .font(.footnote)
   }
   
   var body: some View {
@@ -47,7 +121,8 @@ struct TransactionConfirmationView: View {
             Text(networkStore.selectedChain.shortChainName)
             Spacer()
             if transactions.count > 1 {
-              Text("\(activeTransactionIndex + 1) of \(transactions.count)")
+              let index = transactions.firstIndex(of: activeTransaction) ?? 0
+              Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, transactions.count))
                 .fontWeight(.semibold)
               Button(action: next) {
                 Text(Strings.Wallet.nextTransaction)
@@ -61,22 +136,22 @@ struct TransactionConfirmationView: View {
           VStack(spacing: 8) {
             VStack {
               BlockieGroup(
-                fromAddress: "0xddfabcdc4d8adc6d5beaf154f11b778f892a0740", // From Address
-                toAddress: "0xbd5b489e2177f20a0779dff0faa834ca834bcd39", // To Address
+                fromAddress: activeTransaction.fromAddress,
+                toAddress: activeTransaction.txData.baseData.to,
                 size: 48
               )
               Group {
                 if sizeCategory.isAccessibilityCategory {
                   VStack {
-                    Text("Account 1") // From Address
+                    Text(fromAccountName)
                     Image(systemName: "arrow.down")
-                    Text("0xbd5b***bcd39") // To Address
+                    Text(toAccountName)
                   }
                 } else {
                   HStack {
-                    Text("Account 1") // From Address
+                    Text(fromAccountName)
                     Image(systemName: "arrow.right")
-                    Text("0xbd5b***bcd39") // To Address
+                    Text(toAccountName)
                   }
                 }
               }
@@ -87,18 +162,19 @@ struct TransactionConfirmationView: View {
             .accessibility(addTraits: .isStaticText)
             .accessibility(
               label: Text(String.localizedStringWithFormat(
-                Strings.Wallet.transactionFromToAccessibilityLabel, "Account 1", "0xbd5b***bcd39"
-              )) // From Address & To address
+                Strings.Wallet.transactionFromToAccessibilityLabel, fromAccountName, toAccountName
+              ))
             )
             VStack(spacing: 4) {
-              Text(Strings.Wallet.send) // Or Strings.Wallet.swap if transaction type is a swap
+              Text(transactionType)
                 .font(.footnote)
-              Text("0.025 ETH") // Value
+              Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol)")
                 .fontWeight(.semibold)
                 .foregroundColor(Color(.bravePrimary))
-              Text("$67.85") // Value in Fiat
+              Text(confirmationStore.state.fiat) // Value in Fiat
                 .font(.footnote)
             }
+            .padding(.vertical, 8)
           }
           // View Mode
           VStack(spacing: 12) {
@@ -115,18 +191,13 @@ struct TransactionConfirmationView: View {
                     VStack(alignment: .leading) {
                       Text(Strings.Wallet.gasFee)
                         .foregroundColor(Color(.bravePrimary))
-                      NavigationLink(destination: EditGasFeeView()) {
-                        Text(Strings.Wallet.editGasFeeButtonTitle)
-                          .fontWeight(.semibold)
-                          .foregroundColor(Color(.braveBlurple))
-                      }
-                      .font(.footnote)
+                      editGasFeeButton
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                      Text("0.0000 ETH") // Gas Fee in ETH
+                      Text("\(confirmationStore.state.gasValue) \(confirmationStore.state.gasSymbol)")
                         .foregroundColor(Color(.bravePrimary))
-                      Text("$0.00") // Gas Fee in fiat
+                      Text(confirmationStore.state.gasFiat)
                         .font(.footnote)
                     }
                   }
@@ -145,10 +216,20 @@ struct TransactionConfirmationView: View {
                       Text(Strings.Wallet.amountAndGas)
                         .font(.footnote)
                         .foregroundColor(Color(.secondaryBraveLabel))
-                      Text("0.0000 ETH") // Total in token
+                      Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol) + \(confirmationStore.state.gasValue) \(confirmationStore.state.gasSymbol)")
                         .foregroundColor(Color(.bravePrimary))
-                      Text("$0.00") // Total in fiat
-                        .font(.footnote)
+                      HStack(spacing: 4) {
+                        if !confirmationStore.state.isBalanceSufficient {
+                          Text(Strings.Wallet.insufficientBalance)
+                            .foregroundColor(Color(.braveErrorLabel))
+                        }
+                        Text(confirmationStore.state.totalFiat)
+                          .foregroundColor(
+                            confirmationStore.state.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
+                          )
+                      }
+                      .accessibilityElement(children: .contain)
+                      .font(.footnote)
                     }
                   }
                   .padding()
@@ -156,7 +237,7 @@ struct TransactionConfirmationView: View {
                 }
               case .details:
                 VStack(alignment: .leading) {
-                  DetailsTextView(text: Strings.Wallet.inputDataPlaceholder) // "No Data." - placeholder/empty data
+                  DetailsTextView(text: transactionDetails)
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
                     .background(Color(.tertiaryBraveGroupedBackground))
@@ -175,7 +256,7 @@ struct TransactionConfirmationView: View {
             Button(action: rejectAll) {
               Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, transactions.count))
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.braveBlurple))
+                .foregroundColor(Color(.braveBlurpleTint))
             }
             .padding(.top, 8)
           }
@@ -223,6 +304,11 @@ struct TransactionConfirmationView: View {
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+    .onAppear {
+      assert(!transactions.isEmpty, "TransactionConfirmationView should not be displayed if there are no transactions to approve.")
+      activeTransactionId = transactions[0].id
+      confirmationStore.fetchDetails(for: activeTransaction)
+    }
   }
   
   @ViewBuilder private var rejectConfirmContainer: some View {
@@ -238,14 +324,19 @@ struct TransactionConfirmationView: View {
   }
   
   @ViewBuilder private var rejectConfirmButtons: some View {
-    Button(action: {}) {
+    Button(action: {
+      confirmationStore.reject(transaction: activeTransaction)
+    }) {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {}) {
+    Button(action: {
+      confirmationStore.confirm(transaction: activeTransaction)
+    }) {
       Label(Strings.Wallet.confirmTransactionButtonTitle, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .disabled(!confirmationStore.state.isBalanceSufficient)
   }
 }
 
@@ -277,9 +368,8 @@ private struct DetailsTextView: UIViewRepresentable {
 #if DEBUG
 struct TransactionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
-    TransactionConfirmationView(transactions: [], networkStore: .previewStore)
+    TransactionConfirmationView(transactions: [BraveWallet.TransactionInfo.previewConfirmedERC20Approve, .previewConfirmedSend, .previewConfirmedSwap].map { tx in tx.txStatus = .unapproved; return tx }, confirmationStore: .previewStore, networkStore: .previewStore, keyringStore: .previewStoreWithWalletCreated)
       .previewLayout(.sizeThatFits)
-    //      .previewSizeCategories()
   }
 }
 #endif

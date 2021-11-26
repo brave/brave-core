@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import BraveUI
+import struct Shared.Strings
 
 class SwapButton: SpringButton {
   private let gradientView = BraveGradientView.alternateGradient02.then {
@@ -38,6 +39,10 @@ class SwapButton: SpringButton {
     layer.shadowOffset = .init(width: 0, height: 1)
     layer.shadowRadius = 1
     layer.shadowOpacity = 0.3
+    
+    accessibilityLabel = ListFormatter.localizedString(
+      byJoining: [Strings.Wallet.buy, Strings.Wallet.send, Strings.Wallet.swap]
+    )
   }
   
   override func layoutSubviews() {

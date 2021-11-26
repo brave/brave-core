@@ -11,7 +11,7 @@ import Introspect
 import BraveUI
 
 public struct CryptoView: View {
-  var walletStore: WalletStore
+  @ObservedObject var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
   
   // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
@@ -19,8 +19,6 @@ public struct CryptoView: View {
   var dismissAction: (() -> Void)?
   
   var openWalletURLAction: ((URL) -> Void)?
-  
-  @State private var buySendSwapDestination: BuySendSwapDestination?
   
   public init(
     walletStore: WalletStore,
@@ -68,28 +66,44 @@ public struct CryptoView: View {
               dismissButtonToolbarContents
             }
         }
-        .sheet(item: $buySendSwapDestination) { action in
-          switch action {
-          case .buy:
-            BuyTokenView(
-              keyringStore: walletStore.keyringStore,
-              networkStore: walletStore.networkStore,
-              buyTokenStore: walletStore.buyTokenStore
-            )
-          case .send:
-            SendTokenView(
-              keyringStore: walletStore.keyringStore,
-              networkStore: walletStore.networkStore,
-              sendTokenStore: walletStore.sendTokenStore
-            )
-          case .swap:
-            SwapCryptoView(
-              keyringStore: walletStore.keyringStore,
-              ethNetworkStore: walletStore.networkStore,
-              swapTokensStore: walletStore.swapTokenStore
-            )
-          }
-        }
+        .background(
+          Color.clear
+            .sheet(item: $walletStore.buySendSwapDestination) { action in
+              switch action {
+              case .buy:
+                BuyTokenView(
+                  keyringStore: walletStore.keyringStore,
+                  networkStore: walletStore.networkStore,
+                  buyTokenStore: walletStore.buyTokenStore
+                )
+              case .send:
+                SendTokenView(
+                  keyringStore: walletStore.keyringStore,
+                  networkStore: walletStore.networkStore,
+                  sendTokenStore: walletStore.sendTokenStore
+                )
+              case .swap:
+                SwapCryptoView(
+                  keyringStore: walletStore.keyringStore,
+                  ethNetworkStore: walletStore.networkStore,
+                  swapTokensStore: walletStore.swapTokenStore
+                )
+              }
+            }
+        )
+        .background(
+          Color.clear
+            .sheet(isPresented: $walletStore.isPresentingTransactionConfirmations) {
+              if !walletStore.unapprovedTransactions.isEmpty {
+                TransactionConfirmationView(
+                  transactions: walletStore.unapprovedTransactions,
+                  confirmationStore: walletStore.confirmationStore,
+                  networkStore: walletStore.networkStore,
+                  keyringStore: walletStore.keyringStore
+                )
+              }
+            }
+        )
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
       case .unlock:
         UIKitNavigationView {
@@ -116,6 +130,6 @@ public struct CryptoView: View {
     .environment(\.openWalletURLAction, .init(action: { url in
       openWalletURLAction?(url)
     }))
-    .environment(\.buySendSwapDestination, $buySendSwapDestination)
+    .environment(\.buySendSwapDestination, $walletStore.buySendSwapDestination)
   }
 }

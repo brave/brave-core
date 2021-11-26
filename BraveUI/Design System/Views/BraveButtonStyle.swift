@@ -46,7 +46,7 @@ public struct BraveFilledButtonStyle: ButtonStyle {
       .background(
         Group {
           if isEnabled {
-            Color(.braveBlurple).opacity(configuration.isPressed ? 0.7 : 1.0)
+            Color(.braveBlurpleTint).opacity(configuration.isPressed ? 0.7 : 1.0)
           } else {
             Color(.braveDisabled)
           }

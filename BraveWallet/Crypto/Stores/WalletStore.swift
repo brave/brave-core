@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 
 /// The main wallet store
-public class WalletStore {
+public class WalletStore: ObservableObject {
   
   public let keyringStore: KeyringStore
   public let networkStore: NetworkStore
@@ -15,6 +15,11 @@ public class WalletStore {
   public let buyTokenStore: BuyTokenStore
   public let sendTokenStore: SendTokenStore
   public let swapTokenStore: SwapTokenStore
+  public let confirmationStore: TransactionConfirmationStore
+  
+  @Published var buySendSwapDestination: BuySendSwapDestination?
+  @Published var isPresentingTransactionConfirmations: Bool = false
+  @Published private(set) var unapprovedTransactions: [BraveWallet.TransactionInfo] = []
   
   // MARK: -
   
@@ -70,6 +75,36 @@ public class WalletStore {
       swapController: swapController,
       transactionController: transactionController
     )
+    self.confirmationStore = .init(
+      assetRatioController: assetRatioController,
+      rpcController: rpcController,
+      txController: transactionController,
+      tokenRegistry: tokenRegistry
+    )
+    self.keyringController.add(self)
+    self.transactionController.add(self)
+  }
+  
+  func fetchUnapprovedTransactions() {
+    keyringController.defaultKeyringInfo { [self] keyring in
+      var pendingTransactions: [BraveWallet.TransactionInfo] = []
+      let group = DispatchGroup()
+      for info in keyring.accountInfos {
+        group.enter()
+        transactionController.allTransactionInfo(info.address) { tx in
+          defer { group.leave() }
+          pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
+        }
+      }
+      group.notify(queue: .main) {
+        if !pendingTransactions.isEmpty && buySendSwapDestination != nil {
+          // Dismiss any buy send swap open to show the unapproved transactions
+          self.buySendSwapDestination = nil
+        }
+        self.unapprovedTransactions = pendingTransactions
+        self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
+      }
+    }
   }
   
   private var assetDetailStore: AssetDetailStore?
@@ -102,5 +137,37 @@ public class WalletStore {
     )
     accountActivityStore = store
     return store
+  }
+}
+
+extension WalletStore: BraveWalletEthTxControllerObserver {
+  public func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
+    fetchUnapprovedTransactions()
+  }
+  public func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+    fetchUnapprovedTransactions()
+  }
+  public func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+    fetchUnapprovedTransactions()
+  }
+}
+
+extension WalletStore: BraveWalletKeyringControllerObserver {
+  public func keyringCreated() {
+  }
+  public func keyringRestored() {
+  }
+  public func locked() {
+    isPresentingTransactionConfirmations = false
+  }
+  public func unlocked() {
+  }
+  public func backedUp() {
+  }
+  public func accountsChanged() {
+  }
+  public func autoLockMinutesChanged() {
+  }
+  public func selectedAccountChanged() {
   }
 }

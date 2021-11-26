@@ -988,6 +988,13 @@ extension Strings {
       value: "Market Price in %@",
       comment: "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
     )
+    public static let transactionCount = NSLocalizedString(
+      "wallet.transactionCount",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "%lld of %lld",
+      comment: "Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4'"
+    )
     public static let nextTransaction = NSLocalizedString(
       "wallet.nextTransaction",
       tableName: "BraveWallet",
@@ -1175,7 +1182,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Max Priority Fee",
-      comment: "The title of the edit gas fee screen"
+      comment: "The title of the edit gas fee screen for EIP-1559 transactions"
     )
     public static let insufficientBalance = NSLocalizedString(
       "wallet.insufficientBalance",
@@ -1407,6 +1414,27 @@ extension Strings {
       bundle: .braveWallet,
       value: "Delete",
       comment: "The title of the option inside the context menu for custom asset row in edit user asset screen."
+    )
+    public static let transactionTypeApprove = NSLocalizedString(
+      "wallet.transactionTypeApprove",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Approve",
+      comment: "Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info"
+    )
+    public static let perGasPriceTitle = NSLocalizedString(
+      "wallet.perGasPriceTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Per-gas price (Gwei)",
+      comment: "A title above a text field for inputting the per-gas price limit in Gwei"
+    )
+    public static let editGasTitle = NSLocalizedString(
+      "wallet.editGasTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Edit Gas",
+      comment: "A title of the edit gas screen for standard transactions"
     )
   }
 }

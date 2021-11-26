@@ -94,12 +94,15 @@ struct AccountActivityView: View {
               })
             )
             .contextMenu {
-              Button(action: {
-                if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)), let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
-                  openWalletURL?(url)
+              if !tx.txHash.isEmpty {
+                Button(action: {
+                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                    openWalletURL?(url)
+                  }
+                }) {
+                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
-              }) {
-                Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
               }
             }
           }

@@ -108,4 +108,15 @@ extension AccountActivityStore {
   }
 }
 
+extension TransactionConfirmationStore {
+  static var previewStore: TransactionConfirmationStore {
+    .init(
+      assetRatioController: TestAssetRatioController(),
+      rpcController: TestEthJsonRpcController(),
+      txController: TestEthTxController(),
+      tokenRegistry: TestTokenRegistry()
+    )
+  }
+}
+
 #endif

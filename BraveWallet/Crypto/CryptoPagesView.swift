@@ -12,14 +12,29 @@ import BraveUI
 import struct Shared.Strings
 
 struct CryptoPagesView: View {
-  var walletStore: WalletStore
+  @ObservedObject var walletStore: WalletStore
   
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
-  @State private var isShowingTransactions: Bool = false
+  @State private var fetchedUnapprovedTransactionsThisSession: Bool = false
   
   var body: some View {
-    _CryptoPagesView(walletStore: walletStore, isShowingTransactions: $isShowingTransactions)
+    _CryptoPagesView(
+      walletStore: walletStore,
+      isShowingTransactions: $walletStore.isPresentingTransactionConfirmations,
+      isConfirmationsButtonVisible: !walletStore.unapprovedTransactions.isEmpty
+    )
+      .onAppear {
+        // If a user chooses not to confirm/reject their transactions we shouldn't
+        // do it again until they close and re-open wallet
+        if !fetchedUnapprovedTransactionsThisSession {
+          // Give the animation time
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.fetchedUnapprovedTransactionsThisSession = true
+            self.walletStore.fetchUnapprovedTransactions()
+          }
+        }
+      }
       .ignoresSafeArea()
       .navigationTitle(Strings.Wallet.cryptoTitle)
       .navigationBarTitleDisplayMode(.inline)
@@ -46,18 +61,12 @@ struct CryptoPagesView: View {
         ) {
           Text("Settings")
         }
-        .hidden()
+          .hidden()
       )
       .background(
         Color.clear
           .sheet(isPresented: $isShowingSearch) {
             AssetSearchView(walletStore: walletStore)
-          }
-      )
-      .background(
-        Color.clear
-          .sheet(isPresented: $isShowingTransactions) {
-            TransactionConfirmationView(transactions: [], networkStore: walletStore.networkStore)
           }
       )
       .toolbar {
@@ -85,21 +94,23 @@ struct CryptoPagesView: View {
               .foregroundColor(Color(.braveOrange))
           }
         }
-      }
+    }
   }
   
-  struct _CryptoPagesView: UIViewControllerRepresentable {
+  private struct _CryptoPagesView: UIViewControllerRepresentable {
     var walletStore: WalletStore
     var isShowingTransactions: Binding<Bool>
+    var isConfirmationsButtonVisible: Bool
     
-    func makeUIViewController(context: Context) -> some UIViewController {
+    func makeUIViewController(context: Context) -> CryptoPagesViewController {
       CryptoPagesViewController(
         walletStore: walletStore,
         buySendSwapDestination: context.environment.buySendSwapDestination,
         isShowingTransactions: isShowingTransactions
       )
     }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    func updateUIViewController(_ uiViewController: CryptoPagesViewController, context: Context) {
+      uiViewController.confirmationsButton.isHidden = !isConfirmationsButtonVisible
     }
   }
 }
@@ -107,6 +118,8 @@ struct CryptoPagesView: View {
 private class CryptoPagesViewController: TabbedPageViewController {
   private let walletStore: WalletStore
   private let swapButton = SwapButton()
+  let confirmationsButton = ConfirmationsButton()
+  
   @Binding private var buySendSwapDestination: BuySendSwapDestination?
   @Binding private var isShowingTransactions: Bool
   
@@ -159,14 +172,13 @@ private class CryptoPagesViewController: TabbedPageViewController {
     
     swapButton.addTarget(self, action: #selector(tappedSwapButton), for: .touchUpInside)
     
-//    let confirmationsButton = SwapButton()
-//    view.addSubview(confirmationsButton)
-//    confirmationsButton.snp.makeConstraints {
-//      $0.trailing.equalToSuperview().inset(16)
-//      $0.bottom.equalTo(view.safeAreaLayoutGuide).priority(.high)
-//      $0.bottom.lessThanOrEqualTo(view).inset(8)
-//    }
-//    confirmationsButton.addTarget(self, action: #selector(tappedConfirmationsButton), for: .touchUpInside)
+    view.addSubview(confirmationsButton)
+    confirmationsButton.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(16)
+      $0.centerY.equalTo(swapButton)
+      $0.bottom.lessThanOrEqualTo(view).inset(8)
+    }
+    confirmationsButton.addTarget(self, action: #selector(tappedConfirmationsButton), for: .touchUpInside)
   }
   
   @objc private func tappedConfirmationsButton() {
@@ -186,5 +198,45 @@ private class CryptoPagesViewController: TabbedPageViewController {
       sourceView: swapButton,
       sourceRect: swapButton.bounds
     )
+  }
+}
+
+private class ConfirmationsButton: SpringButton {
+  private let imageView = UIImageView(
+    image: UIImage(imageLiteralResourceName: "brave.bell.badge")
+      .applyingSymbolConfiguration(.init(pointSize: 18))
+  ).then {
+    $0.tintColor = .white
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    backgroundColor = .braveBlurpleTint
+    addSubview(imageView)
+    
+    imageView.snp.makeConstraints {
+      $0.center.equalToSuperview()
+    }
+    snp.makeConstraints {
+      $0.width.equalTo(snp.height)
+    }
+    
+    layer.shadowColor = UIColor.black.cgColor
+    layer.shadowOffset = .init(width: 0, height: 1)
+    layer.shadowRadius = 1
+    layer.shadowOpacity = 0.3
+    
+    accessibilityLabel = Strings.Wallet.confirmTransactionsTitle
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    layer.cornerRadius = bounds.height / 2.0
+    layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
+  }
+  
+  override var intrinsicContentSize: CGSize {
+    .init(width: 36, height: 36)
   }
 }
