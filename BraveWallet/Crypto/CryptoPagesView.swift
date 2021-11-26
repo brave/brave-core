@@ -59,7 +59,7 @@ struct CryptoPagesView: View {
           destination: WalletSettingsView(keyringStore: walletStore.keyringStore),
           isActive: $isShowingSettings
         ) {
-          Text("Settings")
+          Text(Strings.Wallet.settings)
         }
           .hidden()
       )
@@ -81,12 +81,12 @@ struct CryptoPagesView: View {
             Button(action: {
               walletStore.keyringStore.lock()
             }) {
-              Label("Lock", image: "brave.lock")
+              Label(Strings.Wallet.lock, image: "brave.lock")
                 .imageScale(.medium) // Menu seems to use a different image scale by default
             }
             Divider()
             Button(action: { isShowingSettings = true }) {
-              Label("Settings", image: "brave.gear")
+              Label(Strings.Wallet.settings, image: "brave.gear")
                 .imageScale(.medium) // Menu seems to use a different image scale by default
             }
           } label: {

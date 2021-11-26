@@ -55,4 +55,3 @@ extension NetworkStore: BraveWalletEthJsonRpcControllerObserver {
     self.selectedChainId = chainId
   }
 }
-
