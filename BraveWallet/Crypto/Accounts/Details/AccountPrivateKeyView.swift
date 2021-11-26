@@ -65,7 +65,6 @@ struct AccountPrivateKeyView: View {
     .frame(maxHeight: .infinity, alignment: .top)
     .onAppear {
       keyringStore.privateKey(for: account) { key in
-        // TODO: Error state?
         self.key = key ?? ""
       }
     }

@@ -53,7 +53,7 @@ public struct WalletSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .navigationTitle("Brave Wallet")
+    .navigationTitle(Strings.Wallet.braveWallet)
     .navigationBarTitleDisplayMode(.inline)
     .alert(isPresented: $isShowingResetAlert) {
       Alert(

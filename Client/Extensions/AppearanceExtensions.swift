@@ -67,9 +67,6 @@ extension AppDelegate {
         UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self])
             .tintColor = .braveLabel
         
-        //  UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
-        //    .backgroundColor = tablePrimaryColor
-        
         UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = .braveLabel
         UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])
             .textColor = .braveLabel

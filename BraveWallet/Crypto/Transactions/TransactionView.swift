@@ -22,9 +22,7 @@ struct TransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   var visibleTokens: [BraveWallet.ERCToken]
-  
-  var displayAccountCreator: Bool // FIXME: Name sucks
-  
+  var displayAccountCreator: Bool
   var assetRatios: [String: Double]
   
   private let timeFormatter = RelativeDateTimeFormatter().then {

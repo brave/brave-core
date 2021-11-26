@@ -24,7 +24,6 @@ struct AddAccountView: View {
       // Add normal account
       let accountName = name.isEmpty ? String.localizedStringWithFormat(Strings.Wallet.defaultAccountName, keyringStore.keyring.accountInfos.filter(\.isPrimary).count + 1) : name
       keyringStore.addPrimaryAccount(accountName) { success in
-        // TODO: Error state
         if success {
           presentationMode.dismiss()
         }

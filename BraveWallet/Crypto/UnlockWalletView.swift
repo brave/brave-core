@@ -37,7 +37,7 @@ struct UnlockWalletView: View {
       keyringStore.unlock(password: password) { unlocked in
         if !unlocked {
           unlockError = .incorrectPassword
-          // TODO: Add haptic buzz here when it fails
+          UIImpactFeedbackGenerator(style: .medium).bzzt()
         }
       }
     }

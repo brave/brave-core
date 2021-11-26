@@ -125,7 +125,7 @@ private class CryptoPagesViewController: TabbedPageViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = "Crypto"
+    title = Strings.Wallet.cryptoTitle
     navigationItem.largeTitleDisplayMode = .never
     view.backgroundColor = .braveGroupedBackground
     
