@@ -620,7 +620,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   updateGeminiAssetAddress = (asset: string, address: string) => {
-    generateQRData(address, asset, this.setGeminiAssetAddress.bind(this, address))
+    void generateQRData(address, asset, this.setGeminiAssetAddress.bind(this, address))
   }
 
   fetchGeminiDepositInfo = () => {
