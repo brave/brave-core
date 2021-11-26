@@ -883,6 +883,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     @Override
+    public void onUserInteraction() {
+        if (mKeyringController == null) {
+            return;
+        }
+        mKeyringController.notifyUserInteraction();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (mCameraSourcePreview != null) {
