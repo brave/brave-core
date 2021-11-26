@@ -114,10 +114,10 @@ extension BrowserViewController {
                 let vc = DownloadsPanel(profile: self.profile)
                 menuController.pushInnerMenu(vc)
             }
-            if #available(iOS 14.0, *) {
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
                 MenuItemButton(
                     icon: #imageLiteral(resourceName: "menu-crypto").template,
-                    title: Strings.Wallet.braveWallet
+                    title: Strings.Wallet.wallet
                 ) { [unowned self] in
                     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
                     guard
