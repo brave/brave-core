@@ -103,6 +103,7 @@ struct AddCustomAssetView: View {
   }
 }
 
+#if DEBUG
 struct AddCustomAssetView_Previews: PreviewProvider {
     static var previews: some View {
       AddCustomAssetView(userAssetStore: UserAssetsStore(walletService: TestBraveWalletService(),
@@ -110,3 +111,4 @@ struct AddCustomAssetView_Previews: PreviewProvider {
                                                          rpcController: TestEthJsonRpcController()))
     }
 }
+#endif

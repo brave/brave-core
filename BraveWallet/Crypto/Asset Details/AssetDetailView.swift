@@ -37,14 +37,7 @@ struct AssetDetailView: View {
       ) {
       }
       Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
-          .osAvailabilityModifiers { content in
-            if #available(iOS 15.0, *) {
-              content // padding already applied
-            } else {
-              content
-            }
-          },
+        header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle)),
         footer: Button(action: {
           isShowingAddAccount = true
         }) {
@@ -97,12 +90,15 @@ struct AssetDetailView: View {
               assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
             )
             .contextMenu {
-              Button(action: {
-                if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)), let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
-                  openWalletURL?(url)
+              if !tx.txHash.isEmpty {
+                Button(action: {
+                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                    openWalletURL?(url)
+                  }
+                }) {
+                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
-              }) {
-                Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
               }
             }
           }
