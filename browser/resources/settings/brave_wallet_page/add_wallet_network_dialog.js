@@ -62,7 +62,7 @@ Polymer({
       value: false,
     },
 
-    chainIdValue_: String,
+    chainIdValue_: Number,
     invalidChainIdMessage_: String,
     chainIdInvalid_: {
       type: Boolean,
@@ -105,7 +105,7 @@ Polymer({
   ready: function() {
     if (Object.keys(this.selected).length === 0)
       return
-    this.chainIdValue_ = this.selected.chainId
+    this.chainIdValue_ = parseInt(this.selected.chainId, 16) | 0
     this.chainNameValue_ = this.selected.chainName
     this.currencyNameValue_ = this.selected.nativeCurrency.name
     this.currencySymbolValue_ = this.selected.nativeCurrency.symbol
@@ -135,20 +135,12 @@ Polymer({
 
     return url.protocol === "http:" || url.protocol === "https:"
   },
-  isValidHexValue: function(value) {
-    var parsed = parseInt(value, 16);
-    const processed = value.replace('0x', '').toLowerCase()
-    return (parsed.toString(16) === processed) && value.startsWith('0x');
-  },
   /** @private */
   chainIdChanged_: function(event) {
     const value = event.target.value
-    this.chainIdInvalid_ = !this.isValidHexValue(value)
-    const empty = value.trim() === ''
+    this.chainIdInvalid_ = value <= 0
     if (this.chainIdInvalid_) {
-      const text = empty ? this.i18n('walletAddNetworkMandarotyFieldError')
-                         : this.i18n('walletAddNetworkInvalidChainId')
-      this.invalidChainIdMessage_ = text
+      this.invalidChainIdMessage_ = this.i18n('walletAddNetworkInvalidChainId')
     }
     this.updateSubmitButtonState_()
   },
@@ -198,7 +190,7 @@ Polymer({
         return;
       }
     }
-    if (this.chainIdValue_ === '') {
+    if (this.chainIdValue_ <= 0) {
       this.isSubmitButtonEnabled_ = false
       return;
     }
@@ -287,9 +279,12 @@ Polymer({
         }
       })
   },
+  getHexNumber: function(value) {
+    return '0x' + Number(this.chainIdValue_).toString(16)
+  },
   onAddNetworkTap_: function(item) {
     let payload = Object({
-      chainId: this.chainIdValue_,
+      chainId: this.getHexNumber(),
       chainName: this.chainNameValue_,
     })
     const nativeCurrency = Object({
