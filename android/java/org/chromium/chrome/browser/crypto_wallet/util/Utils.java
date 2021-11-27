@@ -14,6 +14,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
@@ -273,7 +274,10 @@ public class Utils {
         categories.add(activity.getText(R.string.ropsten).toString());
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
-        categories.add(activity.getText(R.string.localhost).toString());
+        // Disables localhost on Release builds
+        if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
+            categories.add(activity.getText(R.string.localhost).toString());
+        }
 
         return categories.toArray(new String[0]);
     }
@@ -285,7 +289,10 @@ public class Utils {
         categories.add(activity.getText(R.string.ropsten_short).toString());
         categories.add(activity.getText(R.string.goerli_short).toString());
         categories.add(activity.getText(R.string.kovan_short).toString());
-        categories.add(activity.getText(R.string.localhost).toString());
+        // Disables localhost on Release builds
+        if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
+            categories.add(activity.getText(R.string.localhost).toString());
+        }
 
         return categories.toArray(new String[0]);
     }
@@ -665,10 +672,13 @@ public class Utils {
                                 null);
                     }
                 });
-            } catch (IOException exc) {
+            } catch (Exception exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
-            } catch (IllegalArgumentException exc) {
-                org.chromium.base.Log.e("Utils", exc.getMessage());
+                handler.post(() -> {
+                    if (iconImg != null) {
+                        iconImg.setImageResource(iconId);
+                    }
+                });
             }
         });
     }
