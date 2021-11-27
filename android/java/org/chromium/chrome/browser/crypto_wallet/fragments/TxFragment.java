@@ -183,14 +183,18 @@ public class TxFragment extends Fragment {
                                         dialog.findViewById(R.id.per_gas_price_limit_edit);
                                 perGasPriceLimitEdit.setText(String.format(Locale.getDefault(),
                                         "%.0f", Utils.fromHexWei(maxFeePerGas, 9)));
-                                filterEIP1559TextWatcher.setDialog(dialog);
+                                filterEIP1559TextWatcher.setDialog(dialog,
+                                        String.format(Locale.getDefault(), "%.0f",
+                                                Utils.fromHexWei(
+                                                        mTxInfo.txData.gasEstimation.baseFeePerGas,
+                                                        9)));
                                 gasAmountLimitEdit.addTextChangedListener(filterEIP1559TextWatcher);
                                 perGasTipLimitEdit.addTextChangedListener(filterEIP1559TextWatcher);
                                 perGasPriceLimitEdit.addTextChangedListener(
                                         filterEIP1559TextWatcher);
                             }
                             fillMaxFee(dialog.findViewById(R.id.maximum_fee_msg), gasLimit,
-                                    maxPriorityFeePerGas, maxFeePerGas);
+                                    maxFeePerGas);
                         });
                     });
                     if (mCheckedPriorityId == -1) {
@@ -290,22 +294,41 @@ public class TxFragment extends Fragment {
 
     private class TextWatcherImpl implements TextWatcher {
         Dialog mDialog;
+        String mBaseFeePerGas;
+        boolean mIgnoreChange;
 
-        public void setDialog(Dialog dialog) {
+        public void setDialog(Dialog dialog, String baseFeePerGas) {
             mDialog = dialog;
+            mBaseFeePerGas = baseFeePerGas;
+            mIgnoreChange = false;
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (mIgnoreChange) {
+                mIgnoreChange = false;
+
+                return;
+            }
             EditText gasAmountLimitEdit = mDialog.findViewById(R.id.gas_amount_limit_edit);
             EditText perGasTipLimitEdit = mDialog.findViewById(R.id.per_gas_tip_limit_edit);
             EditText perGasPriceLimitEdit = mDialog.findViewById(R.id.per_gas_price_limit_edit);
+            String perGasPriceLimit = perGasPriceLimitEdit.getText().toString();
+            if (perGasTipLimitEdit.hasFocus()) {
+                try {
+                    String perGasTipLimit = perGasTipLimitEdit.getText().toString();
+                    perGasPriceLimit = String.format(Locale.getDefault(), "%.0f",
+                            Double.valueOf(perGasTipLimit) + Double.valueOf(mBaseFeePerGas));
+                    mIgnoreChange = true;
+                    perGasPriceLimitEdit.setText(perGasPriceLimit);
+                } catch (NumberFormatException exc) {
+                }
+            }
             if (gasAmountLimitEdit.hasFocus() || perGasTipLimitEdit.hasFocus()
                     || perGasPriceLimitEdit.hasFocus()) {
                 fillMaxFee(mDialog.findViewById(R.id.maximum_fee_msg),
                         Utils.toHexWeiFromGWEI(gasAmountLimitEdit.getText().toString()),
-                        Utils.toHexWei(perGasTipLimitEdit.getText().toString(), 9),
-                        Utils.toHexWei(perGasPriceLimitEdit.getText().toString(), 9));
+                        Utils.toHexWei(perGasPriceLimit, 9));
             }
         }
 
@@ -316,12 +339,8 @@ public class TxFragment extends Fragment {
         public void afterTextChanged(Editable s) {}
     };
 
-    private void fillMaxFee(
-            TextView textView, String gasLimit, String maxPriorityFeePerGas, String maxFeePerGas) {
-        double totalGas =
-                Utils.fromHexWei(Utils.multiplyHexBN(gasLimit,
-                                         Utils.concatHexBN(maxPriorityFeePerGas, maxFeePerGas)),
-                        18);
+    private void fillMaxFee(TextView textView, String gasLimit, String maxFeePerGas) {
+        double totalGas = Utils.fromHexWei(Utils.multiplyHexBN(gasLimit, maxFeePerGas), 18);
         double price = totalGas * mEthRate;
         textView.setText(String.format(getResources().getString(R.string.wallet_maximum_fee),
                 String.format(Locale.getDefault(), "%.2f", price),
@@ -332,8 +351,7 @@ public class TxFragment extends Fragment {
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
         final double totalGas = mIsEIP1559
                 ? Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
-                                           Utils.concatHexBN(mTxInfo.txData.maxPriorityFeePerGas,
-                                                   mTxInfo.txData.maxFeePerGas)),
+                                           mTxInfo.txData.maxFeePerGas),
                         18)
                 : Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
                                            mTxInfo.txData.baseData.gasPrice),
