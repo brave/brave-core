@@ -12,9 +12,6 @@
 namespace ntp_background_images {
 namespace features {
 
-const base::Feature kBraveNTPBrandedWallpaper{
-    "BraveNTPBrandedWallpaperName",
-    base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveNTPBrandedWallpaperDemo{
     "BraveNTPBrandedWallpaperDemoName",
     base::FEATURE_DISABLED_BY_DEFAULT};

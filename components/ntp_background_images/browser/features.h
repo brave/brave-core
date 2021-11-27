@@ -12,7 +12,6 @@ struct Feature;
 
 namespace ntp_background_images {
 namespace features {
-extern const base::Feature kBraveNTPBrandedWallpaper;
 extern const base::Feature kBraveNTPBrandedWallpaperDemo;
 extern const base::Feature kBraveNTPSuperReferralWallpaper;
 }  // namespace features

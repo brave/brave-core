@@ -27,7 +27,6 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -44,7 +43,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
-using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::
@@ -200,8 +198,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   }
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
-                     base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
-                         is_ads_supported_locale_);
+                     is_ads_supported_locale_);
   source->AddBoolean("braveTalkPromptAllowed",
                      BraveNewTabMessageHandler::CanPromptBraveTalk());
 
