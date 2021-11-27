@@ -1,7 +1,10 @@
 import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
@@ -77,8 +80,8 @@ const PortfolioAccountItem = (props: Props) => {
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
-          <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
-          <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {assetTicker}</AssetBalanceText>
+          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+          <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(assetBalance, assetTicker)}</AssetBalanceText>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>
           <MoreIcon />
