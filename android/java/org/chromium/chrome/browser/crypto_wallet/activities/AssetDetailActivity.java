@@ -80,6 +80,14 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
+    public void onUserInteraction() {
+        if (mKeyringController == null) {
+            return;
+        }
+        mKeyringController.notifyUserInteraction();
+    }
+
+    @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_asset_detail);
 

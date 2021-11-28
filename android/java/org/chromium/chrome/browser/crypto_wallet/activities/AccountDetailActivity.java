@@ -261,6 +261,14 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         finish();
     }
 
+    @Override
+    public void onUserInteraction() {
+        if (mKeyringController == null) {
+            return;
+        }
+        mKeyringController.notifyUserInteraction();
+    }
+
     private AccountInfo getThisAccountInfo() {
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.address = mAddress;
