@@ -43,6 +43,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -150,6 +151,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void SetUp() override {
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
+    permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     eth_json_rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, prefs()));
     SetNetwork("0x1");
@@ -252,6 +254,36 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
           run_loop.Quit();
         }));
     run_loop.Run();
+  }
+
+  std::vector<std::string> GetAllowedAccounts() {
+    std::vector<std::string> allowed_accounts;
+    base::RunLoop run_loop;
+    provider()->GetAllowedAccounts(base::BindLambdaForTesting(
+        [&](const std::vector<std::string>& accounts,
+            mojom::ProviderError error, const std::string& error_message) {
+          allowed_accounts = accounts;
+          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+          EXPECT_TRUE(error_message.empty());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return allowed_accounts;
+  }
+
+  std::vector<std::string> RequestEthereumPermissions() {
+    std::vector<std::string> allowed_accounts;
+    base::RunLoop run_loop;
+    provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
+        [&](const std::vector<std::string>& accounts,
+            mojom::ProviderError error, const std::string& error_message) {
+          allowed_accounts = accounts;
+          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+          EXPECT_TRUE(error_message.empty());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return allowed_accounts;
   }
 
   ~BraveWalletProviderImplUnitTest() override = default;
@@ -830,7 +862,7 @@ TEST_F(BraveWalletProviderImplUnitTest,
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
+TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
   bool new_setup_callback_called = false;
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
@@ -839,18 +871,10 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(url);
-  bool permission_callback_called = false;
-  provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
-      [&](const std::vector<std::string>& allowed_accounts,
-          mojom::ProviderError error, const std::string& error_message) {
-        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message.empty());
-        EXPECT_EQ(allowed_accounts.size(), 1UL);
-        EXPECT_EQ(allowed_accounts[0], from());
-        permission_callback_called = true;
-      }));
+  base::RunLoop run_loop;
+  EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(0)});
+  // Make sure even with a delay the new setup callback is not called.
   browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(permission_callback_called);
   EXPECT_FALSE(new_setup_callback_called);
 }
 
@@ -890,6 +914,38 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
       }));
   run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest,
+       RequestEthereumPermissionsWithAccounts) {
+  CreateWallet();
+  AddAccount();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Allowing 1 account should return that account for allowed accounts
+  AddEthereumPermission(url, 0);
+  EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(0)});
+
+  // Multiple accounts can be returned
+  AddEthereumPermission(url, 1);
+  EXPECT_EQ(RequestEthereumPermissions(),
+            (std::vector<std::string>{from(0), from(1)}));
+
+  // Resetting permissions should return the remaining allowed account
+  ResetEthereumPermission(url, 1);
+  EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(0)});
+
+  // Selected account should filter the accounts returned
+  AddEthereumPermission(url, 1);
+  SetSelectedAccount(from(0));
+  EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(0)});
+  SetSelectedAccount(from(1));
+  EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(1)});
+  SetSelectedAccount(from(2));
+  EXPECT_EQ(RequestEthereumPermissions(),
+            (std::vector<std::string>{from(0), from(1)}));
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
@@ -1179,6 +1235,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ChainChangedEvent) {
 TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   CreateWallet();
   AddAccount();
+  AddAccount();
   GURL url("https://brave.com");
   Navigate(url);
   EXPECT_FALSE(observer_->AccountsChangedFired());
@@ -1199,11 +1256,19 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
   observer_->Reset();
 
-  // Resetting the permission changes the accounts again
-  ResetEthereumPermission(url);
-  EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ(std::vector<std::string>(), observer_->GetAccounts());
-  observer_->Reset();
+  // Does not fire for a different origin that has no permissions
+  Navigate(GURL("https://bravesoftware.com"));
+  AddEthereumPermission(url, 1);
+  SetSelectedAccount(from(0));
+  EXPECT_FALSE(observer_->AccountsChangedFired());
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
+  CreateWallet();
+  AddAccount();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
 
   // Multiple accounts can be returned
   AddEthereumPermission(url, 0);
@@ -1213,10 +1278,22 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
             observer_->GetAccounts());
   observer_->Reset();
 
-  // Changing the selected account re-orders things
+  // Changing the selected account only returns that account
+  SetSelectedAccount(from(0));
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ((std::vector<std::string>{from(0)}), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Changing to a different allowed account only returns that account
   SetSelectedAccount(from(1));
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{from(1), from(0)}),
+  EXPECT_EQ((std::vector<std::string>{from(1)}), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Changing gto a not allowed account returns all allowed accounts
+  SetSelectedAccount(from(2));
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ((std::vector<std::string>{from(0), from(1)}),
             observer_->GetAccounts());
   observer_->Reset();
 
@@ -1225,12 +1302,51 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from(0)}), observer_->GetAccounts());
   observer_->Reset();
+}
 
-  // Does not fire for a different origin that has no permissions
-  Navigate(GURL("https://bravesoftware.com"));
+TEST_F(BraveWalletProviderImplUnitTest, GetAllowedAccounts) {
+  CreateWallet();
+  AddAccount();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // When nothing is allowed, empty array should be returned
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+
+  // Allowing 1 account should return that account for allowed accounts
+  AddEthereumPermission(url, 0);
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+
+  // Multiple accounts can be returned
+  AddEthereumPermission(url, 1);
+  EXPECT_EQ(GetAllowedAccounts(), (std::vector<std::string>{from(0), from(1)}));
+
+  // Resetting permissions should return the remaining allowed account
+  ResetEthereumPermission(url, 1);
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+
+  // Locking the keyring does not return any accounts
+  Lock();
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+
+  // Unlocking restores the accounts that were previously allowed
+  Unlock();
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+
+  // Selected account should filter the accounts returned
   AddEthereumPermission(url, 1);
   SetSelectedAccount(from(0));
-  EXPECT_FALSE(observer_->AccountsChangedFired());
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+  SetSelectedAccount(from(1));
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(1)});
+  SetSelectedAccount(from(2));
+  EXPECT_EQ(GetAllowedAccounts(), (std::vector<std::string>{from(0), from(1)}));
+
+  // Resetting all accounts should return an empty array again
+  ResetEthereumPermission(url, 0);
+  ResetEthereumPermission(url, 1);
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {

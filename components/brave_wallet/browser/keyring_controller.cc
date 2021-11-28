@@ -975,6 +975,14 @@ bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
 
+absl::optional<std::string> KeyringController::GetSelectedAccount() const {
+  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
+  if (address.empty()) {
+    return absl::nullopt;
+  }
+  return address;
+}
+
 void KeyringController::Lock() {
   if (IsLocked() || !default_keyring_)
     return;
@@ -1158,12 +1166,7 @@ void KeyringController::NotifyUserInteraction() {
 
 void KeyringController::GetSelectedAccount(
     GetSelectedAccountCallback callback) {
-  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
-  if (address.empty()) {
-    std::move(callback).Run(absl::nullopt);
-    return;
-  }
-  std::move(callback).Run(address);
+  std::move(callback).Run(GetSelectedAccount());
 }
 
 void KeyringController::SetSelectedAccount(

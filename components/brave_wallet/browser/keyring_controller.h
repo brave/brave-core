@@ -170,6 +170,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void AddAccountsWithDefaultName(size_t number);
 
   bool IsLocked() const;
+  absl::optional<std::string> GetSelectedAccount() const;
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
