@@ -1862,6 +1862,9 @@ Are you sure you want to do this?
     <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
       Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
     </message> -->
+    <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
+      Account <ph name="ACCOUNT_NUMBER">%1$s<ex>2</ex></ph>
+    </message>
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add Account
     </message>
