@@ -113,6 +113,8 @@ declare namespace NewTab {
     showBinance: boolean
     showGemini: boolean
     showCryptoDotCom: boolean
+    showFTX: boolean
+    widgetVisibilityMigrated: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -136,7 +138,6 @@ declare namespace NewTab {
     customLinksEnabled: boolean
     customLinksNum: number
     showBitcoinDotCom: boolean
-    showFTX: boolean,
     stats: Stats,
     braveTalkPromptAllowed: boolean
     brandedWallpaper?: BrandedWallpaper
