@@ -45,8 +45,9 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
  private:
   void ContinueRequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback,
-      bool success,
-      const std::vector<std::string>& allowed_accounts);
+      const std::vector<std::string>& allowed_accounts,
+      int error,
+      const std::string& error_message);
   void ContinueRequestEthereumPermissionsKeyringInfo(
       RequestEthereumPermissionsCallback callback,
       const std::vector<std::string>& allowed_accounts,

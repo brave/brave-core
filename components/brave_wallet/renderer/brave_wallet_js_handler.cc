@@ -125,8 +125,9 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    int error,
+    const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -138,14 +139,14 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
   // page has a handler that checks window.ethereum.selectedAddress
   UpdateAndBindJSProperties();
   std::unique_ptr<base::Value> formed_response;
-  if (!success || accounts.empty()) {
-    brave_wallet::ProviderErrors code =
-        !success ? brave_wallet::ProviderErrors::kInternalError
-                 : brave_wallet::ProviderErrors::kUserRejectedRequest;
-    std::string message =
-        !success ? "Internal JSON-RPC error" : "User rejected the request.";
-
-    formed_response = GetProviderErrorDictionary(code, message);
+  bool success = error == 0;
+  if (success && accounts.empty()) {
+    formed_response = GetProviderErrorDictionary(
+        brave_wallet::ProviderErrors::kUserRejectedRequest,
+        "User rejected the request.");
+  } else if (!success) {
+    formed_response = GetProviderErrorDictionary(
+        static_cast<brave_wallet::ProviderErrors>(error), error_message);
   } else {
     formed_response = base::Value::ToUniquePtrValue(base::ListValue());
     for (size_t i = 0; i < accounts.size(); i++) {
@@ -182,18 +183,17 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    int error,
+    const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (!success) {
-    brave_wallet::ProviderErrors code =
-        brave_wallet::ProviderErrors::kInternalError;
-    std::string message = "Internal JSON-RPC error";
-    formed_response = GetProviderErrorDictionary(code, message);
+  if (error != 0) {
+    formed_response = GetProviderErrorDictionary(
+        static_cast<brave_wallet::ProviderErrors>(error), error_message);
   } else {
     formed_response = base::Value::ToUniquePtrValue(base::ListValue());
     for (size_t i = 0; i < accounts.size(); i++) {
@@ -203,7 +203,7 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), success);
+               force_json_response, std::move(formed_response), error == 0);
 }
 
 void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
@@ -230,7 +230,7 @@ void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
                force_json_response, std::move(formed_response),
-               !provider_error);
+               provider_error == 0);
 }
 
 void BraveWalletJSHandler::OnAddAndApproveTransaction(
@@ -240,15 +240,15 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
     const std::string& tx_hash,
+    int error,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (success) {
+  if (error == 0) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(tx_hash));
   } else {
     formed_response = GetProviderErrorDictionary(
@@ -257,7 +257,7 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), success);
+               force_json_response, std::move(formed_response), error == 0);
 }
 
 void BraveWalletJSHandler::OnSignMessage(
@@ -275,7 +275,7 @@ void BraveWalletJSHandler::OnSignMessage(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (!error) {
+  if (error == 0) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(signature));
   } else {
     formed_response = GetProviderErrorDictionary(
@@ -284,7 +284,7 @@ void BraveWalletJSHandler::OnSignMessage(
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), !error);
+               force_json_response, std::move(formed_response), error == 0);
 }
 
 void BraveWalletJSHandler::SendResponse(

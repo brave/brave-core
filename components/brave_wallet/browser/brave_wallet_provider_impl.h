@@ -54,8 +54,9 @@ class BraveWalletProviderImpl final
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
   void OnRequestEthereumPermissions(RequestEthereumPermissionsCallback callback,
-                                    bool success,
-                                    const std::vector<std::string>& accounts);
+                                    const std::vector<std::string>& accounts,
+                                    int error,
+                                    const std::string& error_message);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(const std::string& json_payload,
@@ -79,8 +80,9 @@ class BraveWalletProviderImpl final
                         base::Value domain,
                         SignTypedMessageCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
-                            bool success,
-                            const std::vector<std::string>& accounts);
+                            const std::vector<std::string>& accounts,
+                            int error,
+                            const std::string& error_message);
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 
@@ -119,38 +121,48 @@ class BraveWalletProviderImpl final
                              const std::string& error);
   void OnConnectionError();
   void OnAddUnapprovedTransaction(AddAndApproveTransactionCallback callback,
-                                  bool success,
                                   const std::string& tx_meta_id,
+                                  int error,
                                   const std::string& error_message);
+  void OnAddUnapprovedTransactionAdapter(
+      AddAndApproveTransactionCallback callback,
+      bool success,
+      const std::string& tx_meta_id,
+      const std::string& error_message);
   void ContinueAddAndApproveTransaction(
       AddAndApproveTransactionCallback callback,
       mojom::TxDataPtr tx_data,
       const std::string& from,
-      bool success,
-      const std::vector<std::string>& allowed_accounts);
+      const std::vector<std::string>& allowed_accounts,
+      int error,
+      const std::string& error_message);
+
   void ContinueAddAndApprove1559Transaction(
       AddAndApproveTransactionCallback callback,
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       const std::string& chain_id);
-  void ContinueAddAndApprove1559Transaction2(
+  void ContinueAddAndApprove1559TransactionWithAccounts(
       AddAndApproveTransactionCallback callback,
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
-      bool success,
-      const std::vector<std::string>& allowed_accounts);
+      const std::vector<std::string>& allowed_accounts,
+      int error,
+      const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
                            const std::string& message,
                            std::vector<uint8_t>&& message_to_sign,
                            SignMessageCallback callback,
                            bool is_eip712,
-                           bool success,
-                           const std::vector<std::string>& allowed_accounts);
+                           const std::vector<std::string>& allowed_accounts,
+                           int error,
+                           const std::string& error_message);
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
   void UpdateKnownAccounts();
-  void OnUpdateKnownAccounts(bool success,
-                             const std::vector<std::string>& allowed_accounts);
+  void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
+                             int error,
+                             const std::string& error_message);
 
   void ContinueGetDefaultKeyringInfo(
       GetNetworkAndDefaultKeyringInfoCallback callback,

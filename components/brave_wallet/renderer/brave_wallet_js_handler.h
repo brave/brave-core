@@ -103,8 +103,9 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      bool success,
-      const std::vector<std::string>& accounts);
+      const std::vector<std::string>& accounts,
+      int error,
+      const std::string& error_message);
   void OnIsUnlocked(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
@@ -115,8 +116,9 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                             v8::Global<v8::Promise::Resolver> promise_resolver,
                             v8::Isolate* isolate,
                             bool force_json_response,
-                            bool success,
-                            const std::vector<std::string>& accounts);
+                            const std::vector<std::string>& accounts,
+                            int error,
+                            const std::string& error_message);
   void OnAddOrSwitchEthereumChain(
       base::Value id,
       v8::Global<v8::Context> global_context,
@@ -133,8 +135,8 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      bool success,
       const std::string& tx_meta_id,
+      int error,
       const std::string& error_message);
   void OnSignMessage(base::Value id,
                      v8::Global<v8::Context> global_context,

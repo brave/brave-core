@@ -13,10 +13,13 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -36,14 +39,21 @@ void OnRequestEthereumPermissions(
   }
 
   // The responses array will be empty if operation failed.
-  std::move(callback).Run(!responses.empty(), granted_accounts);
+  bool success = !responses.empty();
+  std::move(callback).Run(
+      granted_accounts,
+      success ? 0 : static_cast<int>(ProviderErrors::kInternalError),
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 void OnGetAllowedAccounts(
     BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
     bool success,
     const std::vector<std::string>& allowed_accounts) {
-  std::move(callback).Run(success, allowed_accounts);
+  std::move(callback).Run(
+      allowed_accounts,
+      success ? 0 : static_cast<int>(ProviderErrors::kInternalError),
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace
@@ -81,15 +91,16 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
 
 void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback,
-    bool success,
-    const std::vector<std::string>& allowed_accounts) {
-  if (!success) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    const std::vector<std::string>& allowed_accounts,
+    int error,
+    const std::string& error_message) {
+  if (error != 0) {
+    std::move(callback).Run(std::vector<std::string>(), error, error_message);
     return;
   }
 
-  if (success && !allowed_accounts.empty()) {
-    std::move(callback).Run(true, allowed_accounts);
+  if (error == 0 && !allowed_accounts.empty()) {
+    std::move(callback).Run(allowed_accounts, 0, "");
     return;
   }
 
@@ -107,7 +118,10 @@ void BraveWalletProviderDelegateImpl::
         brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   if (!keyring_info->is_default_keyring_created) {
     ShowWalletOnboarding(web_contents_);
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(),
+        static_cast<int>(ProviderErrors::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -115,6 +129,7 @@ void BraveWalletProviderDelegateImpl::
   for (const auto& account_info : keyring_info->account_infos) {
     addresses.push_back(account_info->address);
   }
+
   permissions::BraveEthereumPermissionContext::RequestPermissions(
       content::RenderFrameHost::FromID(host_id_), addresses,
       base::BindOnce(&OnRequestEthereumPermissions, addresses,

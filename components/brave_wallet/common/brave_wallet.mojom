@@ -30,7 +30,7 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  RequestEthereumPermissions() => (bool success, array<string> accounts);
+  RequestEthereumPermissions() => (array<string> accounts, int32 error, string message);
 
   // Used for wallet_addEthereumChain method requests
   AddEthereumChain(string json_payload) => (int32 error, string message);
@@ -39,10 +39,10 @@ interface BraveWalletProvider {
   SwitchEthereumChain(string chain_id) => (int32 error, string message);
 
   // Used for eth_sendTransaction method requests without 1559 gas data
-  AddAndApproveTransaction(TxData tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApproveTransaction(TxData tx_data, string from) => (string tx_hash, int32 error, string error_message);
 
   // Used for eth_sendTransaction method requests with 1559 gas data
-  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (string tx_hash, int32 error, string error_message);
 
   // Used for eth_sign and personal_sign
   // error will be 0 when success
@@ -63,8 +63,8 @@ interface BraveWalletProvider {
   GetNetworkAndDefaultKeyringInfo() => (EthereumChain network,
                                         KeyringInfo keyring_info);
 
-  // Used for eth_accounts method requests
-  GetAllowedAccounts() => (bool success, array<string> accounts);
+  // Used for eth_accounts method requests and as part of RequestEthereumPermissions
+  GetAllowedAccounts() => (array<string> accounts, int32 error, string message);
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
