@@ -104,7 +104,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Isolate* isolate,
       bool force_json_response,
       const std::vector<std::string>& accounts,
-      int error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void OnIsUnlocked(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
@@ -117,7 +117,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                             v8::Isolate* isolate,
                             bool force_json_response,
                             const std::vector<std::string>& accounts,
-                            int error,
+                            mojom::ProviderError error,
                             const std::string& error_message);
   void OnAddOrSwitchEthereumChain(
       base::Value id,
@@ -126,7 +126,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      int provider_error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void OnAddAndApproveTransaction(
       base::Value id,
@@ -136,7 +136,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Isolate* isolate,
       bool force_json_response,
       const std::string& tx_meta_id,
-      int error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void OnSignMessage(base::Value id,
                      v8::Global<v8::Context> global_context,
@@ -145,7 +145,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                      v8::Isolate* isolate,
                      bool force_json_response,
                      const std::string& signature,
-                     int error,
+                     mojom::ProviderError error,
                      const std::string& error_message);
   void SendResponse(base::Value id,
                     v8::Global<v8::Context> global_context,

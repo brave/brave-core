@@ -72,7 +72,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
     AddEthereumChainCallback callback) {
   if (json_payload.empty()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -81,7 +81,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
       base::JSONReader::Read(json_payload, base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -89,21 +89,21 @@ void BraveWalletProviderImpl::AddEthereumChain(
   const base::Value* params = json_value->FindListPath(brave_wallet::kParams);
   if (!params || !params->is_list()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
   const auto list = params->GetList();
   if (list.empty()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
     return;
   }
   auto chain = brave_wallet::ValueToEthereumChain(list.front());
   if (!chain) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -115,7 +115,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
       return;
     }
 
-    std::move(callback).Run(0, std::string());
+    std::move(callback).Run(mojom::ProviderError::kSuccess, std::string());
     return;
   }
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
@@ -124,19 +124,19 @@ void BraveWalletProviderImpl::AddEthereumChain(
   if (chain->chain_id.empty() || chain->rpc_urls.empty() ||
       chain->chain_name.empty()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
   if (chain_callbacks_.contains(chain->chain_id)) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
   if (!delegate_) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInternalError),
+        mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -154,7 +154,7 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
     return;
   if (!accepted) {
     std::move(chain_callbacks_[chain_id])
-        .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        .Run(mojom::ProviderError::kUserRejectedRequest,
              l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
 
     chain_callbacks_.erase(chain_id);
@@ -204,7 +204,7 @@ void BraveWalletProviderImpl::AddAndApproveTransaction(
     AddAndApproveTransactionCallback callback) {
   if (!tx_data) {
     std::move(callback).Run(
-        "", static_cast<int>(brave_wallet::ProviderErrors::kInvalidParams),
+        "", brave_wallet::mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA));
     return;
   }
@@ -220,16 +220,16 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
     const std::vector<std::string>& allowed_accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != 0) {
+  if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run("", error, error_message);
     return;
   }
 
   if (!CheckAccountAllowed(from, allowed_accounts)) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kUnauthorized),
+        "", mojom::ProviderError::kUnauthorized,
         l10n_util::GetStringUTF8(
             IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
     return;
@@ -250,10 +250,10 @@ void BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter(
     bool success,
     const std::string& tx_meta_id,
     const std::string& error_message) {
-  OnAddUnapprovedTransaction(
-      std::move(callback), tx_meta_id,
-      success ? 0 : static_cast<int>(ProviderErrors::kInternalError),
-      success ? "" : error_message);
+  OnAddUnapprovedTransaction(std::move(callback), tx_meta_id,
+                             success ? mojom::ProviderError::kSuccess
+                                     : mojom::ProviderError::kInternalError,
+                             success ? "" : error_message);
 }
 
 void BraveWalletProviderImpl::AddAndApprove1559Transaction(
@@ -262,7 +262,7 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
     AddAndApprove1559TransactionCallback callback) {
   if (!tx_data) {
     std::move(callback).Run(
-        "", static_cast<int>(brave_wallet::ProviderErrors::kInvalidParams),
+        "", brave_wallet::mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA));
     return;
   }
@@ -300,16 +300,16 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
     const std::vector<std::string>& allowed_accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != 0) {
+  if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run("", error, error_message);
     return;
   }
 
   if (!CheckAccountAllowed(from, allowed_accounts)) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kUnauthorized),
+        "", mojom::ProviderError::kUnauthorized,
         l10n_util::GetStringUTF8(
             IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
     return;
@@ -325,9 +325,9 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
 void BraveWalletProviderImpl::OnAddUnapprovedTransaction(
     AddAndApproveTransactionCallback callback,
     const std::string& tx_meta_id,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error == 0) {
+  if (error == mojom::ProviderError::kSuccess) {
     add_tx_callbacks_[tx_meta_id] = std::move(callback);
     delegate_->ShowPanel();
   } else {
@@ -340,7 +340,7 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
                                           SignMessageCallback callback) {
   if (!EthAddress::IsValidAddress(address) || !IsValidHexString(message)) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kInvalidParams),
+        "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -348,7 +348,7 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
   std::vector<uint8_t> message_bytes;
   if (!base::HexStringToBytes(message.substr(2), &message_bytes)) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kInvalidParams),
+        "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -376,7 +376,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
       !base::HexStringToBytes(message_to_sign, &eip712_hash) ||
       eip712_hash.size() != 32 || !domain.is_dict()) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kInvalidParams),
+        "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -387,7 +387,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
     if (chain_id_hex != rpc_controller_->GetChainId()) {
       std::move(callback).Run(
-          "", static_cast<int>(ProviderErrors::kInternalError),
+          "", mojom::ProviderError::kInternalError,
           l10n_util::GetStringFUTF8(
               IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH,
               base::ASCIIToUTF16(chain_id_hex)));
@@ -410,16 +410,16 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     SignMessageCallback callback,
     bool is_eip712,
     const std::vector<std::string>& allowed_accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != 0) {
+  if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run("", error, error_message);
     return;
   }
 
   if (!CheckAccountAllowed(address, allowed_accounts)) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kUnauthorized),
+        "", mojom::ProviderError::kUnauthorized,
         l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
                                   base::ASCIIToUTF16(address)));
     return;
@@ -454,7 +454,7 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
     const std::string& error) {
   if (!approved) {
     std::move(callback).Run(
-        "", static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        "", mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     return;
   }
@@ -462,11 +462,11 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
   auto signature_with_err = keyring_controller_->SignMessageByDefaultKeyring(
       address, message, is_eip712);
   if (!signature_with_err.signature)
-    std::move(callback).Run("",
-                            static_cast<int>(ProviderErrors::kInternalError),
+    std::move(callback).Run("", mojom::ProviderError::kInternalError,
                             signature_with_err.error_message);
   else
-    std::move(callback).Run(ToHex(*signature_with_err.signature), 0, "");
+    std::move(callback).Run(ToHex(*signature_with_err.signature),
+                            mojom::ProviderError::kSuccess, "");
 }
 
 void BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed(
@@ -478,9 +478,9 @@ void BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed(
     const std::string& signature,
     const std::string& error) {
   if (!approved) {
-    int error_code =
-        static_cast<int>(error.empty() ? ProviderErrors::kUserRejectedRequest
-                                       : ProviderErrors::kInternalError);
+    mojom::ProviderError error_code =
+        error.empty() ? mojom::ProviderError::kUserRejectedRequest
+                      : mojom::ProviderError::kInternalError;
     auto error_message =
         error.empty()
             ? l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST)
@@ -489,7 +489,7 @@ void BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed(
     return;
   }
 
-  std::move(callback).Run(signature, 0, "");
+  std::move(callback).Run(signature, mojom::ProviderError::kSuccess, "");
 }
 
 bool BraveWalletProviderImpl::CheckAccountAllowed(
@@ -517,7 +517,7 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
     return;
   }
   std::move(chain_callbacks_[chain_id])
-      .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest), error);
+      .Run(mojom::ProviderError::kUserRejectedRequest, error);
   chain_callbacks_.erase(chain_id);
 }
 
@@ -540,7 +540,7 @@ void BraveWalletProviderImpl::RequestEthereumPermissions(
 void BraveWalletProviderImpl::OnRequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback,
     const std::vector<std::string>& accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
   std::move(callback).Run(accounts, error, error_message);
 }
@@ -556,7 +556,7 @@ void BraveWalletProviderImpl::GetAllowedAccounts(
 void BraveWalletProviderImpl::OnGetAllowedAccounts(
     GetAllowedAccountsCallback callback,
     const std::vector<std::string>& accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
   std::move(callback).Run(accounts, error, error_message);
 }
@@ -569,9 +569,9 @@ void BraveWalletProviderImpl::UpdateKnownAccounts() {
 
 void BraveWalletProviderImpl::OnUpdateKnownAccounts(
     const std::vector<std::string>& allowed_accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != 0) {
+  if (error != mojom::ProviderError::kSuccess) {
     return;
   }
   bool accounts_changed = allowed_accounts != known_allowed_accounts;
@@ -624,15 +624,16 @@ void BraveWalletProviderImpl::OnTransactionStatusChanged(
 
   std::string tx_hash = tx_info->tx_hash;
   if (tx_status == mojom::TransactionStatus::Submitted) {
-    std::move(add_tx_callbacks_[tx_meta_id]).Run(tx_hash, 0, "");
+    std::move(add_tx_callbacks_[tx_meta_id])
+        .Run(tx_hash, mojom::ProviderError::kSuccess, "");
   } else if (tx_status == mojom::TransactionStatus::Rejected) {
     std::move(add_tx_callbacks_[tx_meta_id])
-        .Run("", static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        .Run("", mojom::ProviderError::kUserRejectedRequest,
              l10n_util::GetStringUTF8(
                  IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED));
   } else if (tx_status == mojom::TransactionStatus::Error) {
     std::move(add_tx_callbacks_[tx_meta_id])
-        .Run("", static_cast<int>(ProviderErrors::kInternalError),
+        .Run("", mojom::ProviderError::kInternalError,
              l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
   }
   add_tx_callbacks_.erase(tx_meta_id);

@@ -20,6 +20,25 @@ interface EventsListener {
   AccountsChangedEvent(array<string> accounts);
 };
 
+// https://eips.ethereum.org/EIPS/eip-1193#provider-errors
+// https://eips.ethereum.org/EIPS/eip-1474#error-codes
+enum ProviderError {
+  kSuccess = 0,                 // No error
+  kUserRejectedRequest = 4001,  // User rejected the request
+  kUnauthorized = 4100,         // The requested account and/or method has not
+                                // been authorized by the user
+  kUnsupportedMethod = 4200,    // The requested method is not supported by this
+                                // Ethereum provider
+  kDisconnected = 4900,         // The provider is disconnected from all chains
+  kChainDisconnected = 4901,    // The provider is disconnected from the
+                                // specified chain
+  kUnknownChain = 4902,         // The provider doesn't know this chain
+  kInvalidParams = -32602,      // Invalid method parameters
+  kInternalError = -32603,      // Internal JSON-RPC error
+
+  kUnknown = -1                 // Unknown error
+};
+
 // There is one BraveWalletProvider per renderer, the renderer communicates
 // with this for window.ethereum usage.
 interface BraveWalletProvider {
@@ -30,23 +49,22 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  RequestEthereumPermissions() => (array<string> accounts, int32 error, string message);
+  RequestEthereumPermissions() => (array<string> accounts, ProviderError error, string message);
 
   // Used for wallet_addEthereumChain method requests
-  AddEthereumChain(string json_payload) => (int32 error, string message);
+  AddEthereumChain(string json_payload) => (ProviderError error, string message);
 
   // Used for wallet_switchEthereumChain method requests
-  SwitchEthereumChain(string chain_id) => (int32 error, string message);
+  SwitchEthereumChain(string chain_id) => (ProviderError error, string message);
 
   // Used for eth_sendTransaction method requests without 1559 gas data
-  AddAndApproveTransaction(TxData tx_data, string from) => (string tx_hash, int32 error, string error_message);
+  AddAndApproveTransaction(TxData tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
 
   // Used for eth_sendTransaction method requests with 1559 gas data
-  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (string tx_hash, int32 error, string error_message);
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
 
   // Used for eth_sign and personal_sign
-  // error will be 0 when success
-  SignMessage(string address, string message) => (string signature, int32 error, string error_message);
+  SignMessage(string address, string message) => (string signature, ProviderError error, string error_message);
 
   // Used for eth_signTypedData
   // message is for displaying the sign request to users
@@ -54,7 +72,7 @@ interface BraveWalletProvider {
   // domain is the domain separator defined in eip712
   SignTypedMessage(string address, string message, string message_to_sign,
                    mojo_base.mojom.DictionaryValue domain)
-    => (string signature, int32 error, string error_message);
+    => (string signature, ProviderError error, string error_message);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -64,7 +82,7 @@ interface BraveWalletProvider {
                                         KeyringInfo keyring_info);
 
   // Used for eth_accounts method requests and as part of RequestEthereumPermissions
-  GetAllowedAccounts() => (array<string> accounts, int32 error, string message);
+  GetAllowedAccounts() => (array<string> accounts, ProviderError error, string message);
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);

@@ -1021,10 +1021,10 @@ void EthJsonRpcController::NotifySwitchChainRequestProcessed(
   switch_chain_callbacks_.erase(origin);
 
   if (approved)
-    std::move(callback).Run(0, "");
+    std::move(callback).Run(mojom::ProviderError::kSuccess, "");
   else
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
@@ -1034,7 +1034,7 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
     SwitchEthereumChainRequestCallback callback) {
   if (!GetNetworkURL(prefs_, chain_id).is_valid()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUnknownChain),
+        mojom::ProviderError::kUnknownChain,
         l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
                                   base::ASCIIToUTF16(chain_id)));
     return false;
@@ -1042,14 +1042,14 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
 
   // Already on the chain
   if (GetChainId() == chain_id) {
-    std::move(callback).Run(0, "");
+    std::move(callback).Run(mojom::ProviderError::kSuccess, "");
     return false;
   }
 
   // There can be only 1 request per origin
   if (switch_chain_requests_.contains(origin)) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return false;
   }

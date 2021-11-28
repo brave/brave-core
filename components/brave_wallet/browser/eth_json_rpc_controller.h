@@ -180,7 +180,8 @@ class EthJsonRpcController : public KeyedService,
                             GetSupportsInterfaceCallback callback);
 
   using SwitchEthereumChainRequestCallback =
-      base::OnceCallback<void(int error, const std::string& error_message)>;
+      base::OnceCallback<void(mojom::ProviderError error,
+                              const std::string& error_message)>;
   // return false when there is an error before processing request
   bool AddSwitchEthereumChainRequest(
       const std::string& chain_id,

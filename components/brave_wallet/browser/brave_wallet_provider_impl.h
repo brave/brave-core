@@ -55,7 +55,7 @@ class BraveWalletProviderImpl final
       RequestEthereumPermissionsCallback callback) override;
   void OnRequestEthereumPermissions(RequestEthereumPermissionsCallback callback,
                                     const std::vector<std::string>& accounts,
-                                    int error,
+                                    mojom::ProviderError error,
                                     const std::string& error_message);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
@@ -81,7 +81,7 @@ class BraveWalletProviderImpl final
                         SignTypedMessageCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             const std::vector<std::string>& accounts,
-                            int error,
+                            mojom::ProviderError error,
                             const std::string& error_message);
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
@@ -122,7 +122,7 @@ class BraveWalletProviderImpl final
   void OnConnectionError();
   void OnAddUnapprovedTransaction(AddAndApproveTransactionCallback callback,
                                   const std::string& tx_meta_id,
-                                  int error,
+                                  mojom::ProviderError error,
                                   const std::string& error_message);
   void OnAddUnapprovedTransactionAdapter(
       AddAndApproveTransactionCallback callback,
@@ -134,7 +134,7 @@ class BraveWalletProviderImpl final
       mojom::TxDataPtr tx_data,
       const std::string& from,
       const std::vector<std::string>& allowed_accounts,
-      int error,
+      mojom::ProviderError error,
       const std::string& error_message);
 
   void ContinueAddAndApprove1559Transaction(
@@ -147,7 +147,7 @@ class BraveWalletProviderImpl final
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       const std::vector<std::string>& allowed_accounts,
-      int error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
                            const std::string& message,
@@ -155,13 +155,13 @@ class BraveWalletProviderImpl final
                            SignMessageCallback callback,
                            bool is_eip712,
                            const std::vector<std::string>& allowed_accounts,
-                           int error,
+                           mojom::ProviderError error,
                            const std::string& error_message);
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
   void UpdateKnownAccounts();
   void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
-                             int error,
+                             mojom::ProviderError error,
                              const std::string& error_message);
 
   void ContinueGetDefaultKeyringInfo(

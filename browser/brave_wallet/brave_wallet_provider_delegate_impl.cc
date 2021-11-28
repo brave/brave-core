@@ -13,7 +13,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/grit/brave_components_strings.h"
@@ -42,7 +41,8 @@ void OnRequestEthereumPermissions(
   bool success = !responses.empty();
   std::move(callback).Run(
       granted_accounts,
-      success ? 0 : static_cast<int>(ProviderErrors::kInternalError),
+      success ? mojom::ProviderError::kSuccess
+              : mojom::ProviderError::kInternalError,
       success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
@@ -52,7 +52,8 @@ void OnGetAllowedAccounts(
     const std::vector<std::string>& allowed_accounts) {
   std::move(callback).Run(
       allowed_accounts,
-      success ? 0 : static_cast<int>(ProviderErrors::kInternalError),
+      success ? mojom::ProviderError::kSuccess
+              : mojom::ProviderError::kInternalError,
       success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
@@ -92,15 +93,16 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
 void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback,
     const std::vector<std::string>& allowed_accounts,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != 0) {
+  if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run(std::vector<std::string>(), error, error_message);
     return;
   }
 
-  if (error == 0 && !allowed_accounts.empty()) {
-    std::move(callback).Run(allowed_accounts, 0, "");
+  if (error == mojom::ProviderError::kSuccess && !allowed_accounts.empty()) {
+    std::move(callback).Run(allowed_accounts, mojom::ProviderError::kSuccess,
+                            "");
     return;
   }
 
@@ -119,8 +121,7 @@ void BraveWalletProviderDelegateImpl::
   if (!keyring_info->is_default_keyring_created) {
     ShowWalletOnboarding(web_contents_);
     std::move(callback).Run(
-        std::vector<std::string>(),
-        static_cast<int>(ProviderErrors::kInternalError),
+        std::vector<std::string>(), mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }

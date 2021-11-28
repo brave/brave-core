@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -18,11 +19,11 @@ class BraveWalletProviderDelegate {
  public:
   using RequestEthereumPermissionsCallback =
       base::OnceCallback<void(const std::vector<std::string>&,
-                              int error,
+                              mojom::ProviderError error,
                               const std::string& error_message)>;
   using GetAllowedAccountsCallback =
       base::OnceCallback<void(const std::vector<std::string>&,
-                              int error,
+                              mojom::ProviderError error,
                               const std::string& error_message)>;
 
   BraveWalletProviderDelegate() = default;

@@ -46,7 +46,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ContinueRequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback,
       const std::vector<std::string>& allowed_accounts,
-      int error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void ContinueRequestEthereumPermissionsKeyringInfo(
       RequestEthereumPermissionsCallback callback,
