@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -28,8 +29,8 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountPrivateKeyActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AccountPrivateKeyActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, KeyringControllerObserver {
     private KeyringController mKeyringController;
     private String mAddress;
     private boolean mIsPrivateKeyShown;
@@ -124,6 +125,7 @@ public class AccountPrivateKeyActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     @Override
@@ -143,5 +145,10 @@ public class AccountPrivateKeyActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

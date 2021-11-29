@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -52,7 +53,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AccountDetailActivity extends AsyncInitializationActivity
-        implements OnWalletListItemClick, ConnectionErrorHandler {
+        implements OnWalletListItemClick, ConnectionErrorHandler, KeyringControllerObserver {
     private String mAddress;
     private String mName;
     private boolean mIsImported;
@@ -325,6 +326,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     private void InitEthJsonRpcController() {
@@ -363,5 +365,10 @@ public class AccountDetailActivity extends AsyncInitializationActivity
 
     public BraveWalletService getBraveWalletService() {
         return mBraveWalletService;
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

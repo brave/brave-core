@@ -11,6 +11,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLE
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,6 +55,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -69,11 +71,12 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BraveWalletActivity
-        extends AsyncInitializationActivity implements OnNextPage, ConnectionErrorHandler {
+public class BraveWalletActivity extends AsyncInitializationActivity
+        implements OnNextPage, ConnectionErrorHandler, KeyringControllerObserver {
     private Toolbar mToolbar;
 
-    private View cryptoLayout;
+    private View mCryptoLayout;
+    private View mCryptoOnboardingLayout;
     private View cryptoOnboardingLayout;
     private ImageView swapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
@@ -137,7 +140,8 @@ public class BraveWalletActivity
                     getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
         });
 
-        cryptoLayout = findViewById(R.id.crypto_layout);
+        mCryptoLayout = findViewById(R.id.crypto_layout);
+        mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         cryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
         cryptoWalletOnboardingPagerAdapter =
                 new CryptoWalletOnboardingPagerAdapter(getSupportFragmentManager());
@@ -224,6 +228,7 @@ public class BraveWalletActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     private void InitErcTokenRegistry() {
@@ -335,7 +340,8 @@ public class BraveWalletActivity
 
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
-        cryptoLayout.setVisibility(View.GONE);
+        mCryptoLayout.setVisibility(View.GONE);
+        mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
             setupWalletFragment.setOnNextPageListener(this);
@@ -392,9 +398,8 @@ public class BraveWalletActivity
     }
 
     private void setCryptoLayout() {
-        cryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
-        cryptoOnboardingLayout.setVisibility(View.GONE);
-        cryptoLayout.setVisibility(View.VISIBLE);
+        mCryptoOnboardingLayout.setVisibility(View.GONE);
+        mCryptoLayout.setVisibility(View.VISIBLE);
 
         ViewPager viewPager = findViewById(R.id.navigation_view_pager);
         CryptoFragmentPageAdapter adapter =
@@ -434,8 +439,8 @@ public class BraveWalletActivity
     }
 
     public void backupBannerOnClick() {
-        cryptoOnboardingLayout.setVisibility(View.VISIBLE);
-        cryptoLayout.setVisibility(View.GONE);
+        mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
+        mCryptoLayout.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems);
@@ -484,5 +489,10 @@ public class BraveWalletActivity
     @Override
     public void gotoRestorePage() {
         replaceNavigationFragments(RESTORE_WALLET_ACTION, true);
+    }
+
+    @Override
+    public void locked() {
+        setNavigationFragments(UNLOCK_WALLET_ACTION);
     }
 }
