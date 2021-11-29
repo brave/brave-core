@@ -97,6 +97,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals = getIntent().getIntExtra(Utils.ASSET_DECIMALS, 18);
+            if (mAssetSymbol.equals("ETH")) {
+                mAssetLogo = "eth.png";
+            }
         }
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
