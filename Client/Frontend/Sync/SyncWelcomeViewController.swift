@@ -230,21 +230,7 @@ class SyncWelcomeViewController: SyncViewController {
     @objc func existingUserAction() {
         handleSyncSetupFailure()
         let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
-        
-        pairCamera.syncHandler = { codeWords in
-            pairCamera.enableNavigationPrevention()
-            
-            self.syncDeviceInfoObserver = self.syncAPI.addDeviceStateObserver {
-                self.syncServiceObserver = nil
-                self.syncDeviceInfoObserver = nil
-                pairCamera.disableNavigationPrevention()
-                self.pushSettings()
-            }
- 
-            self.syncAPI.joinSyncGroup(codeWords: codeWords)
-            self.syncAPI.syncEnabled = true
-        }
-        
+        pairCamera.delegate = self
         self.navigationController?.pushViewController(pairCamera, animated: true)
     }
     
@@ -256,5 +242,25 @@ class SyncWelcomeViewController: SyncViewController {
         
         let syncSettingsVC = SyncSettingsTableViewController(showDoneButton: true, syncAPI: syncAPI)
         navigationController?.pushViewController(syncSettingsVC, animated: true)
+    }
+}
+
+extension SyncWelcomeViewController: SyncPairControllerDelegate {
+    func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String) {
+        syncOnWordsEntered(controller, codeWords: syncAPI.syncCode(fromHexSeed: hexCode))
+    }
+    
+    func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String) {
+        controller.enableNavigationPrevention()
+        syncDeviceInfoObserver = syncAPI.addDeviceStateObserver { [weak self] in
+            guard let self = self else { return }
+            self.syncServiceObserver = nil
+            self.syncDeviceInfoObserver = nil
+            controller.disableNavigationPrevention()
+            self.pushSettings()
+        }
+
+        syncAPI.joinSyncGroup(codeWords: codeWords)
+        syncAPI.syncEnabled = true
     }
 }
