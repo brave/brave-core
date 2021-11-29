@@ -1,0 +1,16 @@
+[package]
+name = "brave-build-rust"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+cxx = "1.0.56"
+cxxbridge-cmd = "1.0.56"
+
+[profile.release]
+panic = "abort"
+
+[[bin]]
+# empty bin so we can cargo install to get the cxx deps
+name = "brave_build_rust_empty"
+path = "lib.rs"
