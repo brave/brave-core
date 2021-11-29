@@ -139,12 +139,12 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    public static void saveTextToClipboard(Context context, String textToCopy) {
+    public static void saveTextToClipboard(Context context, String textToCopy, int textToShow) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, R.string.text_has_been_copied, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
     }
 
     public static String getTextFromClipboard(Context context) {

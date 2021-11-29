@@ -248,27 +248,25 @@
                 android:id="@+id/rvCoins"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
                 android:id="@+id/edit_visible_assets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="25dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/crypto_wallet_blue_button"
                 android:text="@string/edit_visible_assets"
-                android:textAllCaps="false"
-                android:textSize="16sp"
+                android:textColor="@color/wallet_text_color"
+                android:background="@drawable/rounded_white_holo_bg"
+                android:gravity="center"
+                android:textSize="14sp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColor="@android:color/white"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="8dp"/>
 
         </LinearLayout>
 

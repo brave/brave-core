@@ -1400,6 +1400,9 @@ Are you sure you want to do this?
       <message name="IDS_TEXT_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Your text has been copied to the clipboard.
       </message>
+      <message name="IDS_ADDRESS_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
+        Public address has been copied to the clipboard.
+      </message>
       <message name="IDS_TEXT_HAS_BEEN_SAVED" desc="Save to file toast text.">
         Your text has been saved to a text file.
       </message>

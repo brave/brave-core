@@ -7,9 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:paddingStart="5dp"
-    android:paddingTop="7dp"
-    android:paddingBottom="7dp"
+    android:paddingStart="13dp"
+    android:paddingTop="13dp"
+    android:paddingBottom="13dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -28,7 +28,7 @@
         android:layout_gravity="center_vertical"
         android:textColor="@color/wallet_text_color"
         android:textSize="16sp"
-        android:paddingStart="8dp"
+        android:paddingStart="1dp"
         android:paddingEnd="8dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp" />
