@@ -12,13 +12,13 @@ import {
 } from './style'
 import { NavButton } from '..'
 import { getLocale } from '../../../../common/locale'
-import { HardwareWalletErrorType } from '../../../constants/types'
+import { HardwareWalletResponseCodeType } from '../../../constants/types'
 import useInterval from '../../../common/hooks/interval'
 
 export interface Props {
   onCancel: () => void
   walletName: string
-  hardwareWalletError?: HardwareWalletErrorType
+  hardwareWalletCode?: HardwareWalletResponseCodeType
   retryCallable: () => void
 }
 
@@ -26,20 +26,24 @@ function ConnectHardwareWalletPanel (props: Props) {
   const {
     onCancel,
     walletName,
-    hardwareWalletError,
+    hardwareWalletCode,
     retryCallable
   } = props
 
-  const isConnected = hardwareWalletError !== undefined && hardwareWalletError !== 'deviceNotConnected'
-  const getTitle = () => {
-    if (hardwareWalletError === 'deviceBusy') {
+  const isConnected = hardwareWalletCode !== undefined && hardwareWalletCode !== 'deviceNotConnected'
+
+  const title = React.useMemo(() => {
+    if (hardwareWalletCode === 'deviceBusy') {
       return getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
     }
-    if (hardwareWalletError === 'openEthereumApp') {
+
+    if (hardwareWalletCode === 'openEthereumApp') {
       return getLocale('braveWalletConnectHardwarePanelOpenApp').replace('$1', walletName)
     }
+
     return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
-  }
+  }, [hardwareWalletCode])
+
   const onClickInstructions = () => {
     window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
   }
@@ -58,14 +62,18 @@ function ConnectHardwareWalletPanel (props: Props) {
           }
         </Description>
       </ConnectionRow>
-      <Title>
-        {getTitle()}
-      </Title>
+      <Title>{title}</Title>
       <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
       <PageIcon />
-      <ButtonWrapper>
-        <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancel} />
-      </ButtonWrapper>
+
+      {
+        hardwareWalletCode !== 'deviceBusy' && (
+          <ButtonWrapper>
+            <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancel} />
+          </ButtonWrapper>
+        )
+      }
+
     </StyledWrapper>
   )
 }

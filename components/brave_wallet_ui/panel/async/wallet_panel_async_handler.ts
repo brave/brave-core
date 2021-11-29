@@ -16,9 +16,6 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
-  StatusCodes as LedgerStatusCodes
-} from '@ledgerhq/errors'
-import {
   WalletPanelState,
   PanelState,
   WalletState
@@ -109,10 +106,15 @@ handler.on(PanelActions.navigateToMain.getType(), async (store: Store) => {
 
 async function navigateToConnectHardwareWallet (store: Store) {
   const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.setCloseOnDeactivate(false)
+
+  const { selectedPanel } = getPanelState(store)
+  if (selectedPanel === 'connectHardwareWallet') {
+    return
+  }
 
   await store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
   await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
-  apiProxy.panelHandler.setCloseOnDeactivate(false)
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -191,39 +193,48 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
     const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
-    if (!success) {
-      if (code) {
-        if (code === LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
-          await store.dispatch(WalletActions.rejectTransaction(txInfo))
-          await store.dispatch(PanelActions.navigateToMain())
-        } else {
-          const deviceError = dialogErrorFromLedgerErrorCode(code)
-          await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
-          return
-        }
-      } else if (error) {
-        // TODO: handle non-device errors
-        console.log(error)
-        await store.dispatch(PanelActions.navigateToMain())
-      }
-    } else {
+    if (success) {
       await store.dispatch(PanelActions.navigateToMain())
       refreshTransactionHistory(txInfo.fromAddress)
+      return
     }
-  } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
-    apiProxy.panelHandler.setCloseOnDeactivate(false)
-    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
-    if (!success) {
-      if (deviceError === 'deviceBusy') {
-        // do nothing as the operation is already in progress
+
+    if (code) {
+      const deviceError = dialogErrorFromLedgerErrorCode(code)
+      if (deviceError === 'transactionRejected') {
+        await store.dispatch(WalletActions.rejectTransaction(txInfo))
+        await store.dispatch(PanelActions.navigateToMain())
         return
       }
-      console.log(error)
-      await store.dispatch(WalletActions.rejectTransaction(txInfo))
-    } else {
-      refreshTransactionHistory(txInfo.fromAddress)
+
+      await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
+      return
     }
+
+    if (error) {
+      // TODO: handle non-device errors
+      console.log(error)
+      await store.dispatch(PanelActions.navigateToMain())
+    }
+  } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
+    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    if (success) {
+      refreshTransactionHistory(txInfo.fromAddress)
+      await store.dispatch(PanelActions.navigateToMain())
+      return
+    }
+
+    if (deviceError === 'deviceBusy') {
+      // do nothing as the operation is already in progress
+      return
+    }
+
+    console.log(error)
+    await store.dispatch(WalletActions.rejectTransaction(txInfo))
+    await store.dispatch(PanelActions.navigateToMain())
+    return
   }
+
   await store.dispatch(PanelActions.navigateToMain())
 })
 

@@ -10,15 +10,22 @@ import WalletApiProxy from '../../common/wallet_api_proxy'
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 import { TrezorErrorsCodes } from '../trezor/trezor-messages'
-import { HardwareWalletErrorType } from 'components/brave_wallet_ui/constants/types'
+import { HardwareWalletResponseCodeType } from 'components/brave_wallet_ui/constants/types'
+import { StatusCodes as LedgerStatusCodes } from '@ledgerhq/errors'
 
-export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletErrorType {
+export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
   if (code === 'TransportOpenUserCancelled') {
     return 'deviceNotConnected'
   }
+
   if (code === 'TransportLocked') {
     return 'deviceBusy'
   }
+
+  if (code === LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
+    return 'transactionRejected'
+  }
+
   return 'openEthereumApp'
 }
 

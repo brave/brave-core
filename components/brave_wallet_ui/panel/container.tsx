@@ -491,7 +491,7 @@ function Container (props: Props) {
           <ConnectHardwareWalletPanel
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
-            hardwareWalletError={props.panel.hardwareWalletError}
+            hardwareWalletCode={props.panel.hardwareWalletCode}
             retryCallable={onConfirmTransaction}
           />
         </StyledExtensionWrapper>

@@ -6,7 +6,7 @@
 
 import { createReducer } from 'redux-act'
 import {
-  HardwareWalletErrorType,
+  HardwareWalletResponseCodeType,
   PanelState,
   SwapErrorResponse,
   SwapResponse,
@@ -45,7 +45,7 @@ const defaultState: PanelState = {
     },
     chainId: ''
   },
-  hardwareWalletError: undefined
+  hardwareWalletCode: undefined
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -105,10 +105,10 @@ reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload[])
   }
 })
 
-reducer.on(PanelActions.setHardwareWalletInteractionError, (state: any, payload?: HardwareWalletErrorType) => {
+reducer.on(PanelActions.setHardwareWalletInteractionError, (state: any, payload?: HardwareWalletResponseCodeType) => {
   return {
     ...state,
-    hardwareWalletError: payload
+    hardwareWalletCode: payload
   }
 })
 
