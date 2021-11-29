@@ -37,14 +37,14 @@ export const setGeminiAccountBalances = (balances: Record<string, string>) => ac
   balances
 })
 
-export const onGeminiDepositQRForAsset = (asset: string, src: string) => action(types.ON_DEPOSIT_QR_FOR_ASSET, {
-  asset,
-  src
-})
+export type GeminiAssetAddress = {
+  asset: string
+  address: string
+  qrCode: string
+}
 
-export const setGeminiAssetAddress = (asset: string, address: string) => action(types.SET_ASSET_ADDRESS, {
-  asset,
-  address
+export const setGeminiAssetAddress = (assetAddresses: GeminiAssetAddress[]) => action(types.SET_ASSET_ADDRESS, {
+  assetAddresses
 })
 
 export const setGeminiAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_INVALID, {
