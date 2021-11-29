@@ -929,11 +929,13 @@
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
 		CA439A7625E8054A00FE9150 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */; };
 		CA439A9025E80EE400FE9150 /* VideoPlayerTrackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */; };
+		CA4B1F7D274D6DA9009C5BBA /* BraveSyncQRCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */; };
 		CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */ = {isa = PBXBuildFile; fileRef = CA55048F269DED8F00C19917 /* MediaBackgrounding.js */; };
 		CA752EA526CEABF8009356EF /* PlaylistToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA752EA426CEABF8009356EF /* PlaylistToast.swift */; };
 		CA752EB126CEBE52009356EF /* FontScaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A22FF26A7370C00923D70 /* FontScaling.swift */; };
 		CA7C5CAD2731928F003366F7 /* WelcomeViewSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAC2731928F003366F7 /* WelcomeViewSearchView.swift */; };
 		CA7C5CAF2731D022003366F7 /* PrivacyEverywhereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAE2731D022003366F7 /* PrivacyEverywhereView.swift */; };
+		CA84F896274F428B00B1388E /* SyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA84F895274F428B00B1388E /* SyncTests.swift */; };
 		CA8D5C0E26D7CD8A009BF13D /* PlaylistDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */; };
 		CA8D5C1026D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */; };
 		CA8D5C1226D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */; };
@@ -2718,10 +2720,12 @@
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
 		CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
+		CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSyncQRCodeModel.swift; sourceTree = "<group>"; };
 		CA55048F269DED8F00C19917 /* MediaBackgrounding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MediaBackgrounding.js; sourceTree = "<group>"; };
 		CA752EA426CEABF8009356EF /* PlaylistToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistToast.swift; sourceTree = "<group>"; };
 		CA7C5CAC2731928F003366F7 /* WelcomeViewSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewSearchView.swift; sourceTree = "<group>"; };
 		CA7C5CAE2731D022003366F7 /* PrivacyEverywhereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyEverywhereView.swift; sourceTree = "<group>"; };
+		CA84F895274F428B00B1388E /* SyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTests.swift; sourceTree = "<group>"; };
 		CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailViewController.swift; sourceTree = "<group>"; };
 		CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+DragDropDelegate.swift"; sourceTree = "<group>"; };
 		CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
@@ -4997,6 +5001,7 @@
 				5E09617F252B63F200F3AFBB /* BraveSyncAPIExtensions.swift */,
 				5E72D54E253657FF00F8D62D /* BraveCoreImportExportUtility.swift */,
 				2FB0E26B2653132500B722AF /* BraveServiceStateObserver.swift */,
+				CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */,
 			);
 			path = BraveCore;
 			sourceTree = "<group>";
@@ -5904,6 +5909,7 @@
 				2F26C42B267B9B7E00E5AD60 /* ProductNotificationTests */,
 				F84B21D71A090F8100AAB793 /* Supporting Files */,
 				CA04E8A527022D9D00BFBB4D /* PlaylistTests.swift */,
+				CA84F895274F428B00B1388E /* SyncTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -7655,6 +7661,7 @@
 				E4CD9E911A6897FB00318571 /* ReaderMode.swift in Sources */,
 				4422D42321BFCE9200BF1855 /* HttpsEverywhereStats.swift in Sources */,
 				0A8C69AB225CFCAF00988715 /* AddEditBookmarkTableViewController.swift in Sources */,
+				CA4B1F7D274D6DA9009C5BBA /* BraveSyncQRCodeModel.swift in Sources */,
 				27C5AC8725D6FA6D00B8F50E /* OPML.swift in Sources */,
 				27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */,
 				4422D4E121BFFB7600BF1855 /* filter_block.cc in Sources */,
@@ -8063,6 +8070,7 @@
 			files = (
 				D3D488591ABB54CD00A93597 /* FileAccessorTests.swift in Sources */,
 				0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */,
+				CA84F896274F428B00B1388E /* SyncTests.swift in Sources */,
 				0BA8964B1A250E6500C1010C /* ProfileTest.swift in Sources */,
 				5953AAEF2226E9D800A92DE1 /* HttpCookieExtensionTest.swift in Sources */,
 				F84B21DA1A090F8100AAB793 /* ClientTests.swift in Sources */,
