@@ -69,7 +69,7 @@ struct BackupRecoveryPhraseView: View {
         Button(action: copyRecoveryPhrase) {
           Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
             .font(.subheadline.bold())
-            .foregroundColor(.primary)
+            .foregroundColor(Color(.braveBlurpleTint))
         }
         Toggle(Strings.Wallet.backupRecoveryPhraseDisclaimer, isOn: $confirmedPhraseBackup)
           .fixedSize(horizontal: false, vertical: true)

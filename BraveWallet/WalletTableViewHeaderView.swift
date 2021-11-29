@@ -34,12 +34,16 @@ struct WalletListHeaderView<Title: View, Subtitle: View>: View {
     .foregroundColor(Color(.secondaryBraveLabel))
     .osAvailabilityModifiers { content in
       if #available(iOS 15.0, *) {
-        // In iOS 15, the default insets are applied to the view
         content
           .padding(.horizontal, -8)
-      } else {
+      } else if #available(iOS 14.5, *) {
+        // In iOS 14.4-14.8 for some reason List does not apply correct padding
+        // or insets to headers and footers
         content
           .padding(.horizontal, 8)
+      } else {
+        content
+          .padding(.horizontal, -8)
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)

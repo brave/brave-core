@@ -85,32 +85,41 @@ struct EditUserAssetsView: View {
               }
             }
         ) {
-          ForEach(tokenStores, id: \.token.id) { store in
-            if store.isCustomToken {
-              EditTokenView(assetStore: store)
-                .osAvailabilityModifiers { content in
-                  if #available(iOS 15.0, *) {
-                    content
-                      .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                          removeCustomToken(store.token)
-                        } label: {
-                          Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+          let tokens = tokenStores
+          if tokens.isEmpty {
+            Text(Strings.Wallet.assetSearchEmpty)
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .multilineTextAlignment(.center)
+              .frame(maxWidth: .infinity)
+          } else {
+            ForEach(tokens, id: \.token.id) { store in
+              if store.isCustomToken {
+                EditTokenView(assetStore: store)
+                  .osAvailabilityModifiers { content in
+                    if #available(iOS 15.0, *) {
+                      content
+                        .swipeActions(edge: .trailing) {
+                          Button(role: .destructive) {
+                            removeCustomToken(store.token)
+                          } label: {
+                            Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+                          }
                         }
-                      }
-                  } else {
-                    content
-                      .contextMenu {
-                        Button {
-                          removeCustomToken(store.token)
-                        } label: {
-                          Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+                    } else {
+                      content
+                        .contextMenu {
+                          Button {
+                            removeCustomToken(store.token)
+                          } label: {
+                            Label(Strings.Wallet.deleteCustomToken, systemImage: "trash")
+                          }
                         }
-                      }
+                    }
                   }
-                }
-            } else {
-              EditTokenView(assetStore: store)
+              } else {
+                EditTokenView(assetStore: store)
+              }
             }
           }
         }

@@ -27,7 +27,9 @@ struct FilterableViewModifier: ViewModifier {
           }
         }
         vc.navigationItem.hidesSearchBarWhenScrolling = false
-        vc.navigationItem.searchController?.searchBar.placeholder = prompt
+        if let prompt = prompt {
+          vc.navigationItem.searchController?.searchBar.placeholder = prompt
+        }
         searchDelegate.onSubmit = onSubmit
       }
       .onChange(of: searchDelegate.query) { newValue in
