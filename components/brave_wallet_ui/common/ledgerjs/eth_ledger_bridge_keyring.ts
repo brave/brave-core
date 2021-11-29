@@ -105,7 +105,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
       return { success: true, payload: signature }
     } catch (e) {
-      return { success: false, error: e.message, code: e.id }
+      return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
     }
   }
 
