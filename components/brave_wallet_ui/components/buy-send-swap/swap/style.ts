@@ -55,7 +55,7 @@ export const SwapDisclaimerRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 8px;
 `
 
 export const SwapDisclaimerText = styled.span`
