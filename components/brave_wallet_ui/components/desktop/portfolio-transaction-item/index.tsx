@@ -32,6 +32,7 @@ import {
   DetailTextDark,
   DetailTextDarkBold,
   DetailTextLight,
+  RejectedTransactionSpacer,
   FromCircle,
   MoreButton,
   MoreIcon,
@@ -322,9 +323,16 @@ const PortfolioTransactionItem = (props: Props) => {
             <CoinsIcon />
           </CoinsButton>
         </TransactionFeesTooltip>
-        <MoreButton onClick={onShowTransactionPopup}>
-          <MoreIcon />
-        </MoreButton>
+        {transactionDetails.status !== TransactionStatus.Rejected &&
+          <MoreButton onClick={onShowTransactionPopup}>
+            <MoreIcon />
+          </MoreButton>
+        }
+
+        {transactionDetails.status === TransactionStatus.Rejected &&
+          <RejectedTransactionSpacer></RejectedTransactionSpacer>
+        }
+
         {showTransactionPopup &&
           <TransactionPopup>
             {[TransactionStatus.Approved, TransactionStatus.Submitted, TransactionStatus.Confirmed] &&
