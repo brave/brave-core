@@ -105,5 +105,13 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
                                 false);
   registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
                                 false);
-  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);
+  // Restore default behaviour for Android until we figure out if we want this
+  // option there.
+#if defined(OS_ANDROID)
+  bool allow_open_search_engines = true;
+#else
+  bool allow_open_search_engines = false;
+#endif
+  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
+                                allow_open_search_engines);
 }
