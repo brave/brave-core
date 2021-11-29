@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { formatBalance } from '../../utils/format-balances'
@@ -13,14 +12,17 @@ import {
   AssetPriceTimeframe,
   EthereumChain,
   ERCToken,
-  WalletAccountType
+  WalletAccountType,
+  AccountInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
-import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
-import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
+import { getHardwareKeyring } from '../api/getKeyringsByType'
+import { HardwareWalletAccount } from '../hardware/types'
 import { GetAccountsHardwareOperationResult } from '../hardware_operations'
 
 export const getERC20Allowance = (
@@ -46,8 +48,7 @@ export const getERC20Allowance = (
 
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
-    const apiProxy = getAPIProxy()
-    const keyring = await apiProxy.getKeyringsByType(opts.hardware)
+    const keyring = getHardwareKeyring(opts.hardware)
     if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then((result: GetAccountsHardwareOperationResult) => {
@@ -83,7 +84,7 @@ export async function findUnstoppableDomainAddress (address: string) {
   return apiProxy.ethJsonRpcController.unstoppableDomainsGetEthAddr(address)
 }
 
-export async function findHardwareAccountInfo (address: string) {
+export async function findHardwareAccountInfo (address: string): Promise<AccountInfo | false> {
   const apiProxy = getAPIProxy()
   const result = await apiProxy.walletHandler.getWalletInfo()
   for (const account of result.accountInfos) {
@@ -94,7 +95,7 @@ export async function findHardwareAccountInfo (address: string) {
       return account
     }
   }
-  return null
+  return false
 }
 
 export function refreshBalances (currentNetwork: EthereumChain) {

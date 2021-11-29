@@ -4,11 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global window */
 
-import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import {
-  TrezorDerivationPaths
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { getLocale } from '../../../../common/locale'
 import {
   kTrezorBridgeUrl,
   TrezorFrameResponse,
@@ -21,13 +18,14 @@ import {
   TrezorGetAccountsResponse,
   SignTransactionResponse,
   TrezorErrorsCodes
-} from '../../common/trezor/trezor-messages'
-import { getLocale } from '../../../common/locale'
+} from '../../../common/hardware/trezor/trezor-messages'
+import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
-import { getMockedTransactionInfo } from '../constants/mocks'
-import { HardwareOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
+import { getMockedTransactionInfo } from '../../constants/mocks'
+import { HardwareOperationResult, SignHardwareTransactionOperationResult } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
+import { TrezorDerivationPaths } from '../types'
 
 let uuid = 0
 window.crypto = {

@@ -2,14 +2,10 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
-const { EventEmitter } = require('events')
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
-import {
-  TrezorDerivationPaths
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { TransactionInfo, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
   UnlockResponsePayload,
@@ -24,22 +20,25 @@ import {
   SignTransactionResponse,
   SignMessageResponse,
   TrezorGetAccountsResponse
-} from '../../common/trezor/trezor-messages'
-import { sendTrezorCommand, closeTrezorBridge } from '../../common/trezor/trezor-bridge-transport'
-import { getLocale } from '../../../common/locale'
+} from '../trezor/trezor-messages'
+import { sendTrezorCommand, closeTrezorBridge } from '../trezor/trezor-bridge-transport'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../../common/hardware_operations'
+} from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
+import { TrezorKeyring } from '../hardwareKeyring'
+import { HardwareVendor } from '../../api/getKeyringsByType'
+import { TrezorDerivationPaths } from '../types'
 
-export default class TrezorBridgeKeyring extends EventEmitter {
+export default class TrezorBridgeKeyring extends TrezorKeyring {
   private unlocked: boolean = false
+  protected deviceId: string
 
-  type = () => {
+  type = (): HardwareVendor => {
     return TREZOR_HARDWARE_VENDOR
   }
 
@@ -233,7 +232,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
     let accounts = []
     const accountsList = response.payload as TrezorAccount[]
-    this.deviceId_ = await this.getDeviceIdFromAccountsList(accountsList)
+    this.deviceId = await this.getDeviceIdFromAccountsList(accountsList)
     const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
     for (const value of accountsList) {
       // If requested addresses do not have zero indexed adress we add it
@@ -247,7 +246,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
         derivationPath: value.serializedPath,
         name: this.type(),
         hardwareVendor: this.type(),
-        deviceId: this.deviceId_
+        deviceId: this.deviceId
       })
     }
     return { success: true, payload: [...accounts] }

@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
-
+import { TREZOR_HARDWARE_VENDOR, LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -18,16 +18,11 @@ import {
   ErrorText,
   LoadIcon
 } from './style'
-
 // Custom types
-import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-
-import {
-  LEDGER_HARDWARE_VENDOR,
-  TREZOR_HARDWARE_VENDOR
-} from '../../../../../constants/types'
-
+import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import HardwareWalletAccountsList from './accounts-list'
+import { HardwareDerivationScheme, HardwareWalletAccount, LedgerDerivationPaths } from '../../../../../common/hardware/types'
+import { HardwareVendor } from 'components/brave_wallet_ui/common/api/getKeyringsByType'
 
 export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
@@ -38,13 +33,13 @@ export interface Props {
 const derivationBatch = 4
 
 export default function (props: Props) {
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<string>(LEDGER_HARDWARE_VENDOR)
+  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<HardwareWalletAccount[]>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
-  const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<string>(
-    LedgerDerivationPaths.LedgerLive.toString()
+  const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
+    LedgerDerivationPaths.LedgerLive
   )
 
   const getErrorMessage = (error: any) => {
@@ -63,7 +58,7 @@ export default function (props: Props) {
     return { error: error.message, userHint: '' }
   }
 
-  const onSelectedDerivationScheme = (scheme: string) => {
+  const onSelectedDerivationScheme = (scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)
     setAccounts([])
     props.onConnectHardwareWallet({
@@ -77,7 +72,7 @@ export default function (props: Props) {
       setConnectionError(getErrorMessage(error))
     })
   }
-  const onConnectHardwareWallet = (hardware: string) => {
+  const onConnectHardwareWallet = (hardware: HardwareVendor) => {
     setIsConnecting(true)
     props.onConnectHardwareWallet({
       hardware,
@@ -102,9 +97,9 @@ export default function (props: Props) {
     return props.getBalance(address)
   }
 
-  const selectVendor = (vendor: string) => {
+  const selectVendor = (vendor: HardwareVendor) => {
     const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
-    setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as string)
+    setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme)
     setSelectedHardwareWallet(vendor)
   }
 

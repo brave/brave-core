@@ -14,7 +14,6 @@ import {
   AddressBalanceWrapper
 } from './style'
 import {
-  HardwareWalletAccount,
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping
 } from './types'
@@ -23,6 +22,7 @@ import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
+import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 interface Props {
   hardwareWallet: string

@@ -6,24 +6,33 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
 import { TransactionInfo, LEDGER_HARDWARE_VENDOR, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
-GetNonceForHardwareTransactionReturnInfo,
-GetTransactionMessageToSignReturnInfo,
-SignatureVRS,
-ProcessHardwareSignatureReturnInfo
+  GetNonceForHardwareTransactionReturnInfo,
+  GetTransactionMessageToSignReturnInfo,
+  ProcessHardwareSignatureReturnInfo
 } from '../../constants/types'
 import {
-signTrezorTransaction,
-signLedgerTransaction
+  signTrezorTransaction,
+  signLedgerTransaction
 } from '../../common/async/hardware'
 import WalletApiProxy from '../../common/wallet_api_proxy'
 import { getLocale } from '../../../common/locale'
 import { Success, Unsuccessful } from 'trezor-connect'
 import { getMockedTransactionInfo } from '../constants/mocks'
-import { SignHardwareTransactionOperationResult, SignHardwareTransactionType } from '../hardware_operations'
+import { SignatureVRS, SignHardwareTransactionOperationResult, SignHardwareTransactionType } from '../hardware/types'
+import { HardwareVendor } from '../api/getKeyringsByType'
+import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
+
+let uuid = 0
+window.crypto = {
+  randomUUID () {
+    return uuid++
+  }
+}
 
 const getMockedLedgerKeyring = (expectedPath: string, expectedData: string | TransactionInfo, signed?: SignHardwareTransactionOperationResult) => {
   return {
-    type: () => {
+    type: (): HardwareVendor => {
       return LEDGER_HARDWARE_VENDOR
     },
     signTransaction: async (path: string, data: string): Promise<SignHardwareTransactionOperationResult> => {
@@ -50,7 +59,7 @@ const getMockedLedgerKeyring = (expectedPath: string, expectedData: string | Tra
 
 const getMockedTrezorKeyring = (expectedDevicePath: string, expectedData: string | TransactionInfo, signed?: Success<EthereumSignedTx> | Unsuccessful) => {
   return {
-    type: () => {
+    type: (): HardwareVendor => {
       return TREZOR_HARDWARE_VENDOR
     },
     signTransaction: async (path: string, data: string): Promise<Success<EthereumSignedTx> | Unsuccessful | undefined> => {
@@ -72,11 +81,11 @@ const getMockedTrezorKeyring = (expectedDevicePath: string, expectedData: string
   }
 }
 
-const getMockedProxyControllers = (expectedId: string,
-                                   nonce?: GetNonceForHardwareTransactionReturnInfo,
-                                   messageToSign?: GetTransactionMessageToSignReturnInfo | undefined,
-                                   keyring?: any,
-                                   hardwareSignature?: ProcessHardwareSignatureReturnInfo) => {
+const getMockedProxyControllers = (
+  expectedId: string,
+  nonce?: GetNonceForHardwareTransactionReturnInfo,
+  messageToSign?: GetTransactionMessageToSignReturnInfo | undefined,
+  hardwareSignature?: ProcessHardwareSignatureReturnInfo) => {
   return {
     ethJsonRpcController: {
       getChainId: async () => {
@@ -99,10 +108,6 @@ const getMockedProxyControllers = (expectedId: string,
         expect(s.startsWith('0x')).toStrictEqual(true)
         return hardwareSignature
       }
-    },
-    getKeyringsByType (type: string) {
-      expect(type).toStrictEqual(keyring.type())
-      return keyring
     }
   }
 }
@@ -116,8 +121,8 @@ const signTransactionWithLedger = (vrs?: SignatureVRS, signatureResponse?: boole
   const mockedKeyring = getMockedLedgerKeyring(expectedPath, expectedData, signTransactionResult as SignHardwareTransactionOperationResult)
   const signed = signatureResponse ? { status: signatureResponse } : undefined
   const apiProxy = getMockedProxyControllers(txInfo.id, { nonce: '0x1' }, messageToSign,
-                                              mockedKeyring, signed)
-  return signLedgerTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo)
+    signed)
+  return signLedgerTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo, mockedKeyring as unknown as LedgerBridgeKeyring)
 }
 
 const hardwareTransactionErrorResponse = (errorId: string, code: string = ''): SignHardwareTransactionType => {
@@ -130,9 +135,9 @@ const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccess
   const txInfo = getMockedTransactionInfo()
   const expectedPath = 'path'
   const mockedKeyring = getMockedTrezorKeyring(expectedPath, txInfo, signed)
-  const apiProxy = getMockedProxyControllers(txInfo.id, { nonce: '0x1' }, undefined, mockedKeyring, signatureResponse)
+  const apiProxy = getMockedProxyControllers(txInfo.id, { nonce: '0x1' }, undefined, signatureResponse)
   return signTrezorTransaction(apiProxy as unknown as WalletApiProxy,
-    expectedPath, txInfo)
+    expectedPath, txInfo, mockedKeyring as unknown as TrezorBridgeKeyring)
 }
 
 test('Test sign Ledger transaction, nonce failed', () => {
@@ -167,18 +172,18 @@ test('Test sign Trezor transaction, approve failed', () => {
   const txInfo = getMockedTransactionInfo()
   const apiProxy = getMockedProxyControllers(txInfo.id, { nonce: '' })
   return expect(signTrezorTransaction(apiProxy as unknown as WalletApiProxy,
-         'path', txInfo)).resolves.toStrictEqual(
-          hardwareTransactionErrorResponse('braveWalletApproveTransactionError'))
+    'path', txInfo)).resolves.toStrictEqual(
+      hardwareTransactionErrorResponse('braveWalletApproveTransactionError'))
 })
 
 test('Test sign Trezor transaction, approved, device error', () => {
   return expect(signTransactionWithTrezor({ success: false, payload: { error: 'error', code: '111' } }))
-                .resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletSignOnDeviceError'))
+    .resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletSignOnDeviceError'))
 })
 
 test('Test sign Trezor transaction, approved, processing error', () => {
   return expect(signTransactionWithTrezor({ id: 1, success: true, payload: { v: '0xV', r: '0xR', s: '0xS' } }, { status: false })).resolves.toStrictEqual(
-      hardwareTransactionErrorResponse('braveWalletProcessTransactionError'))
+    hardwareTransactionErrorResponse('braveWalletProcessTransactionError'))
 })
 
 test('Test sign Trezor transaction, approved, processed', () => {

@@ -1,16 +1,11 @@
-import {
-  LEDGER_HARDWARE_VENDOR,
-  TREZOR_HARDWARE_VENDOR
-} from '../../../../../constants/types'
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export enum LedgerDerivationPaths {
-  LedgerLive = 'ledger-live',
-  Legacy = 'legacy'
-}
-
-export enum TrezorDerivationPaths {
-  Default = 'trezor'
-}
+import { HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths } from '../../../../../common/hardware/types'
+import { LEDGER_HARDWARE_VENDOR, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { HardwareVendor } from 'components/brave_wallet_ui/common/api/getKeyringsByType'
 
 export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',
@@ -24,33 +19,17 @@ export const HardwareWalletDerivationPathsMapping = {
 }
 
 export interface HardwareWalletConnectOpts {
-  hardware: string
+  hardware: HardwareVendor
   // TODO: add currency and network as enums
   // currency: string
   // network: string
 
   startIndex: number
   stopIndex: number
-  scheme: string
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export interface HardwareWalletAccount {
-  address: string
-  derivationPath: string
-  name: string
-  hardwareVendor: string
-  deviceId: string
+  scheme: HardwareDerivationScheme
 }
 
 export interface ErrorMessage {
   error: string
   userHint: string
-}
-
-export interface TrezorBridgeAccountsPayload {
-  success: boolean
-  accounts: HardwareWalletAccount[]
-  error?: string
 }

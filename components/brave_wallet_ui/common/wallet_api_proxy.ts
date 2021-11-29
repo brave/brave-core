@@ -6,9 +6,7 @@
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from '../common/async/types'
-import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
-import TrezorBridgeKeyring from '../common/trezor/trezor_bridge_keyring'
-
+import { getBraveKeyring } from './api/getKeyringsByType'
 // Provide access to all the generated types.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 
@@ -17,12 +15,11 @@ export default class WalletApiProxy {
   ethJsonRpcController = new BraveWallet.EthJsonRpcControllerRemote()
   swapController = new BraveWallet.SwapControllerRemote()
   assetRatioController = new BraveWallet.AssetRatioControllerRemote()
-  keyringController = new BraveWallet.KeyringControllerRemote()
+
+  keyringController = getBraveKeyring()
   ercTokenRegistry = new BraveWallet.ERCTokenRegistryRemote()
   ethTxController = new BraveWallet.EthTxControllerRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
-  ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  trezorHardwareKeyring = new TrezorBridgeKeyring()
 
   addEthJsonRpcControllerObserver (store: Store) {
     const ethJsonRpcControllerObserverReceiver = new BraveWallet.EthJsonRpcControllerObserverReceiver({
@@ -37,15 +34,6 @@ export default class WalletApiProxy {
       }
     })
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
-  }
-
-  getKeyringsByType (type: string) {
-    if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-      return this.ledgerHardwareKeyring
-    } else if (type === BraveWallet.TREZOR_HARDWARE_VENDOR) {
-      return this.trezorHardwareKeyring
-    }
-    return this.keyringController
   }
 
   addKeyringControllerObserver (store: Store) {
