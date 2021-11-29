@@ -39,8 +39,8 @@ const createLedgerKeyring = () => {
 
 test('Extracting accounts from device', () => {
   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
-    .resolves.toStrictEqual([
-      {
+    .resolves.toStrictEqual({
+      payload: [{
         'address': 'address for m/44\'/60\'/0\'/0/0',
         'derivationPath': 'm/44\'/60\'/0\'/0/0',
         'hardwareVendor': 'Ledger',
@@ -53,14 +53,15 @@ test('Extracting accounts from device', () => {
         'hardwareVendor': 'Ledger',
         'name': 'Ledger',
         'deviceId': 'device1'
-      }]
-    )
+      }],
+      success: true
+    })
 })
 
 test('Extracting accounts from legacy device', () => {
   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Legacy))
-    .resolves.toStrictEqual([
-      {
+    .resolves.toStrictEqual({
+      payload: [{
         'address': 'address for m/44\'/60\'/0\'/0',
         'derivationPath': 'm/44\'/60\'/0\'/0',
         'hardwareVendor': 'Ledger',
@@ -73,8 +74,9 @@ test('Extracting accounts from legacy device', () => {
         'hardwareVendor': 'Ledger',
         'name': 'Ledger',
         'deviceId': 'device1'
-      }]
-    )
+      }],
+      success: true
+    })
 })
 
 test('Check ledger bridge type', () => {
@@ -95,7 +97,7 @@ test('Extract accounts from locked device', () => {
     return false
   }
   return expect(ledgerHardwareKeyring.getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
-  .rejects.toThrow()
+  .resolves.toStrictEqual({ error: 'braveWalletUnlockError', success: false })
 })
 
 test('Extract accounts from unknown device', () => {
@@ -110,7 +112,7 @@ test('Sign personal message successfully', () => {
   ledgerHardwareKeyring.app = new MockApp()
   ledgerHardwareKeyring.app.signature = { v: 1, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
-    'm/44\'/60\'/0\'/0/0', '0x111', 'message'))
+    'm/44\'/60\'/0\'/0/0', 'message'))
     .resolves.toStrictEqual({ payload: '0xb68983r68983-26', success: true })
 })
 

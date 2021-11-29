@@ -423,6 +423,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT},
     {"braveWalletConnectHardwarePanelConfirmation",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION},
+    {"braveWalletConnectHardwarePanelOpenApp",
+     IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP},
     {"braveWalletTransactionSent", IDS_BRAVE_WALLET_TRANSACTION_SENT},
     {"braveWalletTransactionReceived", IDS_BRAVE_WALLET_TRANSACTION_RECEIVED},
     {"braveWalletTransactionExplorerMissing",
@@ -516,7 +518,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletProcessMessageError",
      IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR},
     {"braveWalletUnknownKeyringError",
-     IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR}};
+     IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR},
+    {"braveWalletBridgeCommandInProgress",
+     IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR},
+    {"braveWalletBridgeNotReady",
+     IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";

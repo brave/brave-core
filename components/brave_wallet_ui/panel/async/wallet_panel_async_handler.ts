@@ -16,6 +16,9 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
+  StatusCodes as LedgerStatusCodes
+} from '@ledgerhq/errors'
+import {
   WalletPanelState,
   PanelState,
   WalletState
@@ -37,7 +40,9 @@ import {
 import {
   signTrezorTransaction,
   signLedgerTransaction,
-  signMessageWithHardwareKeyring
+  signMessageWithHardwareKeyring,
+  cancelHardwareOperation,
+  dialogErrorFromLedgerErrorCode
 } from '../../common/async/hardware'
 
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
@@ -45,6 +50,8 @@ import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
+import { TrezorErrorsCodes } from '../../common/trezor/trezor-messages'
+import { LedgerErrorsCodes } from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 
 const handler = new AsyncActionHandler()
 
@@ -163,24 +170,36 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   apiProxy.panelHandler.closeUI()
 })
 
+handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: TransactionInfo) => {
+  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    return
+  }
+  const apiProxy = getWalletPanelApiProxy()
+  await cancelHardwareOperation(apiProxy, hardwareAccount.hardware.vendor)
+  // Navigating to main panel view will unmount ConnectHardwareWalletPanel
+  // and therefore forfeit connecting to the hardware wallet.
+  await store.dispatch(PanelActions.navigateToMain())
+})
+
 handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
   if (!hardwareAccount || !hardwareAccount.hardware) {
     return
   }
-
+  await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
-
   if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
-    await navigateToConnectHardwareWallet(store)
-    const { success, error, deviceError } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
-      if (deviceError) {
-        if (deviceError === 'transactionRejected') {
+      if (code) {
+        if (code === LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
           await store.dispatch(WalletActions.rejectTransaction(txInfo))
           await store.dispatch(PanelActions.navigateToMain())
         } else {
+          const deviceError = dialogErrorFromLedgerErrorCode(code)
           await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
+          return
         }
       } else if (error) {
         // TODO: handle non-device errors
@@ -193,16 +212,19 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
     }
   } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
     apiProxy.panelHandler.setCloseOnDeactivate(false)
-    const { success, error } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
     if (!success) {
+      if (deviceError === 'deviceBusy') {
+        // do nothing as the operation is already in progress
+        return
+      }
       console.log(error)
       await store.dispatch(WalletActions.rejectTransaction(txInfo))
     } else {
       refreshTransactionHistory(txInfo.fromAddress)
     }
-
-    apiProxy.panelHandler.setCloseOnDeactivate(true)
   }
+  await store.dispatch(PanelActions.navigateToMain())
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
@@ -307,22 +329,26 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
     apiProxy.panelHandler.closeUI()
     return
   }
+  await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
-  apiProxy.panelHandler.setCloseOnDeactivate(false)
-  const signature = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.address, messageData.message)
-  apiProxy.panelHandler.setCloseOnDeactivate(true)
-  if (!signature || !signature.success) {
-    store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, error: signature.error }))
+  const signed = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.message)
+  if (!signed.success &&
+      (signed.code === TrezorErrorsCodes.CommandInProgress ||
+       signed.code === LedgerErrorsCodes.TransportLocked)) {
+    // do nothing as the operation is already in progress
     return
   }
-  store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature.payload }))
+  const payload: SignMessageHardwareProcessedPayload =
+    signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
+                   : { success: signed.success, id: messageData.id, error: signed.error }
+  store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
   apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature || '', payload.error || '')
+  braveWalletService.notifySignMessageHardwareRequestProcessed(!!payload.success, payload.id, payload.signature || '', payload.error || '')
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

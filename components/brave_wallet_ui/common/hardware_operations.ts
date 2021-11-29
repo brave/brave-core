@@ -1,4 +1,5 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
+import { HardwareWalletAccount } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { HardwareWalletErrorType } from '../constants/types'
 
 export interface SignHardwareTransactionType {
@@ -23,4 +24,8 @@ export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
 
 export type SignHardwareMessageOperationResult = HardwareOperationResult & {
   payload?: string
+}
+
+export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
+  payload?: HardwareWalletAccount[]
 }

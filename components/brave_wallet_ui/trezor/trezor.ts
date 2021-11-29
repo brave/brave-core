@@ -8,28 +8,30 @@ import { EthereumSignedTx } from 'trezor-connect/lib/typescript/networks/ethereu
 import {
   TrezorCommand,
   UnlockCommand,
-  UnlockResponse,
+  UnlockResponsePayload,
   GetAccountsCommand,
   GetAccountsResponsePayload,
-  TrezorGetPublicKeyResponse,
+  TrezorGetAccountsResponse,
   SignTransactionCommand,
   SignTransactionResponsePayload,
   SignMessageCommand,
   SignMessageResponsePayload,
-  SignMessageResponse
+  SignMessageResponse,
+  UnlockResponse
 } from '../common/trezor/trezor-messages'
 
 import { addTrezorCommandHandler } from '../common/trezor/trezor-command-handler'
 
-const createUnlockResponse = (command: UnlockCommand, result: Boolean, error?: Unsuccessful): UnlockResponse => {
-  return { id: command.id, command: command.command, result: result, origin: command.origin, error: error }
+const createUnlockResponse = (command: UnlockCommand, result: boolean, error?: Unsuccessful): UnlockResponsePayload => {
+  const payload: UnlockResponse = (!result && error) ? error : { success: result }
+  return { id: command.id, command: command.command, payload: payload, origin: command.origin }
 }
 
-const createGetAccountsResponse = (command: GetAccountsCommand, result: TrezorGetPublicKeyResponse): GetAccountsResponsePayload => {
+const createGetAccountsResponse = (command: GetAccountsCommand, result: TrezorGetAccountsResponse): GetAccountsResponsePayload => {
   return { id: command.id, command: command.command, payload: result, origin: command.origin }
 }
 
-addTrezorCommandHandler(TrezorCommand.Unlock, (command: UnlockCommand): Promise<UnlockResponse> => {
+addTrezorCommandHandler(TrezorCommand.Unlock, (command: UnlockCommand): Promise<UnlockResponsePayload> => {
   return new Promise(async (resolve) => {
     TrezorConnect.init({
       connectSrc: 'https://connect.trezor.io/8/',
@@ -48,7 +50,7 @@ addTrezorCommandHandler(TrezorCommand.Unlock, (command: UnlockCommand): Promise<
 
 addTrezorCommandHandler(TrezorCommand.GetAccounts, (command: GetAccountsCommand, source: Window): Promise<GetAccountsResponsePayload> => {
   return new Promise(async (resolve) => {
-    TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
+    TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetAccountsResponse) => {
       resolve(createGetAccountsResponse(command, result))
     })
   })

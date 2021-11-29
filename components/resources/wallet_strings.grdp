@@ -278,6 +278,7 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires transaction confirmation. <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires Ethereum App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SENT" desc="Transaction sent label">sent</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RECEIVED" desc="Transaction received label">received</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING" desc="Alert for when no block explorer is available">Block explorer URL is not available.</message>
@@ -354,4 +355,6 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_EDIT" desc="Edit custom network button title">Edit</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_REMOVE" desc="Remove custom network button title">Remove</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR" desc="Error when command Trezor is already in progress">Trezor command is already in progress</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR" desc="Error when Trezor bridge is not ready">Trezor bridge is not ready</message>
 </grit-part>

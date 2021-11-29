@@ -136,9 +136,8 @@ export type ChartTimelineType =
 
 export type HardwareWalletErrorType =
   | 'deviceNotConnected'
-  | 'transactionRejected'
   | 'deviceBusy'
-  | 'needsConnectionReset'
+  | 'openEthereumApp'
 
 export interface BuySendSwapObjectType {
   name: string

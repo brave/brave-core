@@ -50,3 +50,4 @@ export const signMessageHardware = createAction<SignMessageRequest>('signMessage
 export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')
 export const approveHardwareTransaction = createAction<TransactionInfo>('approveHardwareTransaction')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletErrorType | undefined>('setHardwareWalletInteractionError')
+export const cancelConnectHardwareWallet = createAction<TransactionInfo>('cancelConnectHardwareWallet')
