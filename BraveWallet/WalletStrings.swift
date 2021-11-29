@@ -334,7 +334,7 @@ extension Strings {
       "wallet.cryptoTitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Crypto",
+      value: "Brave Wallet",
       comment: "The title of the crypto tab"
     )
     public static let backupWalletWarningMessage = NSLocalizedString(
@@ -362,7 +362,7 @@ extension Strings {
       "wallet.buyDescription",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Buy crypto with Apple Pay, credit or debit card.",
+      value: "Buy crypto with Apple Pay, credit or debit card through Wyre.",
       comment: "The description of a buy button on the buy/send/swap modal"
     )
     public static let send = NSLocalizedString(
