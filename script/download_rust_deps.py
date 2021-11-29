@@ -148,6 +148,11 @@ def cargo_install(tool):
     cargo_args.append(cargo_bin)
     cargo_args.append("install")
     cargo_args.append(tool["name"])
+    if "path" in tool:
+        cargo_args.append("--path")
+        cargo_args.append(tool["path"])
+        cargo_args.append("--target-dir")
+        cargo_args.append(os.path.join(RUSTUP_HOME, ".build"))
     if "version" in tool:
         cargo_args.append("--version")
         cargo_args.append(tool["version"])
@@ -178,6 +183,10 @@ def main():
         {
             "name": "cbindgen",
             "version": "0.14.2",
+        },
+        {
+            "name": "brave-build-rust",
+            "path": os.path.join(BRAVE_CORE_ROOT, 'build', 'rust', 'cxx')
         },
         {
             "name": "cargo-audit",

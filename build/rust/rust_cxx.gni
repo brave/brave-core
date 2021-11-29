@@ -4,12 +4,6 @@
 
 import("//brave/build/cargo.gni")
 
-cxx_build_path = "$root_build_dir/cxxbridge"
-cxxbridge_executable = "$cxx_build_path/$rustc_exe_target/release/cxxbridge"
-if (is_win) {
-  cxxbridge_executable = "${cxxbridge_executable}.exe"
-}
-
 set_defaults("rust_cxx") {
   native_header_deps = []
 }
@@ -62,6 +56,11 @@ set_defaults("rust_cxx") {
 template("rust_cxx") {
   assert(defined(invoker.input), "Must specify the Rust file to use as input.")
   action_foreach("${target_name}_gen") {
+    cxxbridge_executable = "//brave/build/rustup/0.1.8/bin/cxxbridge"
+    if (is_win) {
+      cxxbridge_executable = "${cxxbridge_executable}.exe"
+    }
+
     sources = invoker.input
 
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
@@ -87,23 +86,16 @@ template("rust_cxx") {
       "{{source}}",
     ]
 
-    deps = [
-      "//brave/third_party/rust:cxxbridge",
-    ]
-
     # Anyone building the header files we generate needs to have
     # RUST_CXX_NO_EXCEPTIONS defined so that they build without
     # exception support.
     public_configs = [ "//brave/build/rust:cxx_cppconfig" ]
   }
 
-  source_set(target_name) {
+  rust_ffi(target_name) {
     sources = get_target_outputs(":${target_name}_gen")
     deps = [ "//brave/build/rust:cxx_cppdeps" ]
     deps += invoker.native_header_deps
     public_deps = [ ":${target_name}_gen" ]
-
-    configs -= [ "//build/config/compiler:chromium_code" ]
-    configs += [ "//build/config/compiler:no_chromium_code" ]
   }
 }

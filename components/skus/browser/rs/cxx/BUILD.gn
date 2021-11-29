@@ -31,10 +31,3 @@ source_set("shim") {
     "//brave/build/rust:cxx_cppdeps",
   ]
 }
-
-rust_ffi("src") {
-  public_deps = [
-    ":cxx",
-    ":shim",
-  ]
-}
