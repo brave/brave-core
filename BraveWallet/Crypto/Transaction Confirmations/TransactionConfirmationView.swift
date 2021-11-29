@@ -61,15 +61,10 @@ struct TransactionConfirmationView: View {
   }
   
   private var transactionType: String {
-    switch activeTransaction.txType {
-    case .erc20Approve:
+    if activeTransaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
-    default:
-      if activeTransaction.isSwap {
-        return Strings.Wallet.swap
-      }
-      return Strings.Wallet.send
     }
+    return activeTransaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
   }
   
   private var transactionDetails: String {
@@ -368,7 +363,20 @@ private struct DetailsTextView: UIViewRepresentable {
 #if DEBUG
 struct TransactionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
-    TransactionConfirmationView(transactions: [BraveWallet.TransactionInfo.previewConfirmedERC20Approve, .previewConfirmedSend, .previewConfirmedSwap].map { tx in tx.txStatus = .unapproved; return tx }, confirmationStore: .previewStore, networkStore: .previewStore, keyringStore: .previewStoreWithWalletCreated)
+    TransactionConfirmationView(
+      transactions: [
+        BraveWallet.TransactionInfo.previewConfirmedERC20Approve,
+        .previewConfirmedSend,
+        .previewConfirmedSwap
+      ].map {
+        tx in
+        tx.txStatus = .unapproved
+        return tx
+      },
+      confirmationStore: .previewStore,
+      networkStore: .previewStore,
+      keyringStore: .previewStoreWithWalletCreated
+    )
       .previewLayout(.sizeThatFits)
   }
 }

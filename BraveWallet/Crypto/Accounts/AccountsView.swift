@@ -76,15 +76,15 @@ struct AccountsView: View {
           subtitle: Text(Strings.Wallet.secondaryCryptoAccountsSubtitle)
         )
       ) {
-        let secondaryAccounts = secondaryAccounts
-        if secondaryAccounts.isEmpty {
+        let accounts = secondaryAccounts
+        if accounts.isEmpty {
           Text(Strings.Wallet.noSecondaryAccounts)
             .foregroundColor(Color(.secondaryBraveLabel))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .font(.footnote.weight(.medium))
         } else {
-          ForEach(secondaryAccounts) { account in
+          ForEach(accounts) { account in
             accountView(for: account)
           }
         }

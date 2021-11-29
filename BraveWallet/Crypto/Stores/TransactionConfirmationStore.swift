@@ -126,7 +126,7 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   private func fetchAssetRatios(for symbol: String, gasSymbol: String) {
-    @discardableResult func _updateState() -> Bool {
+    @discardableResult func updateState() -> Bool {
       if let ratio = assetRatios[symbolKey], let gasRatio = assetRatios[gasKey] {
         let value = (Double(self.state.value) ?? 0.0) * ratio
         self.state.fiat = numberFormatter.string(from: NSNumber(value: value)) ?? ""
@@ -140,7 +140,7 @@ public class TransactionConfirmationStore: ObservableObject {
     }
     let symbolKey = symbol.lowercased()
     let gasKey = gasSymbol.lowercased()
-    if _updateState() {
+    if updateState() {
       isLoading = false
     } else {
       let symbols = symbolKey == gasKey ? [symbolKey] : [symbolKey, gasKey]
@@ -153,17 +153,15 @@ public class TransactionConfirmationStore: ObservableObject {
               self.state.symbol.caseInsensitiveCompare(symbol) == .orderedSame else {
                 return
               }
-        if let price = prices.first(where: { $0.fromAsset == symbolKey }) {
-          if let ratio = Double(price.price) {
-            self.assetRatios[symbolKey] = ratio
-          }
+        if let price = prices.first(where: { $0.fromAsset == symbolKey }),
+           let ratio = Double(price.price) {
+          self.assetRatios[symbolKey] = ratio
         }
-        if let price = prices.first(where: { $0.fromAsset == gasKey }) {
-          if let gasRatio = Double(price.price) {
-            self.assetRatios[gasKey] = gasRatio
-          }
+        if let price = prices.first(where: { $0.fromAsset == gasKey }),
+           let gasRatio = Double(price.price) {
+          self.assetRatios[gasKey] = gasRatio
         }
-        _updateState()
+        updateState()
         self.isLoading = false
       }
     }
