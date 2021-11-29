@@ -203,19 +203,17 @@ private struct RestoreWalletView: View {
         keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
         keyringStore.markOnboardingCompleted()
       }
-      if enabled {
-        // Store password in keychain
-        if !KeyringStore.storePasswordInKeychain(password) {
-          let alert = UIAlertController(
-            title: Strings.Wallet.biometricsSetupErrorTitle,
-            message: Strings.Wallet.biometricsSetupErrorMessage,
-            preferredStyle: .alert
-          )
-          alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-          navController?.presentedViewController?.present(alert, animated: true)
-          // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
-          // an option to enable in `UnlockWalletView`
-        }
+      // Store password in keychain
+      if enabled, !KeyringStore.storePasswordInKeychain(password) {
+        let alert = UIAlertController(
+          title: Strings.Wallet.biometricsSetupErrorTitle,
+          message: Strings.Wallet.biometricsSetupErrorMessage,
+          preferredStyle: .alert
+        )
+        alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+        navController?.presentedViewController?.present(alert, animated: true)
+        // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
+        // an option to enable in `UnlockWalletView`
       }
       return false
     })

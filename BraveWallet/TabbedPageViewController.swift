@@ -163,7 +163,9 @@ class TabbedPageViewController: UIViewController {
   private func updateTabsBarSelectionIndicator(contentOffset: CGPoint) {
     guard let pageTransitionContext = pageTransitionContext else { return }
     let contentSizeWidth = tabsBar.collectionView.contentSize.width
-    if contentSizeWidth.isZero { return }
+    if contentSizeWidth.isZero {
+      return
+    }
     
     // The page process is a clamped value from -1 to 1 from the current index
     // to the target index. A negative number means user is scrolling to a
@@ -270,7 +272,9 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
     previousViewControllers: [UIViewController],
     transitionCompleted completed: Bool
   ) {
-    if !completed { return }
+    if !completed {
+      return
+    }
     self.pageTransitionContext = nil
     if let currentIndex = currentIndex {
       // Update the selected tab for accessibility purposes and also in case UIPageViewController

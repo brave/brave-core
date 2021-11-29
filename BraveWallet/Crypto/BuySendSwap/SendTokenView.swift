@@ -84,7 +84,7 @@ struct SendTokenView: View {
           .listRowInsets(.zero)
           .padding(.bottom, 8)
         ) {
-          TextField(String.localizedStringWithFormat(Strings.Wallet.sendCryptoAmountPlaceholder,
+          TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency,
                                                      sendTokenStore.selectedSendToken?.symbol ?? ""),
                     text: $amountInput
           )

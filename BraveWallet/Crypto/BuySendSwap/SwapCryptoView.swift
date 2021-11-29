@@ -252,7 +252,7 @@ struct SwapCryptoView: View {
     ) {
       TextField(
         String.localizedStringWithFormat(
-          Strings.Wallet.swapCryptoAmountPlaceholder,
+          Strings.Wallet.amountInCurrency,
           swapTokensStore.selectedFromToken?.symbol ?? ""),
         text: $swapTokensStore.sellAmount
       )
@@ -290,7 +290,7 @@ struct SwapCryptoView: View {
     ) {
       TextField(
         String.localizedStringWithFormat(
-          Strings.Wallet.swapCryptoAmountPlaceholder,
+          Strings.Wallet.amountInCurrency,
           swapTokensStore.selectedToToken?.symbol ?? ""),
         text: $swapTokensStore.buyAmount
       )

@@ -51,7 +51,9 @@ private struct CreateWalletView: View {
   @State private var isSkippingBiometricsPrompt: Bool = false
   
   private func createWallet() {
-    if !validate() { return }
+    if !validate() {
+      return
+    }
     keyringStore.createWallet(password: password) { mnemonic in
       if !mnemonic.isEmpty {
         if isBiometricsAvailable {
@@ -123,18 +125,16 @@ private struct CreateWalletView: View {
       .padding()
       .padding(.vertical)
       .background(BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
-        if enabled {
-          // Store password in keychain
-          if !KeyringStore.storePasswordInKeychain(password) {
-            let alert = UIAlertController(
-              title: Strings.Wallet.biometricsSetupErrorTitle,
-              message: Strings.Wallet.biometricsSetupErrorMessage,
-              preferredStyle: .alert
-            )
-            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-            navController?.presentedViewController?.present(alert, animated: true)
-            return false
-          }
+        // Store password in keychain
+        if enabled, !KeyringStore.storePasswordInKeychain(password) {
+          let alert = UIAlertController(
+            title: Strings.Wallet.biometricsSetupErrorTitle,
+            message: Strings.Wallet.biometricsSetupErrorMessage,
+            preferredStyle: .alert
+          )
+          alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+          navController?.presentedViewController?.present(alert, animated: true)
+          return false
         }
         let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
         navController?.pushViewController(controller, animated: true)

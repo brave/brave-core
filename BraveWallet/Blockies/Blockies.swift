@@ -8,11 +8,16 @@ import UIKit
 import SwiftUI
 
 private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
-  var x, y, z, w: UInt32
+  var x: UInt32
+  var y: UInt32
+  var z: UInt32
+  var w: UInt32
   
   mutating func next() -> UInt64 {
     let t = x ^ (x << 11)
-    x = y; y = z; z = w
+    x = y
+    y = z
+    z = w
     w = (w ^ (w >> 19)) ^ (t ^ (t >> 8))
     return UInt64(w)
   }
@@ -33,7 +38,7 @@ class Blockies {
       let index = i % 4
       let a: UInt32 = xorSeed[index] &* (2 << 4)
       let b: UInt32 = xorSeed[index]
-      let c: UInt32 = UInt32((seed[seed.index(startIndex, offsetBy: i)].asciiValue ?? 0))
+      let c: UInt32 = UInt32(seed[seed.index(startIndex, offsetBy: i)].asciiValue ?? 0)
       xorSeed[index] = (a &- b &+ c)
     }
     self.generator = .init(

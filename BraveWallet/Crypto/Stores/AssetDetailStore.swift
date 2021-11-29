@@ -95,9 +95,9 @@ class AssetDetailStore: ObservableObject {
              let value = Double(assetPrice.price) {
             self.assetPriceValue = value
             self.price = Self.priceFormatter.string(from: NSNumber(value: value)) ?? ""
-            if let deltaVaue = Double(assetPrice.assetTimeframeChange) {
-              self.priceIsDown = deltaVaue.isZero || deltaVaue > 0 ? false : true
-              self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaVaue / 100.0)) ?? ""
+            if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+              self.priceIsDown = deltaValue < 0
+              self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
             }
             for index in 0..<self.accounts.count {
               self.accounts[index].fiatBalance = Self.priceFormatter.string(from: NSNumber(value: self.accounts[index].decimalBalance * self.assetPriceValue)) ?? ""
@@ -145,17 +145,17 @@ class AssetDetailStore: ObservableObject {
     rpcController.network { [weak self] network in
       guard let self = self else { return }
       self.keyringController.defaultKeyringInfo { keyring in
-        var transactions: [BraveWallet.TransactionInfo] = []
+        var allTransactions: [BraveWallet.TransactionInfo] = []
         let group = DispatchGroup()
         for account in keyring.accountInfos {
           group.enter()
           self.txController.allTransactionInfo(account.address) { txs in
             defer { group.leave() }
-            transactions.append(contentsOf: txs)
+            allTransactions.append(contentsOf: txs)
           }
         }
         group.notify(queue: .main) {
-          self.transactions = transactions
+          self.transactions = allTransactions
             .filter { tx in
               switch tx.txType {
               case .erc20Approve, .erc20Transfer:

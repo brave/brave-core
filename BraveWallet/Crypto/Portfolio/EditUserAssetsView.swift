@@ -45,12 +45,12 @@ struct EditUserAssetsView: View {
   @State private var isPresentingAssetRemovalError = false
   
   private var tokenStores: [AssetStore] {
-    let query = query.lowercased()
+    let normalizedQuery = query.lowercased()
     var stores = userAssetsStore.assetStores
-    if !query.isEmpty {
+    if !normalizedQuery.isEmpty {
       stores = stores.filter {
-        $0.token.symbol.lowercased().contains(query) ||
-        $0.token.name.lowercased().contains(query)
+        $0.token.symbol.lowercased().contains(normalizedQuery) ||
+        $0.token.name.lowercased().contains(normalizedQuery)
       }
     }
     return stores

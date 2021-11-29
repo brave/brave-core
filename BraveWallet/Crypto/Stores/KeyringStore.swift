@@ -130,7 +130,9 @@ public class KeyringStore: ObservableObject {
   }
   
   func unlock(password: String, completion: @escaping (Bool) -> Void) {
-    if !keyring.isDefaultKeyringCreated { return }
+    if !keyring.isDefaultKeyringCreated {
+      return
+    }
     controller.unlock(password) { [weak self] unlocked in
       completion(unlocked)
       if unlocked {

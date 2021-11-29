@@ -778,13 +778,6 @@ extension Strings {
       value: "Enter amount of %@ to swap",
       comment: "A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
     )
-    public static let swapCryptoAmountPlaceholder = NSLocalizedString(
-      "wallet.swapCryptoAmountPlaceholder",
-      tableName: "BraveWallet",
-      bundle: .braveWallet,
-      value: "Amount in %@",
-      comment: "A placeholder of the amount text field. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
-    )
     public static let swapCryptoAmountReceivingTitle = NSLocalizedString(
       "wallet.swapCryptoAmountReceivingTitle",
       tableName: "BraveWallet",
@@ -881,7 +874,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Amount in %@",
-      comment: "The textField's placeholder for users to input dollar value of the crypto they want to buy. '%@' will be replaced with a currency such as 'USD' or 'EUR'"
+      comment: "A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT'"
     )
     public static let buyButtonTitle = NSLocalizedString(
       "wallet.buyButtonTitle",
@@ -924,13 +917,6 @@ extension Strings {
       bundle: .braveWallet,
       value: "Enter amount of %@ to send",
       comment: "A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
-    )
-    public static let sendCryptoAmountPlaceholder = NSLocalizedString(
-      "wallet.sendCryptoAmountPlaceholder",
-      tableName: "BraveWallet",
-      bundle: .braveWallet,
-      value: "Amount in %@",
-      comment: "A placeholder of the amount text field. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
     )
     public static let sendCryptoToTitle = NSLocalizedString(
       "wallet.sendCryptoToTitle",

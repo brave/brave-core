@@ -14,13 +14,13 @@ struct TokenList<Content: View>: View {
   @State private var query = ""
   
   private var filteredTokens: [BraveWallet.ERCToken] {
-    let query = query.lowercased()
-    if query.isEmpty {
+    let normalizedQuery = query.lowercased()
+    if normalizedQuery.isEmpty {
       return tokens
     }
     return tokens.filter {
-      $0.symbol.lowercased().contains(query) ||
-      $0.name.lowercased().contains(query)
+      $0.symbol.lowercased().contains(normalizedQuery) ||
+      $0.name.lowercased().contains(normalizedQuery)
     }
   }
   
