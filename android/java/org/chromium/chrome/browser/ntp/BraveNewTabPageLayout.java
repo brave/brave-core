@@ -558,6 +558,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 }
             }
 
+            if (mNewContentButton != null) {
+                mNewContentButton.setVisibility(View.INVISIBLE);
+            }
+
             if (mBraveNewsController != null) {
                 mBraveNewsController.close();
             }
