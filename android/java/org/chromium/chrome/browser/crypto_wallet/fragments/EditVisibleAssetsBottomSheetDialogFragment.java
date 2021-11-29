@@ -221,15 +221,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         // Add ETH as a first item always
         ErcToken eth = Utils.createEthereumErcToken();
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
         itemModelEth.setIsUserSelected(
                 selectedTokensSymbols.contains(eth.symbol.toUpperCase(Locale.getDefault())));
+        itemModelEth.setIconPath("file://" + tokensPath + "/" + eth.logo);
         itemModelEth.setErcToken(eth);
         walletListItemModelList.add(itemModelEth);
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].symbol.equals("ETH")) {
                 // We have added ETH already
