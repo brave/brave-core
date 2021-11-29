@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import { StatusCodes as LedgerStatusCodes } from '@ledgerhq/errors'
 import {
   TransactionInfo,
   SignMessageRequest,
@@ -39,7 +38,8 @@ import {
   signLedgerTransaction,
   signMessageWithHardwareKeyring,
   cancelHardwareOperation,
-  dialogErrorFromLedgerErrorCode
+  dialogErrorFromLedgerErrorCode,
+  dialogErrorFromTrezorErrorCode
 } from '../../common/async/hardware'
 
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
@@ -340,11 +340,13 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.message)
   if (!signed.success) {
-    if (signed.code && (signed.code !== LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-                        signed.code === TrezorErrorsCodes.CommandInProgress)) {
-      const deviceError = dialogErrorFromLedgerErrorCode(signed.code)
-      await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
-      return
+    if (signed.code) {
+      const deviceError = (info.vendor === TREZOR_HARDWARE_VENDOR)
+        ? dialogErrorFromTrezorErrorCode(signed.code as TrezorErrorsCodes) : dialogErrorFromLedgerErrorCode(signed.code)
+      if (deviceError !== 'transactionRejected') {
+        await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
+        return
+      }
     }
   }
   const payload: SignMessageHardwareProcessedPayload =
