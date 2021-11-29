@@ -27,7 +27,7 @@ public struct WalletSettingsView: View {
   }
   
   public var body: some View {
-    Form {
+    List {
       Section(
         footer: Text(Strings.Wallet.autoLockFooter)
           .foregroundColor(Color(.secondaryBraveLabel))

@@ -22,6 +22,13 @@ extension Strings {
       value: "Wallet",
       comment: "The title shown on the menu to access Brave Wallet"
     )
+    public static let otherWalletActionsAccessibilityTitle = NSLocalizedString(
+      "wallet.otherWalletActionsAccessibilityTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Other wallet actions",
+      comment: "The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page"
+    )
     public static let portfolioPageTitle = NSLocalizedString(
       "wallet.portfolioPageTitle",
       tableName: "BraveWallet",

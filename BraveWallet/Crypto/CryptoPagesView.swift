@@ -74,7 +74,8 @@ struct CryptoPagesView: View {
           Button(action: {
             isShowingSearch = true
           }) {
-            Image(systemName: "magnifyingglass")
+            Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
+              .labelStyle(.iconOnly)
               .foregroundColor(Color(.braveOrange))
           }
           Menu {
@@ -82,15 +83,26 @@ struct CryptoPagesView: View {
               walletStore.keyringStore.lock()
             }) {
               Label(Strings.Wallet.lock, image: "brave.lock")
-                .imageScale(.medium) // Menu seems to use a different image scale by default
+                .imageScale(.medium) // Menu inside nav bar implicitly gets large
             }
             Divider()
             Button(action: { isShowingSettings = true }) {
               Label(Strings.Wallet.settings, image: "brave.gear")
-                .imageScale(.medium) // Menu seems to use a different image scale by default
+                .imageScale(.medium) // Menu inside nav bar implicitly gets large
             }
           } label: {
-            Image(systemName: "ellipsis.circle")
+            Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, systemImage: "ellipsis.circle")
+              .labelStyle(.iconOnly)
+              .osAvailabilityModifiers { content in
+                if #available(iOS 15.0, *) {
+                  content
+                } else {
+                  // iOS 14 does not correctly apply a large image scale to a `Menu`s label inside of a
+                  // `ToolbarItemGroup` like it does with a `Button` using `DefaultButtonStyle`
+                  content
+                    .imageScale(.large)
+                }
+              }
               .foregroundColor(Color(.braveOrange))
           }
         }

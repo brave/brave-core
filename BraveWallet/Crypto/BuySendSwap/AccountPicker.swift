@@ -61,17 +61,17 @@ struct AccountPicker: View {
   private func copyAddress() {
     UIPasteboard.general.string = keyringStore.selectedAccount.address
   }
+
+  @available(iOS, introduced: 14.0, deprecated: 15.0)
+  @State private var isPresentingCopyAddressActionSheet: Bool = false
   
-  private var menuContents: some View {
-    Button(action: copyAddress) {
-      Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
-    }
-  }
   
   @ViewBuilder private var accountPickerView: some View {
     if #available(iOS 15.0, *) {
       Menu {
-        menuContents
+        Button(action: copyAddress) {
+          Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+        }
       } label: {
         accountView
       } primaryAction: {
@@ -83,9 +83,19 @@ struct AccountPicker: View {
       }) {
         accountView
       }
-      .background(Color(.braveBackground)) // For the contextMenu
-      .contextMenu {
-        menuContents
+      // Context Menus are not supported inside `List`/`Form` section headers/footers so we must replace
+      // this with a long press gesture + action sheet on iOS 14
+      .simultaneousGesture(
+        LongPressGesture(minimumDuration: 0.3)
+          .onEnded { _ in
+            isPresentingCopyAddressActionSheet = true
+          }
+      )
+      .actionSheet(isPresented: $isPresentingCopyAddressActionSheet) {
+        .init(title: Text(keyringStore.selectedAccount.address), message: nil, buttons: [
+          .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
+          .cancel()
+        ])
       }
     }
   }
