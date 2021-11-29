@@ -59,6 +59,8 @@ static_library("browser") {
     "hd_key.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "filecoin_keyring.cc",
+    "filecoin_keyring.h",
     "keyring_controller.cc",
     "keyring_controller.h",
     "password_encryptor.cc",

@@ -399,7 +399,7 @@ handler.on(PanelActions.openWalletApps.getType(), async (store) => {
 handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
     if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
 })

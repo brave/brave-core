@@ -19,11 +19,11 @@ import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
-import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
-import { getHardwareKeyring } from '../api/hardware_keyrings'
+import { getHardwareKeyring, HardwareCoins } from '../api/hardware_keyrings'
 import { HardwareWalletAccount } from '../hardware/types'
 import { GetAccountsHardwareOperationResult } from '../hardware_operations'
+import { LedgerKeyring } from '../hardware/hardwareKeyring'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -48,8 +48,8 @@ export const getERC20Allowance = (
 
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
-    const keyring = getHardwareKeyring(opts.hardware)
-    if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
+    const keyring = getHardwareKeyring(opts.hardware, HardwareCoins.FILECOIN)
+    if (keyring instanceof LedgerKeyring || keyring instanceof TrezorBridgeKeyring) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {

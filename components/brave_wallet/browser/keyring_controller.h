@@ -34,6 +34,7 @@ class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
 class BraveWalletProviderImplUnitTest;
+class FilecoinKeyring;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
@@ -266,6 +267,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;
+  std::unique_ptr<FilecoinKeyring> filecoin_keyring_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 

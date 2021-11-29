@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -633,23 +634,24 @@ void KeyringController::ImportAccount(const std::string& account_name,
                                       const std::string& private_key_hex,
                                       ImportAccountCallback callback) {
   if (account_name.empty() || private_key_hex.empty() || !encryptor_) {
+    LOG(ERROR) << " 1 ";
     std::move(callback).Run(false, "");
     return;
   }
 
   std::vector<uint8_t> private_key;
   if (!base::HexStringToBytes(private_key_hex, &private_key)) {
+    LOG(ERROR) << private_key_hex << " result size: " << private_key.size();
+    std::move(callback).Run(false, "");
+    return;
+  }
+  auto address = filecoin_keyring_->ImportAccount(private_key);// ImportAccountForDefaultKeyring(account_name, private_key);
+  if (address.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
 
-  auto address = ImportAccountForDefaultKeyring(account_name, private_key);
-  if (!address) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  std::move(callback).Run(true, *address);
+  std::move(callback).Run(true, address);
 }
 
 void KeyringController::ImportAccountFromJson(const std::string& account_name,
@@ -1137,6 +1139,9 @@ bool KeyringController::CreateDefaultKeyringInternal(
 
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, kRootPath);
+  filecoin_keyring_ = std::make_unique<FilecoinKeyring>();
+  filecoin_keyring_->ConstructRootHDKey(*seed, kRootPath);
+
   UpdateLastUnlockPref(prefs_);
 
   return true;
