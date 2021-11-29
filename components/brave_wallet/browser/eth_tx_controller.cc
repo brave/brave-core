@@ -171,7 +171,6 @@ void EthTxController::AddUnapprovedTransaction(
 
   auto tx_ptr = std::make_unique<EthTransaction>(*tx);
 
-  // Use default gas price and limit for ETHSend.
   mojom::TransactionType tx_type;
   if (!GetTransactionInfoFromData(ToHex(tx_ptr->data()), &tx_type, nullptr,
                                   nullptr)) {
@@ -182,22 +181,16 @@ void EthTxController::AddUnapprovedTransaction(
     return;
   }
 
-  if (tx_type == mojom::TransactionType::ETHSend) {
-    if (!tx_ptr->gas_limit())
-      tx_ptr->set_gas_limit(kDefaultSendEthGasLimit);
-    if (!tx_ptr->gas_price())
-      tx_ptr->set_gas_price(kDefaultSendEthGasPrice);
+  // Use default gas limit for ETHSend if it is empty.
+  if (tx_type == mojom::TransactionType::ETHSend && !tx_ptr->gas_limit())
+    tx_ptr->set_gas_limit(kDefaultSendEthGasLimit);
 
-    const std::string new_gas_limit = Uint256ValueToHex(tx_ptr->gas_limit());
-    ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
-                                     std::move(callback), true, new_gas_limit);
-    return;
-  }
+  const std::string gas_limit = Uint256ValueToHex(tx_ptr->gas_limit());
 
   if (!tx_ptr->gas_price()) {
     rpc_controller_->GetGasPrice(base::BindOnce(
         &EthTxController::OnGetGasPrice, weak_factory_.GetWeakPtr(), from,
-        tx_data->to, tx_data->value, ToHex(tx_data->data), tx_data->gas_limit,
+        tx_data->to, tx_data->value, ToHex(tx_data->data), gas_limit,
         std::move(tx_ptr), std::move(callback)));
   } else if (!tx_ptr->gas_limit()) {
     rpc_controller_->GetEstimateGas(
@@ -207,8 +200,8 @@ void EthTxController::AddUnapprovedTransaction(
                        weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
                        std::move(callback)));
   } else {
-    ContinueAddUnapprovedTransaction(
-        from, std::move(tx_ptr), std::move(callback), true, tx_data->gas_limit);
+    ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
+                                     std::move(callback), true, gas_limit);
   }
 }
 
@@ -925,19 +918,11 @@ void EthTxController::SpeedupOrCancelTransaction(
       return;
     }
 
-    if (tx_type == mojom::TransactionType::ETHSend) {
-      ContinueSpeedupOrCancelTransaction(
-          meta->from.ToChecksumAddress(),
-          Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
-          std::move(callback), true,
-          Uint256ValueToHex(kDefaultSendEthGasPrice));
-    } else {
-      rpc_controller_->GetGasPrice(base::BindOnce(
-          &EthTxController::ContinueSpeedupOrCancelTransaction,
-          weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
-          Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
-          std::move(callback)));
-    }
+    rpc_controller_->GetGasPrice(base::BindOnce(
+        &EthTxController::ContinueSpeedupOrCancelTransaction,
+        weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
+        Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
+        std::move(callback)));
   }
 }
 
