@@ -4,7 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  TransactionInfo
+  ERCToken,
+  EthereumChain,
+  TransactionInfo,
+  TransactionStatus,
+  TransactionType
 } from '../../constants/types'
 
 export const getMockedTransactionInfo = (): TransactionInfo => {
@@ -25,12 +29,36 @@ export const getMockedTransactionInfo = (): TransactionInfo => {
       maxPriorityFeePerGas: '',
       maxFeePerGas: ''
     },
-    txStatus: 1,
-    txType: 5,
+    txStatus: TransactionStatus.Approved,
+    txType: TransactionType.Other,
     txParams: [],
     txArgs: [],
     createdTime: { microseconds: 0 },
     submittedTime: { microseconds: 0 },
     confirmedTime: { microseconds: 0 }
   }
+}
+
+export const mockNetwork: EthereumChain = {
+  chainId: '0x1',
+  chainName: 'Ethereum Main Net',
+  rpcUrls: ['https://mainnet.infura.io/v3/'],
+  blockExplorerUrls: ['https://etherscan.io/'],
+  symbol: 'ETH',
+  symbolName: 'Ethereum',
+  decimals: 18,
+  iconUrls: [],
+  isEip1559: true
+}
+
+export const mockERC20Token: ERCToken = {
+  contractAddress: 'mockContractAddress',
+  name: 'Dog Coin',
+  symbol: 'DOG',
+  logo: '',
+  isErc20: true,
+  isErc721: false,
+  decimals: 18,
+  visible: true,
+  tokenId: ''
 }
