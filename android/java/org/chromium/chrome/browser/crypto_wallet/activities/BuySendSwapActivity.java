@@ -1202,8 +1202,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mCurrentErcToken.contractAddress = Utils.getContractAddress(
                 mCurrentChainId, mCurrentErcToken.symbol, mCurrentErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath =
-                ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
+        if (mCurrentErcToken.symbol.equals("ETH")) {
+            mCurrentErcToken.logo = "eth.png";
+        }
+        String iconPath = ercToken.logo.isEmpty()
+                ? null
+                : ("file://" + tokensPath + "/" + mCurrentErcToken.logo);
         Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
                 assetFromDropDown, true);
         updateBalance(
@@ -1223,8 +1227,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mCurrentSwapToErcToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
                 mCurrentSwapToErcToken.symbol, mCurrentSwapToErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath =
-                ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
+        if (mCurrentSwapToErcToken.symbol.equals("ETH")) {
+            mCurrentSwapToErcToken.logo = "eth.png";
+        }
+        String iconPath = ercToken.logo.isEmpty()
+                ? null
+                : ("file://" + tokensPath + "/" + mCurrentSwapToErcToken.logo);
         Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
                 assetToDropDown, true);
         updateBalance(

@@ -175,6 +175,9 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                                 // Amount in current crypto currency/token
                                 cryptoBalanceString);
 
+                if (userAsset.symbol.equals("ETH")) {
+                    userAsset.logo = "eth.png";
+                }
                 walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
                 walletListItemModel.setErcToken(userAsset);
                 walletListItemModelList.add(walletListItemModel);
