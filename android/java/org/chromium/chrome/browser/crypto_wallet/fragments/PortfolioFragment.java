@@ -203,7 +203,7 @@ public class PortfolioFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         assert getActivity() != null;
 
-        Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
+        TextView editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
             String chainName = mSpinner.getSelectedItem().toString();
             String chainId = Utils.getNetworkConst(getActivity(), chainName);

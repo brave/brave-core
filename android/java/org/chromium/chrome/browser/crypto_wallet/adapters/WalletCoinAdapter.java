@@ -168,6 +168,12 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         } else if (mType == AdapterType.ACCOUNTS_LIST) {
             Utils.setBlockiesBitmapResource(
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
+            holder.itemView.setOnLongClickListener(v -> {
+                Utils.saveTextToClipboard(context, walletListItemModel.getSubTitle(),
+                        R.string.address_has_been_copied);
+
+                return true;
+            });
         }
     }
 

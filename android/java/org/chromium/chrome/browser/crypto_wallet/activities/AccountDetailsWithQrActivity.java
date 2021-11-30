@@ -65,8 +65,9 @@ public class AccountDetailsWithQrActivity
         accountValueText.setText(Utils.stripAccountAddress(mAddress));
 
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
-        accountCopyImage.setOnClickListener(
-                v -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress));
+        accountCopyImage.setOnClickListener(v
+                -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress,
+                        R.string.address_has_been_copied));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText(mName);
