@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index bc7ef9408327182588002f1241b456a3e7126301..1acbd5932b9ac97be7100480f72b9ca094e39dee 100644
+index e917d06dc4b30e400e85d7e6235c03d814a8428e..0b71b05ff29d4b5351006bf327bc144e55328361 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -70,7 +70,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -11,8 +11,8 @@ index bc7ef9408327182588002f1241b456a3e7126301..1acbd5932b9ac97be7100480f72b9ca0
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -105,7 +105,7 @@ export class SettingsPersonalizationOptionsElement extends
- 
+@@ -106,7 +106,7 @@ export class SettingsPersonalizationOptionsElement extends
+   pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
 -  // <if expr="_google_chrome and not chromeos">
@@ -20,7 +20,7 @@ index bc7ef9408327182588002f1241b456a3e7126301..1acbd5932b9ac97be7100480f72b9ca0
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
-@@ -127,7 +127,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -128,7 +128,7 @@ export class SettingsPersonalizationOptionsElement extends
    ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index bc7ef9408327182588002f1241b456a3e7126301..1acbd5932b9ac97be7100480f72b9ca0
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -159,7 +159,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -160,7 +160,7 @@ export class SettingsPersonalizationOptionsElement extends
          '#driveSuggestControl');
    }
  
