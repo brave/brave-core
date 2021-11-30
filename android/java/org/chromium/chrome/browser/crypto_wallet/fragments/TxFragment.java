@@ -227,7 +227,7 @@ public class TxFragment extends Fragment {
                         if (!mIsEIP1559) {
                             EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
                             mTxInfo.txData.baseData.gasLimit =
-                                    Utils.toHexWeiFromGWEI(gasLimitEdit.getText().toString());
+                                    Utils.toHexGWeiFromGWEI(gasLimitEdit.getText().toString());
                             EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                             mTxInfo.txData.baseData.gasPrice =
                                     Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
@@ -263,7 +263,7 @@ public class TxFragment extends Fragment {
                                         dialog.findViewById(R.id.per_gas_tip_limit_edit);
                                 EditText perGasPriceLimitEdit =
                                         dialog.findViewById(R.id.per_gas_price_limit_edit);
-                                gasLimit = Utils.toHexWeiFromGWEI(
+                                gasLimit = Utils.toHexGWeiFromGWEI(
                                         gasAmountLimitEdit.getText().toString());
                                 maxPriorityFeePerGas =
                                         Utils.toHexWei(perGasTipLimitEdit.getText().toString(), 9);
@@ -327,7 +327,7 @@ public class TxFragment extends Fragment {
             if (gasAmountLimitEdit.hasFocus() || perGasTipLimitEdit.hasFocus()
                     || perGasPriceLimitEdit.hasFocus()) {
                 fillMaxFee(mDialog.findViewById(R.id.maximum_fee_msg),
-                        Utils.toHexWeiFromGWEI(gasAmountLimitEdit.getText().toString()),
+                        Utils.toHexGWeiFromGWEI(gasAmountLimitEdit.getText().toString()),
                         Utils.toHexWei(perGasPriceLimit, 9));
             }
         }
