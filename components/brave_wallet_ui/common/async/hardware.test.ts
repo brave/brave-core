@@ -19,7 +19,7 @@ import { getLocale } from '../../../common/locale'
 import { Success, Unsuccessful } from 'trezor-connect'
 import { getMockedTransactionInfo } from '../constants/mocks'
 import { SignatureVRS, SignHardwareTransactionOperationResult, SignHardwareTransactionType } from '../hardware/types'
-import { HardwareVendor } from '../api/getKeyringsByType'
+import { HardwareVendor } from '../api/hardware_keyrings'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 

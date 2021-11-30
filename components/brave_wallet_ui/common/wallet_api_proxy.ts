@@ -6,7 +6,7 @@
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from '../common/async/types'
-import { getBraveKeyring } from './api/getKeyringsByType'
+import { getBraveKeyring } from './api/hardware_keyrings'
 // Provide access to all the generated types.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 

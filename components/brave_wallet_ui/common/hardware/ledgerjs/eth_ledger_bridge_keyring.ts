@@ -16,7 +16,7 @@ import {
   SignHardwareTransactionOperationResult
 } from '../../../common/hardware_operations'
 import { LedgerKeyring } from '../hardwareKeyring'
-import { HardwareVendor } from '../../api/getKeyringsByType'
+import { HardwareVendor } from '../../api/hardware_keyrings'
 import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
@@ -103,7 +103,7 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
       if (!unlocked.success || !this.app) {
         return unlocked
       }
-        const eth: Eth = this.app
+      const eth: Eth = this.app
       const messageHex = Buffer.from(message).toString('hex')
       const data = await eth.signPersonalMessage(path, messageHex)
       const signature = this.createMessageSignature(data)

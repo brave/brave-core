@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { HardwareVendor } from '../api/getKeyringsByType'
+import { HardwareVendor } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult, HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
 
 export abstract class HardwareKeyring {

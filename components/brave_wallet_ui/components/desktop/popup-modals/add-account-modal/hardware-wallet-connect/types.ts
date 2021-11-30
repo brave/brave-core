@@ -5,7 +5,7 @@
 
 import { HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths } from '../../../../../common/hardware/types'
 import { LEDGER_HARDWARE_VENDOR, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { HardwareVendor } from 'components/brave_wallet_ui/common/api/getKeyringsByType'
+import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',

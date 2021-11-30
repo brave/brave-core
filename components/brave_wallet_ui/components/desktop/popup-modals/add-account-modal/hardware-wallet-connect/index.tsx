@@ -22,7 +22,7 @@ import {
 import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import HardwareWalletAccountsList from './accounts-list'
 import { HardwareDerivationScheme, HardwareWalletAccount, LedgerDerivationPaths } from '../../../../../common/hardware/types'
-import { HardwareVendor } from 'components/brave_wallet_ui/common/api/getKeyringsByType'
+import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>

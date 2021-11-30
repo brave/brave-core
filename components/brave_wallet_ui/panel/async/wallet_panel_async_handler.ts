@@ -49,7 +49,7 @@ import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { TrezorErrorsCodes } from '../../common/hardware/trezor/trezor-messages'
-import { HardwareVendor } from '../../common/api/getKeyringsByType'
+import { HardwareVendor } from '../../common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
 
@@ -173,11 +173,10 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
 
 handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
-  if (!found || !found.hardware) {
-    return
+  if (found && found.hardware) {
+    const info: HardwareInfo = found.hardware
+    await cancelHardwareOperation(info.vendor as HardwareVendor)
   }
-  const info: HardwareInfo = found.hardware
-  await cancelHardwareOperation(info.vendor as HardwareVendor)
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
   // and therefore forfeit connecting to the hardware wallet.
   await store.dispatch(PanelActions.navigateToMain())
@@ -401,7 +400,7 @@ handler.on(PanelActions.openWalletApps.getType(), async (store) => {
 handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
     if (chrome.runtime.lastError) {
-       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
 })

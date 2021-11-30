@@ -31,7 +31,7 @@ import {
 } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
 import { TrezorKeyring } from '../hardwareKeyring'
-import { HardwareVendor } from '../../api/getKeyringsByType'
+import { HardwareVendor } from '../../api/hardware_keyrings'
 import { TrezorDerivationPaths } from '../types'
 
 export default class TrezorBridgeKeyring extends TrezorKeyring {
