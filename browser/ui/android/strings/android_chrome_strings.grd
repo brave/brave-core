@@ -329,11 +329,62 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_OFF" desc="Summary for the Private tab lock toggle in Settings which asks the user to turn on screen lock in Android settings if it's off. Clicking on the text takes the user to Android settings.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Turn on screen lock in Android settings<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
-      <message name="IDS_PRELOAD_PAGES_TITLE" desc="Title for a checkbox in Settings that controls pages preloading and informs the user about the data shared by this feature.">
-        Preload pages for faster browsing and searching
+      <message name="IDS_PREFS_SECTION_PRELOAD_PAGES_TITLE" desc="Title for the Preload Pages section. This section allows the user to control whether Brave will preload pages that it thinks the user is likely to load in the future. [CHAR_LIMIT=32]">
+        Preload Pages
       </message>
-      <message name="IDS_PRELOAD_PAGES_SUMMARY" desc="Summary for a checkbox in Settings that controls pages preloading and informs the user about the data shared by this feature.">
-        Preloads pages that Brave thinks you might visit. To do this, Brave may use cookies, if you allow cookies, and may encrypt and send pages through Brave to hide your identity from sites.
+      <message name="IDS_PRELOAD_PAGES_TITLE" desc="Title for a section in Settings that controls pages preloading and informs the user about the data shared by this feature.">
+        Preload pages
+      </message>
+      <message name="IDS_PRELOAD_PAGES_SUMMARY" desc="Summary for a section in Settings that controls pages preloading and informs the user about the data shared by this feature.">
+        You can browse and search faster when Brave preloads pages that it thinks you might visit
+      </message>
+      <message name="IDS_PRELOAD_PAGES_NO_PRELOADING_TITLE" desc="Name of the no preloading option for the Preload Pages settings page. This option disables preloading pages that Brave believes the user is likely to navigate to. [CHAR_LIMIT=32]">
+        No preloading
+      </message>
+      <message name="IDS_PRELOAD_PAGES_NO_PRELOADING_SUMMARY" desc="Short explanation of what the no preloading mode does in the Preload Pages setting.">
+        Pages load only after you open them.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Brave believes the user is likely to navigate to. [CHAR_LIMIT=32]">
+        Standard preloading
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_SUBTITLE" desc="Subtitle for Preload Pages standard preloading mode. Informs the user about which preloading setting is being described on this page.">
+        Standard preloading:
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_SUMMARY" desc="Short explanation of what the standard preloading mode does in the Preload Pages setting.">
+        Some of the pages you visit are preloaded. Pages may be preloaded through Brave servers when linked from a Brave site.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_BULLET_ONE" desc="First bullet point under the Preload Pages standard preloading mode. Informs the user about what the standard preloading setting does.">
+        Preloads pages that Brave thinks you are likely to visit.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_BULLET_TWO" desc="Second bullet point under the Preload Pages standard preloading mode. Informs the user about what the standard preloading setting does.">
+        If you allow cookies, Brave may use them for preloading.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_BULLET_THREE" desc="Third bullet point under the Preload Pages standard preloading mode. Informs the user about what the standard preloading setting does.">
+        When a Brave site asks to privately preload links on their page, Brave encrypts and preloads pages through Brave servers without cookies. This hides your identity from the preloaded site.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_BULLET_FOUR" desc="Fourth bullet point under the Preload Pages standard preloading mode. Informs the user about what the standard preloading setting does.">
+        Because the preloaded pages are encrypted, and the site linking to the pages is a Brave site, Brave servers don’t receive new information when privately preloading these pages.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_TITLE" desc="Name of the extended preloading option for the Preload Pages settings page. This option enables more extensive preloading of pages that Brave believes the user is likely to navigate to. [CHAR_LIMIT=32]">
+        Extended preloading
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_SUBTITLE" desc="Subtitle for Preload Pages extended preloading mode. Informs the user about which preloading setting is being described on this page.">
+        Extended preloading:
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_SUMMARY" desc="Short explanation of what the extended preloading mode does in the Preload Pages setting.">
+        More pages are preloaded. Pages may be preloaded through Brave servers when requested by other sites.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_BULLET_ONE" desc="First bullet point under the Preload Pages extended preloading mode. Informs the user about what the extended preloading setting does.">
+        More frequently preloads pages that Brave thinks you are likely to visit. This setting may result in increased data use.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_BULLET_TWO" desc="Second bullet point under the Preload Pages extended preloading mode. Informs the user about what the extended preloading setting does.">
+        If you allow cookies, Brave may use them for preloading.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_BULLET_THREE" desc="Third bullet point under the Preload Pages extended preloading mode. Informs the user about what the extended preloading setting does.">
+        When a site asks to privately preload links on their page, Brave encrypts and preloads pages through Brave servers without cookies. This hides your identity from the preloaded site.
+      </message>
+      <message name="IDS_PRELOAD_PAGES_EXTENDED_PRELOADING_BULLET_FOUR" desc="Fourth bullet point under the Preload Pages extended preloading mode. Informs the user about what the extended preloading setting does.">
+        Because the preloaded pages are encrypted, Brave will not learn anything about the preloaded page content. Brave servers will learn which sites are privately preloaded. This information is only used to preload the pages, and is not linked to other information from your Brave sync chain.
       </message>
       <message name="IDS_URL_KEYED_ANONYMIZED_DATA_TITLE" desc="Title for a checkbox in Settings that controls non-personalized URL collection and informs the user about the data shared by this feature.">
         Make searches and browsing better
@@ -2734,7 +2785,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Signin First Run strings -->
-      <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Text for the dismiss button on the welcome sign-in screen. By clicking this button users will continue without signing in,">
+      <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Button on the very first screen of Brave to continue without signing into Brave. Ensure consistency with OneBrave strings while still omitting “Brave” (see e.g. TC ID 5336438894576002929).">
         Use without an account
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second part through a line break.">
@@ -2743,19 +2794,22 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_FRE_FOOTER_SUPERVISED_USER" desc="The text is displayed in a footer on the very first screen of Brave. The link 'Terms of Service' opens the Brave Terms of Service. The link 'Privacy Policy' opens the Brave Privacy Policy. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second sentence through a line break.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph> and <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy\u00A0Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title for the FRE footer dialog">
+      <message name="IDS_SIGNIN_FRE_FOOTER_SUPERVISED_USER" desc="The text is displayed in a footer on the very first screen of Brave. The link 'Terms of Service' opens the Brave Terms of Service. The link 'Privacy Policy' opens the Brave Privacy Policy. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second sentence through a line break.">
+        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph> and <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy\u00A0Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
+      </message>
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title of the dialog where users can change their Brave metric sharing settings, like usage data. This appears when they open the Brave app for the first time on their phone.">
         Make Brave better
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_HEADER" desc="Header for the first section in FRE uma dialog">
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_HEADER" desc="Header of the section that shows the benefits for users if they turn on the metric sharing option. This header implies 'What you get from Brave' but we have omitted 'from Brave' for brevity.">
         What you get
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Body of the first section in FRE uma dialog">
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the concrete benefits users will get if they turn on the metrics sharing option.">
         New features and improved performance
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header for the second section in FRE uma dialog">
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header of the section that shows the data that users share with Brave if they turn on the metric sharing option.">
         What you share with Brave
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY" desc="Body of the second section in FRE uma dialog">
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY" desc="Text that describes the concrete data that users share with Brave if they turn on the metric sharing option.">
         Info about your Brave usage that can\u2019t be tied to you\n\nRelevant data from rare Brave crashes, which may include some personal info\n\nIf you turn on sync, metrics may also include info about URLs you visit
       </message>
 
@@ -2821,8 +2875,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Personalized Signin Promos Strings -->
-      <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button that the user can press to login without asking the password and continue using Brave with this acccount.">
-        Continue as <ph name="USER_FULL_NAME">%1$s<ex>John Doe</ex></ph>
+      <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button to sign into Brave with the displayed account and without having to reenter a password. ‘John’ is replaced with the user’s given name, or the user’s full name if the given name is not available. Ensure consistency with related OneBrave sign-in buttons (see e.g. TC ID 5569230012177947065).">
+        Continue as <ph name="USER_FULL_NAME">%1$s<ex>John</ex></ph>
       </message>
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ACCOUNT" desc="Button that the user can press if they are not the profile that Brave found (opposite of 'Continue as Joe Doe').">
         Not <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>?
@@ -3481,7 +3535,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IPH_SHOPPING_LIST_SAVE_FLOW" desc="In-product help text that notifies a user that they can organize their saved products from a folder in bookmarks.">
         Organize your tracked products in Bookmarks
-      </message> 
+      </message>
       <message name="IDS_IPH_SHOPPING_LIST_SAVE_FLOW_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="In-product help accessibility text that notifies a user that they can organize their saved products from a folder in bookmarks.">
         Organize your tracked products in Bookmarks from the folder icon
       </message>
@@ -4990,6 +5044,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_LIGHTWEIGHT_REACTIONS_FILENAME_PREFIX" desc="The file name prefix of the shared lightweight reaction. Followed by the timestamp.">
         chrome_emotion_gif_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
+      </message>
+
+      <message name="IDS_LIGHTWEIGHT_REACTIONS_ERROR_ASSET_FETCH" desc="Message displayed in a toast when the Lightweight Reactions assets cannot be downloaded from the server.">
+        Can’t download reactions. Try again.
+      </message>
+
+      <message name="IDS_LIGHTWEIGHT_REACTIONS_ERROR_SCREENSHOT" desc="Message displayed in a toast when taking a screenshot fails during Lightweight Reactions initialization.">
+        Can’t take a screenshot. Try again.
       </message>
 
       <!-- Share Screenshot strings -->

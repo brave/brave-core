@@ -1708,7 +1708,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_STATUS_STARTING" desc="When starting a download, let the user know we're starting the download.">
         Starting...
       </message>
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_TITLE" desc="The title of a download notification: the current download status is in progress.">
                  Downloading <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
         </message>
@@ -1887,19 +1887,19 @@ are declared in tools/grit/grit_rule.gni.
         This file is encrypted. Ask its owner to decrypt.
       </message>
 
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_PROMPT_BLOCKED_MIXED_DOWNLOAD_TITLE" desc="In the download notification, a title of the message shown on a download blocked for being insecure.">
           Insecure download blocked
         </message>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_PROMPT_BLOCKED_MALICIOUS_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown for blocked download">
           Dangerous download blocked
         </message>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_PROMPT_SEND_TO_SAFEBROWSING_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown indicating that the file may be malicious and Safe Browsing recommends sending the file to Brave">
           Scan file before opening?
         </message>
@@ -4357,11 +4357,8 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <if expr="chromeos">
-        <message name="IDS_EXTENSION_NOTIFICATION_INSTALLED" desc="Notification message shown in the message center when an application is successfully install.">
-          Successfully installed
-        </message>
-        <message name="IDS_EXTENSION_NOTIFICATION_DISPLAY_SOURCE" desc="Notification display source shown in the message center when an application is successfully installed.">
-          Extensions
+        <message name="IDS_EXTENSION_NOTIFICATION_INSTALLED" desc="Toast message shown when an application is successfully installed.">
+          <ph name="APP">$1<ex>Brave Keep</ex></ph> installed
         </message>
       </if>
 
@@ -6427,6 +6424,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
          To save memory, Brave removed some content
       </message>
 
+      <!-- Tailored Security Prompt for Unconsented users -->
+      <message name="IDS_TAILORED_SECURITY_UNCONSENTED_MESSAGE_TITLE" desc="The title of the message asking if the user wants to enable Enhanced Safe Browsing">
+         Also turn on Enhanced Safe Browsing for this Brave profile?
+      </message>
+      <message name="IDS_TAILORED_SECURITY_UNCONSENTED_MESSAGE_ACCEPT" desc="The text on the 'accept' button when asking if the user wants to enable Enhanced Safe Browsing">
+        Turn on
+      </message>
+
       <!-- Password Manager -->
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
@@ -8161,12 +8166,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COOKIES_COOKIES" desc="Label for folder under which a list of cookies appear">
         Cookies
       </message>
-      <message name="IDS_COOKIES_APPLICATION_CACHES" desc="Label for folder under which a list of application caches (name of an HTML standard) are stored">
-        Application caches
-      </message>
-      <message name="IDS_COOKIES_APPLICATION_CACHE" desc="The text shown when there is an Application Cache (name of an HTML standard) in the Cookies table">
-        Application cache
-      </message>
       <message name="IDS_COOKIES_WEB_DATABASES" desc="Label for the folder under which a list of web databases (name of an HTML standard) are displayed">
         Web databases
       </message>
@@ -8440,6 +8439,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
         Settings
       </message>
+      <message name="IDS_SYNC_CONFIRMATION_REFRESHED_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation screen to open sync settings">
+        Sync settings
+      </message>
+      <if expr="lacros">
+        <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS" desc="Title of the sync confirmation dialog/screen on lacros.">
+          Brave browser sync is on
+        </message>
+        <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_TITLE_LACROS" desc="Text in the information about sync on the sync confirmation dialog/screen on lacros.">
+          Your bookmarks, passwords, history, and more are synced on all your devices
+        </message>
+      </if>
 
       <!--- Sync Confirmation section of the tab modal signin flow when sync is disabled by policy -->
       <message name="IDS_SYNC_DISABLED_CONFIRMATION_CHROME_SYNC_TITLE" desc="Title of the chrome sync section of the sync confirmation dialog in the tab modal signin flow when sync is disabled by policy">
@@ -10522,9 +10532,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
           Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to <ph name="USB_VM_NAME">$2<ex>Linux</ex></ph>
       </message>
-      <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_LINUX_PLUGIN_VM" desc="Content for notification shown to the user when a USB device gets plugged in and both Parallels and Linux are enabled. Do not translate 'Parallels Desktop' or 'Linux'.">
-          Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to Linux or Parallels Desktop
-      </message>
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_TITLE" desc="Title for notification shown to the user when a USB device gets plugged in.">
         USB device detected
       </message>
@@ -10536,6 +10543,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_CROSUSB_UNKNOWN_DEVICE" desc="String describing an unknown device in notification shown when a USB device gets plugged in.">
         USB device
+      </message>
+      <message name="IDS_CROSUSB_NOTIFICATION_ARCVM" desc="Name for ARCVM in USB attach notification when a USB device gets plugged in.">
+        Android apps
+      </message>
+      <message name="IDS_CROSUSB_NOTIFICATION_ARCVM_BUTTON" desc="Button text of name for ARCVM in USB attach notification when a USB device gets plugged in.">
+        Android
+      </message>
+      <message name="IDS_CROSUSB_NOTIFICATION_OR" desc="Word between multiple VM names in notification shown to user when a USB device gets plugged in.">
+        or
       </message>
     </if>
 
