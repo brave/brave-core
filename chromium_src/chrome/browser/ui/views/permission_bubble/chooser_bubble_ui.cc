@@ -43,6 +43,9 @@ class BraveBubbleDialogDelegateView : public views::BubbleDialogDelegateView {
       return;
     content::WebContents* active =
         browser->tab_strip_model()->GetActiveWebContents();
+    if (!active) {
+      return;
+    }
     auto* tab_helper =
         brave_wallet::BraveWalletTabHelper::FromWebContents(active);
     if (tab_helper)
