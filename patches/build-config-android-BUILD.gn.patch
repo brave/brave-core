@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 4231cd1c29cc7a9728502378f868d74c59c3cc1a..1d1f7169451846921e75984dbcd76bc2105be318 100644
+index 1f2c2e5c028679ad869cc2f7e21527f26f58aa16..61408563a603f2d0b351d3ff1d9978356b3fe521 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -46,6 +46,7 @@ config("compiler") {
@@ -9,4 +9,4 @@ index 4231cd1c29cc7a9728502378f868d74c59c3cc1a..1d1f7169451846921e75984dbcd76bc2
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
    if (current_cpu == "arm64") {
-     # For outline atomics on AArch64 (can't pass this unconditionally
+     if (arm_control_flow_integrity == "standard") {

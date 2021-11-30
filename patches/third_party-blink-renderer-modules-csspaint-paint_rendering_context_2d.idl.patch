@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index 10147c2adf24a0265e3ae35b9a396844de836665..6c03db20fdd58d69ca393a534e7738c30d0d6886 100644
+index 0bb2a1a13723610332a3db42d921e739bca1e6b6..2080cccd24888d11b97fe107160d05437f992900 100644
 --- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 @@ -60,10 +60,10 @@
@@ -16,4 +16,4 @@ index 10147c2adf24a0265e3ae35b9a396844de836665..6c03db20fdd58d69ca393a534e7738c3
 +    [CallWith=ScriptState, HighEntropy, Measure] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
  
      // drawing images
-     [CallWith=ScriptState, RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);
+     [RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);
