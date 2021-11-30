@@ -323,15 +323,14 @@ const PortfolioTransactionItem = (props: Props) => {
             <CoinsIcon />
           </CoinsButton>
         </TransactionFeesTooltip>
-        {transactionDetails.status !== TransactionStatus.Rejected &&
+
+        {transactionDetails.status !== TransactionStatus.Rejected ? (
           <MoreButton onClick={onShowTransactionPopup}>
             <MoreIcon />
           </MoreButton>
-        }
-
-        {transactionDetails.status === TransactionStatus.Rejected &&
-          <RejectedTransactionSpacer></RejectedTransactionSpacer>
-        }
+        ) : (
+          <RejectedTransactionSpacer />
+        )}
 
         {showTransactionPopup &&
           <TransactionPopup>
