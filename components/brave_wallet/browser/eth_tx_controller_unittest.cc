@@ -551,8 +551,11 @@ TEST_F(EthTxControllerUnitTest,
   auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
+  uint256_t gas_price_value;
+  EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
+  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
+
   // Default value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_price(), kDefaultSendEthGasPrice);
   EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
 }
 
@@ -574,26 +577,17 @@ TEST_F(EthTxControllerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
+  uint256_t gas_price_value;
+  EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
+  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
+
   // Default value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_price(), kDefaultSendEthGasPrice);
   EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
 
   // Fail if transaction is not found.
   callback_called = false;
   eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
-      "not_exist", Uint256ValueToHex(kDefaultSendEthGasPrice),
-      Uint256ValueToHex(kDefaultSendEthGasLimit),
-      base::BindLambdaForTesting([&](bool success) {
-        EXPECT_FALSE(success);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  // Fail if passing an empty gas limit.
-  callback_called = false;
-  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
-      tx_meta_id, "", Uint256ValueToHex(kDefaultSendEthGasLimit),
+      "not_exist", "0x1", Uint256ValueToHex(kDefaultSendEthGasLimit),
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
@@ -604,8 +598,18 @@ TEST_F(EthTxControllerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   // Fail if passing an empty gas price.
   callback_called = false;
   eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
-      tx_meta_id, Uint256ValueToHex(kDefaultSendEthGasPrice), "",
+      tx_meta_id, "", Uint256ValueToHex(kDefaultSendEthGasLimit),
       base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty gas limit.
+  callback_called = false;
+  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x1", "", base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
       }));
@@ -1266,7 +1270,7 @@ TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   // Fail if passing an empty gas limit.
   callback_called = false;
   eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
-      tx_meta_id, "", "0x2", "0x3",
+      tx_meta_id, "0x1", "0x2", "",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
@@ -1277,7 +1281,7 @@ TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   // Fail if passing an empty max_priority_fee_per_gas.
   callback_called = false;
   eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
-      tx_meta_id, "0x1", "", "0x3",
+      tx_meta_id, "", "0x2", "0x3",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
@@ -1288,7 +1292,7 @@ TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   // Fail if passing an empty max_fee_per_gas.
   callback_called = false;
   eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
-      tx_meta_id, "0x1", "0x2", "",
+      tx_meta_id, "0x1", "", "0x3",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
@@ -1453,27 +1457,35 @@ TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
 }
 
 TEST_F(EthTxControllerUnitTest, SpeedupTransaction) {
-  // Speedup EthSend with gas price + 10% < default gas price should use
-  // default gas price for EthSend.
+  // Speedup EthSend with gas price + 10% < eth_getGasPrice should use
+  // eth_getGasPrice for EthSend.
+  //
+  //    gas price       => 0xa (10 wei)
+  //    gas price + 10% => 0xb (11 wei)
+  //    eth_getGasPrice => 0x17fcf18321 (103 Gwei)
   std::string orig_meta_id = "001";
   std::string tx_meta_id;
   DoSpeedupOrCancelTransactionSuccess(
-      "0x05", "0x1", std::vector<uint8_t>(), orig_meta_id,
+      "0x05", "0xa", std::vector<uint8_t>(), orig_meta_id,
       mojom::TransactionStatus::Submitted, false, &tx_meta_id);
 
   auto expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
-  expected_tx_meta->tx->set_gas_price(150000000000ULL);  // 150 Gwei
+  expected_tx_meta->tx->set_gas_price(103027933985ULL);  // 0x17fcf18321
   auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
 
   // Speedup with gas price + 10% < eth_getGasPrice, new gas_price should be
-  // 0x17fcf18321 from eth_getGasPrice
+  // from eth_getGasPrice
+  //
+  //    gas price       => 0xa (10 wei)
+  //    gas price + 10% => 0xb (11 wei)
+  //    eth_getGasPrice => 0x17fcf18321 (103 Gwei)
   orig_meta_id = "002";
-  DoSpeedupOrCancelTransactionSuccess(
-      "0x06", "0x17fcf1832", data_, orig_meta_id,
-      mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+  DoSpeedupOrCancelTransactionSuccess("0x06", "0xa", data_, orig_meta_id,
+                                      mojom::TransactionStatus::Submitted,
+                                      false, &tx_meta_id);
 
   expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
@@ -1484,14 +1496,18 @@ TEST_F(EthTxControllerUnitTest, SpeedupTransaction) {
 
   // Speedup with original gas price + 10% > eth_getGasPrice should use
   // original gas price + 10% as the new gas price.
+  //
+  //    gas price       => 0x174876e800 (100 Gwei)
+  //    gas price + 10% => 0x199c82cc00 (110 Gwei)
+  //    eth_getGasPrice => 0x17fcf18321 (103 Gwei)
   orig_meta_id = "003";
   DoSpeedupOrCancelTransactionSuccess(
-      "0x07", "0x17fcf18322", data_, orig_meta_id,
+      "0x07", "0x174876e800", data_, orig_meta_id,
       mojom::TransactionStatus::Submitted, false, &tx_meta_id);
 
   expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
-  expected_tx_meta->tx->set_gas_price(113330727384ULL);  // 0x17fcf18322 * 1.1
+  expected_tx_meta->tx->set_gas_price(110000000000ULL);  // 0x174876e800 * 1.1
   tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
@@ -1556,8 +1572,12 @@ TEST_F(EthTxControllerUnitTest, Speedup1559Transaction) {
 }
 
 TEST_F(EthTxControllerUnitTest, CancelTransaction) {
-  // Cancel with original gas price + 10% > default gas price should use
+  // Cancel with original gas price + 10% > eth_getGasPrice should use
   // original gas price + 10% as the new gas price.
+  //
+  //    gas price       => 0x2540BE4000 (160 Gwei)
+  //    gas price + 10% => 0x28fa6ae000 (176 Gwei)
+  //    eth_getGasPrice => 0x17fcf18321 (103 Gwei)
   std::string orig_meta_id = "001";
   std::string tx_meta_id;
   DoSpeedupOrCancelTransactionSuccess(
@@ -1575,8 +1595,12 @@ TEST_F(EthTxControllerUnitTest, CancelTransaction) {
   EXPECT_EQ(tx_meta->tx->value(), 0u);
   EXPECT_TRUE(tx_meta->tx->data().empty());
 
-  // Cancel with original gas price + 10% < default gas price should use
-  // default gas price as the new gas price.
+  // Cancel with original gas price + 10% < eth_getGasPrice should use
+  // eth_getGasPrice as the new gas price.
+  //
+  //    gas price       => 0xa (10 wei)
+  //    gas price + 10% => 0xb (11 wei)
+  //    eth_getGasPrice => 0x17fcf18321 (103 Gwei)
   orig_meta_id = "002";
   DoSpeedupOrCancelTransactionSuccess("0x07", "0x1", data_, orig_meta_id,
                                       mojom::TransactionStatus::Submitted, true,
@@ -1588,7 +1612,7 @@ TEST_F(EthTxControllerUnitTest, CancelTransaction) {
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx->nonce(), orig_tx_meta->tx->nonce());
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), "0x7");
-  EXPECT_EQ(tx_meta->tx->gas_price(), 150000000000ULL);  // 150 gwei
+  EXPECT_EQ(tx_meta->tx->gas_price(), 0x17fcf18321ULL);  // 0x17fcf18321
   EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
   EXPECT_EQ(tx_meta->tx->value(), 0u);
   EXPECT_TRUE(tx_meta->tx->data().empty());

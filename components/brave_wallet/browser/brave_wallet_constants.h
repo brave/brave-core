@@ -19,7 +19,6 @@ namespace brave_wallet {
 extern const char kAssetRatioBaseURL[];
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
-constexpr uint256_t kDefaultSendEthGasPrice = 150000000000ULL;  // 150 Gwei
 constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
 constexpr uint256_t kDefaultERC721TransferGasLimit = 800000;
 constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
