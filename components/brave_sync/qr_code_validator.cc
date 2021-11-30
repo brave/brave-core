@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -22,6 +24,7 @@ namespace {
 static constexpr base::TimeDelta kIntervalForValidForTooLong =
     base::Minutes(60);
 static constexpr size_t kSeedBytesCount = 32u;
+static constexpr size_t kPassphraseWordsCount = 24u;
 static constexpr char kQRv1SunsetDate[] = "Sat, 1 Jan 2022 00:00:00 GMT";
 
 }  // namespace
@@ -97,6 +100,15 @@ bool QrCodeDataValidator::IsValidSeedHex(const std::string& seed_hex) {
   std::string sync_code_words =
       brave_sync::crypto::PassphraseFromBytes32(bytes);
   if (sync_code_words.empty()) {
+    return false;
+  }
+
+  const std::vector<base::StringPiece> words = base::SplitStringPiece(
+      sync_code_words, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
+
+  if (words.size() != kPassphraseWordsCount) {
+    NOTREACHED() << "Passphrase words number is " << words.size();
     return false;
   }
 

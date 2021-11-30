@@ -21,12 +21,6 @@
 //   "sync_code_hex" : "<current hex code>",
 //   "not_after": "1637080050"
 // }
-// or
-// {
-//   "version": 2,
-//   "sync_code_hex" : "<current hex code>",
-//   "not_after": "1637080050"
-// }
 
 namespace brave_sync {
 
@@ -79,46 +73,38 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
   auto qr_data = std::unique_ptr<QrCodeData>(new QrCodeData());
 
   absl::optional<base::Value> value = base::JSONReader::Read(json_string);
-  if (!value || !value->is_dict()) {
-    VLOG(1) << "Invalid JSON";
+  if (!value) {
+    VLOG(1) << "Could not parse string " << json_string;
     return nullptr;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    VLOG(1) << "Invalid JSON";
+  if (!value->is_dict()) {
+    VLOG(1) << "Invalid JSON: " << *value;
     return nullptr;
   }
 
-  const base::Value* version_value = dictionary->FindKey("version");
+  const std::string* version_value = value->FindStringKey("version");
   if (!version_value) {
     VLOG(1) << "Missing version";
     return nullptr;
   }
 
-  if (version_value->is_string()) {
-    int version;
-    if (!base::StringToInt(version_value->GetString(), &version)) {
-      VLOG(1) << "Version has wrong format";
-      return nullptr;
-    }
-    qr_data->version = version;
-  } else if (version_value->is_int()) {
-    qr_data->version = version_value->GetInt();
-  } else {
+  int version;
+  if (!base::StringToInt(*version_value, &version)) {
     VLOG(1) << "Version has wrong format";
     return nullptr;
   }
+  qr_data->version = version;
 
   const std::string* sync_code_hex_value =
-      dictionary->FindStringKey("sync_code_hex");
+      value->FindStringKey("sync_code_hex");
   if (!sync_code_hex_value) {
     VLOG(1) << "Missing sync code hex";
     return nullptr;
   }
   qr_data->sync_code_hex = *sync_code_hex_value;
 
-  const std::string* not_after_string = dictionary->FindStringKey("not_after");
+  const std::string* not_after_string = value->FindStringKey("not_after");
   if (!not_after_string) {
     VLOG(1) << "Missing not after time";
     return nullptr;

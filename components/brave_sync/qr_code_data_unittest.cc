@@ -32,7 +32,7 @@ TEST(QrCodeData, Serialization) {
   const std::string json_string1 =
       R"(
 {
-  "version": 2,
+  "version": "2",
   "sync_code_hex" : "current hex code",
   "not_after": "1637080050"
 }

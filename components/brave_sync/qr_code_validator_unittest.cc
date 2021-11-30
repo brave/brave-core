@@ -110,42 +110,42 @@ TEST(QrCodeDataValidator, NotWellFormed) {
 
   // clang-format off
   std::string version_too_small =
-      "{ \"version\"       : 1,"
+      "{ \"version\"       : \"1\","
       "  \"sync_code_hex\" : " SEED_HEX_QUOTES ","
       "  \"not_after\"     : " NOT_AFTER_STR_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(version_too_small);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kVersionDeprecated);
 
   std::string version_too_new =
-      "{ \"version\"       : 3,"
+      "{ \"version\"       : \"3\","
       "  \"sync_code_hex\" : " SEED_HEX_QUOTES ","
       "  \"not_after\"     : " NOT_AFTER_STR_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(version_too_new);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kVersionNotRecognized);
 
   std::string sync_code_hex_too_short =
-      "{ \"version\"       : 2,"
+      "{ \"version\"       : \"2\","
       "  \"sync_code_hex\" : " SEED_HEX_TOO_SHORT_QUOTES ","
       "  \"not_after\"     : " NOT_AFTER_STR_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(sync_code_hex_too_short);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
 
   std::string sync_code_hex_too_long =
-      "{ \"version\"       : 2,"
+      "{ \"version\"       : \"2\","
       "  \"sync_code_hex\" : " SEED_HEX_TOO_LONG_QUOTES ","
       "  \"not_after\"     : " NOT_AFTER_STR_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(sync_code_hex_too_long);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
 
   std::string wrong_hex_string =
-      "{ \"version\"       : 2,"
+      "{ \"version\"       : \"2\","
       "  \"sync_code_hex\" : " SEED_HEX_WRONG_STRING_QUOTES ","
       "  \"not_after\"     : " NOT_AFTER_STR_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(wrong_hex_string);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
 
   std::string missing_sync_code_hex =
-      "{ \"version\"       : 2,"
+      "{ \"version\"       : \"2\","
       "  \"not_after\"     : \"" NOT_AFTER_STR "\" }";
   verdict = QrCodeDataValidator::ValidateQrDataJson(missing_sync_code_hex);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
@@ -157,7 +157,7 @@ TEST(QrCodeDataValidator, NotWellFormed) {
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
 
   std::string missing_expire =
-      "{ \"version\"       : 2,"
+      "{ \"version\"       : \"2\","
       "  \"sync_code_hex\" : " SEED_HEX_QUOTES "}";
   verdict = QrCodeDataValidator::ValidateQrDataJson(missing_expire);
   EXPECT_EQ(verdict, QrCodeDataValidationResult::kNotWellFormed);
