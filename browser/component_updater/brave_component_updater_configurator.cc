@@ -103,10 +103,6 @@ std::string BraveConfigurator::GetChannel() const {
   return std::string("stable");
 }
 
-std::string BraveConfigurator::GetBrand() const {
-  return std::string();
-}
-
 std::string BraveConfigurator::GetLang() const {
   return std::string();
 }
