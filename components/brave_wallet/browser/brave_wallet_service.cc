@@ -636,25 +636,25 @@ void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
     base::OnceCallback<void(bool, const absl::optional<std::string>&)> callback,
     bool result,
-    BraveWalletServiceDelegate::ImportInfo info,
-    BraveWalletServiceDelegate::ImportError error) {
+    ImportInfo info,
+    ImportError error) {
   if (!result) {
     switch (error) {
-      case BraveWalletServiceDelegate::ImportError::kJsonError:
+      case ImportError::kJsonError:
         std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                            IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kPasswordError:
+      case ImportError::kPasswordError:
         std::move(callback).Run(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kInternalError:
+      case ImportError::kInternalError:
         std::move(callback).Run(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kNone:
+      case ImportError::kNone:
       default:
         NOTREACHED();
     }

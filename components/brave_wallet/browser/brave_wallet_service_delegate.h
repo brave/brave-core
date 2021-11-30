@@ -11,6 +11,7 @@
 
 #include "base/callback.h"
 #include "base/observer_list_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace content {
 class BrowserContext;
@@ -20,19 +21,6 @@ namespace brave_wallet {
 
 class BraveWalletServiceDelegate {
  public:
-  struct ImportInfo {
-    std::string mnemonic;
-    bool is_legacy_crypto_wallets;
-    size_t number_of_accounts;
-  };
-
-  enum class ImportError {
-    kNone = 0,
-    kJsonError,
-    kPasswordError,
-    kInternalError
-  };
-
   using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
   using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =

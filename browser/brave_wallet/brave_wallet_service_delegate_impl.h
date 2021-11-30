@@ -8,33 +8,23 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "base/sequence_checker.h"
-#include "base/values.h"
+#include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "mojo/public/cpp/bindings/remote.h"
-
-namespace value_store {
-class ValueStore;
-}
 
 namespace content {
 class BrowserContext;
 }
 
-namespace extensions {
-class Extension;
-}
-
 namespace brave_wallet {
+
+class ExternalWalletsImporter;
 
 class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        public TabStripModelObserver,
@@ -81,35 +71,18 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
 
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
-  void OnCryptoWalletsLoaded(const std::string& password,
-                             GetImportInfoCallback callback,
-                             bool should_unload);
 
-  void GetLocalStorage(const extensions::Extension* extension,
-                       const std::string& password,
-                       GetImportInfoCallback callback);
-  void OnGetLocalStorage(const std::string& password,
-                         GetImportInfoCallback callback,
-                         std::unique_ptr<base::DictionaryValue> dict);
-
-  void GetMnemonic(bool is_legacy_crypto_wallets,
-                   GetImportInfoCallback callback,
-                   std::unique_ptr<base::DictionaryValue> dict,
-                   const std::string& password);
-
-  bool IsCryptoWalletsInstalledInternal() const;
-  const extensions::Extension* GetCryptoWallets();
-  const extensions::Extension* GetMetaMask();
+  void ContinueImportInfo(const std::string& password,
+                          GetImportInfoCallback callback,
+                          bool init_success);
 
   std::string GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   content::BrowserContext* context_;
-  scoped_refptr<extensions::Extension> extension_;
+  std::unique_ptr<ExternalWalletsImporter> importer_;
   BrowserTabStripTracker browser_tab_strip_tracker_;
   base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
-
-  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };

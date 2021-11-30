@@ -135,8 +135,8 @@ class BraveWalletService : public KeyedService,
       base::OnceCallback<void(bool, const absl::optional<std::string>&)>
           callback,
       bool result,
-      BraveWalletServiceDelegate::ImportInfo info,
-      BraveWalletServiceDelegate::ImportError error);
+      ImportInfo info,
+      ImportError error);
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;

@@ -35,6 +35,19 @@ struct TransactionReceipt {
   bool status;
 };
 
+struct ImportInfo {
+  std::string mnemonic;
+  bool is_legacy_crypto_wallets;
+  size_t number_of_accounts;
+};
+
+enum class ImportError {
+  kNone = 0,
+  kJsonError,
+  kPasswordError,
+  kInternalError
+};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
