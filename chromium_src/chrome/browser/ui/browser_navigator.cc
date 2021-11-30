@@ -40,7 +40,7 @@ void UpdateBraveScheme(NavigateParams* params) {
 }
 
 void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
-  auto* profile = params->initiating_profile;
+  auto& profile = params->initiating_profile;
   if (brave::IsSessionProfile(profile)) {
     if (!allow_in_incognito) {
       params->initiating_profile =
