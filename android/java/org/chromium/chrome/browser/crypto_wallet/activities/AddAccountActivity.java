@@ -226,15 +226,15 @@ public class AddAccountActivity
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
             mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
+            mIsUpdate = getIntent().getBooleanExtra(Utils.ISUPDATEACCOUNT, false);
         }
-        if (!TextUtils.isEmpty(mAddress) && !TextUtils.isEmpty(mName)) {
+        if (mIsUpdate) {
             Button btnAdd = findViewById(R.id.btn_add);
             btnAdd.setText(getResources().getString(R.string.update));
             mAddAccountText.setText(mName);
             getSupportActionBar().setTitle(getResources().getString(R.string.update_account));
             findViewById(R.id.import_account_layout).setVisibility(View.GONE);
             findViewById(R.id.import_account_title).setVisibility(View.GONE);
-            mIsUpdate = true;
         }
         InitKeyringController();
         if (mIsUpdate) {

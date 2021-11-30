@@ -124,6 +124,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                 addAccountActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 addAccountActivityIntent.putExtra(Utils.NAME, mName);
                 addAccountActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
+                addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, true);
                 startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
             }
         });
