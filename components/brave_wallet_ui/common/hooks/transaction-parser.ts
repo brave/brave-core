@@ -149,7 +149,10 @@ export function useTransactionParser (
     const { baseData } = txData
     const { value, to } = baseData
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
-    const accountsNativeFiatBalance = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())?.fiatBalance
+    const accountsNativeBalance = formatBalance(
+      accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())?.balance || '0x0',
+      selectedNetwork.decimals
+    )
     const usersTokenInfo = account?.tokens.find((asset) => asset.asset.contractAddress.toLowerCase() === to.toLowerCase())
 
     switch (true) {
@@ -158,14 +161,17 @@ export function useTransactionParser (
         const [address, amount] = txArgs
         const token = findToken(to)
         const price = findSpotPrice(token?.symbol ?? '')
+        const sendAmount = formatBalance(amount, token?.decimals ?? 18)
         const sendAmountFiat = formatFiatBalance(amount, token?.decimals ?? 18, price)
 
         const feeDetails = parseTransactionFees(transactionInfo)
-        const { gasFeeFiat } = feeDetails
+        const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
-        const accountsTokenFiatBalance = usersTokenInfo?.fiatBalance
-        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
-        const insufficientTokenFunds = Number(sendAmountFiat) > Number(accountsTokenFiatBalance)
+        const accountsTokenBalance = formatBalance(
+          usersTokenInfo?.assetBalance ?? '0x0', token?.decimals ?? 18
+        )
+        const insufficientNativeFunds = Number(gasFee) > Number(accountsNativeBalance)
+        const insufficientTokenFunds = Number(sendAmount) > Number(accountsTokenBalance)
 
         return {
           hash: transactionInfo.txHash,
@@ -199,9 +205,10 @@ export function useTransactionParser (
         const token = findToken(to)
 
         const feeDetails = parseTransactionFees(transactionInfo)
-        const { gasFeeFiat } = feeDetails
+        const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = gasFeeFiat
-        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
+
+        const insufficientNativeFunds = Number(gasFee) > Number(accountsNativeBalance)
 
         return {
           hash: transactionInfo.txHash,
@@ -231,9 +238,9 @@ export function useTransactionParser (
         const [address, amount] = txArgs
         const token = findToken(to)
         const feeDetails = parseTransactionFees(transactionInfo)
-        const { gasFeeFiat } = feeDetails
+        const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
-        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
+        const insufficientNativeFunds = Number(gasFee) > Number(accountsNativeBalance)
         const formattedValue = formatBalance(amount, token?.decimals ?? 18)
         const userTokenBalance = usersTokenInfo?.assetBalance ?? ''
         const allowanceValue = Number(amount) > Number(userTokenBalance) ? getLocale('braveWalletTransactionApproveUnlimited') : formattedValue
@@ -263,12 +270,14 @@ export function useTransactionParser (
       // FIXME: swap needs a real parser to figure out the From and To details.
       case to.toLowerCase() === SwapExchangeProxy:
       case txType === TransactionType.ETHSend:
+      case txType === TransactionType.Other:
       default: {
         const networkPrice = findSpotPrice(selectedNetwork.symbol)
+        const sendAmount = formatBalance(value, selectedNetwork.decimals)
         const sendAmountFiat = formatFiatBalance(value, selectedNetwork.decimals, networkPrice)
 
         const feeDetails = parseTransactionFees(transactionInfo)
-        const { gasFeeFiat } = feeDetails
+        const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
 
         return {
@@ -285,7 +294,7 @@ export function useTransactionParser (
           value: formatBalance(value, selectedNetwork.decimals),
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
-          insufficientFundsError: Number(totalAmountFiat) > Number(accountsNativeFiatBalance),
+          insufficientFundsError: (Number(gasFee) + Number(sendAmount)) > Number(accountsNativeBalance),
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
         } as ParsedTransaction
