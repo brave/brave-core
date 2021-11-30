@@ -128,6 +128,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Download rust deps')
 
     parser.add_argument('--platform')
+    # This is kind of hacky, we should have a separate script to install tools
+    parser.add_argument('--cxx_version')
 
     args = parser.parse_args()
     return args
@@ -186,11 +188,7 @@ def main():
         },
         {
             "name": "cxxbridge-cmd",
-            "version": "1.0.56",
-        },
-        {
-            "name": "brave-build-rust",
-            "path": os.path.join(BRAVE_CORE_ROOT, 'build', 'rust', 'cxx')
+            "version": args.cxx_version,
         },
         {
             "name": "cargo-audit",
