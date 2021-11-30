@@ -182,7 +182,7 @@ Polymer({
   },
   updateSubmitButtonState_: function() {
     for (const input of this.shadowRoot.querySelectorAll('.mandatory')) {
-      if (input && (input.invalid || !input.value || input.value.trim() === '')) {
+      if (input && (input.invalid || !input.value || (input.value.trim && input.value.trim() === ''))) {
         this.isSubmitButtonEnabled_ = false
         return;
       }
@@ -202,8 +202,7 @@ Polymer({
       this.isSubmitButtonEnabled_ = false
       return;
     }
-    
-    if (!this.rpcUrls.find(element => element.value !== '')) {
+    if (!this.hasValidRPCUrls()) {
       this.isSubmitButtonEnabled_ = false
       return;
     }
@@ -221,13 +220,16 @@ Polymer({
     this.updateSubmitButtonState_()
     const empty = element.value.trim() === ''
     if (list == 'rpc' && element.invalid) {
-      const text = empty ? this.i18n('walletAddNetworkMandarotyFieldError')
+      const text = empty && !this.hasValidRPCUrls() ? this.i18n('walletAddNetworkMandarotyFieldError')
                          : this.i18n('walletAddNetworkInvalidURLInput')
       element.setAttribute('error-message', text)
     }
     if (!element.invalid || empty) {
       this.updatePlusButtonState(list)
     }
+  },
+  hasValidRPCUrls: function() {
+    return this.rpcUrls.find(element => this.validateURL(element.value))
   },
   urlChangedIcons_: function(event) {
     return this.urlChangedImpl_(event.target, 'icon')
