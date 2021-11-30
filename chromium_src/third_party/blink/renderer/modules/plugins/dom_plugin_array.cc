@@ -12,7 +12,7 @@
 #include "third_party/blink/renderer/core/page/plugin_data.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
-#include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
