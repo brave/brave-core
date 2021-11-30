@@ -22,6 +22,20 @@ extension WalletStore {
   }
 }
 
+extension CryptoStore {
+  static var previewStore: CryptoStore {
+    .init(
+      keyringController: TestKeyringController(),
+      rpcController: TestEthJsonRpcController(),
+      walletService: TestBraveWalletService(),
+      assetRatioController: TestAssetRatioController(),
+      swapController: TestSwapController(),
+      tokenRegistry: TestTokenRegistry(),
+      transactionController: TestEthTxController()
+    )
+  }
+}
+
 extension NetworkStore {
   static var previewStore: NetworkStore {
     .init(
