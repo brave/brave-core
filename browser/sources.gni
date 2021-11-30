@@ -98,6 +98,7 @@ brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
+  "//brave/browser/brave_federated_learning",
   "//brave/browser/brave_wallet",
   "//brave/browser/brave_wallet:brave_wallet_delegate",
   "//brave/browser/brave_wallet:tab_helper",

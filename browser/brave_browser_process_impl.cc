@@ -22,7 +22,6 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -174,7 +173,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   ad_block_service()->Start();
   https_everywhere_service()->Start();
-  brave_federated_learning_service()->Start();
   resource_component();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -316,17 +314,6 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
   }
 }
 #endif
-
-brave::BraveFederatedLearningService*
-BraveBrowserProcessImpl::brave_federated_learning_service() {
-  if (brave_federated_learning_service_) {
-    return brave_federated_learning_service_.get();
-  }
-  brave_federated_learning_service_ =
-      std::make_unique<brave::BraveFederatedLearningService>(
-          local_state(), g_browser_process->shared_url_loader_factory());
-  return brave_federated_learning_service_.get();
-}
 
 brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   if (brave_p3a_service_) {

@@ -54,7 +54,7 @@ class BraveOperationalPatterns final {
   BraveOperationalPatterns(const BraveOperationalPatterns&) = delete;
   BraveOperationalPatterns& operator=(const BraveOperationalPatterns&) = delete;
 
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void Start();
   void Stop();
@@ -74,7 +74,7 @@ class BraveOperationalPatterns final {
 
   void MaybeResetCollectionId();
 
-  PrefService* local_state_;
+  PrefService* pref_service_;
   std::unique_ptr<base::RepeatingTimer> collection_slot_periodic_timer_;
   std::unique_ptr<base::RetainingOneShotTimer>
       simulate_local_training_step_timer_;
