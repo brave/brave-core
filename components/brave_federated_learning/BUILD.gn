@@ -12,6 +12,7 @@ static_library("brave_federated_learning") {
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:p3a",
     "//brave/components/version_info",
+    "//components/keyed_service/core",
     "//components/metrics",
     "//components/prefs",
     "//services/network/public/cpp",

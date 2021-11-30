@@ -12,6 +12,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_federated_learning/brave_federated_learning_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -119,6 +120,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  brave::BraveFederatedLearningServiceFactory::GetForBrowserContext(profile);
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif

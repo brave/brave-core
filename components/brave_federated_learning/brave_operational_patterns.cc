@@ -62,12 +62,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 BraveOperationalPatterns::BraveOperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : local_state_(pref_service), url_loader_factory_(url_loader_factory) {}
+    : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {}
 
 BraveOperationalPatterns::~BraveOperationalPatterns() {}
 
-void BraveOperationalPatterns::RegisterLocalStatePrefs(
-    PrefRegistrySimple* registry) {
+void BraveOperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckedSlotPrefName, -1);
   registry->RegisterStringPref(kCollectionIdPrefName, {});
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
@@ -105,17 +104,17 @@ void BraveOperationalPatterns::Stop() {
 }
 
 void BraveOperationalPatterns::LoadPrefs() {
-  last_checked_slot_ = local_state_->GetInteger(kLastCheckedSlotPrefName);
-  collection_id_ = local_state_->GetString(kCollectionIdPrefName);
+  last_checked_slot_ = pref_service_->GetInteger(kLastCheckedSlotPrefName);
+  collection_id_ = pref_service_->GetString(kCollectionIdPrefName);
   collection_id_expiration_time_ =
-      local_state_->GetTime(kCollectionIdExpirationPrefName);
+      pref_service_->GetTime(kCollectionIdExpirationPrefName);
 }
 
 void BraveOperationalPatterns::SavePrefs() {
-  local_state_->SetInteger(kLastCheckedSlotPrefName, last_checked_slot_);
-  local_state_->SetString(kCollectionIdPrefName, collection_id_);
-  local_state_->SetTime(kCollectionIdExpirationPrefName,
-                        collection_id_expiration_time_);
+  pref_service_->SetInteger(kLastCheckedSlotPrefName, last_checked_slot_);
+  pref_service_->SetString(kCollectionIdPrefName, collection_id_);
+  pref_service_->SetTime(kCollectionIdExpirationPrefName,
+                         collection_id_expiration_time_);
 }
 
 void BraveOperationalPatterns::OnCollectionSlotStartTimerFired() {
