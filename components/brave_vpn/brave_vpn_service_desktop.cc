@@ -479,10 +479,8 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
   }
 
   // if a credential is ready, we can present it
-  // name should be environment specific but prefix with "vpn."
-  // for now we can hardcode dev
   skus_sdk_service_->PrepareCredentialsPresentation(
-      "vpn.brave.software", "*",
+      skus::GetDomain("vpn"), "*",
       base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
                      base::Unretained(this)));
 }
