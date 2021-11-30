@@ -185,6 +185,10 @@ def main():
             "version": "0.14.2",
         },
         {
+            "name": "cxxbridge-cmd",
+            "version": "1.0.56",
+        },
+        {
             "name": "brave-build-rust",
             "path": os.path.join(BRAVE_CORE_ROOT, 'build', 'rust', 'cxx')
         },
