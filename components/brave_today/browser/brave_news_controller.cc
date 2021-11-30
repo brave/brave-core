@@ -128,6 +128,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
           // Byte padding removal failed
           absl::optional<std::vector<uint8_t>> args;
           std::move(callback).Run(std::move(args));
+          return;
         }
         // Unpadding was successful, uint8Array will be easier to move over
         // mojom
