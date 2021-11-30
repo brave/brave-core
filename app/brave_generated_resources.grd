@@ -387,7 +387,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Show non-verified sites in list
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL" desc="The text label for the setting controlling allowing contributions for videos">
-        Allow contributions to videos
+        Allow contributions for videos
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
         By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
