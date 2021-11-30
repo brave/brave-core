@@ -7,7 +7,7 @@
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "check_security": "node ./build/commands/scripts/checkSecurity.js",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
-    "init": "npm --prefix ../../ run init --",
+    "init": "cd ../../ && npm run init --",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js create_dist",
     "sync": "node ./build/commands/scripts/sync.js",
