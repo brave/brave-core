@@ -7,7 +7,7 @@
 
         <ImageView
             android:id="@+id/brave_shields_shadow"
-            android:src="@drawable/toolbar_shadow_normal"
+            android:src="@drawable/modern_toolbar_shadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"

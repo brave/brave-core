@@ -17,7 +17,7 @@ import org.chromium.chrome.tab_ui.R;
 public class BraveTabUiThemeProvider {
     @ColorInt
     public static int getTitleTextColor(Context context, boolean isIncognito, boolean isSelected) {
-        if (TabUiThemeProvider.themeRefactorEnabled() && isSelected) {
+        if (isSelected) {
             return ApiCompatibilityUtils.getColor(
                     context.getResources(), R.color.baseline_neutral_900);
         }
@@ -27,7 +27,7 @@ public class BraveTabUiThemeProvider {
 
     public static ColorStateList getActionButtonTintList(
             Context context, boolean isIncognito, boolean isSelected) {
-        if (TabUiThemeProvider.themeRefactorEnabled() && isSelected) {
+        if (isSelected) {
             return AppCompatResources.getColorStateList(context, R.color.baseline_neutral_900);
         }
 
