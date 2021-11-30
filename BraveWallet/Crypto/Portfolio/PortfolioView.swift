@@ -11,7 +11,7 @@ import Introspect
 import struct Shared.Strings
 
 struct PortfolioView: View {
-  var walletStore: WalletStore
+  var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var portfolioStore: PortfolioStore
@@ -73,7 +73,7 @@ struct PortfolioView: View {
         ForEach(portfolioStore.userVisibleAssets) { asset in
           NavigationLink(
             destination: AssetDetailView(
-              assetDetailStore: walletStore.assetDetailStore(for: asset.token),
+              assetDetailStore: cryptoStore.assetDetailStore(for: asset.token),
               keyringStore: keyringStore,
               networkStore: networkStore
             )
@@ -200,10 +200,10 @@ struct PortfolioViewController_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       PortfolioView(
-        walletStore: .previewStore,
-        keyringStore: WalletStore.previewStore.keyringStore,
-        networkStore: WalletStore.previewStore.networkStore,
-        portfolioStore: WalletStore.previewStore.portfolioStore
+        cryptoStore: .previewStore,
+        keyringStore: .previewStore,
+        networkStore: .previewStore,
+        portfolioStore: CryptoStore.previewStore.portfolioStore
       )
       .navigationBarTitleDisplayMode(.inline)
     }

@@ -945,6 +945,7 @@
 		7DAC597B2726524E00E735A2 /* AddressQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAC597A2726524E00E735A2 /* AddressQRCodeScannerView.swift */; };
 		7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */; };
 		7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */; };
+		7DCA34D427555E96001B0555 /* CryptoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCA34D327555E96001B0555 /* CryptoStore.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
 		A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* ClientPreferences.swift */; };
 		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
@@ -2883,6 +2884,7 @@
 		7DAC597A2726524E00E735A2 /* AddressQRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressQRCodeScannerView.swift; sourceTree = "<group>"; };
 		7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtension.swift; sourceTree = "<group>"; };
 		7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtensionTests.swift; sourceTree = "<group>"; };
+		7DCA34D327555E96001B0555 /* CryptoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoStore.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* ClientPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferences.swift; sourceTree = "<group>"; };
 		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
@@ -3870,6 +3872,7 @@
 			children = (
 				271F685C26EBD27D00AA2A50 /* Address.swift */,
 				27DDE88726FD2D8B00A70C3A /* WalletStore.swift */,
+				7DCA34D327555E96001B0555 /* CryptoStore.swift */,
 				271F685B26EBD27D00AA2A50 /* NetworkStore.swift */,
 				271F685D26EBD27D00AA2A50 /* KeyringStore.swift */,
 				27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */,
@@ -7897,6 +7900,7 @@
 				271F689A26EBD27E00AA2A50 /* KeyringStore.swift in Sources */,
 				27E17B902744129B00F3C282 /* TestSwapController.swift in Sources */,
 				271F68A026EBD27E00AA2A50 /* AccountDetailsView.swift in Sources */,
+				7DCA34D427555E96001B0555 /* CryptoStore.swift in Sources */,
 				271F68B026EBD27E00AA2A50 /* BackupRecoveryPhraseView.swift in Sources */,
 				271F68A926EBD27E00AA2A50 /* BuySendSwapView.swift in Sources */,
 				7D758917271A182800B643C3 /* TokenList.swift in Sources */,

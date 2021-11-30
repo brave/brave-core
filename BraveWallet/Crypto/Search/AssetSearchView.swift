@@ -9,7 +9,8 @@ import BraveCore
 import struct Shared.Strings
 
 struct AssetSearchView: View {
-  var walletStore: WalletStore
+  var keyringStore: KeyringStore
+  var cryptoStore: CryptoStore
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   
@@ -20,9 +21,9 @@ struct AssetSearchView: View {
       TokenList(tokens: allTokens.filter({ $0.isErc20 || $0.isETH })) { token in
         NavigationLink(
           destination: AssetDetailView(
-            assetDetailStore: walletStore.assetDetailStore(for: token),
-            keyringStore: walletStore.keyringStore,
-            networkStore: walletStore.networkStore
+            assetDetailStore: cryptoStore.assetDetailStore(for: token),
+            keyringStore: keyringStore,
+            networkStore: cryptoStore.networkStore
           )
         ) {
           TokenView(token: token)
@@ -43,7 +44,7 @@ struct AssetSearchView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
-      walletStore.tokenRegistry.allTokens { tokens in
+      cryptoStore.tokenRegistry.allTokens { tokens in
         self.allTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
       }
     }

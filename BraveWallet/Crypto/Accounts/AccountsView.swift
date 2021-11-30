@@ -11,7 +11,7 @@ import BraveUI
 import struct Shared.Strings
 
 struct AccountsView: View {
-  var walletStore: WalletStore
+  var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   @State private var navigationController: UINavigationController?
   
@@ -30,8 +30,8 @@ struct AccountsView: View {
     let view = AccountView(address: account.address, name: account.name)
     let destination = AccountActivityView(
       keyringStore: keyringStore,
-      activityStore: walletStore.accountActivityStore(for: account),
-      networkStore: walletStore.networkStore
+      activityStore: cryptoStore.accountActivityStore(for: account),
+      networkStore: cryptoStore.networkStore
     )
     if #available(iOS 15.0, *) {
       ZStack {
@@ -109,7 +109,10 @@ struct AccountsView: View {
 struct AccountsViewController_Previews: PreviewProvider {
   static var previews: some View {
     Group {
-      AccountsView(walletStore: .previewStore, keyringStore: .previewStoreWithWalletCreated)
+      AccountsView(
+        cryptoStore: .previewStore,
+        keyringStore: .previewStoreWithWalletCreated
+      )
     }
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()
