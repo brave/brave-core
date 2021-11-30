@@ -84,15 +84,6 @@ public class AccountPrivateKeyActivity
             }
         });
 
-        InitKeyringController();
-        if (mKeyringController != null)
-            mKeyringController.getPrivateKeyForDefaultKeyringAccount(
-                    mAddress, (result, privateKey) -> {
-                        if (result) {
-                            privateKeyText.setText(privateKey);
-                        }
-                    });
-
         onInitialLayoutInflationComplete();
     }
 
@@ -138,6 +129,15 @@ public class AccountPrivateKeyActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        InitKeyringController();
+        assert mKeyringController != null;
+        mKeyringController.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
+            if (result) {
+                EditText privateKeyText = findViewById(R.id.private_key_text);
+                privateKeyText.setText(privateKey);
+            }
+        });
     }
 
     @Override
