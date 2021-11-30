@@ -54,6 +54,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   decimals: number
   insufficientFundsError: boolean
   contractAddressError?: string
+  sameAddressError?: string
   erc721TokenInfo?: TokenInfo
   erc721TokenId?: string
   isSwap?: boolean
@@ -100,15 +101,51 @@ export function useTransactionParser (
     return visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
   }, [visibleTokens])
 
+  /**
+   * Checks if a given address is a known contract address from our token
+   * registry.
+   *
+   * @remarks
+   *
+   * This function must only be used for the following transaction types:
+   *  - ERC20Transfer
+   *  - ERC721TransferFrom
+   *  - ERC721SafeTransferFrom
+   *
+   * @param to - The address to check
+   * @returns Localized string describing the error, or undefined in case of
+   * no error.
+   */
   const checkForContractAddressError = (to: string): string | undefined => {
-    // If value is a Tokens Contract Address
     return fullTokenList?.some(token => token.contractAddress.toLowerCase() === to.toLowerCase())
       ? getLocale('braveWalletContractAddressError')
       : undefined
   }
 
+  /**
+   * Checks if a given set of sender and recipient addresses are the
+   * same.
+   *
+   * @remarks
+   *
+   * This function must only be used for the following transaction types:
+   *  - ERC20Transfer
+   *  - ERC721TransferFrom
+   *  - ERC721SafeTransferFrom
+   *  - ERC20Approve
+   *  - ETHSend
+   *
+   * @param to - The recipient address
+   * @param from - The sender address
+   */
+  const checkForSameAddressError = (to: string, from: string): string | undefined => {
+    return to.toLowerCase() === from.toLowerCase()
+      ? getLocale('braveWalletSameAddressError')
+      : undefined
+  }
+
   return React.useCallback((transactionInfo: TransactionInfo) => {
-    const { txArgs, txData, fromAddress } = transactionInfo
+    const { txArgs, txData, fromAddress, txType } = transactionInfo
     const { baseData } = txData
     const { value, to } = baseData
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
@@ -117,7 +154,7 @@ export function useTransactionParser (
 
     switch (true) {
       // transfer(address recipient, uint256 amount) → bool
-      case transactionInfo.txType === TransactionType.ERC20Transfer: {
+      case txType === TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
         const token = findToken(to)
         const price = findSpotPrice(token?.symbol ?? '')
@@ -134,8 +171,8 @@ export function useTransactionParser (
           hash: transactionInfo.txHash,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
-          sender: transactionInfo.fromAddress,
-          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          sender: fromAddress,
+          senderLabel: getAddressLabel(fromAddress),
           recipient: address,
           recipientLabel: getAddressLabel(address),
           fiatValue: sendAmountFiat,
@@ -146,13 +183,19 @@ export function useTransactionParser (
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
           contractAddressError: checkForContractAddressError(address),
+          sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
         } as ParsedTransaction
       }
 
-      case transactionInfo.txType === TransactionType.ERC721TransferFrom:
-      case transactionInfo.txType === TransactionType.ERC721SafeTransferFrom: {
-        const [fromAddress, toAddress, tokenID] = txArgs
+      // transferFrom(address owner, address to, uint256 tokenId)
+      case txType === TransactionType.ERC721TransferFrom:
+
+      // safeTransferFrom(address owner, address to, uint256 tokenId)
+      case txType === TransactionType.ERC721SafeTransferFrom: {
+        // The owner of the ERC721 must not be confused with the
+        // caller (fromAddress).
+        const [owner, toAddress, tokenID] = txArgs
         const token = findToken(to)
 
         const feeDetails = parseTransactionFees(transactionInfo)
@@ -164,8 +207,8 @@ export function useTransactionParser (
           hash: transactionInfo.txHash,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
-          sender: fromAddress,
-          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          sender: fromAddress, // The caller, which may not be the owner
+          senderLabel: getAddressLabel(fromAddress),
           recipient: toAddress,
           recipientLabel: getAddressLabel(toAddress),
           fiatValue: '0.00', // Display NFT values in the future
@@ -178,28 +221,29 @@ export function useTransactionParser (
           erc721TokenInfo: token,
           erc721TokenId: hexToNumber(tokenID ?? ''),
           contractAddressError: checkForContractAddressError(toAddress),
+          sameAddressError: checkForSameAddressError(toAddress, owner),
           ...feeDetails
         } as ParsedTransaction
       }
 
       // approve(address spender, uint256 amount) → bool
-      case transactionInfo.txType === TransactionType.ERC20Approve: {
+      case txType === TransactionType.ERC20Approve: {
         const [address, amount] = txArgs
         const token = findToken(to)
         const feeDetails = parseTransactionFees(transactionInfo)
         const { gasFeeFiat } = feeDetails
         const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
         const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
-        const formatedValue = formatBalance(amount, token?.decimals ?? 18)
+        const formattedValue = formatBalance(amount, token?.decimals ?? 18)
         const userTokenBalance = usersTokenInfo?.assetBalance ?? ''
-        const allowanceValue = Number(amount) > Number(userTokenBalance) ? getLocale('braveWalletTransactionApproveUnlimited') : formatedValue
+        const allowanceValue = Number(amount) > Number(userTokenBalance) ? getLocale('braveWalletTransactionApproveUnlimited') : formattedValue
 
         return {
           hash: transactionInfo.txHash,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
-          sender: transactionInfo.fromAddress,
-          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          sender: fromAddress,
+          senderLabel: getAddressLabel(fromAddress),
           recipient: to,
           recipientLabel: getAddressLabel(to),
           fiatValue: (0).toFixed(2),
@@ -211,13 +255,14 @@ export function useTransactionParser (
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
           insufficientFundsError: insufficientNativeFunds,
+          sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
         } as ParsedTransaction
       }
 
       // FIXME: swap needs a real parser to figure out the From and To details.
-      case transactionInfo.txData.baseData.to.toLowerCase() === SwapExchangeProxy:
-      case transactionInfo.txType === TransactionType.ETHSend:
+      case to.toLowerCase() === SwapExchangeProxy:
+      case txType === TransactionType.ETHSend:
       default: {
         const networkPrice = findSpotPrice(selectedNetwork.symbol)
         const sendAmountFiat = formatFiatBalance(value, selectedNetwork.decimals, networkPrice)
@@ -230,8 +275,8 @@ export function useTransactionParser (
           hash: transactionInfo.txHash,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
-          sender: transactionInfo.fromAddress,
-          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          sender: fromAddress,
+          senderLabel: getAddressLabel(fromAddress),
           recipient: to,
           recipientLabel: getAddressLabel(to),
           fiatValue: sendAmountFiat,
@@ -241,8 +286,7 @@ export function useTransactionParser (
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: Number(totalAmountFiat) > Number(accountsNativeFiatBalance),
-          contractAddressError: checkForContractAddressError(to),
-          isSwap: transactionInfo.txData.baseData.to.toLowerCase() === SwapExchangeProxy,
+          isSwap: to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
         } as ParsedTransaction
       }
