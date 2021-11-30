@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -388,7 +389,8 @@ public class Utils {
         return networkConst;
     }
 
-    private static String getDecimalsDepNumber(int decimals) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public static String getDecimalsDepNumber(int decimals) {
         String strDecimals = "1";
         for (int i = 0; i < decimals; i++) {
             strDecimals += "0";
@@ -489,7 +491,7 @@ public class Utils {
         return "0x" + res.toString(16);
     }
 
-    public static String toHexWeiFromGWEI(String number) {
+    public static String toHexGWeiFromGWEI(String number) {
         try {
             if (number.isEmpty()) {
                 return "0x0";

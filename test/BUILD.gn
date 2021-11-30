@@ -1155,6 +1155,7 @@ if (is_android) {
     deps = [
       "//base:base_java",
       "//base:base_java_test_support",
+      "//brave/components/brave_wallet/common:mojom_java",
       "//chrome/android:chrome_apk_pak_assets",
       "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/browser/android/lifecycle:java",
