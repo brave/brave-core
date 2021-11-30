@@ -35,7 +35,13 @@ const monthDayFormatter = new Intl.DateTimeFormat(undefined, {
 function renderDateRange () {
   const now = new Date()
   const start = new Date(now.getFullYear(), now.getMonth(), 1)
-  const end = new Date(start.getFullYear(), start.getMonth() + 1, -1)
+
+  // To get the last day of the month, we can create a date for the next month,
+  // (months greater than 11 wrap around) with the day part set to 0 (one before
+  // the first day of the month). The Date constructor will perform the offset
+  // for us.
+  const end = new Date(start.getFullYear(), start.getMonth() + 1, 0)
+
   return (
     <>{monthDayFormatter.format(start)} - {monthDayFormatter.format(end)}</>
   )
