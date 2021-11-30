@@ -8,12 +8,50 @@ const fs = require('fs-extra')
 const webpack = require('webpack')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
 const pathMap = require('./path-map')
+const node_url = require("url");
 
 const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
+
+
+
+class AnySchemeUriPlugin {
+
+    constructor(options = {}) {
+        this.options = options;
+    }
+
+    apply(compiler) {
+        compiler.hooks.compilation.tap(
+            "AnySchemeUriPlugin",
+            (compilation, { normalModuleFactory }) => {
+                Array.from(this.options.schemes).forEach(scheme => {
+                    normalModuleFactory.hooks.resolveForScheme
+                        .for(scheme)
+                        .tap("AnySchemeUriPlugin", resourceData => {
+                            // const uri = resourceData.resource.replace(`${scheme}://`, 'file://');
+                            const url = new node_url.URL(resourceData.resource);
+                            const filepath = resourceData.resource.replace('chrome://resources', path.join(process.env.ROOT_GEN_DIR, 'ui/webui/resources/preprocessed')) + '.js'
+                            const query = url.search;
+                            const fragment = url.hash;
+                            console.log(resourceData.resource, filepath, query, fragment)
+                            resourceData.path = filepath;
+                            resourceData.query = query;
+                            resourceData.fragment = fragment;
+                            resourceData.resource = filepath + query + fragment;
+                            return true;
+                        });
+                });
+            }
+        );
+    }
+}
+
+module.exports = AnySchemeUriPlugin;
 
 module.exports = async function (env, argv) {
   // Webpack config object
   return {
+    mode: argv.mode === 'development' ? 'development' : 'production',
     devtool: argv.mode === 'development' ? '#inline-source-map' : false,
     output: {
       path: process.env.TARGET_GEN_DIR,
@@ -25,7 +63,10 @@ module.exports = async function (env, argv) {
       alias: pathMap,
       // For explanation of "chromeapp", see:
       // https://github.com/brave/brave-browser/issues/5587
-      aliasFields: ['chromeapp', 'browser']
+      aliasFields: ['chromeapp', 'browser'],
+      fallback: {
+        fs: false
+      }
     },
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.
@@ -35,7 +76,8 @@ module.exports = async function (env, argv) {
       new GenerateDepfilePlugin({
         depfilePath: process.env.DEPFILE_PATH,
         depfileSourceName: process.env.DEPFILE_SOURCE_NAME
-      })
+      }),
+      new AnySchemeUriPlugin({schemes: ['chrome'] })
     ] : [],
     module: {
       rules: [
@@ -53,20 +95,17 @@ module.exports = async function (env, argv) {
         },
         {
           test: /\.css$/,
-          loader: ['style-loader', 'css-loader']
+          use: ['style-loader', 'css-loader']
         },
         // Loads font files for Font Awesome
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'url-loader?limit=13000&minetype=application/font-woff'
+          use: 'url-loader?limit=13000&minetype=application/font-woff'
         },
         {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader'
+          use: 'file-loader'
         }]
-    },
-    node: {
-      fs: 'empty'
     }
   }
 }
