@@ -431,8 +431,9 @@ class SettingsViewController: TableViewController {
         return Section(
             header: .title(Strings.security),
             rows: [
-                .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template)
+                .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
                 // TODO: Uncomment once we restore saved logins, see #4583
+                // Also delete the preference toggle for saved logins
                 /*,
                 Row(text: Strings.Login.loginListNavigationTitle, selection: { [unowned self] in
                     let loginsPasswordsViewController = LoginListViewController(
@@ -442,6 +443,7 @@ class SettingsViewController: TableViewController {
                     self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-save-logins").template, accessory: .disclosureIndicator)
                 */
+                .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins, image: #imageLiteral(resourceName: "settings-save-logins").template)
             ]
         )
     }()
