@@ -256,7 +256,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 @Override
                 public void run() {
                     showEndDialog(
-                            getResources().getString(R.string.sync_device_failure) + messageFinal);
+                            getResources().getString(R.string.sync_device_failure) + messageFinal,
+                            () -> {});
                 }
             });
         } catch (Exception exc) {
@@ -708,7 +709,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // This function used when we have scanned the QR code to connect to the chain
     private void seedHexReceived(String seedHex) {
         assert seedHex != null && !seedHex.isEmpty();
-        assert isBarCodeValid(seedHex);
+        assert isSeedHexValid(seedHex);
 
         if (null == getActivity()) {
             return;
@@ -944,8 +945,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     // Barcode is valid when its raw representation has length of 64
     // and when it's possible to convert the barcode to bip39 code words
-    private boolean isBarCodeValid(String barcode) {
-        Log.v(TAG, "isBarCodeValid barcode length=" + barcode.length());
+    private boolean isSeedHexValid(String barcode) {
+        Log.v(TAG, "isSeedHexValid barcode length=" + barcode.length());
         if (barcode == null) {
             Log.e(TAG, "Barcode is empty");
             return false;
@@ -962,36 +963,63 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return true;
     }
 
+    private String getQrCodeValidationString(String jsonQr) {
+        Log.v(TAG, "getQrCodeValidationString jsonQr length=" + jsonQr.length());
+        int validationResult = getBraveSyncWorker().GetQrCodeValidationResult(jsonQr);
+        Log.v(TAG, "validationResult is " + validationResult);
+        switch (validationResult) {
+            case 0:
+                // kValid, empty string indicates there is no error
+                return "";
+            case 3:
+                // kVersionDeprecated
+                return getResources().getString(R.string.brave_sync_code_from_deprecated_version);
+            case 4:
+                // kExpired
+                return getResources().getString(R.string.brave_sync_code_expired);
+            default:
+                // These three different types of errors have the same message
+                // kNotWellFormed
+                // kVersionNotRecognized
+                // kValidForTooLong
+                return getResources().getString(R.string.brave_sync_wrong_qrcode_error);
+        }
+    }
+
     private final Object mQrInProcessingLock = new Object();
     private boolean mQrInProcessing;
 
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
-            final String barcodeValue = barcode.displayValue;
-            if (!isBarCodeValid(barcodeValue)) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showEndDialog(
-                                getResources().getString(R.string.brave_sync_wrong_qrcode_error));
-                        showMainSyncScrypt();
-                    }
-                });
-                return;
-            }
-
             synchronized (mQrInProcessingLock) {
                 // If camera looks on the QR image and final security warning is shown,
                 // we could arrive here again and show 2nd alert while the 1st is not yet closed
                 if (mQrInProcessing) {
                     return;
                 }
-
                 mQrInProcessing = true;
             }
 
-            String seedHex = barcodeValue;
+            final String jsonQr = barcode.displayValue;
+            String validationError = getQrCodeValidationString(jsonQr);
+
+            if (!validationError.isEmpty()) {
+                getActivity().runOnUiThread(() -> {
+                    showEndDialog(validationError, new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (mQrInProcessingLock) {
+                                assert mQrInProcessing;
+                                mQrInProcessing = false;
+                            }
+                        }
+                    });
+                });
+                return;
+            }
+
+            String seedHex = getBraveSyncWorker().GetSeedHexFromQrJson(jsonQr);
 
             // It is supposed to be
             // getActivity().runOnUiThread(() -> {
@@ -1030,7 +1058,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private void showEndDialog(String message) {
+    private void showEndDialog(String message, Runnable runWhenDismissed) {
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
@@ -1046,6 +1074,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         .setPositiveButton(R.string.ok, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.setOnDismissListener((dialog) -> { runWhenDismissed.run(); });
         alertDialog.show();
     }
 
@@ -1236,21 +1265,25 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                   Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
                   assert false;
               } else {
-                  fillQrCode(seedHex);
+                  if (!isSeedHexValid(seedHex)) {
+                      Log.e(TAG, "fillQrCode - invalid QR code");
+                      // Normally must not reach here ever, because the code is validated right
+                      // after scan
+                      assert false;
+                      showEndDialog(
+                              getResources().getString(R.string.sync_device_failure), () -> {});
+                      return;
+                  } else {
+                      String qrCodeString = getBraveSyncWorker().GetQrDataJson(seedHex);
+                      assert qrCodeString != null && !qrCodeString.isEmpty();
+                      fillQrCode(qrCodeString);
+                  }
               }
           }
       });
   }
 
   private void fillQrCode(String qrDataFinal) {
-      if (!isBarCodeValid(qrDataFinal)) {
-          Log.e(TAG, "fillQrCode - invalid QR code");
-          // Normally must not reach here ever, because the code is validated right after scan
-          assert false;
-          showEndDialog(getResources().getString(R.string.sync_device_failure));
-          return;
-      }
-
       new Thread(new Runnable() {
           @Override
           public void run() {

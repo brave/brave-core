@@ -70,6 +70,20 @@ source_set("prefs") {
   ]
 }
 
+source_set("qr_code_data") {
+  sources = [
+    "qr_code_data.cc",
+    "qr_code_data.h",
+    "qr_code_validator.cc",
+    "qr_code_validator.h",
+  ]
+
+  deps = [
+    ":crypto",
+    "//base",
+  ]
+}
+
 static_library("sync_service_impl_helper") {
   sources = [
     "sync_service_impl_helper.cc",
@@ -89,10 +103,24 @@ group("brave_sync") {
     ":features",
     ":network_time_helper",
     ":prefs",
+    ":qr_code_data",
     "//base",
   ]
 }
 
 group("constants") {
   public_configs = [ ":brave_sync_config" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "//brave/components/brave_sync/qr_code_data_unittest.cc",
+    "//brave/components/brave_sync/qr_code_validator_unittest.cc",
+  ]
+
+  deps = [
+    ":qr_code_data",
+    "//base/test:test_support",
+  ]
 }
