@@ -13,6 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/qr_code_data.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
@@ -109,6 +110,8 @@ void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
   // QR code version 3 can only carry 84 bytes so we hex encode 32 bytes
   // seed then we will have 64 bytes input data
   const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
+  const std::string qr_code_string =
+      brave_sync::QrCodeData::CreateWithActualDate(sync_code_hex)->ToJson();
 
   base::Value callback_id_disconnect(args[0].Clone());
   base::Value callback_id_arg(args[0].Clone());
@@ -123,7 +126,7 @@ void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
 
   qrcode_generator::mojom::GenerateQRCodeRequestPtr request =
       qrcode_generator::mojom::GenerateQRCodeRequest::New();
-  request->data = sync_code_hex;
+  request->data = qr_code_string;
   request->should_render = true;
   request->render_dino = false;
   request->render_module_style =
