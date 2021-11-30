@@ -3,18 +3,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export async function generateQRData (url: string, asset: string, qrAction: any) {
-  const qr = await import('qr-image')
-  const image: any = qr.image(url)
-  try {
-    let chunks: Uint8Array[] = []
-    image
-      .on('data', (chunk: Uint8Array) => chunks.push(chunk))
-      .on('end', () => {
-        qrAction(asset, `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`)
-      })
-  } catch (error) {
-    console.error('Could not create deposit QR', error.toString())
-  }
+  // const qr = await import('qr-image')
+  // const image: any = qr.image(url)
+  // try {
+  //   let chunks: Uint8Array[] = []
+  //   image
+  //     .on('data', (chunk: Uint8Array) => chunks.push(chunk))
+  //     .on('end', () => {
+  //       qrAction(asset, `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`)
+  //     })
+  // } catch (error) {
+  //   console.error('Could not create deposit QR', error.toString())
+  // }
 }
 
 export const isValidClientURL = (url: string) => {

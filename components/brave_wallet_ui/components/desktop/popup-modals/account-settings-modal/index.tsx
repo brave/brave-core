@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as qr from 'qr-image'
+// import * as qr from 'qr-image'
 import {
   AccountSettingsNavTypes,
   WalletAccountType,
@@ -89,13 +89,14 @@ const AddAccountModal = (props: Props) => {
   }
 
   const generateQRData = () => {
-    const image = qr.image(account.address)
-    let chunks: Uint8Array[] = []
-    image
-      .on('data', (chunk: Uint8Array) => chunks.push(chunk))
-      .on('end', () => {
-        setQRCode(`data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`)
-      })
+    // const image = qr.image(account.address)
+    // let chunks: Uint8Array[] = []
+    // image
+    //   .on('data', (chunk: Uint8Array) => chunks.push(chunk))
+    //   .on('end', () => {
+    //     setQRCode(`data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`)
+    //   })
+    setQRCode('hi')
   }
 
   React.useEffect(() => {

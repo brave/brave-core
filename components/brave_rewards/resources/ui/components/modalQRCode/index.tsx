@@ -8,7 +8,7 @@ import {
   ImageWrapper
 } from './style'
 import { Modal } from 'brave-ui/components'
-import * as qr from 'qr-image'
+// import * as qr from 'qr-image'
 import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
@@ -50,19 +50,19 @@ export default class ModalQRCode extends React.PureComponent<Props, State> {
   }
 
   generateQRData = () => {
-    const image: any = qr.image(this.props.paymentId)
-    try {
-      let chunks: Uint8Array[] = []
-      image
-        .on('data', (chunk: Uint8Array) => chunks.push(chunk))
-        .on('end', () => {
-          this.setState({
-            qrCode: `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`
-          })
-        })
-    } catch (error) {
-      console.error('Could not create deposit QR', error.toString())
-    }
+    // const image: any = qr.image(this.props.paymentId)
+    // try {
+    //   let chunks: Uint8Array[] = []
+    //   image
+    //     .on('data', (chunk: Uint8Array) => chunks.push(chunk))
+    //     .on('end', () => {
+    //       this.setState({
+    //         qrCode: `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`
+    //       })
+    //     })
+    // } catch (error) {
+    //   console.error('Could not create deposit QR', error.toString())
+    // }
   }
 
   render () {
