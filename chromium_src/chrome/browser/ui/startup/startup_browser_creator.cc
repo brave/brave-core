@@ -28,7 +28,7 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
                                  chrome::startup::IsFirstRun is_first_run);
 
   bool Launch(Profile* profile,
-              bool process_startup,
+              chrome::startup::IsProcessStartup process_startup,
               std::unique_ptr<LaunchModeRecorder> launch_mode_recorder);
 };
 
@@ -55,7 +55,7 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 // won't be launched.
 bool BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
-    bool process_startup,
+    chrome::startup::IsProcessStartup process_startup,
     std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_.HasSwitch(switches::kTor)) {
