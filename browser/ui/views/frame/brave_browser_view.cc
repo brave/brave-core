@@ -151,7 +151,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   // Wrap |contents_container_| within our new |brave_contents_container_|.
   // |brave_contents_container_| also contains sidebar.
-  auto orignal_contents_container = RemoveChildViewT(contents_container_);
+  auto orignal_contents_container = RemoveChildViewT(contents_container_.get());
   sidebar_container_view_ = brave_contents_container->AddChildView(
       std::make_unique<SidebarContainerView>(
           static_cast<BraveBrowser*>(browser_.get())));
