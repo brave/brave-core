@@ -263,6 +263,14 @@ interface KeyringController {
   GetAutoLockMinutes() => (int32 minutes);
   // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
   SetAutoLockMinutes(int32 minutes) => (bool success);
+
+  // Returned result is true if the password is considered a strong password.
+  // We define a strong password to have:
+  // - At least one letter
+  // - At least one number
+  // - At least 7 characters
+  // - At least one non-alphanumeric character
+  IsStrongPassword(string password) => (bool result);
 };
 
 interface AssetRatioController {
