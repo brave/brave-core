@@ -446,6 +446,16 @@ class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetAdsDataFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsData", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAdsDataFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetAnonWalletStatusFunction
     : public ExtensionFunction {
  public:
