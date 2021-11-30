@@ -11,7 +11,7 @@ class SyncQRCodeView: UIImageView {
         
         contentMode = .scaleAspectFill
         
-        if let img = syncApi.getQRCodeImage(CGSize(width: barcodeSize, height: barcodeSize)) {
+        if let img = syncApi.getQRCodeImageV2(CGSize(width: barcodeSize, height: barcodeSize)) {
             image = img
         }
     }

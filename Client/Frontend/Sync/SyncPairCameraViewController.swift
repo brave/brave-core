@@ -7,9 +7,15 @@ import BraveShared
 import BraveCore
 import Data
 
+protocol SyncPairControllerDelegate: AnyObject {
+    func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String)
+    func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String)
+}
+
 class SyncPairCameraViewController: SyncViewController {
+    private var cameraLocked = false
     
-    var syncHandler: ((String) -> Void)?
+    weak var delegate: SyncPairControllerDelegate?
     var cameraView: SyncCameraView!
     var titleLabel: UILabel!
     var descriptionLabel: UILabel!
@@ -21,6 +27,7 @@ class SyncPairCameraViewController: SyncViewController {
     }
     
     private let syncAPI: BraveSyncAPI
+    private static let forcedCameraTimeout = 25.0
 
     init(syncAPI: BraveSyncAPI) {
         self.syncAPI = syncAPI
@@ -37,11 +44,13 @@ class SyncPairCameraViewController: SyncViewController {
         
         title = Strings.scan
 
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .center
-        stackView.spacing = 4
+        let stackView = UIStackView().then {
+            $0.axis = .vertical
+            $0.distribution = .equalSpacing
+            $0.alignment = .center
+            $0.spacing = 4
+        }
+        
         view.addSubview(stackView)
 
         stackView.snp.makeConstraints { make in
@@ -50,88 +59,41 @@ class SyncPairCameraViewController: SyncViewController {
             make.bottom.equalTo(self.view.safeArea.bottom).inset(16)
         }
         
-        cameraView = SyncCameraView()
-        cameraView.translatesAutoresizingMaskIntoConstraints = false
-        cameraView.backgroundColor = .black
-        cameraView.layer.cornerRadius = 4
-        cameraView.layer.cornerCurve = .continuous
-        cameraView.layer.masksToBounds = true
-        cameraView.scanCallback = { [weak self] data in
-            guard let self = self else { return }
-            
-            // TODO: Functional, but needs some cleanup
-            struct Scanner { static var lock = false }
-            
-            if Scanner.lock {
-                // Have internal, so camera error does not show
-                return
+        cameraView = SyncCameraView().then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.backgroundColor = .black
+            $0.layer.cornerRadius = 4
+            $0.layer.cornerCurve = .continuous
+            $0.layer.masksToBounds = true
+            $0.scanCallback = { [weak self] data in
+                self?.onQRCodeScanned(data: data)
             }
-            
-            Scanner.lock = true
-            
-            let alert = UIAlertController(title: Strings.syncJoinChainWarningTitle,
-                                          message: Strings.syncJoinChainCameraWarning,
-                                          preferredStyle: .alert)
-            
-            let okAction = UIAlertAction(title: Strings.yes, style: .default, handler: { _ in
-                if !DeviceInfo.hasConnectivity() {
-                    self.present(SyncAlerts.noConnection, animated: true)
-                    return
-                }
-                self.cameraView.cameraOverlaySucess()
-                // Freezing the camera frame after QR has been scanned.
-                self.cameraView.captureSession?.stopRunning()
-                
-                // Vibrate.
-                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                
-                // Forced timeout
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
-                    Scanner.lock = false
-                    self.cameraView.cameraOverlayError()
-                })
-                
-                // If multiple calls get in here due to race conditions it isn't a big deal
-                
-                let codeWords = self.syncAPI.syncCode(fromHexSeed: data)
-                if codeWords.isEmpty {
-                    self.cameraView.cameraOverlayError()
-                } else {
-                    self.syncHandler?(codeWords)
-                }
-            })
-            
-            let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel) { _ in
-                Scanner.lock = false
-            }
-            
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            
-            self.present(alert, animated: true)
         }
 
         stackView.addArrangedSubview(cameraView)
 
-        let titleDescriptionStackView = UIStackView()
-        titleDescriptionStackView.axis = .vertical
-        titleDescriptionStackView.spacing = 4
-        titleDescriptionStackView.alignment = .center
-        titleDescriptionStackView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .vertical)
+        let titleDescriptionStackView = UIStackView().then {
+            $0.axis = .vertical
+            $0.spacing = 4
+            $0.alignment = .center
+            $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .vertical)
+        }
         
-        titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        titleLabel.text = Strings.syncToDevice
+        titleLabel = UILabel().then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
+            $0.text = Strings.syncToDevice
+        }
         titleDescriptionStackView.addArrangedSubview(titleLabel)
 
-        descriptionLabel = UILabel()
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.lineBreakMode = .byWordWrapping
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.text = Strings.syncToDeviceDescription
+        descriptionLabel = UILabel().then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byWordWrapping
+            $0.textAlignment = .center
+            $0.text = Strings.syncToDeviceDescription
+        }
         titleDescriptionStackView.addArrangedSubview(descriptionLabel)
 
         let textStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 16),
@@ -144,7 +106,7 @@ class SyncPairCameraViewController: SyncViewController {
         enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
         enterWordsButton.setTitle(Strings.enterCodeWords, for: .normal)
         enterWordsButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-        enterWordsButton.addTarget(self, action: #selector(SEL_enterWords), for: .touchUpInside)
+        enterWordsButton.addTarget(self, action: #selector(onEnterWordsPressed), for: .touchUpInside)
         stackView.addArrangedSubview(enterWordsButton)
         
         loadingSpinner.startAnimating()
@@ -181,10 +143,111 @@ class SyncPairCameraViewController: SyncViewController {
         }
     }
     
-    @objc func SEL_enterWords() {
+    @objc
+    private func onEnterWordsPressed() {
         let wordsVC = SyncPairWordsViewController(syncAPI: syncAPI)
-        wordsVC.syncHandler = self.syncHandler
+        wordsVC.delegate = delegate
         navigationController?.pushViewController(wordsVC, animated: true)
+    }
+    
+    private func onQRCodeScanned(data: String) {
+        // Guard against multi-scanning
+        if cameraLocked { return }
+        cameraLocked = true
+        
+        // Pause scanning
+        cameraView.cameraOverlaySuccess()
+        cameraView.stopRunning()
+        
+        // Vibrate.
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        
+        // Forced timeout
+        let task = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            self.cameraLocked = false
+            self.cameraView.cameraOverlayError()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + SyncPairCameraViewController.forcedCameraTimeout, execute: task)
+        
+        // Check Internet Connectivity
+        if !DeviceInfo.hasConnectivity() {
+            task.cancel()
+            let alert = UIAlertController(title: Strings.syncNoConnectionTitle,
+                                          message: Strings.syncNoConnectionBody,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.cameraLocked = false
+                self.cameraView.cameraOverlayNormal()
+                self.cameraView.startRunning()
+            }))
+            present(alert, animated: true)
+            return
+        }
+        
+        // QR Code (Unversioned - Version #1)
+        if data.filter(\.isHexDigit).count == data.count {
+            if Date().timeIntervalSince1970 >= TimeInterval(BraveSyncQRCodeModel.sunsetDate) {
+                // Insecure version (Past the Sunset Date)
+                cameraView.cameraOverlayError()
+                showErrorAlert(error: .insecure)
+            } else if syncAPI.isValidSyncCode(syncAPI.syncCode(fromHexSeed: data)) {
+                // Valid Hex Code
+                cameraView.cameraOverlaySuccess()
+                self.delegate?.syncOnScannedHexCode(self, hexCode: data)
+            } else {
+                // Invalid Hex Code
+                cameraView.cameraOverlayError()
+                showErrorAlert(error: .invalidFormat)
+            }
+            return
+        }
+        
+        // QR Code (Versioned - Version #2+)
+        guard let model = BraveSyncQRCodeModel.from(string: data) else {
+            cameraView.cameraOverlayError()
+            showErrorAlert(error: .invalidFormat)
+            return
+        }
+        
+        // Validation
+        let errorCode = model.validate(syncAPI: syncAPI)
+        if errorCode != .none {
+            cameraView.cameraOverlayError()
+            showErrorAlert(error: errorCode)
+            return
+        }
+        
+        // Sync code is valid
+        delegate?.syncOnScannedHexCode(self, hexCode: model.syncHexCode)
+    }
+    
+    private func showErrorAlert(error: BraveSyncQRCodeError) {
+        let errorMessage = { (error: BraveSyncQRCodeError) -> String in
+            switch error {
+            case .insecure: return Strings.syncInsecureVersionError
+            case .newerVersion: return Strings.syncNewerVersionError
+            case .olderVersion: return Strings.syncOlderVersionError
+            case .invalidFormat: return Strings.syncInvalidVersionError
+            case .expired: return Strings.syncExpiredError
+            case .futureDate: return Strings.syncFutureVersionError
+            default: return Strings.syncGenericError
+            }
+        }
+        
+        let alert = UIAlertController(title: Strings.syncUnableCreateGroup,
+                                      message: errorMessage(error),
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.cameraLocked = false
+            self.cameraView.cameraOverlayNormal()
+            self.cameraView.startRunning()
+        }))
+        present(alert, animated: true)
     }
 }
 

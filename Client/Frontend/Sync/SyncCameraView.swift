@@ -88,7 +88,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     
-    func startCapture() {
+    private func startCapture() {
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
             print("Capture device is nil")
             return
@@ -170,7 +170,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
     }
     
-    func cameraOverlaySucess() {
+    func cameraOverlaySuccess() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
         cameraOverlayView.tintColor = .green

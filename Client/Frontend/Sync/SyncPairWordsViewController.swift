@@ -10,7 +10,7 @@ private let log = Logger.browserLogger
 
 class SyncPairWordsViewController: SyncViewController {
     
-    var syncHandler: ((String) -> Void)?
+    weak var delegate: SyncPairControllerDelegate?
     var scrollView: UIScrollView!
     var containerView: UIView!
     var codewordsView: SyncCodewordsView!
@@ -164,22 +164,9 @@ class SyncPairWordsViewController: SyncViewController {
     }
     
     @objc func SEL_done() {
-        let alert = UIAlertController(title: Strings.syncJoinChainWarningTitle,
-                                      message: Strings.syncJoinChainCodewordsWarning,
-                                      preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: Strings.yes, style: .default, handler: { [weak self] _ in
-            self?.doIfConnected {
-                self?.checkCodes()
-            }
-        })
-        
-        let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
-        
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true)
+        doIfConnected {
+            self.checkCodes()
+        }
     }
     
     private func checkCodes() {
@@ -215,7 +202,7 @@ class SyncPairWordsViewController: SyncViewController {
         })
         
         if syncAPI.isValidSyncCode(codes.joined(separator: " ")) {
-            syncHandler?(codes.joined(separator: " "))
+            delegate?.syncOnWordsEntered(self, codeWords: codes.joined(separator: " "))
         } else {
             alert(message: Strings.invalidSyncCodeDescription)
             disableNavigationPrevention()

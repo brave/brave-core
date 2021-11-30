@@ -12,7 +12,6 @@ struct SyncAlerts {
         
         let okAction = UIAlertAction(title: Strings.OKString, style: .default)
         alert.addAction(okAction)
-        
         return alert
     }
     
