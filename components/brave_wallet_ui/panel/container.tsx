@@ -416,7 +416,7 @@ function Container (props: Props) {
     props.walletActions.queueNextTransaction()
   }
   const retryHardwareOperation = () => {
-    if (signMessageData) {
+    if (signMessageData && signMessageData.length && signMessageData[0].id != -1) {
       onSignData()
     }
     if (selectedPendingTransaction) {
