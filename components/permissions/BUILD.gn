@@ -20,4 +20,8 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (is_android) {
+    deps += [ "//components/messages/android:android" ]
+  }
 }
