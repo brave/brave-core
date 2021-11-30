@@ -21,11 +21,9 @@ import {
   ImportFromExternalWalletPayloadType,
   ImportWalletErrorPayloadType
 } from '../constants/action_types'
-import {
-  HardwareWalletAccount
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { SwapResponse, SwapErrorResponse, ERCToken, UpdateAccountNamePayloadType } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
+import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')

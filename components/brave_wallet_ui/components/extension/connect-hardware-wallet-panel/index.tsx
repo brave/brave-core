@@ -12,8 +12,8 @@ import {
 } from './style'
 import { NavButton } from '..'
 import { getLocale } from '../../../../common/locale'
-import { HardwareWalletResponseCodeType } from '../../../constants/types'
 import useInterval from '../../../common/hooks/interval'
+import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 
 export interface Props {
   onCancel: () => void

@@ -28,9 +28,9 @@ import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
 import { PortfolioView, AccountsView } from '../../components/desktop/views'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { HardwareWalletAccount } from './../../common/hardware/types'
 
 export interface Props {
   isFetchingPortfolioPriceHistory: boolean

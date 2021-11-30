@@ -3,36 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const { EventEmitter } = require('events')
-import Eth from '@ledgerhq/hw-app-eth'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import {
-  LedgerDerivationPaths
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { getLocale } from '../../../common/locale'
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
-import { GetAccountsHardwareOperationResult, SignatureVRS, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 import { assert } from 'chrome://resources/js/assert.m.js'
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import Eth from '@ledgerhq/hw-app-eth'
+import { getLocale } from '../../../../common/locale'
+import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
+import {
+  GetAccountsHardwareOperationResult,
+  SignatureVRS,
+  SignHardwareMessageOperationResult,
+  SignHardwareTransactionOperationResult
+} from '../../../common/hardware_operations'
+import { LedgerKeyring } from '../hardwareKeyring'
+import { HardwareVendor } from '../../api/hardware_keyrings'
+import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
   TransportLocked = 'TransportLocked'
 }
-
-export default class LedgerBridgeKeyring extends EventEmitter {
+export default class LedgerBridgeKeyring extends LedgerKeyring {
   constructor () {
     super()
   }
 
   private app?: Eth
+  private deviceId: string
 
-  type = () => {
+  type = (): HardwareVendor => {
     return LEDGER_HARDWARE_VENDOR
   }
 
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
-    if (!this.isUnlocked() && !(await this.unlock()) || !this.app) {
-      return { success: false, error: getLocale('braveWalletUnlockError') }
+    const unlocked = await this.unlock()
+    if (!unlocked.success || !this.app) {
+      return unlocked
     }
     from = (from < 0) ? 0 : from
     const eth: Eth = this.app
@@ -45,13 +50,13 @@ export default class LedgerBridgeKeyring extends EventEmitter {
         derivationPath: path,
         name: this.type(),
         hardwareVendor: this.type(),
-        deviceId: this.deviceId_
+        deviceId: this.deviceId
       })
     }
     return { success: true, payload: [...accounts] }
   }
 
-  isUnlocked = () => {
+  isUnlocked = (): boolean => {
     return this.app !== undefined
   }
 
@@ -59,28 +64,30 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     this.app = new Eth(await TransportWebHID.create())
   }
 
-  unlock = async () => {
-    if (this.isUnlocked()) {
-      return this.app
+  unlock = async (): Promise<HardwareOperationResult> => {
+    if (this.app) {
+      return { success: true }
     }
 
     await this.makeApp()
-
-    if (this.app) {
-      this.app.transport.on('disconnect', this.onDisconnected)
-      const eth: Eth = this.app
-      const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
-      const address = (await eth.getAddress(zeroPath)).address
-      this.deviceId_ = await hardwareDeviceIdFromAddress(address)
+    if (!this.app) {
+      return { success: false }
     }
 
-    return this.isUnlocked()
+    const eth: Eth = this.app
+    eth.transport.on('disconnect', this.onDisconnected)
+    const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+    const address = (await eth.getAddress(zeroPath)).address
+    this.deviceId = await hardwareDeviceIdFromAddress(address)
+
+    return { success: this.isUnlocked() }
   }
 
   signTransaction = async (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult> => {
     try {
-      if (!this.isUnlocked() && !(await this.unlock()) || !this.app) {
-        return { success: false, error: getLocale('braveWalletUnlockError') }
+      const unlocked = await this.unlock()
+      if (!unlocked.success || !this.app) {
+        return unlocked
       }
       const eth: Eth = this.app
       const signed = await eth.signTransaction(path, rawTxHex)
@@ -92,8 +99,9 @@ export default class LedgerBridgeKeyring extends EventEmitter {
 
   signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
     try {
-      if (!this.isUnlocked() && !(await this.unlock()) || !this.app) {
-        return { success: false, error: getLocale('braveWalletUnlockError') }
+      const unlocked = await this.unlock()
+      if (!unlocked.success || !this.app) {
+        return unlocked
       }
       const eth: Eth = this.app
       const messageHex = Buffer.from(message).toString('hex')

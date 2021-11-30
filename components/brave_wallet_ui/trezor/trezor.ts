@@ -18,9 +18,8 @@ import {
   SignMessageResponsePayload,
   SignMessageResponse,
   UnlockResponse
-} from '../common/trezor/trezor-messages'
-
-import { addTrezorCommandHandler } from '../common/trezor/trezor-command-handler'
+} from '../common/hardware/trezor/trezor-messages'
+import { addTrezorCommandHandler } from '../common/hardware/trezor/trezor-command-handler'
 
 const createUnlockResponse = (command: UnlockCommand, result: boolean, error?: Unsuccessful): UnlockResponsePayload => {
   const payload: UnlockResponse = (!result && error) ? error : { success: result }

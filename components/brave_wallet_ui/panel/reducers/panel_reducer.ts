@@ -5,7 +5,6 @@
 
 import { createReducer } from 'redux-act'
 import {
-  HardwareWalletResponseCodeType,
   PanelState,
   SwapErrorResponse,
   SwapResponse,
@@ -18,6 +17,7 @@ import {
   SignMessagePayload
 } from '../constants/action_types'
 import { PanelTitles } from '../../options/panel-titles'
+import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 const defaultState: PanelState = {
   hasInitialized: false,
