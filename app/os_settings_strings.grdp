@@ -83,10 +83,10 @@
     Device name
   </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
-    Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
+    <ph name="MANAGER">$1<ex>google.com</ex></ph> is putting this device on a previous version (<ph name="PROGRESS_PERCENT">$2<ex>90%</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_SUCCESS" desc="Status label: Successfully rolled back Chrome OS. All data on the device will be deleted during the next reboot.">
-    Your administrator rolled back this device. Please save important files, then restart. All data on the device will be deleted.
+    <ph name="MANAGER">$1<ex>google.com</ex></ph> has put this device on a previous version. Please save important files, then restart. All data on the device will be deleted.
   </message>
   <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on BraveOS/BraveOS">
     Channel changed. Restart your device to apply changes.
@@ -223,11 +223,11 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FIRMWARE_UPDATES" desc="Text of the button for the surface which allows users to update all their peripheral firmwares in one place.">
+    Firmware updates
+  </message>
 
   <!-- Profiles (OS settings) -->
-  <message name="IDS_OS_SETTINGS_PEOPLE_V2" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
-    Accounts
-  </message>
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
     Currently signed in as <ph name="NAME">$1<ex>John</ex></ph>
   </message>
@@ -1637,6 +1637,18 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
     Primary account
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_TITLE" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of that dialog.">
+    Remove this account?
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_BODY" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the main message of that dialog.">
+    Removing this account will also delete any Brave profiles signed in with this account
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_REMOVE" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of the button that will remove the account.">
+    Remove
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_CANCEL" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of the button that will cancel the dialog.">
+    Cancel
   </message>
 
   <!-- Used by both Crostini and Plugin VM -->
@@ -3123,13 +3135,13 @@ Press an assigned switch or key to remove assignment.
     Connecting to your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
-    Set a PIN or password to continue
+    Set a PIN or password
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
-    Protect your phone's data when this Bravebook wakes from sleep.
+    This PIN or password protects your data on this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, including any content you stream from your phone.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog containing the smart lock will log in when the phone is nearby.">
-    Smart lock will automatically log you in when your phone is nearby.
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog.">
+    Choose either one each time you sign in
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
     Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
