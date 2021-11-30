@@ -20,7 +20,8 @@ bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {
 
   // Read payload length from the header.
   uint32_t data_length;
-  base::ReadBigEndian(padded_string->data(), &data_length);
+  base::ReadBigEndian(reinterpret_cast<const uint8_t*>(padded_string->data()),
+                      &data_length);
 
   // Remove length header.
   padded_string->remove_prefix(sizeof(uint32_t));
