@@ -163,8 +163,10 @@ struct SwapCryptoView: View {
   
   @State private var orderType: OrderType = .market
   @State var hideSlippage = true
+  @State private var isSwapDisclaimerVisible: Bool = false
   
   @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.openWalletURLAction) private var openWalletURL
   
   @ViewBuilder var unsupportedSwapChainSection: some View {
     Section {
@@ -363,6 +365,34 @@ struct SwapCryptoView: View {
         .resetListHeaderStyle()
         .padding(.top, 20)
     ) {
+      Button(action: {
+        isSwapDisclaimerVisible = true
+      }) {
+        HStack {
+          Text(Strings.Wallet.swapDexAggrigatorNote)
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color(.braveLabel))
+          Image(systemName: "info.circle")
+            .foregroundColor(Color(.braveBlurpleTint))
+            .accessibilityHidden(true)
+        }
+      }
+      .buttonStyle(.plain)
+      .padding(.vertical, 4)
+      .alert(isPresented: $isSwapDisclaimerVisible) {
+        Alert(
+          title: Text(Strings.Wallet.swapDexAggrigatorNote),
+          message: Text(Strings.Wallet.swapDexAggrigatorDisclaimer),
+          primaryButton: Alert.Button.default(Text(Strings.learnMore), action: {
+            guard let url = URL(string: "https://0x.org/") else { return }
+            openWalletURL?(url)
+          }),
+          secondaryButton: Alert.Button.cancel(Text(Strings.OKString))
+        )
+      }
+      .frame(maxWidth: .infinity)
+      .font(.footnote)
+      .listRowBackground(Color(.braveGroupedBackground))
     }
   }
   

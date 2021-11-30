@@ -166,7 +166,7 @@ extension Strings {
       "wallet.accountPrivateKeyDisplayWarning",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Warning: Never share your recovery phrase. Anyone with this phrase can take your assets forever.",
+      value: "Warning: Never share your private key. Anyone with this key can take your assets forever.",
       comment: "A warning message displayed at the top of the Private Key screen"
     )
     public static let copyToPasteboard = NSLocalizedString(
@@ -1442,6 +1442,20 @@ extension Strings {
       bundle: .braveWallet,
       value: "Settings",
       comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let swapDexAggrigatorNote = NSLocalizedString(
+      "wallet.swapDexAggrigatorNote",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Brave uses 0x as a DEX aggregator.",
+      comment: "A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange)"
+    )
+    public static let swapDexAggrigatorDisclaimer = NSLocalizedString(
+      "wallet.swapDexAggrigatorDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.",
+      comment: "A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage."
     )
   }
 }
