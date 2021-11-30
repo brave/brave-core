@@ -128,19 +128,6 @@ public class AccountDetailActivity extends AsyncInitializationActivity
             }
         });
 
-        InitEthJsonRpcController();
-        InitAssetRatioController();
-        InitBraveWalletService();
-        InitKeyringController();
-        InitEthTxController();
-        InitErcTokenRegistry();
-
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getChainId(chainId -> {
-            setUpAssetList(chainId);
-            fetchAccountInfo(chainId);
-        });
-
         onInitialLayoutInflationComplete();
     }
 
@@ -225,6 +212,19 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        InitEthJsonRpcController();
+        InitAssetRatioController();
+        InitBraveWalletService();
+        InitKeyringController();
+        InitEthTxController();
+        InitErcTokenRegistry();
+
+        assert mEthJsonRpcController != null;
+        mEthJsonRpcController.getChainId(chainId -> {
+            setUpAssetList(chainId);
+            fetchAccountInfo(chainId);
+        });
     }
 
     @Override
