@@ -255,16 +255,23 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
   if (!brave_shields::GetBraveShieldsEnabled(map, url))
     return DomainBlockingType::kNone;
 
-  // Block if ad blocking is "aggressive"
-  if (brave_shields::GetCosmeticFilteringControlType(map, url) ==
-      ControlType::BLOCK) {
+  // Don't block if ad blocking is off.
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
+    return DomainBlockingType::kNone;
+
+  const ControlType cosmetic_control_type =
+      brave_shields::GetCosmeticFilteringControlType(map, url);
+  // Block if ad blocking is "aggressive".
+  if (cosmetic_control_type == ControlType::BLOCK) {
     return DomainBlockingType::kAggressive;
   }
 
-  if (base::FeatureList::IsEnabled(
+  // Block using 1PES if ad blocking is "standard".
+  if (cosmetic_control_type == BLOCK_THIRD_PARTY &&
+      base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveDomainBlockVia1PES)) {
+          brave_shields::features::kBraveDomainBlock1PES)) {
     return DomainBlockingType::k1PES;
   }
 
