@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index f69e4c52ca5a661bb2dc7061caf687fa5fd60c0b..3c8bbb09da391917332afe7a92c042441ef63948 100644
+index 676dc872a3b7f0323ce2ee61ad29cf0f6f1b6048..fd5c86cee80eaa2d8f232e597b61998b6d0bf31e 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -8,6 +8,7 @@
@@ -27,24 +27,25 @@ index f69e4c52ca5a661bb2dc7061caf687fa5fd60c0b..3c8bbb09da391917332afe7a92c04244
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -51,13 +55,15 @@
+@@ -51,7 +55,8 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
 +<if expr="_google_chrome">
-     <settings-toggle-button id="urlCollectionToggle"
-         class="hr"
-         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
-         label="$i18n{urlKeyedAnonymizedDataCollection}"
-         sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
-     </settings-toggle-button>
+     <template is="dom-if" if="[[showUrlCollectionToggle_()]]" restamp>
+       <settings-toggle-button id="urlCollectionToggle"
+           class="hr"
+@@ -60,6 +65,7 @@
+           sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
+       </settings-toggle-button>
+     </template>
 +</if>
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -77,6 +83,7 @@
+@@ -79,6 +85,7 @@
        </settings-toggle-button>
      </template>
  
@@ -52,7 +53,7 @@ index f69e4c52ca5a661bb2dc7061caf687fa5fd60c0b..3c8bbb09da391917332afe7a92c04244
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -89,3 +96,4 @@
+@@ -91,3 +98,4 @@
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>
  </if>
