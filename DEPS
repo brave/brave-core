@@ -1,5 +1,9 @@
 use_relative_paths = True
 
+vars = {
+  'brave_cxx_version': '1.0.56',
+}
+
 deps = {
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@c29f81bf84d1cccae2181347689c336576d2c8c4",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
@@ -18,6 +22,7 @@ deps = {
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
+  "third_party/rust/cxx": "https://github.com/dtolnay/cxx.git@refs/tags/" + Var('brave_cxx_version'),
 }
 
 recursedeps = [
@@ -42,14 +47,16 @@ hooks = [
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_ios',
-    'action': ['vpython3', 'script/download_rust_deps.py', '--platform', 'ios'],
+    'action': ['vpython3', 'script/download_rust_deps.py',
+        '--platform', 'ios', '--cxx_version', Var('brave_cxx_version')],
   },
   {
     # Download rust deps if necessary for Windows, Linux, and macOS
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'not checkout_android and not checkout_ios',
-    'action': ['vpython3', 'script/download_rust_deps.py'],
+    'action': ['vpython3', 'script/download_rust_deps.py',
+        '--cxx_version', Var('brave_cxx_version')],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS

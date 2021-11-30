@@ -56,38 +56,14 @@ config("cxx_cppconfig") {
   defines = [ "RUST_CXX_NO_EXCEPTIONS" ]
 }
 
-copy("cxx_source") {
-  visibility = [ ":cxx_cppdeps" ]
-  # TODO(bridiver) - get path from Cargo.toml or python
-  sources = [
-    "//brave/build/rustup/0.1.8/registry/src/github.com-1ecc6299db9ec823/cxx-1.0.56/src/cxx.cc",
-  ]
-  outputs = [
-    "$root_out_dir/gen/brave/third_party/rust/cxx/src/cxx.cc",
-  ]
-}
-
-copy("cxx_header") {
-  visibility = [ ":cxx_cppdeps" ]
-  # TODO(bridiver) - get path from Cargo.toml or python
-  sources = [
-    "//brave/build/rustup/0.1.8/registry/src/github.com-1ecc6299db9ec823/cxx-1.0.56/include/cxx.h",
-  ]
-  outputs = [
-    "$root_out_dir/gen/brave/third_party/rust/cxx/include/cxx.h",
-  ]
-}
-
 # The required dependencies for cxx-generated bindings, that must be included
 # on the C++ side.
 source_set("cxx_cppdeps") {
-  sources = get_target_outputs(":cxx_source")
-  sources += get_target_outputs(":cxx_header")
+  sources = [
+    "//brave/third_party/rust/cxx/include/cxx.h",
+    "//brave/third_party/rust/cxx/src/cxx.cc",
+  ]
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [ "//build/config/compiler:no_chromium_code" ]
   public_configs = [ ":cxx_cppconfig" ]
-  deps = [
-    ":cxx_source",
-    ":cxx_header",
-  ]
 }
