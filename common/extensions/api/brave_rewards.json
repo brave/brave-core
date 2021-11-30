@@ -886,32 +886,31 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "adsIsSupported",
-                "type": "boolean"
-              },
-              {
-                "name": "adsEnabled",
-                "type": "boolean"
-              },
-              {
-                "name": "adsPerHour",
-                "type": "number"
-              },
-              {
-                "name": "adsSubdivisionTargeting",
-                "type": "string"
-              },
-              {
-                "name": "automaticallyDetectedAdsSubdivisionTargeting",
-                "type": "string"
-              },
-              {
-                "name": "shouldAllowAdsSubdivisionTargeting",
-                "type": "boolean"
-              },
-              {
-                "name": "adsUIEnabled",
-                "type": "boolean"
+                "name": "adsData",
+                "type": "object",
+                "properties": {
+                  "adsIsSupported": {
+                    "type": "boolean"
+                  },
+                  "adsEnabled": {
+                    "type": "boolean"
+                  },
+                  "adsPerHour": {
+                    "type": "number"
+                  },
+                  "adsSubdivisionTargeting": {
+                    "type": "string"
+                  },
+                  "automaticallyDetectedAdsSubdivisionTargeting": {
+                    "type": "string"
+                  },
+                  "shouldAllowAdsSubdivisionTargeting": {
+                    "type": "boolean"
+                  },
+                  "adsUIEnabled": {
+                    "type": "boolean"
+                  }
+                }
               }
             ]
           }
