@@ -73,6 +73,8 @@ extension BrowserViewController {
     }
     
     private func presentOnboardingAdblockNotifications() {
+        if Preferences.DebugFlag.skipEduPopups == true { return }
+
         var isAboutHomeUrl = false
         if let selectedTab = tabManager.selectedTab,
            let url = selectedTab.url,

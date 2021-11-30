@@ -520,6 +520,7 @@
 		2F13B801273311CB00253A4D /* BrowserViewController+Callout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13B800273311CB00253A4D /* BrowserViewController+Callout.swift */; };
 		2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */; };
 		2F198EE82603FDD900945AB3 /* AddSearchEngineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */; };
+		2F1A835A274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */; };
 		2F26C438267B9F0D00E5AD60 /* BlockSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26C437267B9F0D00E5AD60 /* BlockSummaryTests.swift */; };
 		2F26C43A267B9F9400E5AD60 /* blocking-summary-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 2F26C439267B9F9400E5AD60 /* blocking-summary-test.json */; };
 		2F29FB8B267BE06100B0AD6A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F29FB7E267BE06100B0AD6A /* Model.xcdatamodeld */; };
@@ -991,7 +992,6 @@
 		CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0391B5271E1023000EB13C /* SwiftUI.framework */; };
 		CA0391B9271E1023000EB13C /* BraveWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391B8271E1023000EB13C /* BraveWidgets.swift */; };
 		CA0391BC271E1026000EB13C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA0391BB271E1026000EB13C /* Assets.xcassets */; };
-		CA0391D4271E105E000EB13C /* BraveWidgetsExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CA0391E3271E1382000EB13C /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; };
 		CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */; };
 		CA0391F9271E143F000EB13C /* FavoritesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F4271E143F000EB13C /* FavoritesWidget.swift */; };
@@ -1045,11 +1045,13 @@
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
 		CA439A7625E8054A00FE9150 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */; };
 		CA439A9025E80EE400FE9150 /* VideoPlayerTrackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */; };
+		CA4B1F7D274D6DA9009C5BBA /* BraveSyncQRCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */; };
 		CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */ = {isa = PBXBuildFile; fileRef = CA55048F269DED8F00C19917 /* MediaBackgrounding.js */; };
 		CA752EA526CEABF8009356EF /* PlaylistToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA752EA426CEABF8009356EF /* PlaylistToast.swift */; };
 		CA752EB126CEBE52009356EF /* FontScaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A22FF26A7370C00923D70 /* FontScaling.swift */; };
 		CA7C5CAD2731928F003366F7 /* WelcomeViewSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAC2731928F003366F7 /* WelcomeViewSearchView.swift */; };
 		CA7C5CAF2731D022003366F7 /* PrivacyEverywhereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAE2731D022003366F7 /* PrivacyEverywhereView.swift */; };
+		CA84F896274F428B00B1388E /* SyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA84F895274F428B00B1388E /* SyncTests.swift */; };
 		CA8D5C0E26D7CD8A009BF13D /* PlaylistDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */; };
 		CA8D5C1026D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */; };
 		CA8D5C1226D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */; };
@@ -1531,13 +1533,6 @@
 			remoteGlobalIDString = 5DE7688320B3456C00FF5533;
 			remoteInfo = BraveShared;
 		};
-		CA0391D2271E1037000EB13C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CA0391B1271E1023000EB13C;
-			remoteInfo = BraveWidgetsExtension;
-		};
 		E63CD1B11B31B66400A63AFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -1634,7 +1629,6 @@
 			files = (
 				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
-				CA0391D4271E105E000EB13C /* BraveWidgetsExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2259,6 +2253,7 @@
 		2F13B800273311CB00253A4D /* BrowserViewController+Callout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+Callout.swift"; sourceTree = "<group>"; };
 		2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSearchEngineActivity.swift; sourceTree = "<group>"; };
+		2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPreferencesDebugMenuViewController.swift; sourceTree = "<group>"; };
 		2F26C437267B9F0D00E5AD60 /* BlockSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSummaryTests.swift; sourceTree = "<group>"; };
 		2F26C439267B9F9400E5AD60 /* blocking-summary-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blocking-summary-test.json"; sourceTree = "<group>"; };
 		2F29FB7F267BE06100B0AD6A /* Model7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model7.xcdatamodel; sourceTree = "<group>"; };
@@ -2976,10 +2971,12 @@
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
 		CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
+		CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSyncQRCodeModel.swift; sourceTree = "<group>"; };
 		CA55048F269DED8F00C19917 /* MediaBackgrounding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MediaBackgrounding.js; sourceTree = "<group>"; };
 		CA752EA426CEABF8009356EF /* PlaylistToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistToast.swift; sourceTree = "<group>"; };
 		CA7C5CAC2731928F003366F7 /* WelcomeViewSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewSearchView.swift; sourceTree = "<group>"; };
 		CA7C5CAE2731D022003366F7 /* PrivacyEverywhereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyEverywhereView.swift; sourceTree = "<group>"; };
+		CA84F895274F428B00B1388E /* SyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTests.swift; sourceTree = "<group>"; };
 		CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailViewController.swift; sourceTree = "<group>"; };
 		CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+DragDropDelegate.swift"; sourceTree = "<group>"; };
 		CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
@@ -4822,6 +4819,7 @@
 				2F51767325E4024B00429692 /* PlaylistSettingsViewController.swift */,
 				2F12A175260A3B17005A8C2B /* ShortcutSettingsViewController.swift */,
 				272B862A270BD96F005ED304 /* SandboxInspectorView.swift */,
+				2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -5543,6 +5541,7 @@
 				5E09617F252B63F200F3AFBB /* BraveSyncAPIExtensions.swift */,
 				5E72D54E253657FF00F8D62D /* BraveCoreImportExportUtility.swift */,
 				2FB0E26B2653132500B722AF /* BraveServiceStateObserver.swift */,
+				CA4B1F7C274D6DA8009C5BBA /* BraveSyncQRCodeModel.swift */,
 			);
 			path = BraveCore;
 			sourceTree = "<group>";
@@ -6463,6 +6462,7 @@
 				2F26C42B267B9B7E00E5AD60 /* ProductNotificationTests */,
 				F84B21D71A090F8100AAB793 /* Supporting Files */,
 				CA04E8A527022D9D00BFBB4D /* PlaylistTests.swift */,
+				CA84F895274F428B00B1388E /* SyncTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -7155,7 +7155,6 @@
 				277568D625ACF91600C129AF /* PBXTargetDependency */,
 				2F6931BA260CFB3700ECEB38 /* PBXTargetDependency */,
 				271F683B26EBD0E400AA2A50 /* PBXTargetDependency */,
-				CA0391D3271E1037000EB13C /* PBXTargetDependency */,
 			);
 			name = Client;
 			packageProductDependencies = (
@@ -8411,6 +8410,7 @@
 				E4CD9E911A6897FB00318571 /* ReaderMode.swift in Sources */,
 				4422D42321BFCE9200BF1855 /* HttpsEverywhereStats.swift in Sources */,
 				0A8C69AB225CFCAF00988715 /* AddEditBookmarkTableViewController.swift in Sources */,
+				CA4B1F7D274D6DA9009C5BBA /* BraveSyncQRCodeModel.swift in Sources */,
 				27C5AC8725D6FA6D00B8F50E /* OPML.swift in Sources */,
 				27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */,
 				4422D4E121BFFB7600BF1855 /* filter_block.cc in Sources */,
@@ -8791,6 +8791,7 @@
 				0A39FE992486604D00290ABC /* GRDGatewayAPI.m in Sources */,
 				0A1DF48424487AA000541FE4 /* GRDGatewayAPIResponse.m in Sources */,
 				4422D4B421BFFB7600BF1855 /* hash.cc in Sources */,
+				2F1A835A274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift in Sources */,
 				0A5CBD3823D4905D00362CC8 /* NTPNotificationView.swift in Sources */,
 				27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
@@ -8818,6 +8819,7 @@
 			files = (
 				D3D488591ABB54CD00A93597 /* FileAccessorTests.swift in Sources */,
 				0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */,
+				CA84F896274F428B00B1388E /* SyncTests.swift in Sources */,
 				0BA8964B1A250E6500C1010C /* ProfileTest.swift in Sources */,
 				5953AAEF2226E9D800A92DE1 /* HttpCookieExtensionTest.swift in Sources */,
 				F84B21DA1A090F8100AAB793 /* ClientTests.swift in Sources */,
@@ -9005,11 +9007,6 @@
 			isa = PBXTargetDependency;
 			target = 5DE7688320B3456C00FF5533 /* BraveShared */;
 			targetProxy = 5DE7689720B3456E00FF5533 /* PBXContainerItemProxy */;
-		};
-		CA0391D3271E1037000EB13C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CA0391B1271E1023000EB13C /* BraveWidgetsExtension */;
-			targetProxy = CA0391D2271E1037000EB13C /* PBXContainerItemProxy */;
 		};
 		E6F965141B2F1CF20034B023 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

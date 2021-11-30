@@ -445,7 +445,9 @@ class SettingsViewController: TableViewController {
         return Section(
             header: .title(Strings.security),
             rows: [
-                .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
+                .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template)
+                // TODO: Uncomment once we restore saved logins, see #4583
+                /*,
                 Row(text: Strings.Login.loginListNavigationTitle, selection: { [unowned self] in
                     let loginsPasswordsViewController = LoginListViewController(
                         profile: self.profile,
@@ -453,6 +455,7 @@ class SettingsViewController: TableViewController {
                     loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
                     self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-save-logins").template, accessory: .disclosureIndicator)
+                */
             ]
         )
     }()
@@ -558,6 +561,9 @@ class SettingsViewController: TableViewController {
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "VPN Logs", selection: { [unowned self] in
                     self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: "Retention Preferences Debug Menu", selection: { [unowned self] in
+                    self.navigationController?.pushViewController(RetentionPreferencesDebugMenuViewController(), animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "Load all QA Links", selection: { [unowned self] in
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
