@@ -67,6 +67,7 @@ function Send (props: Props) {
         selectedAssetBalance={selectedAssetBalance}
         selectedAsset={selectedAsset}
         onShowSelection={onShowAssets}
+        autoFocus={true}
       />
       <SwapInputComponent
         componentType='toAddress'
