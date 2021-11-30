@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index a16166f7701a9f9fa6cf2db997689a8d79caa899..6509964da9ad64619733fe330a1701efdbf39450 100644
+index 9266ced5ba3da3a6f493b5d438df85113038f8d0..90d5e77a70a44d2f00b3d2bfdfc491218cbb2384 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
-@@ -125,6 +125,7 @@ class PermissionContextBase : public KeyedService,
+@@ -126,6 +126,7 @@ class PermissionContextBase : public KeyedService,
    void AddObserver(permissions::Observer* permission_observer);
    void RemoveObserver(permissions::Observer* permission_observer);
  

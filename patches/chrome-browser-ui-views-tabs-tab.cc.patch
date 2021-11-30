@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 66247122c1e1b1cc9802912b34c2064863e296e4..4b154bc71749820e586a753105ecf96677ca77ef 100644
+index 57fe65bc63bc6f65a4332f8cd07676d25e552cb0..f71b5839ba812d145b26a2baf907b25adec1808f 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -384,6 +384,7 @@ void Tab::Layout() {
+@@ -385,6 +385,7 @@ void Tab::Layout() {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_->x() - after_title_padding;
@@ -10,7 +10,7 @@ index 66247122c1e1b1cc9802912b34c2064863e296e4..4b154bc71749820e586a753105ecf966
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -990,6 +991,7 @@ void Tab::UpdateIconVisibility() {
+@@ -991,6 +992,7 @@ void Tab::UpdateIconVisibility() {
        available_width -= favicon_width;
  
      showing_close_button_ = large_enough_for_close_button;

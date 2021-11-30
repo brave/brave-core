@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/alert_indicator.h b/chrome/browser/ui/views/tabs/alert_indicator.h
-index 15e386676ff6deb37f3df092962014d781bb9ec3..3be58aef9eed5e3d7e49024944ef74cbd7f7feee 100644
+index 4db1c0be363d09ba27bb85fbec7d262bbb61540a..7479f90eed22a9b568d40d145cc3cf801dcbe204 100644
 --- a/chrome/browser/ui/views/tabs/alert_indicator.h
 +++ b/chrome/browser/ui/views/tabs/alert_indicator.h
-@@ -51,6 +51,7 @@ class AlertIndicator : public views::ImageView {
+@@ -52,6 +52,7 @@ class AlertIndicator : public views::ImageView {
    View* GetTooltipHandlerForPoint(const gfx::Point& point) override;
  
   private:

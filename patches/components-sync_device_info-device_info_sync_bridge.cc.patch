@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..3b38c4720c2a8c814ed4298c38aa47d1e967a2ec 100644
+index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..1c3d2da86782a5154dbfcfcd764f22a87e7b93de 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -261,6 +261,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
@@ -10,7 +10,7 @@ index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..3b38c4720c2a8c814ed4298c38aa47d1
    return specifics;
  }
  
-@@ -429,6 +430,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+@@ -430,6 +431,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
    for (const std::unique_ptr<EntityChange>& change : entity_changes) {
      const std::string guid = change->storage_key();
  
