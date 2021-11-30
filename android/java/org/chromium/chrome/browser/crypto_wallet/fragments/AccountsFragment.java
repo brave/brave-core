@@ -66,6 +66,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         TextView addAccountBtn = view.findViewById(R.id.add_account_btn);
         addAccountBtn.setOnClickListener(v -> {
             Intent addAccountActivityIntent = new Intent(getActivity(), AddAccountActivity.class);
+            addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, false);
             startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
         });
 

@@ -48,15 +48,13 @@ public class AddAccountActivity
     private EditText mAddAccountText;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
 
+    public AddAccountActivity() {
+        mIsUpdate = false;
+    }
+
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_add_account);
-
-        if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
-            mName = getIntent().getStringExtra(Utils.NAME);
-            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
-        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -175,15 +173,6 @@ public class AddAccountActivity
             }
         });
 
-        if (!TextUtils.isEmpty(mAddress) && !TextUtils.isEmpty(mName)) {
-            btnAdd.setText(getResources().getString(R.string.update));
-            mAddAccountText.setText(mName);
-            getSupportActionBar().setTitle(getResources().getString(R.string.update_account));
-            findViewById(R.id.import_account_layout).setVisibility(View.GONE);
-            findViewById(R.id.import_account_title).setVisibility(View.GONE);
-            mIsUpdate = true;
-        }
-
         onInitialLayoutInflationComplete();
     }
 
@@ -233,16 +222,43 @@ public class AddAccountActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitKeyringController();
-        if (mKeyringController != null) {
-            mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
-                if (keyringInfo != null) {
-                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
-                    mAddAccountText.setText(getString(
-                            R.string.new_account_prefix, String.valueOf(accountInfos.length + 1)));
-                }
-            });
+        if (getIntent() != null) {
+            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
+            mName = getIntent().getStringExtra(Utils.NAME);
+            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
+            mIsUpdate = getIntent().getBooleanExtra(Utils.ISUPDATEACCOUNT, false);
         }
+        if (mIsUpdate) {
+            Button btnAdd = findViewById(R.id.btn_add);
+            btnAdd.setText(getResources().getString(R.string.update));
+            mAddAccountText.setText(mName);
+            getSupportActionBar().setTitle(getResources().getString(R.string.update_account));
+            findViewById(R.id.import_account_layout).setVisibility(View.GONE);
+            findViewById(R.id.import_account_title).setVisibility(View.GONE);
+        }
+        InitKeyringController();
+        if (mIsUpdate) {
+            return;
+        }
+
+        assert mKeyringController != null;
+        mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
+            if (keyringInfo != null) {
+                mAddAccountText.setText(getUniqueNextAccountName(keyringInfo.accountInfos, 1));
+            }
+        });
+    }
+
+    private String getUniqueNextAccountName(AccountInfo[] accountInfos, int number) {
+        String accountName = getString(
+                R.string.new_account_prefix, String.valueOf(accountInfos.length + number));
+        for (AccountInfo accountInfo : accountInfos) {
+            if (accountInfo.name.equals(accountName)) {
+                return getUniqueNextAccountName(accountInfos, number + 1);
+            }
+        }
+
+        return accountName;
     }
 
     @Override
