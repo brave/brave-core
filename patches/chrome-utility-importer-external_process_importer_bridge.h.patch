@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/importer/external_process_importer_bridge.h b/chrome/utility/importer/external_process_importer_bridge.h
-index ce96defbe448c73b84ea6de5c83b68885c29d420..45e020a7d442e8c524786542b1ca8ffd31a7a3a2 100644
+index 1169806384d43892bec74851c915eae9e356dfd2..0a0102cc30bac24af5fff69d158dce1f865f5aed 100644
 --- a/chrome/utility/importer/external_process_importer_bridge.h
 +++ b/chrome/utility/importer/external_process_importer_bridge.h
-@@ -71,6 +71,7 @@ class ExternalProcessImporterBridge : public ImporterBridge {
+@@ -70,6 +70,7 @@ class ExternalProcessImporterBridge : public ImporterBridge {
    std::u16string GetLocalizedString(int message_id) override;
    // End ImporterBridge implementation.
  
