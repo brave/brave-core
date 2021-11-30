@@ -50,6 +50,7 @@ export type BuySendSwapInputType =
   | 'selector'
 
 export interface Props {
+  autoFocus?: boolean
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
   selectedAsset?: AccountAssetOptionType
@@ -76,6 +77,7 @@ export interface Props {
 
 function SwapInputComponent (props: Props) {
   const {
+    autoFocus,
     selectedAsset,
     selectedAssetBalance,
     componentType,
@@ -252,6 +254,7 @@ function SwapInputComponent (props: Props) {
                 spellCheck={false}
                 hasError={componentType === 'fromAmount' && fromAmountHasErrors}
                 disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
+                autoFocus={autoFocus}
               />
             }
             {componentType === 'exchange' && orderType === 'market' &&
