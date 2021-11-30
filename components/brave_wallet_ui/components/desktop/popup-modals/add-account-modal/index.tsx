@@ -58,6 +58,7 @@ const AddAccountModal = (props: Props) => {
   const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
+  const passwordInputRef = React.useRef<HTMLInputElement>(null)
 
   const importError = React.useMemo(() => {
     return hasImportError
@@ -141,6 +142,7 @@ const AddAccountModal = (props: Props) => {
     if (file.target.files) {
       setFile(file.target.files)
       onSetImportError(false)
+      passwordInputRef.current?.focus()
     }
   }
 
@@ -191,7 +193,8 @@ const AddAccountModal = (props: Props) => {
               <Input
                 placeholder={getLocale('braveWalletImportAccountPlaceholder')}
                 onChange={handlePrivateKeyChanged}
-                type='password'
+              type='password'
+              autoFocus={true}
               />
             ) : (
               <>
@@ -210,6 +213,7 @@ const AddAccountModal = (props: Props) => {
                   placeholder={`Origin ${getLocale('braveWalletCreatePasswordInput')}`}
                   onChange={handlePasswordChanged}
                   type='password'
+                  ref={passwordInputRef}
                 />
               </>
             )}
@@ -221,7 +225,8 @@ const AddAccountModal = (props: Props) => {
               value={accountName}
               placeholder={getLocale('braveWalletAddAccountPlaceholder')}
               onKeyDown={handleKeyDown}
-              onChange={handleAccountNameChanged}
+            onChange={handleAccountNameChanged}
+            autoFocus={true}
             />
             <NavButton
               onSubmit={onSubmit}
