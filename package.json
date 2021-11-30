@@ -317,6 +317,7 @@
     "fs-extra": "8.1.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.6.3",
+    "jest-junit": "13.0.0",
     "less": "3.13.1",
     "less-loader": "4.1.0",
     "log-update": "3.4.0",
