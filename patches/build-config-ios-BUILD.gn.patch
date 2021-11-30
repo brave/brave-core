@@ -1,5 +1,5 @@
 diff --git a/build/config/ios/BUILD.gn b/build/config/ios/BUILD.gn
-index 1d8506af3f3ffa549ef349b9cdd99d36f7df4395..30404072a4204a057b44956d59d37952770b8e99 100644
+index d97fc5fced0cff0fdd7e3a4b36b51de490cf7691..89465017f362c2d30613a5168246a82e73f80d50 100644
 --- a/build/config/ios/BUILD.gn
 +++ b/build/config/ios/BUILD.gn
 @@ -127,7 +127,8 @@ config("runtime_library") {

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/extensions/extension_service.h b/chrome/browser/extensions/extension_service.h
-index b263e287eb6e6145551fe1c8634acd4492ebb2b0..2baba7cbd5c574c2ab1a78322aa4a77f74312da8 100644
+index f8a8cf7e3c74ebbf73d2e12a9c78bfe164d496ec..15ffed295dcb4558e6ab61e100b4a507f16267d9 100644
 --- a/chrome/browser/extensions/extension_service.h
 +++ b/chrome/browser/extensions/extension_service.h
-@@ -476,6 +476,7 @@ class ExtensionService : public ExtensionServiceInterface,
+@@ -482,6 +482,7 @@ class ExtensionService : public ExtensionServiceInterface,
    static base::AutoReset<bool> DisableExternalUpdatesForTesting();
-
+ 
   private:
 +  friend class BraveExtensionService;
    // Loads extensions specified via a command line flag/switch.
