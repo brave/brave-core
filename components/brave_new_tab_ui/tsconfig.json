@@ -5,5 +5,5 @@
     "**/*.tsx",
     "**/*.d.ts",
     "../definitions/*.d.ts"
-  ]
+  ],
 }

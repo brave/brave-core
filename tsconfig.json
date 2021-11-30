@@ -59,5 +59,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },
-  "include": []
+  "include": [],
+  "references": [{ "path": "./components/brave_new_tab_ui/components/svelte" }]
 }
