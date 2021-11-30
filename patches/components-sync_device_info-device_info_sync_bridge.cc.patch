@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 69dbe2887fae63f3635423ea9a22c3f6ed5f7248..a9d224f072be5a5da78881300031e4ea7c0c1161 100644
+index 69dbe2887fae63f3635423ea9a22c3f6ed5f7248..b0272e67a9b5629583261f86b6738c48fb127812 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -260,6 +260,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
@@ -10,7 +10,15 @@ index 69dbe2887fae63f3635423ea9a22c3f6ed5f7248..a9d224f072be5a5da78881300031e4ea
    return specifics;
  }
  
-@@ -439,7 +440,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+@@ -429,6 +430,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+   for (const std::unique_ptr<EntityChange>& change : entity_changes) {
+     const std::string guid = change->storage_key();
+ 
++    BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
+     // Reupload local device if it was deleted from the server.
+     if (local_cache_guid_ == guid &&
+         change->type() == EntityChange::ACTION_DELETE) {
+@@ -439,7 +441,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
      // Ignore any remote changes that have a cache guid that is or was this
      // local device.
      if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
