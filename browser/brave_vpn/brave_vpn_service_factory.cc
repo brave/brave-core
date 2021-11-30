@@ -51,7 +51,9 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
+#if defined(OS_WIN) || defined(OS_MAC)
   DependsOn(SkusSdkServiceFactory::GetInstance());
+#endif
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;

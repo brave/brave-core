@@ -15,6 +15,7 @@ constexpr char kEnvStaging[] = "staging";
 constexpr char kEnvDevelopment[] = "development";
 
 std::string GetEnvironment();
+std::string GetDomain(std::string prefix);
 
 }  // namespace skus
 
