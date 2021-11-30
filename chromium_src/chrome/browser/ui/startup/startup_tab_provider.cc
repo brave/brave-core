@@ -28,7 +28,7 @@ StartupTabs StartupTabProviderImpl::GetCommandLineTabs(
     if (!url)
       continue;
     if (url->is_valid())
-      result.push_back(StartupTab(url.value(), false));
+      result.push_back(StartupTab(url.value()));
   }
 #endif
 
