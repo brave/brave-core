@@ -56,6 +56,7 @@ function Buy (props: Props) {
           inputName='buy'
           selectedAsset={selectedAsset}
           onShowSelection={onShowAssets}
+          autoFocus={true}
         />
       ) : (
         <FaucetWrapper>
