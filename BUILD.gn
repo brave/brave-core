@@ -378,7 +378,8 @@ action("create_dist_zips") {
   outputs = [ output ]
 
   if (is_win) {
-    # Repack a chrome release archive to the brave format.
+    # Repack a Chrome release archive to the Brave format.
+    # Besides changing from 7z to zip, the directory structure is a bit different.
     # TODO(atuchin): support other platforms.
 
     script = "//brave/script/repack-archive.py"
