@@ -98,8 +98,9 @@ export function useTransactionParser (
   const parseTransactionFees = useTransactionFeesParser(selectedNetwork, findSpotPrice(selectedNetwork.symbol))
 
   const findToken = React.useCallback((contractAddress: string) => {
-    return visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
-  }, [visibleTokens])
+    const checkVisibleList = visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+    return checkVisibleList ?? (fullTokenList?.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase()))
+  }, [visibleTokens, fullTokenList])
 
   /**
    * Checks if a given address is a known contract address from our token
