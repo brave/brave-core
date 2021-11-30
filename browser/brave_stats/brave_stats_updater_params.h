@@ -15,6 +15,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterTest;
+class GURL;
 class PrefService;
 
 FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringDaily);
@@ -47,6 +48,10 @@ class BraveStatsUpdaterParams {
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
   std::string GetWalletEnabledParam() const;
+  GURL GetUpdateURL(const GURL& base_update_url,
+                    const std::string platform_id,
+                    const std::string channel_name,
+                    const std::string full_brave_version) const;
 
   void SavePrefs();
 
