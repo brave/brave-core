@@ -19,7 +19,7 @@ extern const base::Feature kBraveAdblockCookieListDefault;
 extern const base::Feature kBraveAdblockCosmeticFiltering;
 extern const base::Feature kBraveAdblockCspRules;
 extern const base::Feature kBraveDomainBlock;
-extern const base::Feature kBraveDomainBlockVia1PES;
+extern const base::Feature kBraveDomainBlock1PES;
 extern const base::Feature kBraveExtensionNetworkBlocking;
 extern const base::Feature kBraveDarkModeBlock;
 extern const base::Feature kCosmeticFilteringSyncLoad;

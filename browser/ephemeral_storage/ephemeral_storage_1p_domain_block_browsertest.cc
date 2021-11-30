@@ -31,7 +31,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   EphemeralStorage1pDomainBlockBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {net::features::kBraveFirstPartyEphemeralStorage,
-         brave_shields::features::kBraveDomainBlockVia1PES},
+         brave_shields::features::kBraveDomainBlock1PES},
         {});
   }
   ~EphemeralStorage1pDomainBlockBrowserTest() override {}

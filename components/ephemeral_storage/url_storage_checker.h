@@ -11,7 +11,6 @@
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
-#include "components/services/storage/public/mojom/local_storage_control.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/cookies/canonical_cookie.h"
 #include "third_party/blink/public/mojom/dom_storage/storage_area.mojom.h"
