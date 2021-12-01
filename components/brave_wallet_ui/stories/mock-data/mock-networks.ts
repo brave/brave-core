@@ -13,5 +13,16 @@ export const mockNetworks: EthereumChain[] = [
     decimals: 18,
     iconUrls: [ETHIconUrl],
     isEip1559: true
+  },
+  {
+    chainId: '0x3',
+    chainName: 'Ethereum Testnet Ropsten',
+    rpcUrls: ['https://ropsten.infura.io/v3/', 'wss://ropsten.infura.io/ws/v3/'],
+    blockExplorerUrls: ['https://ropsten.etherscan.io/'],
+    symbol: 'ROP',
+    symbolName: 'Ropsten Ether',
+    decimals: 18,
+    iconUrls: [ETHIconUrl],
+    isEip1559: true
   }
 ]
