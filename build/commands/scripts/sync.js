@@ -31,7 +31,7 @@ const installDepotTools = (options = config.defaultOptions) => {
   if (!fs.existsSync(config.depotToolsDir)) {
     Log.progress('Install Depot Tools...')
     fs.mkdirSync(config.depotToolsDir)
-    util.run('git', ['-C', config.depotToolsDir, 'clone', 'ubuntu@172.31.12.54:/home/ubuntu/depot_tools.git', '.'], options)
+    util.run('git', ['-C', config.depotToolsDir, 'clone', 'ubuntu@172.31.54.92:/home/ubuntu/depot_tools.git', '.'], options)
   }
 
   Log.progress('Fixup Depot Tools...')
