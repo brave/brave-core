@@ -145,7 +145,7 @@ export function RewardsCard (props: Props) {
   }
 
   function renderBalance () {
-    if (props.grantInfo) {
+    if (props.grantInfo && props.grantInfo.amount > 0) {
       return renderGrantOverlay()
     }
 
