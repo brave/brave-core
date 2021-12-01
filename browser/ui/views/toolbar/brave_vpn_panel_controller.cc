@@ -26,7 +26,7 @@ void BraveVPNPanelController::ShowBraveVPNPanel() {
   if (!webui_bubble_manager_) {
     auto* profile = browser_view_->browser()->profile();
     webui_bubble_manager_ = std::make_unique<WebUIBubbleManagerT<VPNPanelUI>>(
-        anchor_view, profile, GURL(kVPNPanelURL), 1, true);
+        anchor_view, profile, GURL(kVPNPanelURL), 1);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {
