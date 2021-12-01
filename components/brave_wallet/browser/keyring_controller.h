@@ -180,6 +180,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void GetAutoLockMinutes(GetAutoLockMinutesCallback callback) override;
   void SetAutoLockMinutes(int32_t minutes,
                           SetAutoLockMinutesCallback callback) override;
+  void IsStrongPassword(const std::string& password,
+                        IsStrongPasswordCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);

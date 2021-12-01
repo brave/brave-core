@@ -28,6 +28,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 /* kBraveWalletKeyrings structure
@@ -1321,6 +1322,34 @@ void KeyringController::SetAutoLockMinutes(
   if (minutes != old_auto_lock_minutes) {
     prefs_->SetInteger(kBraveWalletAutoLockMinutes, minutes);
   }
+  std::move(callback).Run(true);
+}
+
+void KeyringController::IsStrongPassword(const std::string& password,
+                                         IsStrongPasswordCallback callback) {
+  if (password.length() < 7) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Has at least one letter
+  if (!RE2::PartialMatch(password, "[a-zA-Z]")) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Has at least one number
+  if (!RE2::PartialMatch(password, "[0-9]")) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Has at least one non-alphanumeric character
+  if (!RE2::PartialMatch(password, "[^0-9a-zA-Z]")) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   std::move(callback).Run(true);
 }
 
