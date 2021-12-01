@@ -94,8 +94,8 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(DEEP_LINK)) {
             if (braveActivity != null) {
-                braveActivity.openRewardsPanel();
-                Intent launchIntent = new Intent(Intent.ACTION_MAIN);
+                Intent launchIntent =
+                        new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
                 launchIntent.setPackage(context.getPackageName());
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);
