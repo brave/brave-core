@@ -99,6 +99,15 @@ public class BraveRewardsPanel
 
     private static final int WALLET_BALANCE_LIMIT = 15;
 
+    // Balance report codes
+    private static final int BALANCE_REPORT_GRANTS = 0;
+    private static final int BALANCE_REPORT_EARNING_FROM_ADS = 1;
+    private static final int BALANCE_REPORT_AUTO_CONTRIBUTE = 2;
+    private static final int BALANCE_REPORT_RECURRING_DONATION = 3;
+    private static final int BALANCE_REPORT_ONE_TIME_DONATION = 4;
+
+    private static final String ERROR_CONVERT_PROBI = "ERROR";
+
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
@@ -340,6 +349,7 @@ public class BraveRewardsPanel
         mBraveRewardsNativeWorker.GetRewardsParameters();
         mBraveRewardsNativeWorker.GetExternalWallet();
         mBraveRewardsNativeWorker.getAdsAccountStatement();
+        mBraveRewardsNativeWorker.GetCurrentBalanceReport();
         // if (root != null && PackageUtils.isFirstInstall(mActivity)
         //         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
         //     if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
@@ -362,6 +372,103 @@ public class BraveRewardsPanel
         //         }
         //         BraveRewardsHelper.setShowMiniOnboardingModal(false);
         //     }
+        // }
+    }
+
+    @Override
+    public void OnGetCurrentBalanceReport(double[] report) {
+        Log.e(TAG, "OnGetCurrentBalanceReport : "+ report);
+        if (report == null) {
+            return;
+        }
+        String batText = BraveRewardsHelper.BAT_TEXT;
+        for (int i = 0; i < report.length; i++) {
+            TextView tvTitle = null;
+            TextView tv = null;
+            TextView tvUSD = null;
+            String text = "";
+            String textUSD = "";
+
+            double  probiDouble = report[i];
+            boolean hideControls = (probiDouble == 0);
+            String value = Double.isNaN(probiDouble) ? "0.000"+batText : String.format(Locale.getDefault(), "%.3f", probiDouble);
+
+            String usdValue = "0.00 USD";
+            if (! Double.isNaN(probiDouble)) {
+                double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate();
+                usdValue = String.format(Locale.getDefault(), "%.2f USD", usdValueDouble);
+            }
+
+            switch (i) {
+            case BALANCE_REPORT_GRANTS:
+                // tvTitle = (TextView)root.findViewById(R.id.br_grants_claimed_title);
+                // tvTitle.setText(BraveRewardsPanelPopup.this.root.getResources().getString(
+                //         R.string.brave_ui_token_grant_claimed));
+                tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
+                tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
+                text = "<font color=#8E2995>" + value + "</font><font color=#000000> " + batText + "</font>";
+                textUSD = usdValue;
+                break;
+            case BALANCE_REPORT_EARNING_FROM_ADS:
+                // tvTitle = (TextView)root.findViewById(R.id.br_earnings_ads_title);
+                tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
+                tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
+                text = "<font color=#8E2995>" + value + "</font><font color=#000000> " + batText + "</font>";
+                textUSD = usdValue;
+                break;
+            case BALANCE_REPORT_AUTO_CONTRIBUTE:
+                // tvTitle = (TextView)root.findViewById(R.id.br_auto_contribute_title);
+                tv = mPopupView.findViewById(R.id.auto_contribute_bat_text);
+                tvUSD = mPopupView.findViewById(R.id.auto_contribute_usd_text);
+                text = "<font color=#6537AD>" + value > 0 ? value * (-1) : value + "</font><font color=#000000> " + batText + "</font>";
+                textUSD = usdValue;
+                break;
+            case BALANCE_REPORT_ONE_TIME_DONATION:
+                // tvTitle = (TextView)root.findViewById(R.id.br_recurring_donation_title);
+                tv = mPopupView.findViewById(R.id.one_time_tip_bat_text);
+                tvUSD = mPopupView.findViewById(R.id.one_time_tip_usd_text);
+                text = "<font color=#392DD1>" + value > 0 ? value * (-1) : value + "</font><font color=#000000> " + batText + "</font>";
+                textUSD = usdValue;
+                break;
+            case BALANCE_REPORT_RECURRING_DONATION:
+                // tvTitle = (TextView)root.findViewById(R.id.br_one_time_donation_title);
+                tv = mPopupView.findViewById(R.id.monthly_tips_bat_text);
+                tvUSD = mPopupView.findViewById(R.id.monthly_tips_usd_text);
+                text = "<font color=#392DD1>" + value > 0 ? value * (-1) : value + "</font><font color=#000000> " + batText + "</font>";
+                textUSD = usdValue;
+                break;
+            }
+            Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(text);
+            tv.setText(toInsert);
+            tvUSD.setText(textUSD);
+            // if (tv != null && tvUSD != null &&
+            //         !text.isEmpty() && !textUSD.isEmpty()) {
+            //     // tvTitle.setVisibility(hideControls ? View.GONE : View.VISIBLE);
+            //     tv.setVisibility(hideControls ? View.GONE : View.VISIBLE);
+            //     tvUSD.setVisibility(hideControls ? View.GONE : View.VISIBLE);
+            //     Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(text);
+            //     tv.setText(toInsert);
+            //     tvUSD.setText(textUSD);
+            // }
+        }
+
+        mBraveRewardsNativeWorker.GetPendingContributionsTotal();
+    }
+
+    @Override
+    public void OnGetPendingContributionsTotal(double amount) {
+        // if (amount > 0.0) {
+        //     String non_verified_summary =
+        //             String.format(
+        //                     root.getResources().getString(R.string.brave_ui_reserved_amount_text),
+        //                     String.format(Locale.getDefault(), "%.3f", amount))
+        //             + " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more)
+        //             + ".</font>";
+        //     Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);
+        //     tvPublisherNotVerifiedSummary.setText(toInsert);
+        //     tvPublisherNotVerifiedSummary.setVisibility(View.VISIBLE);
+        // } else {
+        //     tvPublisherNotVerifiedSummary.setVisibility(View.GONE);
         // }
     }
 

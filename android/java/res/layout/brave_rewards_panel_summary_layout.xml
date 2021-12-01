@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
@@ -20,8 +20,6 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/add_funds"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -91,33 +89,18 @@
                 android:textColor="@color/settings_section_text_color"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/total_grants_claimed_bat_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="0.25"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="10.0"
-                    android:textColor="#C12D7C"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="BAT"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textColor="#C12D7C"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/total_grants_claimed_usd_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -156,33 +139,18 @@
                 android:textColor="@color/settings_section_text_color"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/rewards_from_ads_bat_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="0.25"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="10.0"
-                    android:textColor="#C12D7C"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="BAT"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textColor="#C12D7C"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/rewards_from_ads_usd_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -221,33 +189,18 @@
                 android:textColor="@color/settings_section_text_color"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/auto_contribute_bat_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="0.25"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="10.0"
-                    android:textColor="@color/rewards_settings_button_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="BAT"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/rewards_settings_button_color"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/auto_contribute_usd_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -286,33 +239,18 @@
                 android:textColor="@color/settings_section_text_color"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/one_time_tip_bat_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="0.25"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="-2.0"
-                    android:textColor="@color/rewards_settings_button_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="BAT"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/rewards_settings_button_color"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/one_time_tip_usd_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -351,33 +289,18 @@
                 android:textColor="@color/settings_section_text_color"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/monthly_tips_bat_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="0.25"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="-19.0"
-                    android:textColor="@color/rewards_settings_button_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="BAT"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/rewards_settings_button_color"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/monthly_tips_usd_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
