@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -37,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddAccountActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AddAccountActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, KeyringControllerObserver {
     private String mAddress;
     private String mName;
     private boolean mIsUpdate;
@@ -203,6 +204,7 @@ public class AddAccountActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     public KeyringController getKeyringController() {
@@ -294,5 +296,10 @@ public class AddAccountActivity
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

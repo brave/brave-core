@@ -73,6 +73,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
@@ -94,7 +95,7 @@ import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback {
+                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
@@ -1275,6 +1276,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     private void InitErcTokenRegistry() {
@@ -1372,5 +1374,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

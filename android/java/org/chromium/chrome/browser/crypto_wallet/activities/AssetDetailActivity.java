@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -55,7 +56,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AssetDetailActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, OnWalletListItemClick {
+        implements ConnectionErrorHandler, OnWalletListItemClick, KeyringControllerObserver {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
@@ -316,6 +317,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     public KeyringController getKeyringController() {
@@ -331,5 +333,10 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 setUpAccountList();
             }
         }
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }
