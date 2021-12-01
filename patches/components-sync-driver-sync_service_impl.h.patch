@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/sync_service_impl.h b/components/sync/driver/sync_service_impl.h
-index a40a942a1c90752c03e7aa63372900cbb3a9fa6f..8a0b7473f37752ef0ead8f9bafb0baf4a46df156 100644
+index 098655d28d6d6775e5dd748f148d30c456e1041b..04b3f7a5675fcb55f59d2428819f500b862eb0d8 100644
 --- a/components/sync/driver/sync_service_impl.h
 +++ b/components/sync/driver/sync_service_impl.h
-@@ -256,6 +256,7 @@ class SyncServiceImpl : public SyncService,
+@@ -259,6 +259,7 @@ class SyncServiceImpl : public SyncService,
  
    SyncClient* GetSyncClientForTest();
  
