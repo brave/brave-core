@@ -52,21 +52,19 @@ struct EditPriorityFeeView: View {
     maximumTipPrice = WeiFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
     maximumGasPrice = WeiFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
     baseInGwei = WeiFormatter.weiToDecimalGwei(gasEstimation.baseFeePerGas.removingHexPrefix, radix: .hex) ?? "0"
-
-    withAnimation(nil) {
-      // Comparing from high to low as sometimes avg/slow fees are the same
-      if selectedMaxPrice == gasEstimation.fastMaxFeePerGas &&
-          selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas {
-        gasFeeKind = .high
-      } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas &&
-                  selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas {
-        gasFeeKind = .optimal
-      } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas &&
-                  selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas {
-        gasFeeKind = .low
-      } else {
-        gasFeeKind = .custom
-      }
+    
+    // Comparing from high to low as sometimes avg/slow fees are the same
+    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas &&
+        selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas {
+      gasFeeKind = .high
+    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas &&
+                selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas {
+      gasFeeKind = .optimal
+    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas &&
+                selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas {
+      gasFeeKind = .low
+    } else {
+      gasFeeKind = .custom
     }
   }
   
@@ -170,7 +168,7 @@ struct EditPriorityFeeView: View {
           .resetListHeaderStyle()
           .padding(.vertical)
       ) {
-        Picker(selection: $gasFeeKind) {
+        Picker(selection: $gasFeeKind.animation(.default)) {
           Text(Strings.Wallet.gasFeePredefinedLimitLow).tag(GasFeeKind.low)
           Text(Strings.Wallet.gasFeePredefinedLimitOptimal).tag(GasFeeKind.optimal)
           Text(Strings.Wallet.gasFeePredefinedLimitHigh).tag(GasFeeKind.high)
@@ -252,7 +250,6 @@ struct EditPriorityFeeView: View {
         .listRowBackground(Color(.braveGroupedBackground))
       }
     }
-    .animation(.default, value: gasFeeKind)
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
