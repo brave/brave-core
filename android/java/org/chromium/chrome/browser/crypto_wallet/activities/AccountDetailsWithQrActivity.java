@@ -25,6 +25,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
@@ -34,8 +35,8 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDetailsWithQrActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AccountDetailsWithQrActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, KeyringControllerObserver {
     private static final int WIDTH = 300;
 
     private ImageView qrCodeImage;
@@ -109,6 +110,7 @@ public class AccountDetailsWithQrActivity
         }
 
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringController.addObserver(this);
     }
 
     @Override
@@ -172,5 +174,10 @@ public class AccountDetailsWithQrActivity
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

@@ -55,6 +55,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
             if (keyringController != null) {
                 keyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
                     if (result) {
+                        unlockWalletPassword.setText(null);
                         if (onNextPage != null) {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
