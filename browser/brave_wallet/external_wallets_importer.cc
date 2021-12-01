@@ -331,7 +331,8 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
-  auto vault = base::JSONReader::Read(*vault_str);
+  auto vault =
+      base::JSONReader::Read(*vault_str, base::JSON_ALLOW_TRAILING_COMMAS);
   if (!vault) {
     VLOG(1) << "not a valid JSON: " << *vault_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
@@ -380,7 +381,8 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   const std::string decrypted_keyrings_str =
       std::string(decrypted_keyrings.begin(), decrypted_keyrings.end());
-  auto keyrings = base::JSONReader::Read(decrypted_keyrings_str);
+  auto keyrings = base::JSONReader::Read(decrypted_keyrings_str,
+                                         base::JSON_ALLOW_TRAILING_COMMAS);
   if (!keyrings) {
     VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
