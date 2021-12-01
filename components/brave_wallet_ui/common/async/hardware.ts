@@ -34,9 +34,12 @@ export function dialogErrorFromLedgerErrorCode (code: string | number): Hardware
   return 'openEthereumApp'
 }
 
-export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes): HardwareWalletResponseCodeType {
+export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes | string): HardwareWalletResponseCodeType {
   if (code === TrezorErrorsCodes.CommandInProgress) {
     return 'deviceBusy'
+  }
+  if (code === 'Method_Interrupted') {
+    return 'transactionRejected'
   }
   return 'openEthereumApp'
 }

@@ -48,7 +48,6 @@ import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { TrezorErrorsCodes } from '../../common/hardware/trezor/trezor-messages'
 import { HardwareVendor } from '../../common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
@@ -343,7 +342,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.message)
   if (!signed.success && signed.code) {
     const deviceError = (info.vendor === TREZOR_HARDWARE_VENDOR)
-      ? dialogErrorFromTrezorErrorCode(signed.code as TrezorErrorsCodes) : dialogErrorFromLedgerErrorCode(signed.code)
+      ? dialogErrorFromTrezorErrorCode(signed.code) : dialogErrorFromLedgerErrorCode(signed.code)
     if (deviceError !== 'transactionRejected') {
       await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
       return
