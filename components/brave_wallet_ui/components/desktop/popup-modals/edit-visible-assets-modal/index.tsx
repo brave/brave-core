@@ -344,7 +344,8 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <SearchBar
                   value={searchValue}
                   placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
-                  action={filterWatchlist}
+                      action={filterWatchlist}
+                      autoFocus={true}
                 />
                 {!searchValue.toLowerCase().startsWith('0x') &&
                   <TopRow>

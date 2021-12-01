@@ -143,6 +143,7 @@ function Swap (props: Props) {
         selectedAsset={fromAsset}
         onShowSelection={onShowAssetFrom}
         validationError={validationError}
+        autoFocus={true}
       />
       <ArrowButton onClick={onFlipAssets}>
         <ArrowDownIcon />
