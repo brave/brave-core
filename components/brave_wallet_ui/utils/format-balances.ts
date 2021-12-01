@@ -1,5 +1,30 @@
 import BigNumber from 'bignumber.js'
 
+export const formatInputValue = (value: string, decimals: number, round = true) => {
+  if (decimals === 0) {
+    const result = new BigNumber(value)
+    return (result.isNaN()) ? '0' : result.toFixed(0)
+  }
+
+  const result = new BigNumber(value).dividedBy(10 ** decimals)
+  if (result.isNaN()) {
+    return '0'
+  }
+
+  // We format the number to have 6 places of decimals, unless the value
+  // is too small.
+  //
+  // For situations where the value must not be rounded, round flag may be
+  // used.
+  const formattedValue = (result.isGreaterThanOrEqualTo(0.000001) && result.decimalPlaces() > 6 && round)
+    ? result.toFixed(6)
+    : result.toFixed()
+
+  // Remove trailing zeros, including the decimal separator if necessary.
+  // Example: 1.0000000000 becomes 1.
+  return formattedValue.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, '$1')
+}
+
 export const formatBalance = (balance: string, decimals: number) => {
   if (decimals === 0) {
     const result = new BigNumber(balance)
