@@ -97,12 +97,12 @@ export async function findHardwareAccountInfo (address: string) {
   return null
 }
 
-export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
+export function refreshBalances (currentNetwork: EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { wallet: { accounts, selectedPortfolioTimeline } } = getState()
+    const { wallet: { accounts } } = getState()
 
-    const { braveWalletService, assetRatioController, ethJsonRpcController } = apiProxy
+    const { braveWalletService, ethJsonRpcController } = apiProxy
 
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
@@ -122,35 +122,15 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
     const visibleTokens: ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
-    // Update ETH Balances
-    const getNativeAssetPrice = await assetRatioController.getPrice([nativeAsset.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
-    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       const balanceInfo = await ethJsonRpcController.getBalance(account.address)
       return balanceInfo
     }))
     const balancesAndPrice = {
-      usdPrice: nativeAssetPrice,
+      usdPrice: '',
       balances: getBalanceReturnInfos
     }
-
     await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
-
-    // Update Token Balances
-    if (!visibleTokens) {
-      return
-    }
-
-    const getTokenPrices = await Promise.all(visibleTokens.map(async (token) => {
-      const emptyPrice = {
-        assetTimeframeChange: '0',
-        fromAsset: token.symbol,
-        price: '0',
-        toAsset: 'usd'
-      }
-      const price = await assetRatioController.getPrice([token.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
-      return price.success ? price.values[0] : emptyPrice
-    }))
 
     const getERCTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
@@ -160,6 +140,64 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
         return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))
+
+    const tokenBalancesAndPrices = {
+      balances: getERCTokenBalanceReturnInfos,
+      prices: { success: true, values: [] }
+    }
+    await dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
+  }
+}
+
+export function refreshPrices () {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    const apiProxy = getAPIProxy()
+    const { wallet: { accounts, selectedPortfolioTimeline, selectedNetwork, userVisibleTokensInfo } } = getState()
+
+    const { assetRatioController } = apiProxy
+
+    // Update ETH Balances
+    const getNativeAssetPrice = await assetRatioController.getPrice([selectedNetwork.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
+    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '' : ''
+    const getBalanceReturnInfos = accounts.map((account) => {
+      const balanceInfo = {
+        success: true,
+        balance: account.balance
+      }
+      return balanceInfo
+    })
+    const balancesAndPrice = {
+      usdPrice: nativeAssetPrice,
+      balances: getBalanceReturnInfos
+    }
+
+    await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
+
+    // Update Token Balances
+    if (!userVisibleTokensInfo) {
+      return
+    }
+
+    const getTokenPrices = await Promise.all(userVisibleTokensInfo.map(async (token) => {
+      const emptyPrice = {
+        assetTimeframeChange: '',
+        fromAsset: token.symbol,
+        price: '',
+        toAsset: 'usd'
+      }
+      const price = await assetRatioController.getPrice([token.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
+      return price.success ? price.values[0] : emptyPrice
+    }))
+
+    const getERCTokenBalanceReturnInfos = accounts.map((account) => {
+      return account.tokens.map((token) => {
+        const balanceInfo = {
+          success: true,
+          balance: token.assetBalance
+        }
+        return balanceInfo
+      })
+    })
 
     const tokenBalancesAndPrices = {
       balances: getERCTokenBalanceReturnInfos,

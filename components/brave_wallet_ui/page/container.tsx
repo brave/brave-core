@@ -290,7 +290,7 @@ function Container (props: Props) {
     const amounts = accounts.map((account) => {
       let fiatBalance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-      if (found) {
+      if (found && found.fiatBalance !== '') {
         fiatBalance = Number(found.fiatBalance)
       }
       return fiatBalance
@@ -316,8 +316,9 @@ function Container (props: Props) {
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioBalance = React.useMemo(() => {
-    const amountList = userAssetList.map((item) => {
-      return item.asset.visible ? fullAssetFiatBalance(item.asset) !== '' ? fullAssetFiatBalance(item.asset) : undefined : 0
+    const filteredList = userAssetList.filter((token) => token.asset.visible && !token.asset.isErc721)
+    const amountList = filteredList.map((item) => {
+      return fullAssetFiatBalance(item.asset) !== '' ? fullAssetFiatBalance(item.asset) : undefined
     })
     if (amountList.length === 0) {
       return ''
