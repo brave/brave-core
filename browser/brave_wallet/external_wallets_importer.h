@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace content {
@@ -31,12 +32,12 @@ namespace brave_wallet {
 // calls.
 class ExternalWalletsImporter {
  public:
-  enum class WalletType { kCryptoWallets, kMetaMask };
   using InitCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
       base::OnceCallback<void(bool, ImportInfo, ImportError)>;
 
-  explicit ExternalWalletsImporter(WalletType, content::BrowserContext*);
+  explicit ExternalWalletsImporter(mojom::ExternalWalletType,
+                                   content::BrowserContext*);
   ~ExternalWalletsImporter();
   ExternalWalletsImporter(const ExternalWalletsImporter&) = delete;
   ExternalWalletsImporter& operator=(const ExternalWalletsImporter&) = delete;
@@ -46,9 +47,11 @@ class ExternalWalletsImporter {
   bool IsInitialized() const;
 
   bool IsExternalWalletInstalled() const;
+  bool IsExternalWalletInitialized() const;
   void GetImportInfo(const std::string& password, GetImportInfoCallback) const;
 
   void SetStorageDataForTesting(std::unique_ptr<base::DictionaryValue>);
+  void SetExternalWalletInstalledForTesting(bool installed);
 
  private:
   const extensions::Extension* GetCryptoWallets() const;
@@ -63,7 +66,8 @@ class ExternalWalletsImporter {
                    GetImportInfoCallback callback,
                    const std::string& password) const;
 
-  WalletType type_;
+  bool is_external_wallet_installed_for_testing_ = false;
+  mojom::ExternalWalletType type_;
   content::BrowserContext* context_;
   std::unique_ptr<base::DictionaryValue> storage_data_;
   scoped_refptr<extensions::Extension> extension_;

@@ -143,7 +143,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
 }  // namespace
 
 ExternalWalletsImporter::ExternalWalletsImporter(
-    WalletType type,
+    mojom::ExternalWalletType type,
     content::BrowserContext* context)
     : type_(type), context_(context), weak_ptr_factory_(this) {
   DCHECK(!storage_data_);
@@ -152,7 +152,7 @@ ExternalWalletsImporter::~ExternalWalletsImporter() = default;
 
 void ExternalWalletsImporter::Initialize(InitCallback callback) {
   const Extension* extension = nullptr;
-  if (type_ == WalletType::kCryptoWallets) {
+  if (type_ == mojom::ExternalWalletType::CryptoWallets) {
 #if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
     std::move(callback).Run(false);
     return;
@@ -169,7 +169,7 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
       return;
     }
-  } else if (type_ == WalletType::kMetaMask) {
+  } else if (type_ == mojom::ExternalWalletType::MetaMask) {
     extension = GetMetaMask();
     if (!extension) {
       VLOG(1) << "Failed to load MetaMask extension";
@@ -210,17 +210,25 @@ bool ExternalWalletsImporter::IsCryptoWalletsInstalledInternal() const {
 }
 
 bool ExternalWalletsImporter::IsExternalWalletInstalled() const {
-  if (type_ == WalletType::kCryptoWallets) {
+  if (is_external_wallet_installed_for_testing_)
+    return true;
+  if (type_ == mojom::ExternalWalletType::CryptoWallets) {
 #if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
     return false;
 #endif
-    if (IsCryptoWalletsInstalledInternal())
-      return true;
-  } else if (type_ == WalletType::kMetaMask) {
-    if (GetMetaMask())
-      return true;
+    if (!IsCryptoWalletsInstalledInternal())
+      return false;
+  } else if (type_ == mojom::ExternalWalletType::MetaMask) {
+    if (!GetMetaMask())
+      return false;
   }
-  return false;
+  return true;
+}
+
+bool ExternalWalletsImporter::IsExternalWalletInitialized() const {
+  if (!IsInitialized())
+    return false;
+  return storage_data_->FindPath("data.KeyringController");
 }
 
 void ExternalWalletsImporter::GetImportInfo(
@@ -417,6 +425,11 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 void ExternalWalletsImporter::SetStorageDataForTesting(
     std::unique_ptr<base::DictionaryValue> data) {
   storage_data_ = std::move(data);
+}
+
+void ExternalWalletsImporter::SetExternalWalletInstalledForTesting(
+    bool installed) {
+  is_external_wallet_installed_for_testing_ = installed;
 }
 
 }  // namespace brave_wallet

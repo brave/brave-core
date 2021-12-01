@@ -51,49 +51,58 @@ bool BraveWalletServiceDelegateImpl::ShouldTrackBrowser(Browser* browser) {
   return browser->profile() == Profile::FromBrowserContext(context_);
 }
 
-void BraveWalletServiceDelegateImpl::IsCryptoWalletsInstalled(
-    IsCryptoWalletsInstalledCallback callback) {
-  ExternalWalletsImporter importer(
-      ExternalWalletsImporter::WalletType::kCryptoWallets, context_);
+void BraveWalletServiceDelegateImpl::IsExternalWalletInstalled(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInstalledCallback callback) {
+  ExternalWalletsImporter importer(type, context_);
   std::move(callback).Run(importer.IsExternalWalletInstalled());
 }
 
-void BraveWalletServiceDelegateImpl::IsMetaMaskInstalled(
-    IsMetaMaskInstalledCallback callback) {
-  ExternalWalletsImporter importer(
-      ExternalWalletsImporter::WalletType::kMetaMask, context_);
-  std::move(callback).Run(importer.IsExternalWalletInstalled());
+void BraveWalletServiceDelegateImpl::IsExternalWalletInitialized(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInitializedCallback callback) {
+  std::unique_ptr<ExternalWalletsImporter> importer =
+      std::make_unique<ExternalWalletsImporter>(type, context_);
+  importer->Initialize(base::BindOnce(
+      &BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized,
+      weak_ptr_factory_.GetWeakPtr(), std::move(importer),
+      std::move(callback)));
 }
 
-void BraveWalletServiceDelegateImpl::GetImportInfoFromCryptoWallets(
+void BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized(
+    std::unique_ptr<ExternalWalletsImporter> importer,
+    IsExternalWalletInitializedCallback callback,
+    bool init_success) {
+  DCHECK(importer);
+  if (init_success) {
+    std::move(callback).Run(importer->IsExternalWalletInitialized());
+  } else {
+    std::move(callback).Run(false);
+  }
+}
+
+void BraveWalletServiceDelegateImpl::GetImportInfoFromExternalWallet(
+    mojom::ExternalWalletType type,
     const std::string& password,
     GetImportInfoCallback callback) {
-  importer_.reset(new ExternalWalletsImporter(
-      ExternalWalletsImporter::WalletType::kCryptoWallets, context_));
-  importer_->Initialize(base::BindOnce(
-      &BraveWalletServiceDelegateImpl::ContinueImportInfo,
-      weak_ptr_factory_.GetWeakPtr(), password, std::move(callback)));
+  std::unique_ptr<ExternalWalletsImporter> importer =
+      std::make_unique<ExternalWalletsImporter>(type, context_);
+  importer->Initialize(base::BindOnce(
+      &BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet,
+      weak_ptr_factory_.GetWeakPtr(), std::move(importer), password,
+      std::move(callback)));
 }
 
-void BraveWalletServiceDelegateImpl::GetImportInfoFromMetaMask(
-    const std::string& password,
-    GetImportInfoCallback callback) {
-  importer_.reset(new ExternalWalletsImporter(
-      ExternalWalletsImporter::WalletType::kMetaMask, context_));
-  importer_->Initialize(base::BindOnce(
-      &BraveWalletServiceDelegateImpl::ContinueImportInfo,
-      weak_ptr_factory_.GetWeakPtr(), password, std::move(callback)));
-}
-
-void BraveWalletServiceDelegateImpl::ContinueImportInfo(
+void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
+    std::unique_ptr<ExternalWalletsImporter> importer,
     const std::string& password,
     GetImportInfoCallback callback,
     bool init_success) {
+  DCHECK(importer);
   if (init_success) {
-    DCHECK(importer_->IsInitialized());
-    importer_->GetImportInfo(password, std::move(callback));
+    DCHECK(importer->IsInitialized());
+    importer->GetImportInfo(password, std::move(callback));
   } else {
-    importer_.reset();
     std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
   }
 }

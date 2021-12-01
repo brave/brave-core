@@ -71,25 +71,67 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
                              ImportError* out_error) {
     ASSERT_NE(out_success, nullptr);
 
-    ExternalWalletsImporter importer(
-        ExternalWalletsImporter::WalletType::kCryptoWallets, browser_context());
-
     auto json = base::JSONReader::Read(json_str);
     ASSERT_TRUE(json);
+    {
+      ExternalWalletsImporter importer(mojom::ExternalWalletType::CryptoWallets,
+                                       browser_context());
 
-    importer.SetStorageDataForTesting(base::DictionaryValue::From(
+      importer.SetStorageDataForTesting(base::DictionaryValue::From(
+          base::Value::ToUniquePtrValue(json->Clone())));
+
+      base::RunLoop run_loop;
+      importer.GetImportInfo(
+          password, base::BindLambdaForTesting(
+                        [&](bool success, ImportInfo info, ImportError error) {
+                          *out_success = success;
+                          *out_info = info;
+                          *out_error = error;
+                          run_loop.Quit();
+                        }));
+      run_loop.Run();
+    }
+    {
+      ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
+                                       browser_context());
+
+      importer.SetStorageDataForTesting(base::DictionaryValue::From(
+          base::Value::ToUniquePtrValue(std::move(*json))));
+
+      base::RunLoop run_loop;
+      importer.GetImportInfo(
+          password, base::BindLambdaForTesting(
+                        [&](bool success, ImportInfo info, ImportError error) {
+                          EXPECT_EQ(*out_success, success);
+                          EXPECT_EQ(out_info->mnemonic, info.mnemonic);
+                          EXPECT_EQ(out_info->is_legacy_crypto_wallets,
+                                    info.is_legacy_crypto_wallets);
+                          EXPECT_EQ(out_info->number_of_accounts,
+                                    info.number_of_accounts);
+                          EXPECT_EQ(*out_error, error);
+                          run_loop.Quit();
+                        }));
+      run_loop.Run();
+    }
+  }
+
+  void SimulateIsExternalWalletInitialized(const std::string& json_str,
+                                           bool* out_initialized) {
+    ASSERT_NE(out_initialized, nullptr);
+    ExternalWalletsImporter cw_importer(
+        mojom::ExternalWalletType::CryptoWallets, browser_context());
+    ExternalWalletsImporter mm_importer(mojom::ExternalWalletType::MetaMask,
+                                        browser_context());
+    auto json = base::JSONReader::Read(json_str);
+    ASSERT_TRUE(json);
+    cw_importer.SetStorageDataForTesting(base::DictionaryValue::From(
+        base::Value::ToUniquePtrValue(json->Clone())));
+    mm_importer.SetStorageDataForTesting(base::DictionaryValue::From(
         base::Value::ToUniquePtrValue(std::move(*json))));
-
-    base::RunLoop run_loop;
-    importer.GetImportInfo(
-        password, base::BindLambdaForTesting(
-                      [&](bool success, ImportInfo info, ImportError error) {
-                        *out_success = success;
-                        *out_info = info;
-                        *out_error = error;
-                        run_loop.Quit();
-                      }));
-    run_loop.Run();
+    cw_importer.SetExternalWalletInstalledForTesting(true);
+    mm_importer.SetExternalWalletInstalledForTesting(true);
+    *out_initialized = cw_importer.IsExternalWalletInitialized();
+    EXPECT_EQ(mm_importer.IsExternalWalletInitialized(), *out_initialized);
   }
 
  protected:
@@ -235,6 +277,23 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWallet) {
   EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
   EXPECT_TRUE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 2u);
+}
+
+TEST_F(ExternalWalletsImporterUnitTest, IsExternalWalletInitialized) {
+  bool initialized = false;
+  SimulateIsExternalWalletInitialized("{\"data\":{\"KeyringController\":{}}}",
+                                      &initialized);
+  EXPECT_TRUE(initialized);
+
+  initialized = true;
+  SimulateIsExternalWalletInitialized(
+      "{\"data\":{\"KeyringProController\":{}}}", &initialized);
+  EXPECT_FALSE(initialized);
+
+  initialized = true;
+  SimulateIsExternalWalletInitialized("{\"KeyringController\":{}}",
+                                      &initialized);
+  EXPECT_FALSE(initialized);
 }
 
 }  // namespace brave_wallet

@@ -647,6 +647,11 @@ struct SignMessageRequest {
   string message;
 };
 
+enum ExternalWalletType {
+  CryptoWallets,
+  MetaMask
+};
+
 // For default wallet setting, user assets, permission checks, importing
 // functionality and much more.
 interface BraveWalletService {
@@ -665,19 +670,20 @@ interface BraveWalletService {
   // Sets whether or not an asset is visible for the specified chain ID
   SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
 
-  // Checks if the deprecated Crypto Wallets extension is installed
-  IsCryptoWalletsInstalled() => (bool installed);
+  // Check if the external wallet is installed (Only check installation state
+  // regardless of internal state)
+  IsExternalWalletInstalled(ExternalWalletType type) => (bool installed);
 
-  // Checks if MetaMask is installed (Used for knowing to present import UI)
-  IsMetaMaskInstalled() => (bool installed);
+  // Check if the external wallet is initialized (Used for knowing for knowing
+  // to present UI). If a external wallet is not installed, hence it is not
+  // initialized.
+  IsExternalWalletInitialized(ExternalWalletType type) => (bool initialized);
 
-  // Imports from Crypto Wallets
-  ImportFromCryptoWallets(string password, string newPassword) => (bool success,
-      string? errorMessage);
-
-  // Imports from MetaMask
-  ImportFromMetaMask(string password, string newPassword) => (bool success,
-      string? errorMessage);
+  // Import from the external wallet
+  ImportFromExternalWallet(ExternalWalletType type,
+                           string password,
+                           string newPassword)
+    => (bool success, string? errorMessage);
 
   // Obtains the default wallet setting
   GetDefaultWallet() => (DefaultWallet default_wallet);

@@ -11,6 +11,7 @@
 
 #include "base/callback.h"
 #include "base/observer_list_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace content {
@@ -21,8 +22,8 @@ namespace brave_wallet {
 
 class BraveWalletServiceDelegate {
  public:
-  using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
-  using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsExternalWalletInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsExternalWalletInitializedCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
       base::OnceCallback<void(bool, ImportInfo, ImportError)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
@@ -42,13 +43,13 @@ class BraveWalletServiceDelegate {
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
 
-  virtual void IsCryptoWalletsInstalled(
-      IsCryptoWalletsInstalledCallback callback);
-  virtual void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback);
-  virtual void GetImportInfoFromCryptoWallets(const std::string& password,
-                                              GetImportInfoCallback callback);
-  virtual void GetImportInfoFromMetaMask(const std::string& password,
-                                         GetImportInfoCallback callback);
+  virtual void IsExternalWalletInstalled(mojom::ExternalWalletType,
+                                         IsExternalWalletInstalledCallback);
+  virtual void IsExternalWalletInitialized(mojom::ExternalWalletType,
+                                           IsExternalWalletInitializedCallback);
+  virtual void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
+                                               const std::string& password,
+                                               GetImportInfoCallback callback);
   virtual void HasEthereumPermission(const std::string& origin,
                                      const std::string& account,
                                      HasEthereumPermissionCallback callback);

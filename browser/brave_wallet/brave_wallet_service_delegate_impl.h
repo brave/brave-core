@@ -37,13 +37,15 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
 
-  void IsCryptoWalletsInstalled(
-      IsCryptoWalletsInstalledCallback callback) override;
-  void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
-  void GetImportInfoFromCryptoWallets(const std::string& password,
-                                      GetImportInfoCallback callback) override;
-  void GetImportInfoFromMetaMask(const std::string& password,
-                                 GetImportInfoCallback callback) override;
+  void IsExternalWalletInstalled(mojom::ExternalWalletType,
+                                 IsExternalWalletInstalledCallback) override;
+  void IsExternalWalletInitialized(
+      mojom::ExternalWalletType,
+      IsExternalWalletInitializedCallback) override;
+  void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
+                                       const std::string& password,
+                                       GetImportInfoCallback callback) override;
+
   void HasEthereumPermission(const std::string& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
@@ -72,15 +74,20 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
 
-  void ContinueImportInfo(const std::string& password,
-                          GetImportInfoCallback callback,
-                          bool init_success);
+  void ContinueIsExternalWalletInitialized(
+      std::unique_ptr<ExternalWalletsImporter> importer,
+      IsExternalWalletInitializedCallback,
+      bool init_success);
+  void ContinueGetImportInfoFromExternalWallet(
+      std::unique_ptr<ExternalWalletsImporter> importer,
+      const std::string& password,
+      GetImportInfoCallback callback,
+      bool init_success);
 
   std::string GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   content::BrowserContext* context_;
-  std::unique_ptr<ExternalWalletsImporter> importer_;
   BrowserTabStripTracker browser_tab_strip_tracker_;
   base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
 
