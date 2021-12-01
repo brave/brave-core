@@ -258,7 +258,7 @@
         "dir": "src",
         "tag": "96.0.4664.45",
         "repository": {
-          "url": "ubuntu@172.31.12.54:/home/ubuntu/chromium.git"
+          "url": "ubuntu@172.31.54.92:/home/ubuntu/chromium.git"
         }
       }
     }
