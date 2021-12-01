@@ -6,9 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_RECENT_TABS_SUB_MENU_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_RECENT_TABS_SUB_MENU_MODEL_H_
 
+#include <memory>
+
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_ \
   private: \
-    std::auto_ptr<sessions::SessionTab> stub_tab_; \
+    std::unique_ptr<sessions::SessionTab> stub_tab_; \
     friend class BraveRecentTabsSubMenuModel; \
   public:
 #include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
