@@ -65,38 +65,48 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             }
         });
 
-        EditText passwordEdittext = view.findViewById(R.id.restore_wallet_password);
-        EditText retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
-
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(v -> {
-            String passwordInput = passwordEdittext.getText().toString().trim();
-            String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
+            EditText passwordEdittext = view.findViewById(R.id.restore_wallet_password);
+            String passwordInput = passwordEdittext.getText().toString();
 
-            if (passwordInput.isEmpty()
-                    || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-                passwordEdittext.setError(getResources().getString(R.string.password_text));
-            } else if (retypePasswordInput.isEmpty()
-                    || !passwordInput.equals(retypePasswordInput)) {
-                retypePasswordEdittext.setError(
-                        getResources().getString(R.string.retype_password_error));
-            } else {
-                KeyringController keyringController = getKeyringController();
-                if (keyringController != null) {
-                    keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                            passwordEdittext.getText().toString().trim(), false, result -> {
-                                if (result) {
-                                    Utils.hideKeyboard(getActivity());
-                                    onNextPage.gotoNextPage(true);
-                                    Utils.setCryptoOnboarding(false);
-                                } else {
-                                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
-                                                 Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            });
+            KeyringController keyringController = getKeyringController();
+            assert keyringController != null;
+            keyringController.isStrongPassword(passwordInput, result -> {
+                if (!result) {
+                    passwordEdittext.setError(getResources().getString(R.string.password_text));
+
+                    return;
                 }
-            }
+
+                proceedWithAStrongPassword(passwordInput, view, recoveryPhraseText);
+            });
         });
+    }
+
+    private void proceedWithAStrongPassword(
+            String passwordInput, View view, EditText recoveryPhraseText) {
+        EditText retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
+        String retypePasswordInput = retypePasswordEdittext.getText().toString();
+
+        if (!passwordInput.equals(retypePasswordInput)) {
+            retypePasswordEdittext.setError(
+                    getResources().getString(R.string.retype_password_error));
+        } else {
+            KeyringController keyringController = getKeyringController();
+            assert keyringController != null;
+            keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                    passwordInput, false, result -> {
+                        if (result) {
+                            Utils.hideKeyboard(getActivity());
+                            onNextPage.gotoNextPage(true);
+                            Utils.setCryptoOnboarding(false);
+                        } else {
+                            Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                         Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+        }
     }
 }
