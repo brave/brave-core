@@ -415,6 +415,7 @@ function Container (props: Props) {
   const onQueueNextTransction = () => {
     props.walletActions.queueNextTransaction()
   }
+
   const onConfirmTransaction = () => {
     if (!selectedPendingTransaction) {
       return
@@ -425,7 +426,15 @@ function Container (props: Props) {
       props.walletActions.approveTransaction(selectedPendingTransaction)
     }
   }
-
+  const retryHardwareOperation = () => {
+    // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
+    if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
+      onSignData()
+    }
+    if (selectedPendingTransaction) {
+      onConfirmTransaction()
+    }
+  }
   const onOpenSettings = () => {
     props.walletPanelActions.openWalletSettings()
   }
@@ -492,7 +501,7 @@ function Container (props: Props) {
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
             hardwareWalletCode={props.panel.hardwareWalletCode}
-            retryCallable={onConfirmTransaction}
+            retryCallable={retryHardwareOperation}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
