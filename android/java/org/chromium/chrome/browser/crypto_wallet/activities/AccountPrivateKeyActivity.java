@@ -9,6 +9,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +38,8 @@ public class AccountPrivateKeyActivity extends AsyncInitializationActivity
 
     @Override
     protected void triggerLayoutInflation() {
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_account_private_key);
 
         if (getIntent() != null) {

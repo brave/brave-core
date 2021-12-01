@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -243,6 +244,8 @@ public class AddAccountActivity extends AsyncInitializationActivity
             return;
         }
 
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         assert mKeyringController != null;
         mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
             if (keyringInfo != null) {
