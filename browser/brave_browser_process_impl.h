@@ -23,7 +23,6 @@ namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
 class HistogramsBraveizer;
-class BraveFederatedLearningService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -110,7 +109,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
-  brave::BraveFederatedLearningService* brave_federated_learning_service();
   brave::BraveP3AService* brave_p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
@@ -167,8 +165,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
-  std::unique_ptr<brave::BraveFederatedLearningService>
-      brave_federated_learning_service_;
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
   scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>

@@ -32,10 +32,13 @@ class TaskEnvironmentOptionalMockTime : public TaskEnvironment {
 }  // namespace base
 
 #define TaskEnvironment TaskEnvironmentOptionalMockTime
+#define ShouldReuploadOnceAfterLocalDeviceInfoTombstone \
+  DISABLED_ShouldReuploadOnceAfterLocalDeviceInfoTombstone
 
 #include "../../../../components/sync_device_info/device_info_sync_bridge_unittest.cc"
 
 #undef TaskEnvironment
+#undef ShouldReuploadOnceAfterLocalDeviceInfoTombstone
 
 namespace syncer {
 namespace {
@@ -153,6 +156,40 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDeleteWhenOffline) {
   ASSERT_EQ(3, change_count());
   EXPECT_THAT(ReadAllFromStore(),
               UnorderedElementsAre(Pair(specifics.cache_guid(), _)));
+}
+
+TEST_F(DeviceInfoSyncBridgeTest, BraveApplySyncChangesForLocalDelete) {
+  InitializeAndMergeInitialData(SyncMode::kFull);
+  ASSERT_EQ(1, change_count());
+
+  const DeviceInfoSpecifics specifics = CreateLocalDeviceSpecifics();
+  syncer::EntityChangeList entity_change_list;
+  entity_change_list.push_back(
+      EntityChange::CreateDelete(specifics.cache_guid()));
+  auto error_on_delete = bridge()->ApplySyncChanges(
+      bridge()->CreateMetadataChangeList(), std::move(entity_change_list));
+  EXPECT_FALSE(error_on_delete);
+  EXPECT_EQ(2, change_count());
+}
+
+TEST_F(DeviceInfoSyncBridgeTest,
+       BraveShouldReuploadAfterLocalDeviceInfoTombstone) {
+  InitializeAndMergeInitialData(SyncMode::kFull);
+  ASSERT_EQ(1u, bridge()->GetAllDeviceInfo().size());
+
+  EntityChangeList changes;
+  changes.push_back(
+      EntityChange::CreateDelete(CacheGuidForSuffix(kLocalSuffix)));
+
+  // An incoming deletion for the local device info should not cause a reupload
+  EXPECT_CALL(*processor(), Put(CacheGuidForSuffix(kLocalSuffix), _, _))
+      .Times(0);
+  absl::optional<ModelError> error = bridge()->ApplySyncChanges(
+      bridge()->CreateMetadataChangeList(), std::move(changes));
+  ASSERT_FALSE(error);
+
+  // The local device info should no longer exist.
+  EXPECT_EQ(0u, bridge()->GetAllDeviceInfo().size());
 }
 
 }  // namespace

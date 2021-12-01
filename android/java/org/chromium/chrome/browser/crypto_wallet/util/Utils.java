@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,6 +120,7 @@ public class Utils {
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
+    public static final String ISUPDATEACCOUNT = "isUpdateAccount";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
     public static final String ASSET_SYMBOL = "assetSymbol";
     public static final String ASSET_NAME = "assetName";
@@ -139,12 +141,12 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    public static void saveTextToClipboard(Context context, String textToCopy) {
+    public static void saveTextToClipboard(Context context, String textToCopy, int textToShow) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, R.string.text_has_been_copied, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -259,12 +261,6 @@ public class Utils {
         assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, contractAddress);
         assetDetailIntent.putExtra(ASSET_DECIMALS, assetDecimals);
         activity.startActivity(assetDetailIntent);
-    }
-
-    public static void openAddAccountActivity(Activity activity) {
-        assert activity != null;
-        Intent addAccountActivityIntent = new Intent(activity, AddAccountActivity.class);
-        activity.startActivity(addAccountActivityIntent);
     }
 
     public static String[] getNetworksList(Activity activity) {
@@ -393,7 +389,8 @@ public class Utils {
         return networkConst;
     }
 
-    private static String getDecimalsDepNumber(int decimals) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public static String getDecimalsDepNumber(int decimals) {
         String strDecimals = "1";
         for (int i = 0; i < decimals; i++) {
             strDecimals += "0";
@@ -494,7 +491,7 @@ public class Utils {
         return "0x" + res.toString(16);
     }
 
-    public static String toHexWeiFromGWEI(String number) {
+    public static String toHexGWeiFromGWEI(String number) {
         try {
             if (number.isEmpty()) {
                 return "0x0";

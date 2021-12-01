@@ -50,8 +50,8 @@ public class AccountPrivateKeyActivity
         EditText privateKeyText = findViewById(R.id.private_key_text);
         TextView copyToClipboardText = findViewById(R.id.copy_to_clipboard_text);
         copyToClipboardText.setOnClickListener(v
-                -> Utils.saveTextToClipboard(
-                        AccountPrivateKeyActivity.this, privateKeyText.getText().toString()));
+                -> Utils.saveTextToClipboard(AccountPrivateKeyActivity.this,
+                        privateKeyText.getText().toString(), R.string.text_has_been_copied));
 
         LinearLayout bannerLayout = findViewById(R.id.wallet_backup_banner);
         bannerLayout.setVisibility(View.VISIBLE);
@@ -83,15 +83,6 @@ public class AccountPrivateKeyActivity
                 mIsPrivateKeyShown = !mIsPrivateKeyShown;
             }
         });
-
-        InitKeyringController();
-        if (mKeyringController != null)
-            mKeyringController.getPrivateKeyForDefaultKeyringAccount(
-                    mAddress, (result, privateKey) -> {
-                        if (result) {
-                            privateKeyText.setText(privateKey);
-                        }
-                    });
 
         onInitialLayoutInflationComplete();
     }
@@ -138,6 +129,15 @@ public class AccountPrivateKeyActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        InitKeyringController();
+        assert mKeyringController != null;
+        mKeyringController.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
+            if (result) {
+                EditText privateKeyText = findViewById(R.id.private_key_text);
+                privateKeyText.setText(privateKey);
+            }
+        });
     }
 
     @Override

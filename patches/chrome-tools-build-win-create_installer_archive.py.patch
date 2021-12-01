@@ -39,7 +39,7 @@ index 732479bbf5975289bd251ab6d41c8dda7e808a50..b85b6ffd7bab57a5da1d6819bccbaab0
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
-+  parser.add_option('--skip_signing', default=False)
++  parser.add_option('--skip_signing', action='store_true', default=False)
  
    options, _ = parser.parse_args()
    if not options.build_dir:

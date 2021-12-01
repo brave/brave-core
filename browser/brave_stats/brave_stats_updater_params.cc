@@ -19,6 +19,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
 
 namespace brave_stats {
 
@@ -181,6 +183,38 @@ base::Time BraveStatsUpdaterParams::GetReferenceTime() const {
 
 base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
   return g_current_time.is_null() ? base::Time::Now() : g_current_time;
+}
+
+GURL BraveStatsUpdaterParams::GetUpdateURL(
+    const GURL& base_update_url,
+    const std::string platform_id,
+    const std::string channel_name,
+    const std::string full_brave_version) const {
+  GURL update_url(base_update_url);
+  update_url = net::AppendQueryParameter(update_url, "platform", platform_id);
+  update_url = net::AppendQueryParameter(update_url, "channel", channel_name);
+  update_url =
+      net::AppendQueryParameter(update_url, "version", full_brave_version);
+  update_url = net::AppendQueryParameter(update_url, "daily", GetDailyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "weekly", GetWeeklyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "monthly", GetMonthlyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "first", GetFirstCheckMadeParam());
+  update_url = net::AppendQueryParameter(update_url, "woi",
+                                         GetWeekOfInstallationParam());
+  update_url = net::AppendQueryParameter(update_url, "dtoi",
+                                         GetDateOfInstallationParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "ref", GetReferralCodeParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
+  update_url = net::AppendQueryParameter(update_url, "walletActive",
+                                         GetWalletEnabledParam());
+  return update_url;
 }
 
 // static

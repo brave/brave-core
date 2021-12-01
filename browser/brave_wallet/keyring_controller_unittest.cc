@@ -255,6 +255,19 @@ class KeyringControllerUnitTest : public testing::Test {
     return success;
   }
 
+  static bool IsStrongPassword(KeyringController* controller,
+                               const std::string& password) {
+    bool result;
+    base::RunLoop run_loop;
+    controller->IsStrongPassword(password,
+                                 base::BindLambdaForTesting([&](bool v) {
+                                   result = v;
+                                   run_loop.Quit();
+                                 }));
+    run_loop.Run();
+    return result;
+  }
+
   static bool Lock(KeyringController* controller) {
     controller->Lock();
     return controller->IsLocked();
@@ -2119,6 +2132,30 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringHardwareAccountName) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(KeyringControllerUnitTest, IsStrongPassword) {
+  KeyringController controller(GetPrefs());
+  // Strong password that meets all requirements passes
+  EXPECT_TRUE(IsStrongPassword(&controller, "LDKH66BJbLsHQPEAK@4_zak*"));
+  // Must have at least one number
+  EXPECT_FALSE(IsStrongPassword(&controller, "LDKHBJbLsHQPEAK@_zak*"));
+  // Number requirement is satisfied
+  EXPECT_TRUE(IsStrongPassword(&controller, "LDKHBJbLsH0QPEAK@_zak*"));
+  // Must have at least one alpha character
+  EXPECT_FALSE(IsStrongPassword(&controller, "663@4_*"));
+  // Character requirement can be lowercase
+  EXPECT_TRUE(IsStrongPassword(&controller, "663@4_*a"));
+  // Character requirement can be uppercase
+  EXPECT_TRUE(IsStrongPassword(&controller, "663@4_*A"));
+  // Must have at least one non-alphanumeric character
+  EXPECT_FALSE(IsStrongPassword(&controller, "LDKH66BJbLsHQPEAK4zak"));
+  // space is ok for non alphanumeric requirement
+  EXPECT_TRUE(IsStrongPassword(&controller, "LDKH66BJbLsH QPEAK4zak"));
+  // All requirements met except for length should still fail
+  EXPECT_FALSE(IsStrongPassword(&controller, "a7_&YF"));
+  // Empty password is not accepted
+  EXPECT_FALSE(IsStrongPassword(&controller, ""));
 }
 
 }  // namespace brave_wallet

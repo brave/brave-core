@@ -10,8 +10,9 @@
 // etc) that depend on features/flags. That's why several methods are made
 // virtual and actual ctor TranslateBubbleView() is replaced to
 // MakeTranslateBubbleView(). See the descendants of TranslateBubbleView.
-#define BRAVE_TRANSLATE_BUBBLE_VIEW_H_                                     \
- private:                                                                  \
+#define RevertOrDeclineTranslation                                         \
+  RevertOrDeclineTranslation();                                            \
+                                                                           \
   friend class BraveTranslateBubbleView;                                   \
   friend class BraveTranslateBubbleViewTest;                               \
   FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest,                   \
@@ -23,19 +24,22 @@
   static TranslateBubbleView* MakeTranslateBubbleView(Args&&... args);     \
                                                                            \
  public:                                                                   \
-  virtual int GetTitleBeforeTranslateTitle();
+  virtual int GetTitleBeforeTranslateTitle();                              \
+                                                                           \
+ private:                                                                  \
+  void Dummy
 
 class BraveTranslateBubbleView;
-#define TranslateBubbleView ChromiumTranslateBubbleView
+#define TranslateBubbleView TranslateBubbleView_ChromiumImpl
 #define CreateTranslateIcon virtual CreateTranslateIcon
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
 #undef CreateTranslateIcon
 #undef TranslateBubbleView
-#undef BRAVE_TRANSLATE_BUBBLE_VIEW_H_
+#undef RevertOrDeclineTranslation
 
-class TranslateBubbleView : public ChromiumTranslateBubbleView {
+class TranslateBubbleView : public TranslateBubbleView_ChromiumImpl {
  public:
-  using ChromiumTranslateBubbleView::ChromiumTranslateBubbleView;
+  using TranslateBubbleView_ChromiumImpl::TranslateBubbleView_ChromiumImpl;
 
   std::unique_ptr<views::ImageView> CreateTranslateIcon() override;
 };

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Route, useHistory, useParams } from 'react-router-dom'
+import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { StyledWrapper } from './style'
 import {
   TopTabNavTypes,
@@ -13,17 +14,16 @@ import {
   ERCToken,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultWallet,
-  TransactionInfo
+  DefaultWallet
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
 import { getLocale } from '../../../../../common/locale'
 import { PortfolioView, AccountsView } from '../'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 interface ParamsType {
   category?: TopTabNavTypes

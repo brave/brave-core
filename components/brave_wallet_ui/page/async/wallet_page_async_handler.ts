@@ -23,12 +23,10 @@ import {
 import {
   findHardwareAccountInfo
 } from '../../common/async/lib'
-import {
-  HardwareWalletAccount
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
+import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 const handler = new AsyncActionHandler()
 

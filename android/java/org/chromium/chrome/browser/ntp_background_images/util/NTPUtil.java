@@ -94,10 +94,7 @@ public class NTPUtil {
         boolean isCompensate = false;
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            if (BravePrefServiceBridge.getInstance().getNewsOptIn()
-                    && BravePrefServiceBridge.getInstance().getShowNews()) {
-                isCompensate = true;
-            }
+            isCompensate = true;
         }
 
         if (BraveActivity.getBraveActivity() != null) {
@@ -144,6 +141,7 @@ public class NTPUtil {
         CompositorViewHolder compositorView = view.findViewById(R.id.compositor_view_holder);
         ViewGroup imageCreditLayout = view.findViewById(R.id.image_credit_layout);
         ViewGroup newsRecyclerLayout = view.findViewById(R.id.newsRecycler);
+        ViewGroup optinLayout = view.findViewById(R.id.optin_layout_id);
 
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
 
@@ -152,10 +150,12 @@ public class NTPUtil {
 
         parentLayout.removeView(mainLayout);
         parentLayout.removeView(imageCreditLayout);
+        parentLayout.removeView(optinLayout);
         parentLayout.removeView(newsRecyclerLayout);
 
         parentLayout.addView(mainLayout);
         parentLayout.addView(imageCreditLayout);
+        parentLayout.addView(optinLayout);
         parentLayout.addView(newsRecyclerLayout);
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
@@ -181,12 +181,8 @@ public class NTPUtil {
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             int topMargin = correctImageCreditLayoutTopPosition(ntpImage);
-            if ((BravePrefServiceBridge.getInstance().getNewsOptIn()
-                        && BravePrefServiceBridge.getInstance().getShowNews())) {
-                imageCreditLayoutParams.setMargins(0, topMargin, 0, 50);
-            }
+            imageCreditLayoutParams.setMargins(0, topMargin, 0, 50);
 
-            ViewGroup optinLayout = view.findViewById(R.id.optin_layout_id);
             LinearLayout.LayoutParams optinLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             optinLayoutParams.setMargins(30, imageCreditLayout.getBottom(), 30, 500);

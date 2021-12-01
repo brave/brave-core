@@ -13,8 +13,14 @@
 #define RefreshLocalDeviceInfoIfNeeded \
   RefreshLocalDeviceInfoIfNeeded_ChromiumImpl
 
+// This macro disables Chromium's block which detects whether the local
+// device record should be re-uploaded to server. We disable it because it
+// breaks the ability to remove other device in sync chain for Brave
+#define BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF if (false)
+
 #include "../../../../components/sync_device_info/device_info_sync_bridge.cc"
 
+#undef BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
 #undef RefreshLocalDeviceInfoIfNeeded
 #undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 

@@ -26,7 +26,6 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
@@ -41,57 +40,6 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
-
-class BraveActionsContainer::EmptyExtensionsContainer
-    : public ExtensionsContainer {
- public:
-  EmptyExtensionsContainer() = default;
-  virtual ~EmptyExtensionsContainer() = default;
-
-  ToolbarActionViewController* GetActionForId(
-      const std::string& action_id) override { return nullptr; }
-
-  ToolbarActionViewController* GetPoppedOutAction() const override {
-    return nullptr;
-  }
-
-  bool IsActionVisibleOnToolbar(
-    const ToolbarActionViewController* action) const override { return false; }
-
-  extensions::ExtensionContextMenuModel::ButtonVisibility GetActionVisibility(
-      const ToolbarActionViewController* action) const override {
-    return extensions::ExtensionContextMenuModel::PINNED;
-  }
-
-  void UndoPopOut() override {}
-
-  void SetPopupOwner(ToolbarActionViewController* popup_owner) override {}
-
-  void HideActivePopup() override {}
-
-  bool CloseOverflowMenuIfOpen() override { return false; }
-
-  void PopOutAction(ToolbarActionViewController* action,
-                    bool is_sticky,
-                    base::OnceClosure closure) override {}
-
-  bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override {
-    return false;
-  }
-
-  void ShowToolbarActionBubble(
-      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
-
-  void ShowToolbarActionBubbleAsync(
-      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
-
-  void ToggleExtensionsMenu() override {}
-
-  bool HasAnyExtensions() const override { return false; }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(EmptyExtensionsContainer);
-};
 
 BraveActionsContainer::BraveActionInfo::BraveActionInfo()
     : position_(ACTION_ANY_POSITION) {}
@@ -117,7 +65,6 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_manager_(
           extensions::ExtensionActionManager::Get(profile)),
       brave_action_api_(extensions::BraveActionAPI::Get(browser)),
-      empty_extensions_container_(new EmptyExtensionsContainer),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
       weak_ptr_factory_(this) {
@@ -173,15 +120,17 @@ bool BraveActionsContainer::IsContainerAction(const std::string& id) const {
   return (actions_.find(id) != actions_.end());
 }
 
-bool BraveActionsContainer::ShouldAddAction(const std::string& id) const {
+bool BraveActionsContainer::ShouldShowAction(const std::string& id) const {
   if (!IsContainerAction(id))
     return false;
+  if (popup_owner_ && actions_.at(id).view_controller_.get() == popup_owner_)
+    return true;
   if (id == brave_rewards_extension_id)
-    return ShouldAddBraveRewardsAction();
+    return ShouldShowBraveRewardsAction();
   return true;
 }
 
-bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
+bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
@@ -198,25 +147,24 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
   DCHECK(extension);
-  if (!ShouldAddAction(extension->id()))
+
+  const std::string& id = extension->id();
+  if (!IsContainerAction(id))
     return;
-  VLOG(1) << "AddAction (" << extension->id() << "), was already loaded: "
-          << static_cast<bool>(actions_[extension->id()].view_);
-  if (!actions_[extension->id()].view_controller_) {
-    const auto& id = extension->id();
+
+  VLOG(1) << "AddAction (" << id
+          << "), was already loaded: " << static_cast<bool>(actions_[id].view_);
+
+  if (!actions_[id].view_controller_) {
     // Remove existing stub view, if present
     actions_[id].Reset();
     // Create a ExtensionActionViewController for the extension
-    // Passing stub ExtensionsContainer instead of ToolbarActionsBar since we
-    // do not require that logic.
-    // If we do require notifications when popups are open or closed,
-    // then we should inherit and pass |this| through.
-    actions_[id].view_controller_ = BraveActionViewController::Create(
-        extension->id(), browser_, empty_extensions_container_.get());
+    actions_[id].view_controller_ =
+        BraveActionViewController::Create(id, browser_, this);
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
-    AttachAction(actions_[id]);
+    AttachAction(id);
     // Handle if we are in a continuing pressed state for this extension.
     if (is_rewards_pressed_ && id == brave_rewards_extension_id) {
       is_rewards_pressed_ = false;
@@ -228,18 +176,23 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
 
 void BraveActionsContainer::AddActionStubForRewards() {
   const std::string id = brave_rewards_extension_id;
-  if (!ShouldAddAction(id)) {
-    return;
-  }
   if (actions_[id].view_) {
     return;
   }
   actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(
       browser_->profile(), this);
-  AttachAction(actions_[id]);
+  AttachAction(id);
 }
 
-void BraveActionsContainer::AttachAction(const BraveActionInfo& action) {
+void BraveActionsContainer::AttachAction(const std::string& id) {
+  DCHECK(IsContainerAction(id));
+  DCHECK(actions_[id].view_);
+
+  const auto& action = actions_[id];
+
+  if (!ShouldShowAction(id))
+    action.view_->SetVisible(false);
+
   // Add extension view after separator view
   // `AddChildView` should be called first, so that changes that modify
   // layout (e.g. preferred size) are forwarded to its parent
@@ -282,16 +235,24 @@ void BraveActionsContainer::RemoveAction(const std::string& id) {
   PreferredSizeChanged();
 }
 
-// Adds or removes action
-void BraveActionsContainer::ShowAction(const std::string& id, bool show) {
-  if (show != IsActionShown(id))
-    show ? AddAction(id) : RemoveAction(id);
+void BraveActionsContainer::UpdateActionVisibility(const std::string& id) {
+  if (views::Button* button = GetActionButton(id)) {
+    bool should_show = ShouldShowAction(id);
+    if (button->GetVisible() != should_show) {
+      button->SetVisible(should_show);
+      Update();
+    }
+  }
 }
 
-// Checks if action for the given |id| has been added
+views::Button* BraveActionsContainer::GetActionButton(
+    const std::string& id) const {
+  return IsContainerAction(id) ? actions_.at(id).view_.get() : nullptr;
+}
+
 bool BraveActionsContainer::IsActionShown(const std::string& id) const {
-  DCHECK(IsContainerAction(id));
-  return(actions_.at(id).view_ != nullptr);
+  views::Button* button = GetActionButton(id);
+  return button && button->GetVisible();
 }
 
 void BraveActionsContainer::UpdateActionState(const std::string& id) {
@@ -320,7 +281,7 @@ void BraveActionsContainer::Update() {
   for (auto const& pair : actions_) {
     if (pair.second.view_controller_)
       pair.second.view_controller_->UpdateState();
-    if (!can_show && pair.second.view_)
+    if (!can_show && pair.second.view_ && pair.second.view_->GetVisible())
       can_show = true;
   }
   // only show separator if we're showing any buttons
@@ -451,5 +412,78 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
 
 // Brave Rewards preferences change observers callback
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
-  ShowAction(brave_rewards_extension_id, ShouldAddBraveRewardsAction());
+  UpdateActionVisibility(brave_rewards_extension_id);
+}
+
+ToolbarActionViewController* BraveActionsContainer::GetActionForId(
+    const std::string& action_id) {
+  return nullptr;
+}
+
+ToolbarActionViewController* BraveActionsContainer::GetPoppedOutAction() const {
+  return nullptr;
+}
+
+void BraveActionsContainer::OnContextMenuShown(
+    ToolbarActionViewController* extension) {}
+
+void BraveActionsContainer::OnContextMenuClosed(
+    ToolbarActionViewController* extension) {}
+
+bool BraveActionsContainer::IsActionVisibleOnToolbar(
+    const ToolbarActionViewController* action) const {
+  return false;
+}
+
+extensions::ExtensionContextMenuModel::ButtonVisibility
+BraveActionsContainer::GetActionVisibility(
+    const ToolbarActionViewController* action) const {
+  return extensions::ExtensionContextMenuModel::PINNED;
+}
+
+void BraveActionsContainer::UndoPopOut() {}
+
+void BraveActionsContainer::SetPopupOwner(
+    ToolbarActionViewController* popup_owner) {
+  if (popup_owner) {
+    DCHECK(!popup_owner_);
+    popup_owner_ = popup_owner;
+    UpdateActionVisibility(popup_owner->GetId());
+    return;
+  }
+
+  auto* previous_owner = popup_owner_;
+  DCHECK(previous_owner);
+  popup_owner_ = nullptr;
+  UpdateActionVisibility(previous_owner->GetId());
+}
+
+void BraveActionsContainer::HideActivePopup() {
+  if (popup_owner_)
+    popup_owner_->HidePopup();
+}
+
+bool BraveActionsContainer::CloseOverflowMenuIfOpen() {
+  return false;
+}
+
+void BraveActionsContainer::PopOutAction(ToolbarActionViewController* action,
+                                         bool is_sticky,
+                                         base::OnceClosure closure) {}
+
+bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
+    const std::string& action_id) {
+  return false;
+}
+
+void BraveActionsContainer::ShowToolbarActionBubble(
+    std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
+
+void BraveActionsContainer::ShowToolbarActionBubbleAsync(
+    std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
+
+void BraveActionsContainer::ToggleExtensionsMenu() {}
+
+bool BraveActionsContainer::HasAnyExtensions() const {
+  return false;
 }

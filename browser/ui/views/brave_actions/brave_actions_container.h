@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_member.h"
@@ -42,6 +43,7 @@ class Button;
 // TODO(petemill): consider splitting to separate model, like
 // ToolbarActionsModel and ToolbarActionsBar
 class BraveActionsContainer : public views::View,
+                              public ExtensionsContainer,
                               public extensions::BraveActionAPI::Observer,
                               public extensions::ExtensionActionAPI::Observer,
                               public extensions::ExtensionRegistryObserver,
@@ -102,8 +104,6 @@ class BraveActionsContainer : public views::View,
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
-  class EmptyExtensionsContainer;
-
   // Special positions in the container designators
   enum ActionPosition : int {
     ACTION_ANY_POSITION = -1,
@@ -124,19 +124,45 @@ class BraveActionsContainer : public views::View,
   // Actions that belong to the container
   std::map<std::string, BraveActionInfo> actions_;
 
+  // ExtensionsContainer:
+  ToolbarActionViewController* GetActionForId(
+      const std::string& action_id) override;
+  ToolbarActionViewController* GetPoppedOutAction() const override;
+  void OnContextMenuShown(ToolbarActionViewController* extension) override;
+  void OnContextMenuClosed(ToolbarActionViewController* extension) override;
+  bool IsActionVisibleOnToolbar(
+      const ToolbarActionViewController* action) const override;
+  extensions::ExtensionContextMenuModel::ButtonVisibility GetActionVisibility(
+      const ToolbarActionViewController* action) const override;
+  void UndoPopOut() override;
+  void SetPopupOwner(ToolbarActionViewController* popup_owner) override;
+  void HideActivePopup() override;
+  bool CloseOverflowMenuIfOpen() override;
+  void PopOutAction(ToolbarActionViewController* action,
+                    bool is_sticky,
+                    base::OnceClosure closure) override;
+  bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override;
+  void ShowToolbarActionBubble(
+      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override;
+  void ShowToolbarActionBubbleAsync(
+      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override;
+  void ToggleExtensionsMenu() override;
+  bool HasAnyExtensions() const override;
+
   // Actions operations
-  bool ShouldAddAction(const std::string& id) const;
+  bool ShouldShowAction(const std::string& id) const;
   bool IsContainerAction(const std::string& id) const;
   void AddAction(const extensions::Extension* extension);
   void AddAction(const std::string& id);
-  bool ShouldAddBraveRewardsAction() const;
+  bool ShouldShowBraveRewardsAction() const;
   void AddActionStubForRewards();
   void AddActionViewForShields();
   void RemoveAction(const std::string& id);
-  void ShowAction(const std::string& id, bool show);
+  void UpdateActionVisibility(const std::string& id);
+  views::Button* GetActionButton(const std::string& id) const;
   bool IsActionShown(const std::string& id) const;
   void UpdateActionState(const std::string& id);
-  void AttachAction(const BraveActionInfo& action);
+  void AttachAction(const std::string& id);
 
   // BraveActionAPI::Observer
   void OnBraveActionShouldTrigger(const std::string& extension_id,
@@ -145,6 +171,8 @@ class BraveActionsContainer : public views::View,
   bool should_hide_ = false;
 
   bool is_rewards_pressed_ = false;
+
+  ToolbarActionViewController* popup_owner_ = nullptr;
 
   // The Browser this LocationBarView is in.  Note that at least
   // chromeos::SimpleWebViewDialog uses a LocationBarView outside any browser
@@ -179,8 +207,6 @@ class BraveActionsContainer : public views::View,
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;
   BooleanPrefMember hide_brave_rewards_button_;
-
-  std::unique_ptr<EmptyExtensionsContainer> empty_extensions_container_;
 
   brave_rewards::RewardsService* rewards_service_;
 

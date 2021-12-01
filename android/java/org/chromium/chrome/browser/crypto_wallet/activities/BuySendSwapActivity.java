@@ -229,52 +229,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         toAssetText.setText("ETH");
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
-        Spinner spinner = findViewById(R.id.network_spinner);
-        spinner.setOnItemSelectedListener(this);
-        // Creating adapter for spinner
-        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(
-                this, Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
-        spinner.setAdapter(dataAdapter);
 
         onInitialLayoutInflationComplete();
 
         adjustControls();
-        InitErcTokenRegistry();
-        InitEthJsonRpcController();
-        InitEthTxController();
-        InitKeyringController();
-        InitAssetRatioController();
-        InitSwapController();
-
-        if (mEthJsonRpcController != null) {
-            mEthJsonRpcController.getChainId(chainId -> {
-                mCurrentChainId = chainId;
-                spinner.setSelection(getIndexOf(spinner, chainId));
-            });
-        }
-        if (mKeyringController != null) {
-            mKeyringController.getDefaultKeyringInfo(keyring -> {
-                String[] accountNames = new String[keyring.accountInfos.length];
-                String[] accountTitles = new String[keyring.accountInfos.length];
-                int currentPos = 0;
-                for (AccountInfo info : keyring.accountInfos) {
-                    accountNames[currentPos] = info.name;
-                    accountTitles[currentPos] = info.address;
-                    currentPos++;
-                }
-                mAccountSpinner = findViewById(R.id.accounts_spinner);
-                mCustomAccountAdapter = new AccountSpinnerAdapter(
-                        getApplicationContext(), accountNames, accountTitles);
-                mAccountSpinner.setAdapter(mCustomAccountAdapter);
-                mAccountSpinner.setOnItemSelectedListener(this);
-                if (accountTitles.length > 0) {
-                    updateBalance(accountTitles[0], true);
-                    if (mActivityType == ActivityType.SWAP) {
-                        updateBalance(accountTitles[0], false);
-                    }
-                }
-            });
-        }
     }
 
     private class BuySendSwapUiInfo {
@@ -1202,8 +1160,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mCurrentErcToken.contractAddress = Utils.getContractAddress(
                 mCurrentChainId, mCurrentErcToken.symbol, mCurrentErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath =
-                ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
+        if (mCurrentErcToken.symbol.equals("ETH")) {
+            mCurrentErcToken.logo = "eth.png";
+        }
+        String iconPath = ercToken.logo.isEmpty()
+                ? null
+                : ("file://" + tokensPath + "/" + mCurrentErcToken.logo);
         Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
                 assetFromDropDown, true);
         updateBalance(
@@ -1223,8 +1185,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mCurrentSwapToErcToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
                 mCurrentSwapToErcToken.symbol, mCurrentSwapToErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath =
-                ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
+        if (mCurrentSwapToErcToken.symbol.equals("ETH")) {
+            mCurrentSwapToErcToken.logo = "eth.png";
+        }
+        String iconPath = ercToken.logo.isEmpty()
+                ? null
+                : ("file://" + tokensPath + "/" + mCurrentSwapToErcToken.logo);
         Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
                 assetToDropDown, true);
         updateBalance(
@@ -1359,6 +1325,48 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        InitErcTokenRegistry();
+        InitEthJsonRpcController();
+        InitEthTxController();
+        InitKeyringController();
+        InitAssetRatioController();
+        InitSwapController();
+
+        if (mEthJsonRpcController != null) {
+            mEthJsonRpcController.getChainId(chainId -> {
+                mCurrentChainId = chainId;
+                Spinner spinner = findViewById(R.id.network_spinner);
+                spinner.setOnItemSelectedListener(this);
+                // Creating adapter for spinner
+                NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(
+                        this, Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
+                spinner.setAdapter(dataAdapter);
+                spinner.setSelection(getIndexOf(spinner, chainId));
+            });
+        }
+        if (mKeyringController != null) {
+            mKeyringController.getDefaultKeyringInfo(keyring -> {
+                String[] accountNames = new String[keyring.accountInfos.length];
+                String[] accountTitles = new String[keyring.accountInfos.length];
+                int currentPos = 0;
+                for (AccountInfo info : keyring.accountInfos) {
+                    accountNames[currentPos] = info.name;
+                    accountTitles[currentPos] = info.address;
+                    currentPos++;
+                }
+                mAccountSpinner = findViewById(R.id.accounts_spinner);
+                mCustomAccountAdapter = new AccountSpinnerAdapter(
+                        getApplicationContext(), accountNames, accountTitles);
+                mAccountSpinner.setAdapter(mCustomAccountAdapter);
+                mAccountSpinner.setOnItemSelectedListener(this);
+                if (accountTitles.length > 0) {
+                    updateBalance(accountTitles[0], true);
+                    if (mActivityType == ActivityType.SWAP) {
+                        updateBalance(accountTitles[0], false);
+                    }
+                }
+            });
+        }
     }
 
     @Override

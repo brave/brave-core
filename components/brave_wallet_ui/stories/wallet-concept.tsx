@@ -45,10 +45,10 @@ import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { getLocale } from '../../common/locale'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
+import { HardwareWalletAccount } from '../common/hardware/types'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {

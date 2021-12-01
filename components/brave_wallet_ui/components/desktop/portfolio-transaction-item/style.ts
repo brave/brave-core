@@ -80,6 +80,10 @@ export const MoreButton = styled(WalletButton)`
   border: none;
 `
 
+export const RejectedTransactionSpacer = styled.div`
+  width: 38px;
+`
+
 export const MoreIcon = styled(MoreVertRIcon)`
   width: auto;
   height: 26px;

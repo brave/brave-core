@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
 import {
   TransactionInfo,
   SignMessageRequest,
@@ -18,7 +17,8 @@ import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
   WalletPanelState,
   PanelState,
-  WalletState
+  WalletState,
+  HardwareInfo
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -39,7 +39,8 @@ import {
   signLedgerTransaction,
   signMessageWithHardwareKeyring,
   cancelHardwareOperation,
-  dialogErrorFromLedgerErrorCode
+  dialogErrorFromLedgerErrorCode,
+  dialogErrorFromTrezorErrorCode
 } from '../../common/async/hardware'
 
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
@@ -47,8 +48,8 @@ import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { TrezorErrorsCodes } from '../../common/trezor/trezor-messages'
-import { LedgerErrorsCodes } from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import { TrezorErrorsCodes } from '../../common/hardware/trezor/trezor-messages'
+import { HardwareVendor } from '../../common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
 
@@ -171,26 +172,26 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
 })
 
 handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: TransactionInfo) => {
-  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
-  if (!hardwareAccount || !hardwareAccount.hardware) {
-    return
+  const found = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (found && found.hardware) {
+    const info: HardwareInfo = found.hardware
+    await cancelHardwareOperation(info.vendor as HardwareVendor)
   }
-  const apiProxy = getWalletPanelApiProxy()
-  await cancelHardwareOperation(apiProxy, hardwareAccount.hardware.vendor)
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
   // and therefore forfeit connecting to the hardware wallet.
   await store.dispatch(PanelActions.navigateToMain())
 })
 
 handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
-  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
-  if (!hardwareAccount || !hardwareAccount.hardware) {
+  const found = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (!found || !found.hardware) {
     return
   }
+  const hardwareAccount: HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
-  if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
-    const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  if (hardwareAccount.vendor === LEDGER_HARDWARE_VENDOR) {
+    const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       await store.dispatch(PanelActions.navigateToMain())
       refreshTransactionHistory(txInfo.fromAddress)
@@ -214,8 +215,8 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       console.log(error)
       await store.dispatch(PanelActions.navigateToMain())
     }
-  } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
-    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  } else if (hardwareAccount.vendor === TREZOR_HARDWARE_VENDOR) {
+    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
       await store.dispatch(PanelActions.navigateToMain())
@@ -339,17 +340,20 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   }
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
-  const signed = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.message)
-  if (!signed.success &&
-      (signed.code === TrezorErrorsCodes.CommandInProgress ||
-       signed.code === LedgerErrorsCodes.TransportLocked)) {
-      // do nothing as the operation is already in progress
+  const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.message)
+  if (!signed.success && signed.code) {
+    const deviceError = (info.vendor === TREZOR_HARDWARE_VENDOR)
+      ? dialogErrorFromTrezorErrorCode(signed.code as TrezorErrorsCodes) : dialogErrorFromLedgerErrorCode(signed.code)
+    if (deviceError !== 'transactionRejected') {
+      await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
       return
+    }
   }
   const payload: SignMessageHardwareProcessedPayload =
     signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
                    : { success: signed.success, id: messageData.id, error: signed.error }
   store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
+  await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
 })
 

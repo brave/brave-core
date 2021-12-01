@@ -124,21 +124,9 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                 addAccountActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 addAccountActivityIntent.putExtra(Utils.NAME, mName);
                 addAccountActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
+                addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, true);
                 startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
             }
-        });
-
-        InitEthJsonRpcController();
-        InitAssetRatioController();
-        InitBraveWalletService();
-        InitKeyringController();
-        InitEthTxController();
-        InitErcTokenRegistry();
-
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getChainId(chainId -> {
-            setUpAssetList(chainId);
-            fetchAccountInfo(chainId);
         });
 
         onInitialLayoutInflationComplete();
@@ -175,6 +163,9 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                                 // Amount in current crypto currency/token
                                 cryptoBalanceString);
 
+                if (userAsset.symbol.equals("ETH")) {
+                    userAsset.logo = "eth.png";
+                }
                 walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
                 walletListItemModel.setErcToken(userAsset);
                 walletListItemModelList.add(walletListItemModel);
@@ -222,6 +213,19 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        InitEthJsonRpcController();
+        InitAssetRatioController();
+        InitBraveWalletService();
+        InitKeyringController();
+        InitEthTxController();
+        InitErcTokenRegistry();
+
+        assert mEthJsonRpcController != null;
+        mEthJsonRpcController.getChainId(chainId -> {
+            setUpAssetList(chainId);
+            fetchAccountInfo(chainId);
+        });
     }
 
     @Override

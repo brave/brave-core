@@ -5,7 +5,6 @@ import { Select } from 'brave-ui/components'
 import { PopupModal, TopTabNav } from '../..'
 import { NavButton } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
-
 // Styled Components
 import {
   Input,
@@ -18,8 +17,9 @@ import {
   ErrorText
 } from './style'
 
-import { HardwareWalletAccount, HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
+import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
+import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 export interface Props {
   onClose: () => void

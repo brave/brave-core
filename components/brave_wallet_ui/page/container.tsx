@@ -7,7 +7,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
-
+import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -37,8 +37,7 @@ import {
   UpdateAccountNamePayloadType,
   EthereumChain,
   WalletRoutes,
-  BuySendSwapTypes,
-  TransactionInfo
+  BuySendSwapTypes
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -48,9 +47,6 @@ import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import {
-  HardwareWalletAccount
-} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
   findENSAddress,
@@ -63,6 +59,7 @@ import {
 import { formatBalance } from '../utils/format-balances'
 import { useSwap, useAssets, useBalance, useSend, usePreset } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
+import { HardwareWalletAccount } from '../common/hardware/types'
 
 type Props = {
   wallet: WalletState
