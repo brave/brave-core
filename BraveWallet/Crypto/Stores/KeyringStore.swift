@@ -9,6 +9,7 @@ import BraveCore
 import Security
 import struct Shared.Strings
 import LocalAuthentication
+import Combine
 
 struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
@@ -91,6 +92,7 @@ public class KeyringStore: ObservableObject {
   }
   
   private let controller: BraveWalletKeyringController
+  private var cancellable: AnyCancellable?
   
   public init(keyringController: BraveWalletKeyringController) {
     controller = keyringController
@@ -102,6 +104,11 @@ public class KeyringStore: ObservableObject {
     controller.autoLockMinutes { minutes in
       self.autoLockInterval = .init(value: minutes)
     }
+    cancellable = NotificationCenter.default
+      .publisher(for: UIApplication.willEnterForegroundNotification, object: nil)
+      .sink { [weak self] _ in
+        self?.updateKeyringInfo()
+      }
   }
   
   private func updateKeyringInfo() {
