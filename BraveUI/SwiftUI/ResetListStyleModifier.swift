@@ -24,6 +24,7 @@ private struct ResetListHeaderStyleModifier: ViewModifier {
         }
         return $0
       })
+      .accessibilityRemoveTraits(.isHeader)
   }
 }
 

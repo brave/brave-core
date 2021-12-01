@@ -139,6 +139,7 @@ private struct AccountActivityHeaderView: View {
     VStack {
       Blockie(address: account.address)
         .frame(width: 64, height: 64)
+        .accessibilityHidden(true)
       VStack(spacing: 4) {
         Text(account.name)
           .fontWeight(.semibold)

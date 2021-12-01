@@ -72,6 +72,7 @@ struct UnlockWalletView: View {
       VStack(spacing: 46) {
         Image("graphic-lock")
           .padding(.bottom)
+          .accessibilityHidden(true)
         VStack {
           Text(Strings.Wallet.unlockWalletTitle)
             .font(.headline)

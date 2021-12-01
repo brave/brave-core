@@ -110,6 +110,7 @@ struct CryptoPagesView: View {
               }
               .foregroundColor(Color(.braveOrange))
           }
+          .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
         }
     }
   }

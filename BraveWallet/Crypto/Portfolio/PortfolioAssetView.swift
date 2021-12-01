@@ -34,6 +34,8 @@ struct PortfolioAssetView: View {
     }
     .frame(maxWidth: .infinity)
     .padding(.vertical, 6)
+    .accessibilityElement()
+    .accessibilityLabel("\(title), \(quantity) \(symbol), \(amount)")
   }
 }
 

@@ -183,6 +183,10 @@ struct BalanceHeaderView: View {
         LinearGradient(braveGradient: .lightGradient02)
           .shimmer(isLoading)
       }
+      .chartAccessibility(
+        title: Strings.Wallet.portfolioPageTitle,
+        dataPoints: chartData
+      )
       .disabled(historicalBalances.isEmpty)
       .frame(height: 148)
       .padding(.horizontal, -12)

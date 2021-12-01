@@ -36,6 +36,7 @@ struct AccountPrivateKeyView: View {
           .multilineTextAlignment(.center)
           .font(.system(.body, design: .monospaced))
           .blur(radius: isKeyVisible ? 0 : 5)
+          .accessibilityHidden(!isKeyVisible)
         Button(action: {
           UIPasteboard.general.string = key
         }) {

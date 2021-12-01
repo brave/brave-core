@@ -29,6 +29,8 @@ struct AccountView: View {
       Spacer()
     }
     .padding(.vertical, 6)
+    .accessibilityElement()
+    .accessibilityLabel("\(name), \(address.truncatedAddress)")
   }
 }
 

@@ -78,6 +78,7 @@ struct SlippageGrid: View {
   var body: some View {
     HStack(spacing: 8) {
       ForEach(Option.predefinedOptions, id: \.id) { option in
+        let isSelected = isPredefinedOptionSelected(option.id)
         Button(action: {
           customSlippage = nil
           selectedSlippage = option
@@ -89,9 +90,10 @@ struct SlippageGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isPredefinedOptionSelected(option.id) ? .braveBlurple : .secondaryBraveGroupedBackground)))
+            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isSelected ? .braveBlurple : .secondaryBraveGroupedBackground)))
             .padding(.top, 8)
         }
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
       }
       TextField("%", text: $input)
         .onChange(of: input) { value in
@@ -117,6 +119,7 @@ struct SlippageGrid: View {
         .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
         .background(BuySendSwapGridBackgroundView(backgroundColor: Color(customSlippage != nil ? .braveBlurple : .secondaryBraveGroupedBackground)))
         .padding(.top, 8)
+        .accessibilityAddTraits(customSlippage != nil ? .isSelected : [])
     }
   }
   
@@ -143,11 +146,13 @@ struct MarketPriceView: View {
         Text(swapTokenStore.selectedFromTokenPrice)
           .font(.title3.weight(.semibold))
       }
+      .accessibilityElement(children: .combine)
       Spacer()
       Button(action: {
         swapTokenStore.fetchPriceQuote(base: .perSellAsset)
       }) {
-        Image("wallet-refresh")
+        Label(Strings.Wallet.refreshMarketPriceLabel, image: "wallet-refresh")
+          .labelStyle(.iconOnly)
           .foregroundColor(Color(.braveBlurpleTint))
           .font(.title3)
       }
@@ -350,6 +355,9 @@ struct SwapCryptoView: View {
         .contentShape(Rectangle())
       }
       .buttonStyle(.plain)
+      .accessibilityLabel(Strings.Wallet.swapCryptoSlippageTitle)
+      .accessibilityValue(formatSlippage)
+      .accessibility(addTraits: .isButton)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(

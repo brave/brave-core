@@ -44,6 +44,8 @@ struct NetworkPicker: View {
       .contentShape(Capsule())
       .animation(nil, value: selectedNetwork)
     }
+    .accessibilityLabel(Strings.Wallet.selectedNetworkAccessibilityLabel)
+    .accessibilityValue(selectedNetwork.shortChainName)
   }
 }
 

@@ -153,27 +153,33 @@ private struct RestoreWalletView: View {
                 }
               }
           }
+          .accessibilityElement(children: .combine)
           .frame(maxWidth: .infinity, alignment: .leading)
         }
         HStack {
-          Toggle(Strings.Wallet.restoreWalletShowRecoveryPhrase, isOn: $showingRecoveryPhase)
-            .labelsHidden()
-            .scaleEffect(0.75)
-            .padding(-6)
-          Text(Strings.Wallet.restoreWalletShowRecoveryPhrase)
-            .font(.footnote)
-            .onTapGesture {
-              withAnimation {
-                showingRecoveryPhase.toggle()
+          HStack {
+            Toggle(Strings.Wallet.restoreWalletShowRecoveryPhrase, isOn: $showingRecoveryPhase)
+              .labelsHidden()
+              .scaleEffect(0.75)
+              .padding(-6)
+            Text(Strings.Wallet.restoreWalletShowRecoveryPhrase)
+              .font(.footnote)
+              .onTapGesture {
+                withAnimation {
+                  showingRecoveryPhase.toggle()
+                }
               }
-            }
+          }
+          .accessibilityElement(children: .combine)
+          .accessibilityAddTraits(.isButton)
           Spacer()
           Button(action: {
             if let string = UIPasteboard.general.string {
               phrase = string
             }
           }) {
-            Image("brave.clipboard")
+            Label(Strings.Wallet.pasteFromPasteboard, image: "brave.clipboard")
+              .labelStyle(.iconOnly)
           }
         }
       }

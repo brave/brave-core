@@ -36,7 +36,8 @@ struct AccountsHeaderView: View {
       Spacer()
       HStack(spacing: 16) {
         Button(action: { isPresentingAddAccount = true }) {
-          Image(systemName: "plus")
+          Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
+            .labelStyle(.iconOnly)
         }
         .background(
           Color.clear
@@ -48,7 +49,8 @@ struct AccountsHeaderView: View {
             }
         )
         NavigationLink(destination: WalletSettingsView(keyringStore: keyringStore)) {
-          Image("brave.gear")
+          Label(Strings.Wallet.settings, image: "brave.gear")
+            .labelStyle(.iconOnly)
         }
       }
       .foregroundColor(Color(.braveLabel))

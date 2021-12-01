@@ -157,6 +157,7 @@ struct AddAccountView: View {
       )
     ) {
       TextEditor(text: $privateKey)
+        .autocapitalization(.none)
         .font(.system(.body, design: .monospaced))
         .frame(height: privateKeyFieldHeight)
         .background(
@@ -165,12 +166,14 @@ struct AddAccountView: View {
             .padding(.horizontal, 4) // To match the TextEditor's editing insets
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(Color(.placeholderText))
-            .opacity(privateKey.isEmpty ? 1 : 0),
+            .opacity(privateKey.isEmpty ? 1 : 0)
+            .accessibilityHidden(true),
           alignment: .top
         )
         .introspectTextView { textView in
           textView.smartQuotesType = .no
         }
+        .accessibilityValue(privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey)
       Button(action: { isPresentingImport = true }) {
         HStack {
           Text(Strings.Wallet.importButtonTitle)

@@ -27,10 +27,12 @@ struct WalletListHeaderView<Title: View, Subtitle: View>: View {
       title
         .font(.footnote.weight(.medium))
         .textCase(.none)
+        .accessibilityAddTraits(.isHeader)
       subtitle
         .font(.caption)
         .textCase(.none)
     }
+    .accessibilityElement(children: .contain)
     .foregroundColor(Color(.secondaryBraveLabel))
     .osAvailabilityModifiers { content in
       if #available(iOS 15.0, *) {
