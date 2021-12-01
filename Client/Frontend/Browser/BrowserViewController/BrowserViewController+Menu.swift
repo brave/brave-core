@@ -114,39 +114,37 @@ extension BrowserViewController {
                 let vc = DownloadsPanel(profile: self.profile)
                 menuController.pushInnerMenu(vc)
             }
-            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                MenuItemButton(
-                    icon: #imageLiteral(resourceName: "menu-crypto").template,
-                    title: Strings.Wallet.wallet
-                ) { [unowned self] in
-                    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-                    guard
-                        let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
-                        let rpcController = BraveWallet.EthJsonRpcControllerFactory.get(privateMode: privateMode),
-                        let assetRatioController = BraveWallet.AssetRatioControllerFactory.get(privateMode: privateMode),
-                        let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-                        let swapController = BraveWallet.SwapControllerFactory.get(privateMode: privateMode),
-                        let txController = BraveWallet.EthTxControllerFactory.get(privateMode: privateMode)
-                    else {
-                        log.error("Failed to load wallet. One or more services were unavailable")
-                        return
-                    }
-                    
-                    let walletStore = WalletStore(
-                        keyringController: keyringController,
-                        rpcController: rpcController,
-                        walletService: walletService,
-                        assetRatioController: assetRatioController,
-                        swapController: swapController,
-                        tokenRegistry: BraveCoreMain.ercTokenRegistry,
-                        transactionController: txController
-                    )
-                    
-                    let vc = WalletHostingViewController(walletStore: walletStore)
-                    vc.delegate = self
-                    self.dismiss(animated: true) {
-                        self.present(vc, animated: true)
-                    }
+            MenuItemButton(
+                icon: #imageLiteral(resourceName: "menu-crypto").template,
+                title: Strings.Wallet.wallet
+            ) { [unowned self] in
+                let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+                guard
+                    let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
+                    let rpcController = BraveWallet.EthJsonRpcControllerFactory.get(privateMode: privateMode),
+                    let assetRatioController = BraveWallet.AssetRatioControllerFactory.get(privateMode: privateMode),
+                    let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
+                    let swapController = BraveWallet.SwapControllerFactory.get(privateMode: privateMode),
+                    let txController = BraveWallet.EthTxControllerFactory.get(privateMode: privateMode)
+                else {
+                    log.error("Failed to load wallet. One or more services were unavailable")
+                    return
+                }
+                
+                let walletStore = WalletStore(
+                    keyringController: keyringController,
+                    rpcController: rpcController,
+                    walletService: walletService,
+                    assetRatioController: assetRatioController,
+                    swapController: swapController,
+                    tokenRegistry: BraveCoreMain.ercTokenRegistry,
+                    transactionController: txController
+                )
+                
+                let vc = WalletHostingViewController(walletStore: walletStore)
+                vc.delegate = self
+                self.dismiss(animated: true) {
+                    self.present(vc, animated: true)
                 }
             }
             if isShownOnWebPage {
