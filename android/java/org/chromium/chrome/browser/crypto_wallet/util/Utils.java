@@ -95,17 +95,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
 public class Utils {
-    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^"
-            + "(?=.*[0-9])" + // at least 1 digit
-            "(?=.*[a-zA-Z])" + // any letter
-            "(?=.*[$&+,:;=?@#|'<>.^*()%!-])" + // at least 1 special character
-            "(?=\\S+$)" + // no white spaces
-            ".{7,}" + // at least 7 characters
-            "$");
-
     public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
     public static int ONBOARDING_ACTION = 2;
     public static int UNLOCK_WALLET_ACTION = 3;
