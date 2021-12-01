@@ -393,5 +393,9 @@ provideStrings({
   braveWalletQueueOf: 'of',
   braveWalletQueueNext: 'next',
   braveWalletQueueFirst: 'first',
-  braveWalletQueueRejectAll: 'Reject transactions'
+  braveWalletQueueRejectAll: 'Reject transactions',
+
+  // Add Suggested Token Panel
+  braveWalletAddSuggestedTokenTitle: 'Add suggested token',
+  braveWalletAddSuggestedTokenDescription: 'Would you like to import this token?'
 })

@@ -521,7 +521,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBridgeCommandInProgress",
      IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR},
     {"braveWalletBridgeNotReady",
-     IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR}};
+     IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR},
+    {"braveWalletAddSuggestedTokenTitle",
+     IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE},
+    {"braveWalletAddSuggestedTokenDescription",
+     IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";

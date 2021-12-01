@@ -49,7 +49,8 @@ const defaultState: PanelState = {
     },
     chainId: ''
   },
-  hardwareWalletCode: undefined
+  hardwareWalletCode: undefined,
+  suggestedToken: undefined
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)

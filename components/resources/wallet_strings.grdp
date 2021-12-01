@@ -357,4 +357,6 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR" desc="Error when command Trezor is already in progress">Trezor command is already in progress</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR" desc="Error when Trezor bridge is not ready">Trezor bridge is not ready</message>
+  <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE" desc="Add Suggested Token Panel Title">Add suggested token</message>
+  <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION" desc="Add Suggested Token Panel Description">Would you like to import this token?</message>
 </grit-part>

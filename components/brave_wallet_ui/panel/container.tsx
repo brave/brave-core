@@ -15,7 +15,8 @@ import {
   AllowAddChangeNetworkPanel,
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
-  SitePermissions
+  SitePermissions,
+  AddSuggestedTokenPanel
 } from '../components/extension'
 import {
   Send,
@@ -113,7 +114,8 @@ function Container (props: Props) {
     swapQuote,
     swapError,
     signMessageData,
-    switchChainRequest
+    switchChainRequest,
+    suggestedToken
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -454,6 +456,14 @@ function Container (props: Props) {
     props.walletPanelActions.expandWalletAccounts()
   }
 
+  const onAddSuggestedToken = () => {
+    // Logic here to Add a Suggested Token
+  }
+
+  const onCancelAddSuggestedToken = () => {
+    // Logic here to Cancel Adding a Suggested Token
+  }
+
   const isConnectedToSite = React.useMemo((): boolean => {
     if (activeOrigin === WalletOrigin) {
       return true
@@ -493,7 +503,7 @@ function Container (props: Props) {
   }
 
   if ((selectedPendingTransaction || signMessageData.length) &&
-      selectedPanel === 'connectHardwareWallet') {
+    selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
@@ -533,6 +543,21 @@ function Container (props: Props) {
             fullTokenList={props.wallet.fullTokenList}
           />
         </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'addSuggestedToken') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <AddSuggestedTokenPanel
+            onCancel={onCancelAddSuggestedToken}
+            onAddToken={onAddSuggestedToken}
+            token={suggestedToken}
+            selectedNetwork={selectedNetwork}
+          />
+        </StyledExtensionWrapper>
       </PanelWrapper>
     )
   }
