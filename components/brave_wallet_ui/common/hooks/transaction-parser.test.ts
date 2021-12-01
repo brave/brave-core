@@ -502,4 +502,85 @@ describe('useTransactionParser hook', () => {
       })
     })
   })
+  describe('check for token symbol', () => {
+    describe.each([
+      ['ERC20Approve', TransactionType.ERC20Approve],
+      ['ERC20Transfer', TransactionType.ERC20Transfer],
+      ['ERC721TransferFrom', TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', TransactionType.ERC721SafeTransferFrom]
+    ])('%s', (_, txType) => {
+      it('should be empty', () => {
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
+          mockNetwork, [mockAccount], [], [mockERC20Token]
+        ))
+
+        const mockTransactionInfo = getMockedTransactionInfo()
+        const parsedTransaction = transactionParser({
+          ...mockTransactionInfo,
+          txType,
+          txData: {
+            ...mockTransactionInfo.txData,
+            baseData: {
+              ...mockTransactionInfo.txData.baseData,
+              to: 'test'
+            }
+          },
+          txArgs: [
+            'mockRecipient',
+            '0xde0b6b3a7640000'
+          ]
+        })
+
+        expect(parsedTransaction.symbol).toEqual('')
+      })
+      it('Gets token symbol from visibleList, should be DOG', () => {
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
+          mockNetwork, [mockAccount], [], [mockERC20Token]
+        ))
+
+        const mockTransactionInfo = getMockedTransactionInfo()
+        const parsedTransaction = transactionParser({
+          ...mockTransactionInfo,
+          txType,
+          txData: {
+            ...mockTransactionInfo.txData,
+            baseData: {
+              ...mockTransactionInfo.txData.baseData,
+              to: 'mockContractAddress'
+            }
+          },
+          txArgs: [
+            'mockRecipient',
+            '0xde0b6b3a7640000'
+          ]
+        })
+
+        expect(parsedTransaction.symbol).toEqual('DOG')
+      })
+      it('Gets token symbol from fallback fullTokenList, should be DOG', () => {
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
+          mockNetwork, [mockAccount], [], [], [mockERC20Token]
+        ))
+
+        const mockTransactionInfo = getMockedTransactionInfo()
+        const parsedTransaction = transactionParser({
+          ...mockTransactionInfo,
+          txType,
+          txData: {
+            ...mockTransactionInfo.txData,
+            baseData: {
+              ...mockTransactionInfo.txData.baseData,
+              to: 'mockContractAddress'
+            }
+          },
+          txArgs: [
+            'mockRecipient',
+            '0xde0b6b3a7640000'
+          ]
+        })
+
+        expect(parsedTransaction.symbol).toEqual('DOG')
+      })
+    })
+  })
 })
