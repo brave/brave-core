@@ -125,6 +125,12 @@ struct AssetDetailHeaderView: View {
           Color(.walletGreen)
             .shimmer(assetDetailStore.isLoadingChart)
         }
+        .chartAccessibility(
+          title: String.localizedStringWithFormat(Strings.Wallet.assetDetailSubtitle,
+                                                  assetDetailStore.token.name,
+                                                  assetDetailStore.token.symbol),
+          dataPoints: data
+        )
         .disabled(data.isEmpty)
         .frame(height: 128)
         .padding(.horizontal, -16)

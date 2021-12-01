@@ -5,6 +5,7 @@
 
 import Foundation
 import SwiftUI
+import struct Shared.Strings
 
 /// A data point for a chart
 protocol DataPoint {
@@ -264,6 +265,69 @@ extension CGPoint {
     return point
   }
 }
+
+// MARK: - Accessibility
+
+extension View {
+  func chartAccessibility(title: String, dataPoints: [DataPoint]) -> some View {
+    Group {
+      if #available(iOS 15.0, *) {
+        self
+          .accessibilityElement()
+          .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
+      } else {
+        self
+      }
+    }
+    .accessibilityLabel(title)
+  }
+}
+
+@available(iOS 15.0, *)
+private struct LineChartDescriptor: AXChartDescriptorRepresentable {
+  var title: String
+  var values: [DataPoint]
+  
+  func makeChartDescriptor() -> AXChartDescriptor {
+    let (min, max) = { () -> (CGFloat, CGFloat) in
+      let filledData = values.map({ $0.value })
+      let min = filledData.min() ?? 0.0
+      let max = filledData.max() ?? CGFloat.greatestFiniteMagnitude
+      if min == max {
+        // If there's only 1 value then we want to make sure we include some space above it
+        // Also this will prevent dividing by 0 and causing NaN errors
+        return (min, min + 1)
+      }
+      return (min, max)
+    }()
+    return AXChartDescriptor(
+      title: title,
+      summary: nil,
+      xAxis: AXCategoricalDataAxisDescriptor(
+        title: Strings.Wallet.chartAxisDateLabel,
+        categoryOrder: values.map { $0.date.formatted(.dateTime) }
+      ),
+      yAxis: AXNumericDataAxisDescriptor(
+        title: Strings.Wallet.chartAxisPriceLabel,
+        range: min...max,
+        gridlinePositions: [],
+        valueDescriptionProvider: { value in
+          "\(value)"
+        }
+      ),
+      additionalAxes: [],
+      series: [AXDataSeriesDescriptor(
+        name: "",
+        isContinuous: true,
+        dataPoints: values.map {
+          AXDataPoint(x: $0.date.formatted(.dateTime), y: $0.value, additionalValues: [], label: nil)
+        }
+      )]
+    )
+  }
+}
+
+// MARK: - Animation
 
 /// Animatable data for a line chart
 private struct LineChartAnimatableData: VectorArithmetic {

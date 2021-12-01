@@ -50,6 +50,13 @@ extension Strings {
       value: "Selected Network",
       comment: "The accessibility label for the ethereum network picker"
     )
+    public static let selectedAccountAccessibilityLabel = NSLocalizedString(
+      "wallet.selectedAccount",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Selected Account",
+      comment: "The accessibility label for the selected account picker"
+    )
     public static let assetsTitle = NSLocalizedString(
       "wallet.assetsTitle",
       tableName: "BraveWallet",
@@ -175,6 +182,13 @@ extension Strings {
       bundle: .braveWallet,
       value: "Copy",
       comment: "A button title that when tapped will copy some data to the users clipboard"
+    )
+    public static let pasteFromPasteboard = NSLocalizedString(
+      "wallet.pasteFromPasteboard",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Paste",
+      comment: "A button title that when tapped will paste some data from the users clipboard to a text field"
     )
     public static let showPrivateKeyButtonTitle = NSLocalizedString(
       "wallet.showPrivateKeyButtonTitle",
@@ -932,6 +946,13 @@ extension Strings {
       value: "Enter address or url",
       comment: "A placeholder of the address text field."
     )
+    public static let scanQRCodeAccessibilityLabel = NSLocalizedString(
+      "wallet.scanQRCodeAccessibilityLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Scan QR Code",
+      comment: "A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes"
+    )
     public static let sendCryptoSendButtonTitle = NSLocalizedString(
       "wallet.sendCryptoSendButtonTitle",
       tableName: "BraveWallet",
@@ -980,6 +1001,13 @@ extension Strings {
       bundle: .braveWallet,
       value: "Market Price in %@",
       comment: "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
+    )
+    public static let refreshMarketPriceLabel = NSLocalizedString(
+      "wallet.refreshMarketPriceLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Refresh Market Price",
+      comment: "A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets"
     )
     public static let transactionCount = NSLocalizedString(
       "wallet.transactionCount",
@@ -1456,6 +1484,20 @@ extension Strings {
       bundle: .braveWallet,
       value: "0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.",
       comment: "A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage."
+    )
+    public static let chartAxisDateLabel = NSLocalizedString(
+      "wallet.chartAxisDateLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Date",
+      comment: "The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price"
+    )
+    public static let chartAxisPriceLabel = NSLocalizedString(
+      "wallet.chartAxisDateLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Price",
+      comment: "The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date"
     )
   }
 }

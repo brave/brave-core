@@ -19,6 +19,7 @@ struct BackupRecoveryPhraseView: View {
       Image(systemName: "exclamationmark.circle")
         .font(.subheadline.weight(.semibold))
         .foregroundColor(.red)
+        .accessibilityHidden(true)
       
       let warningPartOne = Text(Strings.Wallet.backupRecoveryPhraseWarningPartOne)
         .fontWeight(.semibold)

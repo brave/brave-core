@@ -41,6 +41,8 @@ struct AccountsView: View {
         }
         .opacity(0) // Design doesnt have a disclosure icon
       }
+      .accessibilityAddTraits(.isButton)
+      .accessibilityElement(children: .contain)
     } else {
       Button(action: {
         navigationController?.pushViewController(

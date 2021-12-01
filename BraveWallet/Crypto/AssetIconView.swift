@@ -53,6 +53,7 @@ struct AssetIconView: View {
       }
     }
     .frame(width: length, height: length)
+    .accessibilityHidden(true)
   }
 }
 

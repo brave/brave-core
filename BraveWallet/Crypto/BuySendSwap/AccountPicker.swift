@@ -65,39 +65,42 @@ struct AccountPicker: View {
   @available(iOS, introduced: 14.0, deprecated: 15.0)
   @State private var isPresentingCopyAddressActionSheet: Bool = false
   
-  
   @ViewBuilder private var accountPickerView: some View {
-    if #available(iOS 15.0, *) {
-      Menu {
-        Button(action: copyAddress) {
-          Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
-        }
-      } label: {
-        accountView
-      } primaryAction: {
-        isPresentingPicker = true
-      }
-    } else {
-      Button(action: {
-        isPresentingPicker = true
-      }) {
-        accountView
-      }
-      // Context Menus are not supported inside `List`/`Form` section headers/footers so we must replace
-      // this with a long press gesture + action sheet on iOS 14
-      .simultaneousGesture(
-        LongPressGesture(minimumDuration: 0.3)
-          .onEnded { _ in
-            isPresentingCopyAddressActionSheet = true
+    Group {
+      if #available(iOS 15.0, *) {
+        Menu {
+          Button(action: copyAddress) {
+            Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
           }
-      )
-      .actionSheet(isPresented: $isPresentingCopyAddressActionSheet) {
-        .init(title: Text(keyringStore.selectedAccount.address), message: nil, buttons: [
-          .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
-          .cancel()
-        ])
+        } label: {
+          accountView
+        } primaryAction: {
+          isPresentingPicker = true
+        }
+      } else {
+        Button(action: {
+          isPresentingPicker = true
+        }) {
+          accountView
+        }
+        // Context Menus are not supported inside `List`/`Form` section headers/footers so we must replace
+        // this with a long press gesture + action sheet on iOS 14
+        .simultaneousGesture(
+          LongPressGesture(minimumDuration: 0.3)
+            .onEnded { _ in
+              isPresentingCopyAddressActionSheet = true
+            }
+        )
+        .actionSheet(isPresented: $isPresentingCopyAddressActionSheet) {
+          .init(title: Text(keyringStore.selectedAccount.address), message: nil, buttons: [
+            .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
+            .cancel()
+          ])
+        }
       }
     }
+    .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
+    .accessibilityValue("\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)")
   }
   
   private var networkPickerView: some View {
@@ -135,7 +138,7 @@ struct AccountPicker: View {
         }
         ToolbarItemGroup(placement: .primaryAction) {
           Button(action: { isPresentingAddAccount = true }) {
-            Image(systemName: "plus")
+            Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
               .foregroundColor(Color(.braveOrange))
           }
         }

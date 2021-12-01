@@ -146,6 +146,7 @@ private struct AccountDetailsHeaderView: View {
                 .interpolation(.none)
                 .scaledToFit()
                 .padding()
+                .accessibilityHidden(true)
             }
           }
         )
@@ -153,7 +154,8 @@ private struct AccountDetailsHeaderView: View {
         Text(address.truncatedAddress)
           .foregroundColor(Color(.secondaryBraveLabel))
         Button(action: { UIPasteboard.general.string = address }) {
-          Image("brave.clipboard")
+          Label(Strings.Wallet.copyToPasteboard, image: "brave.clipboard")
+            .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveLabel))
         }
       }

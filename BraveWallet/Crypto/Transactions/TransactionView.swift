@@ -103,7 +103,14 @@ struct TransactionView: View {
   @ViewBuilder private var subtitle: some View {
     // For the time being, use the same subtitle label until we have the ability to parse
     // Swap from/to addresses
-    Text("\(namedAddress(for: info.fromAddress)) \(Image(systemName: "arrow.right")) \(namedAddress(for: info.txData.baseData.to))")
+    let from = namedAddress(for: info.fromAddress)
+    let to = namedAddress(for: info.txData.baseData.to)
+    Text("\(from) \(Image(systemName: "arrow.right")) \(to))")
+      .accessibilityLabel(
+        String.localizedStringWithFormat(
+          Strings.Wallet.transactionFromToAccessibilityLabel, from, to
+        )
+      )
   }
   
   private var metadata: Text {
@@ -121,6 +128,7 @@ struct TransactionView: View {
         toAddress: info.txData.baseData.to,
         alignVisuallyCentered: false
       )
+      .accessibilityHidden(true)
       VStack(alignment: .leading, spacing: 4) {
         title
           .font(.footnote.weight(.semibold))
@@ -134,6 +142,7 @@ struct TransactionView: View {
                 fee, networkStore.selectedChain.symbol, fiat)
             )
           }
+          .accessibilityElement(children: .combine)
           .foregroundColor(Color(.braveLabel))
           .font(.caption)
         }

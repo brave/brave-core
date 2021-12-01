@@ -23,6 +23,7 @@ struct BuySendSwapView: View {
               .font(.footnote)
               .multilineTextAlignment(.leading)
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding([.leading, .trailing], 20)
         }
         if action != BuySendSwapDestination.allCases.last {

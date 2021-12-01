@@ -177,6 +177,7 @@ private struct SelectedWordsBox: View {
             )
             .clipShape(clipShape)
         }
+        .accessibilityValue(isCorrect ? "1" : "0")
         .background(Color(.braveDisabled).clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous)))
       }
     }

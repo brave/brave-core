@@ -32,6 +32,7 @@ private struct EditTokenView: View {
       }
       .padding(.vertical, 8)
     }
+    .accessibilityAddTraits(assetStore.isVisible ? [.isSelected] : [])
   }
 }
 
