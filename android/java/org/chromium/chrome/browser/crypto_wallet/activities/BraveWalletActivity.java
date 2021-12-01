@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -341,6 +342,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
         mCryptoLayout.setVisibility(View.GONE);
+        swapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
@@ -364,6 +366,18 @@ public class BraveWalletActivity extends AsyncInitializationActivity
             cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
             cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
         }
+        addRemoveSecureFlag(true);
+    }
+
+    private void addRemoveSecureFlag(boolean add) {
+        if (add) {
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
+        getWindowManager().removeViewImmediate(getWindow().getDecorView());
+        getWindowManager().addView(getWindow().getDecorView(), getWindow().getAttributes());
     }
 
     private void replaceNavigationFragments(int type, boolean doNavigate) {
@@ -398,6 +412,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     }
 
     private void setCryptoLayout() {
+        addRemoveSecureFlag(false);
+
         mCryptoOnboardingLayout.setVisibility(View.GONE);
         mCryptoLayout.setVisibility(View.VISIBLE);
 
@@ -439,6 +455,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     }
 
     public void backupBannerOnClick() {
+        addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
 
