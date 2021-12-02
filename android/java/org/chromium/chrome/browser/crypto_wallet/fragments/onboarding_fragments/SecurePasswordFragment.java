@@ -112,8 +112,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                             public void onAuthenticationSucceeded(
                                     BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
-                                KeystoreHelper.useBiometricOnUnlock(
-                                        passwordInput);
+                                KeystoreHelper.useBiometricOnUnlock(passwordInput);
                                 onNextPage();
                             }
 
