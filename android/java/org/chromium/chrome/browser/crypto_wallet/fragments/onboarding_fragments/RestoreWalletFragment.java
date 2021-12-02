@@ -101,6 +101,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
                             Utils.setCryptoOnboarding(false);
+                            Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
+                            Utils.clearClipboard(passwordInput, 0);
+                            Utils.clearClipboard(retypePasswordInput, 0);
                         } else {
                             Toast.makeText(getActivity(), R.string.account_recovery_failed,
                                          Toast.LENGTH_SHORT)

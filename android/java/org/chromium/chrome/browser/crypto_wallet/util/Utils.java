@@ -93,6 +93,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -119,6 +121,7 @@ public class Utils {
     public static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
+    private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -133,12 +136,19 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    public static void saveTextToClipboard(Context context, String textToCopy, int textToShow) {
+    public static void saveTextToClipboard(
+            Context context, String textToCopy, int textToShow, boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        if (textToShow != -1) {
+            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        }
+        if (!scheduleClear) {
+            return;
+        }
+        clearClipboard(textToCopy, CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -149,10 +159,22 @@ public class Utils {
             return pasteData;
         } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
             return pasteData;
-        } else {
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            return item.getText().toString();
         }
+        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+
+        return item.getText().toString();
+    }
+
+    public static void clearClipboard(String textToCompare, int delay) {
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
+                if (textToCompare.equals(clipboardText)) {
+                    saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+                }
+            }
+        }, delay);
     }
 
     public static void LaunchBackupFilePicker(

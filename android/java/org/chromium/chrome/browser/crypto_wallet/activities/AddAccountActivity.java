@@ -129,10 +129,15 @@ public class AddAccountActivity extends AsyncInitializationActivity
                                     mPrivateKeyControl.getText().toString(), (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);
+                                            Utils.clearClipboard(
+                                                    mPrivateKeyControl.getText().toString(), 0);
+                                            Utils.clearClipboard(
+                                                    importAccountPasswordText.getText().toString(),
+                                                    0);
                                             finish();
                                         } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.account_name_empty_error));
+                                            mAddAccountText.setError(getString(
+                                                    R.string.wallet_failed_to_import_account));
                                         }
                                     });
                         } else {
@@ -140,10 +145,12 @@ public class AddAccountActivity extends AsyncInitializationActivity
                                     mPrivateKeyControl.getText().toString(), (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);
+                                            Utils.clearClipboard(
+                                                    mPrivateKeyControl.getText().toString(), 0);
                                             finish();
                                         } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.password_error));
+                                            mAddAccountText.setError(getString(
+                                                    R.string.wallet_failed_to_import_account));
                                         }
                                     });
                         }
