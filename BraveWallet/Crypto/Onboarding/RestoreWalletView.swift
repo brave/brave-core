@@ -60,37 +60,41 @@ private struct RestoreWalletView: View {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
   }
   
-  private func validate() -> Bool {
-    if phrase.isEmpty {
-      restoreError = .invalidPhrase
-    } else if !PasswordValidation.isValid(password) {
-      restoreError = .requirementsNotMet
-    } else if password != repeatedPassword {
-      restoreError = .inputsDontMatch
-    } else {
-      restoreError = nil
+  private func validate(_ completion: @escaping (Bool) -> Void) {
+    keyringStore.isStrongPassword(password) { isValid in
+      if phrase.isEmpty {
+        restoreError = .invalidPhrase
+      } else if !isValid {
+        restoreError = .requirementsNotMet
+      } else if password != repeatedPassword {
+        restoreError = .inputsDontMatch
+      } else {
+        restoreError = nil
+      }
+      completion(restoreError == nil)
     }
-    return restoreError == nil
   }
   
   private func restore() {
-    if !validate() {
-      return
-    }
-    keyringStore.restoreWallet(
-      phrase: phrase,
-      password: password,
-      isLegacyBraveWallet: isBraveLegacyWallet
-    ) { success in
+    validate { success in
       if !success {
-        restoreError = .invalidPhrase
-      } else {
-        KeyringStore.resetKeychainStoredPassword()
-        if isBiometricsAvailable {
-          keyringStore.isRestoreFromUnlockBiometricsPromptVisible = true
+        return
+      }
+      keyringStore.restoreWallet(
+        phrase: phrase,
+        password: password,
+        isLegacyBraveWallet: isBraveLegacyWallet
+      ) { success in
+        if !success {
+          restoreError = .invalidPhrase
         } else {
-          // If we're displaying this via onboarding, mark as completed.
-          keyringStore.markOnboardingCompleted()
+          KeyringStore.resetKeychainStoredPassword()
+          if isBiometricsAvailable {
+            keyringStore.isRestoreFromUnlockBiometricsPromptVisible = true
+          } else {
+            // If we're displaying this via onboarding, mark as completed.
+            keyringStore.markOnboardingCompleted()
+          }
         }
       }
     }

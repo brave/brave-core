@@ -51,15 +51,17 @@ private struct CreateWalletView: View {
   @State private var isSkippingBiometricsPrompt: Bool = false
   
   private func createWallet() {
-    if !validate() {
-      return
-    }
-    keyringStore.createWallet(password: password) { mnemonic in
-      if !mnemonic.isEmpty {
-        if isBiometricsAvailable {
-          isShowingBiometricsPrompt = true
-        } else {
-          isSkippingBiometricsPrompt = true
+    validate { success in
+      if !success {
+        return
+      }
+      keyringStore.createWallet(password: password) { mnemonic in
+        if !mnemonic.isEmpty {
+          if isBiometricsAvailable {
+            isShowingBiometricsPrompt = true
+          } else {
+            isSkippingBiometricsPrompt = true
+          }
         }
       }
     }
@@ -69,15 +71,17 @@ private struct CreateWalletView: View {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
   }
   
-  private func validate() -> Bool {
-    if !PasswordValidation.isValid(password) {
-      validationError = .requirementsNotMet
-    } else if password != repeatedPassword {
-      validationError = .inputsDontMatch
-    } else {
-      validationError = nil
+  private func validate(_ completion: @escaping (Bool) -> Void) {
+    keyringStore.isStrongPassword(password) { isValidPassword in
+      if !isValidPassword {
+        validationError = .requirementsNotMet
+      } else if password != repeatedPassword {
+        validationError = .inputsDontMatch
+      } else {
+        validationError = nil
+      }
+      completion(validationError == nil)
     }
-    return validationError == nil
   }
   
   private func handlePasswordChanged(_ value: String) {
