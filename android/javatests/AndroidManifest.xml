@@ -11,3 +11,7 @@
         android:targetPackage="{{manifest_package}}"
         android:label="Tests for {{manifest_package}}"/>
 {% endblock %}
+
+{% block extra_uses_permissions %}
+    <uses-permission android:name="android.permission.SET_ANIMATION_SCALE"/>
+{% endblock %}
