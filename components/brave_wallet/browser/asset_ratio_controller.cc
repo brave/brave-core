@@ -135,12 +135,13 @@ GURL AssetRatioController::GetPriceURL(
 // static
 GURL AssetRatioController::GetPriceHistoryURL(
     const std::string& asset,
+    const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string spec = base::StringPrintf(
-      "%sv2/history/coingecko/%s/usd/%s",
+      "%sv2/history/coingecko/%s/%s/%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
-      asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
+      asset.c_str(), vs_asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
 }
 
@@ -181,14 +182,17 @@ void AssetRatioController::OnGetPrice(
 
 void AssetRatioController::GetPriceHistory(
     const std::string& asset,
+    const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
     GetPriceHistoryCallback callback) {
   std::string asset_lower = base::ToLowerASCII(asset);
+  std::string vs_asset_lower = base::ToLowerASCII(vs_asset);
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET", GetPriceHistoryURL(asset_lower, timeframe),
-                              "", "", true, std::move(internal_callback));
+  api_request_helper_.Request(
+      "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
+      true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPriceHistory(
