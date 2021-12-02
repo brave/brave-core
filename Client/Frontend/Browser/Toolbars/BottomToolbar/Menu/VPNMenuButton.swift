@@ -73,7 +73,7 @@ struct VPNMenuButton: View {
         HStack {
             MenuItemHeaderView(
                 icon: #imageLiteral(resourceName: "vpn_menu_icon").template,
-                title: "Brave VPN",
+                title: description == nil ? "Brave VPN" : Strings.OptionsMenu.braveVPNItemTitle,
                 subtitle: description)
             Spacer()
             if isVPNStatusChanging {

@@ -521,8 +521,8 @@ class WelcomeViewController: UIViewController {
             // Japan
         case "JP":
             siteList = [
-                WebsiteRegion(icon: #imageLiteral(resourceName: "welcome-view-search-view-yahoo"), title: "Yahoo", domain: "https://m.yahoo.co.jp/"),
-                WebsiteRegion(icon: #imageLiteral(resourceName: "welcome-view-search-view-wired"), title: "Wired", domain: "https://wired.jp/"),
+                WebsiteRegion(icon: #imageLiteral(resourceName: "faviconYahoo"), title: "Yahoo! JAPAN", domain: "https://m.yahoo.co.jp/"),
+                WebsiteRegion(icon: #imageLiteral(resourceName: "welcome-view-search-view-wired"), title: "Wired(日本版)", domain: "https://wired.jp/"),
                 WebsiteRegion(icon: #imageLiteral(resourceName: "welcome-view-search-view-number-bunshin"), title: "Number Web", domain: "https://number.bunshun.jp/")
             ]
             
