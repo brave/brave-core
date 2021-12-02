@@ -24,7 +24,7 @@ import {
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
 import { ETH, RopstenSwapAssetOptions } from '../../options/asset-options'
-import { formatBalance, toWei, toWeiHex } from '../../utils/format-balances'
+import { formatInputValue, toWei, toWeiHex } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import useBalance from './balance'
@@ -160,8 +160,8 @@ export default function useSwap (
 
     const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
 
-    setFromAmount(formatBalance(sellAmount, fromAsset.asset.decimals))
-    setToAmount(formatBalance(buyAmount, toAsset.asset.decimals))
+    setFromAmount(formatInputValue(sellAmount, fromAsset.asset.decimals))
+    setToAmount(formatInputValue(buyAmount, toAsset.asset.decimals))
 
     /**
      * Price computation block
