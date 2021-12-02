@@ -225,6 +225,9 @@ const string kTrezorHardwareVendor = "Trezor";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+const string kFilecoinKeyringId = "filecoin";
+const string kDefaultKeyringId = "default";
+
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
   BLS = 3 // Represents the address BLS protocol
@@ -236,7 +239,7 @@ struct HardwareWalletAccount {
   string name;
   string hardware_vendor;
   string device_id;
-  string coin;
+  BraveCoins coin;
 };
 
 struct HardwareInfo {
@@ -250,9 +253,11 @@ struct AccountInfo {
   string name;
   bool is_imported;
   HardwareInfo? hardware;
+  BraveCoins coin;
 };
 
 struct KeyringInfo {
+  string id;
   bool is_default_keyring_created;
   bool is_locked;
   bool is_backed_up;
@@ -393,7 +398,7 @@ interface KeyringController {
   NotifyWalletBackupComplete();
 
   // Obtains the keyring information
-  GetDefaultKeyringInfo() => (KeyringInfo keyring);
+  GetKeyringsInfo(array<string> keyrings) => (array<KeyringInfo> keyrings);
   // Obtains the keyring information
   GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
   // Resets the keyring and all preferences
@@ -403,10 +408,10 @@ interface KeyringController {
   AddObserver(pending_remote<KeyringControllerObserver> observer);
 
   // Sets the account name for a derived account
-  SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+  SetKeyringDerivedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for an imported account
-  SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+  SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
   SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
@@ -528,6 +533,11 @@ const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
 
+enum BraveCoins {
+  ETH = 1,
+  FILECOIN = 2
+};
+
 struct EthereumChain {
   string chain_id;
   string chain_name;
@@ -572,7 +582,7 @@ interface EthJsonRpcController {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, BraveCoins coin) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,

@@ -29,6 +29,16 @@ export function getCoinName (coin: HardwareCoins) {
 const VendorTypes = [BraveWallet.TREZOR_HARDWARE_VENDOR, BraveWallet.LEDGER_HARDWARE_VENDOR] as const
 export type HardwareVendor = typeof VendorTypes[number]
 
+export function getCoinName (coin: BraveCoins) {
+  switch (coin) {
+    case BraveCoins.FILECOIN:
+      return 'Filecoin'
+    case BraveCoins.ETH:
+      return 'Ethereum'
+  }
+  return ''
+}
+
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: LedgerBridgeKeyring
 let filecoinHardwareKeyring: FilecoinLedgerKeyring
@@ -43,7 +53,7 @@ export function getBraveKeyring (): BraveWallet.KeyringControllerRemote {
   return keyringController
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = HardwareCoins.ETH): LedgerKeyring | TrezorBridgeKeyring | FilecoinKeyring {
+export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.BraveCoins = BraveWallet.BraveCoins.ETH): LedgerKeyring | TrezorBridgeKeyring | FilecoinKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const ledgerKeyring = getLedgerHardwareKeyring(coin)
     assert(type === ledgerKeyring.type())
@@ -55,14 +65,14 @@ export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = 
   return trezorKeyring
 }
 
-export function getLedgerHardwareKeyring (coin: HardwareCoins): LedgerKeyring | FilecoinKeyring {
-  if (coin === HardwareCoins.ETH) {
+export function getLedgerHardwareKeyring (coin: BraveCoins): LedgerKeyring | FilecoinKeyring {
+  if (coin === BraveCoins.ETH) {
     if (!ethereumHardwareKeyring) {
       ethereumHardwareKeyring = new LedgerBridgeKeyring()
     }
     return ethereumHardwareKeyring
   }
-  assert(coin === HardwareCoins.FILECOIN)
+  assert(coin === BraveCoins.FILECOIN)
   if (!filecoinHardwareKeyring) {
     filecoinHardwareKeyring = new FilecoinLedgerKeyring()
   }

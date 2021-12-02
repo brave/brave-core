@@ -31,12 +31,12 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
   private app?: Eth
   private deviceId: string
 
-  coin = (): HardwareCoins => {
-    return HardwareCoins.ETH
+  coin = (): BraveWallet.BraveCoins => {
+    return BraveWallet.BraveCoins.ETH
   }
 
   type = (): HardwareVendor => {
-    return BraveWallet.LEDGER_HARDWARE_VENDOR
+    return BraveWallet.BraveWallet.LEDGER_HARDWARE_VENDOR
   }
 
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
@@ -109,7 +109,7 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
       if (!unlocked.success || !this.app) {
         return unlocked
       }
-      const eth: Eth = this.app
+        const eth: Eth = this.app
       const messageHex = Buffer.from(message).toString('hex')
       const data = await eth.signPersonalMessage(path, messageHex)
       const signature = this.createMessageSignature(data)

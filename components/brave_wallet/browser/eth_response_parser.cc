@@ -11,141 +11,16 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
-namespace {
-
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
-
-  base::Value result_v;
-  if (!brave_wallet::ParseResult(json, &result_v))
-    return false;
-
-  const std::string* result_str = result_v.GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-}  // namespace
-
 namespace brave_wallet {
-
-void ParseErrorResult(const std::string& json,
-                      mojom::ProviderError* error,
-                      std::string* error_message) {
-  DCHECK(error);
-  DCHECK(error_message);
-  *error = mojom::ProviderError::kParsingError;
-  *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
-
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return;
-  }
-
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return;
-  }
-
-  absl::optional<int> code_int = response_dict->FindIntPath("error.code");
-  const std::string* message_string =
-      response_dict->FindStringPath("error.message");
-  if (!code_int)
-    return;
-
-  *error = static_cast<mojom::ProviderError>(*code_int);
-  if (message_string) {
-    *error_message = *message_string;
-  } else {
-    error_message->clear();
-  }
-}
-
-bool ParseResult(const std::string& json, base::Value* result) {
-  DCHECK(result);
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  const base::Value* result_v = response_dict->FindPath("result");
-  if (!result_v)
-    return false;
-
-  *result = result_v->Clone();
-
-  return true;
-}
-
-bool ParseBoolResult(const std::string& json, bool* value) {
-  DCHECK(value);
-
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  if (result ==
-      "0x0000000000000000000000000000000000000000000000000000000000000001") {
-    *value = true;
-    return true;
-  } else if (result ==
-             "0x000000000000000000000000000000000000000000000000000000000000000"
-             "0") {
-    *value = false;
-    return true;
-  }
-
-  return false;
-}
-
-bool ParseAddressResult(const std::string& json, std::string* address) {
-  DCHECK(address);
-
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
-  if (result.size() != 66) {
-    return false;
-  }
-
-  size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
-  *address = "0x" + result.substr(offset);
-
-  auto eth_addr = EthAddress::FromHex("0x" + result.substr(offset));
-  if (eth_addr.IsEmpty())
-    return false;
-
-  *address = eth_addr.ToChecksumAddress();
-  return true;
-}
-
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   std::string block_num_str;
-  if (!ParseSingleStringResult(json, &block_num_str))
+  if (!brave_wallet::ParseSingleStringResult(json, &block_num_str))
     return false;
 
   if (!HexValueToUint256(block_num_str, block_num))
@@ -155,12 +30,12 @@ bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
 }
 
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
-  return ParseSingleStringResult(json, hex_balance);
+  return brave_wallet::ParseSingleStringResult(json, hex_balance);
 }
 
 bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
   std::string count_str;
-  if (!ParseSingleStringResult(json, &count_str))
+  if (!brave_wallet::ParseSingleStringResult(json, &count_str))
     return false;
 
   if (!HexValueToUint256(count_str, count))
@@ -290,6 +165,29 @@ bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
   return brave_wallet::DecodeString(offset, result, value);
+}
+
+bool ParseAddressResult(const std::string& json, std::string* address) {
+  DCHECK(address);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
+  if (result.size() != 66) {
+    return false;
+  }
+
+  size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
+  *address = "0x" + result.substr(offset);
+
+  auto eth_addr = EthAddress::FromHex("0x" + result.substr(offset));
+  if (eth_addr.IsEmpty())
+    return false;
+
+  *address = eth_addr.ToChecksumAddress();
+  return true;
 }
 
 }  // namespace brave_wallet

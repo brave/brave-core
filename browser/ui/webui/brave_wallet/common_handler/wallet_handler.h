@@ -36,8 +36,9 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void EnsureConnected();
   void OnConnectionError();
 
-  void OnGetWalletInfo(GetWalletInfoCallback callback,
-                       brave_wallet::mojom::KeyringInfoPtr keyring_info);
+  void OnGetWalletInfo(
+      GetWalletInfoCallback callback,
+      std::vector<brave_wallet::mojom::KeyringInfoPtr> keyring_info);
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
 

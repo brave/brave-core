@@ -76,7 +76,7 @@ export async function signLedgerTransaction (
   apiProxy: WalletApiProxy,
   path: string,
   txInfo: BraveWallet.TransactionInfo,
-  deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring(HardwareCoins.ETH) as LedgerBridgeKeyring): Promise<SignHardwareTransactionOperationResult> {
+  deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring(BraveWallet.BraveCoins.ETH) as LedgerBridgeKeyring): Promise<SignHardwareTransactionOperationResult> {
   const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }

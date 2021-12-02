@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"

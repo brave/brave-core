@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { FILECOIN_TESTNET, FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { AddAccountNavTypes, WalletAccountType } from '../../../../constants/types'
 import { AddAccountNavOptions } from '../../../../options/add-account-nav-options'
 import { Select } from 'brave-ui/components'
@@ -94,7 +94,6 @@ const AddAccountModal = (props: Props) => {
   // TODO(spylogsster): Uncomment for importing filecoin accounts
   // should be enabled in //brave/components/brave_wallet/common/buildflags/buildflags.gni as well
   // example: onImportFilecoinKey(accountName, privateKey, FILECOIN_TESTNET, FilecoinAddressProtocol.BLS)
-  // @ts-expect-error
   const onImportFilecoinKey = (accountName: string, privateKey: string, network: FilecoinNetwork, protocol: FilecoinAddressProtocol) => {
     onImportFilecoinAccount(accountName, privateKey, network, protocol)
   }
@@ -108,7 +107,10 @@ const AddAccountModal = (props: Props) => {
     }
     if (tab === 'import') {
       if (importOption === 'key') {
-        onImportAccount(accountName, privateKey)
+        onImportFilecoinKey(accountName, privateKey, FILECOIN_TESTNET, FilecoinAddressProtocol.BLS)
+        if (!accountName) {
+          onImportAccount(accountName, privateKey)
+        }
       } else {
         if (file) {
           const index = file[0]

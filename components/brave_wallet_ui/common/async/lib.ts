@@ -2,7 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
+import { BraveCoins, DEFAULT_KEYRING_ID, FILECOIN_KEYRING_ID } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { assert } from 'chrome://resources/js/assert.m.js'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -65,8 +66,9 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const controller = getAPIProxy().ethJsonRpcController
-    const result = await controller.getBalance(address)
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
+
+    const result = await controller.getBalance(address, BraveCoins.ETH)
+    if (result.success) {
       resolve(formatBalance(result.balance, 18))
     } else {
       reject()
@@ -113,6 +115,25 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
   return false
 }
 
+export function getKeyringIdFromCoin(coin: BraveWallet.BraveCoins): BraveWallet.BraveKeyrings {
+  if (coin === BraveCoins.FILECOIN) {
+    return FILECOIN_KEYRING_ID;
+  }
+  assert(coin === BraveCoins.ETH)
+  return DEFAULT_KEYRING_ID
+}
+
+export async function getKeyringIdFromAddress (address: string): Promise<string> {
+  const apiProxy = getAPIProxy()
+  const result = await apiProxy.walletHandler.getWalletInfo()
+  for (const account of result.accountInfos) {
+    if (account.address === address) {
+      return getKeyringIdFromCoin(account.coin)
+    }
+  }
+  return getKeyringIdFromCoin(BraveCoins.ETH)
+}
+
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
@@ -139,7 +160,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const balanceInfo = await ethJsonRpcController.getBalance(account.address)
+      const balanceInfo = await ethJsonRpcController.getBalance(account.address, BraveCoins.FILECOIN)
       return balanceInfo
     }))
     const balancesAndPrice = {

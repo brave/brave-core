@@ -46,12 +46,12 @@ export default class FilecoinLedgerKeyring extends FilecoinKeyring {
   private deviceId: string
   private provider?: LedgerProvider
 
-  coin = (): HardwareCoins => {
-    return HardwareCoins.FILECOIN
+  coin = (): BraveWallet.BraveCoins => {
+    return BraveWallet.BraveCoins.FILECOIN
   }
 
   type = (): HardwareVendor => {
-    return LEDGER_HARDWARE_VENDOR
+    return BraveWallet.LEDGER_HARDWARE_VENDOR
   }
 
   getAccounts = async (from: number, to: number, coinType?: CoinType): Promise<GetAccountsHardwareOperationResult> => {

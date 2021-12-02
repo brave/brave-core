@@ -1,4 +1,4 @@
-import { FILECOIN_TESTNET, FILECOIN_MAINNET } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { FILECOIN_TESTNET, FILECOIN_MAINNET, BraveCoins } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
 import { HardwareVendor, HardwareCoins } from '../api/hardware_keyrings'
@@ -51,7 +51,7 @@ export interface HardwareWalletAccount {
   name: string
   hardwareVendor: HardwareVendor
   deviceId: string
-  coin: HardwareCoins
+  coin: BraveCoins
 }
 
 export enum LedgerDerivationPaths {

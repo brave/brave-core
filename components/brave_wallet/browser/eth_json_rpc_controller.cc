@@ -13,8 +13,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
+#include "brave/components/brave_wallet/browser/fil_requests.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/fil_response_parser.h"
+#include "brave/components/brave_wallet/browser/rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
@@ -109,6 +112,7 @@ void EthJsonRpcController::AddObserver(
 void EthJsonRpcController::Request(const std::string& json_payload,
                                    bool auto_retry_on_network_change,
                                    RequestCallback callback) {
+  DLOG(INFO) << "network:" << network_url_ << " json_payload:" << json_payload;
   RequestInternal(json_payload, auto_retry_on_network_change, network_url_,
                   std::move(callback));
 }
@@ -138,7 +142,7 @@ void EthJsonRpcController::RequestInternal(const std::string& json_payload,
     env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
   request_headers["x-brave-key"] = brave_key;
-
+  DLOG(INFO) << "request:" << network_url << ", " << json_payload;
   api_request_helper_->Request("POST", network_url, json_payload,
                                "application/json", auto_retry_on_network_change,
                                std::move(callback), request_headers);
@@ -351,12 +355,14 @@ void EthJsonRpcController::OnGetBlockNumber(
 
 void EthJsonRpcController::GetBalance(
     const std::string& address,
+    mojom::BraveCoins coin,
     EthJsonRpcController::GetBalanceCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  return Request(eth_getBalance(address, "latest"), true,
-                 std::move(internal_callback));
+  auto payload = (coin == mojom::BraveCoins::ETH) ?
+    eth_getBalance(address, "latest") : fil_getBalance(address, "");
+  return Request(payload, true, std::move(internal_callback));
 }
 
 void EthJsonRpcController::OnGetBalance(
@@ -364,6 +370,7 @@ void EthJsonRpcController::OnGetBalance(
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
+  DLOG(ERROR) << "status:" << status << " body:" << body;
   if (status < 200 || status > 299) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -371,11 +378,8 @@ void EthJsonRpcController::OnGetBalance(
     return;
   }
   std::string balance;
-  if (!ParseEthGetBalance(body, &balance)) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult(body, &error, &error_message);
-    std::move(callback).Run("", error, error_message);
+  if (!ParseFilGetBalance(body, &balance)) {
+    std::move(callback).Run(false, "");
     return;
   }
 
@@ -611,7 +615,7 @@ void EthJsonRpcController::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!ParseAddressResult(body, &resolver_address) ||
+  if (!brave_wallet::ParseAddressResult(body, &resolver_address) ||
       resolver_address.empty()) {
     mojom::ProviderError error;
     std::string error_message;

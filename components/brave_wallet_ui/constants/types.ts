@@ -12,6 +12,9 @@ import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 
+const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID] as const
+export type BraveKeyrings = typeof BraveKeyringsTypes[number]
+
 export interface WalletAccountType {
   id: string
   name: string
