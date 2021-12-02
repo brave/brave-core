@@ -80,15 +80,13 @@ bool PermissionRequest::SupportsLifetime() const {
 #else
     RequestType::kRegisterProtocolHandler,
     RequestType::kSecurityAttestation,
+    RequestType::kU2fApiRequest,
 #endif  // defined(OS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
     RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
   };
-  if (base::Contains(kExcludedTypes, request_type())) {
-    return false;
-  }
-  return true;
+  return !base::Contains(kExcludedTypes, request_type());
 }
 
 void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
