@@ -28,6 +28,10 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(FILECOIN_ENABLED)
+#include "brave/components/brave_wallet/browser/filecoin_keyring.h"
+#endif
+
 namespace brave_wallet {
 
 namespace {
@@ -178,7 +182,6 @@ class KeyringServiceUnitTest : public testing::Test {
     run_loop.Run();
     return success;
   }
-
   static absl::optional<std::string> ImportFilecoinSECP256K1Account(
       KeyringService* service,
       const std::string& account_name,
@@ -193,12 +196,19 @@ class KeyringServiceUnitTest : public testing::Test {
               if (success) {
                 account = address;
               }
+<<<<<<< HEAD
               run_loop.Quit();
             }));
     run_loop.Run();
     return account;
   }
 
+=======
+            }));
+    return account;
+  }
+#endif
+>>>>>>> 803e770575 (Added import for Filecoin accounts)
   static absl::optional<std::string> ImportAccount(
       KeyringService* service,
       const std::string& name,
