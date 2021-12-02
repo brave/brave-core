@@ -395,8 +395,9 @@ interface AssetRatioController {
       (bool success, array<AssetPrice> values);
 
   // Obtains the price history for a specific asset
-  GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
-      (bool success, array<AssetTimePrice> values);
+  GetPriceHistory(string asset, string vs_asset,
+      AssetPriceTimeframe timeframe) =>
+          (bool success, array<AssetTimePrice> values);
 
   // Gas estimation APIs
   GetEstimatedTime(string gas_price /* decimal string in wei */) =>
