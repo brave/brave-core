@@ -40,7 +40,8 @@ hooks = [
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_android',
-    'action': ['vpython3', 'script/download_rust_deps.py', '--platform', 'android'],
+    'action': ['vpython3', 'script/download_rust_deps.py',
+        '--platform', 'android', '--cxx_version', Var('brave_cxx_version')],
   },
   {
     # Download rust deps if necessary for iOS
