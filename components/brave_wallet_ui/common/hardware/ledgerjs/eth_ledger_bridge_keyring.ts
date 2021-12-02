@@ -17,7 +17,7 @@ import {
   SignHardwareTransactionOperationResult
 } from '../../hardware_operations'
 import { LedgerKeyring } from '../hardwareKeyring'
-import { HardwareVendor } from '../../api/hardware_keyrings'
+import { HardwareVendor, HardwareCoins } from '../../api/hardware_keyrings'
 import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
@@ -30,6 +30,10 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
 
   private app?: Eth
   private deviceId: string
+
+  coin = (): HardwareCoins => {
+    return HardwareCoins.ETH
+  }
 
   type = (): HardwareVendor => {
     return BraveWallet.LEDGER_HARDWARE_VENDOR
@@ -51,7 +55,8 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
         derivationPath: path,
         name: this.type(),
         hardwareVendor: this.type(),
-        deviceId: this.deviceId
+        deviceId: this.deviceId,
+        coin: this.coin()
       })
     }
     return { success: true, payload: [...accounts] }
