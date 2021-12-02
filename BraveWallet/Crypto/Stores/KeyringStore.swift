@@ -150,6 +150,10 @@ public class KeyringStore: ObservableObject {
     }
   }
   
+  func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
+    controller.isStrongPassword(password, completion: completion)
+  }
+  
   func createWallet(password: String, completion: ((String) -> Void)? = nil) {
     controller.createWallet(password) { [weak self] mnemonic in
       self?.updateKeyringInfo()

@@ -280,4 +280,36 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     autoLockMinutes = minutes
     completion(true)
   }
+  
+  func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
+    do {
+      // Should match shared logic for testing, however this may not always be the case
+      let range = NSRange(location: 0, length: password.count)
+      if password.count < 7 {
+        completion(false)
+        return
+      }
+      // Has at least one letter
+      if (try NSRegularExpression(pattern: "[a-zA-Z]", options: []))
+          .numberOfMatches(in: password, options: [], range: range) < 1 {
+        completion(false)
+        return
+      }
+      // Has at least one number
+      if (try NSRegularExpression(pattern: "[0-9]", options: []))
+          .numberOfMatches(in: password, options: [], range: range) < 1 {
+        completion(false)
+        return
+      }
+      // Has at least one non-alphanumeric
+      if (try NSRegularExpression(pattern: "[^0-9a-zA-Z]", options: []))
+          .numberOfMatches(in: password, options: [], range: range) < 1 {
+        completion(false)
+        return
+      }
+      completion(true)
+    } catch {
+      completion(false)
+    }
+  }
 }

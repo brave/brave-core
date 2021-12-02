@@ -207,8 +207,6 @@
 		270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F1226F29C320024C70E /* UIKitNavigationView.swift */; };
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
 		27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */; };
-		2718016D272B05110047EB15 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718016C272B05110047EB15 /* PasswordValidation.swift */; };
-		2718017A272B05400047EB15 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27180179272B053F0047EB15 /* PasswordValidationTests.swift */; };
 		2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
@@ -1857,8 +1855,6 @@
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
 		2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPromptView.swift; sourceTree = "<group>"; };
-		2718016C272B05110047EB15 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
-		27180179272B053F0047EB15 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailStore.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
@@ -3967,7 +3963,6 @@
 				271F687D26EBD27D00AA2A50 /* RestoreWalletView.swift */,
 				271F687E26EBD27D00AA2A50 /* RecoveryPhraseGrid.swift */,
 				271F687F26EBD27D00AA2A50 /* CreateWalletView.swift */,
-				2718016C272B05110047EB15 /* PasswordValidation.swift */,
 				2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */,
 			);
 			path = Onboarding;
@@ -4145,7 +4140,6 @@
 			children = (
 				277309E72721DF6D007643F6 /* WeiFormatterTests.swift */,
 				27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */,
-				27180179272B053F0047EB15 /* PasswordValidationTests.swift */,
 				7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */,
 			);
 			path = BraveWalletTests;
@@ -7881,7 +7875,6 @@
 				7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */,
 				271F689C26EBD27E00AA2A50 /* NetworkPicker.swift in Sources */,
 				271F68A626EBD27E00AA2A50 /* PortfolioAssetView.swift in Sources */,
-				2718016D272B05110047EB15 /* PasswordValidation.swift in Sources */,
 				271F68A226EBD27E00AA2A50 /* AddAccountView.swift in Sources */,
 				271F68A126EBD27E00AA2A50 /* AccountsHeaderView.swift in Sources */,
 				271F68AB26EBD27E00AA2A50 /* AssetDetailView.swift in Sources */,
@@ -7938,7 +7931,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2718017A272B05400047EB15 /* PasswordValidationTests.swift in Sources */,
 				27EA1B0E2729E6C8003C5CF9 /* AddressTests.swift in Sources */,
 				7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */,
 				277309E82721DF6D007643F6 /* WeiFormatterTests.swift in Sources */,
