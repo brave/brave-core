@@ -4,11 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
+  AssetPrice,
   ERCToken,
   EthereumChain,
   TransactionInfo,
   TransactionStatus,
-  TransactionType
+  TransactionType,
+  WalletAccountType
 } from '../../constants/types'
 
 export const getMockedTransactionInfo = (): TransactionInfo => {
@@ -62,3 +64,29 @@ export const mockERC20Token: ERCToken = {
   visible: true,
   tokenId: ''
 }
+
+export const mockAccount: WalletAccountType = {
+  id: 'mockId',
+  name: 'mockAccountName',
+  address: 'mockAddress',
+  balance: '123.456',
+  fiatBalance: '17.34',
+  asset: 'mockAsset', // FIXME: This is probably a useless field
+  accountType: 'Primary',
+  tokens: []
+}
+
+export const mockAssetPrices: AssetPrice[] = [
+  {
+    fromAsset: 'ETH',
+    price: '4000',
+    toAsset: 'mockValue',
+    assetTimeframeChange: 'mockValue'
+  },
+  {
+    fromAsset: 'DOG',
+    price: '100',
+    toAsset: 'mockValue',
+    assetTimeframeChange: 'mockValue'
+  }
+]
