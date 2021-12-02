@@ -14,6 +14,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveCoins;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
@@ -167,7 +168,8 @@ public class PortfolioHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.userAsset = userAsset;
                             contexts.add(context);
-                            mJsonRpcService.getBalance(accountInfo.address, context);
+                            mJsonRpcService.getBalance(
+                                    accountInfo.address, BraveCoins.ETH, context);
 
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =

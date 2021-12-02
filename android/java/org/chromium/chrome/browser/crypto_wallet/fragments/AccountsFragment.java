@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
@@ -89,7 +90,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getDefaultKeyringInfo(keyringInfo -> {
+            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -118,7 +119,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getDefaultKeyringInfo(keyringInfo -> {
+            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();

@@ -5,10 +5,10 @@
 
 import { BraveWallet } from '../../constants/types'
 import { HardwareVendor } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult, HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
+import { HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
 
 export abstract class HardwareKeyring {
-  abstract getAccounts (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult>
+  abstract coin (): BraveWallet.BraveCoins
   abstract type (): HardwareVendor
   abstract isUnlocked (): boolean
   abstract unlock (): Promise<HardwareOperationResult>
@@ -19,7 +19,7 @@ export abstract class TrezorKeyring extends HardwareKeyring {
   abstract signPersonalMessage (path: string, message: string): Promise<SignHardwareMessageOperationResult>
 }
 
-export abstract class LedgerKeyring extends HardwareKeyring {
+export abstract class LedgerEthereumKeyring extends HardwareKeyring {
   abstract signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult>
   abstract signTransaction (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult>
 }

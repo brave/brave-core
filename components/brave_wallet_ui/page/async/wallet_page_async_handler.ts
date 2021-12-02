@@ -27,7 +27,7 @@ import {
   ImportFilecoinAccountPayloadType
 } from '../constants/action_types'
 import {
-  findHardwareAccountInfo
+  findHardwareAccountInfo, getKeyringIdFromAddress
 } from '../../common/async/lib'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
@@ -177,10 +177,10 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, p
     const result = await keyringService.setDefaultKeyringHardwareAccountName(payload.address, payload.name)
     return result.success
   }
-
+  const keyringId = await getKeyringIdFromAddress(payload.address)
   const result = payload.isDerived
-    ? await keyringService.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
-    : await keyringService.setDefaultKeyringImportedAccountName(payload.address, payload.name)
+    ? await keyringService.setKeyringDerivedAccountName(keyringId, payload.address, payload.name)
+    : await keyringService.setKeyringImportedAccountName(keyringId, payload.address, payload.name)
   return result.success
 })
 

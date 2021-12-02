@@ -79,9 +79,16 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static std::string GetAccountPathByIndex(size_t index);
 
   struct ImportedAccountInfo {
+    ImportedAccountInfo(const std::string& account_name,
+                        const std::string& account_address,
+                        const std::string& encrypted_private_key,
+                        mojom::BraveCoins coin);
+    ~ImportedAccountInfo();
+    ImportedAccountInfo(const ImportedAccountInfo& other);
     std::string account_name;
     std::string account_address;
     std::string encrypted_private_key;
+    mojom::BraveCoins coin;
   };
   static void SetImportedAccountForKeyring(PrefService* prefs,
                                            const ImportedAccountInfo& info,
@@ -142,21 +149,24 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                              RemoveImportedAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
-  void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
+  void GetKeyringsInfo(const std::vector<std::string>& keyrings,
+                       GetKeyringsInfoCallback callback) override;
   void GetKeyringInfo(const std::string& keyring_id,
                       GetKeyringInfoCallback callback) override;
   void SetDefaultKeyringHardwareAccountName(
       const std::string& address,
       const std::string& name,
       SetDefaultKeyringHardwareAccountNameCallback callback) override;
-  void SetDefaultKeyringDerivedAccountName(
+  void SetKeyringDerivedAccountName(
+      const std::string& keyring_id,
       const std::string& address,
       const std::string& name,
-      SetDefaultKeyringDerivedAccountNameCallback callback) override;
-  void SetDefaultKeyringImportedAccountName(
+      SetKeyringDerivedAccountNameCallback callback) override;
+  void SetKeyringImportedAccountName(
+      const std::string& keyring_id,
       const std::string& address,
       const std::string& name,
-      SetDefaultKeyringImportedAccountNameCallback callback) override;
+      SetKeyringImportedAccountNameCallback callback) override;
 
   void Reset(bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id);
@@ -243,10 +253,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class EthTxServiceUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
+  mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetKeyringForAddress(const std::string& address);
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
-  std::string GetKeyringId(HDKeyring::Type type) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
   std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
                                                 const std::string& keyring_id);
@@ -305,12 +315,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void OnSelectedAccountPreferenceChanged();
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
-  std::unique_ptr<HDKeyring> default_keyring_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-  std::unique_ptr<FilecoinKeyring> filecoin_keyring_;
-  // TODO(darkdh): For other keyrings support
-  // std::vector<std::unique_ptr<HDKeyring>> keyrings_;
+  base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
 
   PrefService* prefs_;
   bool request_unlock_pending_ = false;

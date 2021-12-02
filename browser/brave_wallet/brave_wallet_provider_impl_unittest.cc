@@ -223,7 +223,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void AddHardwareAccount(const std::string& address) {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
-        address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
+        address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
+        mojom::BraveCoins::ETH));
 
     keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }
@@ -295,7 +296,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   BraveWalletProviderImpl* provider() { return provider_.get(); }
   std::string from(size_t from_index = 0) {
     CHECK(!keyring_service_->IsLocked());
-    return keyring_service()->default_keyring_->GetAddress(from_index);
+    return keyring_service()
+        ->GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
+        ->GetAddress(from_index);
   }
 
   content::BrowserContext* browser_context() { return &profile_; }
@@ -485,7 +488,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
     base::RunLoop run_loop;
-    keyring_service_->GetDefaultKeyringInfo(
+    keyring_service_->GetKeyringInfo(
+        brave_wallet::mojom::kDefaultKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
           for (size_t i = 0; i < keyring_info->account_infos.size(); ++i) {
             result.push_back(keyring_info->account_infos[i]->address);

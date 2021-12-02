@@ -30,7 +30,7 @@ import {
   SignHardwareTransactionOperationResult
 } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
-import { TrezorKeyring } from '../hardwareKeyring'
+import { TrezorKeyring } from '../interfaces'
 import { HardwareVendor } from '../../api/hardware_keyrings'
 import { TrezorDerivationPaths } from '../types'
 
@@ -40,6 +40,10 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
 
   type = (): HardwareVendor => {
     return BraveWallet.TREZOR_HARDWARE_VENDOR
+  }
+
+  coin = (): BraveWallet.BraveCoins => {
+    return BraveWallet.BraveCoins.ETH
   }
 
   isUnlocked = (): boolean => {
@@ -246,7 +250,8 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
         derivationPath: value.serializedPath,
         name: this.type(),
         hardwareVendor: this.type(),
-        deviceId: this.deviceId
+        deviceId: this.deviceId,
+        coin: this.coin()
       })
     }
     return { success: true, payload: [...accounts] }

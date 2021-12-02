@@ -49,6 +49,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveCoins;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
@@ -550,7 +551,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assert mJsonRpcService != null;
         mJsonRpcService.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                (balance, error, errorMessage) -> {
+                BraveCoins.ETH, (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
                     if (error == ProviderError.SUCCESS) {
                         double currentBalance = Utils.fromHexWei(balance, 18);
@@ -627,7 +628,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             blockchainToken = mCurrentSwapToBlockchainToken;
         }
         if (blockchainToken == null || blockchainToken.contractAddress.isEmpty()) {
-            mJsonRpcService.getBalance(address, (balance, error, errorMessage) -> {
+            mJsonRpcService.getBalance(address, BraveCoins.ETH, (balance, error, errorMessage) -> {
                 warnWhenError(TAG, "getBalance", error, errorMessage);
                 if (error != ProviderError.SUCCESS) {
                     return;
@@ -1662,7 +1663,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             });
         }
         if (mKeyringService != null) {
-            mKeyringService.getDefaultKeyringInfo(keyring -> {
+            mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyring -> {
                 String[] accountNames = new String[keyring.accountInfos.length];
                 String[] accountTitles = new String[keyring.accountInfos.length];
                 int currentPos = 0;

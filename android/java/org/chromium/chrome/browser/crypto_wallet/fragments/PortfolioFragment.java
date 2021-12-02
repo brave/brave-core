@@ -34,6 +34,7 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -395,7 +396,7 @@ public class PortfolioFragment extends Fragment
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
-        keyringService.getDefaultKeyringInfo(keyringInfo -> {
+        keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
             jsonRpcService.getAllNetworks(chains -> {
