@@ -3,14 +3,18 @@ use std::ops::Deref;
 
 use async_trait::async_trait;
 use futures::channel::oneshot;
-use skus::{errors, http::http, HTTPClient};
+use skus::{
+    errors::{DebugUnwrap, InternalError},
+    http::http,
+    HTTPClient,
+};
 
 use tracing::debug;
 
 use crate::{ffi, NativeClient};
 
 pub struct HttpRoundtripContext {
-    tx: oneshot::Sender<Result<http::Response<Vec<u8>>, errors::InternalError>>,
+    tx: oneshot::Sender<Result<http::Response<Vec<u8>>, InternalError>>,
     client: NativeClient,
 }
 
@@ -19,7 +23,7 @@ pub struct WakeupContext {
 }
 
 impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
-    type Error = errors::InternalError;
+    type Error = InternalError;
 
     fn try_from(req: http::Request<Vec<u8>>) -> Result<Self, Self::Error> {
         let url = req.uri().to_string();
@@ -29,7 +33,7 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
         for (key, value) in req.headers().iter() {
             let value = value
                 .to_str()
-                .map_err(|_| errors::InternalError::UnhandledVariant)?;
+                .map_err(|_| InternalError::UnhandledVariant)?;
             let header = format!("{}: {}", key.as_str(), value);
             headers.push(header);
         }
@@ -45,7 +49,7 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
     }
 }
 
-impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, errors::InternalError> {
+impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalError> {
     fn from(resp: ffi::HttpResponse<'_>) -> Self {
         match resp.result {
             ffi::SkusResult::Ok => {
@@ -57,20 +61,27 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, errors::Int
                     // header: value
                     let idx = header
                         .find(':')
-                        .expect("caller must pass headers as `KEY: VALUE`");
+                        .ok_or(InternalError::InvalidCall(
+                            "must pass headers as `KEY: VALUE`".to_string(),
+                        ))
+                        .debug_unwrap()?;
                     let (key, value) = header.split_at(idx);
                     let value = value
                         .get(1..)
-                        .expect("caller must pass headers as `KEY: VALUE`");
+                        .ok_or(InternalError::InvalidCall(
+                            "must pass headers as `KEY: VALUE`".to_string(),
+                        ))
+                        .debug_unwrap()?;
 
                     response.header(key, value);
                 }
 
-                Ok(response
+                response
                     .body(resp.body.iter().cloned().collect())
-                    .expect("caller must pass valid body even if zero length"))
+                    .map_err(|e| InternalError::InvalidCall(e.to_string()))
+                    .debug_unwrap()
             }
-            _ => Err(errors::InternalError::RequestFailed),
+            _ => Err(InternalError::RequestFailed),
         }
     }
 }
@@ -79,7 +90,7 @@ impl NativeClient {
     pub async fn execute_request(
         &self,
         req: ffi::HttpRequest,
-    ) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
+    ) -> Result<http::Response<Vec<u8>>, InternalError> {
         let (tx, rx) = oneshot::channel();
         let context = Box::new(HttpRoundtripContext {
             tx,
@@ -90,7 +101,7 @@ impl NativeClient {
             &self
                 .ctx
                 .try_borrow()
-                .map_err(|_| errors::InternalError::BorrowFailed)?
+                .map_err(|_| InternalError::BorrowFailed)?
                 .deref()
                 .deref()
                 .ctx,
@@ -109,7 +120,7 @@ impl NativeClient {
             Ok(ret) => ret,
             Err(_) => {
                 debug!("http response channel was cancelled");
-                Err(errors::InternalError::FutureCancelled)
+                Err(InternalError::FutureCancelled)
             }
         }
     }
@@ -120,7 +131,7 @@ impl HTTPClient for NativeClient {
     async fn execute(
         &self,
         req: http::Request<Vec<u8>>,
-    ) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
+    ) -> Result<http::Response<Vec<u8>>, InternalError> {
         self.execute_request(req.try_into()?).await
     }
 
