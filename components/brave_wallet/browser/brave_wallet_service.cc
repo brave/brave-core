@@ -389,45 +389,35 @@ void BraveWalletService::SetUserAssetVisible(
   std::move(callback).Run(true);
 }
 
-void BraveWalletService::IsCryptoWalletsInstalled(
-    IsCryptoWalletsInstalledCallback callback) {
+void BraveWalletService::IsExternalWalletInstalled(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInstalledCallback callback) {
   if (delegate_)
-    delegate_->IsCryptoWalletsInstalled(std::move(callback));
+    delegate_->IsExternalWalletInstalled(type, std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::IsMetaMaskInstalled(
-    IsMetaMaskInstalledCallback callback) {
+void BraveWalletService::IsExternalWalletInitialized(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInitializedCallback callback) {
   if (delegate_)
-    delegate_->IsMetaMaskInstalled(std::move(callback));
+    delegate_->IsExternalWalletInitialized(type, std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::ImportFromCryptoWallets(
+void BraveWalletService::ImportFromExternalWallet(
+    mojom::ExternalWalletType type,
     const std::string& password,
     const std::string& new_password,
-    ImportFromCryptoWalletsCallback callback) {
+    ImportFromExternalWalletCallback callback) {
   if (delegate_)
-    delegate_->GetImportInfoFromCryptoWallets(
-        password, base::BindOnce(&BraveWalletService::OnGetImportInfo,
-                                 weak_ptr_factory_.GetWeakPtr(), new_password,
-                                 std::move(callback)));
-  else
-    std::move(callback).Run(false, l10n_util::GetStringUTF8(
-                                       IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
-}
-
-void BraveWalletService::ImportFromMetaMask(
-    const std::string& password,
-    const std::string& new_password,
-    ImportFromMetaMaskCallback callback) {
-  if (delegate_)
-    delegate_->GetImportInfoFromMetaMask(
-        password, base::BindOnce(&BraveWalletService::OnGetImportInfo,
-                                 weak_ptr_factory_.GetWeakPtr(), new_password,
-                                 std::move(callback)));
+    delegate_->GetImportInfoFromExternalWallet(
+        type, password,
+        base::BindOnce(&BraveWalletService::OnGetImportInfo,
+                       weak_ptr_factory_.GetWeakPtr(), new_password,
+                       std::move(callback)));
   else
     std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                        IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
@@ -636,25 +626,25 @@ void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
     base::OnceCallback<void(bool, const absl::optional<std::string>&)> callback,
     bool result,
-    BraveWalletServiceDelegate::ImportInfo info,
-    BraveWalletServiceDelegate::ImportError error) {
+    ImportInfo info,
+    ImportError error) {
   if (!result) {
     switch (error) {
-      case BraveWalletServiceDelegate::ImportError::kJsonError:
+      case ImportError::kJsonError:
         std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                            IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kPasswordError:
+      case ImportError::kPasswordError:
         std::move(callback).Run(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kInternalError:
+      case ImportError::kInternalError:
         std::move(callback).Run(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
-      case BraveWalletServiceDelegate::ImportError::kNone:
+      case ImportError::kNone:
       default:
         NOTREACHED();
     }
@@ -664,7 +654,7 @@ void BraveWalletService::OnGetImportInfo(
   keyring_controller_->RestoreWallet(
       info.mnemonic, new_password, info.is_legacy_crypto_wallets,
       base::BindOnce(
-          [](ImportFromCryptoWalletsCallback callback,
+          [](ImportFromExternalWalletCallback callback,
              size_t number_of_accounts, KeyringController* keyring_controller,
              bool is_valid_mnemonic) {
             if (!is_valid_mnemonic) {

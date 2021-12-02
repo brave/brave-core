@@ -29,6 +29,7 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   EthereumChain,
+  ExternalWalletType,
   SendTransactionParams,
   SwapErrorResponse,
   SwapResponse,
@@ -86,7 +87,9 @@ async function refreshWalletInfo (store: Store) {
   const defaultWallet = await braveWalletService.getDefaultWallet()
   store.dispatch(WalletActions.defaultWalletUpdated(defaultWallet.defaultWallet))
 
-  const mmResult = await braveWalletService.isMetaMaskInstalled()
+  const mmResult =
+    await braveWalletService.isExternalWalletInstalled(
+      ExternalWalletType.MetaMask)
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
   await store.dispatch(refreshTransactionHistory())

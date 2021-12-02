@@ -127,9 +127,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~BraveWalletServiceUnitTest() override = default;
 
-  using ImportInfo = BraveWalletServiceDelegate::ImportInfo;
-  using ImportError = BraveWalletServiceDelegate::ImportError;
-
  protected:
   void SetUp() override {
     scoped_feature_list_.InitAndEnableFeature(

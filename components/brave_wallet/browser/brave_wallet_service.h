@@ -70,16 +70,17 @@ class BraveWalletService : public KeyedService,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
-  void IsCryptoWalletsInstalled(
-      IsCryptoWalletsInstalledCallback callback) override;
-  void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
-  void ImportFromCryptoWallets(
+  void IsExternalWalletInstalled(mojom::ExternalWalletType,
+                                 IsExternalWalletInstalledCallback) override;
+  void IsExternalWalletInitialized(
+      mojom::ExternalWalletType,
+      IsExternalWalletInitializedCallback) override;
+  void ImportFromExternalWallet(
+      mojom::ExternalWalletType type,
       const std::string& password,
       const std::string& new_password,
-      ImportFromCryptoWalletsCallback callback) override;
-  void ImportFromMetaMask(const std::string& password,
-                          const std::string& new_password,
-                          ImportFromMetaMaskCallback callback) override;
+      ImportFromExternalWalletCallback callback) override;
+
   void GetDefaultWallet(GetDefaultWalletCallback callback) override;
   void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
   void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
@@ -135,8 +136,8 @@ class BraveWalletService : public KeyedService,
       base::OnceCallback<void(bool, const absl::optional<std::string>&)>
           callback,
       bool result,
-      BraveWalletServiceDelegate::ImportInfo info,
-      BraveWalletServiceDelegate::ImportError error);
+      ImportInfo info,
+      ImportError error);
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;

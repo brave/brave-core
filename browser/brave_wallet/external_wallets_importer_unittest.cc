@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
+#include "brave/browser/brave_wallet/external_wallets_importer.h"
 
 #include <utility>
 
@@ -56,78 +56,112 @@ const char* valid_legacy_data =
 
 }  // namespace
 
-class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
+class ExternalWalletsImporterUnitTest : public testing::Test {
  public:
-  BraveWalletServiceDelegateImplUnitTest() = default;
+  ExternalWalletsImporterUnitTest() = default;
 
-  using ImportInfo = BraveWalletServiceDelegate::ImportInfo;
-  using ImportError = BraveWalletServiceDelegate::ImportError;
-
-  void TearDown() override { delegate_.reset(); }
-
-  void SetUp() override {
-    delegate_ =
-        std::make_unique<BraveWalletServiceDelegateImpl>(browser_context());
-  }
-
-  ~BraveWalletServiceDelegateImplUnitTest() override = default;
+  ~ExternalWalletsImporterUnitTest() override = default;
 
   content::BrowserContext* browser_context() { return &profile_; }
 
-  void SimulateGetLocalStorage(const std::string& password,
-                               const std::string& json_str,
-                               bool* out_success,
-                               ImportInfo* out_info,
-                               ImportError* out_error) {
+  void SimulateGetImportInfo(const std::string& password,
+                             const std::string& json_str,
+                             bool* out_success,
+                             ImportInfo* out_info,
+                             ImportError* out_error) {
     ASSERT_NE(out_success, nullptr);
 
     auto json = base::JSONReader::Read(json_str);
     ASSERT_TRUE(json);
+    {
+      ExternalWalletsImporter importer(mojom::ExternalWalletType::CryptoWallets,
+                                       browser_context());
 
-    base::RunLoop run_loop;
-    delegate_->OnGetLocalStorage(
-        password,
-        base::BindLambdaForTesting(
-            [&](bool success, ImportInfo info, ImportError error) {
-              *out_success = success;
-              *out_info = info;
-              *out_error = error;
-              run_loop.Quit();
-            }),
-        base::DictionaryValue::From(
-            base::Value::ToUniquePtrValue(std::move(*json))));
-    run_loop.Run();
+      importer.SetStorageDataForTesting(base::DictionaryValue::From(
+          base::Value::ToUniquePtrValue(json->Clone())));
+
+      base::RunLoop run_loop;
+      importer.GetImportInfo(
+          password, base::BindLambdaForTesting(
+                        [&](bool success, ImportInfo info, ImportError error) {
+                          *out_success = success;
+                          *out_info = info;
+                          *out_error = error;
+                          run_loop.Quit();
+                        }));
+      run_loop.Run();
+    }
+    {
+      ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
+                                       browser_context());
+
+      importer.SetStorageDataForTesting(base::DictionaryValue::From(
+          base::Value::ToUniquePtrValue(std::move(*json))));
+
+      base::RunLoop run_loop;
+      importer.GetImportInfo(
+          password, base::BindLambdaForTesting(
+                        [&](bool success, ImportInfo info, ImportError error) {
+                          EXPECT_EQ(*out_success, success);
+                          EXPECT_EQ(out_info->mnemonic, info.mnemonic);
+                          EXPECT_EQ(out_info->is_legacy_crypto_wallets,
+                                    info.is_legacy_crypto_wallets);
+                          EXPECT_EQ(out_info->number_of_accounts,
+                                    info.number_of_accounts);
+                          EXPECT_EQ(*out_error, error);
+                          run_loop.Quit();
+                        }));
+      run_loop.Run();
+    }
+  }
+
+  void SimulateIsExternalWalletInitialized(const std::string& json_str,
+                                           bool* out_initialized) {
+    ASSERT_NE(out_initialized, nullptr);
+    ExternalWalletsImporter cw_importer(
+        mojom::ExternalWalletType::CryptoWallets, browser_context());
+    ExternalWalletsImporter mm_importer(mojom::ExternalWalletType::MetaMask,
+                                        browser_context());
+    auto json = base::JSONReader::Read(json_str);
+    ASSERT_TRUE(json);
+    cw_importer.SetStorageDataForTesting(base::DictionaryValue::From(
+        base::Value::ToUniquePtrValue(json->Clone())));
+    mm_importer.SetStorageDataForTesting(base::DictionaryValue::From(
+        base::Value::ToUniquePtrValue(std::move(*json))));
+    cw_importer.SetExternalWalletInstalledForTesting(true);
+    mm_importer.SetExternalWalletInstalledForTesting(true);
+    *out_initialized = cw_importer.IsExternalWalletInitialized();
+    EXPECT_EQ(mm_importer.IsExternalWalletInitialized(), *out_initialized);
   }
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
 
  private:
-  std::unique_ptr<BraveWalletServiceDelegateImpl> delegate_;
   TestingProfile profile_;
 };
 
-TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   bool result = true;
   ImportInfo info;
   ImportError error;
   // empty password
-  SimulateGetLocalStorage("", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("", valid_data, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 
   result = true;
   error = ImportError::kNone;
   // no vault
-  SimulateGetLocalStorage("123", R"({"data": { "KeyringController": {}}})",
-                          &result, &info, &error);
+  SimulateGetImportInfo("123", R"({"data": { "KeyringController": {}}})",
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
   error = ImportError::kNone;
   // vault is not a valid json
-  SimulateGetLocalStorage(
+  SimulateGetImportInfo(
       "123", R"({"data": { "KeyringController": { "vault": "{[}]"}}})", &result,
       &info, &error);
   EXPECT_FALSE(result);
@@ -136,7 +170,7 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
   result = true;
   error = ImportError::kNone;
   // vault missing iv and salt
-  SimulateGetLocalStorage(
+  SimulateGetImportInfo(
       "123",
       R"({"data": { "KeyringController": { "vault": "{\"data\": \"data\"}"}}})",
       &result, &info, &error);
@@ -146,27 +180,27 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
   result = true;
   error = ImportError::kNone;
   // data is not base64 encoded
-  SimulateGetLocalStorage("123",
-                          R"({"data": {"KeyringController": {
+  SimulateGetImportInfo("123",
+                        R"({"data": {"KeyringController": {
                           "vault": "{\"data\": \"d\",
                           \"iv\": \"aXY=\", \"salt\": \"c2FsdA==\"}"}}})",
-                          &result, &info, &error);
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
   error = ImportError::kNone;
   // wrong password
-  SimulateGetLocalStorage("123", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("123", valid_data, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 }
 
-TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo) {
   bool result = false;
   ImportInfo info;
   ImportError error;
-  SimulateGetLocalStorage("brave4ever", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("brave4ever", valid_data, &result, &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, valid_mnemonic);
@@ -174,36 +208,36 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
   EXPECT_EQ(info.number_of_accounts, 1u);
 }
 
-TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
+TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
   bool result = true;
   // argonParams is not a dict
   ImportInfo info;
   ImportError error;
-  SimulateGetLocalStorage("123", R"({
+  SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
                   "argonParams": "123"
               }}})",
-                          &result, &info, &error);
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
   error = ImportError::kNone;
   // argonParams multiple fields are missing
-  SimulateGetLocalStorage("123", R"({
+  SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "mem": 256
                   }
               }}})",
-                          &result, &info, &error);
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
   error = ImportError::kNone;
   // argonParams type is not 2
-  SimulateGetLocalStorage("123", R"({
+  SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "hashLen": 32,
@@ -212,14 +246,14 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 1
                   }
               }}})",
-                          &result, &info, &error);
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
   error = ImportError::kNone;
   // KeyringController.salt is missing
-  SimulateGetLocalStorage("123", R"({
+  SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "hashLen": 32,
@@ -228,22 +262,38 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 2
                   }
               }}})",
-                          &result, &info, &error);
+                        &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kInternalError);
 }
 
-TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWallet) {
+TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWallet) {
   bool result = false;
   ImportInfo info;
   ImportError error;
-  SimulateGetLocalStorage("bbbravey", valid_legacy_data, &result, &info,
-                          &error);
+  SimulateGetImportInfo("bbbravey", valid_legacy_data, &result, &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
   EXPECT_TRUE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 2u);
+}
+
+TEST_F(ExternalWalletsImporterUnitTest, IsExternalWalletInitialized) {
+  bool initialized = false;
+  SimulateIsExternalWalletInitialized("{\"data\":{\"KeyringController\":{}}}",
+                                      &initialized);
+  EXPECT_TRUE(initialized);
+
+  initialized = true;
+  SimulateIsExternalWalletInitialized(
+      "{\"data\":{\"KeyringProController\":{}}}", &initialized);
+  EXPECT_FALSE(initialized);
+
+  initialized = true;
+  SimulateIsExternalWalletInitialized("{\"KeyringController\":{}}",
+                                      &initialized);
+  EXPECT_FALSE(initialized);
 }
 
 }  // namespace brave_wallet

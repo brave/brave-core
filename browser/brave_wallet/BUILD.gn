@@ -27,7 +27,6 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/factory",
-    "//brave/third_party/argon2",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
@@ -65,30 +64,47 @@ source_set("brave_wallet_delegate") {
   if (is_android) {
     sources += [ "brave_wallet_provider_delegate_impl_helper_android.cc" ]
   } else {
-    sources += [ "brave_wallet_provider_delegate_impl_helper.cc" ]
+    sources += [
+      "brave_wallet_provider_delegate_impl_helper.cc",
+      "brave_wallet_service_delegate_impl.cc",
+      "brave_wallet_service_delegate_impl.h",
+    ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
-      "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/ui",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
     ]
     if (enable_extensions) {
-      sources += [
-        "brave_wallet_service_delegate_impl.cc",
-        "brave_wallet_service_delegate_impl.h",
-      ]
-      deps += [
-        "//extensions/browser",
-        "//extensions/common",
-      ]
-      if (ethereum_remote_client_enabled) {
-        deps += [
-          "//brave/browser/ethereum_remote_client",
-          "//brave/browser/ethereum_remote_client:browser",
-        ]
-      }
+      deps += [ ":external_wallets_importer" ]
     }
+  }
+}
+
+source_set("external_wallets_importer") {
+  sources = [
+    "external_wallets_importer.cc",
+    "external_wallets_importer.h",
+  ]
+  deps = [
+    "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/third_party/argon2",
+    "//components/value_store:value_store",
+  ]
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+  if (ethereum_remote_client_enabled) {
+    deps += [
+      "//brave/browser/ethereum_remote_client",
+      "//brave/browser/ethereum_remote_client:browser",
+    ]
   }
 }
 
@@ -145,7 +161,8 @@ source_set("unit_tests") {
       "//brave/components/brave_wallet/common:common_constants",
     ]
     if (enable_extensions) {
-      sources += [ "brave_wallet_service_delegate_impl_unittest.cc" ]
+      sources += [ "external_wallets_importer_unittest.cc" ]
+      deps += [ ":external_wallets_importer" ]
     }
   }
 }
