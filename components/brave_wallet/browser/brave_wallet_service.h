@@ -88,6 +88,9 @@ class BraveWalletService : public KeyedService,
   void GetDefaultBaseCryptocurrency(
       GetDefaultBaseCryptocurrencyCallback callback) override;
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
+  void AddEthereumPermission(const std::string& origin,
+                             const std::string& account,
+                             AddEthereumPermissionCallback callback) override;
   void HasEthereumPermission(const std::string& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;

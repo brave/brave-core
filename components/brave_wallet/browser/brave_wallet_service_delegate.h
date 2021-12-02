@@ -26,6 +26,7 @@ class BraveWalletServiceDelegate {
   using IsExternalWalletInitializedCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
       base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+  using AddEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;
@@ -50,6 +51,9 @@ class BraveWalletServiceDelegate {
   virtual void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
                                                const std::string& password,
                                                GetImportInfoCallback callback);
+  virtual void AddEthereumPermission(const std::string& origin,
+                                     const std::string& account,
+                                     AddEthereumPermissionCallback callback);
   virtual void HasEthereumPermission(const std::string& origin,
                                      const std::string& account,
                                      HasEthereumPermissionCallback callback);

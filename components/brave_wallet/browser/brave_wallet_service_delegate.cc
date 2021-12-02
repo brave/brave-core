@@ -28,6 +28,13 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
   std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
+void BraveWalletServiceDelegate::AddEthereumPermission(
+    const std::string& origin,
+    const std::string& account,
+    AddEthereumPermissionCallback callback) {
+  std::move(callback).Run(false);
+}
+
 void BraveWalletServiceDelegate::HasEthereumPermission(
     const std::string& origin,
     const std::string& account,
