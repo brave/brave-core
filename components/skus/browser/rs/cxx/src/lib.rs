@@ -100,6 +100,7 @@ mod ffi {
         UnknownError,
         BorrowFailed,
         FutureCancelled,
+        InvalidCall,
     }
 
     pub struct HttpRequest {

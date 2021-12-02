@@ -38,6 +38,7 @@ impl From<&skus::errors::InternalError> for ffi::SkusResult {
             }
             skus::errors::InternalError::BorrowFailed => ffi::SkusResult::BorrowFailed,
             skus::errors::InternalError::FutureCancelled => ffi::SkusResult::FutureCancelled,
+            skus::errors::InternalError::InvalidCall(_) => ffi::SkusResult::InvalidCall,
         }
     }
 }
@@ -98,6 +99,9 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
             }
             ffi::SkusResult::BorrowFailed => skus::errors::InternalError::BorrowFailed,
             ffi::SkusResult::FutureCancelled => skus::errors::InternalError::FutureCancelled,
+            ffi::SkusResult::InvalidCall => {
+                skus::errors::InternalError::InvalidCall("".to_string())
+            }
             _ => skus::errors::InternalError::UnhandledVariant,
         }
     }

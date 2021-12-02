@@ -29,6 +29,7 @@ pub enum InternalError {
     InvalidMerchantOrSku,
     BorrowFailed,
     FutureCancelled,
+    InvalidCall(String),
 }
 
 impl Display for InternalError {
@@ -98,6 +99,13 @@ impl Display for InternalError {
             InternalError::FutureCancelled => {
                 write!(f, "Future was cancelled")
             }
+            InternalError::InvalidCall(reason) => {
+                write!(
+                    f,
+                    "Caller did not follow required call convention: {}",
+                    reason
+                )
+            }
         }
     }
 }
@@ -140,5 +148,18 @@ impl From<(InternalError, usize)> for SkusError {
 impl From<serde_json::Error> for SkusError {
     fn from(e: serde_json::Error) -> Self {
         SkusError(e.into())
+    }
+}
+
+pub trait DebugUnwrap {
+    fn debug_unwrap(self) -> Self;
+}
+
+impl<T> DebugUnwrap for Result<T, InternalError> {
+    fn debug_unwrap(self) -> Self {
+        self.map_err(|e| {
+            debug_assert!(false, "debug_unwrap called on Result::Err: {}", e);
+            e
+        })
     }
 }
