@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Greška: Nalog na čekanju</translation>
 <translation id="2388470740942086608">Vaš Uphold nalog je trenutno ograničen.</translation>
 <translation id="3605236342612716051">Greška: Ograničen nalog</translation>
+<translation id="7147519373526655987">Došlo je do problema pri potvrđivanju zahteva pregledača za povezivanje vašeg novčanika za Brave nagrade sa vašim <ph name="PROVIDER"/> nalogom. Da biste dobili pomoć, možete <ph name="BEGIN_LINK"/>kontaktirati sa podrškom<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Greška: Zahtev nije mogao biti potvrđen</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]], prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politiku privatnosti<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Vaša <ph name="AMOUNT"/> isplata će započeti obradom za <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Napomena: <ph name="BOLD_END"/>Može biti potrebno nekoliko dana za obradu isplate i da vaš BAT stigne.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Dovršite verifikaciju novčanika</translation>
 <translation id="9200453331904391567">Prekini vezu sa Brave nagradama</translation>
 <translation id="3656941797339037856">Povežite Rewards i Gemini!</translation>
-<translation id="2383784987664887340">Gemini vam omogućuje da jednostavno trgujete, čuvate i zaradite 3,49 % godišnjeg procentualnog prinosa (APY) na osnovu svojih tokena (BAT). Verifikujte i povežite odmah svoj novčanik za Brave nagrade pomoću platforme Gemini!</translation>
-<translation id="2237374144728570574">* Gemini Earn godišnji procentualni prinos (APY) od 15. septembra 2021.</translation>
+<translation id="3066983737886188034">Gemini vam omogućuje da jednostavno trgujete, čuvate i zaradite 3,49 % godišnjeg procentualnog prinosa (APY) na osnovu svojih tokena (BAT). Verifikujte i povežite odmah svoj novčanik za Brave nagrade pomoću platforme Gemini!</translation>
 <translation id="7404779623219601861">Zamenite BAT za poklon kartice</translation>
 <translation id="6215565499749144110">Sa TAP mrežom, možete zameniti vaše BAT za popularno ime- poklon kartice brenda.</translation>
 <translation id="6915065518766963119">*Zahteva potvrdnu verifikaciju.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Očekivani pojedinačni, parametar objekta.</translation>
 <translation id="1875861420974447980">Ovaj ID lanca se trenutno koristi</translation>
 <translation id="167698752210114155">Došlo je do unutrašnje greške</translation>
+<translation id="1680597601664421644">Mnemoničko sredstvo koje se uvozi nije važeće za Brave novčanik</translation>
 <translation id="4641919696349069826">Zahtev je već u toku</translation>
 <translation id="872806943696014633">Nedostaju podaci o transakciji</translation>
 <translation id="4805410229033541409">'from' nije ovlašćen da šalje transakcije</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">налог</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Dodaj nalog</translation>
+<translation id="5061574358754621254">Podatke o ceni obezbeđuje CoinGecko</translation>
 <translation id="1483493594462132177">Пошаљи</translation>
 <translation id="538450413584738399">Menjačnica</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> nije podržan</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Tolerancija propusta</translation>
 <translation id="4500473291496079954">Ističe za</translation>
 <translation id="8093033115658137576">Ox adresa ili url</translation>
+<translation id="2860280209982026951">Brave koristi <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kao DEX agregator.</translation>
+<translation id="151946611346774041">0x će obraditi Ethereum adresu i IP adresu da bi izvršio transakciju (uključujući dobijanje ponuda). 0x će koristiti ove podatke SAMO u svrhe procesuiranja transakcija.</translation>
 <translation id="6518133107902771759">Верификуј</translation>
 <translation id="1420318137760245955">Dobro došli u novi Brave novčanik</translation>
 <translation id="8303434745767477417">Čuvajte kripto sredstva pod svojim nadzorom. Pratite učinak portfolija i vršite interakciju sa veb 3 decentralizovanim aplikacijama (dapps). Trgujte, investirajte, uzimajte i dajte zajmove pomoću decentralizovanih finansija (DeFi). Sva prava iz Brave privatnog pregledača. Bez proširenja i potrebe za preuzimanjem.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048">Uređaj <ph name="DEVICE_NAME"/> je isključen</translation>
 <translation id="5317781812114905957">Uputstva</translation>
 <translation id="1178198982208000092">Povežite vaš uređaj <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Hardverski novčanik zahteva potvrdu transakcije. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Hardverski novčanik zahteva da aplikacija Ethereum bude otvorena na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslato</translation>
 <translation id="5013754027092416509">primljeno</translation>
 <translation id="5867988533873716616">URL adresa za Block Explorer nije dostupna.</translation>
 <translation id="4255623233927788178">Prikaži na pregledaču Block Explorer</translation>
+<translation id="7148658188569580292">Ubrzaj transakciju</translation>
+<translation id="1198263951134066686">Otkaži transakciju</translation>
+<translation id="3562548974839822204">Pokušaj ponovo transakciju</translation>
 <translation id="6383204195803840504">Transakcije se prikazuju ovde</translation>
+<translation id="6079696972035130497">Neograničeno</translation>
 <translation id="2916401020782528840">Transakcija nije pronađena</translation>
+<translation id="2833661570529295305">Neodobren\n</translation>
+<translation id="8034530868111548216">Odobreno</translation>
+<translation id="6015436276085482001">Odbijeno</translation>
+<translation id="6666273175654835609">Prosleđeno</translation>
+<translation id="2331676293859649642">Potvrđeno</translation>
+<translation id="1165039591588034296">Грешка</translation>
 <translation id="8941851657764077659">Maksimalna naknada za prioritet</translation>
 <translation id="8047527352810290817">Uredi gas</translation>
 <translation id="9091334651803050473">Iako to nije garancija, rudari će verovatno dati prioritet vašoj transakciji ako platite veću naknadu.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">ETH adresa nije važeća</translation>
 <translation id="882486206986535424">Adresa nije važeća</translation>
 <translation id="6825399159373612149">Domen <ph name="DOMAIN_NAME"/> nije registrovan</translation>
+<translation id="8971278306757462297">Prijemna adresa je vaša sopstvena adresa</translation>
+<translation id="3506416339268164412">Prijemna adresa je adresa ugovora tokena</translation>
 <translation id="862585889767884824">od</translation>
 <translation id="9106265941552476098">Odbiti <ph name="TRANSACTION_LENGTH"/> transakcije</translation>
 <translation id="1118876217803190221">Nedovoljno sredstava</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Nalog <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Novčanik najpre mora biti odblokiran</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nije važeća adresa</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> nije trenutna mreža</translation>
 <translation id="7340805872138998391">Nije moguće otključati uređaj, pokušajte da se ponovo povežete</translation>
 <translation id="1984410139271779110">Interna greška, nepoznata šema</translation>
 <translation id="8682200134223578011">odobreno</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON podaci nisu očekivani</translation>
 <translation id="3282936527763045737">Lozinka nije ispravna</translation>
 <translation id="1119447706177454957">Interna greška</translation>
-<translation id="3327639091470204775">Interna greška, nije moguće kreirati iframe bridget</translation>
 <translation id="6672377693827764095">Interna greška, nije moguće preuzeti naloge</translation>
+<translation id="8933250418452564886">Nije moguće pronaći hardversku transakciju. Pokušajte ponovo</translation>
+<translation id="5999974802900788338">Prijavljena greška sa hardverskog uređaja. Verovatno treba da potvrdite transakciju na svom uređaju</translation>
+<translation id="8523768065044261559">Greška u obradi transakcije. Pokušajte ponovo</translation>
+<translation id="971552837551838642">Greška pri potpisivanju poruke. Pokušajte ponovo</translation>
+<translation id="8273603707418703324">Greška pri potpisivanju poruke. Zahteva se nepoznat privezak za pristup. Pokušajte ponovo.</translation>
+<translation id="5265455943786954050">Trezor komanda je već u toku</translation>
+<translation id="7017116822583380542">Aplikacija Trezor bridge nije spremna</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="3745016858329272300">Opšte informacije</translation>
 <translation id="4045404575593562245">Tor kontrolni događaji</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Povezivanje sa serverom nije moguće</translation>
 <translation id="3936826714240735937">Izaberite drugi server</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ne može da se poveže na <ph name="REGION_NAME"/> server. Možete pokušati ponovo ili izabrati drugi</translation>
-<translation id="1664949222596149258">Kupi za <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Već ste kupili VPN?</translation>
 <translation id="8814357473522731680">Omogućava</translation>
 <translation id="5747552184818312860">Истиче</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Izaberite svoju VPN lokaciju</translation>
 <translation id="1751947227857853925">Brz i neograničen do 100 Mb/s</translation>
 <translation id="1400240082805528049">Podrška non-stop</translation>
+<translation id="8463313539532697053">Samo trenutak. Učitavanje…</translation>
 <translation id="7586151660465233733">Više tržišta na <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vidite tržišta i trgujte kripto valutom na FTX-u</translation>
 <translation id="5963745988819586370">Tržišta</translation>

@@ -55,7 +55,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Menyusun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="6821903322090655051">Brave Rewards dinonaktifkan</translation>
-<translation id="9184430019924125685">Klik di sini untuk mempelajari lebih lanjut</translation>
 <translation id="3849957491997306859">Terdeteksi Otomatis</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
@@ -69,7 +68,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7286722244752781970">Waktu laman minimum sebelum kunjungan dicatat</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk relevansi penerbit</translation>
 <translation id="6248554379744796526">Tampilkan situs non-terverifikasi dalam daftar</translation>
-<translation id="3241299447027267831">Izinkan kontribusi ke video</translation>
+<translation id="5510618543889994434">Izinkan kontribusi ke video</translation>
 <translation id="924777189963477634">Dengan mengaktifkan Kontribusi Otomatis, Anda menyetujui<ph name="BEGIN_LINK_TOS"/>Syarat Layanan<ph name="END_LINK_TOS"/> dan <ph name="BEGIN_LINK_PP"/>Kebijakan Privasi<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tombol tip</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="1360441190790440400">Sama seperti Linux</translation>
 <translation id="1336940801687497203">Sama seperti Windows</translation>
+<translation id="5919209812221905840">Pengelola bawaan dari protokol Microsoft-Edge</translation>
+<translation id="5239541974656019812">Jadikan Brave pengelola protokol Microsoft-Edge</translation>
+<translation id="7136694880210472378">Jadikan baku</translation>
+<translation id="1751388324499810661">Brave adalah pengelola bawaan dari protokol Microsoft-Edge</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
 <translation id="8488282162676695335">Dompet Brave.</translation>
@@ -425,7 +428,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2653659639078652383">Kirim</translation>
 <translation id="2556708692502648323">Jaringan dompet</translation>
 <translation id="1330032157352961756">ID rantai baru</translation>
-<translation id="9053905035135220650">Deret heksadesimal berawalan 0x</translation>
 <translation id="726121047592132939">Nama rantai baru</translation>
 <translation id="1034112277864078119">Masukkan nama rantai</translation>
 <translation id="4672314527143443556">Nama mata uang rantai</translation>
@@ -439,7 +441,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3047726704186619366">URL Ikon</translation>
 <translation id="2487558607408469181">Blokir URL penjelajah</translation>
 <translation id="6301398959353668507">Bidang ini tidak dapat dibiarkan kosong.</translation>
-<translation id="4514843126085243862">Format tidak valid. Rantai ini adalah deret heksadesimal berawalan 0x</translation>
 <translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
 <translation id="650071759190249039">Kesalahan Internal, tidak dapat menambahkan jaringan.</translation>
 <translation id="868529041590572443">Silakan mengisi semua informasi tentang mata uang asal</translation>

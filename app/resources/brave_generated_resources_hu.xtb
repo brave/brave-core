@@ -55,7 +55,6 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="6821903322090655051">A Brave jutalmak le vannak tiltva</translation>
-<translation id="9184430019924125685">Kattintson ide a további tudnivalókért</translation>
 <translation id="3849957491997306859">Automatikusan észlelve</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
 <translation id="4176463684765177261">Kikapcsolva</translation>
@@ -69,7 +68,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7286722244752781970">Oldalon eltöltött minimális idő egy látogatás naplózása előtt</translation>
 <translation id="4424486208397124985">Látogatások minimális száma a tartalomszolgáltató relevanciájához</translation>
 <translation id="6248554379744796526">Nem hitelesített webhelyek megjelenítése a listában</translation>
-<translation id="3241299447027267831">Videókhoz történő hozzájárulás engedélyezése</translation>
+<translation id="5510618543889994434">Videókhoz történő hozzájárulás engedélyezése</translation>
 <translation id="924777189963477634">Az Automatikus hozzájárulás bekapcsolásával elfogadja a <ph name="BEGIN_LINK_TOS"/>Szolgáltatási feltételeket<ph name="END_LINK_TOS"/> és az <ph name="BEGIN_LINK_PP"/>Adatvédelmi szabályzatot<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tipp gombok</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2414886740292270097">Sötét</translation>
 <translation id="1360441190790440400">Olyan, mint a Linux</translation>
 <translation id="1336940801687497203">Olyan, mint a Windows</translation>
+<translation id="5919209812221905840">Alapértelmezett microsoft-edge protokollkezelő</translation>
+<translation id="5239541974656019812">Legyen a Brave a microsoft-edge protokollkezelő</translation>
+<translation id="7136694880210472378">Legyen alapértelmezett</translation>
+<translation id="1751388324499810661">A Brave az alapértelmezett microsoft-edge protokollkezelő</translation>
 <translation id="8721331068159819483">Ugyanaz, mint macOS-en</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +428,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2653659639078652383">Elküldés</translation>
 <translation id="2556708692502648323">Pénztárca hálózatok</translation>
 <translation id="1330032157352961756">Az új láncolat azonosítója</translation>
-<translation id="9053905035135220650">0-előjelű hexadecimális karakterlánc</translation>
 <translation id="726121047592132939">Az új láncolat neve</translation>
 <translation id="1034112277864078119">Írja be a láncolat nevét</translation>
 <translation id="4672314527143443556">A láncolat pénznemének neve</translation>
@@ -439,7 +441,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3047726704186619366">Ikon URL-ek</translation>
 <translation id="2487558607408469181">Block explorer URL-ek</translation>
 <translation id="6301398959353668507">Ez a mező nem lehet üres.</translation>
-<translation id="4514843126085243862">Érvénytelen formátum, a láncolatazonosító egy 0-előjelű hexadecimális karakterlánc</translation>
 <translation id="8325036459845654666">A hálózat már hozzá lett adva.</translation>
 <translation id="650071759190249039">Belső hiba, sikertelen volt a hálózat hozzáadása.</translation>
 <translation id="868529041590572443">Töltse ki az összes információt a helyi pénznem kapcsán</translation>

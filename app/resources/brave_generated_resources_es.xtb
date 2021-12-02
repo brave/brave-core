@@ -55,7 +55,6 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
 <translation id="6821903322090655051">Las Brave Rewards están deshabilitadas</translation>
-<translation id="9184430019924125685">Haz clic aquí para obtener más información</translation>
 <translation id="3849957491997306859">Detectar automáticamente</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
@@ -69,7 +68,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="7286722244752781970">Tiempo mínimo en la página antes de registrar una visita</translation>
 <translation id="4424486208397124985">Visitas mínimas por relevancia del editor</translation>
 <translation id="6248554379744796526">Mostrar las páginas no verificadas en la lista</translation>
-<translation id="3241299447027267831">Permitir contribuciones a videos</translation>
+<translation id="5510618543889994434">Permitir contribuciones para videos</translation>
 <translation id="924777189963477634">Al activar las contribuciones automáticas, aceptas las <ph name="BEGIN_LINK_TOS"/>Condiciones del servicio<ph name="END_LINK_TOS"/> y la <ph name="BEGIN_LINK_PP"/>Política de privacidad<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Botones de propinas</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="2414886740292270097">Oscuro</translation>
 <translation id="1360441190790440400">Mismo que en Linux</translation>
 <translation id="1336940801687497203">Mismo que en Windows</translation>
+<translation id="5919209812221905840">Controlador de protocolo de Microsoft Edge predeterminado</translation>
+<translation id="5239541974656019812">Convierte a Brave en el controlador de protocolo de Microsoft Edge predeterminado</translation>
+<translation id="7136694880210472378">Establecer como predeterminado</translation>
+<translation id="1751388324499810661">Brave es el controlador de protocolo de Microsoft Edge predeterminado</translation>
 <translation id="8721331068159819483">Mismo que en MacOS</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +428,6 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="2556708692502648323">Redes de carteras</translation>
 <translation id="1330032157352961756">El ID de la nueva cadena</translation>
-<translation id="9053905035135220650">Una cadena hexadecimal con el prefijo 0x</translation>
 <translation id="726121047592132939">El nombre de la nueva cadena</translation>
 <translation id="1034112277864078119">Introduce el nombre de la cadena</translation>
 <translation id="4672314527143443556">Nombre de la divisa de la cadena</translation>
@@ -439,7 +441,6 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="3047726704186619366">URL de los iconos</translation>
 <translation id="2487558607408469181">URL de exploradores de bloques</translation>
 <translation id="6301398959353668507">Este campo no puede quedar en blanco.</translation>
-<translation id="4514843126085243862">Formato no válido; el ID de la cadena es una cadena hexadecimal con el prefijo 0x</translation>
 <translation id="8325036459845654666">Ya se ha añadido esta red.</translation>
 <translation id="650071759190249039">Error interno; no ha sido posible añadir la red.</translation>
 <translation id="868529041590572443">Introduce toda la información relativa a la divisa nativa</translation>

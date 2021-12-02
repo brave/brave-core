@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">Оформлення замовлення онлайн</translation>
 <translation id="6583902294974160967">Підтримка</translation>
 <translation id="1799030480311994998">Функції</translation>
-<translation id="5345505584130165588">Щити Brave і конфіденційність</translation>
+<translation id="2005732746077850308">Щити Brave і конфіденційність</translation>
 <translation id="4692623383562244444">Пошукові системи</translation>
 <translation id="1468415711258933398">Стандартна вкладка</translation>
 <translation id="3377025655491224618">Приватна вкладка</translation>
@@ -23,13 +23,28 @@
 <translation id="4022987104439075738">Шлюз IPFS</translation>
 <translation id="2688519859165248360">Забезпечує перехід до ресурсів IPFS за допомогою шлюзу IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="7822245778264751380">Ціна на Ethereum (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/> Ціна (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Метод вирішення</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
 <translation id="2218918398178303658">DNS поверх HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6252490671914511928">Найпопулярніші сьогоднішні історії в абсолютно приватній стрічці, тільки для вас.</translation>
+<translation id="7266075701303521777">Новини Brave підтримують рекламу з повністю приватними й анонімними оголошеннями, підібраними для вашого пристрою.</translation>
+<translation id="4541978218358617681">Реклама</translation>
+<translation id="1765217911817124376">Увімкнути новини Brave</translation>
+<translation id="1654539412343893324">Дізнайтеся більше про ваші дані</translation>
+<translation id="2989805286512600854">Відкрити в новій вкладці</translation>
+<translation id="3709782636417497984">Відкрити в новій приватній вкладці</translation>
+<translation id="2014017248518069982">Заблокувати контент від <ph name="PUBLISHER"/></translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> заблоковано</translation>
+<translation id="1276592121036104130">Завантажити новий контент</translation>
+<translation id="3189348785087463371">Підвищені</translation>
+<translation id="7554145152551782675">Більше пропозицій Brave</translation>
+<translation id="4975944254857623648">Джерела за замовчуванням</translation>
+<translation id="253886574765651454">Додати джерело</translation>
+<translation id="7823038307453615214">Показати Brave News</translation>
 <translation id="5787084571334399599">Запобігає збору цифрового відбитка веб-переглядача</translation>
 <translation id="7459000603787995422">Закрити вкладки при виході</translation>
 <translation id="4448697385961650078">Блокувати трекери та рекламу</translation>
@@ -118,6 +133,7 @@
 <translation id="4254029385847607686">ГРУДЕНЬ</translation>
 <translation id="3780605330121608425">Ваш гаманець</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Новини Brave</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">Долари США</translation>
 <translation id="1165667598801520610">Додати кошти</translation>
@@ -169,6 +185,8 @@
 <translation id="4282642752844565114">Невірна кількість слів</translation>
 <translation id="7507533586185621084">Невірний код синхронізації</translation>
 <translation id="8284063834901328650">Невірний QR-код синхронізації</translation>
+<translation id="859506441384380749">Цей код було згенеровано застарілою версією Brave, спочатку встановіть оновлення на іншому пристрої</translation>
+<translation id="3132642509209154999">Термін дії цього коду минув. Згенеруйте новий код на іншому пристрої та повторіть спробу.</translation>
 <translation id="3149880132460839085">Синхронізація Brave</translation>
 <translation id="3680755684186855422">Функція синхронізації Brave дозволяє анонімно синхронізувати закладки браузерів Brave на різних пристроях.</translation>
 <translation id="3735228155296883311">Просто відскануйте код з ланцюга синхронізації, створеного вами на іншому пристрої. Або ж розпочніть новий ланцюг синхронізації.</translation>
@@ -405,46 +423,16 @@
 <translation id="1972589975368876259">Редагувати стек</translation>
 <translation id="2490330380242414851">Видалити віджет</translation>
 <translation id="8446884382197647889">Докладніше</translation>
-<translation id="7384441892795736634">Оновити дані</translation>
-<translation id="4804818685124855865">Від'єднатись</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адреса депозиту</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Мемо щодо депозиту</translation>
-<translation id="5110244215256675209">Купити криптовалюту</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Купити <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Переглянути обмін</translation>
 <translation id="2882813124794301799">Стек віджетів</translation>
 <translation id="13296465911709339">Ваш текст було скопійовано до буферу обміну.</translation>
-<translation id="4670943871783273148">Ваш текст було збережено в текстовий файл.</translation>
-<translation id="4432845796903761592">Файл не збережено.</translation>
-<translation id="7144878232160441200">Спробувати знову</translation>
+<translation id="2735834606413553397">Публічну адресу було скопійовано до буферу обміну.</translation>
 <translation id="2977461003134694205">Статистика приватності</translation>
 <translation id="4643117005422448078">Найкращі сайти</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Відстежувачі таamp;amp; Реклама Блоковані, Приблизні заощадження пропускної здатності та часу.</translation>
 <translation id="74417429503469271">Відкрийте топ-сайти, які ви часто відвідуєте.</translation>
-<translation id="2956070106555335453">Звід</translation>
-<translation id="1366855498335432549">Внести депозит</translation>
-<translation id="1301340234286078471">Обміняти</translation>
 <translation id="223536150967420869">Купити</translation>
-<translation id="1714829281959608206">Дозвольте з'єднання з Binance для перегляду балансу і торгівлі криптовалютами.</translation>
-<translation id="4584930231524505442">Я хочу обміняти...</translation>
-<translation id="5749014321384313843">Я хочу витратити...</translation>
 <translation id="8688672835843460752">Доступно</translation>
-<translation id="2480674848181564169">Недостатній залишок для конвертування</translation>
-<translation id="2215334405220411393">Мінімальна сума для конвертації - це : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Не вдалось під'єднатись</translation>
-<translation id="7742417737698031726">Збір</translation>
-<translation id="2122225204180056042">Ви отримаєте</translation>
-<translation id="6432284126416751397">Підтвердити обмін</translation>
 <translation id="5137723827757859599">На топ-сайтах ще нічого немає.</translation>
-<translation id="3891414008432200754">Ціна</translation>
-<translation id="3733576242118819803">Підтвердити (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Не вдалось провести конвертацію. Будь ласка, спробуйте пізніше.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Заробляйте токени та допомагайте іншим</translation>
 <translation id="244362569344671266">Заробляйте токени, переглядаючи приватні рекламні оголошення Brave, та автоматично підтримуйте улюблені сайти та творців контенту.</translation>
 <translation id="631124996535890460">Продовжуючи, ви приймаєте <ph name="TERMS_OF_SERVICE"/> та <ph name="PRIVACY_POLICY"/>.</translation>
@@ -488,8 +476,6 @@
 <translation id="3415016869273103668">Тепер ви можете розпочати безкоштовний виклик</translation>
 <translation id="7073631403665023390">Натисніть або торкніться в будь-якому місці екрана, щоб перейти в Brave Talk.</translation>
 <translation id="626339649633171286">Хочете дізнатися більше про Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Ви конвертували <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Будь ласка, перевірте підключення до мережі.</translation>
 <translation id="7889432931837317731">Автоматично відкривати, коли це можливо</translation>
 <translation id="8967385052772844086">Переглянути повний звіт про конфіденційність</translation>
 <translation id="6864343534748973390">Найпопулярніший</translation>
@@ -550,9 +536,8 @@
 <translation id="7408247683131762445">ЗАСТЕРЕЖЕННЯ. Нікому не розголошуйте вашу відновлювальну фразу. Будь-хто із цією фразою зможе заволодіти вашими коштами.</translation>
 <translation id="939275786514736244">Я скопіював відновлювальну фразу до безпечного місця</translation>
 <translation id="6896758677409633944">Скопіювати</translation>
-<translation id="5317780077021120954">Зберегти</translation>
 <translation id="2604744480284798833">Створіть резервну копію гаманця зараз, щоб захистити портфель від втрати доступу.</translation>
-<translation id="1202920745614909195">Купуйте криптовалюту за допомогою Apple Pay, кредитної або дебетової картки.</translation>
+<translation id="8289942708804097960">Купуйте криптовалюту за допомогою Apple Pay, кредитної або дебетової картки.</translation>
 <translation id="841880029259839903">Надсилайте криптовалюту або перераховуйте з одного рахунку на інший.</translation>
 <translation id="8982246458261383692">Обмінюйте криптоактиви за допомогою агрегатора Brave DEX.</translation>
 <translation id="1783600039044302171">Захистіть криптовалюту паролем</translation>
@@ -567,6 +552,7 @@
 <translation id="6366007539108097840">3 місяці</translation>
 <translation id="6977728312178289892">1 рік</translation>
 <translation id="6895566650974550243">УСЕ</translation>
+<translation id="5071303414930953888">Обліковий запис <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2267753748892043616">Додати обліковий запис</translation>
 <translation id="2632612428525029752">Оновити обліковий запис</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
@@ -584,7 +570,7 @@
 <translation id="9111102763498581341">Розблокувати</translation>
 <translation id="6657585470893396449">Пароль</translation>
 <translation id="1569452037668432756">Уведіть пароль, щоб розблокувати</translation>
-<translation id="224719674509047150">Пароль повинен складатися не менше ніж із 7 символів, що мають щонайменше одну цифру й спеціальний символ</translation>
+<translation id="3717685683157254329">Пароль повинен складатися не менше ніж із 7 символів, що мають щонайменше одну цифру й спеціальний символ</translation>
 <translation id="1144810021918451336">Не захищає від небезпечних сайтів, завантажень та розширень.</translation>
 <translation id="5760476995887363522">Фраза не збігається. Спробуйте ще раз.</translation>
 <translation id="2360588547830602174">Не вдалося відновити обліковий запис. Спробуйте пізніше.</translation>
@@ -599,7 +585,6 @@
 <translation id="632241521608275119">Толерантність до прослизання</translation>
 <translation id="1987317783729300807">Облікові записи</translation>
 <translation id="3535654229833214438">Транзакції</translation>
-<translation id="4636930964841734540">Інформація</translation>
 <translation id="2449682593754783720">1 година</translation>
 <translation id="969133700726811190">1 день</translation>
 <translation id="5882300031363619940">1 тиждень</translation>
@@ -611,7 +596,7 @@
 <translation id="3819257035322786455">Резервне копіювання</translation>
 <translation id="4608713693379664295">Основні криптогаманці</translation>
 <translation id="4003821417160006384">Додаткові акаунти</translation>
-<translation id="8094541587800369158">Ці акаунти можуть використовуватися з децентралізованими додатками web 3 і можуть бути показані у вашому портфоліо, проте їх не можна відновити за допомогою фрази відновлення з резервної копії основного акаунту. Увімкніть акаунти Brave Sync для автоматичного відновлення додаткових акаунтів.</translation>
+<translation id="2471916999505901943">Ці облікові записи можуть використовуватися з додатками web 3 DApps і можуть відображатись у вашому портфоліо. Проте зверніть увагу, що додаткові облікові записи не можна відновити за допомогою відновлювальної фрази з резервної копії основного облікового запису.</translation>
 <translation id="6725413948756358325">Назва облікового запису</translation>
 <translation id="6062431965141524986">Ви можете створити додатковий акаунт, імпортувавши свій закритий ключ.</translation>
 <translation id="3952797765659730604">Уведіть, вставте або імпортуйте файл рядку закритого ключа або JSON.</translation>
@@ -623,6 +608,17 @@
 <translation id="5050890334032852465">Зберегти журнал перегляду акаунту</translation>
 <translation id="7755766175599167100">Пошук токенів</translation>
 <translation id="3835223348537121988">Баланс:</translation>
+<translation id="2490428413101944234">Перевірити кран</translation>
+<translation id="2581671693710952401">Отримати Ефір</translation>
+<translation id="8165484222652118977">Отримати Ether з крана для тестової мережі <ph name="NETWORK"/></translation>
+<translation id="7420359180991315365">Продовжити у Wire</translation>
+<translation id="8488282162676695335">Гаманець Brave</translation>
+<translation id="5040262127954254034">Конфіденційність</translation>
+<translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
+<translation id="414639769490080648">Скільки хвилин потрібно до автоматичного блокування вашого гаманця brave?</translation>
+<translation id="4993345308607970390">Скинути гаманець Brave</translation>
+<translation id="6369495274982305511">Ви дійсно хочете скинути свій гаманець? Якщо ваш гаманець не має резервної копії, скидання призведе до втрати всіх даних облікового запису (зокрема всіх пов’язаних коштів). Уведіть <ph name="CONFIRMATION_PHRASE"/> для підтвердження.</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# хвилина} other {# хвилини}}</translation>
 <translation id="4449475351935531438">Брандмауер Brave + VPN</translation>
 <translation id="719977489961414786">Оновіть VPN, щоб захистити своє під’єднання та скрізь заблокувати нав’язливих відстежувачів.</translation>
 <translation id="3435896845095436175">Увімкнути</translation>
@@ -706,8 +702,8 @@
 <translation id="7995708795274219641">Сума + газ</translation>
 <translation id="1950052789869821983">Транзакція</translation>
 <translation id="6122742277607781713">Портфель</translation>
-<translation id="6083912983861746409">Ціна на пальне (GWEI)</translation>
-<translation id="2499079593046817044">Ліміт пального (GWEI)</translation>
+<translation id="750843150060816463">Ціна газу (Gwei)</translation>
+<translation id="1426320910664514906">Ліміт газу</translation>
 <translation id="6389441740143786465">Вимкнути центр спільного доступу</translation>
 <translation id="9065203028668620118">Редагувати</translation>
 <translation id="473775607612524610">Оновити</translation>
@@ -723,8 +719,40 @@
 <translation id="5932938770824268122">Закритий ключ</translation>
 <translation id="2472882733835903303">Показати приватний ключ</translation>
 <translation id="4391056902675005799">Приховати приватний ключ</translation>
-<translation id="5929798090073091848">Увага! Ніколи не розкривайте цей ключ. Будь-хто, у кого є секретний ключ, може викрасти всі активи з вашого рахунку.</translation>
+<translation id="7518007103754668253">Увага! Ніколи не розкривайте цей ключ. Будь-хто, у кого є секретний ключ, може викрасти всі активи з вашого рахунку.</translation>
 <translation id="1133619932669546254">Активувати <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ТИП ФУНКЦІЇ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Немає даних</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> надіслав (-ла) <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> затвердив (-ла) <ph name="ASSET"/> — <ph name="DATE"/></translation>
+<translation id="7400134344541309180">Затверджено необмежені <ph name="ASSET"/> — <ph name="PROXY"/></translation>
+<translation id="2428770727194227378">Своп <ph name="ACCOUNT_NAME"/> —<ph name="DATE"/></translation>
+<translation id="2833661570529295305">Не затверджено</translation>
+<translation id="8034530868111548216">Затверджено</translation>
+<translation id="6015436276085482001">Відмовлено</translation>
+<translation id="6666273175654835609">Надіслано</translation>
+<translation id="2331676293859649642">Підтверджено</translation>
+<translation id="1165039591588034296">Помилка</translation>
+<translation id="4354768722613827480">Комісія: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">Ви користуєтеся найшвидшим браузером?</translation>
+<translation id="2065971949051836200">Утричі швидший Інтернет у вашому телефоні. Завжди використовуйте Brave для вебперегляду.</translation>
+<translation id="2888278614497184977">Brave: утричі швидший вебперегляд</translation>
+<translation id="6887232551109532144">Отримуйте довший час роботи від батареї після кожного заряджання</translation>
+<translation id="5388885352353494741">Лише один крок до економії заряду батареї. Завжди використовуйте Brave для вебперегляду.</translation>
+<translation id="3164151360474408351">Brave: довший час роботи батареї після кожного заряджання</translation>
+<translation id="3211051910418903298">Рідше сплачуйте за мобільні дані</translation>
+<translation id="1092355580602106002">Менше рекламних оголошень — менше даних на сторінці, яку ви завантажуєте. Завжди використовуйте Brave для вебперегляду.</translation>
+<translation id="623962032102267945">Brave: менше даних на кожній сторінці</translation>
+<translation id="8047527352810290817">Редагувати кількість gas</translation>
+<translation id="7358989216567322955">Комісія за макс. пріоритет</translation>
+<translation id="9091334651803050473">Хоча це й не гарантовано, але, імовірно, майнери нададуть пріоритет вашій транзакції, якщо ви сплатите більшу комісію.</translation>
+<translation id="2941112035454246133">Низька</translation>
+<translation id="5431902940483264007">Оптимально</translation>
+<translation id="7304030187361489308">Висока</translation>
+<translation id="1177863135347784049">Спеціальне</translation>
+<translation id="4853037749278079787">Максимальна комісія: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">Поточна базова комісія: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">Сума ліміту газу</translation>
+<translation id="1254969878422524947">Ліміт відрахування за пальне (Gwei)</translation>
+<translation id="7373308452149471621">Ліміт цін на пальне (Gwei)</translation>
 </translationbundle>

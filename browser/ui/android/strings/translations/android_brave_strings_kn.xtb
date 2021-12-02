@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">ಆನ್‍ಲೈನ್ ಪರಿಶೀಲನೆಗಳು</translation>
 <translation id="6583902294974160967">ಬೆಂಬಲ</translation>
 <translation id="1799030480311994998">ವೈಶಿಷ್ಟ್ಯಗಳು</translation>
-<translation id="5345505584130165588">Brave ಶೀಲ್ಡ್‌ಗಳು &amp; ಗೌಪ್ಯತೆ</translation>
+<translation id="2005732746077850308">Brave ಶೀಲ್ಡ್‌ಗಳು &amp; ಗೌಪ್ಯತೆ</translation>
 <translation id="4692623383562244444">ಹುಡುಕಾಟ ಎಂಜಿನ್‌ಗಳು</translation>
 <translation id="1468415711258933398">ಸ್ಟಾಂಡರ್ಡ್‌ ಟ್ಯಾಬ್‌</translation>
 <translation id="3377025655491224618">ಖಾಸಗಿ ಟ್ಯಾಬ್</translation>
@@ -23,13 +23,28 @@
 <translation id="4022987104439075738">IPFS ಗೇಟ್‌ವೇ</translation>
 <translation id="2688519859165248360">IPFS ಗೇಟ್‌ವೇ ಮೂಲಕ IPFS ಸಂಪನ್ಮೂಲಗಳಿಗಾಗಿ ನ್ಯಾವಿಗೇಶನ್‌ಗೆ ಅನುಮತಿಸುತ್ತದೆ</translation>
 <translation id="7534079972563542000">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳು</translation>
-<translation id="1448289340149908413">ಈಥೆರಿಯಮ್</translation>
-<translation id="7822245778264751380">ಎಥೇರಿಯಂ ದರ (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/> ದರ (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್</translation>
 <translation id="3894650624018948468">ಪರಿಹರಿಸುವಿಕೆ ವಿಧಾನ</translation>
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="4176463684765177261">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="2218918398178303658">HTTPS ಮೂಲಕ DNS</translation>
+<translation id="1448289340149908413">ಈಥೆರಿಯಮ್</translation>
+<translation id="6252490671914511928">ಇಂದಿನ ಉನ್ನತ ಕಥೆಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಫೀಡ್‌ನಲ್ಲಿ, ಕೇವಲ ನಿಮಗಾಗಿ.</translation>
+<translation id="7266075701303521777">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿಯಾದ ಮತ್ತು ಅನಾಮಧೇಯಗೊಳಿಸಿದ ಜಾಹೀರಾತುಗಳೊಂದಿಗೆ Brave ಸುದ್ದಿಯು ಜಾಹೀರಾತು-ಬೆಂಬಲಿತವಾಗಿದೆ.</translation>
+<translation id="4541978218358617681">ಜಾಹೀರಾತು</translation>
+<translation id="1765217911817124376">Brave ಸುದ್ದಿ ಆನ್ ಮಾಡಿ</translation>
+<translation id="1654539412343893324">ನಿಮ್ಮ ಡೇಟಾ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
+<translation id="2989805286512600854">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="3709782636417497984">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="2014017248518069982">ವಿಷಯವನ್ನು <ph name="PUBLISHER"/> ನಿಂದ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
+<translation id="1276592121036104130">ಹೊಸ ವಿಷಯವನ್ನು ಲೋಡ್ ಮಾಡಿ</translation>
+<translation id="3189348785087463371">ಪ್ರಾಯೋಜಿಸಲಾಗಿದೆ</translation>
+<translation id="7554145152551782675">ಹೆಚ್ಚು Brave ಕೊಡುಗೆಗಳು</translation>
+<translation id="4975944254857623648">ಡೀಫಾಲ್ಟ್ ಸೋರ್ಸ್‌ಗಳು</translation>
+<translation id="253886574765651454">ಸೋರ್ಸ್ ಸೇರಿಸಿ</translation>
+<translation id="7823038307453615214">Brave ಸುದ್ದಿ ತೋರಿಸಿ</translation>
 <translation id="5787084571334399599">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ನಿಂದ ಬ್ರೌಸರ್‌ ಅನ್ನು ತಡೆಗಟ್ಟಿ</translation>
 <translation id="7459000603787995422">ನಿರ್ಗಮಿಸಲು ಟ್ಯಾಬ್‌ ಕ್ಲೋಸ್‌ ಮಾಡಿ</translation>
 <translation id="4448697385961650078">ಟ್ರ್ಯಾಕರ್‌ಗಳ &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
@@ -112,6 +127,7 @@
 <translation id="4254029385847607686">ಡಿಸೆಂಬರ್‌</translation>
 <translation id="3780605330121608425">ನಿಮ್ಮ ವಾಲೆಟ್</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Brave ಸುದ್ದಿ</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">ಹಣ ಜಮೆಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -163,6 +179,8 @@
 <translation id="4282642752844565114">ಪದಗಳ ಸಂಖ್ಯೆ ತಪ್ಪಾಗಿದೆ</translation>
 <translation id="7507533586185621084">ತಪ್ಪಾದ ಸಿಂಕ್ ಕೋಡ್</translation>
 <translation id="8284063834901328650">ತಪ್ಪಾದ ಸಿಂಕ್ QR ಕೋಡ್</translation>
+<translation id="859506441384380749">ಈ ಕೋಡ್ ಅನ್ನು Brave ನ ಡೆಪ್ರಿಕೇಟ್ ಮಾಡಲಾದ ಆವೃತ್ತಿಯ ಮೂಲಕ ಜೆನರೇಟ್ ಮಾಡಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೊದಲು ನಿಮ್ಮ ಮತ್ತೊಂದು ಸಾಧನವನ್ನು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ</translation>
+<translation id="3132642509209154999">ಈ ಕೋಡ್ ಅವಧಿ ಮೀರಿದೆ. ದಯವಿಟ್ಟು ಹೊಸತೊಂದನ್ನು ನಿಮ್ಮ ಮತ್ತೊಂದು ಸಾಧನದಲ್ಲಿ ಜೆನರೇಟ್ ಮಾಡಿ ಹಾಗೂ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="3149880132460839085">ಬ್ರೇವ್‌  ಸಿಂಕ್</translation>
 <translation id="3680755684186855422">ನಿಮ್ಮ ವಿವಿಧ ಸಾಧನಗಳಲ್ಲಿರುವ ನಿಮ್ಮ Brave ಬ್ರೌಸರ್‌ಗಳ ನಡುವೆ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಡೇಟಾವನ್ನು ಖಾಸಗಿಯಾಗಿ ಸಿಂಕ್ ಮಾಡಲು ನಿಮಗೆ Brave ಸಿಂಕ್ ಅನುಮತಿಸುತ್ತದೆ.</translation>
 <translation id="3735228155296883311">ನೀವು ಇನ್ನೊಂದು ಸಾಧನದಲ್ಲಿ ರಚಿಸಿದ ನಿಮ್ಮ ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ. ಅಥವಾ ಹೊಸ ಸಿಂಕ್ ಚೈನ್‌ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ.</translation>
@@ -395,46 +413,16 @@
 <translation id="1972589975368876259">ಸ್ಟ್ಯಾಕ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="2490330380242414851">ವಿಜೆಟ್ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
-<translation id="7384441892795736634">ಡೇಟಾ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
-<translation id="4804818685124855865">ಡಿಸ್‌ಕನೆಕ್ಟ್ ಮಾಡಿ</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ಡೆಪಾಸಿಟ್ ವಿಳಾಸ</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ಡೆಪಾಸಿಟ್ ಮೆಮೋ</translation>
-<translation id="5110244215256675209">ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
-<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
-<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
 <translation id="2882813124794301799">ವಿಜೆಟ್ ಸ್ಟ್ಯಾಕ್</translation>
 <translation id="13296465911709339">ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
-<translation id="4670943871783273148">ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಪಠ್ಯ ಫೈಲ್‌ಗೆ ಉಳಿಸಲಾಗಿದೆ.</translation>
-<translation id="4432845796903761592">ಫೈಲ್ ಉಳಿಸಲಾಗಿಲ್ಲ.</translation>
-<translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="2735834606413553397">ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
 <translation id="2977461003134694205">ಗೌಪ್ಯತೆ ಅಂಕಿಅಂಶಗಳು</translation>
 <translation id="4643117005422448078">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">ಟ್ರ್ಯಾಕರ್ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ, ಬ್ಯಾಂಡ್ವಿಡ್ತ್ ಮತ್ತು ಸಮಯ ಉಳಿಸಿದ ಅಂದಾಜುಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ.</translation>
 <translation id="74417429503469271">ನೀವು ಆಗಾಗ್ಗೆ ಭೇಟಿ ನೀಡುವ ಪ್ರಮುಖ ಸೈಟ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ.</translation>
-<translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
-<translation id="1366855498335432549">ಡೆಪಾಸಿಟ್ ಮಾಡಿ</translation>
-<translation id="1301340234286078471">ಪರಿವರ್ತಿಸಿ</translation>
 <translation id="223536150967420869">ಖರೀದಿಸಿ</translation>
-<translation id="1714829281959608206">Binance ಖಾತೆ ಬ್ಯಾಲೆನ್ಸ್ ವೀಕ್ಷಿಸಲು ಮತ್ತು ಕ್ರಿಪ್ಟೋ ವ್ಯಾಪಾರ ಮಾಡಲು Binance ಸಂಪರ್ಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
-<translation id="4584930231524505442">ನಾನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
-<translation id="5749014321384313843">ನಾನು ಖರ್ಚು ಮಾಡಲು ಬಯಸುತ್ತೇನೆ...</translation>
 <translation id="8688672835843460752">ಲಭ್ಯವಿದೆ</translation>
-<translation id="2480674848181564169">ಪರಿವರ್ತಿಸಲು ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
-<translation id="2215334405220411393">ಪರಿವರ್ತಿಸಲು ಕನಿಷ್ಠ ಮೊತ್ತ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
-<translation id="7742417737698031726">ಶುಲ್ಕ</translation>
-<translation id="2122225204180056042">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
-<translation id="6432284126416751397">ಪರಿವರ್ತನೆಯನ್ನು ದೃಢೀಕರಿಸಿ</translation>
 <translation id="5137723827757859599">ಪ್ರಮುಖ ಸೈಟ್‌ಗಳಲ್ಲಿ ಖರೀದಿಸಲು ಇಲ್ಲಿ ಇನ್ನೂ ಇಲ್ಲ.</translation>
-<translation id="3891414008432200754">ದರ</translation>
-<translation id="3733576242118819803">ದೃಢಪಡಿಸಿ (<ph name="REMAINING_TIME"/>ಗಳು)</translation>
-<translation id="1627064138060308910">ಪರಿವರ್ತನೆ ವಿಫಲಗೊಂಡಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ &amp; ಹಿಂದಕ್ಕೆ ನೀಡಿ</translation>
 <translation id="244362569344671266">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.</translation>
 <translation id="631124996535890460">ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು <ph name="TERMS_OF_SERVICE"/> ಮತ್ತು <ph name="PRIVACY_POLICY"/> ಗೆ ಸಮ್ಮತಿಸಿದ್ದೀರಿ.</translation>
@@ -478,8 +466,6 @@
 <translation id="3415016869273103668">ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು</translation>
 <translation id="7073631403665023390">Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ.</translation>
 <translation id="626339649633171286">Brave ರಿವಾರ್ಡ್ಸ್ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">ನೀವು <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ರಿಂದ <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> ಗೆ ಪರಿವರ್ತಿಸಿದ್ದೀರಿ!</translation>
-<translation id="392587271502873865">ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
 <translation id="7889432931837317731">ಸಾಧ್ಯವಿರುವಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8967385052772844086">ಪೂರ್ಣ ಗೌಪ್ಯತೆ ವರದಿಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="6864343534748973390">ಹೆಚ್ಚು ಜನಪ್ರಿಯ</translation>
@@ -540,9 +526,8 @@
 <translation id="7408247683131762445">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ಯಾಕಪ್ ಫ್ರೇಸ್ ಅನ್ನು ಎಂದಿಗೂ ಬಹಿರಗಪಡಿಸಬೇಡಿ. ಈ ಫ್ರೇಸ್ ಅನ್ನು ಹೊಂದಿರುವ ಯಾರಾದರೂ ನಿಮ್ಮ ಫಂಡ್‌ಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="939275786514736244">ನಾನು ನನ್ನ ಫ್ರೇಸ್ ಅನ್ನು ಬೇರೊಂದೆಡೆ ಸುರಕ್ಷಿತವಾಗಿ ಬ್ಯಾಕಪ್ ಮಾಡಿದ್ದೇನೆ</translation>
 <translation id="6896758677409633944">ನಕಲಿಸಿ</translation>
-<translation id="5317780077021120954">ಉಳಿಸು</translation>
 <translation id="2604744480284798833">ಪ್ರವೇಶದ ನಷ್ಟದಿಂದ ನಿಮ್ಮ ಕ್ರಿಪ್ಟೋ ಪೋರ್ಟ್‌ಫೋಲಿಯೋವನ್ನು ರಕ್ಷಿಸಲು ಇದೀಗ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಬ್ಯಾಕಪ್ ಮಾಡಿ.</translation>
-<translation id="1202920745614909195">Apple Pay, ಕ್ರೆಡಿಟ್ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಮೂಲಕ ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ.</translation>
+<translation id="8289942708804097960">Apple Pay, ಕ್ರೆಡಿಟ್ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಮೂಲಕ ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ.</translation>
 <translation id="841880029259839903">ಕ್ರಿಪ್ಟೋ ಕಳುಹಿಸಿ ಅಥವಾ ಒಂದು ಖಾತೆಯಿಂದ ಮತ್ತೊಂದಕ್ಕೆ ವರ್ಗಾಯಿಸಿ.</translation>
 <translation id="8982246458261383692">Brave DEX ಅಗ್ರಿಗೇಟರ್ ಜೊತೆಗೆ ಕ್ರಿಪ್ಟೋ ಅಸೆಟ್‌ಗಳನ್ನು ಸ್ವಾಪ್ ಮಾಡಿ.</translation>
 <translation id="1783600039044302171">ಪಾಸ್‌ವರ್ಡ್ ಮೂಲಕ ನಿಮ್ಮ ಕ್ರಿಪ್ಟೋ ಸುರಕ್ಷಿತಗೊಳಿಸಿ</translation>
@@ -557,6 +542,7 @@
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">ಎಲ್ಲಾ</translation>
+<translation id="5071303414930953888">ಖಾತೆ <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2267753748892043616">ಖಾತೆಯನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="2632612428525029752">ಖಾತೆಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
@@ -574,7 +560,7 @@
 <translation id="9111102763498581341">ಅನ್‌ಲಾಕ್</translation>
 <translation id="6657585470893396449">ಪಾಸ್‌ವರ್ಡ್</translation>
 <translation id="1569452037668432756">ಅನ್‌ಲಾಕ್ ಮಾಡಲು ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ</translation>
-<translation id="224719674509047150">ಪಾಸ್‌ವರ್ಡ್ ಕನಿಷ್ಠ 7 ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿದ್ದು ಕನಿಷ್ಠ ಒಂದು ಸಂಖ್ಯೆ ಮತ್ತು ವಿಶೇಷ ಅಕ್ಷರವನ್ನು ಒಳಗೊಂಡಿರಬೇಕು</translation>
+<translation id="3717685683157254329">ಪಾಸ್‌ವರ್ಡ್ ಕನಿಷ್ಠ 7 ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿದ್ದು ಕನಿಷ್ಠ ಒಂದು ಸಂಖ್ಯೆ ಮತ್ತು ವಿಶೇಷ ಅಕ್ಷರವನ್ನು ಒಳಗೊಂಡಿರಬೇಕು</translation>
 <translation id="1144810021918451336">ಅಪಾಯಕಾರಿ ವೆಬ್‌ಸೈಟ್‌ಗಳು, ಡೌನ್‌ಲೋಡ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳ ವಿರುದ್ಧ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="5760476995887363522">ಫ್ರೇಸ್‌ಗಳು ಹೊಂದಾಣಿಕೆಯಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2360588547830602174">ಖಾತೆ ರಿಕವರಿ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -589,7 +575,6 @@
 <translation id="632241521608275119">ಸ್ಲಿಪ್ಪೇಜ್ ಸಹಿಸಿಕೊಳ್ಳುವಿಕೆ</translation>
 <translation id="1987317783729300807">ಖಾತೆಗಳು</translation>
 <translation id="3535654229833214438">ವಹಿವಾಟುಗಳು</translation>
-<translation id="4636930964841734540">ಮಾಹಿತಿ</translation>
 <translation id="2449682593754783720">1 ಗಂಟೆ</translation>
 <translation id="969133700726811190">1 ದಿನ</translation>
 <translation id="5882300031363619940">1 ವಾರ</translation>
@@ -601,7 +586,7 @@
 <translation id="3819257035322786455">ಬ್ಯಾಕಪ್</translation>
 <translation id="4608713693379664295">ಪ್ರಾಥಮಿಕ ಕ್ರಿಪ್ಟೋ ಖಾತೆಗಳು</translation>
 <translation id="4003821417160006384">ಎರಡನೆಯ ಖಾತೆಗಳು</translation>
-<translation id="8094541587800369158">ಈ ಖಾತೆಗಳನ್ನು ವೆಬ್ 3 dapps ಜೊತೆಗೆ ಬಳಸಬಹುದು ಮತ್ತು ನಿಮ್ಮ ಪೋರ್ಟ್‌ಫೋಲಿಯೋದಲ್ಲಿ ತೋರಿಸಬಹುದು, ಆದರೆ ಅವುಗಳನ್ನು ನಿಮ್ಮ ಪ್ರಾಥಮಿಕ ಖಾತೆ ಬ್ಯಾಕಪ್‌ನಿಂದ ರಿಕವರಿ ನುಡಿಗಟ್ಟಿನ ಮೂಲಕ ಪುನಃಸ್ಥಾಪಿಸಲಾಗುವುದಿಲ್ಲ. ಎರಡನೆಯ ಖಾತೆಗಳನ್ನು ಸ್ವಯಂ-ಪುನಃಸ್ಥಾಪಿಸಲು Brave ಸಿಂಕ್ ಖಾತೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="2471916999505901943">ಈ ಖಾತೆಗಳನ್ನು ವೆಬ್ 3D ಆ್ಯಪ್‌ಗಳ ಜೊತೆಗೆ ಬಳಸಬಹುದು ಮತ್ತು ನಿಮ್ಮ ಪೋರ್ಟ್‌ಫೋಲಿಯೋದಲ್ಲಿ ತೋರಿಸಬಹುದು. ಆದರೆ, ನಿಮ್ಮ ಪ್ರಾಥಮಿಕ ಖಾತೆ ಬ್ಯಾಕಪ್‌ನಿಂದ ರಿಕವರಿ ಫ್ರೇಸ್ ಮೂಲಕ ಎರಡನೆಯ ಖಾತೆಗಳನ್ನು ಪುನಃಸ್ಥಾಪಿಸಲಾಗುವುದಿಲ್ಲ ಎಂಬುದನ್ನು ಗಮನಿಸಿ.</translation>
 <translation id="6725413948756358325">ಖಾತೆಯ ಹೆಸರು</translation>
 <translation id="6062431965141524986">ನಿಮ್ಮ ಖಾಸಗಿ ಕೀ ಆಮದು ಮಾಡುವ ಮೂಲಕ ಎರಡನೆಯ ಖಾತೆಯನ್ನು ನೀವು ರಚಿಸಬಹುದು.</translation>
 <translation id="3952797765659730604">ನಿಮ್ಮ ಖಾಸಗಿ ಕೀ ಸ್ಟ್ರಿಂಗ್ ಫೈಲ್ ಅಥವಾ JSON ಅನ್ನು ನಮೂದಿಸಿ, ಅಂಟಿಸಿ ಅಥವಾ ಆಮದು ಮಾಡಿ.</translation>
@@ -613,6 +598,17 @@
 <translation id="5050890334032852465">ಖಾತೆ ವೀಕ್ಷಣೆಪಟ್ಟಿ ಉಳಿಸಿ</translation>
 <translation id="7755766175599167100">ಟೋಕನ್‌ಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3835223348537121988">ಬ್ಯಾಲೆನ್ಸ್:</translation>
+<translation id="2490428413101944234">ಫಾಸೆಟ್ ಪರೀಕ್ಷಿಸಿ</translation>
+<translation id="2581671693710952401">ಎಥರ್ ಪಡೆಯಿರಿ</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> ಪರೀಕ್ಷಾರ್ಥ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಫೌಸೆಟ್‌ನಿಂದ ಈಥರ್ ಪಡೆಯಿರಿ</translation>
+<translation id="7420359180991315365">ವೈರ್‌ಗೆ ಮುಂದುವರಿಯಿರಿ</translation>
+<translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
+<translation id="5040262127954254034">ಗೌಪ್ಯತೆ</translation>
+<translation id="8239147115686034860">ಸ್ವಯಂಚಾಲಿತವಾಗಿ Brave ವ್ಯಾಲೆಟ್ ಲಾಕ್ ಮಾಡಿ</translation>
+<translation id="414639769490080648">ನಿಮ್ಮ brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಲಾಕ್ ಮಾಡುವ ಮೊದಲು ನಿಮಗೆ ಎಷ್ಟು ನಿಮಿಷಗಳು ಬೇಕಾಗುತ್ತವೆ?</translation>
+<translation id="4993345308607970390">Brave ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="6369495274982305511">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡದೇ ಇದ್ದರೆ, ಮರುಹೊಂದಿಸುವುದರಿಂದ ನೀವು ಎಲ್ಲಾ ಖಾತೆ ಡೇಟಾ ಕಳೆದುಕೊಳ್ಳುವುದಕ್ಕೆ ಕಾರಣವಾಗುತ್ತದೆ (ಯಾವುದೇ ಸಂಬಂಧಿಸಿದ ಫಂಡ್‌ಗಳನ್ನು ಒಳಗೊಂಡಂತೆ). ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಎಂದು ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# ನಿಮಿಷ} other {# ನಿಮಿಷಗಳು}}</translation>
 <translation id="4449475351935531438">Brave ಫೈರ್‌ವಾಲ್ + VPN</translation>
 <translation id="719977489961414786">ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ರಕ್ಷಿಸುವುದಕ್ಕಾಗಿ VPN ಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ ಮತ್ತು ಪ್ರತಿಯೊಂದು ಕಡೆ ಆಕ್ರಮಣಶೀಲ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ.</translation>
 <translation id="3435896845095436175">ಸಕ್ರಿಯಗೊಳಿಸು</translation>
@@ -696,8 +692,8 @@
 <translation id="7995708795274219641">ಮೊತ್ತ + ಗ್ಯಾಸ್</translation>
 <translation id="1950052789869821983">ವಹಿವಾಟು</translation>
 <translation id="6122742277607781713">ಪೋರ್ಟ್‌ಫೋಲಿಯೋ</translation>
-<translation id="6083912983861746409">ಗ್ಯಾಸ್ ದರ(GWEI)</translation>
-<translation id="2499079593046817044">ಗ್ಯಾಸ್ ಮಿತಿ(GWEI)</translation>
+<translation id="750843150060816463">ಗ್ಯಾಸ್ ದರ (Gwei)</translation>
+<translation id="1426320910664514906">ಗ್ಯಾಸ್ ಮಿತಿ</translation>
 <translation id="6389441740143786465">ಹಂಚಿಕೊಳ್ಳುವಿಕೆ ಹಬ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="9065203028668620118">ಎಡಿಟ್</translation>
 <translation id="473775607612524610">ಅಪ್‌ಡೇಟ್‌‌</translation>
@@ -713,8 +709,40 @@
 <translation id="5932938770824268122">ಖಾಸಗಿ ಕೀ</translation>
 <translation id="2472882733835903303">ಖಾಸಗಿ ಕೀ ತೋರಿಸಿ</translation>
 <translation id="4391056902675005799">ಖಾಸಗಿ ಕೀ ಮರೆಮಾಡಿ</translation>
-<translation id="5929798090073091848">ಎಚ್ಚರಿಕೆ: ಈ ಕೀಯನ್ನು ಎಂದಿಗೂ ಬಹಿರಂಗಪಡಿಸಬೇಡಿ. ಖಾಸಗಿ ಕೀ ಹೊಂದಿರುವ ಯಾರಾದರೂ ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿರುವ ಯಾವುದೇ ಸ್ವತ್ತುಗಳನ್ನು ಕದಿಯಬಹುದು.</translation>
+<translation id="7518007103754668253">ಎಚ್ಚರಿಕೆ: ಈ ಕೀಯನ್ನು ಎಂದಿಗೂ ಬಹಿರಂಗಪಡಿಸಬೇಡಿ. ಖಾಸಗಿ ಕೀ ಹೊಂದಿರುವ ಯಾರಾದರೂ ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿರುವ ಯಾವುದೇ ಸ್ವತ್ತುಗಳನ್ನು ಕದಿಯಬಹುದು.</translation>
 <translation id="1133619932669546254"><ph name="TOKEN"/> ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="2199215899212542417">ಕಾರ್ಯಪ್ರಕಾರ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">ಡೇಟಾ ಇಲ್ಲ</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ಕಳುಹಿಸಿರುವುದು <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ಅನುಮೋದಿತ <ph name="ASSET"/> - <ph name="DATE"/></translation>
+<translation id="7400134344541309180">ಅನುಮೋದಿತ ಅನಿಯಮಿತ <ph name="ASSET"/> - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> ಸ್ವ್ಯಾಪ್ - <ph name="DATE"/></translation>
+<translation id="2833661570529295305">ಅನುಮೋದಿಸದಿರುವುದು</translation>
+<translation id="8034530868111548216">ಅನುಮೋದಿಸಲಾಗಿದೆ</translation>
+<translation id="6015436276085482001">ತಿರಸ್ಕರಿಸಲಾಗಿದೆ</translation>
+<translation id="6666273175654835609">ಸಲ್ಲಿಸಲಾಗಿದೆ</translation>
+<translation id="2331676293859649642">ಖಚಿತಪಡಿಸಲಾಗಿದೆ</translation>
+<translation id="1165039591588034296">ದೋಷ</translation>
+<translation id="4354768722613827480">ಶುಲ್ಕ: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">ನೀವು ವೇಗವಾದ ವೆಬ್ ಬ್ರೌಸರ್ ಬಳಸುತ್ತಿರುವಿರಾ?</translation>
+<translation id="2065971949051836200">3x ವೇಗವಾದ ಇಂಟರ್ನೆಟ್ ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿದೆ. ನಿಮ್ಮ ಎಲ್ಲಾ ವೆಬ್ ಬ್ರೌಸಿಂಗ್‌ಗೆ Brave ಬಳಸಿ.</translation>
+<translation id="2888278614497184977">Brave = 3x ವೇಗವಾದ ವೆಬ್ ಬ್ರೌಸಿಂಗ್</translation>
+<translation id="6887232551109532144">ಪ್ರತಿ ಚಾರ್ಜ್‌ನಲ್ಲಿ ಹೆಚ್ಚು ಬ್ಯಾಟರಿ ಬಾಳಿಕೆ ಪಡೆಯಿರಿ</translation>
+<translation id="5388885352353494741">ಬ್ಯಾಟರಿ ಉಳಿತಾಯಗಳು ಕೆಲವೇ ಹಂತಗಳ ದೂರದಲ್ಲಿವೆ. ನಿಮ್ಮ ಎಲ್ಲಾ ವೆಬ್ ಬ್ರೌಸಿಂಗ್‌ಗೆ Brave ಬಳಸಿ.</translation>
+<translation id="3164151360474408351">Brave = ಪ್ರತಿ ಚಾರ್ಜ್‌ನಲ್ಲಿ ಹೆಚ್ಚು ಬಾಳಿಕೆ</translation>
+<translation id="3211051910418903298">ಕಡಿಮೆ ಆಗಾಗ್ಗೆ ನಿಮ್ಮ ಮೊಬೈಲ್ ಡೇಟಾ ಟಾಪ್ ಅಪ್ ಮಾಡಿ</translation>
+<translation id="1092355580602106002">ಕಡಿಮೆ ಜಾಹೀರಾತುಗಳು = ನೀವು ಲೋಡ್ ಮಾಡುವ ಪ್ರತಿ ಪುಟದಲ್ಲೂ ಕಡಿಮೆ ಡೇಟಾ. ನಿಮ್ಮ ಎಲ್ಲಾ ವೆಬ್ ಬ್ರೌಸಿಂಗ್‌ಗೆ Brave ಬಳಸಿ.</translation>
+<translation id="623962032102267945">Brave = ಪ್ರತಿ ಪುಟದಲ್ಲಿ ಕಡಿಮೆ ಮೊಬೈಲ್ ಡೇಟಾ</translation>
+<translation id="8047527352810290817">ಗ್ಯಾಸ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
+<translation id="7358989216567322955">ಗರಿಷ್ಠ ಆದ್ಯತೆ ಶುಲ್ಕ</translation>
+<translation id="9091334651803050473">ಖಾತ್ರಿಯುತವಾಗಿಲ್ಲದಿರುವಾಗ, ನೀವು ಅಧಿಕ ಶುಲ್ಕವನ್ನು ಪಾವತಿಸಿದರೆ ಮೈನರ್‌ಗಳು ನಿಮ್ಮ ವಹಿವಾಟಿಗೆ ಆದ್ಯತೆ ನೀಡುವ ಸಾಧ್ಯತೆ ಇರುತ್ತದೆ.</translation>
+<translation id="2941112035454246133">ಕಡಿಮೆ</translation>
+<translation id="5431902940483264007">ಪ್ರಶಸ್ತ</translation>
+<translation id="7304030187361489308">ಅಧಿಕ</translation>
+<translation id="1177863135347784049">ಕಸ್ಟಮ್</translation>
+<translation id="4853037749278079787">ಗರಿಷ್ಠ ಶುಲ್ಕ: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">ಪ್ರಸ್ತುತ ಮೂಲ ಶುಲ್ಕ: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">ಗ್ಯಾಸ್ ಪ್ರಮಾಣ ಮಿತಿ</translation>
+<translation id="1254969878422524947">ಪ್ರತಿ-ಗ್ಯಾಸ್ ಟಿಪ್ ಮಿತಿ (ಗ್ವೀ)</translation>
+<translation id="7373308452149471621">ಪ್ರತಿ-ಗ್ಯಾಸ್ ದರ ಮಿತಿ (ಗ್ವೀ)</translation>
 </translationbundle>

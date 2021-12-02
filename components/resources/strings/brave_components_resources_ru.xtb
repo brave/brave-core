@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Ошибка: аккаунт на рассмотрении</translation>
 <translation id="2388470740942086608">Доступ к вашему аккаунту Uphold сейчас ограничен.</translation>
 <translation id="3605236342612716051">Ошибка: доступ к аккаунту ограничен</translation>
+<translation id="7147519373526655987">Не удалось подтвердить запрос на подключение кошелька Brave Rewards к аккаунту <ph name="PROVIDER"/>. Обратитесь в <ph name="BEGIN_LINK"/>службу поддержки<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Ошибка: не удалось подтвердить запрос</translation>
 <translation id="1737873393693460829">Включая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Обработка выплаты в размере <ph name="AMOUNT"/> начнется через <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Примечание.<ph name="BOLD_END"/> Обработка платежа может занять несколько дней. Затем вы получите BAT.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Завершить проверку кошелька</translation>
 <translation id="9200453331904391567">Отключиться от храбрых наград Brave Rewards</translation>
 <translation id="3656941797339037856">Привяжите Rewards к Gemini</translation>
-<translation id="2383784987664887340">Gemini позволяет хранить и продавать баллы BAT, а также зарабатывать с них 3,49 % годовых (APY). Для этого подтвердите кошелек Brave Rewards и свяжите его с Gemini прямо сейчас!</translation>
-<translation id="2237374144728570574">*Годовой процентный доход (APY) в Gemini Earn на 15 сентября 2021 г.</translation>
+<translation id="3066983737886188034">Gemini позволяет хранить и продавать баллы BAT, а также зарабатывать с них 3,49 % годовых (APY). Для этого подтвердите кошелек Brave Rewards и свяжите его с Gemini прямо сейчас!</translation>
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
 <translation id="6215565499749144110">С сетью TAP вы можете использовать BAT для оплаты подарочных карт популярных торговых брендов.</translation>
 <translation id="6915065518766963119">*Требует верификации в Uphold.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Ожидается одиночный параметр объекта.</translation>
 <translation id="1875861420974447980">Этот идентификатор уже используется.</translation>
 <translation id="167698752210114155">Произошла внутренняя ошибка.</translation>
+<translation id="1680597601664421644">Мнемоническая фраза для кошелька Brave недействительна.</translation>
 <translation id="4641919696349069826">Запрос уже обрабатывается.</translation>
 <translation id="872806943696014633">Отсутствуют данные о транзакции</translation>
 <translation id="4805410229033541409">Указанный в поле from отправитель не может совершать транзакции.</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Аккаунт</translation>
 <translation id="3891414008432200754">Цена</translation>
 <translation id="2267753748892043616">Добавить счет</translation>
+<translation id="5061574358754621254">Данные о ценах представлены порталом CoinGecko</translation>
 <translation id="1483493594462132177">Отправить</translation>
 <translation id="538450413584738399">Своп</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> не поддерживается.</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Допустимое проскальзывание</translation>
 <translation id="4500473291496079954">Срок действия истекает</translation>
 <translation id="8093033115658137576">Адрес или URL с префиксом 0x</translation>
+<translation id="2860280209982026951">Brave использует <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> в качестве DEX-агрегатора.</translation>
+<translation id="151946611346774041">0x обработает Ethereum-адрес и IP-адрес для выполнения транзакции (включая получение расценок). 0x будет использовать эти данные ТОЛЬКО для обработки транзакций.</translation>
 <translation id="6518133107902771759">Подтвердить</translation>
 <translation id="1420318137760245955">Добро пожаловать в новый криптокошелек Brave!</translation>
 <translation id="8303434745767477417">Храните криптовалюту в кошельке. Следите за доходностью портфелей и взаимодействуйте с DApps Web3. Продавайте, инвестируйте, занимайте и одалживайте активы с DeFi. Все это прямо в браузере Brave! Без установки дополнительных файлов и расширений.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048">Устройство <ph name="DEVICE_NAME"/> отключено.</translation>
 <translation id="5317781812114905957">Инструкции</translation>
 <translation id="1178198982208000092">Подключение устройства <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Аппаратный криптокошелек <ph name="DEVICE_NAME"/> требует подтверждения транзакции.</translation>
+<translation id="3087887714936696603">Аппаратный криптокошелек требует открыть приложение Ethereum на устройстве «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="8687869982094542529">отправлено</translation>
 <translation id="5013754027092416509">получено</translation>
 <translation id="5867988533873716616">URL блок-проводника недоступен.</translation>
 <translation id="4255623233927788178">Показать в блок-проводнике</translation>
+<translation id="7148658188569580292">Ускорить транзакцию</translation>
+<translation id="1198263951134066686">Отменить транзакцию</translation>
+<translation id="3562548974839822204">Повторить транзакцию</translation>
 <translation id="6383204195803840504">Здесь будут отображаться транзакции</translation>
+<translation id="6079696972035130497">Неограниченно</translation>
 <translation id="2916401020782528840">Транзакция не найдена.</translation>
+<translation id="2833661570529295305">Не одобрена</translation>
+<translation id="8034530868111548216">Одобрена</translation>
+<translation id="6015436276085482001">Отклонена</translation>
+<translation id="6666273175654835609">Отправлена</translation>
+<translation id="2331676293859649642">Подтверждена</translation>
+<translation id="1165039591588034296">Ошибка</translation>
 <translation id="8941851657764077659">Максимальная плата за приоритет</translation>
 <translation id="8047527352810290817">Изменить газ</translation>
 <translation id="9091334651803050473">Майнеры могут отдать приоритет вашей транзакции, если вы заплатите более высокую комиссию. Однако это не гарантировано.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Недействительный адрес ETH.</translation>
 <translation id="882486206986535424">Недействительный адрес.</translation>
 <translation id="6825399159373612149">Домен «<ph name="DOMAIN_NAME"/>» не зарегистрирован.</translation>
+<translation id="8971278306757462297">Адрес получателя совпадает с адресом отправителя.</translation>
+<translation id="3506416339268164412">Адрес получателя совпадает с адресом контракта токена</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Отклонить транзакции: <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Недостаточно средств</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Аккаунт <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Необходимо разблокировать кошелек.</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> — недействительный адрес.</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> не является текущей сетью.</translation>
 <translation id="7340805872138998391">Не удается разблокировать устройство. Попробуйте подключиться снова.</translation>
 <translation id="1984410139271779110">Внутренняя ошибка. Неизвестная схема.</translation>
 <translation id="8682200134223578011">одобрено</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">Данные JSON не поддерживаются.</translation>
 <translation id="3282936527763045737">Неверный пароль.</translation>
 <translation id="1119447706177454957">Внутренняя ошибка.</translation>
-<translation id="3327639091470204775">Внутренняя ошибка. Не удалось создать мост с iframe.</translation>
 <translation id="6672377693827764095">Внутренняя ошибка. Не удается получить данные аккаунтов.</translation>
+<translation id="8933250418452564886">Не удалось найти устройство. Повторите попытку.</translation>
+<translation id="5999974802900788338">Получена информация об ошибке. Возможно, вам нужно подтвердить транзакцию на устройстве.</translation>
+<translation id="8523768065044261559">Не удалось совершить транзакцию. Повторите попытку.</translation>
+<translation id="971552837551838642">Не удалось подписать сообщение. Повторите попытку.</translation>
+<translation id="8273603707418703324">Не удалось подписать сообщение: запрошен неизвестный набор ключей. Попробуйте снова.</translation>
+<translation id="5265455943786954050">Команда с кошелька Trezor уже выполняется.</translation>
+<translation id="7017116822583380542">Драйвер Trezor Bridge не готов.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Не удается подключиться к серверу</translation>
 <translation id="3936826714240735937">Выбрать другой сервер</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> не может подключиться к серверу в регионе <ph name="REGION_NAME"/>. Попробуйте позже или выберите другой.</translation>
-<translation id="1664949222596149258">Купить за <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">У вас уже есть VPN?</translation>
 <translation id="8814357473522731680">Технологии</translation>
 <translation id="5747552184818312860">Срок действия</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Изменяйте свое местоположение с помощью VPN.</translation>
 <translation id="1751947227857853925">Безлимитный интернет со скоростью до 100 Мбит/сек.</translation>
 <translation id="1400240082805528049">Поддержка 24/7</translation>
+<translation id="8463313539532697053">Подождите…</translation>
 <translation id="7586151660465233733">Больше рынков на сайте <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Просматривайте рынки и торгуйте криптовалютой на бирже FTX.</translation>
 <translation id="5963745988819586370">Рынки</translation>
