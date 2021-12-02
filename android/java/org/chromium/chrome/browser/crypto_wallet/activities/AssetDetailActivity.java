@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -52,6 +53,7 @@ import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,6 +70,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
+    private String mChainId;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
@@ -93,6 +96,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         setContentView(R.layout.activity_asset_detail);
 
         if (getIntent() != null) {
+            mChainId = getIntent().getStringExtra(Utils.CHAIN_ID);
             mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
             mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
@@ -204,20 +208,45 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     Utils.setUpTransactionList(accountInfos, mAssetRatioController,
                             mEthTxController, null, mAssetSymbol, mContractAddress, mAssetDecimals,
                             findViewById(R.id.rv_transactions), this, this, null);
-                    List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-                    for (AccountInfo accountInfo : accountInfos) {
-                        walletListItemModelList.add(
-                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                        accountInfo.address, null, null, accountInfo.isImported));
-                    }
-                    if (walletCoinAdapter != null) {
-                        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
-                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
-                        rvAccounts.setAdapter(walletCoinAdapter);
-                        rvAccounts.setLayoutManager(
-                                new LinearLayoutManager(AssetDetailActivity.this));
-                    }
+
+                    SingleTokenBalanceHelper singleTokenBalanceHelper =
+                            new SingleTokenBalanceHelper(
+                                    getAssetRatioController(), getEthJsonRpcController());
+                    singleTokenBalanceHelper.getPerAccountBalances(mChainId, mContractAddress,
+                            mAssetSymbol, mAssetDecimals, accountInfos, () -> {
+                                List<WalletListItemModel> walletListItemModelList =
+                                        new ArrayList<>();
+                                for (AccountInfo accountInfo : accountInfos) {
+                                    Double thisAccountFiatBalance = Utils.getOrDefault(
+                                            singleTokenBalanceHelper.getPerAccountFiatBalance(),
+                                            accountInfo.address, 0.0d);
+                                    final String fiatBalanceString = String.format(
+                                            Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
+
+                                    Double thisAccountCryptoBalance = Utils.getOrDefault(
+                                            singleTokenBalanceHelper.getPerAccountCryptoBalance(),
+                                            accountInfo.address, 0.0d);
+                                    final String cryptoBalanceString =
+                                            String.format(Locale.getDefault(), "%.4f %s",
+                                                    thisAccountCryptoBalance, mAssetSymbol);
+
+                                    walletListItemModelList.add(new WalletListItemModel(
+                                            R.drawable.ic_eth, accountInfo.name,
+                                            accountInfo.address, fiatBalanceString,
+                                            cryptoBalanceString, accountInfo.isImported));
+
+                                    if (walletCoinAdapter != null) {
+                                        walletCoinAdapter.setWalletListItemModelList(
+                                                walletListItemModelList);
+                                        walletCoinAdapter.setOnWalletListItemClick(
+                                                AssetDetailActivity.this);
+                                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
+                                        rvAccounts.setAdapter(walletCoinAdapter);
+                                        rvAccounts.setLayoutManager(
+                                                new LinearLayoutManager(AssetDetailActivity.this));
+                                    }
+                                }
+                            });
                 }
             });
         }
@@ -322,6 +351,14 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     public KeyringController getKeyringController() {
         return mKeyringController;
+    }
+
+    private AssetRatioController getAssetRatioController() {
+        return mAssetRatioController;
+    }
+
+    private EthJsonRpcController getEthJsonRpcController() {
+        return mEthJsonRpcController;
     }
 
     @Override
