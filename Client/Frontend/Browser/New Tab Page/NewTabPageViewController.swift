@@ -90,7 +90,7 @@ class NewTabPageViewController: UIViewController {
         }
         
         if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? NewTabCollectionViewCell<BraveShieldStatsView> {
-            return collectionView.convert(cell.contentView.frame, to: view)
+            return cell.contentView.convert(cell.contentView.frame, to: view)
         }
         return nil
     }
