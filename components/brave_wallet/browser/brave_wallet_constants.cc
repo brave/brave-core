@@ -8,5 +8,7 @@
 namespace brave_wallet {
 
 const char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
+const char kDefaultKeyringId[] = "default";
+const char kFilecoinKeyringId[] = "filecoin";
 
 }  // namespace brave_wallet

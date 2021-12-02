@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -140,7 +141,9 @@ source_set("unit_tests") {
     "eth_tx_state_manager_unittest.cc",
     "keyring_controller_unittest.cc",
   ]
-
+  if (filecoin_enabled) {
+    sources += [ "filecoin_keyring_unittest.cc" ]
+  }
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",

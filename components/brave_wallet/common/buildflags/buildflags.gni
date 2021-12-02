@@ -1,0 +1,3 @@
+declare_args() {
+  filecoin_enabled = true
+}

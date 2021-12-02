@@ -33,6 +33,7 @@ export interface Props {
   onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
+  onImportFilecoinAccount: (accountName: string, key: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
@@ -96,6 +97,7 @@ const CryptoView = (props: Props) => {
     onAddHardwareAccounts,
     getBalance,
     onImportAccount,
+    onImportFilecoinAccount,
     onUpdateAccountName,
     onSelectNetwork,
     onRemoveAccount,
@@ -339,6 +341,7 @@ const CryptoView = (props: Props) => {
           onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
+          onImportFilecoinAccount={onImportFilecoinAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
           onAddHardwareAccounts={onAddHardwareAccounts}
           getBalance={getBalance}
