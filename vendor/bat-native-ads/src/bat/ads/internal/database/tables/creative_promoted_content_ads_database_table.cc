@@ -515,7 +515,7 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
     GetCreativePromotedContentAdCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get creative new tab page ad");
+    BLOG(0, "Failed to get creative promoted content ad");
     callback(/* success */ false, creative_instance_id, {});
     return;
   }
@@ -524,7 +524,7 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
       GetCreativeAdsFromResponse(std::move(response));
 
   if (creative_ads.size() != 1) {
-    BLOG(0, "Failed to get creative new tab page ad");
+    BLOG(0, "Failed to get creative promoted content ad");
     callback(/* success */ false, creative_instance_id, {});
     return;
   }
@@ -540,7 +540,7 @@ void CreativePromotedContentAds::OnGetForSegments(
     GetCreativePromotedContentAdsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get creative new tab page ads");
+    BLOG(0, "Failed to get creative promoted content ads");
     callback(/* success */ false, segments, {});
     return;
   }
