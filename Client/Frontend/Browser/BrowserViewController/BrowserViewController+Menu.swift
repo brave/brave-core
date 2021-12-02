@@ -32,7 +32,7 @@ extension BrowserViewController {
     
     func privacyFeaturesMenuSection(_ menuController: MenuViewController) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(Strings.PrivacyFeature.menuSectionTitle.uppercased())
+            Text(Strings.OptionsMenu.menuSectionTitle.capitalized)
                 .font(.callout.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
                 .padding(.horizontal, 14)
@@ -40,7 +40,7 @@ extension BrowserViewController {
                         
             VPNMenuButton(
                 vpnProductInfo: self.vpnProductInfo,
-                description: Strings.PrivacyFeature.braveVPNItemDescription,
+                description: Strings.OptionsMenu.braveVPNItemDescription,
                 displayVPNDestination: { [unowned self] vc in
                     (self.presentedViewController as? MenuViewController)?
                         .pushInnerMenu(vc)
@@ -53,24 +53,23 @@ extension BrowserViewController {
                 }
             )
             
+            MenuItemButton(
+                icon: #imageLiteral(resourceName: "playlist_menu").template,
+                title: Strings.OptionsMenu.bravePlaylistItemTitle,
+                subtitle: Strings.OptionsMenu.bravePlaylistItemDescription) { [weak self] in
+                guard let self = self else { return }
+
+                self.presentPlaylistController()
+            }
+            
             // Add Brave Talk and News options only in normal browsing
             if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                MenuItemButton(
-                    icon: #imageLiteral(resourceName: "menu-brave-talk").template,
-                    title: Strings.BraveTalk.braveTalkTitle,
-                    subtitle: Strings.PrivacyFeature.braveTalkItemDescription) { [weak self] in
-                    guard let self = self, let url = URL(string: "https://talk.brave.com/") else { return }
-                    
-                    self.popToBVC()
-                    self.finishEditingAndSubmit(url, visitType: .typed)
-                }
-                
                 // Show Brave News if it is first launch and after first launch If the new is enabled
                 if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
                     MenuItemButton(
                         icon: #imageLiteral(resourceName: "menu_brave_news").template,
-                        title: Strings.BraveNews.braveNews,
-                        subtitle: Strings.PrivacyFeature.braveNewsItemDescription) { [weak self] in
+                        title: Strings.OptionsMenu.braveNewsItemTitle,
+                        subtitle: Strings.OptionsMenu.braveNewsItemDescription) { [weak self] in
                         guard let self = self, let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController  else {
                             return
                         }
@@ -79,15 +78,16 @@ extension BrowserViewController {
                         newTabPageController.scrollToBraveNews()
                     }
                 }
-            }
-            
-            MenuItemButton(
-                icon: #imageLiteral(resourceName: "playlist_menu").template,
-                title: Strings.PlayList.playlistCarplayTitle,
-                subtitle: Strings.PrivacyFeature.bravePlaylistItemDescription) { [weak self] in
-                guard let self = self else { return }
-
-                self.presentPlaylistController()
+                
+                MenuItemButton(
+                    icon: #imageLiteral(resourceName: "menu-brave-talk").template,
+                    title: Strings.OptionsMenu.braveTalkItemTitle,
+                    subtitle: Strings.OptionsMenu.braveTalkItemDescription) { [weak self] in
+                    guard let self = self, let url = URL(string: "https://talk.brave.com/") else { return }
+                    
+                    self.popToBVC()
+                    self.finishEditingAndSubmit(url, visitType: .typed)
+                }
             }
         }
         .fixedSize(horizontal: false, vertical: true)
