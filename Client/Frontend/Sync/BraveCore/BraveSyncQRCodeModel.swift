@@ -54,6 +54,20 @@ struct BraveSyncQRCodeModel: Codable {
         self.notValidAfter = Int64(notValidAfter)
     }
     
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        version = try Int(container.decode(String.self, forKey: .version)) ?? 0
+        syncHexCode = try container.decode(String.self, forKey: .syncHexCode)
+        notValidAfter = try Int64(container.decode(String.self, forKey: .notValidAfter)) ?? 0
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(String(version), forKey: .version)
+        try container.encode(syncHexCode, forKey: .syncHexCode)
+        try container.encode(String(notValidAfter), forKey: .notValidAfter)
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case version
         case syncHexCode = "sync_code_hex"

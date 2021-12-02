@@ -2829,7 +2829,7 @@ extension BrowserViewController: NewTabPageDelegate {
     
     func showNTPOnboarding() {
         if Preferences.General.isNewRetentionUser.value == true,
-            Preferences.DebugFlag.skipNTPCallouts == false,
+            Preferences.DebugFlag.skipNTPCallouts != true,
             !topToolbar.inOverlayMode,
             !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
             presentNTPStatsOnboarding()
