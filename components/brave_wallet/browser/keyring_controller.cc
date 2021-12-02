@@ -458,6 +458,10 @@ HDKeyring* KeyringController::CreateKeyring(const std::string& keyring_id,
     return filecoin_keyring_.get();
   }
 
+  if (IsFilecoinEnabled() && keyring_id == kFilecoinKeyringId) {
+    return filecoin_keyring_.get();
+  }
+
   return default_keyring_.get();
 }
 

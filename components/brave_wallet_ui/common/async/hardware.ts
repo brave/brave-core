@@ -12,7 +12,7 @@ import {
 import { StatusCodes as LedgerStatusCodes } from '@ledgerhq/errors'
 import { getLocale } from '../../../common/locale'
 import WalletApiProxy from '../../common/wallet_api_proxy'
-import { getHardwareKeyring, getLedgerHardwareKeyring, getTrezorHardwareKeyring, HardwareVendor } from '../api/hardware_keyrings'
+import { getHardwareKeyring, getLedgerHardwareKeyring, getTrezorHardwareKeyring, HardwareVendor, HardwareCoins } from '../api/hardware_keyrings'
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -76,7 +76,7 @@ export async function signLedgerTransaction (
   apiProxy: WalletApiProxy,
   path: string,
   txInfo: BraveWallet.TransactionInfo,
-  deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring()): Promise<SignHardwareTransactionOperationResult> {
+  deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring(HardwareCoins.ETH) as LedgerBridgeKeyring): Promise<SignHardwareTransactionOperationResult> {
   const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }

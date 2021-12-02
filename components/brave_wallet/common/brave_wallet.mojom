@@ -236,6 +236,7 @@ struct HardwareWalletAccount {
   string name;
   string hardware_vendor;
   string device_id;
+  string coin;
 };
 
 struct HardwareInfo {

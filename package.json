@@ -270,6 +270,7 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@dump247/storybook-state": "1.6.1",
+    "@glif/filecoin-wallet-provider": "2.0.0-alpha.8",
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-knobs": "6.3.1",
     "@storybook/addons": "6.3.12",

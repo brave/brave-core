@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import * as bls from '@noble/bls12-381'
 import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
@@ -32,29 +31,9 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 import { GetTokenParam } from '../../utils/api-utils'
-
-function encodeKeyToHex (key: string): string {
-  return Buffer.from(key, 'base64').toString('hex')
-}
-
-function switchEndianness (hexString: string): string | false {
-  const regex = hexString.match(/.{2}/g)
-  if (!regex) {
-    return false
-  }
-  return regex.reverse().join('')
-}
-
-function extractPublicKeyForBLS (privateKey: string): string {
-  // https://github.com/brave/brave-browser/issues/20024
-  const reversedKey = switchEndianness(privateKey)
-  if (!reversedKey) {
-    return ''
-  }
-  return Buffer.from(bls.getPublicKey(reversedKey)).toString('hex')
-}
+import { HardwareWalletAccount } from '../../common/hardware/types'
+import { extractPublicKeyForBLS, encodeKeyToHex } from '../../common/hardware/ledgerjs/filecoin_ledger_keyring'
 
 const handler = new AsyncActionHandler()
 
