@@ -48,10 +48,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     
     var isHistoryRefreshing = false
     
+    // TODO: Uncomment once we restore search bar, see #4599
+    /*
     private var searchHistoryTimer: Timer?
     private var isHistoryBeingSearched = false
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchQuery = ""
+    */
     
     init(isPrivateBrowsing: Bool, historyAPI: BraveHistoryAPI) {
         self.isPrivateBrowsing = isPrivateBrowsing
@@ -82,8 +85,11 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             
         navigationItem.do {
             if !Preferences.Privacy.privateBrowsingOnly.value {
+                // TODO: Uncomment once we restore search bar, see #4599
+                /*
                 $0.searchController = searchController
                 $0.hidesSearchBarWhenScrolling = false
+                */
                 $0.rightBarButtonItem =
                     UIBarButtonItem(image: #imageLiteral(resourceName: "playlist_delete_item").template, style: .done, target: self, action: #selector(performDeleteAll))
             }
@@ -101,6 +107,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     private func applyTheme() {
         title = Strings.historyScreenTitle
 
+        // TODO: Uncomment once we restore search bar, see #4599
+        /*
         searchController.do {
             $0.searchBar.autocapitalizationType = .none
             $0.searchResultsUpdater = self
@@ -109,13 +117,17 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             $0.delegate = self
             $0.hidesNavigationBarDuringPresentation = true
         }
+        */
     }
     
     private func refreshHistory() {
+        // TODO: Uncomment once we restore saved logins, see #4599
+        /*
         if isHistoryBeingSearched {
             return
         }
-        
+        */
+         
         if Preferences.Privacy.privateBrowsingOnly.value {
             showEmptyPanelState()
         } else {
@@ -219,12 +231,15 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         }
     }
     
+    // TODO: Uncomment once we restore search bar, see #4599
+    /*
     private func invalidateSearchTimer() {
         if searchHistoryTimer != nil {
             searchHistoryTimer?.invalidate()
             searchHistoryTimer = nil
         }
     }
+    */
     
     @objc private func performDeleteAll() {
         let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
@@ -299,10 +314,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let historyItem = historyFRC?.object(at: indexPath) else { return }
         
+        // TODO: Uncomment once we restore search bar, see #4599
+        /*
         if isHistoryBeingSearched {
             searchController.isActive = false
         }
-            
+        */
+         
         if let url = URL(string: historyItem.url.absoluteString) {
             dismiss(animated: true) {
                 self.toolbarUrlActionsDelegate?.select(url: url, visitType: .typed)
@@ -340,12 +358,14 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             case .delete:
                 guard let historyItem = historyFRC?.object(at: indexPath) else { return }
                 historyAPI.removeHistory(historyItem)
-                
+                // TODO: Uncomment once we restore search bar, see #4599
+                /*
                 if isHistoryBeingSearched {
                     reloadDataAndShowLoading(with: searchQuery)
                 } else {
+                */
                     refreshHistory()
-                }
+                //}
             default:
                 break
         }
@@ -409,6 +429,8 @@ extension HistoryViewController: HistoryV2FetchResultsDelegate {
     }
 }
 
+// TODO: Uncomment once we restore search bar, see #4599
+/*
 // MARK: UISearchResultUpdating
 
 extension HistoryViewController: UISearchResultsUpdating {
@@ -451,3 +473,4 @@ extension HistoryViewController: UISearchControllerDelegate {
         tableView.reloadData()
     }
 }
+*/
