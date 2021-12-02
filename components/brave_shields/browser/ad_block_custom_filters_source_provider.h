@@ -20,7 +20,7 @@ class PrefService;
 
 namespace brave_shields {
 
-class AdBlockCustomFiltersSourceProvider : public SourceProvider {
+class AdBlockCustomFiltersSourceProvider : public AdBlockSourceProvider {
  public:
   explicit AdBlockCustomFiltersSourceProvider(PrefService* local_state);
   ~AdBlockCustomFiltersSourceProvider() override;
@@ -28,8 +28,9 @@ class AdBlockCustomFiltersSourceProvider : public SourceProvider {
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
 
-  void Load(base::OnceCallback<
-            void(bool deserialize, const DATFileDataBuffer& dat_buf)>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
 
  private:
   PrefService* local_state_;

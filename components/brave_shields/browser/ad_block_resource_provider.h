@@ -17,24 +17,24 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class ResourceProvider {
+class AdBlockResourceProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnNewResourcesAvailable(const std::string& resources_json) = 0;
+    virtual void OnResourcesLoaded(const std::string& resources_json) = 0;
   };
 
-  ResourceProvider();
-  virtual ~ResourceProvider();
+  AdBlockResourceProvider();
+  virtual ~AdBlockResourceProvider();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void Load(
+  virtual void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)>) = 0;
 
  protected:
-  void ProvideNewResources(const std::string& resources_json);
+  void OnResourcesLoaded(const std::string& resources_json);
 
  private:
   base::ObserverList<Observer> observers_;

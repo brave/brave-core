@@ -49,11 +49,11 @@ void AdBlockRegionalSourceProvider::OnComponentReady(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
-      base::BindOnce(&AdBlockRegionalSourceProvider::ProvideNewDAT,
+      base::BindOnce(&AdBlockRegionalSourceProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockRegionalSourceProvider::Load(
+void AdBlockRegionalSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {

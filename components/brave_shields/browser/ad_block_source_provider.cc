@@ -7,28 +7,30 @@
 
 namespace brave_shields {
 
-SourceProvider::SourceProvider() {}
+AdBlockSourceProvider::AdBlockSourceProvider() {}
 
-SourceProvider::~SourceProvider() {}
+AdBlockSourceProvider::~AdBlockSourceProvider() {}
 
-void SourceProvider::AddObserver(SourceProvider::Observer* observer) {
+void AdBlockSourceProvider::AddObserver(
+    AdBlockSourceProvider::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void SourceProvider::RemoveObserver(SourceProvider::Observer* observer) {
+void AdBlockSourceProvider::RemoveObserver(
+    AdBlockSourceProvider::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void SourceProvider::ProvideNewDAT(const DATFileDataBuffer& dat_buf) {
+void AdBlockSourceProvider::OnDATLoaded(const DATFileDataBuffer& dat_buf) {
   for (auto& observer : observers_) {
-    observer.OnNewDATAvailable(dat_buf);
+    observer.OnDATLoaded(dat_buf);
   }
 }
 
-void SourceProvider::ProvideNewListSource(
+void AdBlockSourceProvider::OnListSourceLoaded(
     const DATFileDataBuffer& list_source) {
   for (auto& observer : observers_) {
-    observer.OnNewListSourceAvailable(list_source);
+    observer.OnListSourceLoaded(list_source);
   }
 }
 

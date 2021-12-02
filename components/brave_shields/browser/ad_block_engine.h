@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_H_
 
 #include <stdint.h>
 
@@ -39,18 +39,17 @@ class PerfPredictorTabHelperTest;
 namespace brave_shields {
 
 // Brave Shields service managing an adblock engine.
-class AdBlockEngineService : public BaseBraveShieldsService,
-                             public ResourceProvider::Observer,
-                             public SourceProvider::Observer {
+class AdBlockEngine : public BaseBraveShieldsService,
+                      public AdBlockResourceProvider::Observer,
+                      public AdBlockSourceProvider::Observer {
  public:
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
 
-  explicit AdBlockEngineService(
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
-  AdBlockEngineService(const AdBlockEngineService&) = delete;
-  AdBlockEngineService& operator=(const AdBlockEngineService&) = delete;
-  ~AdBlockEngineService() override;
+  explicit AdBlockEngine(scoped_refptr<base::SequencedTaskRunner> task_runner);
+  AdBlockEngine(const AdBlockEngine&) = delete;
+  AdBlockEngine& operator=(const AdBlockEngine&) = delete;
+  ~AdBlockEngine() override;
 
   void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
@@ -75,15 +74,15 @@ class AdBlockEngineService : public BaseBraveShieldsService,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void OnNewListSourceAvailable(const DATFileDataBuffer& list_source) override;
-  void OnNewDATAvailable(const DATFileDataBuffer& list_source) override;
+  void OnListSourceLoaded(const DATFileDataBuffer& list_source) override;
+  void OnDATLoaded(const DATFileDataBuffer& list_source) override;
 
-  void OnNewResourcesAvailable(const std::string& resources_json) override;
+  void OnResourcesLoaded(const std::string& resources_json) override;
 
   void OnInitialListLoad(bool deserialize, const DATFileDataBuffer& dat_buf);
 
-  bool Init(SourceProvider* source_provider,
-            ResourceProvider* resource_provider);
+  bool Init(AdBlockSourceProvider* source_provider,
+            AdBlockResourceProvider* resource_provider);
 
  protected:
   void GetDATFileData(const base::FilePath& dat_file_path,
@@ -112,14 +111,12 @@ class AdBlockEngineService : public BaseBraveShieldsService,
   void OnPreferenceChanges(const std::string& pref_name);
 
   std::set<std::string> tags_;
-  ResourceProvider* resource_provider_;
-  base::WeakPtrFactory<AdBlockEngineService> weak_factory_;
-};
 
-// Creates the AdBlockEngineService
-std::unique_ptr<AdBlockEngineService> AdBlockEngineServiceFactory(
-    scoped_refptr<base::SequencedTaskRunner> task_runner);
+  raw_ptr<AdBlockResourceProvider> resource_provider_;
+
+  base::WeakPtrFactory<AdBlockEngine> weak_factory_;
+};
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_ENGINE_H_

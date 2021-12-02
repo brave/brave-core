@@ -14,7 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -42,7 +42,8 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
       task_runner_(task_runner),
       component_update_service_(cus) {}
 
-void AdBlockRegionalServiceManager::Init(ResourceProvider* resource_provider) {
+void AdBlockRegionalServiceManager::Init(
+    AdBlockResourceProvider* resource_provider) {
   DCHECK(!initialized_);
   resource_provider_ = resource_provider;
   initialized_ = true;
@@ -112,7 +113,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
         auto regional_source_provider =
             std::make_unique<AdBlockRegionalSourceProvider>(
                 component_update_service_, *catalog_entry);
-        auto regional_service = AdBlockEngineServiceFactory(task_runner_);
+        auto regional_service = std::make_unique<AdBlockEngine>(task_runner_);
         regional_service->Init(regional_source_provider.get(),
                                resource_provider_);
         regional_services_.insert(
@@ -217,7 +218,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(
     auto regional_source_provider =
         std::make_unique<AdBlockRegionalSourceProvider>(
             component_update_service_, *catalog_entry);
-    auto regional_service = AdBlockEngineServiceFactory(task_runner_);
+    auto regional_service = std::make_unique<AdBlockEngine>(task_runner_);
     regional_service->Init(regional_source_provider.get(), resource_provider_);
     regional_services_.insert(
         std::make_pair(uuid, std::move(regional_service)));

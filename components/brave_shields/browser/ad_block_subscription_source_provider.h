@@ -18,7 +18,7 @@ class PrefService;
 
 namespace brave_shields {
 
-class AdBlockSubscriptionSourceProvider : public SourceProvider {
+class AdBlockSubscriptionSourceProvider : public AdBlockSourceProvider {
  public:
   AdBlockSubscriptionSourceProvider(PrefService* local_state,
                                     base::FilePath list_file);
@@ -30,8 +30,9 @@ class AdBlockSubscriptionSourceProvider : public SourceProvider {
 
   void ReloadListFromDisk();
 
-  void Load(base::OnceCallback<
-            void(bool deserialize, const DATFileDataBuffer& dat_buf)>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
 
  private:
   base::FilePath list_file_;

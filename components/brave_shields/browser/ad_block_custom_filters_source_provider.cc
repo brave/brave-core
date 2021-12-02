@@ -39,7 +39,7 @@ bool AdBlockCustomFiltersSourceProvider::UpdateCustomFilters(
 
   auto buffer =
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  ProvideNewListSource(buffer);
+  OnListSourceLoaded(buffer);
 
   return true;
 }
@@ -53,7 +53,7 @@ void RespondWithCustomFilters(
   std::move(cb).Run(false, buffer);
 }
 
-void AdBlockCustomFiltersSourceProvider::Load(
+void AdBlockCustomFiltersSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(

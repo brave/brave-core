@@ -9,21 +9,24 @@
 
 namespace brave_shields {
 
-ResourceProvider::ResourceProvider() {}
+AdBlockResourceProvider::AdBlockResourceProvider() {}
 
-ResourceProvider::~ResourceProvider() {}
+AdBlockResourceProvider::~AdBlockResourceProvider() {}
 
-void ResourceProvider::AddObserver(ResourceProvider::Observer* observer) {
+void AdBlockResourceProvider::AddObserver(
+    AdBlockResourceProvider::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void ResourceProvider::RemoveObserver(ResourceProvider::Observer* observer) {
+void AdBlockResourceProvider::RemoveObserver(
+    AdBlockResourceProvider::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void ResourceProvider::ProvideNewResources(const std::string& resources_json) {
+void AdBlockResourceProvider::OnResourcesLoaded(
+    const std::string& resources_json) {
   for (auto& observer : observers_) {
-    observer.OnNewResourcesAvailable(resources_json);
+    observer.OnResourcesLoaded(resources_json);
   }
 }
 

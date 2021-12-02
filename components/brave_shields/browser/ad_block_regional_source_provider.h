@@ -29,14 +29,15 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-class AdBlockRegionalSourceProvider : public SourceProvider {
+class AdBlockRegionalSourceProvider : public AdBlockSourceProvider {
  public:
   AdBlockRegionalSourceProvider(component_updater::ComponentUpdateService* cus,
                                 const adblock::FilterList& catalog_entry);
   ~AdBlockRegionalSourceProvider() override;
 
-  void Load(base::OnceCallback<
-            void(bool deserialize, const DATFileDataBuffer& dat_buf)>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
 
  private:
   friend class ::AdBlockServiceTest;

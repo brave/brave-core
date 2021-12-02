@@ -20,7 +20,7 @@
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_default_source_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -215,23 +215,22 @@ AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
   return regional_service_manager_.get();
 }
 
-brave_shields::AdBlockEngineService* AdBlockService::default_service() {
+AdBlockEngine* AdBlockService::default_service() {
   if (!default_service_) {
-    default_service_ = AdBlockEngineServiceFactory(GetTaskRunner());
+    default_service_ = std::make_unique<AdBlockEngine>(GetTaskRunner());
     default_service_->Init(default_source_provider_.get(),
                            default_source_provider_.get());
   }
   return default_service_.get();
 }
 
-brave_shields::ResourceProvider* AdBlockService::resource_provider() {
+AdBlockResourceProvider* AdBlockService::resource_provider() {
   return default_source_provider_.get();
 }
 
-brave_shields::AdBlockEngineService* AdBlockService::custom_filters_service() {
+AdBlockEngine* AdBlockService::custom_filters_service() {
   if (!custom_filters_service_) {
-    custom_filters_service_ =
-        brave_shields::AdBlockEngineServiceFactory(GetTaskRunner());
+    custom_filters_service_ = std::make_unique<AdBlockEngine>(GetTaskRunner());
     custom_filters_service_->Init(custom_filters_source_provider_.get(),
                                   resource_provider());
   }
@@ -308,14 +307,14 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
 }
 
 void AdBlockService::UseSourceProvidersForTest(
-    SourceProvider* source_provider,
-    ResourceProvider* resource_provider) {
+    AdBlockSourceProvider* source_provider,
+    AdBlockResourceProvider* resource_provider) {
   default_service_->Init(source_provider, resource_provider);
 }
 
 void AdBlockService::UseCustomSourceProvidersForTest(
-    SourceProvider* source_provider,
-    ResourceProvider* resource_provider) {
+    AdBlockSourceProvider* source_provider,
+    AdBlockResourceProvider* resource_provider) {
   custom_filters_service_->Init(source_provider, resource_provider);
 }
 

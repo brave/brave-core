@@ -41,20 +41,23 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
+  // Load the DAT (as a buffer)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData,
                      component_path_.AppendASCII(DAT_FILE)),
-      base::BindOnce(&AdBlockDefaultSourceProvider::ProvideNewDAT,
+      base::BindOnce(&AdBlockDefaultSourceProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr()));
 
+  // Load the resources (as a string)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(kAdBlockResourcesFilename)),
-      base::BindOnce(&AdBlockDefaultSourceProvider::ProvideNewResources,
+      base::BindOnce(&AdBlockDefaultSourceProvider::OnResourcesLoaded,
                      weak_factory_.GetWeakPtr()));
 
+  // Load the regional catalog (as a string)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
@@ -62,7 +65,7 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       base::BindOnce(regional_catalog_available_cb_));
 }
 
-void AdBlockDefaultSourceProvider::Load(
+void AdBlockDefaultSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
@@ -78,7 +81,7 @@ void AdBlockDefaultSourceProvider::Load(
       base::BindOnce(std::move(cb), true));
 }
 
-void AdBlockDefaultSourceProvider::Load(
+void AdBlockDefaultSourceProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, don't run the callback. An update should be

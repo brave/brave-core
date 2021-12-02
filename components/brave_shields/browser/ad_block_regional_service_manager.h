@@ -17,7 +17,7 @@
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_source_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -78,7 +78,7 @@ class AdBlockRegionalServiceManager {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void Init(ResourceProvider* resource_provider);
+  void Init(AdBlockResourceProvider* resource_provider);
 
  private:
   friend class ::AdBlockServiceTest;
@@ -89,8 +89,7 @@ class AdBlockRegionalServiceManager {
   std::string locale_;
   bool initialized_;
   base::Lock regional_services_lock_;
-  std::map<std::string, std::unique_ptr<AdBlockEngineService>>
-      regional_services_;
+  std::map<std::string, std::unique_ptr<AdBlockEngine>> regional_services_;
   std::map<std::string, std::unique_ptr<AdBlockRegionalSourceProvider>>
       regional_source_providers_;
 
@@ -98,7 +97,9 @@ class AdBlockRegionalServiceManager {
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
-  raw_ptr<ResourceProvider> resource_provider_;
+  raw_ptr<AdBlockResourceProvider> resource_provider_;
+
+  DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalServiceManager);
 };
 
 // Creates the AdBlockRegionalServiceManager

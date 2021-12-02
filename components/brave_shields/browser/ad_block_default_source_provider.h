@@ -29,8 +29,8 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-class AdBlockDefaultSourceProvider : public SourceProvider,
-                                     public ResourceProvider {
+class AdBlockDefaultSourceProvider : public AdBlockSourceProvider,
+                                     public AdBlockResourceProvider {
  public:
   AdBlockDefaultSourceProvider(
       component_updater::ComponentUpdateService* cus,
@@ -38,10 +38,11 @@ class AdBlockDefaultSourceProvider : public SourceProvider,
           regional_catalog_available_cb);
   ~AdBlockDefaultSourceProvider() override;
 
-  void Load(base::OnceCallback<
-            void(bool deserialize, const DATFileDataBuffer& dat_buf)>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
 
-  void Load(
+  void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)>) override;
 
  private:

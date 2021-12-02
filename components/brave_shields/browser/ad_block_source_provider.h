@@ -15,28 +15,27 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class SourceProvider {
+class AdBlockSourceProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnNewDATAvailable(const DATFileDataBuffer& dat_buf) = 0;
-    virtual void OnNewListSourceAvailable(
-        const DATFileDataBuffer& list_source) = 0;
+    virtual void OnDATLoaded(const DATFileDataBuffer& dat_buf) = 0;
+    virtual void OnListSourceLoaded(const DATFileDataBuffer& list_source) = 0;
   };
 
-  SourceProvider();
-  virtual ~SourceProvider();
+  AdBlockSourceProvider();
+  virtual ~AdBlockSourceProvider();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void Load(
+  virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
 
  protected:
-  void ProvideNewDAT(const DATFileDataBuffer& dat_buf);
-  void ProvideNewListSource(const DATFileDataBuffer& list_source);
+  void OnDATLoaded(const DATFileDataBuffer& dat_buf);
+  void OnListSourceLoaded(const DATFileDataBuffer& list_source);
 
  private:
   base::ObserverList<Observer> observers_;

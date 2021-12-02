@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_test_source_provider.h"
+#include "brave/components/brave_shields/browser/test_source_provider.h"
 
 #include <string>
 #include <utility>
@@ -26,7 +26,7 @@ TestSourceProvider::TestSourceProvider(const base::FilePath& dat_location,
 
 TestSourceProvider::~TestSourceProvider() {}
 
-void TestSourceProvider::Load(
+void TestSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (dat_buffer_.empty()) {
@@ -37,7 +37,7 @@ void TestSourceProvider::Load(
   }
 }
 
-void TestSourceProvider::Load(
+void TestSourceProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   std::move(cb).Run(resources_);
 }

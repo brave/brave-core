@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_shields/browser/ad_block_test_source_provider.h"
+#include "brave/components/brave_shields/browser/test_source_provider.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 

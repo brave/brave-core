@@ -20,7 +20,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
@@ -35,9 +35,9 @@ class JSONValueConverter;
 }
 
 namespace brave_shields {
+class AdBlockResourceProvider;
 class AdBlockSubscriptionServiceManagerObserver;
 class AdBlockSubscriptionSourceProvider;
-class ResourceProvider;
 }
 
 class AdBlockServiceTest;
@@ -115,7 +115,7 @@ class AdBlockSubscriptionServiceManager {
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
 
-  void Init(ResourceProvider* resource_provider);
+  void Init(AdBlockResourceProvider* resource_provider);
   bool IsInitialized();
 
  private:
@@ -145,13 +145,13 @@ class AdBlockSubscriptionServiceManager {
 
   raw_ptr<PrefService> local_state_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  raw_ptr<ResourceProvider> resource_provider_;
+  raw_ptr<AdBlockResourceProvider> resource_provider_;
   raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
 
-  std::map<GURL, std::unique_ptr<AdBlockEngineService>> subscription_services_;
+  std::map<GURL, std::unique_ptr<AdBlockEngine>> subscription_services_;
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionSourceProvider>>
       subscription_source_providers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>

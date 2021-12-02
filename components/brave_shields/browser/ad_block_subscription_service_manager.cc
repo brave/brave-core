@@ -20,7 +20,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -110,7 +110,7 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
 }
 
 void AdBlockSubscriptionServiceManager::Init(
-    ResourceProvider* resource_provider) {
+    AdBlockResourceProvider* resource_provider) {
   resource_provider_ = resource_provider;
   initialized_ = true;
 }
@@ -212,8 +212,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
-  auto subscription_service =
-      std::make_unique<AdBlockEngineService>(task_runner_);
+  auto subscription_service = std::make_unique<AdBlockEngine>(task_runner_);
   UpdateSubscriptionPrefs(sub_url, info);
 
   auto subscription_source_provider =
@@ -355,8 +354,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
-      auto subscription_service =
-          std::make_unique<AdBlockEngineService>(task_runner_);
+      auto subscription_service = std::make_unique<AdBlockEngine>(task_runner_);
 
       auto subscription_source_provider =
           std::make_unique<AdBlockSubscriptionSourceProvider>(

@@ -34,13 +34,13 @@ class ComponentUpdateService;
 
 namespace brave_shields {
 
-class AdBlockEngineService;
+class AdBlockEngine;
 class AdBlockDefaultSourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersSourceProvider;
+class AdBlockResourceProvider;
+class AdBlockSourceProvider;
 class AdBlockSubscriptionServiceManager;
-class ResourceProvider;
-class SourceProvider;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
@@ -74,8 +74,8 @@ class AdBlockService {
       const std::vector<std::string>& exceptions);
 
   AdBlockRegionalServiceManager* regional_service_manager();
-  AdBlockEngineService* custom_filters_service();
-  AdBlockEngineService* default_service();
+  AdBlockEngine* custom_filters_service();
+  AdBlockEngine* default_service();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
 
   AdBlockCustomFiltersSourceProvider* custom_filters_source_provider();
@@ -98,12 +98,13 @@ class AdBlockService {
   static std::string g_ad_block_dat_file_version_;
 
   void InitCustomFilters();
-  ResourceProvider* resource_provider();
+  AdBlockResourceProvider* resource_provider();
 
-  void UseSourceProvidersForTest(SourceProvider* source_provider,
-                                 ResourceProvider* resource_provider);
-  void UseCustomSourceProvidersForTest(SourceProvider* source_provider,
-                                       ResourceProvider* resource_provider);
+  void UseSourceProvidersForTest(AdBlockSourceProvider* source_provider,
+                                 AdBlockResourceProvider* resource_provider);
+  void UseCustomSourceProvidersForTest(
+      AdBlockSourceProvider* source_provider,
+      AdBlockResourceProvider* resource_provider);
   bool TagExistsForTest(const std::string& tag);
 
   raw_ptr<PrefService> local_state_;
@@ -115,8 +116,8 @@ class AdBlockService {
 
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;
-  std::unique_ptr<brave_shields::AdBlockEngineService> custom_filters_service_;
-  std::unique_ptr<brave_shields::AdBlockEngineService> default_service_;
+  std::unique_ptr<brave_shields::AdBlockEngine> custom_filters_service_;
+  std::unique_ptr<brave_shields::AdBlockEngine> default_service_;
   std::unique_ptr<brave_shields::AdBlockSubscriptionServiceManager>
       subscription_service_manager_;
 
