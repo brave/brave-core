@@ -47,5 +47,5 @@ export enum CurrencySymbols {
   XAG = 'XAG',
   XAU = 'XAU',
   XDR = 'XDR',
-  ZAR = 'R',
+  ZAR = 'R'
 }

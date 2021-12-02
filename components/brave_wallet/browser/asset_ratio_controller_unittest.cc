@@ -245,7 +245,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistory) {
 
   bool callback_run = false;
   asset_ratio_controller_->GetPriceHistory(
-      "bat", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, true,
                      std::move(expected_price_history_response)));
 
@@ -260,7 +260,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryError) {
       expected_price_history_response;
   bool callback_run = false;
   asset_ratio_controller_->GetPriceHistory(
-      "bat", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
   base::RunLoop().RunUntilIdle();
@@ -274,7 +274,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryUnexpectedResponse) {
 
   bool callback_run = false;
   asset_ratio_controller_->GetPriceHistory(
-      "bat", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
 
@@ -383,6 +383,41 @@ TEST_F(AssetRatioControllerUnitTest, GetGasOracleServerError) {
       base::BindOnce(&OnGetGasOracle, &callback_run, nullptr));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryURL) {
+  // Basic test
+  EXPECT_EQ("/v2/history/coingecko/bat/usd/1d",
+            AssetRatioController::GetPriceHistoryURL(
+                "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay)
+                .path());
+  // Test the remaining timeframes
+  EXPECT_EQ("/v2/history/coingecko/eth/cad/live",
+            AssetRatioController::GetPriceHistoryURL(
+                "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::Live)
+                .path());
+  EXPECT_EQ("/v2/history/coingecko/eth/cad/1w",
+            AssetRatioController::GetPriceHistoryURL(
+                "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneWeek)
+                .path());
+  EXPECT_EQ(
+      "/v2/history/coingecko/eth/cad/1m",
+      AssetRatioController::GetPriceHistoryURL(
+          "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneMonth)
+          .path());
+  EXPECT_EQ(
+      "/v2/history/coingecko/eth/cad/3m",
+      AssetRatioController::GetPriceHistoryURL(
+          "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths)
+          .path());
+  EXPECT_EQ("/v2/history/coingecko/eth/cad/1y",
+            AssetRatioController::GetPriceHistoryURL(
+                "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneYear)
+                .path());
+  EXPECT_EQ("/v2/history/coingecko/eth/cad/all",
+            AssetRatioController::GetPriceHistoryURL(
+                "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::All)
+                .path());
 }
 
 }  // namespace brave_wallet
