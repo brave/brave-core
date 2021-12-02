@@ -221,7 +221,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
         return {
           token: token,
           history: await assetRatioController.getPriceHistory(
-            token.asset.symbol.toLowerCase(), selectedPortfolioTimeline
+            token.asset.symbol.toLowerCase(), 'usd', selectedPortfolioTimeline
           )
         }
       }))

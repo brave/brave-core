@@ -258,7 +258,7 @@ public class PortfolioHelper {
             pricesHistoryContexts.add(priceHistoryContext);
 
             mAssetRatioController.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
-                    mFiatHistoryTimeframe, priceHistoryContext);
+                    "usd", mFiatHistoryTimeframe, priceHistoryContext);
         }
 
         historyMultiResponse.setWhenAllCompletedAction(() -> {

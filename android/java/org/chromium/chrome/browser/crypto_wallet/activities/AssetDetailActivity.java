@@ -154,7 +154,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             RadioButton button = findViewById(checkedId);
             button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
-            getPriceHistory(mAssetSymbol, timeframeType);
+            getPriceHistory(mAssetSymbol, "usd", timeframeType);
             checkedTimeframeType = checkedId;
         });
 
@@ -185,10 +185,10 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         onInitialLayoutInflationComplete();
     }
 
-    private void getPriceHistory(String asset, int timeframe) {
+    private void getPriceHistory(String asset, String vsAsset, int timeframe) {
         if (mAssetRatioController != null) {
-            mAssetRatioController.getPriceHistory(
-                    asset, timeframe, (result, priceHistory) -> { chartES.setData(priceHistory); });
+            mAssetRatioController.getPriceHistory(asset, vsAsset, timeframe,
+                    (result, priceHistory) -> { chartES.setData(priceHistory); });
         }
     }
 
@@ -240,7 +240,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         InitKeyringController();
         InitEthTxController();
         InitEthJsonRpcController();
-        getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
+        getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         setUpAccountList();
     }
 

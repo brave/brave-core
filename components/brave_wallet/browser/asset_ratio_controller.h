@@ -46,8 +46,9 @@ class AssetRatioController : public KeyedService,
                 const std::vector<std::string>& to_assets,
                 brave_wallet::mojom::AssetPriceTimeframe timeframe,
                 GetPriceCallback callback) override;
-  // The asset param is a string like: "bat"
+  // The asset and vs_asset params are strings like: "bat"
   void GetPriceHistory(const std::string& asset,
+                       const std::string& vs_asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
 
@@ -56,6 +57,7 @@ class AssetRatioController : public KeyedService,
                           brave_wallet::mojom::AssetPriceTimeframe timeframe);
   static GURL GetPriceHistoryURL(
       const std::string& asset,
+      const std::string& vs_asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
 
   void GetEstimatedTime(const std::string& gas_price,
