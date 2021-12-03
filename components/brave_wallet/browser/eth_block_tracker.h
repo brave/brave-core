@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_BLOCK_TRACKER_H_
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
@@ -55,7 +56,7 @@ class EthBlockTracker {
 
   base::ObserverList<Observer> observers_;
 
-  EthJsonRpcController* rpc_controller_;
+  raw_ptr<EthJsonRpcController> rpc_controller_ = nullptr;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };

@@ -12,6 +12,7 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -173,8 +174,8 @@ class BraveWalletService : public KeyedService,
       add_suggest_token_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
-  KeyringController* keyring_controller_;
-  PrefService* prefs_;
+  raw_ptr<KeyringController> keyring_controller_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::RepeatingTimer p3a_periodic_timer_;

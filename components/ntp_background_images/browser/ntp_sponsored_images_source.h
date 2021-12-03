@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -56,7 +57,7 @@ class NTPSponsoredImagesSource : public content::URLDataSource {
   bool IsTopSiteFaviconPath(const std::string& path) const;
   base::FilePath GetTopSiteFaviconFilePath(const std::string& path) const;
 
-  NTPBackgroundImagesService* service_;  // not owned
+  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
   base::WeakPtrFactory<NTPSponsoredImagesSource> weak_factory_;
 };
 

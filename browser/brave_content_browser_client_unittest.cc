@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -61,7 +62,7 @@ class BraveWalleBrowserClientUnitTest
  private:
   scoped_refptr<const Extension> extension_;
   content::ContentBrowserClient client_;
-  content::ContentBrowserClient* original_client_;
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
 };
 
 TEST_F(BraveWalleBrowserClientUnitTest,

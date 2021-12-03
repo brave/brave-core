@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -66,7 +67,7 @@ class SpeedreaderModeBubble : public SpeedreaderBubbleView,
   void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 
-  SpeedreaderTabHelper* tab_helper_;  // weak.
+  raw_ptr<SpeedreaderTabHelper> tab_helper_ = nullptr;  // weak.
 
   views::StyledLabel* site_title_label_ = nullptr;         // weak.
   views::ToggleButton* site_toggle_button_ = nullptr;      // weak.

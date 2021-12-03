@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -49,7 +50,7 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
                       absl::optional<std::string> input);
   int GetWallpaperIndexFromPath(const std::string& path) const;
 
-  NTPBackgroundImagesService* service_;  // not owned
+  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
   base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_;
 };
 

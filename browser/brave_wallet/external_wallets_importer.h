@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
@@ -68,7 +69,7 @@ class ExternalWalletsImporter {
 
   bool is_external_wallet_installed_for_testing_ = false;
   mojom::ExternalWalletType type_;
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   std::unique_ptr<base::DictionaryValue> storage_data_;
   scoped_refptr<extensions::Extension> extension_;
 

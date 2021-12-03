@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_SHORTCUT_MANAGER_WIN_H_
 #define BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_SHORTCUT_MANAGER_WIN_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/profiles/profile_shortcut_manager_win.h"
 
 class BraveProfileShortcutManagerWin : public ProfileShortcutManagerWin {
@@ -23,7 +24,7 @@ class BraveProfileShortcutManagerWin : public ProfileShortcutManagerWin {
                              base::FilePath* icon_path) override;
 
  private:
-  ProfileManager* profile_manager_;
+  raw_ptr<ProfileManager> profile_manager_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_SHORTCUT_MANAGER_WIN_H_

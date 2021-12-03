@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
@@ -49,7 +50,7 @@ class BraveAdsJSHandler final {
       std::unique_ptr<v8::Global<v8::Context>> context_old,
       bool response);
 
-  content::RenderFrame* render_frame_;
+  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<brave_ads::mojom::BraveAdsHost> brave_ads_;
 };
 

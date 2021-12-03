@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/features.h"
@@ -46,7 +47,7 @@ class DecentralizedDnsServiceBrowserTest : public InProcessBrowserTest {
 
  private:
   base::test::ScopedFeatureList feature_list_;
-  StubResolverConfigReader* stub_config_reader_;
+  raw_ptr<StubResolverConfigReader> stub_config_reader_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,

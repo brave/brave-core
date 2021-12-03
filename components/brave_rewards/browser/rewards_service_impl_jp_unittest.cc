@@ -6,6 +6,7 @@
 #include <map>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/mojom_structs.h"
@@ -92,7 +93,7 @@ class RewardsServiceJPTest : public testing::Test {
   // base::test::ScopedTaskEnvironment
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Profile> profile_;
-  RewardsServiceImpl* rewards_service_;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
 };

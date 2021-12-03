@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_GCM_DRIVER_BRAVE_GCM_CHANNEL_STATUS_H_
 #define BRAVE_BROWSER_GCM_DRIVER_BRAVE_GCM_CHANNEL_STATUS_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
 
 class Profile;
@@ -21,7 +22,7 @@ class BraveGCMChannelStatus : public base::SupportsUserData::Data {
   void UpdateGCMDriverStatus();
 
  private:
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   bool gcm_enabled_;
 };
 

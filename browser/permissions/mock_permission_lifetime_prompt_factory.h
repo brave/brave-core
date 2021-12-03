@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/permissions/mock_permission_lifetime_prompt.h"
 #include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request.h"
@@ -63,7 +64,7 @@ class MockPermissionLifetimePromptFactory {
   base::RepeatingClosure show_bubble_quit_closure_;
 
   // The bubble manager that will be associated with this factory.
-  PermissionRequestManager* manager_;
+  raw_ptr<PermissionRequestManager> manager_ = nullptr;
 };
 
 }  // namespace permissions

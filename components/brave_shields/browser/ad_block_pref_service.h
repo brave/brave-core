@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -28,8 +29,8 @@ class AdBlockPrefService : public KeyedService {
  private:
   void OnPreferenceChanged(const std::string& pref_name);
 
-  AdBlockService* ad_block_service_;  // not owned
-  PrefService* prefs_;                // not owned
+  raw_ptr<AdBlockService> ad_block_service_ = nullptr;  // not owned
+  raw_ptr<PrefService> prefs_ = nullptr;                // not owned
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
 };

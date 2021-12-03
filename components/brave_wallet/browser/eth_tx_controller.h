@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
@@ -216,9 +217,9 @@ class EthTxController : public KeyedService,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
-  EthJsonRpcController* rpc_controller_;          // NOT OWNED
-  KeyringController* keyring_controller_;         // NOT OWNED
-  AssetRatioController* asset_ratio_controller_;  // NOT OWNED
+  raw_ptr<EthJsonRpcController> rpc_controller_ = nullptr;          // NOT OWNED
+  raw_ptr<KeyringController> keyring_controller_ = nullptr;         // NOT OWNED
+  raw_ptr<AssetRatioController> asset_ratio_controller_ = nullptr;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;

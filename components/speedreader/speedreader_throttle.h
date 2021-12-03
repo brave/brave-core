@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
@@ -57,7 +58,7 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   void Resume();
 
  private:
-  SpeedreaderRewriterService* rewriter_service_;  // not owned
+  raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned
   base::WeakPtr<SpeedreaderResultDelegate> result_delegate_;
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   base::WeakPtrFactory<SpeedReaderThrottle> weak_factory_{this};

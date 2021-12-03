@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -50,9 +51,9 @@ class CookiePrefService : public KeyedService,
                                ContentSettingsType content_type) override;
 
   Lock lock_;
-  HostContentSettingsMap* host_content_settings_map_;
-  PrefService* prefs_;
-  PrefService* local_state_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 };
 

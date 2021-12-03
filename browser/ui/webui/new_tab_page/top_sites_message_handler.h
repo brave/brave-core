@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"
@@ -59,7 +60,7 @@ class TopSitesMessageHandler : public content::WebUIMessageHandler,
   void HandleEditTopSite(base::Value::ConstListView args);
   void HandleAddNewTopSite(base::Value::ConstListView args);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<ntp_tiles::MostVisitedSites> most_visited_sites_;
   GURL last_blocklisted_;
   base::Value top_site_tiles_;

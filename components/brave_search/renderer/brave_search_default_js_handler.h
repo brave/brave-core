@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -52,7 +53,7 @@ class BraveSearchDefaultJSHandler {
       std::unique_ptr<v8::Global<v8::Context>> context_old,
       const bool response);
 
-  content::RenderFrame* render_frame_;
+  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<brave_search::mojom::BraveSearchDefault> brave_search_default_;
 };
 

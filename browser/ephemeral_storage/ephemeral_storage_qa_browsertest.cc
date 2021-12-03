@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -310,7 +311,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
@@ -350,7 +351,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-5').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
@@ -373,7 +374,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
@@ -406,8 +407,8 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  content::WebContents* original_tab_;
-  TabStripModel* tabs_;
+  raw_ptr<content::WebContents> original_tab_ = nullptr;
+  raw_ptr<TabStripModel> tabs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {

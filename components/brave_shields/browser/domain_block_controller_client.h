@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "url/gurl.h"
 
@@ -50,7 +51,8 @@ class DomainBlockControllerClient
 
  private:
   const GURL request_url_;
-  AdBlockCustomFiltersService* ad_block_custom_filters_service_;
+  raw_ptr<AdBlockCustomFiltersService> ad_block_custom_filters_service_{
+      nullptr};
   bool dont_warn_again_;
 };
 

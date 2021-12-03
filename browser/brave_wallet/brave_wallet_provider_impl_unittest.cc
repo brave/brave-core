@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -566,14 +567,14 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   EthJsonRpcController* eth_json_rpc_controller_;
-  BraveWalletService* brave_wallet_service_;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
 
  private:
-  KeyringController* keyring_controller_;
+  raw_ptr<KeyringController> keyring_controller_ = nullptr;
   content::TestWebContentsFactory factory_;
-  EthTxController* eth_tx_controller_;
-  AssetRatioController* asset_ratio_controller_;
+  raw_ptr<EthTxController> eth_tx_controller_;
+  raw_ptr<AssetRatioController> asset_ratio_controller_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
   network::TestURLLoaderFactory url_loader_factory_;

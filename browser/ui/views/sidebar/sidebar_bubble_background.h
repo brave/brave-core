@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUBBLE_BACKGROUND_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUBBLE_BACKGROUND_H_
 
+#include "base/memory/raw_ptr.h"
 #include "ui/views/background.h"
 
 namespace views {
@@ -26,7 +27,7 @@ class SidebarBubbleBackground : public views::Background {
   void Paint(gfx::Canvas* canvas, views::View* view) const override;
 
  private:
-  BubbleBorderWithArrow* border_;
+  raw_ptr<BubbleBorderWithArrow> border_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUBBLE_BACKGROUND_H_

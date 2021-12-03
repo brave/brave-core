@@ -9,6 +9,7 @@
 #include "base/gtest_prod_util.h"
 #include "components/permissions/permission_request.h"
 
+#include "base/memory/raw_ptr.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -43,7 +44,7 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
 
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   bool dont_ask_widevine_install_ = false;
 

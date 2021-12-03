@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -50,9 +51,9 @@ class EthPendingTxTracker {
   // (txHash, count)
   base::flat_map<std::string, uint8_t> dropped_blocks_counter_;
 
-  EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
-  EthNonceTracker* nonce_tracker_;
+  raw_ptr<EthTxStateManager> tx_state_manager_ = nullptr;
+  raw_ptr<EthJsonRpcController> rpc_controller_ = nullptr;
+  raw_ptr<EthNonceTracker> nonce_tracker_ = nullptr;
 
   base::WeakPtrFactory<EthPendingTxTracker> weak_factory_;
 };

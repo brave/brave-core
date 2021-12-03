@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"
@@ -145,7 +146,7 @@ class BraveWebTorrentNavigationThrottleUnitTest
  private:
   scoped_refptr<const Extension> extension_;
   MockBrowserClient client_;
-  content::ContentBrowserClient* original_client_;
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
   ScopedTestingLocalState local_state_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;

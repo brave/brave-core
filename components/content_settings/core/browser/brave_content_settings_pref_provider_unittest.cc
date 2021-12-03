@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -158,7 +159,7 @@ class ShieldsSetting {
     }
   }
 
-  BravePrefProvider* provider_;
+  raw_ptr<BravePrefProvider> provider_ = nullptr;
   const std::vector<GURLSourcePair> urls_;
 };
 

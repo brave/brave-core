@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -382,9 +383,9 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 
-  brave_ads::AdsService* ads_service_;
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
 
   TestRewardsServiceObserver rewards_service_observer_;
 

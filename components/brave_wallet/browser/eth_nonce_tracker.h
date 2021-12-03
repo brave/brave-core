@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -39,8 +40,8 @@ class EthNonceTracker {
                          bool status,
                          uint256_t result);
 
-  EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
+  raw_ptr<EthTxStateManager> tx_state_manager_ = nullptr;
+  raw_ptr<EthJsonRpcController> rpc_controller_ = nullptr;
 
   base::Lock nonce_lock_;
 
