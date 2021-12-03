@@ -283,7 +283,9 @@ public class PortfolioFragment extends Fragment
 
     @Override
     public void onAssetClick(ErcToken asset) {
-        Utils.openAssetDetailsActivity(getActivity(), asset.symbol, asset.name,
+        String chainName = mSpinner.getSelectedItem().toString();
+        String chainId = Utils.getNetworkConst(getActivity(), chainName);
+        Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
                 asset.contractAddress, asset.logo, asset.decimals);
     }
 

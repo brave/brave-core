@@ -72,6 +72,7 @@ public class AsyncUtils {
         public Boolean success;
         public String balance;
         public ErcToken userAsset;
+        public String accountAddress;
 
         public GetBalanceResponseBaseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
