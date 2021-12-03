@@ -12,7 +12,7 @@ extension BraveWallet.AccountInfo {
   static var previewAccount: BraveWallet.AccountInfo {
     let account = BraveWallet.AccountInfo()
     account.name = "Account 1"
-    account.address = "0x879240B2D6179E9EC40BC2AFFF"
+    account.address = "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
     return account
   }
 }
