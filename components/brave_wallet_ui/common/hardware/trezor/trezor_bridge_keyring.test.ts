@@ -237,7 +237,11 @@ test('Bridge not ready', () => {
 test('Device is busy', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
-  hardwareTransport.contentWindow = {}
+  hardwareTransport.contentWindow = {
+    postMessage: () => {
+      // This is intentional
+    }
+  }
   hardwareTransport.createBridge = async () => {
     return hardwareTransport
   }
