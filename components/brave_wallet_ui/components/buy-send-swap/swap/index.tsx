@@ -24,7 +24,9 @@ import {
   SwapDisclaimerText,
   SwapDisclaimerButton,
   SwapDisclaimerRow,
-  AlertIcon
+  AlertIcon,
+  SwapFeesNoticeRow,
+  SwapFeesNoticeText
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
@@ -178,6 +180,13 @@ function Swap (props: Props) {
         customSlippageTolerance={customSlippageTolerance}
         onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
+
+      <SwapFeesNoticeRow>
+        <SwapFeesNoticeText>
+          {getLocale('braveWalletSwapFeesNotice')}
+        </SwapFeesNoticeText>
+      </SwapFeesNoticeRow>
+
       <SwapNavButton
         disabled={isSubmitDisabled}
         buttonType='primary'
