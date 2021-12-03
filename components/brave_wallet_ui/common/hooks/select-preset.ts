@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BigNumber from 'bignumber.js'
-import { formatBalance } from '../../utils/format-balances'
+import { formatInputValue } from '../../utils/format-balances'
 import { WalletAccountType, AccountAssetOptionType } from '../../constants/types'
 
 export default function usePreset (
@@ -22,8 +22,13 @@ export default function usePreset (
         token.asset.symbol === selectedAsset.asset.symbol
       )
     )
-    const amount = new BigNumber(asset?.assetBalance || '0').times(percent).toString()
-    const formattedAmount = formatBalance(amount.toString(), asset?.asset.decimals ?? 18)
+
+    const decimals = asset?.asset.decimals ?? 18
+    const amountWeiBN = new BigNumber(asset?.assetBalance || '0').times(percent)
+
+    const formattedAmount = (percent === 1)
+      ? formatInputValue(amountWeiBN.toString(), decimals, false)
+      : formatInputValue(amountWeiBN.toString(), decimals)
 
     if (sendOrSwap === 'send') {
       onSetSendAmount(formattedAmount)
