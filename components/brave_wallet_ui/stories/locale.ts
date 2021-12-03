@@ -78,6 +78,7 @@ provideStrings({
   braveWalletSendPlaceholder: '0x address or url',
   braveWalletSwapDisclaimer: 'Brave uses $10x$2 as a DEX aggregator.',
   braveWalletSwapDisclaimerDescription: '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
+  braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
