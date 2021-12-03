@@ -111,6 +111,7 @@ public class Utils {
     public static final int ACCOUNT_REQUEST_CODE = 2;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
+    public static final String DEX_AGGREGATOR_URL = "https://0x.org/";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
