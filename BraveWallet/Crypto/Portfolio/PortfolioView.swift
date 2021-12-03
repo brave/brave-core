@@ -59,6 +59,8 @@ struct PortfolioView: View {
   
   @State private var tableInset: CGFloat = -16.0
   
+  @State private var selectedToken: BraveWallet.ERCToken?
+  
   var body: some View {
     List {
       Section(
@@ -71,13 +73,9 @@ struct PortfolioView: View {
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
         ForEach(portfolioStore.userVisibleAssets) { asset in
-          NavigationLink(
-            destination: AssetDetailView(
-              assetDetailStore: cryptoStore.assetDetailStore(for: asset.token),
-              keyringStore: keyringStore,
-              networkStore: networkStore
-            )
-          ) {
+          Button(action: {
+            selectedToken = asset.token
+          }) {
             PortfolioAssetView(
               image: AssetIconView(token: asset.token),
               title: asset.token.name,
@@ -102,6 +100,22 @@ struct PortfolioView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .background(
+      NavigationLink(isActive: Binding(
+        get: { selectedToken != nil },
+        set: { if !$0 { selectedToken = nil } }
+      ), destination: {
+        if let token = selectedToken {
+          AssetDetailView(
+            assetDetailStore: cryptoStore.assetDetailStore(for: token),
+            keyringStore: keyringStore,
+            networkStore: networkStore
+          )
+        }
+      }, label: {
+        EmptyView()
+      })
+    )
     .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
     .introspectTableView { tableView in
