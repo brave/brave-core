@@ -271,12 +271,15 @@ public class CardBuilderFeedCard {
                                 adLogo.setCompoundDrawablesWithIntrinsicBounds(
                                         R.drawable.ic_rewards, 0, 0, 0);
                                 adLogo.setText(R.string.brave_news_ad);
-                                adLogo.setTextColor(R.color.brave_theme_color);
+                                adLogo.setTextColor(mActivity.getResources().getColor(
+                                        R.color.brave_theme_color));
                                 GradientDrawable gd = new GradientDrawable();
                                 gd.setColor(mActivity.getResources().getColor(
                                         android.R.color.transparent));
                                 gd.setCornerRadius(15);
-                                gd.setStroke(1, R.color.brave_theme_color);
+                                gd.setStroke(1,
+                                        mActivity.getResources().getColor(
+                                                R.color.brave_theme_color));
                                 adLogo.setBackground(gd);
                                 adLogo.setPadding(5, 5, 10, 5);
                                 adLogo.setLayoutParams(adLogoParams);
