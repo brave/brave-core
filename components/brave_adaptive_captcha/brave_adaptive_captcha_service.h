@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -79,8 +80,9 @@ class BraveAdaptiveCaptchaService
                        const ledger::type::Result result) override;
   void OnCompleteReset(const bool success) override;
 
-  PrefService* prefs_;
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<brave_rewards::RewardsService> rewards_service_ =
+      nullptr;  // NOT OWNED
   std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> captcha_challenge_;
 };

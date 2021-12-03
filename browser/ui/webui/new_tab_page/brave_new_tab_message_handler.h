@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
@@ -77,7 +78,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 #endif

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 
 namespace network {
@@ -44,7 +45,7 @@ class WaybackMachineURLFetcher final {
   void OnWaybackURLFetched(const GURL& orignal_url,
                            std::unique_ptr<std::string> response_body);
 
-  Client* client_;
+  raw_ptr<Client> client_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> wayback_url_loader_;
 };

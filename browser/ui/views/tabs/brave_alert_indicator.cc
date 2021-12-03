@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/common/brave_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
@@ -58,7 +59,7 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
   }
 
  private:
-  BraveAlertIndicator* host_view_;
+  raw_ptr<BraveAlertIndicator> host_view_ = nullptr;
 };
 
 BraveAlertIndicator::BraveAlertIndicator(Tab* parent_tab)

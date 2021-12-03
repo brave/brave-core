@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -92,7 +93,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnCompleteReset(const bool success) override;
 
  private:
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace brave_rewards

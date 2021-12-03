@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
@@ -119,7 +120,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  HostContentSettingsMap* content_settings_;
+  raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   scoped_refptr<const extensions::Extension> extension_;
 };
 

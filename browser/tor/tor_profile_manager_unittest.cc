@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/common/pref_names.h"
@@ -49,7 +50,7 @@ class TorProfileManagerUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<TestingProfileManager> profile_manager_;
 
   TorProfileManagerUnitTest(const TorProfileManagerUnitTest&) = delete;

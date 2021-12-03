@@ -16,6 +16,7 @@
 
 #include "base/callback.h"
 #include "base/containers/unique_ptr_adapters.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -126,7 +127,7 @@ class BraveProxyingURLLoaderFactory
     const int frame_tree_node_id_;
     const uint32_t options_;
 
-    content::BrowserContext* browser_context_;
+    raw_ptr<content::BrowserContext> browser_context_ = nullptr;
     const net::MutableNetworkTrafficAnnotationTag traffic_annotation_;
 
     // This is our proxy's receiver that will talk to the original client. It
@@ -219,7 +220,7 @@ class BraveProxyingURLLoaderFactory
   void MaybeRemoveProxy();
 
   BraveRequestHandler* const request_handler_;
-  content::BrowserContext* browser_context_;
+  raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const int render_process_id_;
   const int frame_tree_node_id_;
 

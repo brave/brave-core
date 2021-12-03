@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/android/scoped_java_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "net/base/completion_once_callback.h"
 
 namespace safetynet_check {
@@ -41,7 +42,7 @@ class SafetyNetCheck {
  private:
     base::android::ScopedJavaGlobalRef<jobject> java_obj_;
     ClientAttestationCallback attest_callback_;
-    SafetyNetCheckRunner* runner_;
+    raw_ptr<SafetyNetCheckRunner> runner_ = nullptr;
 };
 
 class SafetyNetCheckRunner {

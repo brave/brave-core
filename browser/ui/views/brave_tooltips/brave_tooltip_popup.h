@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_view.h"
@@ -142,7 +143,7 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   void FadeIn();
   void FadeOut();
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
   std::unique_ptr<BraveTooltip> tooltip_;
 

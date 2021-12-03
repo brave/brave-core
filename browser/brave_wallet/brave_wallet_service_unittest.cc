@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
@@ -531,7 +532,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
-  KeyringService* keyring_service_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
   JsonRpcService* json_rpc_service_;
   EthTxService* eth_tx_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;

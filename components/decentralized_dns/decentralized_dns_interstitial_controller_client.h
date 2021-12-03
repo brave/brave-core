@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "url/gurl.h"
 
@@ -52,7 +53,7 @@ class DecentralizedDnsInterstitialControllerClient
   void SetResolveMethodAndReload(ResolveMethodTypes type);
 
   const GURL request_url_;
-  PrefService* local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
 }  // namespace decentralized_dns

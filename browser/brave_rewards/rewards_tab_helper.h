@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -58,7 +59,7 @@ class RewardsTabHelper : public RewardsServiceObserver,
 #endif
 
   SessionID tab_id_;
-  RewardsService* rewards_service_;  // NOT OWNED
+  raw_ptr<RewardsService> rewards_service_ = nullptr;  // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

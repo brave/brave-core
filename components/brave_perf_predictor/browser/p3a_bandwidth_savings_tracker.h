@@ -9,6 +9,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -33,7 +35,7 @@ class P3ABandwidthSavingsTracker {
   void RecordSavings(uint64_t savings);
 
  private:
-  PrefService* user_prefs_;
+  raw_ptr<PrefService> user_prefs_ = nullptr;
   std::unique_ptr<base::Clock> clock_;  // Injected clock for testing
   void StoreSavingsHistogram(uint64_t savings_bytes);
 };

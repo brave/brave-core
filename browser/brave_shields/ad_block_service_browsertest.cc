@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
@@ -724,7 +725,8 @@ class TestAdBlockSubscriptionServiceManagerObserver
  private:
   void OnServiceUpdateEvent() override { run_loop_.Quit(); }
   base::RunLoop run_loop_;
-  brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager_;
+  raw_ptr<brave_shields::AdBlockSubscriptionServiceManager>
+      sub_service_manager_ = nullptr;
 };
 
 // This test fails intermittently on Windows; see

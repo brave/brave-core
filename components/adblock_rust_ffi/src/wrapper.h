@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+
 extern "C" {
 #include "lib.h"  // NOLINT
 }
@@ -102,7 +104,7 @@ class ADBLOCK_EXPORT Engine {
  private:
   Engine(const Engine&) = delete;
   void operator=(const Engine&) = delete;
-  C_Engine* raw;
+  raw_ptr<C_Engine> raw = nullptr;
 };
 
 }  // namespace adblock

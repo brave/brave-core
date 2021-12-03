@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
@@ -123,7 +124,7 @@ class IpfsNotConnectedPageBrowserTest : public InProcessBrowserTest {
 
  private:
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
-  IpfsService* ipfs_service_;
+  raw_ptr<IpfsService> ipfs_service_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
   GURL ipfs_url_;
   GURL gateway_url_;

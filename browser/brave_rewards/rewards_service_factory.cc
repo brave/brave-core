@@ -41,7 +41,7 @@
 
 namespace brave_rewards {
 
-RewardsService* testing_service_;
+RewardsService* testing_service_ = nullptr;
 
 // static
 RewardsService* RewardsServiceFactory::GetForProfile(

@@ -14,6 +14,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/version.h"
@@ -79,12 +80,15 @@ class GreaselionServiceImpl : public GreaselionService,
   // GreaselionDownloadService::Observer:
   void OnRulesReady(GreaselionDownloadService* download_service) override;
 
-  GreaselionDownloadService* download_service_;  // NOT OWNED
+  raw_ptr<GreaselionDownloadService> download_service_ = nullptr;  // NOT OWNED
   GreaselionFeatures state_;
   const base::FilePath install_directory_;
-  extensions::ExtensionSystem* extension_system_;      // NOT OWNED
-  extensions::ExtensionService* extension_service_;    // NOT OWNED
-  extensions::ExtensionRegistry* extension_registry_;  // NOT OWNED
+  raw_ptr<extensions::ExtensionSystem> extension_system_ =
+      nullptr;  // NOT OWNED
+  raw_ptr<extensions::ExtensionService> extension_service_ =
+      nullptr;  // NOT OWNED
+  raw_ptr<extensions::ExtensionRegistry> extension_registry_ =
+      nullptr;  // NOT OWNED
   bool all_rules_installed_successfully_;
   bool update_in_progress_;
   bool update_pending_;

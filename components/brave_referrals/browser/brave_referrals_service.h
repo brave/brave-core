@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
@@ -132,7 +133,7 @@ class BraveReferralsService : public ProfileManagerObserver {
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   ReferralInitializedCallback referral_initialized_callback_;
-  PrefService* pref_service_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   const std::string api_key_;
   const std::string platform_;
   std::string promo_code_;

@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
@@ -70,7 +71,7 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   PrefService* local_state() override { return local_state_; }
 
  private:
-  PrefService* local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
 }  // namespace

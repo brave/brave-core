@@ -15,6 +15,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/queue.h"
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -102,7 +103,7 @@ class CryptoDotComService : public KeyedService {
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<CryptoDotComService> weak_factory_;

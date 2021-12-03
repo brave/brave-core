@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
@@ -44,8 +45,8 @@ class BraveRewardsActionStubView : public views::LabelButton {
   void ButtonPressed();
 
   StringPrefMember badge_text_pref_;
-  Profile* profile_;
-  Delegate* delegate_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Delegate> delegate_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_REWARDS_ACTION_STUB_VIEW_H_

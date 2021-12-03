@@ -39,17 +39,14 @@ int GetViewPadding() {
 }  // namespace
 
 BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
-    : instructions_(NULL),
-      import_link_(NULL),
-      updated_colors_(false),
-      browser_(browser) {
+    : updated_colors_(false), browser_(browser) {
   SetID(BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW);
   instructions_ =
       new views::Label(l10n_util::GetStringUTF16(IDS_BOOKMARKS_NO_ITEMS),
                        kBookmarkBarTextContext);
   instructions_->SetAutoColorReadabilityEnabled(false);
   instructions_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  AddChildView(instructions_);
+  AddChildView(instructions_.get());
 
   if (browser_defaults::kShowImportOnBookmarkBar) {
     import_link_ =
@@ -63,7 +60,7 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
     import_link_->set_context_menu_controller(this);
     import_link_->SetAutoColorReadabilityEnabled(false);
     import_link_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-    AddChildView(import_link_);
+    AddChildView(import_link_.get());
   }
 }
 

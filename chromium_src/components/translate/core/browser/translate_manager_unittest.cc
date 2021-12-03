@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -155,7 +156,7 @@ class TranslateManagerTest : public ::testing::Test {
   ProfilePrefRegistration registration_;
   // TODO(groby): request TranslatePrefs from |mock_translate_client_| instead.
   TranslatePrefs translate_prefs_;
-  TranslateDownloadManager* manager_;
+  raw_ptr<TranslateDownloadManager> manager_ = nullptr;
 
   TestNetworkChangeNotifier network_notifier_;
   translate::testing::MockTranslateDriver driver_;

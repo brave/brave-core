@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 
@@ -40,7 +41,7 @@ class TopSitesProvider : public AutocompleteProvider {
       const std::string &site,
       const size_t &foundPos);
 
-  AutocompleteProviderClient* client_;
+  raw_ptr<AutocompleteProviderClient> client_ = nullptr;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_TOPSITES_PROVIDER_H_

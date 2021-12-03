@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "url/gurl.h"
@@ -59,7 +60,8 @@ class DomainBlockControllerClient
   void OnCanEnable1PESForUrl(bool can_enable_1pes);
 
   const GURL request_url_;
-  AdBlockCustomFiltersService* ad_block_custom_filters_service_;
+  raw_ptr<AdBlockCustomFiltersService> ad_block_custom_filters_service_ =
+      nullptr;
   ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_;
   bool dont_warn_again_;
 

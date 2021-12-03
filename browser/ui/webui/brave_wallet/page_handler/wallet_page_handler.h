@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -29,7 +30,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   void ShowApprovePanelUI() override;
 
  private:
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
   mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
   base::WeakPtrFactory<WalletPageHandler> weak_ptr_factory_;
 };

@@ -11,6 +11,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -72,9 +73,9 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
       base::Value* data);
 
-  Profile* profile_;
-  ViewCounterService* view_counter_service_;
-  NTPBackgroundImagesService* background_images_service_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<ViewCounterService> view_counter_service_ = nullptr;
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
 };
 

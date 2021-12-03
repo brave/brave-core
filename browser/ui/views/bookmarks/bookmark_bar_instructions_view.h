@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_INSTRUCTIONS_VIEW_H_
 
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
@@ -48,13 +49,13 @@ class BookmarkBarInstructionsView : public views::View,
   void UpdateColors();
   void LinkClicked();
 
-  views::Label* instructions_;
-  views::Link* import_link_;
+  raw_ptr<views::Label> instructions_ = nullptr;
+  raw_ptr<views::Link> import_link_ = nullptr;
 
   // Have the colors of the child views been updated? This is initially false
   // and set to true once we have a valid ThemeProvider.
   bool updated_colors_;
-  Browser* browser_;
+  raw_ptr<Browser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_INSTRUCTIONS_VIEW_H_

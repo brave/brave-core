@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/ptr_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "brave/common/brave_constants.h"
@@ -75,7 +76,7 @@ class ParentProfileData : public base::SupportsUserData::Data {
 
   explicit ParentProfileData(Profile* profile);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   base::FilePath path_;
 };
 

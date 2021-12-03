@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -63,8 +64,9 @@ class RewardsBrowserTestPromotion
   bool should_succeed_ = true;
 
   ledger::type::PromotionPtr promotion_;
-  Browser* browser_;  // NOT OWNED
-  brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED
+  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ =
+      nullptr;  // NOT OWNED
 };
 
 }  // namespace rewards_browsertest

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
 #include "brave/components/weekly_storage/weekly_event_storage.h"
@@ -96,7 +97,7 @@ class SearchEngineTracker : public KeyedService,
   GURL previous_search_url_;
   WeeklyEventStorage switch_record_;
 
-  TemplateURLService* template_url_service_;
+  raw_ptr<TemplateURLService> template_url_service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_

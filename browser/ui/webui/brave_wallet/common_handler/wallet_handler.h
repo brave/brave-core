@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -46,7 +47,7 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;
   mojo::Receiver<brave_wallet::mojom::WalletHandler> receiver_;
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
   base::WeakPtrFactory<WalletHandler> weak_ptr_factory_;
 };
 

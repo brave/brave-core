@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -41,8 +42,8 @@ class EthNonceTracker {
                          mojom::ProviderError error,
                          const std::string& error_message);
 
-  EthTxStateManager* tx_state_manager_;
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<EthTxStateManager> tx_state_manager_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
   base::Lock nonce_lock_;
 

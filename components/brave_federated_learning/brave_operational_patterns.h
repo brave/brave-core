@@ -26,6 +26,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 
@@ -74,7 +75,7 @@ class BraveOperationalPatterns final {
 
   void MaybeResetCollectionId();
 
-  PrefService* pref_service_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   std::unique_ptr<base::RepeatingTimer> collection_slot_periodic_timer_;
   std::unique_ptr<base::RetainingOneShotTimer>
       simulate_local_training_step_timer_;

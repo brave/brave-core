@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -66,8 +67,9 @@ class TorProfileServiceImpl : public TorProfileService,
 
   content::BrowserContext* context_ = nullptr;
   BraveTorClientUpdater* tor_client_updater_ = nullptr;
-  TorLauncherFactory* tor_launcher_factory_;  // Singleton
-  net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED
+  raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;  // Singleton
+  raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
+      nullptr;  // NOT OWNED
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
 };
 

@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -51,7 +52,7 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
-  BookmarkModel* model_;
+  raw_ptr<BookmarkModel> model_ = nullptr;
 };
 
 TEST_F(BraveBookmarkContextMenuControllerTest,

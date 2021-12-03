@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
@@ -36,7 +37,7 @@ class ObserverLogger : public RenderProcessHostObserver {
     observed_host_->RemoveObserver(this);
     EXPECT_EQ(info.exit_code, 0);
   }
-  RenderProcessHost* observed_host_;
+  raw_ptr<RenderProcessHost> observed_host_ = nullptr;
 };
 
 }  // namespace

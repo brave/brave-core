@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
@@ -942,7 +943,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // Prepare test cases.
   struct TestCase {
-    RenderFrameHost* send;
+    raw_ptr<RenderFrameHost> send = nullptr;
     std::vector<RenderFrameHost*> expect_received;
   } const kTestCases[] = {
       {// Send from a.com main frame.

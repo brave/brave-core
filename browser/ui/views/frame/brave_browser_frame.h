@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 
 class BraveBrowserFrame : public BrowserFrame {
@@ -18,7 +19,7 @@ class BraveBrowserFrame : public BrowserFrame {
   const ui::NativeTheme* GetNativeTheme() const override;
 
  private:
-  BrowserView* view_;
+  raw_ptr<BrowserView> view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

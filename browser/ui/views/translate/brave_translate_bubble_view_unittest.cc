@@ -5,8 +5,9 @@
 
 #include <string>
 
-#include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/events/keycodes/dom/dom_code.h"
 #include "ui/views/controls/button/button.h"
@@ -230,8 +231,8 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   }
 
   std::unique_ptr<views::Widget> anchor_widget_;
-  MockTranslateBubbleModel* mock_model_;
-  MockBraveTranslateBubbleView* bubble_;
+  raw_ptr<MockTranslateBubbleModel> mock_model_ = nullptr;
+  raw_ptr<MockBraveTranslateBubbleView> bubble_ = nullptr;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

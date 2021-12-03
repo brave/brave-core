@@ -14,10 +14,11 @@
 
 #include "base/android/jni_weak_ref.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 namespace brave_rewards {
@@ -240,7 +241,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                                   double earnings_last_month);
 
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
-    brave_rewards::RewardsService* brave_rewards_service_;
+    raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
     ledger::type::RewardsParameters parameters_;
     ledger::type::Balance balance_;
     ledger::type::AutoContributePropertiesPtr auto_contrib_properties_;

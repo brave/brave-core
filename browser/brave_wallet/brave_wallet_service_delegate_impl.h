@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
@@ -90,7 +91,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   std::string GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   BrowserTabStripTracker browser_tab_strip_tracker_;
   base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
 

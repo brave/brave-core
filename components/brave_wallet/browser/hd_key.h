@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h"
 
 namespace brave_wallet {
@@ -97,7 +98,7 @@ class HDKey {
   std::vector<uint8_t> public_key_;
   std::vector<uint8_t> chain_code_;
 
-  secp256k1_context* secp256k1_ctx_;
+  raw_ptr<secp256k1_context> secp256k1_ctx_ = nullptr;
 
   HDKey(const HDKey&) = delete;
   HDKey& operator=(const HDKey&) = delete;

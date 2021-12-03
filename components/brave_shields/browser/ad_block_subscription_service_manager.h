@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/synchronization/lock.h"
@@ -109,7 +110,8 @@ class AdBlockSubscriptionServiceManager {
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
                                     base::TimeDelta* retry_interval);
 
-  brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
+  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_ =
+      nullptr;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;

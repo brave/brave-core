@@ -17,6 +17,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
@@ -772,9 +773,10 @@ class RewardsServiceImpl : public RewardsService,
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionService* greaselion_service_;  // NOT OWNED
+  raw_ptr<greaselion::GreaselionService> greaselion_service_ =
+      nullptr;  // NOT OWNED
 #endif
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;

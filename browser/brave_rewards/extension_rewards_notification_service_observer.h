@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_EXTENSION_REWARDS_NOTIFICATION_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_EXTENSION_REWARDS_NOTIFICATION_SERVICE_OBSERVER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 
@@ -46,7 +47,7 @@ class ExtensionRewardsNotificationServiceObserver
           rewards_notifications_list) override;
 
  private:
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace brave_rewards

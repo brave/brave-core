@@ -11,6 +11,7 @@
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
@@ -92,8 +93,8 @@ class BraveNewsController : public KeyedService,
   void CheckForPublishersUpdate();
   void Prefetch();
 
-  PrefService* prefs_;
-  brave_ads::AdsService* ads_service_;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   PublishersController publishers_controller_;
   FeedController feed_controller_;

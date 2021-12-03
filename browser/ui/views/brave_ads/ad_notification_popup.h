@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/brave_ads/ad_notification.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -94,7 +95,7 @@ class AdNotificationPopup : public views::WidgetDelegateView,
     kFadeOut,
   };
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
   void CreatePopup(gfx::NativeWindow browser_native_window);
 

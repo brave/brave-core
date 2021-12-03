@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
@@ -154,7 +155,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   mojo::SimpleWatcher body_producer_watcher_;
 
   // Not Owned
-  SpeedreaderRewriterService* rewriter_service_;
+  raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;
 
   base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };

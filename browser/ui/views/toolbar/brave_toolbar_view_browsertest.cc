@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -77,7 +78,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 
  private:
-  ToolbarButtonProvider* toolbar_button_provider_;
+  raw_ptr<ToolbarButtonProvider> toolbar_button_provider_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   base::test::ScopedFeatureList scoped_feature_list_;

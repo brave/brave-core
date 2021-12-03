@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
@@ -43,7 +44,7 @@ class SidebarItemAddButton : public SidebarButtonView,
 
   void UpdateButtonImages();
 
-  BraveBrowser* browser_;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
   base::OneShotTimer timer_;
   base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{

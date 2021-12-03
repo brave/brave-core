@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -53,8 +54,8 @@ class BraveFederatedLearningService : public KeyedService {
   bool IsP3AEnabled();
   bool IsOperationalPatternsEnabled();
 
-  PrefService* prefs_;
-  PrefService* local_state_;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
   std::unique_ptr<BraveOperationalPatterns> operational_patterns_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
