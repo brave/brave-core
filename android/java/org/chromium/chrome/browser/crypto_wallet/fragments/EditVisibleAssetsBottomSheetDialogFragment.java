@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -195,18 +196,18 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                 assert braveWalletService != null;
                 assert mChainId != null && !mChainId.isEmpty();
 
-                braveWalletService.getUserAssets(mChainId, (userAssets) -> {
-                    ercTokenRegistry.getAllTokens(tokens -> {
+                TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId, (userAssets) -> {
+                    TokenUtils.getAllTokensFiltered(ercTokenRegistry, tokens -> {
                         tokens = Utils.fixupTokensRegistry(tokens, mChainId);
                         setUpAssetsList(view, tokens, userAssets);
                     });
                 });
             } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
-                ercTokenRegistry.getAllTokens(
+                TokenUtils.getAllTokensFiltered(ercTokenRegistry,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                ercTokenRegistry.getBuyTokens(
+                TokenUtils.getBuyTokensFiltered(ercTokenRegistry,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             }
         }
