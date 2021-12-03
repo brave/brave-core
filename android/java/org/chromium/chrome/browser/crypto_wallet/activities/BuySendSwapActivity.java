@@ -205,6 +205,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_buy_send_swap);
 
+        mAccountSpinner = findViewById(R.id.accounts_spinner);
         mActivateAllowanceTxId = "";
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
@@ -760,6 +761,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             EditText fromValueText = findViewById(R.id.from_value_text);
             fromValueText.addTextChangedListener(filterTextWatcherFrom);
             toValueText.addTextChangedListener(filterTextWatcherTo);
+            findViewById(R.id.brave_fee).setVisibility(View.VISIBLE);
+            TextView dexAggregator = findViewById(R.id.dex_aggregator);
+            dexAggregator.setVisibility(View.VISIBLE);
+            dexAggregator.setOnClickListener(v -> {
+                TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
+                TabUtils.bringChromeTabbedActivityToTheTop(this);
+            });
         }
 
         btnBuySendSwap.setOnClickListener(v -> {
@@ -1356,7 +1364,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     accountTitles[currentPos] = info.address;
                     currentPos++;
                 }
-                mAccountSpinner = findViewById(R.id.accounts_spinner);
                 mCustomAccountAdapter = new AccountSpinnerAdapter(
                         getApplicationContext(), accountNames, accountTitles);
                 mAccountSpinner.setAdapter(mCustomAccountAdapter);
