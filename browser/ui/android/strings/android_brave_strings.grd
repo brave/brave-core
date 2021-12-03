@@ -1932,7 +1932,7 @@ Are you sure you want to do this?
       Enter your password to unlock
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Password must be at least 7 characters containg at least one number, at least one letter and at least one non-alphanumeric character
+      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
@@ -2119,7 +2119,7 @@ Are you sure you want to do this?
       Automatically lock Brave Wallet
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_HOW_MANY_MINUTES" desc="Brave wallet autolock dialog text">
-      How many minutes do you want before automatically lock your brave wallet?
+      The number of minutes to wait until the Brave Wallet is automatically locked
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION" desc="Title for preference to reset Brave Wallet.">
       Reset Brave Wallet
@@ -2572,6 +2572,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_FAILED_TO_IMPORT_ACCOUNT" desc="Brave wallet msg that appears when we couldn't import an account">
       Failed to import account, please try again.
+    </message>
+    <message name="IDS_WALLET_DEX_AGGREGATOR" desc="Brave wallet msg about using 0x for swap">
+      Brave uses 0x as a DEX aggregator.
+    </message>
+    <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
+      Price data powered by CoinGecko
+    </message>
+    <message name="IDS_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">
+      Quote includes a 0.875% Brave fee.
     </message>
     </messages>
   </release>

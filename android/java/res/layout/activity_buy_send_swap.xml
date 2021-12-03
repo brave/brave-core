@@ -521,6 +521,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/brave_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/wallet_swap_fees_notice"
+            android:textColor="@color/wallet_text_color"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:visibility="gone"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_buy_send_swap"
             android:layout_width="wrap_content"
@@ -535,9 +549,23 @@
             android:paddingBottom="8dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:id="@+id/dex_aggregator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/wallet_dex_aggregator"
+            android:textColor="@color/wallet_text_color"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
