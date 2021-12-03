@@ -487,12 +487,24 @@ void BraveWalletService::OnNetworkListChanged() {
   }
 }
 
+void BraveWalletService::AddEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    AddEthereumPermissionCallback callback) {
+  if (delegate_)
+    delegate_->AddEthereumPermission(origin_spec, account, std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
 void BraveWalletService::HasEthereumPermission(
     const std::string& origin_spec,
     const std::string& account,
     HasEthereumPermissionCallback callback) {
   if (delegate_)
     delegate_->HasEthereumPermission(origin_spec, account, std::move(callback));
+  else
+    std::move(callback).Run(false, false);
 }
 
 void BraveWalletService::ResetEthereumPermission(
@@ -502,6 +514,8 @@ void BraveWalletService::ResetEthereumPermission(
   if (delegate_)
     delegate_->ResetEthereumPermission(origin_spec, account,
                                        std::move(callback));
+  else
+    std::move(callback).Run(false);
 }
 
 // static

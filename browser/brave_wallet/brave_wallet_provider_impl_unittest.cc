@@ -290,12 +290,13 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     AddEthereumPermission(url, from(from_index));
   }
   void AddEthereumPermission(const GURL& url, const std::string& address) {
-    GURL sub_request_origin;
-    ASSERT_TRUE(
-        brave_wallet::GetSubRequestOrigin(url, address, &sub_request_origin));
-    host_content_settings_map()->SetContentSettingDefaultScope(
-        sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
-        ContentSetting::CONTENT_SETTING_ALLOW);
+    base::RunLoop run_loop;
+    brave_wallet_service_->AddEthereumPermission(
+        url.spec(), address, base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   void ResetEthereumPermission(const GURL& url, size_t from_index = 0) {

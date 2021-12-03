@@ -107,6 +107,16 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   }
 }
 
+void BraveWalletServiceDelegateImpl::AddEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    AddEthereumPermissionCallback callback) {
+  bool success =
+      permissions::BraveEthereumPermissionContext::AddEthereumPermission(
+          context_, origin_spec, account);
+  std::move(callback).Run(success);
+}
+
 void BraveWalletServiceDelegateImpl::HasEthereumPermission(
     const std::string& origin_spec,
     const std::string& account,

@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
@@ -225,6 +226,33 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
   }
 
   std::move(callback).Run(true, allowed_accounts);
+}
+
+// static
+bool BraveEthereumPermissionContext::AddEthereumPermission(
+    content::BrowserContext* context,
+    const std::string& origin_spec,
+    const std::string& account) {
+  bool has_permission;
+  if (!HasEthereumPermission(context, origin_spec, account, &has_permission))
+    return false;
+
+  if (has_permission)
+    return true;
+
+  GURL origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(GURL(origin_spec).GetOrigin(), account,
+                                         &origin_wallet_address))
+    return false;
+
+  PermissionsClient::Get()
+      ->GetSettingsMap(context)
+      ->SetContentSettingDefaultScope(origin_wallet_address,
+                                      origin_wallet_address,
+                                      ContentSettingsType::BRAVE_ETHEREUM,
+                                      ContentSetting::CONTENT_SETTING_ALLOW);
+
+  return true;
 }
 
 // static

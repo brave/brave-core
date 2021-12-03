@@ -275,15 +275,13 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     AddEthereumPermission(url, from(from_index));
   }
   void AddEthereumPermission(const GURL& url, const std::string& address) {
-    GURL sub_request_origin;
-    ASSERT_TRUE(
-        brave_wallet::GetSubRequestOrigin(url, address, &sub_request_origin));
-    host_content_settings_map()->SetContentSettingDefaultScope(
-        sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
-        ContentSetting::CONTENT_SETTING_ALLOW);
-    // Needed so content settings observer handler can be hit
-    // which the provider object listens to for the accountsChanged event.
-    base::RunLoop().RunUntilIdle();
+    base::RunLoop run_loop;
+    brave_wallet_service_->AddEthereumPermission(
+        url.spec(), address, base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   std::string from(size_t index = 0) {
