@@ -39,7 +39,7 @@ struct AccountPrivateKeyView: View {
             .blur(radius: isKeyVisible ? 0 : 5)
             .accessibilityHidden(!isKeyVisible)
           Button(action: {
-            UIPasteboard.general.string = key
+            UIPasteboard.general.setSecureString(key)
           }) {
             Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
               .font(.subheadline)
