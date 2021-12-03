@@ -81,6 +81,7 @@
   <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">0x address or url</message>
   <message name="IDS_BRAVE_WALLET_SWAP_DISCLAIMER" desc="Swap 0x Security and Privacy Disclaimer">Brave uses <ph name="LINK_BEFORE">$1</ph>0x<ph name="LINK_AFTER">$2</ph> as a DEX aggregator.</message>
   <message name="IDS_BRAVE_WALLET_SWAP_DISCLAIMER_DESCRIPTION" desc="Swap 0x Security and Privacy Disclaimer Description">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">Quote includes a 0.875% Brave fee.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
