@@ -99,7 +99,7 @@ public class RecoveryPhraseSaveCopyBottomSheetDialogFragment extends BottomSheet
             Utils.LaunchBackupFilePicker((AsyncInitializationActivity) getActivity(), this);
         } else if (view == mCopyLayout) {
             Utils.saveTextToClipboard(
-                    getActivity(), mRecoveryPhrasesText, R.string.text_has_been_copied);
+                    getActivity(), mRecoveryPhrasesText, R.string.text_has_been_copied, true);
         }
         dismiss();
     }

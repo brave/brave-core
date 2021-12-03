@@ -2564,6 +2564,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_MAX_PRIORITY_PER_GAS_PRICE_LIMIT" desc="Brave wallet msg that appears on max priority fee dialog">
       Per-gas price limit (Gwei)
     </message>
+    <message name="IDS_WALLET_FAILED_TO_IMPORT_ACCOUNT" desc="Brave wallet msg that appears when we couldn't import an account">
+      Failed to import account, please try again.
+    </message>
     </messages>
   </release>
 </grit>
