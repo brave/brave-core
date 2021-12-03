@@ -181,10 +181,6 @@ void EthTxController::AddUnapprovedTransaction(
     return;
   }
 
-  // Use default gas limit for ETHSend if it is empty.
-  if (tx_type == mojom::TransactionType::ETHSend && !tx_ptr->gas_limit())
-    tx_ptr->set_gas_limit(kDefaultSendEthGasLimit);
-
   const std::string gas_limit = Uint256ValueToHex(tx_ptr->gas_limit());
 
   if (!tx_ptr->gas_price()) {
@@ -310,10 +306,7 @@ void EthTxController::AddUnapproved1559Transaction(
     return;
   }
 
-  // Use default gas limit for ETHSend if it is empty.
   std::string gas_limit = tx_data->base_data->gas_limit;
-  if (gas_limit.empty() && tx_type == mojom::TransactionType::ETHSend)
-    gas_limit = Uint256ValueToHex(kDefaultSendEthGasLimit);
 
   if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
     asset_ratio_controller_->GetGasOracle(base::BindOnce(
