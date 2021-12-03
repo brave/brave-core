@@ -404,6 +404,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     Log.e(TAG, "Swap error: " + errorResponse);
                 }
             }
+            findViewById(R.id.btn_buy_send_swap).setEnabled(true);
 
             return;
         }
@@ -822,6 +823,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         return;
                     }
                 }
+                btnBuySendSwap.setEnabled(false);
                 getSendSwapQuota(true, true);
             }
         });
@@ -1144,8 +1146,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String accountName =
                 mCustomAccountAdapter.getNameAtPosition(mAccountSpinner.getSelectedItemPosition());
         if (mActivityType == ActivityType.SWAP) {
+            Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+            btnBuySendSwap.setEnabled(true);
             if (mCurrentErcToken != null) {
-                Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
                 String btnText = btnBuySendSwap.getText().toString();
                 String toCompare =
                         String.format(getString(R.string.activate_erc20), mCurrentErcToken.symbol);
