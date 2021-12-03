@@ -6,7 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.app.Activity;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +17,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.util.concurrent.Executor;
+
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
+    private EditText mUnlockWalletPassword;
+    private Button mUnlockButton;
+    private TextView mUnlockWalletRestoreButton;
+    private TextView mUnlockWalletTitle;
+
     private KeyringController getKeyringController() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
@@ -42,37 +56,122 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText unlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
+        mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
+        mUnlockButton = view.findViewById(R.id.btn_unlock);
+        mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
+        mUnlockWalletTitle = view.findViewById(R.id.unlock_wallet_title);
 
-        Button unlockButton = view.findViewById(R.id.btn_unlock);
-        unlockButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(unlockWalletPassword.getText())) {
-                unlockWalletPassword.setError(getString(R.string.password_error));
+        mUnlockButton.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(mUnlockWalletPassword.getText())) {
+                mUnlockWalletPassword.setError(getString(R.string.password_error));
                 return;
             }
 
             KeyringController keyringController = getKeyringController();
             if (keyringController != null) {
-                keyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
+                keyringController.unlock(mUnlockWalletPassword.getText().toString(), result -> {
                     if (result) {
-                        Utils.clearClipboard(unlockWalletPassword.getText().toString(), 0);
-                        unlockWalletPassword.setText(null);
+                        Utils.clearClipboard(mUnlockWalletPassword.getText().toString(), 0);
+                        mUnlockWalletPassword.setText(null);
                         if (onNextPage != null) {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
                         }
                     } else {
-                        unlockWalletPassword.setError(getString(R.string.incorrect_password_error));
+                        mUnlockWalletPassword.setError(
+                                getString(R.string.incorrect_password_error));
                     }
                 });
             }
         });
 
-        TextView unlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
-        unlockWalletRestoreButton.setOnClickListener(v -> {
+        mUnlockWalletRestoreButton.setOnClickListener(v -> {
             if (onNextPage != null) {
                 onNextPage.gotoRestorePage();
             }
         });
+        checkOnBiometric();
+    }
+
+    private void checkOnBiometric() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+                || !KeystoreHelper.shouldUseBiometricOnUnlock()) {
+            showPasswordRelatedControls();
+
+            return;
+        }
+
+        createBiometricPrompt();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void createBiometricPrompt() {
+        final BiometricPrompt.AuthenticationCallback authenticationCallback =
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        // We authenticated using fingerprint
+                        try {
+                            String unlockWalletPassword = KeystoreHelper.decryptText();
+                            if (unlockWalletPassword.isEmpty()) {
+                                showPasswordRelatedControls();
+
+                                return;
+                            }
+                            KeyringController keyringController = getKeyringController();
+                            assert keyringController != null;
+                            keyringController.unlock(unlockWalletPassword, unlockResult -> {
+                                if (unlockResult) {
+                                    if (onNextPage != null) {
+                                        onNextPage.gotoNextPage(true);
+                                    }
+                                } else {
+                                    showPasswordRelatedControls();
+                                    mUnlockWalletPassword.setError(
+                                            getString(R.string.incorrect_password_error));
+                                }
+                            });
+                        } catch (Exception exc) {
+                            showPasswordRelatedControls();
+
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+
+                        // Even though we have an error, we still let to proceed
+                        Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                        showPasswordRelatedControls();
+                    }
+                };
+        showFingerprintDialog(authenticationCallback);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void showFingerprintDialog(
+            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
+        assert getActivity() != null;
+        Executor executor = ContextCompat.getMainExecutor(getActivity());
+        new BiometricPrompt.Builder(getActivity())
+                .setTitle(getResources().getString(R.string.fingerprint_unlock))
+                .setDescription(getResources().getString(R.string.use_fingerprint_text))
+                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
+                        (dialog, which)
+                                -> authenticationCallback.onAuthenticationError(
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .build()
+                .authenticate(new CancellationSignal(), executor, authenticationCallback);
+    }
+
+    private void showPasswordRelatedControls() {
+        mUnlockWalletPassword.setVisibility(View.VISIBLE);
+        mUnlockButton.setVisibility(View.VISIBLE);
+        mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
+        mUnlockWalletTitle.setVisibility(View.VISIBLE);
     }
 }

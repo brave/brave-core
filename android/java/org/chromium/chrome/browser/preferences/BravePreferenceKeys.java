@@ -29,4 +29,10 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";
     public static final String BRAVE_NEWS_FEED_HASH = "brave_news_feed_hash";
     public static final String BRAVE_NEWS_PREF_SHOW_NEWS = "kNewTabPageShowToday";
+    public static final String BRAVE_USE_BIOMETRICS_FOR_WALLET =
+            "org.chromium.chrome.browser.Brave_Use_Biometrics_For_Wallet";
+    public static final String BRAVE_BIOMETRICS_FOR_WALLET_IV =
+            "org.chromium.chrome.browser.Brave_Biometrics_For_Wallet_Iv";
+    public static final String BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED =
+            "org.chromium.chrome.browser.Brave_Biometrics_For_Wallet_Encrypted";
 }
