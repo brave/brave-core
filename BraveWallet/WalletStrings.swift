@@ -1499,5 +1499,19 @@ extension Strings {
       value: "Price",
       comment: "The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date"
     )
+    public static let coinGeckoDisclaimer = NSLocalizedString(
+      "wallet.coinGeckoDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Price data powered by CoinGecko",
+      comment: "A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product."
+    )
+    public static let braveSwapFeeDisclaimer = NSLocalizedString(
+      "wallet.braveSwapFeeDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Quote includes a %@ Brave fee.",
+      comment: "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee'"
+    )
   }
 }

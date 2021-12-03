@@ -447,6 +447,7 @@
 		27B33D5826556E7300F3D274 /* BraveButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B33D5726556E7300F3D274 /* BraveButtonStyle.swift */; };
 		27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */; };
 		27B3DDD524AF98EA0006A7ED /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDD424AF98EA0006A7ED /* FeedItem.swift */; };
+		27B54807275A7140004A33BA /* WalletConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B54806275A7140004A33BA /* WalletConstants.swift */; };
 		27B68DF025C48F39002D0826 /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
 		27B68DF125C48F39002D0826 /* MaterialComponents.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27B68E5D25C88CA7002D0826 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = 27B68E5C25C88CA7002D0826 /* FeedKit */; };
@@ -2184,6 +2185,7 @@
 		27B33D5726556E7300F3D274 /* BraveButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveButtonStyle.swift; sourceTree = "<group>"; };
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
 		27B3DDD424AF98EA0006A7ED /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		27B54806275A7140004A33BA /* WalletConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConstants.swift; sourceTree = "<group>"; };
 		27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MaterialComponents.xcframework; path = "node_modules/brave-core-ios/MaterialComponents.xcframework"; sourceTree = "<group>"; };
 		27B68E9325C8911D002D0826 /* BraveNewsAddSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsAddSourceViewController.swift; sourceTree = "<group>"; };
 		27C22A8F26409FF200419FC7 /* WindowProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowProtection.swift; sourceTree = "<group>"; };
@@ -3798,6 +3800,7 @@
 				271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */,
 				271F688E26EBD27D00AA2A50 /* WalletTableViewHeaderView.swift */,
 				276684AD270F6F6000DF45C5 /* WalletStrings.swift */,
+				27B54806275A7140004A33BA /* WalletConstants.swift */,
 				271F683726EBD0E400AA2A50 /* BraveWallet.h */,
 				271F683826EBD0E400AA2A50 /* Info.plist */,
 			);
@@ -7855,6 +7858,7 @@
 				271F68A826EBD27E00AA2A50 /* PortfolioView.swift in Sources */,
 				277190EA2702512900DC81D5 /* TestStores.swift in Sources */,
 				271F68BD26EBD27E00AA2A50 /* Blockies.swift in Sources */,
+				27B54807275A7140004A33BA /* WalletConstants.swift in Sources */,
 				27668489270CD9AA00DF45C5 /* EditUserAssetsView.swift in Sources */,
 				271F689E26EBD27E00AA2A50 /* TestTokenRegistry.swift in Sources */,
 				27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */,

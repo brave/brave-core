@@ -362,16 +362,31 @@ struct SwapCryptoView: View {
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header:
-        Button(action: {
-          swapTokensStore.prepareSwap()
-        }) {
-          Text(swapButtonTitle)
+        VStack(spacing: 16) {
+          Text(
+            String.localizedStringWithFormat(Strings.Wallet.braveSwapFeeDisclaimer, {
+              let formatter = NumberFormatter()
+              formatter.numberStyle = .percent
+              formatter.minimumFractionDigits = 3
+              formatter.maximumFractionDigits = 3
+              return formatter.string(from: NSNumber(
+                value: WalletConstants.braveSwapFee
+              )) ?? ""
+            }())
+          )
+            .foregroundColor(Color(.braveLabel))
+            .font(.footnote)
+          Button(action: {
+            swapTokensStore.prepareSwap()
+          }) {
+            Text(swapButtonTitle)
+          }
+          .disabled(isSwapButtonDisabled)
+          .buttonStyle(BraveFilledButtonStyle(size: .normal))
         }
-        .disabled(isSwapButtonDisabled)
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .frame(maxWidth: .infinity)
+        .padding(.top, 16)
         .resetListHeaderStyle()
-        .padding(.top, 20)
     ) {
       Button(action: {
         isSwapDisclaimerVisible = true
@@ -386,7 +401,7 @@ struct SwapCryptoView: View {
         }
       }
       .buttonStyle(.plain)
-      .padding(.vertical, 4)
+      .padding(.vertical, 12)
       .alert(isPresented: $isSwapDisclaimerVisible) {
         Alert(
           title: Text(Strings.Wallet.swapDexAggrigatorNote),
@@ -456,7 +471,7 @@ struct SwapCryptoView_Previews: PreviewProvider {
       ethNetworkStore: .previewStore,
       swapTokensStore: .previewStore
     )
-      .previewSizeCategories([.large, .accessibilityLarge])
+//      .previewSizeCategories([.large, .accessibilityLarge])
   }
 }
 #endif

@@ -105,6 +105,17 @@ struct AssetDetailView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section {
+        EmptyView()
+      } header: {
+        Text(Strings.Wallet.coinGeckoDisclaimer)
+          .multilineTextAlignment(.center)
+          .font(.footnote)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .frame(maxWidth: .infinity)
+          .listRowBackground(Color(.braveGroupedBackground))
+          .resetListHeaderStyle(insets: nil)
+      }
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(assetDetailStore.token.name)
