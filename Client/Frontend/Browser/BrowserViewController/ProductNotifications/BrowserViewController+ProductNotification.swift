@@ -27,23 +27,6 @@ extension BrowserViewController {
         case grandTier = 500_000
         case legendaryTier = 1_000_000
 
-        var title: String {
-            switch self {
-                case .specialTier:
-                    return Strings.ShieldEducation.benchmarkSpecialTierTitle
-                case .newbieExclusiveTier, .casualExclusiveTier, .regularExclusiveTier, .expertExclusiveTier:
-                    return Strings.ShieldEducation.benchmarkExclusiveTierTitle
-                case .professionalTier:
-                    return Strings.ShieldEducation.benchmarkProfessionalTierTitle
-                case .primeTier:
-                    return Strings.ShieldEducation.benchmarkPrimeTierTitle
-                case .grandTier:
-                    return Strings.ShieldEducation.benchmarkGrandTierTitle
-                case .legendaryTier:
-                    return Strings.ShieldEducation.benchmarkLegendaryTierTitle
-            }
-        }
-
         var nextTier: BenchmarkTrackerCountTier? {
             guard let indexOfSelf = Self.allCases.firstIndex(where: { self == $0 }) else {
                 return nil
@@ -164,7 +147,8 @@ extension BrowserViewController {
                 Preferences.ProductNotificationBenchmarks.trackerTierCount.value = numOfTrackerAds
                 
                 if numOfTrackerAds > firstExistingTier.value {
-                    notifyTrackerAdsCount(firstExistingTier.value, description: firstExistingTier.title)
+                    notifyTrackerAdsCount(firstExistingTier.value,
+                                          description: Strings.ShieldEducation.benchmarkAnyTierTitle)
                 }
             }
         }
