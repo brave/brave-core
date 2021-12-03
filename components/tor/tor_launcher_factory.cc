@@ -80,6 +80,7 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
   }
 
   DCHECK(!config.binary_path.empty());
+  DCHECK(!config.torrc_path.empty());
   DCHECK(!config.tor_data_path.empty());
   DCHECK(!config.tor_watch_path.empty());
   config_ = config;
