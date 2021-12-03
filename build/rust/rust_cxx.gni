@@ -56,11 +56,6 @@ set_defaults("rust_cxx") {
 template("rust_cxx") {
   assert(defined(invoker.input), "Must specify the Rust file to use as input.")
   action_foreach("${target_name}_gen") {
-    cxxbridge_executable = "//brave/build/rustup/0.1.8/bin/cxxbridge"
-    if (is_win) {
-      cxxbridge_executable = "${cxxbridge_executable}.exe"
-    }
-
     sources = invoker.input
 
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
@@ -68,7 +63,6 @@ template("rust_cxx") {
 
     script = "//brave/build/rust/run_cxxbridge.py"
     inputs = [
-      cxxbridge_executable,
       script,
     ]
     outputs = [
@@ -77,8 +71,7 @@ template("rust_cxx") {
     ]
 
     args = [
-      "--exe",
-      rebase_path(cxxbridge_executable),
+      "--cargo_path=" + rustup_path,
       "--header",
       output_h,
       "--cc",
