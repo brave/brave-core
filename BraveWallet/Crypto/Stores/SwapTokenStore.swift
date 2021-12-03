@@ -156,7 +156,7 @@ public class SwapTokenStore: ObservableObject {
     }
     
     rpcController.balance(for: token, in: account) { balance in
-      completion(BDouble(balance ?? 0))
+      completion(balance.map { BDouble($0) })
     }
   }
   
