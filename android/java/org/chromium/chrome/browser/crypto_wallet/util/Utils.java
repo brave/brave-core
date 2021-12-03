@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,8 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +38,6 @@ import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -68,20 +63,14 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -175,68 +164,6 @@ public class Utils {
                 }
             }
         }, delay);
-    }
-
-    public static void LaunchBackupFilePicker(
-            AsyncInitializationActivity activity, WindowAndroid.IntentCallback callback) {
-        // Check if READ_EXTERNAL_STORAGE permission is granted.
-        String storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
-        WindowAndroid window = activity.getWindowAndroid();
-        assert window != null;
-        if (!window.hasPermission(storagePermission)) {
-            String[] requestPermissions = new String[] {storagePermission};
-            window.requestPermissions(requestPermissions, (permissions, grantResults) -> {
-                assert permissions.length == 1 && grantResults.length == 1;
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    onFileNotSelected();
-                }
-            });
-        }
-
-        // Create file intent
-        Intent createDocumentIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        createDocumentIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        createDocumentIntent.setType("text/*");
-        createDocumentIntent.putExtra(Intent.EXTRA_TITLE, "wallet-phrase.txt");
-
-        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
-        chooser.putExtra(Intent.EXTRA_INTENT, createDocumentIntent);
-
-        if (!window.showIntent(chooser, callback, null)) {
-            onFileNotSelected();
-        }
-    }
-
-    public static void writeTextToFile(Uri uri, String textToSave) {
-        AssetFileDescriptor assetFileDescriptor;
-        Context context = ContextUtils.getApplicationContext();
-        FileOutputStream outputStream;
-        try {
-            assetFileDescriptor = context.getContentResolver().openAssetFileDescriptor(uri, "wt");
-            if (assetFileDescriptor != null) {
-                outputStream = assetFileDescriptor.createOutputStream();
-                if (outputStream != null) {
-                    outputStream.write(textToSave.getBytes(Charset.forName("UTF-8")));
-                    outputStream.close();
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("wallet_Utils", "File URI not found", e);
-        } catch (IOException e) {
-            Log.e("wallet_Utils", "Problem creating output stream from URI", e);
-        }
-    }
-
-    public static void onFileSaved() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_has_been_saved,
-                     Toast.LENGTH_SHORT)
-                .show();
-    }
-
-    public static void onFileNotSelected() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_file_not_saved,
-                     Toast.LENGTH_SHORT)
-                .show();
     }
 
     public static boolean shouldShowCryptoOnboarding() {
