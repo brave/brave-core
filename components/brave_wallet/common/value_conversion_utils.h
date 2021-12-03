@@ -16,6 +16,8 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain);
 absl::optional<mojom::EthereumChain> ValueToEthereumChain(
     const base::Value& value);
 
+mojom::ERCTokenPtr ValueToERCToken(const base::Value& value);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_

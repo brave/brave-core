@@ -39,16 +39,17 @@ void ERCTokenRegistry::UpdateTokenList(
 
 void ERCTokenRegistry::GetTokenByContract(const std::string& contract,
                                           GetTokenByContractCallback callback) {
+  std::move(callback).Run(GetTokenByContract(contract));
+}
+
+mojom::ERCTokenPtr ERCTokenRegistry::GetTokenByContract(
+    const std::string& contract) {
   auto token_it =
       std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
                    [&](const mojom::ERCTokenPtr& current_token) {
                      return current_token->contract_address == contract;
                    });
-  if (token_it == erc_tokens_.end()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  std::move(callback).Run(token_it->Clone());
+  return token_it == erc_tokens_.end() ? nullptr : token_it->Clone();
 }
 
 void ERCTokenRegistry::GetTokenBySymbol(const std::string& symbol,

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/circular_deque.h"
 #include "base/gtest_prod_util.h"
@@ -39,6 +40,8 @@ class BraveWalletService : public KeyedService,
  public:
   using SignMessageRequestCallback =
       base::OnceCallback<void(bool, const std::string&, const std::string&)>;
+  using AddSuggestTokenCallback =
+      base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
@@ -107,6 +110,11 @@ class BraveWalletService : public KeyedService,
       int id,
       const std::string& signature,
       const std::string& error) override;
+  void GetPendingAddSuggestTokenRequests(
+      GetPendingAddSuggestTokenRequestsCallback callback) override;
+  void NotifyAddSuggestTokenRequestsProcessed(
+      bool approved,
+      const std::vector<std::string>& contract_addresses) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const std::string& origin) override;
@@ -115,6 +123,8 @@ class BraveWalletService : public KeyedService,
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
+  void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
+                              AddSuggestTokenCallback callback);
 
  private:
   friend class BraveWalletProviderImplUnitTest;
@@ -142,8 +152,23 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
+  bool AddUserAsset(mojom::ERCTokenPtr token, const std::string& chain_id);
+  bool RemoveUserAsset(mojom::ERCTokenPtr token, const std::string& chain_id);
+  bool SetUserAssetVisible(mojom::ERCTokenPtr token,
+                           const std::string& chain_id,
+                           bool visible);
+  mojom::ERCTokenPtr GetUserAsset(const std::string& contract_address,
+                                  const std::string& token_id,
+                                  bool is_erc721,
+                                  const std::string& chain_id);
+  void OnNetworkChanged();
+
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
+  base::flat_map<std::string, AddSuggestTokenCallback>
+      add_suggest_token_callbacks_;
+  base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
+      add_suggest_token_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringController* keyring_controller_;

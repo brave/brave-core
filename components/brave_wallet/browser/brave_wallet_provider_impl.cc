@@ -682,4 +682,20 @@ void BraveWalletProviderImpl::OnContentSettingChanged(
   }
 }
 
+void BraveWalletProviderImpl::AddSuggestToken(
+    mojom::ERCTokenPtr token,
+    AddSuggestTokenCallback callback) {
+  if (!token) {
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto request = mojom::AddSuggestTokenRequest::New(std::move(token));
+  brave_wallet_service_->AddSuggestTokenRequest(std::move(request),
+                                                std::move(callback));
+  delegate_->ShowPanel();
+}
+
 }  // namespace brave_wallet

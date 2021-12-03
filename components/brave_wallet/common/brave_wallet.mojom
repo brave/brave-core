@@ -86,6 +86,14 @@ interface BraveWalletProvider {
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+
+  // Used for wallet_watchAsset.
+  // It will prompt an UI for user to confirm, and add the token into user's
+  // visible asset list if user approves.
+  // Note that we will use the token data from ERCTokenRegistry (for
+  // mainnet) or from user asset list if there is an existing token with the
+  // same contract address, instead of the token data in the request.
+  AddSuggestToken(ERCToken token) => (bool approved, ProviderError error, string error_message);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -676,6 +684,10 @@ enum ExternalWalletType {
   MetaMask
 };
 
+struct AddSuggestTokenRequest {
+  ERCToken token;
+};
+
 // For default wallet setting, user assets, permission checks, importing
 // functionality and much more.
 interface BraveWalletService {
@@ -685,13 +697,16 @@ interface BraveWalletService {
   // Obtains the user assets for the specified chain ID
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
 
-  // Adds a user asset for the specified chain ID
+  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // This asset could be a token from ERCTokenRegistry or a custom token.
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
 
-  // Removes a user asset for the specified chain ID
+  // Removes a user asset from the user asset list pref for the specified chain
+  // ID. This asset could be a token from ERCTokenRegistry or a custom token.
   RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
 
-  // Sets whether or not an asset is visible for the specified chain ID
+  // Sets whether or not an asset is visible for the specified chain ID.
+  // This asset could be a token from ERCTokenRegistry or a custom token.
   SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state
@@ -744,6 +759,13 @@ interface BraveWalletService {
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
+
+  // Used for UI notifying native when the user apprrove/reject add suggest
+  // token requests.
+  NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
+  // Obtain the pending add suggest token requests for current chain, will be
+  // cleared when user switch networks.
+  GetPendingAddSuggestTokenRequests() => (array<AddSuggestTokenRequest> requests);
 };
 
 enum DefaultWallet {

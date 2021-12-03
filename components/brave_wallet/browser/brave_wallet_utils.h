@@ -99,6 +99,9 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
 mojom::EthereumChainPtr GetChain(PrefService* prefs,
                                  const std::string& chain_id);
 
+// Get the current chain ID from kBraveWalletCurrentChainId pref.
+std::string GetCurrentChainId(PrefService* prefs);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
