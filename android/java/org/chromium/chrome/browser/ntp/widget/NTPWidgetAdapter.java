@@ -120,6 +120,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 } else if (id == R.id.remove) {
                     NTPWidgetItem ntpWidgetItem = widgetList.get(position);
                     removeWidgetItem(position);
+                    ntpWidgetListener.onMenuRemove(position);
                 }
                 return true;
             }
