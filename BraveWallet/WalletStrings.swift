@@ -1038,7 +1038,7 @@ extension Strings {
       comment: "One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals"
     )
     public static let confirmationViewModeDetails = NSLocalizedString(
-      "wallet.confirmationViewModeTransaction",
+      "wallet.confirmationViewModeDetails",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Details",
@@ -1220,7 +1220,7 @@ extension Strings {
       comment: "An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
     )
     public static let activateToken = NSLocalizedString(
-      "wallet.insufficientFundsForGas",
+      "wallet.activateToken",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Activate Token %@",
@@ -1493,7 +1493,7 @@ extension Strings {
       comment: "The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price"
     )
     public static let chartAxisPriceLabel = NSLocalizedString(
-      "wallet.chartAxisDateLabel",
+      "wallet.chartAxisPriceLabel",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Price",
