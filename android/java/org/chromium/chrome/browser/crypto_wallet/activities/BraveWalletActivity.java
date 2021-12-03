@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -94,16 +95,10 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.wallet_search, menu);
-        final MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
 
-        EditText searchEditText = searchView.findViewById(R.id.search_src_text);
-        searchEditText.setTextColor(getResources().getColor(android.R.color.black));
-        searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
-        ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);
-        closeButtonImage.setImageResource(R.drawable.ic_baseline_close_24);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        if (menu instanceof MenuBuilder) {
+            ((MenuBuilder) menu).setOptionalIconsVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -113,6 +108,10 @@ public class BraveWalletActivity extends AsyncInitializationActivity
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
             settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
             return true;
+        } else if (item.getItemId() == R.id.lock) {
+            if (mKeyringController != null) {
+                mKeyringController.lock();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
