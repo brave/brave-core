@@ -26,7 +26,6 @@ import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.fragments.RecoveryPhraseSaveCopyBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -65,13 +64,9 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
                 TextView copyButton = view.findViewById(R.id.btn_copy);
                 assert getActivity() != null;
                 copyButton.setOnClickListener(v -> {
-                    RecoveryPhraseSaveCopyBottomSheetDialogFragment
-                            recoveryPhraseSaveCopyBottomSheetDialogFragment =
-                                    RecoveryPhraseSaveCopyBottomSheetDialogFragment.newInstance(
-                                            Utils.getRecoveryPhraseFromList(recoveryPhrases));
-                    recoveryPhraseSaveCopyBottomSheetDialogFragment.show(
-                            ((FragmentActivity) getActivity()).getSupportFragmentManager(),
-                            RecoveryPhraseSaveCopyBottomSheetDialogFragment.TAG_FRAGMENT);
+                    Utils.saveTextToClipboard(getActivity(),
+                            Utils.getRecoveryPhraseFromList(recoveryPhrases),
+                            R.string.text_has_been_copied, true);
                 });
                 setupRecoveryPhraseRecyclerView(view);
             });
