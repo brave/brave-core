@@ -168,14 +168,20 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
         carplaySessionConfiguration = CPSessionConfiguration(delegate: self)
         
         isCarPlayAvailable = true
-        attemptInterfaceConnection(isCarPlayAvailable: true)
+        
+        DispatchQueue.main.async {
+            self.attemptInterfaceConnection(isCarPlayAvailable: true)
+        }
     }
     
     func disconnect(interfaceController: CPInterfaceController) {
         isCarPlayAvailable = false
         carplayInterface = nil
         carplayInterface?.delegate = nil
-        attemptInterfaceConnection(isCarPlayAvailable: false)
+        
+        DispatchQueue.main.async {
+            self.attemptInterfaceConnection(isCarPlayAvailable: false)
+        }
     }
     
     func sessionConfiguration(_ sessionConfiguration: CPSessionConfiguration,

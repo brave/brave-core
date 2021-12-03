@@ -1187,7 +1187,7 @@ extension Strings {
         public static let trackerCountShareTitle =
             NSLocalizedString("shieldEducation.trackerCountShareTitle",
                               bundle: .braveShared,
-                              value: "%ld trackers & ads blocked",
+                              value: "%ld trackers & ads blocked!",
                               comment: "Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked")
         
         public static let videoAdBlockTitle =
@@ -1219,6 +1219,12 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Share the news",
                               comment: "Action title for actionable Share warnings")
+        
+        public static let benchmarkAnyTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkAnyTierTitle",
+                              bundle: .braveShared,
+                              value: "Congrats on reaching this privacy milestone.",
+                              comment: "Subtitle for tracker benchmark Share")
         
         public static let benchmarkSpecialTierTitle =
             NSLocalizedString("shieldEducation.benchmarkSpecialTierTitle",
