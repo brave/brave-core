@@ -597,6 +597,12 @@ extension Strings {
             bundle: .braveShared,
             value: "Keep an offline playlist of any video/stream",
             comment: "The subtitle description of menu item Brave Playlist")
+        public static let braveWalletItemDescription = NSLocalizedString(
+            "optionsMenu.braveWalletItemDescription",
+            tableName: "BraveShared",
+            bundle: .braveShared,
+            value: "The secure crypto wallet, no extension required",
+            comment: "The subtitle description of menu item Brave Wallet")
     }
 }
 
