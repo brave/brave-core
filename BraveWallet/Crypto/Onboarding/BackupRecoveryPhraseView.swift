@@ -39,7 +39,9 @@ struct BackupRecoveryPhraseView: View {
   }
   
   private func copyRecoveryPhrase() {
-    UIPasteboard.general.string = recoveryWords.map(\.value).joined(separator: " ")
+    UIPasteboard.general.setSecureString(
+      recoveryWords.map(\.value).joined(separator: " ")
+    )
   }
   
   var body: some View {
