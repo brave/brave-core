@@ -55,7 +55,7 @@ public class AccountPrivateKeyActivity extends AsyncInitializationActivity
         TextView copyToClipboardText = findViewById(R.id.copy_to_clipboard_text);
         copyToClipboardText.setOnClickListener(v
                 -> Utils.saveTextToClipboard(AccountPrivateKeyActivity.this,
-                        privateKeyText.getText().toString(), R.string.text_has_been_copied));
+                        privateKeyText.getText().toString(), R.string.text_has_been_copied, true));
 
         LinearLayout bannerLayout = findViewById(R.id.wallet_backup_banner);
         bannerLayout.setVisibility(View.VISIBLE);

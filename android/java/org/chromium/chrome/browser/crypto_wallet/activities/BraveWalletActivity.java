@@ -69,6 +69,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -376,8 +377,12 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
-        getWindowManager().removeViewImmediate(getWindow().getDecorView());
-        getWindowManager().addView(getWindow().getDecorView(), getWindow().getAttributes());
+        try {
+            getWindowManager().removeViewImmediate(getWindow().getDecorView());
+            getWindowManager().addView(getWindow().getDecorView(), getWindow().getAttributes());
+        } catch (IllegalArgumentException exc) {
+            // The activity isn't active right now
+        }
     }
 
     private void replaceNavigationFragments(int type, boolean doNavigate) {

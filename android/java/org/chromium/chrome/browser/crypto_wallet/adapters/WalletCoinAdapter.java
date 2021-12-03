@@ -170,7 +170,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
             holder.itemView.setOnLongClickListener(v -> {
                 Utils.saveTextToClipboard(context, walletListItemModel.getSubTitle(),
-                        R.string.address_has_been_copied);
+                        R.string.address_has_been_copied, false);
 
                 return true;
             });
