@@ -603,6 +603,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String text = getText(R.string.crypto_wallet_balance) + " "
                     + String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance);
             fromBalanceText.setText(text);
+            if (mActivityType == ActivityType.SEND) {
+                Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+                btnBuySendSwap.setEnabled(mConvertedFromBalance != 0);
+            }
         } else {
             TextView toBalanceText = findViewById(R.id.to_balance_text);
             if (mCurrentSwapToErcToken != null) {
