@@ -1,0 +1,13 @@
+diff --git a/build/nocompile.gni b/build/nocompile.gni
+index db937ed5ccaaf0d9a66bb437f9e333f1359d6ac6..5b4aeb8f4ada70c2a151a0792cc11ac32c4ccaa0 100644
+--- a/build/nocompile.gni
++++ b/build/nocompile.gni
+@@ -96,7 +96,7 @@ if (enable_nocompile_tests) {
+         "-nostdinc++",
+         "-isystem" + rebase_path("$libcxx_prefix/include", root_build_dir),
+         "-isystem" + rebase_path("$libcxxabi_prefix/include", root_build_dir),
+-        "-std=c++17",
++        "-std=c++14",
+         "-Wall",
+         "-Werror",
+         "-Wfatal-errors",
