@@ -572,7 +572,7 @@ extension Strings {
       "wallet.passwordDoesNotMeetRequirementsError",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Passwords must be at least 7 characters, and contain at least one number and one special character.",
+      value: "Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.",
       comment: "The error message displayed when a user enters a password that does not meet the requirements"
     )
     public static let passwordsDontMatchError = NSLocalizedString(
@@ -950,7 +950,7 @@ extension Strings {
       "wallet.scanQRCodeAccessibilityLabel",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Scan QR Code",
+      value: "Scan QR code",
       comment: "A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes"
     )
     public static let sendCryptoSendButtonTitle = NSLocalizedString(
@@ -1006,7 +1006,7 @@ extension Strings {
       "wallet.refreshMarketPriceLabel",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Refresh Market Price",
+      value: "Refresh market price",
       comment: "A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets"
     )
     public static let transactionCount = NSLocalizedString(
