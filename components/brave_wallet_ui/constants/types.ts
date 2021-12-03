@@ -98,6 +98,7 @@ export type PanelTypes =
   | 'switchEthereumChain'
   | 'approveTransaction'
   | 'sitePermissions'
+  | 'addSuggestedToken'
 
 export type NavTypes =
   | 'crypto'
@@ -214,6 +215,7 @@ export interface PanelState {
   signMessageData: BraveWallet.SignMessageRequest[]
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
+  suggestedToken?: BraveWallet.ERCToken
 }
 
 export interface PageState {

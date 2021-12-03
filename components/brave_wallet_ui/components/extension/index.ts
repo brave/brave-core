@@ -18,6 +18,7 @@ import TransactionDetailBox from './transaction-box'
 import EditGas from './edit-gas'
 import SitePermissions from './site-permissions-panel'
 import ConnectedAccountItem from './connected-account-item'
+import AddSuggestedTokenPanel from './add-suggested-token-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -41,5 +42,6 @@ export {
   ConnectHardwareWalletPanel,
   EditGas,
   SitePermissions,
-  ConnectedAccountItem
+  ConnectedAccountItem,
+  AddSuggestedTokenPanel
 }

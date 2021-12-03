@@ -10,7 +10,8 @@ import {
   AllowAddChangeNetworkPanel,
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
-  SitePermissions
+  SitePermissions,
+  AddSuggestedTokenPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -628,4 +629,29 @@ export const _ConnectHardwareWallet = () => {
 
 _ConnectHardwareWallet.story = {
   name: 'Connect Hardware Wallet'
+}
+
+export const _AddSuggestedToken = () => {
+  const onCancel = () => {
+    // Doesn't do anything in storybook
+  }
+
+  const onAddToken = () => {
+    // Doesn't do anything in storybook
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <AddSuggestedTokenPanel
+        onCancel={onCancel}
+        onAddToken={onAddToken}
+        token={NewAssetOptions[2]}
+        selectedNetwork={mockNetworks[0]}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_AddSuggestedToken.story = {
+  name: 'Add Suggested Token'
 }
