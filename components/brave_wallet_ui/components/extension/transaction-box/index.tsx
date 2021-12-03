@@ -9,6 +9,8 @@ export interface Props {
   transactionInfo: TransactionInfo
 }
 
+const txKeys = Object.keys(TransactionType)
+
 const TransactionDetailBox = (props: Props) => {
   const { transactionInfo } = props
   const {
@@ -32,7 +34,7 @@ const TransactionDetailBox = (props: Props) => {
         <>
           <DetailRow>
             <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
-            <DetailText>{TransactionType[txType]}</DetailText>
+            <DetailText>{txKeys[txType]}</DetailText>
           </DetailRow>
           {txType !== TransactionType.Other && txParams.map((param, i) =>
             <CodeSnippet key={i}>
