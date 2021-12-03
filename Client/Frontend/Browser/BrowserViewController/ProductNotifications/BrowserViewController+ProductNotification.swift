@@ -86,6 +86,7 @@ extension BrowserViewController {
               !Preferences.General.onboardingAdblockPopoverShown.value,
               !benchmarkNotificationPresented,
               !Preferences.AppState.backgroundedCleanly.value,
+              Preferences.General.isNewRetentionUser.value == true,
               !topToolbar.inOverlayMode,
               !isTabTrayActive,
               selectedTab.webView?.scrollView.isDragging == false,
