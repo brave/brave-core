@@ -89,19 +89,9 @@ function BackupWallet (props: Props) {
     await copyToClipboard(recoveryPhrase.join(' '))
   }
 
-  const showBackButton = React.useMemo(() => {
-    if (isOnboarding) {
-      return true
-    }
-    if (!isOnboarding && backupStep !== 0) {
-      return true
-    }
-    return false
-  }, [isOnboarding, backupStep])
-
   return (
     <>
-      {showBackButton &&
+      {backupStep !== 0 &&
         <BackButton onSubmit={onGoBack} />
       }
       {backupStep === 0 &&
