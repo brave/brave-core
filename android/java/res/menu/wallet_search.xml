@@ -9,7 +9,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item android:id="@+id/lock"
-      android:icon="@drawable/wallet_toolbar_lock"
+      android:icon="@drawable/ic_wallet_lock"
       android:title="@string/brave_wallet_toolbar_lock"
       app:iconTint="@color/wallet_text_color"
       app:showAsAction="never" />
