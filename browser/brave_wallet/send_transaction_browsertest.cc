@@ -5,6 +5,7 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
@@ -455,16 +456,16 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   std::string chain_id() { return chain_id_; }
 
  protected:
-  BraveWalletService* brave_wallet_service_;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
 
  private:
   TestEthTxServiceObserver observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
-  KeyringService* keyring_service_;
-  EthTxService* eth_tx_service_;
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<EthTxService> eth_tx_service_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   std::string chain_id_;
 };
 

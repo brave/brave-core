@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -212,13 +213,13 @@ class BraveWalletProviderImpl final
   void SelectedAccountChanged() override;
 
   int sign_message_id_ = 0;
-  HostContentSettingsMap* host_content_settings_map_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::Remote<mojom::EthTxService> tx_service_;
-  KeyringService* keyring_service_;
-  BraveWalletService* brave_wallet_service_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   base::flat_map<std::string, AddAndApproveTransactionCallback>
       add_tx_callbacks_;

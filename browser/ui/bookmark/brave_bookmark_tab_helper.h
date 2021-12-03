@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BOOKMARK_BRAVE_BOOKMARK_TAB_HELPER_H_
 #define BRAVE_BROWSER_UI_BOOKMARK_BRAVE_BOOKMARK_TAB_HELPER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -28,7 +29,7 @@ class BraveBookmarkTabHelper
 
   explicit BraveBookmarkTabHelper(content::WebContents* web_contents);
 
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

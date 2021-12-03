@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
@@ -64,7 +65,7 @@ class EthBlockTracker {
 
   base::ObserverList<Observer> observers_;
 
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };

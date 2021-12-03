@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
@@ -93,7 +94,7 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   int threshold_score_ = 0;
   ProcessArch arch_ = ProcessArch::kArchSkip;
   bool stats_startup_complete_ = false;
-  PrefService* pref_service_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   std::string usage_server_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;

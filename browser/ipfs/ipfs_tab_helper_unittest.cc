@@ -5,6 +5,7 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -53,7 +54,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfileManager profile_manager_;
-  TestingProfile* profile_;
+  raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
 };
 

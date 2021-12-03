@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -182,7 +183,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
 
   std::unique_ptr<rewards_browsertest::RewardsBrowserTestResponse> response_;
   net::test_server::EmbeddedTestServer https_server_;
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
 #if !defined(OS_MAC)

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/base/ui_base_types.h"
 
@@ -53,10 +54,10 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   std::unique_ptr<BraveTabMenuModel> model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
 
-  Tab* tab_;
-  Browser* browser_;
+  raw_ptr<Tab> tab_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
   sessions::TabRestoreService* restore_service_ = nullptr;
-  BraveBrowserTabStripController* controller_;
+  raw_ptr<BraveBrowserTabStripController> controller_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTEXT_MENU_CONTENTS_H_

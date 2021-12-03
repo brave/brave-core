@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -56,8 +57,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   // content::WebContentsObserver overrides
   void WebContentsDestroyed() override;
 
-  KeyringService* keyring_service_;
-  content::WebContents* web_contents_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
 };

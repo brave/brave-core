@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/containers/queue.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
@@ -233,7 +234,7 @@ class IpfsService : public KeyedService,
   bool reentrancy_guard_ = false;
 
   base::FilePath user_data_dir_;
-  BraveIpfsClientUpdater* ipfs_client_updater_;
+  raw_ptr<BraveIpfsClientUpdater> ipfs_client_updater_ = nullptr;
   version_info::Channel channel_;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;

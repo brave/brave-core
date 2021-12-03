@@ -10,6 +10,8 @@ rust_ffi("adblock_rust_ffi") {
     "src/wrapper.cc",
     "src/wrapper.h",
   ]
+
+  deps = [ "//base" ]
 }
 
 rust_crate("rust_lib") {

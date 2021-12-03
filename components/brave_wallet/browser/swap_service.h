@@ -11,17 +11,17 @@
 
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
-#include "url/gurl.h"
-
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -75,7 +75,7 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
-  JsonRpcService* json_rpc_service_;  // NOT OWNED
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   mojo::ReceiverSet<mojom::SwapService> receivers_;
 
   base::WeakPtrFactory<SwapService> weak_ptr_factory_;

@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/task/sequenced_task_runner.h"
@@ -92,7 +93,7 @@ class BraveTorClientUpdater : public BraveComponent {
   base::FilePath executable_path_;
   base::FilePath torrc_path_;
   base::ObserverList<Observer> observers_;
-  PrefService* local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
   base::FilePath user_data_dir_;
 
   base::WeakPtrFactory<BraveTorClientUpdater> weak_ptr_factory_;

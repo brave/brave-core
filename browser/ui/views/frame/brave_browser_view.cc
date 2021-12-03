@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -119,7 +120,7 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
     browser_view_->StopTabCycling();
   }
 
-  BraveBrowserView* browser_view_;
+  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
   std::unique_ptr<views::EventMonitor> monitor_;
 };
 

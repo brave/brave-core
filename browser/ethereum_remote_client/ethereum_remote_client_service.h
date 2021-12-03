@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
@@ -75,7 +76,7 @@ class EthereumRemoteClientService
  private:
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   std::unique_ptr<EthereumRemoteClientDelegate>
       ethereum_remote_client_delegate_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;

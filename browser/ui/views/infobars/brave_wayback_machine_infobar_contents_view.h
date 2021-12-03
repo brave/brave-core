@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "ui/views/view.h"
 
@@ -63,7 +64,7 @@ class BraveWaybackMachineInfoBarContentsView
   Labels labels_;
   Views views_visible_before_checking_;
   Views views_visible_after_checking_;
-  content::WebContents* contents_;
+  raw_ptr<content::WebContents> contents_ = nullptr;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
   BraveWaybackMachineInfoBarButtonContainer* fetch_url_button_ = nullptr;

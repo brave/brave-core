@@ -12,6 +12,7 @@
 
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "content/common/content_export.h"
@@ -77,7 +78,7 @@ class CONTENT_EXPORT TLDEphemeralLifetime
   static TLDEphemeralLifetime* Get(const TLDEphemeralLifetimeKey& key);
 
   TLDEphemeralLifetimeKey key_;
-  StoragePartition* storage_partition_;
+  raw_ptr<StoragePartition> storage_partition_ = nullptr;
   std::unique_ptr<Delegate> delegate_;
   std::vector<OnDestroyCallback> on_destroy_callbacks_;
 

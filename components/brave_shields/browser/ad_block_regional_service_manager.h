@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/synchronization/lock.h"
 #include "base/values.h"
@@ -76,7 +77,8 @@ class AdBlockRegionalServiceManager {
   void StartRegionalServices();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
-  brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
+  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_ =
+      nullptr;  // NOT OWNED
   bool initialized_;
   base::Lock regional_services_lock_;
   std::map<std::string, std::unique_ptr<AdBlockRegionalService>>

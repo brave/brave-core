@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
@@ -183,11 +184,12 @@ class BraveActionsContainer : public views::View,
 
   void OnExtensionSystemReady();
 
-  extensions::ExtensionSystem* extension_system_;
-  extensions::ExtensionActionAPI* extension_action_api_;
-  extensions::ExtensionRegistry* extension_registry_;
-  extensions::ExtensionActionManager* extension_action_manager_;
-  extensions::BraveActionAPI* brave_action_api_;
+  raw_ptr<extensions::ExtensionSystem> extension_system_ = nullptr;
+  raw_ptr<extensions::ExtensionActionAPI> extension_action_api_ = nullptr;
+  raw_ptr<extensions::ExtensionRegistry> extension_registry_ = nullptr;
+  raw_ptr<extensions::ExtensionActionManager> extension_action_manager_ =
+      nullptr;
+  raw_ptr<extensions::BraveActionAPI> brave_action_api_ = nullptr;
 
   // Listen to extension load, unloaded notifications.
   base::ScopedObservation<extensions::ExtensionRegistry,
@@ -210,7 +212,7 @@ class BraveActionsContainer : public views::View,
   BooleanPrefMember brave_rewards_enabled_;
   BooleanPrefMember show_brave_rewards_button_;
 
-  brave_rewards::RewardsService* rewards_service_;
+  raw_ptr<brave_rewards::RewardsService> rewards_service_ = nullptr;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
 };

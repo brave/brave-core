@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_BRAVE_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_BRAVE_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "components/signin/internal/identity_manager/mutable_profile_oauth2_token_service_delegate.h"
 
 class BraveMutableProfileOAuth2TokenServiceDelegate
@@ -28,7 +29,7 @@ class BraveMutableProfileOAuth2TokenServiceDelegate
   void LoadCredentials(const CoreAccountId& primary_account_id) override;
 
  private:
-  AccountTrackerService* account_tracker_service_;
+  raw_ptr<AccountTrackerService> account_tracker_service_ = nullptr;
 };
 
 #endif  // BRAVE_COMPONENTS_SIGNIN_INTERNAL_IDENTITY_MANAGER_BRAVE_MUTABLE_PROFILE_OAUTH2_TOKEN_SERVICE_DELEGATE_H_

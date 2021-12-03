@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
@@ -119,7 +120,7 @@ class IPFSLocationButtonView : public views::LabelButton {
   }
 
   GURL ipfs_location_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace

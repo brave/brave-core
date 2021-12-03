@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -95,7 +96,7 @@ class RewardsNotificationServiceImpl
   RewardsNotificationID GenerateRewardsNotificationID() const;
   RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   RewardsNotificationsMap rewards_notifications_;
   std::vector<RewardsNotificationID> rewards_notifications_displayed_;
   std::unique_ptr<RewardsNotificationServiceObserver> extension_observer_;

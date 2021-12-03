@@ -13,6 +13,7 @@
 
 #include "base/callback.h"
 #include "base/containers/queue.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
@@ -93,7 +94,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
 
   int last_load_retry_value_for_test_ = -1;
   BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
-  network::mojom::URLLoaderFactory* url_loader_factory_;
+  raw_ptr<network::mojom::URLLoaderFactory> url_loader_factory_ = nullptr;
   SimpleURLLoaderList url_loaders_;
   std::unordered_map<std::string, std::string> keys_;
   base::queue<LoadKeysCallback> pending_load_callbacks_;

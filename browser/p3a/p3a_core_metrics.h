@@ -19,6 +19,7 @@
 
 #include <list>
 
+#include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
@@ -77,7 +78,7 @@ class BraveWindowTracker : public BrowserListObserver {
   void UpdateP3AValues() const;
 
   base::RepeatingTimer timer_;
-  PrefService* local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 #endif  // !defined(OS_ANDROID)
 

@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -192,7 +193,7 @@ class AdsClientMojoBridge
       CallbackHolder<RunDBTransactionCallback>* holder,
       ads::mojom::DBCommandResponsePtr response);
 
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  raw_ptr<ads::AdsClient> ads_client_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace bat_ads

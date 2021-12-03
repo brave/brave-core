@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
@@ -63,8 +64,8 @@ class BraveStatsUpdaterParams {
   FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringMonthly);
   FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringInactive);
 
-  PrefService* stats_pref_service_;
-  PrefService* profile_pref_service_;
+  raw_ptr<PrefService> stats_pref_service_ = nullptr;
+  raw_ptr<PrefService> profile_pref_service_ = nullptr;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;

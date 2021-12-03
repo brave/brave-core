@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -68,9 +69,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetAdDiagnostics(base::Value::ConstListView args);
   void OnGetAdDiagnostics(const bool success, const std::string& json);
 
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_ads::AdsService* ads_service_;              // NOT OWNED
-  Profile* profile_;
+  raw_ptr<brave_rewards::RewardsService> rewards_service_ =
+      nullptr;                                            // NOT OWNED
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 };
 

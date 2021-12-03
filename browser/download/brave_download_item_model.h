@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+
 // The purpose of this class is to extend DonwloadItemModel's class
 // functionality by adding a method for the origin URL text and
 // a method that returns tool tip text that includes origin URL.
@@ -36,7 +38,7 @@ class BraveDownloadItemModel {
   std::u16string GetOriginURLText(bool* is_secure);
 
   // Encapsulated model.
-  DownloadUIModel* model_;
+  raw_ptr<DownloadUIModel> model_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_MODEL_H_

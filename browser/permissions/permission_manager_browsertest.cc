@@ -6,6 +6,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -60,7 +61,7 @@ class PermissionRequestManagerObserver
   void Reset() { is_showing_bubble_ = is_requests_finalized_ = false; }
 
  private:
-  PermissionRequestManager* manager_;
+  raw_ptr<PermissionRequestManager> manager_ = nullptr;
   bool is_showing_bubble_ = false;
   bool is_requests_finalized_ = false;
 };
@@ -116,7 +117,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  PermissionManager* permission_manager_;
+  raw_ptr<PermissionManager> permission_manager_ = nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;

@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -154,9 +155,9 @@ class TestObserver : public NTPBackgroundImagesService::Observer {
     on_super_referral_ended_ = true;
   }
 
-  NTPBackgroundImagesData* bi_data_;
+  raw_ptr<NTPBackgroundImagesData> bi_data_ = nullptr;
   bool on_bi_updated_ = false;
-  NTPSponsoredImagesData* si_data_;
+  raw_ptr<NTPSponsoredImagesData> si_data_ = nullptr;
   bool on_si_updated_ = false;
   bool on_super_referral_ended_ = false;
 };

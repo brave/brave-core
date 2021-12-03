@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
 #define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "components/permissions/permission_prompt.h"
 
@@ -31,7 +32,7 @@ class EthereumPermissionPromptImpl : public permissions::PermissionPrompt {
  private:
   void ShowBubble();
 
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   permissions::PermissionPrompt::Delegate* const delegate_;
   base::TimeTicks permission_requested_time_;
 };
