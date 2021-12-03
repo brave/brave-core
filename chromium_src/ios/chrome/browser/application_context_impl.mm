@@ -45,6 +45,7 @@
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #import "ios/chrome/browser/safe_browsing/safe_browsing_service.h"
+#include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
@@ -269,7 +270,8 @@ ApplicationContextImpl::GetComponentUpdateService() {
     component_updater_ = component_updater::ComponentUpdateServiceFactory(
         component_updater::MakeIOSComponentUpdaterConfigurator(
             base::CommandLine::ForCurrentProcess()),
-        std::make_unique<component_updater::TimerUpdateScheduler>());
+        std::make_unique<component_updater::TimerUpdateScheduler>(),
+        ios::provider::GetBrandCode());
   }
   return component_updater_.get();
 }
