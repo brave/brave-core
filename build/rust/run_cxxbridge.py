@@ -7,6 +7,8 @@
 import os
 import sys
 
+from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+
 # Set up path to load build_utils.py which enables us to do
 # atomic output that's maximally compatible with ninja.
 sys.path.append(
@@ -18,7 +20,13 @@ import argparse
 import subprocess
 
 
-def run(exe, args, output, is_header):
+def run(cargo_path, args, output, is_header):
+  cargo_home = os.path.join(cargo_path, RUST_DEPS_PACKAGE_VERSION)
+  exe = os.path.abspath(os.path.join(cargo_home, 'bin', 'cxxbridge'))
+
+  if sys.platform == "win32":
+    exe = exe + '.exe'
+
   cmdargs = [exe]
   cmdargs.extend(args)
   if is_header:
@@ -36,7 +44,7 @@ def run(exe, args, output, is_header):
 
 def main():
   parser = argparse.ArgumentParser("run_cxxbridge.py")
-  parser.add_argument("--exe", help="Path to cxxbridge", required=True),
+  parser.add_argument('--cargo_path', required=True)
   parser.add_argument("--cc", help="output cc file", required=True)
   parser.add_argument("--header", help="output h file", required=True)
   parser.add_argument('args',
@@ -44,10 +52,10 @@ def main():
                       nargs='+',
                       help="Args to pass through")
   args = parser.parse_args()
-  v = run(args.exe, args.args, args.cc, False)
+  v = run(args.cargo_path, args.args, args.cc, False)
   if v != 0:
     return v
-  return run(args.exe, args.args, args.header, True)
+  v = run(args.cargo_path, args.args, args.cc, False)
 
 
 if __name__ == '__main__':
