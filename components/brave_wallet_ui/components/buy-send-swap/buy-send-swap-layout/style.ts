@@ -43,7 +43,7 @@ export const MainContainer = styled.div<Partial<StyleProps>>`
   border: ${(p) => `2px solid ${p.theme.color.divider01}`};
   border-radius: ${(p) =>
     p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'};
-  max-height: 525px;
+  max-height: 550px;
   overflow: hidden;
 `
 
