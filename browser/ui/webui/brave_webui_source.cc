@@ -770,7 +770,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
         { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
         { "geminiPromoInfo", IDS_BRAVE_UI_GEMINI_PROMO_INFO },
-        { "geminiPromoDisclaimer", IDS_BRAVE_UI_GEMINI_PROMO_DISCLAIMER },
 
         { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
         { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
