@@ -110,6 +110,7 @@ public class Utils {
     public static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
+    public static final String CHAIN_ID = "chainId";
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
@@ -193,10 +194,12 @@ public class Utils {
         activity.startActivity(buySendSwapActivityIntent);
     }
 
-    public static void openAssetDetailsActivity(Activity activity, String assetSymbol,
-            String assetName, String contractAddress, String assetLogo, int assetDecimals) {
+    public static void openAssetDetailsActivity(Activity activity, String chainId,
+            String assetSymbol, String assetName, String contractAddress, String assetLogo,
+            int assetDecimals) {
         assert activity != null;
         Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
+        assetDetailIntent.putExtra(CHAIN_ID, chainId);
         assetDetailIntent.putExtra(ASSET_SYMBOL, assetSymbol);
         assetDetailIntent.putExtra(ASSET_NAME, assetName);
         assetDetailIntent.putExtra(ASSET_LOGO, assetLogo);
