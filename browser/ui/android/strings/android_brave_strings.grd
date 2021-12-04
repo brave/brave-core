@@ -1777,7 +1777,7 @@ Are you sure you want to do this?
       Backup your wallet now to protect your crypto portfolio from loss of access.
     </message>
     <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
-      Buy crypto with Apple Pay, credit or debit card.
+      Buy crypto with credit or debit card.
     </message>
     <message name="IDS_SEND_SWAP_TEXT" desc="Brave Wallet send bottomsheet text">
       Send crypto or transfer from one account to another.
@@ -2063,7 +2063,7 @@ Are you sure you want to do this?
       Get Ether from a faucet for <ph name="NETWORK">%1$s<ex>Ropsten</ex></ph> Test Network
     </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
-      Continue to Wire
+      Continue to Wyre
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
@@ -2434,7 +2434,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Hide Private Key
     </message>
     <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
-      Warning: Never disclose this key. Anyone with private key can steal any assets held in your account.
+      Warning: Never disclose this key. Anyone with this private key can steal any assets held in your account.
     </message>
     <message name="IDS_ACTIVATE_ERC20" desc="A button to activate an ERC20 token">
       Activate <ph name="TOKEN">%1$s<ex>BAT</ex></ph>
