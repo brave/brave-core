@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 
@@ -924,7 +925,7 @@ public class Utils {
             AssetRatioController assetRatioController) {
         assert chainId != null;
         assert ercTokenRegistry != null;
-        ercTokenRegistry.getAllTokens(tokens -> {
+        TokenUtils.getAllTokensFiltered(ercTokenRegistry, tokens -> {
             HashMap<String, String> assets = new HashMap<String, String>();
             HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
             for (String accountName : pendingTxInfos.keySet()) {
