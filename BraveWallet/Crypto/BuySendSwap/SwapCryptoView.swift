@@ -467,7 +467,7 @@ struct SwapCryptoView: View {
 struct SwapCryptoView_Previews: PreviewProvider {
   static var previews: some View {
     SwapCryptoView(
-      keyringStore: .previewStoreWithWalletCreated,
+      keyringStore: .previewStore,
       ethNetworkStore: .previewStore,
       swapTokensStore: .previewStore
     )

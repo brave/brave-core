@@ -116,19 +116,19 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
             BuyTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              buyTokenStore: cryptoStore.buyTokenStore
+              buyTokenStore: cryptoStore.openBuyTokenStore()
             )
           case .send:
             SendTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              sendTokenStore: cryptoStore.sendTokenStore
+              sendTokenStore: cryptoStore.openSendTokenStore()
             )
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
               ethNetworkStore: cryptoStore.networkStore,
-              swapTokensStore: cryptoStore.swapTokenStore
+              swapTokensStore: cryptoStore.openSwapTokenStore()
             )
           }
         }
@@ -139,7 +139,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           if !cryptoStore.unapprovedTransactions.isEmpty {
             TransactionConfirmationView(
               transactions: cryptoStore.unapprovedTransactions,
-              confirmationStore: cryptoStore.confirmationStore,
+              confirmationStore: cryptoStore.openConfirmationStore(),
               networkStore: cryptoStore.networkStore,
               keyringStore: keyringStore
             )

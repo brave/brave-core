@@ -11,6 +11,7 @@ import BigNumber
 
 struct TransactionConfirmationView: View {
   var transactions: [BraveWallet.TransactionInfo]
+  
   @ObservedObject var confirmationStore: TransactionConfirmationStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
