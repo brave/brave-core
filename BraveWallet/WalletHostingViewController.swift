@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
+import Combine
 
 /// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
 /// some integration with the browser
@@ -19,6 +20,7 @@ public protocol BraveWalletDelegate: AnyObject {
 /// The initial wallet controller to present when the user wants to view their wallet
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   public weak var delegate: BraveWalletDelegate?
+  private var cancellable: AnyCancellable?
   
   public init(walletStore: WalletStore) {
     gesture = WalletInteractionGestureRecognizer(
@@ -38,6 +40,23 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         self.delegate?.openWalletURL(url)
       }
     }
+    // SwiftUI has a bug where nested sheets do not dismiss correctly if the root View holding onto
+    // the sheet is removed from the view hierarchy. The root's sheet stays visible even though the
+    // root doesn't exist anymore.
+    //
+    // As a workaround to this issue, we can just watch keyring's `isLocked` value from here
+    // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
+    // while the wallet is locked.
+    cancellable = walletStore.keyringStore.$keyring
+      .dropFirst()
+      .map(\.isLocked)
+      .removeDuplicates()
+      .sink { [weak self] isLocked in
+        guard let self = self else { return }
+        if isLocked, let controller = self.presentedViewController {
+          controller.dismiss(animated: true)
+        }
+      }
   }
   
   @available(*, unavailable)
