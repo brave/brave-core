@@ -148,13 +148,18 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
 }
 
 void TorProfileServiceImpl::LaunchTor() {
-  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorDataPath(),
-                               GetTorWatchPath());
+  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorrcPath(),
+                               GetTorDataPath(), GetTorWatchPath());
   tor_launcher_factory_->LaunchTorProcess(config);
 }
 
 base::FilePath TorProfileServiceImpl::GetTorExecutablePath() const {
   return tor_client_updater_ ? tor_client_updater_->GetExecutablePath()
+                             : base::FilePath();
+}
+
+base::FilePath TorProfileServiceImpl::GetTorrcPath() const {
+  return tor_client_updater_ ? tor_client_updater_->GetTorrcPath()
                              : base::FilePath();
 }
 

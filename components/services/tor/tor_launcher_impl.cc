@@ -55,11 +55,9 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
   base::CommandLine args(config->binary_path);
   args.AppendArg("--ignore-missing-torrc");
   args.AppendArg("-f");
-  args.AppendArg("/nonexistent");
+  args.AppendArgPath(config->torrc_path);
   args.AppendArg("--defaults-torrc");
-  args.AppendArg("/nonexistent");
-  args.AppendArg("--SocksPort");
-  args.AppendArg("auto");
+  args.AppendArgPath(config->torrc_path);
   base::FilePath tor_data_path = config->tor_data_path;
   if (!tor_data_path.empty()) {
     if (!base::DirectoryExists(tor_data_path))
@@ -75,12 +73,8 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
       base::CreateDirectory(tor_watch_path_);
     args.AppendArg("--pidfile");
     args.AppendArgPath(tor_watch_path_.AppendASCII("tor.pid"));
-    args.AppendArg("--controlport");
-    args.AppendArg("auto");
     args.AppendArg("--controlportwritetofile");
     args.AppendArgPath(tor_watch_path_.AppendASCII("controlport"));
-    args.AppendArg("--cookieauthentication");
-    args.AppendArg("1");
     args.AppendArg("--cookieauthfile");
     args.AppendArgPath(tor_watch_path_.AppendASCII("control_auth_cookie"));
   }

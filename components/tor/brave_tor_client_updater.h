@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
@@ -54,6 +55,7 @@ class BraveTorClientUpdater : public BraveComponent {
   void Unregister();
   void Cleanup();
   base::FilePath GetExecutablePath() const;
+  base::FilePath GetTorrcPath() const;
   base::FilePath GetTorDataPath() const;
   base::FilePath GetTorWatchPath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
@@ -80,11 +82,13 @@ class BraveTorClientUpdater : public BraveComponent {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
-  void SetExecutablePath(const base::FilePath& path);
+  // <tor executable, torrc>
+  void SetTorPath(const std::pair<base::FilePath, base::FilePath>&);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool registered_;
   base::FilePath executable_path_;
+  base::FilePath torrc_path_;
   base::ObserverList<Observer> observers_;
   PrefService* local_state_;
   base::FilePath user_data_dir_;

@@ -55,6 +55,7 @@ class TorProfileServiceImpl : public TorProfileService,
   void LaunchTor();
 
   base::FilePath GetTorExecutablePath() const;
+  base::FilePath GetTorrcPath() const;
   base::FilePath GetTorDataPath() const;
   base::FilePath GetTorWatchPath() const;
 
