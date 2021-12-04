@@ -17,6 +17,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -106,7 +107,7 @@ public class PortfolioHelper {
     public void calculateBalances(Runnable runWhenDone) {
         resetResultData();
 
-        mBraveWalletService.getUserAssets(mChainId, (userAssets) -> {
+        TokenUtils.getUserAssetsFiltered(mBraveWalletService, mChainId, (userAssets) -> {
             mUserAssets = userAssets;
             HashMap<String, Double> tokenToUsdRatios = new HashMap<String, Double>();
 
