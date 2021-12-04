@@ -15,6 +15,7 @@ struct AccountActivityView: View {
   @ObservedObject var networkStore: NetworkStore
   
   @State private var detailsPresentation: DetailsPresentation?
+  
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
   
@@ -175,7 +176,7 @@ private struct AccountActivityHeaderView: View {
 struct AccountActivityView_Previews: PreviewProvider {
   static var previews: some View {
     AccountActivityView(
-      keyringStore: .previewStoreWithWalletCreated,
+      keyringStore: .previewStore,
       activityStore: .previewStore,
       networkStore: .previewStore
     )

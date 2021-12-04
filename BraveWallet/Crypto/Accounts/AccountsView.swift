@@ -33,6 +33,9 @@ struct AccountsView: View {
       activityStore: cryptoStore.accountActivityStore(for: account),
       networkStore: cryptoStore.networkStore
     )
+      .onDisappear {
+        cryptoStore.closeAccountActivityStore(for: account)
+      }
     if #available(iOS 15.0, *) {
       ZStack {
         view

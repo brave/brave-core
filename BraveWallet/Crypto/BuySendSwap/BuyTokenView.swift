@@ -12,6 +12,7 @@ struct BuyTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var buyTokenStore: BuyTokenStore
+  
   @State private var amountInput = ""
   
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -133,7 +134,7 @@ struct BuyTokenView: View {
 struct BuyTokenView_Previews: PreviewProvider {
     static var previews: some View {
       BuyTokenView(
-        keyringStore: .previewStoreWithWalletCreated,
+        keyringStore: .previewStore,
         networkStore: .previewStore,
         buyTokenStore: .previewStore
       )

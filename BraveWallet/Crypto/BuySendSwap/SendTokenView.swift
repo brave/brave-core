@@ -174,7 +174,7 @@ struct SendTokenView: View {
 struct SendTokenView_Previews: PreviewProvider {
     static var previews: some View {
       SendTokenView(
-        keyringStore: .previewStoreWithWalletCreated,
+        keyringStore: .previewStore,
         networkStore: .previewStore,
         sendTokenStore: .previewStore
       )

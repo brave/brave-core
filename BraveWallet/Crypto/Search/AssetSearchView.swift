@@ -25,6 +25,9 @@ struct AssetSearchView: View {
             keyringStore: keyringStore,
             networkStore: cryptoStore.networkStore
           )
+            .onDisappear {
+              cryptoStore.closeAssetDetailStore(for: token)
+            }
         ) {
           TokenView(token: token)
         }
