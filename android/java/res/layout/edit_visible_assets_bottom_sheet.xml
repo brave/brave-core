@@ -31,7 +31,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_weight = "0.2"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/crypto_wallet_blue_button"
         android:text="@string/save_account_watchlist"
         android:textAllCaps="false"
