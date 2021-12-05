@@ -81,7 +81,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private View mCryptoLayout;
     private View mCryptoOnboardingLayout;
     private View cryptoOnboardingLayout;
-    private ImageView swapButton;
+    private ImageView mSwapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
@@ -126,15 +126,15 @@ public class BraveWalletActivity extends AsyncInitializationActivity
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(mToolbar);
 
-        swapButton = findViewById(R.id.swap_button);
+        mSwapButton = findViewById(R.id.swap_button);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // For Android 7 and above use vector images for send/swap button.
             // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            swapButton.setImageResource(R.drawable.ic_swap_icon);
-            swapButton.setBackgroundResource(R.drawable.ic_swap_bg);
+            mSwapButton.setImageResource(R.drawable.ic_swap_icon);
+            mSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
         }
 
-        swapButton.setOnClickListener(v -> {
+        mSwapButton.setOnClickListener(v -> {
             SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                     SwapBottomSheetDialogFragment.newInstance();
             swapBottomSheetDialogFragment.show(
@@ -342,7 +342,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
         mCryptoLayout.setVisibility(View.GONE);
-        swapButton.setVisibility(View.GONE);
+        mSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
@@ -429,7 +429,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (swapButton != null) swapButton.setVisibility(View.VISIBLE);
+        if (mSwapButton != null) mSwapButton.setVisibility(View.VISIBLE);
 
         if (mKeyringController != null)
             mKeyringController.isWalletBackedUp(backed_up -> {
@@ -462,6 +462,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
+        mSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems);
