@@ -170,32 +170,21 @@ void EthTxController::AddUnapprovedTransaction(
   }
 
   auto tx_ptr = std::make_unique<EthTransaction>(*tx);
-
-  mojom::TransactionType tx_type;
-  if (!GetTransactionInfoFromData(ToHex(tx_ptr->data()), &tx_type, nullptr,
-                                  nullptr)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(
-            IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED));
-    return;
-  }
-
-  // Use default gas limit for ETHSend if it is empty.
-  if (tx_type == mojom::TransactionType::ETHSend && !tx_ptr->gas_limit())
-    tx_ptr->set_gas_limit(kDefaultSendEthGasLimit);
-
   const std::string gas_limit = Uint256ValueToHex(tx_ptr->gas_limit());
+
+  // Use empty string for data to estimate gas when data array is empty,
+  // as required by geth. This is typically the case with ETHSend.
+  const std::string data = tx_data->data.empty() ? "" : ToHex(tx_data->data);
 
   if (!tx_ptr->gas_price()) {
     rpc_controller_->GetGasPrice(base::BindOnce(
         &EthTxController::OnGetGasPrice, weak_factory_.GetWeakPtr(), from,
-        tx_data->to, tx_data->value, ToHex(tx_data->data), gas_limit,
-        std::move(tx_ptr), std::move(callback)));
+        tx_data->to, tx_data->value, data, gas_limit, std::move(tx_ptr),
+        std::move(callback)));
   } else if (!tx_ptr->gas_limit()) {
     rpc_controller_->GetEstimateGas(
         from, tx_data->to, "" /* gas */, "" /* gas_price */, tx_data->value,
-        ToHex(tx_data->data),
+        data,
         base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
                        std::move(callback)));
@@ -299,32 +288,22 @@ void EthTxController::AddUnapproved1559Transaction(
   }
 
   auto tx_ptr = std::make_unique<Eip1559Transaction>(*tx);
-
-  mojom::TransactionType tx_type;
-  if (!GetTransactionInfoFromData(ToHex(tx_ptr->data()), &tx_type, nullptr,
-                                  nullptr)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(
-            IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED));
-    return;
-  }
-
-  // Use default gas limit for ETHSend if it is empty.
   std::string gas_limit = tx_data->base_data->gas_limit;
-  if (gas_limit.empty() && tx_type == mojom::TransactionType::ETHSend)
-    gas_limit = Uint256ValueToHex(kDefaultSendEthGasLimit);
+
+  // Use empty string for data to estimate gas when data array is empty,
+  // as required by geth. This is typically the case with ETHSend.
+  const std::string data =
+      tx_data->base_data->data.empty() ? "" : ToHex(tx_data->base_data->data);
 
   if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
     asset_ratio_controller_->GetGasOracle(base::BindOnce(
         &EthTxController::OnGetGasOracle, weak_factory_.GetWeakPtr(), from,
-        tx_data->base_data->to, tx_data->base_data->value,
-        ToHex(tx_data->base_data->data), gas_limit, std::move(tx_ptr),
-        std::move(callback)));
+        tx_data->base_data->to, tx_data->base_data->value, data, gas_limit,
+        std::move(tx_ptr), std::move(callback)));
   } else if (gas_limit.empty()) {
     rpc_controller_->GetEstimateGas(
         from, tx_data->base_data->to, "" /* gas */, "" /* gas_price */,
-        tx_data->base_data->value, ToHex(tx_data->base_data->data),
+        tx_data->base_data->value, data,
         base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
                        std::move(callback)));
