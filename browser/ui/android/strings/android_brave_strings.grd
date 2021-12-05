@@ -1766,9 +1766,6 @@ Are you sure you want to do this?
     <message name="IDS_SEND" desc="Brave Wallet send button text">
       Send
     </message>
-    <message name="IDS_SEARCH_TITLE" desc="Brave Wallet search toolbar button hint text">
-      Search
-    </message>
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
@@ -2102,6 +2099,9 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
+      Lock
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_PRIVACY_SECTION" desc="Title for privacy sectio of Brave Wallet Settings. [CHAR-LIMIT=27]">
       Privacy
