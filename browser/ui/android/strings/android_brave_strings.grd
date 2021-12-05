@@ -1766,9 +1766,6 @@ Are you sure you want to do this?
     <message name="IDS_SEND" desc="Brave Wallet send button text">
       Send
     </message>
-    <message name="IDS_SEARCH_TITLE" desc="Brave Wallet search toolbar button hint text">
-      Search
-    </message>
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
