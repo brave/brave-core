@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Locale;
@@ -171,7 +172,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
                 ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
                 assert ercTokenRegistry != null;
-                ercTokenRegistry.getAllTokens(tokens -> {
+                TokenUtils.getAllTokensFiltered(ercTokenRegistry, tokens -> {
                     for (ErcToken token : tokens) {
                         // Replace USDC and DAI contract addresses for Ropsten network
                         token.contractAddress = Utils.getContractAddress(
