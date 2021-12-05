@@ -87,3 +87,21 @@ export const AlertIcon = styled(AlertCircleIcon)`
   height: 14px;
   color: ${(p) => p.theme.color.interactive05};
 `
+
+export const SwapFeesNoticeRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: -4px;
+  margin-bottom: 8px;
+`
+
+export const SwapFeesNoticeText = styled.div`
+  font-family: Poppins;
+  letter-spacing: 0.01em;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(p) => p.theme.color.text02};
+  word-break: break-word;
+`
