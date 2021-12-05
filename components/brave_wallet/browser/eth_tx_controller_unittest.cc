@@ -555,8 +555,8 @@ TEST_F(EthTxControllerUnitTest,
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
 
-  // Default value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+  // Gas limit obtained by querying eth_estimateGas.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 }
 
 TEST_F(EthTxControllerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
@@ -581,8 +581,8 @@ TEST_F(EthTxControllerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
 
-  // Default value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+  // Gas limit obtained by querying eth_estimateGas.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 
   // Fail if transaction is not found.
   callback_called = false;
@@ -1116,8 +1116,8 @@ TEST_F(EthTxControllerUnitTest,
   auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  // Default gas limit value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+  // Gas limit obtained by querying eth_estimateGas.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 
   // Gas fee and estimation should be filled by gas oracle.
   auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
@@ -1180,8 +1180,8 @@ TEST_F(EthTxControllerUnitTest,
   auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  // Default gas limit value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+  // Gas limit obtained by querying eth_estimateGas.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 
   auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
