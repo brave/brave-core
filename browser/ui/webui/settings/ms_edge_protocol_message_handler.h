@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
@@ -43,4 +43,4 @@ class MSEdgeProtocolMessageHandler : public content::WebUIMessageHandler {
   base::WeakPtrFactory<MSEdgeProtocolMessageHandler> weak_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_MS_EDGE_PROTOCOL_MESSAGE_HANDLER_H_

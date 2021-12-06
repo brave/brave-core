@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/new_tab_page/ms_edge_protocol_message_handler.h"
+#include "brave/browser/ui/webui/settings/ms_edge_protocol_message_handler.h"
 
 #include "base/bind.h"
 #include "base/command_line.h"
