@@ -92,6 +92,8 @@ extension BrowserViewController {
                 
                 if !resources.isEmpty {
                     trackers[entity.key] = resources
+                } else {
+                    trackers[domain] = [domain]
                 }
             }
         }
