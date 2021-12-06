@@ -97,6 +97,7 @@ export type PanelTypes =
   | 'addEthereumChain'
   | 'switchEthereumChain'
   | 'approveTransaction'
+  | 'showUnlock'
   | 'sitePermissions'
   | 'addSuggestedToken'
 

@@ -213,6 +213,7 @@ class BraveWalletProviderImpl final
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   base::flat_map<std::string, AddAndApproveTransactionCallback>
       add_tx_callbacks_;
+  RequestEthereumPermissionsCallback pending_unlock_callback_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> rpc_observer_receiver_{
       this};
   mojo::Receiver<mojom::EthTxControllerObserver> tx_observer_receiver_{this};

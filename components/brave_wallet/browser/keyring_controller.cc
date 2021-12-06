@@ -445,6 +445,11 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
   return default_keyring_.get();
 }
 
+void KeyringController::RequestUnlock() {
+  DCHECK(IsLocked());
+  request_unlock_pending_ = true;
+}
+
 HDKeyring* KeyringController::ResumeDefaultKeyring(
     const std::string& password) {
   if (!CreateEncryptorForKeyring(password, kDefaultKeyringId)) {
@@ -975,6 +980,10 @@ bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
 
+bool KeyringController::GetPendingUnlockRequest() const {
+  return request_unlock_pending_;
+}
+
 absl::optional<std::string> KeyringController::GetSelectedAccount() const {
   std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
   if (address.empty()) {
@@ -1013,6 +1022,7 @@ void KeyringController::Unlock(const std::string& password,
   }
 
   UpdateLastUnlockPref(prefs_);
+  request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();
   }
@@ -1353,6 +1363,11 @@ void KeyringController::IsStrongPassword(const std::string& password,
   }
 
   std::move(callback).Run(true);
+}
+
+void KeyringController::GetPendingUnlockRequest(
+    GetPendingUnlockRequestCallback callback) {
+  std::move(callback).Run(GetPendingUnlockRequest());
 }
 
 }  // namespace brave_wallet

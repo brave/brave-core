@@ -948,6 +948,38 @@ TEST_F(BraveWalletProviderImplUnitTest,
             (std::vector<std::string>{from(0), from(1)}));
 }
 
+TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Allowing 1 account should return that account for allowed accounts
+  AddEthereumPermission(url, 0);
+  Lock();
+  // Allowed accounts is empty when locked
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  std::vector<std::string> allowed_accounts;
+  base::RunLoop run_loop;
+  provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& accounts, mojom::ProviderError error,
+          const std::string& error_message) {
+        allowed_accounts = accounts;
+        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+        EXPECT_TRUE(error_message.empty());
+        run_loop.Quit();
+      }));
+
+  EXPECT_TRUE(keyring_controller()->GetPendingUnlockRequest());
+  // Allowed accounts is still empty when locked
+  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  Unlock();
+  run_loop.Run();
+
+  EXPECT_FALSE(keyring_controller()->GetPendingUnlockRequest());
+  EXPECT_EQ(allowed_accounts, std::vector<std::string>{from(0)});
+}
+
 TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   CreateWallet();
   AddAccount();
