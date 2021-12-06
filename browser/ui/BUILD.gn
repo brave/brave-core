@@ -520,8 +520,8 @@ source_set("ui") {
 
   if (is_win) {
     sources += [
-      "webui/new_tab_page/ms_edge_protocol_message_handler.cc",
-      "webui/new_tab_page/ms_edge_protocol_message_handler.h",
+      "webui/settings/ms_edge_protocol_message_handler.cc",
+      "webui/settings/ms_edge_protocol_message_handler.h",
     ]
   }
 

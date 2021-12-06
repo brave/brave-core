@@ -48,7 +48,7 @@
 #endif
 
 #if defined(OS_WIN)
-#include "brave/browser/ui/webui/new_tab_page/ms_edge_protocol_message_handler.h"
+#include "brave/browser/ui/webui/settings/ms_edge_protocol_message_handler.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
