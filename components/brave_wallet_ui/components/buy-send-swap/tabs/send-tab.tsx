@@ -65,6 +65,9 @@ function SendTab (props: Props) {
   const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setSendView('send')
+
+    // Reset amount to 0
+    onSetSendAmount('0')
   }
 
   const onClickSelectAccount = (account: UserAccountType) => () => {
