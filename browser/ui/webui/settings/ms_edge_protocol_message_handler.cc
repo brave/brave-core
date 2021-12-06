@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/settings/ms_edge_protocol_message_handler.h"
 
+#include <shlobj.h>
+
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -126,6 +128,8 @@ void MSEdgeProtocolMessageHandler::OnSetDefaultProtocolHandler(bool success) {
     FireWebUIListener("notify-ms-edge-protocol-default-handler-status",
                       base::Value(success));
   }
+
+  ::SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 }
 
 void MSEdgeProtocolMessageHandler::LaunchSystemDialog() {
