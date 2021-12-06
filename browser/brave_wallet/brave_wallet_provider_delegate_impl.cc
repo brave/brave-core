@@ -116,6 +116,16 @@ void BraveWalletProviderDelegateImpl::ShowPanel() {
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
+  // Check if there's already a permission request in progress
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (rfh &&
+      permissions::BraveEthereumPermissionContext::HasRequestsInProgress(rfh)) {
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    return;
+  }
+
   GetAllowedAccounts(base::BindOnce(
       &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

@@ -53,6 +53,7 @@ class BraveEthereumPermissionContext : public PermissionContextBase {
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
       base::OnceCallback<void(const std::vector<ContentSetting>&)> callback);
+  static bool HasRequestsInProgress(content::RenderFrameHost* rfh);
 
   static void AcceptOrCancel(const std::vector<std::string>& accounts,
                              content::WebContents* web_contents);
