@@ -31,6 +31,7 @@ source_set("brave_wallet") {
     "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/browser_state",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
   ]
 }
