@@ -199,6 +199,9 @@ struct SwapCryptoView: View {
   }
   
   private var isSwapButtonDisabled: Bool {
+    guard !swapTokensStore.isMakingTx else {
+      return true
+    }
     switch swapTokensStore.state {
     case .error, .idle:
       return true
@@ -376,13 +379,17 @@ struct SwapCryptoView: View {
           )
             .foregroundColor(Color(.braveLabel))
             .font(.footnote)
-          Button(action: {
-            swapTokensStore.prepareSwap()
-          }) {
-            Text(swapButtonTitle)
-          }
-          .disabled(isSwapButtonDisabled)
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          WalletLoadingButton(
+            isLoading: swapTokensStore.isMakingTx,
+            action: {
+              swapTokensStore.prepareSwap()
+            },
+            label: {
+              Text(swapButtonTitle)
+            }
+          )
+            .disabled(isSwapButtonDisabled)
+            .buttonStyle(BraveFilledButtonStyle(size: .normal))
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 16)

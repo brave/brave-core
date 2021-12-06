@@ -86,6 +86,8 @@ public class SwapTokenStore: ObservableObject {
       }
     }
   }
+  /// A boolean indicates if this store is making an unapproved tx
+  @Published var isMakingTx = false
   
   private let keyringController: BraveWalletKeyringController
   private let tokenRegistry: BraveWalletERCTokenRegistry
@@ -208,12 +210,15 @@ public class SwapTokenStore: ObservableObject {
       let swapParams = swapParameters(for: .perSellAsset)
     else { return }
     
+    isMakingTx = true
     rpcController.network { [weak self] network in
       guard let self = self else {
         self?.state = .error(Strings.Wallet.unknownError)
         self?.clearAllAmount()
         return
       }
+      defer { self.isMakingTx = false }
+      
       self.addingUnapprovedTx = true
       self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
         defer { self.addingUnapprovedTx = false }

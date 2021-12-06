@@ -948,6 +948,7 @@
 		7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */; };
 		7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */; };
 		7DCA34D427555E96001B0555 /* CryptoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCA34D327555E96001B0555 /* CryptoStore.swift */; };
+		7DF9113D275AC86100EF0D8B /* WalletLoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
 		A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* ClientPreferences.swift */; };
 		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
@@ -2882,6 +2883,7 @@
 		7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtension.swift; sourceTree = "<group>"; };
 		7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtensionTests.swift; sourceTree = "<group>"; };
 		7DCA34D327555E96001B0555 /* CryptoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoStore.swift; sourceTree = "<group>"; };
+		7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletLoadingButton.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* ClientPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferences.swift; sourceTree = "<group>"; };
 		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
@@ -3801,6 +3803,7 @@
 				275034D626EF9E5D00CF4C8A /* Settings */,
 				270E5F2526F3E1A50024C70E /* Extensions */,
 				271F685026EBD27C00AA2A50 /* Preview Content */,
+				7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */,
 				271F689026EBD27E00AA2A50 /* SwapButton.swift */,
 				271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */,
 				271F688E26EBD27D00AA2A50 /* WalletTableViewHeaderView.swift */,
@@ -7914,6 +7917,7 @@
 				2774303227332C2F00183725 /* TransactionConfirmationView.swift in Sources */,
 				271F689726EBD27E00AA2A50 /* CryptoPagesView.swift in Sources */,
 				7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */,
+				7DF9113D275AC86100EF0D8B /* WalletLoadingButton.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				2792CBC8275951B10055151E /* UIPasteboardExtensions.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,

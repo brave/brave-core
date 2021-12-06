@@ -18,6 +18,8 @@ public class SendTokenStore: ObservableObject {
   }
   /// The current selected token balance. Default with nil value.
   @Published var selectedSendTokenBalance: Double?
+  /// A boolean indicates if this store is making an unapproved tx
+  @Published var isMakingTx = false
   
   private let keyringController: BraveWalletKeyringController
   private let rpcController: BraveWalletEthJsonRpcController
@@ -150,8 +152,11 @@ public class SendTokenStore: ObservableObject {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard let token = selectedSendToken, let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: 18) else { return }
     
+    isMakingTx = true
     rpcController.network { [weak self] network in
       guard let self = self else { return }
+      defer { self.isMakingTx = false }
+
       if token.isETH {
         let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: address, value: "0x\(weiHexString)", data: .init())
         if network.isEip1559 {

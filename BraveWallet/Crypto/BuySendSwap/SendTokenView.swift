@@ -25,7 +25,8 @@ struct SendTokenView: View {
   private var isSendDisabled: Bool {
     guard let sendAmount = BDouble(amountInput),
           let balance = sendTokenStore.selectedSendTokenBalance,
-          let token = sendTokenStore.selectedSendToken else {
+          let token = sendTokenStore.selectedSendToken,
+          !sendTokenStore.isMakingTx else {
       return true
     }
     
@@ -121,17 +122,21 @@ struct SendTokenView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header:
-            Button(action: {
-              sendTokenStore.sendToken(
-                from: keyringStore.selectedAccount,
-                to: sendAddress,
-                amount: amountInput
-              ) { success in
-                isShowingError = !success
+            WalletLoadingButton(
+              isLoading: sendTokenStore.isMakingTx,
+              action: {
+                sendTokenStore.sendToken(
+                  from: keyringStore.selectedAccount,
+                  to: sendAddress,
+                  amount: amountInput
+                ) { success in
+                  isShowingError = !success
+                }
+              },
+              label: {
+                Text(Strings.Wallet.sendCryptoSendButtonTitle)
               }
-            }) {
-              Text(Strings.Wallet.sendCryptoSendButtonTitle)
-            }
+            )
             .buttonStyle(BraveFilledButtonStyle(size: .normal))
             .disabled(isSendDisabled)
             .frame(maxWidth: .infinity)
