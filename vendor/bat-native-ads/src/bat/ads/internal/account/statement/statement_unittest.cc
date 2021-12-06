@@ -49,8 +49,9 @@ class BatAdsStatementTest : public UnitTestBase {
   }
 
   void AddTransactions(const int count) {
-    const ConfirmationInfo confirmation = BuildConfirmation(
-        "9cf19f6e-25b8-44f1-9050-2a7247185489", ConfirmationType::kViewed);
+    const ConfirmationInfo confirmation =
+        BuildConfirmation("9cf19f6e-25b8-44f1-9050-2a7247185489",
+                          ConfirmationType::kViewed, AdType::kAdNotification);
 
     for (int i = 0; i < count; i++) {
       transactions::Add(0.05, confirmation);

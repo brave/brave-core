@@ -15,7 +15,7 @@ namespace ads {
 
 namespace {
 
-bool ShouldFilterAction(const ConfirmationType& confirmation_type) {
+bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
   switch (confirmation_type.value()) {
     case ConfirmationType::kViewed:
     case ConfirmationType::kClicked:
@@ -25,6 +25,7 @@ bool ShouldFilterAction(const ConfirmationType& confirmation_type) {
 
     case ConfirmationType::kServed:
     case ConfirmationType::kTransferred:
+    case ConfirmationType::kSaved:
     case ConfirmationType::kFlagged:
     case ConfirmationType::kUpvoted:
     case ConfirmationType::kDownvoted:
@@ -50,8 +51,8 @@ std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
   std::map<std::string, AdHistoryInfo> filtered_ads_history_map;
 
   for (const auto& ad : history) {
-    const ConfirmationType ad_action = ad.ad_content.ad_action;
-    if (ShouldFilterAction(ad_action)) {
+    const ConfirmationType confirmation_type = ad.ad_content.confirmation_type;
+    if (ShouldFilterConfirmationType(confirmation_type)) {
       continue;
     }
 
@@ -61,8 +62,9 @@ std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
     if (it == filtered_ads_history_map.end()) {
       filtered_ads_history_map.insert({uuid, ad});
     } else {
-      AdHistoryInfo filtered_ad = it->second;
-      if (filtered_ad.ad_content.ad_action.value() > ad_action.value()) {
+      const AdHistoryInfo filtered_ad = it->second;
+      if (filtered_ad.ad_content.confirmation_type.value() >
+          confirmation_type.value()) {
         filtered_ads_history_map[uuid] = ad;
       }
     }

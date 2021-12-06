@@ -77,6 +77,7 @@ bool DoesConfirmationTypeMatchConversionType(
     case ConfirmationType::kServed:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kTransferred:
+    case ConfirmationType::kSaved:
     case ConfirmationType::kFlagged:
     case ConfirmationType::kUpvoted:
     case ConfirmationType::kDownvoted:
@@ -383,6 +384,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.conversion_id = verifiable_conversion.id;
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
+  conversion_queue_item.ad_type = ad_event.type;
   const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.confirm_at =

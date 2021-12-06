@@ -255,28 +255,28 @@ class AdsBox extends React.Component<Props, State> {
     })
   }
 
-  onThumbUpPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbUp(creativeInstanceId, creativeSetId, action)
+  onThumbUpPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbUp(adContent)
   }
 
-  onThumbDownPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbDown(creativeInstanceId, creativeSetId, action)
+  onThumbDownPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbDown(adContent)
   }
 
-  onOptInAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptInAction(category, action)
+  onOptIn = (category: string, action: number) => {
+    this.props.actions.toggleAdOptIn(category, action)
   }
 
-  onOptOutAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptOutAction(category, action)
+  onOptOut = (category: string, action: number) => {
+    this.props.actions.toggleAdOptOut(category, action)
   }
 
   onMenuSave = (creativeInstanceId: string, creativeSetId: string, saved: boolean) => {
-    this.props.actions.toggleSaveAd(creativeInstanceId, creativeSetId, saved)
+    this.props.actions.toggleSavedAd(creativeInstanceId, creativeSetId, saved)
   }
 
-  onMenuFlag = (creativeInstanceId: string, creativeSetId: string, flagged: boolean) => {
-    this.props.actions.toggleFlagAd(creativeInstanceId, creativeSetId, flagged)
+  onMenuFlag = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleFlaggedAd(adContent)
   }
 
   getGroupedAdsHistory = (adsHistory: Rewards.AdsHistory[], savedOnly: boolean) => {
@@ -322,11 +322,11 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const adContent: Rewards.AdContent = {
+      adType: adHistory.adContent.adType,
       creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
       brand: brand,
       brandInfo: brandInfo,
-      brandLogo: adHistory.adContent.brandLogo,
       brandDisplayUrl: adHistory.adContent.brandDisplayUrl,
       brandUrl: adHistory.adContent.brandUrl,
       likeAction: adHistory.adContent.likeAction,
@@ -334,32 +334,26 @@ class AdsBox extends React.Component<Props, State> {
       savedAd: adHistory.adContent.savedAd,
       flaggedAd: adHistory.adContent.flaggedAd,
       onThumbUpPress: () =>
-        this.onThumbUpPress(adHistory.adContent.creativeInstanceId,
-                            adHistory.adContent.creativeSetId,
-                            adHistory.adContent.likeAction),
+        this.onThumbUpPress(adHistory.adContent),
       onThumbDownPress: () =>
-        this.onThumbDownPress(adHistory.adContent.creativeInstanceId,
-                              adHistory.adContent.creativeSetId,
-                              adHistory.adContent.likeAction),
+        this.onThumbDownPress(adHistory.adContent),
       onMenuSave: () =>
         this.onMenuSave(adHistory.adContent.creativeInstanceId,
                         adHistory.adContent.creativeSetId,
                         adHistory.adContent.savedAd),
       onMenuFlag: () =>
-        this.onMenuFlag(adHistory.adContent.creativeInstanceId,
-                        adHistory.adContent.creativeSetId,
-                        adHistory.adContent.flaggedAd)
+        this.onMenuFlag(adHistory.adContent)
     }
 
     const categoryContent: Rewards.CategoryContent = {
       category: adHistory.categoryContent.category,
       optAction: adHistory.categoryContent.optAction,
-      onOptInAction: () =>
-        this.onOptInAction(adHistory.categoryContent.category,
-                           adHistory.categoryContent.optAction),
-      onOptOutAction: () =>
-        this.onOptOutAction(adHistory.categoryContent.category,
-                            adHistory.categoryContent.optAction)
+      onOptIn: () =>
+        this.onOptIn(adHistory.categoryContent.category,
+                     adHistory.categoryContent.optAction),
+      onOptOut: () =>
+        this.onOptOut(adHistory.categoryContent.category,
+                      adHistory.categoryContent.optAction)
     }
 
     return {

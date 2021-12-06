@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
+#include <utility>
+
 #include "base/base64url.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
@@ -33,12 +35,19 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   const std::string blinded_payment_token_base64 =
       confirmation.blinded_payment_token.encode_base64();
   if (!blinded_payment_token_base64.empty()) {
-    dto.SetKey("blindedPaymentToken",
-               base::Value(blinded_payment_token_base64));
+    base::Value list(base::Value::Type::LIST);
+
+    list.Append(blinded_payment_token_base64);
+
+    dto.SetKey("blindedPaymentTokens", std::move(list));
   }
 
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
+
+  const std::string public_key =
+      confirmation.unblinded_token.public_key.encode_base64();
+  dto.SetKey("publicKey", base::Value(public_key));
 
   absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);

@@ -123,34 +123,23 @@ class BatAdsImpl :
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
-  void ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      ToggleAdThumbUpCallback callback) override;
-  void ToggleAdOptInAction(
-      const std::string& category,
-      const int action,
-      ToggleAdOptInActionCallback callback) override;
-  void ToggleAdOptOutAction(
-      const std::string& category,
-      const int action,
-      ToggleAdOptOutActionCallback callback) override;
-  void ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved,
-      ToggleSaveAdCallback callback) override;
-  void ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged,
-      ToggleFlagAdCallback callback) override;
+  void ToggleAdThumbUp(const std::string& json,
+                       ToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(const std::string& json,
+                         ToggleAdThumbUpCallback callback) override;
+
+  void ToggleAdOptIn(const std::string& category,
+                     const int opt_action_type,
+                     ToggleAdOptInCallback callback) override;
+  void ToggleAdOptOut(const std::string& category,
+                      const int opt_action_type,
+                      ToggleAdOptOutCallback callback) override;
+
+  void ToggleSavedAd(const std::string& json,
+                     ToggleSavedAdCallback callback) override;
+
+  void ToggleFlaggedAd(const std::string& json,
+                       ToggleFlaggedAdCallback callback) override;
 
   void OnResourceComponentUpdated(const std::string& id) override;
 

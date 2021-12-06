@@ -22,7 +22,7 @@ CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
 CreateConfirmationUrlRequestBuilder::~CreateConfirmationUrlRequestBuilder() =
     default;
 
-// POST /v1/confirmation/{confirmation_id}/{credential}
+// POST /v2/confirmation/{confirmation_id}/{credential}
 
 mojom::UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
@@ -38,7 +38,7 @@ mojom::UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string CreateConfirmationUrlRequestBuilder::BuildUrl() const {
-  std::string url = base::StringPrintf("%s/v1/confirmation/%s",
+  std::string url = base::StringPrintf("%s/v2/confirmation/%s",
                                        confirmations::server::GetHost().c_str(),
                                        confirmation_.id.c_str());
 

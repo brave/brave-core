@@ -57,7 +57,7 @@ void CreateIndex(mojom::DBTransaction* transaction,
   DCHECK(!table_name.empty());
   DCHECK(!key.empty());
 
-  const std::string query = base::StringPrintf(
+  const std::string& query = base::StringPrintf(
       "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
       table_name.c_str(), key.c_str());
 
@@ -72,7 +72,7 @@ void Drop(mojom::DBTransaction* transaction, const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string query = base::StringPrintf(
+  const std::string& query = base::StringPrintf(
       "PRAGMA foreign_keys = off;"
       "DROP TABLE IF EXISTS %s;"
       "PRAGMA foreign_keys = on;",
@@ -89,7 +89,7 @@ void Delete(mojom::DBTransaction* transaction, const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string query =
+  const std::string& query =
       base::StringPrintf("DELETE FROM %s", table_name.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
@@ -158,8 +158,8 @@ void Rename(mojom::DBTransaction* transaction,
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
 
-  const std::string query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
-                                               from.c_str(), to.c_str());
+  const std::string& query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
+                                                from.c_str(), to.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;

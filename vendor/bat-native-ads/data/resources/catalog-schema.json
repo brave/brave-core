@@ -6,7 +6,6 @@
         "version",
         "ping",
         "campaigns",
-        "issuers",
         "catalogId"
     ],
     "properties": {
@@ -18,25 +17,6 @@
         },
         "catalogId": {
             "type": "string"
-        },
-        "issuers": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                    "name",
-                    "publicKey"
-                ],
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "publicKey": {
-                        "type": "string"
-                    }
-                }
-            }
         },
         "campaigns": {
             "type": "array",

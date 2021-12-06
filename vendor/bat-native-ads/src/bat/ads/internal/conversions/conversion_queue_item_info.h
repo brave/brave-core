@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/time/time.h"
+#include "bat/ads/ad_type.h"
 
 namespace ads {
 
@@ -26,6 +27,7 @@ struct ConversionQueueItemInfo final {
   std::string advertiser_id;
   std::string conversion_id;
   std::string advertiser_public_key;
+  AdType ad_type = AdType::kUndefined;
   base::Time confirm_at;
 
   bool IsValid() const;

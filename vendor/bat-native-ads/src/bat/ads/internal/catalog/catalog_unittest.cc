@@ -518,7 +518,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(8, version);
+  EXPECT_EQ(9, version);
 }
 
 TEST_F(BatAdsCatalogTest, GetPing) {
@@ -537,39 +537,6 @@ TEST_F(BatAdsCatalogTest, GetPing) {
 
   // Assert
   EXPECT_EQ(7200, ping);
-}
-
-TEST_F(BatAdsCatalogTest, GetIssuers) {
-  // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
-
-  Catalog catalog;
-  ASSERT_TRUE(catalog.FromJson(json));
-
-  // Act
-  const CatalogIssuersInfo catalog_issuers = catalog.GetIssuers();
-
-  // Assert
-  CatalogIssuersInfo expected_catalog_issuers;
-
-  expected_catalog_issuers.public_key =
-      "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34=";
-
-  CatalogIssuerInfo catalog_issuer_1;
-  catalog_issuer_1.name = "0.01BAT";
-  catalog_issuer_1.public_key = "VihGXGoiQ5Fjxe4SrskIVMcmERa1LoAgvhFxxfLmNEI=";
-  expected_catalog_issuers.issuers.push_back(catalog_issuer_1);
-
-  CatalogIssuerInfo catalog_issuer_2;
-  catalog_issuer_2.name = "0.05BAT";
-  catalog_issuer_2.public_key = "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk=";
-  expected_catalog_issuers.issuers.push_back(catalog_issuer_2);
-
-  EXPECT_EQ(expected_catalog_issuers, catalog_issuers);
 }
 
 TEST_F(BatAdsCatalogTest, GetCampaign) {

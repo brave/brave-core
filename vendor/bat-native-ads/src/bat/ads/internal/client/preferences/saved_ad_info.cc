@@ -42,14 +42,14 @@ bool SavedAdInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const SavedAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const SavedAdInfo& info) {
   writer->StartObject();
 
   writer->String("uuid");
-  writer->String(ad.creative_instance_id.c_str());
+  writer->String(info.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
-  writer->String(ad.creative_set_id.c_str());
+  writer->String(info.creative_set_id.c_str());
 
   writer->EndObject();
 }

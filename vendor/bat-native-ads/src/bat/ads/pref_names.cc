@@ -46,6 +46,9 @@ const char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 // Stores catalog last updated
 const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
 
+// Stores issuer ping
+const char kIssuerPing[] = "brave.brave_ads.issuer_ping";
+
 // Stores epsilon greedy bandit arms
 const char kEpsilonGreedyBanditArms[] =
     "brave.brave_ads.epsilon_greedy_bandit_arms";

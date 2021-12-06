@@ -14,14 +14,15 @@
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
@@ -31,7 +32,7 @@
 namespace ads {
 
 namespace {
-const int64_t kRetryAfterSeconds = 5 * base::Time::kSecondsPerMinute;
+const int64_t kRetryAfterSeconds = 15;
 }  // namespace
 
 Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator,
@@ -56,34 +57,8 @@ void Confirmations::RemoveObserver(ConfirmationsObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Confirmations::SetCatalogIssuers(
-    const CatalogIssuersInfo& catalog_issuers) {
-  BLOG(1, "SetCatalogIssuers:");
-  BLOG(1, "  Public key: " << catalog_issuers.public_key);
-  BLOG(1, "  Issuers:");
-
-  for (const auto& issuer : catalog_issuers.issuers) {
-    BLOG(1, "    Name: " << issuer.name);
-    BLOG(1, "    Public key: " << issuer.public_key);
-  }
-
-  const CatalogIssuersInfo current_catalog_issuers =
-      ConfirmationsState::Get()->GetCatalogIssuers();
-
-  const bool public_key_was_rotated =
-      !current_catalog_issuers.public_key.empty() &&
-      current_catalog_issuers.public_key != catalog_issuers.public_key;
-
-  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
-
-  if (public_key_was_rotated) {
-    ConfirmationsState::Get()->get_unblinded_tokens()->RemoveAllTokens();
-  }
-
-  ConfirmationsState::Get()->Save();
-}
-
 void Confirmations::Confirm(const std::string& creative_instance_id,
+                            const AdType& ad_type,
                             const ConfirmationType& confirmation_type) {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -97,29 +72,59 @@ void Confirmations::Confirm(const std::string& creative_instance_id,
       [=](const base::Value& user_data) {
         const base::DictionaryValue* user_data_dictionary = nullptr;
         user_data.GetAsDictionary(&user_data_dictionary);
-        const ConfirmationInfo confirmation = CreateConfirmation(
-            creative_instance_id, confirmation_type, *user_data_dictionary);
+        const ConfirmationInfo& confirmation =
+            CreateConfirmation(creative_instance_id, confirmation_type, ad_type,
+                               *user_data_dictionary);
         redeem_unblinded_token_->Redeem(confirmation);
       });
 }
 
-void Confirmations::RetryAfterDelay() {
+void Confirmations::ProcessRetryQueue() {
   if (retry_timer_.IsRunning()) {
     return;
   }
 
-  const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-      base::BindOnce(&Confirmations::Retry, base::Unretained(this)));
-
-  BLOG(1, "Retry failed confirmations " << FriendlyDateAndTime(time));
+  Retry();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void Confirmations::Retry() {
+  ConfirmationList failed_confirmations =
+      ConfirmationsState::Get()->GetFailedConfirmations();
+  if (failed_confirmations.empty()) {
+    BLOG(1, "No failed confirmations to retry");
+    return;
+  }
+
+  DCHECK(!retry_timer_.IsRunning());
+  const base::Time& time = retry_timer_.StartWithPrivacy(
+      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
+
+  BLOG(1, "Retry sending failed confirmations " << FriendlyDateAndTime(time));
+}
+
+void Confirmations::OnRetry() {
+  const ConfirmationList& failed_confirmations =
+      ConfirmationsState::Get()->GetFailedConfirmations();
+  DCHECK(!failed_confirmations.empty());
+
+  const ConfirmationInfo& confirmation = failed_confirmations.front();
+
+  RemoveFromRetryQueue(confirmation);
+
+  redeem_unblinded_token_->Redeem(confirmation);
+}
+
+void Confirmations::StopRetrying() {
+  retry_timer_.Stop();
+}
+
 ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
+    const AdType& ad_type,
     const base::DictionaryValue& user_data) const {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -129,12 +134,14 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.id = base::GenerateGUID();
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
+  confirmation.ad_type = ad_type;
   confirmation.created_at = base::Time::Now();
 
   if (ShouldRewardUser() &&
       !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
-    const privacy::UnblindedTokenInfo unblinded_token =
+    const privacy::UnblindedTokenInfo& unblinded_token =
         ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
+
     confirmation.unblinded_token = unblinded_token;
 
     const std::vector<Token> tokens = token_generator_->Generate(1);
@@ -175,9 +182,9 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
         const base::DictionaryValue* user_data_dictionary = nullptr;
         user_data.GetAsDictionary(&user_data_dictionary);
 
-        const ConfirmationInfo new_confirmation =
-            CreateConfirmation(confirmation.creative_instance_id,
-                               confirmation.type, *user_data_dictionary);
+        const ConfirmationInfo& new_confirmation = CreateConfirmation(
+            confirmation.creative_instance_id, confirmation.type,
+            confirmation.ad_type, *user_data_dictionary);
         AppendToRetryQueue(new_confirmation);
       });
 }
@@ -220,33 +227,21 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
   ConfirmationsState::Get()->Save();
 }
 
-void Confirmations::Retry() {
-  ConfirmationList failed_confirmations =
-      ConfirmationsState::Get()->GetFailedConfirmations();
-  if (failed_confirmations.empty()) {
-    BLOG(1, "No failed confirmations to retry");
-    return;
-  }
-
-  ConfirmationInfo confirmation = failed_confirmations.front();
-  RemoveFromRetryQueue(confirmation);
-
-  redeem_unblinded_token_->Redeem(confirmation);
-
-  RetryAfterDelay();
-}
-
 void Confirmations::OnDidSendConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "Successfully sent confirmation with id "
               << confirmation.id << ", creative instance id "
               << confirmation.creative_instance_id << " and "
               << std::string(confirmation.type));
+
+  StopRetrying();
+
+  ProcessRetryQueue();
 }
 
 void Confirmations::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
-    const privacy::UnblindedTokenInfo& unblinded_payment_token) {
+    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
   if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->TokenExists(
           unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
@@ -254,35 +249,41 @@ void Confirmations::OnDidRedeemUnblindedToken(
     return;
   }
 
-  BLOG(1, "Successfully redeemed unblinded token with confirmation id "
-              << confirmation.id << ", creative instance id "
-              << confirmation.creative_instance_id << " and "
-              << std::string(confirmation.type));
-
   ConfirmationsState::Get()->get_unblinded_payment_tokens()->AddTokens(
       {unblinded_payment_token});
   ConfirmationsState::Get()->Save();
 
-  const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->GetCatalogIssuers();
+  const int unblinded_payment_tokens_count =
+      ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count();
 
-  const absl::optional<double> estimated_redemption_value =
-      catalog_issuers.GetEstimatedRedemptionValue(
-          unblinded_payment_token.public_key.encode_base64());
-  if (!estimated_redemption_value) {
-    BLOG(1, "Invalid estimated redemption value");
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
-    return;
-  }
+  BLOG(1, "Successfully redeemed unblinded token with confirmation id "
+              << confirmation.id << ", creative instance id "
+              << confirmation.creative_instance_id << " and "
+              << std::string(confirmation.type) << ". You now have "
+              << unblinded_payment_tokens_count
+              << " unredeemed unblinded payment tokens");
 
-  BLOG(1,
-       "Added 1 unblinded payment token with an estimated redemption value "
-       "of "
-           << *estimated_redemption_value << " BAT, you now have "
-           << ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count()
-           << " unblinded payment tokens");
+  database::table::CreativeAds database_table;
+  database_table.GetForCreativeInstanceId(
+      confirmation.creative_instance_id,
+      [=](const bool success, const std::string& creative_instance_id,
+          const CreativeAdInfo& creative_ad) {
+        if (!success) {
+          BLOG(1, "Estimated redemption value missing for creative instance id"
+                      << creative_instance_id);
 
-  NotifyDidConfirm(*estimated_redemption_value, confirmation);
+          OnFailedToRedeemUnblindedToken(confirmation,
+                                         /* should_retry */ false);
+
+          return;
+        }
+
+        NotifyDidConfirm(creative_ad.value, confirmation);
+
+        StopRetrying();
+
+        ProcessRetryQueue();
+      });
 }
 
 void Confirmations::OnFailedToRedeemUnblindedToken(
@@ -302,6 +303,8 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
   }
 
   NotifyFailedToConfirm(confirmation);
+
+  ProcessRetryQueue();
 }
 
 void Confirmations::NotifyDidConfirm(

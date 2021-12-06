@@ -13,6 +13,10 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
 
+namespace base {
+class Value;
+}  // namespace base
+
 namespace ads {
 
 struct ADS_EXPORT AdContentInfo final {
@@ -22,6 +26,12 @@ struct ADS_EXPORT AdContentInfo final {
 
   bool operator==(const AdContentInfo& rhs) const;
   bool operator!=(const AdContentInfo& rhs) const;
+
+  AdContentLikeActionType ToggleThumbUpActionType() const;
+  AdContentLikeActionType ToggleThumbDownActionType() const;
+
+  base::Value ToValue() const;
+  bool FromValue(const base::Value& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);
@@ -35,10 +45,10 @@ struct ADS_EXPORT AdContentInfo final {
   std::string brand_info;
   std::string brand_display_url;
   std::string brand_url;
-  AdContentActionType like_action = AdContentActionType::kNeutral;
-  ConfirmationType ad_action = ConfirmationType::kUndefined;
-  bool saved_ad = false;
-  bool flagged_ad = false;
+  AdContentLikeActionType like_action_type = AdContentLikeActionType::kNeutral;
+  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
+  bool is_saved = false;
+  bool is_flagged = false;
 };
 
 }  // namespace ads

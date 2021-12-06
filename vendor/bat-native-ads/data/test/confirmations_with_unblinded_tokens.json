@@ -8,15 +8,6 @@
       }
     ]
   },
-  "catalog_issuers": {
-    "issuers": [
-      {
-        "name": "0.05BAT",
-        "public_key": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
-      }
-    ],
-    "public_key": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
-  },
   "confirmations": {
     "failed_confirmations": []
   },
@@ -26,8 +17,11 @@
   },
   "unblinded_payment_tokens": [
     {
+      "transaction_id": "1ebe3c36-81cb-42c2-b12d-4a1627903f90",
       "public_key": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk=",
-      "unblinded_token": "sBHEriHjOcSJBLi65AuZwqvPm7U+kgloDIZZrJ1G6t7l3Q0nSvag+EXj4xc+ObeL6xou0XCryeJSusoZrLZuXUguYj9trXz/q/WS+OXxehg91iXvOToywZOYTBnSCR1t"
+      "unblinded_token": "sBHEriHjOcSJBLi65AuZwqvPm7U+kgloDIZZrJ1G6t7l3Q0nSvag+EXj4xc+ObeL6xou0XCryeJSusoZrLZuXUguYj9trXz/q/WS+OXxehg91iXvOToywZOYTBnSCR1t",
+      "confirmation_type": "view",
+      "ad_type": "ad_notification"
     }
   ],
   "unblinded_tokens": [

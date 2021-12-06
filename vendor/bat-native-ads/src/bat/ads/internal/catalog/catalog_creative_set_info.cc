@@ -21,7 +21,7 @@ bool CatalogCreativeSetInfo::operator==(
   return creative_set_id == rhs.creative_set_id && per_day == rhs.per_day &&
          per_week == rhs.per_week && per_month == rhs.per_month &&
          total_max == rhs.total_max && DoubleEquals(value, rhs.value) &&
-         segments == rhs.segments && split_test_group == rhs.split_test_group &&
+         split_test_group == rhs.split_test_group && segments == rhs.segments &&
          oses == rhs.oses &&
          creative_ad_notifications == rhs.creative_ad_notifications &&
          creative_inline_content_ads == rhs.creative_inline_content_ads &&

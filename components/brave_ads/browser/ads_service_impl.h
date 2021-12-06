@@ -179,29 +179,23 @@ class AdsServiceImpl : public AdsService,
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
-  void ToggleAdThumbUp(const std::string& creative_instance_id,
-                       const std::string& creative_set_id,
-                       const int action,
+  void ToggleAdThumbUp(const std::string& json,
                        OnToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(const std::string& creative_instance_id,
-                         const std::string& creative_set_id,
-                         const int action,
+  void ToggleAdThumbDown(const std::string& json,
                          OnToggleAdThumbDownCallback callback) override;
-  void ToggleAdOptInAction(
-      const std::string& category,
-      const int action,
-      const OnToggleAdOptInActionCallback callback) override;
-  void ToggleAdOptOutAction(const std::string& category,
-                            const int action,
-                            OnToggleAdOptOutActionCallback callback) override;
-  void ToggleSaveAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool saved,
-                    OnToggleSaveAdCallback callback) override;
-  void ToggleFlagAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool flagged,
-                    OnToggleFlagAdCallback callback) override;
+
+  void ToggleAdOptIn(const std::string& category,
+                     const int action,
+                     const OnToggleAdOptInCallback callback) override;
+  void ToggleAdOptOut(const std::string& category,
+                      const int action,
+                      OnToggleAdOptOutCallback callback) override;
+
+  void ToggleSavedAd(const std::string& json,
+                     OnToggleSavedAdCallback callback) override;
+
+  void ToggleFlaggedAd(const std::string& json,
+                       OnToggleFlaggedAdCallback callback) override;
 
   void ResetAllState(const bool should_shutdown) override;
 
@@ -295,23 +289,22 @@ class AdsServiceImpl : public AdsService,
   void OnRemoveAllHistory(const bool success);
 
   void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
-                         const std::string& creative_instance_id,
-                         const int action);
+                         const std::string& json);
   void OnToggleAdThumbDown(const OnToggleAdThumbDownCallback callback,
-                           const std::string& creative_instance_id,
-                           const int action);
-  void OnToggleAdOptInAction(OnToggleAdOptInActionCallback callback,
-                             const std::string& category,
-                             const int action);
-  void OnToggleAdOptOutAction(OnToggleAdOptOutActionCallback callback,
-                              const std::string& category,
-                              const int action);
-  void OnToggleSaveAd(OnToggleSaveAdCallback callback,
-                      const std::string& creative_instance_id,
-                      const bool saved);
-  void OnToggleFlagAd(OnToggleSaveAdCallback callback,
-                      const std::string& creative_instance_id,
-                      const bool flagged);
+                           const std::string& json);
+
+  void OnToggleAdOptIn(OnToggleAdOptInCallback callback,
+                       const std::string& category,
+                       const int action);
+  void OnToggleAdOptOut(OnToggleAdOptOutCallback callback,
+                        const std::string& category,
+                        const int action);
+
+  void OnToggleSavedAd(OnToggleSavedAdCallback callback,
+                       const std::string& json);
+
+  void OnToggleFlaggedAd(OnToggleFlaggedAdCallback callback,
+                         const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
   void OnSaved(const ads::ResultCallback& callback, const bool success);

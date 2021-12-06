@@ -11,7 +11,7 @@ namespace ads {
 struct ConfirmationInfo;
 
 namespace privacy {
-struct UnblindedTokenInfo;
+struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
 class RedeemUnblindedTokenDelegate {
@@ -25,7 +25,7 @@ class RedeemUnblindedTokenDelegate {
   // corresponding |confirmation| and |unblinded_payment_token|
   virtual void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
-      const privacy::UnblindedTokenInfo& unblinded_payment_token) {}
+      const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {}
 
   // Invoked to tell the delegate unblinded token redemption failed for the
   // corresponding |confirmation| and whether we should retry

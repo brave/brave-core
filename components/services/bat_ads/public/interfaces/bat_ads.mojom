@@ -98,11 +98,11 @@ interface BatAds {
   GetAdsHistory(double from_timestamp, double to_timestamp) => (string json);
   GetAccountStatement() => (bool success, string json);
   GetAdDiagnostics() => (bool success, string json);
-  ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
-  ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
-  ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);
-  ToggleAdOptOutAction(string category, int32 action) => (string category, int32 action);
-  ToggleSaveAd(string creative_instance_id, string creative_set_id, bool saved) => (string creative_instance_id, bool saved);
-  ToggleFlagAd(string creative_instance_id, string creative_set_id, bool flagged) => (string creative_instance_id, bool flagged);
+  ToggleAdThumbUp(string json) => (string json);
+  ToggleAdThumbDown(string json) => (string json);
+  ToggleAdOptIn(string category, int32 action) => (string category, int32 action);
+  ToggleAdOptOut(string category, int32 action) => (string category, int32 action);
+  ToggleSavedAd(string json) => (string json);
+  ToggleFlaggedAd(string json) => (string json);
   OnResourceComponentUpdated(string id);
 };

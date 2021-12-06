@@ -19,7 +19,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -203,7 +203,7 @@ void AdRewards::Reset() {
 
   ConfirmationsState::Get()->reset_transactions();
 
-  privacy::UnblindedTokens* unblinded_payment_tokens =
+  privacy::UnblindedPaymentTokens* unblinded_payment_tokens =
       ConfirmationsState::Get()->get_unblinded_payment_tokens();
   unblinded_payment_tokens->RemoveAllTokens();
 

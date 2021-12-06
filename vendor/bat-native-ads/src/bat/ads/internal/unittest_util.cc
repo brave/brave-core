@@ -273,6 +273,8 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
   mock->SetDoublePref(prefs::kCatalogLastUpdated, DistantPast().ToDoubleT());
 
+  mock->SetInt64Pref(prefs::kIssuerPing, 0);
+
   mock->SetDoublePref(prefs::kUnreconciledTransactions, 0.0);
 
   mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
@@ -545,6 +547,8 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
   ON_CALL(*mock, RunDBTransaction(_, _))
       .WillByDefault(Invoke([&database](mojom::DBTransactionPtr transaction,
                                         RunDBTransactionCallback callback) {
+        DCHECK(transaction);
+
         mojom::DBCommandResponsePtr response = mojom::DBCommandResponse::New();
 
         if (!database) {

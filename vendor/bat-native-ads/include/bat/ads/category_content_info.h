@@ -25,7 +25,8 @@ struct ADS_EXPORT CategoryContentInfo final {
   bool FromJson(const std::string& json);
 
   std::string category;
-  CategoryContentActionType opt_action = CategoryContentActionType::kNone;
+  CategoryContentOptActionType opt_action_type =
+      CategoryContentOptActionType::kNone;
 };
 
 }  // namespace ads

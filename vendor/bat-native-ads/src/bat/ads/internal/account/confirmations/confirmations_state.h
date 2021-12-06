@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads_aliases.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/tokens/issuers/issuer_info_aliases.h"
 #include "bat/ads/transaction_info_aliases.h"
 
 namespace base {
@@ -25,6 +25,7 @@ namespace ads {
 class AdRewards;
 
 namespace privacy {
+class UnblindedPaymentTokens;
 class UnblindedTokens;
 }  // namespace privacy
 
@@ -42,8 +43,8 @@ class ConfirmationsState final {
   void Load();
   void Save();
 
-  CatalogIssuersInfo GetCatalogIssuers() const;
-  void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
+  void SetIssuers(const IssuerList& issuers);
+  IssuerList GetIssuers() const;
 
   ConfirmationList GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
@@ -62,7 +63,7 @@ class ConfirmationsState final {
     return unblinded_tokens_.get();
   }
 
-  privacy::UnblindedTokens* get_unblinded_payment_tokens() const {
+  privacy::UnblindedPaymentTokens* get_unblinded_payment_tokens() const {
     DCHECK(is_initialized_);
     return unblinded_payment_tokens_.get();
   }
@@ -76,8 +77,8 @@ class ConfirmationsState final {
   std::string ToJson();
   bool FromJson(const std::string& json);
 
-  CatalogIssuersInfo catalog_issuers_;
-  bool ParseCatalogIssuersFromDictionary(base::DictionaryValue* dictionary);
+  IssuerList issuers_;
+  bool ParseIssuersFromDictionary(base::DictionaryValue* dictionary);
 
   ConfirmationList failed_confirmations_;
   base::Value GetFailedConfirmationsAsDictionary(
@@ -103,7 +104,7 @@ class ConfirmationsState final {
   std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
   bool ParseUnblindedTokensFromDictionary(base::DictionaryValue* dictionary);
 
-  std::unique_ptr<privacy::UnblindedTokens> unblinded_payment_tokens_;
+  std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
   bool ParseUnblindedPaymentTokensFromDictionary(
       base::DictionaryValue* dictionary);
 };

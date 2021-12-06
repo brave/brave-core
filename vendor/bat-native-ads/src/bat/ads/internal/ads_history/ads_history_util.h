@@ -17,7 +17,7 @@ struct AdInfo;
 AdHistoryInfo BuildAdHistory(const AdInfo& ad,
                              const ConfirmationType& confirmation_type,
                              const std::string& title,
-                             const std::string& body);
+                             const std::string& description);
 
 }  // namespace ads
 

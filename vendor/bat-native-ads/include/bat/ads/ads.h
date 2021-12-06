@@ -202,45 +202,36 @@ class ADS_EXPORT Ads {
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentActionType ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentActionType& action) = 0;
+  virtual AdContentLikeActionType ToggleAdThumbUp(const std::string& json) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentActionType ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentActionType& action) = 0;
+  virtual AdContentLikeActionType ToggleAdThumbDown(
+      const std::string& json) = 0;
 
   // Should be called to opt-in to the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns |OptAction" with
-  // the current status
-  virtual CategoryContentActionType ToggleAdOptInAction(
+  // so calling it again neutralizes the ad category. Returns
+  // |CategoryContentOptActionType| with the current status
+  virtual CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentActionType& action) = 0;
+      const CategoryContentOptActionType& action) = 0;
 
   // Should be called to opt-out of the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns |OptAction" with
-  // the current status
-  virtual CategoryContentActionType ToggleAdOptOutAction(
+  // so calling it again neutralizes the ad category. Returns
+  // |CategoryContentOptActionType| with the current status
+  virtual CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentActionType& action) = 0;
+      const CategoryContentOptActionType& action) = 0;
 
   // Should be called to save an ad for later viewing. This is a toggle, so
   // calling it again removes the ad from the saved list. Returns true if the ad
   // was saved otherwise should return false
-  virtual bool ToggleSaveAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool saved) = 0;
+  virtual bool ToggleSavedAd(const std::string& json) = 0;
 
   // Should be called to flag an ad as inappropriate. This is a toggle, so
   // calling it again unflags the ad. Returns true if the ad was flagged
   // otherwise returns false
-  virtual bool ToggleFlagAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool flagged) = 0;
+  virtual bool ToggleFlaggedAd(const std::string& json) = 0;
 
  private:
   // Not copyable, not assignable

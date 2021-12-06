@@ -172,8 +172,6 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongDay) {
   Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-
-  // Go to next day
   std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
 
