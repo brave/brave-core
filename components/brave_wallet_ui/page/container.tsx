@@ -53,7 +53,8 @@ import {
   findUnstoppableDomainAddress,
   getBalance,
   getERC20Allowance,
-  onConnectHardwareWallet
+  onConnectHardwareWallet,
+  isStrongPassword
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
@@ -517,6 +518,7 @@ function Container (props: Props) {
             {isWalletLocked &&
               <OnboardingWrapper>
                 <OnboardingRestore
+                  checkIsStrongPassword={isStrongPassword}
                   onRestore={restoreWallet}
                   toggleShowRestore={onToggleShowRestore}
                   hasRestoreError={restoreError}
@@ -526,6 +528,7 @@ function Container (props: Props) {
           </Route>
           <Route path={WalletRoutes.Onboarding} exact={true}>
             <Onboarding
+              checkIsStrongPassword={isStrongPassword}
               recoveryPhrase={recoveryPhrase}
               onPasswordProvided={passwordProvided}
               onSubmit={completeWalletSetup}

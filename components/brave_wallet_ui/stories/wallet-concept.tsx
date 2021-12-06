@@ -49,6 +49,7 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
 import { HardwareWalletAccount } from '../common/hardware/types'
+import { isStrongPassword } from '../utils/password-utils'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -665,6 +666,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setCustomTolerance(value)
   }
 
+  const checkIsStrongPassword = async (value: string) => {
+    return isStrongPassword.test(value)
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -675,6 +680,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       <WalletSubViewLayout>
         {isRestoring ? (
           <OnboardingRestore
+            checkIsStrongPassword={checkIsStrongPassword}
             hasRestoreError={hasRestoreError}
             onRestore={onRestore}
             toggleShowRestore={onToggleRestore}
@@ -684,6 +690,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             {needsOnboarding
               ? (
                 <Onboarding
+                  checkIsStrongPassword={checkIsStrongPassword}
                   importError={importWalletError}
                   recoveryPhrase={recoveryPhrase}
                   onSubmit={completeWalletSetup}
