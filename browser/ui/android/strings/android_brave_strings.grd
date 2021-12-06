@@ -1750,7 +1750,7 @@ Are you sure you want to do this?
       Backup your wallet now!
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
-      In the next step you'll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Safe it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
+      In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
     </message>
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
@@ -1795,7 +1795,7 @@ Are you sure you want to do this?
       Verify password
     </message>
     <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Passwords must be at least 7 characters, and contain at least one number and one special character.
+      Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.
     </message>
     <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Verified password did not match
@@ -1960,7 +1960,7 @@ Are you sure you want to do this?
       To
     </message>
     <message name="IDS_TO_ADDRESS_EDIT" desc="Brave Wallet buy-send-swap section for address(hint)">
-      Address or url
+      Address or URL
     </message>
     <!-- <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
       Limit
