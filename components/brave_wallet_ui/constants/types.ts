@@ -174,6 +174,11 @@ export interface ImportWalletError {
   errorMessage?: string
 }
 
+export interface DefaultCurrencies {
+  fiat: string
+  crypto: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
@@ -201,6 +206,7 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
+  defaultCurrencies: DefaultCurrencies
 }
 
 export interface PanelState {
@@ -224,8 +230,8 @@ export interface PageState {
   invalidMnemonic: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedAsset: BraveWallet.ERCToken | undefined
-  selectedBTCAssetPrice: BraveWallet.AssetPrice | undefined
-  selectedUSDAssetPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -315,7 +321,7 @@ export interface GetBalanceReturnInfo {
 }
 
 export interface GetNativeAssetBalancesPriceReturnInfo {
-  usdPrice: string
+  fiatPrice: string
   balances: GetBalanceReturnInfo[]
 }
 

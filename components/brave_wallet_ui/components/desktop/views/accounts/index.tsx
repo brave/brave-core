@@ -8,7 +8,8 @@ import {
   EthereumChain,
   ERCToken,
   AssetPrice,
-  TransactionInfo
+  TransactionInfo,
+  DefaultCurrencies
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -64,6 +65,7 @@ export interface Props {
   userVisibleTokensInfo: ERCToken[]
   transactionSpotPrices: AssetPrice[]
   selectedAccount: WalletAccountType | undefined
+  defaultCurrencies: DefaultCurrencies
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
@@ -88,6 +90,7 @@ function Accounts (props: Props) {
     transactionSpotPrices,
     userVisibleTokensInfo,
     selectedAccount,
+    defaultCurrencies,
     goBack,
     onSelectAccount,
     onSelectAsset,
@@ -271,6 +274,7 @@ function Accounts (props: Props) {
           <SubDivider />
           {selectedAccount.tokens.filter((token) => !token.asset.isErc721).map((item) =>
             <PortfolioAssetItem
+              defaultCurrencies={defaultCurrencies}
               key={item.asset.contractAddress}
               assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
               fiatBalance={item.fiatBalance}
@@ -284,6 +288,7 @@ function Accounts (props: Props) {
               <SubDivider />
               {erc271Tokens?.map((item) =>
                 <PortfolioAssetItem
+                  defaultCurrencies={defaultCurrencies}
                   key={item.asset.contractAddress}
                   assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
                   fiatBalance={item.fiatBalance}
@@ -299,6 +304,7 @@ function Accounts (props: Props) {
             <>
               {transactionList.map((transaction) =>
                 <PortfolioTransactionItem
+                  defaultCurrencies={defaultCurrencies}
                   selectedNetwork={selectedNetwork}
                   key={transaction?.id}
                   transaction={transaction}

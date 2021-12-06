@@ -10,9 +10,11 @@ import {
   AccountAssetOptionType,
   ERCToken,
   EthereumChain,
-  TransactionInfo
+  TransactionInfo,
+  DefaultCurrencies
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
+import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
 import {
@@ -82,6 +84,7 @@ export interface Props {
   onAddUserAsset: (token: ERCToken) => void
   onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
   onRemoveUserAsset: (token: ERCToken) => void
+  defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   selectedNetwork: EthereumChain
   networkList: EthereumChain[]
@@ -90,8 +93,8 @@ export interface Props {
   selectedTimeline: AssetPriceTimeframe
   selectedPortfolioTimeline: AssetPriceTimeframe
   selectedAsset: ERCToken | undefined
-  selectedUSDAssetPrice: AssetPrice | undefined
-  selectedBTCAssetPrice: AssetPrice | undefined
+  selectedAssetFiatPrice: AssetPrice | undefined
+  selectedAssetCryptoPrice: AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
@@ -118,14 +121,15 @@ const Portfolio = (props: Props) => {
     onAddUserAsset,
     onSetUserAssetVisible,
     onRemoveUserAsset,
+    defaultCurrencies,
     addUserAssetError,
     userVisibleTokensInfo,
     selectedNetwork,
     fullAssetList,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
-    selectedUSDAssetPrice,
-    selectedBTCAssetPrice,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
     selectedTimeline,
     selectedPortfolioTimeline,
     accounts,
@@ -301,7 +305,7 @@ const Portfolio = (props: Props) => {
       </TopRow>
       {!selectedAsset ? (
         <>
-          <BalanceText>{fullPortfolioFiatBalance !== '' ? '$' : ''}{hoverBalance || fullPortfolioFiatBalance}</BalanceText>
+          <BalanceText>{fullPortfolioFiatBalance !== '' ? CurrencySymbols[defaultCurrencies.fiat] : ''}{hoverBalance || fullPortfolioFiatBalance}</BalanceText>
         </>
       ) : (
         <InfoColumn>
@@ -311,17 +315,17 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice || (selectedUSDAssetPrice ? formatWithCommasAndDecimals(selectedUSDAssetPrice.price) : 0.00)}</PriceText>
-            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}>
-              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false} />
-              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
+            <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? formatWithCommasAndDecimals(selectedAssetFiatPrice.price) : 0.00)}</PriceText>
+            <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
+              <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
+              <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
-          <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : ''} BTC</DetailText>
+          <DetailText>{selectedAssetCryptoPrice ? selectedAssetCryptoPrice.price : ''} {defaultCurrencies.crypto}</DetailText>
         </InfoColumn>
       )}
       <LineChart
-        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
+        isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
         priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
         onUpdateBalance={onUpdateBalance}
@@ -332,11 +336,12 @@ const Portfolio = (props: Props) => {
         <>
           <DividerRow>
             <DividerText>{getLocale('braveWalletAccounts')}</DividerText>
-            <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '')} {formatedFullAssetBalance}</AssetBalanceDisplay>
+            <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '', defaultCurrencies.fiat)} {formatedFullAssetBalance}</AssetBalanceDisplay>
           </DividerRow>
           <SubDivider />
           {accounts.map((account) =>
             <PortfolioAccountItem
+              defaultCurrencies={defaultCurrencies}
               key={account.address}
               assetTicker={selectedAsset.symbol}
               name={account.name}
@@ -359,6 +364,7 @@ const Portfolio = (props: Props) => {
             <>
               {selectedAssetTransactions.map((transaction: TransactionInfo) =>
                 <PortfolioTransactionItem
+                  defaultCurrencies={defaultCurrencies}
                   key={transaction.id}
                   selectedNetwork={selectedNetwork}
                   accounts={accounts}
@@ -388,6 +394,7 @@ const Portfolio = (props: Props) => {
           <SearchBar placeholder={getLocale('braveWalletSearchText')} action={filterAssets} />
           {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
             <PortfolioAssetItem
+              defaultCurrencies={defaultCurrencies}
               action={selectAsset(item.asset)}
               key={item.asset.contractAddress}
               assetBalance={item.assetBalance}
@@ -402,6 +409,7 @@ const Portfolio = (props: Props) => {
               <SubDivider />
               {erc271Tokens.map((item) =>
                 <PortfolioAssetItem
+                  defaultCurrencies={defaultCurrencies}
                   action={selectAsset(item.asset)}
                   key={item.asset.contractAddress}
                   assetBalance={item.assetBalance}
