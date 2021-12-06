@@ -43,9 +43,9 @@ function OnboardingBackup (props: Props) {
         </DisclaimerColumn>
       </WarningBox>
       <RecoveryPhraseContainer>
-        {recoverPhrase.map((word) =>
-          <RecoveryBubble key={word}>
-            <RecoveryBubbleText>{recoverPhrase.indexOf(word) + 1}. {word}</RecoveryBubbleText>
+        {recoverPhrase.map((word, index) =>
+          <RecoveryBubble key={index}>
+            <RecoveryBubbleText>{index + 1}. {word}</RecoveryBubbleText>
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
