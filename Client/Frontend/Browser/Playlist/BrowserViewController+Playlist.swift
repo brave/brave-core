@@ -245,7 +245,9 @@ extension BrowserViewController: PlaylistHelperDelegate {
         let shouldShowOnboarding = tab?.url?.isPlaylistSupportedSiteURL == true
         
         if shouldShowOnboarding {
-            if Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value < 2 && shouldShowPlaylistOnboardingThisSession {
+            if Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value < 2,
+                shouldShowPlaylistOnboardingThisSession,
+                presentedViewController == nil {
                 Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value += 1
                 
                 topToolbar.layoutIfNeeded()
@@ -287,9 +289,9 @@ extension BrowserViewController: PlaylistHelperDelegate {
                         }
                     }
                 }
+                
+                shouldShowPlaylistOnboardingThisSession = false
             }
-            
-            shouldShowPlaylistOnboardingThisSession = false
         }
     }
     
