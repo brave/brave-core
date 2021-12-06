@@ -52,6 +52,12 @@ extension BrowserViewController {
     }
     
     func presentNTPStatsOnboarding() {
+        // If a controller is already presented (such as menu), do not show onboarding
+        guard presentedViewController == nil else {
+            return
+        }
+        
+        // We can only show this onboarding on the NTP
         guard let ntpController = tabManager.selectedTab?.newTabPageViewController,
             let statsFrame = ntpController.ntpStatsOnboardingFrame else {
             return
@@ -157,8 +163,16 @@ extension BrowserViewController {
                                from: topToolbar.locationView.shieldsButton,
                                on: popover,
                                browser: self)
-        popover.popoverDidDismiss = { _ in
+        popover.popoverDidDismiss = { [weak self] _ in
             pulseAnimation.removeFromSuperview()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                guard let self = self else { return }
+                
+                if self.shouldShowPlaylistOnboardingThisSession {
+                    self.showPlaylistOnboarding(tab: self.tabManager.selectedTab)
+                }
+            }
         }
     }
     

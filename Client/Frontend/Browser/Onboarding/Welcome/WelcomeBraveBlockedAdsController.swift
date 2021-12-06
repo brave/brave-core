@@ -13,6 +13,8 @@ import Shared
 class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponent {
     private let label = UILabel().then {
         $0.numberOfLines = 0
+        $0.textColor = .braveLabel
+        $0.font = .preferredFont(forTextStyle: .body)
     }
     
     override func viewDidLoad() {
@@ -25,41 +27,48 @@ class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponen
     }
     
     func setData(domain: String, trackerBlocked: String, trackerCount: Int) {
-        let text = NSMutableAttributedString()
-        
+        var defaultText: String
+        let uuid = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+
         if trackerCount > 0 {
-            let uuid = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-            let string = trackerCount == 1 ?
-            String(format: Strings.Onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription, "[\(uuid)]", trackerCount, domain) :
-            String(format: Strings.Onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription, "[\(uuid)]", trackerCount, domain)
-            let strings = string.separatedBy("[\(uuid)]")
-            guard strings.count == 2 else {
-                label.text = string
-                return
-            }
-            
-            text.append(NSAttributedString(string: strings[0], attributes: [
-                .foregroundColor: UIColor.braveLabel,
-                .font: UIFont.preferredFont(forTextStyle: .body)
-            ]))
-            
-            text.append(NSAttributedString(string: " \(trackerBlocked) ", attributes: [
-                .foregroundColor: UIColor.braveLabel,
-                .font: UIFont.preferredFont(for: .body, weight: .bold)
-            ]))
-            
-            text.append(NSAttributedString(string: "\(strings[1])\n\n\(Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionThree)", attributes: [
-                .foregroundColor: UIColor.braveLabel,
-                .font: UIFont.preferredFont(forTextStyle: .body)
-            ]))
+            defaultText = trackerCount == 1 ?
+                String(format: Strings.Onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription, "[\(uuid)]", trackerCount, domain) :
+                String(format: Strings.Onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription, "[\(uuid)]", trackerCount, domain)
         } else {
-            let string = String(format: Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionTwo, trackerBlocked, domain)
-            
-            text.append(NSAttributedString(string: "\(string)\n\n\(Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionThree)", attributes: [
+            defaultText = String(format: Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionTwo, "[\(uuid)]", domain)
+        }
+        
+        if let attributedText = createBlockedDescription(trackerBlocked: trackerBlocked, uuid: uuid, defaultText: defaultText) {
+            label.attributedText = attributedText
+        }
+    }
+    
+    private func createBlockedDescription(trackerBlocked: String, uuid: String, defaultText: String) -> NSAttributedString? {
+        let attributedText = NSMutableAttributedString()
+
+        let defaultTextChunks = defaultText.separatedBy("[\(uuid)]")
+        guard defaultTextChunks.count == 2 else {
+            label.text = defaultText
+            return nil
+        }
+        
+        attributedText.append(NSAttributedString(string: defaultTextChunks[0], attributes: [
+            .foregroundColor: UIColor.braveLabel,
+            .font: UIFont.preferredFont(forTextStyle: .body)
+        ]))
+        
+        attributedText.append(NSAttributedString(string: " \(trackerBlocked) ", attributes: [
+            .foregroundColor: UIColor.braveLabel,
+            .font: UIFont.preferredFont(for: .body, weight: .bold)
+        ]))
+        
+        attributedText.append(NSAttributedString(
+            string: "\(defaultTextChunks[1])\n\n\(Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionThree)",
+            attributes: [
                 .foregroundColor: UIColor.braveLabel,
                 .font: UIFont.preferredFont(forTextStyle: .body)
-            ]))
-        }
-        label.attributedText = text
+        ]))
+        
+        return attributedText
     }
 }
