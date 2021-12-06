@@ -44,6 +44,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Object,
         value: {}
       },
+      removeHidden: {
+        type: Boolean,
+        value: true
+      }
     }
   }
 
@@ -108,10 +112,6 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   onItemDoubleClick(event) {
-    if (this.isDefaultNetwork(event.model.item.chainId)) {
-      this.updateNetworks()
-      return
-    }
     this.selectedNetwork = event.model.item
     this.showAddWalletNetworkDialog_ = true
   }
@@ -133,6 +133,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
+    this.removeHidden = this.isDefaultNetwork(this.selectedNetwork.chainId)
     const actionMenu =
         /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
     actionMenu.showAt(event.target);
