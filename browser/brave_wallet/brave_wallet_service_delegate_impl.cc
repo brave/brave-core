@@ -63,6 +63,11 @@ void BraveWalletServiceDelegateImpl::IsExternalWalletInitialized(
     IsExternalWalletInitializedCallback callback) {
   std::unique_ptr<ExternalWalletsImporter> importer =
       std::make_unique<ExternalWalletsImporter>(type, context_);
+  // Do not try to init the importer when external wallet is not installed
+  if (!importer->IsExternalWalletInstalled()) {
+    std::move(callback).Run(false);
+    return;
+  }
   importer->Initialize(base::BindOnce(
       &BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized,
       weak_ptr_factory_.GetWeakPtr(), std::move(importer),
