@@ -1,5 +1,5 @@
 diff --git a/base/strings/string_util.cc b/base/strings/string_util.cc
-index 78569332be857395ba9361b4847eb073ce8e8853..5f7d73dc41c813e02653c2fe9e24a760a36e76e9 100644
+index 35ae9126e73b867b2fd32841b5e86d08f214a054..5f7d73dc41c813e02653c2fe9e24a760a36e76e9 100644
 --- a/base/strings/string_util.cc
 +++ b/base/strings/string_util.cc
 @@ -21,7 +21,6 @@
@@ -14,7 +14,7 @@ index 78569332be857395ba9361b4847eb073ce8e8853..5f7d73dc41c813e02653c2fe9e24a760
  bool IsWprintfFormatPortable(const wchar_t* format) {
    // This snippet of code checks that we can build C++17 code.
    // TODO(thakis): Enable this on all platforms, and then remove it again.
--#if !defined(OS_IOS) && !defined(OS_MAC) && !BUILDFLAG(CFI_ICALL_CHECK) && \
+-#if !defined(OS_LINUX) && !BUILDFLAG(CFI_ICALL_CHECK) && \
 -    !BUILDFLAG(CFI_CAST_CHECK)
 +#if defined(OS_WIN)
    if constexpr (constexpr int i = 0; i > 0) {
