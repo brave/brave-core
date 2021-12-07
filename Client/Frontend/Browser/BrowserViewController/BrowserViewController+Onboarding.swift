@@ -32,22 +32,47 @@ extension BrowserViewController {
                 guard let self = self else { return }
                 
                 if let url = url {
-                    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
                     self.topToolbar.leaveOverlayMode()
+                    self.addNTPTutorialPage()
+                    
                     let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest,
                                                      afterTab: self.tabManager.selectedTab,
-                                                     isPrivate: isPrivate)
+                                                     isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
                     self.tabManager.selectTab(tab)
                 } else {
+                    self.addNTPTutorialPage()
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
                     }
                 }
             }
+            onboardingController.onSkipSelected = { [weak self] in
+                guard let self = self else { return }
+                self.addNTPTutorialPage()
+            }
             
             present(onboardingController, animated: false)
             isOnboardingOrFullScreenCalloutPresented = true
-            shouldShowNTPEducation = true
+//            shouldShowNTPEducation = true
+        }
+    }
+    
+    private func addNTPTutorialPage() {
+        if showNTPEducation().isEnabled, let url = showNTPEducation().url {
+            tabManager.addTab(PrivilegedRequest(url: url) as URLRequest,
+                                             afterTab: self.tabManager.selectedTab,
+                                             isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        }
+    }
+    
+    func showNTPOnboarding() {
+        if Preferences.General.isNewRetentionUser.value == true,
+            Preferences.DebugFlag.skipNTPCallouts != true,
+            !topToolbar.inOverlayMode,
+            topToolbar.currentURL == nil,
+            !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
+            presentNTPStatsOnboarding()
         }
     }
     
@@ -177,41 +202,17 @@ extension BrowserViewController {
     }
     
     /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
-    /// - Returns: A tuple which shows NTP Edication is enabled and URL to be loaed
-    fileprivate func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
+    /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
+    func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
         guard let url = BraveUX.ntpTutorialPageURL else {
             return (false, nil)
         }
 
         return (Locale.current.regionCode == "JP", url)
     }
-}
-
-// MARK: OnboardingControllerDelegate
-
-extension BrowserViewController {
-    private func presentEducationNTPIfNeeded() {
-        // NTP Education Load after onboarding screen
-        if shouldShowNTPEducation,
-           showNTPEducation().isEnabled,
-           let url = showNTPEducation().url {
-            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-        }
-    }
     
-    func dismissOnboarding(_ controller: OnboardingRewardsAgreementViewController,
-                           state: OnboardingRewardsState) {
+    func completeOnboarding(_ controller: UIViewController) {
         Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-        
-        // Present NTP Education If Locale is JP and onboading is finished or skipped
-        // Present private browsing prompt if necessary when onboarding has been skipped
-        controller.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            
-            self.presentEducationNTPIfNeeded()
-        }
+        controller.dismiss(animated: true)
     }
-    
-    // 60 days until the next time the user sees the onboarding..
-    static let onboardingDaysInterval = TimeInterval(60.days)
 }
