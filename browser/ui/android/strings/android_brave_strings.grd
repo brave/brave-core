@@ -2573,6 +2573,36 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">
       Quote includes a 0.875% Brave fee.
     </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET" desc="Add custom asset clickable name">
+      Add custom asset
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_ADD_BUTTON" desc="Add custom asset dialog Add button text">
+      Add
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_NAME" desc="Add custom asset dialog Token name field">
+      Token name
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_CONTRACT_ADDRESS" desc="Add custom asset dialog Token contract address field">
+      Token contract address
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_SYMBOL" desc="Add custom asset dialog Token symbol field">
+      Token symbol
+    </message>
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_DECIMALS" desc="Add custom asset dialog Decimals of precision field">
+      Decimals of precision
+    </message>
+    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET" desc="Remove custom asset dialog title">
+      Remove custom asset
+    </message>
+    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_DESC" desc="Remove custom asset dialog description">
+      Do you want to remove <ph name="TOKEN_NAME">%1$s<ex>Custom</ex></ph> (<ph name="TOKEN_SYMBOL">%2$s<ex>CUS</ex></ph>) token?
+    </message>
+    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_YES" desc="Remove custom asset dialog button name">
+      Yes
+    </message>
+    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_NO" desc="Remove custom asset dialog button name">
+      No
+    </message>
     </messages>
   </release>
 </grit>

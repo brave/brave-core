@@ -49,17 +49,16 @@ public class SingleTokenBalanceHelper {
 
         mAssetRatioController.getPrice(fromAssets, toAssets, AssetPriceTimeframe.LIVE,
                 (Boolean success, AssetPrice[] prices) -> {
-                    if (!success || prices.length == 0) {
-                        runWhenDone.run();
-                        return;
+                    // We have to do that to support custom assets
+                    String price = "0";
+                    if (success && prices.length != 0) {
+                        price = prices[0].price;
                     }
-                    assert prices.length == 1;
-
                     Double usdPerToken;
                     try {
-                        usdPerToken = Double.parseDouble(prices[0].price);
+                        usdPerToken = Double.parseDouble(price);
                     } catch (NullPointerException | NumberFormatException ex) {
-                        Log.e(TAG, "Cannot parse " + prices[0].price + ", " + ex);
+                        Log.e(TAG, "Cannot parse " + price + ", " + ex);
                         runWhenDone.run();
                         return;
                     }

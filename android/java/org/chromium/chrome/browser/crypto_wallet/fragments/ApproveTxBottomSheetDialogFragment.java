@@ -31,6 +31,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -125,6 +126,17 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         return null;
     }
 
+    private BraveWalletService getBraveWalletService() {
+        Activity activity = getActivity();
+        if (activity instanceof BuySendSwapActivity) {
+            return ((BuySendSwapActivity) activity).getBraveWalletService();
+        } else if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletService();
+        }
+
+        return null;
+    }
+
     @Override
     public void show(FragmentManager manager, String tag) {
         try {
@@ -172,27 +184,29 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
                 ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
                 assert ercTokenRegistry != null;
-                TokenUtils.getAllTokensFiltered(ercTokenRegistry, tokens -> {
-                    for (ErcToken token : tokens) {
-                        // Replace USDC and DAI contract addresses for Ropsten network
-                        token.contractAddress = Utils.getContractAddress(
-                                chainId, token.symbol, token.contractAddress);
-                        String symbol = token.symbol;
-                        int decimals = token.decimals;
-                        if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                            txType.setText(String.format(
-                                    getResources().getString(R.string.activate_erc20), symbol));
-                            symbol = "ETH";
-                            decimals = 18;
-                        }
-                        if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                        .equals(mTxInfo.txData.baseData.to.toLowerCase(
-                                                Locale.getDefault()))) {
-                            fillAssetDependentControls(symbol, view, decimals);
-                            break;
-                        }
-                    }
-                });
+                TokenUtils.getAllTokensFiltered(
+                        getBraveWalletService(), ercTokenRegistry, chainId, tokens -> {
+                            for (ErcToken token : tokens) {
+                                // Replace USDC and DAI contract addresses for Ropsten network
+                                token.contractAddress = Utils.getContractAddress(
+                                        chainId, token.symbol, token.contractAddress);
+                                String symbol = token.symbol;
+                                int decimals = token.decimals;
+                                if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
+                                    txType.setText(String.format(
+                                            getResources().getString(R.string.activate_erc20),
+                                            symbol));
+                                    symbol = "ETH";
+                                    decimals = 18;
+                                }
+                                if (token.contractAddress.toLowerCase(Locale.getDefault())
+                                                .equals(mTxInfo.txData.baseData.to.toLowerCase(
+                                                        Locale.getDefault()))) {
+                                    fillAssetDependentControls(symbol, view, decimals);
+                                    break;
+                                }
+                            }
+                        });
             } else {
                 if (mTxInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
                                 .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(

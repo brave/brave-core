@@ -558,7 +558,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/wallet_dex_aggregator"
-            android:textColor="@color/wallet_text_color"
+            android:textColor="@color/brave_action_color"
             android:gravity="center"
             android:textSize="14sp"
             android:paddingTop="8dp"
