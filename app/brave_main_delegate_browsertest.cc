@@ -127,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   };
 
   for (const auto* feature : disabled_features)
-    EXPECT_FALSE(base::FeatureList::IsEnabled(*feature));
+    EXPECT_FALSE(base::FeatureList::IsEnabled(*feature)) << feature->name;
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
@@ -137,12 +137,17 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
+    &net::features::kPartitionConnectionsByNetworkIsolationKey,
+    &net::features::kPartitionExpectCTStateByNetworkIsolationKey,
+    &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
+    &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
+    &net::features::kSplitHostCacheByNetworkIsolationKey,
     &password_manager::features::kPasswordImport,
     &security_state::features::kSafetyTipUI,
   };
 
   for (const auto* feature : enabled_features)
-    EXPECT_TRUE(base::FeatureList::IsEnabled(*feature));
+    EXPECT_TRUE(base::FeatureList::IsEnabled(*feature)) << feature->name;
 
   EXPECT_TRUE(features::kDnsOverHttpsShowUiParam.default_value);
 }
