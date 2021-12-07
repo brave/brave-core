@@ -105,7 +105,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
-    private boolean mInitialLayoutInflationComplete = false;
+    private boolean mInitialLayoutInflationComplete;
 
     public enum ActivityType {
         BUY(0),
