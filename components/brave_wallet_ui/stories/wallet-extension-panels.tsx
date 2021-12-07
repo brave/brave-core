@@ -466,6 +466,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(`Will disconnect ${address} from ${origin}`)
   }
 
+  const onConnectToOrigin = (origin: string, account: WalletAccountType) => {
+    console.log(`Will connect ${account.address} to ${origin}`)
+  }
+
   const onAddAccount = () => {
     console.log('Will Expand to the Accounts Page')
   }
@@ -473,6 +477,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const onAddNetwork = () => {
     console.log('Will redirect user to network settings')
   }
+
+  const connectedAccounts = accounts.slice(0, 2)
 
   return (
     <StyledExtensionWrapper>
@@ -576,9 +582,14 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     }
                     {selectedPanel === 'sitePermissions' &&
                       <SitePermissions
+                        selectedAccount={selectedAccount}
                         siteURL='https://app.uniswap.org'
                         onDisconnect={onDisconnectFromOrigin}
-                        connectedAccounts={accounts}
+                        connectedAccounts={connectedAccounts}
+                        accounts={accounts}
+                        onSwitchAccount={onSelectAccount}
+                        onConnect={onConnectToOrigin}
+                        onAddAccount={onAddAccount}
                       />
                     }
                   </ScrollContainer>

@@ -21,6 +21,7 @@ import {
   UpdateUnapprovedTransactionGasFieldsType,
   SitePermissionsPayloadType,
   RemoveSitePermissionPayloadType,
+  AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
 import {
@@ -103,6 +104,7 @@ export const defaultBaseCurrencyChanged = createAction<DefaultBaseCurrencyChange
 export const defaultBaseCryptocurrencyChanged = createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged')
 export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
 export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
+export const addSitePermission = createAction<AddSitePermissionPayloadType>('addSitePermission')
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
 export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
