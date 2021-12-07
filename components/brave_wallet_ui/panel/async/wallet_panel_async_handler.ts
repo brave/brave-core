@@ -66,9 +66,9 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
-async function getPendingUnlockRequest () {
+async function hasPendingUnlockRequest () {
   const keyringController = getWalletPanelApiProxy().keyringController
-  return (await keyringController.getPendingUnlockRequest()).pending
+  return (await keyringController.hasPendingUnlockRequest()).pending
 }
 
 async function getPendingChainRequest () {
@@ -142,7 +142,7 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     store.dispatch(PanelActions.showConnectToSite({ accounts, origin }))
     return
   } else {
-    const unlockRequest = await getPendingUnlockRequest()
+    const unlockRequest = await hasPendingUnlockRequest()
     if (unlockRequest) {
       store.dispatch(PanelActions.showUnlock())
     }

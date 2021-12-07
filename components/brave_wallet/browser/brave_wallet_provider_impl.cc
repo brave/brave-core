@@ -546,14 +546,14 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
   // unlock.  After the unlock happens a new request will be made.
   if (error == mojom::ProviderError::kSuccess &&
       keyring_controller_->IsLocked()) {
-    if (pending_unlock_callback_) {
+    if (pending_request_ethereum_permissions_callback_) {
       std::move(callback).Run(
           std::vector<std::string>(),
           mojom::ProviderError::kUserRejectedRequest,
           l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
       return;
     }
-    pending_unlock_callback_ = std::move(callback);
+    pending_request_ethereum_permissions_callback_ = std::move(callback);
     keyring_controller_->RequestUnlock();
     delegate_->ShowPanel();
     return;
@@ -665,9 +665,9 @@ void BraveWalletProviderImpl::Locked() {
 }
 
 void BraveWalletProviderImpl::Unlocked() {
-  if (pending_unlock_callback_) {
-    RequestEthereumPermissions(std::move(pending_unlock_callback_));
-    pending_unlock_callback_ = RequestEthereumPermissionsCallback();
+  if (pending_request_ethereum_permissions_callback_) {
+    RequestEthereumPermissions(
+        std::move(pending_request_ethereum_permissions_callback_));
   } else {
     UpdateKnownAccounts();
   }

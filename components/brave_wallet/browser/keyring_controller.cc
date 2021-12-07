@@ -980,7 +980,7 @@ bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
 
-bool KeyringController::GetPendingUnlockRequest() const {
+bool KeyringController::HasPendingUnlockRequest() const {
   return request_unlock_pending_;
 }
 
@@ -1365,9 +1365,9 @@ void KeyringController::IsStrongPassword(const std::string& password,
   std::move(callback).Run(true);
 }
 
-void KeyringController::GetPendingUnlockRequest(
-    GetPendingUnlockRequestCallback callback) {
-  std::move(callback).Run(GetPendingUnlockRequest());
+void KeyringController::HasPendingUnlockRequest(
+    HasPendingUnlockRequestCallback callback) {
+  std::move(callback).Run(HasPendingUnlockRequest());
 }
 
 }  // namespace brave_wallet

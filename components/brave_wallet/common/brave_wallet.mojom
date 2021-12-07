@@ -406,7 +406,7 @@ interface KeyringController {
   // Obtains if there's a pending unlock request
   // Note that there is no need for an API to notify unlocked
   // because the KeyringControllerObserver Unlocked event can be used for that.
-  GetPendingUnlockRequest() => (bool pending);
+  HasPendingUnlockRequest() => (bool pending);
 };
 
 // Used for cryptocurrency prices over time.

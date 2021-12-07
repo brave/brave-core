@@ -970,13 +970,13 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
         run_loop.Quit();
       }));
 
-  EXPECT_TRUE(keyring_controller()->GetPendingUnlockRequest());
+  EXPECT_TRUE(keyring_controller()->HasPendingUnlockRequest());
   // Allowed accounts is still empty when locked
   EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
   Unlock();
   run_loop.Run();
 
-  EXPECT_FALSE(keyring_controller()->GetPendingUnlockRequest());
+  EXPECT_FALSE(keyring_controller()->HasPendingUnlockRequest());
   EXPECT_EQ(allowed_accounts, std::vector<std::string>{from(0)});
 }
 

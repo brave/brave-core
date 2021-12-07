@@ -170,7 +170,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void AddAccountsWithDefaultName(size_t number);
 
   bool IsLocked() const;
-  bool GetPendingUnlockRequest() const;
+  bool HasPendingUnlockRequest() const;
   void RequestUnlock();
   absl::optional<std::string> GetSelectedAccount() const;
 
@@ -185,8 +185,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                           SetAutoLockMinutesCallback callback) override;
   void IsStrongPassword(const std::string& password,
                         IsStrongPasswordCallback callback) override;
-  void GetPendingUnlockRequest(
-      GetPendingUnlockRequestCallback callback) override;
+  void HasPendingUnlockRequest(
+      HasPendingUnlockRequestCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
