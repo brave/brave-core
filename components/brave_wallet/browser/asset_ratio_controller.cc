@@ -6,8 +6,10 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
+#include "base/environment.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "net/base/escape.h"
@@ -155,9 +157,18 @@ void AssetRatioController::GetPrice(
   auto internal_callback = base::BindOnce(
       &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets_lower, to_assets_lower, std::move(callback));
+
+  base::flat_map<std::string, std::string> request_headers;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string brave_key(BRAVE_SERVICES_KEY);
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
+  }
+  request_headers["x-brave-key"] = brave_key;
+
   api_request_helper_.Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      true, std::move(internal_callback));
+      true, std::move(internal_callback), request_headers);
 }
 
 void AssetRatioController::OnGetPrice(
