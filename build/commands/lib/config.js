@@ -875,10 +875,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.BRAVE_CHANNEL = this.channel
     }
 
-    if (this.getCachePath()) {
-      console.log("using git cache path " + this.getCachePath())
-      env.GIT_CACHE_PATH = path.join(this.getCachePath())
-    }
+    //if (this.getCachePath()) {
+    //  console.log("using git cache path " + this.getCachePath())
+    //  env.GIT_CACHE_PATH = path.join(this.getCachePath())
+    //}
 
     if (this.use_goma && this.gomaServerHost) {
       env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
