@@ -28,7 +28,8 @@ class WelcomeViewController: UIViewController {
     private var state: WelcomeViewCalloutState?
     
     var onAdsWebsiteSelected: ((URL?) -> Void)?
-    
+    var onSkipSelected: (() -> Void)?
+
     convenience init(profile: Profile?, rewards: BraveRewards?) {
         self.init(profile: profile,
                   rewards: rewards,
@@ -356,6 +357,7 @@ class WelcomeViewController: UIViewController {
                                                    rewards: rewards,
                                                    state: nil)
         nextController.onAdsWebsiteSelected = onAdsWebsiteSelected
+        nextController.onSkipSelected = onSkipSelected
         let state = WelcomeViewCalloutState.privacy(
             title: Strings.Onboarding.privacyScreenTitle,
             details: Strings.Onboarding.privacyScreenDescription,
@@ -373,6 +375,7 @@ class WelcomeViewController: UIViewController {
                                                    rewards: rewards,
                                                    state: nil)
         nextController.onAdsWebsiteSelected = onAdsWebsiteSelected
+        nextController.onSkipSelected = onSkipSelected
         let state = WelcomeViewCalloutState.defaultBrowser(
             info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
                 title: Strings.Callout.defaultBrowserCalloutTitle,
@@ -395,6 +398,7 @@ class WelcomeViewController: UIViewController {
                                                    rewards: rewards,
                                                    state: nil)
         nextController.onAdsWebsiteSelected = onAdsWebsiteSelected
+        nextController.onSkipSelected = onSkipSelected
         let state = WelcomeViewCalloutState.ready(
             title: Strings.Onboarding.readyScreenTitle,
             details: Strings.Onboarding.readyScreenDescription,
@@ -406,18 +410,19 @@ class WelcomeViewController: UIViewController {
     @objc
     private func onSkipButtonPressed(_ button: UIButton) {
         close()
+        onSkipSelected?()
     }
     
     private func onWebsiteSelected(_ item: WebsiteRegion) {
         close()
         if let url = URL(string: item.domain) {
-            self.onAdsWebsiteSelected?(url)
+            onAdsWebsiteSelected?(url)
         }
     }
     
     private func onEnterCustomWebsite() {
         close()
-        self.onAdsWebsiteSelected?(nil)
+        onAdsWebsiteSelected?(nil)
     }
     
     private func onSetDefaultBrowser() {

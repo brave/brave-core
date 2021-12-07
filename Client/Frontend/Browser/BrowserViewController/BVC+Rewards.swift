@@ -41,7 +41,7 @@ extension BrowserViewController {
             
             let controller = OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards)
             controller.onOnboardingStateChanged = { [weak self] controller, state in
-                self?.dismissOnboarding(controller, state: state)
+                self?.completeOnboarding(controller)
             }
             
             Preferences.FullScreenCallout.rewardsCalloutCompleted.value = true
