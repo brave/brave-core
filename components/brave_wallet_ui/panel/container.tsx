@@ -470,11 +470,17 @@ function Container (props: Props) {
   }
 
   const onAddSuggestedToken = () => {
-    // Logic here to Add a Suggested Token
+    if (!suggestedToken) {
+      return
+    }
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedToken.contractAddress })
   }
 
   const onCancelAddSuggestedToken = () => {
-    // Logic here to Cancel Adding a Suggested Token
+    if (!suggestedToken) {
+      return
+    }
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedToken.contractAddress })
   }
 
   const onAddNetwork = () => {

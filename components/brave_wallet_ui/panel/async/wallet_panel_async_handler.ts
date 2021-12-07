@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import {
+  AddSuggestTokenRequest,
   TransactionInfo,
   SignMessageRequest,
   SwitchChainRequest,
@@ -22,6 +23,7 @@ import {
 } from '../../constants/types'
 import {
   AccountPayloadType,
+  AddSuggestTokenProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
@@ -100,6 +102,23 @@ async function getPendingSignMessageRequest () {
   return null
 }
 
+async function getPendingAddSuggestTokenRequest () {
+  const braveWalletService = getWalletPanelApiProxy().braveWalletService
+  const requests =
+    (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
+  if (requests && requests.length) {
+    // Currently it will only be non-empty if the logo info is coming from us,
+    // either from user asset list or the ERC token registry, re-map the logo
+    // url to show the icon correctly in the add suggest token UI.
+    const logo = requests[0].token.logo
+    if (logo !== '') {
+      requests[0].token.logo = `chrome://erc-token-images/${logo}`
+    }
+    return requests[0]
+  }
+  return null
+}
+
 handler.on(PanelActions.navigateToMain.getType(), async (store: Store) => {
   const apiProxy = getWalletPanelApiProxy()
 
@@ -159,6 +178,11 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const switchChainRequest = await getPendingSwitchChainRequest()
     if (switchChainRequest) {
       store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
+      return
+    }
+    const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
+    if (addSuggestTokenRequest) {
+      store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
       return
     }
   }
@@ -378,6 +402,24 @@ handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, pa
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))
+    return
+  }
+  apiProxy.panelHandler.closeUI()
+})
+
+handler.on(PanelActions.addSuggestToken.getType(), async (store: Store, payload: AddSuggestTokenRequest[]) => {
+  store.dispatch(PanelActions.navigateTo('addSuggestedToken'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
+handler.on(PanelActions.addSuggestTokenProcessed.getType(), async (store: Store, payload: AddSuggestTokenProcessedPayload) => {
+  const apiProxy = getWalletPanelApiProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  braveWalletService.notifyAddSuggestTokenRequestsProcessed(payload.approved, [payload.contractAddress])
+  const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
+  if (addSuggestTokenRequest) {
+    store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
     return
   }
   apiProxy.panelHandler.closeUI()

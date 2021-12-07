@@ -5,6 +5,7 @@
 
 import { createReducer } from 'redux-act'
 import {
+  AddSuggestTokenRequest,
   PanelState,
   SwapErrorResponse,
   SwapResponse,
@@ -113,6 +114,13 @@ reducer.on(PanelActions.setHardwareWalletInteractionError, (state: any, payload?
   return {
     ...state,
     hardwareWalletCode: payload
+  }
+})
+
+reducer.on(PanelActions.addSuggestToken, (state: any, payload: AddSuggestTokenRequest) => {
+  return {
+    ...state,
+    suggestedToken: payload.token
   }
 })
 
