@@ -267,8 +267,8 @@ public class KeyringStore: ObservableObject {
   private static let passwordKeychainKey = "brave-wallet-password"
   
   /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
-  static func storePasswordInKeychain(_ password: String) -> Bool {
-    guard let passwordData = password.data(using: .utf8) else { return false }
+  static func storePasswordInKeychain(_ password: String) -> OSStatus {
+    guard let passwordData = password.data(using: .utf8) else { return errSecInvalidData }
     #if targetEnvironment(simulator)
     // There is a bug with iOS 15 simulators when attempting to add a keychain item with
     // `kSecAttrAccessControl` set. This of course means that on simulator we will not ask for biometrics
@@ -295,8 +295,7 @@ public class KeyringStore: ObservableObject {
       kSecValueData as String: passwordData
     ]
     #endif
-    let status = SecItemAdd(query as CFDictionary, nil)
-    return status == errSecSuccess
+    return SecItemAdd(query as CFDictionary, nil)
   }
   
   @discardableResult

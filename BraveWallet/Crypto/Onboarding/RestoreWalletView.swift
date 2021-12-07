@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import BraveUI
 import struct Shared.Strings
+import struct Shared.AppConstants
 import LocalAuthentication
 
 struct RestoreWalletContainerView: View {
@@ -214,10 +215,12 @@ private struct RestoreWalletView: View {
         keyringStore.markOnboardingCompleted()
       }
       // Store password in keychain
-      if enabled, !KeyringStore.storePasswordInKeychain(password) {
+      if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
+         status != errSecSuccess {
+        let isPublic = AppConstants.buildChannel.isPublic
         let alert = UIAlertController(
           title: Strings.Wallet.biometricsSetupErrorTitle,
-          message: Strings.Wallet.biometricsSetupErrorMessage,
+          message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
           preferredStyle: .alert
         )
         alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
