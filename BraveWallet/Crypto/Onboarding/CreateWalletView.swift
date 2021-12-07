@@ -8,6 +8,7 @@ import SwiftUI
 import LocalAuthentication
 import BraveUI
 import struct Shared.Strings
+import struct Shared.AppConstants
 
 struct CreateWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -130,10 +131,12 @@ private struct CreateWalletView: View {
       .padding(.vertical)
       .background(BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
         // Store password in keychain
-        if enabled, !KeyringStore.storePasswordInKeychain(password) {
+        if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
+           status != errSecSuccess {
+          let isPublic = AppConstants.buildChannel.isPublic
           let alert = UIAlertController(
             title: Strings.Wallet.biometricsSetupErrorTitle,
-            message: Strings.Wallet.biometricsSetupErrorMessage,
+            message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
             preferredStyle: .alert
           )
           alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
