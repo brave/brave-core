@@ -32,7 +32,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment{
+public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "CRYPTO_WIDGET_FRAG";
     private ViewPager viewPager;
     private CryptoWidgetTabAdapter adapter;
@@ -89,7 +89,7 @@ public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFrag
             new BinanceBottomSheetListener() {
                 @Override
                 public void onContinue() {
-                    if (viewPager != null && adapter != null) viewPager.setAdapter(adapter); 
+                    if (viewPager != null && adapter != null) viewPager.setAdapter(adapter);
                 }
 
                 @Override

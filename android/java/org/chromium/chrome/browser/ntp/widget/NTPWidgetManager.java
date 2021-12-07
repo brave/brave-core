@@ -26,6 +26,7 @@ public class NTPWidgetManager {
     public static final String PREF_FAVORITES = "favorites";
     public static final String PREF_BINANCE = "binance";
     public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
+    public static final String PREF_USER_PREF_FOR_BINANCE = "user_pref_for_binance";
 
     private static NTPWidgetManager sInstance;
 
@@ -93,6 +94,16 @@ public class NTPWidgetManager {
         sharedPreferencesEditor.apply();
     }
 
+    public boolean hasUpdatedUserPrefForBinance() {
+        return mSharedPreferences.getBoolean(PREF_USER_PREF_FOR_BINANCE, false);
+    }
+
+    public void setUpdatedUserPrefForBinance() {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_USER_PREF_FOR_BINANCE, true);
+        sharedPreferencesEditor.apply();
+    }
+
     public List<String> getUsedWidgets() {
         Map<Integer, String> usedWidgetMap = new TreeMap<>();
         if (getPrivateStatsWidget() != -1) {
@@ -101,8 +112,7 @@ public class NTPWidgetManager {
         if (getFavoritesWidget() != -1) {
             usedWidgetMap.put(getFavoritesWidget(), PREF_FAVORITES);
         }
-        if (getBinanceWidget() != -1
-            && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
+        if (getBinanceWidget() != -1 && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
             usedWidgetMap.put(getBinanceWidget(), PREF_BINANCE);
         }
         return new ArrayList<String>(usedWidgetMap.values());
@@ -116,8 +126,7 @@ public class NTPWidgetManager {
         if (getFavoritesWidget() == -1) {
             availableWidgets.add(PREF_FAVORITES);
         }
-        if (getBinanceWidget() == -1
-            && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
+        if (getBinanceWidget() == -1 && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
             availableWidgets.add(PREF_BINANCE);
         }
         return availableWidgets;

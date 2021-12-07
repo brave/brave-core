@@ -74,7 +74,7 @@ public class BinanceNativeWorker {
     }
 
     public boolean IsSupportedRegion() {
-        synchronized(lock) {
+        synchronized (lock) {
             return BinanceNativeWorkerJni.get().isSupportedRegion(mNativeBinanceNativeWorker);
         }
     }

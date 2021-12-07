@@ -129,12 +129,12 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -156,7 +156,8 @@ import java.util.concurrent.Executors;
 
 public class BraveNewTabPageLayout
         extends NewTabPageLayout implements CryptoWidgetBottomSheetDialogFragment
-                                                    .CryptoWidgetBottomSheetDialogDismissListener, ConnectionErrorHandler {
+                                                    .CryptoWidgetBottomSheetDialogDismissListener,
+                                            ConnectionErrorHandler {
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
@@ -569,6 +570,13 @@ public class BraveNewTabPageLayout
         if (mBadgeAnimationView != null
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
+        }
+        int appOpenCount = SharedPreferencesManager.getInstance().readInt(
+                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
+        if (appOpenCount == 1 && !NTPWidgetManager.getInstance().hasUpdatedUserPrefForBinance()
+                && !BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+            NTPWidgetManager.getInstance().setWidget(NTPWidgetManager.PREF_BINANCE, -1);
+            NTPWidgetManager.getInstance().setUpdatedUserPrefForBinance();
         }
         showWidgets();
 
