@@ -257,6 +257,14 @@ class EthTxControllerUnitTest : public testing::Test {
 
   EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
 
+  void SetInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, content](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
   void SetErrorInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
@@ -784,7 +792,12 @@ TEST_F(EthTxControllerUnitTest, ProcessHardwareSignature) {
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  callback_called = false;
+
+  // Set an interceptor and just fake a common repsonse for
+  // eth_getTransactionCount and eth_sendRawTransaction
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
+
+  base::RunLoop run_loop;
   eth_tx_controller_->ProcessHardwareSignature(
       tx_meta_id, "0x00",
       "0x93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e",
@@ -793,11 +806,10 @@ TEST_F(EthTxControllerUnitTest, ProcessHardwareSignature) {
         EXPECT_TRUE(success);
         auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Approved);
-        callback_called = true;
+        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Submitted);
+        run_loop.Quit();
       }));
-  base::RunLoop().RunUntilIdle();
-  ASSERT_TRUE(callback_called);
+  run_loop.Run();
   ASSERT_TRUE(observer.TxStatusChanged());
 }
 
