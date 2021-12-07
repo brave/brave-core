@@ -191,7 +191,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = new AccountInfo[1];
                     accountInfos[0] = accountInfo;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioController,
-                            mEthTxController, mErcTokenRegistry, null, null, 0,
+                            mEthTxController, mErcTokenRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId);
                     break;
                 }

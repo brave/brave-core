@@ -163,8 +163,22 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
 
         if (mType != AdapterType.ACCOUNTS_LIST) {
-            Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
-                    walletListItemModel.getIcon(), holder.iconImg, null, true);
+            if (!walletListItemModel.getErcToken().logo.isEmpty()) {
+                Utils.setBitmapResource(mExecutor, mHandler, context,
+                        walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
+                        holder.iconImg, null, true);
+            } else {
+                Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
+                        walletListItemModel.getErcToken().contractAddress,
+                        walletListItemModel.getErcToken().symbol,
+                        context.getResources().getDisplayMetrics().density, null, context, false,
+                        (float) 0.9);
+                if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                    holder.iconTrash.setVisibility(View.VISIBLE);
+                    holder.iconTrash.setOnClickListener(
+                            v -> { onWalletListItemClick.onTrashIconClick(walletListItemModel); });
+                }
+            }
         } else if (mType == AdapterType.ACCOUNTS_LIST) {
             Utils.setBlockiesBitmapResource(
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
@@ -222,6 +236,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public CheckBox assetCheck;
         public LinearLayout feeLayout;
         public TextView feeText;
+        public ImageView iconTrash;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -233,6 +248,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             this.text2Text = itemView.findViewById(R.id.text2);
             this.assetCheck = itemView.findViewById(R.id.assetCheck);
             this.feeText = itemView.findViewById(R.id.fee_text);
+            this.iconTrash = itemView.findViewById(R.id.icon_trash);
         }
 
         public void resetObservers() {
@@ -255,6 +271,20 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 }
             }
         }
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void removeItem(WalletListItemModel item) {
+        walletListItemModelList.remove(item);
+        walletListItemModelListCopy.remove(item);
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addItem(WalletListItemModel item) {
+        walletListItemModelList.add(item);
+        walletListItemModelListCopy.add(item);
         notifyDataSetChanged();
     }
 }
