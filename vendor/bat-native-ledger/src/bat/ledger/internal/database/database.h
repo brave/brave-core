@@ -19,7 +19,6 @@
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_event_log.h"
-#include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_multi_tables.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
@@ -44,12 +43,6 @@ class Database {
  public:
   explicit Database(LedgerImpl* ledger);
   virtual ~Database();
-
-  void Initialize(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
-
-  void Close(ledger::ResultCallback callback);
 
   /**
    * ACTIVITY INFO
@@ -429,7 +422,6 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
   std::unique_ptr<DatabaseBalanceReport> balance_report_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;

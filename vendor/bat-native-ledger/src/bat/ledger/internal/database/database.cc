@@ -19,7 +19,6 @@ Database::Database(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 
-  initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   balance_report_ = std::make_unique<DatabaseBalanceReport>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
@@ -46,27 +45,6 @@ Database::Database(LedgerImpl* ledger) :
 }
 
 Database::~Database() = default;
-
-void Database::Initialize(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  initialize_->Start(execute_create_script, callback);
-}
-
-void Database::Close(ledger::ResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::CLOSE;
-
-  transaction->commands.push_back(std::move(command));
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
-}
 
 /**
  * ACTIVITY INFO

@@ -1,0 +1,29 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPGRADES_UPGRADE_MANAGER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPGRADES_UPGRADE_MANAGER_H_
+
+#include "bat/ledger/internal/core/bat_ledger_context.h"
+#include "bat/ledger/internal/core/future.h"
+
+namespace ledger {
+
+// Performs migrations and upgrades on the BAT ledger datastores. Upgrades can
+// be asynchronous but must not depend upon network availability. To add a new
+// upgrade, create a |BATLedgerJob<bool>| class and add it to the |AllUpgrades|
+// alias found in the implementation file.
+class UpgradeManager : public BATLedgerContext::Object {
+ public:
+  inline static const char kContextKey[] = "upgrade-manager";
+
+  Future<bool> Initialize();
+
+  Future<bool> UpgradeToVersionForTesting(int version);
+};
+
+}  // namespace ledger
+
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPGRADES_UPGRADE_MANAGER_H_

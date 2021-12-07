@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/core/bat_ledger_initializer.h"
+#include "bat/ledger/internal/core/sql_store.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/static_values.h"
@@ -832,7 +833,10 @@ void LedgerImpl::Shutdown(ResultCallback callback) {
 }
 
 void LedgerImpl::OnAllDone(type::Result result, ResultCallback callback) {
-  database()->Close(callback);
+  context().Get<SQLStore>().Close().Then(
+      callback_adapter_([callback](SQLReader reader) {
+        callback(CallbackAdapter::ResultCode(reader.Succeeded()));
+      }));
 }
 
 void LedgerImpl::GetEventLogs(GetEventLogsCallback callback) {

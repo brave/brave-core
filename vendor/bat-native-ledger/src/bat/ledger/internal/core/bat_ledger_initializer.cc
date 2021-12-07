@@ -9,6 +9,7 @@
 
 #include "bat/ledger/internal/core/bat_ledger_job.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/upgrades/upgrade_manager.h"
 
 namespace ledger {
 
@@ -24,22 +25,11 @@ class LedgerImplInitializer : public BATLedgerContext::Object {
   class Job : public BATLedgerJob<bool> {
    public:
     void Start() {
-      context().GetLedgerImpl()->database()->Initialize(
-          false, ContinueWithLambda(this, &Job::OnDatabaseInitialized));
-    }
-
-   private:
-    void OnDatabaseInitialized(mojom::Result result) {
-      if (result != mojom::Result::LEDGER_OK) {
-        context().LogError(FROM_HERE)
-            << "Failed to initialize database: " << result;
-        return Complete(false);
-      }
-
       context().GetLedgerImpl()->state()->Initialize(
           ContinueWithLambda(this, &Job::OnStateInitialized));
     }
 
+   private:
     void OnStateInitialized(mojom::Result result) {
       if (result != mojom::Result::LEDGER_OK) {
         context().LogError(FROM_HERE)
@@ -97,7 +87,7 @@ class InitializeJob : public BATLedgerJob<bool> {
   }
 };
 
-using InitializeAllJob = InitializeJob<LedgerImplInitializer>;
+using InitializeAllJob = InitializeJob<UpgradeManager, LedgerImplInitializer>;
 
 }  // namespace
 
