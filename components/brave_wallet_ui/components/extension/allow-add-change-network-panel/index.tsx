@@ -35,7 +35,6 @@ export type tabs = 'network' | 'details'
 
 export interface Props {
   siteOrigin: string
-  selectedNetwork: EthereumChain
   networkPayload: EthereumChain
   panelType: 'add' | 'change'
   onCancel: () => void

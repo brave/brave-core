@@ -572,7 +572,6 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             networkPayload={networkPayload}
             panelType='add'
           />
@@ -591,7 +590,6 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
             onLearnMore={onNetworkLearnMore}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             networkPayload={GetNetworkInfo(switchChainRequest.chainId, networkList)}
             panelType='change'
           />
