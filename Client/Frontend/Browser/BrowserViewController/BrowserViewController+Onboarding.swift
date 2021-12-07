@@ -11,8 +11,28 @@ import BraveCore
 // MARK: - Onboarding
 
 extension BrowserViewController {
+    
+    func presentOnboardingIntro() {
+        if Preferences.URP.referralCode.value == nil &&
+            UIPasteboard.general.hasStrings &&
+            Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+            let controller = OnboardingPrivacyConsentViewController()
+            
+            controller.handleReferralLookup = { [weak self] urp, consentGranted in
+                self?.handleReferralLookup(urp, checkClipboard: consentGranted)
+            }
+            
+            controller.onPrivacyConsentCompleted = { [weak self, unowned controller] in
+                self?.presentOnboardingWelcomeScreen(on: controller)
+            }
+            
+            present(controller, animated: false)
+        } else {
+            presentOnboardingWelcomeScreen(on: self)
+        }
+    }
 
-    func presentOnboardingIntro() {        
+    func presentOnboardingWelcomeScreen(on parentController: UIViewController) {
         if Preferences.DebugFlag.skipOnboardingIntro == true { return }
         
         // 1. Existing user.
@@ -52,7 +72,7 @@ extension BrowserViewController {
                 self.addNTPTutorialPage()
             }
             
-            present(onboardingController, animated: false)
+            parentController.present(onboardingController, animated: false)
             isOnboardingOrFullScreenCalloutPresented = true
 //            shouldShowNTPEducation = true
         }
