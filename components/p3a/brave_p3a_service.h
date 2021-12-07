@@ -14,7 +14,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "url/gurl.h"
@@ -117,7 +117,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   base::flat_map<base::StringPiece, size_t> histogram_values_;
 
   // Once fired we restart the overall uploading process.
-  base::OneShotTimer rotation_timer_;
+  base::WallClockTimer rotation_timer_;
 
   std::vector<
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
