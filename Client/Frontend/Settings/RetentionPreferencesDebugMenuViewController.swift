@@ -98,6 +98,17 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
                     },
                     cellReuseId: "RetentionUserCell"),
                 .boolRow(
+                    title: "NTP Education Shown",
+                    detailText: "Flag tracking NTP Education should be loaded after onboarding of user.",
+                    toggleValue: Preferences.FullScreenCallout.ntpCalloutCompleted.value,
+                    valueChange: {
+                        if $0 {
+                            let status = $0
+                            Preferences.FullScreenCallout.ntpCalloutCompleted.value = status
+                        }
+                    },
+                    cellReuseId: "NTPEducationCell"),
+                .boolRow(
                     title: "VPN Callout Shown",
                     detailText: "Flag determining if VPN callout is shown to user.",
                     toggleValue: Preferences.FullScreenCallout.vpnCalloutCompleted.value,
@@ -159,14 +170,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
                         self.browserViewController?.benchmarkNotificationPresented = status
                     },
                     cellReuseId: "BenchmarkNotificationCell"),
-                .boolRow(
-                    title: "Should Show NTP Education",
-                    detailText: "Flag tracking NTP Education should be loaded after onboarding of user.",
-                    toggleValue: browserViewController?.shouldShowNTPEducation ?? false,
-                    valueChange: { [unowned self] status in
-                        self.browserViewController?.shouldShowNTPEducation = status
-                    },
-                    cellReuseId: "ShouldShowNTPEducationCell"),
                 .boolRow(
                     title: "Onboarding or Callout Presented",
                     detailText: "Flag tracking If a full screen callout or onboarding is presented in order to not to try to present another callout  over existing one",
