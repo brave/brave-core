@@ -59,6 +59,7 @@ struct BackupRecoveryPhraseView: View {
           .padding(.vertical)
         RecoveryPhraseGrid(data: recoveryWords, id: \.self) { word in
           Text(verbatim: "\(word.index + 1). \(word.value)")
+            .noCapture()
             .font(.footnote.bold())
             .padding(8)
             .frame(maxWidth: .infinity)
@@ -109,6 +110,13 @@ struct BackupRecoveryPhraseView: View {
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .alertOnScreenshot {
+      Alert(
+        title: Text(Strings.Wallet.screenshotDetectedTitle),
+        message: Text(Strings.Wallet.recoveryPhraseScreenshotDetectedMessage),
+        dismissButton: .cancel(Text(Strings.OKString))
+      )
+    }
   }
   
   struct ToolbarModifier: ViewModifier {
