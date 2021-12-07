@@ -1513,5 +1513,26 @@ extension Strings {
       value: "Quote includes a %@ Brave fee.",
       comment: "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee'"
     )
+    public static let screenshotDetectedTitle = NSLocalizedString(
+      "wallet.screenshotDetectedTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Screenshot detected",
+      comment: "A title of an alert when the user takes a screenshot of their device"
+    )
+    public static let recoveryPhraseScreenshotDetectedMessage = NSLocalizedString(
+      "wallet.recoveryPhraseScreenshotDetectedMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Warning: A screenshot of your recovery phrase may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+      comment: "The message displayed when the user takes a screenshot of their recovery phrase"
+    )
+    public static let privateKeyScreenshotDetectedMessage = NSLocalizedString(
+      "wallet.privateKeyScreenshotDetectedMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+      comment: "The message displayed when the user takes a screenshot of their private key"
+    )
   }
 }

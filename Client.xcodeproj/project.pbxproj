@@ -445,6 +445,8 @@
 		27AD20C426851C5400889AA7 /* BraveCore.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27AD20CC26851DD100889AA7 /* BraveRewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AD20CB26851DD100889AA7 /* BraveRewards.swift */; };
 		27AE360D25E55AA200E795E5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE360C25E55AA200E795E5 /* MenuViewController.swift */; };
+		27B1041B275ECE7600728421 /* NoCaptureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1041A275ECE7600728421 /* NoCaptureViewModifier.swift */; };
+		27B10428275ED44900728421 /* AlertOnScreenshotViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B10427275ED44900728421 /* AlertOnScreenshotViewModifier.swift */; };
 		27B16C5924E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */; };
 		27B33D5826556E7300F3D274 /* BraveButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B33D5726556E7300F3D274 /* BraveButtonStyle.swift */; };
 		27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */; };
@@ -2186,6 +2188,8 @@
 		27AD20C226851C5400889AA7 /* BraveCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveCore.xcframework; path = "node_modules/brave-core-ios/BraveCore.xcframework"; sourceTree = "<group>"; };
 		27AD20CB26851DD100889AA7 /* BraveRewards.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = BraveRewards.swift; sourceTree = "<group>"; };
 		27AE360C25E55AA200E795E5 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		27B1041A275ECE7600728421 /* NoCaptureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCaptureViewModifier.swift; sourceTree = "<group>"; };
+		27B10427275ED44900728421 /* AlertOnScreenshotViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOnScreenshotViewModifier.swift; sourceTree = "<group>"; };
 		27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageFeedOverlayView.swift; sourceTree = "<group>"; };
 		27B33D5726556E7300F3D274 /* BraveButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveButtonStyle.swift; sourceTree = "<group>"; };
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
@@ -4579,6 +4583,8 @@
 				2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */,
 				276AADB9272850850034A0C2 /* Shimmer.swift */,
 				271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */,
+				27B1041A275ECE7600728421 /* NoCaptureViewModifier.swift */,
+				27B10427275ED44900728421 /* AlertOnScreenshotViewModifier.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -7989,6 +7995,7 @@
 				271F68C926EBD29500AA2A50 /* DocumentOpenerView.swift in Sources */,
 				27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */,
 				271F68C726EBD29500AA2A50 /* UIKitController.swift in Sources */,
+				27B10428275ED44900728421 /* AlertOnScreenshotViewModifier.swift in Sources */,
 				27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */,
 				44A58CC82693A309005C0879 /* ActivityView.swift in Sources */,
 				2FBE200926F8E97300B7098B /* UIFontExtenions.swift in Sources */,
@@ -7999,6 +8006,7 @@
 				2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */,
 				27E17B932744134000F3C282 /* PreviewModifiers.swift in Sources */,
 				271F68C426EBD29500AA2A50 /* EdgeInsetsExtensions.swift in Sources */,
+				27B1041B275ECE7600728421 /* NoCaptureViewModifier.swift in Sources */,
 				276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */,
 				278C469523F1E8620083347F /* LoaderView.swift in Sources */,
 				278C469723F1E8620083347F /* BraveButton.swift in Sources */,

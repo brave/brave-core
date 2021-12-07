@@ -56,6 +56,7 @@ struct VerifyRecoveryPhraseView: View {
             tappedWord(word)
           }) {
             Text(verbatim: word.value)
+              .noCapture()
               .font(.footnote.bold())
               .foregroundColor(.primary)
               .fixedSize(horizontal: false, vertical: true)
@@ -107,6 +108,13 @@ struct VerifyRecoveryPhraseView: View {
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
+    .alertOnScreenshot {
+      Alert(
+        title: Text(Strings.Wallet.screenshotDetectedTitle),
+        message: Text(Strings.Wallet.recoveryPhraseScreenshotDetectedMessage),
+        dismissButton: .cancel(Text(Strings.OKString))
+      )
+    }
   }
 }
 
@@ -167,6 +175,7 @@ private struct SelectedWordsBox: View {
       case .word(let word, let index, let isCorrect):
         Button(action: { tappedWord(atIndex: index) }) {
           Text(verbatim: "\(index + 1). \(word)")
+            .noCapture()
             .padding(8)
             .frame(maxWidth: .infinity)
             .fixedSize(horizontal: false, vertical: true)

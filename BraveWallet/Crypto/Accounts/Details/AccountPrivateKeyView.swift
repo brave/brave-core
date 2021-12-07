@@ -38,6 +38,7 @@ struct AccountPrivateKeyView: View {
             .font(.system(.body, design: .monospaced))
             .blur(radius: isKeyVisible ? 0 : 5)
             .accessibilityHidden(!isKeyVisible)
+            .noCapture()
           Button(action: {
             UIPasteboard.general.setSecureString(key)
           }) {
@@ -75,6 +76,13 @@ struct AccountPrivateKeyView: View {
     .navigationBarTitleDisplayMode(.inline)
     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
       isKeyVisible = false
+    }
+    .alertOnScreenshot {
+      Alert(
+        title: Text(Strings.Wallet.screenshotDetectedTitle),
+        message: Text(Strings.Wallet.privateKeyScreenshotDetectedMessage),
+        dismissButton: .cancel(Text(Strings.OKString))
+      )
     }
   }
 }
