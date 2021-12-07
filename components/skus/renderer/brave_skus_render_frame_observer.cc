@@ -39,7 +39,7 @@ void BraveSkusRenderFrameObserver::DidCreateScriptContext(
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
 
-  if (!isSkusSdkAllowed())
+  if (!IsSkusSdkAllowed())
     return;
 
   if (!native_javascript_handle_) {
@@ -51,7 +51,7 @@ void BraveSkusRenderFrameObserver::DidCreateScriptContext(
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
 }
 
-bool BraveSkusRenderFrameObserver::isSkusSdkAllowed() {
+bool BraveSkusRenderFrameObserver::IsSkusSdkAllowed() {
   return url_.host() == "account.brave.com" ||
          url_.host() == "account.bravesoftware.com" ||
          url_.host() == "account.brave.software";

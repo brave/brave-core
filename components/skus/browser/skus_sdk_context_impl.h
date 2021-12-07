@@ -18,10 +18,6 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
-
 namespace skus {
 class SkusSdkFetcher;
 }  // namespace skus
@@ -37,9 +33,6 @@ namespace skus {
 // persisted.
 class SkusSdkContextImpl : public SkusSdkContext {
  public:
-  // TODO(bridiver) - this is not the right place for this
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-
   SkusSdkContextImpl(const SkusSdkContextImpl&) = delete;
   SkusSdkContextImpl& operator=(const SkusSdkContextImpl&) = delete;
 

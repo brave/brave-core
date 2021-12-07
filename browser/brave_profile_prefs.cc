@@ -37,7 +37,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/skus/browser/skus_sdk_context_impl.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -180,9 +179,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     brave_news::BraveNewsController::RegisterProfilePrefs(registry);
   }
-
-  // SKU SDK (can be used on account.brave.com)
-  skus::SkusSdkContextImpl::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

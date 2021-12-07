@@ -32,6 +32,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_sdk_mojom_impl.h"
+#include "brave/browser/skus/skus_sdk_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -324,12 +325,10 @@ void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusSdk> receiver) {
   auto* context = frame_host->GetBrowserContext();
-  auto* profile = Profile::FromBrowserContext(context);
-  // Skus functionality not supported in private / Tor / guest windows
-  if (brave::IsRegularProfile(profile)) {
+  auto* service = skus::SkusSdkServiceFactory::GetForContext(context);
+  if (service) {
     mojo::MakeSelfOwnedReceiver(
-        std::make_unique<brave_rewards::SkusSdkMojomImpl>(context),
-        std::move(receiver));
+        std::make_unique<skus::SkusSdkMojomImpl>(service), std::move(receiver));
   }
 }
 

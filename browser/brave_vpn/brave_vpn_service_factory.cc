@@ -52,7 +52,7 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
 #if defined(OS_WIN) || defined(OS_MAC)
-  DependsOn(SkusSdkServiceFactory::GetInstance());
+  DependsOn(skus::SkusSdkServiceFactory::GetInstance());
 #endif
 }
 
@@ -67,7 +67,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 #if defined(OS_WIN) || defined(OS_MAC)
   return new BraveVpnServiceDesktop(
       shared_url_loader_factory, user_prefs::UserPrefs::Get(context),
-      SkusSdkServiceFactory::GetForContext(context));
+      skus::SkusSdkServiceFactory::GetForContext(context));
 #endif
 
 #if defined(OS_ANDROID)

@@ -88,7 +88,7 @@ std::string GetBraveVPNPaymentsEnv() {
 BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs,
-    SkusSdkService* skus_sdk_service)
+    skus::SkusSdkService* skus_sdk_service)
     : BraveVpnService(url_loader_factory),
       prefs_(prefs),
       skus_sdk_service_(skus_sdk_service) {

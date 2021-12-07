@@ -10,10 +10,9 @@
 
 #include "base/logging.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_sdk_fetcher_impl.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
@@ -113,13 +112,6 @@ std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
   auto fetcher = ctx.CreateFetcher();
   fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
   return fetcher;
-}
-
-// static
-void SkusSdkContextImpl::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(prefs::kSkusState);
-  registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
 }
 
 SkusSdkContextImpl::SkusSdkContextImpl(

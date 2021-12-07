@@ -12,10 +12,10 @@
 #include "brave/components/skus/browser/skus_sdk_service.h"
 #include "content/public/browser/browser_context.h"
 
-namespace brave_rewards {
+namespace skus {
 
-SkusSdkMojomImpl::SkusSdkMojomImpl(content::BrowserContext* context)
-    : service_(SkusSdkServiceFactory::GetForContext(context)) {}
+SkusSdkMojomImpl::SkusSdkMojomImpl(SkusSdkService* service)
+    : service_(service) {}
 
 SkusSdkMojomImpl::~SkusSdkMojomImpl() {}
 
@@ -42,4 +42,4 @@ void SkusSdkMojomImpl::CredentialSummary(const std::string& domain,
   service_->CredentialSummary(domain, std::move(callback));
 }
 
-}  // namespace brave_rewards
+}  // namespace skus

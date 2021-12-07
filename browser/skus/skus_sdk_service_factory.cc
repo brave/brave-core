@@ -6,11 +6,14 @@
 #include "brave/browser/skus/skus_sdk_service_factory.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
+#include "brave/components/skus/browser/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+
+namespace skus {
 
 // static
 SkusSdkServiceFactory* SkusSdkServiceFactory::GetInstance() {
@@ -18,9 +21,9 @@ SkusSdkServiceFactory* SkusSdkServiceFactory::GetInstance() {
 }
 
 // static
-SkusSdkService* SkusSdkServiceFactory::GetForContext(
+skus::SkusSdkService* SkusSdkServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  return static_cast<SkusSdkService*>(
+  return static_cast<skus::SkusSdkService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
@@ -38,12 +41,16 @@ KeyedService* SkusSdkServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  return new SkusSdkService(Profile::FromBrowserContext(context)->GetPrefs(),
-                            context->GetDefaultStoragePartition()
-                                ->GetURLLoaderFactoryForBrowserProcess());
+  return new skus::SkusSdkService(
+      Profile::FromBrowserContext(context)->GetPrefs(),
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
-content::BrowserContext* SkusSdkServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+void SkusSdkServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterDictionaryPref(prefs::kSkusState);
+  registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
 }
+
+}  // namespace skus

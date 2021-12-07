@@ -17,13 +17,13 @@
 
 class PrefService;
 
-namespace skus {
-struct CppSDK;
-}
-
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace skus {
+
+struct CppSDK;
 
 // This is only intended to be used on account.brave.com and the dev / staging
 // counterparts. The accounts website will use this if present which allows a
@@ -54,7 +54,7 @@ class SharedURLLoaderFactory;
 //
 // For more information, please see:
 // https://github.com/brave-intl/br-rs/tree/skus
-class SkusSdkService : public KeyedService {
+class SkusSdkService : public KeyedService, public skus::mojom::SkusSdk {
  public:
   explicit SkusSdkService(
       PrefService* prefs,
@@ -64,18 +64,20 @@ class SkusSdkService : public KeyedService {
   SkusSdkService(const SkusSdkService&) = delete;
   SkusSdkService& operator=(SkusSdkService&) = delete;
 
-  void RefreshOrder(const std::string& order_id,
-                    skus::mojom::SkusSdk::RefreshOrderCallback callback);
+  void RefreshOrder(
+      const std::string& order_id,
+      skus::mojom::SkusSdk::RefreshOrderCallback callback) override;
   void FetchOrderCredentials(
       const std::string& order_id,
-      skus::mojom::SkusSdk::FetchOrderCredentialsCallback callback);
+      skus::mojom::SkusSdk::FetchOrderCredentialsCallback callback) override;
   void PrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& path,
-      skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback callback);
+      skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback callback)
+      override;
   void CredentialSummary(
       const std::string& domain,
-      skus::mojom::SkusSdk::CredentialSummaryCallback callback);
+      skus::mojom::SkusSdk::CredentialSummaryCallback callback) override;
 
  private:
   std::unique_ptr<skus::SkusSdkContextImpl> context_;
@@ -83,5 +85,7 @@ class SkusSdkService : public KeyedService {
   PrefService* prefs_;
   base::WeakPtrFactory<SkusSdkService> weak_factory_;
 };
+
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_SERVICE_H_

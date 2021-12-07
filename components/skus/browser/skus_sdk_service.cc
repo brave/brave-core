@@ -80,6 +80,8 @@ void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
 
 }  // namespace
 
+namespace skus {
+
 SkusSdkService::SkusSdkService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -140,3 +142,5 @@ void SkusSdkService::CredentialSummary(
 
   sdk_->credential_summary(OnCredentialSummary, std::move(cbs), domain);
 }
+
+}  // namespace skus

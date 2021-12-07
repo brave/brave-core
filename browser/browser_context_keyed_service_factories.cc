@@ -23,6 +23,7 @@
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/skus/skus_sdk_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -104,6 +105,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
   PermissionLifetimeManagerFactory::GetInstance();
+
+  skus::SkusSdkServiceFactory::GetInstance();
 }
 
 }  // namespace brave

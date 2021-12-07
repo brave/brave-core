@@ -45,7 +45,7 @@ class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
-  bool isSkusSdkAllowed();
+  bool IsSkusSdkAllowed();
 
   // only allow injection on Brave Software properties
   GURL url_;

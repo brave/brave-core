@@ -10,20 +10,16 @@
 
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 
+namespace skus {
+
 class SkusSdkService;
-
-namespace content {
-class BrowserContext;
-}  // namespace content
-
-namespace brave_rewards {
 
 class SkusSdkMojomImpl final : public skus::mojom::SkusSdk {
  public:
   SkusSdkMojomImpl(const SkusSdkMojomImpl&) = delete;
   SkusSdkMojomImpl& operator=(const SkusSdkMojomImpl&) = delete;
 
-  explicit SkusSdkMojomImpl(content::BrowserContext* context);
+  explicit SkusSdkMojomImpl(SkusSdkService* service);
   ~SkusSdkMojomImpl() override;
 
   void RefreshOrder(const std::string& order_id,
@@ -41,6 +37,6 @@ class SkusSdkMojomImpl final : public skus::mojom::SkusSdk {
   SkusSdkService* service_;
 };
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_BROWSER_SKUS_SKUS_SDK_MOJOM_IMPL_H_
