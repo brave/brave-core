@@ -17,8 +17,9 @@ extension BraveWalletEthJsonRpcController {
     completion: @escaping (Double?) -> Void
   ) {
     let convert: (Bool, String) -> Void = { success, wei in
-      if !success || wei.isEmpty {
+      guard success && !wei.isEmpty else {
         completion(nil)
+        return
       }
       let formatter = WeiFormatter(decimalFormatStyle: .balance)
       if let valueString = formatter.decimalString(
