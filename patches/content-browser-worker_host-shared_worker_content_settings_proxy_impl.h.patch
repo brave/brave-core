@@ -1,12 +1,12 @@
 diff --git a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
-index 94617580cad6592f351afc0a727dfee3bd71e8aa..c2299216f9510004b2f7816e1aa8bcc278a226de 100644
+index 94617580cad6592f351afc0a727dfee3bd71e8aa..a55c9f8c150c938a1c7817e009564f81ba5c6a96 100644
 --- a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
 +++ b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
-@@ -43,6 +43,7 @@ class CONTENT_EXPORT SharedWorkerContentSettingsProxyImpl
-   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+@@ -44,6 +44,7 @@ class CONTENT_EXPORT SharedWorkerContentSettingsProxyImpl
    void RequestFileSystemAccessSync(
        RequestFileSystemAccessSyncCallback callback) override;
-+  BRAVE_SHARED_WORKER_SETTINGS_PROXY_IMPL_H
  
++  BRAVE_SHARED_WORKER_SETTINGS_PROXY_IMPL_H
   private:
    const url::Origin origin_;
+   SharedWorkerHost* owner_;

@@ -6,14 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WORKER_HOST_SHARED_WORKER_HOST_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WORKER_HOST_SHARED_WORKER_HOST_H_
 
-#define BRAVE_SHARED_WORKER_HOST_H                                   \
-  void AllowFingerprinting(const GURL& url,                          \
-                           base::OnceCallback<void(bool)> callback); \
-  void GetBraveFarblingLevel(const GURL& url,                        \
-                             base::OnceCallback<void(uint8_t)> callback);
+#define CreateNetworkFactoryParamsForSubresources                         \
+  UnusedFunction();                                                       \
+  void AllowFingerprinting(const GURL& url,                               \
+                           base::OnceCallback<void(bool)> callback);      \
+  void GetBraveFarblingLevel(const GURL& url,                             \
+                             base::OnceCallback<void(uint8_t)> callback); \
+  network::mojom::URLLoaderFactoryParamsPtr                               \
+      CreateNetworkFactoryParamsForSubresources
 
 #include "../../../../../content/browser/worker_host/shared_worker_host.h"
 
-#undef BRAVE_SHARED_WORKER_HOST_H
+#undef CreateNetworkFactoryParamsForSubresources
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WORKER_HOST_SHARED_WORKER_HOST_H_
