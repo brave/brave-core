@@ -95,6 +95,7 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             Bundle prefExtras = source.getExtras();
             prefExtras.putString("category", category);
             source.setFragment("org.chromium.chrome.browser.settings.BraveNewsCategorySources");
+            source.setVisible(BravePrefServiceBridge.getInstance().getShowNews());
             mMainScreen.addPreference(source);
         }
     }
@@ -139,6 +140,7 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             } else {
                 mShowNews.setChecked(false);
             }
+            setSourcesVisibility(BravePrefServiceBridge.getInstance().getShowNews());
         }
     }
 
@@ -156,22 +158,17 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             }
         } else if (PREF_SHOW_NEWS.equals(key)) {
             BravePrefServiceBridge.getInstance().setShowNews((boolean) newValue);
-            for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
-                Preference pref = getPreferenceScreen().getPreference(i);
-                if (!pref.getKey().equals(PREF_SHOW_NEWS)
-                        && !pref.getKey().equals(PREF_TURN_ON_NEWS)) {
-                    pref.setVisible((boolean) newValue);
-                }
-            }
+            setSourcesVisibility((boolean) newValue);
         }
         return true;
     }
 
-    private void removePreferenceIfPresent(String key) {
-        Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) {
-            getPreferenceScreen().removePreference(preference);
-            mRemovedPreferences.put(preference.getKey(), preference);
+    private void setSourcesVisibility(boolean isNewsShown) {
+        for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
+            Preference pref = getPreferenceScreen().getPreference(i);
+            if (!pref.getKey().equals(PREF_SHOW_NEWS) && !pref.getKey().equals(PREF_TURN_ON_NEWS)) {
+                pref.setVisible(isNewsShown);
+            }
         }
     }
 

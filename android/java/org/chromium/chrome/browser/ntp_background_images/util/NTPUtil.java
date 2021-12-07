@@ -155,8 +155,13 @@ public class NTPUtil {
 
         parentLayout.addView(mainLayout);
         parentLayout.addView(imageCreditLayout);
-        parentLayout.addView(optinLayout);
-        parentLayout.addView(newsRecyclerLayout);
+        if (optinLayout != null) {
+            parentLayout.addView(optinLayout);
+        }
+
+        if (newsRecyclerLayout != null) {
+            parentLayout.addView(newsRecyclerLayout);
+        }
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -186,14 +191,18 @@ public class NTPUtil {
             LinearLayout.LayoutParams optinLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             optinLayoutParams.setMargins(30, imageCreditLayout.getBottom(), 30, 500);
-            optinLayout.setLayoutParams(optinLayoutParams);
+            if (optinLayout != null) {
+                optinLayout.setLayoutParams(optinLayoutParams);
+            }
 
             View feedSpinner = (View) view.findViewById(R.id.feed_spinner);
             FrameLayout.LayoutParams feedSpinnerParams =
                     (FrameLayout.LayoutParams) feedSpinner.getLayoutParams();
             feedSpinnerParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             feedSpinnerParams.setMargins(0, 0, 0, dpToPx(context, 35));
-            feedSpinner.setLayoutParams(feedSpinnerParams);
+            if (feedSpinner != null) {
+                feedSpinner.setLayoutParams(feedSpinnerParams);
+            }
 
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
 

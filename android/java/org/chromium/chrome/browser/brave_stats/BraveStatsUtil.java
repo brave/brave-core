@@ -207,15 +207,18 @@ public class BraveStatsUtil {
 
     public static void removeShareStatsFile() {
         Context context = ContextUtils.getApplicationContext();
-
-        if (shareStatsFile.startsWith("content://")) {
-            ContentResolver contentResolver = context.getContentResolver();
-            contentResolver.delete(Uri.parse(shareStatsFile), null, null);
-        } else {
-            File file = new File(shareStatsFile);
-            if (file.exists()) {
-                file.delete();
+        try {
+            if (shareStatsFile.startsWith("content://")) {
+                ContentResolver contentResolver = context.getContentResolver();
+                contentResolver.delete(Uri.parse(shareStatsFile), null, null);
+            } else {
+                File file = new File(shareStatsFile);
+                if (file.exists()) {
+                    file.delete();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
