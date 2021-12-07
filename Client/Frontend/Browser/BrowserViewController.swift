@@ -183,9 +183,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     /// Boolean tracking  if Tab Tray is active on the screen
     /// Used to determine If pop-over should be presented
     var isTabTrayActive = false
-        
-    /// Boolean Tracking NTP Education should be loaded after onboarding of user
-    var shouldShowNTPEducation = false
 
     /// Data Source object used to determine blocking stats
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
@@ -2824,16 +2821,6 @@ extension BrowserViewController: NewTabPageDelegate {
             
             self.presentActivityViewController(url, sourceView: self.view, sourceRect: viewRect,
                                                arrowDirection: .any)
-        }
-    }
-    
-    func showNTPOnboarding() {
-        if Preferences.General.isNewRetentionUser.value == true,
-            Preferences.DebugFlag.skipNTPCallouts != true,
-            !topToolbar.inOverlayMode,
-            topToolbar.currentURL == nil,
-            !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
-            presentNTPStatsOnboarding()
         }
     }
 }

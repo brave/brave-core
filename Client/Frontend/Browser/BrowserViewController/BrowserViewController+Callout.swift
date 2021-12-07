@@ -105,7 +105,7 @@ extension BrowserViewController {
         if BraveRewards.isAvailable, !Preferences.Rewards.rewardsToggledOnce.value {
             let controller = OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards)
             controller.onOnboardingStateChanged = { [weak self] controller, state in
-                self?.dismissOnboarding(controller, state: state)
+                self?.completeOnboarding(controller)
             }
             present(controller, animated: true)
             isOnboardingOrFullScreenCalloutPresented = true

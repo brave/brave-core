@@ -144,10 +144,12 @@ extension BrowserViewController {
                 Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.value}
             
             if !existingTierList.isEmpty {
-                guard let firstExistingTier = existingTierList.first else { return }
-                
                 Preferences.ProductNotificationBenchmarks.trackerTierCount.value = numOfTrackerAds
                 
+                guard let firstExistingTier = existingTierList.filter({ numOfTrackerAds > $0.value }).first else {
+                    return
+                }
+
                 if numOfTrackerAds > firstExistingTier.value {
                     notifyTrackerAdsCount(firstExistingTier.value,
                                           description: Strings.ShieldEducation.benchmarkAnyTierTitle)

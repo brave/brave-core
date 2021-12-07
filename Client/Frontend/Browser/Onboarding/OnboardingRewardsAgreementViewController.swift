@@ -30,7 +30,7 @@ class OnboardingRewardsAgreementViewController: UIViewController {
         
         // Prevent dismissing the modal by swipe
         isModalInPresentation = true
-        preferredContentSize = UX.preferredModalSize
+        preferredContentSize = OnboardingCommon.UX.preferredModalSize
     }
     
     @available(*, unavailable)
@@ -76,85 +76,25 @@ class OnboardingRewardsAgreementViewController: UIViewController {
 }
 
 extension OnboardingRewardsAgreementViewController {
-    private struct UX {
-        /// The onboarding screens are showing as a modal on iPads.
-        static let preferredModalSize = CGSize(width: 375, height: 667)
-        
-        /// A negative spacing is needed to make rounded corners for details view visible.
-        static let negativeSpacing = -16.0
-        static let descriptionContentInset = 25.0
-        static let linkColor: UIColor = .braveBlurple
-        static let animationContentInset = 50.0
-        static let checkboxInsets = -44.0
-        
-        static let contentBackgroundColor = UIColor(rgb: 0x1E2029)
-        static let secondaryButtonTextColor = UIColor(rgb: 0x84889C)
-    }
-    
-    private struct Views {
-        static func primaryButton(text: String = Strings.OBContinueButton) -> UIButton {
-            let button = RoundInterfaceButton().then {
-                $0.setTitle(text, for: .normal)
-                $0.backgroundColor = .braveOrange
-                $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
-            }
-            
-            return button
-        }
-        
-        static func secondaryButton(text: String = Strings.OBSkipButton) -> UIButton {
-            let button = UIButton().then {
-                $0.setTitle(text, for: .normal)
-                let titleColor = UX.secondaryButtonTextColor
-                $0.setTitleColor(titleColor, for: .normal)
-            }
-            
-            return button
-        }
-        
-        static func primaryText(_ text: String) -> UILabel {
-            let label = UILabel().then {
-                $0.text = text
-                $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.bold)
-                $0.textAlignment = .center
-                $0.textColor = .braveLabel
-            }
-            
-            return label
-        }
-        
-        static func secondaryText(_ text: String) -> UILabel {
-            let label = UILabel().then {
-                $0.text = text
-                $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
-                $0.textAlignment = .center
-                $0.numberOfLines = 0
-                $0.textColor = .braveLabel
-            }
-            
-            return label
-        }
-    }
-    
     class View: UIView {
         
         var onTermsOfServicePressed: (() -> Void)?
         var onPrivacyPolicyPressed: (() -> Void)?
         
-        let turnOnButton = Views.primaryButton(text: Strings.OBTurnOnButton).then {
+        let turnOnButton = OnboardingCommon.Views.primaryButton(text: Strings.OBTurnOnButton).then {
             $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
             $0.backgroundColor = .braveBlurple
             $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
-        let skipButton = Views.secondaryButton(text: Strings.OBSkipButton).then {
+        let skipButton = OnboardingCommon.Views.secondaryButton(text: Strings.OBSkipButton).then {
             $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBSkipButton"
             $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
         private let mainStackView = UIStackView().then {
             $0.axis = .vertical
-            $0.spacing = UX.negativeSpacing
+            $0.spacing = OnboardingCommon.UX.negativeSpacing
         }
         
         private let imageView = AnimationView(name: "onboarding-rewards").then {
@@ -177,12 +117,12 @@ extension OnboardingRewardsAgreementViewController {
             $0.spacing = 32
         }
         
-        private let titleLabel = Views.primaryText(Strings.OBRewardsAgreementTitle).then {
+        private let titleLabel = OnboardingCommon.Views.primaryText(Strings.OBRewardsAgreementTitle).then {
             $0.numberOfLines = 0
             $0.textColor = .braveLabel
         }
         
-        private let subtitleLabel = Views.secondaryText(Strings.OBRewardsDetail).then {
+        private let subtitleLabel = OnboardingCommon.Views.secondaryText(Strings.OBRewardsDetail).then {
             $0.numberOfLines = 0
             $0.textColor = .braveLabel
         }
@@ -200,7 +140,7 @@ extension OnboardingRewardsAgreementViewController {
             
             $0.linkTextAttributes = [
               .font: $0.font!,
-              .foregroundColor: UX.linkColor,
+              .foregroundColor: OnboardingCommon.UX.linkColor,
               .underlineStyle: 0
             ]
             
@@ -240,7 +180,7 @@ extension OnboardingRewardsAgreementViewController {
                 
                 text.append(NSAttributedString(string: Strings.OBRewardsAgreementDetailLink, attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-                    .foregroundColor: UX.linkColor,
+                    .foregroundColor: OnboardingCommon.UX.linkColor,
                     .link: "brave_terms_of_service"
                 ]))
                 
@@ -251,7 +191,7 @@ extension OnboardingRewardsAgreementViewController {
                 
                 text.append(NSAttributedString(string: Strings.OBRewardsPrivacyPolicyDetailLink, attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-                    .foregroundColor: UX.linkColor,
+                    .foregroundColor: OnboardingCommon.UX.linkColor,
                     .link: "brave_privacy_policy"
                 ]))
                 
@@ -289,7 +229,7 @@ extension OnboardingRewardsAgreementViewController {
             
             descriptionView.addSubview(descriptionStackView)
             descriptionStackView.snp.makeConstraints {
-                $0.edges.equalTo(descriptionView.safeArea.edges).inset(UX.descriptionContentInset)
+                $0.edges.equalTo(descriptionView.safeArea.edges).inset(OnboardingCommon.UX.descriptionContentInset)
             }
             
             mainStackView.addArrangedSubview(descriptionView)
@@ -314,8 +254,8 @@ extension OnboardingRewardsAgreementViewController {
             let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
             
             // Design wants LESS offset on iPhone 8 than on iPhone X
-            let offset = self.safeAreaInsets.top > 30 ? 0 : -UX.animationContentInset
-            imageView.frame = CGRect(x: 0.0, y: UX.animationContentInset + offset, width: newSize.width, height: newSize.height)
+            let offset = self.safeAreaInsets.top > 30 ? 0 : -OnboardingCommon.UX.animationContentInset
+            imageView.frame = CGRect(x: 0.0, y: OnboardingCommon.UX.animationContentInset + offset, width: newSize.width, height: newSize.height)
         }
         
         @available(*, unavailable)
