@@ -11,7 +11,7 @@ CI/run-network-audit:
 - chromium_src/**/*features.cc
 - patches/chrome-VERSION.patch
 
-CI/storybook-url:
+dev/storybook:
 - "**/*.ts" 
 - "**/*.tsx"
 - "**/*.svelte"
