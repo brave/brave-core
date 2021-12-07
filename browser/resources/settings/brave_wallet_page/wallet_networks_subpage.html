@@ -53,9 +53,14 @@
                     $i18n{walletNetworkEdit}
                   </button>
                   <button class="dropdown-item" id="remove"
-                      hidden=[[removeHidden]]
+                      hidden=[[isActiveNetwork]]
                       on-click="onDeleteActionTapped_">
                     $i18n{walletNetworkRemove}
+                  </button>
+                  <button class="dropdown-item" id="set-active"
+                      hidden=[[isActiveNetwork]]
+                      on-click="onSetAsActiveActionTapped_">
+                    $i18n{walletNetworkSetAsActive}
                   </button>
                 </cr-action-menu>
               </template>

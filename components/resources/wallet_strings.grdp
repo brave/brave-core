@@ -349,6 +349,7 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNTS_IMPORT_ERROR" desc="Hardware wallet error when importing accounts from Trezor device">Internal error, Unable to fetch accounts</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_EDIT" desc="Edit custom network button title">Edit</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_REMOVE" desc="Remove custom network button title">Remove</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_SET_AS_ACTIVE" desc="Set custom network as active button title">Set as active</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR" desc="Process transaction error when signing transactions with hardware device">Error processing the transaction</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR" desc="Unable to approve hardware transaction during signing process">Error processing the transaction</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NOT_FOUND_ERROR" desc="Unable to find hardware transaction during signing process">Unable to find hardware transaction, please try again</message>

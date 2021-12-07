@@ -76,6 +76,9 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   void AddEthereumChain(base::Value::ConstListView args) {
     BraveWalletHandler::AddEthereumChain(args);
   }
+  void SetActiveNetwork(base::Value::ConstListView args) {
+    BraveWalletHandler::SetActiveNetwork(args);
+  }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
 
@@ -271,4 +274,54 @@ TEST(TestBraveWalletHandler, GetNetworkList) {
       brave_wallet::ValueToEthereumChain(expected_list.value().GetList()[1]);
   ASSERT_TRUE(expected_chain2);
   EXPECT_EQ(expected_chain2.value(), chain2);
+}
+
+TEST(TestBraveWalletHandler, SetActiveNetwork) {
+  TestBraveWalletHandler handler;
+
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain1(
+      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+  auto chain_ptr1 = chain1.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+
+  brave_wallet::mojom::EthereumChain chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
+  auto chain_ptr2 = chain2.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
+  UpdateCustomNetworks(handler.prefs(), &values);
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 2u);
+  }
+  handler.prefs()->SetString(kBraveWalletCurrentChainId, "chain_id");
+  {
+    auto args = base::ListValue();
+    args.Append(base::Value("id"));
+    args.Append(base::Value("chain_id2"));
+
+    handler.SetActiveNetwork(args.GetList());
+    const auto& data = *handler.web_ui()->call_data()[0];
+    ASSERT_TRUE(data.arg3()->is_bool());
+    EXPECT_EQ(data.arg3()->GetBool(), true);
+
+    EXPECT_EQ(handler.prefs()->GetString(kBraveWalletCurrentChainId),
+              "chain_id2");
+  }
+  {
+    auto args = base::ListValue();
+    args.Append(base::Value("id"));
+    args.Append(base::Value("unknown_chain_id"));
+
+    handler.SetActiveNetwork(args.GetList());
+    const auto& data = *handler.web_ui()->call_data()[1];
+    ASSERT_TRUE(data.arg3()->is_bool());
+    EXPECT_EQ(data.arg3()->GetBool(), false);
+
+    EXPECT_EQ(handler.prefs()->GetString(kBraveWalletCurrentChainId),
+              "chain_id2");
+  }
 }
