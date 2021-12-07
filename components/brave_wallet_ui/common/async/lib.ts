@@ -74,6 +74,11 @@ export const getBalance = (address: string): Promise<string> => {
   })
 }
 
+export async function isStrongPassword (value: string) {
+  const apiProxy = getAPIProxy()
+  return (await apiProxy.keyringController.isStrongPassword(value)).result
+}
+
 export async function findENSAddress (address: string) {
   const apiProxy = getAPIProxy()
   return apiProxy.ethJsonRpcController.ensGetEthAddr(address)

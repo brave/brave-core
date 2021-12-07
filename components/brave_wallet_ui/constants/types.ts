@@ -377,6 +377,10 @@ export interface GetEthAddrReturnInfo {
   address: string
 }
 
+export interface GetIsStrongPassswordReturnInfo {
+  result: boolean
+}
+
 export interface RecoveryObject {
   value: string
   id: number

@@ -10,6 +10,7 @@ import './locale'
 import {
   recoveryPhrase
 } from './mock-data/user-accounts'
+import { isStrongPassword } from '../utils/password-utils'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -100,10 +101,15 @@ export const _Onboarding = () => {
     // Does nothing here
   }
 
+  const checkIsStrongPassword = async (value: string) => {
+    return isStrongPassword.test(value)
+  }
+
   return (
     <WalletPageLayout>
       <WalletSubViewLayout>
         <Onboarding
+          checkIsStrongPassword={checkIsStrongPassword}
           importError={{ hasError: false }}
           recoveryPhrase={recoveryPhrase}
           onSubmit={complete}

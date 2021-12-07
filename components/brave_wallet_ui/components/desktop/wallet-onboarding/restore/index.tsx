@@ -16,9 +16,9 @@ import { PasswordInput, BackButton } from '../../../shared'
 import { NavButton } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
 import { Checkbox } from 'brave-ui'
-import { isStrongPassword } from '../../../../utils/password-utils'
 
 export interface Props {
+  checkIsStrongPassword: (value: string) => Promise<boolean>
   toggleShowRestore: () => void
   onRestore: (phrase: string, password: string, isLegacy: boolean) => void
   hasRestoreError: boolean
@@ -28,10 +28,12 @@ function OnboardingRestore (props: Props) {
   const {
     onRestore,
     toggleShowRestore,
+    checkIsStrongPassword,
     hasRestoreError
   } = props
   const [showRecoveryPhrase, setShowRecoveryPhrase] = React.useState<boolean>(false)
   const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
+  const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
   const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
@@ -47,8 +49,10 @@ function OnboardingRestore (props: Props) {
     onRestore(recoveryPhrase.trimEnd(), password, isLegacyWallet)
   }
 
-  const handlePasswordChanged = (value: string) => {
+  const handlePasswordChanged = async (value: string) => {
     setPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongPassword(isStrong)
   }
 
   const handleConfirmPasswordChanged = (value: string) => {
@@ -87,13 +91,9 @@ function OnboardingRestore (props: Props) {
   const checkPassword = React.useMemo(() => {
     if (password === '') {
       return false
-    } else {
-      if (!isStrongPassword.test(password)) {
-        return true
-      }
-      return false
     }
-  }, [password])
+    return !isStrongPassword
+  }, [password, isStrongPassword])
 
   const checkConfirmedPassword = React.useMemo(() => {
     if (confirmedPassword === '') {
