@@ -12,7 +12,9 @@
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -102,6 +104,10 @@ void BraveWalletHandler::RegisterMessages() {
       "addEthereumChain",
       base::BindRepeating(&BraveWalletHandler::AddEthereumChain,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setActiveNetwork",
+      base::BindRepeating(&BraveWalletHandler::SetActiveNetwork,
+                          base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(base::Value::ConstListView args) {
@@ -146,4 +152,15 @@ void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
   result.Append(base::Value(success));
   result.Append(base::Value(error_message));
   ResolveJavascriptCallback(args[0], std::move(result));
+}
+
+void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 2U);
+  AllowJavascript();
+  auto* rpc_controller =
+      brave_wallet::RpcControllerFactory::GetControllerForContext(
+          Profile::FromWebUI(web_ui()));
+  auto result =
+      rpc_controller ? rpc_controller->SetNetwork(args[1].GetString()) : false;
+  ResolveJavascriptCallback(args[0], base::Value(result));
 }

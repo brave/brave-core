@@ -44,7 +44,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Object,
         value: {}
       },
-      removeHidden: {
+      isActiveNetwork: {
         type: Boolean,
         value: true
       }
@@ -87,6 +87,14 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   getItemDescritionText(item) {
     const url = (item.rpcUrls && item.rpcUrls.length) ?  item.rpcUrls[0] : ''
     return item.chainId + ' ' + url
+  }
+
+  onSetAsActiveActionTapped_(event) {
+    const chainId = this.selectedNetwork.chainId
+    this.selectedNetwork = {}
+    this.browserProxy_.setActiveNetwork(chainId).
+        then(success => { this.updateNetworks() })
+    this.$$('cr-action-menu').close();
   }
 
   onDeleteActionTapped_(event) {
@@ -133,7 +141,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
-    this.removeHidden = this.isDefaultNetwork(this.selectedNetwork.chainId)
+    this.isActiveNetwork = this.isDefaultNetwork(this.selectedNetwork.chainId)
     const actionMenu =
         /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
     actionMenu.showAt(event.target);

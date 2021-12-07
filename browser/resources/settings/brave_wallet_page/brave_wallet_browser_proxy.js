@@ -17,6 +17,7 @@ export class BraveWalletBrowserProxy {
    getCustomNetworksList () {}
    removeEthereumChain (chainId) {}
    addEthereumChain (value) {}
+   setActiveNetwork (chainId) {}
 }
 
 /**
@@ -35,7 +36,11 @@ export class BraveWalletBrowserProxyImpl {
   getCustomNetworksList () {
     return sendWithPromise('getCustomNetworksList')
   }
-  
+
+  setActiveNetwork (chainId) {
+    return sendWithPromise('setActiveNetwork', chainId)
+  }
+
   removeEthereumChain (chainId) {
     return sendWithPromise('removeEthereumChain', chainId)
   }
