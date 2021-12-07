@@ -14,16 +14,19 @@
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/third_party/rust/cxx/include/cxx.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
-
-namespace skus {
-struct CppSDK;
-}
 
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace skus {
+
+struct CppSDK;
 
 // This is only intended to be used on account.brave.com and the dev / staging
 // counterparts. The accounts website will use this if present which allows a
@@ -54,34 +57,44 @@ class SharedURLLoaderFactory;
 //
 // For more information, please see:
 // https://github.com/brave-intl/br-rs/tree/skus
-class SkusSdkService : public KeyedService {
+class SdkController : public KeyedService, public mojom::SdkController {
  public:
-  explicit SkusSdkService(
+  explicit SdkController(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SkusSdkService() override;
+  ~SdkController() override;
 
-  SkusSdkService(const SkusSdkService&) = delete;
-  SkusSdkService& operator=(SkusSdkService&) = delete;
+  SdkController(const SdkController&) = delete;
+  SdkController& operator=(SdkController&) = delete;
 
-  void RefreshOrder(const std::string& order_id,
-                    skus::mojom::SkusSdk::RefreshOrderCallback callback);
+  mojo::PendingRemote<mojom::SdkController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::SdkController> receiver);
+
+  // mojom::SdkController
+  void RefreshOrder(
+      const std::string& order_id,
+      skus::mojom::SdkController::RefreshOrderCallback callback) override;
   void FetchOrderCredentials(
       const std::string& order_id,
-      skus::mojom::SkusSdk::FetchOrderCredentialsCallback callback);
+      skus::mojom::SdkController::FetchOrderCredentialsCallback callback)
+      override;
   void PrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& path,
-      skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback callback);
+      skus::mojom::SdkController::PrepareCredentialsPresentationCallback
+          callback) override;
   void CredentialSummary(
       const std::string& domain,
-      skus::mojom::SkusSdk::CredentialSummaryCallback callback);
+      skus::mojom::SdkController::CredentialSummaryCallback callback) override;
 
  private:
   std::unique_ptr<skus::SkusSdkContextImpl> context_;
   ::rust::Box<skus::CppSDK> sdk_;
   PrefService* prefs_;
-  base::WeakPtrFactory<SkusSdkService> weak_factory_;
+  mojo::ReceiverSet<mojom::SdkController> receivers_;
+  base::WeakPtrFactory<SdkController> weak_factory_;
 };
+
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_SERVICE_H_

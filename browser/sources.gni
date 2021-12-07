@@ -155,6 +155,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a:buildflags",
   "//brave/components/resources",
   "//brave/components/sidebar/buildflags",
+  "//brave/components/skus/common",
   "//brave/components/speedreader:buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/translate/core/common:buildflags",

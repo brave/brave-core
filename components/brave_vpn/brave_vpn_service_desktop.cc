@@ -22,7 +22,7 @@
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/skus_sdk_service.h"
+#include "brave/components/skus/browser/sdk_controller.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -88,12 +88,12 @@ std::string GetBraveVPNPaymentsEnv() {
 BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs,
-    SkusSdkService* skus_sdk_service)
+    skus::SdkController* sdk_controller)
     : BraveVpnService(url_loader_factory),
       prefs_(prefs),
-      skus_sdk_service_(skus_sdk_service) {
+      sdk_controller_(sdk_controller) {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
-  DCHECK(skus_sdk_service_);
+  DCHECK(sdk_controller_);
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -429,8 +429,15 @@ void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
-  DCHECK(credential_cookie.IsValid());
-  DCHECK(status.IsInclude());
+  // TODO(bsclifton): have a better check / logging.
+  if (!credential_cookie.IsValid()) {
+    LOG(ERROR) << "FAILED credential_cookie.IsValid";
+    return;
+  }
+  if (!status.IsInclude()) {
+    LOG(ERROR) << "FAILED status.IsInclude";
+    return;
+  }
 
   // Credential value received needs to be URL decoded.
   // That leaves us with a Base64 encoded JSON blob which is the credential.
@@ -479,7 +486,7 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
   }
 
   // if a credential is ready, we can present it
-  skus_sdk_service_->PrepareCredentialsPresentation(
+  sdk_controller_->PrepareCredentialsPresentation(
       skus::GetDomain("vpn"), "*",
       base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
                      base::Unretained(this)));

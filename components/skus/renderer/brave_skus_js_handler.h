@@ -87,7 +87,7 @@ class BraveSkusJSHandler {
                            const std::string& response);
 
   content::RenderFrame* render_frame_;
-  mojo::Remote<skus::mojom::SkusSdk> skus_sdk_;
+  mojo::Remote<skus::mojom::SdkController> sdk_controller_;
 };
 
 }  // namespace brave_rewards

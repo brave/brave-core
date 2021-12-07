@@ -10,12 +10,12 @@ import("//build/config/features.gni")
 static_library("browser") {
   sources = [
     "pref_names.h",
+    "sdk_controller.cc",
+    "sdk_controller.h",
     "skus_sdk_context_impl.cc",
     "skus_sdk_context_impl.h",
     "skus_sdk_fetcher_impl.cc",
     "skus_sdk_fetcher_impl.h",
-    "skus_sdk_service.cc",
-    "skus_sdk_service.h",
     "skus_utils.cc",
     "skus_utils.h",
     "switches.h",

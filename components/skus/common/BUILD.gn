@@ -1,5 +1,15 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
+static_library("common") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+  deps = [
+    "//base",
+  ]
+}
+
 mojom("mojom") {
   sources = [
     "skus_sdk.mojom",

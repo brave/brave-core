@@ -428,7 +428,7 @@ async fn prepare_credentials_presentation_task(
 
 #[repr(transparent)]
 pub struct CredentialSummaryCallback(
-    pub  extern "C" fn(
+    pub extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
         result: ffi::SkusResult,
         summary: &str,

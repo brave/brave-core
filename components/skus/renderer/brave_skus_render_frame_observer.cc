@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/skus/common/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -39,7 +41,7 @@ void BraveSkusRenderFrameObserver::DidCreateScriptContext(
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
 
-  if (!isSkusSdkAllowed())
+  if (!IsSkusSdkAllowed())
     return;
 
   if (!native_javascript_handle_) {
@@ -51,10 +53,11 @@ void BraveSkusRenderFrameObserver::DidCreateScriptContext(
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
 }
 
-bool BraveSkusRenderFrameObserver::isSkusSdkAllowed() {
-  return url_.host() == "account.brave.com" ||
-         url_.host() == "account.bravesoftware.com" ||
-         url_.host() == "account.brave.software";
+bool BraveSkusRenderFrameObserver::IsSkusSdkAllowed() {
+  return base::FeatureList::IsEnabled(skus::features::kSdkFeature) &&
+         (url_.host() == "account.brave.com" ||
+          url_.host() == "account.bravesoftware.com" ||
+          url_.host() == "account.brave.software");
 }
 
 void BraveSkusRenderFrameObserver::OnDestruct() {

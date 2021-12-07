@@ -30,12 +30,12 @@ BraveSkusJSHandler::BraveSkusJSHandler(content::RenderFrame* render_frame)
 BraveSkusJSHandler::~BraveSkusJSHandler() = default;
 
 bool BraveSkusJSHandler::EnsureConnected() {
-  if (!skus_sdk_.is_bound()) {
+  if (!sdk_controller_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        skus_sdk_.BindNewPipeAndPassReceiver());
+        sdk_controller_.BindNewPipeAndPassReceiver());
   }
 
-  return skus_sdk_.is_bound();
+  return sdk_controller_.is_bound();
 }
 
 void BraveSkusJSHandler::AddJavaScriptObjectToFrame(
@@ -52,7 +52,7 @@ void BraveSkusJSHandler::AddJavaScriptObjectToFrame(
 
 void BraveSkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
-  skus_sdk_.reset();
+  sdk_controller_.reset();
   EnsureConnected();
 }
 
@@ -142,7 +142,7 @@ v8::Local<v8::Promise> BraveSkusJSHandler::RefreshOrder(v8::Isolate* isolate,
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  skus_sdk_->RefreshOrder(
+  sdk_controller_->RefreshOrder(
       order_id,
       base::BindOnce(&BraveSkusJSHandler::OnRefreshOrder,
                      base::Unretained(this), std::move(promise_resolver),
@@ -209,7 +209,7 @@ v8::Local<v8::Promise> BraveSkusJSHandler::FetchOrderCredentials(
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  skus_sdk_->FetchOrderCredentials(
+  sdk_controller_->FetchOrderCredentials(
       order_id,
       base::BindOnce(&BraveSkusJSHandler::OnFetchOrderCredentials,
                      base::Unretained(this), std::move(promise_resolver),
@@ -255,7 +255,7 @@ v8::Local<v8::Promise> BraveSkusJSHandler::PrepareCredentialsPresentation(
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  skus_sdk_->PrepareCredentialsPresentation(
+  sdk_controller_->PrepareCredentialsPresentation(
       domain, path,
       base::BindOnce(&BraveSkusJSHandler::OnPrepareCredentialsPresentation,
                      base::Unretained(this), std::move(promise_resolver),
@@ -300,7 +300,7 @@ v8::Local<v8::Promise> BraveSkusJSHandler::CredentialSummary(
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  skus_sdk_->CredentialSummary(
+  sdk_controller_->CredentialSummary(
       domain,
       base::BindOnce(&BraveSkusJSHandler::OnCredentialSummary,
                      base::Unretained(this), std::move(promise_resolver),
