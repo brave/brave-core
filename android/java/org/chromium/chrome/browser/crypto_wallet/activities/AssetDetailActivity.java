@@ -115,10 +115,17 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(mAssetName);
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath = mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
-        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                assetTitleText, false);
+        if (!mAssetLogo.isEmpty()) {
+            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+            String iconPath =
+                    mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                    assetTitleText, false);
+        } else {
+            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, mContractAddress,
+                    mAssetSymbol, getResources().getDisplayMetrics().density, assetTitleText, this,
+                    false, (float) 0.5);
+        }
 
         TextView assetPriceText = findViewById(R.id.asset_price_text);
         assetPriceText.setText(String.format(
@@ -206,8 +213,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioController,
-                            mEthTxController, null, mAssetSymbol, mContractAddress, mAssetDecimals,
-                            findViewById(R.id.rv_transactions), this, this, null);
+                            mEthTxController, null, null, mAssetSymbol, mContractAddress,
+                            mAssetDecimals, findViewById(R.id.rv_transactions), this, this, null);
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(

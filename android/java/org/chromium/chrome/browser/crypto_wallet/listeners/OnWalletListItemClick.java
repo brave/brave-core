@@ -15,4 +15,5 @@ public interface OnWalletListItemClick {
     default public void onTransactionClick(TransactionInfo txInfo){};
     default public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, boolean isChecked){};
+    default public void onTrashIconClick(WalletListItemModel walletListItemModel){};
 }

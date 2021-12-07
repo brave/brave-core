@@ -45,6 +45,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -63,6 +64,7 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
@@ -185,6 +187,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private String mCurrentChainId;
     private String mAllowanceTarget;
     private Spinner mAccountSpinner;
+    private BraveWalletService mBraveWalletService;
 
     @Override
     protected void onDestroy() {
@@ -198,6 +201,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController.close();
         mEthTxController.close();
         mSwapController.close();
+        mBraveWalletService.close();
     }
 
     @Override
@@ -683,6 +687,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
@@ -742,6 +747,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
@@ -750,6 +756,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
+                bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
@@ -1182,8 +1189,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String iconPath = ercToken.logo.isEmpty()
                 ? null
                 : ("file://" + tokensPath + "/" + mCurrentErcToken.logo);
-        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                assetFromDropDown, true);
+        if (!mCurrentErcToken.logo.isEmpty()) {
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                    assetFromDropDown, true);
+        } else {
+            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null,
+                    mCurrentErcToken.contractAddress, mCurrentErcToken.symbol,
+                    getResources().getDisplayMetrics().density, assetFromDropDown, this, true,
+                    (float) 0.5);
+        }
         updateBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 true);
@@ -1207,8 +1221,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String iconPath = ercToken.logo.isEmpty()
                 ? null
                 : ("file://" + tokensPath + "/" + mCurrentSwapToErcToken.logo);
-        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                assetToDropDown, true);
+        if (!mCurrentSwapToErcToken.logo.isEmpty()) {
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                    assetToDropDown, true);
+        } else {
+            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null,
+                    mCurrentSwapToErcToken.contractAddress, mCurrentSwapToErcToken.symbol,
+                    getResources().getDisplayMetrics().density, assetToDropDown, this, true,
+                    (float) 0.5);
+        }
         updateBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 false);
@@ -1249,6 +1270,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController.close();
         mEthTxController.close();
         mSwapController.close();
+        mBraveWalletService.close();
 
         mErcTokenRegistry = null;
         mEthJsonRpcController = null;
@@ -1256,12 +1278,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mKeyringController = null;
         mAssetRatioController = null;
         mSwapController = null;
+        mBraveWalletService = null;
         InitAssetRatioController();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
         InitSwapController();
+        InitBraveWalletService();
     }
 
     public AssetRatioController getAssetRatioController() {
@@ -1274,6 +1298,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     public EthJsonRpcController getEthJsonRpcController() {
         return mEthJsonRpcController;
+    }
+
+    public BraveWalletService getBraveWalletService() {
+        return mBraveWalletService;
+    }
+
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
     private void InitAssetRatioController() {
@@ -1348,6 +1384,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitKeyringController();
         InitAssetRatioController();
         InitSwapController();
+        InitBraveWalletService();
 
         if (mEthJsonRpcController != null) {
             mEthJsonRpcController.getChainId(chainId -> {
