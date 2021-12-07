@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 0fa26b95494dab169d5d2fcdcb0f89b89283a6a3..bbeda0cee067e3adaead0211fa9a683d09ccc091 100644
+index 9dfe72b8626eac1c60ba75f4417662258c887426..1cffd49a4a29c5c5b3018e8935ae2da7e754c382 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -504,6 +504,20 @@ enum HistogramValue {
-   SPEECH_RECOGNITION_PRIVATE_ON_RESULT = 482,
+@@ -505,6 +505,20 @@ enum HistogramValue {
    SPEECH_RECOGNITION_PRIVATE_ON_ERROR = 483,
    FILE_MANAGER_PRIVATE_ON_IO_TASK_PROGRESS_STATUS = 484,
+   INPUT_METHOD_PRIVATE_ON_TOUCH = 485,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
