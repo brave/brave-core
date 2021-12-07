@@ -18,6 +18,7 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/notification_helper/notification_helper.cc",
   "//brave/browser/brave_ads/notification_helper/notification_helper.h",
   "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
+  "//brave/browser/brave_ads/service_sandbox_type.h",
 ]
 
 brave_browser_brave_ads_deps = [

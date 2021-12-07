@@ -42,6 +42,7 @@
 #include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h"
+#include "brave/browser/brave_ads/service_sandbox_type.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -51,7 +52,6 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
@@ -1509,7 +1509,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
   static base::NoDestructor<
-      std::map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
+      base::flat_map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
       mappings({// {{from version, to version}, function}
                 {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
                 {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
@@ -1529,7 +1529,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = mappings->find({from_version, to_version});
+    auto mapping = mappings->find(std::make_pair(from_version, to_version));
     if (mapping == mappings->end()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences

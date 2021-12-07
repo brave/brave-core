@@ -21,7 +21,6 @@ source_set("browser") {
     "component_updater/resource_info.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
-    "service_sandbox_type.h",
   ]
 
   deps = [
