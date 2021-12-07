@@ -105,6 +105,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
+    private boolean mInitialLayoutInflationComplete = false;
 
     public enum ActivityType {
         BUY(0),
@@ -228,13 +229,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
         TextView toBalanceText = findViewById(R.id.to_balance_text);
         TextView toAssetText = findViewById(R.id.to_asset_text);
-        toAssetText.setText("ETH");
+        toAssetText.setText("BAT");
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
 
         onInitialLayoutInflationComplete();
 
         adjustControls();
+
+        mInitialLayoutInflationComplete = true;
     }
 
     private class BuySendSwapUiInfo {
@@ -773,6 +776,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
                 TabUtils.bringChromeTabbedActivityToTheTop(this);
             });
+            if (mErcTokenRegistry != null && mCustomAccountAdapter != null) {
+                mErcTokenRegistry.getTokenBySymbol("BAT", token -> {
+                    if (token != null) {
+                        updateSwapToAsset(token.symbol, token);
+                    }
+                });
+            }
         }
 
         btnBuySendSwap.setOnClickListener(v -> {
@@ -1380,6 +1390,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     if (mActivityType == ActivityType.SWAP) {
                         updateBalance(accountTitles[0], false);
                     }
+                }
+
+                // updateSwapToAsset needs mCustomAccountAdapter to be initialized
+                if (mErcTokenRegistry != null && mActivityType == ActivityType.SWAP
+                        && mInitialLayoutInflationComplete) {
+                    mErcTokenRegistry.getTokenBySymbol("BAT", token -> {
+                        if (token != null) {
+                            updateSwapToAsset(token.symbol, token);
+                        }
+                    });
                 }
             });
         }
