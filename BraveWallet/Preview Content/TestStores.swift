@@ -70,7 +70,8 @@ extension SendTokenStore {
       keyringController: TestKeyringController(),
       rpcController: TestEthJsonRpcController(),
       walletService: TestBraveWalletService(),
-      transactionController: TestEthTxController()
+      transactionController: TestEthTxController(),
+      tokenRegistery: TestTokenRegistry()
     )
   }
 }

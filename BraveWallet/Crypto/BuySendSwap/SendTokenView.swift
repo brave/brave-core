@@ -16,7 +16,6 @@ struct SendTokenView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var amountInput = ""
-  @State private var sendAddress = ""
   @State private var isShowingScanner = false
   @State private var isShowingError = false
   
@@ -35,7 +34,10 @@ struct SendTokenView: View {
       return true
     }
     
-    return sendAmount > balance || amountInput.isEmpty || !sendAddress.isETHAddress
+    return sendAmount == 0
+    || sendAmount > balance
+    || amountInput.isEmpty
+    || sendTokenStore.addressError != nil
   }
   
   var body: some View {
@@ -93,13 +95,32 @@ struct SendTokenView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoToTitle))
+          header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoToTitle)),
+          footer: Group {
+            if let error = sendTokenStore.addressError {
+              HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Image(systemName: "exclamationmark.circle.fill")
+                Text(error.localizedDescription)
+                  .fixedSize(horizontal: false, vertical: true)
+                  .animation(nil, value: error.localizedDescription)
+              }
+              .transition(
+                .asymmetric(
+                  insertion: .opacity.animation(.default),
+                  removal: .identity
+                )
+              )
+              .font(.footnote)
+              .foregroundColor(Color(.braveErrorLabel))
+              .padding(.bottom)
+            }
+          }
         ) {
           HStack(spacing: 14.0) {
-            TextField(Strings.Wallet.sendCryptoAddressPlaceholder, text: $sendAddress)
+            TextField(Strings.Wallet.sendCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
             Button(action: {
               if let string = UIPasteboard.general.string {
-                sendAddress = string
+                sendTokenStore.sendAddress = string
               }
             }) {
               Label(Strings.Wallet.pasteFromPasteboard, image: "brave.clipboard")
@@ -125,11 +146,7 @@ struct SendTokenView: View {
             WalletLoadingButton(
               isLoading: sendTokenStore.isMakingTx,
               action: {
-                sendTokenStore.sendToken(
-                  from: keyringStore.selectedAccount,
-                  to: sendAddress,
-                  amount: amountInput
-                ) { success in
+                sendTokenStore.sendToken(amount: amountInput) { success in
                   isShowingError = !success
                 }
               },
@@ -154,7 +171,7 @@ struct SendTokenView: View {
         )
       }
       .sheet(isPresented: $isShowingScanner) {
-        AddressQRCodeScannerView(address: $sendAddress)
+        AddressQRCodeScannerView(address: $sendTokenStore.sendAddress)
       }
       .navigationTitle(Strings.Wallet.send)
       .navigationBarTitleDisplayMode(.inline)

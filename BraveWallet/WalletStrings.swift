@@ -1534,5 +1534,26 @@ extension Strings {
       value: "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their private key"
     )
+    public static let sendWarningAddressIsOwn = NSLocalizedString(
+      "wallet.sendWarningAddressIsOwn",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "The receiving address is your own address",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address."
+    )
+    public static let sendWarningAddressIsContract = NSLocalizedString(
+      "wallet.sendWarningAddressIsContract",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "The receiving address is a token's contract address",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address is a token contract address."
+    )
+    public static let sendWarningAddressNotValid = NSLocalizedString(
+      "wallet.sendWarningAddressNotValid",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Not a valid ETH address",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address."
+    )
   }
 }
