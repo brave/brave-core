@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index d8129806e326738182a63eef710517eb8125fb8d..b3ea53b253a34dd6c6ab7d258aa88cd822e326eb 100644
+index 4851699384973a76979d8421e4ae3c4a792f0089..197e66b025aa0ef3fcda42aacb34a5ba6959d25c 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -8,6 +8,7 @@
-         border-top: none;
+@@ -13,6 +13,7 @@
+         padding-inline-start: 0;
        }
      </style>
 +<if expr="_google_chrome">
  <if expr="not chromeos and not lacros">
      <!-- Signout is not supported yet on lacros, https://crbug.com/1217645 -->
      <settings-toggle-button id="signinAllowedToggle"
-@@ -21,6 +22,7 @@
+@@ -26,6 +27,7 @@
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos and not lacros -->
@@ -18,16 +18,16 @@ index d8129806e326738182a63eef710517eb8125fb8d..b3ea53b253a34dd6c6ab7d258aa88cd8
      <template is="dom-if" if="[[showSearchSuggestToggle_()]]" restamp>
        <settings-toggle-button id="searchSuggestToggle"
            class="hr"
-@@ -37,6 +39,8 @@
-         sub-label="$i18n{enablePersonalizationLoggingDesc}">
-     </settings-toggle-button>
+@@ -54,6 +56,8 @@
+       </cr-link-row>
+     </template>
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
 +<if expr="_chromium">
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -52,7 +56,8 @@
+@@ -69,7 +73,8 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -37,7 +37,7 @@ index d8129806e326738182a63eef710517eb8125fb8d..b3ea53b253a34dd6c6ab7d258aa88cd8
      <template is="dom-if" if="[[showUrlCollectionToggle_()]]" restamp>
        <settings-toggle-button id="urlCollectionToggle"
            class="hr"
-@@ -61,6 +66,7 @@
+@@ -78,6 +83,7 @@
            sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
        </settings-toggle-button>
      </template>
@@ -45,7 +45,7 @@ index d8129806e326738182a63eef710517eb8125fb8d..b3ea53b253a34dd6c6ab7d258aa88cd8
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -80,6 +86,7 @@
+@@ -97,6 +103,7 @@
        </settings-toggle-button>
      </template>
  
@@ -53,7 +53,7 @@ index d8129806e326738182a63eef710517eb8125fb8d..b3ea53b253a34dd6c6ab7d258aa88cd8
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -92,3 +99,4 @@
+@@ -109,3 +116,4 @@
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>
  </if>
