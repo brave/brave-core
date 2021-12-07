@@ -432,6 +432,53 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void AddSuggestToken(mojom::ERCTokenPtr suggested_token,
+                       mojom::ERCTokenPtr expected_token,
+                       bool approve,
+                       bool run_switch_network = false) {
+    mojom::AddSuggestTokenRequestPtr request =
+        mojom::AddSuggestTokenRequest::New(suggested_token.Clone());
+    base::RunLoop run_loop;
+    service_->AddSuggestTokenRequest(
+        request.Clone(), base::BindLambdaForTesting(
+                             [&](bool user_approved, mojom::ProviderError error,
+                                 const std::string& error_message) {
+                               EXPECT_EQ(approve, user_approved);
+                               EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+                               EXPECT_TRUE(error_message.empty());
+                               run_loop.Quit();
+                             }));
+
+    auto requests = GetPendingAddSuggestTokenRequests();
+    ASSERT_EQ(requests.size(), 1u);
+    EXPECT_EQ(requests[0]->token, expected_token);
+
+    if (run_switch_network) {
+      GetPrefs()->SetString(kBraveWalletCurrentChainId, mojom::kRopstenChainId);
+    } else {
+      service_->NotifyAddSuggestTokenRequestsProcessed(
+          approve, {suggested_token->contract_address});
+    }
+    run_loop.Run();
+
+    requests = GetPendingAddSuggestTokenRequests();
+    EXPECT_TRUE(requests.empty());
+  }
+
+  std::vector<mojom::AddSuggestTokenRequestPtr>
+  GetPendingAddSuggestTokenRequests() const {
+    base::RunLoop run_loop;
+    std::vector<mojom::AddSuggestTokenRequestPtr> requests_out;
+    service_->GetPendingAddSuggestTokenRequests(base::BindLambdaForTesting(
+        [&](std::vector<mojom::AddSuggestTokenRequestPtr> requests) {
+          for (const auto& request : requests)
+            requests_out.push_back(request.Clone());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return requests_out;
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
@@ -1290,6 +1337,185 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   service_->NotifySignMessageRequestProcessed(false, 2);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
+}
+
+TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
+  std::string chain_id = GetCurrentChainId(GetPrefs());
+  ASSERT_EQ(chain_id, mojom::kMainnetChainId);
+
+  mojom::ERCTokenPtr usdc_from_erc_token_registry = mojom::ERCToken::New(
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
+      true, false, "USDC", 6, true, "");
+  ASSERT_EQ(usdc_from_erc_token_registry,
+            GetRegistry()->GetTokenByContract(
+                "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
+  mojom::ERCTokenPtr usdc_from_user_assets =
+      mojom::ERCToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F",
+                           "USD Coin", "", true, false, "USDC", 6, true, "");
+  ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
+
+  mojom::ERCTokenPtr usdc_from_request =
+      mojom::ERCToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC",
+                           "", true, false, "USDC", 6, true, "");
+
+  mojom::ERCTokenPtr custom_token =
+      mojom::ERCToken::New("0x6b175474e89094C44Da98b954eEdeAC495271d1e",
+                           "COLOR", "", true, false, "COLOR", 18, true, "");
+
+  // Case 1: Suggested token does not exist (no entry with the same contract
+  // address) in ERCTokenRegistry nor user assets. Current network is mainnet.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in the request.
+  AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
+  auto token = service_->GetUserAsset(custom_token->contract_address,
+                                      custom_token->token_id,
+                                      custom_token->is_erc721, chain_id);
+  EXPECT_EQ(token, custom_token);
+
+  // Case 2: Suggested token exists (has an entry with the same contract
+  // address) in ERCTokenRegistry and user asset list and is visible. Current
+  // network is mainnet.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in the user asset list.
+  AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
+                  true);
+  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                 usdc_from_user_assets->token_id,
+                                 usdc_from_user_assets->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_user_assets);
+
+  // Case 3: Suggested token exists in ERCTokenRegistry and user asset list but
+  // is not visible. Current network is mainnet.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in the user asset list.
+  ASSERT_TRUE(service_->SetUserAssetVisible(usdc_from_user_assets.Clone(),
+                                            chain_id, false));
+  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                 usdc_from_user_assets->token_id,
+                                 usdc_from_user_assets->is_erc721, chain_id);
+  AddSuggestToken(usdc_from_request.Clone(), token.Clone(), true);
+  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                 usdc_from_user_assets->token_id,
+                                 usdc_from_user_assets->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_user_assets);
+
+  // Case 4: Suggested token exists in ERCTokenRegistry but not in user asset
+  // list. Current network is mainnet.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in ERCTokenRegistry.
+  ASSERT_TRUE(
+      service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
+  AddSuggestToken(usdc_from_request.Clone(),
+                  usdc_from_erc_token_registry.Clone(), true);
+  token =
+      service_->GetUserAsset(usdc_from_erc_token_registry->contract_address,
+                             usdc_from_erc_token_registry->token_id,
+                             usdc_from_erc_token_registry->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_erc_token_registry);
+
+  mojom::ERCTokenPtr usdt_from_user_assets = mojom::ERCToken::New(
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png", true,
+      false, "USDT", 6, true, "");
+  ASSERT_TRUE(service_->AddUserAsset(usdt_from_user_assets.Clone(), chain_id));
+
+  mojom::ERCTokenPtr usdt_from_request =
+      mojom::ERCToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT",
+                           "", true, false, "USDT", 18, true, "");
+  // Case 5: Suggested token exists in user asset list and is visible, does not
+  // exist in ERCTokenRegistry.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in user asset list.
+  AddSuggestToken(usdt_from_request.Clone(), usdt_from_user_assets.Clone(),
+                  true);
+  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                 usdt_from_user_assets->token_id,
+                                 usdt_from_user_assets->is_erc721, chain_id);
+  EXPECT_EQ(token, usdt_from_user_assets);
+
+  // Case 6: Suggested token exists in user asset list but is not visible, does
+  // not exist in ERCTokenRegistry.
+  // Token should be in user asset list and is visible, and the data should be
+  // the same as the one in user asset list.
+  ASSERT_TRUE(service_->SetUserAssetVisible(usdt_from_user_assets.Clone(),
+                                            chain_id, false));
+  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                 usdt_from_user_assets->token_id,
+                                 usdt_from_user_assets->is_erc721, chain_id);
+  AddSuggestToken(usdt_from_request.Clone(), token.Clone(), true);
+  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                 usdt_from_user_assets->token_id,
+                                 usdt_from_user_assets->is_erc721, chain_id);
+  EXPECT_EQ(token, usdt_from_user_assets);
+
+  // Call AddSuggestTokenRequest and switch network without
+  // NotifyAddSuggestTokenRequestsProcessed being called should clear out the
+  // pending request and AddSuggestTokenRequestCallback should be run with
+  // approved = false.
+  mojom::ERCTokenPtr busd = mojom::ERCToken::New(
+      "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
+      false, "BUSD", 18, true, "");
+  AddSuggestToken(busd.Clone(), busd.Clone(), false,
+                  true /* run_switch_network */);
+
+  // Test on networks that's not mainnet.
+  chain_id = GetCurrentChainId(GetPrefs());
+  ASSERT_NE(chain_id, mojom::kMainnetChainId);
+
+  // If suggested token exists in ERCTokenRegistry and user asset, should
+  // use the user asset one.
+  ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
+  AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
+                  true);
+  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                 usdc_from_user_assets->token_id,
+                                 usdc_from_user_assets->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_user_assets);
+
+  // If suggested token exists in ERCTokenRegistry and not in user asset,
+  // should use the token from the original request.
+  ASSERT_TRUE(
+      service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
+  AddSuggestToken(usdc_from_request.Clone(), usdc_from_request.Clone(), true);
+  token = service_->GetUserAsset(usdc_from_request->contract_address,
+                                 usdc_from_request->token_id,
+                                 usdc_from_request->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_request);
+
+  // Test reject request.
+  ASSERT_TRUE(service_->RemoveUserAsset(usdc_from_request.Clone(), chain_id));
+  AddSuggestToken(usdc_from_request.Clone(), usdc_from_request.Clone(), false);
+  token = service_->GetUserAsset(usdc_from_request->contract_address,
+                                 usdc_from_request->token_id,
+                                 usdc_from_request->is_erc721, chain_id);
+  EXPECT_FALSE(token);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
+  mojom::ERCTokenPtr usdc = mojom::ERCToken::New(
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
+      true, false, "USDC", 6, true, "");
+  ASSERT_TRUE(service_->AddUserAsset(usdc.Clone(), mojom::kRopstenChainId));
+  EXPECT_EQ(usdc,
+            service_->GetUserAsset(usdc->contract_address, usdc->token_id,
+                                   usdc->is_erc721, mojom::kRopstenChainId));
+  EXPECT_EQ(usdc, service_->GetUserAsset(
+                      base::ToLowerASCII(usdc->contract_address),
+                      usdc->token_id, usdc->is_erc721, mojom::kRopstenChainId));
+  EXPECT_FALSE(service_->GetUserAsset(usdc->contract_address, usdc->token_id,
+                                      usdc->is_erc721, mojom::kMainnetChainId));
+
+  auto erc721_token_with_empty_token_id = GetErc721Token();
+  auto erc721_token_1 = erc721_token_with_empty_token_id.Clone();
+  erc721_token_1->token_id = "0x1";
+  ASSERT_TRUE(
+      service_->AddUserAsset(erc721_token_1.Clone(), mojom::kRopstenChainId));
+  EXPECT_EQ(erc721_token_1,
+            service_->GetUserAsset(
+                erc721_token_1->contract_address, erc721_token_1->token_id,
+                erc721_token_1->is_erc721, mojom::kRopstenChainId));
+  EXPECT_FALSE(service_->GetUserAsset(erc721_token_1->contract_address, "0x2",
+                                      erc721_token_1->is_erc721,
+                                      mojom::kRopstenChainId));
 }
 
 }  // namespace brave_wallet

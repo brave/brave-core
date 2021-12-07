@@ -516,6 +516,49 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void AddSuggestToken(mojom::ERCTokenPtr token,
+                       bool approved,
+                       bool* approved_out,
+                       mojom::ProviderError* error_out,
+                       std::string* error_message_out) {
+    base::RunLoop run_loop;
+    provider_->AddSuggestToken(
+        token.Clone(), base::BindLambdaForTesting(
+                           [&](bool user_approved, mojom::ProviderError error,
+                               const std::string& error_message) {
+                             *approved_out = user_approved;
+                             *error_out = error;
+                             *error_message_out = error_message;
+                             run_loop.Quit();
+                           }));
+    auto requests = GetPendingAddSuggestTokenRequests();
+    if (!token) {
+      ASSERT_TRUE(requests.empty());
+    } else {
+      ASSERT_EQ(requests.size(), 1u);
+      EXPECT_EQ(requests[0]->token->contract_address, token->contract_address);
+      EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+      brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
+          approved, {token->contract_address});
+    }
+    run_loop.Run();
+  }
+
+  std::vector<mojom::AddSuggestTokenRequestPtr>
+  GetPendingAddSuggestTokenRequests() const {
+    base::RunLoop run_loop;
+    std::vector<mojom::AddSuggestTokenRequestPtr> requests_out;
+    brave_wallet_service_->GetPendingAddSuggestTokenRequests(
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::AddSuggestTokenRequestPtr> requests) {
+              for (const auto& request : requests)
+                requests_out.push_back(request.Clone());
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    return requests_out;
+  }
+
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   EthJsonRpcController* eth_json_rpc_controller_;
@@ -1501,6 +1544,33 @@ TEST_F(BraveWalletProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
   EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x3");
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, AddSuggestToken) {
+  CreateBraveWalletTabHelper();
+  Navigate(GURL("https://brave.com"));
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+
+  mojom::ERCTokenPtr token =
+      mojom::ERCToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
+                           "", true, false, "BAT", 18, true, "");
+  bool approved = false;
+  mojom::ProviderError error;
+  std::string error_message;
+  AddSuggestToken(token.Clone(), true, &approved, &error, &error_message);
+  EXPECT_TRUE(approved);
+  EXPECT_EQ(mojom::ProviderError::kSuccess, error);
+  EXPECT_TRUE(error_message.empty());
+
+  AddSuggestToken(token.Clone(), false, &approved, &error, &error_message);
+  EXPECT_FALSE(approved);
+  EXPECT_EQ(mojom::ProviderError::kSuccess, error);
+  EXPECT_TRUE(error_message.empty());
+
+  AddSuggestToken(nullptr, true, &approved, &error, &error_message);
+  EXPECT_FALSE(approved);
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
 }
 
 }  // namespace brave_wallet
