@@ -72,7 +72,7 @@ export interface Props {
   onSelectPresetSendAmount: (percent: number) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
   onSwapQuoteRefresh: () => void
-  onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void,
+  onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onAddNetwork: () => void
 }
 
