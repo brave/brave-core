@@ -675,6 +675,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     crypto: 'BTC'
   }
 
+  const onAddNetwork = () => {
+    alert('Will redirect to Wallet Network Settings')
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -844,6 +848,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             networkList={mockNetworks}
             onSwapQuoteRefresh={onSwapQuoteRefresh}
             onSelectSendAsset={onSelectTransactAsset}
+            onAddNetwork={onAddNetwork}
           />
         </WalletWidgetStandIn>
       }

@@ -470,6 +470,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log('Will Expand to the Accounts Page')
   }
 
+  const onAddNetwork = () => {
+    console.log('Will redirect user to network settings')
+  }
+
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
@@ -522,6 +526,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     networks={mockNetworks}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}
+                    hasAddButton={true}
+                    onAddNetwork={onAddNetwork}
                   />
                 </SelectContainer>
               }
