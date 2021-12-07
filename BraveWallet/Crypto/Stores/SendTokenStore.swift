@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import Shared
 
 /// A store contains data for sending tokens
 public class SendTokenStore: ObservableObject {
@@ -20,42 +21,86 @@ public class SendTokenStore: ObservableObject {
   @Published var selectedSendTokenBalance: Double?
   /// A boolean indicates if this store is making an unapproved tx
   @Published var isMakingTx = false
+  /// The destination account address
+  @Published var sendAddress = "" {
+    didSet {
+      timer?.invalidate()
+      timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
+        self?.validateSendAddress()
+      })
+    }
+  }
+  /// An error for input send address. Nil for no error.
+  @Published var addressError: AddressError?
+  
+  enum AddressError: LocalizedError {
+    case sameAsFromAddress
+    case contractAddress
+    case notEthAddress
+    
+    var errorDescription: String? {
+      switch self {
+      case .sameAsFromAddress:
+        return Strings.Wallet.sendWarningAddressIsOwn
+      case .contractAddress:
+        return Strings.Wallet.sendWarningAddressIsContract
+      case .notEthAddress:
+        return Strings.Wallet.sendWarningAddressNotValid
+      }
+    }
+  }
   
   private let keyringController: BraveWalletKeyringController
   private let rpcController: BraveWalletEthJsonRpcController
   private let walletService: BraveWalletBraveWalletService
   private let transactionController: BraveWalletEthTxController
+  private let tokenRegistery: BraveWalletERCTokenRegistry
+  private var allTokens: [BraveWallet.ERCToken] = []
+  private var currentAccountAddress: String?
+  private var timer: Timer?
   
   public init(
     keyringController: BraveWalletKeyringController,
     rpcController: BraveWalletEthJsonRpcController,
     walletService: BraveWalletBraveWalletService,
-    transactionController: BraveWalletEthTxController
+    transactionController: BraveWalletEthTxController,
+    tokenRegistery: BraveWalletERCTokenRegistry
   ) {
     self.keyringController = keyringController
     self.rpcController = rpcController
     self.walletService = walletService
     self.transactionController = transactionController
+    self.tokenRegistery = tokenRegistery
     
     self.keyringController.add(self)
     self.rpcController.add(self)
+    
+    self.keyringController.selectedAccount { address in
+      self.currentAccountAddress = address
+    }
   }
   
   func fetchAssets() {
-    rpcController.chainId { [self] chainId in
-      walletService.userAssets(chainId) { tokens in
-        userAssets = tokens
+    rpcController.chainId { [weak self] chainId in
+      guard let self = self else { return }
+      self.walletService.userAssets(chainId) { tokens in
+        self.userAssets = tokens
         
-        if let selectedToken = selectedSendToken {
+        if let selectedToken = self.selectedSendToken {
           if tokens.isEmpty {
-            selectedSendToken = nil
+            self.selectedSendToken = nil
           } else if let token = tokens.first(where: { $0.id == selectedToken.id }) {
-            selectedSendToken = token
+            self.selectedSendToken = token
           }
         } else {
-          selectedSendToken = tokens.first
+          self.selectedSendToken = tokens.first
         }
       }
+    }
+    
+    // store tokens in `allTokens` for address validation
+    tokenRegistery.allTokens { [weak self] tokens in
+      self?.allTokens = tokens + [.eth]
     }
   }
   
@@ -134,23 +179,43 @@ public class SendTokenStore: ObservableObject {
   private func makeEIP1559Tx(
     chainId: String,
     baseData: BraveWallet.TxData,
-    from account: BraveWallet.AccountInfo,
+    from address: String,
     completion: @escaping (_ success: Bool) -> Void
   ) {
     let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: "", maxFeePerGas: "", gasEstimation: nil)
-    self.transactionController.addUnapproved1559Transaction(eip1559Data, from: account.address) { success, txMetaId, errorMessage in
+    self.transactionController.addUnapproved1559Transaction(eip1559Data, from: address) { success, txMetaId, errorMessage in
       completion(success)
     }
   }
   
+  private func validateSendAddress() {
+    guard !sendAddress.isEmpty else {
+      addressError = nil
+      return
+    }
+    let normalizedSendAddress = sendAddress.lowercased()
+    if !sendAddress.isETHAddress {
+      addressError = .notEthAddress
+    } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
+      addressError = .sameAsFromAddress
+    } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
+                || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
+      addressError = .contractAddress
+    } else {
+      addressError = nil
+    }
+  }
+  
   func sendToken(
-    from account: BraveWallet.AccountInfo,
-    to address: String,
     amount: String,
     completion: @escaping (_ success: Bool) -> Void
   ) {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    guard let token = selectedSendToken, let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: 18) else { return }
+    guard
+      let token = selectedSendToken,
+      let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: Int(token.decimals)),
+      let fromAddress = currentAccountAddress
+    else { return }
     
     isMakingTx = true
     rpcController.network { [weak self] network in
@@ -158,25 +223,25 @@ public class SendTokenStore: ObservableObject {
       defer { self.isMakingTx = false }
 
       if token.isETH {
-        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: address, value: "0x\(weiHexString)", data: .init())
+        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
         if network.isEip1559 {
-          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: account, completion: completion)
+          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress, completion: completion)
         } else {
-          self.transactionController.addUnapprovedTransaction(baseData, from: account.address) { success, txMetaId, errorMessage in
+          self.transactionController.addUnapprovedTransaction(baseData, from: fromAddress) { success, txMetaId, errorMessage in
             completion(success)
           }
         }
       } else {
-        self.transactionController.makeErc20TransferData(account.address, amount: "0x\(weiHexString)") { success, data in
+        self.transactionController.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
           guard success else {
             completion(false)
             return
           }
           let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
           if network.isEip1559 {
-            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: account, completion: completion)
+            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress, completion: completion)
           } else {
-            self.transactionController.addUnapprovedTransaction(baseData, from: account.address) { success, txMetaId, errorMessage in
+            self.transactionController.addUnapprovedTransaction(baseData, from: fromAddress) { success, txMetaId, errorMessage in
               completion(success)
             }
           }
@@ -210,6 +275,10 @@ extension SendTokenStore: BraveWalletKeyringControllerObserver {
   
   public func selectedAccountChanged() {
     fetchAssetBalance()
+    keyringController.selectedAccount { [weak self] address in
+      self?.currentAccountAddress = address
+      self?.validateSendAddress()
+    }
   }
 }
 

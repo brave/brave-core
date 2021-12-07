@@ -87,7 +87,8 @@ public class CryptoStore: ObservableObject {
       keyringController: keyringController,
       rpcController: rpcController,
       walletService: walletService,
-      transactionController: transactionController
+      transactionController: transactionController,
+      tokenRegistery: tokenRegistry
     )
     sendTokenStore = store
     return store
