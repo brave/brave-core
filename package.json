@@ -1,7 +1,7 @@
 {
   "name": "brave-core",
   "version": "1.33.100",
-  "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
+  "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
