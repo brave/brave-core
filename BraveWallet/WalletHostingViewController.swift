@@ -65,7 +65,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   }
   
   deinit {
-    view.window?.removeGestureRecognizer(gesture)
+    gesture.view?.removeGestureRecognizer(gesture)
   }
   
   private let gesture: WalletInteractionGestureRecognizer
