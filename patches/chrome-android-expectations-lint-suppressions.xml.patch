@@ -1,5 +1,5 @@
 diff --git a/chrome/android/expectations/lint-suppressions.xml b/chrome/android/expectations/lint-suppressions.xml
-index 93e734cb9843da047f1ba1042972e9a1d5bbd7fa..78867f300b8d0da6a106932aff65bfde4fcb0163 100644
+index 93e734cb9843da047f1ba1042972e9a1d5bbd7fa..ad476b9ab67df6da3d8ec28bbabd7d3cfe9bee6c 100644
 --- a/chrome/android/expectations/lint-suppressions.xml
 +++ b/chrome/android/expectations/lint-suppressions.xml
 @@ -300,4 +300,5 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md

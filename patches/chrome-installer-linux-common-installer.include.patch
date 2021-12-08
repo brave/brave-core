@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index ee2277403d123b158843c0fc411d6981db7adaa4..aa710c52727e39211a272bea2736ca85d9c88435 100644
+index 3009df446a039c97f18ae566b6fd0dd87847f169..0c4796f9827436feb0d3fc68278d51158f681450 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -10,7 +10,7 @@ index ee2277403d123b158843c0fc411d6981db7adaa4..aa710c52727e39211a272bea2736ca85
      -e "s#@@SNAPNAME@@#${SNAPNAME}#g" \
      -e "s#@@PROGNAME@@#${PROGNAME}#g" \
      -e "s#@@CHANNEL@@#${CHANNEL}#g" \
-@@ -163,6 +164,8 @@ stage_install_common() {
+@@ -160,6 +161,8 @@ stage_install_common() {
      install -m 644 "${OUTPUTDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
@@ -19,7 +19,7 @@ index ee2277403d123b158843c0fc411d6981db7adaa4..aa710c52727e39211a272bea2736ca85
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${OUTPUTDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -318,11 +321,13 @@ stage_install_common() {
+@@ -298,11 +301,13 @@ stage_install_common() {
  
    # app icons
    local icon_regex=".*product_logo_[0-9]\+\."
