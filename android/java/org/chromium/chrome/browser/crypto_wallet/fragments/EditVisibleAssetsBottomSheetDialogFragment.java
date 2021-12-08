@@ -262,7 +262,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             assert braveWalletService != null;
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
-
                 TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId, (userAssets) -> {
                     TokenUtils.getAllTokensFiltered(
                             braveWalletService, ercTokenRegistry, mChainId, tokens -> {
@@ -270,8 +269,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                                 setUpAssetsList(view, tokens, userAssets);
                             });
                 });
-            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
+            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
+                assert mChainId != null && !mChainId.isEmpty();
+                TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId,
+                        tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
+            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, mChainId,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
@@ -322,7 +324,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         for (ErcToken userSelectedToken : userSelectedTokens) {
             selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase(Locale.getDefault()));
         }
-
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();

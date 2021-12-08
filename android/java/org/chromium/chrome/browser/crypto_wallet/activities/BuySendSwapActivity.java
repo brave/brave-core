@@ -762,7 +762,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
