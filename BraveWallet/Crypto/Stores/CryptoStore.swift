@@ -187,8 +187,12 @@ public class CryptoStore: ObservableObject {
           // Dismiss any buy send swap open to show the unapproved transactions
           self.buySendSwapDestination = nil
         }
-        self.unapprovedTransactions = pendingTransactions
-        self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          // On iPad if we set these before the send or swap screens disappear for some reason it crashes
+          // within the SwiftUI runtime. Delaying it to give time for the animation to complete fixes it.
+          self.unapprovedTransactions = pendingTransactions
+          self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
+        }
       }
     }
   }
