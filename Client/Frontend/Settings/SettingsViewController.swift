@@ -13,6 +13,7 @@ import Data
 import WebKit
 import BraveCore
 import SwiftUI
+import BraveWallet
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -59,8 +60,9 @@ class SettingsViewController: TableViewController {
     private let legacyWallet: BraveLedger?
     private let feedDataSource: FeedDataSource
     private let historyAPI: BraveHistoryAPI
-    private let windowProtection: WindowProtection?
     private let syncAPI: BraveSyncAPI
+    private let walletKeyringStore: KeyringStore?
+    private let windowProtection: WindowProtection?
 
     init(profile: Profile,
          tabManager: TabManager,
@@ -69,7 +71,9 @@ class SettingsViewController: TableViewController {
          legacyWallet: BraveLedger? = nil,
          windowProtection: WindowProtection?,
          historyAPI: BraveHistoryAPI,
-         syncAPI: BraveSyncAPI) {
+         syncAPI: BraveSyncAPI,
+         walletKeyringStore: KeyringStore? = nil
+    ) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
@@ -78,6 +82,7 @@ class SettingsViewController: TableViewController {
         self.windowProtection = windowProtection
         self.historyAPI = historyAPI
         self.syncAPI = syncAPI
+        self.walletKeyringStore = walletKeyringStore
         
         super.init(style: .insetGrouped)
     }
@@ -243,6 +248,15 @@ class SettingsViewController: TableViewController {
                 self.navigationController?.pushViewController(playlistSettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
         )
+        
+        if #available(iOS 14.0, *), let keyringStore = walletKeyringStore {
+            section.rows.append(
+                Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
+                    let vc = UIHostingController(rootView: WalletSettingsView(keyringStore: keyringStore))
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)
+            )
+        }
         
         return section
     }()

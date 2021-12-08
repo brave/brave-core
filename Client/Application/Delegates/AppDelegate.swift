@@ -84,7 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         migration = Migration(braveCore: braveCore)
-        
         // Setup Adblock Stats and HTTPSE Stats.
         AdBlockStats.shared.startLoading()
         
