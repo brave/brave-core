@@ -58,6 +58,16 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/icon_trash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@null"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_trash_icon"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
