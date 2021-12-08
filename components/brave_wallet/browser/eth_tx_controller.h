@@ -135,6 +135,7 @@ class EthTxController : public KeyedService,
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       uint256_t chain_id,
+                      ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
   void OnGetNextNonceForHardware(
@@ -143,8 +144,10 @@ class EthTxController : public KeyedService,
       bool success,
       uint256_t nonce);
   void PublishTransaction(const std::string& tx_meta_id,
-                          const std::string& signed_transaction);
+                          const std::string& signed_transaction,
+                          ApproveTransactionCallback callback);
   void OnPublishTransaction(std::string tx_meta_id,
+                            ApproveTransactionCallback callback,
                             bool status,
                             const std::string& tx_hash);
   void OnGetGasPrice(const std::string& from,

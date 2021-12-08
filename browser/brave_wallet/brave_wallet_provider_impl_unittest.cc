@@ -624,10 +624,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
 
   EXPECT_TRUE(ApproveTransaction(infos[0]->id));
   base::RunLoop().RunUntilIdle();
-  // OnGetNextNonce
-  base::RunLoop().RunUntilIdle();
-  // OnPublishTransaction
-  base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(callback_called);
   infos = GetAllTransactionInfo();
@@ -716,10 +712,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
   EXPECT_TRUE(ApproveTransaction(infos[0]->id));
-  base::RunLoop().RunUntilIdle();
-  // OnGetNextNonce
-  base::RunLoop().RunUntilIdle();
-  // OnPublishTransaction
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(callback_called);
