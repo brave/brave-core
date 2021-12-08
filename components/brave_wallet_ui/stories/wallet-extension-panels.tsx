@@ -93,6 +93,11 @@ const accounts: WalletAccountType[] = [
   }
 ]
 
+const mockDefaultCurrencies = {
+  fiat: 'USD',
+  crypto: 'BTC'
+}
+
 export const _ConfirmTransaction = () => {
   const transactionInfo: TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -170,6 +175,7 @@ export const _ConfirmTransaction = () => {
   return (
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
+        defaultCurrencies={mockDefaultCurrencies}
         siteURL='https://app.uniswap.org'
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransction={onQueueNextTransction}
@@ -478,6 +484,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         <>
           {selectedPanel === 'main' ? (
             <ConnectedPanel
+              defaultCurrencies={mockDefaultCurrencies}
               selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}
               isConnected={true}
@@ -551,6 +558,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     }
                     {selectedPanel === 'buy' &&
                       <Buy
+                        defaultCurrencies={mockDefaultCurrencies}
                         onChangeBuyView={onChangeSendView}
                         onInputChange={onSetBuyAmount}
                         onSubmit={onSubmitBuy}

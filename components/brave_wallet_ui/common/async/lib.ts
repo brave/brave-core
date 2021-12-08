@@ -128,7 +128,7 @@ export function refreshBalances (currentNetwork: EthereumChain) {
       return balanceInfo
     }))
     const balancesAndPrice = {
-      usdPrice: '',
+      fiatPrice: '',
       balances: getBalanceReturnInfos
     }
     await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
@@ -153,13 +153,12 @@ export function refreshBalances (currentNetwork: EthereumChain) {
 export function refreshPrices () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { wallet: { accounts, selectedPortfolioTimeline, selectedNetwork, userVisibleTokensInfo } } = getState()
-
+    const { wallet: { accounts, selectedPortfolioTimeline, selectedNetwork, userVisibleTokensInfo, defaultCurrencies } } = getState()
     const { assetRatioController } = apiProxy
-
+    const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
     // Update ETH Balances
-    const getNativeAssetPrice = await assetRatioController.getPrice([selectedNetwork.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
-    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '' : ''
+    const getNativeAssetPrice = await assetRatioController.getPrice([selectedNetwork.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
+    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
     const getBalanceReturnInfos = accounts.map((account) => {
       const balanceInfo = {
         success: true,
@@ -168,7 +167,7 @@ export function refreshPrices () {
       return balanceInfo
     })
     const balancesAndPrice = {
-      usdPrice: nativeAssetPrice,
+      fiatPrice: nativeAssetPrice,
       balances: getBalanceReturnInfos
     }
 
@@ -184,12 +183,11 @@ export function refreshPrices () {
         assetTimeframeChange: '',
         fromAsset: token.symbol,
         price: '',
-        toAsset: 'usd'
+        toAsset: defaultFiatCurrency
       }
-      const price = await assetRatioController.getPrice([token.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
+      const price = await assetRatioController.getPrice([token.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
       return price.success ? price.values[0] : emptyPrice
     }))
-
     const getERCTokenBalanceReturnInfos = accounts.map((account) => {
       return account.tokens.map((token) => {
         const balanceInfo = {
@@ -214,14 +212,14 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
     const apiProxy = getAPIProxy()
     const { assetRatioController } = apiProxy
 
-    const { wallet: { accounts } } = getState()
+    const { wallet: { accounts, defaultCurrencies } } = getState()
 
     const result = await Promise.all(accounts.map(async (account) => {
       return Promise.all(account.tokens.filter((t) => !t.asset.isErc721).map(async (token) => {
         return {
           token: token,
           history: await assetRatioController.getPriceHistory(
-            token.asset.symbol.toLowerCase(), selectedPortfolioTimeline
+            token.asset.symbol.toLowerCase(), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
           )
         }
       }))

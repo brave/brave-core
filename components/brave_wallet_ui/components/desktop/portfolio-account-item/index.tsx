@@ -8,7 +8,7 @@ import {
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
-import { EthereumChain } from '../../../constants/types'
+import { EthereumChain, DefaultCurrencies } from '../../../constants/types'
 import { TransactionPopup } from '../'
 // Styled Components
 import {
@@ -28,6 +28,7 @@ import {
 import { TransactionPopupItem } from '../transaction-popup'
 
 export interface Props {
+  defaultCurrencies: DefaultCurrencies
   address: string
   fiatBalance: string
   assetBalance: string
@@ -37,7 +38,15 @@ export interface Props {
 }
 
 const PortfolioAccountItem = (props: Props) => {
-  const { address, name, assetBalance, fiatBalance, assetTicker, selectedNetwork } = props
+  const {
+    address,
+    name,
+    assetBalance,
+    fiatBalance,
+    assetTicker,
+    selectedNetwork,
+    defaultCurrencies
+  } = props
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
   const onCopyToClipboard = async () => {
     await copyToClipboard(address)
@@ -80,7 +89,7 @@ const PortfolioAccountItem = (props: Props) => {
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
           <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(assetBalance, assetTicker)}</AssetBalanceText>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>
