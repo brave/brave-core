@@ -78,10 +78,10 @@ struct TransactionView: View {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, networkStore.selectedChain.symbol, fiat))
       }
     case .erc20Transfer:
-      if let token = visibleTokens.first(where: {
+      if info.txArgs.count > 1, let token = visibleTokens.first(where: {
         $0.contractAddress.caseInsensitiveCompare(info.txData.baseData.to) == .orderedSame
       }) {
-        let amount = formatter.decimalString(for: info.txData.baseData.value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+        let amount = formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
         let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, token.symbol, fiat))
       } else {
