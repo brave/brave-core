@@ -3,7 +3,8 @@ import {
   UserAccountType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  EthereumChain
+  EthereumChain,
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -19,6 +20,7 @@ export interface Props {
   assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
+  defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: AccountAssetOptionType) => void
   onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
@@ -34,6 +36,7 @@ function BuyTab (props: Props) {
     buyAmount,
     showHeader,
     assetOptions,
+    defaultCurrencies,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
@@ -85,6 +88,7 @@ function BuyTab (props: Props) {
             />
           }
           <Buy
+            defaultCurrencies={defaultCurrencies}
             buyAmount={buyAmount}
             selectedAsset={selectedAsset}
             selectedNetwork={selectedNetwork}

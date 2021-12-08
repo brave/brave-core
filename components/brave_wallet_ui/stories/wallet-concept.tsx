@@ -666,6 +666,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setCustomTolerance(value)
   }
 
+  const defaultCurrencies = {
+    fiat: 'USD',
+    crypto: 'BTC'
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -719,6 +724,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                             />
                           ) : (
                             <CryptoStoryView
+                              defaultCurrencies={defaultCurrencies}
                               onLockWallet={lockWallet}
                               needsBackup={needsBackup}
                               onShowBackup={onShowBackup}
@@ -732,8 +738,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               portfolioPriceHistory={selectedAssetPriceHistory}
                               portfolioBalance={scrapedFullPortfolioBalance()}
                               transactions={transactionDummyData}
-                              selectedUSDAssetPrice={selectedUSDAssetPrice}
-                              selectedBTCAssetPrice={selectedBTCAssetPrice}
+                              selectedAssetFiatPrice={selectedUSDAssetPrice}
+                              selectedAssetCryptoPrice={selectedBTCAssetPrice}
                               userAssetList={userAssetList}
                               onCreateAccount={onCreateAccount}
                               onImportAccount={onImportAccount}
@@ -781,6 +787,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       {!needsOnboarding && !walletLocked &&
         <WalletWidgetStandIn>
           <BuySendSwap
+            defaultCurrencies={defaultCurrencies}
             orderType={orderType}
             swapToAsset={toAsset}
             exchangeRate={exchangeRate}

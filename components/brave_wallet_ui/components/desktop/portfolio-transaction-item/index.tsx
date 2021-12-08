@@ -9,12 +9,14 @@ import {
   TransactionInfo,
   TransactionStatus,
   TransactionType,
-  WalletAccountType
+  WalletAccountType,
+  DefaultCurrencies
 } from '../../../constants/types'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
+import { formatFiatAmountWithCommasAndDecimals } from '../../../utils/format-prices'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -57,6 +59,7 @@ export interface Props {
   visibleTokens: ERCToken[]
   transactionSpotPrices: AssetPrice[]
   displayAccountName: boolean
+  defaultCurrencies: DefaultCurrencies
   onSelectAccount: (account: WalletAccountType) => void
   onSelectAsset: (asset: ERCToken) => void
   onRetryTransaction: (transaction: TransactionInfo) => void
@@ -73,6 +76,7 @@ const PortfolioTransactionItem = (props: Props) => {
     transactionSpotPrices,
     displayAccountName,
     accounts,
+    defaultCurrencies,
     onSelectAccount,
     onSelectAsset,
     onRetryTransaction,
@@ -309,15 +313,15 @@ const PortfolioTransactionItem = (props: Props) => {
       </StatusRow>
       <DetailRow>
         <BalanceColumn>
-          <DetailTextDark>{/*We need to return a Transaction Time Stamp to calculate Fiat value here*/}${transactionDetails.fiatValue}</DetailTextDark>
+          <DetailTextDark>{/* We need to return a Transaction Time Stamp to calculate Fiat value here */}{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</DetailTextDark>
           <DetailTextLight>{transactionDetails.nativeCurrencyTotal} {selectedNetwork.symbol}</DetailTextLight>
         </BalanceColumn>
         <TransactionFeesTooltip
           text={
             <>
-              <TransactionFeeTooltipTitle>Transaction fee</TransactionFeeTooltipTitle>
+              <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
               <TransactionFeeTooltipBody>{transactionDetails.gasFee} {selectedNetwork.symbol}</TransactionFeeTooltipBody>
-              <TransactionFeeTooltipBody>${transactionDetails.gasFeeFiat}</TransactionFeeTooltipBody>
+              <TransactionFeeTooltipBody>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</TransactionFeeTooltipBody>
             </>
           }
         >

@@ -92,7 +92,8 @@ function Container (props: Props) {
     transactionSpotPrices,
     addUserAssetError,
     defaultWallet,
-    isMetaMaskInstalled
+    isMetaMaskInstalled,
+    defaultCurrencies
   } = props.wallet
 
   // Page Props
@@ -101,8 +102,8 @@ function Container (props: Props) {
     mnemonic,
     selectedTimeline,
     selectedAsset,
-    selectedUSDAssetPrice,
-    selectedBTCAssetPrice,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
@@ -567,6 +568,7 @@ function Container (props: Props) {
           <Route path={WalletRoutes.CryptoPage} exact={true}>
             {hideMainComponents &&
               <CryptoView
+                defaultCurrencies={defaultCurrencies}
                 onLockWallet={lockWallet}
                 needsBackup={!isWalletBackedUp}
                 onShowBackup={onShowBackup}
@@ -576,8 +578,8 @@ function Container (props: Props) {
                 onSelectAsset={onSelectAsset}
                 portfolioBalance={fullPortfolioBalance}
                 selectedAsset={selectedAsset}
-                selectedUSDAssetPrice={selectedUSDAssetPrice}
-                selectedBTCAssetPrice={selectedBTCAssetPrice}
+                selectedAssetFiatPrice={selectedAssetFiatPrice}
+                selectedAssetCryptoPrice={selectedAssetCryptoPrice}
                 selectedAssetPriceHistory={formatedPriceHistory}
                 portfolioPriceHistory={portfolioPriceHistory}
                 selectedTimeline={selectedTimeline}
@@ -655,6 +657,7 @@ function Container (props: Props) {
             isFetchingSwapQuote={isFetchingSwapQuote}
             isSwapSubmitDisabled={isSwapButtonDisabled}
             customSlippageTolerance={customSlippageTolerance}
+            defaultCurrencies={defaultCurrencies}
             onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddressOrUrl={onSetToAddressOrUrl}
