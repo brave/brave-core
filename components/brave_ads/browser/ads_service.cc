@@ -67,7 +67,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterDoublePref(ads::prefs::kCatalogLastUpdated,
                                base::Time().ToDoubleT());
 
-  registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 0);
+  registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 7200000);
 
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditArms, "");
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
