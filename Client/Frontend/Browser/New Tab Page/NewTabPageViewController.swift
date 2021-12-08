@@ -1026,8 +1026,11 @@ extension NewTabPageViewController {
             showsVerticalScrollIndicator = false
             // Even on light mode we use a darker background now
             indicatorStyle = .white
-            // Drag should be enabled to rearrange favourite
-            dragInteractionEnabled = true
+            // TODO: Issue #4651 - Drag and drop Favourites crashing on iOS-14
+            if #available(iOS 15.0, *) {
+                // Drag should be enabled to rearrange favourite
+                dragInteractionEnabled = true
+            }
         }
         @available(*, unavailable)
         required init(coder: NSCoder) {

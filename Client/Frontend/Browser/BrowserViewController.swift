@@ -1094,6 +1094,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 if finished {
                     self.webViewContainer.accessibilityElementsHidden = true
                     UIAccessibility.post(notification: .screenChanged, argument: nil)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.showNTPOnboarding()
+                    }
                 }
             })
         }
@@ -1601,7 +1605,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 let addToFavoritesActivity = AddToFavoritesActivity() { [weak tab] in
                     FavoritesHelper.add(url: url, title: tab?.displayTitle)
                 }
-                activities.append(addToFavoritesActivity)
+                // TODO: Issue #4651 - Drag and drop Favourites crashing on iOS-14
+                if #available(iOS 15.0, *) {
+                    activities.append(addToFavoritesActivity)
+                }
             }
             activities.append(requestDesktopSiteActivity)
             
