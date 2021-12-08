@@ -381,6 +381,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
             swapParams.buyAmount = "";
         }
+        if (swapParams.sellAmount.isEmpty() && swapParams.buyAmount.isEmpty()) {
+            Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+            btnBuySendSwap.setEnabled(false);
+            btnBuySendSwap.setText(getString(R.string.swap));
+
+            return;
+        }
         swapParams.buyToken = buyAddress;
         swapParams.sellToken = sellAddress;
         try {
@@ -755,7 +762,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
