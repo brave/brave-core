@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -43,6 +44,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -667,6 +669,44 @@ public class Utils {
         return overlayBitmap;
     }
 
+    public static void setBlockiesBitmapCustomAsset(ExecutorService executor, Handler handler,
+            ImageView iconImg, String source, String symbol, float scale, TextView textView,
+            Context context, boolean drawCaratDown, float scaleDown) {
+        executor.execute(() -> {
+            final Bitmap bitmap =
+                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true), scaleDown),
+                            symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
+            handler.post(() -> {
+                if (iconImg != null) {
+                    iconImg.setImageBitmap(bitmap);
+                } else if (textView != null) {
+                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            new BitmapDrawable(context.getResources(), bitmap), null,
+                            drawCaratDown ? ApiCompatibilityUtils.getDrawable(
+                                    context.getResources(), R.drawable.ic_carat_down)
+                                          : null,
+                            null);
+                }
+            });
+        });
+    }
+
+    public static Bitmap drawTextToBitmap(
+            Bitmap bitmap, String text, float scale, float scaleDown) {
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0xFF3D3D3D);
+        paint.setTextSize((int) (24 * scale * scaleDown));
+
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        int x = (bitmap.getWidth() - bounds.width()) / 2;
+        int y = (bitmap.getHeight() + bounds.height()) / 2;
+        canvas.drawText(text, x, y, paint);
+
+        return bitmap;
+    }
+
     public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
@@ -852,9 +892,10 @@ public class Utils {
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
             AssetRatioController assetRatioController, EthTxController ethTxController,
-            ErcTokenRegistry ercTokenRegistry, String assetSymbol, String contractAddress,
-            int assetDecimals, RecyclerView rvTransactions, OnWalletListItemClick callback,
-            Context context, String chainId) {
+            ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
+            String assetSymbol, String contractAddress, int assetDecimals,
+            RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
+            String chainId) {
         assert assetRatioController != null;
         String[] assets = {"eth"};
         String[] toCurr = {"usd"};
@@ -870,7 +911,8 @@ public class Utils {
                             fetchTransactions(accountInfos, Double.valueOf(tempPrice),
                                     Double.valueOf(tempPrice), ethTxController, ercTokenRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioController);
+                                    assetDecimals, chainId, assetRatioController,
+                                    braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
 
@@ -890,7 +932,7 @@ public class Utils {
                                             Double.valueOf(tempPriceAsset), ethTxController,
                                             ercTokenRegistry, contractAddress, rvTransactions,
                                             callback, context, assetSymbol, assetDecimals, chainId,
-                                            assetRatioController);
+                                            assetRatioController, braveWalletService);
                                 } catch (NumberFormatException exc) {
                                 }
                             });
@@ -901,7 +943,7 @@ public class Utils {
             double assetPrice, EthTxController ethTxController, ErcTokenRegistry ercTokenRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
-            AssetRatioController assetRatioController) {
+            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
         assert ethTxController != null;
         PendingTxHelper pendingTxHelper =
                 new PendingTxHelper(ethTxController, accountInfos, true, contractAddress);
@@ -913,7 +955,7 @@ public class Utils {
             } else {
                 fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
-                        assetRatioController);
+                        assetRatioController, braveWalletService);
             }
         });
     }
@@ -922,10 +964,10 @@ public class Utils {
             double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
-            AssetRatioController assetRatioController) {
+            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
         assert chainId != null;
         assert ercTokenRegistry != null;
-        TokenUtils.getAllTokensFiltered(ercTokenRegistry, tokens -> {
+        TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, chainId, tokens -> {
             HashMap<String, String> assets = new HashMap<String, String>();
             HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
             for (String accountName : pendingTxInfos.keySet()) {
