@@ -163,7 +163,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
 
         if (mType != AdapterType.ACCOUNTS_LIST) {
-            if (!walletListItemModel.getErcToken().logo.isEmpty()) {
+            if (walletListItemModel.getErcToken() == null
+                    || !walletListItemModel.getErcToken().logo.isEmpty()) {
                 Utils.setBitmapResource(mExecutor, mHandler, context,
                         walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
                         holder.iconImg, null, true);
