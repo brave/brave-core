@@ -64,10 +64,12 @@ GRIT_INCLUDES = [
 
 def do_check_includes(override_filepath):
     """
-    Checks if |override_filepath| uses the correct number of ".." in the
-    include statement for the original file.
+    Warns if |override_filepath| uses relative includes and, if so, also checks
+    them for the correct number of ".." in the include statement for the
+    original file.
     """
     with open(override_filepath, mode='r', encoding='utf-8') as override_file:
+        normalized_override_filepath = override_filepath.replace('\\', '/')
         override_filename = os.path.basename(override_filepath)
         override_dirpath = os.path.dirname(override_filepath)
 
@@ -76,13 +78,31 @@ def do_check_includes(override_filepath):
         # +3 to get to chromium_src->brave->src.
         expected_count = len(override_dirpath.split(os.path.sep)) - 1 + 3
 
-        # Check relative includes go up the expected amount of steps.
         for line in override_file:
-            # We're only interested in include paths for parent directories.
+            # Check src/-prefixed includes
+            regexp = r'^#include "src/(.*)"'
+            line_match = re.search(regexp, line)
+            if line_match:
+                if line_match.group(1) != normalized_override_filepath:
+                    print(f"WARNING: {override_filepath} uses a src/-prefixed" +
+                          " include that doesn't point to the expected file:")
+                    print(f"         Include: {line}" +
+                          "         Expected include target: src/" +
+                          f"{normalized_override_filepath}")
+                    print("-------------------------")
+                continue
+
+            # Check relative includes go up the expected amount of steps.
+            # We're only interested in relative include paths.
             regexp = rf'^#include "(\.\./.*{override_filename})"'
             line_match = re.search(regexp, line)
             if not line_match:
                 continue
+
+            print(f"WARNING: {override_filepath} uses a relative include:\n" +
+                  f"         {line}" +
+                  "         Switch to using a src/-prefixed include instead.")
+            print("-------------------------")
 
             # Count the number of '../' elements, but don't use the OS's path
             # separator here, since we're counting paths from a C++ include.
