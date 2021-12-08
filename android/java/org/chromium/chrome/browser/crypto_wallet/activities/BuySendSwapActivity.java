@@ -381,6 +381,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
             swapParams.buyAmount = "";
         }
+        if (swapParams.sellAmount.isEmpty() && swapParams.buyAmount.isEmpty()) {
+            Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+            btnBuySendSwap.setEnabled(false);
+            btnBuySendSwap.setText(getString(R.string.swap));
+
+            return;
+        }
         swapParams.buyToken = buyAddress;
         swapParams.sellToken = sellAddress;
         try {
