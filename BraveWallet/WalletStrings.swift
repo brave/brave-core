@@ -1555,5 +1555,12 @@ extension Strings {
       value: "Not a valid ETH address",
       comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address."
     )
+    public static let betaLabel = NSLocalizedString(
+      "wallet.betaLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Beta",
+      comment: "Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software"
+    )
   }
 }
