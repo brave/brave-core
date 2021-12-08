@@ -33,6 +33,7 @@ public class TransactionConfirmationStore: ObservableObject {
   private let rpcController: BraveWalletEthJsonRpcController
   private let txController: BraveWalletEthTxController
   private let tokenRegistry: BraveWalletERCTokenRegistry
+  private let walletService: BraveWalletBraveWalletService
   private var selectedChain: BraveWallet.EthereumChain = .init()
   private var activeTransaction: BraveWallet.TransactionInfo?
   
@@ -40,12 +41,14 @@ public class TransactionConfirmationStore: ObservableObject {
     assetRatioController: BraveWalletAssetRatioController,
     rpcController: BraveWalletEthJsonRpcController,
     txController: BraveWalletEthTxController,
-    tokenRegistry: BraveWalletERCTokenRegistry
+    tokenRegistry: BraveWalletERCTokenRegistry,
+    walletService: BraveWalletBraveWalletService
   ) {
     self.assetRatioController = assetRatioController
     self.rpcController = rpcController
     self.txController = txController
     self.tokenRegistry = tokenRegistry
+    self.walletService = walletService
     
     self.txController.add(self)
   }
@@ -98,28 +101,36 @@ public class TransactionConfirmationStore: ObservableObject {
         let txValue = transaction.txData.baseData.value.removingHexPrefix
         
         self.tokenRegistry.allTokens { tokens in
-          switch transaction.txType {
-          case .erc20Approve:
-            // Find token in args
-            if let token = tokens.first(where: { $0.contractAddress.caseInsensitiveCompare(transaction.txArgs[0]) == .orderedSame
-            }) {
-              self.state.symbol = token.symbol
-              let approvalValue = transaction.txArgs[1].removingHexPrefix
-              self.state.value = formatter.decimalString(for: approvalValue, radix: .hex, decimals: Int(token.decimals)) ?? ""
+          self.walletService.userAssets(chainId) { userAssets in
+            let allTokens = tokens + userAssets.filter { asset in
+              // Only get custom tokens
+              !tokens.contains(where: { $0.contractAddress == asset.contractAddress })
             }
-          case .erc20Transfer:
-            if let token = tokens.first(where: { $0.contractAddress.caseInsensitiveCompare(transaction.txData.baseData.to) == .orderedSame
-            }) {
-              self.state.symbol = token.symbol
-              self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(token.decimals)) ?? ""
+            
+            switch transaction.txType {
+            case .erc20Approve:
+              // Find token in args
+              if let token = allTokens.first(where: { $0.contractAddress.caseInsensitiveCompare(transaction.txArgs[0]) == .orderedSame
+              }) {
+                self.state.symbol = token.symbol
+                let approvalValue = transaction.txArgs[1].removingHexPrefix
+                self.state.value = formatter.decimalString(for: approvalValue, radix: .hex, decimals: Int(token.decimals)) ?? ""
+              }
+            case .erc20Transfer:
+              if let token = allTokens.first(where: { $0.contractAddress.caseInsensitiveCompare(transaction.txData.baseData.to) == .orderedSame
+              }) {
+                self.state.symbol = token.symbol
+                let value = transaction.txArgs[1].removingHexPrefix
+                self.state.value = formatter.decimalString(for: value, radix: .hex, decimals: Int(token.decimals)) ?? ""
+              }
+            case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
+              self.state.symbol = selectedChain.symbol
+              self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(selectedChain.decimals)) ?? ""
+            @unknown default:
+              break
             }
-          case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
-            self.state.symbol = selectedChain.symbol
-            self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(selectedChain.decimals)) ?? ""
-          @unknown default:
-            break
+            self.fetchAssetRatios(for: self.state.symbol, gasSymbol: self.state.gasSymbol)
           }
-          self.fetchAssetRatios(for: self.state.symbol, gasSymbol: self.state.gasSymbol)
         }
       }
     }

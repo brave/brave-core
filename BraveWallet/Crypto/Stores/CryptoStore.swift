@@ -164,7 +164,8 @@ public class CryptoStore: ObservableObject {
       assetRatioController: assetRatioController,
       rpcController: rpcController,
       txController: transactionController,
-      tokenRegistry: tokenRegistry
+      tokenRegistry: tokenRegistry,
+      walletService: walletService
     )
     confirmationStore = store
     return store
