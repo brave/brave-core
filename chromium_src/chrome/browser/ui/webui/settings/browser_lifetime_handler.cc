@@ -12,7 +12,7 @@
 #endif
 
 #define BrowserLifetimeHandler BrowserLifetimeHandler_ChromiumImpl
-#include "../../../../../../../chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
+#include "src/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
 #undef BrowserLifetimeHandler
 
 namespace settings {

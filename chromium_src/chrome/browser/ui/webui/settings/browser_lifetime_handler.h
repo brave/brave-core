@@ -13,7 +13,7 @@
  protected:            \
   virtual void HandleRelaunch
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/browser_lifetime_handler.h"
+#include "src/chrome/browser/ui/webui/settings/browser_lifetime_handler.h"
 #undef HandleRelaunch
 #undef BrowserLifetimeHandler
 
