@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Chyba: Čakajúci účet</translation>
 <translation id="2388470740942086608">Váš účet na Uphold je momentálne obmedzený.</translation>
 <translation id="3605236342612716051">Chyba: Obmedzený účet</translation>
+<translation id="7147519373526655987">Pri overovaní požiadavky vášho prehliadača na pripojenie peňaženky odmien Brave k vášmu účtu <ph name="PROVIDER"/> sa objavil problém. So žiadosťou o pomoc <ph name="BEGIN_LINK"/>kontaktujte podporu<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Chyba: požiadavku nebolo možné overiť</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Vaša výplata <ph name="AMOUNT"/>sa začne spracúvať o <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Upozornenie: <ph name="BOLD_END"/>Spracovanie vašej výplaty a prijatie vášho BAT môže niekoľko dní trvať</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Dokončiť verifikáciu peňaženky</translation>
 <translation id="9200453331904391567">Odpojiť od Brave Rewards</translation>
 <translation id="3656941797339037856">Prepojte odmeny s Gemini!</translation>
-<translation id="2383784987664887340">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Overte a prepojte si peňaženku Brave Rewards s Gemini!</translation>
-<translation id="2237374144728570574">* Zárobok APY cez Gemini k 15. septembru 2021</translation>
+<translation id="3066983737886188034">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Overte a prepojte si peňaženku Brave Rewards s Gemini!</translation>
 <translation id="7404779623219601861">Uplatniť BAT na darčekové karty</translation>
 <translation id="6215565499749144110">So sieťou TAP si môžete uplatniť svoje BAT na populárne značkové darčekové karty.</translation>
 <translation id="6915065518766963119">* Vyžaduje sa potvrdená verifikácia.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Očakávaný samostatný, objektívny parameter.</translation>
 <translation id="1875861420974447980">Toto ID reťazca sa momentálne používa</translation>
 <translation id="167698752210114155">Vyskytla sa interná chyba</translation>
+<translation id="1680597601664421644">Importovaná mnemotehnická pomôcka nie je platná pre peňaženku Brave</translation>
 <translation id="4641919696349069826">Žiadosť sa už spracováva</translation>
 <translation id="872806943696014633">Chýbajú údaje o transakcii</translation>
 <translation id="4805410229033541409">„from“ nie je autorizovaný na odosielanie transakcií</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Účet</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Pridať účet</translation>
+<translation id="5061574358754621254">Údaje o cenách zabezpečuje CoinGecko</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> sa nepodporuje</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Tolerancia sklzu</translation>
 <translation id="4500473291496079954">Platnosť vyprší o</translation>
 <translation id="8093033115658137576">Adresa 0x alebo adresa URL</translation>
+<translation id="2860280209982026951">Brave používa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ako agregátor DEX.</translation>
+<translation id="151946611346774041">Ox spracuje adresu Etherea a IP adresu na vykonanie transakcie (vrátane získania kotácií). 0x bude tieto údaje používať IBA na účely spracovania transakcií.</translation>
 <translation id="6518133107902771759">Overiť</translation>
 <translation id="1420318137760245955">Vitajte v novej peňaženke Brave</translation>
 <translation id="8303434745767477417">Držte kryptoaktíva vo svojej úschove. Sledujte výkonnosť portfólia a komunikujte s webovými aplikáciami 3 DApps. Obchodujte, investujte, požičiavajte si a požičiavajte s DeFi. Všetko priamo zo súkromného prehliadača Brave. Žiadne rozšírenia, žiadne sťahovanie nie je potrebné.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odpojené</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="1178198982208000092">Pripojte si <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Hardvérová peňaženka vyžaduje potvrdenie transakcie. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Hardvérová peňaženka vyžaduje otvorenie aplikácie Ethereum na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">odoslané</translation>
 <translation id="5013754027092416509">prijaté</translation>
 <translation id="5867988533873716616">Adresa URL blokovacieho prieskumníka nie je k dispozícii.</translation>
 <translation id="4255623233927788178">Zobraziť v blokovom prieskumníkovi</translation>
+<translation id="7148658188569580292">Urýchliť transakciu</translation>
+<translation id="1198263951134066686">Zrušiť transakciu</translation>
+<translation id="3562548974839822204">Zopakovať transakciu</translation>
 <translation id="6383204195803840504">Transakcie sa zobrazia tu</translation>
+<translation id="6079696972035130497">Neobmedzene</translation>
 <translation id="2916401020782528840">Transakcia sa nenašla</translation>
+<translation id="2833661570529295305">Neschváleno</translation>
+<translation id="8034530868111548216">Schváleno</translation>
+<translation id="6015436276085482001">Odmítnuto</translation>
+<translation id="6666273175654835609">Odesláno</translation>
+<translation id="2331676293859649642">Potvrzeno</translation>
+<translation id="1165039591588034296">Chyba</translation>
 <translation id="8941851657764077659">Maximálny poplatok za uprednostnenie</translation>
 <translation id="8047527352810290817">Upraviť palivo</translation>
 <translation id="9091334651803050473">Hoci to nie je záruka, mineri pravdepodobne uprednostnia vašu transakciu, ak zaplatíte vyšší poplatok.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Nejde o platnú adresu ETH</translation>
 <translation id="882486206986535424">Nejde o platnú adresu</translation>
 <translation id="6825399159373612149">Doména <ph name="DOMAIN_NAME"/> nie je zaregistrovaná</translation>
+<translation id="8971278306757462297">Adresa prijímateľa je vaša vlastná</translation>
+<translation id="3506416339268164412">Adresa prijímateľa je kontaktná adresa tokenu</translation>
 <translation id="862585889767884824">z</translation>
 <translation id="9106265941552476098">Zamietnuť transakcie: <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Nedostatočný zostatok</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Účet <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Najskôr treba odomknúť peňaženku</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nie je platná adresa</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> nie je aktuálna sieť</translation>
 <translation id="7340805872138998391">Nepodarilo sa odomknúť zariadenie, skúste sa pripojiť znova</translation>
 <translation id="1984410139271779110">Interná chyba, neznáma schéma</translation>
 <translation id="8682200134223578011">schválené</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">Dáta z JSON nie sú očakávané</translation>
 <translation id="3282936527763045737">Heslo nie je správne</translation>
 <translation id="1119447706177454957">Interná chyba</translation>
-<translation id="3327639091470204775">Interná chyba, nepodarilo sa vytvoriť rozpočet pre iframe</translation>
 <translation id="6672377693827764095">Interná chyba, nepodarilo sa načítať účty</translation>
+<translation id="8933250418452564886">Nie je možné nájsť transakciu hardvéru, skúste to znova</translation>
+<translation id="5999974802900788338">Na hardvérovom zariadení sa vyskytla chyba, pravdepodobne musíte potvrdiť transakciu na svojom zariadení</translation>
+<translation id="8523768065044261559">Pri spracovaní transakcie sa vyskytla chyba, skúste to znova</translation>
+<translation id="971552837551838642">Pri podpisovaní správy sa vyskytla chyba, skúste to znova</translation>
+<translation id="8273603707418703324">Pri podpisovaní správy sa vyskytla chyba, požadoval sa neznámy prívesok na kľúče, skúste to znova</translation>
+<translation id="5265455943786954050">Príkaz Trezor sa už spracováva</translation>
+<translation id="7017116822583380542">Most trezora nie je pripravený</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Nedá sa pripojiť k serveru</translation>
 <translation id="3936826714240735937">Vybrať iný server</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> sa nepodarilo pripojiť k serveru <ph name="REGION_NAME"/>. Môžete to skúsiť znova alebo vybrať iný.</translation>
-<translation id="1664949222596149258">Kúpiť za <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Už ste si zakúpili VPN?</translation>
 <translation id="8814357473522731680">Používa technológiu</translation>
 <translation id="5747552184818312860">Koniec platnosti</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Vyberte si umiestnenie VPN</translation>
 <translation id="1751947227857853925">Rýchle a bez obmedzení až do 100 Mb/s</translation>
 <translation id="1400240082805528049">Neptretržitá podpora</translation>
+<translation id="8463313539532697053">Počkajte, kým sa načíta…</translation>
 <translation id="7586151660465233733">Viac trhov na webovej stránke <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Zobraziť trhy a obchodovať s kryptomenami na FTX</translation>
 <translation id="5963745988819586370">Trhy</translation>

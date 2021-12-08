@@ -89,7 +89,6 @@ Binance
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
-<translation id="9184430019924125685">ज़्यादा जानकारी के लिए यहाँ क्लिक करें</translation>
 <translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -103,7 +102,7 @@ Binance
 <translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
 <translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
 <translation id="6248554379744796526">सूची में गैर-सत्यापित साइट दिखाएं</translation>
-<translation id="3241299447027267831">वीडियो के लिए योगदान की इजाज़त दें</translation>
+<translation id="5510618543889994434">वीडियो में योगदान की इजाज़त दें</translation>
 <translation id="924777189963477634">ऑटोमैटिक योगदान को चालू करके आप <ph name="BEGIN_LINK_TOS"/>सेवा की शर्तें<ph name="END_LINK_TOS"/> और <ph name="BEGIN_LINK_PP"/>निजता नीति<ph name="END_LINK_PP"/> पर अपनी सहमति देते हैं.</translation>
 <translation id="5733490796524078528">टिप बटन</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -242,6 +241,10 @@ Binance
 <translation id="2414886740292270097">गाढ़ा</translation>
 <translation id="1360441190790440400">Linux के जैसे ही</translation>
 <translation id="1336940801687497203">Windows के जैसे ही</translation>
+<translation id="5919209812221905840">डिफ़ॉल्ट microsoft-edge प्रोटोकॉल हैंडलर</translation>
+<translation id="5239541974656019812">Brave को microsoft-edge प्रोटोकॉल हैंडलर बनाएं</translation>
+<translation id="7136694880210472378">डिफ़ॉल्ट बनाएं</translation>
+<translation id="1751388324499810661">Brave डिफ़ॉल्ट microsoft-edge प्रोटोकॉल हैंडलर है</translation>
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
@@ -292,7 +295,7 @@ Binance
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
-<translation id="3399481770463167943">IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="BEGIN_LINK_MPL"/>और जानें<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/> IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="END_LINK_MPL"/> और जानें.</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -459,7 +462,6 @@ Binance
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="2556708692502648323">वॉलेट नेटवर्क</translation>
 <translation id="1330032157352961756">नई चेन की आईडी</translation>
-<translation id="9053905035135220650">0x से शुरू होने वाली हेक्साडेसिमल स्ट्रिंग</translation>
 <translation id="726121047592132939">चेन का नया नाम</translation>
 <translation id="1034112277864078119">चेन का नाम डालें</translation>
 <translation id="4672314527143443556">चेन की करेंसी का नाम</translation>
@@ -473,7 +475,6 @@ Binance
 <translation id="3047726704186619366">आइकन के URL</translation>
 <translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
 <translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
-<translation id="4514843126085243862">फ़ॉर्मैट गलत है, चेन आईडी 0x से शुरू होने वाली हेक्साडेसिमल स्ट्रिंग होती है</translation>
 <translation id="8325036459845654666">यह नेटवर्क पहले ही जोड़ा जा चुका है.</translation>
 <translation id="650071759190249039">आंतरिक गड़बड़ी, नेटवर्क नहीं जोड़ा जा सका.</translation>
 <translation id="868529041590572443">मूल करेंसी के बारे में सभी जानकारी भरें</translation>

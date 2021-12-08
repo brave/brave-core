@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Σφάλμα: Λογαριασμός σε εκκρεμότητα</translation>
 <translation id="2388470740942086608">Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.</translation>
 <translation id="3605236342612716051">Σφάλμα: Περιορισμένος λογαριασμός</translation>
+<translation id="7147519373526655987">Παρουσιάστηκε πρόβλημα κατά την επικύρωση του αιτήματος του προγράμματος περιήγησής σας για τη σύνδεση του πορτοφολιού των Ανταμοιβών Brave στον λογαριασμό σας <ph name="PROVIDER"/> . Μπορείτε να <ph name="BEGIN_LINK"/>επικοινωνήσετε με την υποστήριξη<ph name="END_LINK"/> για περισσότερη βοήθεια.</translation>
+<translation id="1316066811927496401">Σφάλμα: Δεν ήταν δυνατή η επαλήθευση του αιτήματος</translation>
 <translation id="1737873393693460829">Ενεργοποιώντας [[title]], συμφωνείτε με τους <ph name="BEGIN_LINK1"/>Όρους Υπηρεσίας<ph name="END_LINK1"/> και την <ph name="BEGIN_LINK2"/>Πολιτική Απορρήτου<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Η <ph name="AMOUNT"/> πληρωμή σας θα ξεκινήσει την επεξεργασία σε <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Σημείωση: <ph name="BOLD_END"/>Μπορεί να χρειαστούν μερικές ημέρες για να ολοκληρωθεί η πληρωμή και να φτάσει το BAT σας.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
 <translation id="9200453331904391567">Αποσύνδεση από τις Ανταμοιβές Brave</translation>
 <translation id="3656941797339037856">Συνδέστε τα Rewards με το Gemini!</translation>
-<translation id="2383784987664887340">Με το Gemini μπορείτε εύκολα να ανταλλάξετε, να αποθηκεύσετε και να κερδίσετε APY 3,49% επί των BAT σας. Επαληθεύστε και συνδέστε το πορτοφόλι Ανταμοιβών Brave με το Gemini τώρα!</translation>
-<translation id="2237374144728570574">*APY του Gemini Earn στις 15 Σεπτεμβρίου 2021</translation>
+<translation id="3066983737886188034">Με το Gemini μπορείτε εύκολα να ανταλλάξετε, να αποθηκεύσετε και να κερδίσετε APY 3,49% επί των BAT σας. Επαληθεύστε και συνδέστε το πορτοφόλι Ανταμοιβών Brave με το Gemini τώρα!</translation>
 <translation id="7404779623219601861">Εξαργυρώστε BAT με Δωροκάρτες</translation>
 <translation id="6215565499749144110">Με το δίκτυο TAP, μπορείτε να εξαργυρώσετε τα BAT σας με δημοφιλείς επώνυμες δωροκάρτες.</translation>
 <translation id="6915065518766963119">* Απαιτείται Υποστηρικτική Επιβεβαίωση.</translation>
@@ -812,6 +813,7 @@
 <translation id="9161147058107529840">Αναμένεται μονή παράμετρος αντικειμένου.</translation>
 <translation id="1875861420974447980">Αυτό το αναγνωριστικό αλυσίδας χρησιμοποιείται ήδη.</translation>
 <translation id="167698752210114155">Παρουσιάστηκε εσωτερικό σφάλμα</translation>
+<translation id="1680597601664421644">Το μνημονικό που εισάγεται δεν ισχύει για το Πορτοφόλι Brave</translation>
 <translation id="4641919696349069826">Υπάρχει ήδη ένα αίτημα σε εξέλιξη</translation>
 <translation id="872806943696014633">Λείπουν δεδομένα συναλλαγών</translation>
 <translation id="4805410229033541409">Η πηγή 'from' δεν είναι εξουσιοδοτημένη για την αποστολή συναλλαγών</translation>
@@ -865,6 +867,7 @@
 <translation id="629730747756840877">Λογαριασμός</translation>
 <translation id="3891414008432200754">Τιμή</translation>
 <translation id="2267753748892043616">Προσθήκη λογαριασμού</translation>
+<translation id="5061574358754621254">Δεδομένα τιμής από την CoinGecko</translation>
 <translation id="1483493594462132177">Αποστολή</translation>
 <translation id="538450413584738399">Ανταλλαγή</translation>
 <translation id="7020187418439030877">Το <ph name="NETWORK"/> δεν υποστηρίζεται</translation>
@@ -872,6 +875,8 @@
 <translation id="632241521608275119">Ανοχή Πτώσης Απόδοσης</translation>
 <translation id="4500473291496079954">Λήγει σε</translation>
 <translation id="8093033115658137576">Διεύθυνση 0x ή διεύθυνση URL</translation>
+<translation id="2860280209982026951">Το Brave χρησιμοποιεί το <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ως αθροιστή DEX.</translation>
+<translation id="151946611346774041">Το 0x θα επεξεργαστεί τη διεύθυνση Ethereum και τη διεύθυνση IP για να ολοκληρώσει μια συναλλαγή (συμπεριλαμβανομένης της λήψης προσφορών). Το 0x θα χρησιμοποιήσει αυτά τα δεδομένα ΑΠΟΚΛΕΙΣΤΙΚΑ για σκοπούς επεξεργασίας συναλλαγών.</translation>
 <translation id="6518133107902771759">Επαλήθευση</translation>
 <translation id="1420318137760245955">Καλώς ήρθατε στο νέο Πορτοφόλι Brave</translation>
 <translation id="8303434745767477417">Κρατήστε τα στοιχεία κρυπτονομισμάτων υπό την κηδεμονία σας. Παρακολουθήστε την απόδοση του χαρτοφυλακίου και αλληλεπιδράστε με 3 DApps ιστού. Ανταλλάξτε, επενδύστε, δανειστείτε και δανείστε με το DeFi. Όλα απευθείας από το πρόγραμμα περιήγησης απορρήτου Brave. Χωρίς επεκτάσεις, χωρίς να απαιτείται λήψη.</translation>
@@ -1043,13 +1048,24 @@
 <translation id="7051244143160304048">Το<ph name="DEVICE_NAME"/> αποσυνδέθηκε</translation>
 <translation id="5317781812114905957">Οδηγίες</translation>
 <translation id="1178198982208000092">Συνδέστε το <ph name="DEVICE_NAME"/> σας</translation>
-<translation id="3301417531330431881">Η συσκευή πορτοφολιού απαιτεί επιβεβαίωση συναλλαγής. <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Η συσκευή πορτοφολιού απαιτεί επιβεβαίωση συναλλαγής. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Το πορτοφόλι υλικού απαιτεί ανοικτή την εφαρμογή Ethereum στη συσκευή <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">εστάλη</translation>
 <translation id="5013754027092416509">ελήφθη</translation>
 <translation id="5867988533873716616">Η διεύθυνση URL του Block Explorer δεν είναι διαθέσιμη.</translation>
 <translation id="4255623233927788178">Προβολή στο Block explorer</translation>
+<translation id="7148658188569580292">Επιτάχυνση συναλλαγής</translation>
+<translation id="1198263951134066686">Ακύρωση συναλλαγής</translation>
+<translation id="3562548974839822204">Επανάληψη συναλλαγής</translation>
 <translation id="6383204195803840504">Οι συναλλαγές θα εμφανίζονται εδώ</translation>
+<translation id="6079696972035130497">Απεριόριστο</translation>
 <translation id="2916401020782528840">Η συναλλαγή δεν βρέθηκε</translation>
+<translation id="2833661570529295305">Μη εγκεκριμένο</translation>
+<translation id="8034530868111548216">Εγκρίθηκε</translation>
+<translation id="6015436276085482001">Απορρίφθηκε</translation>
+<translation id="6666273175654835609">Υποβλήθηκε</translation>
+<translation id="2331676293859649642">Επιβεβαιωμένο</translation>
+<translation id="1165039591588034296">Σφάλμα</translation>
 <translation id="8941851657764077659">Χρέωση μέγιστης προτεραιότητας</translation>
 <translation id="8047527352810290817">Επεξεργασία καυσίμου</translation>
 <translation id="9091334651803050473">Αν και δεν αποτελεί εγγύηση, οι εξορύκτες πιθανότατα θα δώσουν προτεραιότητα στη συναλλαγή σας αν καταβάλετε υψηλότερη χρέωση.</translation>
@@ -1071,6 +1087,8 @@
 <translation id="749944179568745958">Μη έγκυρη διεύθυνση ΕΤΗ</translation>
 <translation id="882486206986535424">Μη έγκυρη διεύθυνση</translation>
 <translation id="6825399159373612149">Ο τομέας <ph name="DOMAIN_NAME"/> δεν είναι καταχωρημένος</translation>
+<translation id="8971278306757462297">Η διεύθυνση παραλήπτη είναι η δική σας διεύθυνση</translation>
+<translation id="3506416339268164412">Η διεύθυνση παραλήπτη αποτελεί τη διεύθυνση επικοινωνίας ενός token</translation>
 <translation id="862585889767884824">από</translation>
 <translation id="9106265941552476098">Να απορριφθούν <ph name="TRANSACTION_LENGTH"/> συναλλαγές</translation>
 <translation id="1118876217803190221">Ανεπαρκές υπόλοιπο</translation>
@@ -1081,6 +1099,7 @@
 <translation id="5071303414930953888">Λογαριασμός <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Πρώτα πρέπει να ξεκλειδωθεί το πορτοφόλι</translation>
 <translation id="7930338223819368854">Το <ph name="ADDRESS"/>δεν είναι έγκυρη διεύθυνση</translation>
+<translation id="1470129769517088397">Το <ph name="ADDRESS"/> δεν είναι το τρέχον δίκτυο</translation>
 <translation id="7340805872138998391">Δεν είναι δυνατό το ξεκλείδωμα της συσκευής. Προσπαθήστε να συνδεθείτε ξανά.</translation>
 <translation id="1984410139271779110">Εσωτερικό σφάλμα, άγνωστο σύστημα</translation>
 <translation id="8682200134223578011">εγκρίθηκε</translation>
@@ -1089,8 +1108,15 @@
 <translation id="4287068151777838754">Δεν αναμένονται δεδομένα JSON</translation>
 <translation id="3282936527763045737">Ο κωδικός πρόσβασης δεν είναι σωστός</translation>
 <translation id="1119447706177454957">Εσωτερικό σφάλμα</translation>
-<translation id="3327639091470204775">Εσωτερικό σφάλμα. Δεν είναι δυνατή η δημιουργία iframe bridge</translation>
+<translation id="3327639091470204775">Δεν είναι δυνατή η σύνδεση με τη γέφυρα Trezor</translation>
 <translation id="6672377693827764095">Εσωτερικό σφάλμα. Δεν είναι δυνατή η ανάκτηση λογαριασμών.</translation>
+<translation id="8933250418452564886">Δεν είναι δυνατή η εύρεση συναλλαγής υλικού, δοκιμάστε ξανά</translation>
+<translation id="5999974802900788338">Λήφθηκε σφάλμα από συσκευή υλικού, θα πρέπει να επιβεβαιώσετε τη συναλλαγή στη συσκευή σας</translation>
+<translation id="8523768065044261559">Σφάλμα κατά την επεξεργασία της συναλλαγής, δοκιμάστε ξανά</translation>
+<translation id="971552837551838642">Σφάλμα υπογραφής μηνύματος, δοκιμάστε ξανά</translation>
+<translation id="8273603707418703324">Σφάλμα υπογραφής μηνύματος, ζητήθηκε άγνωστη κλειδοθήκη, δοκιμάστε ξανά</translation>
+<translation id="5265455943786954050">Η εντολή Trezor βρίσκεται ήδη σε εξέλιξη</translation>
+<translation id="7017116822583380542">Το Trezor bridge δεν είναι έτοιμο</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές Πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα Ελέγχου Tor</translation>
@@ -1105,7 +1131,6 @@
 <translation id="745054660363064771">Δεν είναι δυνατή η σύνδεση σε διακομιστή</translation>
 <translation id="3936826714240735937">Επιλέξτε διαφορετικό διακομιστή</translation>
 <translation id="8006923044496340707">Δεν ήταν δυνατή η σύνδεση του <ph name="PRODUCT_NAME"/> στον διακομιστή του <ph name="REGION_NAME"/>. Μπορείτε να δοκιμάσετε ξανά ή να επιλέξετε άλλον.</translation>
-<translation id="1664949222596149258">Αγορά με <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Έχετε ήδη αγοράσει VPN;</translation>
 <translation id="8814357473522731680">Με την υποστήριξη</translation>
 <translation id="5747552184818312860">Λήγει</translation>
@@ -1117,6 +1142,7 @@
 <translation id="3181339219453722970">Επιλέξτε την τοποθεσία σας VPN</translation>
 <translation id="1751947227857853925">Γρήγορο και απεριόριστο έως τα 100 Mbps</translation>
 <translation id="1400240082805528049">Υποστήριξη 24/7</translation>
+<translation id="8463313539532697053">Περιμένετε όσο γίνεται φόρτωση…</translation>
 <translation id="7586151660465233733">Δείτε περισσότερες αγορές στο <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Δείτε τις αγορές και κάντε συναλλαγές με crypto στο FTX</translation>
 <translation id="5963745988819586370">Αγορές</translation>

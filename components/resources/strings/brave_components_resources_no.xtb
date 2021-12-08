@@ -59,6 +59,7 @@
 <translation id="8173998484743827990">Brave-statistikk</translation>
 <translation id="383680190590774040">klokke</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
+<translation id="3159285901314605198">Bakgrunnsbilde</translation>
 <translation id="385051799172605136">Tilbake</translation>
 <translation id="9024104284526126630">Du kan starte en privat samtale i Brave.</translation>
 <translation id="4903286433687221248">Få ubegrensede samtaler med venner og kolleger i Brave Talk.</translation>
@@ -78,7 +79,6 @@
 <translation id="3189348785087463371">Anbefalt</translation>
 <translation id="4541978218358617681">Annonse</translation>
 <translation id="1776831331757823105">Klokke</translation>
-<translation id="3159285901314605198">Bakgrunnsbilde</translation>
 <translation id="7791543448312431591">Legg til</translation>
 <translation id="7679334366167089823">Tjen polletter på å se annonser som respekterer personvernet ditt.</translation>
 <translation id="1531133232292396145">Handle krypto på Binance, direkte i nettleseren din.</translation>
@@ -183,6 +183,8 @@
 <translation id="905529390827000221">4 annonser i timen</translation>
 <translation id="7694167481321619202">5 annonser i timen</translation>
 <translation id="3705420658531870884">10 annonser i timen</translation>
+<translation id="8576106690599421723">Statusnivå og målrettede annonser</translation>
+<translation id="4775297407519948063">Dette lar Brave vise deg annonser som er ment for landet du befinner deg i.</translation>
 <translation id="8446884382197647889">Les mer</translation>
 <translation id="6209514229703649203">Automatisk oppdaget som [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Gjenkjenn automatisk</translation>
@@ -257,6 +259,8 @@
 <translation id="4530453398914580957">Feil: Ventende konto</translation>
 <translation id="2388470740942086608">Kontoen din hos Uphold er for øyeblikket begrenset.</translation>
 <translation id="3605236342612716051">Feil: Begrenset konto</translation>
+<translation id="7147519373526655987">Det oppsto et problem under validering av nettleserens forespørsel om å koble Brave Rewards-lommeboken til <ph name="PROVIDER"/>-kontoen din. Du kan <ph name="BEGIN_LINK"/>ta kontakt med støtteteamet<ph name="END_LINK"/> for å få ytterligere assistanse</translation>
+<translation id="1316066811927496401">Feil: Forespørselen kunne ikke valideres</translation>
 <translation id="1737873393693460829">Ved å skru på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Din <ph name="AMOUNT"/>-utbetaling begynner å behandles om <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/> Merk: <ph name="BOLD_END"/> Det kan ta noen dager å behandle betalingen og frem til BAT er på plass.</translation>
@@ -275,12 +279,28 @@
 <translation id="1280764044837262633"><ph name="PROVIDER"/> krever en minimumssaldo på <ph name="AMOUNT"/> BAT for å opprette en konto. Om du har koblet til en konto tidligere,</translation>
 <translation id="752216563428219524">Annonsene ble ikke lastet inn – oppdater siden</translation>
 <translation id="7422678632904904341">Beløp:</translation>
+<translation id="6969783933307596818">Automatisk fornying hvert 5. sekund</translation>
 <translation id="5025866799968038247">Saldoinformasjon</translation>
 <translation id="6073289164268847023">Lommebok opprettet:</translation>
 <translation id="6643016212128521049">Tøm</translation>
+<translation id="8949473809474431949">Bidratt med beløp:</translation>
+<translation id="4468686134841688885">Opprettet :</translation>
+<translation id="3468857518057809855">Bidrag</translation>
+<translation id="1743476997641822027">Prosessor:</translation>
+<translation id="276257469335694903">Trinn:</translation>
+<translation id="6320347655509970755">Bidra automatisk-bordet er tomt</translation>
+<translation id="6152423905338223517">Ikke nok midler</translation>
 <translation id="6325525973963619867">Mislyktes</translation>
+<translation id="561349411957324076">Fullført</translation>
 <translation id="583281660410589416">Ukjent</translation>
+<translation id="2743301740238894839">Start</translation>
 <translation id="8654112359048700618">Forbered</translation>
+<translation id="7420180413541445142">Reserver</translation>
+<translation id="3390504443230842742">Ekstern transaksjon</translation>
+<translation id="7413895050241358090">Kred</translation>
+<translation id="386483240851194811">Belønninger ble slått av</translation>
+<translation id="3354337256330577726">Bidra automatisk ble slått av</translation>
+<translation id="6727186931929643711">Sluttet å prøve igjen</translation>
 <translation id="8978461348341400550">Vaktmester:</translation>
 <translation id="7220161813676251577">Vaktmesterens medlems-ID:</translation>
 <translation id="680983167891198932">Nøkkel</translation>
@@ -288,10 +308,13 @@
 <translation id="45591635423975492">Loggført kl.</translation>
 <translation id="2059498613853603008">ADVARSEL: Data på denne siden kan være sensitive. Behandle dem slik du ville behandlet lommeboken din eller nøklene dine. Vær forsiktig med hensyn til hvem du deler dem med.</translation>
 <translation id="7375125077091615385">Type:</translation>
+<translation id="4973347371961481083">Bidrag</translation>
+<translation id="1924618796077284366">Last ned hele loggen</translation>
 <translation id="1979114396925139279">Info om ekstern lommebok</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
 <translation id="6161467863097205016">Nøkkelinso seed:</translation>
-<translation id="5323604113525002127">Vi viser de siste [[numberOfLines]] linjene i loggen. Hvis du vil ha hele loggen, kan du laste den ned ovenfor.</translation>
+<translation id="5323604113525002127">Vi viser siste {{numberOfLines}} linjer av loggen. Hvis du vil se hele loggen, kan du laste den ned over.</translation>
+<translation id="7168491065836975228">Interne belønninger</translation>
 <translation id="758790787422117549">Person-ID</translation>
 <translation id="3671566813999349838">Sum</translation>
 <translation id="751223241692981112">Gjort krav på</translation>
@@ -311,11 +334,15 @@
 <translation id="5334568292977026472">UGP</translation>
 <translation id="3798449238516105146">Versjon</translation>
 <translation id="7180611975245234373">Last inn på nytt</translation>
+<translation id="1456696701804096710">Telling nytt forsøk:</translation>
+<translation id="2152423226436243241">Bidra automatisk</translation>
 <translation id="2927922949538312364">Engangstips</translation>
 <translation id="3164105678355419142">Gjentatt tips</translation>
 <translation id="916115051162298064">Annonsediagnostikk</translation>
 <translation id="7806880412350961625">Hendelseslogger</translation>
 <translation id="4309915981827077375">Generell informasjon</translation>
+<translation id="3662406032239313663">Logger</translation>
+<translation id="9001933311880936179">Totalbeløp:</translation>
 <translation id="6672180611914406778">Total saldo</translation>
 <translation id="2223892939866251845">Bruker-ID</translation>
 <translation id="4235360514405112390">Gyldig</translation>
@@ -495,8 +522,12 @@
 <translation id="5939518447894949180">Tilbakestill</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="1797334173232638045">De festede sidene dine er flyttet til</translation>
+<translation id="6803187280799213426">Midlene i Brave-lommeboken din er virtuelle og backup er ikke nødvendig. Den kan brukes eksklusivt på denne nettleseren.</translation>
+<translation id="5904352893156917813">Hvis du vil sikre alle midlene din i tilfelle du vil innstallere nettleseren på nytt, eller du skifter enhet, og få andre fordeler som å sette inn, ta ut eller overføre midler, anbefaler vi <ph name="LINK_BEGIN"/>å verifisere lommeboken din<ph name="LINK_END"/>.</translation>
 <translation id="5717619667204259673">Ta godt vare på denne gjenopprettingsnøkkelen.</translation>
 <translation id="4699702339303280827">Du kan alltid bruke denne nøkkelen til å få lommeboken din tilbake hvis det skjer noe med nettleseren eller datamaskinen din. Men sørg for å beskytte den – hvis noen får tak i denne nøkkelen, kan de stjele lommeboken din. Det er sannsynligvis tryggest å skrive den ned på et stykke papir eller et annet sted hvor du oppbevarer viktig informasjon.</translation>
+<translation id="8979401359137062629">Merk:</translation>
+<translation id="7934806082615382155">Deler av midlene kan mottas fra Brave, og de er ikke inkludert i backupen da dette ikke er påkrevet. Den kan brukes eksklusivt på denne nettleseren.</translation>
 <translation id="7354412786785889047">Du kan støtte denne innholdskreatøren ved å sende et tips. It’s en måte å takke dem for å lage flott innhold. Verifiserte kreatører blir betalt for tipsene deres i løpet av den første uken i hver kalendermåten.</translation>
 <translation id="3074127054582480056">Obs</translation>
 <translation id="5830306739231399614">Desverre, ingen tokens enda.</translation>
@@ -511,7 +542,10 @@
 <translation id="1640793619390890218">for Rewards-brukere med iOS som overfører BAT.</translation>
 <translation id="4600052736217630789">Gjenopprettelse med en gjenopprettingsnøkkel vil erstatte din nåværende lommebok. Sørg for at du tømmer eller sikkerhetskopierer din nåværende lommebok før du gjenoppretter.</translation>
 <translation id="3267911153934785912">Skriv inn gjenopprettingsnøkkelen eller</translation>
-<translation id="1209382772199769572">Sikkerhetskopier lommeboken din før du bytter den ut. Ellers mister du midlene, [[funds]], i din nåværende lommebok.</translation>
+<translation id="1209382772199769572">Ta en backup av lommeboken din før du skifter den ut. Du vil ellers miste midlene {{funds}} i den nåværende lommeboken din.</translation>
+<translation id="5423214929210538027">Er du sikker på at du vil tilbakestille Belønningslommeboken?</translation>
+<translation id="4749947664556704604">Din <ph name="BAT_AMOUNT"/> and other Belønningsdata vil tapes permanent hvis du tilbakestiller lommeboken. Forsikre deg om at du har <ph name="LINK_BEGIN"/>bekreftet lommeboken<ph name="LINK_END"/> så du får din BAT.</translation>
+<translation id="2028613172174411919">Din belønningsinformasjon blir slettet om du nullstiller lommeboka di.</translation>
 <translation id="4914597931214386232">Tokenstipender gjort krav på</translation>
 <translation id="3494964159182650590">Sammendrag av belønninger</translation>
 <translation id="1738658589626889850">Lagre som en fil</translation>
@@ -557,8 +591,7 @@
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>
-<translation id="2383784987664887340">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY pr. Sept 15, 2021</translation>
+<translation id="3066983737886188034">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
@@ -637,6 +670,7 @@
 <translation id="4855440621031541830">Bruk kryptolommebøker kun hvis du aksepterer at du ene og alene er ansvarlig for all risk assosiert med bruken av disse, og at Brave-programvaren bærer intet ansvar for tap, enten tilfeldig eller som følge av bruken av disse.</translation>
 <translation id="3187473319809074178">Alt dette er fullstendig atskilt fra</translation>
 <translation id="8327818101454798856">Så hvis du er ute etter å støtte dine favorittnettsteder, kan du ta turen dit i stedet.</translation>
+<translation id="412480955826088549">Laster ned komponent...</translation>
 <translation id="4894106830958548828">Jeg forstår</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Vis markeder og kjøp kryptovaluta fra crypto.com.</translation>
@@ -683,7 +717,6 @@
 <translation id="7536543993364605970">Agentversjon</translation>
 <translation id="3693482323085649439">Noden kjører</translation>
 <translation id="6315833555896070573">Noden kjører ikke</translation>
-<translation id="2743301740238894839">Start</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="5895138241574237353">Start på nytt</translation>
 <translation id="6762417584993757344">Ikke installert</translation>
@@ -779,6 +812,7 @@
 <translation id="9161147058107529840">Forventet ett enkelt objektparameter</translation>
 <translation id="1875861420974447980">Denne blokkjeden er allerede i bruk</translation>
 <translation id="167698752210114155">Det har oppstått en intern feil</translation>
+<translation id="1680597601664421644">Huskeregelen som importeres er ikke gyldig for Brave Wallet</translation>
 <translation id="4641919696349069826">En forespørsel er allerede aktiv</translation>
 <translation id="872806943696014633">Transaksjonsdata mangler</translation>
 <translation id="4805410229033541409">'from' er ikke autorisert til å sende transaksjoner</translation>
@@ -832,6 +866,7 @@
 <translation id="629730747756840877">Konto</translation>
 <translation id="3891414008432200754">Pris</translation>
 <translation id="2267753748892043616">Legg til konto</translation>
+<translation id="5061574358754621254">Prisdata levert av CoinGecko</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Bytt</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> ikke støttet</translation>
@@ -839,6 +874,8 @@
 <translation id="632241521608275119">Slingringstoleranse</translation>
 <translation id="4500473291496079954">Utløper om</translation>
 <translation id="8093033115658137576">0x-adresse eller nettadresse</translation>
+<translation id="2860280209982026951">Brave bruker <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som DEX-aggregator.</translation>
+<translation id="151946611346774041">0x behandler Ethereum-adressen og IP-adressen for å fullføre en transaksjon (inkludert å hente priser). 0x bruker KUN disse dataene for å behandle transaksjoner.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
 <translation id="8303434745767477417">Ha et inventar av kryptoressurser. Hold øye med hvordan porteføljen din gjør det, og ha interaksjon med web 3 DApps. Handle, invester, lån og lån ut med DeFi – alt dette rett i den private Brave-nettleseren. Ingen utvidelser eller nedlastinger kreves.</translation>
@@ -1010,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> frakoblet</translation>
 <translation id="5317781812114905957">Instruksjoner</translation>
 <translation id="1178198982208000092">Koble til din <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Maskinvarelommeboken krever en transaksjonsbekreftelse. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Maskinvarelommeboken krever at Ethereum-appen åpnes på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">mottatt</translation>
 <translation id="5867988533873716616">Block Explorer-nettadressen er ikke tilgjengelig.</translation>
 <translation id="4255623233927788178">Vis i Block Explorer</translation>
+<translation id="7148658188569580292">Fremskynd transaksjonen</translation>
+<translation id="1198263951134066686">Avbryt transaksjonen</translation>
+<translation id="3562548974839822204">Prøv transaksjonen på nytt</translation>
 <translation id="6383204195803840504">Transaksjoner vises her</translation>
+<translation id="6079696972035130497">Ubegrenset</translation>
 <translation id="2916401020782528840">Transaksjonen ble ikke funnet</translation>
+<translation id="2833661570529295305">Ikke godkjent</translation>
+<translation id="8034530868111548216">Godkjent</translation>
+<translation id="6015436276085482001">Avvist</translation>
+<translation id="6666273175654835609">Sendt inn</translation>
+<translation id="2331676293859649642">Bekreftet</translation>
+<translation id="1165039591588034296">Feil</translation>
 <translation id="8941851657764077659">Maks. prioritetsgebyr</translation>
 <translation id="8047527352810290817">Rediger «gas»</translation>
 <translation id="9091334651803050473">Selv om det ikke garanteres, er det sannsynlig at minere prioriterer transaksjonen din hvis du betaler en høyere avgift.</translation>
@@ -1038,6 +1085,8 @@
 <translation id="749944179568745958">Ikke en gyldig ETH-adresse</translation>
 <translation id="882486206986535424">Ikke en gyldig adresse</translation>
 <translation id="6825399159373612149">Domenet <ph name="DOMAIN_NAME"/> er ikke registrert</translation>
+<translation id="8971278306757462297">Mottaksadressen er din egen adresse</translation>
+<translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvis <ph name="TRANSACTION_LENGTH"/> transaksjoner</translation>
 <translation id="1118876217803190221">Utilstrekkelig saldo.</translation>
@@ -1048,6 +1097,7 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Lommeboken må låses opp først</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/>er ikke en gyldig adresse</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> er ikke det gjeldende nettverket</translation>
 <translation id="7340805872138998391">Kunne ikke låse opp enheten, prøv å koble til på nytt</translation>
 <translation id="1984410139271779110">Intern feil, ukjent skjema</translation>
 <translation id="8682200134223578011">godkjent</translation>
@@ -1056,11 +1106,16 @@
 <translation id="4287068151777838754">JSON-data forventes ikke</translation>
 <translation id="3282936527763045737">Passordet er feil</translation>
 <translation id="1119447706177454957">Intern feil</translation>
-<translation id="3327639091470204775">Intern feil, kunne ikke opprette iframe-bridget</translation>
 <translation id="6672377693827764095">Intern feil, kan ikke hente kontoer</translation>
+<translation id="8933250418452564886">Fant ikke maskinvaretransaksjonen. Prøv på nytt.</translation>
+<translation id="5999974802900788338">Mottaksfeil fra maskinvareenhet. Sannsynligvis må du bekrefte transaksjonen på enheten din.</translation>
+<translation id="8523768065044261559">Feil under behandling av transaksjonen. Prøv på nytt.</translation>
+<translation id="971552837551838642">Feil under signering av melding. Prøv på nytt.</translation>
+<translation id="8273603707418703324">Feil under signering av melding. Ukjent nøkkelring forespurt. Prøv på nytt.</translation>
+<translation id="5265455943786954050">Trezor-kommandoen er allerede aktiv</translation>
+<translation id="7017116822583380542">Trezor-broen er ikke klar</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
-<translation id="3662406032239313663">Logger</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
 <translation id="216855356675970168">Tor-versjon</translation>
 <translation id="2976625104959685176">Tor-prosessid</translation>
@@ -1073,7 +1128,6 @@
 <translation id="745054660363064771">Kan ikke koble til serveren</translation>
 <translation id="3936826714240735937">Velg en annen server</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunne ikke koble til <ph name="REGION_NAME"/>-serveren. Du kan prøve på nytt, eller velge en annen</translation>
-<translation id="1664949222596149258">Kjøp for <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Har du allerede kjøpt en VPN?</translation>
 <translation id="8814357473522731680">Driftet av</translation>
 <translation id="5747552184818312860">Utløper</translation>
@@ -1085,6 +1139,7 @@
 <translation id="3181339219453722970">Velg din VPN-plassering</translation>
 <translation id="1751947227857853925">Raskt og ubegrenset opp til 100 Mbps</translation>
 <translation id="1400240082805528049">Døgnåpen brukerstøtte</translation>
+<translation id="8463313539532697053">Vent et øyeblikk mens vi laster inn…</translation>
 <translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Se markeder og handle krypto på FTX</translation>
 <translation id="5963745988819586370">Markeder</translation>

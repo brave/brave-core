@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Virhe: Odottava tili</translation>
 <translation id="2388470740942086608">Uphold-tilisi on tällä hetkellä rajoitettu.</translation>
 <translation id="3605236342612716051">Virhe: Rajoitettu tili</translation>
+<translation id="7147519373526655987">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave Rewards -lompakko <ph name="PROVIDER"/>-tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
+<translation id="1316066811927496401">Virhe: pyyntöä ei voitu vahvistaa</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028"><ph name="AMOUNT"/> maksu käsitellään <ph name="DAYS"/> kuluttua.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Maksun käsittely ja BAT:n saapuminen voivat kestää muutaman päivän.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
 <translation id="3656941797339037856">Linkitä Rewards Geminiin!</translation>
-<translation id="2383784987664887340">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave-palkintolompakkosi Geminiin nyt!</translation>
-<translation id="2237374144728570574">* Gemini Earn -tilin vuotuinen prosentuaalinen tuotto 15.09.2021 alkaen</translation>
+<translation id="3066983737886188034">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave-palkintolompakkosi Geminiin nyt!</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
 <translation id="6915065518766963119">* Vaatii Uphold-vahvistuksen.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Odotti yhtä objektiparametriä.</translation>
 <translation id="1875861420974447980">Tämä ketjun tunnus on käytössä</translation>
 <translation id="167698752210114155">Tapahtui sisäinen virhe</translation>
+<translation id="1680597601664421644">Tuotava muistisääntö ei kelpaa Brave Walletille</translation>
 <translation id="4641919696349069826">Pyyntö on jo käynnissä</translation>
 <translation id="872806943696014633">Maksutapahtuman tiedot puuttuvat</translation>
 <translation id="4805410229033541409">'from' ei ole valtuutettu lähettämään maksutapahtumia</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Tili</translation>
 <translation id="3891414008432200754">Hinta</translation>
 <translation id="2267753748892043616">Lisää tili</translation>
+<translation id="5061574358754621254">Hintatiedot tarjoaa CoinGecko</translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> -ketjua ei tueta</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
 <translation id="4500473291496079954">Vanhenee:</translation>
 <translation id="8093033115658137576">0x-osoite tai -url</translation>
+<translation id="2860280209982026951">Brave käyttää <ph name="LINK_BEFORE"/>0x:ää<ph name="LINK_AFTER"/> DEX-aggregaattorina.</translation>
+<translation id="151946611346774041">0x käsittelee Ethereum-osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien hintatarjousten saaminen). 0x käyttää näitä tietoja VAIN tapahtumien käsittelyyn.</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
 <translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/>-laitetta ei ole enää liitetty</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
 <translation id="1178198982208000092">Liitä <ph name="DEVICE_NAME"/>-laitteesi</translation>
-<translation id="3301417531330431881">Laitelompakko vaatii maksutapahtumavahvistuksen. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Laitteistolompakko vaatii Ethereum-sovelluksen avaamisen laitteella <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">lähetetty</translation>
 <translation id="5013754027092416509">vastaanotettu</translation>
 <translation id="5867988533873716616">Lohkoketjuohjelman URL-osoite ei ole käytettävissä.</translation>
 <translation id="4255623233927788178">Näytä lohkoketjuohjelmassa</translation>
+<translation id="7148658188569580292">Nopeuta tapahtumaa</translation>
+<translation id="1198263951134066686">Peruuta tapahtuma</translation>
+<translation id="3562548974839822204">Yritä tapahtumaa uudelleen</translation>
 <translation id="6383204195803840504">Maksutapahtumat näkyvät tässä</translation>
+<translation id="6079696972035130497">Rajaton</translation>
 <translation id="2916401020782528840">Maksutapahtumaa ei löydy</translation>
+<translation id="2833661570529295305">Ei hyväksytty</translation>
+<translation id="8034530868111548216">Hyväksytty</translation>
+<translation id="6015436276085482001">Hylätty</translation>
+<translation id="6666273175654835609">Lähetetty</translation>
+<translation id="2331676293859649642">Vahvistettu</translation>
+<translation id="1165039591588034296">Virhe</translation>
 <translation id="8941851657764077659">Ensisijaisuuden enimmäismaksu</translation>
 <translation id="8047527352810290817">Muokkaa Gas-tokenia</translation>
 <translation id="9091334651803050473">Vaikka siitä ei ole takuita, louhijat todennäköisesti priorisoivat maksutapahtumasi, jos maksat suuremman maksun.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Virheellinen ETH-osoite</translation>
 <translation id="882486206986535424">Virheellinen osoite</translation>
 <translation id="6825399159373612149">Verkkotunnusta <ph name="DOMAIN_NAME"/> ei ole rekisteröity</translation>
+<translation id="8971278306757462297">Vastaanotto-osoite on oma osoitteesi</translation>
+<translation id="3506416339268164412">Vastaanotto-osoite on tokenin sopimusosoite</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Hylkää <ph name="TRANSACTION_LENGTH"/> maksutapahtumaa</translation>
 <translation id="1118876217803190221">Riittämätön saldo</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Tili <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Lompakon lukitus on ensin avattava</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ei ole kelvollinen osoite</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> ei ole nykyinen verkko</translation>
 <translation id="7340805872138998391">Laitteen lukituksen avaamine ei onnistu, yritä muodostaa yhteys uudelleen</translation>
 <translation id="1984410139271779110">Sisäinen virhe, tuntematon malli</translation>
 <translation id="8682200134223578011">hyväksytty</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON-tietoja ei odoteta</translation>
 <translation id="3282936527763045737">Salasana on virheellinen</translation>
 <translation id="1119447706177454957">Sisäinen virhe</translation>
-<translation id="3327639091470204775">Sisäinen virhe, iframe bridgetia ei voida luoda</translation>
 <translation id="6672377693827764095">Sisäinen virhe, tilejä ei voitu noutaa</translation>
+<translation id="8933250418452564886">Laitteistotapahtumaa ei löydy, yritä uudelleen</translation>
+<translation id="5999974802900788338">Vastaanotettu virhe laitteistolaitteelta, sinun on luultavasti vahvistettava tapahtuma laitteellasi</translation>
+<translation id="8523768065044261559">Virhe tapahtuman käsittelyssä, yritä uudelleen</translation>
+<translation id="971552837551838642">Virhe viestiä allekirjoitettaessa, yritä uudelleen</translation>
+<translation id="8273603707418703324">Virhe viestiä allekirjoitettaessa, tuntematonta avaimenperää pyydetty, yritä uudelleen</translation>
+<translation id="5265455943786954050">Trezor-komento on jo käynnissä</translation>
+<translation id="7017116822583380542">Trezor-silta ei ole valmis</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Ei voitu yhdistää palvelimeen</translation>
 <translation id="3936826714240735937">Valitse toinen palvelin</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ei pystynyt muodostamaan yhteyttä <ph name="REGION_NAME"/> palvelimeen. Voit yrittää uudelleen tai valita toisen</translation>
-<translation id="1664949222596149258">Osta hintaan <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Oletko jo ostanut VPN:n?</translation>
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
 <translation id="5747552184818312860">Vanhenee</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Valitse VPN:n sijainti</translation>
 <translation id="1751947227857853925">Nopea ja rajoittamaton, jopa 100 Mbit/s</translation>
 <translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
+<translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
 <translation id="7586151660465233733">Lisää markkinoita sivustolla <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Katso markkinoita ja käy kauppaa kryptolla FTX:ssä</translation>
 <translation id="5963745988819586370">Markkinat</translation>

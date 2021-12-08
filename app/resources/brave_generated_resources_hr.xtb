@@ -55,7 +55,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
 <translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
 <translation id="6821903322090655051">Onemogućene Nagrade Brave</translation>
-<translation id="9184430019924125685">Klikni ovdje za više informacija</translation>
 <translation id="3849957491997306859">Automatski otkriveno</translation>
 <translation id="8798099450830957504">Zadano</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
@@ -69,7 +68,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="7286722244752781970">Minimalno vrijeme provedeno na stranici prije evidentiranja posjeta</translation>
 <translation id="4424486208397124985">Minimalni broj posjeta da bi se izdavač smatrao relevantnim</translation>
 <translation id="6248554379744796526">Pokaži neprovjerena mrežna mjesta na popisu</translation>
-<translation id="3241299447027267831">Dopusti davanje doprinosa videozapisima</translation>
+<translation id="5510618543889994434">Dopusti davanje doprinosa za videozapise</translation>
 <translation id="924777189963477634">Uključivanjem automatskog davanja doprinosa pristajete na <ph name="BEGIN_LINK_TOS"/>Odredbe pružanja usluge<ph name="END_LINK_TOS"/> i<ph name="BEGIN_LINK_PP"/>Pravilnik o privatnosti<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Gumbi za napojnice</translation>
 <translation id="3905400818082450708">Ponovno uredi</translation>
@@ -208,6 +207,10 @@ Sigurno želite to napraviti?</translation>
 <translation id="2414886740292270097">Tama</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
+<translation id="5919209812221905840">Zadani rukovatelj protokolom za microsoft-edge</translation>
+<translation id="5239541974656019812">Neka preglednik Brave bude zadani rukovatelj protokolom za microsoft-edge</translation>
+<translation id="7136694880210472378">Postavi kao zadano</translation>
+<translation id="1751388324499810661">Preglednik Brave zadani je rukovatelj protokolom za microsoft-edge</translation>
 <translation id="8721331068159819483">Kao na operativnom sustavu macOS</translation>
 <translation id="2896916411183256228">Upotrijebite WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
 <translation id="8488282162676695335">Novčanik Brave</translation>
@@ -425,7 +428,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="2556708692502648323">Mreže novčanika</translation>
 <translation id="1330032157352961756">ID novog lanca</translation>
-<translation id="9053905035135220650">Heksadekadski niz s prefiksom 0x</translation>
 <translation id="726121047592132939">Naziv novog lanca</translation>
 <translation id="1034112277864078119">Upiši naziv lanca</translation>
 <translation id="4672314527143443556">Naziv valute lanca</translation>
@@ -439,7 +441,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="3047726704186619366">URL-ovi ikone</translation>
 <translation id="2487558607408469181">URL-ovi tražilice Block Explorer</translation>
 <translation id="6301398959353668507">Polje ne smije biti prazno.</translation>
-<translation id="4514843126085243862">Nevažeći oblik, identifikacija oznaka lanca heksadekadski je niz s prefiksom 0x</translation>
 <translation id="8325036459845654666">Mreža već dodana.</translation>
 <translation id="650071759190249039">Interna pogreška, nemogućnost dodavanja mreže.</translation>
 <translation id="868529041590572443">Upišite sve informacije o domaćoj valuti</translation>

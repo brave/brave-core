@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">ስህተት፡ በመጠባበቅ ላይ ያለ መለያ</translation>
 <translation id="2388470740942086608">በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ የተገደበ ነው።</translation>
 <translation id="3605236342612716051">ስህተት፡ የተገደበ መለያ</translation>
+<translation id="7147519373526655987">ለ <ph name="PROVIDER"/> አካውንትዎ የ Brave Rewards ቦርሳዎን ለማገናኘት የአሳሽዎን ጥያቄ ማረጋገጥ ላይ ችግር ነበር። በ <ph name="BEGIN_LINK"/> የአድራሻ ድጋፍ<ph name="END_LINK"/> ተጨማሪ እርዳታ ማግኘት ይችላሉ።</translation>
+<translation id="1316066811927496401">ስህተት: ጥያቄዎ ተቀባይነት አላገኘም</translation>
 <translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
 <translation id="901298512318791028">Your <ph name="AMOUNT"/> payout will begin processing in <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/> ማስታወሻ ፦ <ph name="BOLD_END"/> ክፍያው እስኪካሄድ ድረስ እና የእርስዎ BAT እስኪመጣ ድረስ ጥቂት ቀናት ሊወስድ ይችላል። .</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
 <translation id="3656941797339037856">Rewards ን ከ ጄሚኒ ጋር ያያይዙ!</translation>
-<translation id="2383784987664887340">Gemini በቀላሉ እንዲገበያዩ፣ እንዲያከማቹ እና በBATዎ ላይ  3.49% APY እንዲያገኙ ያስችልዎታል። ያረጋግጡ እና የBrave ሽልማቶች ዋሌትዎን ከGemini  ጋር አሁን ያገናኙ!</translation>
-<translation id="2237374144728570574">*Gemini Earn ከሴፕቴምበር 15, 2021 ጀምሮ APYን ያገኛል</translation>
+<translation id="3066983737886188034">Gemini በቀላሉ እንዲገበያዩ፣ እንዲያከማቹ እና በBATዎ ላይ  3.49% APY እንዲያገኙ ያስችልዎታል። ያረጋግጡ እና የBrave ሽልማቶች ዋሌትዎን ከGemini  ጋር አሁን ያገናኙ!</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
 <translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
 <translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">የሚጠበቅ ነጠላ፣ የኦብጀክት መለኪያ።</translation>
 <translation id="1875861420974447980">ይህ ቼይን መታወቂያ በአሁኑ ጊዜ ጥቅም ላይ ውሏል</translation>
 <translation id="167698752210114155">ውስጣዊ ስህተት ተፈጥሯል</translation>
+<translation id="1680597601664421644">ከውጭ የገባው የሃሳብ ማስታወሻ ቁልፍ ለBrave Wallet ተቀባይነት የለውም።</translation>
 <translation id="4641919696349069826">ጥያቄ ቀድሞውኑ በሂደት ላይ ነው</translation>
 <translation id="872806943696014633">የግብይት ውሂብ ይጎድላል</translation>
 <translation id="4805410229033541409">'from' ግብይቶችን ለመላክ ፍቃድ የለውም</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">መለያ</translation>
 <translation id="3891414008432200754">ዋጋ</translation>
 <translation id="2267753748892043616">መለያ ያክሉ</translation>
+<translation id="5061574358754621254">በCoinGecko የተጠናከረ የዋጋ መረጃ</translation>
 <translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> ኣይሰራም</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">ተቀባይነት ያለው የዋጋ መንሸራተት</translation>
 <translation id="4500473291496079954">የሚያበቃበት ግዜ</translation>
 <translation id="8093033115658137576">0x ኣድራሻ ወይም url</translation>
+<translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ን የሚጠቀመው እንደ DEX ሰብሳቢ ነው።</translation>
+<translation id="151946611346774041">ግብይቱን ለማሟላት (ዋጋዎችን ማግኘትን ጨምሮ) 0x የEthereum አድራሻ እና የIP አድራሻ ሂደት ያደርጋል። 0x ይህንን ውሂብ የሚተቀመው ግብይቶችን ለማስኬድ ዓላማ ብቻ ነው</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="1420318137760245955">ወደ አዲሱ Brave ዋሌት እንኳን በደህና መጡ</translation>
 <translation id="8303434745767477417">በእርስዎ ጥበቃ ውስጥ የ crypto ንብረቶችን ይያዙ። የፖርትፎሊዮ አፈፃፀምን ይከታተሉ እና ከድር 3 DApps ጋር ይገናኙ። ከ DeFi ጋር ይገበያዩ ፣ ኢንቨስት ያድርጉ ፣ ያበድሩ እና ያበድሩ። ደህና ከ Brave የግላዊነት አሳሽ። ምንም ቅጥያዎች ፣ ማውረድ አያስፈልግም።</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ተቋርጧል</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
 <translation id="1178198982208000092">የእርስዎን <ph name="DEVICE_NAME"/>ያገናኙ</translation>
-<translation id="3301417531330431881">የሃርድዌር ዋሌት የግብይት ማረጋገጫ ያስፈልገዋል። <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">የሃርድዌር ቦርሳ የEthereum መተግበሪያ በ <ph name="DEVICE_NAME"/> እንዲከፈት ይፈልጋል</translation>
 <translation id="8687869982094542529">ተልኳል</translation>
 <translation id="5013754027092416509">ደርሷል</translation>
 <translation id="5867988533873716616">የአሳሽ URL አግድ የለም።</translation>
 <translation id="4255623233927788178">በBlock explorer ላይ ይመልከቱ</translation>
+<translation id="7148658188569580292">ግብይቱን ያቀላጥፉ</translation>
+<translation id="1198263951134066686">ግብይቱን ሰርዝ</translation>
+<translation id="3562548974839822204">ግብይቱን እንደገና ሞክር</translation>
 <translation id="6383204195803840504">ግብይቶች እዚህ ይታያሉ</translation>
+<translation id="6079696972035130497">ያልተገደበ</translation>
 <translation id="2916401020782528840">ግብይት አልተገኘም</translation>
+<translation id="2833661570529295305">ያልተፈቀደ</translation>
+<translation id="8034530868111548216">የተፈቀደ</translation>
+<translation id="6015436276085482001">ውድቅ የተደረገ</translation>
+<translation id="6666273175654835609">የቀረበ</translation>
+<translation id="2331676293859649642">ተረጋገጠ</translation>
+<translation id="1165039591588034296">ስህተት</translation>
 <translation id="8941851657764077659">ከፍተኛ ቅድሚያ ክፍያ</translation>
 <translation id="8047527352810290817">ነዳጅ አርትዓ ያድርጉ</translation>
 <translation id="9091334651803050473">ዋስትና ባይሆንም ፣ ከፍ ያለ ክፍያ ከከፈሉ የማዕድን ሠራተኞች ለግብይትዎ ቅድሚያ ይሰጣሉ።</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">የሚሰራ የ ETH አድራሻ አይደለም</translation>
 <translation id="882486206986535424">የሚሰራ አድራሻ አይደለም</translation>
 <translation id="6825399159373612149">ዶሜይን <ph name="DOMAIN_NAME"/> አልተመዘገበም</translation>
+<translation id="8971278306757462297">የተቀባዩ አድራሻ የራስዎ አድራሻ ነው</translation>
+<translation id="3506416339268164412">የተቀባዩ አድራሻ የማስመሰያ ውል አድራሻ ነው።</translation>
 <translation id="862585889767884824">ከ</translation>
 <translation id="9106265941552476098">የ <ph name="TRANSACTION_LENGTH"/> ግብይቶችን አይቀበሉ</translation>
 <translation id="1118876217803190221">በቂ ያልሆነ ገንዘብ</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">መለያ <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">ዋሌቱ መጀመሪያ መከፈት አለበት</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> የሚሰራ አድራሻ አይደለም</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> አሁን በስራ ላይ ያለ አውታረ መረብ አይደለም</translation>
 <translation id="7340805872138998391">መሳሪያው መክፈት አልተቻለም፣ እንደገና ለማገናኘት ይሞክሩ</translation>
 <translation id="1984410139271779110">የውስጥ ስህተት፣ ያልታውቀ እቅድ</translation>
 <translation id="8682200134223578011">ጸድቋል</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">የ JSON ውሂብ ይጠበቃል</translation>
 <translation id="3282936527763045737">የይለፍ ቃሉ ትክክል አይደለም</translation>
 <translation id="1119447706177454957">የውስጥ ስህተት</translation>
-<translation id="3327639091470204775">የውስጥ ስህተት፣ የ iframe bridget መፍጠር አልተቻለም</translation>
 <translation id="6672377693827764095">የውስጥ ስህተት፣ መለያዎች ማግኘት አልተቻለም።</translation>
+<translation id="8933250418452564886">የሃርድዌር ግብይት ማግኘት አልተቻለም፣ እባክዎ እንደገና ይሞክሩ</translation>
+<translation id="5999974802900788338">ከሃርድዌር መሳሪያ የመጣ ስህተት፣ ምናልባት በመሳሪያዎ ላይ ያለውን ግብይት ማረጋገጥ ይኖርቦታል</translation>
+<translation id="8523768065044261559">ግብይቱን የማስኬድ ሂደት ላይ ስህተት ተገኘ፣ እባክዎ እንደገና ይሞክሩ</translation>
+<translation id="971552837551838642">የአገባብ ስህተት መልእክት፣ እባክዎ እንደገና ይሞክሩ</translation>
+<translation id="8273603707418703324">የአገባብ ስህተት መልእክት፣ ያልታወቀ የመግባት ሙከራ ተጠይቋል፣ እባክዎ እንደገና ይሞክሩ</translation>
+<translation id="5265455943786954050">የTrezor ትዕዛዝ ከወዲሁ በሂደት ላይ ነው</translation>
+<translation id="7017116822583380542">Trezor bridge ዝግጁ አይደለም</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">ከሰርቨሩ ጋር መገናኘት አልተቻለም</translation>
 <translation id="3936826714240735937">ሌላ ሰርቨር ይምረጡ</translation>
 <translation id="8006923044496340707">ይህ <ph name="PRODUCT_NAME"/> ከ <ph name="REGION_NAME"/> ሰርቨር ጋ መገናኘት አልቻለም። እንደገና መሞከር ይችላልሉ ወይም ሌላ መምረጥ</translation>
-<translation id="1664949222596149258">ይግዙ ለ <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">አስቀድመው VPN ገዝተዋልን?</translation>
 <translation id="8814357473522731680">የተጎላበተው በ</translation>
 <translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">የእርስዎን VPN አካባቢ ይምረጡ</translation>
 <translation id="1751947227857853925">ፈጣን እና ያልተገደበ እስከ 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 ድጋፍ</translation>
+<translation id="8463313539532697053">…ን በመጫን ላይ ትንሽ ይጠብቁ</translation>
 <translation id="7586151660465233733">ተጨማሪ ገበያዎች በ​<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ገበያዎች ይመልከቱ እና በ FTX ላይ ክሪፕቶ ይነግዱ</translation>
 <translation id="5963745988819586370">ገበያዎች</translation>
