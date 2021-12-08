@@ -88,33 +88,19 @@ public class PortfolioStore: ObservableObject {
   
   /// Fills the `userVisibleAssets` models with balances in decimal format
   func fetchBalances(accounts: [BraveWallet.AccountInfo], completion: @escaping () -> Void) {
-    let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
     let group = DispatchGroup()
     for account in accounts {
-      for index in 0..<userVisibleAssets.count {
-        let token = userVisibleAssets[index].token
-        func updateBalance(_ success: Bool, _ balance: String) {
-          guard success, let decimalString = balanceFormatter.decimalString(
-            for: balance.removingHexPrefix,
-               radix: .hex,
-               decimals: Int(token.decimals)
-          ), !decimalString.isEmpty, let decimal = Double(decimalString) else {
-            return
-          }
-          userVisibleAssets[index].decimalBalance += decimal
-        }
-        if token.isETH {
-          group.enter()
-          rpcController.balance(account.address) { success, balance in
-            defer { group.leave() }
-            updateBalance(success, balance)
-          }
-        } else if token.isErc20 {
-          group.enter()
-          rpcController.erc20TokenBalance(token.contractAddress, address: account.address) { success, balance in
-            defer { group.leave() }
-            updateBalance(success, balance)
-          }
+      for asset in userVisibleAssets {
+        let token = asset.token
+        group.enter()
+        rpcController.balance(for: token, in: account) { [weak self] balance in
+          defer { group.leave() }
+          guard let self = self,
+                let balance = balance,
+                let index = self.userVisibleAssets.firstIndex(where: { $0.token.symbol == token.symbol }) else {
+                  return
+                }
+          self.userVisibleAssets[index].decimalBalance += balance
         }
       }
     }

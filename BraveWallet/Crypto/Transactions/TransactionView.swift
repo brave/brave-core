@@ -105,7 +105,7 @@ struct TransactionView: View {
     // Swap from/to addresses
     let from = namedAddress(for: info.fromAddress)
     let to = namedAddress(for: info.txData.baseData.to)
-    Text("\(from) \(Image(systemName: "arrow.right")) \(to))")
+    Text("\(from) \(Image(systemName: "arrow.right")) \(to)")
       .accessibilityLabel(
         String.localizedStringWithFormat(
           Strings.Wallet.transactionFromToAccessibilityLabel, from, to
