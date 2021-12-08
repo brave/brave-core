@@ -90,7 +90,12 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 onNextPage.gotoRestorePage();
             }
         });
-        checkOnBiometric();
+        if (onNextPage != null && onNextPage.showBiometricPrompt()) {
+            checkOnBiometric();
+        } else if (onNextPage != null) {
+            onNextPage.showBiometricPrompt(true);
+            showPasswordRelatedControls();
+        }
     }
 
     private void checkOnBiometric() {

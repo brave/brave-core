@@ -30,6 +30,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.base.ActivityState;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -91,6 +93,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private EthTxController mEthTxController;
     private AssetRatioController mAssetRatioController;
     private BraveWalletService mBraveWalletService;
+    private boolean mShowBiometricPrompt;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,6 +122,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
+        mShowBiometricPrompt = true;
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
         mToolbar.setTitle("");
@@ -341,6 +345,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
 
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
+        mShowBiometricPrompt = true;
         mCryptoLayout.setVisibility(View.GONE);
         mSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
@@ -355,6 +360,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.unlock_wallet_title), unlockWalletFragment));
         } else if (type == RESTORE_WALLET_ACTION) {
+            mShowBiometricPrompt = false;
             RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
             restoreWalletFragment.setOnNextPageListener(this);
             navigationItems.add(
@@ -385,8 +391,10 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     }
 
     private void replaceNavigationFragments(int type, boolean doNavigate) {
+        mShowBiometricPrompt = true;
         if (cryptoWalletOnboardingViewPager != null && cryptoWalletOnboardingPagerAdapter != null) {
             if (type == RESTORE_WALLET_ACTION) {
+                mShowBiometricPrompt = false;
                 RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
                 restoreWalletFragment.setOnNextPageListener(this);
                 cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
@@ -489,6 +497,20 @@ public class BraveWalletActivity extends AsyncInitializationActivity
                 backupTopBannerLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public boolean showBiometricPrompt() {
+        int state = ApplicationStatus.getStateForActivity(this);
+
+        return mShowBiometricPrompt
+                && (state != ActivityState.PAUSED || state != ActivityState.STOPPED
+                        || state != ActivityState.DESTROYED);
+    }
+
+    @Override
+    public void showBiometricPrompt(boolean show) {
+        mShowBiometricPrompt = show;
     }
 
     @Override
