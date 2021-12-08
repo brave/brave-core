@@ -54,24 +54,21 @@
 <translation id="8987927404178983737">महिना</translation>
 <translation id="1383876407941801731">शोधा</translation>
 <translation id="8446884382197647889">अधिक जाणून घ्या</translation>
-<translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
-<translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
 <translation id="3479552764303398839">सध्या नाही</translation>
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="1483493594462132177">पाठवा</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="6896758677409633944">कॉपी करा</translation>
-<translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="6518133107902771759">सत्यापित करा</translation>
 <translation id="3157931365184549694">पुनर्संचयित करा</translation>
 <translation id="9111102763498581341">अनलॉक करा</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="1987317783729300807">खाती</translation>
-<translation id="4636930964841734540">माहिती</translation>
 <translation id="6979737339423435258">पूर्णवेळ</translation>
 <translation id="3819257035322786455">बॅक अप</translation>
 <translation id="4522570452068850558">तपशील</translation>
+<translation id="5040262127954254034">गोपनीयता</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
@@ -86,4 +83,10 @@
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="8648684608605749476">तृतीय पक्ष कुकी गुप्त मोडमध्ये ब्लॉक करा</translation>
 <translation id="3380365263193509176">अज्ञात एरर</translation>
+<translation id="1165039591588034296">एरर</translation>
+<translation id="1177863135347784049">सानुकूल</translation>
+<translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
+<translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
+<translation id="5317780077021120954">सेव्ह करा</translation>
+<translation id="4636930964841734540">माहिती</translation>
 </translationbundle>

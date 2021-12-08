@@ -55,7 +55,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
 <translation id="6821903322090655051">Brave nagrade su onemogućene</translation>
-<translation id="9184430019924125685">Kliknite ovde kako biste saznali više</translation>
 <translation id="3849957491997306859">Automatsko otkrivanje</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
@@ -69,7 +68,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7286722244752781970">Minimalno vreme na stranici pre evidentiranja posete</translation>
 <translation id="4424486208397124985">Minimalni broj poseta za relevantnost objavljivača</translation>
 <translation id="6248554379744796526">Pokaži nepotvrđene lokacije na listi</translation>
-<translation id="3241299447027267831">Dozvoliti doprinose video snimcima</translation>
+<translation id="5510618543889994434">Dozvoliti doprinose video snimcima</translation>
 <translation id="924777189963477634">Uključivanjem automatskog doprinosa, prihvatate <ph name="BEGIN_LINK_TOS"/>Uslove korišćenja<ph name="END_LINK_TOS"/> i <ph name="BEGIN_LINK_PP"/>Politiku privatnosti<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Dugmići za savet</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -207,6 +206,10 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2414886740292270097">Tamno</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
+<translation id="5919209812221905840">Podrazumevani rukovalac protokola za microsoft-edge</translation>
+<translation id="5239541974656019812">Postavi Brave kao rukovaoca protokolom za microsoft-edge</translation>
+<translation id="7136694880210472378">Постави као подразумевано</translation>
+<translation id="1751388324499810661">Brave je podrazumevani rukovalac protokola za microsoft-edge</translation>
 <translation id="8721331068159819483">Isto kao macOS</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
 <translation id="8488282162676695335">Brave novčanik</translation>
@@ -422,7 +425,6 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2653659639078652383">Пошаљи</translation>
 <translation id="2556708692502648323">Mreže novčanika</translation>
 <translation id="1330032157352961756">ID novog lanca</translation>
-<translation id="9053905035135220650">Heksadecimalni string sa prefiksom 0x</translation>
 <translation id="726121047592132939">Naziv novog lanca</translation>
 <translation id="1034112277864078119">Uneti naziv lanca</translation>
 <translation id="4672314527143443556">Naziv valute lanca</translation>
@@ -436,7 +438,6 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="3047726704186619366">URL ikonice</translation>
 <translation id="2487558607408469181">URL blok istraživača</translation>
 <translation id="6301398959353668507">Ovo polje ne može biti prazno</translation>
-<translation id="4514843126085243862">Neispravan format, id lanca je heksadecimalni string sa prefiksom 0x</translation>
 <translation id="8325036459845654666">Ova mreža je već dodata.</translation>
 <translation id="650071759190249039">Interna greška, nije moguće dodati mrežu.</translation>
 <translation id="868529041590572443">Unesite sve informacije o domaćoj valuti</translation>

@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">Spletna blagajna</translation>
 <translation id="6583902294974160967">Podpora</translation>
 <translation id="1799030480311994998">Funkcije</translation>
-<translation id="5345505584130165588">Zasebnost Brave shields &amp;</translation>
+<translation id="2005732746077850308">Brave Shields &amp; zasebnost</translation>
 <translation id="4692623383562244444">Iskalniki</translation>
 <translation id="1468415711258933398">Standardni zavihek</translation>
 <translation id="3377025655491224618">Zavihek za način brez beleženja zgodovine</translation>
@@ -23,13 +23,28 @@
 <translation id="4022987104439075738">Prehod IPFS</translation>
 <translation id="2688519859165248360">Omogoča navigacijo do virov IPFS prek prehoda IPFS</translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="7822245778264751380">Cena Ethereum (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/> Cena (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Imenske storitve Ethereum</translation>
 <translation id="3894650624018948468">Način reševanja</translation>
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
 <translation id="2218918398178303658">DNS preko HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6252490671914511928">Sveže novice z današnjega dne v popolnoma zasebnem viru, samo za vas.</translation>
+<translation id="7266075701303521777">Brave novice podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi, ki se ujemajo v vaši napravi.</translation>
+<translation id="4541978218358617681">Oglas</translation>
+<translation id="1765217911817124376">Vklopite Brave novice</translation>
+<translation id="1654539412343893324">Več o vaših podatkih</translation>
+<translation id="2989805286512600854">Odpri v novem zavihku</translation>
+<translation id="3709782636417497984">Odpri v novem zasebnem zavihku</translation>
+<translation id="2014017248518069982">Onemogoči vsebino od <ph name="PUBLISHER"/></translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> onemogočeno</translation>
+<translation id="1276592121036104130">Naloži novo vsebino</translation>
+<translation id="3189348785087463371">Promovirano</translation>
+<translation id="7554145152551782675">Več ponudb Brave</translation>
+<translation id="4975944254857623648">Privzeti viri</translation>
+<translation id="253886574765651454">Dodaj vir</translation>
+<translation id="7823038307453615214">Prikaži Brave News</translation>
 <translation id="5787084571334399599">Preprečuje strežniku ustvarjanje prstnih odtisov</translation>
 <translation id="7459000603787995422">Zapri zavihke ob izhodu</translation>
 <translation id="4448697385961650078">Blokiraj sledilnike in oglase</translation>
@@ -118,6 +133,7 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3780605330121608425">Vaša denarnica</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Brave novice</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
@@ -171,6 +187,8 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="4282642752844565114">Nepravilno število besed</translation>
 <translation id="7507533586185621084">Napačna sinhronizacijska koda</translation>
 <translation id="8284063834901328650">Napačna koda QR</translation>
+<translation id="859506441384380749">To kodo je ustvarila zastarela različica Brave, najprej nadgradite svojo drugo napravo</translation>
+<translation id="3132642509209154999">Ta koda je potekla. Ustvarite novo v drugi napravi in poskusite znova.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync vam omogoča, da zasebno sinhronizirate podatke o zaznamkih med vašimi brskalniki Brave na različnih napravah.</translation>
 <translation id="3735228155296883311">Preprosto optično preberite kodo iz verige za sinhronizacijo, ki ste jo ustvarili v drugi napravi. Ali pa zaženite novo verigo sinhronizacije.</translation>
@@ -386,12 +404,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.🔋</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.🔥</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.💨💨</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="1390943217516275883">Storitvi Brave omogoča prikaz vaših statistik zasebnosti</translation>
@@ -407,46 +425,16 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1972589975368876259">Uredi nabor</translation>
 <translation id="2490330380242414851">Odstranite pripomoček</translation>
 <translation id="8446884382197647889">Več informacij</translation>
-<translation id="7384441892795736634">Osveži podatke</translation>
-<translation id="4804818685124855865">Prekini povezavo</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Naslov depozita</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Opomnik za depozit</translation>
-<translation id="5110244215256675209">Kupi Kripto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Kupite <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Razpoložljivih je <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Predogled pretvorbe</translation>
 <translation id="2882813124794301799">Nabor pripomočkov</translation>
 <translation id="13296465911709339">Vaše besedilo je bilo kopirano v odložišče.</translation>
-<translation id="4670943871783273148">Vaše besedilo je bilo shranjeno v besedilno datoteko.</translation>
-<translation id="4432845796903761592">Datoteka ni shranjena.</translation>
-<translation id="7144878232160441200">Poskusi znova</translation>
+<translation id="2735834606413553397">Javni naslov je bil kopiran v odložišče.</translation>
 <translation id="2977461003134694205">Statistika zasebnosti</translation>
 <translation id="4643117005422448078">Najb. prilj.</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Sledilci &amp; reklame blokirane, shranjena pasovna širina in ocenitev prihranjenega časa.</translation>
 <translation id="74417429503469271">Odprite spletna mesta, ki jih pogosto obiskujete.</translation>
-<translation id="2956070106555335453">Povzetek</translation>
-<translation id="1366855498335432549">Polog</translation>
-<translation id="1301340234286078471">Pretvori</translation>
 <translation id="223536150967420869">Kupi</translation>
-<translation id="1714829281959608206">Omogoči povezavo do Binance za ogled stanja računa Binance in trgovanje s kriptovalutami</translation>
-<translation id="4584930231524505442">Pretvoriti želim ...</translation>
-<translation id="5749014321384313843">Porabiti želim</translation>
 <translation id="8688672835843460752">Na voljo</translation>
-<translation id="2480674848181564169">Ni dovolj na stanju za pretvorbo</translation>
-<translation id="2215334405220411393">Najmanjši znesek za pretvorbo je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Povezava ni mogoča</translation>
-<translation id="7742417737698031726">Pristojbina</translation>
-<translation id="2122225204180056042">Prejeli boste</translation>
-<translation id="6432284126416751397">Potrdi pretvorbo</translation>
 <translation id="5137723827757859599">Na najboljših spletnih mestih še ni ničesar.</translation>
-<translation id="3891414008432200754">Cena</translation>
-<translation id="3733576242118819803">Potrdite (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Pretvorba ni uspela. Prosim poskusite ponovno.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Prejmite žetone &amp; Podpirajte</translation>
 <translation id="244362569344671266">Prejmite žetone z ogledom oglasov Brave Ads in samodejno podprite ustvarjalce vsebin.</translation>
 <translation id="631124996535890460">Z nadaljevanjem se strinjate s <ph name="TERMS_OF_SERVICE"/> in <ph name="PRIVACY_POLICY"/>.</translation>
@@ -490,8 +478,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
 <translation id="7073631403665023390">Kliknite ali tapnite kjer koli na zaslonu, da nadaljujete na Brave Talk.</translation>
 <translation id="626339649633171286">Želite izvedeti več o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
 <translation id="7889432931837317731">Ko je mogoče, se naj samodejno odpre</translation>
 <translation id="8967385052772844086">Oglejte si celotno poročilo o zasebnosti</translation>
 <translation id="6864343534748973390">Najbolj priljubljeno</translation>
@@ -552,9 +538,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7408247683131762445">OPOZORILO: nikoli ne razkrijte svoje varnostne fraze. Vsakdo s to fazo si lahko za vedno prilasti vaša sredstva.</translation>
 <translation id="939275786514736244">Na varnem mestu imam varnostno kopijo svoje fraze</translation>
 <translation id="6896758677409633944">Kopiraj</translation>
-<translation id="5317780077021120954">Shrani</translation>
 <translation id="2604744480284798833">Varnostno kopirajte denarnico zdaj, da zaščitite svoj kripto portfelj pred izgubo dostopa.</translation>
-<translation id="1202920745614909195">Uporabite Apple Pay, kreditno kartico ali debetno kartico za nakup kripta.</translation>
+<translation id="8289942708804097960">Uporabite Apple Pay, kreditno kartico ali debetno kartico za nakup kripta.</translation>
 <translation id="841880029259839903">Pošljite kripto ali pa ga prenesite z enega računa na drugega.</translation>
 <translation id="8982246458261383692">Z agregatorjem Brave DEX lahko menjate kriptosredstva.</translation>
 <translation id="1783600039044302171">Zavarujte svoj kripto z geslom</translation>
@@ -569,6 +554,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 leto</translation>
 <translation id="6895566650974550243">VSE</translation>
+<translation id="5071303414930953888">Račun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2267753748892043616">Dodaj račun</translation>
 <translation id="2632612428525029752">Posodobi račun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
@@ -586,7 +572,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="9111102763498581341">Odkleni</translation>
 <translation id="6657585470893396449">Geslo</translation>
 <translation id="1569452037668432756">Za odklep vnesite svoje geslo</translation>
-<translation id="224719674509047150">Geslo mora imeti vsaj sedem znakov, od tega more biti vsaj eden števka in vsaj eden poseben znak</translation>
+<translation id="3717685683157254329">Geslo mora imeti vsaj sedem znakov, od tega more biti vsaj eden števka in vsaj eden poseben znak</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
 <translation id="5760476995887363522">Besedne zveze se niso ujemale. Prosim poskusite ponovno.</translation>
 <translation id="2360588547830602174">Obnovitev računa ni uspela. Poskusite znova.</translation>
@@ -601,7 +587,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="632241521608275119">Toleranca padca</translation>
 <translation id="1987317783729300807">Računi</translation>
 <translation id="3535654229833214438">Transakcije</translation>
-<translation id="4636930964841734540">Info</translation>
 <translation id="2449682593754783720">1 ura</translation>
 <translation id="969133700726811190">1 dan</translation>
 <translation id="5882300031363619940">1 teden</translation>
@@ -613,7 +598,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3819257035322786455">Varnostno kopiranje</translation>
 <translation id="4608713693379664295">Primarni kripto računi</translation>
 <translation id="4003821417160006384">Sekundardni računi</translation>
-<translation id="8094541587800369158">Ti računi se lahko uporabljajo s spletnimi 3 dapps in so lahko prikazani v vašem portfelju, vendar jih ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa. Omogočite račune Brave Sync za samodejno obnovitev sekundarnih računov.</translation>
+<translation id="2471916999505901943">Ti računi se lahko uporabljajo z aplikacijami web3 DApps in so lahko prikazani v vašem portfelju. Pri tem pa upoštevajte, da sekundarnih računov ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa.</translation>
 <translation id="6725413948756358325">Ime računa</translation>
 <translation id="6062431965141524986">Sekundarni račun lahko ustvarite z uvozom zasebnega ključa.</translation>
 <translation id="3952797765659730604">Vnesite, prilepite ali uvozite svojo datoteko niza zasebnega ključa ali JSON.</translation>
@@ -625,6 +610,17 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
 <translation id="7755766175599167100">Išči žetone</translation>
 <translation id="3835223348537121988">Stanje:</translation>
+<translation id="2490428413101944234">Testna pipa</translation>
+<translation id="2581671693710952401">Pridobi Ether</translation>
+<translation id="8165484222652118977">Pridobite Ether iz pipe za testno omrežje <ph name="NETWORK"/></translation>
+<translation id="7420359180991315365">Nadaljuj k Wire</translation>
+<translation id="8488282162676695335">Denarnica Brave</translation>
+<translation id="5040262127954254034">Zasebnost</translation>
+<translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
+<translation id="414639769490080648">Koliko minut želite, preden se vaša Brave denarnica samodejno zaklene?</translation>
+<translation id="4993345308607970390">Ponastavi denarnico Brave</translation>
+<translation id="6369495274982305511">Ali ste prepričani, da želite ponastaviti denarnico? Če vaša denarnica ni varnostno kopirana, bo ponastavitev povzročila, da izgubite vse podatke o računu (vključno z vsemi povezanimi sredstvi). Za potrditev vnesite "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
 <translation id="4449475351935531438">Brave požarni zid + VPN</translation>
 <translation id="719977489961414786">Nadgradite na VPN, da zaščitite svojo povezavo in blokirate invazivne sledilce na vsakem koraku.</translation>
 <translation id="3435896845095436175">Omogoči</translation>
@@ -708,8 +704,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7995708795274219641">Znesek + Gas</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="6122742277607781713">Portfelj</translation>
-<translation id="6083912983861746409">Cena plina(GWEI)</translation>
-<translation id="2499079593046817044">Omejitev plina(GWEI)</translation>
+<translation id="750843150060816463">Cena goriva (Gwei)</translation>
+<translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">Onemogoči Središče za skupno rabo</translation>
 <translation id="9065203028668620118">Uredi</translation>
 <translation id="473775607612524610">Posodobi</translation>
@@ -725,8 +721,83 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5932938770824268122">Zasebni lljuč</translation>
 <translation id="2472882733835903303">Pokaži zasebni ključ</translation>
 <translation id="4391056902675005799">Skrij zasebni ključ</translation>
-<translation id="5929798090073091848">Opozorilo: Tega ključa nikoli ne razkrijte. Vsakdo z zasebnim ključem lahko ukrade vsa sredstva na vašem računu.</translation>
+<translation id="7518007103754668253">Opozorilo: Tega ključa nikoli ne razkrijte. Vsakdo z zasebnim ključem lahko ukrade vsa sredstva na vašem računu.</translation>
 <translation id="1133619932669546254">Aktiviraj <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">VRSTA FUNKCIJE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ni podatkov</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> je poslal <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> je potrdil <ph name="ASSET"/> - <ph name="DATE"/></translation>
+<translation id="7400134344541309180">Odobreno neomejeno <ph name="ASSET"/> - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> zamenjava - <ph name="DATE"/></translation>
+<translation id="2833661570529295305">Neodobreno</translation>
+<translation id="8034530868111548216">Potrjeno</translation>
+<translation id="6015436276085482001">Zavrnjeno</translation>
+<translation id="6666273175654835609">Potrjeno</translation>
+<translation id="2331676293859649642">Potrjeno</translation>
+<translation id="1165039591588034296">Napaka</translation>
+<translation id="4354768722613827480">Pristojbina: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">Ali uporabljate najhitrejši spletni brskalnik?</translation>
+<translation id="2065971949051836200">3x hitrejši internet je že na vašem telefonu. Uporabite Brave za vse svoje brskanje po spletu.</translation>
+<translation id="2888278614497184977">Brave = 3x hitrejše brskanje po spletu</translation>
+<translation id="6887232551109532144">Zagotovite si daljšo življenjsko dobo baterije z vsakim polnjenjem</translation>
+<translation id="5388885352353494741">Varčevanje z baterijo je le korak stran. Uporabite Brave za vse svoje brskanje po spletu.</translation>
+<translation id="3164151360474408351">Brave = z vsakim polnjenjem več energije</translation>
+<translation id="3211051910418903298">Redkeje polnite svoje mobilne podatke</translation>
+<translation id="1092355580602106002">Manj oglasov = manj podatkov na vsaki strani, ki jo naložite. Uporabite Brave za vse svoje brskanje po spletu.</translation>
+<translation id="623962032102267945">Brave = manj mobilnih podatkov na vsaki strani</translation>
+<translation id="8047527352810290817">Uredi plin</translation>
+<translation id="7358989216567322955">Maksimalna prednostna pristojbina</translation>
+<translation id="9091334651803050473">Čeprav to ni jamstvo, bodo rudarji verjetno dali prednost vaši transakciji, če plačate višjo pristojbino.</translation>
+<translation id="2941112035454246133">Nizko</translation>
+<translation id="5431902940483264007">Optimalno</translation>
+<translation id="7304030187361489308">Visoko</translation>
+<translation id="1177863135347784049">Po meri</translation>
+<translation id="4853037749278079787">Maksimalna pristojbina: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">Trenutna osnovna pristojbina: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">Omejitev količine goriva</translation>
+<translation id="1254969878422524947">Omejitev prispevka na plin (Gwei)</translation>
+<translation id="7373308452149471621">Omejitev cene za plin (Gwei)</translation>
+<translation id="5345505584130165588">Zasebnost Brave shields &amp;</translation>
+<translation id="7822245778264751380">Cena Ethereum (ETH)</translation>
+<translation id="7384441892795736634">Osveži podatke</translation>
+<translation id="4804818685124855865">Prekini povezavo</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Naslov depozita</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Opomnik za depozit</translation>
+<translation id="5110244215256675209">Kupi Kripto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Kupite <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Razpoložljivih je <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Predogled pretvorbe</translation>
+<translation id="4670943871783273148">Vaše besedilo je bilo shranjeno v besedilno datoteko.</translation>
+<translation id="4432845796903761592">Datoteka ni shranjena.</translation>
+<translation id="7144878232160441200">Poskusi znova</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Povzetek</translation>
+<translation id="1366855498335432549">Polog</translation>
+<translation id="1301340234286078471">Pretvori</translation>
+<translation id="1714829281959608206">Omogoči povezavo do Binance za ogled stanja računa Binance in trgovanje s kriptovalutami</translation>
+<translation id="4584930231524505442">Pretvoriti želim ...</translation>
+<translation id="5749014321384313843">Porabiti želim</translation>
+<translation id="2480674848181564169">Ni dovolj na stanju za pretvorbo</translation>
+<translation id="2215334405220411393">Najmanjši znesek za pretvorbo je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Povezava ni mogoča</translation>
+<translation id="7742417737698031726">Pristojbina</translation>
+<translation id="2122225204180056042">Prejeli boste</translation>
+<translation id="6432284126416751397">Potrdi pretvorbo</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Potrdite (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Pretvorba ni uspela. Prosim poskusite ponovno.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
+<translation id="5317780077021120954">Shrani</translation>
+<translation id="1202920745614909195">Uporabite Apple Pay, kreditno kartico ali debetno kartico za nakup kripta.</translation>
+<translation id="224719674509047150">Geslo mora imeti vsaj sedem znakov, od tega more biti vsaj eden števka in vsaj eden poseben znak</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="8094541587800369158">Ti računi se lahko uporabljajo s spletnimi 3 dapps in so lahko prikazani v vašem portfelju, vendar jih ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa. Omogočite račune Brave Sync za samodejno obnovitev sekundarnih računov.</translation>
+<translation id="6083912983861746409">Cena plina(GWEI)</translation>
+<translation id="2499079593046817044">Omejitev plina(GWEI)</translation>
+<translation id="5929798090073091848">Opozorilo: Tega ključa nikoli ne razkrijte. Vsakdo z zasebnim ključem lahko ukrade vsa sredstva na vašem računu.</translation>
 </translationbundle>

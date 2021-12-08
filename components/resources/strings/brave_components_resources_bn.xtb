@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">ত্রুটি: বাকি থাকা অ্যাকাউন্ট</translation>
 <translation id="2388470740942086608">আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।</translation>
 <translation id="3605236342612716051">ত্রুটি: সীমাবদ্ধ অ্যাকাউন্ট</translation>
+<translation id="7147519373526655987">আপনার Brave রিওয়ার্ডস ওয়ালেটটিকে আপনার <ph name="PROVIDER"/> অ্যাকাউন্টের সাথে সংযুক্ত করার জন্য আপনার ব্রাউজারের অনুরোধ যাচাই করতে একটি সমস্যা হয়েছে। সহায্যের জন্য আপনি <ph name="BEGIN_LINK"/>সমর্থন টিমের সাথে যোগাযোগ<ph name="END_LINK"/> করতে পারেন।</translation>
+<translation id="1316066811927496401">ত্রুটি: অনুরোধটিকে যাচাই করা গেল না</translation>
 <translation id="1737873393693460829">[[title]] চালু করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="901298512318791028">আপনার <ph name="AMOUNT"/> পেআউট <ph name="DAYS"/> মধ্যে প্রক্রিয়া হওয়া শুরু হবে।</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>মনে রাখবেন: <ph name="BOLD_END"/>পেমেন্ট প্রক্রিয়া করতে এবং আপনার BAT আসতে কয়েক দিন সময় লাগতে পারে।</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
-<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
-<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
 <translation id="6215565499749144110">TAP নেটওয়ার্ক দিয়ে, আপনি জনপ্রিয় নাম-ব্র্যান্ড যুক্ত উপহার কার্ডের জন্য আপনার BAT রিডিম করে নিতে পারেন।</translation>
 <translation id="6915065518766963119">* অনুমোদিত যাচাইকরণের প্রয়োজন।</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">একক, বিষয়মূলক প্যারামিটার প্রত্যাশিত।</translation>
 <translation id="1875861420974447980">এই চেইন ID বর্তমানে ব্যবহৃত</translation>
 <translation id="167698752210114155">একটি অভ্যন্তরীন ত্রুটি ঘটেছে</translation>
+<translation id="1680597601664421644">Brave ওয়ালেটের জন্য আমদানি করা স্মৃতিচিহ্ন বৈধ নয়</translation>
 <translation id="4641919696349069826">একটি অনুরোধ ইতিমধ্যে অগ্রগতিতে রয়েছে</translation>
 <translation id="872806943696014633">লেনদেনের ডেটা অনুপস্থিত</translation>
 <translation id="4805410229033541409">লেনদেনগুলো করতে 'from' অনুমোদিত নয়</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">অ্যাকাউন্ট</translation>
 <translation id="3891414008432200754">মূল্য</translation>
 <translation id="2267753748892043616">অ্যাকাউন্ট যোগ করুন</translation>
+<translation id="5061574358754621254">CoinGecko-এর দ্বারা পরিচালনা প্রাইস ডেটা</translation>
 <translation id="1483493594462132177">পাঠান</translation>
 <translation id="538450413584738399">সোয়াপ করুন</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> সমর্থিত নয়</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">স্লিপেজ টলারেন্স</translation>
 <translation id="4500473291496079954">মেয়াদ শেষ হবে</translation>
 <translation id="8093033115658137576">0x ঠিকানা অথবা url</translation>
+<translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> কে একটি DEX এগ্রিগেটর হিসেবে ব্যবহার করে।</translation>
+<translation id="151946611346774041">0x একটি লেনদেন (কোটগুলি পাওয়া সহ) পরিপূরণ করতে ইথেরিয়াম ঠিকানা এবং IP ঠিকানা প্রক্রিয়াকরণ করবে। 0x শুধুমাত্র লেনদেনগুলি প্রক্রিয়াকরণ করার জন্যই এই ডেটা ব্যবহার করবে।</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
 <translation id="1420318137760245955">নতুন Brave ওয়্যালেটে স্বাগতম</translation>
 <translation id="8303434745767477417">পনার হেফাজতে ক্রিপ্টো সম্পদ রাখুন। পোর্টফোলিও কর্মক্ষমতা ট্র্যাক করুন এবং ওয়েব 3D অ্যাপের সাথে ইন্টারঅ্যাক্ট করুন। DeFi দিয়ে ট্রেড করুন, বিনিয়োগ করুন, ঋণ নিন এবং ঋণ দিন। Brave গোপনীয়তা ব্রাউজার থেকে সকল অধিকার। কোনও এক্সটেনশন, কোনও ডাউনলোড প্রয়োজন বেই।</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> সংযোগ বিচ্ছিন্ন হয়েছে</translation>
 <translation id="5317781812114905957">নির্দেশাবলী</translation>
 <translation id="1178198982208000092">আপনার <ph name="DEVICE_NAME"/> সংযোগ করুন</translation>
-<translation id="3301417531330431881">হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">হার্ডওয়্যার ওয়ালেটের <ph name="DEVICE_NAME"/> Ethereum অ্যাপ খোলা প্রয়োজন</translation>
 <translation id="8687869982094542529">পাঠানো হয়েছে</translation>
 <translation id="5013754027092416509">প্রাপ্ত</translation>
 <translation id="5867988533873716616">ব্লক এক্সপ্লোরারের URL উপলব্ধ নয়।</translation>
 <translation id="4255623233927788178">ব্লক এক্সপ্লোরারে দেখুন</translation>
+<translation id="7148658188569580292">লেনদেনের গতি বাড়ান</translation>
+<translation id="1198263951134066686">লেনদেন বাতিল করুন</translation>
+<translation id="3562548974839822204">লেনদেনটিকে পুনরায় করুন</translation>
 <translation id="6383204195803840504">লেনদেনগুলো এখানে প্রদর্শিত হবে</translation>
+<translation id="6079696972035130497">সীমাহীন</translation>
 <translation id="2916401020782528840">লেনদেন পাওয়া যায়নি</translation>
+<translation id="2833661570529295305">অননুমোদিত</translation>
+<translation id="8034530868111548216">অনুমোদিত</translation>
+<translation id="6015436276085482001">খারিজ করা হয়েছে</translation>
+<translation id="6666273175654835609">জমা করা হয়েছে</translation>
+<translation id="2331676293859649642">নিশ্চিত করা হয়েছে</translation>
+<translation id="1165039591588034296">সমস্যা</translation>
 <translation id="8941851657764077659">সর্বাধিক অগ্রাধিকারের পরীক্ষা</translation>
 <translation id="8047527352810290817">গ্যাস সম্পাদনা করুন</translation>
 <translation id="9091334651803050473">গ্যারান্টি না থাকা সত্ত্বেও, যদি আপনি বেশি ফি প্রদান করেন তবে মাইনাররা সম্ভবত আপনার লেনদেনকে অগ্রাধিকার দেবে।</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">একটি বৈধ ETH ঠিকানা নয়</translation>
 <translation id="882486206986535424">একটি বৈধ ঠিকানা নয়</translation>
 <translation id="6825399159373612149">ডোমেন <ph name="DOMAIN_NAME"/> নিবন্ধিত নয়</translation>
+<translation id="8971278306757462297">প্রাপ্ত ঠিকানাটি আপনার নিজের ঠিকানা</translation>
+<translation id="3506416339268164412">প্রাপ্তির ঠিকানাটি একটি টোকেনের চুক্তির ঠিকানা</translation>
 <translation id="862585889767884824">এর</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> লেনদেন প্রত্যাখ্যান করুন</translation>
 <translation id="1118876217803190221">অপর্যান্ত ব্যালেন্স</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">অ্যাকাউন্ট <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">প্রথমে ওয়ালেট আনলক করতে হবে</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> একটি বৈধ ঠিকানা নয়</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> সাম্প্রতিক নেটওয়ার্ক নয়</translation>
 <translation id="7340805872138998391">ডিভাইস আনলক করা যায়্নি, পুনরায় সংযোগ করার চেষ্টা করুন</translation>
 <translation id="1984410139271779110">অভ্যন্তরীণ ত্রুটি, অজানা স্কিম</translation>
 <translation id="8682200134223578011">অনুমোদিত</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON ডেটা প্রত্যাশিত নয়</translation>
 <translation id="3282936527763045737">পাসওয়ার্ড সঠিক নয়</translation>
 <translation id="1119447706177454957">আভ্যন্তরীণ ত্রুটি</translation>
-<translation id="3327639091470204775">অভ্যন্তরীণ ত্রুটি, আইফ্রেম ব্রিজেট তৈরি করা যায়নি</translation>
 <translation id="6672377693827764095">অভ্যন্তরীণ ত্রুটি, অ্যাকাউন্টগুলি আনা যাচ্ছে না</translation>
+<translation id="8933250418452564886">হার্ডওয়্যার লেনদেন খুঁজে পাওয়া যায়নি, অনুগ্রহ করে আবার চেষ্টা করুন</translation>
+<translation id="5999974802900788338">হার্ডওয়্যার ডিভাইস থেকে ত্রুটি প্রাপ্ত হয়েছে, সম্ভবত আপনাকে আপনার ডিভাইসে লেনদেনটিকে নিশ্চিত করতে হবে</translation>
+<translation id="8523768065044261559">লেনদেনটিকে প্রক্রিয়া করার সময় ত্রুটি, অনুগ্রহ করে আবার চেষ্টা করুন</translation>
+<translation id="971552837551838642">সাইনইন করার সময় ত্রুটি বার্তা, অনুগ্রহ করে আবার চেষ্টা করুন</translation>
+<translation id="8273603707418703324">সাইনইন করার সময় ত্রুটি বার্তা, অজানা কীরিং-এর অনুরোধ করা হয়েছে, অনুগ্রহ করে পরে আবার চেষ্টা করুন</translation>
+<translation id="5265455943786954050">ট্রেজরের আদেশ ইতিমধ্যেই প্রগতিতে রয়েছে</translation>
+<translation id="7017116822583380542">ট্রেজর ব্রিজ প্রস্তুত নয়</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="3745016858329272300">সাধারণ তথ্য</translation>
 <translation id="4045404575593562245">টর নিয়ন্ত্রণ ইভেন্টগুলি</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">সার্ভারের সাথে সংযোগ করা যাচ্ছে না</translation>
 <translation id="3936826714240735937">অন্য একটি সার্ভার বেছে নিন</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> <ph name="REGION_NAME"/> সার্ভারের সাথে সংযোগ করতে পারেনি। আপনি আবার চেষ্টা করতে পারেন অথবা অন্য একটি বেছে নিতে পারেন</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">VPN ইতিমধ্যে কিনেছেন?</translation>
 <translation id="8814357473522731680">দ্বারা চালিত</translation>
 <translation id="5747552184818312860">মেয়াদ শেষ হবে</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">আপনার VPN লোকেশন বেছে নিন</translation>
 <translation id="1751947227857853925">দ্রুত এবং 100 Mbps অবধি সীমাহীন</translation>
 <translation id="1400240082805528049">24/7 সহায়তা</translation>
+<translation id="8463313539532697053">লোড হওয়ার সময় এক মুহূর্ত অপেক্ষা করুন…</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/>-এ আরো মার্কেট পাওয়া যাবে</translation>
 <translation id="952067063131306699">FTX-এ মার্কেট দেখুন এবং ক্রিপ্টো ট্রেডিং করুন</translation>
 <translation id="5963745988819586370">মার্কেট</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">ডিস্প্লে থেকে আপনার ব্যালান্স লুকিয়ে রাখুন</translation>
 <translation id="4548946945059463969">আপনার ব্যালান্সগুলি স্ক্রিনে দেখান</translation>
 <translation id="242959166945779492">আপনার অ্যাকাউন্টে কোনো ব্যালেন্স নেই। কিছু কিনতে FTX ভিজিট করুন।</translation>
+<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
+<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini Earn APY</translation>
+<translation id="3301417531330431881">হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">অভ্যন্তরীণ ত্রুটি, আইফ্রেম ব্রিজেট তৈরি করা যায়নি</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

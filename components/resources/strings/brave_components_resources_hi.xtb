@@ -260,6 +260,8 @@
 <translation id="4530453398914580957">एरर: पेंडिंग अकाउंट</translation>
 <translation id="2388470740942086608">Uphold पर इस समय आपके अकाउंट पर रोक लगी हुई है.</translation>
 <translation id="3605236342612716051">एरर: रोक लगाया हुआ अकाउंट</translation>
+<translation id="7147519373526655987">आपके Brave Rewards वॉलेट को आपके <ph name="PROVIDER"/>अकाउंट से जोड़ने के आपके ब्राउज़र के अनुरोध को सत्यापित करने में समस्या हुई. अधिक सहायता के लिए आप <ph name="BEGIN_LINK"/> सहायता केंद्र <ph name="END_LINK"/> से संपर्क कर सकते हैं.</translation>
+<translation id="1316066811927496401">एरर: अनुरोध सत्यापित नहीं किया जा सका</translation>
 <translation id="1737873393693460829">[[title]] को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
 <translation id="901298512318791028">आपका <ph name="AMOUNT"/> पेआउट <ph name="DAYS"/> में प्रोसेस होना शुरू हो जाएगा.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>नोट: <ph name="BOLD_END"/>पेआउट प्रोसेस होने में और आपका BAT आने में कुछ दिन लग सकते हैं .</translation>
@@ -382,8 +384,8 @@
 <translation id="207268487070188114">1- टाइम टिप</translation>
 <translation id="69861679024013299">1- टाइम टिप की राशि:</translation>
 <translation id="3669086939205397942">रुकें, आप अभी तक टिप नहीं कर सकते</translation>
-<translation id="3288812755711687300"><ph name="USER"/> पोस्ट</translation>
-<translation id="5851002232791947896"><ph name="USER"/> ट्वीट</translation>
+<translation id="3288812755711687300"><ph name="USER"/> ’s पोस्ट</translation>
+<translation id="5851002232791947896"><ph name="USER"/> ’s ट्वीट</translation>
 <translation id="5531915212947569943">आपके जाने पर … बहुत दुख हो रहा है</translation>
 <translation id="1420756770787071946">इस क्रिएटर का सपोर्ट करें</translation>
 <translation id="3271043362279673449">सहायता के लिए धन्यवाद!</translation>
@@ -590,8 +592,7 @@
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="3656941797339037856">रिवॉर्ड को Gemini से लिंक करें!</translation>
-<translation id="2383784987664887340">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
-<translation id="2237374144728570574">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
@@ -812,6 +813,7 @@
 <translation id="9161147058107529840">अपेक्षित सिंगल ऑब्जेक्ट पैरामीटर</translation>
 <translation id="1875861420974447980">इस समय इस Chain ID का इस्तेमाल किया जा रहा है</translation>
 <translation id="167698752210114155">एक अंदरूनी गड़बड़ी हुई</translation>
+<translation id="1680597601664421644">इम्पोर्ट किया जा रहा स्मरक Brave Wallet के लिए मान्य नहीं है</translation>
 <translation id="4641919696349069826">एक अनुरोध पहले से ही जारी है</translation>
 <translation id="872806943696014633">लेन-देन डेटा गायब है</translation>
 <translation id="4805410229033541409">'से' लेनदेन भेजने के लिए अधिकृत नहीं है</translation>
@@ -865,6 +867,7 @@
 <translation id="629730747756840877">खाता</translation>
 <translation id="3891414008432200754">मूल्य</translation>
 <translation id="2267753748892043616">अकाउंट जोड़ें</translation>
+<translation id="5061574358754621254">मूल्य डेटा CoinGecko द्वारा संचालित है</translation>
 <translation id="1483493594462132177">भेजें</translation>
 <translation id="538450413584738399">स्वैप</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> सपोर्ट नहीं करता है</translation>
@@ -872,6 +875,8 @@
 <translation id="632241521608275119">फिसलन सहनशीलता</translation>
 <translation id="4500473291496079954">में समाप्त होने वाला है</translation>
 <translation id="8093033115658137576">0x से शुरू होने वाला पता या यूआरएल (url)</translation>
+<translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>का उपयोग DEX एग्रीगेटर के तौर पर  करता है.</translation>
+<translation id="151946611346774041">0x लेनदेन को पूरा करने के लिए एथेरियम पते और IP पते को प्रोसेस करेगा (उद्धरण प्राप्त करने सहित). 0x केवल इस डेटा का उपयोग लेनदेन को प्रोसेस करने के लिए करेगा.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="1420318137760245955">नए Brave Wallet में आपका स्वागत है</translation>
 <translation id="8303434745767477417">क्रिप्टो असेट को अपने पास सुरक्षित रखें. पोर्टफ़ोलियो प्रदर्शन को ट्रैक करें, और वेब 3 DApps के साथ सहभागिता करें. DeFi के साथ ट्रेड करें, निवेश करें, उधार लें और उधार दें. Brave गोपनीयता ब्राउज़र से ठीक है. कोई एक्सटेंशन नहीं, कोई डाउनलोड की आवश्यकता नहीं है.</translation>
@@ -1043,13 +1048,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> डिसकनेक्ट हो गया है</translation>
 <translation id="5317781812114905957">निर्देश</translation>
 <translation id="1178198982208000092">अपना <ph name="DEVICE_NAME"/> कनेक्ट करें</translation>
-<translation id="3301417531330431881">Hardware वॉलेट को लेन-देन की पुष्टि करने की ज़रूरत होती है. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">हार्डवेयर वॉलेट को <ph name="DEVICE_NAME"/> एथेरियम ऐप खोलना ज़रूरी है</translation>
 <translation id="8687869982094542529">भेजे गए</translation>
 <translation id="5013754027092416509">मिला</translation>
 <translation id="5867988533873716616">ब्लॉक एक्सप्लोरर URL उपलब्ध नहीं है.</translation>
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोरर पर देखें</translation>
+<translation id="7148658188569580292">लेन-देन की गति बढ़ाएँ</translation>
+<translation id="1198263951134066686">लेन-देन कैंसल करें</translation>
+<translation id="3562548974839822204">दोबारा लेनदेन करें</translation>
 <translation id="6383204195803840504">लेन-देन यहां दिखाई देंगे</translation>
+<translation id="6079696972035130497">असीमित</translation>
 <translation id="2916401020782528840">ऐसा कोई लेन-देन नहीं मिला</translation>
+<translation id="2833661570529295305">अस्वीकृत</translation>
+<translation id="8034530868111548216">स्वीकृत</translation>
+<translation id="6015436276085482001">रिजेक्ट किया हुआ</translation>
+<translation id="6666273175654835609">प्रस्तुत किया गया</translation>
+<translation id="2331676293859649642">पुष्टि की गई</translation>
+<translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="8941851657764077659">अधिकतम प्राथमिकता शुल्क</translation>
 <translation id="8047527352810290817">गैस एडिट करें</translation>
 <translation id="9091334651803050473">गारंटी नहीं होने पर, अगर आप ज़्यादा शुल्क की पेमेंट करते हैं तो माइनर आपके लेनदेन को प्राथमिकता देंगे.</translation>
@@ -1071,6 +1086,8 @@
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="882486206986535424">यह मान्य पता नहीं है</translation>
 <translation id="6825399159373612149">डोमेन <ph name="DOMAIN_NAME"/> रजिस्टर नहीं किया गया है</translation>
+<translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
+<translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 <translation id="862585889767884824">का</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> लेन-देन रिजेक्ट करें</translation>
 <translation id="1118876217803190221">अपर्याप्त बैलेंस</translation>
@@ -1081,6 +1098,7 @@
 <translation id="5071303414930953888">अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">पहले वॉलेट को अनलॉक करना होगा</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> कोई मान्य पता नहीं है</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> वर्तमान नेटवर्क नहीं है</translation>
 <translation id="7340805872138998391">डिवाइस को अनलॉक नहीं किया जा सका, फिर से कनेक्ट करने की कोशिश करें</translation>
 <translation id="1984410139271779110">आंतरिक गड़बड़ी, अनजानी स्कीम</translation>
 <translation id="8682200134223578011">मंज़ूर किया गया</translation>
@@ -1089,8 +1107,14 @@
 <translation id="4287068151777838754">JSON डेटा की उम्मीद नहीं है</translation>
 <translation id="3282936527763045737">पासवर्ड सही नहीं है</translation>
 <translation id="1119447706177454957">आंतरिक गड़बड़ी</translation>
-<translation id="3327639091470204775">आंतरिक गड़बड़ी, iframe bridget नहीं बनाया जा सका</translation>
 <translation id="6672377693827764095">आंतरिक गड़बड़ी, अकाउंट की जानकारी नहीं निकाली जा सकी</translation>
+<translation id="8933250418452564886">हार्डवेयर लेनदेन खोजने में असमर्थ, कृपया दोबारा कोशिश करें</translation>
+<translation id="5999974802900788338">हार्डवेयर डिवाइस से प्राप्त एरर, शायद आपको अपने डिवाइस पर लेनदेन की पुष्टि करने की आवश्यकता है</translation>
+<translation id="8523768065044261559">लेन-देन प्रोसेस करने में गड़बड़ी हुई, कृपया दोबारा कोशिश करें</translation>
+<translation id="971552837551838642">साइन इन मेसेज से सम्बंधित एरर, कृपया दोबारा कोशिश करें</translation>
+<translation id="8273603707418703324">साइन इन मेसेज से सम्बंधित एरर, अनजान कीरिंग का अनुरोध किया गया, कृपया दोबारा कोशिश करें</translation>
+<translation id="5265455943786954050">Trezor कमांड से ही जारी है</translation>
+<translation id="7017116822583380542">Trezor ब्रिज तैयार नहीं है</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1105,7 +1129,6 @@
 <translation id="745054660363064771">सर्वर से कनेक्शन नहीं हो सका</translation>
 <translation id="3936826714240735937">कोई और सर्वर चुनें</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/><ph name="REGION_NAME"/> सर्वर से कनेक्ट नहीं हो सका. आप फिर से कोशिश कर सके हैं या कोई और जगह चुन सकते हैं</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/> में खरीदें</translation>
 <translation id="1024255913009642477">VPN पहले से खरीद चुके हैं?</translation>
 <translation id="8814357473522731680">द्वारा संचालित</translation>
 <translation id="5747552184818312860">समय सीमा समाप्ति दिनांक</translation>
@@ -1117,6 +1140,7 @@
 <translation id="3181339219453722970">अपनी VPN लोकेशन चुनें</translation>
 <translation id="1751947227857853925">100 Mbps तक तेज और असीमित कनेक्शन</translation>
 <translation id="1400240082805528049">24/7 सहायता</translation>
+<translation id="8463313539532697053">लोड करने में एक पल…</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> पर और मार्केट</translation>
 <translation id="952067063131306699">FTX पर मार्केट देखें और क्रिप्टो ट्रेड करें</translation>
 <translation id="5963745988819586370">मार्केट</translation>
@@ -1134,4 +1158,9 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="2383784987664887340">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
+<translation id="2237374144728570574">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
+<translation id="3301417531330431881">Hardware वॉलेट को लेन-देन की पुष्टि करने की ज़रूरत होती है. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">आंतरिक गड़बड़ी, iframe bridget नहीं बनाया जा सका</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/> में खरीदें</translation>
 </translationbundle>

@@ -36,24 +36,21 @@
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="1383876407941801731">തിരയുക</translation>
 <translation id="8446884382197647889">കൂടുതലറിയുക</translation>
-<translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
-<translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
 <translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
 <translation id="6896758677409633944">പകര്‍ത്തുക</translation>
-<translation id="5317780077021120954">സംരക്ഷിക്കുക</translation>
 <translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
 <translation id="3157931365184549694">പുനഃസ്ഥാപിക്കുക</translation>
 <translation id="9111102763498581341">അണ്‍ലോക്ക് ചെയ്യുക</translation>
 <translation id="6657585470893396449">പാസ്‌വേഡ്</translation>
 <translation id="1987317783729300807">അക്കൗണ്ടുകൾ‌</translation>
-<translation id="4636930964841734540">വിവരം</translation>
 <translation id="6979737339423435258">എല്ലാ സമയത്തും</translation>
 <translation id="3819257035322786455">ബാക്കപ്പ്</translation>
 <translation id="4522570452068850558">വിശദാംശങ്ങൾ</translation>
+<translation id="5040262127954254034">സ്വകാര്യത</translation>
 <translation id="3435896845095436175">തയ്യാറാക്കുക</translation>
 <translation id="7805768142964895445">നില</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
@@ -68,4 +65,11 @@
 <translation id="1367951781824006909">ഒരു ഫയല്‍ തിരഞ്ഞെടുക്കുക</translation>
 <translation id="8648684608605749476">അദൃശ്യ മോഡിൽ മൂന്നാം കക്ഷി കുക്കികളെ ബ്ലോക്ക് ചെയ്യുക</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
+<translation id="1165039591588034296">പിശക്</translation>
+<translation id="2941112035454246133">താഴ്ന്ന</translation>
+<translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
+<translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
+<translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="5317780077021120954">സംരക്ഷിക്കുക</translation>
+<translation id="4636930964841734540">വിവരം</translation>
 </translationbundle>

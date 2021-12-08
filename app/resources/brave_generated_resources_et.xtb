@@ -55,7 +55,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
 <translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
 <translation id="6821903322090655051">Brave'i preemiad on keelatud</translation>
-<translation id="9184430019924125685">Klõpsake lisateabe saamiseks siin</translation>
+<translation id="413570371620795359">Lubamiseks ja alustamiseks avage preemiate paneel</translation>
 <translation id="3849957491997306859">Tuvastati automaatselt</translation>
 <translation id="8798099450830957504">Vaikimisi</translation>
 <translation id="4176463684765177261">Keelatud</translation>
@@ -69,7 +69,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7286722244752781970">Minimaalne külastusaeg, millest alates külastust logitakse</translation>
 <translation id="4424486208397124985">Minimaalne külastuste arv, millest alates väljaandjat välja tuuakse</translation>
 <translation id="6248554379744796526">Näidake kinnitamata veebilehti loendis</translation>
-<translation id="3241299447027267831">Luba videotesse panustamine</translation>
+<translation id="5510618543889994434">Luba annetused videote eest</translation>
 <translation id="924777189963477634">Automaatse panustamise sisselülitamisega nõustute <ph name="BEGIN_LINK_TOS"/>teenusetingimuste<ph name="END_LINK_TOS"/> ja <ph name="BEGIN_LINK_PP"/>privaatsuspõhimõtetega<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Preemianupud</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +208,10 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2414886740292270097">Tume</translation>
 <translation id="1360441190790440400">Sama mis Linuxil</translation>
 <translation id="1336940801687497203">Sama mis Windowsil</translation>
+<translation id="5919209812221905840">Microsoft Edge'i protokolli vaiketöötleja</translation>
+<translation id="5239541974656019812">Tee Brave Microsoft Edge'i protokolli töötlejaks</translation>
+<translation id="7136694880210472378">Muuda vaikevalikuks</translation>
+<translation id="1751388324499810661">Brave on Microsoft Edge'i protokolli vaiketöötleja</translation>
 <translation id="8721331068159819483">Sama mis macOSil</translation>
 <translation id="2896916411183256228">Kasutab rakendust WebTorrent torrentite kuvamiseks otse brauseris. Toetab torrent-faile ja magnetlinke.</translation>
 <translation id="8488282162676695335">Brave'i rahakott</translation>
@@ -425,7 +429,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2653659639078652383">Esita</translation>
 <translation id="2556708692502648323">Rahakoti võrgud</translation>
 <translation id="1330032157352961756">Uue ahela tunnus</translation>
-<translation id="9053905035135220650">Kuueteistkümnendstring prefiksiga 0x</translation>
+<translation id="3423620355610881890">Positiivne kümnendarv</translation>
 <translation id="726121047592132939">Uue ahela nimi</translation>
 <translation id="1034112277864078119">Sisestage ahela nimi</translation>
 <translation id="4672314527143443556">Ahela vääringu nimetus</translation>
@@ -439,7 +443,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="3047726704186619366">Ikoonide URL-id</translation>
 <translation id="2487558607408469181">Plokiuurijate URL-id</translation>
 <translation id="6301398959353668507">See väli ei tohi olla tühi.</translation>
-<translation id="4514843126085243862">Vigane vorming, ahela tunnus on kuueteistkümnendstring prefiksiga 0x</translation>
+<translation id="7504462451153306677">Vigane vorming, ahela tunnus on positiivne arv</translation>
 <translation id="8325036459845654666">See võrk on juba lisatud.</translation>
 <translation id="650071759190249039">Sisetõrge, võrku ei õnnestu lisada.</translation>
 <translation id="868529041590572443">Palun sisestage kõik omavääringu andmed</translation>

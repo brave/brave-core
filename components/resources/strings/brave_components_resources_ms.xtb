@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Ralat: Akaun belum selesai</translation>
 <translation id="2388470740942086608">Akaun anda di Uphold dihad pada masa ini.</translation>
 <translation id="3605236342612716051">Ralat: Akaun dihadkan</translation>
+<translation id="7147519373526655987">Terdapat masalah mengesahkan permintaan pelayar anda untuk menyambungkan dompet Brave Rewards anda kepada akaun <ph name="PROVIDER"/> anda. Anda boleh <ph name="BEGIN_LINK"/>menghubungi sokongan<ph name="END_LINK"/> untuk bantuan lanjut.</translation>
+<translation id="1316066811927496401">Ralat: Permintaan tidak dapat disahkan</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Pembayaran <ph name="AMOUNT"/> anda akan mula diproses dalam masa <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>Proses pembayaran mungkin memerlukan beberapa hari dan BAT anda diterima.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Lengkapkan pengesahan dompet</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
 <translation id="3656941797339037856">Pautkan Ganjaran ke Gemini!</translation>
-<translation id="2383784987664887340">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
-<translation id="2237374144728570574">* APY Gemini Earn setakat 15 September 2021</translation>
+<translation id="3066983737886188034">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
 <translation id="7404779623219601861">Menebus BAT untuk Kad Hadiah</translation>
 <translation id="6215565499749144110">Dengan Rangkaian TAP, anda boleh menebus BAT anda untuk kad hadiah jenama terkenal.</translation>
 <translation id="6915065518766963119">* Memerlukan Pengesahan Jaminan.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Dijangka tunggal, parameter objek.</translation>
 <translation id="1875861420974447980">ID Rantai ini digunakan pada masa ini</translation>
 <translation id="167698752210114155">Satu ralat dalaman telah berlaku</translation>
+<translation id="1680597601664421644">Mnemonik yang diimport tidak sah untuk Brave Wallet</translation>
 <translation id="4641919696349069826">Satu permintan telah berlangsung</translation>
 <translation id="872806943696014633">Data transaksi tidak wujud</translation>
 <translation id="4805410229033541409">'from' tidak dibenarkan menghantar transaksi</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Akaun</translation>
 <translation id="3891414008432200754">Harga</translation>
 <translation id="2267753748892043616">Tambah Akaun</translation>
+<translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
 <translation id="1483493594462132177">Hantar</translation>
 <translation id="538450413584738399">Pertukaran</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> tidak disokong</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Toleransi gelinciran</translation>
 <translation id="4500473291496079954">Tamat tempoh dalam</translation>
 <translation id="8093033115658137576">alamat 0x atau url</translation>
+<translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
+<translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
 <translation id="8303434745767477417">Tahan aset kripto dalam jagaan anda. Jejak prestasi portfolio, dan berinteraksi dengan aplikasi nyahpusat web 3. Dagangkan, labur, pinjam, dan beri pinjam dengan DeFi. Semuanya daripada pelayar privasi Brave. Tiada sambungan dan muat turut diperlukan.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
 <translation id="5317781812114905957">Arahan</translation>
 <translation id="1178198982208000092">Sambungkan <ph name="DEVICE_NAME"/> anda</translation>
-<translation id="3301417531330431881">Dompet perkakasan memerlukan pengesahan transaksi.<ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Dompet perkakasan memerlukan Aplikasi Ethereum dibuka pada <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dihantar</translation>
 <translation id="5013754027092416509">diterima</translation>
 <translation id="5867988533873716616">Sekatan penjelajah URL tidak tersedia.</translation>
 <translation id="4255623233927788178">Lihat pada sekatan penjelajah</translation>
+<translation id="7148658188569580292">Transaksi percepatan</translation>
+<translation id="1198263951134066686">Batalkan transaksi</translation>
+<translation id="3562548974839822204">Cuba semula transaksi</translation>
 <translation id="6383204195803840504">Transaksi akan dipaparkan di sini</translation>
+<translation id="6079696972035130497">Tanpa Had</translation>
 <translation id="2916401020782528840">Transaksi tidak ditemui</translation>
+<translation id="2833661570529295305">Belum Diluluskan</translation>
+<translation id="8034530868111548216">Diluluskan</translation>
+<translation id="6015436276085482001">Ditolak</translation>
+<translation id="6666273175654835609">Dihantar</translation>
+<translation id="2331676293859649642">Disahkan</translation>
+<translation id="1165039591588034296">Ralat</translation>
 <translation id="8941851657764077659">Fi keutamaan maksimum</translation>
 <translation id="8047527352810290817">Edit gas</translation>
 <translation id="9091334651803050473">Walaupun bukan satu jaminan, pelombong kemungkinan akan mengutamakan transaksi anda jika anda membayar fi yang lebih tinggi.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
 <translation id="882486206986535424">Bukan alamat yang sah</translation>
 <translation id="6825399159373612149">Domain <ph name="DOMAIN_NAME"/> tidak didaftarkan</translation>
+<translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
+<translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
 <translation id="862585889767884824">daripada</translation>
 <translation id="9106265941552476098">Tolak <ph name="TRANSACTION_LENGTH"/> transaksi</translation>
 <translation id="1118876217803190221">Baki tidak mencukupi</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Akaun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Dompet perlu dibuka kunci dahulu</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> bukan alamat yang sah</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> bukan rangkaian semasa</translation>
 <translation id="7340805872138998391">Gagal untuk membuka kunci peranti, cuba sambung semula</translation>
 <translation id="1984410139271779110">Ralat dalaman, skim tidak diketahui</translation>
 <translation id="8682200134223578011">diluluskan</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">Data JSON tidak dijangka</translation>
 <translation id="3282936527763045737">Kata laluan tidak betul</translation>
 <translation id="1119447706177454957">Ralat dalaman</translation>
-<translation id="3327639091470204775">Ralat dalaman, gagal untuk mencipta iframe bridget</translation>
 <translation id="6672377693827764095">Ralat dalaman, Gagal untuk mendapatkan akaun</translation>
+<translation id="8933250418452564886">Tidak dapat mencari transaksi perkakasan, sila cuba lagi</translation>
+<translation id="5999974802900788338">Menerima ralat dari peranti perkakasan, mungkin anda perlu mengesahkan transaksi pada peranti anda</translation>
+<translation id="8523768065044261559">Ralat memproses transaksi, sila cuba lagi</translation>
+<translation id="971552837551838642">Ralat menandatangani mesej, sila cuba lagi</translation>
+<translation id="8273603707418703324">Ralat menandatangani mesej, cincin kekunci yang tidak diketahui diminta, sila cuba lagi</translation>
+<translation id="5265455943786954050">Arahan Trezor sedang dijalankan</translation>
+<translation id="7017116822583380542">Jambatan Trezor belum sedia</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Tidak dapat menyambung ke pelayan</translation>
 <translation id="3936826714240735937">Pilih pelayan lain</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> tidak dapat bersambung kepada pelayan <ph name="REGION_NAME"/>. Anda boleh cuba lagi, atau pilih lain</translation>
-<translation id="1664949222596149258">Beli dengan harga <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Telah membeli VPN?</translation>
 <translation id="8814357473522731680">Dikuasakan oleh</translation>
 <translation id="5747552184818312860">Tamat tempoh</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Pilih lokasi VPN anda</translation>
 <translation id="1751947227857853925">Cepat dan tanpa had sehingga 100 Mbps</translation>
 <translation id="1400240082805528049">Sokongan 24/7</translation>
+<translation id="8463313539532697053">Sekejap semasa memuatkan…</translation>
 <translation id="7586151660465233733">Lebih banyak pasaran di <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Lihat pasaran dan dagang kripto di FTX</translation>
 <translation id="5963745988819586370">Pasaran</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="2383784987664887340">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
+<translation id="2237374144728570574">* APY Gemini Earn setakat 15 September 2021</translation>
+<translation id="3301417531330431881">Dompet perkakasan memerlukan pengesahan transaksi.<ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">Ralat dalaman, gagal untuk mencipta iframe bridget</translation>
+<translation id="1664949222596149258">Beli dengan harga <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

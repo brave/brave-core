@@ -172,8 +172,6 @@
 <translation id="8987927404178983737">મહિનો</translation>
 <translation id="1383876407941801731">શોધો</translation>
 <translation id="8446884382197647889">વધુ જાણો</translation>
-<translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
-<translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="8688672835843460752">ઉપલબ્ધ</translation>
 <translation id="1078265935778232285">Brave Browser માં સ્વાગત છે</translation>
 <translation id="3479552764303398839">હમણાં નહીં</translation>
@@ -181,16 +179,15 @@
 <translation id="1483493594462132177">મોકલો</translation>
 <translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="6896758677409633944">કૉપિ કરો</translation>
-<translation id="5317780077021120954">સાચવો</translation>
 <translation id="6518133107902771759">પ્રમાણિત કરો</translation>
 <translation id="3157931365184549694">પુનઃસ્થાપિત કરો</translation>
 <translation id="9111102763498581341">અનલોક કરો</translation>
 <translation id="6657585470893396449">પાસવર્ડ</translation>
 <translation id="1987317783729300807">એકાઉન્ટ્સ</translation>
-<translation id="4636930964841734540">માહિતી</translation>
 <translation id="6979737339423435258">હંમેશાં</translation>
 <translation id="3819257035322786455">બેકઅપ</translation>
 <translation id="4522570452068850558">વિગતો</translation>
+<translation id="5040262127954254034">ગોપનીયતા</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
@@ -205,4 +202,10 @@
 <translation id="1367951781824006909">એક ફાઇલ પસંદ કરો</translation>
 <translation id="8648684608605749476">ત્રીજા પક્ષની કુકીને છૂપા મોડમાં બ્લૉક કરો</translation>
 <translation id="3380365263193509176">અજ્ઞાત ભૂલ</translation>
+<translation id="1165039591588034296">ભૂલ</translation>
+<translation id="1177863135347784049">કસ્ટમ</translation>
+<translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
+<translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
+<translation id="5317780077021120954">સાચવો</translation>
+<translation id="4636930964841734540">માહિતી</translation>
 </translationbundle>

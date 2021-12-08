@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Error: cuenta pendiente</translation>
 <translation id="2388470740942086608">Actualmente, tu cuenta de Uphold está restringida.</translation>
 <translation id="3605236342612716051">Error: cuenta restringida</translation>
+<translation id="7147519373526655987">Se ha producido un problema al validar la solicitud del navegador para vincular tu cartera de Recompensas de Brave con tu cuenta de <ph name="PROVIDER"/>. Si necesitas ayuda, puedes <ph name="BEGIN_LINK"/>contactar con el servicio de asistencia<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Error: no se ha podido validar la solicitud</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>Condiciones de uso<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>Política de privacidad<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">El pago de <ph name="AMOUNT"/> comenzará a procesarse dentro de <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>Pueden pasar unos días hasta que se procese el pago y recibas tus BAT.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Finaliza la verificación de tu monedero</translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="3656941797339037856">¡Vincula Brave Rewards con Gemini!</translation>
-<translation id="2383784987664887340">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
-<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
+<translation id="3066983737886188034">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
 <translation id="7404779623219601861">Canjear BAT para las tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Se esperaba un único parámetro de objeto.</translation>
 <translation id="1875861420974447980">Este identificador de cadena ya está en uso</translation>
 <translation id="167698752210114155">Ha ocurrido un error interno</translation>
+<translation id="1680597601664421644">El mnemotécnico que se está importando no es válido para la cartera de Brave</translation>
 <translation id="4641919696349069826">Ya hay una solicitud en curso</translation>
 <translation id="872806943696014633">Faltan datos de la transacción</translation>
 <translation id="4805410229033541409">"from" no tiene autorización para enviar transacciones</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Cuenta</translation>
 <translation id="3891414008432200754">Precio</translation>
 <translation id="2267753748892043616">Añadir cuenta</translation>
+<translation id="5061574358754621254">Datos sobre precios con la tecnología de CoinGecko</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> no compatible</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="4500473291496079954">Caduca dentro de</translation>
 <translation id="8093033115658137576">Dirección o URL 0x</translation>
+<translation id="2860280209982026951">Brave utiliza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
+<translation id="151946611346774041">0x procesará la dirección Ethereum y la dirección IP para completar una transacción (se ocupará incluso de calcular los presupuestos). 0x SOLO utilizará estos datos con el propósito de procesar las transacciones.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Te damos la bienvenida a la nueva experiencia de Brave Wallet</translation>
 <translation id="8303434745767477417">Conserva criptoactivos bajo tu custodia. Lleva un seguimiento del rendimiento de tu cartera e interactúa con aplicaciones descentralizadas de Web3. Intercambia, invierte, toma prestados y presta activos haciendo operaciones DeFi. Y todo ello sin salir del navegador de Brave, para no poner en riesgo tu privacidad. No se requieren extensiones ni descargas.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
 <translation id="5317781812114905957">Instrucciones</translation>
 <translation id="1178198982208000092">Conecta tu <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">La cartera de hardware requiere confirmación de la transacción. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">La cartera de hardware requiere que la aplicación de Ethereum esté abierta en <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">recibida</translation>
 <translation id="5867988533873716616">La URL del explorador de bloques no está disponible.</translation>
 <translation id="4255623233927788178">Ver en el explorador de bloques</translation>
+<translation id="7148658188569580292">Acelerar la transacción</translation>
+<translation id="1198263951134066686">Cancelar transacción</translation>
+<translation id="3562548974839822204">Reintentar la transacción</translation>
 <translation id="6383204195803840504">Las transacciones aparecerán aquí</translation>
+<translation id="6079696972035130497">Sin límite</translation>
 <translation id="2916401020782528840">No se ha encontrado la transacción</translation>
+<translation id="2833661570529295305">No aprobado</translation>
+<translation id="8034530868111548216">Aprobado</translation>
+<translation id="6015436276085482001">Rechazado</translation>
+<translation id="6666273175654835609">Enviado</translation>
+<translation id="2331676293859649642">Confirmado</translation>
+<translation id="1165039591588034296">Error</translation>
 <translation id="8941851657764077659">Comisión de prioridad máxima</translation>
 <translation id="8047527352810290817">Editar gas</translation>
 <translation id="9091334651803050473">Aunque no es seguro, es posible que los mineros prioricen tu transacción si pagas una comisión más alta.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">No es una dirección de ETH válida</translation>
 <translation id="882486206986535424">No es una dirección válida</translation>
 <translation id="6825399159373612149">El dominio <ph name="DOMAIN_NAME"/> no está registrado</translation>
+<translation id="8971278306757462297">La dirección de recepción es la tuya propia</translation>
+<translation id="3506416339268164412">La dirección de recepción es la dirección del contrato del token</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Rechazar <ph name="TRANSACTION_LENGTH"/> transacciones</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Cuenta <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Es necesario desbloquear primero la cartera</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> no es una dirección válida</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> no es la red actual</translation>
 <translation id="7340805872138998391">No ha sido posible desbloquear el dispositivo. Prueba a volver a establecer conexión.</translation>
 <translation id="1984410139271779110">Error interno. Esquema desconocido.</translation>
 <translation id="8682200134223578011">aprobado</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">No se esperan datos JSON</translation>
 <translation id="3282936527763045737">La contraseña no es correcta</translation>
 <translation id="1119447706177454957">Error interno</translation>
-<translation id="3327639091470204775">Error interno. No ha sido posible crear el bridget de iframe.</translation>
 <translation id="6672377693827764095">Error interno. No ha sido posible obtener las cuentas.</translation>
+<translation id="8933250418452564886">No se ha podido encontrar la transacción del hardware. Inténtalo de nuevo</translation>
+<translation id="5999974802900788338">Se ha recibido un error del dispositivo de hardware. Probablemente tengas que confirmar la transacción en tu dispositivo</translation>
+<translation id="8523768065044261559">Se ha producido un error al procesar la transacción. Inténtalo de nuevo</translation>
+<translation id="971552837551838642">Mensaje de error al iniciar sesión. Inténtalo de nuevo</translation>
+<translation id="8273603707418703324">Mensaje de error al iniciar sesión. Se ha solicitado un conjunto de claves desconocido. Inténtalo de nuevo</translation>
+<translation id="5265455943786954050">El comando de Trezor ya está en curso</translation>
+<translation id="7017116822583380542">Trezor Bridge no está listo</translation>
 <translation id="3155170474926428993">Lanzador de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Control de eventos de Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">No se puede establecer conexión con el servidor</translation>
 <translation id="3936826714240735937">Elegir otro servidor</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> no ha podido establecer conexión con el servidor ubicado en <ph name="REGION_NAME"/>. Vuelve a intentarlo o prueba con otro.</translation>
-<translation id="1664949222596149258">Contratar por <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">¿Ya has contratado una VPN?</translation>
 <translation id="8814357473522731680">Proporcionado por</translation>
 <translation id="5747552184818312860">Caduca</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Selecciona la ubicación de tu VPN</translation>
 <translation id="1751947227857853925">Rapidez y sin límites hasta los 100 Mbps</translation>
 <translation id="1400240082805528049">Asistencia ininterrumpida</translation>
+<translation id="8463313539532697053">Espera a que se cargue…</translation>
 <translation id="7586151660465233733">Más mercados en <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Ver mercados y hacer transacciones en criptomonedas en FTX</translation>
 <translation id="5963745988819586370">Mercados</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">Ocultar tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostrar tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes saldo disponible en tu cuenta. Pásate por FTX para adquirir fondos.</translation>
+<translation id="2383784987664887340">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
+<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
+<translation id="3301417531330431881">La cartera de hardware requiere confirmación de la transacción. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">Error interno. No ha sido posible crear el bridget de iframe.</translation>
+<translation id="1664949222596149258">Contratar por <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

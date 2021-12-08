@@ -56,7 +56,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
 <translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
-<translation id="9184430019924125685">Klik hier voor meer informatie</translation>
 <translation id="3849957491997306859">Automatisch gedetecteerd</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
@@ -70,7 +69,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7286722244752781970">Minimum tijd op pagina voordat een bezoek wordt geregistreerd</translation>
 <translation id="4424486208397124985">Minimum aantal bezoeken voor relevantie uitgever</translation>
 <translation id="6248554379744796526">Niet-geverifieerde sites in lijst weergeven</translation>
-<translation id="3241299447027267831">Bijdragen aan video's toestaan</translation>
+<translation id="5510618543889994434">Sta bijdragen aan video's toe</translation>
 <translation id="924777189963477634">Door automatische bijdragen in te schakelen, ga je akkoord met de <ph name="BEGIN_LINK_TOS"/>servicevoorwaarden<ph name="END_LINK_TOS"/> en het <ph name="BEGIN_LINK_PP"/>privacybeleid<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Beloningsknoppen</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -209,6 +208,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2414886740292270097">Donker</translation>
 <translation id="1360441190790440400">Hetzelfde als Linux</translation>
 <translation id="1336940801687497203">Hetzelfde als Windows</translation>
+<translation id="5919209812221905840">Standaard Microsoft Edge-protocolhandler</translation>
+<translation id="5239541974656019812">Maak Brave de Microsoft Edge-protocolhandler</translation>
+<translation id="7136694880210472378">Instellen als standaard</translation>
+<translation id="1751388324499810661">Brave is de standaard Microsoft Edge-protocolhandler</translation>
 <translation id="8721331068159819483">Zelfde als macOS</translation>
 <translation id="2896916411183256228">Gebruikt WebTorrent om torrents rechtstreeks in je browser weer te geven. Ondersteunt torrentbestanden en magnetlinks.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -426,7 +429,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="2556708692502648323">Wallet-netwerken</translation>
 <translation id="1330032157352961756">ID van nieuwe keten</translation>
-<translation id="9053905035135220650">Een hexadecimale tekenreeks met 0x-voorvoegsel</translation>
 <translation id="726121047592132939">De naam van de nieuwe keten</translation>
 <translation id="1034112277864078119">Voer ketennaam in</translation>
 <translation id="4672314527143443556">Valutanaam van keten</translation>
@@ -440,7 +442,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3047726704186619366">Pictogram-URL's</translation>
 <translation id="2487558607408469181">Explorer-URL's blokkeren</translation>
 <translation id="6301398959353668507">Dit veld mag niet leeg zijn.</translation>
-<translation id="4514843126085243862">Ongeldige notatie, de keten-ID is een hexadecimale tekenreeks met 0x-voorvoegsel</translation>
 <translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
 <translation id="650071759190249039">Interne fout, kan netwerk niet toevoegen.</translation>
 <translation id="868529041590572443">Verstrek alle informatie over de oorspronkelijke valuta</translation>
