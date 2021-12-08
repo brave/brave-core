@@ -15,7 +15,7 @@ namespace endpoint {
 namespace bitflyer {
 
 const char kUrlStaging[] = BITFLYER_STAGING_URL;
-const char kUrlProduction[] = "https://bitflyer.com";
+const char kUrlProduction[] = "https://dummy.com";
 
 std::string GetClientId() {
   return ::ledger::bitflyer::GetClientId();
