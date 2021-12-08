@@ -12,13 +12,13 @@
 <translation id="6302422639282249274">பிரேவ் வெகுமதிகளை நிர்வகி</translation>
 <translation id="6583902294974160967">ஆதரவு</translation>
 <translation id="1799030480311994998">அம்சங்கள்</translation>
-<translation id="5345505584130165588">பிரேவ் கவசங்கள் &amp; தனியுரிமை</translation>
 <translation id="4692623383562244444">தேடுபொறிகள்</translation>
 <translation id="1468415711258933398">நிலையான தாவல்</translation>
 <translation id="3377025655491224618">மறைநிலைத் தாவல்</translation>
 <translation id="9148058034647219655">வெளியேறு</translation>
 <translation id="2356070529366658676">கேள்</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
+<translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
@@ -216,9 +216,7 @@
 <translation id="1972589975368876259">அடுக்கை திருத்து</translation>
 <translation id="2490330380242414851">சில்லை நீக்கு</translation>
 <translation id="8446884382197647889">மேலும் அறிக</translation>
-<translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="2882813124794301799">சில் அடுக்கு</translation>
-<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="2977461003134694205">தனியுரிமை புள்ளிவிவரங்கள்</translation>
 <translation id="4643117005422448078">முன்னணி தளங்கள்</translation>
 <translation id="74417429503469271">நீங்கள் அடிக்கடி பார்வையிடும் முன்னணி தளங்களை திற.</translation>
@@ -238,7 +236,6 @@
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
-<translation id="5317780077021120954">சேமி</translation>
 <translation id="1544192797660353713">பணப்பை</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>
@@ -247,11 +244,12 @@
 <translation id="6664416064035847539">முகவரி அ உரலி</translation>
 <translation id="1987317783729300807">கணக்குகள்</translation>
 <translation id="3535654229833214438">பரிவர்த்தனைகள்</translation>
-<translation id="4636930964841734540">தகவல்</translation>
 <translation id="6979737339423435258">எல்லா நேரமும்</translation>
 <translation id="3819257035322786455">மறுபிரதி</translation>
 <translation id="1940465339426637378">சொத்துக்கள்</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
+<translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
+<translation id="5040262127954254034">தனியுரிமை</translation>
 <translation id="3435896845095436175">இயக்கு</translation>
 <translation id="7805768142964895445">நிலை</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
@@ -269,4 +267,7 @@
 <translation id="8648684608605749476">மறைநிலை அம்சத்தில் மூன்றாம் தரப்பு குக்கீகளைத் தடுக்கும்</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
 <translation id="5932938770824268122">தனிப்பட்ட விசை</translation>
+<translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
+<translation id="1165039591588034296">பிழை</translation>
+<translation id="1177863135347784049">தனிப்பயன்</translation>
 </translationbundle>

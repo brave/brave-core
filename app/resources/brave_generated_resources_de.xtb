@@ -55,7 +55,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="6821903322090655051">Brave Rewards sind deaktiviert</translation>
-<translation id="9184430019924125685">Klicken Sie hier, um mehr zu erfahren</translation>
 <translation id="3849957491997306859">Automatisch erkannt</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
@@ -69,7 +68,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7286722244752781970">Minimale Nutzungsdauer einer Seite bevor sie mit einbezogen wird</translation>
 <translation id="4424486208397124985">Mindestbesuche für Herausgeberrelevanz</translation>
 <translation id="6248554379744796526">Liste noch nicht bestätigter Seiten anzeigen</translation>
-<translation id="3241299447027267831">Beiträge zu Videos zulassen</translation>
+<translation id="5510618543889994434">Beiträge zu Videos zulassen</translation>
 <translation id="924777189963477634">Indem Sie die Option zum automatischen Beitragen aktivieren, stimmen Sie den <ph name="BEGIN_LINK_TOS"/>Nutzungsbedingungen<ph name="END_LINK_TOS"/> und der <ph name="BEGIN_LINK_PP"/>Datenschutzrichtlinie<ph name="END_LINK_PP"/> zu.</translation>
 <translation id="5733490796524078528">Tipp-Schaltflächen</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2414886740292270097">Dunkel</translation>
 <translation id="1360441190790440400">Wie Linux</translation>
 <translation id="1336940801687497203">Wie Windows</translation>
+<translation id="5919209812221905840">Standard-Microsoft-Edge-Protokollhandler</translation>
+<translation id="5239541974656019812">Machen Sie Brave zum Microsoft-Edge-Protokollhandler</translation>
+<translation id="7136694880210472378">Als Standard festlegen</translation>
+<translation id="1751388324499810661">Brave ist der Standard-Microsoft-Edge-Protokollhandler</translation>
 <translation id="8721331068159819483">Dasselbe wie macOS</translation>
 <translation id="2896916411183256228">Verwendet WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +428,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2653659639078652383">Senden</translation>
 <translation id="2556708692502648323">Wallet-Netzwerk</translation>
 <translation id="1330032157352961756">Die ID der neuen Kette</translation>
-<translation id="9053905035135220650">Eine Hexadezimalzeichenfolge mit Präfix 0x</translation>
 <translation id="726121047592132939">Der Name der neuen Kette</translation>
 <translation id="1034112277864078119">Kettennamen eingeben</translation>
 <translation id="4672314527143443556">Währungsname der Kette</translation>
@@ -439,7 +441,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3047726704186619366">Symbol-URLs</translation>
 <translation id="2487558607408469181">Explorer-URLs blockieren</translation>
 <translation id="6301398959353668507">Dieses Feld kann nicht leer bleiben.</translation>
-<translation id="4514843126085243862">Ungültiges Format, die Ketten-ID ist eine Hexadezimalzeichenfolge mit Präfix 0x</translation>
 <translation id="8325036459845654666">Dieses Netzwerk wurde bereits hinzugefügt.</translation>
 <translation id="650071759190249039">Interner Fehler, Netzwerk kann nicht hinzugefügt werden</translation>
 <translation id="868529041590572443">Geben Sie alle Informationen über die native Währung ein</translation>

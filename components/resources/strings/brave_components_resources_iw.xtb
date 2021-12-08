@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">שגיאה: חשבון בהשהייה</translation>
 <translation id="2388470740942086608">החשבון שלך ב-Uphold מוגבל כעת.</translation>
 <translation id="3605236342612716051">שגיאה: חשבון מוגבל</translation>
+<translation id="7147519373526655987">התרכשה בעיה באימות בקשת הדפדפן לחבר את ארנק Brave Rewards לחשבון.<ph name="PROVIDER"/>. ניתן <ph name="BEGIN_LINK"/>ליצור קשר עם התמיכה<ph name="END_LINK"/> לקבלת סיוע נוסף.</translation>
+<translation id="1316066811927496401">שגיאה: לא ניתן לאמת את הבקשה</translation>
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">התשלום <ph name="AMOUNT"/> שלך יתחיל בעיבוד בעוד <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>ייתכן שייקח מספר ימים עד שהתשלום יסתיים וה- BAT שלך יגיע.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="3656941797339037856">קשרו פרסים אל Gemini!</translation>
-<translation id="2383784987664887340">Gemini מאפשרת לך להחליף, לאחסן ולהרוויח 3.49% APY ב- BAT שלך. אמת וקשר את ארנק ה- Brave Reward שלך עם Gemini עכשיו!</translation>
-<translation id="2237374144728570574">* הרווח APY עם Gemini החל מ-15 בספטמבר 2021</translation>
+<translation id="3066983737886188034">Gemini מאפשרת לך להחליף, לאחסן ולהרוויח 3.49% APY ב- BAT שלך. אמת וקשר את ארנק ה- Brave Reward שלך עם Gemini עכשיו!</translation>
 <translation id="7404779623219601861">מימוש BAT עבור כרטיסי מתנה</translation>
 <translation id="6215565499749144110">עם רשת TAP, באפשרותך לממש את ה-BAT שלך עבור כרטיסי מתנה של שמות מותגים פופולריים.</translation>
 <translation id="6915065518766963119">* דורש אימות Uphold</translation>
@@ -812,6 +813,7 @@
 <translation id="9161147058107529840">המערכת מצפה לפרמטר אובייקט בודד.</translation>
 <translation id="1875861420974447980">מזהה שרשרת זה נמצא כעת בשימוש</translation>
 <translation id="167698752210114155">קרתה שגיאה פנימית</translation>
+<translation id="1680597601664421644">מסייע הזיכרון המיובא אינו תקף לגבי Brave Wallet</translation>
 <translation id="4641919696349069826">בקשה כבר נמצאת בביצוע</translation>
 <translation id="872806943696014633">חסרים נתוני עסקאות</translation>
 <translation id="4805410229033541409">'מאת' אינו מורשה לשלוח עסקאות</translation>
@@ -865,6 +867,7 @@
 <translation id="629730747756840877">חשבון</translation>
 <translation id="3891414008432200754">מחיר</translation>
 <translation id="2267753748892043616">הוסף חשבון</translation>
+<translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
 <translation id="1483493594462132177">שלח</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> לא נתמך</translation>
@@ -872,6 +875,8 @@
 <translation id="632241521608275119">רגישות למעידה</translation>
 <translation id="4500473291496079954">בתוקף עד</translation>
 <translation id="8093033115658137576">0x כתובת או url</translation>
+<translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
+<translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
 <translation id="8303434745767477417">החזק בנכסי קריפטו במשמורת שלך. עקוב אחר ביצועי תיק ההשקעות וקיים אינטראקציה עם אפליקציות 3D. סחור, השקע, לווה והלווה באמצעות DeFi. הכל ישר מדפדפן הפרטיות Brave. ללא תוספות, ללא צורך בהורדה.</translation>
@@ -1043,14 +1048,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> מנותק</translation>
 <translation id="5317781812114905957">הוראות</translation>
 <translation id="1178198982208000092">חבר את<ph name="DEVICE_NAME"/>שלך</translation>
-<translation id="3301417531330431881">חומרת ארנק דורשת אישור עסקה.
-<ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">יש לפתוח את אפליקציית Ethereum ב<ph name="DEVICE_NAME"/> לפי דרישת Hardware Wallert</translation>
 <translation id="8687869982094542529">נשלח</translation>
 <translation id="5013754027092416509">התקבל</translation>
 <translation id="5867988533873716616">חסימת כתובת URL של סייר אינה זמינה.</translation>
 <translation id="4255623233927788178">צפה בחסימת סייר</translation>
+<translation id="7148658188569580292">זרז עסקה</translation>
+<translation id="1198263951134066686">בטל עסקה</translation>
+<translation id="3562548974839822204">נסה שוב לבצע עסקה</translation>
 <translation id="6383204195803840504">עסקאות יופיעו כאן</translation>
+<translation id="6079696972035130497">ללא הגבלה</translation>
 <translation id="2916401020782528840">עסקה לא נמצאה</translation>
+<translation id="2833661570529295305">לא אושר</translation>
+<translation id="8034530868111548216">אושר</translation>
+<translation id="6015436276085482001">נדחה</translation>
+<translation id="6666273175654835609">הוגש</translation>
+<translation id="2331676293859649642">אושר</translation>
+<translation id="1165039591588034296">שגיאה</translation>
 <translation id="8941851657764077659">מקסימום דמי עדיפות</translation>
 <translation id="8047527352810290817">עריכת דלק</translation>
 <translation id="9091334651803050473">למרות שזה לא מובטח, סביר להניח שכורים יעדיפו את העסקה שלך אם תשלם עמלה גבוהה יותר.</translation>
@@ -1072,6 +1086,8 @@
 <translation id="749944179568745958">כתובת ETH לא חוקית</translation>
 <translation id="882486206986535424">כתובת לא חוקית</translation>
 <translation id="6825399159373612149">דומיין <ph name="DOMAIN_NAME"/> אינו רשום</translation>
+<translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
+<translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
 <translation id="862585889767884824">של</translation>
 <translation id="9106265941552476098">דחה<ph name="TRANSACTION_LENGTH"/> עסקאות</translation>
 <translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
@@ -1082,6 +1098,7 @@
 <translation id="5071303414930953888">חשבון <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">תחילה יש לבטל את נעילת הארנק</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> אינה כתובת חוקית</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/>אינו הרשת הנוכחית</translation>
 <translation id="7340805872138998391">לא ניתן לבטל נעילת המכשיר, נסה לחבר מחדש</translation>
 <translation id="1984410139271779110">שגיאה פנימית, ערכה לא ידועה</translation>
 <translation id="8682200134223578011">אושר</translation>
@@ -1090,8 +1107,14 @@
 <translation id="4287068151777838754">נתוני JSON לא צפויים</translation>
 <translation id="3282936527763045737">סיסמה לא נכונה</translation>
 <translation id="1119447706177454957">שגיאה פנימית</translation>
-<translation id="3327639091470204775">שגיאה פנימית, לא ניתן ליצור גשר iframe</translation>
 <translation id="6672377693827764095">שגיאה פנימית, לא ניתן לאחזר החשבונות</translation>
+<translation id="8933250418452564886">לא ניתן למצוא עסקת חומרה, יש לנסות שוב</translation>
+<translation id="5999974802900788338">התקבלה שגיאה מהתקן חומרה, ייתכן שעליך לאשר את העסקה במכשיר שלך</translation>
+<translation id="8523768065044261559">שגיאה בטיפול בעסקה, יש לנסות שוב</translation>
+<translation id="971552837551838642">שגיאה בחתימת ההודעה, יש לנסות שוב</translation>
+<translation id="8273603707418703324">שגיאה בחתימת ההודעה, התבקש מחזיק מפתחות לא ידוע, יש לנסות שוב</translation>
+<translation id="5265455943786954050">הפקודה של Trezor כבר נתונה בביצוע</translation>
+<translation id="7017116822583380542">הגשר של Trezor לא מוכן</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1106,7 +1129,6 @@
 <translation id="745054660363064771">לא ניתן להתחבר לשרת</translation>
 <translation id="3936826714240735937">בחר שרת אחר</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>לא ניתן להתחבר לשרת<ph name="REGION_NAME"/>. באפשרותך לנסות שוב, ולבחור בשרת אחר</translation>
-<translation id="1664949222596149258">קנייה עבור<ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">כבר קנית VPN?</translation>
 <translation id="8814357473522731680">מופעל באמצעות</translation>
 <translation id="5747552184818312860">מועד תפוגה</translation>
@@ -1118,6 +1140,7 @@
 <translation id="3181339219453722970">בחר את מיקום ה-VPN שלך</translation>
 <translation id="1751947227857853925">מהיר וללא הגבלה עד 100 Mbps</translation>
 <translation id="1400240082805528049">תמיכה 24/7</translation>
+<translation id="8463313539532697053">יש להמתין בזמן טעינת…</translation>
 <translation id="7586151660465233733">שווקים נוספים ב-<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">צפו בשווקים וקנו קריפטו ב-FTX</translation>
 <translation id="5963745988819586370">שווקים</translation>

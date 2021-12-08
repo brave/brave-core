@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Error: compte pendent</translation>
 <translation id="2388470740942086608">El teu compte a Uphold actualment està restringit.</translation>
 <translation id="3605236342612716051">Error: compte restringit</translation>
+<translation id="7147519373526655987">Hi ha hagut un problema en validar la sol·licitud del teu navegador per connectar la cartera de recompenses de Brave al teu <ph name="PROVIDER"/>. Pots<ph name="BEGIN_LINK"/>contactar amb l'assistència<ph name="END_LINK"/> per obtenir més ajuda.</translation>
+<translation id="1316066811927496401">Error: la sol·licitud no s'ha pogut validar</translation>
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">El teu pagament de <ph name="AMOUNT"/> començarà a processar-se en <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>poden passar uns dies fins que el pagament es processi i us arribin els BAT.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="3656941797339037856">Enllaça Brave Rewards amb Gemini!</translation>
-<translation id="2383784987664887340">Gemini us permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49% en els vostres BAT fàcilment. Verifiqueu la vostra cartera de Brave Rewards i enllaceu-la amb Gemini ara!</translation>
-<translation id="2237374144728570574">* Taxa de rendiment anual de Gemini Earn a partir del 15 de setembre de 2021</translation>
+<translation id="3066983737886188034">Gemini us permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49% en els vostres BAT fàcilment. Verifiqueu la vostra cartera de Brave Rewards i enllaceu-la amb Gemini ara!</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">S'espera paràmetre d'objecte únic.</translation>
 <translation id="1875861420974447980">Aquest cadena ID està en ús actualment</translation>
 <translation id="167698752210114155">S'ha produït un error intern</translation>
+<translation id="1680597601664421644">El mnemotècnic que s'està important no és vàlid per a la Brave Wallet</translation>
 <translation id="4641919696349069826">Ja hi ha una sol·licitud en curs</translation>
 <translation id="872806943696014633">Manquen dades de la transacció</translation>
 <translation id="4805410229033541409">'from' no té autorització per enviar transaccions</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Compte</translation>
 <translation id="3891414008432200754">Preu</translation>
 <translation id="2267753748892043616">Afegeix compte</translation>
+<translation id="5061574358754621254">Dades de preus impulsades per CoinGecko</translation>
 <translation id="1483493594462132177">Envia</translation>
 <translation id="538450413584738399">Intercanvi</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> no és compatible</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Tolerància a la disminució</translation>
 <translation id="4500473291496079954">Caduca en</translation>
 <translation id="8093033115658137576">0x adreça o URL</translation>
+<translation id="2860280209982026951">Brave utilitza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> com a agregador DEX.</translation>
+<translation id="151946611346774041">0x processarà l'adreça ethereum i l'adreça IP per complir una transacció (incloent-hi les cotitzacions). 0x NOMÉS utilitzarà aquestes dades amb l'objectiu de processar transaccions.</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvinguts a la nova cartera de Brave</translation>
 <translation id="8303434745767477417">Mantingueu actius en criptomoneda sota la vostra custòdia. Feu un seguiment del rendiment de la cartera i interactueu amb aplicacions descentralitzades de Web3. Comercialitzeu, invertiu, manlleveu i presteu amb DeFi. Tot des del navegador de privadesa de Brave. Sense extensions ni descàrregues.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconnectat</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="1178198982208000092">Connecta el teu <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">El moneder de maquinari requereix la confimació de la transacció. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">La cartera de hardware requereix l'aplicació Ethereum oberta a<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">rebut</translation>
 <translation id="5867988533873716616">L'URL de l'explorador de blocs no està disponible.</translation>
 <translation id="4255623233927788178">Mostra a l'explorador de blocs</translation>
+<translation id="7148658188569580292">Accelera la transacció</translation>
+<translation id="1198263951134066686">Cancel·la la transacció</translation>
+<translation id="3562548974839822204">Torna a provar la transacció</translation>
 <translation id="6383204195803840504">Les transaccions es mostraran aquí</translation>
+<translation id="6079696972035130497">Il·limitat</translation>
 <translation id="2916401020782528840">No es troba la transacció</translation>
+<translation id="2833661570529295305">Pendent d'aprovació</translation>
+<translation id="8034530868111548216">Aprovat</translation>
+<translation id="6015436276085482001">Rebutjat</translation>
+<translation id="6666273175654835609">Enviat</translation>
+<translation id="2331676293859649642">Confirmat</translation>
+<translation id="1165039591588034296">Error</translation>
 <translation id="8941851657764077659">Tarifa màx. de prioritat</translation>
 <translation id="8047527352810290817">Edita el gas</translation>
 <translation id="9091334651803050473">Tot i que no és una garantia, és probable que els miners prioritzin la vostra transacció si pagueu una tarifa més alta.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">No és una adreça ETH vàlida</translation>
 <translation id="882486206986535424">No és una adreça vàlida</translation>
 <translation id="6825399159373612149">No s'ha registrat el domini <ph name="DOMAIN_NAME"/></translation>
+<translation id="8971278306757462297">L'adreça de recepció és la teva pròpia</translation>
+<translation id="3506416339268164412">L'adreça de recepció és l'adreça de contracte d'un testimoni</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Refusar les transaccions <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Balanç insuficient</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Compte <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">El moneder s'ha de desbloquejar primer</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> no és una adreça vàlida</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> no és la xarxa actual</translation>
 <translation id="7340805872138998391">No s'ha pogut desbloquejar el dispositiu, intenta reconnectar</translation>
 <translation id="1984410139271779110">Error intern, esquema desconegut</translation>
 <translation id="8682200134223578011">aprovat</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">No s'esperen dades JSON</translation>
 <translation id="3282936527763045737">La contrasenya no és correcta</translation>
 <translation id="1119447706177454957">Error intern</translation>
-<translation id="3327639091470204775">Error intern, no s'ha pogut crear iframe bridget</translation>
 <translation id="6672377693827764095">Error intern, no s'han pogut obtenir els comptes</translation>
+<translation id="8933250418452564886">No s'ha pogut trobar la transacció del hardware, torna-ho a provar</translation>
+<translation id="5999974802900788338">S'ha rebut un error del dispositiu de hardware, probablement cal confirmar la transacció del dispositiu</translation>
+<translation id="8523768065044261559">Error en processar la transacció, torna-ho a provar</translation>
+<translation id="971552837551838642">S'ha produït un error en signar el missatge, torna-ho a provar</translation>
+<translation id="8273603707418703324">S'ha produït un error en signar el missatge, s'ha demanat un anell de claus desconegut, torna-ho a provar</translation>
+<translation id="5265455943786954050">L'ordre Trezor ja està en curs</translation>
+<translation id="7017116822583380542">El pont de Trezor no està preparat</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">No es pot connectar al servidor</translation>
 <translation id="3936826714240735937">Tria un altre servidor</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> no s'ha pogut connectar al servidor <ph name="REGION_NAME"/>. Pots intentar-ho de nou més tard, o bé triar-ne un altre.</translation>
-<translation id="1664949222596149258">Compra per <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Ja has comprat un VPN?</translation>
 <translation id="8814357473522731680">Impulsat per</translation>
 <translation id="5747552184818312860">Data de caducitat</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Tria la teva ubicació VPN</translation>
 <translation id="1751947227857853925">Ràpid i il·limitat fins a 100 Mbps</translation>
 <translation id="1400240082805528049">Suport 24/7</translation>
+<translation id="8463313539532697053">Un moment mentre es carrega…</translation>
 <translation id="7586151660465233733">Més mercats a <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Veure mercats i fer transaccions amb criptomoneda a FTX</translation>
 <translation id="5963745988819586370">Mercats</translation>

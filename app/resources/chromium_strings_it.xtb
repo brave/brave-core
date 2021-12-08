@@ -131,7 +131,7 @@
 <translation id="1744365871163268756">Attendi mentre Brave installa gli aggiornamenti di sistema più recenti.</translation>
 <translation id="3861679447659630159">Brave sta cercando di modificare le password. Per consentire la modifica, digita la tua password Windows.</translation>
 <translation id="232381795826373334">Apri PDF in Brave</translation>
-<translation id="1026406809507858026">{0,plural, =0{È disponibile un aggiornamento di Brave}=1{È disponibile un aggiornamento di Brave}other{È disponibile un aggiornamento di Brave da # giorni}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{È disponibile un aggiornamento di Brave}=1{È disponibile un aggiornamento di Brave}one{È disponibile un aggiornamento di Brave da # giorni}other{È disponibile un aggiornamento di Brave da # giorni}}</translation>
 <translation id="95624393026532554">Brave richiede Windows 7 o versioni successive.</translation>
 <translation id="5646769069113654257">Riavvia subito Brave</translation>
 <translation id="2335583906071111058">Visualizza Brave in questa lingua</translation>
@@ -155,7 +155,7 @@
 <translation id="4060970194201477024">Puoi passare da un profilo Brave all'altro qui</translation>
 <translation id="4368341489795135329">Assicurati di aver effettuato l'accesso a Brave sul tuo dispositivo <ph name="TARGET_DEVICE_NAME"/> e prova a ripetere l'invio.</translation>
 <translation id="8320964054148936490">Questo computer ha già una versione più recente di Brave. Se il software non funziona, disinstalla Brave e riprova.</translation>
-<translation id="3574823187131579180">{0,plural, =0{Brave verrà riavviato ora}=1{Brave verrà riavviato tra 1 secondo}other{Brave verrà riavviato tra # secondi}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave verrà riavviato ora}=1{Brave verrà riavviato tra 1 secondo}one{Brave verrà riavviato tra # secondi}other{Brave verrà riavviato tra # secondi}}</translation>
 <translation id="5980269616827212166">Brave deve avere l'autorizzazione di accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="5019879183386042809">Imposta Brave come browser predefinito</translation>
 <translation id="428541510811554120">Brave non può controllare la disponibilità di aggiornamenti. Prova a controllare la connessione a Internet.</translation>
@@ -170,7 +170,7 @@
 <translation id="6373767849825830651">Brave è un browser web che esegue le pagine web e le applicazioni alla velocità della luce. È veloce, stabile e facile da utilizzare. Naviga su Internet in modo più sicuro grazie alla protezione da malware e phishing integrata in Brave.</translation>
 <translation id="2644798301485385923">Sistema Chrome OS</translation>
 <translation id="1684121725014454063">Ti diamo il benvenuto nei profili Brave</translation>
-<translation id="2513524988380267210">{SECONDS,plural, =1{Brave si riavvierà tra 1 secondo}other{Brave si riavvierà tra # secondi}}</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave si riavvierà tra 1 secondo}one{Brave will restart in # seconds}other{Brave si riavvierà tra # secondi}}</translation>
 <translation id="2675662665675552980">Controlla anche la pagina visualizzata all'avvio di Brave.</translation>
 <translation id="5590013613412457132">Disinstalla Brave</translation>
 <translation id="8646609321956191980">Ogni profilo dispone delle proprie informazioni di Brave, come preferiti, cronologia, password e altro</translation>
@@ -215,7 +215,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave per gli sviluppatori</translation>
 <translation id="2034072705932785495">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera</translation>
 <translation id="2619516027171717873">Impossibile installare una versione di Brave uguale a quella in esecuzione. Chiudi Brave e riprova.</translation>
-<translation id="3186363903915641692">{0,plural, =1{Brave verrà riavviato tra 1 minuto}other{Brave verrà riavviato tra # minuti}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave verrà riavviato tra 1 minuto}one{Brave verrà riavviato tra # minuti}other{Brave verrà riavviato tra # minuti}}</translation>
 <translation id="573759479754913123">Informazioni su Chrome OS</translation>
 <translation id="8516116288943000095">Cancella anche i dati di Brave (<ph name="URL"/>)</translation>
 <translation id="5657226924540934362">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>impostazioni del sistema operativo Brave<ph name="LINK_END"/>.</translation>
@@ -243,7 +243,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
-<translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}other{Riavvia Brave entro # giorni}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}one{Riavvia Brave entro # giorni}other{Riavvia Brave entro # giorni}}</translation>
 <translation id="6914496861676471566">L'archivio di installazione è danneggiato o non valido. Scarica di nuovo Brave.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
 <translation id="8550334526674375523">Questo profilo di lavoro è completamente separato dal tuo profilo personale.</translation>
@@ -265,7 +265,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6368958679917195344">La realizzazione di Chrome OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="8986207147630327271">Stai per aggiungere a questo browser un profilo di lavoro che sarà controllato dal tuo amministratore.</translation>
 <translation id="5173820533850252773">Brave non è aggiornato</translation>
-<translation id="310518206836658214">{0,plural, =1{Brave verrà riavviato tra un'ora}other{Brave verrà riavviato tra # ore}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave verrà riavviato tra un'ora}one{Brave verrà riavviato tra # ore}other{Brave verrà riavviato tra # ore}}</translation>
 <translation id="7863882214613921971">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="911206726377975832">Eliminare anche i tuoi dati di navigazione?</translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>

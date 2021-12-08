@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Hiba: függőben lévő fiók</translation>
 <translation id="2388470740942086608">Uphold-fiókja jelenleg korlátozva van.</translation>
 <translation id="3605236342612716051">Hiba: korlátozott fiók</translation>
+<translation id="7147519373526655987">Probléma lépett fel a böngészője kérésének érvényesítésével, amely a Brave jutalmak pénztárcája és a(z) <ph name="PROVIDER"/> fiók összekapcsolására vonatkozott. További segítségért <ph name="BEGIN_LINK"/>lépjen kapcsolatba az ügyfélszolgálattal<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Hiba: a kérést nem lehetett érvényesíteni</translation>
 <translation id="1737873393693460829">A(z) [[title]] bekapcsolásával elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Az Ön <ph name="AMOUNT"/> kifizetésének feldolgozása <ph name="DAYS"/> múlva fog megkezdődni.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Megjegyzés: <ph name="BOLD_END"/>Pár nap eltelhet a fizetés feldolgozásáig és a BAT-je megérkezésééig.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
 <translation id="9200453331904391567">Brave Jutalmak kapcsolat megszakítása</translation>
 <translation id="3656941797339037856">Kapcsolja össze a Rewards-ot a Geminivel!</translation>
-<translation id="2383784987664887340">A Geminivel könnyedén kereskedhet a BAT-jával, tárolhatja azt és kereshet 3,49% APY-t vele. Erősítse meg és kapcsolja össze Brave jutalmak pénztárcáját a Geminivel most!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY 2021. szept. 15-től</translation>
+<translation id="3066983737886188034">A Geminivel könnyedén kereskedhet a BAT-jával, tárolhatja azt és kereshet 3,49% APY-t vele. Erősítse meg és kapcsolja össze Brave jutalmak pénztárcáját a Geminivel most!</translation>
 <translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
 <translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
 <translation id="6915065518766963119">* Uphold-ellenőrzést igényel.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Egyetlen objektumparamétert várt.</translation>
 <translation id="1875861420974447980">Ez a láncazonosító már használatban van</translation>
 <translation id="167698752210114155">Belső hiba lépett fel</translation>
+<translation id="1680597601664421644">Az éppen importált mnemonika nem érvényes a Brave pénztárca esetén</translation>
 <translation id="4641919696349069826">A kérelem már folyamatban van</translation>
 <translation id="872806943696014633">Hiányoznak a tranzakciós adatok</translation>
 <translation id="4805410229033541409">'from' nincs feljogosítva rá, hogy tranzakciókat küldjön</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Fiók</translation>
 <translation id="3891414008432200754">Ár</translation>
 <translation id="2267753748892043616">Számla hozzáadása</translation>
+<translation id="5061574358754621254">Az áradatokat a CoinGecko biztosítja</translation>
 <translation id="1483493594462132177">Küldés</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877">A(z) <ph name="NETWORK"/> nem támogatott</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Csúszási tolerancia</translation>
 <translation id="4500473291496079954">Lejár ennyi idő múlva:</translation>
 <translation id="8093033115658137576">0x  cím vagy URL</translation>
+<translation id="2860280209982026951">A Brave a következőt használja DEX aggregátorként: <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
+<translation id="151946611346774041">A 0x feldolgozza az Ethereum-címet és az IP-címet a tranzakciók teljesítéséhez (beleértve az árajánlatok lehívását). A 0x KIZÁRÓLAG a tranzakciók feldolgozása céljából használja ezeket az adatokat.</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
 <translation id="8303434745767477417">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba web 3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="1178198982208000092">Csatlakoztassa a következőt: <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">A hardware pénztárcához tranzakció-visszaigazolás szükséges. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">A hardware pénztárcához a következőn kell megnyitni az Ethereum alkalmazást: <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">elküldött</translation>
 <translation id="5013754027092416509">beérkezett</translation>
 <translation id="5867988533873716616">A block explorer URL-je nem elérhető.</translation>
 <translation id="4255623233927788178">Megtekintés block explorerben</translation>
+<translation id="7148658188569580292">Tranzakció gyorsítása</translation>
+<translation id="1198263951134066686">Tranzakció visszavonása</translation>
+<translation id="3562548974839822204">Tranzakció megkísérlése újból</translation>
 <translation id="6383204195803840504">A tranzakciók itt jelennek majd meg</translation>
+<translation id="6079696972035130497">Korlátlan</translation>
 <translation id="2916401020782528840">A tranzakció nem található</translation>
+<translation id="2833661570529295305">Jóvá nem hagyott</translation>
+<translation id="8034530868111548216">Jóváhagyva</translation>
+<translation id="6015436276085482001">Elutasítva</translation>
+<translation id="6666273175654835609">Elküldve</translation>
+<translation id="2331676293859649642">Megerősítve</translation>
+<translation id="1165039591588034296">Hiba</translation>
 <translation id="8941851657764077659">Maximum prioritási díj</translation>
 <translation id="8047527352810290817">Gas szerkesztése</translation>
 <translation id="9091334651803050473">Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Érvénytelen ETH cím</translation>
 <translation id="882486206986535424">Érvénytelen cím</translation>
 <translation id="6825399159373612149">A(z) <ph name="DOMAIN_NAME"/> domén nincs regisztrálva</translation>
+<translation id="8971278306757462297">A fogadó cím az Ön saját címe</translation>
+<translation id="3506416339268164412">A fogadó cím egy token szerződési címe</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> tranzakció elutasítása</translation>
 <translation id="1118876217803190221">Nincs fedezet</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888"><ph name="ACCOUNT_NUMBER"/> fiók</translation>
 <translation id="2330177808960134000">A pénztárca zárolását előbb fel kell oldani</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nem érvényes cím</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> nem az aktuális hálózat</translation>
 <translation id="7340805872138998391">Nem sikerült feloldani az eszköz zárolását, próbáljon meg újra csatlakozni</translation>
 <translation id="1984410139271779110">Belső hiba, ismeretlen séma</translation>
 <translation id="8682200134223578011">jóváhagyva</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON-adatok nem várhatók</translation>
 <translation id="3282936527763045737">A jelszó helytelen</translation>
 <translation id="1119447706177454957">Belső hiba</translation>
-<translation id="3327639091470204775">Belső hiba, sikertelen volt az iframe bridge létrehozása</translation>
 <translation id="6672377693827764095">Belső hiba, sikertelen volt a fiókok lehívása</translation>
+<translation id="8933250418452564886">Nem található hardware-tranzakció, próbálja újra</translation>
+<translation id="5999974802900788338">A hardware eszköz hibát jelez, előfordulhat, hogy a tranzakciót az eszközén kell megerősítenie</translation>
+<translation id="8523768065044261559">Hiba történt a tranzakció feldolgozásakor, próbálja újra</translation>
+<translation id="971552837551838642">Hiba történt az üzenet aláírásakor, próbálja újra</translation>
+<translation id="8273603707418703324">Hiba történt az üzenet aláírásakor, ismeretlen kulcstár igényelve; próbálja újra</translation>
+<translation id="5265455943786954050">A Trezor parancs már folyamatban van</translation>
+<translation id="7017116822583380542">A Trezor-híd nem áll készen</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Nem lehet kapcsolódni a szerverhez</translation>
 <translation id="3936826714240735937">Válasszon másik szervert</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nem tudott csatlakozni a(z) <ph name="REGION_NAME"/> szerverhez. Megpróbálhatja újra, vagy válasszon egy másik szervert</translation>
-<translation id="1664949222596149258">Megvásárlás <ph name="PRODUCE_PRICE"/> összegért</translation>
 <translation id="1024255913009642477">Már vásárolt VPN-szolgáltatást?</translation>
 <translation id="8814357473522731680">Szolgáltató:</translation>
 <translation id="5747552184818312860">Lejár</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Kiválaszthatja a VPN országát</translation>
 <translation id="1751947227857853925">Gyors és 100 Mbps-ig korlátlan</translation>
 <translation id="1400240082805528049">0–24 ügyfélszolgálat</translation>
+<translation id="8463313539532697053">Egy pillanat, a betöltés folyamatban…</translation>
 <translation id="7586151660465233733">További piacok itt: <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Megtekintheti a piacokat és kriptokereskedést bonyolíthat az FTX-en</translation>
 <translation id="5963745988819586370">Piacok</translation>
