@@ -15,7 +15,8 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/net/prediction_options.h"
+#include "chrome/browser/prefetch/pref_names.h"
+#include "chrome/browser/prefetch/prefetch_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
@@ -136,8 +137,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSearchSuggestEnabled));
   EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
-                prefs::kNetworkPredictionOptions),
-            chrome_browser_net::NETWORK_PREDICTION_NEVER);
+                prefetch::prefs::kNetworkPredictionOptions),
+            static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSigninAllowedOnNextStartup));
   // Verify cloud print is disabled.
