@@ -52,10 +52,8 @@
         android:text="@string/save_account_watchlist"
         android:textAllCaps="false"
         android:textSize="16sp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:textColor="@android:color/white"
         style="?android:attr/borderlessButtonStyle"/>
 
