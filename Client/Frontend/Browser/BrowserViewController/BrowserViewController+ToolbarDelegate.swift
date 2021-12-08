@@ -240,7 +240,7 @@ extension BrowserViewController: TopToolbarDelegate {
             url = originalURL
         }
         
-        if url.isLocalUtility {
+        if url.isLocalUtility || InternalURL(url)?.isAboutURL == true || InternalURL(url)?.isAboutHomeURL == true {
             return
         }
         
