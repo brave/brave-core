@@ -159,19 +159,19 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int leftDot = R.drawable.ic_live_dot;
             ((RadioButton) findViewById(checkedTimeframeType))
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             RadioButton button = findViewById(checkedId);
-            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             getPriceHistory(mAssetSymbol, "usd", timeframeType);
             checkedTimeframeType = checkedId;
         });
 
+        final TextView assetPrice = findViewById(R.id.asset_price);
         chartES = findViewById(R.id.line_chart);
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
-        chartES.drawLine(0.f, findViewById(R.id.asset_price));
+        chartES.drawLine(0, assetPrice);
+        chartES.setNoDrawText(true);
         chartES.setOnTouchListener(new View.OnTouchListener() {
             @Override
             @SuppressLint("ClickableViewAccessibility")
@@ -183,7 +183,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX(), findViewById(R.id.asset_price));
+                    chartES.drawLine(event.getRawX(), assetPrice);
                 } else if (event.getAction() == MotionEvent.ACTION_UP
                         || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     chartES.drawLine(-1, null);

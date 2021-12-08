@@ -585,7 +585,6 @@ brave_java_resources = [
   "java/res/drawable/ic_icon_bat_eta.xml",
   "java/res/drawable/ic_info.xml",
   "java/res/drawable/ic_languages.xml",
-  "java/res/drawable/ic_live_dot.xml",
   "java/res/drawable/ic_mask.xml",
   "java/res/drawable/ic_more_horiz.xml",
   "java/res/drawable/ic_new_tab_page.xml",
