@@ -1,14 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
-index a6405c3a53a56e8563610380f80ccda0e1689757..5e963fefd2fddd3705e20cf5751340947c877978 100644
+index a6405c3a53a56e8563610380f80ccda0e1689757..955543d1d55bc542b71c3633da7f5e0b9d8af57d 100644
 --- a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
 +++ b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
-@@ -38,7 +38,8 @@ class ServiceWorkerContentSettingsProxy final
+@@ -38,6 +38,7 @@ class ServiceWorkerContentSettingsProxy final
    // Blocks until the response arrives.
    bool AllowStorageAccessSync(StorageType storage_type) override;
  
-- private:
 +  BRAVE_SERVICE_WORKER_CONTENT_SETTINGS_PROXY_H
-+  private:
+  private:
    // To ensure the returned pointer is destructed on the same thread
    // that it was constructed on, this uses ThreadSpecific.
-   mojo::Remote<mojom::blink::WorkerContentSettingsProxy>& GetService();
