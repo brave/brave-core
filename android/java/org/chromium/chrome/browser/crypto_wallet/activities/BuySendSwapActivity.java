@@ -75,6 +75,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -97,7 +98,8 @@ import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver {
+                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver,
+                   ApprovedTxObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
@@ -1180,8 +1182,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
                 ApproveTxBottomSheetDialogFragment.newInstance(txInfo, accountName);
+        approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
         approveTxBottomSheetDialogFragment.show(
                 getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    @Override
+    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
+        if (approved) {
+            finish();
+        }
     }
 
     public void showSwapButtonText() {
