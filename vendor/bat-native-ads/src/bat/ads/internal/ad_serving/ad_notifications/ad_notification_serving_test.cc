@@ -158,11 +158,14 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
                                          &anti_targeting_resource);
 
   std::map<std::string, std::string> ad_serving_parameters;
-  ad_serving_parameters["ad_serving_version"] = 2;
+  ad_serving_parameters["ad_serving_version"] = "2";
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kAdServing, ad_serving_parameters}}, {});
+
+  ASSERT_TRUE(features::IsAdServingEnabled());
+  ASSERT_EQ(2, features::GetAdServingVersion());
 
   // Act
   EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(

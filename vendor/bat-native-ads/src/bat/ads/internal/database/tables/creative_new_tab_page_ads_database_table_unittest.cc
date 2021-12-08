@@ -673,7 +673,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   Save(creative_new_tab_page_ads);
 
   // Act
-  FastForwardClockBy(base::TimeDelta::FromSeconds(1));
+  FastForwardClockBy(base::Seconds(1));
 
   // Assert
   CreativeNewTabPageAdList expected_creative_new_tab_page_ads;

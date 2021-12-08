@@ -178,7 +178,7 @@ bool IsSuspendedMetric(base::StringPiece metric_name,
 
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
-  const auto delta = base::TimeDelta::FromSecondsD(
+  const auto delta = base::Seconds(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
   return delta;
 }
@@ -194,8 +194,8 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
     days_till_monday = 1;
   }
 
-  base::TimeDelta result = base::TimeDelta::FromDays(days_till_monday) -
-                           (time - time.LocalMidnight());
+  base::TimeDelta result =
+      base::Days(days_till_monday) - (time - time.LocalMidnight());
   return result;
 }
 
@@ -235,8 +235,7 @@ void BraveP3AService::Init(
   // Init basic prefs.
   initialized_ = true;
 
-  average_upload_interval_ =
-      base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
+  average_upload_interval_ = base::Seconds(kDefaultUploadIntervalSeconds);
 
   upload_server_url_ = GURL(kP3AServerUrl);
   MaybeOverrideSettingsFromCommandLine();
@@ -322,7 +321,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3AUploadIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      average_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
+      average_upload_interval_ = base::Seconds(seconds);
     }
   }
 
@@ -335,7 +334,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3ARotationIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      rotation_interval_ = base::TimeDelta::FromSeconds(seconds);
+      rotation_interval_ = base::Seconds(seconds);
     }
   }
 

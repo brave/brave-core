@@ -399,7 +399,7 @@ void AdNotificationPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
 
   const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+      base::Milliseconds(features::AdNotificationFadeDuration());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -409,7 +409,7 @@ void AdNotificationPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
 
   const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+      base::Milliseconds(features::AdNotificationFadeDuration());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();

@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/bind_post_task.h"
 #include "base/callback_helpers.h"
+#include "base/task/bind_post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -319,7 +319,7 @@ void TorLauncherFactory::DelayedRelaunchTor() {
       FROM_HERE,
       base::BindOnce(&TorLauncherFactory::RelaunchTor,
                      weak_ptr_factory_.GetWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void TorLauncherFactory::OnTorEvent(

@@ -25,14 +25,14 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
+import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnParentActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private ProgressBar mPlanProgress;
     private LinearLayout mPlanLayout;
     private boolean mShouldShowRestoreMenu;
@@ -152,7 +152,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();

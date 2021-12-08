@@ -117,7 +117,7 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
           FROM_HERE,
           base::BindOnce(&IPFSOnboardingPage::GetConnectedPeers,
                          weak_ptr_factory_.GetWeakPtr()),
-          base::TimeDelta::FromSeconds(kConnectedPeersRetryStepSec));
+          base::Seconds(kConnectedPeersRetryStepSec));
     } else {
       RespondToPage(NO_PEERS_LIMIT, l10n_util::GetStringUTF16(
                                         IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));

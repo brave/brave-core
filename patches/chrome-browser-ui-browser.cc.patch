@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index c764e3607d274b9ec3f645c2b5fc9c8c1e98ad47..b5ce87d4bb91147dcc63e72b0658ab1d66c2ed98 100644
+index 030680ad086128d02d7a1c8adc21b9b1611786c6..748a2f3a204ead17bb29b2c479897e940d23173f 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -446,6 +446,7 @@ Browser::CreationStatus Browser::GetCreationStatusForProfile(Profile* profile) {
- // static
- Browser* Browser::Create(const CreateParams& params) {
+@@ -446,6 +446,7 @@ Browser* Browser::Create(const CreateParams& params) {
+   // not possible, e.g. using the wrong profile or during shutdown. The caller
+   // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
 +  BRAVE_BROWSER_CREATE
    return new Browser(params);

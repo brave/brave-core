@@ -263,7 +263,7 @@ void SidebarContainerView::ShowSidebar(bool show_sidebar,
   } else {
     constexpr int kHideDelayInMS = 400;
     sidebar_hide_timer_.Start(
-        FROM_HERE, base::TimeDelta::FromMilliseconds(kHideDelayInMS),
+        FROM_HERE, base::Milliseconds(kHideDelayInMS),
         base::BindOnce(&SidebarContainerView::DoHideSidebar,
                        base::Unretained(this), show_event_detect_widget));
   }

@@ -163,9 +163,8 @@ void Unverified::QueueSaved(
   }
 
   base::TimeDelta delay = ledger::is_testing
-      ? base::TimeDelta::FromSeconds(2)
-      : util::GetRandomizedDelay(
-          base::TimeDelta::FromSeconds(45));
+                              ? base::Seconds(2)
+                              : util::GetRandomizedDelay(base::Seconds(45));
 
   BLOG(1, "Unverified contribution timer set for " << delay);
 

@@ -11,8 +11,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-using base::TimeDelta;
-
 static const char max_expires_date_cookie[] =
     "test1=yes; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 static const char max_age_cookie[] =
@@ -30,7 +28,7 @@ namespace net {
 
 const base::Time creation_time = base::Time::Now();
 constexpr base::TimeDelta kMaxCookieExpiration =
-    base::TimeDelta::FromDays(30*6);  // 6 months
+    base::Days(30 * 6);  // 6 months
 
 TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
   GURL url("https://www.example.com/test");
@@ -61,7 +59,7 @@ TEST(BraveCanonicalCookieTest, AllowShorterThanMaxExpiration) {
       url, short_expiration_cookie, creation_time,
       /*server_time=*/absl::nullopt, /*cookie_partition_key=*/absl::nullopt);
   EXPECT_TRUE(cookie.get());
-  EXPECT_EQ(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(2));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + base::Days(2));
 }
 
 TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {

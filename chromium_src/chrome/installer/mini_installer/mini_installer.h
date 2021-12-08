@@ -8,8 +8,6 @@
 
 #include "../../../../../chrome/installer/mini_installer/mini_installer.h"
 
-#define StandardReferralCodeLen 6
-
 namespace mini_installer {
 typedef StackString<128> ReferralCodeString;
 

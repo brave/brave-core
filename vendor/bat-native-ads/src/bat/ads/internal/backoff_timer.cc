@@ -12,7 +12,7 @@
 namespace ads {
 
 BackoffTimer::BackoffTimer() {
-  max_backoff_delay_ = base::TimeDelta::FromHours(1);
+  max_backoff_delay_ = base::Hours(1);
 }
 
 BackoffTimer::~BackoffTimer() = default;
@@ -58,8 +58,7 @@ base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta& delay) {
   int64_t delay_in_seconds = delay.InSeconds();
   delay_in_seconds <<= backoff_count_++;
 
-  base::TimeDelta backoff_delay =
-      base::TimeDelta::FromSeconds(delay_in_seconds);
+  base::TimeDelta backoff_delay = base::Seconds(delay_in_seconds);
   if (backoff_delay > max_backoff_delay_) {
     backoff_delay = max_backoff_delay_;
   }

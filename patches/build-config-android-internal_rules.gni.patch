@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 52d6c5f2120d8a2797378ca78205e1b849e23ecf..76872b3ca28af7d978286b27f6905c228e42467e 100644
+index 1bc0713025c50c840e1e6e0e938726868caee103..482ab380130749dde2eb02be6e4f5fe4f1847e98 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3868,6 +3868,7 @@ if (enable_java_templates) {
+@@ -3912,6 +3912,7 @@ if (enable_java_templates) {
          }
          _analysis_public_deps += [ ":$_bytecode_checks_target" ]
        }

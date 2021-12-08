@@ -207,8 +207,7 @@ void Gemini::StartTransferFeeTimer(const std::string& fee_id,
                                    const int attempts) {
   DCHECK(!fee_id.empty());
 
-  base::TimeDelta delay =
-      util::GetRandomizedDelay(base::TimeDelta::FromSeconds(45));
+  base::TimeDelta delay = util::GetRandomizedDelay(base::Seconds(45));
 
   BLOG(1, "Gemini transfer fee timer set for " << delay);
 

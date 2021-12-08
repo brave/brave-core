@@ -259,7 +259,7 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
 
 void SubdivisionTargeting::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Retry fetching subdivision target " << FriendlyDateAndTime(time));
@@ -269,7 +269,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
   const int64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing
                                   : kFetchSubdivisionTargetingPing;
 
-  const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);
+  const base::TimeDelta delay = base::Seconds(ping);
 
   const base::Time time = timer_.StartWithPrivacy(
       delay,

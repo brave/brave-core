@@ -35,7 +35,7 @@ const int kMinimalPeersRetryIntervalMs = 50;
 const int kPeersRetryRate = 3;
 
 base::TimeDelta CalculatePeersRetryTime() {
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalPeersRetryIntervalMs,
                     kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }

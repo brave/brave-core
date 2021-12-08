@@ -60,6 +60,12 @@
   <if expr="chromeos or lacros">
     </if>
 
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy review, for blocking third party cookies in private.">
+    Block third-party cookies in Private
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+    When you aren't in Private mode, sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
+  </message>
   <if expr="is_win and _google_chrome">
     </if>
 
@@ -89,7 +95,7 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
 
   <if expr="not chromeos and not lacros">

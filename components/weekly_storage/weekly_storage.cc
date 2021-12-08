@@ -56,8 +56,7 @@ void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
 
 uint64_t WeeklyStorage::GetWeeklySum() const {
   // We record only value for last N days.
-  const base::Time n_days_ago =
-      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  const base::Time n_days_ago = clock_->Now() - base::Days(kDaysInWeek);
   return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
                          [n_days_ago](const uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
@@ -71,8 +70,7 @@ uint64_t WeeklyStorage::GetWeeklySum() const {
 
 uint64_t WeeklyStorage::GetHighestValueInWeek() const {
   // We record only value for last N days.
-  const base::Time n_days_ago =
-      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  const base::Time n_days_ago = clock_->Now() - base::Days(kDaysInWeek);
   std::list<DailyValue> last_weeks_daily_values(daily_values_.size());
   auto copied_it =
       std::copy_if(daily_values_.begin(), daily_values_.end(),

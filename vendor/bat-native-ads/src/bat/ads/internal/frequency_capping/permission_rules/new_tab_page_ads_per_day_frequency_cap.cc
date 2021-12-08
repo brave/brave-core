@@ -34,8 +34,8 @@ std::string NewTabPageAdsPerDayFrequencyCap::GetLastMessage() const {
 
 bool NewTabPageAdsPerDayFrequencyCap::DoesRespectCap(
     const std::deque<base::Time>& history) {
-  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
+  const base::TimeDelta time_constraint =
+      base::Seconds(base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   const int cap = features::GetMaximumNewTabPageAdsPerDay();
 

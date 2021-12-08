@@ -1117,8 +1117,7 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
   histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
                                        1);
 
-  service_->RecordWalletUsage(base::Time::Now() +
-                              base::TimeDelta::FromDays(31));
+  service_->RecordWalletUsage(base::Time::Now() + base::Days(31));
   histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, false,
                                        2);
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, false,

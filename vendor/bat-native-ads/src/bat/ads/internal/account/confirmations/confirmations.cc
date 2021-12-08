@@ -109,7 +109,7 @@ void Confirmations::RetryAfterDelay() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&Confirmations::Retry, base::Unretained(this)));
 
   BLOG(1, "Retry failed confirmations " << FriendlyDateAndTime(time));

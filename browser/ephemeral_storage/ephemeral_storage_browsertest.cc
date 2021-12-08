@@ -157,7 +157,7 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       "a.com", "/ephemeral_storage_with_network_cookies.html");
 
   ephemeral_storage::EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      base::Seconds(kKeepAliveInterval));
 }
 
 void EphemeralStorageBrowserTest::SetUpHttpsServer() {
@@ -275,8 +275,7 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
 void EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive() {
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 }
 

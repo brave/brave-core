@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_database_impl.h"
 #include "bat/ledger/ledger_client.h"
