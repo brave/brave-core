@@ -29,6 +29,8 @@ extension BrowserViewController {
                     controller.dismiss(animated: true, completion: nil)
                     return
                 }
+                
+                self.presentOnboardingWelcomeScreen(on: controller)
             }
             
             present(controller, animated: false)
