@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Kļūda: neapstiprināts konts</translation>
 <translation id="2388470740942086608">Jūsu Uphold konts šobrīd ir ierobežots.</translation>
 <translation id="3605236342612716051">Kļūda: ierobežots konts</translation>
+<translation id="7147519373526655987">Problēma, apstiprinot jūsu pārlūkprogrammas pieprasījumu savienot Brave Rewards maku ar <ph name="PROVIDER"/> kontu. Lai saņemtu papildu palīdzību <ph name="BEGIN_LINK"/>, varat sazināties ar atbalsta dienestu<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">Kļūda: pieprasījumu nevarēja apstiprināt</translation>
 <translation id="1737873393693460829">Ieslēdzot [[title]], jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Jūsu <ph name="AMOUNT"/> izmaksas apstrāde tiks uzsākta pēc<ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Piezīme: <ph name="BOLD_END"/>Var paiet dažas dienas, līdz izmaksa tiks apstrādāta un jūs saņemsiet BAT.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Pabeigt maka verifikāciju</translation>
 <translation id="9200453331904391567">Atspējot Brave balvas</translation>
 <translation id="3656941797339037856">Saistiet Rewards ar Gemini!</translation>
-<translation id="2383784987664887340">Gemini ļauj ērti tirgoties, uzglabāt un nopelnīt 3,49 % APY par BAT. Verificējiet un saistiet Brave balvu maku ar Gemini jau tagad!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY no 2021. gada 15. septembra</translation>
+<translation id="3066983737886188034">Gemini ļauj ērti tirgoties, uzglabāt un nopelnīt 3,49 % APY par BAT. Verificējiet un saistiet Brave balvu maku ar Gemini jau tagad!</translation>
 <translation id="7404779623219601861">Izpirkt BAT, iegādājoties dāvanu kartes</translation>
 <translation id="6215565499749144110">Izmantojot TAP Network, jūs varat izpirkt savus BAT, iegādājoties populāru zīmolu dāvanu kartes.</translation>
 <translation id="6915065518766963119">* Nepieciešama Uphold verifikācija.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Jābūt vienam objekta parametram.</translation>
 <translation id="1875861420974447980">Pašreiz tiek izmantots šis ķēdes ID</translation>
 <translation id="167698752210114155">Radās iekšēja kļūda</translation>
+<translation id="1680597601664421644">Importētā mnemonika Brave makam nav derīga</translation>
 <translation id="4641919696349069826">Pieprasījums jau tiek apstrādāts</translation>
 <translation id="872806943696014633">Trūkst darījuma datu.</translation>
 <translation id="4805410229033541409">“from” nav pilnvarots sūtīt darījumus.</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Konts</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Pievienot kontu</translation>
+<translation id="5061574358754621254">Cenas datus nodrošina CoinGecko</translation>
 <translation id="1483493594462132177">Sūtīt</translation>
 <translation id="538450413584738399">Mijmaiņa</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> netiek atbalstīts</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Pieļaujamā novirze</translation>
 <translation id="4500473291496079954">Derīgums beidzas pēc</translation>
 <translation id="8093033115658137576">0x adrese vai url</translation>
+<translation id="2860280209982026951">Brave izmanto<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kā DEX apkopotāju.</translation>
+<translation id="151946611346774041">0x apstrādā Ethereum adresi un IP adresi, lai veiktu darījumu (tai skaitā cenu saņemšanu). 0x šos datus izmanto VIENĪGI darījumu apstrādei.</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
 <translation id="8303434745767477417">Turiet kripto līdzekļus savā īpašumā. Sekojiet portfeļa efektivitātei un darbojieties ar tīmekļa 3 DApps. Tirgojieties, ieguldiet, aizņemieties un aizdodiet ar DeFi. Brave privātuma pārlūks to atbalsta. Bez paplašinājumiem, bez lejupielādes.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atvienots</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
 <translation id="1178198982208000092">Savienojiet savu <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Aparatūras maciņam nepieciešams darījuma apstiprinājums. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Aparatūras maciņam nepieciešams, lai lietotne Ethereum būtu atvērta<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">nosūtīts</translation>
 <translation id="5013754027092416509">saņemts</translation>
 <translation id="5867988533873716616">Pārlūka URL bloķēšana nav pieejama.</translation>
 <translation id="4255623233927788178">Skats uz pārlūka bloķēšanu</translation>
+<translation id="7148658188569580292">Paātrināt darījumu</translation>
+<translation id="1198263951134066686">Atcelt darījumu</translation>
+<translation id="3562548974839822204">Mēģiniet darījumu veikt vēlreiz</translation>
 <translation id="6383204195803840504">Darījumi parādīsies šeit</translation>
+<translation id="6079696972035130497">Neierobežots</translation>
 <translation id="2916401020782528840">Darījums netika atrasts</translation>
+<translation id="2833661570529295305">Nav apstiprināts</translation>
+<translation id="8034530868111548216">Apstiprināts</translation>
+<translation id="6015436276085482001">Noraidīts</translation>
+<translation id="6666273175654835609">Iesniegts</translation>
+<translation id="2331676293859649642">Apstiprināts</translation>
+<translation id="1165039591588034296">Kļūda</translation>
 <translation id="8941851657764077659">Maksimālā prioritātes maksa</translation>
 <translation id="8047527352810290817">Rediģēt Gas</translation>
 <translation id="9091334651803050473">Lai gan garantijas nav, racēji, visticamāk, prioritizēs jūsu darījumu, ja piedāvāsiet lielāku maksu.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">ETH adrese nav derīga</translation>
 <translation id="882486206986535424">Adrese nav derīga</translation>
 <translation id="6825399159373612149">Domēns <ph name="DOMAIN_NAME"/> nav reģistrēts</translation>
+<translation id="8971278306757462297">Saņēmēja adrese ir jūsu paša adrese</translation>
+<translation id="3506416339268164412">Saņēmēja adrese ir marķiera līguma adrese</translation>
 <translation id="862585889767884824">no</translation>
 <translation id="9106265941552476098">Noraidīt <ph name="TRANSACTION_LENGTH"/> darījumus</translation>
 <translation id="1118876217803190221">Nepietiekama bilance</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Konts <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Vispirms jāatbloķē maciņš</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nav derīga adrese</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> nav pašreizējais tīkls</translation>
 <translation id="7340805872138998391">Nespēj atbloķēt ierīci, mēģiniet izveidot savienojumu atkārtoti</translation>
 <translation id="1984410139271779110">Iekšēja kļūda, nezināma shēma</translation>
 <translation id="8682200134223578011">apstiprināts</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON dati nav paredzēti</translation>
 <translation id="3282936527763045737">Parole nav pareiza</translation>
 <translation id="1119447706177454957">Iekšēja kļūda</translation>
-<translation id="3327639091470204775">Iekšēja kļūda, iframe bridget nevarēja izveidot</translation>
 <translation id="6672377693827764095">Iekšējā kļūda, kontus nevarēja iegūt</translation>
+<translation id="8933250418452564886">Nevar atrast aparatūras darījumu, mēģiniet vēlreiz</translation>
+<translation id="5999974802900788338">Saņemta kļūda no aparatūras ierīces, iespējams, jums savā ierīcē jāapstiprina darījums</translation>
+<translation id="8523768065044261559">Kļūda, apstrādājot darījumu, mēģiniet vēlreiz</translation>
+<translation id="971552837551838642">Kļūda, parakstot ziņojumu, mēģiniet vēlreiz</translation>
+<translation id="8273603707418703324">Kļūda, parakstot ziņojumu, pieprasīts nezināms atslēgu saišķis. Lūdzu, mēģiniet vēlreiz</translation>
+<translation id="5265455943786954050">Trezor komanda jau tiek apstrādāta</translation>
+<translation id="7017116822583380542">Trezor tilts nav gatavs</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Nevar savienoties ar serveri</translation>
 <translation id="3936826714240735937">Izvēlēties citu serveri</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nevarēja savienoties ar  <ph name="REGION_NAME"/> serveri. Jūs varat mēģināt vēlreiz vai izvēlēties citu</translation>
-<translation id="1664949222596149258">Iegādājieties par <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Vai jūs jau iegādājāties VPN?</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
 <translation id="5747552184818312860">Termiņš</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Izvēlieties savu VPN atrašanās vietu</translation>
 <translation id="1751947227857853925">Ātrs un neierobežots līdz 100 Mb/s.</translation>
 <translation id="1400240082805528049">Atbalsts visu diennakti</translation>
+<translation id="8463313539532697053">Uzgaidiet mirkli, kamēr notiek ielāde…</translation>
 <translation id="7586151660465233733">Vairāk tirgu vietnē <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Skatīt tirgus un pārdot kriptovalūtu FTX</translation>
 <translation id="5963745988819586370">Tirgi</translation>

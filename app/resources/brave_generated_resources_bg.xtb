@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
 <translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
 <translation id="6821903322090655051">Brave Rewards са дезактивирани</translation>
-<translation id="9184430019924125685">Щракнете тук, за да научите повече</translation>
 <translation id="3849957491997306859">Автоматично открити</translation>
 <translation id="8798099450830957504">По подразбиране</translation>
 <translation id="4176463684765177261">Дезактивирано</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">Минимално време на страницата преди отчитане като посещение</translation>
 <translation id="4424486208397124985">Минимално количество посещения за съответствие на издателя</translation>
 <translation id="6248554379744796526">Показване на непроверени сайтове в списъка</translation>
-<translation id="3241299447027267831">Разрешете приноси за видеоклипове</translation>
+<translation id="5510618543889994434">Разрешете приноси за видеоклипове</translation>
 <translation id="924777189963477634">С включването на автоматичен принос се съгласявате с <ph name="BEGIN_LINK_TOS"/>Условията за ползване<ph name="END_LINK_TOS"/> и <ph name="BEGIN_LINK_PP"/>Политиката за поверителност<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Бутони за бакшиши</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@
 <translation id="2414886740292270097">Тъмен</translation>
 <translation id="1360441190790440400">Също като Linux</translation>
 <translation id="1336940801687497203">Също като Windows</translation>
+<translation id="5919209812221905840">Манипулатор на протоколи на microsoft-edge по подразбиране</translation>
+<translation id="5239541974656019812">Направете Brave манипулатор на протоколи на microsoft-edge</translation>
+<translation id="7136694880210472378">Задаване като основна</translation>
+<translation id="1751388324499810661">Brave е манипулатор на протоколи на microsoft-edge по подразбиране</translation>
 <translation id="8721331068159819483">Също като macOS</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
 <translation id="8488282162676695335">Портфейл в Brave</translation>
@@ -425,7 +428,6 @@
 <translation id="2653659639078652383">Изпращане</translation>
 <translation id="2556708692502648323">Мрежи на портфейла</translation>
 <translation id="1330032157352961756">Идентификаторът на нова верига</translation>
-<translation id="9053905035135220650">Шестнадесетичен низ с префикс 0x</translation>
 <translation id="726121047592132939">Името на новата верига</translation>
 <translation id="1034112277864078119">Въведете име на верига</translation>
 <translation id="4672314527143443556">Име на валутата на веригата</translation>
@@ -439,7 +441,6 @@
 <translation id="3047726704186619366">URL адреси на икона</translation>
 <translation id="2487558607408469181">URL адреси на Block Explorer</translation>
 <translation id="6301398959353668507">Това поле не може да бъде празно.</translation>
-<translation id="4514843126085243862">Невалиден формат, идентификаторът на веригата е шестнадесетичен низ с префикс 0x</translation>
 <translation id="8325036459845654666">Тази мрежа вече е добавена.</translation>
 <translation id="650071759190249039">Вътрешна грешка, неуспешно добавяне на мрежа.</translation>
 <translation id="868529041590572443">Попълнете цялата информация за основната валута</translation>

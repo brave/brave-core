@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">অনলাইন চেকআউট</translation>
 <translation id="6583902294974160967">সহায়তা</translation>
 <translation id="1799030480311994998">বৈশিষ্ট্যসমূহ</translation>
-<translation id="5345505584130165588">Brave শীল্ড &amp; গোপনীয়তা</translation>
+<translation id="2005732746077850308">Brave শীল্ড &amp; গোপনীয়তা</translation>
 <translation id="4692623383562244444">সার্চ ইঞ্জিনগুলি</translation>
 <translation id="1468415711258933398">স্ট্যান্ডার্ড ট্যাব</translation>
 <translation id="3377025655491224618">ব্যক্তিগত ট্যাব</translation>
@@ -23,13 +23,28 @@
 <translation id="4022987104439075738">IPFS গেটওয়ে</translation>
 <translation id="2688519859165248360">একটি IPFS গেটওয়ের মাধ্যমে IPFS রিসোর্সগুলোতে নেভিগেশন করার অনুমতি দেয়</translation>
 <translation id="7534079972563542000">অপ্রতিরোধ্য ডোমেইনসমূহ</translation>
-<translation id="1448289340149908413">ইথেরিয়াম</translation>
-<translation id="7822245778264751380">ইথেরিয়াম প্রাইস (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/> প্রাইস (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">সমাধান পদ্ধতি</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
 <translation id="2218918398178303658">HTTPS এর ওপরে DNS</translation>
+<translation id="1448289340149908413">ইথেরিয়াম</translation>
+<translation id="6252490671914511928">আজকের শীর্ষস্থানীয় গল্পগুলি পুরোপুরি ব্যক্তিগত ফিডে,কেবলমাত্র আপনার জন্য।</translation>
+<translation id="7266075701303521777">Brave নিউজ আপনার ডিভাইসে মিলিত সম্পূর্ণ ব্যক্তিগত এবং বেনামী বিজ্ঞাপনগুলির সাথে বিজ্ঞাপন-সমর্থিত।</translation>
+<translation id="4541978218358617681">বিজ্ঞাপন</translation>
+<translation id="1765217911817124376">Brave নিউজ চালু করুন</translation>
+<translation id="1654539412343893324">আপনার ডেটার বিষয়ে আরও জানুন</translation>
+<translation id="2989805286512600854">নতুন ট্যাবে খুলুন</translation>
+<translation id="3709782636417497984">ব্যক্তিগত ট্যাবে খুলুন</translation>
+<translation id="2014017248518069982"><ph name="PUBLISHER"/>-এর থেকে কনটেন্ট অক্ষম করুন</translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> অক্ষম করা হয়েছে</translation>
+<translation id="1276592121036104130">নতুন বিষয়বস্তু লোড করুন</translation>
+<translation id="3189348785087463371">প্রচারিত</translation>
+<translation id="7554145152551782675">আরো Brave অফার</translation>
+<translation id="4975944254857623648">ডিফল্ট সোর্স</translation>
+<translation id="253886574765651454">সোর্স যোগ করুন</translation>
+<translation id="7823038307453615214">Brave নিউজ দেখান</translation>
 <translation id="5787084571334399599">ফিঙ্গারপ্রিন্টিং থেকে ব্রাউজারকে বাধা দেয়</translation>
 <translation id="7459000603787995422">প্রস্থানে ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="4448697385961650078">ট্র্যাকারদের অবরুদ্ধ করুন &amp; বিজ্ঞাপনগুলি</translation>
@@ -118,6 +133,7 @@
 <translation id="4254029385847607686">ডিসেম্বর</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Brave নিউজ</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
@@ -172,6 +188,8 @@
 <translation id="4282642752844565114">ভুল শব্দ সংখ্যা</translation>
 <translation id="7507533586185621084">ভুল সিঙ্ক কোড</translation>
 <translation id="8284063834901328650">ভুল সিঙ্ক QR কোড</translation>
+<translation id="859506441384380749">এই কোডটি Brave-এর একটি অবমূল্যায়ন সংস্করণ দ্বারা তৈরি করা হয়েছে, অনুগ্রহ করে প্রথমে আপনার অন্য ডিভাইস আপগ্রেড করুন</translation>
+<translation id="3132642509209154999">এই কোডটির মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আপনার অন্য ডিভাইসে একটি নতুন তৈরি করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync আপনার বিভিন্ন ডিভাইসে আপনার Brave ব্রাউজারগুলির মধ্যে বুকমার্ক ডেটা গোপনে sync করতে অনুমোদন দেয়।</translation>
 <translation id="3735228155296883311">অন্য একটি ডিভাইসে আপনার তৈরি আপনার সিঙ্ক চেইন থেকে শুধু কোডটি স্ক্যান করুন। অথবা একটি নতুন সিঙ্ক চেইন শুরু করুন।</translation>
@@ -408,46 +426,16 @@
 <translation id="1972589975368876259">স্ট্যাক সম্পাদনা করুন</translation>
 <translation id="2490330380242414851">উইজেট সরান</translation>
 <translation id="8446884382197647889">আরও জানুন</translation>
-<translation id="7384441892795736634">ডেটা রিফ্রেশ করুন</translation>
-<translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ডিপোজিটের ঠিকানা</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ডিপোজিট মেমো</translation>
-<translation id="5110244215256675209">Crypto ক্রয় করুন</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> কিনুন</translation>
-<translation id="558614325644656740">উপলব্ধ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">রূপান্তর প্রিভিউ করুন</translation>
 <translation id="2882813124794301799">উইজেট স্ট্যাক</translation>
 <translation id="13296465911709339">আপনার টেক্সট ক্লিপবোর্ডে কপি করা হয়েছে।</translation>
-<translation id="4670943871783273148">আপনার লেখা একটি টেক্সট ফাইলে সংরক্ষণ করা হয়েছে।</translation>
-<translation id="4432845796903761592">ফাইল সংরক্ষিত হয়নি।</translation>
-<translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
+<translation id="2735834606413553397">সর্বজনীনন ঠিকানা আপনার ক্লিপবোর্ডে কপি করা হয়েছে।</translation>
 <translation id="2977461003134694205">গোপনীয়তার স্থিতি</translation>
 <translation id="4643117005422448078">সেরা সাইটগুলি</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">ট্র্যাকার &amp; বিজ্ঞাপন রোধ করা হয়েছে, সংরক্ষিত ব্যান্ডউইথ, এবং সংরক্ষিত সময়ের অনুমানগুলি।</translation>
 <translation id="74417429503469271">আপনার প্রায়শই দেখা সেরা সাইটগুলি খুলুন।</translation>
-<translation id="2956070106555335453">সংক্ষিপ্তসার</translation>
-<translation id="1366855498335432549">জমা</translation>
-<translation id="1301340234286078471">রূপান্তর করুন</translation>
 <translation id="223536150967420869">ক্রয় করুন</translation>
-<translation id="1714829281959608206">Binance অ্যাকাউন্ট ব্যালেন্স দেখতে এবং Crypto ট্রেড করতে Binance সংযোগ সক্রিয় করুন।</translation>
-<translation id="4584930231524505442">আমি … পরিবর্তন করতে চাই</translation>
-<translation id="5749014321384313843">আমি ব্যয় করতে চাই...</translation>
 <translation id="8688672835843460752">উপলভ্য</translation>
-<translation id="2480674848181564169">রূপান্তরের জন্য পর্যাপ্ত ব্যালেন্স নেই</translation>
-<translation id="2215334405220411393">রূপান্তর করার জন্য ন্যুনতম অর্থরাশি : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">সংযোগ করতে পারছে না</translation>
-<translation id="7742417737698031726">ফী</translation>
-<translation id="2122225204180056042">আপনি পাবেন</translation>
-<translation id="6432284126416751397">রূপান্তর নিশ্চিত করুন</translation>
 <translation id="5137723827757859599">সেরা সাইটগুলিতে এখনও কিছু নেই।</translation>
-<translation id="3891414008432200754">মূল্য</translation>
-<translation id="3733576242118819803">নিশ্চিত করুন (<ph name="REMAINING_TIME"/>সেঃ)</translation>
-<translation id="1627064138060308910">রূপান্তর ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">টোকেন উপার্জন করুন &amp; ফেরৎ পাঠান</translation>
 <translation id="244362569344671266">Brave Private Ads দেখে টোকেন উপার্জন করুন এবং স্বয়ংক্রিয়ভাবে সামগ্রী নির্মাতাদের সমর্থন করুন।</translation>
 <translation id="631124996535890460">এগিয়ে চলার মাধ্যমে, আপনি এর সাথে সম্মত হন <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -491,8 +479,6 @@
 <translation id="3415016869273103668">আপনি এখন বিনামূল্যে কল শুরু করতে পারেন</translation>
 <translation id="7073631403665023390">Brave টক অবিরত রাখতে স্ক্রিনের যেকোনো জায়গায় ক্লিক বা ট্যাপ করুন।</translation>
 <translation id="626339649633171286">Brave রিওয়ার্ডস সম্পর্কে আরও জানতে চান? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">আপনি রূপান্তর করেছেন <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">আপনার নেটওয়ার্ক সংযোগ পরীক্ষা করুন।</translation>
 <translation id="7889432931837317731">সম্ভব হলে স্বয়ংক্রিয়ভাবে খুলুন</translation>
 <translation id="8967385052772844086">সম্পূর্ণ গোপনীয়তা প্রতিবেদন দেখুন</translation>
 <translation id="6864343534748973390">সবচেয়ে জনপ্রিয়</translation>
@@ -553,9 +539,8 @@
 <translation id="7408247683131762445">সতর্কতা: কখনও আপনার ব্যাকআপ বাক্যাংশ প্রকাশ করবেন না। এই বাক্যাংশ কারোর কাছে থাকলে সে আপনার ফান্ড চিরকালের জন্য নিয়ে নিতে পারবেন।</translation>
 <translation id="939275786514736244">আমি অন্য কোনও নিরাপদ স্থানে আমার বাক্যাংশ ব্যাকআপ করেছি</translation>
 <translation id="6896758677409633944">অনুলিপি</translation>
-<translation id="5317780077021120954">সেভ করুন</translation>
 <translation id="2604744480284798833">আপনার ক্রিপ্টো পোর্টফোলিওকে অ্যাক্সেসের ক্ষতি থেকে রক্ষা করতে এখনই আপনার ওয়ালেটটির ব্যাকআপ নিন।</translation>
-<translation id="1202920745614909195">Apple Pay, ক্রেডিট বা ডেবিট কার্ড দিয়ে ক্রিপ্টো ক্রয় করুন।</translation>
+<translation id="8289942708804097960">Apple Pay, ক্রেডিট বা ডেবিট কার্ড দিয়ে ক্রিপ্টো ক্রয় করুন।</translation>
 <translation id="841880029259839903">ক্রিপ্টো পাঠান বা একটি অ্যাকাউন্ট থেকে অন্য অ্যাকাউন্টে ট্রান্সফার করুন।</translation>
 <translation id="8982246458261383692">Brave DEX অ্যাগ্রিগেটর দিয়ে ক্রিপ্টো সম্পদগুলি সোয়াপ করুন।</translation>
 <translation id="1783600039044302171">আপনার ক্রিপ্টো একটি পাসওয়ার্ড দিয়ে নিরাপদ করুন</translation>
@@ -570,6 +555,7 @@
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">সব</translation>
+<translation id="5071303414930953888">অ্যাকাউন্ট <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2267753748892043616">অ্যাকাউন্ট যোগ করুন</translation>
 <translation id="2632612428525029752">অ্যাকাউন্ট আপডেট করুন</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
@@ -587,7 +573,7 @@
 <translation id="9111102763498581341">আনলক</translation>
 <translation id="6657585470893396449">পাসওয়ার্ড</translation>
 <translation id="1569452037668432756">আনলক করতে আপনার পাসওয়ার্ড লিখুন</translation>
-<translation id="224719674509047150">পাসওয়ার্ড অবশ্যই অন্তত 7 অক্ষরের হতে হবে এবং তাতে একটি সংখ্যা এবং একটি স্পেশাল ক্যারেক্টার থাকতে হবে</translation>
+<translation id="3717685683157254329">পাসওয়ার্ড অবশ্যই অন্তত 7 অক্ষরের হতে হবে এবং তাতে একটি সংখ্যা এবং একটি স্পেশাল ক্যারেক্টার থাকতে হবে</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="5760476995887363522">শব্দগুচ্ছগুলো মেলেনি। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2360588547830602174">অ্যাকাউন্ট পুনরুদ্ধার ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
@@ -602,7 +588,6 @@
 <translation id="632241521608275119">স্লিপেজ টলারেন্স</translation>
 <translation id="1987317783729300807">অ্যাকাউন্টসমূহ</translation>
 <translation id="3535654229833214438">লেনদেন</translation>
-<translation id="4636930964841734540">তথ্য</translation>
 <translation id="2449682593754783720">1 ঘণ্টা</translation>
 <translation id="969133700726811190">1 দিন</translation>
 <translation id="5882300031363619940">1 সপ্তাহ</translation>
@@ -614,7 +599,7 @@
 <translation id="3819257035322786455">ব্যাকআপ</translation>
 <translation id="4608713693379664295">প্রাথমিক ক্রিপ্টো অ্যাকাউন্টগুলি</translation>
 <translation id="4003821417160006384">সেকেন্ডারি অ্যাকাউন্টগুলি</translation>
-<translation id="8094541587800369158">এই অ্যাকাউন্টগুলি ওয়েব 3 dapps দিয়ে ব্যবহার করা যেতে পারে এবং আপনার পোর্টফোলিওতে দেখানো যেতে পারে, কিন্তু সেগুলি আপনার প্রাথমিক অ্যাকাউন্টের ব্যাকআপ থেকে পুনরুদ্ধারের বাক্যাংশের মাধ্যমে পুনরুদ্ধার করা যাবে না। সেকেন্ডারি অ্যাকাউন্টগুলিকে স্বয়ংক্রিয়ভাবে পুনরুদ্ধার করতে Brave সিঙ্ক অ্যাকাউন্টগুলি সক্ষম করুন।</translation>
+<translation id="2471916999505901943">এই অ্যাকাউন্টগুলি ওয়েব 3D অ্যাপের সাথে ব্যবহার করা যেতে পারে এবং আপনার পোর্টফোলিওতে দেখানো যেতে পারে। যাইহোক, মনে রাখবেন যে সেকেন্ডারি অ্যাকাউন্টগুলি আপনার প্রাথমিক অ্যাকাউন্ট ব্যাকআপ থেকে পুনরুদ্ধারের বাক্যাংশটির মাধ্যমে পুনরুদ্ধার করা যাবে না।</translation>
 <translation id="6725413948756358325">অ্যাকাউন্টের নাম</translation>
 <translation id="6062431965141524986">আপনি আপনার ব্যক্তিগত কি ইমপোর্ট করে একটি সেকেন্ডারি অ্যাকাউন্ট তৈরি করতে পারেন।</translation>
 <translation id="3952797765659730604">অনুগ্রহ করে আপনার ব্যক্তিগত কি স্ট্রিং ফাইলটি বা JSON প্রবেশ করুন, পেস্ট করুন বা ইমপোর্ট করুন।</translation>
@@ -626,6 +611,17 @@
 <translation id="5050890334032852465">অ্যাকাউন্ট ওয়াচলিস্ট সংরক্ষণ করুন</translation>
 <translation id="7755766175599167100">সার্চ টোকেনগুলি</translation>
 <translation id="3835223348537121988">ব্যালেন্স:</translation>
+<translation id="2490428413101944234">ফসেট পরীক্ষা করুন</translation>
+<translation id="2581671693710952401">ইথার পান</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> টেস্ট নেটওয়ার্কের জন্য কল থেকে ইথার পান</translation>
+<translation id="7420359180991315365">ওয়্যারে চালিয়ে যান</translation>
+<translation id="8488282162676695335">Brave ওয়ালেট</translation>
+<translation id="5040262127954254034">গোপনীয়তা</translation>
+<translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
+<translation id="414639769490080648">স্বয়ংক্রিয়ভাবে আপনার brave ওয়ালেট লক করার আগে আপনি কত মিনিট চান?</translation>
+<translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
+<translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# মিনিট} other {# মিনিট}}</translation>
 <translation id="4449475351935531438">Brave ফায়ারওয়াল + VPN</translation>
 <translation id="719977489961414786">আপনার সংযোগ রক্ষা করতে এবং সর্বত্র আক্রমণকারী ট্র্যাকারগুলিকে ব্লক করতে একটি VPNএ আপগ্রেড করুন।</translation>
 <translation id="3435896845095436175">সক্ষম করুন</translation>
@@ -709,8 +705,8 @@
 <translation id="7995708795274219641">অর্থরাশি + গ্যাস</translation>
 <translation id="1950052789869821983">লেনদেন</translation>
 <translation id="6122742277607781713">পোর্টফোলিও</translation>
-<translation id="6083912983861746409">গ্যাসের দাম(গোয়েই)</translation>
-<translation id="2499079593046817044">গ্যাসের সীমা(গোয়েই)</translation>
+<translation id="750843150060816463">গ্যাসের মূল্য (Gwei)</translation>
+<translation id="1426320910664514906">গ্যাসের সীমা</translation>
 <translation id="6389441740143786465">শেয়ারিং হাব নিষ্ক্রিয় করুন</translation>
 <translation id="9065203028668620118">সম্পাদনা</translation>
 <translation id="473775607612524610">আপডেট করুন</translation>
@@ -726,8 +722,40 @@
 <translation id="5932938770824268122">ব্যক্তিগত কী</translation>
 <translation id="2472882733835903303">ব্যক্তিগত কী দেখান</translation>
 <translation id="4391056902675005799">ব্যক্তিগত কী লুকান</translation>
-<translation id="5929798090073091848">সতর্কবাণী: এই কীটি কখনই প্রকাশ করবেন না। ব্যক্তিগত কী সহ যে কেউ আপনার অ্যাকাউন্টে থাকা যেকোনো সম্পদ চুরি করতে পারে।</translation>
+<translation id="7518007103754668253">সতর্কবাণী: এই কীটি কখনই প্রকাশ করবেন না। ব্যক্তিগত কী সহ যে কেউ আপনার অ্যাকাউন্টে থাকা যেকোনো সম্পদ চুরি করতে পারে।</translation>
 <translation id="1133619932669546254"><ph name="TOKEN"/> সক্রিয় করুন</translation>
 <translation id="2199215899212542417">ফাংশনের প্রকার: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">কোনো ডেটা নেই</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> পাঠানো হয়েছে <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> <ph name="ASSET"/> - <ph name="DATE"/>-এ অনুমোদিত করেছে</translation>
+<translation id="7400134344541309180">আল্টিমেটেড <ph name="ASSET"/> অনুমোদিত হয়েছে - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> সোয়াইপ করুন - <ph name="DATE"/></translation>
+<translation id="2833661570529295305">অননুমোদিত</translation>
+<translation id="8034530868111548216">অনুমোদিত</translation>
+<translation id="6015436276085482001">খারিজ করা হয়েছে</translation>
+<translation id="6666273175654835609">জমা করা হয়েছে</translation>
+<translation id="2331676293859649642">নিশ্চিত করা হয়েছে</translation>
+<translation id="1165039591588034296">সমস্যা</translation>
+<translation id="4354768722613827480">ফী: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">আপনি কি দ্রুততম ওয়েব ব্রাউজার ব্যবহার করছেন?</translation>
+<translation id="2065971949051836200">আপনার ফোনের ইন্টারনেট ইতিমধ্যেই 3x বেশি দ্রুত। আপনার সমস্ত ওয়েব ব্রাউজিংয়ের জন্য Brave ব্যবহার করুন।</translation>
+<translation id="2888278614497184977">Brave = 3x বেশি দ্রুত ওয়েব ব্রাউজিং</translation>
+<translation id="6887232551109532144">প্রত্যেক চার্জে আরও ব্যাটারি লাইফ পান</translation>
+<translation id="5388885352353494741">ব্যাটারি সাশ্রয় আর মাত্র এক ধাপ দূরে। আপনার সমস্ত ওয়েব ব্রাউজিংয়ের জন্য Brave ব্যবহার করুন।</translation>
+<translation id="3164151360474408351">Brave = প্রত্যেক চার্জে আরও লাইফ</translation>
+<translation id="3211051910418903298">আপনার মোবাইল ডেটা ঘন ঘন টপ আপ করতে হবে না</translation>
+<translation id="1092355580602106002">কম বিজ্ঞাপন = আপনার লোড করা প্রতিটি পৃষ্ঠায় কম ডেটা। আপনার সমস্ত ওয়েব ব্রাউজিংয়ের জন্য Brave ব্যবহার করুন।</translation>
+<translation id="623962032102267945">Brave = প্রতিটি পৃষ্ঠায় কম মোবাইল ডেটা</translation>
+<translation id="8047527352810290817">গ্যাস সম্পাদনা করুন</translation>
+<translation id="7358989216567322955">সর্বাধিক অগ্রাধিকারের পরীক্ষা</translation>
+<translation id="9091334651803050473">গ্যারান্টি না থাকা সত্ত্বেও, যদি আপনি বেশি ফি প্রদান করেন তবে মাইনাররা সম্ভবত আপনার লেনদেনকে অগ্রাধিকার দেবে।</translation>
+<translation id="2941112035454246133">কম</translation>
+<translation id="5431902940483264007">কাম্য</translation>
+<translation id="7304030187361489308">উচ্চ</translation>
+<translation id="1177863135347784049">কাস্টম</translation>
+<translation id="4853037749278079787">সর্বনিম্ন ফী: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">বর্তমান বেস ফী: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">অ্যামাউন্টের সীমা পান</translation>
+<translation id="1254969878422524947">গ্যাস প্রতি টিপের সীমা (গোয়েই)</translation>
+<translation id="7373308452149471621">প্রতি গ্যাস মূল্য সীমা (গোয়েই)</translation>
 </translationbundle>

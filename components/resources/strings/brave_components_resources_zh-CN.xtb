@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">错误：待处理账户</translation>
 <translation id="2388470740942086608">您在 Uphold 的账户目前受到限制。</translation>
 <translation id="3605236342612716051">错误：受限账户</translation>
+<translation id="7147519373526655987">验证浏览器请求以将 Brave 奖励钱包与 <ph name="PROVIDER"/> 账户关联时出错。您可以<ph name="BEGIN_LINK"/>联系支持团队<ph name="END_LINK"/>获得更多帮助。</translation>
+<translation id="1316066811927496401">错误：无法验证请求</translation>
 <translation id="1737873393693460829">开启 [[title]]，即意味着您同意了 <ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
 <translation id="901298512318791028">您的 <ph name="AMOUNT"/> 支付将在 <ph name="DAYS"/>内开始处理。</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note:<ph name="BOLD_END"/>处理支付以及 BAT 到账可能需要几天。</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
-<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
-<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日赚取 APY</translation>
+<translation id="3066983737886188034">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">预期的单个对象参数。</translation>
 <translation id="1875861420974447980">此链 ID 已有人使用</translation>
 <translation id="167698752210114155">发生了一个内部的错误</translation>
+<translation id="1680597601664421644">导入的助记符对 Brave 钱包无效</translation>
 <translation id="4641919696349069826">请求已在进行中</translation>
 <translation id="872806943696014633">交易数据缺失</translation>
 <translation id="4805410229033541409">“from”未被授权发送交易</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">帐号</translation>
 <translation id="3891414008432200754">价格</translation>
 <translation id="2267753748892043616">添加账户</translation>
+<translation id="5061574358754621254">价格数据由 CoinGecko 提供技术支持</translation>
 <translation id="1483493594462132177">发送</translation>
 <translation id="538450413584738399">交换</translation>
 <translation id="7020187418439030877">不支持 <ph name="NETWORK"/></translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">滑点公差</translation>
 <translation id="4500473291496079954">到期时间</translation>
 <translation id="8093033115658137576">0x 地址或 url</translation>
+<translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 作为 DEX 聚合器。</translation>
+<translation id="151946611346774041">0x 将处理以太坊地址和 IP 地址以完成交易（包括获取报价）。0x 只会将这些数据用于处理交易的目的。</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="1420318137760245955">欢迎来到新的 Brave 钱包</translation>
 <translation id="8303434745767477417">保管加密资产。跟踪投资组合表现，并与 web 3 DApps 交互。使用 DeFi 交易、投资、借贷和贷款。所有操作都可以在 Brave 无痕浏览器中完成。无需扩展程序，不需要下载。</translation>
@@ -1042,13 +1047,25 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已断开连接</translation>
 <translation id="5317781812114905957">说明</translation>
 <translation id="1178198982208000092">连接 <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">硬件钱包需要交易确认。<ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">硬件钱包需要设备上确认。
+<ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">硬件钱包需要在 <ph name="DEVICE_NAME"/> 上打开 Ethereum 应用</translation>
 <translation id="8687869982094542529">已发送</translation>
 <translation id="5013754027092416509">已接收</translation>
 <translation id="5867988533873716616">区块浏览器 URL 不可用</translation>
 <translation id="4255623233927788178">在区块浏览器器上查看</translation>
+<translation id="7148658188569580292">加速交易</translation>
+<translation id="1198263951134066686">取消交易</translation>
+<translation id="3562548974839822204">重试交易</translation>
 <translation id="6383204195803840504">交易将出现在此处</translation>
+<translation id="6079696972035130497">无金额限制</translation>
 <translation id="2916401020782528840">未找到交易</translation>
+<translation id="2833661570529295305">未批准</translation>
+<translation id="8034530868111548216">批准</translation>
+<translation id="6015436276085482001">拒绝</translation>
+<translation id="6666273175654835609">已提交</translation>
+<translation id="2331676293859649642">确认</translation>
+<translation id="1165039591588034296">错误</translation>
 <translation id="8941851657764077659">最高优先费用</translation>
 <translation id="8047527352810290817">编辑 gas</translation>
 <translation id="9091334651803050473">如果支付更高的费用，矿商可能会优先考虑您的交易，但我们不能对此做出保证。</translation>
@@ -1070,6 +1087,8 @@
 <translation id="749944179568745958">不是有效的 ETH 地址</translation>
 <translation id="882486206986535424">不是有效的地址</translation>
 <translation id="6825399159373612149">域名 <ph name="DOMAIN_NAME"/> 未注册</translation>
+<translation id="8971278306757462297">接收地址是您自己的地址</translation>
+<translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">拒绝 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
 <translation id="1118876217803190221">余额不足</translation>
@@ -1080,6 +1099,7 @@
 <translation id="5071303414930953888">账户 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">需要先解锁钱包</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> 不是有效的地址</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> 不是当前网络</translation>
 <translation id="7340805872138998391">无法解锁设备，尝试重新连接</translation>
 <translation id="1984410139271779110">内部错误，未知架构</translation>
 <translation id="8682200134223578011">已批准</translation>
@@ -1088,8 +1108,15 @@
 <translation id="4287068151777838754">异常 JSON 数据</translation>
 <translation id="3282936527763045737">密码错误</translation>
 <translation id="1119447706177454957">内部错误</translation>
-<translation id="3327639091470204775">内部错误，无法创建 iframe brigdet</translation>
+<translation id="3327639091470204775">无法连接至 Trezor 桥</translation>
 <translation id="6672377693827764095">内部错误，无法获取账户</translation>
+<translation id="8933250418452564886">找不到硬件交易，请重试</translation>
+<translation id="5999974802900788338">从您的硬件设备收到错误，可能您需要在设备上确认交易</translation>
+<translation id="8523768065044261559">处理交易出错，请重试</translation>
+<translation id="971552837551838642">签署消息出错，请重试</translation>
+<translation id="8273603707418703324">签署消息出错，请求了未知的 keyring，请重试</translation>
+<translation id="5265455943786954050">Trezor 命令已在进行中</translation>
+<translation id="7017116822583380542">Trezor 网桥未就绪</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1104,7 +1131,6 @@
 <translation id="745054660363064771">无法连接到服务器</translation>
 <translation id="3936826714240735937">选择另一个服务器</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> 无法连接至 <ph name="REGION_NAME"/> 服务器。您可以再试一次或选择连接另一个服务器</translation>
-<translation id="1664949222596149258">以 <ph name="PRODUCE_PRICE"/>的价格购买</translation>
 <translation id="1024255913009642477">已经购买了 VPN？</translation>
 <translation id="8814357473522731680">技术支持：</translation>
 <translation id="5747552184818312860">到期时间</translation>
@@ -1116,6 +1142,7 @@
 <translation id="3181339219453722970">选择您的 VPN 位置</translation>
 <translation id="1751947227857853925">高速和无限流量，高达 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 支持</translation>
+<translation id="8463313539532697053">正在加载，请稍候…</translation>
 <translation id="7586151660465233733">访问 <ph name="SITE_NAME"/> 探索更多市场</translation>
 <translation id="952067063131306699">在 FTX 查看市场和交易加密货币</translation>
 <translation id="5963745988819586370">市场</translation>

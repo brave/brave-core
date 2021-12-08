@@ -55,7 +55,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
 <translation id="6821903322090655051">Phần thưởng Brave bị tắt đi</translation>
-<translation id="9184430019924125685">Nhấp vào đây để tìm hiểu thêm</translation>
 <translation id="3849957491997306859">Đã tự động phát hiện</translation>
 <translation id="8798099450830957504">Mặc định</translation>
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
@@ -69,7 +68,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
 <translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
-<translation id="3241299447027267831">Cho phép đóng góp cho video</translation>
+<translation id="5510618543889994434">Cho phép đóng góp cho video</translation>
 <translation id="924777189963477634">Với việc bật Tự động đóng góp, bạn đồng ý với <ph name="BEGIN_LINK_TOS"/>Điều khoản Dịch vụ<ph name="END_LINK_TOS"/> và <ph name="BEGIN_LINK_PP"/>Chính sách Quyền riêng tư<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Nút tiền thưởng</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +103,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7895302206188277628">Nội dung liên kết</translation>
 <translation id="3654831858282189202">Xuất bản bằng khóa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Nhập văn bản đã chọn vào IPFS</translation>
 <translation id="6925604404524625582">Nhập và sao chép liên kết đến ảnh chụp nhanh IPFS</translation>
 <translation id="1434416574322382019">Cửa sổ Riêng tư với Tor Mới</translation>
 <translation id="4703780849509456860">Mở Liên kết trong Cửa sổ Riêng tư với Tor</translation>
@@ -207,6 +207,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2414886740292270097">Tối</translation>
 <translation id="1360441190790440400">Giống như Linux</translation>
 <translation id="1336940801687497203">Giống như Windows</translation>
+<translation id="5919209812221905840">Bộ xử lý giao thức microsoft-edge mặc định</translation>
+<translation id="5239541974656019812">Đặt Brave làm bộ xử lý giao thức microsoft-edge</translation>
+<translation id="7136694880210472378">Đặt làm mặc định</translation>
+<translation id="1751388324499810661">Brave là bộ xử lý giao thức microsoft-edge mặc định</translation>
 <translation id="8721331068159819483">Giống như macOS</translation>
 <translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
@@ -222,6 +226,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về DNS trên HTTPS và các cân nhắc quyền riêng tư của Ethereum.</translation>
 <translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
 <translation id="7024553202001112871">Thiết lập khóa IPNS của bạn</translation>
 <translation id="951216659045543447">Ký nội dung bằng khóa riêng tư tương ứng và xuất bản lên IPNS</translation>
@@ -256,6 +261,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
 <translation id="80225669816651290">Nút cục bộ</translation>
 <translation id="4927734062756955434">Địa chỉ cổng mạng IPFS công khai</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="557281710253742286">Đặt cổng mạng IPFS</translation>
 <translation id="8571837315037233299">Địa chỉ cổng mạng</translation>
@@ -422,7 +428,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2653659639078652383">Gửi</translation>
 <translation id="2556708692502648323">Mạng ví</translation>
 <translation id="1330032157352961756">ID của chuỗi mới</translation>
-<translation id="9053905035135220650">Chuỗi thập lục phân bắt đầu bằng 0x</translation>
 <translation id="726121047592132939">Tên của chuỗi mới</translation>
 <translation id="1034112277864078119">Nhập tên chuỗi</translation>
 <translation id="4672314527143443556">Tên tiền tệ của chuỗi</translation>
@@ -436,7 +441,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3047726704186619366">URL biểu tượng</translation>
 <translation id="2487558607408469181">Chặn URL trình khám phá</translation>
 <translation id="6301398959353668507">Trường này không được trống.</translation>
-<translation id="4514843126085243862">Định dạng không hợp lệ, ID chuỗi là chuỗi thập lục phân bắt đầu bằng 0x</translation>
 <translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 <translation id="650071759190249039">Lỗi nội bộ, không thể thêm mạng.</translation>
 <translation id="868529041590572443">Vui lòng điền tất cả thông tin về đồng tiền nguyên bản</translation>

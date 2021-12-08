@@ -55,7 +55,6 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
 <translation id="919715748352669592">OpenSearch özelliklerine uygun web siteleri otomatik olarak indeksler.</translation>
 <translation id="6821903322090655051">Brave Ödülleri devre dışı</translation>
-<translation id="9184430019924125685">Daha fazla bilgi için buraya tıklayın</translation>
 <translation id="3849957491997306859">Otomatik algılandı</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
@@ -69,7 +68,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
 <translation id="4424486208397124985">Yayıncı alaka düzeyi için minimum ziyaret sayısı</translation>
 <translation id="6248554379744796526">Doğrulanmamış siteleri listede göster</translation>
-<translation id="3241299447027267831">Videolara katkıları etkinleştir</translation>
+<translation id="5510618543889994434">Videolar için katkıları etkinleştir</translation>
 <translation id="924777189963477634">Otomatik Katkı'yı açarak, <ph name="BEGIN_LINK_TOS"/>Hizmet Koşullarını<ph name="END_LINK_TOS"/> ve <ph name="BEGIN_LINK_PP"/>Gizlilik İlkesini<ph name="END_LINK_PP"/> kabul etmiş olursunuz.</translation>
 <translation id="5733490796524078528">Bahşiş butonları</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -207,6 +206,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2414886740292270097">Koyu</translation>
 <translation id="1360441190790440400">Linux ile aynı</translation>
 <translation id="1336940801687497203">Windows ile aynı</translation>
+<translation id="5919209812221905840">Varsayılan microsoft-edge protokol işleyicisi</translation>
+<translation id="5239541974656019812">Brave'i microsoft-edge protokol işleyicisi yap</translation>
+<translation id="7136694880210472378">Varsayılan yap</translation>
+<translation id="1751388324499810661">Brave, varsayılan microsoft-edge protokolü işleyicisidir</translation>
 <translation id="8721331068159819483">macOS ile aynı</translation>
 <translation id="2896916411183256228">Torrentleri doğrudan tarayıcıda görüntülemek için WebTorrent'i kullanır. Torrent dosyalarını ve magnet bağlantılarını destekler.</translation>
 <translation id="8488282162676695335">Brave Cüzdan</translation>
@@ -422,7 +425,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2653659639078652383">Gönder</translation>
 <translation id="2556708692502648323">Cüzdan ağları</translation>
 <translation id="1330032157352961756">Yeni zincirin kimliği</translation>
-<translation id="9053905035135220650">Başına 0x eklenmiş on altılı bir dizi</translation>
 <translation id="726121047592132939">Yeni zincirin adı</translation>
 <translation id="1034112277864078119">Zincir adını girin</translation>
 <translation id="4672314527143443556">Zincirin para birimi ismi</translation>
@@ -436,7 +438,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3047726704186619366">Simge URL'leri</translation>
 <translation id="2487558607408469181">Blok gezgini URL'leri</translation>
 <translation id="6301398959353668507">Bu alan boş olamaz.</translation>
-<translation id="4514843126085243862">Geçersiz format, zincir kimliği başına 0x eklenmiş on altılı bir dizi</translation>
 <translation id="8325036459845654666">Bu ağ zaten ekli.</translation>
 <translation id="650071759190249039">İç Hata, ağ eklenemiyor.</translation>
 <translation id="868529041590572443">Lütfen asıl para birimiyle ilgili tüm bilgileri doldurun</translation>

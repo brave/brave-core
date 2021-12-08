@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Erro: conta pendente</translation>
 <translation id="2388470740942086608">A sua conta Uphold está atualmente restrita.</translation>
 <translation id="3605236342612716051">Erro: conta restrita</translation>
+<translation id="7147519373526655987">Houve um problema ao validar o pedido do navegador para associar a carteira de Recompensas Brave à conta<ph name="PROVIDER"/>. Pode <ph name="BEGIN_LINK"/>entrar em contacto com o apoio ao cliente<ph name="END_LINK"/> para obter mais ajuda.</translation>
+<translation id="1316066811927496401">Erro: não foi possível validar o pedido</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], aceita os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">O pagamento de <ph name="AMOUNT"/> será processado dentro de <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Pode demorar alguns dias até ao pagamento processar e o seu BAT chegar.</translation>
@@ -585,8 +587,7 @@
 <translation id="3699674790322420653">Verificação da wallet concluída</translation>
 <translation id="9200453331904391567">Desligar de «Recompensas Brave»</translation>
 <translation id="3656941797339037856">Associar Rewards ao Gemini!</translation>
-<translation id="2383784987664887340">O Gemini permite-lhe negociar, depositar e ganhar 3,49% de APY facilmente no seu BAT. Verifique e associe a sua carteira de Recompensas Brave ao Gemini agora!</translation>
-<translation id="2237374144728570574">* APY do Gemini Earn a partir de 15 de setembro de 2021</translation>
+<translation id="3066983737886188034">O Gemini permite-lhe negociar, depositar e ganhar 3,49% de APY facilmente no seu BAT. Verifique e associe a sua carteira de Recompensas Brave ao Gemini agora!</translation>
 <translation id="7404779623219601861">Resgatar BAT para cartões-presente</translation>
 <translation id="6215565499749144110">Com a TAP Network, pode resgatar os seus BAT por cartões-presente de marcas populares.</translation>
 <translation id="6915065518766963119">* Requer verificação da Uphold</translation>
@@ -807,6 +808,7 @@
 <translation id="9161147058107529840">Deve ser um parâmetro de objeto único.</translation>
 <translation id="1875861420974447980">Este ID de cadeia está em utilização</translation>
 <translation id="167698752210114155">Ocorreu um erro interno</translation>
+<translation id="1680597601664421644">A mnemónica a ser importada não é válida para a Carteira Brave</translation>
 <translation id="4641919696349069826">O pedido já está em curso</translation>
 <translation id="872806943696014633">Dados da transação em falta</translation>
 <translation id="4805410229033541409">'from' não está autorizado a enviar transações</translation>
@@ -860,6 +862,7 @@
 <translation id="629730747756840877">Conta</translation>
 <translation id="3891414008432200754">Preço</translation>
 <translation id="2267753748892043616">Adicionar conta</translation>
+<translation id="5061574358754621254">Dados de preços disponibilizados pela CoinGecko</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Trocar</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> não é suportado</translation>
@@ -867,6 +870,8 @@
 <translation id="632241521608275119">Tolerância de desvio</translation>
 <translation id="4500473291496079954">Expira em</translation>
 <translation id="8093033115658137576">endereço ou url 0x</translation>
+<translation id="2860280209982026951">O Brave usa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
+<translation id="151946611346774041">0x processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). 0x usará estes dados APENAS para processar transações.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Bem-vindo à nova Carteira Brave</translation>
 <translation id="8303434745767477417">Mantenha os ativos cripto na sua custódia. Controle o desempenho da carteira, e interaja com as DApps de Web3. Negocie, invista, peça emprestado e empreste com o DeFi. Tudo bem a partir do navegador privado Brave. Sem extensões, sem transferências obrigatórias.</translation>
@@ -1038,13 +1043,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desligado</translation>
 <translation id="5317781812114905957">Instruções</translation>
 <translation id="1178198982208000092">Ligar <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">A carteira de hardware requer confirmação da transação. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">A carteira de hardware exige que a aplicação Ethereum esteja aberta no <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviado</translation>
 <translation id="5013754027092416509">recebido</translation>
 <translation id="5867988533873716616">O URL do Block Explorer não está disponível.</translation>
 <translation id="4255623233927788178">Ver no Block Explorer</translation>
+<translation id="7148658188569580292">Acelerar transação</translation>
+<translation id="1198263951134066686">Cancelar transação</translation>
+<translation id="3562548974839822204">Tentar transação novamente</translation>
 <translation id="6383204195803840504">As transações aparecerão aqui</translation>
+<translation id="6079696972035130497">Ilimitado</translation>
 <translation id="2916401020782528840">Transação não encontrada</translation>
+<translation id="2833661570529295305">Não aprovado</translation>
+<translation id="8034530868111548216">Aprovado</translation>
+<translation id="6015436276085482001">Recusado</translation>
+<translation id="6666273175654835609">Enviado</translation>
+<translation id="2331676293859649642">Confirmado</translation>
+<translation id="1165039591588034296">Erro</translation>
 <translation id="8941851657764077659">Taxa de prioridade máxima</translation>
 <translation id="8047527352810290817">Editar taxa (gas)</translation>
 <translation id="9091334651803050473">Enquanto não há uma garantia, os "mineiros" provavelmente darão prioridade à sua transação se pagar uma taxa mais elevada.</translation>
@@ -1066,6 +1081,8 @@
 <translation id="749944179568745958">Não é um endereço ETH válido</translation>
 <translation id="882486206986535424">Não é um endereço válido</translation>
 <translation id="6825399159373612149">O domínio<ph name="DOMAIN_NAME"/> não está registado</translation>
+<translation id="8971278306757462297">O endereço de receção é o seu próprio endereço</translation>
+<translation id="3506416339268164412">O endereço de receção é o endereço de contrato de um token</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Rejeitar <ph name="TRANSACTION_LENGTH"/> transações</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
@@ -1076,6 +1093,7 @@
 <translation id="5071303414930953888">Conta <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Primeiro, é necessário desbloquear a carteira</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> não é um endereço válido</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> não é a rede atual</translation>
 <translation id="7340805872138998391">Não é possível desbloquear o dispositivo. Tente estabelecer ligação novamente.</translation>
 <translation id="1984410139271779110">Erro interno. Esquema desconhecido</translation>
 <translation id="8682200134223578011">aprovado</translation>
@@ -1084,8 +1102,14 @@
 <translation id="4287068151777838754">Os dados JSON não são o esperado</translation>
 <translation id="3282936527763045737">A palavra-passe não está correta</translation>
 <translation id="1119447706177454957">Erro interno</translation>
-<translation id="3327639091470204775">Erro interno. Não é possível criar "iframe bridge"</translation>
 <translation id="6672377693827764095">Erro interno. Não é possível obter as contas</translation>
+<translation id="8933250418452564886">Não foi possível encontrar a transação de hardware — tente novamente</translation>
+<translation id="5999974802900788338">Erro recebido do dispositivo de hardware: é possível que tenha de confirmar a transação no seu dispositivo</translation>
+<translation id="8523768065044261559">Erro ao processar a transação — tente novamente</translation>
+<translation id="971552837551838642">Erro ao assinar mensagem — tente novamente</translation>
+<translation id="8273603707418703324">Erro ao assinar mensagem: o porta-chaves solicitado é desconhecido — tente novamente</translation>
+<translation id="5265455943786954050">O comando Trezor já está em curso</translation>
+<translation id="7017116822583380542">O Trezor Bridge não está pronto</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação geral</translation>
 <translation id="4045404575593562245">Eventos de controlo do Tor</translation>
@@ -1100,7 +1124,6 @@
 <translation id="745054660363064771">Não é possível estabelecer ligação ao servidor</translation>
 <translation id="3936826714240735937">Selecionar outro servidor</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> não é possível estabelecer ligação ao servidor de <ph name="REGION_NAME"/>. Pode tentar novamente ou selecionar outro servidor</translation>
-<translation id="1664949222596149258">Comprar por <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Já adquiriu uma VPN?</translation>
 <translation id="8814357473522731680">Desenvolvido por</translation>
 <translation id="5747552184818312860">Expira</translation>
@@ -1112,6 +1135,7 @@
 <translation id="3181339219453722970">Selecione a localização da VPN</translation>
 <translation id="1751947227857853925">Rápido e ilimitado até 100 Mbps</translation>
 <translation id="1400240082805528049">Apoio 24/7</translation>
+<translation id="8463313539532697053">Aguarde enquanto carrega…</translation>
 <translation id="7586151660465233733">Mais mercados em <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Ver mercados e trocar criptomoeda em FTX</translation>
 <translation id="5963745988819586370">Mercados</translation>

@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="6821903322090655051">Brave Rewards מושבתים</translation>
-<translation id="9184430019924125685">למידע נוסף לחץ כאן</translation>
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="4176463684765177261">מושבת</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
 <translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
 <translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
-<translation id="3241299447027267831">אפשר תרומות לסרטונים</translation>
+<translation id="5510618543889994434">אפשר תרומות לסרטונים</translation>
 <translation id="924777189963477634">על ידי הפעלת Auto-Contribute הינכם מסכימים <ph name="BEGIN_LINK_TOS"/>לתנאי השירות<ph name="END_LINK_TOS"/> <ph name="BEGIN_LINK_PP"/>ומדיניות הפרטיות<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">לחצני טיפים</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -206,6 +205,10 @@
 <translation id="2414886740292270097">כהה</translation>
 <translation id="1360441190790440400">כמו לינוקס</translation>
 <translation id="1336940801687497203">כמו Windows</translation>
+<translation id="5919209812221905840">מטפל בפרוטוקול של Miscrosoft Edge שהוא ברירת המחדל</translation>
+<translation id="5239541974656019812">קבע את Brave כמטפל ברירת מחדל בפרוטוקול Miscrosoft Edge</translation>
+<translation id="7136694880210472378">הפוך לברירת מחדל</translation>
+<translation id="1751388324499810661">Brave הוגדר כמטפל בפרוטוקול של Microsoft Edge כבררת מחדל</translation>
 <translation id="8721331068159819483">כמו macOS</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
@@ -423,7 +426,6 @@
 <translation id="2653659639078652383">שלח</translation>
 <translation id="2556708692502648323">רשתות הארנק</translation>
 <translation id="1330032157352961756">המזהה לשרשרת חדשה</translation>
-<translation id="9053905035135220650">0x-קידומת למחרוזת הקסדצימלית</translation>
 <translation id="726121047592132939">שמה של שרשרת חדשה</translation>
 <translation id="1034112277864078119">הזן שרשרת חדשה</translation>
 <translation id="4672314527143443556">שמו של מטבע השרשרת</translation>
@@ -437,7 +439,6 @@
 <translation id="3047726704186619366">כתובות URL של הסמל</translation>
 <translation id="2487558607408469181">חסימת כתובות URL של סייר</translation>
 <translation id="6301398959353668507">שדה זה לא יכול להיות ריק.</translation>
-<translation id="4514843126085243862">פורמט לא חוקי, מזהה השרשרת הינו 0x-קידומת למחרוזת הקסדצימלית</translation>
 <translation id="8325036459845654666">רשת זו כבר נוספת.</translation>
 <translation id="650071759190249039">שגיאה פנימית, לא ניתן להוסיף רשת.</translation>
 <translation id="868529041590572443">נא להזין את כל המידע על המטבע המקומי</translation>

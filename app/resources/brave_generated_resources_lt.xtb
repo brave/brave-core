@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
 <translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
 <translation id="6821903322090655051">„Brave Rewards“ funkcija išjungta</translation>
-<translation id="9184430019924125685">Spustelėkite čia, kad sužinotumėte daugiau</translation>
 <translation id="3849957491997306859">Aptinkama automatiškai</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
 <translation id="4176463684765177261">Pasyvinta</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">Minimalus puslapyje praleistas laikas prieš užregistruojant apsilankymą</translation>
 <translation id="4424486208397124985">Minimalus apsilankymų skaičius, kad leidėjas būtų pripažintas tinkamu</translation>
 <translation id="6248554379744796526">Rodyti nepatvirtintas svetaines sąraše</translation>
-<translation id="3241299447027267831">Leisti paramą vaizdo įrašams</translation>
+<translation id="5510618543889994434">Leisti paramą vaizdo įrašams</translation>
 <translation id="924777189963477634">Įjungdami automatinio indėlio funkciją sutinkate su <ph name="BEGIN_LINK_TOS"/>paslaugų teikimo sąlygomis<ph name="END_LINK_TOS"/> ir <ph name="BEGIN_LINK_PP"/>privatumo politika<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Patarimų mygtukai</translation>
 <translation id="3905400818082450708">„Reddit“</translation>
@@ -208,6 +207,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2414886740292270097">Tamsu</translation>
 <translation id="1360441190790440400">Atitinka „Linux“</translation>
 <translation id="1336940801687497203">Atitinka „Windows“</translation>
+<translation id="5919209812221905840">Numatytoji „Microsoft Edge“ protokolo apdorojimo programa</translation>
+<translation id="5239541974656019812">Padaryti „Brave“ numatytąja „Microsoft Edge“ protokolo apdorojimo programa</translation>
+<translation id="7136694880210472378">Padaryti numatytuoju</translation>
+<translation id="1751388324499810661">„Brave“ yra numatytoji „Microsoft Edge“ protokolo apdorojimo programa</translation>
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="8488282162676695335">„Brave“ piniginė</translation>
@@ -425,7 +428,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2653659639078652383">Pateikti</translation>
 <translation id="2556708692502648323">Piniginės tinklai</translation>
 <translation id="1330032157352961756">Naujos grandinės ID</translation>
-<translation id="9053905035135220650">Šešioliktainė seka, prasidedanti 0x</translation>
 <translation id="726121047592132939">Naujos grandinės pavadinimas</translation>
 <translation id="1034112277864078119">Įveskite grandinės pavadinimą</translation>
 <translation id="4672314527143443556">Grandinės valiutos pavadinimas</translation>
@@ -439,7 +441,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3047726704186619366">Piktogramų URL adresai</translation>
 <translation id="2487558607408469181">Blokų naršyklės URL adresai</translation>
 <translation id="6301398959353668507">Šis laukas negali būti tuščias.</translation>
-<translation id="4514843126085243862">Netinkamas formatas, grandinės ID yra šešioliktainė seka, prasidedanti 0x</translation>
 <translation id="8325036459845654666">Šis tinklas jau pridėtas.</translation>
 <translation id="650071759190249039">Vidinė klaida, nepavyko pridėti tinklo.</translation>
 <translation id="868529041590572443">Užpildykite visą informaciją apie vietinę valiutą</translation>
