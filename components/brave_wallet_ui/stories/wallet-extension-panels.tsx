@@ -221,7 +221,6 @@ export const _AllowAddChangeNetwork = () => {
       <AllowAddChangeNetworkPanel
         siteOrigin='https://app.uniswap.org'
         panelType='change'
-        selectedNetwork={mockNetworks[0]}
         onApproveAddNetwork={onApprove}
         onApproveChangeNetwork={onApprove}
         onCancel={onCancel}
