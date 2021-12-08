@@ -90,7 +90,7 @@ struct AddCustomAssetView: View {
                                      isErc20: true,
                                      isErc721: false,
                                      symbol: symbolInput,
-                                     decimals: Int32(symbolInput) ?? 18,
+                                     decimals: Int32(decimalsInput) ?? 18,
                                      visible: true,
                                      tokenId: "")
     userAssetStore.addUserAsset(token: token) { [self] success in
