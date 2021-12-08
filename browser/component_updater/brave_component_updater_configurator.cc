@@ -166,10 +166,6 @@ bool BraveConfigurator::EnabledDeltas() const {
   return configurator_impl_.EnabledDeltas();
 }
 
-bool BraveConfigurator::EnabledComponentUpdates() const {
-  return pref_service_->GetBoolean(prefs::kComponentUpdatesEnabled);
-}
-
 bool BraveConfigurator::EnabledBackgroundDownloader() const {
   return configurator_impl_.EnabledBackgroundDownloader();
 }
