@@ -454,7 +454,7 @@ function Container (props: Props) {
   }
 
   const onAddAccount = () => {
-    props.walletActions.expandWalletNetworks()
+    props.walletPanelActions.expandWalletAccounts()
   }
 
   const onAddSuggestedToken = () => {
@@ -466,7 +466,7 @@ function Container (props: Props) {
   }
 
   const onAddNetwork = () => {
-    props.walletPanelActions.expandWalletNetworks()
+    props.walletActions.expandWalletNetworks()
   }
 
   const isConnectedToSite = React.useMemo((): boolean => {
