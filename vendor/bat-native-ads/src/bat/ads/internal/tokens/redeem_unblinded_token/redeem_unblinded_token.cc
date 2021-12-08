@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
@@ -295,7 +294,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
-  unblinded_payment_token.transaction_id = base::GenerateGUID();
+  unblinded_payment_token.transaction_id = confirmation.transaction_id;
   unblinded_payment_token.value = batch_dleq_proof_unblinded_tokens.front();
   unblinded_payment_token.public_key = public_key;
   unblinded_payment_token.confirmation_type = confirmation.type;

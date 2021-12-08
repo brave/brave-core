@@ -398,14 +398,6 @@ void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
                             base::Base64Encode(wallet->recovery_seed));
 }
 
-void AdsServiceImpl::ReconcileAdRewards() {
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_->ReconcileAdRewards();
-}
-
 void AdsServiceImpl::GetAdsHistory(const double from_timestamp,
                                    const double to_timestamp,
                                    OnGetAdsHistoryCallback callback) {

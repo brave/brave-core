@@ -12,7 +12,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "bat/ads/database.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_mock.h"
@@ -53,7 +52,6 @@ class UnitTestBase : public testing::Test {
   void InitializeAds();
 
   AdsImpl* GetAds() const;
-  AdRewards* GetAdRewards() const;
 
   // testing::Test implementation
   void SetUp() override;
@@ -105,7 +103,6 @@ class UnitTestBase : public testing::Test {
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<Client> client_;
-  std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<database::Initialize> database_initialize_;

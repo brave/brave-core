@@ -1,71 +1,48 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/statement/statement.h"
 
-#include "base/check.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/account/statement/statement_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
+#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {
 
-Statement::Statement(AdRewards* ad_rewards) : ad_rewards_(ad_rewards) {
-  DCHECK(ad_rewards_);
-}
+void BuildStatement(StatementCallback callback) {
+  const base::Time& from_time = base::Time();
+  const base::Time& to_time = base::Time::Now();
 
-Statement::~Statement() = default;
+  transactions::GetForDateRange(
+      from_time, to_time,
+      [=](const bool success, const TransactionList& transactions) {
+        if (!success) {
+          BLOG(0, "Failed to get transactions");
+          callback(/* success */ false, {});
+          return;
+        }
 
-StatementInfo Statement::Get(const base::Time& from,
-                             const base::Time& to) const {
-  DCHECK(to >= from);
+        StatementInfo statement;
 
-  StatementInfo statement;
+        statement.earnings_this_month =
+            GetEarningsForThisMonth(transactions) +
+            GetUnreconciledEarningsForPreviousMonths(transactions);
 
-  statement.next_payment_date = ad_rewards_->GetNextPaymentDate();
+        statement.earnings_last_month = GetEarningsForLastMonth(transactions);
 
-  statement.ads_received_this_month = GetAdsReceivedThisMonth();
+        const base::Time& next_payment_date = GetNextPaymentDate(transactions);
+        statement.next_payment_date = next_payment_date.ToDoubleT();
 
-  statement.earnings_this_month = GetEarningsForThisMonth();
-  statement.earnings_last_month = GetEarningsForLastMonth();
+        statement.ads_received_this_month =
+            GetAdsReceivedForThisMonth(transactions);
 
-  statement.cleared_transactions = transactions::GetCleared(from, to);
-  statement.uncleared_transactions = transactions::GetUncleared();
-
-  return statement;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-double Statement::GetEarningsForThisMonth() const {
-  return ad_rewards_->GetEarningsForThisMonth();
-}
-
-double Statement::GetEarningsForLastMonth() const {
-  const base::Time now = base::Time::Now();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-
-  exploded.month--;
-  if (exploded.month < 1) {
-    exploded.month = 12;
-    exploded.year--;
-  }
-
-  exploded.day_of_month = 1;
-
-  base::Time last_month;
-  const bool success = base::Time::FromLocalExploded(exploded, &last_month);
-  DCHECK(success);
-
-  return ad_rewards_->GetEarningsForMonth(last_month);
-}
-
-uint64_t Statement::GetAdsReceivedThisMonth() const {
-  const base::Time now = base::Time::Now();
-  return transactions::GetCountForMonth(now);
+        callback(/* success */ true, statement);
+      });
 }
 
 }  // namespace ads
