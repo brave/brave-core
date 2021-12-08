@@ -12,7 +12,7 @@
   bool AllowFingerprinting(bool enabled_per_settings) override; \
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
-#include "../../../../../../../third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h"
+#include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h"
 
 #undef BRAVE_SHARED_WORKER_SETTINGS_PROXY_H
 

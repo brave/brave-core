@@ -15,7 +15,7 @@
   network::mojom::URLLoaderFactoryParamsPtr                               \
       CreateNetworkFactoryParamsForSubresources
 
-#include "../../../../../content/browser/worker_host/shared_worker_host.h"
+#include "src/content/browser/worker_host/shared_worker_host.h"
 
 #undef CreateNetworkFactoryParamsForSubresources
 
