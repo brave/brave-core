@@ -51,7 +51,7 @@ TEST_F(WeeklyStorageTest, ForgetsOldSavings) {
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetWeeklySum(), saving);
 
-  clock_->Advance(base::TimeDelta::FromDays(8));
+  clock_->Advance(base::Days(8));
 
   // More savings
   state_->AddDelta(saving);
@@ -63,7 +63,7 @@ TEST_F(WeeklyStorageTest, ForgetsOldSavings) {
 TEST_F(WeeklyStorageTest, RetrievesDailySavings) {
   uint64_t saving = 10000;
   for (int day = 0; day <= 7; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(1));
+    clock_->Advance(base::Days(1));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetWeeklySum(), 7 * saving);
@@ -72,7 +72,7 @@ TEST_F(WeeklyStorageTest, RetrievesDailySavings) {
 TEST_F(WeeklyStorageTest, HandlesSkippedDay) {
   uint64_t saving = 10000;
   for (int day = 0; day < 7; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(1));
+    clock_->Advance(base::Days(1));
     if (day == 3)
       continue;
     state_->AddDelta(saving);
@@ -83,7 +83,7 @@ TEST_F(WeeklyStorageTest, HandlesSkippedDay) {
 TEST_F(WeeklyStorageTest, IntermittentUsage) {
   uint64_t saving = 10000;
   for (int day = 0; day < 10; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(2));
+    clock_->Advance(base::Days(2));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetWeeklySum(), 4 * saving);
@@ -92,7 +92,7 @@ TEST_F(WeeklyStorageTest, IntermittentUsage) {
 TEST_F(WeeklyStorageTest, InfrequentUsage) {
   uint64_t saving = 10000;
   state_->AddDelta(saving);
-  clock_->Advance(base::TimeDelta::FromDays(6));
+  clock_->Advance(base::Days(6));
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetWeeklySum(), 2 * saving);
 }
@@ -102,12 +102,12 @@ TEST_F(WeeklyStorageTest, GetHighestValueInWeek) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->AddDelta(low_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   state_->AddDelta(high_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   state_->AddDelta(lowest_value);
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
 }
 
@@ -132,7 +132,7 @@ TEST_F(WeeklyStorageTest, GetsHighestValueInWeekFromReplacement) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->ReplaceTodaysValueIfGreater(high_value);
-  clock_->Advance(base::TimeDelta::FromDays(2));
+  clock_->Advance(base::Days(2));
   state_->ReplaceTodaysValueIfGreater(low_value);
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
   // Sanity check disparate days were not replaced

@@ -39,5 +39,6 @@
     popup_ids_.push_back(tab_id);                                            \
   }                                                                          \
   void BubbleContentsWrapper::RenderViewHostChanged
-#include "../../../../../../chrome/browser/ui/views/bubble/bubble_contents_wrapper.cc"
+
+#include "../../../../../../../chrome/browser/ui/views/bubble/bubble_contents_wrapper.cc"
 #undef RenderViewHostChanged

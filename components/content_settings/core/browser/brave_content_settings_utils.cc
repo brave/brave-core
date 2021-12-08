@@ -124,8 +124,8 @@ base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
   int64_t timestamp = 0;
   if (const std::string* timestamp_str = dictionary->FindStringKey(key))
     base::StringToInt64(*timestamp_str, &timestamp);
-  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
-      base::TimeDelta::FromMicroseconds(timestamp));
+  base::Time last_modified =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(timestamp));
   return last_modified;
 }
 

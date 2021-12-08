@@ -21,13 +21,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
+import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private TextView mProfileTitle;
     private TextView mProfileText;
     private Button mInstallVpnButton;
@@ -91,7 +91,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();

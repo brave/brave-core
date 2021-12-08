@@ -52,8 +52,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -84,8 +83,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -115,8 +113,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -147,8 +144,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;

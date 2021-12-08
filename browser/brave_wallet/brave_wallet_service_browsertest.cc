@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -63,36 +65,38 @@ class TestBraveWalletServiceObserver
 
 class BraveWalletServiceTest : public InProcessBrowserTest {
  public:
-  BraveWalletServiceTest() {
+  BraveWalletServiceTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kNativeBraveWalletFeature);
+
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    ASSERT_TRUE(https_server_->Start());
-
     wallet_service_ = brave_wallet::BraveWalletServiceFactory::GetInstance()
                           ->GetServiceForContext(browser()->profile());
   }
 
   BraveWalletService* wallet_service() { return wallet_service_; }
-  net::EmbeddedTestServer* https_server() { return https_server_.get(); }
+  const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
   BraveWalletService* wallet_service_;
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
-  GURL url = https_server()->GetURL("a.com", "/simple.html");
-  std::string expected_origin = url.GetOrigin().spec();
+  GURL url = https_server()->GetURL("a.test", "/simple.html");
+  std::string expected_origin = url::Origin::Create(url).Serialize();
   TestBraveWalletServiceObserver observer;
   wallet_service()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -104,8 +108,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
-  url = https_server()->GetURL("b.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  url = https_server()->GetURL("b.test", "/simple.html");
+  expected_origin = url::Origin::Create(url).Serialize();
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -115,8 +119,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
-  url = https_server()->GetURL("c.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  url = https_server()->GetURL("c.test", "/simple.html");
+  expected_origin = url::Origin::Create(url).Serialize();
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -127,8 +131,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
-  url = https_server()->GetURL("d.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  url = https_server()->GetURL("d.test", "/simple.html");
+  expected_origin = url::Origin::Create(url).Serialize();
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,

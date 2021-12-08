@@ -120,7 +120,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::Days(1));
 
   // Act
   PerDayFrequencyCap frequency_cap(ad_events);
@@ -144,7 +144,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(23));
+  FastForwardClockBy(base::Hours(23));
 
   // Act
   PerDayFrequencyCap frequency_cap(ad_events);

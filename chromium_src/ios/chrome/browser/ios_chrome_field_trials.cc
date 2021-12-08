@@ -34,11 +34,11 @@ void DeleteFileMetrics() {
 
 }  // namespace
 
-void IOSChromeFieldTrials::SetupFieldTrials() {
+void IOSChromeFieldTrials::SetUpFieldTrials() {
   DeleteFileMetrics();
 }
 
-void IOSChromeFieldTrials::SetupFeatureControllingFieldTrials(
+void IOSChromeFieldTrials::SetUpFeatureControllingFieldTrials(
     bool has_seed,
     const base::FieldTrial::EntropyProvider* low_entropy_provider,
     base::FeatureList* feature_list) {

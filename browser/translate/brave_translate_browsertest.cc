@@ -29,6 +29,7 @@
 #include "components/translate/core/browser/translate_language_list.h"
 #include "components/translate/core/browser/translate_manager.h"
 #include "components/translate/core/browser/translate_script.h"
+#include "components/translate/core/common/translate_util.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/http_request.h"

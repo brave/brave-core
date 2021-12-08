@@ -1,12 +1,13 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index f64ddceb359b32fee6cb553410e7091b1eb39699..be0f163c79532d98da4ef49a1376357c83330a04 100755
+index f64ddceb359b32fee6cb553410e7091b1eb39699..e36b06f760d262158c5957b64fb455d272b52ee6 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -49,6 +49,7 @@ _IGNORE_WARNINGS = (
-     # Only relevant for R8 when optimizing an app that doesn't use proto.
-     r'Ignoring -shrinkunusedprotofields since the protobuf-lite runtime is',
- )
-+_IGNORE_WARNINGS += ( r'.Brave', )
- 
+@@ -53,7 +53,7 @@ _IGNORE_WARNINGS = (
  _SKIPPED_CLASS_FILE_NAMES = (
      'module-info.class',  # Explicitly skipped by r8/utils/FileUtils#isClassFile
+ )
+-
++_IGNORE_WARNINGS += ( r'.Brave', )
+ 
+ def _ParseArgs(args):
+   args = build_utils.ExpandFileArgs(args)

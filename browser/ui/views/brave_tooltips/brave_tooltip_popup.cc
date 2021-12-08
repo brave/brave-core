@@ -397,8 +397,7 @@ void BraveTooltipPopup::CloseWidgetView() {
 void BraveTooltipPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
 
-  const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(fade_duration_);
+  const base::TimeDelta fade_duration = base::Milliseconds(fade_duration_);
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -407,8 +406,7 @@ void BraveTooltipPopup::FadeIn() {
 void BraveTooltipPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
 
-  const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(fade_duration_);
+  const base::TimeDelta fade_duration = base::Milliseconds(fade_duration_);
   animation_->SetDuration(fade_duration);
 
   StartAnimation();

@@ -9,8 +9,8 @@
 #define BRAVE_HOST_URLS                                                  \
   kAdblockHost, kIPFSWebUIHost, kRewardsPageHost, kRewardsInternalsHost, \
       kWelcomeHost, kWalletPageHost, kTorInternalsHost
-#define kChromeUIAppCacheInternalsHost \
-  kChromeUIAppCacheInternalsHost, BRAVE_HOST_URLS
+#define kChromeUIAttributionInternalsHost \
+  kChromeUIAttributionInternalsHost, BRAVE_HOST_URLS
 #include "../../../../chrome/common/webui_url_constants.cc"
-#undef kChromeUIAppCacheInternalsHost
+#undef kChromeUIAttributionInternalsHost
 #undef BRAVE_HOST_URLS

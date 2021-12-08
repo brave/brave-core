@@ -9,7 +9,7 @@
 #define ShouldDisableCSPCheckForLitePageSubresourceRedirectOrigin \
   ShouldDisableCSPCheckForLitePageSubresourceRedirectOrigin_ChromiumImpl
 
-#include "../../../../../../third_party/blink/renderer/core/loader/subresource_redirect_util.cc"
+#include "../../../../../../../third_party/blink/renderer/core/loader/subresource_redirect_util.cc"
 #undef ShouldDisableCSPCheckForLitePageSubresourceRedirectOrigin
 
 namespace blink {

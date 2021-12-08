@@ -15,9 +15,9 @@ class TorLauncher;
 }  // namespace tor
 
 template <>
-inline sandbox::policy::SandboxType
+inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
+  return sandbox::mojom::Sandbox::kNoSandbox;
 }
 
 #endif  // BRAVE_COMPONENTS_TOR_SERVICE_SANDBOX_TYPE_H_

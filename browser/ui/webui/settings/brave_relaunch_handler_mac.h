@@ -6,24 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_RELAUNCH_HANDLER_MAC_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_RELAUNCH_HANDLER_MAC_H_
 
-#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+namespace brave_relaunch_handler {
 
-class Profile;
+void RelaunchOnMac();
 
-class BraveRelaunchHandler : public settings::SettingsPageUIHandler {
- public:
-  BraveRelaunchHandler() = default;
-  ~BraveRelaunchHandler() override = default;
-
- private:
-  // SettingsPageUIHandler overrides:
-  void RegisterMessages() override;
-  void OnJavascriptAllowed() override {}
-  void OnJavascriptDisallowed() override {}
-
-  void Relaunch(base::Value::ConstListView args);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveRelaunchHandler);
-};
+}  // namespace brave_relaunch_handler
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_RELAUNCH_HANDLER_MAC_H_

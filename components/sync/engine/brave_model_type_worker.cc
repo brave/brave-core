@@ -30,8 +30,7 @@ namespace {
 
 size_t kFailuresToResetMarker = 7;
 // Allow reset progress marker for type not often than once in 30 minutes
-base::TimeDelta kMinimalTimeBetweenResetMarker =
-    base::TimeDelta::FromMinutes(30);
+base::TimeDelta kMinimalTimeBetweenResetMarker = base::Minutes(30);
 }  // namespace
 
 BraveModelTypeWorker::BraveModelTypeWorker(

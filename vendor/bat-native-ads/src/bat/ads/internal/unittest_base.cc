@@ -123,7 +123,7 @@ void UnitTestBase::FastForwardClockTo(const base::Time& time) {
 
 void UnitTestBase::AdvanceClockToMidnightUTC() {
   const base::TimeDelta time_delta =
-      Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now();
+      Now().LocalMidnight() + base::Hours(24) - Now();
 
   return AdvanceClock(time_delta);
 }

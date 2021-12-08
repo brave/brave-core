@@ -10,9 +10,9 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/bind_post_task.h"
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversion_utils.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"

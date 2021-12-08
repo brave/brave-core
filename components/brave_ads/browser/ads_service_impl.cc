@@ -26,12 +26,12 @@
 #include "base/memory/ptr_util.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/path_service.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -782,7 +782,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
         FROM_HERE,
         base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr(),
                        total_number_of_starts_),
-        base::TimeDelta::FromSeconds(1));
+        base::Seconds(1));
   } else {
     Start(total_number_of_starts_);
   }
@@ -969,7 +969,7 @@ void AdsServiceImpl::StartCheckIdleStateTimer() {
 #if !defined(OS_ANDROID)
   idle_poll_timer_.Stop();
 
-  idle_poll_timer_.Start(FROM_HERE, base::TimeDelta::FromSeconds(1), this,
+  idle_poll_timer_.Start(FROM_HERE, base::Seconds(1), this,
                          &AdsServiceImpl::CheckIdleState);
 #endif
 }
@@ -1961,8 +1961,7 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
     return;
   }
 
-  const base::TimeDelta timeout =
-      base::TimeDelta::FromSeconds(timeout_in_seconds);
+  const base::TimeDelta timeout = base::Seconds(timeout_in_seconds);
 
   notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
   notification_timers_[uuid]->Start(

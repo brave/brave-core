@@ -36,8 +36,7 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -52,7 +51,7 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  AdvanceClock(base::TimeDelta::FromHours(2));
+  AdvanceClock(base::Hours(2));
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
@@ -62,8 +61,7 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -87,8 +85,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -113,8 +110,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -139,8 +135,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -164,8 +159,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);

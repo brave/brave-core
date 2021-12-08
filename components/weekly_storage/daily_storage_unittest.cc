@@ -51,7 +51,7 @@ TEST_F(DailyStorageTest, ForgetsOldValues) {
   state_->RecordValueNow(value);
   EXPECT_EQ(state_->GetLast24HourSum(), value);
 
-  clock_->Advance(base::TimeDelta::FromHours(24));
+  clock_->Advance(base::Hours(24));
 
   // More values
   state_->RecordValueNow(value);
@@ -63,7 +63,7 @@ TEST_F(DailyStorageTest, ForgetsOldValues) {
 TEST_F(DailyStorageTest, RetrievesAllValues) {
   uint64_t value = 10000;
   for (int hour = 0; hour <= 24; hour++) {
-    clock_->Advance(base::TimeDelta::FromHours(1));
+    clock_->Advance(base::Hours(1));
     state_->RecordValueNow(value);
   }
   EXPECT_EQ(state_->GetLast24HourSum(), 24 * value);
@@ -72,7 +72,7 @@ TEST_F(DailyStorageTest, RetrievesAllValues) {
 TEST_F(DailyStorageTest, HandlesSkippedHour) {
   uint64_t value = 10000;
   for (int hour = 0; hour < 24; hour++) {
-    clock_->Advance(base::TimeDelta::FromHours(1));
+    clock_->Advance(base::Hours(1));
     if (hour == 3)
       continue;
     state_->RecordValueNow(value);
@@ -83,7 +83,7 @@ TEST_F(DailyStorageTest, HandlesSkippedHour) {
 TEST_F(DailyStorageTest, IntermittentUsage) {
   uint64_t value = 10000;
   for (int hour = 0; hour < 36; hour++) {
-    clock_->Advance(base::TimeDelta::FromHours(2));
+    clock_->Advance(base::Hours(2));
     state_->RecordValueNow(value);
   }
   EXPECT_EQ(state_->GetLast24HourSum(), 12 * value);
@@ -92,7 +92,7 @@ TEST_F(DailyStorageTest, IntermittentUsage) {
 TEST_F(DailyStorageTest, InfrequentUsage) {
   uint64_t value = 10000;
   state_->RecordValueNow(value);
-  clock_->Advance(base::TimeDelta::FromHours(23));
+  clock_->Advance(base::Hours(23));
   state_->RecordValueNow(value);
   EXPECT_EQ(state_->GetLast24HourSum(), 2 * value);
 }

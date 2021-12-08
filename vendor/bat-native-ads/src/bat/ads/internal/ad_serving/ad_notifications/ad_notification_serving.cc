@@ -39,14 +39,11 @@ namespace ad_notifications {
 
 namespace {
 
-constexpr base::TimeDelta kServeFirstAdAfterDelay =
-    base::TimeDelta::FromMinutes(2);
+constexpr base::TimeDelta kServeFirstAdAfterDelay = base::Minutes(2);
 
-constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd =
-    base::TimeDelta::FromMinutes(1);
+constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd = base::Minutes(1);
 
-constexpr base::TimeDelta kRetryServingAdAfterDelay =
-    base::TimeDelta::FromMinutes(2);
+constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
 
 }  // namespace
 
@@ -226,7 +223,7 @@ void AdServing::MaybeServeAdAtNextRegularInterval() {
   }
 
   const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
-  const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
+  const base::TimeDelta delay = base::Seconds(seconds);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(serve_ad_at));
 }

@@ -133,14 +133,14 @@ void Issuers::FetchAfterDelay() {
 
 base::TimeDelta Issuers::GetFetchDelay() const {
   const int ping = AdsClientHelper::Get()->GetIntegerPref(prefs::kIssuerPing);
-  return base::TimeDelta::FromMilliseconds(ping);
+  return base::Milliseconds(ping);
 }
 
 void Issuers::Retry() {
   DCHECK(!timer_.IsRunning());
 
   const base::Time& time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(time));

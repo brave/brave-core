@@ -163,7 +163,7 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
           FROM_HERE,
           base::BindOnce(&SidebarModel::FetchFavicon,
                          weak_ptr_factory_.GetWeakPtr(), items[i]),
-          base::TimeDelta::FromSeconds(2));
+          base::Seconds(2));
     }
   }
 }

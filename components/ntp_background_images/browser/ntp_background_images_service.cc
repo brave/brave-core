@@ -148,7 +148,7 @@ void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
 
   // If previous update check is missed, do update check now.
   if (base::Time::Now() - last_update_check_time_ >
-      base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins)) {
+      base::Minutes(kSIComponentUpdateCheckIntervalMins)) {
     si_update_check_callback_.Run();
   }
 }
@@ -196,8 +196,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   last_update_check_time_ = base::Time::Now();
   si_update_check_timer_.Start(
-      FROM_HERE,
-      base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins),
+      FROM_HERE, base::Minutes(kSIComponentUpdateCheckIntervalMins),
       si_update_check_callback_);
 }
 

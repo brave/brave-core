@@ -150,7 +150,7 @@ void AdServer::FetchAfterDelay() {
       g_is_debug ? kDebugCatalogPing
                  : AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
 
-  const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);
+  const base::TimeDelta delay = base::Seconds(ping);
 
   const base::Time time = timer_.StartWithPrivacy(
       delay, base::BindOnce(&AdServer::Fetch, base::Unretained(this)));
@@ -160,7 +160,7 @@ void AdServer::FetchAfterDelay() {
 
 void AdServer::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&AdServer::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(time));

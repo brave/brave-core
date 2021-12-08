@@ -282,6 +282,9 @@
   <message name="IDS_SETTINGS_AUTOFILL_DETAIL" desc="Description of what toggling the 'Autofill' setting does. Immediately underneath IDS_SETTINGS_AUTOFILL">
     Enable Autofill to fill out forms in a single click
   </message>
+  <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_FOR_ADDRESS" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a stored autofill address. The address is described by the name of the recipient and usually the beginning of the address (i.e. street name and building number). The name and the address are separated by comma.">
+    More actions for <ph name="ADDRESS_SUMMARY">$1<ex>John Doe, 123 Main Street</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_ADDRESS_REMOVE" desc="Label for a context menu item that removes the selected address." meaning="Remove selected address.">
     Remove
   </message>
@@ -1247,9 +1250,6 @@
   </if>
 
   <!-- Privacy Page -->
-  <message name="IDS_SETTINGS_PRIVACY" desc="Name of the settings page which allows users to modify privacy and security settings.">
-    Privacy and security
-  </message>
   <message name="IDS_SETTINGS_PRIVACY_V2" desc="Name of the settings page which allows users to modify privacy and security settings.">
     Security and Privacy
   </message>
@@ -1356,17 +1356,23 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WHAT_YOU_SHARE_WITH_GOOGLE" desc="Header of a text column that describes the information a feature shares with Brave.">
     What you share with Brave
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WHAT_YOU_SHARE_WITH_WEBSITES" desc="Header of a text column that describes the information a feature shares with websites.">
+    What you share with websites
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_START_BUTTON" desc="Text of a button in the welcome card in the privacy review that starts the privacy review.">
     Get started
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_DONT_SHOW_AGAIN_CHECKBOX" desc="Text of a checkbox in the welcome card in the privacy review that prevents the welcome card from being shown again in the future.">
-    Don’t show again
+    Don’t show this step again
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_HEADER" desc="A header shown at the top of the completion card in the privacy review that informs users that they completed the privacy review.">
-    Review completed!
+    Review complete!
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_SUB_HEADER" desc="A subheader shown at the top of the completion card in the privacy review that informs users that they can explore more settings or complete the privacy review.">
+    Explore more settings below or finish now
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion car in the privacy review that leads the user back to Brave settings.">
-    Back to settings
+    Done
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_CARD_HEADER" desc="Header of the 'make searches and browsing better' card in the privacy review.">
     Review settings for search and browsing optimization
@@ -1389,9 +1395,6 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_CLEAR_ON_EXIT_CARD_HEADER" desc="Header of the 'clear cookies on exit' card in the privacy review.">
     Review automatic data clearing
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_CLEAR_ON_EXIT_FEATURE_DESCRIPTION2" desc="A part of the feature description of 'clear cookies on exit' card in the privacy review.">
-    Sites you visit can still remember your information until you close Brave
-  </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_CARD_HEADER" desc="Header of the history sync card in the privacy review.">
     Review whether to sync history
   </message>
@@ -1403,6 +1406,48 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of history sync in the privacy review.">
     The URLs you visit are saved to your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_HEADER" desc="Header of the cookies card in the privacy review.">
+    Choose when to block third-party cookies
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy review, for blocking third party cookies in private.">
+    Block third-party cookies in Private
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+    Features on some sites may not work
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+    When you aren't in Private mode, sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_SUBHEADER" desc="A subheader for the cookies card of the privacy review, for blocking third party cookies.">
+    Block all third-party cookies
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the privacy review.">
+    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the privacy review.">
+    Features on some sites may not work
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking section of the cookies card in the privacy review.">
+    Sites can only use your cookies to see your browsing activity on their own site
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_SAFE_BROWSING_CARD_HEADER" desc="Header of the safe browsing card in the privacy review.">
+    Choose your Safe Browsing protection
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy review.">
+    Sends URLs to Safe Browsing to check them
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy review.">
+    Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION3" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy review.">
+    Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_SAFE_BROWSING_CARD_STANDARD_PROTECTION_FEATURE_DESCRIPTION1" desc="A part of the feature description of the standard protection section of the safe browsing card in the privacy review.">
+    Detects and warns you about dangerous events when they happen
   </message>
 
   <!-- Safety check -->
@@ -1598,9 +1643,6 @@
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Brave protect user and user's device from dangerous sites">
     Sends URLs of some pages you visit to Google, when your security is at risk
   </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING" desc="The section title of the extended safe browsing checkbox to help improve safe browsing">
-    Help improve Brave security
-  </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC" desc="Description for extended safe browsing">
     Sends URLs of some pages you visit, limited system information, and some page content to Brave, to help discover new threats and protect everyone on the web.
   </message>
@@ -1618,9 +1660,6 @@
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_ONE" desc="First bullet point under the safe browsing enhanced protection mode">
     Predicts and warns you about dangerous events before they happen
-  </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_TWO" desc="Second bullet point under the safe browsing enhanced protection mode">
-    Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_THREE" desc="Third bullet point under the safe browsing enhanced protection mode">
     Improves security for you and everyone on the web
@@ -1642,9 +1681,6 @@
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_ONE" desc="First bullet point under the safe browsing standard protection mode">
     Detects and warns you about dangerous events when they happen
-  </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO" desc="First bullet point under the safe browsing standard protection mode">
-    Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE" desc="The name of the toggle to enable reporting to help improve safe browsing">
     Help improve security on the web for everyone
@@ -3297,7 +3333,7 @@
     Control how your browsing history is used to personalize Search and more
   </message>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <!-- Import Settings Dialog -->
     <message name="IDS_SETTINGS_IMPORT_SETTINGS_TITLE" desc="Dialog title for import dialog.">
       Import bookmarks and settings

@@ -16,9 +16,9 @@ class BatAdsService;
 }  // namespace bat_ads
 
 template <>
-inline sandbox::policy::SandboxType
+inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<bat_ads::mojom::BatAdsService>() {
-  return sandbox::policy::SandboxType::kUtility;
+  return sandbox::mojom::Sandbox::kUtility;
 }
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_

@@ -93,8 +93,7 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1) +
-                     base::TimeDelta::FromSeconds(1));
+  FastForwardClockBy(base::Days(1) + base::Seconds(1));
 
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
