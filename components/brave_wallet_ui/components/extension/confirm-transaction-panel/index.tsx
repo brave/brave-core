@@ -8,7 +8,8 @@ import {
   TransactionType,
   AssetPrice,
   ERCToken,
-  GasEstimation1559
+  GasEstimation1559,
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -18,7 +19,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { formatBalance, toWeiHex } from '../../../utils/format-balances'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import { formatWithCommasAndDecimals, formatFiatAmountWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 import { usePricing, useTransactionParser } from '../../../common/hooks'
 import { withPlaceholderIcon } from '../../shared'
@@ -84,6 +85,7 @@ export interface Props {
   gasEstimates?: GasEstimation1559
   transactionsQueueLength: number
   transactionQueueNumber: number
+  defaultCurrencies: DefaultCurrencies
   onQueueNextTransction: () => void
   onConfirm: () => void
   onReject: () => void
@@ -106,6 +108,7 @@ function ConfirmTransactionPanel (props: Props) {
     transactionsQueueLength,
     transactionQueueNumber,
     fullTokenList,
+    defaultCurrencies,
     onQueueNextTransction,
     onConfirm,
     onReject,
@@ -314,7 +317,7 @@ function ConfirmTransactionPanel (props: Props) {
           </TransactionAmmountBig>
           {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
             transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
-            <TransactionFiatAmountBig>${formatWithCommasAndDecimals(transactionDetails.fiatValue)}</TransactionFiatAmountBig>
+            <TransactionFiatAmountBig>{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</TransactionFiatAmountBig>
           }
         </>
       )}
@@ -345,7 +348,7 @@ function ConfirmTransactionPanel (props: Props) {
                     hasError={transactionDetails.insufficientFundsError}
                   >
                     {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
-                    ${formatWithCommasAndDecimals(transactionDetails.gasFeeFiat)}
+                    {formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}
                   </TransactionText>
                 </TopColumn>
                 <Divider />
@@ -373,7 +376,7 @@ function ConfirmTransactionPanel (props: Props) {
                   <SectionRightColumn>
                     <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
                     <TransactionTypeText>{formatWithCommasAndDecimals(transactionDetails.gasFee)} {selectedNetwork.symbol}</TransactionTypeText>
-                    <TransactionText>${formatWithCommasAndDecimals(transactionDetails.gasFeeFiat)}</TransactionText>
+                    <TransactionText>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</TransactionText>
                   </SectionRightColumn>
                 </SectionRow>
                 <Divider />
@@ -394,7 +397,7 @@ function ConfirmTransactionPanel (props: Props) {
                     {transactionDetails.insufficientFundsError
                       ? `${getLocale('braveWalletSwapInsufficientBalance')} `
                       : ''}
-                    ${formatWithCommasAndDecimals(transactionDetails.fiatTotal)}
+                    {formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatTotal, defaultCurrencies.fiat)}
                   </TransactionText>
 
                 </SectionColumn>

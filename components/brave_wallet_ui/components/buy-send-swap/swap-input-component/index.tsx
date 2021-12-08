@@ -5,8 +5,10 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   SwapValidationErrorType,
-  AmountPresetTypes
+  AmountPresetTypes,
+  DefaultCurrencies
 } from '../../../constants/types'
+import { CurrencySymbols } from '../../../utils/currency-symbols'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
@@ -64,6 +66,7 @@ export interface Props {
   orderExpiration?: ExpirationPresetObjectType
   validationError?: SwapValidationErrorType
   customSlippageTolerance?: string
+  defaultCurrencies?: DefaultCurrencies
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -91,6 +94,7 @@ function SwapInputComponent (props: Props) {
     orderExpiration,
     validationError,
     customSlippageTolerance,
+    defaultCurrencies,
     onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
@@ -241,7 +245,7 @@ function SwapInputComponent (props: Props) {
           }
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
-              <AssetTicker>$</AssetTicker>
+              <AssetTicker>{CurrencySymbols[defaultCurrencies?.fiat ?? 'USD']}</AssetTicker>
             }
             {!selectedAsset?.asset.isErc721 &&
               <Input

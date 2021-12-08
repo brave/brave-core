@@ -14,7 +14,8 @@ import {
   ERCToken,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultWallet
+  DefaultWallet,
+  DefaultCurrencies
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -54,6 +55,7 @@ export interface Props {
   onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
   onRemoveUserAsset: (token: ERCToken) => void
   onOpenWalletSettings: () => void
+  defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   hasImportError: boolean
   transactionSpotPrices: AssetPrice[]
@@ -67,8 +69,8 @@ export interface Props {
   selectedPortfolioTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
-  selectedUSDAssetPrice: AssetPrice | undefined
-  selectedBTCAssetPrice: AssetPrice | undefined
+  selectedAssetFiatPrice: AssetPrice | undefined
+  selectedAssetCryptoPrice: AssetPrice | undefined
   selectedAsset: ERCToken | undefined
   portfolioBalance: string
   transactions: AccountTransactions
@@ -110,6 +112,7 @@ const CryptoView = (props: Props) => {
     onOpenWalletSettings,
     onShowAddModal,
     onHideAddModal,
+    defaultCurrencies,
     defaultWallet,
     addUserAssetError,
     hasImportError,
@@ -129,8 +132,8 @@ const CryptoView = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    selectedUSDAssetPrice,
-    selectedBTCAssetPrice,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
@@ -235,8 +238,8 @@ const CryptoView = (props: Props) => {
             onLockWallet={onLockWallet}
           />
           {(defaultWallet !== DefaultWallet.BraveWallet &&
-           (defaultWallet !== DefaultWallet.BraveWalletPreferExtension || (defaultWallet === DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
-           showDefaultWalletBanner &&
+            (defaultWallet !== DefaultWallet.BraveWalletPreferExtension || (defaultWallet === DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
+            showDefaultWalletBanner &&
             <WalletBanner
               onDismiss={onDismissDefaultWalletBanner}
               onClick={onOpenWalletSettings}
@@ -259,6 +262,7 @@ const CryptoView = (props: Props) => {
 
       <Route path={WalletRoutes.PortfolioSub} exact={true}>
         <PortfolioView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
           networkList={networkList}
@@ -278,8 +282,8 @@ const CryptoView = (props: Props) => {
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
           transactions={transactions}
-          selectedUSDAssetPrice={selectedUSDAssetPrice}
-          selectedBTCAssetPrice={selectedBTCAssetPrice}
+          selectedAssetFiatPrice={selectedAssetFiatPrice}
+          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
           userAssetList={userAssetList}
           isLoading={isLoading}
           selectedNetwork={selectedNetwork}
@@ -295,6 +299,7 @@ const CryptoView = (props: Props) => {
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>
         <AccountsView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
           onClickBackup={onShowBackup}

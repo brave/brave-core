@@ -41,7 +41,8 @@ import {
   EthereumChain,
   BuySupportedChains,
   SwapSupportedChains,
-  WalletOrigin
+  WalletOrigin,
+  DefaultCurrencies
 } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
@@ -51,13 +52,23 @@ export interface Props {
   selectedNetwork: EthereumChain
   isConnected: boolean
   activeOrigin: string
+  defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
   onLockWallet: () => void
   onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { onLockWallet, onOpenSettings, isConnected, navAction, selectedAccount, selectedNetwork, activeOrigin } = props
+  const {
+    onLockWallet,
+    onOpenSettings,
+    isConnected,
+    navAction,
+    selectedAccount,
+    selectedNetwork,
+    activeOrigin,
+    defaultCurrencies
+  } = props
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const navigate = (path: PanelTypes) => () => {
@@ -159,7 +170,7 @@ const ConnectedPanel = (props: Props) => {
         </BalanceColumn>
         <BalanceColumn>
           <AssetBalanceText>{formatedAssetBalanceWithDecimals}</AssetBalanceText>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
+          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccount.fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
       <ConnectedBottomNav
