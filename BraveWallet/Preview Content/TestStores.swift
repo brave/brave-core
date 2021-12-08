@@ -129,7 +129,8 @@ extension TransactionConfirmationStore {
       assetRatioController: TestAssetRatioController(),
       rpcController: TestEthJsonRpcController(),
       txController: TestEthTxController(),
-      tokenRegistry: TestTokenRegistry()
+      tokenRegistry: TestTokenRegistry(),
+      walletService: TestBraveWalletService()
     )
   }
 }
