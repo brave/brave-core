@@ -38,11 +38,5 @@ public struct UIKitNavigationView<Content: View>: View {
       (uiViewController.viewControllers.first as? UIHostingController<Content>)?
         .rootView = content
     }
-    static func dismantleUIViewController(_ uiViewController: UINavigationController, coordinator: ()) {
-      // For some reason we have to do this or else there is a chance the inner content
-      // gets a new lifetime and renders again between the controller dismantling and being
-      // removed from the SwiftUI hierarchy
-      uiViewController.viewControllers.removeAll()
-    }
   }
 }
