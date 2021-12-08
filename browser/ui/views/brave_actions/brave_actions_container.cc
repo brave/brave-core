@@ -449,13 +449,11 @@ void BraveActionsContainer::SetPopupOwner(
     DCHECK(!popup_owner_);
     popup_owner_ = popup_owner;
     UpdateActionVisibility(popup_owner->GetId());
-    return;
+  } else if (popup_owner_) {
+    auto* previous_owner = popup_owner_;
+    popup_owner_ = nullptr;
+    UpdateActionVisibility(previous_owner->GetId());
   }
-
-  auto* previous_owner = popup_owner_;
-  DCHECK(previous_owner);
-  popup_owner_ = nullptr;
-  UpdateActionVisibility(previous_owner->GetId());
 }
 
 void BraveActionsContainer::HideActivePopup() {
