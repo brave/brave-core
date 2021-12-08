@@ -50,6 +50,10 @@ enum DesignSystemColor: String {
   case gradient02_step1 = "gradient02-step1"
   case gradient02_step2 = "gradient02-step2"
   
+  case gradient02_alt_step0 = "gradient02-alt-step0"
+  case gradient02_alt_step1 = "gradient02-alt-step1"
+  case gradient02_alt_step2 = "gradient02-alt-step2"
+  
   case gradient03_step0 = "gradient03-step0"
   case gradient03_step1 = "gradient03-step1"
   
@@ -108,11 +112,34 @@ extension UIColor {
   public static var braveDarkerBlurple: UIColor {
     DesignSystemColor.interactive04.color
   }
+  public static var braveBlurpleTint: UIColor {
+    .init {
+      if $0.userInterfaceStyle == .dark {
+        return .braveLighterBlurple
+      }
+      return .braveBlurple
+    }
+  }
   public static var braveSeparator: UIColor {
     DesignSystemColor.divider01.color
   }
   public static var braveErrorLabel: UIColor {
     DesignSystemColor.errorText.color
+  }
+  public static var braveErrorBorder: UIColor {
+    DesignSystemColor.errorBorder.color
+  }
+  public static var braveErrorBackground: UIColor {
+    DesignSystemColor.errorBackground.color
+  }
+  public static var braveWarningLabel: UIColor {
+    DesignSystemColor.warningText.color
+  }
+  public static var braveWarningBorder: UIColor {
+    DesignSystemColor.warningBorder.color
+  }
+  public static var braveWarningBackground: UIColor {
+    DesignSystemColor.warningBackground.color
   }
   public static var braveInfoLabel: UIColor {
     DesignSystemColor.infoText.color

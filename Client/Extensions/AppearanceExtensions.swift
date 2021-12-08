@@ -15,7 +15,6 @@ extension AppDelegate {
     ///
     /// - warning: Be careful adjusting colors here, and make sure impact is well known
     func applyAppearanceDefaults() {
-        // important! for privacy concerns, otherwise UI can bleed through
         UIToolbar.appearance().do {
             $0.tintColor = .braveOrange
             let appearance: UIToolbarAppearance = {
@@ -67,14 +66,23 @@ extension AppDelegate {
         
         UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self])
             .tintColor = .braveLabel
-
-        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
-            .backgroundColor = tablePrimaryColor
         
         UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = .braveLabel
         UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])
             .textColor = .braveLabel
         
         UITextField.appearance().textColor = .braveLabel
+        
+        UISegmentedControl.appearance().do {
+            $0.selectedSegmentTintColor = .init(dynamicProvider: {
+                if $0.userInterfaceStyle == .dark {
+                    return .secondaryButtonTint
+                }
+                return .white
+            })
+            $0.backgroundColor = .secondaryBraveBackground
+            $0.setTitleTextAttributes([.foregroundColor: UIColor.bravePrimary], for: .selected)
+            $0.setTitleTextAttributes([.foregroundColor: UIColor.braveLabel], for: .normal)
+        }
     }
 }

@@ -9,6 +9,8 @@ import BraveUI
 import BraveShared
 import Shared
 import Data
+import BraveWallet
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -89,6 +91,14 @@ extension BrowserViewController {
                     self.finishEditingAndSubmit(url, visitType: .typed)
                 }
             }
+            
+            MenuItemButton(
+                icon: #imageLiteral(resourceName: "menu-crypto").template,
+                title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))",
+                subtitle: Strings.OptionsMenu.braveWalletItemDescription
+            ) { [unowned self] in
+                self.presentWallet()
+            }
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding(.top, 10)
@@ -113,13 +123,22 @@ extension BrowserViewController {
                 menuController.pushInnerMenu(vc)
             }
             if isShownOnWebPage {
+                MenuItemButton(
+                    icon: #imageLiteral(resourceName: "menu-crypto").template,
+                    title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))"
+                ) { [unowned self] in
+                    self.presentWallet()
+                }
                 MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
                     guard let self = self else { return }
-
                     self.presentPlaylistController()
                 }
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
+                let keyringStore = BraveWallet.KeyringControllerFactory
+                    .get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                    .map { KeyringStore(keyringController: $0) }
+                
                 let vc = SettingsViewController(profile: self.profile,
                                                 tabManager: self.tabManager,
                                                 feedDataSource: self.feedDataSource,
@@ -127,10 +146,42 @@ extension BrowserViewController {
                                                 legacyWallet: self.legacyWallet,
                                                 windowProtection: self.windowProtection,
                                                 historyAPI: self.historyAPI,
-                                                syncAPI: self.syncAPI)
+                                                syncAPI: self.syncAPI,
+                                                walletKeyringStore: keyringStore)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
             }
+        }
+    }
+    
+    private func presentWallet() {
+        let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+        guard
+            let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
+            let rpcController = BraveWallet.EthJsonRpcControllerFactory.get(privateMode: privateMode),
+            let assetRatioController = BraveWallet.AssetRatioControllerFactory.get(privateMode: privateMode),
+            let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
+            let swapController = BraveWallet.SwapControllerFactory.get(privateMode: privateMode),
+            let txController = BraveWallet.EthTxControllerFactory.get(privateMode: privateMode)
+        else {
+            log.error("Failed to load wallet. One or more services were unavailable")
+            return
+        }
+        
+        let walletStore = WalletStore(
+            keyringController: keyringController,
+            rpcController: rpcController,
+            walletService: walletService,
+            assetRatioController: assetRatioController,
+            swapController: swapController,
+            tokenRegistry: BraveCoreMain.ercTokenRegistry,
+            transactionController: txController
+        )
+        
+        let vc = WalletHostingViewController(walletStore: walletStore)
+        vc.delegate = self
+        self.dismiss(animated: true) {
+            self.present(vc, animated: true)
         }
     }
     

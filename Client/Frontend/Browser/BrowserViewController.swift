@@ -100,9 +100,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     let profile: Profile
     let tabManager: TabManager
     let historyAPI: BraveHistoryAPI
-    let bookmarkManager: BookmarkManager
     let syncAPI: BraveSyncAPI
     let migration: Migration?
+    let bookmarkManager: BookmarkManager
     
     /// Whether last session was a crash or not
     fileprivate let crashedLastSession: Bool
