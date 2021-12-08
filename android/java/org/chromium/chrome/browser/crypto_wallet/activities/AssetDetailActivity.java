@@ -203,6 +203,20 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         }
     }
 
+    private void getPrice(String asset, String vsAsset, int timeframe) {
+        assert mAssetRatioController != null;
+        String[] fromAssets = new String[] {asset.toLowerCase(Locale.getDefault())};
+        String[] toAssets = new String[] {vsAsset.toLowerCase(Locale.getDefault())};
+        mAssetRatioController.getPrice(fromAssets, toAssets, timeframe, (success, price) -> {
+            if (!success && price.length == 0) {
+                return;
+            }
+            String btcPriceText = price[0].price + " BTC";
+            TextView btcPrice = findViewById(R.id.asset_price_btc_text);
+            btcPrice.setText(btcPriceText);
+        });
+    }
+
     private void setUpAccountList() {
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
         WalletCoinAdapter walletCoinAdapter =
@@ -277,6 +291,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         InitEthTxController();
         InitEthJsonRpcController();
         getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
+        getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         setUpAccountList();
     }
 
