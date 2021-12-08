@@ -497,16 +497,26 @@ public class Utils {
     }
 
     public static byte[] hexStrToNumberArray(String value) {
+        if (value == null) {
+            return new byte[0];
+        }
+
         if (value.startsWith("0x")) {
             value = value.substring(2);
         }
-        if (value.isEmpty()) {
+
+        if (value.length() < 2 || (value.length() % 2 != 0)) {
             return new byte[0];
         }
 
         byte[] data = new byte[value.length() / 2];
-        for (int n = 0; n < value.length(); n += 2) {
-            data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+
+        try {
+            for (int n = 0; n < value.length(); n += 2) {
+                data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+            }
+        } catch (NumberFormatException ex) {
+            return new byte[0];
         }
 
         return data;

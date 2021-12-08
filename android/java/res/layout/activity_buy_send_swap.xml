@@ -344,6 +344,13 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/to_send_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_error_text_color"
+                    android:textSize="14sp"/>
+
             </LinearLayout>
 
             <LinearLayout

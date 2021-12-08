@@ -78,6 +78,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBott
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
@@ -210,10 +211,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     @SuppressLint("SetTextI18n")
     protected void triggerLayoutInflation() {
-        assert getString(R.string.wallet_same_address_error) != null;
-        assert getString(R.string.wallet_not_valid_eth_address) != null;
-        assert getString(R.string.wallet_contract_address_error) != null;
-
         setContentView(R.layout.activity_buy_send_swap);
 
         mAccountSpinner = findViewById(R.id.accounts_spinner);
@@ -654,6 +651,24 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         return 0;
     }
 
+    private void setSendToValidationResult(String validationResult, boolean disableButtonOnError) {
+        boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+
+        boolean buttonShouldBeEnabled = validationSucceeded || !disableButtonOnError;
+        btnBuySendSwap.setEnabled(buttonShouldBeEnabled);
+
+        TextView sendToValidation = findViewById(R.id.to_send_error_text);
+
+        if (validationSucceeded) {
+            sendToValidation.setText("");
+            sendToValidation.setVisibility(View.GONE);
+        } else {
+            sendToValidation.setText(validationResult);
+            sendToValidation.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void adjustControls() {
         EditText toValueText = findViewById(R.id.to_value_text);
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
@@ -692,6 +707,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             EditText toSendValueText = findViewById(R.id.to_send_value_text);
             toSendValueText.setText("");
             toSendValueText.setHint(getText(R.string.to_address_edit));
+            mFilterTextWatcherToSend = new FilterTextWatcherToSend();
+            toSendValueText.addTextChangedListener(mFilterTextWatcherToSend);
             arrowDown.setVisibility(View.GONE);
             // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
@@ -1085,6 +1102,33 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         public void afterTextChanged(Editable s) {}
     };
 
+    private class FilterTextWatcherToSend implements TextWatcher {
+        Validations.SendToAccountAddress mValidator;
+
+        public FilterTextWatcherToSend() {
+            mValidator = new Validations.SendToAccountAddress();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
+                    mAccountSpinner.getSelectedItemPosition());
+
+            mValidator.validate(mCurrentChainId, getErcTokenRegistry(), getBraveWalletService(),
+
+                    fromAccountAddress, s.toString(), (String validationResult) -> {
+                        setSendToValidationResult(validationResult, true);
+                    });
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    }
+    private FilterTextWatcherToSend mFilterTextWatcherToSend;
+
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
         assert mEthTxController != null;
@@ -1138,21 +1182,25 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
                 txData1559.gasEstimation.fastMaxFeePerGas = "";
                 txData1559.gasEstimation.baseFeePerGas = "";
-                mEthTxController.addUnapproved1559Transaction(txData1559, from,
-                        (success, tx_meta_id, error_message)
-                                -> {
-                                        // Do nothing here as we will receive an
-                                        // unapproved transaction in
-                                        // EthTxControllerObserverImpl
-                                });
+                mEthTxController.addUnapproved1559Transaction(
+                        txData1559, from, (success, tx_meta_id, error_message) -> {
+                            // Do nothing here when success as we will receive an
+                            // unapproved transaction in
+                            // EthTxControllerObserverImpl
+                            // When we have error, let the user know,
+                            // error_message is localized, do not disable send button
+                            setSendToValidationResult(error_message, false);
+                        });
             } else {
-                mEthTxController.addUnapprovedTransaction(data, from,
-                        (success, tx_meta_id, error_message)
-                                -> {
-                                        // Do nothing here as we will receive an
-                                        // unapproved transaction in
-                                        // EthTxControllerObserverImpl
-                                });
+                mEthTxController.addUnapprovedTransaction(
+                        data, from, (success, tx_meta_id, error_message) -> {
+                            // Do nothing here when success as we will receive an
+                            // unapproved transaction in
+                            // EthTxControllerObserverImpl
+                            // When we have error, let the user know,
+                            // error_message is localized, do not disable send button
+                            setSendToValidationResult(error_message, false);
+                        });
             }
         });
     }
