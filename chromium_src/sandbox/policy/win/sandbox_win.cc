@@ -23,5 +23,5 @@ void BraveLaunchOption(const base::CommandLine& cmd_line,
 }  // namespace sandbox
 
 #define BRAVE_START_SANDBOXED_PROCESS BraveLaunchOption(cmd_line, &options);
-#include "../../../../../sandbox/policy/win/sandbox_win.cc"
+#include "src/sandbox/policy/win/sandbox_win.cc"
 #undef BRAVE_START_SANDBOXED_PROCESS

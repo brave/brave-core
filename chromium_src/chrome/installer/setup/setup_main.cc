@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define wWinMain wWinMain_ChromiumImpl
-#include "../../../../../chrome/installer/setup/setup_main.cc"
+#include "src/chrome/installer/setup/setup_main.cc"
 #undef wWinMain
 
 const char kBraveReferralCode[] = "brave-referral-code";

@@ -28,7 +28,7 @@
       net::CookieAccessResultList& excluded_cookies) const;         \
   bool AnnotateAndMoveUserBlockedCookies
 
-#include "../../../../services/network/cookie_settings.h"
+#include "src/services/network/cookie_settings.h"
 
 #undef AnnotateAndMoveUserBlockedCookies
 #undef IsPrivacyModeEnabled

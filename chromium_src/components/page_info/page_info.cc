@@ -7,5 +7,5 @@
   if (!delegate_->BraveShouldShowPermission(permission_info.type)) \
     continue;
 
-#include "../../../../components/page_info/page_info.cc"
+#include "src/components/page_info/page_info.cc"
 #undef BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define IsComponentExtensionAllowlisted IsComponentExtensionAllowlisted_ChromiumImpl  // NOLINT
-#include "../../../../../../chrome/browser/extensions/component_extensions_allowlist/allowlist.cc"  // NOLINT
+#include "src/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc"
 #undef IsComponentExtensionAllowlisted
 
 #include "base/cxx17_backports.h"

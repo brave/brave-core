@@ -4,4 +4,4 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/services/network/public/cpp/system_request_handler.h"
-#include "../../../../../chrome/browser/net/system_network_context_manager.cc"
+#include "src/chrome/browser/net/system_network_context_manager.cc"

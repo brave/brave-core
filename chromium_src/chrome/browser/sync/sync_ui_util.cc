@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #define GetAvatarSyncErrorType GetAvatarSyncErrorType_Unused
-#include "../../../../../chrome/browser/sync/sync_ui_util.cc"
+#include "src/chrome/browser/sync/sync_ui_util.cc"
 #undef GetAvatarSyncErrorType
 
 absl::optional<AvatarSyncErrorType> GetAvatarSyncErrorType(Profile* profile) {

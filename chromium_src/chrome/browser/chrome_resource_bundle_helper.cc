@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define LoadLocalState LoadLocalState_ChromiumImpl
-#include "../../../../chrome/browser/chrome_resource_bundle_helper.cc"
+#include "src/chrome/browser/chrome_resource_bundle_helper.cc"
 #undef LoadLocalState
 #include "brave/common/resource_bundle_helper.h"
 

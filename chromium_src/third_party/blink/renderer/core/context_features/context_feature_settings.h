@@ -24,7 +24,7 @@
  public:
 //  #define BRAVE_CONTEXT_FEATURE_SETTINGS_H_
 
-#include "../../../../../../../third_party/blink/renderer/core/context_features/context_feature_settings.h"
+#include "src/third_party/blink/renderer/core/context_features/context_feature_settings.h"
 #undef BRAVE_CONTEXT_FEATURE_SETTINGS_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_CONTEXT_FEATURES_CONTEXT_FEATURE_SETTINGS_H_

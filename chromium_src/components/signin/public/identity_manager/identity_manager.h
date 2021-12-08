@@ -10,7 +10,7 @@
   GetAccountsInCookieJar_Unused() const; \
   AccountsInCookieJarInfo GetAccountsInCookieJar
 
-#include "../../../../../../components/signin/public/identity_manager/identity_manager.h"
+#include "src/components/signin/public/identity_manager/identity_manager.h"
 
 #undef GetAccountsInCookieJar
 

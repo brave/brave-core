@@ -9,7 +9,7 @@
 #include "brave/browser/content_settings/brave_global_value_map.h"
 
 #define GlobalValueMap BraveGlobalValueMap
-#include "../../../../../chrome/browser/content_settings/content_settings_supervised_provider.h"
+#include "src/chrome/browser/content_settings/content_settings_supervised_provider.h"
 #undef GlobalValueMap
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CONTENT_SETTINGS_CONTENT_SETTINGS_SUPERVISED_PROVIDER_H_

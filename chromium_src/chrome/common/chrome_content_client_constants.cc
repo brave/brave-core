@@ -8,7 +8,7 @@
 #define kPDFExtensionPluginName kPDFExtensionPluginName_Unused
 #define kPDFInternalPluginName kPDFInternalPluginName_Unused
 
-#include "../../../../chrome/common/chrome_content_client_constants.cc"
+#include "src/chrome/common/chrome_content_client_constants.cc"
 
 #undef kPDFExtensionPluginName
 #undef kPDFInternalPluginName

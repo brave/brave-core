@@ -8,7 +8,7 @@
 
 #define BRAVE_IN_PROCESS_IMPORTER_BRIDGE_H \
     friend class BraveInProcessImporterBridge;
-#include "../../../../../chrome/browser/importer/in_process_importer_bridge.h"
+#include "src/chrome/browser/importer/in_process_importer_bridge.h"
 #undef BRAVE_IN_PROCESS_IMPORTER_BRIDGE_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_IN_PROCESS_IMPORTER_BRIDGE_H_

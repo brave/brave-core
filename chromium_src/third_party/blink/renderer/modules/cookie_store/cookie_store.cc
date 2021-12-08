@@ -19,5 +19,5 @@ base::Time BraveCanonExpiration(const base::Time& current) {
 }  // namespace
 
 #define BRAVE_TO_CANONICAL_COOKIE expires = BraveCanonExpiration(expires);
-#include "../../../../../../../third_party/blink/renderer/modules/cookie_store/cookie_store.cc"
+#include "src/third_party/blink/renderer/modules/cookie_store/cookie_store.cc"
 #undef BRAVE_TO_CANONICAL_COOKIE

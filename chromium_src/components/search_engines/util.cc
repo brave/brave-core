@@ -4,7 +4,7 @@
 
 #define GetSearchProvidersUsingKeywordResult \
   GetSearchProvidersUsingKeywordResult_ChromiumImpl
-#include "../../../../components/search_engines/util.cc"
+#include "src/components/search_engines/util.cc"
 #undef GetSearchProvidersUsingKeywordResult
 
 void GetSearchProvidersUsingKeywordResult(

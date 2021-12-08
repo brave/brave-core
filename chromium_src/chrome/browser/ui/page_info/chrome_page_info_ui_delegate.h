@@ -12,7 +12,7 @@
   AddIPFSTabForURL(const GURL& ipfs_url); \
   bool ShouldShowAsk
 
-#include "../../../../../../chrome/browser/ui/page_info/chrome_page_info_ui_delegate.h"
+#include "src/chrome/browser/ui/page_info/chrome_page_info_ui_delegate.h"
 
 #undef ShouldShowAsk
 

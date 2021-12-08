@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/views/accelerator_table.h"
 
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/views/accelerator_table.cc"
+#include "src/chrome/browser/ui/views/accelerator_table.cc"
 #undef GetAcceleratorList
 
 namespace {

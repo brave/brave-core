@@ -8,6 +8,6 @@
 #define DIALOG_BUTTON_NONE \
   DIALOG_BUTTON_NONE && !dialog_delegate->should_ignore_snapping()
 
-#include "../../../../../ui/views/bubble/bubble_frame_view.cc"
+#include "src/ui/views/bubble/bubble_frame_view.cc"
 
 #undef DIALOG_BUTTON_NONE

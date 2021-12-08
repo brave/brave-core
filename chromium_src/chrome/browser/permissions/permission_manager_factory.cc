@@ -17,7 +17,7 @@
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
 
-#include "../../../../../chrome/browser/permissions/permission_manager_factory.cc"
+#include "src/chrome/browser/permissions/permission_manager_factory.cc"
 
 #undef GeolocationPermissionContextDelegate
 #undef BuildServiceInstanceFor

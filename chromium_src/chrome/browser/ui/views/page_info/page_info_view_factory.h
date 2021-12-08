@@ -14,7 +14,7 @@
   std::unique_ptr<views::View> CreateSecurityPageView
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
-#include "../../../../../../../chrome/browser/ui/views/page_info/page_info_view_factory.h"
+#include "src/chrome/browser/ui/views/page_info/page_info_view_factory.h"
 
 #if BUILDFLAG(ENABLE_IPFS)
 #undef CreateSecurityPageView

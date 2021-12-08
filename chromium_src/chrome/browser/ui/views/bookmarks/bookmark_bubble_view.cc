@@ -6,5 +6,5 @@
 #define BRAVE_BOOKMARK_BUBBLE_VIEW \
   bubble->SetArrow(views::BubbleBorder::TOP_LEFT);
 
-#include "../../../../../../../chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc"
+#include "src/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc"
 #undef BRAVE_BOOKMARK_BUBBLE_VIEW

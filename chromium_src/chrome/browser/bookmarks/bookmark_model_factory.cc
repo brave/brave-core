@@ -7,4 +7,4 @@
 
 #define GetBrowserContextRedirectedInIncognito \
   GetBrowserContextRedirectedInIncognitoOverride
-#include "../../../../../chrome/browser/bookmarks/bookmark_model_factory.cc"
+#include "src/chrome/browser/bookmarks/bookmark_model_factory.cc"

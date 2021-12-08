@@ -10,7 +10,7 @@
   keyboard_ChromiumImpl(Navigator&); \
   static Keyboard* keyboard
 
-#include "../../../../../../../third_party/blink/renderer/modules/keyboard/navigator_keyboard.h"
+#include "src/third_party/blink/renderer/modules/keyboard/navigator_keyboard.h"
 #undef keyboard
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_KEYBOARD_NAVIGATOR_KEYBOARD_H_

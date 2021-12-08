@@ -12,7 +12,7 @@
   GetClientID_ChromiumImpl(UUID* client_id); \
   bool GetClientID
 
-#include "../../../../../../third_party/crashpad/crashpad/client/settings.h"
+#include "src/third_party/crashpad/crashpad/client/settings.h"
 
 #undef GetClientID
 

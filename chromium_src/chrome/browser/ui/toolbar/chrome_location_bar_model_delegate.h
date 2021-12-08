@@ -11,7 +11,7 @@
   friend class BraveLocationBarModelDelegate;       \
                                                     \
  public:
-#include "../../../../../../chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
+#include "src/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
 #undef BRAVE_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_

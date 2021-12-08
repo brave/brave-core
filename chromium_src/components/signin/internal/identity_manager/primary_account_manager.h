@@ -12,7 +12,7 @@
       signin_metrics::SignoutDelete signout_delete_metric); \
   void RevokeSyncConsent
 
-#include "../../../../../../components/signin/internal/identity_manager/primary_account_manager.h"
+#include "src/components/signin/internal/identity_manager/primary_account_manager.h"
 
 #undef RevokeSyncConsent
 

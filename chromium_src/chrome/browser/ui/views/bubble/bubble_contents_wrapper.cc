@@ -40,5 +40,5 @@
   }                                                                          \
   void BubbleContentsWrapper::RenderViewHostChanged
 
-#include "../../../../../../../chrome/browser/ui/views/bubble/bubble_contents_wrapper.cc"
+#include "src/chrome/browser/ui/views/bubble/bubble_contents_wrapper.cc"
 #undef RenderViewHostChanged

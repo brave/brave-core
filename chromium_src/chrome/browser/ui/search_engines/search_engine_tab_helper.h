@@ -13,7 +13,7 @@
   bool IsFormSubmit(content::NavigationEntry* entry); \
   void GenerateKeywordIfNecessary
 
-#include "../../../../../../chrome/browser/ui/search_engines/search_engine_tab_helper.h"
+#include "src/chrome/browser/ui/search_engines/search_engine_tab_helper.h"
 
 #undef GenerateKeywordIfNecessary
 

@@ -14,6 +14,6 @@ class IPFSDOMHandler;
   friend void BraveOnDemandUpdate(const std::string&);      \
                                                             \
  public:
-#include "../../../../components/component_updater/component_updater_service.h"
+#include "src/components/component_updater/component_updater_service.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../extensions/common/constants.cc"
+#include "src/extensions/common/constants.cc"
 
 const int kBraveActionGraphicSize = 18;
 const int kBraveActionRightMargin = 2;

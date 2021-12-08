@@ -6,7 +6,7 @@
 #include "net/base/lookup_string_in_fixed_set.h"
 
 #define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
-#include "../../../../net/base/lookup_string_in_fixed_set.cc"
+#include "src/net/base/lookup_string_in_fixed_set.cc"
 #undef LookupSuffixInReversedSet
 
 #include "base/strings/string_util.h"

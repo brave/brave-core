@@ -8,7 +8,7 @@
 #define GetHomepageURL GetHomepageURL_Unused
 #define GetWebStoreURL GetWebStoreURL_Unused
 
-#include "../../../../extensions/common/manifest_url_handlers.cc"
+#include "src/extensions/common/manifest_url_handlers.cc"
 
 #undef GetHomepageURL
 #undef GetWebStoreURL

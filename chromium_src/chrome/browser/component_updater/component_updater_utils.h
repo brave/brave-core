@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "../../../../../chrome/browser/component_updater/component_updater_utils.h"
+#include "src/chrome/browser/component_updater/component_updater_utils.h"
 
 namespace component_updater {
 

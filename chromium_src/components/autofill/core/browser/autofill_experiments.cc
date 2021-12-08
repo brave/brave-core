@@ -34,6 +34,6 @@ bool IsCreditCardMigrationEnabled(PersonalDataManager* personal_data_manager,
 
 #define IsCreditCardUploadEnabled IsCreditCardUploadEnabled_ChromiumImpl
 #define IsCreditCardMigrationEnabled IsCreditCardMigrationEnabled_ChromiumImpl
-#include "../../../../../../components/autofill/core/browser/autofill_experiments.cc"
+#include "src/components/autofill/core/browser/autofill_experiments.cc"
 #undef IsCreditCardUploadEnabled
 #undef IsCreditCardMigrationEnabled

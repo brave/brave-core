@@ -18,7 +18,7 @@
       const absl::optional<url::Origin>& top_frame_origin) const;   \
   virtual bool ShouldTreatUrlAsTrustworthy
 
-#include "../../../../net/cookies/cookie_access_delegate.h"
+#include "src/net/cookies/cookie_access_delegate.h"
 
 #undef ShouldTreatUrlAsTrustworthy
 

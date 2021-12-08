@@ -10,5 +10,5 @@
 #define ChromeViewsDelegate BraveViewsDelegateLinux
 #endif
 
-#include "../../../../../../chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc"
+#include "src/chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc"
 

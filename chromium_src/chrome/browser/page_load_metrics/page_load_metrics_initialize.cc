@@ -5,7 +5,7 @@
 
 #define InitializePageLoadMetricsForWebContents \
   InitializePageLoadMetricsForWebContents_Chromium
-#include "../../../../../chrome/browser/page_load_metrics/page_load_metrics_initialize.cc"
+#include "src/chrome/browser/page_load_metrics/page_load_metrics_initialize.cc"
 #undef InitializePageLoadMetricsForWebContents
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"

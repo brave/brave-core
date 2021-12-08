@@ -18,7 +18,7 @@
       AllowEphemeralStorageAccessCallback callback) override; \
   void OnContentBlocked
 
-#include "../../../../../components/content_settings/browser/content_settings_manager_impl.h"
+#include "src/components/content_settings/browser/content_settings_manager_impl.h"
 
 #undef OnContentBlocked
 

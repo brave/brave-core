@@ -15,7 +15,7 @@
   std::unique_ptr<SecurityDescription> GetSecurityDescription
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
-#include "../../../../components/page_info/page_info_ui.h"
+#include "src/components/page_info/page_info_ui.h"
 
 #if BUILDFLAG(ENABLE_IPFS)
 #undef GetSecurityDescription

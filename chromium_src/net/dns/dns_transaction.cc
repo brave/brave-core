@@ -42,5 +42,5 @@ bool GetNextIndex(const std::string& hostname,
     return AttemptResult(ERR_BLOCKED_BY_CLIENT, nullptr);             \
   }
 
-#include "../../../../net/dns/dns_transaction.cc"
+#include "src/net/dns/dns_transaction.cc"
 #undef BRAVE_MAKE_HTTP_ATTEMPT

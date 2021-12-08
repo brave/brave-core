@@ -8,6 +8,6 @@
 #define BRAVE_GET_ANDROID_OS_INFO \
   include_android_model = IncludeAndroidModel::Exclude;
 
-#include "../../../../content/common/user_agent.cc"
+#include "src/content/common/user_agent.cc"
 
 #undef BRAVE_GET_ANDROID_OS_INFO

@@ -6,5 +6,5 @@
 #include "components/gcm_driver/gcm_driver_desktop.h"
 
 #define GCMDriverDesktop BraveGCMDriverDesktop
-#include "../../../../components/gcm_driver/gcm_desktop_utils.cc"
+#include "src/components/gcm_driver/gcm_desktop_utils.cc"
 #undef GCMDriverDesktop

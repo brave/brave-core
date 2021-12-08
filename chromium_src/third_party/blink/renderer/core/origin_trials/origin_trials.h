@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_ORIGIN_TRIALS_ORIGIN_TRIALS_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_ORIGIN_TRIALS_ORIGIN_TRIALS_H_
 
-#include "../../../../../../../third_party/blink/renderer/core/origin_trials/origin_trials.h"
+#include "src/third_party/blink/renderer/core/origin_trials/origin_trials.h"
 
 namespace blink {
 namespace origin_trials {

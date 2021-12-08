@@ -10,7 +10,7 @@
 #include "chrome/common/chrome_content_client.h"
 
 #define ChromeContentClient BraveContentClient
-#include "../../../../chrome/app/chrome_main_delegate.h"
+#include "src/chrome/app/chrome_main_delegate.h"
 #undef ChromeContentClient
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_MAIN_DELEGATE_H_

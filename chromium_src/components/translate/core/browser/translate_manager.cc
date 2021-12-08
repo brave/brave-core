@@ -34,7 +34,7 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
   void
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
 #define TranslateManager ChromiumTranslateManager
-#include "../../../../../../components/translate/core/browser/translate_manager.cc"
+#include "src/components/translate/core/browser/translate_manager.cc"
 #undef HasAPIKeyConfigured
 #undef TranslateManager
 #undef ASSERT_INSIDE_FUNCTION

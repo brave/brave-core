@@ -14,5 +14,5 @@
   0x88, 0xf9, 0xa1, 0x60, 0xc2, 0x6f, 0x84, \
 }; \
 const uint8_t kPublicKey_ChromiumImpl[] = {
-#include "../../../../components/variations/variations_seed_store.cc"
+#include "src/components/variations/variations_seed_store.cc"
 #undef BRAVE_K_PUBLIC_KEY

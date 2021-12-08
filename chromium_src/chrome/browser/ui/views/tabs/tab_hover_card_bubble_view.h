@@ -14,7 +14,7 @@
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #define UpdateCardContent virtual UpdateCardContent
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
 #undef UpdateCardContent
 #undef TabHoverCardBubbleView
 #undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_

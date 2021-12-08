@@ -5,6 +5,6 @@
 
 // This chormium_src override allows us to skip a lot of patching to
 // chrome/BUILD.gn
-#include "brave/app/brave_command_line_helper.cc"  // NOLINT
-#include "brave/app/brave_main_delegate.cc"  // NOLINT
-#include "../../../../chrome/app/chrome_main_delegate.cc"  // NOLINT
+#include "brave/app/brave_command_line_helper.cc"
+#include "brave/app/brave_main_delegate.cc"
+#include "src/chrome/app/chrome_main_delegate.cc"

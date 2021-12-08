@@ -72,5 +72,5 @@ bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
   MaybeHandleInParent(params, IsURLAllowedInIncognito( \
                                   params->url, params->initiating_profile));
 
-#include "../../../../../chrome/browser/ui/browser_navigator.cc"
+#include "src/chrome/browser/ui/browser_navigator.cc"
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL

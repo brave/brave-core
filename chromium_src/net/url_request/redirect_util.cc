@@ -9,7 +9,7 @@
 #include "net/url_request/url_request_job.h"
 
 #define UpdateHttpRequest UpdateHttpRequest_ChromiumImpl
-#include "../../../../net/url_request/redirect_util.cc"
+#include "src/net/url_request/redirect_util.cc"
 #undef UpdateHttpRequest
 
 namespace net {

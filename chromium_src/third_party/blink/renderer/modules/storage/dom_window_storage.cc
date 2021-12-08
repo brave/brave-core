@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
+#include "src/third_party/blink/renderer/modules/storage/dom_window_storage.cc"
 
 #include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"

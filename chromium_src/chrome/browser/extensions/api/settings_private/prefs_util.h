@@ -10,7 +10,7 @@
   Dummy();                 \
   virtual const TypedPrefMap& GetAllowlistedKeys
 
-#include "../../../../../../../chrome/browser/extensions/api/settings_private/prefs_util.h"
+#include "src/chrome/browser/extensions/api/settings_private/prefs_util.h"
 #undef GetAllowlistedKeys
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_API_SETTINGS_PRIVATE_PREFS_UTIL_H_

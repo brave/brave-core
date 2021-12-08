@@ -7,5 +7,5 @@
 #include "chrome/browser/extensions/update_install_gate.h"
 
 #define ExtensionService BraveExtensionService
-#include "../../../../../chrome/browser/extensions/extension_system_impl.cc"
+#include "src/chrome/browser/extensions/extension_system_impl.cc"
 #undef ExtensionService

@@ -10,7 +10,7 @@
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 #endif
 
-#include "../../../../chrome/browser/active_use_util.cc"
+#include "src/chrome/browser/active_use_util.cc"
 
 #if defined(OS_WIN) && defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION

@@ -29,7 +29,7 @@
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
 
-#include "../../../../../chrome/installer/mini_installer/mini_installer.cc"
+#include "src/chrome/installer/mini_installer/mini_installer.cc"
 
 #undef BRAVE_RUN_SETUP
 

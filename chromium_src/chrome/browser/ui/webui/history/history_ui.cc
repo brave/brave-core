@@ -13,4 +13,4 @@ void BraveCustomizeHistoryDataSource(content::WebUIDataSource* source) {
 
 }  // namespace
 
-#include "../../../../../../../chrome/browser/ui/webui/history/history_ui.cc"  // NOLINT
+#include "src/chrome/browser/ui/webui/history/history_ui.cc"

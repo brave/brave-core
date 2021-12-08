@@ -16,7 +16,7 @@
                 const std::string& origin);                  \
   virtual void AddAutofillFormDataEntries
 
-#include "../../../../../chrome/browser/importer/profile_writer.h"
+#include "src/chrome/browser/importer/profile_writer.h"
 
 #undef AddAutofillFormDataEntries
 

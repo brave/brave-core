@@ -14,5 +14,5 @@
   Item(IDS_REPORT_BROKEN_SITE_MAC)                    \
       .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER),
 
-#include "../../../../../../chrome/browser/ui/cocoa/main_menu_builder.mm"   //NOLINT
+#include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"   //NOLINT
 #undef BRAVE_WEBCOMPAT_REPORTER_MENU_ENTRY

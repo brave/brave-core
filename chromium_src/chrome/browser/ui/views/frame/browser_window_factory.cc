@@ -14,7 +14,7 @@
 #endif
 
 #define BrowserView BraveBrowserView
-#include "../../../../../../../chrome/browser/ui/views/frame/browser_window_factory.cc"  // NOLINT
+#include "src/chrome/browser/ui/views/frame/browser_window_factory.cc"
 #undef BrowserView
 
 #if defined(OS_WIN) || defined(OS_MAC)

@@ -18,7 +18,7 @@
 #include "ui/gfx/image/image.h"
 
 #define GetState virtual GetState
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
+#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #undef GetState
 
 class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {

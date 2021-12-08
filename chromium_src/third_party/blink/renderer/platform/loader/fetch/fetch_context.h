@@ -11,7 +11,7 @@
   virtual String GetCacheIdentifierIfCrossSiteSubframe() const; \
   virtual void AddAdditionalRequestHeaders
 
-#include "../../../../../../../../third_party/blink/renderer/platform/loader/fetch/fetch_context.h"
+#include "src/third_party/blink/renderer/platform/loader/fetch/fetch_context.h"
 
 #undef AddAdditionalRequestHeaders
 

@@ -30,7 +30,7 @@
 #define BookmarkTabHelper BraveBookmarkTabHelper
 #endif
 
-#include "../../../../../chrome/browser/ui/browser.cc"  // NOLINT
+#include "src/chrome/browser/ui/browser.cc"
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController

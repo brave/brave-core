@@ -9,5 +9,5 @@
 #define BACKGROUND_SYNC \
   AUTOPLAY:             \
   case ContentSettingsType::BACKGROUND_SYNC
-#include "../../../../../../components/browser_ui/site_settings/android/website_preference_bridge.cc"
+#include "src/components/browser_ui/site_settings/android/website_preference_bridge.cc"
 #undef BACKGROUND_SYNC

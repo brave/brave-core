@@ -13,4 +13,4 @@
     return brave::GetParentProfile(key->GetPath())->GetProfileKey(); \
   }
 
-#include "../../../../../chrome/browser/supervised_user/supervised_user_settings_service_factory.cc"
+#include "src/chrome/browser/supervised_user/supervised_user_settings_service_factory.cc"

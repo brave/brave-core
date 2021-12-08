@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "../../../../net/log/net_log_event_type_list.h"
+#include "src/net/log/net_log_event_type_list.h"
 
 // The time spent sending authentication to the SOCKS server
 EVENT_TYPE(SOCKS5_AUTH_WRITE)

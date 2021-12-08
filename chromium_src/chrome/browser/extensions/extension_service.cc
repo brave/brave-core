@@ -7,5 +7,5 @@
 #include "chrome/browser/extensions/extension_service.h"
 
 #define ComponentLoader BraveComponentLoader
-#include "../../../../../chrome/browser/extensions/extension_service.cc"
+#include "src/chrome/browser/extensions/extension_service.cc"
 #undef ComponentLoader

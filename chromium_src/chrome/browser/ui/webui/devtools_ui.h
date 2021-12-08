@@ -5,5 +5,5 @@
 #include "brave/browser/devtools/brave_devtools_ui_bindings.h"
 
 #define DevToolsUIBindings BraveDevToolsUIBindings
-#include "../../../../../../chrome/browser/ui/webui/devtools_ui.h"
+#include "src/chrome/browser/ui/webui/devtools_ui.h"
 #undef DevToolsUIBindings

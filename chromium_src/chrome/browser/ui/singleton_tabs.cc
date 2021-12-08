@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define ShowSingletonTab ShowSingletonTab_ChromiumImpl
-#include "../../../../../chrome/browser/ui/singleton_tabs.cc"
+#include "src/chrome/browser/ui/singleton_tabs.cc"
 #undef ShowSingletonTab
 
 void ShowSingletonTab(Browser* browser, const GURL& url) {

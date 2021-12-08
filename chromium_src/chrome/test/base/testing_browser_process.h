@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_BROWSER_PROCESS_H_
 
 #define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
-#include "../../../../../chrome/test/base/testing_browser_process.h"
+#include "src/chrome/test/base/testing_browser_process.h"
 #undef TestingBrowserProcess
 
 #include "brave/test/base/testing_brave_browser_process.h"

@@ -14,7 +14,7 @@
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 #endif
 
-#include "../../../../chrome/install_static/install_constants.h"
+#include "src/chrome/install_static/install_constants.h"
 
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION

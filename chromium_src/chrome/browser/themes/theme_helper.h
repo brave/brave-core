@@ -12,7 +12,7 @@
                                  \
  public:
 #define GetOmniboxColor virtual GetOmniboxColor
-#include "../../../../../chrome/browser/themes/theme_helper.h"
+#include "src/chrome/browser/themes/theme_helper.h"
 #undef GetOmniboxColor
 #undef BRAVE_THEME_HELPER_H_
 

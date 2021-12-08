@@ -9,7 +9,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_client.h"
 
 #define OmniboxClient BraveOmniboxClient
-#include "../../../../../../chrome/browser/ui/omnibox/chrome_omnibox_client.h"
+#include "src/chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #undef OmniboxClient
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_CHROME_OMNIBOX_CLIENT_H_

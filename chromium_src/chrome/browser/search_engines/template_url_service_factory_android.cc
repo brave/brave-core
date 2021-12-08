@@ -8,7 +8,7 @@
 #define JNI_TemplateUrlServiceFactory_DoesDefaultSearchEngineHaveLogo \
   JNI_TemplateUrlServiceFactory_DoesDefaultSearchEngineHaveLogo_ChromiumImpl
 
-#include "../../../../../chrome/browser/search_engines/template_url_service_factory_android.cc"
+#include "src/chrome/browser/search_engines/template_url_service_factory_android.cc"
 
 #undef JNI_TemplateUrlServiceFactory_DoesDefaultSearchEngineHaveLogo
 

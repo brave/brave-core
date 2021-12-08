@@ -1,5 +1,5 @@
 #define SetRuntimeFeaturesDefaultsAndUpdateFromArgs SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl
-#include "../../../../content/child/runtime_features.cc"
+#include "src/content/child/runtime_features.cc"
 #undef SetRuntimeFeaturesDefaultsAndUpdateFromArgs
 
 namespace content {

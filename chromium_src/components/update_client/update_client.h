@@ -10,7 +10,7 @@
   UpdateClientFactory_ChromiumImpl(scoped_refptr<Configurator> config); \
   scoped_refptr<UpdateClient> UpdateClientFactory
 
-#include "../../../../components/update_client/update_client.h"
+#include "src/components/update_client/update_client.h"
 
 #undef UpdateClientFactory
 

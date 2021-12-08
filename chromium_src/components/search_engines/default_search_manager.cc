@@ -38,6 +38,6 @@
     extension_default_search_ = std::move(turl_data);
 // clang-format on
 
-#include "../../../../components/search_engines/default_search_manager.cc"
+#include "src/components/search_engines/default_search_manager.cc"
 
 #undef LOADDEFAULTSEARCHENGINEFROMPREFS_BRAVE

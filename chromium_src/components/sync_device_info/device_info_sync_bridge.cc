@@ -18,7 +18,7 @@
 // breaks the ability to remove other device in sync chain for Brave
 #define BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF if (false)
 
-#include "../../../../components/sync_device_info/device_info_sync_bridge.cc"
+#include "src/components/sync_device_info/device_info_sync_bridge.cc"
 
 #undef BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
 #undef RefreshLocalDeviceInfoIfNeeded

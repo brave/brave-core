@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_INIT BraveInit();
-#include "../../../../../../components/content_settings/core/browser/content_settings_registry.cc"
+#include "src/components/content_settings/core/browser/content_settings_registry.cc"
 #undef BRAVE_INIT
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"

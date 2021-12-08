@@ -33,7 +33,7 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
-#include "../../../../../chrome/browser/first_run/first_run_internal_posix.cc"
+#include "src/chrome/browser/first_run/first_run_internal_posix.cc"
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif

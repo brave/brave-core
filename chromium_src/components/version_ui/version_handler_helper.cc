@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define GetVariationsList GetVariationsList_ChromiumImpl
-#include "../../../../components/version_ui/version_handler_helper.cc"
+#include "src/components/version_ui/version_handler_helper.cc"
 #undef GetVariationsList
 
 namespace version_ui {
