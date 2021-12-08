@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index c9222ab4cb9cba20d7e577b04b1f7e418df7e659..a2dc7ea400c615292a00c64398e3ad53696c6e9a 100644
+index 51922e667e5c794dd96e8679da896b0e700c4d07..7c36f3c4bdc7e8f74b52be5b45c3d5856fcf5bae 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
 @@ -269,6 +269,7 @@ StartupTabs StartupTabProviderImpl::GetNewFeaturesTabs(

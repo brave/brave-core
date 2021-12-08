@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index a108a3797dc0a39be4171051f795f8de26b61d8f..7b1c2c3b12c4a6f9fc57c12173146106363c0880 100644
+index 20b27dc45dedb6c1436c9f92cab110336bc73fe6..6f2aa38647655b19858023a3f47b45b34d7da7dc 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -321,6 +321,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -316,6 +316,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    bool IsPlaceholder() const override { return IsOffscreenCanvasRegistered(); }
  
