@@ -231,11 +231,9 @@ public class PortfolioFragment extends Fragment
         mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
         mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(mPreviousCheckedRadioId);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int leftDot = R.drawable.ic_live_dot;
             ((RadioButton) view.findViewById(mPreviousCheckedRadioId))
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             RadioButton button = view.findViewById(checkedId);
-            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             mPreviousCheckedRadioId = checkedId;
             updatePortfolioGraph();
