@@ -11,29 +11,50 @@ private let log = Logger.browserLogger
 
 class OnboardingPrivacyConsentViewController: UIViewController {
     
+    private struct UX {
+        /// The onboarding screens are showing as a modal on iPads.
+        static let preferredModalSize = CGSize(width: 375, height: 667)
+    }
+    
     var handleReferralLookup: ((_ urp: UserReferralProgram, _ checkClipboard: Bool) -> Void)?
     var onPrivacyConsentCompleted: (() -> Void)?
+
+    private let contentView = View().then {
+        $0.layer.cornerCurve = .continuous
+        $0.layer.cornerRadius = 10.0
+        $0.layer.masksToBounds = true
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
-        modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
+        modalPresentationStyle = .fullScreen
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var contentView: View {
-        return view as! View // swiftlint:disable:this force_cast
-    }
-    
-    override func loadView() {
-        view = View()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1254901961, blue: 0.1607843137, alpha: 1)
+        view.addSubview(contentView)
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            contentView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        } else {
+            contentView.snp.makeConstraints {
+                $0.leading.greaterThanOrEqualToSuperview()
+                $0.trailing.lessThanOrEqualToSuperview()
+                $0.top.greaterThanOrEqualToSuperview()
+                $0.bottom.lessThanOrEqualToSuperview()
+                $0.center.equalToSuperview()
+                $0.width.equalTo(UX.preferredModalSize.width)
+                $0.height.equalTo(UX.preferredModalSize.height)
+            }
+        }
         
         contentView.yesConsentButton.addTarget(self, action: #selector(yesConsentTapped), for: .touchUpInside)
         contentView.noConsentButton.addTarget(self, action: #selector(noConsentTaapped), for: .touchUpInside)

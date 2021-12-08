@@ -15,7 +15,8 @@ extension BrowserViewController {
     func presentOnboardingIntro() {
         if Preferences.URP.referralCode.value == nil &&
             UIPasteboard.general.hasStrings &&
-            Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+            (Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue &&
+             Preferences.General.basicOnboardingCompleted.value != OnboardingState.skipped.rawValue) {
             let controller = OnboardingPrivacyConsentViewController()
             
             controller.handleReferralLookup = { [weak self] urp, consentGranted in
@@ -23,7 +24,11 @@ extension BrowserViewController {
             }
             
             controller.onPrivacyConsentCompleted = { [weak self, unowned controller] in
-                self?.presentOnboardingWelcomeScreen(on: controller)
+                guard let self = self else { return }
+                if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue || Preferences.General.basicOnboardingCompleted.value == OnboardingState.skipped.rawValue {
+                    controller.dismiss(animated: true, completion: nil)
+                    return
+                }
             }
             
             present(controller, animated: false)
