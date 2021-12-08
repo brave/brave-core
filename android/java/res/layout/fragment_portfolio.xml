@@ -136,7 +136,6 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:checked="true"
-                        app:drawableStartCompat="@drawable/ic_live_dot"
                         android:text="@string/day_1" />
 
                     <RadioButton
