@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/webui/settings/site_settings_helper.h"
+
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
 #define ContentSettingsTypeToGroupName \
   ContentSettingsTypeToGroupName_ChromiumImpl
-#define GetVisiblePermissionCategoriesForOrigin \
-  GetVisiblePermissionCategoriesForOrigin_ChromiumImpl
+#define GetVisiblePermissionCategories \
+  GetVisiblePermissionCategories_ChromiumImpl
 
 // clang-format off
 #define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST               \
@@ -33,7 +35,7 @@
 
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
-#undef GetVisiblePermissionCategoriesForOrigin
+#undef GetVisiblePermissionCategories
 #undef ContentSettingsTypeToGroupName
 #undef HasRegisteredGroupName
 
@@ -55,13 +57,16 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
-std::vector<ContentSettingsType> GetVisiblePermissionCategoriesForOrigin(
-    Profile* profile,
-    const GURL& origin) {
-  std::vector<ContentSettingsType> result =
-      GetVisiblePermissionCategoriesForOrigin_ChromiumImpl(profile, origin);
-  result.push_back(ContentSettingsType::AUTOPLAY);
-  result.push_back(ContentSettingsType::BRAVE_ETHEREUM);
+const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
+  std::vector<ContentSettingsType>& result =
+      const_cast<std::vector<ContentSettingsType>&>(
+          GetVisiblePermissionCategories_ChromiumImpl());
+  static bool initialized = false;
+  if (!initialized) {
+    result.push_back(ContentSettingsType::AUTOPLAY);
+    result.push_back(ContentSettingsType::BRAVE_ETHEREUM);
+    initialized = true;
+  }
 
   return result;
 }
