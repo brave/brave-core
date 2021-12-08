@@ -39,7 +39,8 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/net/prediction_options.h"
+#include "chrome/browser/prefetch/pref_names.h"
+#include "chrome/browser/prefetch/prefetch_prefs.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
@@ -275,8 +276,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Disable "Use a prediction service to load pages more quickly"
   registry->SetDefaultPrefValue(
-      prefs::kNetworkPredictionOptions,
-      base::Value(chrome_browser_net::NETWORK_PREDICTION_NEVER));
+      prefetch::prefs::kNetworkPredictionOptions,
+      base::Value(
+          static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled)));
 
   // Disable cloud print
   // Cloud Print: Don't allow this browser to act as Cloud Print server
