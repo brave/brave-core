@@ -47,6 +47,7 @@ public class SmoothLineChartEquallySpaced extends View {
     private float mMinY;
     private float mMaxY;
     private float mCurrentLineX;
+    private boolean mNoDrawText;
     private int[] colors;
     private TextView mPrice;
 
@@ -125,9 +126,14 @@ public class SmoothLineChartEquallySpaced extends View {
     }
 
     public void drawLine(float x, TextView price) {
+        mNoDrawText = false;
         mPrice = price;
         mCurrentLineX = x;
         invalidate();
+    }
+
+    public void setNoDrawText(boolean noDraw) {
+        mNoDrawText = noDraw;
     }
 
     public void setColors(int[] colors) {
@@ -224,7 +230,8 @@ public class SmoothLineChartEquallySpaced extends View {
             if (textX < 0) {
                 textX = mCurrentLineX;
             }
-            canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX, 35, paintText);
+            if (!mNoDrawText)
+                canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX, 35, paintText);
             if (mPrice != null) {
                 DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
                 mPrice.setText("$" + decimalFormat.format(mValues[(int) possibleValue]));
