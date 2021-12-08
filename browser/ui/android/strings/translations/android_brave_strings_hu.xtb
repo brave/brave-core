@@ -403,12 +403,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -756,4 +756,47 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1011713837432053857">Gas mennyiségi korlátja</translation>
 <translation id="1254969878422524947">Gas egységenkénti határérték (Gwei)</translation>
 <translation id="7373308452149471621">Gas egységenkénti hatérérték (Gwei)</translation>
+<translation id="5345505584130165588">Brave pajzsok és adatvédelem</translation>
+<translation id="7822245778264751380">Ethereum ár (ETH)</translation>
+<translation id="7384441892795736634">Adatok frissítése</translation>
+<translation id="4804818685124855865">Kapcsolat bontása</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> letéti cím</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Letéti emlékeztető</translation>
+<translation id="5110244215256675209">Vásárolj kriptot</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> vásárlása</translation>
+<translation id="558614325644656740">Rendelkezésre álló <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Átváltás előnézete</translation>
+<translation id="4670943871783273148">A szöveg el lett mentve egy szöveges fájlba.</translation>
+<translation id="4432845796903761592">A fájl nem lett elmentve.</translation>
+<translation id="7144878232160441200">Újrapróbál</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Összefoglalás</translation>
+<translation id="1366855498335432549">Letétbe helyezés</translation>
+<translation id="1301340234286078471">Átváltás</translation>
+<translation id="1714829281959608206">Binance kapcsolódás engedélyezése a Binance számlaegyenleg megtekintéséhez és kriptokereskedelemhez.</translation>
+<translation id="4584930231524505442">Szeretnék átváltani...</translation>
+<translation id="5749014321384313843">Költeni szeretnék...</translation>
+<translation id="2480674848181564169">Nincs elég egyenleg az átváltáshoz</translation>
+<translation id="2215334405220411393">A minimális átváltható összeg: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nem sikerült csatlakozni</translation>
+<translation id="7742417737698031726">Díj</translation>
+<translation id="2122225204180056042">Kapni fogsz</translation>
+<translation id="6432284126416751397">Átváltás megerősítése</translation>
+<translation id="3891414008432200754">Ár</translation>
+<translation id="3733576242118819803">Megerősítés: (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Az átváltás nem sikerült. Próbáld újra.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">Átváltott <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Ellenőrizze a hálózati kapcsolatot.</translation>
+<translation id="5317780077021120954">Mentés</translation>
+<translation id="1202920745614909195">Várásolj kriptót az Apple Pay-jel, hitel- vagy betéti kártyával.</translation>
+<translation id="224719674509047150">A jelszónak legalább 7 karakterből kell állnia, és tartalmaznia kell legalább egy számot és egy különleges karaktert.</translation>
+<translation id="4636930964841734540">Információ</translation>
+<translation id="8094541587800369158">Ezeket a számlákat web 3 decentralizált applikációkkal lehet használni és megjeleníteni a portfóliójában, viszont nem lehet őket helyreállítani a helyreállítási kifejezéssel az elsődleges számlájának a biztonsági mentéséről. Engedélyezze a Brave Sync számlákat, hogy automatikusan helyreállítsa a másodlagos számlákat.</translation>
+<translation id="6083912983861746409">Gázár(GWEI)</translation>
+<translation id="2499079593046817044">Gáz hatátértéke(GWEI)</translation>
+<translation id="5929798090073091848">Figyelmeztetés: soha ne adja át másnak ezt a kulcsot. A privát kulcs birtokában ellophatják a számláján lévő pénzeszközöket.</translation>
 </translationbundle>

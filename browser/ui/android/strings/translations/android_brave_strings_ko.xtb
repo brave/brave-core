@@ -403,12 +403,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
@@ -756,4 +756,47 @@
 <translation id="1011713837432053857">가스비 한도</translation>
 <translation id="1254969878422524947">가스당 팁 한도(Gwei)</translation>
 <translation id="7373308452149471621">가스당 가격 한도(Gwei)</translation>
+<translation id="5345505584130165588">Brave Shields 및 프라이버시</translation>
+<translation id="7822245778264751380">Ethereum 가격(ETH)</translation>
+<translation id="7384441892795736634">데이터 새로 고침</translation>
+<translation id="4804818685124855865">연결 해제</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 입금 주소</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 입금 메모</translation>
+<translation id="5110244215256675209">암호 화폐 구매</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> 구매</translation>
+<translation id="558614325644656740">사용 가능한 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">전환 미리보기</translation>
+<translation id="4670943871783273148">텍스트가 텍스트 파일로 저장되었습니다.</translation>
+<translation id="4432845796903761592">파일이 저장되지 않았습니다.</translation>
+<translation id="7144878232160441200">재시도</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">요약</translation>
+<translation id="1366855498335432549">입금</translation>
+<translation id="1301340234286078471">전환</translation>
+<translation id="1714829281959608206">Binance 연결을 활성화하여 Binance 계정 잔액을 열람하고 암호 화폐를 거래하세요.</translation>
+<translation id="4584930231524505442">전환하고 싶습니다...</translation>
+<translation id="5749014321384313843">쓰고 싶습니다...</translation>
+<translation id="2480674848181564169">환전용 잔액 부족</translation>
+<translation id="2215334405220411393">환전 최소 금액 : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">연결할 수 없음</translation>
+<translation id="7742417737698031726">수수료</translation>
+<translation id="2122225204180056042">수령하시게 됩니다</translation>
+<translation id="6432284126416751397">전환 확인</translation>
+<translation id="3891414008432200754">가격</translation>
+<translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) 확인</translation>
+<translation id="1627064138060308910">환전 실패. 다시 시도하세요.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>에서 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>(으)로 바꿨습니다!</translation>
+<translation id="392587271502873865">네트워크 연결을 확인하세요.</translation>
+<translation id="5317780077021120954">저장</translation>
+<translation id="1202920745614909195">Apple Pay, 신용/직불카드로 암호화폐를 구입할 수 있습니다.</translation>
+<translation id="224719674509047150">비밀번호는 7자 이상이어야 하며, 숫자와 특수문자를 각각 하나 이상 포함해야 합니다.</translation>
+<translation id="4636930964841734540">정보</translation>
+<translation id="8094541587800369158">이들 계정은 web 3 dapps와 함께 사용하여 포트폴리오에 표시할 수 있지만, 주사용 계정 백업의 복구 문구를 통해서는 복원할 수는 없습니다. 보조 계정을 자동 복원하려면 Brave Sync 계정을 활성화하세요.</translation>
+<translation id="6083912983861746409">가스 가격(GWEI)</translation>
+<translation id="2499079593046817044">가스 한도(GWEI)</translation>
+<translation id="5929798090073091848">경고: 이 키를 절대 노출하지 마세요. 비공개 키를 아는 사람은 회원님의 계정에 보관된 자산을 훔쳐갈 수 있습니다.</translation>
 </translationbundle>

@@ -405,12 +405,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -758,4 +758,47 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1011713837432053857">Maxbelopp för bränsle</translation>
 <translation id="1254969878422524947">Gräns per spets (Gwei)</translation>
 <translation id="7373308452149471621">Prisgräns per gas (Gwei)</translation>
+<translation id="5345505584130165588">Brave Shields och sekretess</translation>
+<translation id="7822245778264751380">Ethereum-pris (ETH)</translation>
+<translation id="7384441892795736634">Ladda om data</translation>
+<translation id="4804818685124855865">Koppla från</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
+<translation id="5110244215256675209">Köp kryptovaluta</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
+<translation id="4670943871783273148">Din text har sparats till en textfil.</translation>
+<translation id="4432845796903761592">Fil ej sparad.</translation>
+<translation id="7144878232160441200">Försök igen</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Sammanfattning</translation>
+<translation id="1366855498335432549">Sätt in</translation>
+<translation id="1301340234286078471">Omvandla</translation>
+<translation id="1714829281959608206">Koppla till Binance för att se kontobalansen där och handla med kryptovaluta.</translation>
+<translation id="4584930231524505442">Jag vill omvandla ...</translation>
+<translation id="5749014321384313843">Jag vill spendera ...</translation>
+<translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
+<translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kan inte ansluta</translation>
+<translation id="7742417737698031726">Avgift</translation>
+<translation id="2122225204180056042">Du erhåller</translation>
+<translation id="6432284126416751397">Bekräfta omvandling</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
+<translation id="5317780077021120954">Spara</translation>
+<translation id="1202920745614909195">Köp krypto med Apple Pay eller betalkort</translation>
+<translation id="224719674509047150">Lösenordet måste vara minst 7 tecken långt, varav minst en siffra och ett specialtecken</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="8094541587800369158">Dessa konton kan användas med web 3-dappar och kan visas i din portfölj, men de kan inte återställas via återställningsfras från din primära kontobackup. Aktivera Brave Sync-konton för att återställa sekundära konton automatiskt.</translation>
+<translation id="6083912983861746409">Gaspris(GWEI)</translation>
+<translation id="2499079593046817044">Gasgräns(GWEI)</translation>
+<translation id="5929798090073091848">Varning: Lämna aldrig ut den här nyckeln. Alla med privat nyckel kan stjäla eventuella tillgångar som finns på ditt konto.</translation>
 </translationbundle>

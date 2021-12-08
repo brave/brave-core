@@ -402,12 +402,12 @@
 <translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
 <translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
 <translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
-<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。&#128267;</translation>
+<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。🔋</translation>
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
-<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。&#128293;</translation>
-<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。&#128267;</translation>
-<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。🔥</translation>
+<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。🔋</translation>
+<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。💨💨</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
 <translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="1390943217516275883">允许 Brave 展示你的隐私统计数据</translation>
@@ -755,4 +755,47 @@
 <translation id="1011713837432053857">Gas 数量限制</translation>
 <translation id="1254969878422524947">每 gas 小费限制 (Gwei)</translation>
 <translation id="7373308452149471621">每 GAS 價格限制 (Gwei)</translation>
+<translation id="5345505584130165588">Brave Shields 和隐私</translation>
+<translation id="7822245778264751380">以太坊价格 (ETH)</translation>
+<translation id="7384441892795736634">刷新数据</translation>
+<translation id="4804818685124855865">断开连接</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
+<translation id="5110244215256675209">购买 Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">预览兑换</translation>
+<translation id="4670943871783273148">您的文本已保存到文本文件。</translation>
+<translation id="4432845796903761592">文件未保存。</translation>
+<translation id="7144878232160441200">重试</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">摘要</translation>
+<translation id="1366855498335432549">存入</translation>
+<translation id="1301340234286078471">兑换</translation>
+<translation id="1714829281959608206">启用 Binance 连接以查看 Binance 帐户余额并交易加密货币。</translation>
+<translation id="4584930231524505442">我想兑换...</translation>
+<translation id="5749014321384313843">我想消费...</translation>
+<translation id="2480674848181564169">余额不足，无法转换</translation>
+<translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">无法连接</translation>
+<translation id="7742417737698031726">费用</translation>
+<translation id="2122225204180056042">你会收到</translation>
+<translation id="6432284126416751397">确认兑换</translation>
+<translation id="3891414008432200754">价格</translation>
+<translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">转换失败。请重试。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">请检查您的网络连接。</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="1202920745614909195">使用 Apple Pay、信用卡或借记卡购买加密货币。</translation>
+<translation id="224719674509047150">密码必须至少有 7 个字符，包含至少一个数字和一个特殊字符</translation>
+<translation id="4636930964841734540">信息</translation>
+<translation id="8094541587800369158">这些账户可与 web 3 dapps 一起使用，并可显示在您的投资组合中，不过，其无法通过您主要账户备份中的恢复密语复原。启用 Brave Sync 账号以自动复原次要账户。</translation>
+<translation id="6083912983861746409">Gas 价格 (GWEI)</translation>
+<translation id="2499079593046817044">Gas 限制 (GWEI)</translation>
+<translation id="5929798090073091848">注意：永远不要公开这个私钥。任何拥有您的私钥的人都可以窃取您账户中的所有资产。</translation>
 </translationbundle>

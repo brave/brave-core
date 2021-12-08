@@ -402,12 +402,12 @@
 <translation id="7427567994475794038">開啟隱私權報告來觀看在過去 3 小時已經封鎖多少追蹤裝置 &amp; 廣告。</translation>
 <translation id="2053891538879944400">您以 Brave 瀏覽器節省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 資料。</translation>
 <translation id="8640064498452534195">開啟隱私權報告來觀看您已節省多少資料。</translation>
-<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。&#128267;</translation>
+<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。🔋</translation>
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
-<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。&#128293;</translation>
-<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。&#128267;</translation>
-<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。🔥</translation>
+<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。🔋</translation>
+<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。💨💨</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
 <translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
@@ -755,4 +755,47 @@
 <translation id="1011713837432053857">Gas 數量限制</translation>
 <translation id="1254969878422524947">每 GAS 小費限制 (Gwei)</translation>
 <translation id="7373308452149471621">每 GAS 價格限制 (Gwei)</translation>
+<translation id="5345505584130165588">Brave shields &amp; 私隱</translation>
+<translation id="7822245778264751380">以太坊價格 (ETH)</translation>
+<translation id="7384441892795736634">重新整理資料</translation>
+<translation id="4804818685124855865">解除連線</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款備忘單</translation>
+<translation id="5110244215256675209">購買加密貨幣</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">購買 <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">預覽轉換</translation>
+<translation id="4670943871783273148">您的文字已儲存至文字檔。</translation>
+<translation id="4432845796903761592">檔案未儲存。</translation>
+<translation id="7144878232160441200">重試</translation>
+<translation id="6966052266404721769">幣安</translation>
+<translation id="2956070106555335453">摘要</translation>
+<translation id="1366855498335432549">存款</translation>
+<translation id="1301340234286078471">轉換</translation>
+<translation id="1714829281959608206">啟用幣安連線以檢視幣安的帳戶餘額並交易交密貨幣。</translation>
+<translation id="4584930231524505442">我想要轉換……</translation>
+<translation id="5749014321384313843">我想要花費……</translation>
+<translation id="2480674848181564169">餘額不足，無法轉換</translation>
+<translation id="2215334405220411393">最低轉換金額為：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">無法連線</translation>
+<translation id="7742417737698031726">手續費</translation>
+<translation id="2122225204180056042">您將會收到</translation>
+<translation id="6432284126416751397">確認轉換</translation>
+<translation id="3891414008432200754">價格</translation>
+<translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">轉換失敗。請再試一次。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">您已將 <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 轉換為 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">請檢查您的網路連線。</translation>
+<translation id="5317780077021120954">儲存</translation>
+<translation id="1202920745614909195">使用 Apple Pay、信用卡或簽帳金融卡購買加密貨幣。</translation>
+<translation id="224719674509047150">密碼必須至少 7 個字元，且包含至少一個數字與一個特殊字元</translation>
+<translation id="4636930964841734540">資訊</translation>
+<translation id="8094541587800369158">這些帳號可與 web 3 dapps 一起使用，並可顯示在您的投資組合中，不過，其無法透過您主要帳號備份中的復原密語復原。請啟用 Brave Sync 帳號以自動復原次要帳號。</translation>
+<translation id="6083912983861746409">Gas 價格 (GWEI)</translation>
+<translation id="2499079593046817044">Gas 限制(GWEI)</translation>
+<translation id="5929798090073091848">注意：永遠不要公開這個私鑰。任何取得這把私鑰的人都可以竊取這個帳戶中的所有資產。</translation>
 </translationbundle>
