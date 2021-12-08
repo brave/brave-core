@@ -698,6 +698,12 @@
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_DISABLED" desc="Sub label for the ambient mode row in settings page when it is disabled.">
     Disabled
   </message>
+  <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
+    Personalize your device
+  </message>
+  <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
+    Customize wallpaper, avatar, screensaver and more
+  </message>
 
   <!-- Ambient Mode Page -->
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_PAGE_DESCRIPTION" desc="Description for the ambient mode settings page.">
@@ -1973,6 +1979,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APP_LINKS" desc="Label for accessing app preferrences on ARC side.">
     Manage Play app links
+  </message>
+  <message name="IDS_SETTINGS_APPS_ARC_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'ARCVM'.">
+    Let Android apps access USB devices on this Bravebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
   </message>
 
   <!-- Device Stylus (OS settings) -->
@@ -4168,31 +4177,31 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DISABLE_BUTTON_LABEL" desc="The label of the confirmation button to disable data access protection">
     Disable
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Do not translate (string not final). Text on the privacy page that opens up the smart privacy section.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Text on the privacy page that opens up the smart privacy section." translateable="false">
     Smart privacy protections
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SUBTEXT" desc="Do not translate (string not final). The sub-label describing the purpose of the smart privacy section.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SUBTEXT" desc="The sub-label describing the purpose of the smart privacy section." translateable="false">
     Smart display lock and detect if others peeking from behind
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="Do not translate (string not final). The text explaining to the user the manner in which their presence is sensed and data usage policy.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="The text explaining to the user the manner in which their presence is sensed and data usage policy." translateable="false">
     This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_TITLE" desc="Do not translate (string not final). The name of the smart screen lock feature shown as the label of a toggle in the smart privacy subpage.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_TITLE" desc="The name of the smart screen lock feature shown as the label of a toggle in the smart privacy subpage." translateable="false">
     Smart screen lock
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of smart screen locking.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_SUBTEXT" desc="Sub-label elaborating on the meaning of smart screen locking." translateable="false">
     Screen locks automatically if you walk off, and won't turn off if you're in front of it
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Do not translate (string not final). Text in the smart privacy section which is the subheader for snooping protection options.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Text in the smart privacy section which is the subheader for snooping protection options." translateable="false">
     Snooping protection
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of snooping protection.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Sub-label elaborating on the meaning of snooping protection." translateable="false">
     Notify you or temporary dim your screen when someone is snooping from behind
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting an eye icon when a snooper is detected.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="The radio button option in the smart privacy section requesting an eye icon when a snooper is detected." translateable="false">
     Show me an eye icon in the status area
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting screen dim when a snooper is detected.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="The radio button option in the smart privacy section requesting screen dim when a snooper is detected." translateable="false">
     Temporary dim screen
   </message>
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
