@@ -46,7 +46,6 @@ class SequentialUpdateChecker : public UpdateChecker {
       const std::vector<std::string>& ids_checked,
       const IdToComponentPtrMap& components,
       const base::flat_map<std::string, std::string>& additional_attributes,
-      bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
   // Needs to be public so std::make_unique(...) works in Create(...).
@@ -78,7 +77,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   // outlives this class.
   const IdToComponentPtrMap* components_;
   base::flat_map<std::string, std::string> additional_attributes_;
-  bool enabled_component_updates_;
   UpdateCheckCallback update_check_callback_;
 
   std::deque<std::string> remaining_ids_;
