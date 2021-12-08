@@ -69,15 +69,23 @@ struct TransactionConfirmationView: View {
   }
   
   private var transactionDetails: String {
-    let data = activeTransaction.txData.baseData.data
-      .map { byte in
-        String(format: "%02X", byte.uint8Value)
+    if activeTransaction.txArgs.isEmpty {
+      let data = activeTransaction.txData.baseData.data
+        .map { byte in
+          String(format: "%02X", byte.uint8Value)
+        }
+        .joined()
+      if data.isEmpty {
+        return Strings.Wallet.inputDataPlaceholder
       }
-      .joined()
-    if data.isEmpty {
-      return Strings.Wallet.inputDataPlaceholder
+      return "0x\(data)"
+    } else {
+      return zip(activeTransaction.txParams, activeTransaction.txArgs)
+        .map { (param, arg) in
+          "\(param): \(arg)"
+        }
+        .joined(separator: "\n\n")
     }
-    return "0x\(data)"
   }
   
   @ViewBuilder private var editGasFeeButton: some View {
