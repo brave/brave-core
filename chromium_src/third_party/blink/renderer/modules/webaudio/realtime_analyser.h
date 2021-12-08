@@ -11,7 +11,7 @@
 #define BRAVE_REALTIMEANALYSER_H \
   base::RepeatingCallback<float(float, size_t)> audio_farbling_callback_;
 
-#include "../../../../../../../third_party/blink/renderer/modules/webaudio/realtime_analyser.h"
+#include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.h"
 
 #undef BRAVE_REALTIMEANALYSER_H
 

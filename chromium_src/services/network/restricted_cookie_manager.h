@@ -28,7 +28,7 @@
       const net::CookieAccessDelegate* cookie_access_delegate) const; \
   void RemoveChangeListener
 
-#include "../../../../services/network/restricted_cookie_manager.h"
+#include "src/services/network/restricted_cookie_manager.h"
 
 #undef RemoveChangeListener
 

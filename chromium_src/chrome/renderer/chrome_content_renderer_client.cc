@@ -5,4 +5,4 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
-#include "../../../../chrome/renderer/chrome_content_renderer_client.cc"
+#include "src/chrome/renderer/chrome_content_renderer_client.cc"

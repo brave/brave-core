@@ -79,7 +79,7 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 
-#include "../../../../../components/permissions/android/permission_dialog_delegate.cc"
+#include "src/components/permissions/android/permission_dialog_delegate.cc"
 
 #undef Java_PermissionDialogController_createDialog
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL

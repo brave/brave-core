@@ -20,7 +20,7 @@
  public:                               \
   size_t NonceLength
 
-#include "../../../crypto/aead.h"
+#include "src/crypto/aead.h"
 
 #undef NonceLength
 

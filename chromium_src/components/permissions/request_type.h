@@ -11,7 +11,7 @@
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
 
-#include "../../../../components/permissions/request_type.h"
+#include "src/components/permissions/request_type.h"
 
 #undef kStorageAccess
 #undef ContentSettingsTypeToRequestType

@@ -1,0 +1,9 @@
+specific_include_rules = {
+  ".*test\.cc": [
+    "+base",
+  ],
+  "execution_context\.cc": [
+    "+base/command_line.h",
+    "+base/strings/string_number_conversions.h",
+  ],
+}

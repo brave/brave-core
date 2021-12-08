@@ -50,7 +50,7 @@ class BraveDownloadItemViewButton : public Button {
 }  // namespace views
 
 #define Button BraveDownloadItemViewButton
-#include "../../../../../../../chrome/browser/ui/views/download/download_item_view.cc"
+#include "src/chrome/browser/ui/views/download/download_item_view.cc"
 #undef Button
 
 bool DownloadItemView::IsShowingWarningDialog() const {

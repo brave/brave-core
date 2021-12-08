@@ -5,4 +5,4 @@
 
 #include "brave/services/network/public/cpp/system_request_handler.h"
 
-#include "../../../../../../components/safe_browsing/content/browser/safe_browsing_network_context.cc"  // NOLINT
+#include "src/components/safe_browsing/content/browser/safe_browsing_network_context.cc"

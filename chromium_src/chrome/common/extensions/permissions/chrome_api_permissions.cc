@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define GetPermissionInfos GetPermissionInfos_ChromiumImpl
-#include "../../../../../../chrome/common/extensions/permissions/chrome_api_permissions.cc"
+#include "src/chrome/common/extensions/permissions/chrome_api_permissions.cc"
 #undef GetPermissionInfos
 
 namespace extensions {

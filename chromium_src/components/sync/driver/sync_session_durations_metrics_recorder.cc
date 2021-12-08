@@ -37,4 +37,4 @@ void SyncSessionDurationsMetricsRecorder::OnAccountsInCookieUpdated(
     const GoogleServiceAuthError& error) {}
 }  // namespace syncer
 
-#include "../../../../../components/sync/driver/sync_session_durations_metrics_recorder.h"
+#include "src/components/sync/driver/sync_session_durations_metrics_recorder.h"

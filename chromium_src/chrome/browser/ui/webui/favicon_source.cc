@@ -78,7 +78,7 @@ ui::NativeTheme* GetNativeTheme(content::WebContents* web_contents) {
 
 #endif  // #if defined(OS_ANDROID)
 
-#include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"
+#include "src/chrome/browser/ui/webui/favicon_source.cc"
 
 #if defined(OS_ANDROID)
 #if !BUILDFLAG(ENABLE_EXTENSIONS)

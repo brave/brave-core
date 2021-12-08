@@ -8,7 +8,7 @@
 #define kAutofillAssistantFeedbackChip \
   kAutofillAssistantFeedbackChip_ChromiumImpl
 
-#include "../../../../../components/autofill_assistant/browser/features.cc"
+#include "src/components/autofill_assistant/browser/features.cc"
 #undef kAutofillAssistantFeedbackChip
 
 namespace autofill_assistant {

@@ -14,6 +14,6 @@
         src_data_.computeByteSize());                                  \
   }
 
-#include "../../../../../../../../third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc"
+#include "src/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc"
 
 #undef BRAVE_CANVAS_ASYNC_BLOB_CREATOR

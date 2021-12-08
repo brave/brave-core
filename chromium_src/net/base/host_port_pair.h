@@ -26,7 +26,7 @@
   std::string username_;                                               \
   std::string password_;
 
-#include "../../../../net/base/host_port_pair.h"
+#include "src/net/base/host_port_pair.h"
 
 #undef BRAVE_HOST_PORT_PAIR_H_
 

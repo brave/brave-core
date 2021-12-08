@@ -10,7 +10,7 @@
   GetContextCacheIdentifier() const; \
   String GetCacheIdentifier
 
-#include "../../../../../../../../third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
+#include "src/third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
 #undef GetCacheIdentifier
 

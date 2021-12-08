@@ -8,5 +8,5 @@
 #define BRAVE_DISABLE_RPH_FROM_REQUEST \
     *error = "Unsupported"; return nullptr;
 
-#include "../../../../../../../chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc"
+#include "src/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc"
 #undef BRAVE_DISABLE_RPH_FROM_REQUEST

@@ -6,7 +6,7 @@
 #include "third_party/blink/renderer/core/script/detect_javascript_frameworks.h"
 
 #define DetectJavascriptFrameworksOnLoad DetectJavascriptFrameworksOnLoad_Unused
-#include "../../../../../../../third_party/blink/renderer/core/script/detect_javascript_frameworks.cc"
+#include "src/third_party/blink/renderer/core/script/detect_javascript_frameworks.cc"
 #undef DetectJavascriptFrameworksOnLoad
 
 namespace blink {

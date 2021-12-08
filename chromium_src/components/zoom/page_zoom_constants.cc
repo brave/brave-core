@@ -7,7 +7,7 @@
 
 #define kPresetZoomFactors kPresetZoomFactors_ChromiumImpl
 #define kPresetZoomFactorsSize kPresetZoomFactorsSize_ChromiumImpl
-#include "../../../../components/zoom/page_zoom_constants.cc"
+#include "src/components/zoom/page_zoom_constants.cc"
 #undef kPresetZoomFactors
 #undef kPresetZoomFactorsSize
 

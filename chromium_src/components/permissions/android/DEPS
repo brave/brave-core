@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../components/permissions",
   "+components/grit",
   "+components/permissions",
   "+components/strings",

@@ -69,6 +69,6 @@ static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
 #define default_state \
   name&& internal::GetDefaultOrOverriddenFeatureState(feature)
 
-#include "../../../base/feature_list.cc"
+#include "src/base/feature_list.cc"
 
 #undef default_state

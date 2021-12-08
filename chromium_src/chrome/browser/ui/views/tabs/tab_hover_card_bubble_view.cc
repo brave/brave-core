@@ -13,7 +13,7 @@
 #include "ui/views/controls/label.h"
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc"
+#include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc"
 #undef TabHoverCardBubbleView
 
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(

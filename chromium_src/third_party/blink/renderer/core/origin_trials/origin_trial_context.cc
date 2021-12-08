@@ -7,7 +7,7 @@
 
 #define AddFeature AddFeature_ChromiumImpl
 #define AddForceEnabledTrials AddForceEnabledTrials_ChromiumImpl
-#include "../../../../../../../third_party/blink/renderer/core/origin_trials/origin_trial_context.cc"
+#include "src/third_party/blink/renderer/core/origin_trials/origin_trial_context.cc"
 #undef AddForceEnabledTrials
 #undef AddFeature
 

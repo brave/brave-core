@@ -15,7 +15,7 @@
   IsIncognitoProfile_ChromiumImpl() const; \
   bool IsIncognitoProfile
 
-#include "../../../../../chrome/browser/profiles/profile.h"
+#include "src/chrome/browser/profiles/profile.h"
 
 #undef IsIncognitoProfile
 #undef HasPrimaryOTRProfile

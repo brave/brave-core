@@ -13,5 +13,4 @@ void BraveCustomizeDownloadsDataSource(content::WebUIDataSource* source) {
 
 }  // namespace
 
-#include "../../../../../../../chrome/browser/ui/webui/downloads/downloads_ui.cc"
-
+#include "src/chrome/browser/ui/webui/downloads/downloads_ui.cc"

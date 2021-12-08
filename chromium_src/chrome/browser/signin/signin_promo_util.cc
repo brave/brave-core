@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define ShouldShowPromo ShouldShowPromo_ChromiumImpl
-#include "../../../../../chrome/browser/signin/signin_promo_util.cc"
+#include "src/chrome/browser/signin/signin_promo_util.cc"
 #undef ShouldShowPromo
 
 namespace signin {

@@ -28,5 +28,5 @@ class BraveBrowserMainExtraPartsProfiles
 }  // namespace
 
 #define ChromeBrowserMainExtraPartsProfiles BraveBrowserMainExtraPartsProfiles
-#include "../../../../chrome/browser/startup_data.cc"
+#include "src/chrome/browser/startup_data.cc"
 #undef ChromeBrowserMainExtraPartsProfiles

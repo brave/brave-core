@@ -6,7 +6,7 @@
 #include "chrome/browser/profiles/profile_metrics.h"
 
 #define LogProfileAvatarSelection LogProfileAvatarSelection_ChromiumImpl
-#include "../../../../../chrome/browser/profiles/profile_metrics.cc"
+#include "src/chrome/browser/profiles/profile_metrics.cc"
 #undef LogProfileAvatarSelection
 
 // Chromium attempts to log profile icons which do not include

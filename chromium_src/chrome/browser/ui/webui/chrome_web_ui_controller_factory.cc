@@ -8,5 +8,5 @@
 #define BRAVE_CHROME_WEBUI_CONTROLLER_FACTORY \
   return BraveWebUIControllerFactory::GetInstance();
 
-#include "../../../../../../chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc"
+#include "src/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc"
 #undef BRAVE_CHROME_WEBUI_CONTROLLER_FACTORY

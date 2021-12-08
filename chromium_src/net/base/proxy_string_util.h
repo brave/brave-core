@@ -10,7 +10,7 @@
   ProxyServerToProxyUri_ChromiumImpl(const ProxyServer& proxy_server); \
   NET_EXPORT std::string ProxyServerToProxyUri
 
-#include "../../../../net/base/proxy_string_util.h"
+#include "src/net/base/proxy_string_util.h"
 
 #undef ProxyServerToProxyUri
 

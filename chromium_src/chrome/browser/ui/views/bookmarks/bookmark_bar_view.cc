@@ -71,6 +71,6 @@ void InstallNoHighlightPathGenerator(View* view) {
         this, model_, browser(), button_height, x, max_x, y);
 
 #define InstallPillHighlightPathGenerator InstallNoHighlightPathGenerator
-#include "../../../../../../../chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
+#include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
 #undef InstallPillHighlightPathGenerator
 #undef BRAVE_LAYOUT

@@ -9,7 +9,7 @@
 #define CreateForTab CreateForTab_ChromiumImpl(Tab* tab); \
   static std::unique_ptr<TabStyleViews> CreateForTab
 
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "src/chrome/browser/ui/views/tabs/tab_style_views.h"
 #undef CreateForTab
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STYLE_VIEWS_H_

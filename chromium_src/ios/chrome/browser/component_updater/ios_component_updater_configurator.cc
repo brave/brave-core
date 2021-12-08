@@ -24,5 +24,5 @@ bool BraveConfiguratorImpl::EnabledCupSigning() const {
 }  // namespace component_updater
 
 #define ConfiguratorImpl BraveConfiguratorImpl
-#include "../../../../../../ios/chrome/browser/component_updater/ios_component_updater_configurator.cc"  // NOLINT
+#include "src/ios/chrome/browser/component_updater/ios_component_updater_configurator.cc"
 #undef ConfiguratorImpl

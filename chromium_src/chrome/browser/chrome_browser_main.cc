@@ -16,7 +16,7 @@
   BraveUntrustedWebUIControllerFactory::RegisterInstance(); \
   ChromeUntrustedWebUIControllerFactory
 #endif
-#include "../../../../chrome/browser/chrome_browser_main.cc"
+#include "src/chrome/browser/chrome_browser_main.cc"
 #if !defined(OS_ANDROID)
 #undef ChromeUntrustedWebUIControllerFactory
 #endif

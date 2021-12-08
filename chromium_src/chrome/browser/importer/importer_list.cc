@@ -73,4 +73,4 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 
 }  // namespace
 
-#include "../../../../../chrome/browser/importer/importer_list.cc"
+#include "src/chrome/browser/importer/importer_list.cc"

@@ -7,7 +7,7 @@
 
 #define SetIsEnabled SetIsEnabled_Unused
 
-#include "../../../../../../third_party/blink/common/client_hints/enabled_client_hints.cc"
+#include "src/third_party/blink/common/client_hints/enabled_client_hints.cc"
 
 #undef SetIsEnabled
 

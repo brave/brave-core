@@ -11,7 +11,7 @@
   kMaxNumTiles = 12; \
   const int kMaxNumTiles_Unused
 
-#include "../../../../components/ntp_tiles/constants.h"
+#include "src/components/ntp_tiles/constants.h"
 
 #undef kMaxNumTiles
 

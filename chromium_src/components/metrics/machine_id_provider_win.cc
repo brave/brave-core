@@ -15,4 +15,4 @@ bool IsMachineIdDisabled() {
 }
 
 }  // namespace
-#include "../../../../components/metrics/machine_id_provider_win.cc"
+#include "src/components/metrics/machine_id_provider_win.cc"

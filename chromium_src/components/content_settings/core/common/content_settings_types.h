@@ -20,7 +20,7 @@
   BRAVE_ETHEREUM
 // clang-format on
 
-#include "../../../../../../components/content_settings/core/common/content_settings_types.h"
+#include "src/components/content_settings/core/common/content_settings_types.h"
 
 #undef BRAVE_CONTENT_SETTINGS_TYPES_LIST
 

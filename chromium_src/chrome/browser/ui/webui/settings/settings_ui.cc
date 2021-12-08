@@ -6,5 +6,5 @@
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 
 #define ImportDataHandler BraveImportDataHandler
-#include "../../../../../../../chrome/browser/ui/webui/settings/settings_ui.cc"  // NOLINT
+#include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
 #undef ImportDataHandler

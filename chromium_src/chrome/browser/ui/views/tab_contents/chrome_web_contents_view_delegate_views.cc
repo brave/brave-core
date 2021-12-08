@@ -6,5 +6,5 @@
 #include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_views.h"
 
 #define RenderViewContextMenuViews BraveRenderViewContextMenuViews
-#include "../../../../../../../chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views.cc"
+#include "src/chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views.cc"
 #undef RenderViewContextMenuViews

@@ -7,7 +7,7 @@
 
 #define MakeChromeComponentUpdaterConfigurator \
     MakeChromeComponentUpdaterConfigurator_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/chrome_component_updater_configurator.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/chrome_component_updater_configurator.cc"
 #undef MakeChromeComponentUpdaterConfigurator
 
 namespace component_updater {

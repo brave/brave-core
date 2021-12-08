@@ -25,7 +25,7 @@
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
 #define getImageData getImageData_Unused
-#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#include "src/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
 #undef getImageData
 #undef BRAVE_GET_IMAGE_DATA_PARAMS
 #undef BRAVE_GET_IMAGE_DATA

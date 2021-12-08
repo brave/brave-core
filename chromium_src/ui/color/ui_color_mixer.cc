@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #define AddUiColorMixer AddUiColorMixer_Chromium
-#include "../../../../ui/color/ui_color_mixer.cc"
+#include "src/ui/color/ui_color_mixer.cc"
 #undef AddUiColorMixer
 
 namespace ui {

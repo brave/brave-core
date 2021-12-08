@@ -9,7 +9,7 @@
 #define SelectRelativeTab virtual SelectRelativeTab
 #define TAB_STRIP_MODEL_H_ friend class BraveTabStripModel;
 
-#include "../../../../../../chrome/browser/ui/tabs/tab_strip_model.h"  // NOLINT
+#include "src/chrome/browser/ui/tabs/tab_strip_model.h"
 #undef SelectRelativeTab
 #undef TAB_STRIP_MODEL_H_
 

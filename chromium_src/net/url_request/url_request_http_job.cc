@@ -5,7 +5,7 @@
 
 #include "net/url_request/url_request_http_job.h"
 
-#include "../../../../net/url_request/url_request_http_job.cc"
+#include "src/net/url_request/url_request_http_job.cc"
 
 namespace net {
 

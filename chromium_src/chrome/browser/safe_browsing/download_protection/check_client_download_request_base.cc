@@ -27,4 +27,4 @@ void BraveFilterRequest(ClientDownloadRequest* request) {
 
 }  // namespace safe_browsing
 
-#include "../../../../../../chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc"  // NOLINT
+#include "src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc"

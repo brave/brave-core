@@ -14,6 +14,6 @@ VISIT_PROTO_FIELDS(const sync_pb::BraveSpecificFields& proto) {        \
   VISIT(is_self_delete_supported);                                     \
 }
 
-#include "../../../../../components/sync/protocol/proto_visitors.h"
+#include "src/components/sync/protocol/proto_visitors.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_

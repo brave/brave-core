@@ -11,7 +11,7 @@
                   mojo::PendingReceiver<mojom::blink::StorageArea> receiver); \
   void BindStorageArea_Unused
 
-#include "../../../../../../../third_party/blink/renderer/modules/storage/storage_namespace.h"
+#include "src/third_party/blink/renderer/modules/storage/storage_namespace.h"
 
 #undef BindStorageArea
 

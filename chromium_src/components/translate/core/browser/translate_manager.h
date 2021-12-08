@@ -16,7 +16,7 @@ using BraveTranslateManager = TranslateManager;
   ignore_missing_key_for_testing_;      \
   friend BraveTranslateManager
 #define FilterIsTranslatePossible virtual FilterIsTranslatePossible
-#include "../../../../../../components/translate/core/browser/translate_manager.h"
+#include "src/components/translate/core/browser/translate_manager.h"
 #undef FilterIsTranslatePossible
 #undef ignore_missing_key_for_testing_
 #undef TranslateManager

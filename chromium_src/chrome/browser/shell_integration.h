@@ -8,7 +8,7 @@
 
 #define BRAVE_DEFAULT_BROWSER_WORKER_H friend class BraveDefaultBrowserWorker;
 
-#include "../../../../chrome/browser/shell_integration.h"
+#include "src/chrome/browser/shell_integration.h"
 
 #undef BRAVE_DEFAULT_BROWSER_WORKER_H
 

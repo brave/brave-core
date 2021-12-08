@@ -19,7 +19,7 @@
 #include "components/sync/engine/sync_engine.h"
 #define Initialize virtual Initialize
 
-#include "../../../../../components/sync/driver/sync_service_impl.h"
+#include "src/components/sync/driver/sync_service_impl.h"
 
 #undef Initialize
 

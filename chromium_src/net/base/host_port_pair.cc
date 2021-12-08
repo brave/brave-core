@@ -70,7 +70,7 @@ std::string MaybeAddUsernameAndPassword(const HostPortPair* host_port_pair,
                         url.HostNoBrackets(), \
                         static_cast<uint16_t>(url.EffectiveIntPort()));
 
-#include "../../../../net/base/host_port_pair.cc"  // NOLINT
+#include "src/net/base/host_port_pair.cc"
 
 #undef BRAVE_HOST_PORT_PAIR_TO_STRING_
 #undef BRAVE_HOST_PORT_PAIR_FROM_STRING_

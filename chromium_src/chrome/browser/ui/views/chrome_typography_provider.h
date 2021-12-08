@@ -9,7 +9,7 @@
 #include "ui/views/style/typography_provider.h"
 
 #define ChromeTypographyProvider ChromeTypographyProvider_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.h"
+#include "src/chrome/browser/ui/views/chrome_typography_provider.h"
 #undef ChromeTypographyProvider
 
 class ChromeTypographyProvider : public ChromeTypographyProvider_ChromiumImpl {

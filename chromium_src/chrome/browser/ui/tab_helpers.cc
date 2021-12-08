@@ -25,7 +25,7 @@ class NoTabHelper {
 #define chrome_browser_net
 #define NetErrorTabHelper NoTabHelper
 
-#include "../../../../../chrome/browser/ui/tab_helpers.cc"
+#include "src/chrome/browser/ui/tab_helpers.cc"
 
 #undef NetErrorTabHelper
 #undef chrome_browser_net

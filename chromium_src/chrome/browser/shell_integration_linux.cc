@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define GetDefaultBrowser GetDefaultBrowser_ChromiumImpl
-#include "../../../../chrome/browser/shell_integration_linux.cc"
+#include "src/chrome/browser/shell_integration_linux.cc"
 #undef GetDefaultBrowser
 
 namespace shell_integration {

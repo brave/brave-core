@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_FEATURES_H_
 
-#include "../../../../../../third_party/blink/public/common/features.h"
+#include "src/third_party/blink/public/common/features.h"
 
 namespace blink {
 namespace features {

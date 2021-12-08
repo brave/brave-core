@@ -15,7 +15,7 @@
 #define GetSecurityDescription GetSecurityDescription_ChromiumImpl
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
-#include "../../../../components/page_info/page_info_ui.cc"
+#include "src/components/page_info/page_info_ui.cc"
 
 #if BUILDFLAG(ENABLE_IPFS)
 #undef GetSecurityDescription

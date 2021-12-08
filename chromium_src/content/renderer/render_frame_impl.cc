@@ -9,6 +9,6 @@
   if (false)                                                   \
 // clang-format on
 
-#include "../../../../content/renderer/render_frame_impl.cc"
+#include "src/content/renderer/render_frame_impl.cc"
 #undef BRAVE_RENDER_FRAME_IMPL_SHOULD_USE_USER_AGENT_OVERRIDE
 

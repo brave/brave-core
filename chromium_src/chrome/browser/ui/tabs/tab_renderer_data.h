@@ -10,7 +10,7 @@
   FromTabInModel_ChromiumImpl(TabStripModel* model, int index); \
   static TabRendererData FromTabInModel
 
-#include "../../../../../../chrome/browser/ui/tabs/tab_renderer_data.h"
+#include "src/chrome/browser/ui/tabs/tab_renderer_data.h"
 #undef FromTabInModel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_RENDERER_DATA_H_

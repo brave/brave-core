@@ -6,7 +6,7 @@
 #include "components/assist_ranker/ranker_url_fetcher.h"
 
 #define Request Request_ChromiumImpl
-#include "../../../../components/assist_ranker/ranker_url_fetcher.cc"
+#include "src/components/assist_ranker/ranker_url_fetcher.cc"
 #undef Request
 
 namespace assist_ranker {

@@ -8,7 +8,7 @@
 #include "ui/gfx/color_utils.h"
 
 #define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
-#include "../../../../ui/native_theme/native_theme.cc"
+#include "src/ui/native_theme/native_theme.cc"
 #undef GetSystemButtonPressedColor
 
 namespace ui {

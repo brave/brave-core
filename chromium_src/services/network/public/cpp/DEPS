@@ -1,6 +1,4 @@
 include_rules = [
-  "+../../../../../../services/network",
-  "+../../../../../components/content_settings/browser",
   "+components/content_settings/browser",
   "+services/network",
 ]

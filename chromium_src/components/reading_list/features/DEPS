@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../../components/reading_list/features",
-  "+components/reading_list/features",
-]

@@ -25,7 +25,7 @@ class PermissionLifetimeManager;
       permission_lifetime_manager_factory_;
 #define CleanUpRequest virtual CleanUpRequest
 
-#include "../../../../components/permissions/permission_context_base.h"
+#include "src/components/permissions/permission_context_base.h"
 
 #undef BRAVE_PERMISSION_CONTEXT_BASE_H_
 #undef CleanUpRequest

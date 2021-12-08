@@ -8,7 +8,7 @@
 
 #define GetFrameWidthForClientWidth virtual GetFrameWidthForClientWidth
 
-#include "../../../../../ui/views/bubble/bubble_frame_view.h"
+#include "src/ui/views/bubble/bubble_frame_view.h"
 
 #undef GetFrameWidthForClientWidth
 

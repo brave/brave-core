@@ -7,7 +7,7 @@
 #define GetProductNameAndVersionForUserAgent \
   GetProductNameAndVersionForUserAgent_Unused
 
-#include "../../../../components/version_info/version_info.cc"
+#include "src/components/version_info/version_info.cc"
 #undef GetChannelString
 #undef GetProductNameAndVersionForUserAgent
 

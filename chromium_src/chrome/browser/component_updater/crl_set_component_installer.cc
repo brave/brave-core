@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define RegisterCRLSetComponent RegisterCRLSetComponent_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/crl_set_component_installer.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/crl_set_component_installer.cc"
 #undef RegisterCRLSetComponent
 
 #include "chrome/browser/browser_process.h"

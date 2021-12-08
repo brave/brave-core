@@ -20,7 +20,7 @@
  public:                                                         \
   void AddAdditionalRequestHeaders
 
-#include "../../../../../../../third_party/blink/renderer/core/loader/frame_fetch_context.h"
+#include "src/third_party/blink/renderer/core/loader/frame_fetch_context.h"
 
 #undef AddAdditionalRequestHeaders
 

@@ -24,7 +24,7 @@ class BraveGoogleKeysInfoBarDelegate {
 
 #define ShowDefaultBrowserPrompt ShowDefaultBraveBrowserPrompt
 
-#include "../../../../../../chrome/browser/ui/startup/startup_browser_creator_impl.cc"  // NOLINT
+#include "src/chrome/browser/ui/startup/startup_browser_creator_impl.cc"
 
 #undef BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
 #undef GoogleApiKeysInfoBarDelegate
