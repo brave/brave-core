@@ -454,7 +454,7 @@ function Container (props: Props) {
   }
 
   const onAddAccount = () => {
-    props.walletPanelActions.expandWalletAccounts()
+    props.walletActions.expandWalletNetworks()
   }
 
   const onAddSuggestedToken = () => {
