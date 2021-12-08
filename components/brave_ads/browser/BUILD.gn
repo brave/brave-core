@@ -1,23 +1,15 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 
-static_library("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
-  check_includes = false
-  public_deps = [ "//brave/components/brave_rewards/browser" ]
-
+source_set("browser") {
   sources = [
     "ads_p2a.cc",
     "ads_p2a.h",
     "ads_service.cc",
     "ads_service.h",
-    "ads_service_impl.cc",
-    "ads_service_impl.h",
     "ads_service_observer.h",
     "ads_storage_cleanup.cc",
     "ads_storage_cleanup.h",
-    "background_helper.cc",
-    "background_helper.h",
     "component_updater/component_info.cc",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
@@ -29,106 +21,29 @@ static_library("browser") {
     "component_updater/resource_info.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
-    "notification_helper.cc",
-    "notification_helper.h",
-    "service_sandbox_type.h",
   ]
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/notifications",
-    "//brave/common",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_rewards/common",
-    "//brave/components/brave_today/common",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/rpill/common",
-    "//brave/components/services/bat_ads/public/cpp",
-    "//brave/components/services/bat_ads/public/interfaces",
     "//brave/components/weekly_storage",
-    "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces",
-    "//chrome/common:buildflags",
-    "//components/history/core/browser",
-    "//components/history/core/common",
-    "//components/wifi",
-    "//content/public/browser",
-    "//net",
-    "//services/network/public/cpp",
-    "//services/network/public/mojom",
-    "//sql",
-    "//ui/base",
-    "//ui/message_center/public/cpp",
-
-    # for profile.h
-    "//components/domain_reliability",
-    "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
     "//content/public/browser",
+    "//sql",
     "//url",
   ]
 
-  public_deps += [ "//brave/vendor/bat-native-ads" ]
-
-  if (is_android) {
-    sources += [
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
-      "background_helper_android.cc",
-      "background_helper_android.h",
-      "notification_helper_android.cc",
-      "notification_helper_android.h",
-    ]
-
-    deps += [
-      "//brave/browser/brave_ads/android:jni_headers",
-      "//brave/build/android:jni_headers",
-      "//chrome/android:jni_headers",
-    ]
-  }
-
-  if (is_linux) {
-    sources += [
-      "background_helper_linux.cc",
-      "background_helper_linux.h",
-      "notification_helper_linux.cc",
-      "notification_helper_linux.h",
-    ]
-
-    deps += [ "//ui/gfx/x" ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "background_helper_mac.h",
-      "background_helper_mac.mm",
-      "notification_helper_mac.h",
-      "notification_helper_mac.mm",
-    ]
-  }
-
-  if (is_win) {
-    sources += [
-      "background_helper_win.cc",
-      "background_helper_win.h",
-      "notification_helper_win.cc",
-      "notification_helper_win.h",
-    ]
-
-    deps += [
-      "//ui/gfx",
-      "//ui/views",
-    ]
-  }
-
-  public_deps += [ "//brave/components/brave_adaptive_captcha/buildflags" ]
+  public_deps = [
+    "//brave/components/brave_adaptive_captcha/buildflags",
+    "//brave/vendor/bat-native-ads",
+  ]
 
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]

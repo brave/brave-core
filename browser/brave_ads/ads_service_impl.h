@@ -3,31 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_
+#define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_
 
 #include <cstdint>
-#include <deque>
 #include <list>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/browser/brave_ads/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
-#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -38,8 +36,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/idle/idle.h"
-
-#include "base/task/cancelable_task_tracker.h"
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
@@ -513,4 +509,4 @@ class AdsServiceImpl : public AdsService,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/browser/brave_ads/ads_service_impl.h"
 
 #include <algorithm>
 #include <limits>
@@ -23,9 +23,8 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/memory/ptr_util.h"
 #include "base/metrics/field_trial_params.h"
-#include "base/path_service.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
@@ -41,7 +40,9 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h"
+#include "brave/browser/brave_ads/service_sandbox_type.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -51,8 +52,6 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/notification_helper.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
@@ -86,7 +85,6 @@
 #include "chrome/common/chrome_constants.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
-#include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/service_process_host.h"
@@ -96,7 +94,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -126,12 +123,9 @@ const unsigned int kRetriesCountOnNetworkChange = 1;
 
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
-static std::map<std::string, int> g_schema_resource_ids = {
-    {ads::g_catalog_schema_resource_id, IDR_ADS_CATALOG_SCHEMA}};
-
 int GetSchemaResourceId(const std::string& name) {
-  if (g_schema_resource_ids.find(name) != g_schema_resource_ids.end()) {
-    return g_schema_resource_ids[name];
+  if (name == ads::g_catalog_schema_resource_id) {
+    return IDR_ADS_CATALOG_SCHEMA;
   }
 
   NOTREACHED();
@@ -1514,18 +1508,19 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
-  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)()> mappings{
-      // {{from version, to version}, function}
-      {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-      {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-      {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-      {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-      {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-      {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-      {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
-      {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
-      {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
-      {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11}};
+  static base::NoDestructor<
+      base::flat_map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
+      mappings({// {{from version, to version}, function}
+                {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+                {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+                {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
+                {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
+                {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
+                {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+                {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
+                {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
+                {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
+                {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11}});
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -1534,8 +1529,8 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = mappings.find({from_version, to_version});
-    if (mapping == mappings.end()) {
+    auto mapping = mappings->find(std::make_pair(from_version, to_version));
+    if (mapping == mappings->end()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences
       return false;
