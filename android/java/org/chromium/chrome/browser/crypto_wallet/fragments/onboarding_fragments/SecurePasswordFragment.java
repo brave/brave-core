@@ -60,11 +60,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    InputMethodManager inputMethodManager =
-                            (InputMethodManager) getActivity().getSystemService(
-                                    Activity.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(
-                            getActivity().getCurrentFocus().getWindowToken(), 0);
+                    Utils.hideKeyboard(getActivity());
                 }
                 return true;
             }
