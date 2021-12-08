@@ -69,6 +69,8 @@ class AssetRatioController : public KeyedService,
   static GURL GetGasOracleURL();
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
+  void SetAPIRequestHelperForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   void OnGetPrice(std::vector<std::string> from_assets,
@@ -97,7 +99,7 @@ class AssetRatioController : public KeyedService,
   mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
 
   static GURL base_url_for_test_;
-  api_request_helper::APIRequestHelper api_request_helper_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<AssetRatioController> weak_ptr_factory_;
 };
 

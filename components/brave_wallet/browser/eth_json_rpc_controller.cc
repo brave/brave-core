@@ -68,7 +68,9 @@ namespace brave_wallet {
 EthJsonRpcController::EthJsonRpcController(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+    : api_request_helper_(new api_request_helper::APIRequestHelper(
+          GetNetworkTrafficAnnotationTag(),
+          url_loader_factory)),
       prefs_(prefs),
       weak_ptr_factory_(this) {
   SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
@@ -77,6 +79,12 @@ EthJsonRpcController::EthJsonRpcController(
                  LOG(ERROR)
                      << "Could not set netowrk from EthJsonRpcController()";
              }));
+}
+
+void EthJsonRpcController::SetAPIRequestHelperForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_.reset(new api_request_helper::APIRequestHelper(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -131,9 +139,9 @@ void EthJsonRpcController::RequestInternal(const std::string& json_payload,
   }
   request_headers["x-brave-key"] = brave_key;
 
-  api_request_helper_.Request("POST", network_url, json_payload,
-                              "application/json", auto_retry_on_network_change,
-                              std::move(callback), request_headers);
+  api_request_helper_->Request("POST", network_url, json_payload,
+                               "application/json", auto_retry_on_network_change,
+                               std::move(callback), request_headers);
 }
 
 void EthJsonRpcController::FirePendingRequestCompleted(

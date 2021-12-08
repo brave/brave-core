@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -152,30 +153,26 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
-    eth_json_rpc_controller_.reset(
-        new EthJsonRpcController(shared_url_loader_factory_, prefs()));
+    eth_json_rpc_controller_ =
+        RpcControllerFactory::GetControllerForContext(browser_context());
+    eth_json_rpc_controller_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
     SetNetwork("0x1");
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
-    asset_ratio_controller_.reset(
-        new AssetRatioController(shared_url_loader_factory_));
-    auto tx_state_manager =
-        std::make_unique<EthTxStateManager>(prefs(), eth_json_rpc_controller());
-    auto nonce_tracker = std::make_unique<EthNonceTracker>(
-        tx_state_manager.get(), eth_json_rpc_controller());
-    auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
-        tx_state_manager.get(), eth_json_rpc_controller(), nonce_tracker.get());
-    eth_tx_controller_.reset(new EthTxController(
-        eth_json_rpc_controller(), keyring_controller(),
-        asset_ratio_controller_.get(), std::move(tx_state_manager),
-        std::move(nonce_tracker), std::move(pending_tx_tracker), prefs()));
+    asset_ratio_controller_ =
+        AssetRatioControllerFactory::GetControllerForContext(browser_context());
+    asset_ratio_controller_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
+    eth_tx_controller_ =
+        EthTxControllerFactory::GetControllerForContext(browser_context());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
 
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         host_content_settings_map(), eth_json_rpc_controller(),
-        eth_tx_controller()->MakeRemote(), keyring_controller_,
+        eth_tx_controller()->MakeRemote(), keyring_controller(),
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
@@ -289,9 +286,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   ~BraveWalletProviderImplUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
-  EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
+  EthTxController* eth_tx_controller() { return eth_tx_controller_; }
   EthJsonRpcController* eth_json_rpc_controller() {
-    return eth_json_rpc_controller_.get();
+    return eth_json_rpc_controller_;
   }
   KeyringController* keyring_controller() { return keyring_controller_; }
   BraveWalletProviderImpl* provider() { return provider_.get(); }
@@ -521,15 +518,15 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
-  std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
+  EthJsonRpcController* eth_json_rpc_controller_;
   BraveWalletService* brave_wallet_service_;
   std::unique_ptr<TestEventsListener> observer_;
 
  private:
   KeyringController* keyring_controller_;
   content::TestWebContentsFactory factory_;
-  std::unique_ptr<EthTxController> eth_tx_controller_;
-  std::unique_ptr<AssetRatioController> asset_ratio_controller_;
+  EthTxController* eth_tx_controller_;
+  AssetRatioController* asset_ratio_controller_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
   network::TestURLLoaderFactory url_loader_factory_;
