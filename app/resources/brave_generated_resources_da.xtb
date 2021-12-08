@@ -448,4 +448,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
 <translation id="2234108191702901162">Der kunne ikke tilføje netværk</translation>
 <translation id="2618193846561624884">Vil du opdatere det eksisterende netværk?</translation>
+<translation id="9184430019924125685">Klik for at få mere at vide</translation>
+<translation id="3241299447027267831">Tillad bidrag til videoer</translation>
+<translation id="9053905035135220650">En 0x-prefixed hexadecimal-streng</translation>
+<translation id="4514843126085243862">Ugyldigt format. Kædei-id'er er en 0x-prefixed hexadecimal-streng</translation>
 </translationbundle>

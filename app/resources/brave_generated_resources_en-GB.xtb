@@ -447,4 +447,8 @@ Are you sure you want to do this?</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2234108191702901162">Unable to add network</translation>
 <translation id="2618193846561624884">Do you want to update the existing network?</translation>
+<translation id="9184430019924125685">Click here to learn more</translation>
+<translation id="3241299447027267831">Allow contributions to videos</translation>
+<translation id="9053905035135220650">A 0x-prefixed hexadecimal string</translation>
+<translation id="4514843126085243862">Invalid format, the chain id is a 0x-prefixed hexadecimal string</translation>
 </translationbundle>

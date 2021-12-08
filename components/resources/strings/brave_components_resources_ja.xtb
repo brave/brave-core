@@ -1160,4 +1160,9 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="2383784987664887340">Gemini では、BATを簡単に取引、保管し、3.49% の APY を獲得できます。今すぐGeminiでBrave Rewards ウォレットを認証して接続しましょう！</translation>
+<translation id="2237374144728570574">* 2021 年 9 月 15 日現在の Gemini APY</translation>
+<translation id="3301417531330431881">ハードウェアウォレットで取引確認が必要です。<ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">内部エラーです。iframeブリッジを作成できません</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>で購入</translation>
 </translationbundle>

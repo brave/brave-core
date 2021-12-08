@@ -1157,4 +1157,9 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="2383784987664887340">A Geminivel könnyedén kereskedhet a BAT-jával, tárolhatja azt és kereshet 3,49% APY-t vele. Erősítse meg és kapcsolja össze Brave jutalmak pénztárcáját a Geminivel most!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY 2021. szept. 15-től</translation>
+<translation id="3301417531330431881">A hardware pénztárcához tranzakció-visszaigazolás szükséges. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">Belső hiba, sikertelen volt az iframe bridge létrehozása</translation>
+<translation id="1664949222596149258">Megvásárlás <ph name="PRODUCE_PRICE"/> összegért</translation>
 </translationbundle>

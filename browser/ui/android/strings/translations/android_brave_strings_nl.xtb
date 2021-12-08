@@ -403,12 +403,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7427567994475794038">Schakel Privacyrapporten in om te zien hoeveel trackers &amp; advertenties er in de afgelopen 3 uur zijn geblokkeerd.</translation>
 <translation id="2053891538879944400">U hebt <ph name="DATA"/> <ph name="DATA_TEXT"/> data bespaard met Brave browser.</translation>
 <translation id="8640064498452534195">Schakel Privacyrapporten in om te zien hoeveel data u hebt bespaard.</translation>
-<translation id="2252497442547961651">Brave browser gebruikt gemiddeld 40% minder energie.&#128267;</translation>
+<translation id="2252497442547961651">Brave browser gebruikt gemiddeld 40% minder energie.🔋</translation>
 <translation id="1945330434665345785">U hebt vorige week <ph name="COUNT"/> trackers en advertenties geblokkeerd met Brave browser.</translation>
 <translation id="2883868922264431515">Verdien tokens door privacy-vriendelijke advertenties te bekijken en steun uw favoriete websites.</translation>
-<translation id="5678925890616256956">Mooi! U hebt 250 trackers &amp; reclames geblokkeerd met Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Mooi! U heeft 10MB bespaard met Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Mooi! U hebt 10 minuten laadtijd bespaard met Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Mooi! U hebt 250 trackers &amp; reclames geblokkeerd met Brave browser.🔥</translation>
+<translation id="9199047775708635708">Mooi! U heeft 10MB bespaard met Brave browser.🔋</translation>
+<translation id="1880168210969863408">Mooi! U hebt 10 minuten laadtijd bespaard met Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Begin met browsen om uw privacyrapport te zien</translation>
 <translation id="9080777565335515917">Stel Brave in als uw standaardbrowser om privé en veilig te kunnen surfen.</translation>
 <translation id="1390943217516275883">Staat Brave toe om uw privacystatistieken weer te geven</translation>
@@ -756,4 +756,49 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1011713837432053857">Brandstoflimiet</translation>
 <translation id="1254969878422524947">Fooilimiet per gaseenheid (Gwei)</translation>
 <translation id="7373308452149471621">Prijslimiet per gaseenheid (Gwei)</translation>
+<translation id="5345505584130165588">Beveiliging &amp; privacy van Brave</translation>
+<translation id="7822245778264751380">Prijs van Ethereum (ETH)</translation>
+<translation id="7384441892795736634">Gegevens vernieuwen</translation>
+<translation id="4804818685124855865">Verbinding verbreken</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Stortingsadres</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Stortingsmemo</translation>
+<translation id="5110244215256675209">Koop Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Koop Buy <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Beschikbaar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/>
+Beschikbaar 
+Beschikbaar</translation>
+<translation id="6755546361496900700">Voorbeeld van conversie</translation>
+<translation id="4670943871783273148">Je tekst is opgeslagen als tekstbestand.</translation>
+<translation id="4432845796903761592">Bestand niet opgeslagen.</translation>
+<translation id="7144878232160441200">Opnieuw proberen</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Samenvatting</translation>
+<translation id="1366855498335432549">Storting</translation>
+<translation id="1301340234286078471">Converteren</translation>
+<translation id="1714829281959608206">Schakel Binance-verbinding in om het Binance-accountsaldo te bekijken en crypto te verhandelen.</translation>
+<translation id="4584930231524505442">Ik wil converteren...</translation>
+<translation id="5749014321384313843">Ik wil spenderen...</translation>
+<translation id="2480674848181564169">Niet genoeg geld voor omwisselen</translation>
+<translation id="2215334405220411393">Minimumbedrag om te wisselen is: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kon niet verbinden</translation>
+<translation id="7742417737698031726">Vergoeding</translation>
+<translation id="2122225204180056042">Je ontvangt</translation>
+<translation id="6432284126416751397">Bevestig de conversie</translation>
+<translation id="3891414008432200754">Prijs</translation>
+<translation id="3733576242118819803">Bevestig (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Conversie mislukt. Probeer het alstublieft nogmaals.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">U converteerde <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> naar <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">gelieve uw netwerkverbinding te controleren.</translation>
+<translation id="5317780077021120954">Opslaan</translation>
+<translation id="1202920745614909195">Koop crypto met Apple Pay of met een credit- of betaalkaart.</translation>
+<translation id="224719674509047150">Wachtwoord moet ten minste 7 tekens bevatten, waaronder ten minste één nummer en een speciaal teken</translation>
+<translation id="4636930964841734540">Informatie</translation>
+<translation id="8094541587800369158">Deze accounts kunnen gebruikt worden met web 3 dapps en kunnen worden weergegeven in je portfolio. Ze kunnen echter niet worden hersteld via herstelwoorden vanuit de back-up van je primaire account. Schakel het synchroniseren van Brave-accounts in om je tweede account automatisch te herstellen.</translation>
+<translation id="6083912983861746409">Gasprijs (GWEI)</translation>
+<translation id="2499079593046817044">Gaslimiet (GWEI)</translation>
+<translation id="5929798090073091848">Waarschuwing: deel deze sleutel nooit met anderen. Iedereen met je privésleutel kan assets van je account stelen.</translation>
 </translationbundle>

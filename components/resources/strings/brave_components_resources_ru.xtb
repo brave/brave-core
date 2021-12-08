@@ -1157,4 +1157,9 @@
 <translation id="6973157709854838218">Скрыть средства с экрана</translation>
 <translation id="4548946945059463969">Показать средства на экране</translation>
 <translation id="242959166945779492">На вашем счету нет средств. Чтобы приобрести валюту, посетите биржу FTX.</translation>
+<translation id="2383784987664887340">Gemini позволяет хранить и продавать баллы BAT, а также зарабатывать с них 3,49 % годовых (APY). Для этого подтвердите кошелек Brave Rewards и свяжите его с Gemini прямо сейчас!</translation>
+<translation id="2237374144728570574">*Годовой процентный доход (APY) в Gemini Earn на 15 сентября 2021 г.</translation>
+<translation id="3301417531330431881">Аппаратный криптокошелек <ph name="DEVICE_NAME"/> требует подтверждения транзакции.</translation>
+<translation id="3327639091470204775">Внутренняя ошибка. Не удалось создать мост с iframe.</translation>
+<translation id="1664949222596149258">Купить за <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

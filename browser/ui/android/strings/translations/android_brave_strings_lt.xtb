@@ -409,12 +409,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7427567994475794038">Įjunkite privatumo ataskaitas ir matykite, kiek sekiklių ir reklamų užblokavote per pastarąsias 3 valandas.</translation>
 <translation id="2053891538879944400">Naudodami „Brave“ naršyklę sutaupėte <ph name="DATA"/> <ph name="DATA_TEXT"/> duomenų.</translation>
 <translation id="8640064498452534195">Įjunkite privatumo ataskaitas ir matykite, kiek duomenų sutaupėte.</translation>
-<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.&#128267;</translation>
+<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.🔋</translation>
 <translation id="1945330434665345785">Praėjusią savaitę „Brave“ naršyklėje užblokavote tiek sekiklių ir reklamų: <ph name="COUNT"/>.</translation>
 <translation id="2883868922264431515">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą ir paremkite mėgstamas svetaines.</translation>
-<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.&#128293;</translation>
-<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.🔥</translation>
+<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.🔋</translation>
+<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.💨💨</translation>
 <translation id="7408493389591475748">Pradėkite naršyti, kad pamatytumėte privatumo ataskaitas</translation>
 <translation id="9080777565335515917">Nustatykite „Brave“ kaip numatytąją naršyklę, kad galėtumėte naršyti privačiai ir saugiai.</translation>
 <translation id="1390943217516275883">Suteikia „Brave“ galimybę rodyti jūsų privatumo statistiką</translation>
@@ -762,4 +762,47 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1011713837432053857">Energijos kainos riba</translation>
 <translation id="1254969878422524947">Kaina už dujų arbatpinigių ribą (GWEI)</translation>
 <translation id="7373308452149471621">Kaina už dujų kainos ribą (GWEI)</translation>
+<translation id="5345505584130165588">„Brave“ skydai ir privatumas</translation>
+<translation id="7822245778264751380">Eterio kaina (ETH)</translation>
+<translation id="7384441892795736634">Atnaujinti duomenis</translation>
+<translation id="4804818685124855865">Atsijungti</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Indėlio adresas</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Indėlio priminimas</translation>
+<translation id="5110244215256675209">Pirkti kriptovaliutos</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Pirkti <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Prieinama <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Peržiūrėti konvertavimą</translation>
+<translation id="4670943871783273148">Jūsų tekstas išsaugotas tekstiniame faile.</translation>
+<translation id="4432845796903761592">Failas neišsaugotas.</translation>
+<translation id="7144878232160441200">Kartoti</translation>
+<translation id="6966052266404721769">„Binance“</translation>
+<translation id="2956070106555335453">Suvestinė</translation>
+<translation id="1366855498335432549">Depozitas</translation>
+<translation id="1301340234286078471">Konvertuoti</translation>
+<translation id="1714829281959608206">Suaktyvinti „Binance“ ryšį, kad būtų galima peržiūrėti „Binance“ sąskaitos balansą ir prekybą kriptovaliutomis.</translation>
+<translation id="4584930231524505442">Noriu konvertuoti...</translation>
+<translation id="5749014321384313843">Noriu išleisti...</translation>
+<translation id="2480674848181564169">Norint konvertuoti nepakankamas likutis</translation>
+<translation id="2215334405220411393">Minimali konvertuojama suma: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nepavyko prisijungti</translation>
+<translation id="7742417737698031726">Mokestis</translation>
+<translation id="2122225204180056042">Gausite</translation>
+<translation id="6432284126416751397">Patvirtinti konvertavimą</translation>
+<translation id="3891414008432200754">Kaina</translation>
+<translation id="3733576242118819803">Patvirtinti (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertuoti nepavyko. Bandykite dar kartą.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">Konvertavote <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> į <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Patikrinkite tinklo ryšį.</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="1202920745614909195">Pirkite kriptovaliutą naudodami „Apple Pay“, kredito ar debeto kortelę.</translation>
+<translation id="224719674509047150">Slaptažodį turi sudaryti mažiausiai 7 simboliai, kurių bent vienas turi būti skaičius ir bent vienas specialusis simbolis</translation>
+<translation id="4636930964841734540">Informacija</translation>
+<translation id="8094541587800369158">Šias sąskaitas galima naudoti su „Web 3“ decentralizuotomis programėlėmis ir rodyti jūsų portfelyje, tačiau jų negalima atkurti naudojant atkūrimo frazę, kai atliekamas pagrindinės sąskaitos atsarginės kopijos kūrimas. Įgalinkite „Brave Sync“ sąskaitas automatiškai atkurti papildomas sąskaitas.</translation>
+<translation id="6083912983861746409">Dujų kaina (GWEI)</translation>
+<translation id="2499079593046817044">Dujų limitas (GWEI)</translation>
+<translation id="5929798090073091848">Dėmesio. Niekada neatskleiskite šio rakto kitiems. Bet kuris jūsų asmeninį raktą turintis asmuo gali pavogti bet kokį jūsų paskyroje laikomą turtą.</translation>
 </translationbundle>

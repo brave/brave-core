@@ -448,4 +448,8 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
+<translation id="9184430019924125685">こちらをクリックして詳細を確認</translation>
+<translation id="3241299447027267831">動画への支援を許可する</translation>
+<translation id="9053905035135220650">0xから始まる16進文字列</translation>
+<translation id="4514843126085243862">形式が無効です。チェーンIDは0xから始まる16進文字列にしてください</translation>
 </translationbundle>

@@ -1157,4 +1157,9 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="2383784987664887340">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
+<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini Earn APY</translation>
+<translation id="3301417531330431881">하드웨어 월렛에는 트랜잭션 확인이 필요합니다. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">내부 오류. iframe 브리지를 생성할 수 없습니다.</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>에 구매</translation>
 </translationbundle>

@@ -1158,4 +1158,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="2383784987664887340">Gemini ช่วยให้คุณเทรด จัดเก็บ และรับ APY 3.49% สำหรับ BAT ของคุณได้ง่ายๆ ยืนยันและเชื่อมโยงวอลเล็ต Brave รีวอร์ด ของคุณกับ Gemini เลยวันนี้!</translation>
+<translation id="2237374144728570574">* APY ที่ได้รับจาก Gemini ณ วันที่ 15 ก.ย. 2021</translation>
+<translation id="3301417531330431881">Hardware Wallet ต้องการให้ยืนยันการทำธุรกรรม <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">เกิดข้อผิดพลาดภายใน ไม่สามารถสร้าง iframe bridge</translation>
+<translation id="1664949222596149258">ซื้อ <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

@@ -404,12 +404,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
 <translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.&#128293;</translation>
-<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.🔥</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.🔋</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.💨💨</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="1390943217516275883">Zezwala Brave na pokazywanie statystyk prywatności.</translation>
@@ -757,4 +757,47 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1011713837432053857">Limit kwoty gazu</translation>
 <translation id="1254969878422524947">Limit napiwka na gaz (Gwei)</translation>
 <translation id="7373308452149471621">Limit ceny na gaz (Gwei)</translation>
+<translation id="5345505584130165588">Brave chroni prywatność</translation>
+<translation id="7822245778264751380">Cena Ethereum (ETH)</translation>
+<translation id="7384441892795736634">Odśwież dane</translation>
+<translation id="4804818685124855865">Rozłącz</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adres depozytu</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo o depozycie</translation>
+<translation id="5110244215256675209">Kup kryptowaluty</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Kup <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Dostępne <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Podgląd wymiany</translation>
+<translation id="4670943871783273148">Twój tekst został zapisany w pliku tekstowym.</translation>
+<translation id="4432845796903761592">Nie zapisano pliku.</translation>
+<translation id="7144878232160441200">Ponów próbę</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Podsumowanie</translation>
+<translation id="1366855498335432549">Wpłać</translation>
+<translation id="1301340234286078471">Wymień</translation>
+<translation id="1714829281959608206">Aktywuj połączenie z Binance, aby wyświetlić saldo rachunku Binance i handlować kryptowalutami.</translation>
+<translation id="4584930231524505442">Chcę wymienić...</translation>
+<translation id="5749014321384313843">Chcę wydać...</translation>
+<translation id="2480674848181564169">Nie ma dość środków na saldzie, by dokonać konwersji</translation>
+<translation id="2215334405220411393">Minimalna kwota do konwersji to: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nie można się połączyć</translation>
+<translation id="7742417737698031726">Opłata</translation>
+<translation id="2122225204180056042">Otrzymasz</translation>
+<translation id="6432284126416751397">Potwierdź wymianę</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Potwierdź (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konwersja nie powiodła się. Spróbuj ponownie.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930">Konwertowałeś(-aś) <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> na <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Sprawdź połączenie sieciowe.</translation>
+<translation id="5317780077021120954">Zapisz</translation>
+<translation id="1202920745614909195">Kupuj kryptowaluty za pomocą Apple Pay, karty kredytowej lub debetowej.</translation>
+<translation id="224719674509047150">Hasło musi składać się z co najmniej 7 znaków, w tym co najmniej jednej cyfry i jednego znaku specjalnego</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="8094541587800369158">Te konta mogą być używane z aplikacjami web 3 i mogą być widoczne w Twoim portfolio, jednak nie można ich przywrócić za pomocą frazy odzyskiwania z kopii zapasowej konta głównego. Włącz synchronizację kont Brave Sync, aby automatycznie przywracać konta dodatkowe.</translation>
+<translation id="6083912983861746409">Cena gazu (GWEI)</translation>
+<translation id="2499079593046817044">Limit gazu (GWEI)</translation>
+<translation id="5929798090073091848">Uwaga: nie ujawniaj nikomu tego klucza. Każda osoba posiadająca Twój prywatny klucz może użyć środków znajdujących się na Twoim koncie.</translation>
 </translationbundle>

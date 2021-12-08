@@ -447,4 +447,8 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
+<translation id="9184430019924125685">按這裡了解詳情</translation>
+<translation id="3241299447027267831">允許對影片捐獻</translation>
+<translation id="9053905035135220650">字首為 0x 的十六進位字串</translation>
+<translation id="4514843126085243862">格式無效，鏈 id 是一個字首為 0x 的十六進位字串</translation>
 </translationbundle>

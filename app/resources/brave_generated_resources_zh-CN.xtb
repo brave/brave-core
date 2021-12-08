@@ -449,4 +449,8 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
+<translation id="9184430019924125685">单击此处了解更多</translation>
+<translation id="3241299447027267831">允许打赏视频</translation>
+<translation id="9053905035135220650">前缀为 0x 的十六进制字符串</translation>
+<translation id="4514843126085243862">无效格式，链 ID 是一个前缀为 0x 的十六进制字符串</translation>
 </translationbundle>

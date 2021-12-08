@@ -447,4 +447,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="1062463687579789365">Pag-customize ng mga network ng wallet</translation>
 <translation id="2234108191702901162">Hindi maidagdag ang network</translation>
 <translation id="2618193846561624884">Gusto mo bang i-update ang dati nang network na ito?</translation>
+<translation id="9184430019924125685">Mag-click dito para matuto pa</translation>
+<translation id="3241299447027267831">Payagan ang mga kontribusyon sa mga video</translation>
+<translation id="9053905035135220650">Isang 0x-prefixed na hexadecimal string</translation>
+<translation id="4514843126085243862">Invalid na format, ang chain id ay isang 0x-prefixed na hexadecimal string</translation>
 </translationbundle>
