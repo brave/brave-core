@@ -230,7 +230,7 @@
     Edit
   </message>
   <message name="IDS_SETTINGS_END_TIME" desc="The label of the end time bubble of settings-scheduler-slider">
-    End time
+    End time <ph name="TIME">$1<ex>5:00 AM</ex></ph>
   </message>
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
     Not valid
@@ -248,7 +248,7 @@
     Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
   </message>
   <message name="IDS_SETTINGS_START_TIME" desc="The label of the start time bubble of settings-scheduler-slider">
-    Start time
+    Start time <ph name="TIME">$1<ex>9:06 PM</ex></ph>
   </message>
 
   <!-- Autofill Page -->
@@ -526,7 +526,13 @@
     Make sure the password you are saving matches your password for <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORD_USERNAME_ALREADY_USED" desc="An error message when user tried editing the username to a value which is already used for the same site.">
-    You already saved this username for this site
+    You already saved a password with this username for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD" desc="A link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD_ARIA_DESCRIPTION" desc="An accessibility description for a link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password with username <ph name="USERNAME">$1<ex>username</ex></ph> for <ph name="WEBSITE">$2<ex>website.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MISSING_TLD" desc="An error message when user entered a URL without a top-level domain as a site for a new password. It suggests to use the same value but with common top level domain." meaning="Suggesting user to add the top-level domain in the website text.">
     Did you mean <ph name="WEBSITE">$1<ex>twitter.com</ex></ph>?
@@ -1923,16 +1929,16 @@
     Search engines
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINES_EXPLANATION" desc="Explanation for 'Search Engines' section">
-    To use a search engine other than the default, type its shortcut followed by your preferred keyboard shortcut. You can also change your default search engine here.
+    To use a search engine other than the default, type its shortcut in the address bar followed by your preferred keyboard shortcut. You can also change your default search engine here.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH" desc="Label for 'Site Search' section">
     Site search
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
-    To search a specific site or part of Brave, you can type the shortcuts here into the address bar, then press Tab or Space.
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK" desc="Explanation for 'Site Search' section">
-    To search a specific site or part of Brave, you can use the shortcuts here. For example, to search only Gmail, type "@gmail", then press Tab or Space.
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut. For example, to search only Bookmarks, type "@bookmarks", then press Tab or Space.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_SITES_ADDED" desc="Text shown when the 'Site Search' section is empty">
     No sites added
@@ -1995,10 +2001,10 @@
     Keyboard shortcut
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION" desc="Text explaining how to use keyword mode">
-    In the address bar, enter the keyword for the website you want to search. Then, use a keyboard shortcut to continue.
+    In the address bar, use this keyboard shortcut with shortcuts for search engines and site search
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION_STARTER_PACK" desc="Text explaining how to use keyboard mode, if scoped search starter pack is enabled">
-    In the address bar, enter the shortcut for the site you want to search, such as "@gmail". Then, press your preferred keyboard shortcut, and enter your search term.
+    In the address bar, enter the shortcut for the site you want to search, such as "@bookmarks". Then, press your preferred keyboard shortcut, and enter your search term.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Space or Tab
@@ -2007,13 +2013,13 @@
     Tab
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_SITES" desc="Label for button that expands the Site Search list of search engines to show all entries">
-    Additional Sites
+    Additional sites
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
-    Additional Inactive Sites
+    Additional inactive sites
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_EXTENSIONS" desc="Label for button that expands the list of extensions to show all entries">
-    Additional Extensions
+    Additional extensions
   </message>
 
   <!-- Site Settings Page -->
@@ -2184,21 +2190,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the device use content setting.">
     Not allowed to know when you're actively using your device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_DESCRIPTION" desc="Description of the file handling content setting.">
-    Web apps typically ask to open certain types of files so you can work on those files where you want, like opening documents in your preferred word processor
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED" desc="Label for the enabled option of the file handling content setting.">
-    Web apps can ask to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED" desc="Label for the disabled option of the file handling content setting.">
-    Don't allow web apps to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the file handling content setting.">
-    Allowed to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the file handling content setting.">
-    Not allowed to open types of files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
@@ -2831,12 +2822,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_BLOCK" desc="The block label for the idle detection site settings.">
     Block sites from knowing when you're actively using this device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ASK" desc="The ask label for the file handling site settings.">
-    Ask when a web app wants to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCK" desc="The block label for the file handling site settings.">
-    Block web apps from opening types of files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
     Allowed

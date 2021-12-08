@@ -4281,20 +4281,14 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+          Run Chrome OS diagnostic tests.
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
           Read Chrome OS device information and device data.
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-          Run diagnostic tests.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_AND_DIAGNOSTICS" desc="Permission string for both chrome.os.{telemetry/diagnostics} APIs.">
-          Read Chrome OS device information, device data, and run diagnostic tests.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_DEVICE_INFO_MAYBE_SHARED_WITH_MANUFACTURER" desc="Common permission string for chrome.os.{telemetry/diagnostics} APIs.">
-          This information may be shared with your device manufacturer. Data handled by organizations other than Brave will follow their separate privacy policies.
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-          Read device and component serial numbers.
+          Read Chrome OS device and component serial numbers.
         </message>
       </if>
 
@@ -8565,11 +8559,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog.">
         Passwords from your Brave sync chain will also be available on this device while you're signed in
       </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC_ALREADY_SAVED_LOCALLY" desc="Body of the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally.">
+        Brave saved your password to this device, but you can save it to your Brave sync chain instead. Then, all passwords in your Brave sync chain will also be available while you're signed in.
+      </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog.">
         Yes
       </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL" desc="Label of the close button in the account password storage reauth tab modal dialog.">
         No thanks
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL_ALREADY_SAVED_LOCALLY" desc="Label of the close button in the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally.">
+        No, this device only
       </message>
 
       <message name="IDS_PLUGIN_OUTDATED_PROMPT" desc="Infobar message when an outdated plugin was disabled">
@@ -9387,6 +9387,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_EDIT_TEXT_REPLACEMENT_MAC" desc="The Mac menu item for toggling text replacement in the edit menu.">
           Text Replacement
+        </message>
+        <!-- Edit::Transformations submenu -->
+        <message name="IDS_EDIT_TRANSFORMATIONS_MAC" desc="The Mac menu item for the transformations submenu in the edit menu.">
+          Transformations
+        </message>
+        <message name="IDS_EDIT_MAKE_UPPERCASE_MAC" desc="The Mac menu item for making the selected text uppercase in the edit menu.">
+          Make Uppercase
+        </message>
+        <message name="IDS_EDIT_MAKE_LOWERCASE_MAC" desc="The Mac menu item for making the selected text lowercase in the edit menu.">
+          Make Lowercase
+        </message>
+        <message name="IDS_EDIT_CAPITALIZE_MAC" desc="The Mac menu item for capitalizing the selected text in the edit menu.">
+          Capitalize
         </message>
         <!-- View menu -->
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
@@ -10386,6 +10399,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_ANNOUNCE_TAB_REMOVED_FROM_NAMED_GROUP" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab and it results in the tab being removed from a tab group with a title">
         Tab removed from group <ph name="GROUP_NAME">$1</ph> - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph>
       </message>
+      <message name="IDS_PAGE_LOADING_AX_TITLE_FORMAT" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the back/forward button is focused and has been pressed. If the title of the page can be obtained, it will be included. Example: 'Loading Brave News'.">
+          Loading <ph name="WINDOW_TITLE">$1<ex>Brave News</ex></ph>
+      </message>
 
       <!-- ProcessSingleton -->
       <message name="IDS_PROFILE_IN_USE_LINUX_QUIT" desc="Text of button in profile in use dialog to quit without doing anything.">
@@ -10691,16 +10707,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!-- File Handling permission prompt -->
+    <!-- File Handling launch prompt -->
     <if expr="not is_android">
       <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
-      </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TITLE" desc="Title of permission request dialog that is when the user is opening a file using a PWA.">
-        Open file?
-      </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TITLE_MULTIPLE" desc="Title of permission request dialog that is shown when the user is opening multiple files using a PWA.">
-        Open files?
       </message>
       <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
         <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open this file:
