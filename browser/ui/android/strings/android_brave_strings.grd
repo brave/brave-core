@@ -2603,6 +2603,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_NO" desc="Remove custom asset dialog button name">
       No
     </message>
+    <message name="IDS_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">
+      The receiving address is your own address
+    </message>
+    <message name="IDS_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">
+      Not a valid ETH address
+    </message>
+    <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
+      The receiving address is a token's contract address
+    </message>
     </messages>
   </release>
 </grit>

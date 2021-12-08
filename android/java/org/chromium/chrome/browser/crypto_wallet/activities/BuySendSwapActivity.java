@@ -208,6 +208,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     @SuppressLint("SetTextI18n")
     protected void triggerLayoutInflation() {
+        assert getString(R.string.wallet_same_address_error) != null;
+        assert getString(R.string.wallet_not_valid_eth_address) != null;
+        assert getString(R.string.wallet_contract_address_error) != null;
+
         setContentView(R.layout.activity_buy_send_swap);
 
         mAccountSpinner = findViewById(R.id.accounts_spinner);
