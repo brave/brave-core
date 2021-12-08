@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 03716cb3d9006f446670ead7b2cefda345848867..3cbbc70ac524a2e5a1ce9fc87ed6f3f2fb194af6 100644
+index c73c004085240ed2106fe93c85692dd28b7639e7..9c932e5127924ff177b079e7ce6e707597aec202 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -292,6 +292,7 @@ enum class ContentSettingsType : int32_t {
+@@ -281,6 +281,7 @@ enum class ContentSettingsType : int32_t {
    // site instead of the mobile one.
    REQUEST_DESKTOP_SITE,
  

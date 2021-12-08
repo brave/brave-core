@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/web_applications/web_app_shortcut_mac.mm b/chrome/browser/web_applications/web_app_shortcut_mac.mm
-index fde03fb70c3b609f77dcc342c2491e4253fcf91d..ecdfb8da4e73982cdfc87ab82330214ce41d8e85 100644
+index c8339aec942435642489207950f78f9001b1ae67..352eadf33e44b410bad8515957626f2978255e10 100644
 --- a/chrome/browser/web_applications/web_app_shortcut_mac.mm
 +++ b/chrome/browser/web_applications/web_app_shortcut_mac.mm
-@@ -764,6 +764,7 @@ base::FilePath GetChromeAppsFolder() {
+@@ -769,6 +769,7 @@ base::FilePath GetChromeAppsFolder() {
    if (path.empty())
      return path;
  
