@@ -55,7 +55,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
 <translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
 <translation id="6821903322090655051">Ricompense Brave disabilitate</translation>
-<translation id="9184430019924125685">Clicca qui per saperne di più</translation>
 <translation id="3849957491997306859">Rilevamento automatico</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
@@ -69,7 +68,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="7286722244752781970">Tempo sulla pagina minimo prima di registrare una visita</translation>
 <translation id="4424486208397124985">Visite minime per pertinenza degli editori</translation>
 <translation id="6248554379744796526">Mostra siti non verificati in lista</translation>
-<translation id="3241299447027267831">Consenti i contributi ai video</translation>
+<translation id="5510618543889994434">Consenti i contributi per i video</translation>
 <translation id="924777189963477634">Attivando il contributo automatico, accetti i <ph name="BEGIN_LINK_TOS"/>Termini di servizio<ph name="END_LINK_TOS"/> e l’<ph name="BEGIN_LINK_PP"/>Informativa sulla privacy<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Pulsanti donazioni</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Confermi di voler procedere?</translation>
 <translation id="2414886740292270097">Scuro</translation>
 <translation id="1360441190790440400">Come per Linux</translation>
 <translation id="1336940801687497203">Come per Windows</translation>
+<translation id="5919209812221905840">Il gestore di protocollo predefinito di Microsoft Edge</translation>
+<translation id="5239541974656019812">Scegli Brave come gestore di protocollo predefinito di Microsoft Edge</translation>
+<translation id="7136694880210472378">Imposta come predefinito</translation>
+<translation id="1751388324499810661">Brave è il gestore di protocollo predefinito di Microsoft Edge</translation>
 <translation id="8721331068159819483">Uguale a macOS</translation>
 <translation id="2896916411183256228">Utilizza WebTorrent per visualizzare i torrent direttamente nel browser. Supporta i file torrent e i magnet link.</translation>
 <translation id="8488282162676695335">Portafoglio Brave</translation>
@@ -425,7 +428,6 @@ Confermi di voler procedere?</translation>
 <translation id="2653659639078652383">Invia</translation>
 <translation id="2556708692502648323">Reti del portafoglio</translation>
 <translation id="1330032157352961756">L'id della nuova catena</translation>
-<translation id="9053905035135220650">Stringa esadecimale che inizia con 0x</translation>
 <translation id="726121047592132939">Il nome della nuova catena</translation>
 <translation id="1034112277864078119">Inserisci il nome della catena</translation>
 <translation id="4672314527143443556">Nome della valuta della catena</translation>
@@ -439,11 +441,14 @@ Confermi di voler procedere?</translation>
 <translation id="3047726704186619366">URL icona</translation>
 <translation id="2487558607408469181">URL dell'esploratore di blocchi</translation>
 <translation id="6301398959353668507">Questo campo non può essere vuoto.</translation>
-<translation id="4514843126085243862">Formato non valido, l’id della catena catena è una stringa esadecimale che inizia con 0x</translation>
 <translation id="8325036459845654666">Questa rete è già stata aggiunta.</translation>
 <translation id="650071759190249039">Errore interno, impossibile aggiungere la rete</translation>
 <translation id="868529041590572443">Inserisci tutte le informazioni relative alla valuta nativa</translation>
 <translation id="1062463687579789365">Personalizzazione delle reti del portafoglio</translation>
 <translation id="2234108191702901162">Impossibile aggiungere la rete</translation>
 <translation id="2618193846561624884">Vuoi aggiornare la rete esistente?</translation>
+<translation id="9184430019924125685">Clicca qui per saperne di più</translation>
+<translation id="3241299447027267831">Consenti i contributi ai video</translation>
+<translation id="9053905035135220650">Stringa esadecimale che inizia con 0x</translation>
+<translation id="4514843126085243862">Formato non valido, l’id della catena catena è una stringa esadecimale che inizia con 0x</translation>
 </translationbundle>

@@ -55,7 +55,6 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
 <translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
 <translation id="6821903322090655051">Brave Rewards imelemazwa</translation>
-<translation id="9184430019924125685">Bofya hapa ili  upate maelezo zaidi</translation>
 <translation id="3849957491997306859">Imetambuliwa kiotomatiki</translation>
 <translation id="8798099450830957504">Chaguomsingi</translation>
 <translation id="4176463684765177261">Imezimwa</translation>
@@ -69,7 +68,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7286722244752781970">Muda wa chini wa ukurasa kabla ya kuandika ziara</translation>
 <translation id="4424486208397124985">Ziara za kiwango cha chini kwa ufaafu w mchapishaji</translation>
 <translation id="6248554379744796526">Onyesha tovuti zisizoidhinishwa katika orodha</translation>
-<translation id="3241299447027267831">Ruhusu michango kwenye video</translation>
+<translation id="5510618543889994434">Ruhusu michango ya video</translation>
 <translation id="924777189963477634">Kwa kuwasha Auto-Contribute, unakubali <ph name="BEGIN_LINK_TOS"/>Sheria na Masharti<ph name="END_LINK_TOS"/> na <ph name="BEGIN_LINK_PP"/>Sera ya Faragha<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Vitufe vya bahshishi</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2414886740292270097">Giza</translation>
 <translation id="1360441190790440400">Sawa na Linux</translation>
 <translation id="1336940801687497203">Sawa na Windows</translation>
+<translation id="5919209812221905840">Kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
+<translation id="5239541974656019812">Fanya Brave kuwa kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
+<translation id="7136694880210472378">Fanya iwe chaguomsingi</translation>
+<translation id="1751388324499810661">Brave ni kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
 <translation id="8721331068159819483">Sawa na MacOS</translation>
 <translation id="2896916411183256228">Hutumia Torenti ya Tovuti kuonyesha torenti moja kwa moja kwenye kisakuzi. Huwezesha mafaili ya torenti na viungo vya sumaku.</translation>
 <translation id="8488282162676695335">Pochi ya Brave</translation>
@@ -424,7 +427,6 @@ Zawadi za Avatar Paladin</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
 <translation id="2556708692502648323">Mitandao ya pochi</translation>
 <translation id="1330032157352961756">Kitambulisho cha mnyororo mpya</translation>
-<translation id="9053905035135220650">Mtungo wa desimali sita wenye kiambishi awali cha 0x</translation>
 <translation id="726121047592132939">Jina la mnyororo mpya</translation>
 <translation id="1034112277864078119">Weka jina la mnyororo</translation>
 <translation id="4672314527143443556">Jina la sarafu ya mnyororo</translation>
@@ -438,11 +440,14 @@ Zawadi za Avatar Paladin</translation>
 <translation id="3047726704186619366">URL za Ikoni</translation>
 <translation id="2487558607408469181">Zuia URL za explorer</translation>
 <translation id="6301398959353668507">Sehemu hii haiwezi kuwa tupu.</translation>
-<translation id="4514843126085243862">Muundo si sahihi, kitambulisho cha mnyororo ni mtundo wa deseimali sita wenye kiambishi awali cha 0x</translation>
 <translation id="8325036459845654666">Mtandao huu tayari umeongezwa.</translation>
 <translation id="650071759190249039">Hitilafu ya ndani, imeshindwa kuongeza mtandao.</translation>
 <translation id="868529041590572443">Tafadhali jaza maelezo yote kuhusu sarafu ya asili</translation>
 <translation id="1062463687579789365">Ugeuzaji wa mitandao ya pochi inayokufaa</translation>
 <translation id="2234108191702901162">Imeshindwa kuongeza mtandao</translation>
 <translation id="2618193846561624884">Je, unataka kusasisha mtandao wa sasa?</translation>
+<translation id="9184430019924125685">Bofya hapa ili  upate maelezo zaidi</translation>
+<translation id="3241299447027267831">Ruhusu michango kwenye video</translation>
+<translation id="9053905035135220650">Mtungo wa desimali sita wenye kiambishi awali cha 0x</translation>
+<translation id="4514843126085243862">Muundo si sahihi, kitambulisho cha mnyororo ni mtundo wa deseimali sita wenye kiambishi awali cha 0x</translation>
 </translationbundle>

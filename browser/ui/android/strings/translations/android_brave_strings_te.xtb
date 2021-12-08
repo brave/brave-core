@@ -35,24 +35,21 @@
 <translation id="8987927404178983737">నెల</translation>
 <translation id="1383876407941801731">వెతుకు</translation>
 <translation id="8446884382197647889">మరింత తెలుసుకోండి</translation>
-<translation id="4804818685124855865">డిస్‌కనెక్ట్ చెయ్యి</translation>
-<translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
 <translation id="8688672835843460752">అందుబాటులో ఉంది</translation>
 <translation id="3479552764303398839">ఇప్పుడు కాదు</translation>
 <translation id="8798099450830957504">డిఫాల్ట్</translation>
 <translation id="1483493594462132177">పంపు</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="6896758677409633944">కాపీ చేయి</translation>
-<translation id="5317780077021120954">సేవ్ చేయి</translation>
 <translation id="6518133107902771759">ధృవీకరించు</translation>
 <translation id="3157931365184549694">పునరుద్ధరించు</translation>
 <translation id="9111102763498581341">అన్‌లాక్ చెయ్యి</translation>
 <translation id="6657585470893396449">పాస్‌వర్డ్</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
-<translation id="4636930964841734540">సమాచారం</translation>
 <translation id="6979737339423435258">మొత్తం సమయం</translation>
 <translation id="3819257035322786455">బ్యాకప్</translation>
 <translation id="4522570452068850558">వివరాలు</translation>
+<translation id="5040262127954254034">గోప్యత</translation>
 <translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="7805768142964895445">స్థితి</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>
@@ -67,4 +64,10 @@
 <translation id="1367951781824006909">ఒక ఫైల్‌ని ఎంచుకోండి</translation>
 <translation id="8648684608605749476">అజ్ఞాతంలో థర్డ్-పార్టీ కుక్కీలను బ్లాక్ చేయి</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
+<translation id="1165039591588034296">ఎర్రర్</translation>
+<translation id="1177863135347784049">అనుకూలీకరించిన</translation>
+<translation id="4804818685124855865">డిస్‌కనెక్ట్ చెయ్యి</translation>
+<translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
+<translation id="5317780077021120954">సేవ్ చేయి</translation>
+<translation id="4636930964841734540">సమాచారం</translation>
 </translationbundle>

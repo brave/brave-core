@@ -55,7 +55,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="6821903322090655051">Brave Rewards är inaktiverade</translation>
-<translation id="9184430019924125685">Klicka här för att läsa mer</translation>
 <translation id="3849957491997306859">Auto-upptäck</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
@@ -69,7 +68,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
 <translation id="4424486208397124985">Minsta antal besök för relevans för utgivare</translation>
 <translation id="6248554379744796526">Visa icke bekräftade webbplatser i listan</translation>
-<translation id="3241299447027267831">Tillåt donationer till videor</translation>
+<translation id="5510618543889994434">Tillåt donationer till videor</translation>
 <translation id="924777189963477634">Genom att aktivera Donera automatiskt samtycker du till <ph name="BEGIN_LINK_TOS"/>Tjänstevillkor<ph name="END_LINK_TOS"/> och <ph name="BEGIN_LINK_PP"/>Integritetspolicy<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tipsknappar</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2414886740292270097">Mörk</translation>
 <translation id="1360441190790440400">Samma som Linux</translation>
 <translation id="1336940801687497203">Samma som Windows</translation>
+<translation id="5919209812221905840">Standardhanterare för microsoft-edge-protokollet</translation>
+<translation id="5239541974656019812">Gör Brave till hanteraren för microsoft-edge-protokollet</translation>
+<translation id="7136694880210472378">Ange som standard</translation>
+<translation id="1751388324499810661">Brave är standardhanterare för microsoft-edge-protokollet</translation>
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +428,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2653659639078652383">Skicka</translation>
 <translation id="2556708692502648323">Plånboksnätverk</translation>
 <translation id="1330032157352961756">En ny kedjas ID</translation>
-<translation id="9053905035135220650">En hexadecimal sträng med 0x-prefix</translation>
 <translation id="726121047592132939">Namnet på en ny kedja</translation>
 <translation id="1034112277864078119">Ange kedjenamn</translation>
 <translation id="4672314527143443556">Kedjans valutanamn</translation>
@@ -439,11 +441,14 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3047726704186619366">Symbol URL:er</translation>
 <translation id="2487558607408469181">Blockera explorer URL:er</translation>
 <translation id="6301398959353668507">Fältet kan inte vara tomt.</translation>
-<translation id="4514843126085243862">Ogiltigt format, kedjans ID är en hexadecimal sträng med 0x-prefix</translation>
 <translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 <translation id="650071759190249039">Internt fel, kunde inte lägga till nätverk.</translation>
 <translation id="868529041590572443">Fyll i all information om ursprungsvalutan</translation>
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2234108191702901162">Kunde inte lägga till nätverk</translation>
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
+<translation id="9184430019924125685">Klicka här för att läsa mer</translation>
+<translation id="3241299447027267831">Tillåt donationer till videor</translation>
+<translation id="9053905035135220650">En hexadecimal sträng med 0x-prefix</translation>
+<translation id="4514843126085243862">Ogiltigt format, kedjans ID är en hexadecimal sträng med 0x-prefix</translation>
 </translationbundle>

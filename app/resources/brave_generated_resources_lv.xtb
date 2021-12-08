@@ -55,7 +55,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="6821903322090655051">Brave Rewards ir atspējots</translation>
-<translation id="9184430019924125685">Noklikšķiniet šeit, lai uzzinātu vairāk</translation>
 <translation id="3849957491997306859">Automātiski uztverts</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
 <translation id="4176463684765177261">Atspējots</translation>
@@ -69,7 +68,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
 <translation id="4424486208397124985">Minimālais apmeklējumu skaits publicētāja būtiskumam</translation>
 <translation id="6248554379744796526">Parādīt nepārbaudītās vietnes sarakstā</translation>
-<translation id="3241299447027267831">Atļaut ziedot videoklipiem</translation>
+<translation id="5510618543889994434">Atļaut ziedot videoklipiem</translation>
 <translation id="924777189963477634">Ieslēdzot automātiskos ziedojumus, jūs piekrītat <ph name="BEGIN_LINK_TOS"/>Pakalpojumu noteikumiem<ph name="END_LINK_TOS"/> un <ph name="BEGIN_LINK_PP"/>Privātuma politikai<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Dzeramnaudas pogas</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +207,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2414886740292270097">Tumšs</translation>
 <translation id="1360441190790440400">Tāds pats kā Linux</translation>
 <translation id="1336940801687497203">Tāds pats kā Windows</translation>
+<translation id="5919209812221905840">Microsoft Edge protokola noklusējuma apdarinātājs</translation>
+<translation id="5239541974656019812">Padarīt Brave par Microsoft Edge protokola apdarinātāju</translation>
+<translation id="7136694880210472378">Iestatīt par noklusējumu</translation>
+<translation id="1751388324499810661">Brave ir Microsoft Edge protokola noklusējuma apdarinātājs</translation>
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +428,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
 <translation id="2556708692502648323">Maciņa tīkli</translation>
 <translation id="1330032157352961756">Jaunās ķēdes ID</translation>
-<translation id="9053905035135220650">Heksadecimāla pavediens, kas sākas ar 0x</translation>
 <translation id="726121047592132939">Jaunas ķēdes nosaukums</translation>
 <translation id="1034112277864078119">Ievadīt ķēdes nosaukumu</translation>
 <translation id="4672314527143443556">Ķēdes valūtas nosaukums</translation>
@@ -439,11 +441,14 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3047726704186619366">Ikonas URL</translation>
 <translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
 <translation id="6301398959353668507">Šis lauks nevar būt tukšs.</translation>
-<translation id="4514843126085243862">Nederīgs formāts, ķēdes ID ir heksadecimāls pavediens, kas sākas ar 0x.</translation>
 <translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
 <translation id="650071759190249039">Iekšēja kļūda, nav iespējams pievienot tīklu.</translation>
 <translation id="868529041590572443">Lūdzu, ievadiet informāciju par pamata valūtu</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
+<translation id="9184430019924125685">Noklikšķiniet šeit, lai uzzinātu vairāk</translation>
+<translation id="3241299447027267831">Atļaut ziedot videoklipiem</translation>
+<translation id="9053905035135220650">Heksadecimāla pavediens, kas sākas ar 0x</translation>
+<translation id="4514843126085243862">Nederīgs formāts, ķēdes ID ir heksadecimāls pavediens, kas sākas ar 0x.</translation>
 </translationbundle>

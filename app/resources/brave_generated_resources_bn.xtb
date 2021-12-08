@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
-<translation id="9184430019924125685">আরও জানতে এখানে ক্লিক করুন</translation>
 <translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
 <translation id="4424486208397124985">প্রকাশকের প্রাসঙ্গিকতার জন্য ন্যুনতম সাক্ষাত</translation>
 <translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
-<translation id="3241299447027267831">ভিডিওতে অবদানের অনুমতি দিন</translation>
+<translation id="5510618543889994434">ভিডিওতে অবদান করার অনুমতি দিন</translation>
 <translation id="924777189963477634">স্বয়ংক্রিয় অবদান চালু করে, আপনি <ph name="BEGIN_LINK_TOS"/>পরিষেবার শর্তাবলী<ph name="END_LINK_TOS"/> এবং <ph name="BEGIN_LINK_PP"/>গোপনীয়তা নীতি<ph name="END_LINK_PP"/>-র সাথে সম্মত হন।</translation>
 <translation id="5733490796524078528">ইঙ্গিত বোতাম</translation>
 <translation id="3905400818082450708">রেড্ডিট</translation>
@@ -208,6 +207,10 @@
 <translation id="2414886740292270097">অন্ধকার</translation>
 <translation id="1360441190790440400">Linux এর মতো</translation>
 <translation id="1336940801687497203">Windows এর মতো</translation>
+<translation id="5919209812221905840">ডিফল্ট microsoft-edge প্রোটকল হ্যান্ডেলার</translation>
+<translation id="5239541974656019812">Brave-কে microsoft-edge প্রোটকল হ্যান্ডেলার বানান</translation>
+<translation id="7136694880210472378">ডিফল্ট করুন</translation>
+<translation id="1751388324499810661">Brave হল ডিফল্ট microsoft-edge প্রোটকল হ্যান্ডেলার</translation>
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
@@ -425,7 +428,6 @@
 <translation id="2653659639078652383">জমা দিন</translation>
 <translation id="2556708692502648323">ওয়ালেট নেটওয়ার্ক</translation>
 <translation id="1330032157352961756">নতুন চেইনের id</translation>
-<translation id="9053905035135220650">একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
 <translation id="726121047592132939">নতুন চেইনের নাম</translation>
 <translation id="1034112277864078119">চেইনের নাম এন্টার করুন</translation>
 <translation id="4672314527143443556">চেইনের মুদ্রার নাম</translation>
@@ -439,11 +441,14 @@
 <translation id="3047726704186619366">আইকন URLগুলি</translation>
 <translation id="2487558607408469181">এক্সপ্লোরার URLগুলি ব্লক করুন</translation>
 <translation id="6301398959353668507">এই ক্ষেত্রটি খালি রাখা যাবে না।</translation>
-<translation id="4514843126085243862">অবৈধ ফরম্যাট, চেইন idটি একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
 <translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
 <translation id="650071759190249039">অভ্যন্তরীণ ত্রুটি, নেটওয়ার্ক যোগ করা যায়নি।</translation>
 <translation id="868529041590572443">দেশীয় মুদ্রা সম্পর্কিত সমস্ত তথ্য পূরণ করুন</translation>
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
 <translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
+<translation id="9184430019924125685">আরও জানতে এখানে ক্লিক করুন</translation>
+<translation id="3241299447027267831">ভিডিওতে অবদানের অনুমতি দিন</translation>
+<translation id="9053905035135220650">একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
+<translation id="4514843126085243862">অবৈধ ফরম্যাট, চেইন idটি একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
 </translationbundle>

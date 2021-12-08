@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
 <translation id="6821903322090655051">تم تعطيل Brave Rewards</translation>
-<translation id="9184430019924125685">انقر هنا لمعرفة المزيد</translation>
 <translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
 <translation id="8798099450830957504">التلقائي</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">الحد الأدنى لوقت الصفحة قبل تسجيل الزيارة</translation>
 <translation id="4424486208397124985">الحد الأدنى من الزيارات من أجل صلة الناشر</translation>
 <translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
-<translation id="3241299447027267831">السماح بالمساهمات في مقاطع الفيديو</translation>
+<translation id="5510618543889994434">السماح بالمساهمات لمقاطع الفيديو</translation>
 <translation id="924777189963477634">من خلال تشغيل المساهمة التلقائية، فإنك توافق على <ph name="BEGIN_LINK_TOS"/>شروط الخدمة <ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/> سياسة الخصوصية <ph name="END_LINK_PP"/></translation>
 <translation id="5733490796524078528">أزرار النصائح</translation>
 <translation id="3905400818082450708">ريديت</translation>
@@ -204,6 +203,10 @@
 <translation id="2414886740292270097">داكن</translation>
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
 <translation id="1336940801687497203">كنظام تشغيل Windows</translation>
+<translation id="5919209812221905840">معالج بروتوكول متصفح microsoft-edge الافتراضي</translation>
+<translation id="5239541974656019812">اجعل Brave معالج بروتوكول متصفح microsoft-edge الافتراضي</translation>
+<translation id="7136694880210472378">تعيين كافتراضي</translation>
+<translation id="1751388324499810661">Brave هو معالج بروتوكول متصفح Microsoft-edge الافتراضي</translation>
 <translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
@@ -422,7 +425,6 @@
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="2556708692502648323">شبكات المحفظة</translation>
 <translation id="1330032157352961756">مُعرّف السلسلة الجديدة</translation>
-<translation id="9053905035135220650">سلسلة سداسية عشرية مسبوقة بــ 0x</translation>
 <translation id="726121047592132939">اسم السلسلة الجديدة</translation>
 <translation id="1034112277864078119">قم بإدخال اسم السلسلة</translation>
 <translation id="4672314527143443556">اسم عملة السلسلة</translation>
@@ -436,11 +438,14 @@
 <translation id="3047726704186619366">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
 <translation id="2487558607408469181">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
 <translation id="6301398959353668507">هذا الحقل لا يمكن أن يكون فارغًا.</translation>
-<translation id="4514843126085243862">تنسيق غير صالح، مُعرف السلسلة عبارة عن سلسلة سداسية عشرية مسبوقة بـ 0x</translation>
 <translation id="8325036459845654666">تمت إضافة هذه الشبكة بالفعل.</translation>
 <translation id="650071759190249039">خطأ داخلي، غير قادر على إضافة الشبكة.</translation>
 <translation id="868529041590572443">يرجى ملء جميع المعلومات حول العملة المحلية</translation>
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
+<translation id="9184430019924125685">انقر هنا لمعرفة المزيد</translation>
+<translation id="3241299447027267831">السماح بالمساهمات في مقاطع الفيديو</translation>
+<translation id="9053905035135220650">سلسلة سداسية عشرية مسبوقة بــ 0x</translation>
+<translation id="4514843126085243862">تنسيق غير صالح، مُعرف السلسلة عبارة عن سلسلة سداسية عشرية مسبوقة بـ 0x</translation>
 </translationbundle>

@@ -19,7 +19,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5616153642055197778">Daar is 'n nuwe, veiliger weergawe van Brave beskikbaar.</translation>
 <translation id="6797402139308059782">Laat Brave in die agtergrond loop</translation>
 <translation id="5875673934455379806">Herinstalleer Brave</translation>
-<translation id="2176087127109773485">Jy kan jou aangemelde Brave-rekeninge bestuur. Jou Brave-rekeninge word gebruik vir Brave-blaaier, Play Winkel, Gmail en meer. As jy 'n rekening vir iemand anders, soos 'n gesinslid, wil byvoeg, kan jy 'n nuwe persoon eerder by jou <ph name="DEVICE_TYPE"/> voeg. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Jy meld tans met 'n bestuurde rekening aan en gee sy administrateur beheer oor jou Brave-profiel. Jou Brave-data, soos jou programme, boekmerke, geskiedenis, wagwoorde en ander instellings sal permanent aan <ph name="USER_NAME"/> gekoppel word. Jy sal hierdie data via die Brave-rekening se kontroleskerm kan uitvee, maar jy sal nie hierdie data met 'n ander rekening kan assosieer nie. Jy het die opsie om 'n nuwe profiel te skep om jou bestaande Brave-data apart te hou. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Deur dit af te skakel, kan jy by Brave-werwe soos Gmail aanmeld sonder om by Brave aan te meld</translation>
 <translation id="189297655255130768">Brave reageer nie. Herbegin nou?</translation>
@@ -43,7 +42,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="7933006624150961626">Meld aan sodat jy sinkronisering kan aanskakel om op al jou toestelle toegang tot jou Brave-goed te kry.</translation>
 <translation id="7291143854620707672">Enige Brave-data wat tydens die gebruik van hierdie profiel gegenereer word (soos die skepping van boekmerke, geskiedenis, wagwoorde, en ander instellings) kan deur die werkprofieladministrateur verwyder word. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Brave-bedryfstelsel moet herbegin word om die opdatering toe te pas.</translation>
-<translation id="4703432949110765917">Die verstekinstellings werk vir die meeste mense, maar jy kan hulle pasmaak volgens hoe jy daarvan hou om Brave te gebruik</translation>
 <translation id="7387051847644272380">'n Bedryfstelselfout het voorgekom met installering. Laai Brave asseblief weer af.</translation>
 <translation id="2648689842065142443">As jy 'n toestel deel, kan vriende en familie apart blaai en Brave opstel net soos hulle dit wil hê</translation>
 <translation id="6791166902140255175">Brave-oortjie</translation>
@@ -108,7 +106,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="3679799810790990472">Gaan voort in 'n nuwe Brave-profiel?</translation>
 <translation id="4567424176335768812">Jy is as <ph name="USER_EMAIL_ADDRESS"/> aangemeld. Nou kan jy op al jou aangemelde toestelle by jou boekmerke, geskiedenis en ander instellings ingaan.</translation>
 <translation id="300669147395456190">Brave-programme</translation>
-<translation id="1299765473362724475">Waarskuwing: Brave kan nie keer dat uitbreidings rekord hou van jou blaaigeskiedenis nie. Ontkies hierdie opsie om hierdie uitbreiding in Incognito-modus te deaktiveer.</translation>
 <translation id="8142245354207161805">Dit lyk of die profiel deur 'n ander Brave-proses (<ph name="PROCESS_ID"/>) op 'n ander rekenaar (<ph name="HOST_NAME"/>) gebruik word. Brave het jou profiel gesluit sodat dit nie gekorrupteer word nie. As jy seker is dat geen ander prosesse hierdie profiel gebruik nie, kan jy die profiel ontsluit en Brave herbegin.</translation>
 <translation id="3395323229510056640">Kry hulp met Brave-bedryfstelsel</translation>
 <translation id="847561904663814268">Iemand het voorheen op hierdie rekenaar as <ph name="ACCOUNT_EMAIL_LAST"/> by Brave aangemeld. Skep asseblief 'n nuwe Brave-gebruiker om jou inligting apart te hou.</translation>
@@ -282,13 +279,16 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7977787072794666032">Brave sal dalk nie reg werk nie omdat dit nie meer in Windows XP en Windows Vista gesteun word nie</translation>
 <translation id="4484434718272972655">Wie gebruik tans Brave?</translation>
 <translation id="8992261409816268381">Die Brave-outeurs</translation>
-<translation id="1448049584457347995">Om Brave veiliger te maak, het ons sekere uitbreidings wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys is nie, gedeaktiveer en kon dit sonder jou medewete bygevoeg gewees het.</translation>
-<translation id="8848045066928358658">Om Brave veiliger te maak, het ons die volgende uitbreiding, wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys word nie en wat dalk sonder jou medewete bygevoeg is, gedeaktiveer.</translation>
-<translation id="669092380621816981">Hierdie persoon se blaaierdata sal van hierdie toestel af uitgevee word. Meld as <ph name="USER_EMAIL"/> by Brave aan om die data te herwin.</translation>
+<translation id="1299765473362724475">Waarskuwing: Brave kan nie verhoed dat uitbreidings rekord hou van u blaaigeskiedenis nie. Om hierdie uitbreiding in privaat modus te deaktiveer, moet u hierdie opsie ontmerk.</translation>
+<translation id="1448049584457347995">Om Brave veiliger te maak, het ons sekere uitbreidings gedeaktiveer wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys is nie en sonder u medewete toegevoeg kon wees.</translation>
+<translation id="8848045066928358658">Om Brave veiliger te maak, het ons die volgende uitbreiding, wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys word nie en wat dalk sonder u medewete toygevoeg is, gedeaktiveer.</translation>
+<translation id="669092380621816981">Hierdie persoon se blaaierdata sal van hierdie toestel geskrap word. Teken as <ph name="USER_EMAIL"/> by Brave aan om die data te herwin.</translation>
 <translation id="4624945300945265642">Maak skakel in 'n incognitovenster in Brave oop</translation>
 <translation id="6554952862405000915">Maak skakel in 'n incognitovenster in Brave oop</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin.}=1{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou incognitovenster sal nie weer oopgemaak word nie.}other{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas}=1{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas}=1{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
-<translation id="7914115000169617076">Amper op datum! Herbegin Brave om opdatering te voltooi. Incognitovensters sal nie weer oopgemaak word nie.</translation>
+<translation id="7914115000169617076">Amper op datum! Herbegin Brave om bywerking te voltooi. Privaat vensters sal nie weer oopmaak nie.</translation>
+<translation id="4703432949110765917">Die verstekinstellings werk vir die meeste profiele, maar u kan dit aanpas om te pas by hoe u van Brave hou</translation>
+<translation id="2176087127109773485">U kan u aangetekende Brave-sinchroniseerkettings bestuur. U Brave-sinchroniseerkettings word gebruik vir die blaaier, Play Store, Gmail en meer. Indien u ’n rekeninge vir iemand anders wil toevoeg, soos ’n gesinslid, voeg liewer ’n nuwe profiel tot u <ph name="DEVICE_TYPE"/> toe. <ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/></translation>
 </translationbundle>

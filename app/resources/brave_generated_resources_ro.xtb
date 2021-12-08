@@ -55,7 +55,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="6821903322090655051">Opțiunea Brave Rewards este dezactivată</translation>
-<translation id="9184430019924125685">Dați clic aici pentru a afla mai multe</translation>
 <translation id="3849957491997306859">Detectare automată</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
 <translation id="4176463684765177261">Dezactivat</translation>
@@ -69,7 +68,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
 <translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
 <translation id="6248554379744796526">Arată siteuri neverificate în listă</translation>
-<translation id="3241299447027267831">Permiteți contribuțiile pentru videoclipuri</translation>
+<translation id="5510618543889994434">Permiteți contribuțiile pentru videoclipuri</translation>
 <translation id="924777189963477634">Prin activarea contribuțiilor automate, acceptați <ph name="BEGIN_LINK_TOS"/>Termenii de utilizare<ph name="END_LINK_TOS"/> și <ph name="BEGIN_LINK_PP"/>Politica de confidențialitate<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Butoane pentru contribuții</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -207,6 +206,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2414886740292270097">Negru</translation>
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
 <translation id="1336940801687497203">Aceeași cu Windows</translation>
+<translation id="5919209812221905840">Program prestabilit de gestionare microsoft-edge</translation>
+<translation id="5239541974656019812">Setați Brave ca program prestabilit de gestionare microsoft-edge</translation>
+<translation id="7136694880210472378">Setează ca prestabilit</translation>
+<translation id="1751388324499810661">Brave este programul prestabilit de gestionare microsoft-edge</translation>
 <translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
@@ -422,7 +425,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2653659639078652383">Trimite</translation>
 <translation id="2556708692502648323">Rețele portofele</translation>
 <translation id="1330032157352961756">Identificatorul noului lanț</translation>
-<translation id="9053905035135220650">Un șir hexazecimal cu prefix 0x</translation>
 <translation id="726121047592132939">Numele noului lanț</translation>
 <translation id="1034112277864078119">Introduceți numele lanțului</translation>
 <translation id="4672314527143443556">Numele monedei lanțului</translation>
@@ -436,11 +438,14 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3047726704186619366">Adrese URL pictograme</translation>
 <translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
 <translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
-<translation id="4514843126085243862">Format incorect; identificatorul lanțului este un șir hexazecimal cu prefix 0x</translation>
 <translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 <translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
 <translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
 <translation id="2618193846561624884">Doriți să actualizați rețeaua existentă?</translation>
+<translation id="9184430019924125685">Dați clic aici pentru a afla mai multe</translation>
+<translation id="3241299447027267831">Permiteți contribuțiile pentru videoclipuri</translation>
+<translation id="9053905035135220650">Un șir hexazecimal cu prefix 0x</translation>
+<translation id="4514843126085243862">Format incorect; identificatorul lanțului este un șir hexazecimal cu prefix 0x</translation>
 </translationbundle>

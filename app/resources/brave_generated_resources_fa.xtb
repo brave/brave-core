@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="6821903322090655051">«پاداش‌های Brave» غیرفعال است</translation>
-<translation id="9184430019924125685">برای دریافت اطلاعات بیشتر، اینجا کلیک کنید</translation>
 <translation id="3849957491997306859">به‌طور خودکار شناسایی شد</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">حداقل زمان صفحهْ قبل از ثبت بازدید</translation>
 <translation id="4424486208397124985">حداقل بازدید برای ربط ناشر</translation>
 <translation id="6248554379744796526">نشان دادن سایت‌های تأییدنشده در فهرست</translation>
-<translation id="3241299447027267831">اجازه کمک به ویدیوها</translation>
+<translation id="5510618543889994434">مجاز کردن کمک‌ها برای ویدیوها</translation>
 <translation id="924777189963477634">با روشن کردن کمک خودکار، با <ph name="BEGIN_LINK_TOS"/>شرایط سرویس<ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/>خط مشی حریم خصوصی<ph name="END_LINK_PP"/>موافقت می‌کنید</translation>
 <translation id="5733490796524078528">دکمه‌های انعام</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +103,7 @@
 <translation id="7895302206188277628">محتوای این پیوند</translation>
 <translation id="3654831858282189202">انتشار با کلید IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">وارد کردن متن انتخاب شده به IPFS</translation>
 <translation id="6925604404524625582">وارد کردن و کپی کردن پیوند در عکس فوری IPFS</translation>
 <translation id="1434416574322382019">Window with Tor خصوصی جدید</translation>
 <translation id="4703780849509456860">باز کردن پیوند در Window with Tor خصوصی</translation>
@@ -207,6 +207,10 @@
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="1360441190790440400">مشابه Linux</translation>
 <translation id="1336940801687497203">مشابه Windows</translation>
+<translation id="5919209812221905840">ناظر پیش‌فرض پروتکل microsoft-edge</translation>
+<translation id="5239541974656019812">Brave را به ناظر پروتکل microsoft-edge تبدیل کنید</translation>
+<translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
+<translation id="1751388324499810661">Brave ناظر پیش‌فرض پروتکل microsoft-edge است.</translation>
 <translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
@@ -222,6 +226,7 @@
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="6864914031231797928">مجاز کردن ورود به سیستم Google برای افزونه‌ها</translation>
 <translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>در مورد DNS در مورد HTTPS و ملاحظات حفظ حریم خصوصی Ethereum.</translation>
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
 <translation id="7024553202001112871">راه‌اندازی کلیدهای IPNS</translation>
 <translation id="951216659045543447">محتوا را با کلید خصوصی مربوطه امضا کنید و آن را در IPNS منتشر کنید</translation>
@@ -256,6 +261,7 @@
 <translation id="1327977588028644528">دروازه</translation>
 <translation id="80225669816651290">گره محلی</translation>
 <translation id="4927734062756955434">نشانی دروازه عمومی IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>بیشتر بدانید<ph name="END_LINK_MPL"/>در مورد ملاحظات حریم خصوصی گره محلی IPFS و دروازه.</translation>
 <translation id="8425213833346101688">تغییر</translation>
 <translation id="557281710253742286">تنظیم دروازه IPFS</translation>
 <translation id="8571837315037233299">نشانی دروازه</translation>
@@ -422,7 +428,6 @@
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="2556708692502648323">شبکه‌های کیف پول</translation>
 <translation id="1330032157352961756">شناسه زنجیره جدید</translation>
-<translation id="9053905035135220650">رشته مبنای شانزده با پیشوند 0x</translation>
 <translation id="726121047592132939">نام زنجیره جدید</translation>
 <translation id="1034112277864078119">نام زنجیره را وارد کنید</translation>
 <translation id="4672314527143443556">نام ارز زنجیره</translation>
@@ -436,11 +441,14 @@
 <translation id="3047726704186619366">آدرس وب نماد</translation>
 <translation id="2487558607408469181">آدرس وب کاوشگر بلوک</translation>
 <translation id="6301398959353668507">این فیلد نباید خالی باشد.</translation>
-<translation id="4514843126085243862">قالب نامعتبر است، شناسه زنجیره یک رشته مبنای شانزده با پیشوند 0x است</translation>
 <translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
 <translation id="650071759190249039">خطای داخلی، افزودن شبکه امکان‌پذیر نیست.</translation>
 <translation id="868529041590572443">لطفاً همه اطلاعات مربوط به ارز بومی را وارد کنید</translation>
 <translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
 <translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
+<translation id="9184430019924125685">برای دریافت اطلاعات بیشتر، اینجا کلیک کنید</translation>
+<translation id="3241299447027267831">اجازه کمک به ویدیوها</translation>
+<translation id="9053905035135220650">رشته مبنای شانزده با پیشوند 0x</translation>
+<translation id="4514843126085243862">قالب نامعتبر است، شناسه زنجیره یک رشته مبنای شانزده با پیشوند 0x است</translation>
 </translationbundle>

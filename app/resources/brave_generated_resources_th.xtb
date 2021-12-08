@@ -55,7 +55,6 @@
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="6821903322090655051">ปิดใช้งาน Brave Rewards แล้ว</translation>
-<translation id="9184430019924125685">คลิกที่นี่เพื่อเรียนรู้เพิ่มเติม</translation>
 <translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
@@ -69,7 +68,7 @@
 <translation id="7286722244752781970">เวลาแสดงหน้าขั้นต่ำก่อนเข้าสู่ระบบ</translation>
 <translation id="4424486208397124985">การเข้าชมขั้นต่ำสำหรับความเกี่ยวข้องของผู้จัดพิมพ์</translation>
 <translation id="6248554379744796526">แสดงไซต์ที่ไม่ได้ยืนยันในรายการ</translation>
-<translation id="3241299447027267831">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
+<translation id="5510618543889994434">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
 <translation id="924777189963477634">การเปิดการสนับสนุนอัตโนมัติจะถือว่าคุณยอมรับ<ph name="BEGIN_LINK_TOS"/>ข้อตกลงการใช้บริการ<ph name="END_LINK_TOS"/>และ<ph name="BEGIN_LINK_PP"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK_PP"/></translation>
 <translation id="5733490796524078528">ปุ่มทิป</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -207,6 +206,10 @@
 <translation id="2414886740292270097">มืด</translation>
 <translation id="1360441190790440400">เหมือน Linux</translation>
 <translation id="1336940801687497203">เหมือน Windows</translation>
+<translation id="5919209812221905840">โปรโตคอลตัวจัดการ Microsoft Edge เริ่มต้น</translation>
+<translation id="5239541974656019812">ทำให้ Brave เป็นโปรโตคอลตัวจัดการ Microsoft Edge</translation>
+<translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
+<translation id="1751388324499810661">Brave เป็นโปรโตคอลตัวจัดการ Microsoft Edge เริ่มต้น</translation>
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -423,7 +426,6 @@
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="2556708692502648323">เครือข่ายกระเป๋าเงิน</translation>
 <translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
-<translation id="9053905035135220650">สตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
 <translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
 <translation id="1034112277864078119">ระบุชื่อ Chain</translation>
 <translation id="4672314527143443556">ชื่อสกุลเงินของ Chain</translation>
@@ -437,11 +439,14 @@
 <translation id="3047726704186619366">URL ไอคอน</translation>
 <translation id="2487558607408469181">URL ของ Block Explorer</translation>
 <translation id="6301398959353668507">ต้องกรอกข้อมูลในช่องนี้</translation>
-<translation id="4514843126085243862">รูปแบบไม่ถูกต้อง Chain ID คือสตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
 <translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
 <translation id="650071759190249039">เกิดข้อผิดพลาดภายใน ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="868529041590572443">กรุณากรอกข้อมูลเกี่ยวกับสกุลเงินประจำกระดานเทรดทั้งหมด</translation>
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
+<translation id="9184430019924125685">คลิกที่นี่เพื่อเรียนรู้เพิ่มเติม</translation>
+<translation id="3241299447027267831">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
+<translation id="9053905035135220650">สตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
+<translation id="4514843126085243862">รูปแบบไม่ถูกต้อง Chain ID คือสตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
 </translationbundle>

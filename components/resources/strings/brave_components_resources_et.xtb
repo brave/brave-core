@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Tõrge: ootel konto</translation>
 <translation id="2388470740942086608">Teie Upholdi konto on praegu piiratud õigustega.</translation>
 <translation id="3605236342612716051">Tõrge: piiratud õigustega konto</translation>
+<translation id="7147519373526655987">Ilmnes probleem teie brauseri taotluse valideerimisel, et ühendada teie Brave'i preemiate rahakott teenusepakkuja <ph name="PROVIDER"/> kontoga. Kui vajate veel abi, võite pöörduda <ph name="BEGIN_LINK"/>kasutajatoe<ph name="END_LINK"/> poole.</translation>
+<translation id="1316066811927496401">Tõrge: taotlust ei õnnestunud valideerida.</translation>
 <translation id="1737873393693460829">Lülitades sisse funktsiooni [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Teie <ph name="AMOUNT"/> väljamakset hakatakse töötlema <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Märkus. <ph name="BOLD_END"/>Väljamakse töötlemiseks ja BAT-i kohalejõudmiseks võib kuluda mõni päev.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="3656941797339037856">Siduge Rewards Geminiga!</translation>
-<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
-<translation id="2237374144728570574">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. september 2021</translation>
+<translation id="3066983737886188034">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Oodatakse ühte objektparameetrit.</translation>
 <translation id="1875861420974447980">See ahela ID on praegu kasutusel</translation>
 <translation id="167698752210114155">Ilmnes sisemine tõrge</translation>
+<translation id="1680597601664421644">Imporditav mnemoonik ei kehti Brave'i rahakoti jaoks</translation>
 <translation id="4641919696349069826">Taotlus on juba töös</translation>
 <translation id="872806943696014633">Tehinguandmed puuduvad</translation>
 <translation id="4805410229033541409">väljal „from“ määratud saatjal pole lubatud tehinguid saata</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Konto</translation>
 <translation id="3891414008432200754">Hind</translation>
 <translation id="2267753748892043616">Lisage konto</translation>
+<translation id="5061574358754621254">Hinnaandmete platvorm: CoinGecko</translation>
 <translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877">Võrku <ph name="NETWORK"/> ei toetata</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Varieeruvuse tolerants</translation>
 <translation id="4500473291496079954">Aegumisaeg</translation>
 <translation id="8093033115658137576">0x aadress või URL</translation>
+<translation id="2860280209982026951">Brave'is on DEX-i agregaatorina kasutusel <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
+<translation id="151946611346774041">0x töötleb Ethereumi aadressi ja IP-aadressi, et sooritada tehing (sealhulgas saada hinnapakkumisi). 0x kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
 <translation id="8303434745767477417">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>
@@ -1042,13 +1047,24 @@
 <translation id="7051244143160304048">Seadme <ph name="DEVICE_NAME"/> ühendus on katkestatud</translation>
 <translation id="5317781812114905957">Juhised</translation>
 <translation id="1178198982208000092">Ühendage oma <ph name="DEVICE_NAME"/>.</translation>
-<translation id="3301417531330431881">Riistvararahakott nõuab tehingu kinnitamist. <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Riistvararahakott nõuab seadme kinnitamist. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Riistvararahakott nõuab, et seadmes <ph name="DEVICE_NAME"/> oleks avatud Ethereumi rakendus</translation>
 <translation id="8687869982094542529">saadetud</translation>
 <translation id="5013754027092416509">vastu võetud</translation>
 <translation id="5867988533873716616">Plokiuurija URL ei ole saadaval.</translation>
 <translation id="4255623233927788178">Kuva plokiuurijas</translation>
+<translation id="7148658188569580292">Kiirenda tehingut</translation>
+<translation id="1198263951134066686">Tühista tehing</translation>
+<translation id="3562548974839822204">Tehingu korduskatse</translation>
 <translation id="6383204195803840504">Tehingud kuvatakse siin</translation>
+<translation id="6079696972035130497">Piiramatu</translation>
 <translation id="2916401020782528840">Tehingut ei leitud</translation>
+<translation id="2833661570529295305">Kinnitamata</translation>
+<translation id="8034530868111548216">Kinnitatud</translation>
+<translation id="6015436276085482001">Tagasi lükatud</translation>
+<translation id="6666273175654835609">Edastatud</translation>
+<translation id="2331676293859649642">Kinnitatud</translation>
+<translation id="1165039591588034296">Viga</translation>
 <translation id="8941851657764077659">Maksimaalse prioriteetsuse tasu</translation>
 <translation id="8047527352810290817">Muuda gaasi</translation>
 <translation id="9091334651803050473">Kui maksate suuremat tasu, prioriseerivad kaevurid tõenäoliselt teie tehingu, kuid see ei ole garanteeritud.</translation>
@@ -1070,6 +1086,8 @@
 <translation id="749944179568745958">Ei ole kehtiv ETH-i aadress</translation>
 <translation id="882486206986535424">Ei ole kehtiv aadress</translation>
 <translation id="6825399159373612149">Domeen <ph name="DOMAIN_NAME"/> pole registreeritud</translation>
+<translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
+<translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Lükka tagasi <ph name="TRANSACTION_LENGTH"/> tehingut.</translation>
 <translation id="1118876217803190221">Ebapiisav saldo</translation>
@@ -1080,6 +1098,7 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Rahakott tuleb esmalt avada</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ei ole kehtiv aadress</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> ei ole aktiivne võrk</translation>
 <translation id="7340805872138998391">Seadme avamine ei õnnestu, proovige uuesti ühendust luua</translation>
 <translation id="1984410139271779110">Sisetõrge, tundmatu skeem</translation>
 <translation id="8682200134223578011">kinnitatud</translation>
@@ -1088,8 +1107,15 @@
 <translation id="4287068151777838754">Ei oodatud JSON-andmeid</translation>
 <translation id="3282936527763045737">Parool ei ole õige</translation>
 <translation id="1119447706177454957">Sisetõrge</translation>
-<translation id="3327639091470204775">Sisetõrge, iFrame-elemendi silda ei õnnestu luua</translation>
+<translation id="3327639091470204775">Trezori sillaga ei õnnestunud ühendust luua</translation>
 <translation id="6672377693827764095">Sisetõrge, kontode toomine ei õnnestu</translation>
+<translation id="8933250418452564886">Riistvaratehingut ei õnnestunud leida, proovige uuesti</translation>
+<translation id="5999974802900788338">Riistvaraseadmest saadi tõrge, arvatavasti peate oma seadmes tehingu kinnitama</translation>
+<translation id="8523768065044261559">Tõrge tehingu töötlemisel, proovige uuesti</translation>
+<translation id="971552837551838642">Tõrge sõnumi allkirjastamisel, proovige uuesti</translation>
+<translation id="8273603707418703324">Tõrge sõnumi allkirjastamisel, nõuti tundmatut võtmerõngast. Proovige uuesti</translation>
+<translation id="5265455943786954050">Trezori käsk on juba täitmisel</translation>
+<translation id="7017116822583380542">Trezori sild ei ole valmis</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1104,7 +1130,6 @@
 <translation id="745054660363064771">Serveriga ühendamine ei õnnestu</translation>
 <translation id="3936826714240735937">Valige muu server</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ei saanud luua ühendust piirkonna <ph name="REGION_NAME"/> serveriga. Võite proovida uuesti või valida muu</translation>
-<translation id="1664949222596149258">Ostke hinnaga <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Kas VPN on juba ostetud?</translation>
 <translation id="8814357473522731680">Platvorm:</translation>
 <translation id="5747552184818312860">Aegub</translation>
@@ -1116,6 +1141,7 @@
 <translation id="3181339219453722970">Valige oma VPN-i asukoht</translation>
 <translation id="1751947227857853925">Kiire ja piiramatu kuni 100 mbit/s</translation>
 <translation id="1400240082805528049">24/7 tugi</translation>
+<translation id="8463313539532697053">Oodake hetk, kuni laaditakse…</translation>
 <translation id="7586151660465233733">Veel turge saidil <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vaata turge ja kauple FTX-is krüptoga</translation>
 <translation id="5963745988819586370">Turud</translation>
@@ -1133,4 +1159,8 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
+<translation id="2237374144728570574">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. september 2021</translation>
+<translation id="3301417531330431881">Riistvararahakott nõuab tehingu kinnitamist. <ph name="DEVICE_NAME"/></translation>
+<translation id="1664949222596149258">Ostke hinnaga <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

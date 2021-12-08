@@ -55,7 +55,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
 <translation id="6821903322090655051">Brave Rewards er deaktivert</translation>
-<translation id="9184430019924125685">Klikk her for å finne ut mer</translation>
 <translation id="3849957491997306859">Automatisk oppdaget</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="4176463684765177261">Deaktivert</translation>
@@ -69,7 +68,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
 <translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
 <translation id="6248554379744796526">Vis ikke-verifiserte nettsteder på listen</translation>
-<translation id="3241299447027267831">Tillat bidrag til videoer</translation>
+<translation id="5510618543889994434">Tillat bidrag for videoer</translation>
 <translation id="924777189963477634">Ved å slå på automatisk bidrag samtykker du til <ph name="BEGIN_LINK_TOS"/>vilkårene for bruk<ph name="END_LINK_TOS"/> og <ph name="BEGIN_LINK_PP"/>retningslinjene for personvern<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tipsknapper</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +103,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7895302206188277628">Lenket innhold</translation>
 <translation id="3654831858282189202">Publiser med IPNS-nøkkel</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importer valgt tekst til IPFS</translation>
 <translation id="6925604404524625582">Importer og kopier lenke til IPFS-øyeblikksbilde</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
 <translation id="4703780849509456860">Åpne lenke i privatvindu med Tor</translation>
@@ -130,6 +130,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7390783310074170337">Standard visning</translation>
 <translation id="130615081792797568">Enkel visning</translation>
 <translation id="2360360976480535628">Avansert visning</translation>
+<translation id="2133317862976486547">Trackere &amp; annonseblokkering</translation>
+<translation id="4385707520896576447">Blokkering av informasjonskapsler</translation>
+<translation id="4978786495456601191">Fingerskriftblokkering</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
 <translation id="4395160081588457461">Se og føl</translation>
@@ -138,21 +141,34 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
+<translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
+<translation id="5770288601196774623">Kun kryssider</translation>
 <translation id="3587482841069643663">Alle</translation>
+<translation id="5533533363827555308">Streng, kan bremse sider</translation>
 <translation id="8792121506918889955">WebRTCs IP-håndteringspolicy</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="1822560017823072927">Standard offentlige og private grensesnitt</translation>
 <translation id="5825943197137337319">Kun standard offentlig grensesnitt</translation>
 <translation id="1689062823386843231">Deaktiver ikke-proxied UDP</translation>
 <translation id="3540231253392253941">Bruk Google-tjenester til pushmeldinger</translation>
+<translation id="5565355416171743213">Begynn å bruke synk</translation>
 <translation id="4332558599726753990">Synkroniseringsoppsett</translation>
+<translation id="2187778349654214731">For å begynne må Brave være installert på alle enhetene du planlegger å synke. Deretter lenker du dem sikkert sammen med en synkkode.</translation>
+<translation id="7530575064080939974">Styr de synkede enhetene dine</translation>
+<translation id="7575156386943878014">Synk-manager</translation>
 <translation id="1755198127524719638">Innstillinger for synkronisering</translation>
 <translation id="7558480201297099157">Administrer hvilken informasjon du vil synkronisere mellom enheter. Disse innstillinger påvirker kun denne enheten.</translation>
+<translation id="7731928563672901833">Enhetsliste</translation>
 <translation id="28332161031213248">Enhetslisten under inneholder alle enhetene i synkroniseringskjeden. Hver enhet kan administreres fra en hvilken som helst annen enhet.</translation>
 <translation id="1313162974556054106">Navn på enhet</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Denne enheten)</translation>
+<translation id="3686835020221422649">Sist aktiv</translation>
 <translation id="1181037720776840403">Fjern</translation>
+<translation id="2569646144216067185">Ordtelling: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopiert!</translation>
+<translation id="8802630444265810662">En QR-kode som kan skannes med en mobilenhet for å overføre synkkoden din</translation>
+<translation id="6221331245829088299">Det var en feil i visningen av QR-koden, forny og prøv igjen.</translation>
 <translation id="298546024891487702">For å begynne må du ha Brave installert på alle enhetene du planlegger å synkronisere. Du sammenkjeder dem ved å starte en synkroniseringskjede som brukes til å knytte alle enhetene dine sikkert sammen.</translation>
 <translation id="6200528822592747640">Start en ny synkroniseringskjede</translation>
 <translation id="5184726904895809379">Jeg har en synkroniseringskode</translation>
@@ -173,19 +189,28 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5734745018569675530">Skriv inn synkroniseringskjede-kodeordene du har fått, i skjemaet nedenfor.</translation>
 <translation id="1061533051865606843">Legg til ny enhet</translation>
 <translation id="5093410893656857925">Velg enhetstype</translation>
+<translation id="4581190919849683048">Hvilken enhetstype vil du synke til?</translation>
+<translation id="4112587618563511470">Ugyldig synkkode, kontroller og prøv igjen.</translation>
 <translation id="2339730291919608488">Forlat synkroniseringskjede</translation>
+<translation id="115699408012835975">Hvis du vil tilabakestille Synk, må du angi en synkkode fra en annen enhet på nytt, for å kunne synke til den. Er du sikker på at du vil fortsette?</translation>
 <translation id="6092564993102418148">Er du sikker på at du vil fjerne den valgte enheten fra synkroniseringskjeden?</translation>
 <translation id="2936582902048232286">Advarsel: Dette deler dine Brave-data, potensielt inkludert passordene dine, med enheten som genererte disse kodeordene.
 
 Dobbeltsjekk at disse kodeordene ble generert av en enhet du eier.
 
 Er du sikker på at du vil gjøre dette?</translation>
+<translation id="3396347744975515056">Brave Sync er oppgradert og krever ny inntilling</translation>
+<translation id="7473245612074035141">Begynn oppsett</translation>
 <translation id="3411013544209536575">Hjelpetips</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-beskjed på 404-sider</translation>
 <translation id="1807246157184219062">Lyst</translation>
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
+<translation id="5919209812221905840">Standard protokollbehandler for Microsoft Edge</translation>
+<translation id="5239541974656019812">Gjør Brave til standard protokollbehandler for Microsoft Edge</translation>
+<translation id="7136694880210472378">Bruk som standard</translation>
+<translation id="1751388324499810661">Brave er standard protokollbehandler for Microsoft Edge</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
@@ -201,6 +226,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/> om DNS over personvernhensyn med HTTPS og Ethereum.</translation>
 <translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
 <translation id="7024553202001112871">Still inn IPNS-nøklene dine</translation>
 <translation id="951216659045543447">Signér innhold med den samsvarende private nøkkelen, og publiser det i IPNS</translation>
@@ -235,6 +261,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlig IPFS-systemportadresse</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om IPFS-personvernhensyn relatert til lokale noder og inngangsporter.</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="557281710253742286">Konfigurer IPFS-systemport</translation>
 <translation id="8571837315037233299">Systemportadresse</translation>
@@ -401,7 +428,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2653659639078652383">Send</translation>
 <translation id="2556708692502648323">Lommeboknettverk</translation>
 <translation id="1330032157352961756">Den nye kjedens ID</translation>
-<translation id="9053905035135220650">En heksadesimal streng med 0x-prefiks</translation>
 <translation id="726121047592132939">Den nye kjedens navn</translation>
 <translation id="1034112277864078119">Skriv inn kjedenavn</translation>
 <translation id="4672314527143443556">Kjedens valutanavn</translation>
@@ -415,11 +441,14 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3047726704186619366">Ikonnettadresser</translation>
 <translation id="2487558607408469181">Blokker utforskernettadresser</translation>
 <translation id="6301398959353668507">Dette feltet kan ikke stå tomt.</translation>
-<translation id="4514843126085243862">Ugyldig format, kjede-ID er en heksadesimal streng med 0x-prefiks</translation>
 <translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
 <translation id="650071759190249039">Intern feil, kan ikke legge til nettverk.</translation>
 <translation id="868529041590572443">Fyll inn all informasjon om innebygd valuta</translation>
 <translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
 <translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
+<translation id="9184430019924125685">Klikk her for å finne ut mer</translation>
+<translation id="3241299447027267831">Tillat bidrag til videoer</translation>
+<translation id="9053905035135220650">En heksadesimal streng med 0x-prefiks</translation>
+<translation id="4514843126085243862">Ugyldig format, kjede-ID er en heksadesimal streng med 0x-prefiks</translation>
 </translationbundle>

@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Hata: Bekleyen hesap</translation>
 <translation id="2388470740942086608">Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.</translation>
 <translation id="3605236342612716051">Hata: Kısıtlanmış hesap</translation>
+<translation id="7147519373526655987">Tarayıcınızın Brave Rewards cüzdanınızı <ph name="PROVIDER"/> hesabınıza bağlama talebi doğrulanırken bir sorun oluştu. Daha fazla yardım için <ph name="BEGIN_LINK"/>destekle iletişime geçebilirsiniz.<ph name="END_LINK"/></translation>
+<translation id="1316066811927496401">Hata: Talep doğrulanamadı</translation>
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
 <translation id="901298512318791028"><ph name="AMOUNT"/> tutarlı ödemenizin işlenmeye başlamasına kalan süre: <ph name="DAYS"/></translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Not: <ph name="BOLD_END"/>Ödemenizin işlenmesi ve BAT'nizin gelmesi birkaç gün sürebilir.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
-<translation id="2383784987664887340">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
-<translation id="2237374144728570574">* 15 Eylül 2021 itibarıyla Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Beklenen tek nesne parametresi.</translation>
 <translation id="1875861420974447980">Bu Zincir Kimliği şu anda kullanılıyor</translation>
 <translation id="167698752210114155">Dahili bir hata oluştu</translation>
+<translation id="1680597601664421644">İçe aktarılmakta olan hatırlatıcı, Brave Cüzdan için geçerli değil</translation>
 <translation id="4641919696349069826">Bir istek zaten işleniyor</translation>
 <translation id="872806943696014633">İşlem verisi eksik</translation>
 <translation id="4805410229033541409">'from' işlem göndermeye yetkili değil</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Hesap</translation>
 <translation id="3891414008432200754">Fiyat</translation>
 <translation id="2267753748892043616">Hesap Ekle</translation>
+<translation id="5061574358754621254">Fiyat verileri CoinGecko tarafından sağlanmaktadır</translation>
 <translation id="1483493594462132177">Gönder</translation>
 <translation id="538450413584738399">Takas</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> desteklenmiyor</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Slipaj toleransı</translation>
 <translation id="4500473291496079954">Süre dolumu:</translation>
 <translation id="8093033115658137576">0x adresi veya url'si</translation>
+<translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x'i<ph name="LINK_AFTER"/> bir DEX toplayıcısı olarak kullanır.</translation>
+<translation id="151946611346774041">0x, bir işlemi yerine getirmek için (teklif alma da dahil) Ethereum adresini ve IP adresini işleyecektir. 0x bu veriyi SADECE işlemleri gerçekleştirme amacıyla kullanacaktır.</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
 <translation id="8303434745767477417">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve web 3 DApps ile etkileşime geçin. DeFi sayesinde alım-satım yapın, yatırım yapın, ödünç alın ve ödünç verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> cihazını bağla</translation>
-<translation id="3301417531330431881">Donanım cüzdanı, işlem onaylaması gerektiriyor. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Donanım cüzdanı, Ethereum uygulamasının <ph name="DEVICE_NAME"/> üzerinde açılmasını gerektirir</translation>
 <translation id="8687869982094542529">gönderildi</translation>
 <translation id="5013754027092416509">alındı</translation>
 <translation id="5867988533873716616">Blok gezgini URL'si mevcut değil.</translation>
 <translation id="4255623233927788178">Blok gezgininde görüntüleyin</translation>
+<translation id="7148658188569580292">İşlemi hızlandır</translation>
+<translation id="1198263951134066686">İşlemi iptal et</translation>
+<translation id="3562548974839822204">İşlemi tekrar dene</translation>
 <translation id="6383204195803840504">İşlemler burada görünür</translation>
+<translation id="6079696972035130497">Limitsiz</translation>
 <translation id="2916401020782528840">İşlem bulunamadı</translation>
+<translation id="2833661570529295305">Onaylanmadı</translation>
+<translation id="8034530868111548216">Onaylandı</translation>
+<translation id="6015436276085482001">Rededildi</translation>
+<translation id="6666273175654835609">Gönderildi</translation>
+<translation id="2331676293859649642">Onaylandı</translation>
+<translation id="1165039591588034296">Hata</translation>
 <translation id="8941851657764077659">Azami öncelikli ücret</translation>
 <translation id="8047527352810290817">GAS'ı düzenle</translation>
 <translation id="9091334651803050473">Bir garantisi olmasa da, daha yüksek bir ücret ödemeniz halinde madencilerin işleminize öncelik vermesi muhtemeldir.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Geçerli bir ETH adresi değil</translation>
 <translation id="882486206986535424">Geçerli bir adres değil</translation>
 <translation id="6825399159373612149"><ph name="DOMAIN_NAME"/> etki alanı kaydedilmemiş</translation>
+<translation id="8971278306757462297">Alıcı adresi kendi adresiniz</translation>
+<translation id="3506416339268164412">Alıcı adresi bir token'ın kontrat adresi</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> işlemi reddet</translation>
 <translation id="1118876217803190221">Yetersiz bakiye</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Hesap <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Önce cüzdan kilidinin açılması gereklidir</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> geçerli bir adres değil</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> mevcut ağ değil</translation>
 <translation id="7340805872138998391">Cihazın kilidi açılamıyor, yeniden bağlanmayı deneyin</translation>
 <translation id="1984410139271779110">İç hata, bilinmeyen şema</translation>
 <translation id="8682200134223578011">onaylandı</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON verisi beklenmiyor</translation>
 <translation id="3282936527763045737">Parola doğru değil</translation>
 <translation id="1119447706177454957">İç hata</translation>
-<translation id="3327639091470204775">İç hata, iframe bridget oluşturulamıyor</translation>
 <translation id="6672377693827764095">İç hata, Hesaplar getirilemiyor</translation>
+<translation id="8933250418452564886">Donanım işlemi bulunamadı, lütfen tekrar deneyin</translation>
+<translation id="5999974802900788338">Donanım cihazından hata alındı, işlemi cihazınızdan onaylamanız gerekiyor olabilir</translation>
+<translation id="8523768065044261559">İşlemin gerçekleştirilmesinde hata, lütfen tekrar deneyin</translation>
+<translation id="971552837551838642">Mesaj imzalanırken hata oluştu, lütfen tekrar deneyin</translation>
+<translation id="8273603707418703324">Mesaj imzalanırken hata oluştu, bilinmeyen anahtarlık istendi, lütfen tekrar deneyin</translation>
+<translation id="5265455943786954050">Trezor komutu zaten devam ediyor</translation>
+<translation id="7017116822583380542">Trezor bridge hazır değil</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Sunucuya bağlanamıyor</translation>
 <translation id="3936826714240735937">Başka bir sunucu seç</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>, <ph name="REGION_NAME"/> sunucusuna bağlanamadı. Tekrar deneyebilir veya başka bir sunucu seçebilirsiniz</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/> karşılığında satın al</translation>
 <translation id="1024255913009642477">Zaten VPN satın aldınız mı?</translation>
 <translation id="8814357473522731680">Destekleyen:</translation>
 <translation id="5747552184818312860">Süre sonu tarihi</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">VPN konumunuzu seçin</translation>
 <translation id="1751947227857853925">100 Mbps'ye kadar hızlı ve sınırsız</translation>
 <translation id="1400240082805528049">7/24 destek</translation>
+<translation id="8463313539532697053">Yüklenirken bir saniye bekleyin…</translation>
 <translation id="7586151660465233733">Daha fazla piyasa <ph name="SITE_NAME"/> adresinde</translation>
 <translation id="952067063131306699">FTX'de piyasaları görüntüleyin ve kripto ticareti yapın</translation>
 <translation id="5963745988819586370">Piyasalar</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="2383784987664887340">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
+<translation id="2237374144728570574">* 15 Eylül 2021 itibarıyla Gemini Earn APY</translation>
+<translation id="3301417531330431881">Donanım cüzdanı, işlem onaylaması gerektiriyor. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">İç hata, iframe bridget oluşturulamıyor</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/> karşılığında satın al</translation>
 </translationbundle>

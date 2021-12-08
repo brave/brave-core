@@ -55,7 +55,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="6821903322090655051">Brave Rewards està inhabilitat</translation>
-<translation id="9184430019924125685">Fes clic aquí per saber-ne més</translation>
 <translation id="3849957491997306859">Detectat automàticament</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
 <translation id="4176463684765177261">Desactivat</translation>
@@ -70,7 +69,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7286722244752781970">Temps mínim de pàgina oberta abans de registrar una visita</translation>
 <translation id="4424486208397124985">Visites mínimes per que l'editor mereixi rellevància</translation>
 <translation id="6248554379744796526">Mostra llocs no verificats en la llista</translation>
-<translation id="3241299447027267831">Permet contribucions als vídeos</translation>
+<translation id="5510618543889994434">Permet contribucions per a vídeos</translation>
 <translation id="924777189963477634">En activar la contribució automàtica, acceptes les <ph name="BEGIN_LINK_TOS"/>Condicions del servei <ph name="END_LINK_TOS"/> i la <ph name="BEGIN_LINK_PP"/> Política de privacitat <ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Botons de propina</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -209,6 +208,10 @@ Segur que vols continuar?</translation>
 <translation id="2414886740292270097">Fosc</translation>
 <translation id="1360441190790440400">Mateix que Linux</translation>
 <translation id="1336940801687497203">Mateix que Windows</translation>
+<translation id="5919209812221905840">Gestor de protocol microsoft-edge per defecte</translation>
+<translation id="5239541974656019812">Fes que Brave sigui el gestor de protocol microsoft-edge</translation>
+<translation id="7136694880210472378">Estableix com a predeterminat</translation>
+<translation id="1751388324499810661">Brave és el gestor de protocol microsoft-edge per defecte</translation>
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
@@ -426,7 +429,6 @@ Segur que vols continuar?</translation>
 <translation id="2653659639078652383">Envia</translation>
 <translation id="2556708692502648323">Xarxes del moneder</translation>
 <translation id="1330032157352961756">La ID de la nova cadena</translation>
-<translation id="9053905035135220650">Una sèrie hexadecimal prefixada a 0x</translation>
 <translation id="726121047592132939">El nom de la nova cadena</translation>
 <translation id="1034112277864078119">Introdueix el nom de la cadena</translation>
 <translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
@@ -440,11 +442,14 @@ Segur que vols continuar?</translation>
 <translation id="3047726704186619366">URL d'icona</translation>
 <translation id="2487558607408469181">Bloquejar URL de l'explorador</translation>
 <translation id="6301398959353668507">Aquest camp no pot estar buit.</translation>
-<translation id="4514843126085243862">El format no és vàlid, l'ID de la cadena és una sèrie hexadecimal amb prefix 0x</translation>
 <translation id="8325036459845654666">Ja s'ha afegit aquesta xarxa.</translation>
 <translation id="650071759190249039">Error intern, no s'ha pogut afegir la xarxa.</translation>
 <translation id="868529041590572443">Emplena tota la informació sobre la moneda nativa</translation>
 <translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
+<translation id="9184430019924125685">Fes clic aquí per saber-ne més</translation>
+<translation id="3241299447027267831">Permet contribucions als vídeos</translation>
+<translation id="9053905035135220650">Una sèrie hexadecimal prefixada a 0x</translation>
+<translation id="4514843126085243862">El format no és vàlid, l'ID de la cadena és una sèrie hexadecimal amb prefix 0x</translation>
 </translationbundle>

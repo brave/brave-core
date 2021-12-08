@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">ದೋಷ: ಬಾಕಿ ಇರುವ ಖಾತೆ</translation>
 <translation id="2388470740942086608">ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.</translation>
 <translation id="3605236342612716051">ದೋಷ: ನಿರ್ಬಂಧಿತ ಖಾತೆ</translation>
+<translation id="7147519373526655987">ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು <ph name="PROVIDER"/> ಖಾತೆಗೆ ಸಂಪರ್ಕಿಸುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನ ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸುವಾಗ ಸಮಸ್ಯೆ ಇತ್ತು. ಹೆಚ್ಚಿನ ಸಹಾಯಕ್ಕಾಗಿ ನೀವು <ph name="BEGIN_LINK"/>ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು<ph name="END_LINK"/>.</translation>
+<translation id="1316066811927496401">ದೋಷ: ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
 <translation id="1737873393693460829">[[title]] ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="901298512318791028"><ph name="AMOUNT"/> ಪೇಔಟ್ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆ <ph name="DAYS"/> ಆರಂಭವಾಗುತ್ತದೆ.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>ಗಮನಿಸಿ: <ph name="BOLD_END"/>ಪೇಔಟ್ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ಮತ್ತು ನಿಮ್ಮ BAT ಆಗಮಿಸಲು ಕೆಲವು ದಿನಗಳ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ</translation>
 <translation id="9200453331904391567">Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
 <translation id="3656941797339037856">Rewards ಅನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ</translation>
-<translation id="2383784987664887340">ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಿಸಲು ಮತ್ತು 3.49% APY ಅನ್ನು ಗಳಿಸಲು Gemini ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದೀಗ Gemini ಮೂಲಕ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿ!</translation>
-<translation id="2237374144728570574">* ಸೆಪ್ಟೆಂಬರ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini Earn APY</translation>
+<translation id="3066983737886188034">ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಿಸಲು ಮತ್ತು 3.49% APY ಅನ್ನು ಗಳಿಸಲು Gemini ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದೀಗ Gemini ಮೂಲಕ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿ!</translation>
 <translation id="7404779623219601861">ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ BAT ರೀಡಿಮ್ ಮಾಡಿ</translation>
 <translation id="6215565499749144110">TAP ನೆಟ್‌ವರ್ಕ್‌ನೊಂದಿಗೆ, ಜನಪ್ರಿಯ ಹೆಸರು-ಬ್ರಾಂಡ್ ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ ನಿಮ್ಮ BAT ಅನ್ನು ನೀವು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="6915065518766963119">* ಅಪ್‌ಹೋಲ್ಡ್ ಪರಿಶೀಲನೆಯ ಅಗತ್ಯವಿದೆ.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">ನಿರೀಕ್ಷಿತ, ಏಕ, ಆಬ್ಜೆಕ್ಟ್ ಪ್ಯಾರಾಮೀಟರ್.</translation>
 <translation id="1875861420974447980">ಈ ಚೈನ್ ID ಅನ್ನು ಪ್ರಸ್ತುತ ಬಳಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="167698752210114155">ಒಂದು ಆಂತರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
+<translation id="1680597601664421644">ಆಮದು ಮಾಡಲಾಗುತ್ತಿರುವ ನ್ಯೂಮೋನಿಕ್ Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="4641919696349069826">ವಿನಂತಿ ಈಗಾಗಲೇ ಪ್ರಗತಿಯಲ್ಲಿದೆ</translation>
 <translation id="872806943696014633">ವಹಿವಾಟು ಡೇಟಾ ಕಾಣೆಯಾಗಿದೆ</translation>
 <translation id="4805410229033541409">ವಹಿವಾಟುಗಳನ್ನು ಕಳುಹಿಸಲು 'from' ಅಧಿಕಾರ ಹೊಂದಿಲ್ಲ</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">ಖಾತೆ</translation>
 <translation id="3891414008432200754">ದರ</translation>
 <translation id="2267753748892043616">ಖಾತೆಯನ್ನು ಸೇರಿಸಿ</translation>
+<translation id="5061574358754621254">CoinGecko ನಿಂದ ಸಾಮರ್ಥ್ಯಪಡೆದ ದರ ಡೇಟಾ</translation>
 <translation id="1483493594462132177">ಕಳುಹಿಸು</translation>
 <translation id="538450413584738399">ಸ್ವಾಪ್</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> ಬೆಂಬಲಿತವಾಗಿಲ್ಲ</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">ಸ್ಲಿಪ್ಪೇಜ್ ಸಹಿಸಿಕೊಳ್ಳುವಿಕೆ</translation>
 <translation id="4500473291496079954">ಇಷ್ಟು ಸಮಯದಲ್ಲಿ ಅವಧಿ ಮೀರುತ್ತದೆ</translation>
 <translation id="8093033115658137576">0x ವಿಳಾಸ ಅಥವಾ url</translation>
+<translation id="2860280209982026951">DEX ಅಗ್ರಿಗೇಟರ್ ಆಗಿ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ಅನ್ನು Brave ಬಳಸುತ್ತದೆ.</translation>
+<translation id="151946611346774041">ವಹಿವಾಟನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು (ಉಲ್ಲೇಖಗಳನ್ನು ಪಡೆಯುವುದನ್ನು ಒಳಗೊಂಡಂತೆ) ಎಥೇರಿಯಮ್ ವಿಳಾಸ ಮತ್ತು IP ವಿಳಾಸವನ್ನು 0x ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತದೆ. ವಹಿವಾಟುಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಮಾತ್ರ ಈ ಡೇಟಾವನ್ನು 0x ಬಳಸುತ್ತದೆ.</translation>
 <translation id="6518133107902771759">ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="1420318137760245955">ಹೊಸ Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಸ್ವಾಗತ</translation>
 <translation id="8303434745767477417">ನಿಮ್ಮ ರಕ್ಷಣೆಯಲ್ಲಿ ಕ್ರಿಪ್ಟೋ ಅಸೆಟ್‌ಗಳನ್ನು ಇರಿಸಿಕೊಳ್ಳಿ. ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಕಾರ್ಯನಿರ್ವಹಣೆಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ವೆಬ್ 3D ಆ್ಯಪ್‌ಗಳ ಜೊತೆಗೆ ಸಂವಹನ ಮಾಡಿ. DeFi ಮೂಲಕ ಟ್ರೇಡ್ ಮಾಡಿ, ಹೂಡಿಕೆ ಮಾಡಿ, ಎರವಲು ಪಡೆಯಿರಿ ಮತ್ತು ಸಾಲ ನೀಡಿ. Brave ಗೌಪ್ಯತೆ ಬ್ರೌಸರ್‌ನಿಂದಲೇ ಎಲ್ಲಾ ಹಕ್ಕು. ಯಾವುದೇ ವಿಸ್ತರಣೆಗಳಿಲ್ಲ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅಗತ್ಯವಿಲ್ಲ.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="5317781812114905957">ಸೂಚನೆಗಳು</translation>
 <translation id="1178198982208000092">ನಿಮ್ಮ <ph name="DEVICE_NAME"/> ಸಂಪರ್ಕಿಸಿ</translation>
-<translation id="3301417531330431881">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ ವಹಿವಾಟು ದೃಢೀಕರಣ ಅಗತ್ಯವಿರುತ್ತದೆ. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ Ethereum ಆ್ಯಪ್ ಅನ್ನು <ph name="DEVICE_NAME"/>ನಲ್ಲಿ ತೆರೆದಿರುವುದು ಅಗತ್ಯವಿರುತ್ತದೆ</translation>
 <translation id="8687869982094542529">ಕಳುಹಿಸಲಾಗಿದೆ</translation>
 <translation id="5013754027092416509">ಸ್ವೀಕರಿಸಲಾಗಿದೆ</translation>
 <translation id="5867988533873716616">ನಿರ್ಬಂಧ ಎಕ್ಸ್‌ಪ್ಲೋರರ್ URL ಲಭ್ಯವಿಲ್ಲ.</translation>
 <translation id="4255623233927788178">ನಿರ್ಬಂಧ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
+<translation id="7148658188569580292">ವಹಿವಾಟನ್ನು ತ್ವರಿತಗೊಳಿಸಿ</translation>
+<translation id="1198263951134066686">ವಹಿವಾಟು ರದ್ದುಗೊಳಿಸಿ</translation>
+<translation id="3562548974839822204">ವಹಿವಾಟನ್ನು ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="6383204195803840504">ವಹಿವಾಟುಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ</translation>
+<translation id="6079696972035130497">ಅನಿಯಮಿತ</translation>
 <translation id="2916401020782528840">ವಹಿವಾಟು ಕಂಡುಬಂದಿಲ್ಲ</translation>
+<translation id="2833661570529295305">ಅನುಮೋದಿಸದಿರುವುದು</translation>
+<translation id="8034530868111548216">ಅನುಮೋದಿಸಲಾಗಿದೆ</translation>
+<translation id="6015436276085482001">ತಿರಸ್ಕರಿಸಲಾಗಿದೆ</translation>
+<translation id="6666273175654835609">ಸಲ್ಲಿಸಲಾಗಿದೆ</translation>
+<translation id="2331676293859649642">ಖಚಿತಪಡಿಸಲಾಗಿದೆ</translation>
+<translation id="1165039591588034296">ದೋಷ</translation>
 <translation id="8941851657764077659">ಗರಿಷ್ಠ ಆದ್ಯತೆ ಶುಲ್ಕ</translation>
 <translation id="8047527352810290817">ಗ್ಯಾಸ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="9091334651803050473">ಖಾತ್ರಿಯುತವಾಗಿಲ್ಲದಿರುವಾಗ, ನೀವು ಅಧಿಕ ಶುಲ್ಕವನ್ನು ಪಾವತಿಸಿದರೆ ಮೈನರ್‌ಗಳು ನಿಮ್ಮ ವಹಿವಾಟಿಗೆ ಆದ್ಯತೆ ನೀಡುವ ಸಾಧ್ಯತೆ ಇರುತ್ತದೆ.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">ಇದು ಮಾನ್ಯವಾದ ETH ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="882486206986535424">ಮಾನ್ಯವಾದ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="6825399159373612149"><ph name="DOMAIN_NAME"/> ಡೊಮೇನ್ ನೋಂದಾಯಿತವಾಗಿಲ್ಲ</translation>
+<translation id="8971278306757462297">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸ ನಿಮ್ಮ ಸ್ವಂತ ವಿಳಾಸವಲ್ಲ</translation>
+<translation id="3506416339268164412">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸವು ಟೋಕನ್‌ನ ಸಂಪರ್ಕ ವಿಳಾಸವಾಗಿದೆ</translation>
 <translation id="862585889767884824">ರಲ್ಲಿ</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> ವಹಿವಾಟುಗಳನ್ನು ತಿರಸ್ಕರಿಸಿ</translation>
 <translation id="1118876217803190221">ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">ಖಾತೆ <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">ಮೊದಲು ವ್ಯಾಲೆಟ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ಮಾನ್ಯವಾದ ವಿಳಾಸವಲ್ಲ</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> ಅನ್ನುವುದು ಪ್ರಸ್ತುತ ನೆಟ್‌ವರ್ಕ್ ಅಲ್ಲ</translation>
 <translation id="7340805872138998391">ಸಾಧನ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ, ಮರುಸಂಪರ್ಕಿಸಲು ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="1984410139271779110">ಆಂತರಿಕ ದೋಷ, ಅಜ್ಞಾತ ಸ್ಕೀಮ್</translation>
 <translation id="8682200134223578011">ಅನುಮೋದಿಸಲಾಗಿದೆ</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">JSON ಡೇಟಾ ನಿರೀಕ್ಷಿತವಾಗಿಲ್ಲ</translation>
 <translation id="3282936527763045737">ಪಾಸ್‌ವರ್ಡ್ ಸರಿಯಾಗಿಲ್ಲ</translation>
 <translation id="1119447706177454957">ಆಂತರಿಕ ದೋಷ</translation>
-<translation id="3327639091470204775">ಆಂತರಿಕ ದೋಷ, ಐಫ್ರೇಮ್ ಬ್ರಿಡ್ಜೆಟ್ ರಚಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="6672377693827764095">ಆಂತರಿಕ ದೋಷ, ಖಾತೆಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="8933250418452564886">ಹಾರ್ಡ್‌ವೇರ್ ವಹಿವಾಟು ಹುಡುಕಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="5999974802900788338">ಹಾರ್ಡ್‌ವೇರ್ ಸಾಧನದಿಂದ ದೋಷ ಸ್ವೀಕರಿಸಲಾಗಿದೆ, ಬಹುಶಃ ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ವಹಿವಾಟನ್ನು ನೀವು ದೃಢಪಡಿಸಬೇಕಾಗುತ್ತದೆ</translation>
+<translation id="8523768065044261559">ವಹಿವಾಟು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ದೋಷ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="971552837551838642">ಸಂದೇಶಕ್ಕೆ ಸಹಿ ಮಾಡುವಲ್ಲಿ ದೋಷ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="8273603707418703324">ಸಂದೇಶಕ್ಕೆ ಸಹಿ ಮಾಡುವಲ್ಲಿ ದೋಷ, ಅಜ್ಞಾತ ಕೀರಿಂಗ್ ವಿನಂತಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="5265455943786954050">ಟ್ರೆಝರ್ ಕಮಾಂಡ್ ಈಗಾಗಲೇ ಪ್ರಗತಿಯಲ್ಲಿದೆ</translation>
+<translation id="7017116822583380542">ಟ್ರೆಝರ್ ಬ್ರಿಡ್ಜ್ ಸಿದ್ಧವಾಗಿಲ್ಲ</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ</translation>
 <translation id="3936826714240735937">ಮತ್ತೊಂದು ಸರ್ವರ್ ಆರಿಸಿ</translation>
 <translation id="8006923044496340707"><ph name="REGION_NAME"/> ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಗೊಳ್ಳಲು <ph name="PRODUCT_NAME"/> ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನೀವು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬಹುದು ಅಥವಾ ಮತ್ತೊಂದನ್ನು ಆರಿಸಬಹುದು</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>ಗೆ ದರದಲ್ಲಿ ಖರೀದಿಸಿ</translation>
 <translation id="1024255913009642477">ಈಗಾಗಲೇ VPN ಖರೀದಿಸಿದ್ದೀರಾ?</translation>
 <translation id="8814357473522731680">ಇದರಿಂದ ಸಾಮರ್ಥ್ಯ ಪಡೆದಿದೆ</translation>
 <translation id="5747552184818312860">ಅವಧಿ ಮೀರುವುದು</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">ನಿಮ್ಮ VPN ಸ್ಥಳ ಆರಿಸಿ</translation>
 <translation id="1751947227857853925">100 Mbps ವರೆಗೆ ವೇಗದ ಮತ್ತು ಅನಿಯಮಿತ</translation>
 <translation id="1400240082805528049">24/7 ಬೆಂಬಲ</translation>
+<translation id="8463313539532697053">ಲೋಡ್ ಮಾಡುವಾಗ ಒಂದು ಕ್ಷಣ ನಿರೀಕ್ಷಿಸಿ…</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಮಾರುಕಟ್ಟೆಗಳು</translation>
 <translation id="952067063131306699">FTX ನಲ್ಲಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ನೋಡಿ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಟ್ರೇಡ್ ಮಾಡಿ</translation>
 <translation id="5963745988819586370">ಮಾರುಕಟ್ಟೆಗಳು</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು ಪ್ರದರ್ಶನಗೊಳ್ಳದಂತೆ ಮರೆಮಾಡಿ</translation>
 <translation id="4548946945059463969">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="242959166945779492">ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿ ನೀವು ಯಾವುದೇ ಬ್ಯಾಲೆನ್ಸ್ ಹೊಂದಿಲ್ಲ. ಖರೀದಿ ಮಾಡಲು FTX ಗೆ ಭೇಟಿ ನೀಡಿ.</translation>
+<translation id="2383784987664887340">ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಿಸಲು ಮತ್ತು 3.49% APY ಅನ್ನು ಗಳಿಸಲು Gemini ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದೀಗ Gemini ಮೂಲಕ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿ!</translation>
+<translation id="2237374144728570574">* ಸೆಪ್ಟೆಂಬರ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini Earn APY</translation>
+<translation id="3301417531330431881">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ ವಹಿವಾಟು ದೃಢೀಕರಣ ಅಗತ್ಯವಿರುತ್ತದೆ. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">ಆಂತರಿಕ ದೋಷ, ಐಫ್ರೇಮ್ ಬ್ರಿಡ್ಜೆಟ್ ರಚಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>ಗೆ ದರದಲ್ಲಿ ಖರೀದಿಸಿ</translation>
 </translationbundle>

@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Hitilafu: Akaunti inayosubiri</translation>
 <translation id="2388470740942086608">Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.</translation>
 <translation id="3605236342612716051">Hitilafu: Akaunti imewekewa vikwazo</translation>
+<translation id="7147519373526655987">Kulikuwa na hitilafu wakati wa kuthibitisha ombi la kivinjari chako la kuunganisha pochi yako ya Brave Rewards kwenye akaunti yako ya <ph name="PROVIDER"/>. Unaweza kuwasiliana na wasaidizi wa<ph name="BEGIN_LINK"/><ph name="END_LINK"/> kwa usaidizi zaidi.</translation>
+<translation id="1316066811927496401">Hitilafu: Ombi halikuweza kuthibitishwa</translation>
 <translation id="1737873393693460829">Kwa kuwasha [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Malipo yako ya <ph name="AMOUNT"/> yanaanza kuchakata baada ya <ph name="DAYS"/></translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Inaweza kuchukua siku chache kwa malipo kuchakatwa na BAT yako kuwasili.</translation>
@@ -589,8 +591,7 @@
 <translation id="3699674790322420653">Kamilisha uthibitishaji pochi</translation>
 <translation id="9200453331904391567">Ondoa kwenye Brave Rewards</translation>
 <translation id="3656941797339037856">Unganisha Zawadi kwa Gemini!</translation>
-<translation id="2383784987664887340">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY kwenye BAT yako. Thibitisha na uunganishe pochi yako ya Brave Rewards na Gemini sasa!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY kuanzia tarehe 15 Septemba, 2021</translation>
+<translation id="3066983737886188034">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY kwenye BAT yako. Thibitisha na uunganishe pochi yako ya Brave Rewards na Gemini sasa!</translation>
 <translation id="7404779623219601861">Tumia BAT upate Kadi za Zawadi</translation>
 <translation id="6215565499749144110">Unaweza kurudisha BAT yako kwa kadi za zawadi za chapa ya jina maarufu ukiwa na Mtandao wa TAP.</translation>
 <translation id="6915065518766963119">* Inahitaji Uthibitisho wa Kudumisha.</translation>
@@ -811,6 +812,7 @@
 <translation id="9161147058107529840">Kigezo kimoja cha kipengee kinachotarajiwa.</translation>
 <translation id="1875861420974447980">Kitambulisho hiki cha Mnyororo kinatumika kwa sasa</translation>
 <translation id="167698752210114155">Hitilafu ya ndani imetokea</translation>
+<translation id="1680597601664421644">Kikumbusho kinachohamishwa hakitumiki kwenye Pochi ya Brave</translation>
 <translation id="4641919696349069826">Ombi tayari linaendelea</translation>
 <translation id="872806943696014633">Data ya muamala inakosekana</translation>
 <translation id="4805410229033541409">'kutoka' haijaidhinishwa kutuma miamala</translation>
@@ -864,6 +866,7 @@
 <translation id="629730747756840877">Akaunti</translation>
 <translation id="3891414008432200754">Bei</translation>
 <translation id="2267753748892043616">Ongeza akaunti</translation>
+<translation id="5061574358754621254">Data ya bei inawezeshwa na CoinGecko</translation>
 <translation id="1483493594462132177">Tuma</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> haitumiki</translation>
@@ -871,6 +874,8 @@
 <translation id="632241521608275119">Ustahimili wa Slippage</translation>
 <translation id="4500473291496079954">Itaisha baada ya</translation>
 <translation id="8093033115658137576">Anwani au url ya 0x</translation>
+<translation id="2860280209982026951">Brave hutumia <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kama kijumlishaji cha DEX.</translation>
+<translation id="151946611346774041">0x itachakata anwani ya Ethereum na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata makadirio ya gharama). 0x itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
 <translation id="6518133107902771759">Thibitisha</translation>
 <translation id="1420318137760245955">Karibu kwenye Brave Wallet mpya</translation>
 <translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
@@ -1042,13 +1047,23 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> imetenganishwa</translation>
 <translation id="5317781812114905957">Maagizo</translation>
 <translation id="1178198982208000092">Unganisha <ph name="DEVICE_NAME"/>yako</translation>
-<translation id="3301417531330431881">Pochi ya maunzi inahitaji thibitisho la muamala. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Pochi ya maunzi inahitaji Programu ya Ethereum ifunguliwe kwenye <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">limetumwa</translation>
 <translation id="5013754027092416509">limepokelewa</translation>
 <translation id="5867988533873716616">Kipengele cha Zuia explorer URL hakipatikani.</translation>
 <translation id="4255623233927788178">Tazama kwenye zuia explorer</translation>
+<translation id="7148658188569580292">Harakisha muamala</translation>
+<translation id="1198263951134066686">Batilisha muamala</translation>
+<translation id="3562548974839822204">Jaribu muamala upya</translation>
 <translation id="6383204195803840504">Miamala itaonekana hapa</translation>
+<translation id="6079696972035130497">Bila kikomo</translation>
 <translation id="2916401020782528840">Muamala haujapatikana</translation>
+<translation id="2833661570529295305">Haijaidhinishwa</translation>
+<translation id="8034530868111548216">Imeidhinishwa</translation>
+<translation id="6015436276085482001">Imekataliwa</translation>
+<translation id="6666273175654835609">Imewasilishwa</translation>
+<translation id="2331676293859649642">Imethibitishwa</translation>
+<translation id="1165039591588034296">Hitilafu</translation>
 <translation id="8941851657764077659">Ada ya juu ya kipaumbele</translation>
 <translation id="8047527352810290817">Hariri gesi</translation>
 <translation id="9091334651803050473">Ingawa si hakikisho, wachimbaji migodi huenda wakaupa kipaumbele muamala wako ukilipa ada ya juu zaidi.</translation>
@@ -1070,6 +1085,8 @@
 <translation id="749944179568745958">Anwani ya ETH si sahihi</translation>
 <translation id="882486206986535424">Anwani si sahihi</translation>
 <translation id="6825399159373612149">Kikoa <ph name="DOMAIN_NAME"/> hakijasajiliwa</translation>
+<translation id="8971278306757462297">Anwani ya kupokea ni anwani yako mwenyewe</translation>
+<translation id="3506416339268164412">Anwani ya kupokea ni anwani ya mkataba wa vocha ya zawadi.</translation>
 <translation id="862585889767884824">ya</translation>
 <translation id="9106265941552476098">Kataa miamala <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Salio halitoshi</translation>
@@ -1080,6 +1097,7 @@
 <translation id="5071303414930953888">Akaunti <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Pochi inahitaji kufunguliwa kwanza</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> si anwani sahihi</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> sio mtandao wa sasa</translation>
 <translation id="7340805872138998391">Imeshindwa kufungua kifaa, jaribu kuunganisha tena</translation>
 <translation id="1984410139271779110">Hitilafu ya ndani, mfumo usiojulikana</translation>
 <translation id="8682200134223578011">imeidhinishwa</translation>
@@ -1088,8 +1106,14 @@
 <translation id="4287068151777838754">Data ya JSON haitarajiwi</translation>
 <translation id="3282936527763045737">Nenosiri si sahihi</translation>
 <translation id="1119447706177454957">Hitilafu ya ndani</translation>
-<translation id="3327639091470204775">Hitilafu ya ndani, imeshindwa kuunda iframe bridget</translation>
 <translation id="6672377693827764095">Hitilafu ya ndani, Imeshindwa kupata akaunti</translation>
+<translation id="8933250418452564886">Imeshindwa kupata muamala wa maunzi, tafadhali jaribu tena</translation>
+<translation id="5999974802900788338">Hitilafu imepokewa kutoka kwa kifaa cha maunzi, huenda unahitaji kuthibitisha muamala kwenye kifaa chako</translation>
+<translation id="8523768065044261559">Hitilafu imetokea wakati wa kuchakata muamala, tafadhali jaribu tena</translation>
+<translation id="971552837551838642">Ujumbe wa hitilafu ya kuingia, tafadhali jaribu tena</translation>
+<translation id="8273603707418703324">Ujumbe wa hitilafu ya kuingia, kishikizo kisichojulikana cha funguo kimeombwa, tafadhali jaribu tena.</translation>
+<translation id="5265455943786954050">Amri ya Trezor inaendelea tayari</translation>
+<translation id="7017116822583380542">Trezor Bridge haiko tayari.</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -1104,7 +1128,6 @@
 <translation id="745054660363064771">Haiwezi kuunganisha kwenye seva</translation>
 <translation id="3936826714240735937">Chagua seva nyingine</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> haikuweza kuunganisha kwenye seva ya <ph name="REGION_NAME"/>. Unaweza kujaribu tena, au chagua nyingine</translation>
-<translation id="1664949222596149258">Nunua kwa <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Tayari umenunua VPN?</translation>
 <translation id="8814357473522731680">Inaendeshwa na</translation>
 <translation id="5747552184818312860">Muda wake unakwisha</translation>
@@ -1116,6 +1139,7 @@
 <translation id="3181339219453722970">Chagua eneo lako la VPN</translation>
 <translation id="1751947227857853925">Haraka na bila kikomo hadi Mbps 100</translation>
 <translation id="1400240082805528049">Usaidizi wa sa 24 kila siku</translation>
+<translation id="8463313539532697053">Subiri kidogo huku ikipakia na#8230;</translation>
 <translation id="7586151660465233733">Masoko zaidi kwenye <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tazama masoko na uuze crypto kwenye FTX</translation>
 <translation id="5963745988819586370">Masoko</translation>
@@ -1133,4 +1157,9 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="2383784987664887340">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY kwenye BAT yako. Thibitisha na uunganishe pochi yako ya Brave Rewards na Gemini sasa!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY kuanzia tarehe 15 Septemba, 2021</translation>
+<translation id="3301417531330431881">Pochi ya maunzi inahitaji thibitisho la muamala. <ph name="DEVICE_NAME"/></translation>
+<translation id="3327639091470204775">Hitilafu ya ndani, imeshindwa kuunda iframe bridget</translation>
+<translation id="1664949222596149258">Nunua kwa <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

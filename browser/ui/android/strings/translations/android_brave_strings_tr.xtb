@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">Çevrimiçi ödeme</translation>
 <translation id="6583902294974160967">Destek</translation>
 <translation id="1799030480311994998">Özellikler</translation>
-<translation id="5345505584130165588">Brave kalkanları &amp; gizlilik</translation>
+<translation id="2005732746077850308">Brave Kalkanları ve Gizlilik</translation>
 <translation id="4692623383562244444">Arama motorları</translation>
 <translation id="1468415711258933398">Standart Sekme</translation>
 <translation id="3377025655491224618">Gizli Sekme</translation>
@@ -23,13 +23,28 @@
 <translation id="4022987104439075738">IPFS Geçidi</translation>
 <translation id="2688519859165248360">Bir IPFS Ağ Geçidi aracılığıyla IPFS kaynaklarına gitmeye izin verir</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="7822245778264751380">Ethereum Fiyatı (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/> Fiyatı (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Çözümleme Yöntemi</translation>
 <translation id="2356070529366658676">Sor</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
 <translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6252490671914511928">Bugünün en çok okunan hikayeleri tamamen özel bir akışta, yalnızca sizin için.</translation>
+<translation id="7266075701303521777">Brave Haberleri cihazınızda eşleştirilen tamamen gizli ve anonim reklamlarla desteklenir.</translation>
+<translation id="4541978218358617681">Reklam</translation>
+<translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
+<translation id="1654539412343893324">Verileriniz hakkında daha fazla bilgi alın</translation>
+<translation id="2989805286512600854">Yeni Sekmede Aç</translation>
+<translation id="3709782636417497984">Yeni Gizli Sekmede Aç</translation>
+<translation id="2014017248518069982"><ph name="PUBLISHER"/> yayıncısının içeriklerini devre dışı bırak</translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> devre dışı</translation>
+<translation id="1276592121036104130">Yeni içerik yükle</translation>
+<translation id="3189348785087463371">Tanıtılan</translation>
+<translation id="7554145152551782675">Daha Fazla Brave Teklifi</translation>
+<translation id="4975944254857623648">Varsayılan kaynaklar</translation>
+<translation id="253886574765651454">Kaynak ekle</translation>
+<translation id="7823038307453615214">Brave News'i Göster</translation>
 <translation id="5787084571334399599">Tarayıcının parmak izi almasını engeller</translation>
 <translation id="7459000603787995422">Çıkışta sekmeleri kapat</translation>
 <translation id="4448697385961650078">İzleyicileri &amp; reklamları engelle</translation>
@@ -118,6 +133,7 @@
 <translation id="4254029385847607686">ARALIK</translation>
 <translation id="3780605330121608425">Cüzdanınız</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Brave Haberleri</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
@@ -170,6 +186,8 @@ yok...</translation>
 <translation id="4282642752844565114">Yanlış sözcük sayısı</translation>
 <translation id="7507533586185621084">Yanlış eşzamanlama kodu</translation>
 <translation id="8284063834901328650">Yanlış eş zamanlama QR kodu</translation>
+<translation id="859506441384380749">Bu kod Brave'in artık kullanılmayan bir sürümü tarafından oluşturulmuş, lütfen önce diğer cihazınızı yükseltin</translation>
+<translation id="3132642509209154999">Bu kodun süresi dolmuş. Lütfen diğer cihazınızda yeni bir kod oluşturun ve tekrar deneyin.</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
 <translation id="3680755684186855422">Brave Senkronizasyonu, yer imleri verilerini çeşitli cihazlarınızdaki Brave Tarayıcılarınız arasında özel olarak senkronize etmenize izin verir.</translation>
 <translation id="3735228155296883311">Başka bir cihazda oluşturduğunuz eşitleme zincirinizden alınan kodu taramanız yeterlidir. Ya da yeni bir eşitleme zinciri başlatın.</translation>
@@ -385,12 +403,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
@@ -406,46 +424,16 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1972589975368876259">Yığını düzenle</translation>
 <translation id="2490330380242414851">Arabirim Öğesini Kaldır</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
-<translation id="7384441892795736634">Verileri Yenile</translation>
-<translation id="4804818685124855865">Bağlantıyı Kes</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Mevduat Adresi</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Mevduat Dekontu</translation>
-<translation id="5110244215256675209">Kripto Para Birimi Satın Al</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Satın al <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Kullanılabilir <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Dönüşümü Ön İzle</translation>
 <translation id="2882813124794301799">Arabirim Öğesi Yığını</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
-<translation id="4670943871783273148">Metniniz bir metin dosyasına kaydedildi.</translation>
-<translation id="4432845796903761592">Dosya kaydedilmedi.</translation>
-<translation id="7144878232160441200">Tekrar Dene</translation>
+<translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
 <translation id="2977461003134694205">Gizlilik İstatistikleri</translation>
 <translation id="4643117005422448078">En İyi Siteler</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">İzleyiciler &amp; Engellenen reklamlar, Tasarruf Edilen Bant Genişliği ve Tasarruf Edilen Zaman Tahminleri.</translation>
 <translation id="74417429503469271">Sık ziyaret ettiğiniz en iyi siteleri açın.</translation>
-<translation id="2956070106555335453">Özet</translation>
-<translation id="1366855498335432549">Para Yatır</translation>
-<translation id="1301340234286078471">Dönüştür</translation>
 <translation id="223536150967420869">Satın Al</translation>
-<translation id="1714829281959608206">Binance hesabı bakiyesini görüntülemek ve kripto para birimlerini alıp satmak için Binance bağlantısını etkinleştirin.</translation>
-<translation id="4584930231524505442">Şunu dönüştürmek istiyorum:</translation>
-<translation id="5749014321384313843">Şunu harcamak istiyorum:</translation>
 <translation id="8688672835843460752">Müsait</translation>
-<translation id="2480674848181564169">Çevirme için yeterli bakiye yok</translation>
-<translation id="2215334405220411393">Dönüştürülecek en az miktar : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Bağlanamadı</translation>
-<translation id="7742417737698031726">Ücret</translation>
-<translation id="2122225204180056042">Şunu alacaksınız:</translation>
-<translation id="6432284126416751397">Dönüşümü Onayla</translation>
 <translation id="5137723827757859599">En iyi sitelerde henüz bir şey yok.</translation>
-<translation id="3891414008432200754">Fiyat</translation>
-<translation id="3733576242118819803">Doğrulayın (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Dönüştürme Başarısız. Lütfen tekrar deneyin.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Jeton Kazanın ve Geri Verin</translation>
 <translation id="244362569344671266">Brave Özel Reklamları'nı görüntüleyerek jeton kazanın ve içerik üreticilerini otomatik olarak destekleyin.</translation>
 <translation id="631124996535890460">Devam ederek <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. kabul etmiş olursunuz</translation>
@@ -489,8 +477,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3415016869273103668">Şimdi ücretsiz bir arama başlatabilirsiniz</translation>
 <translation id="7073631403665023390">Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun veya tıklayın.</translation>
 <translation id="626339649633171286">Brave Ödülleri hakkında daha fazla bilgi edinmek mi istiyorsunuz? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!  çevirdiniz</translation>
-<translation id="392587271502873865">Lütfen ağ bağlantınızı kontrol edin.</translation>
 <translation id="7889432931837317731">Mümkün olduğunda otomatik olarak aç</translation>
 <translation id="8967385052772844086">Tüm Gizlilik Raporunu görüntüleyin</translation>
 <translation id="6864343534748973390">En popüler</translation>
@@ -551,9 +537,8 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7408247683131762445">UYARI: Yedekleme ifadenizi asla ifşa etmeyin. Bu ifadeye sahip olanlar, fonlarınızı sonsuza dek ele geçirebilir.</translation>
 <translation id="939275786514736244">İfademi güvenli bir yere yedekledim</translation>
 <translation id="6896758677409633944">Kopyala</translation>
-<translation id="5317780077021120954">Kaydet</translation>
 <translation id="2604744480284798833">Kripto portföyünüzü erişim kaybına karşı korumak için cüzdanınızı hemen yedekleyin.</translation>
-<translation id="1202920745614909195">Apple Pay, kredi kartı veya bankamatik kartıyla kripto satın alın.</translation>
+<translation id="8289942708804097960">Apple Pay, kredi kartı veya bankamatik kartıyla kripto satın alın.</translation>
 <translation id="841880029259839903">Kripto gönderin veya bir hesaptan diğerine aktarın.</translation>
 <translation id="8982246458261383692">Brave DEX toplayıcısı ile kripto varlık takas edin.</translation>
 <translation id="1783600039044302171">Kriptonuzu şifreyle güvenceye alın</translation>
@@ -568,6 +553,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6366007539108097840">3A</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">TÜMÜ</translation>
+<translation id="5071303414930953888">Hesap <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2267753748892043616">Hesap Ekle</translation>
 <translation id="2632612428525029752">Hesabı Güncelle</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
@@ -585,7 +571,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Şifre</translation>
 <translation id="1569452037668432756">Kilidi açmak için şifrenizi girin</translation>
-<translation id="224719674509047150">Şifre en az 7 karakterden oluşmalıdır, en az bir sayı ve bir özel karakter içermelidir</translation>
+<translation id="3717685683157254329">Şifre en az 7 karakterden oluşmalıdır, en az bir sayı ve bir özel karakter içermelidir</translation>
 <translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
 <translation id="5760476995887363522">Tümceler eşleşmedi. Lütfen tekrar deneyin.</translation>
 <translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
@@ -600,7 +586,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="632241521608275119">Slipaj toleransı</translation>
 <translation id="1987317783729300807">Hesaplar</translation>
 <translation id="3535654229833214438">İşlemler</translation>
-<translation id="4636930964841734540">Bilgi</translation>
 <translation id="2449682593754783720">1 Saat</translation>
 <translation id="969133700726811190">1 Gün</translation>
 <translation id="5882300031363619940">1 Hafta</translation>
@@ -612,7 +597,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3819257035322786455">Yedekle</translation>
 <translation id="4608713693379664295">Birincil Kripto Hesapları</translation>
 <translation id="4003821417160006384">İkincil Hesaplar</translation>
-<translation id="8094541587800369158">Bu hesaplar web 3 dapp'leriyle kullanılabilir ve portföyünüzde gösterilebilir, ancak birincil hesap yedeğinizden kurtarma ifadesiyle geri yüklenemez. İkincil hesapları otomatik olarak geri yüklemek için Brave Sync hesaplarını etkinleştirin.</translation>
+<translation id="2471916999505901943">Bu hesaplar 3 DApps ile kullanılabilir ve portföyünüzde görüntülenebilir. Fakat ikincil hesapların ana hesap yedeğinizdeki kurtarma cümlesiyle geri yüklenemeyeceğini unutmayın.</translation>
 <translation id="6725413948756358325">Hesap İsmi</translation>
 <translation id="6062431965141524986">Özel anahtarınızı içe aktararak ikincil bir hesap oluşturabilirsiniz.</translation>
 <translation id="3952797765659730604">Özel anahtar dize dosyanızı veya JSON'unuzu girin, yapıştırın ya da içe aktarın.</translation>
@@ -624,6 +609,17 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5050890334032852465">Hesap izleme listesini kaydet</translation>
 <translation id="7755766175599167100">Belirteçler ara</translation>
 <translation id="3835223348537121988">Bakiye:</translation>
+<translation id="2490428413101944234">Test musluğu</translation>
+<translation id="2581671693710952401">Ether Al</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> Test Ağı'nın bir musluğundan Ether alın</translation>
+<translation id="7420359180991315365">Wire'a Devam Et</translation>
+<translation id="8488282162676695335">Brave Cüzdan</translation>
+<translation id="5040262127954254034">Gizlilik</translation>
+<translation id="8239147115686034860">Brave Cüzdan'ı otomatik olarak kilitle</translation>
+<translation id="414639769490080648">Brave Cüzdanınızın kaç dakika sonra otomatik olarak kilitlenmesini istersiniz?</translation>
+<translation id="4993345308607970390">Brave Cüzdanı'nı Sıfırla</translation>
+<translation id="6369495274982305511">Cüzdanınızı sıfırlamak istediğinizden emin misiniz? Eğer cüzdanınız yedeklenmediyse, sıfırlamak (tüm ilişkili paralar da dahil olmak üzere) tüm hesap verilerinizi kaybetmenize sebep olabilir. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# dakika} other {# dakika}}</translation>
 <translation id="4449475351935531438">Brave Güvenlik Duvarı + VPN</translation>
 <translation id="719977489961414786">Bağlantınızı korumak ve her yerdeki istenmeyen izleyicileri engellemek için bir VPN'e yükseltin.</translation>
 <translation id="3435896845095436175">Etkinleştir</translation>
@@ -707,8 +703,8 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7995708795274219641">Tutar + Gas</translation>
 <translation id="1950052789869821983">İşlem</translation>
 <translation id="6122742277607781713">Portföy</translation>
-<translation id="6083912983861746409">Gas Fiyatı (GWEI)</translation>
-<translation id="2499079593046817044">GAS Limiti (GWEI)</translation>
+<translation id="750843150060816463">GAS Fiyatı (Gwei)</translation>
+<translation id="1426320910664514906">Gas Limiti</translation>
 <translation id="6389441740143786465">Paylaşım Merkezini Devre Dışı Bırak</translation>
 <translation id="9065203028668620118">Düzenle</translation>
 <translation id="473775607612524610">Güncelle</translation>
@@ -724,8 +720,83 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="5932938770824268122">Özel Anahtar</translation>
 <translation id="2472882733835903303">Özel Anahtarı Göster</translation>
 <translation id="4391056902675005799">Özel Anahtarı Gizle</translation>
-<translation id="5929798090073091848">Uyarı: Bu anahtarı kimseyle paylaşmayın. Özel anahtarınıza sahip olan herkes, hesabınızda tuttuğunuz tüm varlıkları çalabilir.</translation>
+<translation id="7518007103754668253">Uyarı: Bu anahtarı kimseyle paylaşmayın. Özel anahtarınıza sahip olan herkes, hesabınızda tuttuğunuz tüm varlıkları çalabilir.</translation>
 <translation id="1133619932669546254"><ph name="TOKEN"/> token'ını etkinleştir</translation>
 <translation id="2199215899212542417">FONKSİYON TİPİ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Veri yok</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>, <ph name="CRYPTO_VALUE"/><ph name="ASSET"/> (<ph name="FIAT_VALUE"/>$) gönderdi - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> onaylı <ph name="ASSET"/> - <ph name="DATE"/></translation>
+<translation id="7400134344541309180">Onaylı Sınırsız <ph name="ASSET"/> - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> takası - <ph name="DATE"/></translation>
+<translation id="2833661570529295305">Onaylanmadı</translation>
+<translation id="8034530868111548216">Onaylandı</translation>
+<translation id="6015436276085482001">Rededildi</translation>
+<translation id="6666273175654835609">Gönderildi</translation>
+<translation id="2331676293859649642">Onaylandı</translation>
+<translation id="1165039591588034296">Hata</translation>
+<translation id="4354768722613827480">Ücret: <ph name="VALUE"/> ETH (<ph name="FIAT_VALUE"/>$)</translation>
+<translation id="2561824823738097741">En hızlı web tarayıcısını kullanıyor musunuz?</translation>
+<translation id="2065971949051836200">3 kat daha hızlı internet zaten telefonunuzda. Tüm web gezintileriniz için Brave'i kullanın.</translation>
+<translation id="2888278614497184977">Brave = 3 kat hızlı web gezintisi</translation>
+<translation id="6887232551109532144">Her şarjda daha fazla pil ömrü kazanın</translation>
+<translation id="5388885352353494741">Pil tasarrufları bir adım ötenizde. Tüm web gezintileriniz için Brave'i kullanın.</translation>
+<translation id="3164151360474408351">Brave = her şarjda daha fazla pil ömrü</translation>
+<translation id="3211051910418903298">Mobil verilerinizi daha az sıklıkta yenileyin</translation>
+<translation id="1092355580602106002">Daha az reklam = yüklediğiniz her sayfada daha az veri. Tüm web gezintileriniz için Brave'i kullanın.</translation>
+<translation id="623962032102267945">Brave = her sayfada daha az mobil veri</translation>
+<translation id="8047527352810290817">GAS'ı düzenle</translation>
+<translation id="7358989216567322955">Azami Öncelik Ücreti</translation>
+<translation id="9091334651803050473">Bir garantisi olmasa da, daha yüksek bir ücret ödemeniz halinde madencilerin işleminize öncelik vermesi muhtemeldir.</translation>
+<translation id="2941112035454246133">Düşük</translation>
+<translation id="5431902940483264007">Optimum</translation>
+<translation id="7304030187361489308">Yüksek</translation>
+<translation id="1177863135347784049">Özel</translation>
+<translation id="4853037749278079787">Maksimum ücret: ~<ph name="FIAT_VALUE"/>$ (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">Mevcut baz ücret: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">GAS miktarı limiti</translation>
+<translation id="1254969878422524947">GAS başına bahşiş sınırı (Gwei)</translation>
+<translation id="7373308452149471621">GAS başına fiyat sınırı (Gwei)</translation>
+<translation id="5345505584130165588">Brave kalkanları &amp; gizlilik</translation>
+<translation id="7822245778264751380">Ethereum Fiyatı (ETH)</translation>
+<translation id="7384441892795736634">Verileri Yenile</translation>
+<translation id="4804818685124855865">Bağlantıyı Kes</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Mevduat Adresi</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Mevduat Dekontu</translation>
+<translation id="5110244215256675209">Kripto Para Birimi Satın Al</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Satın al <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Kullanılabilir <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Dönüşümü Ön İzle</translation>
+<translation id="4670943871783273148">Metniniz bir metin dosyasına kaydedildi.</translation>
+<translation id="4432845796903761592">Dosya kaydedilmedi.</translation>
+<translation id="7144878232160441200">Tekrar Dene</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="2956070106555335453">Özet</translation>
+<translation id="1366855498335432549">Para Yatır</translation>
+<translation id="1301340234286078471">Dönüştür</translation>
+<translation id="1714829281959608206">Binance hesabı bakiyesini görüntülemek ve kripto para birimlerini alıp satmak için Binance bağlantısını etkinleştirin.</translation>
+<translation id="4584930231524505442">Şunu dönüştürmek istiyorum:</translation>
+<translation id="5749014321384313843">Şunu harcamak istiyorum:</translation>
+<translation id="2480674848181564169">Çevirme için yeterli bakiye yok</translation>
+<translation id="2215334405220411393">Dönüştürülecek en az miktar : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Bağlanamadı</translation>
+<translation id="7742417737698031726">Ücret</translation>
+<translation id="2122225204180056042">Şunu alacaksınız:</translation>
+<translation id="6432284126416751397">Dönüşümü Onayla</translation>
+<translation id="3891414008432200754">Fiyat</translation>
+<translation id="3733576242118819803">Doğrulayın (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Dönüştürme Başarısız. Lütfen tekrar deneyin.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!  çevirdiniz</translation>
+<translation id="392587271502873865">Lütfen ağ bağlantınızı kontrol edin.</translation>
+<translation id="5317780077021120954">Kaydet</translation>
+<translation id="1202920745614909195">Apple Pay, kredi kartı veya bankamatik kartıyla kripto satın alın.</translation>
+<translation id="224719674509047150">Şifre en az 7 karakterden oluşmalıdır, en az bir sayı ve bir özel karakter içermelidir</translation>
+<translation id="4636930964841734540">Bilgi</translation>
+<translation id="8094541587800369158">Bu hesaplar web 3 dapp'leriyle kullanılabilir ve portföyünüzde gösterilebilir, ancak birincil hesap yedeğinizden kurtarma ifadesiyle geri yüklenemez. İkincil hesapları otomatik olarak geri yüklemek için Brave Sync hesaplarını etkinleştirin.</translation>
+<translation id="6083912983861746409">Gas Fiyatı (GWEI)</translation>
+<translation id="2499079593046817044">GAS Limiti (GWEI)</translation>
+<translation id="5929798090073091848">Uyarı: Bu anahtarı kimseyle paylaşmayın. Özel anahtarınıza sahip olan herkes, hesabınızda tuttuğunuz tüm varlıkları çalabilir.</translation>
 </translationbundle>
