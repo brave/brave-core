@@ -27,4 +27,10 @@ source_set("browser_tests") {
     "//content/public/browser",
     "//content/test:test_support",
   ]
+
+  if (is_mac) {
+    sources += [ "os_crypt/keychain_password_mac_browsertest.mm" ]
+
+    deps += [ "//components/os_crypt:test_support" ]
+  }
 }

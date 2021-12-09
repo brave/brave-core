@@ -43,9 +43,8 @@ class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
     https_server_.RegisterRequestHandler(
         base::BindRepeating(&BraveFaviconDatabaseBrowserTest::HandleRequest,
                             base::Unretained(this)));
-    https_server_.RegisterRequestMonitor(
-        base::BindRepeating(&BraveFaviconDatabaseBrowserTest::SaveRequest,
-                            base::Unretained(this)));
+    https_server_.RegisterRequestMonitor(base::BindRepeating(
+        &BraveFaviconDatabaseBrowserTest::SaveRequest, base::Unretained(this)));
 
     ASSERT_TRUE(https_server_.Start());
 
