@@ -290,12 +290,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         InitKeyringController();
         InitEthTxController();
         InitEthJsonRpcController();
-<<<<<<< HEAD
         getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
-=======
-        getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
->>>>>>> 4b3c9376f2... Adds BTC ratio on Asset screen on Android
         setUpAccountList();
     }
 
