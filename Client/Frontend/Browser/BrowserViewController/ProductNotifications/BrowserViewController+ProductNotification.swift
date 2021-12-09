@@ -116,7 +116,7 @@ extension BrowserViewController {
         }
         
         guard let selectedTab = tabManager.selectedTab,
-              Preferences.General.onboardingAdblockPopoverShown.value,
+              presentedViewController == nil,
               !benchmarkNotificationPresented,
               !isOnboardingOrFullScreenCalloutPresented,
               !Preferences.AppState.backgroundedCleanly.value,
