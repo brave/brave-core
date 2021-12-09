@@ -48,6 +48,7 @@ module.exports = async ({ config, mode }) => {
             // version of a module will be used. Instead, accept a cli argument
             // or environment variable containing which build target to use.
             path.resolve(__dirname, '../../out/Component/gen/ui/webui/resources'),
+            path.resolve(__dirname, '../../out/Component_arm64/gen/ui/webui/resources'),
             path.resolve(__dirname, '../../out/Static/gen/ui/webui/resources'),
             path.resolve(__dirname, '../../out/Debug/gen/ui/webui/resources'),
             path.resolve(__dirname, '../../out/Release/gen/ui/webui/resources'),
@@ -63,6 +64,7 @@ module.exports = async ({ config, mode }) => {
             // version of a module will be used. Instead, accept a cli argument
             // or environment variable containing which build target to use.
             path.resolve(__dirname, '../../out/Component/gen'),
+            path.resolve(__dirname, '../../out/Component_arm64/gen'),
             path.resolve(__dirname, '../../out/Static/gen'),
             path.resolve(__dirname, '../../out/Debug/gen'),
             path.resolve(__dirname, '../../out/Release/gen'),
