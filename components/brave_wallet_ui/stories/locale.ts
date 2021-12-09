@@ -83,6 +83,7 @@ provideStrings({
   // Buttons
   braveWalletButtonContinue: 'Continue',
   braveWalletButtonCopy: 'Copy',
+  braveWalletButtonCopied: 'Copied',
   braveWalletButtonVerify: 'Verify',
 
   // Wallet Onboarding Welcome
