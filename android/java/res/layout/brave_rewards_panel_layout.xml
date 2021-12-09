@@ -14,190 +14,200 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/rewards_main_layout"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rewards_settings_gradient_bg"
-                android:orientation="vertical"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
+                android:layout_height="wrap_content">
 
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/rewards_main_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:background="@drawable/rewards_settings_gradient_bg"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:drawablePadding="4dp"
+                                android:text="@string/my_wallet"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                app:drawableEndCompat="@drawable/ic_uphold" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:contentDescription="@null"
+                                app:srcCompat="@drawable/ic_arrow_down" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/btn_verify_wallet"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:background="@drawable/wallet_verify_button"
+                            android:text="@string/brave_ui_wallet_button_unverified"
+                            app:drawableEndCompat="@drawable/disclosure"
+                            android:drawablePadding="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:textAllCaps="false"/>
+
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:drawablePadding="4dp"
-                            android:text="@string/my_wallet"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp"
-                            app:drawableEndCompat="@drawable/ic_uphold" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:contentDescription="@null"
-                            app:srcCompat="@drawable/ic_arrow_down" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/btn_verify_wallet"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:background="@drawable/wallet_verify_button"
-                        android:text="@string/brave_ui_wallet_button_unverified"
-                        app:drawableEndCompat="@drawable/disclosure"
-                        android:drawablePadding="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/white"
-                        android:textAllCaps="false"/>
-
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:paddingStart="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:text="@string/your_balance"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp" />
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/bat_balance_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="4dp"
-                                android:textColor="@android:color/white"
-                                android:textSize="24sp" />
+                            android:layout_weight="0.5"
+                            android:paddingStart="16dp"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.65"
-                                android:text="BAT"
+                                android:text="@string/your_balance"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/bat_balance_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="4dp"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.65"
+                                    android:text="BAT"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/usd_balance_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
                                 android:textColor="@android:color/white"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/usd_balance_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:paddingEnd="32dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/ads_monthly_statement_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:text="@string/estimated_earnings"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="0.5"
+                            android:paddingEnd="32dp"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/bat_balance_ads_text"
+                                android:id="@+id/ads_monthly_statement_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="4dp"
                                 android:textColor="@android:color/white"
-                                android:textSize="24sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.65"
-                                android:text="BAT"
+                                android:text="@string/estimated_earnings"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/bat_balance_ads_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="4dp"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.65"
+                                    android:text="BAT"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/usd_balance_ads_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
                                 android:textColor="@android:color/white"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/usd_balance_ads_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.65"
-                            android:textColor="@android:color/white"
-                            android:textSize="14sp" />
-
                     </LinearLayout>
+
+                    <include
+                        android:id="@+id/brave_rewards_panel_tip_layout_id"
+                        layout="@layout/brave_rewards_panel_tip_layout" />
+
+                    <include
+                        android:id="@+id/brave_rewards_panel_summary_layout_id"
+                        layout="@layout/brave_rewards_panel_summary_layout" />
+
+                    <include
+                        layout="@layout/brave_rewards_panel_settings_layout" />
 
                 </LinearLayout>
 
                 <include
-                    android:id="@+id/brave_rewards_panel_tip_layout_id"
-                    layout="@layout/brave_rewards_panel_tip_layout" />
+                    android:id="@+id/brave_rewards_panel_notification_layout_id"
+                    layout="@layout/brave_rewards_panel_notification_layout" />
 
-                <include
-                    android:id="@+id/brave_rewards_panel_summary_layout_id"
-                    layout="@layout/brave_rewards_panel_summary_layout" />
-
-                <include
-                    layout="@layout/brave_rewards_panel_settings_layout" />
-
-            </LinearLayout>
+            </FrameLayout>
 
         </ScrollView>
 
