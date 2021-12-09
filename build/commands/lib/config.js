@@ -925,7 +925,7 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
-    if (this.targetOS) {
+    if (this.targetOS && (this.targetOS === 'android' || this.targetOS === 'ios')) {
       buildConfigDir = this.targetOS + "_" + buildConfigDir
     }
     if (this.targetEnvironment) {
