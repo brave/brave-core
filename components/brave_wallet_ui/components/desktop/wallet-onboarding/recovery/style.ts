@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../../../shared/style'
+import CheckMark from '../../../../assets/svg-icons/big-checkmark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -129,4 +130,12 @@ export const RecoveryBubbleText = styled.span`
   line-height: 22px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+`
+export const BigCheckMark = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${CheckMark});
+  mask-image: url(${CheckMark});
+  margin-right: 4px;
 `

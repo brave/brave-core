@@ -13,7 +13,8 @@ import {
   AlertIcon,
   RecoveryBubble,
   RecoveryBubbleText,
-  RecoveryPhraseContainer
+  RecoveryPhraseContainer,
+  BigCheckMark
 } from './style'
 import { Tooltip } from '../../../shared'
 import { NavButton } from '../../../extension'
@@ -25,11 +26,12 @@ export interface Props {
   isRecoveryTermsAccepted: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
   recoverPhrase: string[]
+  recoverPhraseCopied: boolean
   onCopy: () => void
 }
 
 function OnboardingBackup (props: Props) {
-  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, onCopy } = props
+  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, recoverPhraseCopied, onCopy } = props
 
   return (
     <StyledWrapper>
@@ -50,7 +52,10 @@ function OnboardingBackup (props: Props) {
         )}
       </RecoveryPhraseContainer>
       <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
-        <CopyButton onClick={onCopy}>{getLocale('braveWalletButtonCopy')}</CopyButton>
+        <CopyButton onClick={onCopy}>
+          {recoverPhraseCopied && <BigCheckMark />}
+          {recoverPhraseCopied ? 'Copied' : getLocale('braveWalletButtonCopy')}
+        </CopyButton>
       </Tooltip>
       <TermsRow>
         <Checkbox value={{ backedUp: isRecoveryTermsAccepted }} onChange={onSubmitTerms}>
