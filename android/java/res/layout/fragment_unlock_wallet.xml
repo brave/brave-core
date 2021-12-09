@@ -7,7 +7,8 @@
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
     android:background="@color/wallet_bg"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:theme="@style/BraveWalletOnboarding">
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_graphic_lock"/>
+                app:srcCompat="?attr/ic_onboarding_password"/>
 
         </FrameLayout>
 
