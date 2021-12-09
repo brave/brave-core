@@ -67,6 +67,10 @@ template("rust_crate") {
 
     forward_variables_from(invoker, [ "deps" ])
 
+    if (defined(invoker.visibility)) {
+      visibility = invoker.visibility
+    }
+
     inputs = [ script ]
 
     inputs += invoker.inputs
