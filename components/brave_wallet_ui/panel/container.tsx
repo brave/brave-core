@@ -465,6 +465,10 @@ function Container (props: Props) {
     // Logic here to Cancel Adding a Suggested Token
   }
 
+  const onAddNetwork = () => {
+    props.walletActions.expandWalletNetworks()
+  }
+
   const isConnectedToSite = React.useMemo((): boolean => {
     if (activeOrigin === WalletOrigin) {
       return true
@@ -649,6 +653,8 @@ function Container (props: Props) {
             networks={networkList}
             onBack={onReturnToMain}
             onSelectNetwork={onSelectNetwork}
+            onAddNetwork={onAddNetwork}
+            hasAddButton={true}
           />
         </SelectContainer>
       </PanelWrapper>

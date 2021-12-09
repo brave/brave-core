@@ -655,4 +655,12 @@ handler.on(WalletActions.cancelTransaction.getType(), async (store: Store, paylo
   }
 })
 
+handler.on(WalletActions.expandWalletNetworks.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+})
+
 export default handler.middleware

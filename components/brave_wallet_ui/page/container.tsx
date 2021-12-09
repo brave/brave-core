@@ -459,6 +459,10 @@ function Container (props: Props) {
     props.walletActions.cancelTransaction(transaction)
   }
 
+  const onAddNetwork = () => {
+    props.walletActions.expandWalletNetworks()
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
@@ -680,6 +684,7 @@ function Container (props: Props) {
             onSelectTab={setSelectedWidgetTab}
             onSwapQuoteRefresh={onSwapQuoteRefresh}
             onSelectSendAsset={onSelectSendAsset}
+            onAddNetwork={onAddNetwork}
           />
         </WalletWidgetStandIn>
       }

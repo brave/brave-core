@@ -25,6 +25,7 @@ export interface Props {
   onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
+  onAddNetwork: () => void
 }
 
 function BuyTab (props: Props) {
@@ -40,7 +41,8 @@ function BuyTab (props: Props) {
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
-    onSetBuyAmount
+    onSetBuyAmount,
+    onAddNetwork
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(assetOptions[0])
@@ -110,6 +112,7 @@ function BuyTab (props: Props) {
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
+          onAddNetwork={onAddNetwork}
         />
       }
     </>
