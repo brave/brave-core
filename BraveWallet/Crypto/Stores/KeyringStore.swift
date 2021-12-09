@@ -112,7 +112,7 @@ public class KeyringStore: ObservableObject {
       self.autoLockInterval = .init(value: minutes)
     }
     cancellable = NotificationCenter.default
-      .publisher(for: UIApplication.willEnterForegroundNotification, object: nil)
+      .publisher(for: UIApplication.didBecomeActiveNotification, object: nil)
       .sink { [weak self] _ in
         self?.updateKeyringInfo()
       }
@@ -120,6 +120,13 @@ public class KeyringStore: ObservableObject {
   
   private func updateKeyringInfo() {
     controller.defaultKeyringInfo { [self] keyringInfo in
+      if UIApplication.shared.applicationState != .active {
+        // Changes made in the backgroud due to timers going off at launch don't
+        // re-render things properly.
+        //
+        // This function is called again on `didBecomeActiveNotification` anyways.
+        return
+      }
       keyring = keyringInfo
       if !keyring.accountInfos.isEmpty {
         controller.selectedAccount { accountAddress in

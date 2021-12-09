@@ -52,9 +52,8 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
       .map(\.isLocked)
       .removeDuplicates()
       .sink { [weak self] isLocked in
-        guard let self = self else { return }
-        if isLocked, let controller = self.presentedViewController {
-          controller.dismiss(animated: true)
+        if let self = self, isLocked, self.presentedViewController != nil {
+          self.dismiss(animated: true)
         }
       }
   }
