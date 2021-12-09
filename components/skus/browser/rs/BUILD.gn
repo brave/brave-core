@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 group("rust_lib") {
+  visibility = [ "//brave/build/rust:rust_lib" ]
   deps = [
     "lib:rust_lib",
     "cxx:rust_lib",
