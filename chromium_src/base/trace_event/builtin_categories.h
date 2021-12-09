@@ -13,7 +13,7 @@
 // named 'brave.<feature_name>`.
 // * Keep the list sorted.
 //
-// Note: THere is no #undef for this macros because it is used in exported
+// Note: There is no #undef for this macros because it is used in exported
 // macros of the chromium builtin_categories.h.
 #define BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES(X) \
   X("brave")                                            \
