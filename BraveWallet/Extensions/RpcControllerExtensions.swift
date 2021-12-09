@@ -37,7 +37,13 @@ extension BraveWalletEthJsonRpcController {
     if token.isETH {
       balance(account.address, completion: convert)
     } else if token.isErc20 {
-      erc20TokenBalance(token.contractAddress, address: account.address, completion: convert)
+      chainId { [self] chainId in
+        erc20TokenBalance(
+          token.contractAddress(in: chainId),
+          address: account.address,
+          completion: convert
+        )
+      }
     } else if token.isErc721 {
       erc721TokenBalance(token.contractAddress, tokenId: token.tokenId, accountAddress: account.address,
                          completion: convert)

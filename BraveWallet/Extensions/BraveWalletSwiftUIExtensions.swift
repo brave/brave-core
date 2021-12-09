@@ -35,7 +35,7 @@ extension BraveWallet.ERCToken: Identifiable {
     contractAddress.isEmpty && symbol.lowercased() == "eth"
   }
   
-  public func swapAddress(in chainId: String) -> String {
+  public func contractAddress(in chainId: String) -> String {
     if chainId == BraveWallet.RopstenChainId {
       switch symbol.uppercased() {
       case "ETH": return BraveWallet.ethSwapAddress
@@ -54,9 +54,11 @@ extension BraveWallet {
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   
   ///  The address that is expected when you are swapping DAI via SwapController APIs
+  ///  Also the contract address to fetch DAI balance on Ropsten
   public static let daiSwapAddress: String = "0xad6d458402f60fd3bd25163575031acdce07538d"
   
   ///  The address that is expected when you are swapping USDC via SwapController APIs
+  ///  Also the contract address to fetch USDC balance on Ropsten
   public static let usdcSwapAddress: String = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
   
   /// A list of supported assets' symbols for swapping in `Ropsten` network
