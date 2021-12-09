@@ -63,8 +63,7 @@ class ViewCounterService : public KeyedService,
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
   base::Value GetCurrentBrandedWallpaper() const;
-  std::vector<TopSite> GetTopSitesVectorForWebUI() const;
-  std::vector<TopSite> GetTopSitesVectorData() const;
+  std::vector<TopSite> GetTopSitesData() const;
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;

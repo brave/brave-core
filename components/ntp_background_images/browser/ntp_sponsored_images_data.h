@@ -57,18 +57,32 @@ struct SponsoredBackground {
 
   std::string creative_instance_id;
 
-  absl::optional<Logo> logo;
+  Logo logo;
   absl::optional<gfx::Rect> viewbox;
 
   SponsoredBackground();
   // For unit test.
   SponsoredBackground(const base::FilePath& image_file_path,
-                      const gfx::Point& point);
+                      const gfx::Point& point,
+                      const Logo& test_logo);
   SponsoredBackground(const SponsoredBackground&);
 
   ~SponsoredBackground();
 };
 
+struct Campaign {
+  Campaign();
+  ~Campaign();
+  Campaign(const Campaign&);
+  Campaign& operator=(const Campaign&);
+
+  bool IsValid() const;
+
+  std::vector<SponsoredBackground> backgrounds;
+};
+
+// For SI, campaign list can have multiple items.
+// For SR, campaign list has only one item.
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
   NTPSponsoredImagesData(const std::string& json_string,
@@ -78,21 +92,27 @@ struct NTPSponsoredImagesData {
   ~NTPSponsoredImagesData();
 
   bool IsValid() const;
-  // Generate Value with background image at |index|.
-  base::Value GetBackgroundAt(size_t index);
-  std::vector<TopSite> GetTopSitesForWebUI() const;
+
+  void ParseCampaignsList(base::Value campaigns,
+                          const base::FilePath& installed_dir);
+
+  // Parse common properties for SI & SR.
+  Campaign GetCampaignFromValue(base::Value value,
+                                const base::FilePath& installed_dir);
+  void ParseSRProperties(base::Value value,
+                         const base::FilePath& installed_dir);
+
+  base::Value GetBackgroundAt(size_t campaign_index, size_t background_index);
 
   bool IsSuperReferral() const;
 
-  std::string GetURLPrefix() const;
-
-  std::vector<std::string> wallpaper_image_urls() const;
-
-  Logo default_logo;
-  std::string theme_name;
-  std::vector<SponsoredBackground> backgrounds;
-  std::vector<TopSite> top_sites;
   std::string url_prefix;
+
+  std::vector<Campaign> campaigns;
+
+  // SR only properties.
+  std::string theme_name;
+  std::vector<TopSite> top_sites;
 };
 
 }  // namespace ntp_background_images

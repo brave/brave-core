@@ -77,7 +77,7 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
 
   if (auto* data = GetCurrentBrandedWallpaperData())
-    model_.set_total_branded_image_count(data->backgrounds.size());
+    model_.set_total_branded_image_count(data->campaigns[0].backgrounds.size());
   if (auto* data = GetCurrentWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
 
@@ -152,24 +152,15 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
+    // TODO(simonhong): Consider multiple campaigns
     return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
-        model_.current_branded_wallpaper_image_index());
+        0, model_.current_branded_wallpaper_image_index());
   }
 
   return base::Value();
 }
 
-std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (auto* data = GetCurrentBrandedWallpaperData()) {
-    return data->GetTopSitesForWebUI();
-  }
-#endif
-
-  return {};
-}
-
-std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
+std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData())
     return data->top_sites;
@@ -225,7 +216,8 @@ void ViewCounterService::ResetModel() {
 
   // SR/SI
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    model_.set_total_branded_image_count(data->backgrounds.size());
+    // TODO(simonhong): Consider multiple campaigns
+    model_.set_total_branded_image_count(data->campaigns[0].backgrounds.size());
     model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
   }
   // BI
