@@ -269,6 +269,11 @@ const util = {
     // Replace webui CSS to use our fonts.
     fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
+    // Replace Dino game icons.
+    fileMap.add([path.join(braveComponentsDir, 'neterror', 'resources', 'images', 'default_100_percent', 'offline', '100-offline-sprite.png'), 
+                 path.join(config.srcDir, 'components', 'neterror', 'resources', 'images', 'default_100_percent', 'offline', '100-offline-sprite.png')])
+    fileMap.add([path.join(braveComponentsDir, 'neterror', 'resources', 'images', 'default_200_percent', 'offline', '200-offline-sprite.png'), 
+                 path.join(config.srcDir, 'components', 'neterror', 'resources', 'images', 'default_200_percent', 'offline', '200-offline-sprite.png')])
 
     for (const [source, output] of fileMap) {
       if (!fs.existsSync(source)) {
