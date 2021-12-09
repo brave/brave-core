@@ -54,13 +54,13 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
             @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
             @Nullable ViewGroup viewportView, FeedActionDelegate actionDelegate,
-            HelpAndFeedbackLauncher helpAndFeedbackLauncher, FeedHooks feedHooks) {
+            HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
                 showDarkBackground, delegate, profile, isPlaceholderShownInitially,
                 bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
                 launchOrigin, privacyPreferencesManager, toolbarSupplier,
                 launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
-                actionDelegate, helpAndFeedbackLauncher, feedHooks);
+                actionDelegate, helpAndFeedbackLauncher);
     }
 
     @Override
