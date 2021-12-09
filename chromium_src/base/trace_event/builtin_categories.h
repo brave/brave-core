@@ -10,7 +10,7 @@
 // builtin_categories.h for more details. Please:
 // * For small features use the existing 'brave' category.
 // * For new big subsystems with a lot of traces create a separate category
-// named 'brave.<feature_name>`.
+// named 'brave.<feature_name>'.
 // * Keep the list sorted.
 //
 // Note: There is no #undef for this macros because it is used in exported
