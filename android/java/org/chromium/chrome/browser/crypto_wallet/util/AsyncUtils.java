@@ -92,7 +92,7 @@ public class AsyncUtils {
     }
 
     public static class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements JsonRpcService.GetErc20TokenBalanceResponse {
+            implements JsonRpcService.GetErc20TokenBalance_Response {
         public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -105,7 +105,7 @@ public class AsyncUtils {
     }
 
     public static class GetBalanceResponseContext
-            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalanceResponse {
+            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalance_Response {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -118,7 +118,7 @@ public class AsyncUtils {
     }
 
     public static class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioService.GetPriceResponse {
+            extends SingleResponseBaseContext implements AssetRatioService.GetPrice_Response {
         public Boolean success;
         public AssetPrice[] prices;
 
@@ -135,7 +135,7 @@ public class AsyncUtils {
     }
 
     public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
-            implements EthTxService.GetAllTransactionInfoResponse {
+            implements EthTxService.GetAllTransactionInfo_Response {
         public TransactionInfo[] txInfos;
         public String name;
 
@@ -152,8 +152,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetPriceHistoryResponseContext
-            extends SingleResponseBaseContext implements AssetRatioService.GetPriceHistoryResponse {
+    public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
+            implements AssetRatioService.GetPriceHistory_Response {
         public Boolean success;
         public AssetTimePrice[] timePrices;
         public BlockchainToken userAsset;

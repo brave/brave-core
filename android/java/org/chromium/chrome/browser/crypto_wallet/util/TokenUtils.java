@@ -37,7 +37,7 @@ public class TokenUtils {
     }
 
     public static void getUserAssetsFiltered(BraveWalletService braveWalletService, String chainId,
-            BraveWalletService.GetUserAssetsResponse callback) {
+            BraveWalletService.GetUserAssets_Response callback) {
         braveWalletService.getUserAssets(chainId, (BlockchainToken[] tokens) -> {
             BlockchainToken[] filteredTokens = filterOut(tokens, false);
             callback.call(filteredTokens);
@@ -46,7 +46,7 @@ public class TokenUtils {
 
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
             BlockchainRegistry blockchainRegistry, String chainId,
-            BlockchainRegistry.GetAllTokensResponse callback) {
+            BlockchainRegistry.GetAllTokens_Response callback) {
         blockchainRegistry.getAllTokens(
                 BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
                     braveWalletService.getUserAssets(chainId, (BlockchainToken[] userTokens) -> {
@@ -58,7 +58,7 @@ public class TokenUtils {
     }
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            BlockchainRegistry.GetAllTokensResponse callback) {
+            BlockchainRegistry.GetAllTokens_Response callback) {
         blockchainRegistry.getBuyTokens(
                 BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
                     BlockchainToken[] filteredTokens = filterOut(tokens, true);
