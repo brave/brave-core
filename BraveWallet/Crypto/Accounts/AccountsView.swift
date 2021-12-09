@@ -14,6 +14,7 @@ struct AccountsView: View {
   var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   @State private var navigationController: UINavigationController?
+  @State private var selectedAccount: BraveWallet.AccountInfo?
   
   private var primaryAccounts: [BraveWallet.AccountInfo] {
     keyringStore.keyring.accountInfos.filter(\.isPrimary)
@@ -21,41 +22,6 @@ struct AccountsView: View {
   
   private var secondaryAccounts: [BraveWallet.AccountInfo] {
     keyringStore.keyring.accountInfos.filter(\.isImported)
-  }
-  
-  @ViewBuilder
-  private func accountView(for account: BraveWallet.AccountInfo) -> some View {
-    // Using `NavigationLink` in iOS 14.0 here ends up with a bug where the cell doesn't deselect because
-    // the navigation is a UINavigationController and this view is inside of a UIPageViewController
-    let view = AccountView(address: account.address, name: account.name)
-    let destination = AccountActivityView(
-      keyringStore: keyringStore,
-      activityStore: cryptoStore.accountActivityStore(for: account),
-      networkStore: cryptoStore.networkStore
-    )
-      .onDisappear {
-        cryptoStore.closeAccountActivityStore(for: account)
-      }
-    if #available(iOS 15.0, *) {
-      ZStack {
-        view
-        NavigationLink(destination: destination) {
-          EmptyView()
-        }
-        .opacity(0) // Design doesnt have a disclosure icon
-      }
-      .accessibilityAddTraits(.isButton)
-      .accessibilityElement(children: .contain)
-    } else {
-      Button(action: {
-        navigationController?.pushViewController(
-          UIHostingController(rootView: destination),
-          animated: true
-        )
-      }) {
-        view
-      }
-    }
   }
   
   var body: some View {
@@ -71,7 +37,11 @@ struct AccountsView: View {
         )
       ) {
         ForEach(primaryAccounts) { account in
-          accountView(for: account)
+          Button {
+            selectedAccount = account
+          } label: {
+            AccountView(address: account.address, name: account.name)
+          }
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -90,12 +60,35 @@ struct AccountsView: View {
             .font(.footnote.weight(.medium))
         } else {
           ForEach(accounts) { account in
-            accountView(for: account)
+            Button {
+              selectedAccount = account
+            } label: {
+              AccountView(address: account.address, name: account.name)
+            }
           }
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .background(
+      NavigationLink(isActive: Binding(
+        get: { selectedAccount != nil },
+        set: { if !$0 { selectedAccount = nil } }
+      ), destination: {
+        if let account = selectedAccount {
+          AccountActivityView(
+            keyringStore: keyringStore,
+            activityStore: cryptoStore.accountActivityStore(for: account),
+            networkStore: cryptoStore.networkStore
+          )
+            .onDisappear {
+              cryptoStore.closeAccountActivityStore(for: account)
+            }
+        }
+      }, label: {
+        EmptyView()
+      })
+    )
     .listStyle(InsetGroupedListStyle())
     .osAvailabilityModifiers { content in
       if #available(iOS 15.0, *) {
