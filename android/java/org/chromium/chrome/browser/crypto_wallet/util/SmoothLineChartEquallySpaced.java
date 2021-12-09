@@ -36,6 +36,9 @@ public class SmoothLineChartEquallySpaced extends View {
     private static final int STROKE_SIZE = 2;
     private static final float SMOOTHNESS = 0.35f; // the higher the smoother, but don't go over 0.5
 
+    private static final int CANVAS_TEXT_START_Y = 35;
+    private static final int CANVAS_TEXT_PADDING_Y = 10;
+
     private final Paint mPaint;
     private final Path mPath;
     private final float mCircleSize;
@@ -215,7 +218,8 @@ public class SmoothLineChartEquallySpaced extends View {
             paint.setColor(getResources().getColor(R.color.wallet_text_color));
 
             paint.setStrokeWidth(2f);
-            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, getHeight() - 10, paint);
+            canvas.drawLine(mCurrentLineX, CANVAS_TEXT_START_Y + CANVAS_TEXT_PADDING_Y,
+                    mCurrentLineX, getHeight() - mBorder - mStrokeSize / 2, paint);
             float possibleValue =
                     mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
             if (possibleValue < 0) {
@@ -231,7 +235,8 @@ public class SmoothLineChartEquallySpaced extends View {
                 textX = mCurrentLineX;
             }
             if (!mNoDrawText)
-                canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX, 35, paintText);
+                canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX,
+                        CANVAS_TEXT_START_Y, paintText);
             if (mPrice != null) {
                 DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
                 mPrice.setText("$" + decimalFormat.format(mValues[(int) possibleValue]));
