@@ -80,7 +80,12 @@ enum NavigationPath: Equatable {
         case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
         case .url(let url, let isPrivate): NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
         case .text(let text): NavigationPath.handleText(text: text, with: bvc)
-        case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
+        case .widgetShortcutURL(let path):
+            // MARK: Widgets Disabled due to Crash on iOS 14 Favourites - Brandon T.
+            // See: https://github.com/brave/brave-ios/issues/4582
+            // See: https://github.com/brave/brave-ios/pull/4692
+            print("WIDGETS DISABLED - DUE TO CRASH ON iOS 14!")
+            break //NavigationPath.handleWidgetShortcut(path, with: bvc)
         }
     }
 
