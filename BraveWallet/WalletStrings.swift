@@ -460,7 +460,7 @@ extension Strings {
       "wallet.backupWalletSubtitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Safe it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.",
+      value: "In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.",
       comment: "The subtitle of the backup wallet screen"
     )
     public static let backupWalletDisclaimer = NSLocalizedString(
