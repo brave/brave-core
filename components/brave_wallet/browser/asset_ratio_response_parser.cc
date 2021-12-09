@@ -19,7 +19,7 @@ namespace brave_wallet {
 bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,
-                     std::vector<brave_wallet::mojom::AssetPricePtr>* values) {
+                     std::vector<mojom::AssetPricePtr>* values) {
   // Parses results like this:
   // /v2/relative/provider/coingecko/bat,chainlink/btc,usd/1w
   // {
@@ -76,7 +76,7 @@ bool ParseAssetPrice(const std::string& json,
     }
 
     for (const std::string& to_asset : to_assets) {
-      auto asset_price = brave_wallet::mojom::AssetPrice::New();
+      auto asset_price = mojom::AssetPrice::New();
       asset_price->from_asset = from_asset;
       asset_price->to_asset = to_asset;
 
@@ -103,9 +103,8 @@ bool ParseAssetPrice(const std::string& json,
   return true;
 }
 
-bool ParseAssetPriceHistory(
-    const std::string& json,
-    std::vector<brave_wallet::mojom::AssetTimePricePtr>* values) {
+bool ParseAssetPriceHistory(const std::string& json,
+                            std::vector<mojom::AssetTimePricePtr>* values) {
   DCHECK(values);
 
   // {  "payload":
@@ -170,7 +169,7 @@ bool ParseAssetPriceHistory(
     double price = price_value.GetDouble();
 
     base::Time date = base::Time::FromJsTime(date_dbl);
-    auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
+    auto asset_time_price = mojom::AssetTimePrice::New();
     asset_time_price->date = base::Milliseconds(date.ToJavaTime());
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
@@ -207,8 +206,7 @@ std::string ParseEstimatedTime(const std::string& json) {
   return result ? *result : "";
 }
 
-brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
-    const std::string& json) {
+mojom::GasEstimation1559Ptr ParseGasOracle(const std::string& json) {
   // {
   //   "payload": {
   //     "status": "1",
@@ -266,8 +264,7 @@ brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
     return nullptr;
   }
 
-  mojom::GasEstimation1559Ptr estimation =
-      brave_wallet::mojom::GasEstimation1559::New();
+  mojom::GasEstimation1559Ptr estimation = mojom::GasEstimation1559::New();
 
   // We save the original value in wei as the base_fee_per_gas, but use only
   // the integer part in gwei value to calculate the priority fee.

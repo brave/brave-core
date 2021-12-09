@@ -18,14 +18,12 @@ namespace brave_wallet {
 bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,
-                     std::vector<brave_wallet::mojom::AssetPricePtr>* values);
-bool ParseAssetPriceHistory(
-    const std::string& json,
-    std::vector<brave_wallet::mojom::AssetTimePricePtr>* values);
+                     std::vector<mojom::AssetPricePtr>* values);
+bool ParseAssetPriceHistory(const std::string& json,
+                            std::vector<mojom::AssetTimePricePtr>* values);
 
 std::string ParseEstimatedTime(const std::string& json);
-brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
-    const std::string& json);
+mojom::GasEstimation1559Ptr ParseGasOracle(const std::string& json);
 
 }  // namespace brave_wallet
 
