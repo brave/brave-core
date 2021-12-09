@@ -301,4 +301,38 @@ void AssetRatioController::OnGetGasOracle(
   std::move(callback).Run(ParseGasOracle(body));
 }
 
+// static
+GURL AssetRatioController::GetTokenInfoURL(
+    const std::string& contract_address) {
+  std::string spec = base::StringPrintf(
+      "%sv2/etherscan/"
+      "passthrough?module=token&action=tokeninfo&contractaddress=%s",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str(),
+      contract_address.c_str());
+  return GURL(spec);
+}
+
+void AssetRatioController::GetTokenInfo(const std::string& contract_address,
+                                        GetTokenInfoCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioController::OnGetTokenInfo,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_->Request("GET", GetTokenInfoURL(contract_address), "", "",
+                               true, std::move(internal_callback));
+}
+
+void AssetRatioController::OnGetTokenInfo(
+    GetTokenInfoCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(ParseTokenInfo(body));
+}
+
 }  // namespace brave_wallet

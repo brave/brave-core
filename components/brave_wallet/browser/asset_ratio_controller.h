@@ -43,6 +43,7 @@ class AssetRatioController : public KeyedService,
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::AssetRatioController> receiver);
 
+  // mojom::AssetRatioController
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
                 brave_wallet::mojom::AssetPriceTimeframe timeframe,
@@ -52,6 +53,11 @@ class AssetRatioController : public KeyedService,
                        const std::string& vs_asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
+  void GetEstimatedTime(const std::string& gas_price,
+                        GetEstimatedTimeCallback callback) override;
+  void GetGasOracle(GetGasOracleCallback callback) override;
+  void GetTokenInfo(const std::string& contract_address,
+                    GetTokenInfoCallback callback) override;
 
   static GURL GetPriceURL(const std::vector<std::string>& from_assets,
                           const std::vector<std::string>& to_assets,
@@ -60,13 +66,9 @@ class AssetRatioController : public KeyedService,
       const std::string& asset,
       const std::string& vs_asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
-
-  void GetEstimatedTime(const std::string& gas_price,
-                        GetEstimatedTimeCallback callback) override;
-  void GetGasOracle(GetGasOracleCallback callback) override;
-
   static GURL GetEstimatedTimeURL(const std::string& gas_price);
   static GURL GetGasOracleURL();
+  static GURL GetTokenInfoURL(const std::string& contract_address);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
   void SetAPIRequestHelperForTesting(
@@ -92,6 +94,11 @@ class AssetRatioController : public KeyedService,
       const base::flat_map<std::string, std::string>& headers);
 
   void OnGetGasOracle(GetGasOracleCallback callback,
+                      const int status,
+                      const std::string& body,
+                      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetTokenInfo(GetTokenInfoCallback callback,
                       const int status,
                       const std::string& body,
                       const base::flat_map<std::string, std::string>& headers);
