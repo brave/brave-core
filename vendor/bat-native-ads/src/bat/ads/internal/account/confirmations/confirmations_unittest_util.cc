@@ -11,6 +11,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "wrapper.hpp"
@@ -23,18 +24,19 @@ using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::UnblindedToken;
 
 ConfirmationInfo BuildConfirmation(const std::string& id,
+                                   const std::string& transaction_id,
                                    const std::string& creative_instance_id,
                                    const ConfirmationType& type,
                                    const AdType& ad_type) {
   ConfirmationInfo confirmation;
 
   confirmation.id = id;
+  confirmation.transaction_id = transaction_id;
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = type;
   confirmation.ad_type = ad_type;
 
-  privacy::UnblindedTokens* unblinded_tokens =
-      ConfirmationsState::Get()->get_unblinded_tokens();
+  privacy::UnblindedTokens* unblinded_tokens = privacy::get_unblinded_tokens();
   if (unblinded_tokens && !unblinded_tokens->IsEmpty()) {
     const privacy::UnblindedTokenInfo& unblinded_token =
         unblinded_tokens->GetToken();
@@ -58,13 +60,6 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
   confirmation.was_created = false;
 
   return confirmation;
-}
-
-ConfirmationInfo BuildConfirmation(const std::string& creative_instance_id,
-                                   const ConfirmationType& type,
-                                   const AdType& ad_type) {
-  const std::string id = base::GenerateGUID();
-  return BuildConfirmation(id, creative_instance_id, type, ad_type);
 }
 
 }  // namespace ads

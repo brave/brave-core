@@ -14,7 +14,7 @@ namespace ads {
 namespace dto {
 namespace user_data {
 
-using Callback = std::function<void(const base::Value)>;
+using Callback = std::function<void(const base::Value&)>;
 
 }  // namespace user_data
 }  // namespace dto

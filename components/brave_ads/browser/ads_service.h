@@ -145,8 +145,6 @@ class AdsService : public KeyedService {
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;
 
-  virtual void ReconcileAdRewards() = 0;
-
   virtual void GetAdsHistory(const double from_timestamp,
                              const double to_timestamp,
                              OnGetAdsHistoryCallback callback) = 0;

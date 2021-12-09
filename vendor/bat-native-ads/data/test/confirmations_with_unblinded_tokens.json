@@ -1,20 +1,8 @@
 {
-  "ads_rewards": {
-    "payments": [
-      {
-        "balance": 48.0,
-        "month": "2021-04",
-        "transaction_count": "16"
-      }
-    ]
-  },
   "confirmations": {
     "failed_confirmations": []
   },
   "next_token_redemption_date_in_seconds": "4102444799",
-  "transaction_history": {
-    "transactions": []
-  },
   "unblinded_payment_tokens": [
     {
       "transaction_id": "1ebe3c36-81cb-42c2-b12d-4a1627903f90",

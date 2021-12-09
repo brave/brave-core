@@ -180,10 +180,6 @@ class ADS_EXPORT Ads {
   // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to reconcile ad rewards with the server, i.e. after an
-  // ad grant is claimed
-  virtual void ReconcileAdRewards() = 0;
-
   // Should be called to get ads history for a specified date range. Returns
   // |AdsHistoryInfo|
   virtual AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,

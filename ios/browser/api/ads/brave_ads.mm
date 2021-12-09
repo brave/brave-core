@@ -658,13 +658,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType));
 }
 
-- (void)reconcileAdRewards {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->ReconcileAdRewards();
-}
-
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
                                          double estimatedEarnings,
                                          NSDate* nextPaymentDate))completion {

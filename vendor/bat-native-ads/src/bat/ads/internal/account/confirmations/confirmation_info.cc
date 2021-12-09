@@ -17,9 +17,9 @@ ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
 ConfirmationInfo::~ConfirmationInfo() = default;
 
 bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
-  return id == rhs.id && creative_instance_id == rhs.creative_instance_id &&
-         type == rhs.type && ad_type == rhs.ad_type &&
-         unblinded_token == rhs.unblinded_token &&
+  return id == rhs.id && transaction_id == rhs.transaction_id &&
+         creative_instance_id == rhs.creative_instance_id && type == rhs.type &&
+         ad_type == rhs.ad_type && unblinded_token == rhs.unblinded_token &&
          payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
          blinded_payment_token.encode_base64() ==
              rhs.blinded_payment_token.encode_base64() &&

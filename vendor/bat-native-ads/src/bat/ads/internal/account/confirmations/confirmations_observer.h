@@ -14,9 +14,8 @@ struct ConfirmationInfo;
 
 class ConfirmationsObserver : public base::CheckedObserver {
  public:
-  // Invoked when a confirmation was sent
-  virtual void OnDidConfirm(const double estimated_redemption_value,
-                            const ConfirmationInfo& confirmation) {}
+  // Invoked when a confirmation was successfully successfully sent
+  virtual void OnDidConfirm(const ConfirmationInfo& confirmation) {}
 
   // Invoked when a confirmation failed to send
   virtual void OnFailedToConfirm(const ConfirmationInfo& confirmation) {}

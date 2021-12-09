@@ -113,8 +113,6 @@ class BatAdsImpl :
       const std::string& payment_id,
       const std::string& seed) override;
 
-  void ReconcileAdRewards() override;
-
   void GetAdsHistory(const double from_timestamp,
                      const double to_timestamp,
                      GetAdsHistoryCallback callback) override;
