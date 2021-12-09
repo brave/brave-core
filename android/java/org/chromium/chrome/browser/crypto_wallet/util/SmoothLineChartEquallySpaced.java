@@ -219,7 +219,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
             paint.setStrokeWidth(2f);
             canvas.drawLine(mCurrentLineX, CANVAS_TEXT_START_Y + CANVAS_TEXT_PADDING_Y,
-                    mCurrentLineX, getHeight() -  mBorder - mStrokeSize / 2, paint);
+                    mCurrentLineX, getHeight() - mBorder - mStrokeSize / 2, paint);
             float possibleValue =
                     mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
             if (possibleValue < 0) {
