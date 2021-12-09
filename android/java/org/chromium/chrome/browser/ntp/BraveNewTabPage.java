@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.feed.FeedLaunchReliabilityLoggingState;
 import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
-import org.chromium.chrome.browser.feed.hooks.FeedHooksImpl;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -85,7 +84,6 @@ public class BraveNewTabPage extends NewTabPage {
                 new FeedLaunchReliabilityLoggingState(SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs),
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
-                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance(),
-                FeedHooksImpl.getInstance());
+                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance());
     }
 }
