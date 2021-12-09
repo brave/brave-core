@@ -51,6 +51,7 @@ import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { HardwareVendor } from '../../common/api/hardware_keyrings'
+import { isRemoteImageURL } from '../../utils/string-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -107,11 +108,8 @@ async function getPendingAddSuggestTokenRequest () {
   const requests =
     (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
   if (requests && requests.length) {
-    // Currently it will only be non-empty if the logo info is coming from us,
-    // either from user asset list or the ERC token registry, re-map the logo
-    // url to show the icon correctly in the add suggest token UI.
     const logo = requests[0].token.logo
-    if (logo !== '') {
+    if (logo !== '' && !isRemoteImageURL(logo)) {
       requests[0].token.logo = `chrome://erc-token-images/${logo}`
     }
     return requests[0]

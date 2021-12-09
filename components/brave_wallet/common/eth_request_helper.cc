@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -472,12 +473,19 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     return false;
   }
 
-  // TODO(jocelyn): Parse image URL to be the logo URL once we supports
-  // downloading an icon from a remote URL.
+  std::string logo;
+  const std::string* image = options_dict->FindStringKey("image");
+  if (image) {
+    GURL url = GURL(*image);
+    if (url.is_valid() && (url.SchemeIsHTTPOrHTTPS() ||
+                           base::StartsWith(*image, "data:image/"))) {
+      logo = url.spec();
+    }
+  }
 
-  *token = mojom::ERCToken::New(eth_addr.ToChecksumAddress(),
-                                *symbol /* name */, "" /* logo */, true, false,
-                                *symbol, decimals, true, "");
+  *token =
+      mojom::ERCToken::New(eth_addr.ToChecksumAddress(), *symbol /* name */,
+                           logo, true, false, *symbol, decimals, true, "");
 
   return true;
 }

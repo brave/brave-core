@@ -557,7 +557,6 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
-  // Image will be ignored currently.
   std::string json = R"({
     "id": "1",
     "jsonrpc": "2.0",
@@ -567,7 +566,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
         "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
         "symbol": "BAT",
         "decimals": 18,
-        "image": "https://test.png"
+        "image": "https://test.com/test.png"
       },
       "type": "ERC20"
     }
@@ -575,14 +574,15 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
 
   mojom::ERCTokenPtr expected_token = mojom::ERCToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
-      "" /* logo is empty because image parameter is currently ignored. */,
-      true, false, "BAT", 18, true, "");
+      "https://test.com/test.png", true, false, "BAT", 18, true, "");
 
   mojom::ERCTokenPtr token;
   std::string error_message;
   EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
+
+  expected_token->logo = "";
 
   // Test optional image and non-checksum address.
   json = R"({
@@ -760,13 +760,75 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "options": {
         "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
         "symbol": "BAT",
-        "decimals": 18,
-        "image": "https://test.png"
+        "decimals": 18
       },
       "type": "ERC20"
     }]
   })";
 
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Test image parameter
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "http://test.com/test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "http://test.com/test.png";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo =
+      "data:image/"
+      "png;base64,"
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3"
+      "A0FDAAAAAElFTkSuQmCC";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Invalid image parameter will have empty logo string.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "";
   EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
