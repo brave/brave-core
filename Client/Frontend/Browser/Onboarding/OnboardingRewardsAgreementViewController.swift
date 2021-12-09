@@ -46,6 +46,8 @@ class OnboardingRewardsAgreementViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .black
             
         contentView.turnOnButton.addTarget(self, action: #selector(turnOnTapped), for: .touchUpInside)
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
