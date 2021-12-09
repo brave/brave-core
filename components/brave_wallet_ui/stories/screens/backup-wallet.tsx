@@ -16,6 +16,8 @@ export interface Props {
   isOnboarding: boolean
 }
 
+const recoverPhraseCopiedTimeout = 5000 // 5s
+
 function BackupWallet (props: Props) {
   const { recoveryPhrase, isOnboarding, onSubmit, onCancel, onBack } = props
   const [backupStep, setBackupStep] = React.useState<number>(0)
@@ -23,6 +25,7 @@ function BackupWallet (props: Props) {
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
   const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
   const [verifyError, setVerifyError] = React.useState<boolean>(false)
+  const [recoverPhraseCopied, setRecoverPhraseCopied] = React.useState(false)
 
   const nextStep = () => {
     if (backupStep === 2) {
@@ -87,7 +90,18 @@ function BackupWallet (props: Props) {
 
   const onCopyToClipboard = async () => {
     await copyToClipboard(recoveryPhrase.join(' '))
+    setRecoverPhraseCopied(true)
   }
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (recoverPhraseCopied) {
+        setRecoverPhraseCopied(false)
+      }
+    }, recoverPhraseCopiedTimeout)
+
+    return () => clearTimeout(timer)
+  }, [recoverPhraseCopied])
 
   return (
     <>
@@ -109,6 +123,7 @@ function BackupWallet (props: Props) {
           isRecoveryTermsAccepted={backedUp}
           onSubmitTerms={checkedBox}
           recoverPhrase={recoveryPhrase}
+          recoverPhraseCopied={recoverPhraseCopied}
           onCopy={onCopyToClipboard}
         />
       }
