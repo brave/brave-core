@@ -44,7 +44,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
   // Arrange
-  const URLEndpoints endpoints = {
+  const URLEndpoints& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
@@ -58,14 +58,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
             }
           )"}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
        {{net::HTTP_OK, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
               "paymentToken" : {
                 "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
                 "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==",
@@ -83,8 +83,9 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
-      BuildConfirmation("9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
-                        "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
   // Act
@@ -106,16 +107,16 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
   // Arrange
-  const URLEndpoints endpoints = {
+  const URLEndpoints& endpoints = {
       {// Fetch payment token request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
        {{net::HTTP_OK, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
               "paymentToken" : {
                 "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
                 "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==",
@@ -133,13 +134,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
   privacy::SetUnblindedTokens(1);
 
   ConfirmationInfo confirmation =
-      BuildConfirmation("9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
-                        "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
   confirmation.was_created = true;
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  const ConfirmationInfo& expected_confirmation = confirmation;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(expected_confirmation, _))
@@ -158,12 +160,12 @@ TEST_F(
     BatAdsRedeemUnblindedTokenTest,
     FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith404NotFound) {  // NOLINT
   // Arrange
-  const URLEndpoints endpoints = {
+  const URLEndpoints& endpoints = {
       {// Create confirmation request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_BAD_REQUEST, ""}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
        {{net::HTTP_NOT_FOUND, ""}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
@@ -173,8 +175,9 @@ TEST_F(
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
-      BuildConfirmation("9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
-                        "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
   // Act
@@ -198,12 +201,12 @@ TEST_F(
     BatAdsRedeemUnblindedTokenTest,
     FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith500InternalServerError) {  // NOLINT
   // Arrange
-  const URLEndpoints endpoints = {
+  const URLEndpoints& endpoints = {
       {// Create confirmation request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_OK, ""}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
        {{net::HTTP_INTERNAL_SERVER_ERROR, ""}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
@@ -213,8 +216,9 @@ TEST_F(
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
-      BuildConfirmation("9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
-                        "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
   // Act
@@ -236,17 +240,17 @@ TEST_F(
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
   // Arrange
-  const URLEndpoints endpoints = {
+  const URLEndpoints& endpoints = {
       {// Create confirmation request
-       "/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+       "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
        {{418 /* I'm a teapot */, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
             }
           )"}}}};
 
@@ -255,12 +259,13 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
   BuildAndSetIssuers();
 
   const ConfirmationInfo& confirmation =
-      BuildConfirmation("9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
-                        "70829d71-ce2e-4483-a4c0-e1e2bee96520",
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  const ConfirmationInfo& expected_confirmation = confirmation;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidSendConfirmation(expected_confirmation))

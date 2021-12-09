@@ -9,7 +9,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.cc"
+#include "src/components/content_settings/core/common/content_settings_mojom_traits.cc"
 
 #undef RendererContentSettingRules
 

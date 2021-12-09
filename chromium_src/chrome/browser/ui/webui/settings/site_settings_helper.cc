@@ -29,7 +29,7 @@
   if (name == "ethereum")                                                \
     return ContentSettingsType::BRAVE_ETHEREUM;
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/site_settings_helper.cc"
+#include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
 
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME

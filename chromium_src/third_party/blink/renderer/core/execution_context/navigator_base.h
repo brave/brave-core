@@ -12,7 +12,7 @@
   userAgent_ChromiumImpl() const; \
   String userAgent
 
-#include "../../../../../../../third_party/blink/renderer/core/execution_context/navigator_base.h"
+#include "src/third_party/blink/renderer/core/execution_context/navigator_base.h"
 
 #undef userAgent
 

@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_BASE_RESOURCE_RESOURCE_BUNDLE_ANDROID_H_
 #define BRAVE_CHROMIUM_SRC_UI_BASE_RESOURCE_RESOURCE_BUNDLE_ANDROID_H_
 
-#include "../../../../../ui/base/resource/resource_bundle_android.h"
+#include "src/ui/base/resource/resource_bundle_android.h"
 
 namespace ui {
 

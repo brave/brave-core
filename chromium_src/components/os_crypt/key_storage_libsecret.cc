@@ -16,7 +16,7 @@ const char* GetApplicationName();
     attrs.Append("application", GetApplicationName()); \
   } else  // NOLINT
 
-#include "../../../../components/os_crypt/key_storage_libsecret.cc"
+#include "src/components/os_crypt/key_storage_libsecret.cc"
 #undef BRAVE_KEY_STORAGE_LIBSECRET_GET_KEY_IMPL
 namespace {
 

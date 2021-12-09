@@ -33,6 +33,7 @@ export const addEthereumChainRequestCompleted = createAction<EthereumChainReques
 export const switchEthereumChain = createAction<SwitchChainRequest>('switchEthereumChain')
 export const switchEthereumChainProcessed = createAction<SwitchEthereumChainProcessedPayload>('switchEthereumChainProcessed')
 export const showApproveTransaction = createAction('showApproveTransaction')
+export const showUnlock = createAction('showUnlock')
 export const setupWallet = createAction('setupWallet')
 export const expandWallet = createAction('expandWallet')
 export const openWalletSettings = createAction('openWalletSettings')

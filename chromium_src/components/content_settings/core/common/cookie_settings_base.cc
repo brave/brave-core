@@ -285,5 +285,5 @@ CookieSettingsBase::GetCookieSettingWithBraveMetadata(
 }  // namespace content_settings
 
 #define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
-#include "../../../../../../components/content_settings/core/common/cookie_settings_base.cc"  // NOLINT
+#include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed

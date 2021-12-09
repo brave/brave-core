@@ -6,7 +6,7 @@
 #include "components/permissions/permission_util.h"
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
-#include "../../../../components/permissions/permission_util.cc"
+#include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
 
 namespace permissions {

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../chrome/browser/component_updater/component_updater_utils.cc"
+#include "src/chrome/browser/component_updater/component_updater_utils.cc"
 
 #include "base/callback.h"
 #include "chrome/browser/browser_process.h"

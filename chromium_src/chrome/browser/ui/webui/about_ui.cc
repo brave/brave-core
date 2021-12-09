@@ -7,7 +7,7 @@
 #include "base/strings/string_split.h"
 #include "third_party/re2/src/re2/re2.h"
 
-#include "../../../../../../chrome/browser/ui/webui/about_ui.cc"
+#include "src/chrome/browser/ui/webui/about_ui.cc"
 
 std::string AboutUIHTMLSource::ChromeURLs() const {
   std::string chrome_urls = ::ChromeURLs();

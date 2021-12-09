@@ -67,8 +67,8 @@ export type UpdateSelectedAssetType = {
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  usdPriceInfo: AssetPrice | undefined
-  btcPriceInfo: AssetPrice | undefined
+  defaultFiatPrice: AssetPrice | undefined
+  defaultCryptoPrice: AssetPrice | undefined
   timeFrame: AssetPriceTimeframe
 }
 

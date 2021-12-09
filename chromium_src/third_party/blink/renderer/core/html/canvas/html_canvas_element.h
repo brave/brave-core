@@ -18,7 +18,7 @@
  private:                                                                      \
   mutable UntracedMember<ExecutionContext> scoped_execution_context_;
 
-#include "../../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
+#include "src/third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 
 #undef BRAVE_HTML_CANVAS_ELEMENT_H_
 

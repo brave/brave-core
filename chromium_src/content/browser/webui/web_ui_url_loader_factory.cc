@@ -6,7 +6,7 @@
 #include "content/public/browser/web_ui_url_loader_factory.h"
 
 #define CreateWebUIURLLoaderFactory CreateWebUIURLLoaderFactory_ChromiumImpl
-#include "../../../../../content/browser/webui/web_ui_url_loader_factory.cc"
+#include "src/content/browser/webui/web_ui_url_loader_factory.cc"
 #undef CreateWebUIURLLoaderFactory
 
 namespace {

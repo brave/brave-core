@@ -6,5 +6,5 @@
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 #include "brave/browser/profiles/brave_profile_impl.h"
 #define BookmarkModelLoadedObserver BraveBookmarkModelLoadedObserver
-#include "../../../../../chrome/browser/profiles/profile_impl.cc"
+#include "src/chrome/browser/profiles/profile_impl.cc"
 #undef BookmarkModelLoadedObserver

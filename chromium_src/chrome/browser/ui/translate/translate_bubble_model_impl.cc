@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/translate/translate_bubble_model_impl.h"
 
 #define TranslateBubbleModelImpl ChromiumTranslateBubbleModelImpl
-#include "../../../../../../chrome/browser/ui/translate/translate_bubble_model_impl.cc"
+#include "src/chrome/browser/ui/translate/translate_bubble_model_impl.cc"
 #undef TranslateBubbleModelImpl
 
 #include "base/containers/contains.h"

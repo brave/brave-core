@@ -13,7 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
 #define OpaqueBrowserFrameView BraveOpaqueBrowserFrameView
 
-#include "../../../../../../../chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc"
+#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc"
 
 #undef OpaqueBrowserFrameView
 

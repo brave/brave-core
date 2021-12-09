@@ -18,7 +18,7 @@
       AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_view_)); \
   if (false)
 
-#include "../../../../../../../chrome/browser/ui/views/toolbar/toolbar_view.cc"
+#include "src/chrome/browser/ui/views/toolbar/toolbar_view.cc"
 #undef BRAVE_TOOLBAR_VIEW_INIT
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #undef LocationBarView

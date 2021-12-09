@@ -20,7 +20,7 @@
  public:                                                                     \
   void SetStorageKey
 
-#include "../../../../../../../third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "src/third_party/blink/renderer/core/frame/local_dom_window.h"
 
 #undef SetStorageKey
 

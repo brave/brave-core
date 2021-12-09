@@ -17,7 +17,7 @@
 #define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
 #endif
 
-#include "../../../../../../chrome/browser/ui/bookmarks/bookmark_utils.cc"
+#include "src/chrome/browser/ui/bookmarks/bookmark_utils.cc"
 
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar

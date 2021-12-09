@@ -52,7 +52,7 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
 
-#include "../../../../components/permissions/request_type.cc"
+#include "src/components/permissions/request_type.cc"
 
 #undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
 #undef IDR_ANDROID_INFOBAR_PERMISSION_COOKIE

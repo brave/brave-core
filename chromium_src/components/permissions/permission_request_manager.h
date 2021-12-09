@@ -13,7 +13,7 @@
   bool ShouldGroupRequests(PermissionRequest* a, PermissionRequest* b);        \
   void set_view_factory_for_testing
 
-#include "../../../../components/permissions/permission_request_manager.h"
+#include "src/components/permissions/permission_request_manager.h"
 
 #undef set_view_factory_for_testing
 

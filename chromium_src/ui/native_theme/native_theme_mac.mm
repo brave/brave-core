@@ -19,7 +19,7 @@ bool ShouldOverride(NativeTheme::ColorId color_id) {
 }  // namespace ui
 
 #define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
-#include "../../../../ui/native_theme/native_theme_mac.mm"
+#include "src/ui/native_theme/native_theme_mac.mm"
 #undef GetSystemButtonPressedColor
 #undef GET_BRAVE_COLOR
 

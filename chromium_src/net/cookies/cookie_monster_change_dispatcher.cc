@@ -6,5 +6,5 @@
 #include "net/cookies/cookie_monster.h"
 
 #define CookieMonster ChromiumCookieMonster
-#include "../../../../net/cookies/cookie_monster_change_dispatcher.cc"
+#include "src/net/cookies/cookie_monster_change_dispatcher.cc"
 #undef CookieMonster

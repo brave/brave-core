@@ -13,7 +13,7 @@
                        ImageDataSettings*, ExceptionState&) final;   \
   ImageData* getImageDataInternal_Unused
 
-#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
+#include "src/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
 #undef getImageDataInternal
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_CANVAS_CANVAS2D_CANVAS_RENDERING_CONTEXT_2D_H_

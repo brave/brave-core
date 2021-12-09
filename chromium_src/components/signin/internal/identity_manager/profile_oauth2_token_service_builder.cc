@@ -9,5 +9,5 @@
 
 #define MutableProfileOAuth2TokenServiceDelegate \
   BraveMutableProfileOAuth2TokenServiceDelegate
-#include "../../../../../../components/signin/internal/identity_manager/profile_oauth2_token_service_builder.cc"
+#include "src/components/signin/internal/identity_manager/profile_oauth2_token_service_builder.cc"
 #undef MutableProfileOAuth2TokenServiceDelegate

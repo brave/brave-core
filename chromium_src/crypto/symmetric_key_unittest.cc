@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../crypto/symmetric_key_unittest.cc"
+#include "src/crypto/symmetric_key_unittest.cc"
 
 class SymmetricKeyDeriveKeyFromPasswordUsingPbkdf2Sha256Test
     : public testing::TestWithParam<PBKDF2TestVector> {};

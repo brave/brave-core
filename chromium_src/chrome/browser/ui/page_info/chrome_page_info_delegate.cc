@@ -25,7 +25,7 @@ std::string GetIPFSLearnMoreURL(const GURL& url) {
 #define kPageInfoHelpCenterURL GetIPFSLearnMoreURL(web_contents_->GetURL())
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
-#include "../../../../../../chrome/browser/ui/page_info/chrome_page_info_delegate.cc"
+#include "src/chrome/browser/ui/page_info/chrome_page_info_delegate.cc"
 #if BUILDFLAG(ENABLE_IPFS)
 #undef kPageInfoHelpCenterURL
 #endif  // BUILDFLAG(ENABLE_IPFS)

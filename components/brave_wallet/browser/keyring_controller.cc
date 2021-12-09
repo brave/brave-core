@@ -445,6 +445,11 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
   return default_keyring_.get();
 }
 
+void KeyringController::RequestUnlock() {
+  DCHECK(IsLocked());
+  request_unlock_pending_ = true;
+}
+
 HDKeyring* KeyringController::ResumeDefaultKeyring(
     const std::string& password) {
   if (!CreateEncryptorForKeyring(password, kDefaultKeyringId)) {
@@ -975,6 +980,18 @@ bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
 
+bool KeyringController::HasPendingUnlockRequest() const {
+  return request_unlock_pending_;
+}
+
+absl::optional<std::string> KeyringController::GetSelectedAccount() const {
+  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
+  if (address.empty()) {
+    return absl::nullopt;
+  }
+  return address;
+}
+
 void KeyringController::Lock() {
   if (IsLocked() || !default_keyring_)
     return;
@@ -1005,6 +1022,7 @@ void KeyringController::Unlock(const std::string& password,
   }
 
   UpdateLastUnlockPref(prefs_);
+  request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();
   }
@@ -1158,12 +1176,7 @@ void KeyringController::NotifyUserInteraction() {
 
 void KeyringController::GetSelectedAccount(
     GetSelectedAccountCallback callback) {
-  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
-  if (address.empty()) {
-    std::move(callback).Run(absl::nullopt);
-    return;
-  }
-  std::move(callback).Run(address);
+  std::move(callback).Run(GetSelectedAccount());
 }
 
 void KeyringController::SetSelectedAccount(
@@ -1350,6 +1363,11 @@ void KeyringController::IsStrongPassword(const std::string& password,
   }
 
   std::move(callback).Run(true);
+}
+
+void KeyringController::HasPendingUnlockRequest(
+    HasPendingUnlockRequestCallback callback) {
+  std::move(callback).Run(HasPendingUnlockRequest());
 }
 
 }  // namespace brave_wallet

@@ -54,6 +54,7 @@ export const FavIcon = styled.img`
   border-radius: 5px;
   background-color: ${(p) => p.theme.palette.grey200};
   margin-bottom: 7px;
+  margin-top: 38px;
 `
 
 export const MessageBoxColumn = styled.div`

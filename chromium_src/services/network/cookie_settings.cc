@@ -31,7 +31,7 @@
         entry->secondary_pattern.MatchesAllHosts();                            \
   }
 
-#include "../../../../services/network/cookie_settings.cc"
+#include "src/services/network/cookie_settings.cc"
 
 #undef BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
 

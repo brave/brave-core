@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 
 #define FromTabInModel FromTabInModel_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/tabs/tab_renderer_data.cc"
+#include "src/chrome/browser/ui/tabs/tab_renderer_data.cc"
 #undef FromTabInModel
 
 #include "brave/common/webui_url_constants.h"

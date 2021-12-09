@@ -23,7 +23,7 @@
   browser_profile->SetBoolean("payments",                                      \
                               (browser_services & importer::PAYMENTS) != 0);
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/import_data_handler.cc"
+#include "src/chrome/browser/ui/webui/settings/import_data_handler.cc"
 #undef ExternalProcessImporterHost
 #undef BRAVE_IMPORT_DATA
 #undef BRAVE_SEND_BROWSER_PROFILE_DATA

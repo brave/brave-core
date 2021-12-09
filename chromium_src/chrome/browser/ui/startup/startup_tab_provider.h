@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_STARTUP_STARTUP_TAB_PROVIDER_H_
 
 #define StartupTabProviderImpl ChromiumStartupTabProviderImpl
-#include "../../../../../../chrome/browser/ui/startup/startup_tab_provider.h"
+#include "src/chrome/browser/ui/startup/startup_tab_provider.h"
 #undef StartupTabProviderImpl
 
 class StartupTabProviderImpl : public ChromiumStartupTabProviderImpl {

@@ -9,7 +9,7 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #define OnSetVoiceList OnSetVoiceList_ChromiumImpl
-#include "../../../../../../../third_party/blink/renderer/modules/speech/speech_synthesis.cc"
+#include "src/third_party/blink/renderer/modules/speech/speech_synthesis.cc"
 #undef OnSetVoiceList
 
 namespace blink {

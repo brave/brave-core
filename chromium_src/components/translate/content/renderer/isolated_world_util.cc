@@ -24,5 +24,5 @@ void AdjustedSetIsolatedWorldInfo(int32_t world_id,
 }  // namespace blink
 
 #define SetIsolatedWorldInfo AdjustedSetIsolatedWorldInfo
-#include "../../../../../../components/translate/content/renderer/isolated_world_util.cc"
+#include "src/components/translate/content/renderer/isolated_world_util.cc"
 #undef SetIsolatedWorldInfo

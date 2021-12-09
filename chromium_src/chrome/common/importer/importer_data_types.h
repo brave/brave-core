@@ -14,7 +14,7 @@
 #define BRAVE_VISIT_SOURCE \
   VISIT_SOURCE_CHROME_IMPORTED = 4,
 
-#include "../../../../../chrome/common/importer/importer_data_types.h"
+#include "src/chrome/common/importer/importer_data_types.h"
 
 #undef BRAVE_VISIT_SOURCE
 

@@ -17,15 +17,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
-
-namespace base {
-class Time;
-}  // namespace base
-
 namespace brave_l10n {
 class LocaleHelperMock;
 }  // namespace brave_l10n

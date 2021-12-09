@@ -12,15 +12,20 @@ import {
 export interface Props {
   networks: EthereumChain[]
   selectedNetwork: EthereumChain
+  hasAddButton?: boolean
   onSelectNetwork: (network: EthereumChain) => () => void
   onBack: () => void
+  onAddNetwork?: () => void
 }
 
 function SelectNetworkWithHeader (props: Props) {
-  const { networks, onSelectNetwork, onBack, selectedNetwork } = props
+  const { networks, onSelectNetwork, onBack, selectedNetwork, hasAddButton, onAddNetwork } = props
   return (
     <SelectWrapper>
-      <Header title={getLocale('braveWalletSelectNetwork')} onBack={onBack} />
+      <Header
+        title={getLocale('braveWalletSelectNetwork')}
+        onBack={onBack} hasAddButton={hasAddButton}
+        onAddAccount={onAddNetwork}/>
       <SelectScrollContainer>
         <SelectNetwork
           selectedNetwork={selectedNetwork}

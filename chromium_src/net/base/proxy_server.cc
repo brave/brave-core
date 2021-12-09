@@ -49,7 +49,7 @@ void ParseAuthInfoAndHostname(base::StringPiece* hostname,
       scheme, HostPortPair(username, password, unbracketed_host, fixed_port)); \
   if (false)
 
-#include "../../../../net/base/proxy_server.cc"  // NOLINT
+#include "src/net/base/proxy_server.cc"
 
 #undef BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_RETURN_HOST_PORT_PAIR
 #undef BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_EXTRACT_AUTH_INFO

@@ -13,7 +13,7 @@
  public:
 // define BRAVE_PROFILE_IMPL_H_
 
-#include "../../../../../chrome/browser/profiles/profile_impl.h"
+#include "src/chrome/browser/profiles/profile_impl.h"
 
 #undef BRAVE_PROFILE_IMPL_H_
 

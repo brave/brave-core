@@ -978,11 +978,9 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
-- (void)updatePendingAndFinishedPromotions:
-    (void (^)(bool shouldReconcileAds))completion {
+- (void)updatePendingAndFinishedPromotions:(void (^)())completion {
   ledger->GetAllPromotions(^(ledger::type::PromotionMap map) {
     NSMutableArray* promos = [[NSMutableArray alloc] init];
-    bool shouldReconcileAds = false;
     for (auto it = map.begin(); it != map.end(); ++it) {
       if (it->second.get() != nullptr) {
         [promos
@@ -999,10 +997,6 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
     for (LedgerPromotion* promotion in promos) {
       if (promotion.status == LedgerPromotionStatusFinished) {
         [self.mFinishedPromotions addObject:promotion];
-
-        if (promotion.type == LedgerPromotionTypeAds) {
-          shouldReconcileAds = true;
-        }
       } else if (promotion.status == LedgerPromotionStatusActive ||
                  promotion.status == LedgerPromotionStatusAttested) {
         [self.mPendingPromotions addObject:promotion];
@@ -1018,7 +1012,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
       }
     }
     if (completion) {
-      completion(shouldReconcileAds);
+      completion();
     }
     for (BraveLedgerObserver* observer in [self.observers copy]) {
       if (observer.promotionsAdded) {
@@ -1031,17 +1025,17 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   });
 }
 
-- (void)fetchPromotions:(nullable void (^)(NSArray<LedgerPromotion*>* grants,
-                                           bool shouldReconcileAds))completion {
+- (void)fetchPromotions:
+    (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
   ledger->FetchPromotions(
       ^(ledger::type::Result result,
         std::vector<ledger::type::PromotionPtr> promotions) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
-        [self updatePendingAndFinishedPromotions:^(bool shouldReconcileAds) {
+        [self updatePendingAndFinishedPromotions:^{
           if (completion) {
-            completion(self.pendingPromotions, shouldReconcileAds);
+            completion(self.pendingPromotions);
           }
         }];
       });

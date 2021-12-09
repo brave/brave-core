@@ -16,7 +16,7 @@
   friend class BraveProfileManager; \
                                     \
  public:
-#include "../../../../../chrome/browser/profiles/profile_manager.h"
+#include "src/chrome/browser/profiles/profile_manager.h"
 #undef LoadProfileByPath
 #undef IsAllowedProfilePath
 #undef SetNonPersonalProfilePrefs

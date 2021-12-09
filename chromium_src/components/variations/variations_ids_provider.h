@@ -10,7 +10,7 @@
   GetClientDataHeaders(bool is_signed_in) { return nullptr; } \
   variations::mojom::VariationsHeadersPtr GetClientDataHeaders_Chromium
 
-#include "../../../../components/variations/variations_ids_provider.h"
+#include "src/components/variations/variations_ids_provider.h"
 #undef GetClientDataHeaders
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_VARIATIONS_VARIATIONS_IDS_PROVIDER_H_

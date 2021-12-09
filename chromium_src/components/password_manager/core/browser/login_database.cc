@@ -7,6 +7,6 @@
     if (result == ENCRYPTION_RESULT_SERVICE_FAILURE) \
       result = ENCRYPTION_RESULT_ITEM_FAILURE;
 
-#include "../../../../../../components/password_manager/core/browser/login_database.cc"
+#include "src/components/password_manager/core/browser/login_database.cc"
 
 #undef BRAVE_STATEMENT_TO_FORMS

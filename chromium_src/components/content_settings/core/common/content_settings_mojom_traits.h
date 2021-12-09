@@ -11,7 +11,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.h"
+#include "src/components/content_settings/core/common/content_settings_mojom_traits.h"
 
 #undef RendererContentSettingRules
 

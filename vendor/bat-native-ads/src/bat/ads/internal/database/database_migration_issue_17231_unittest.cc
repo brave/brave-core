@@ -66,7 +66,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Arrange
   database::table::Conversions database_table;
 
-  AdvanceClock(TimeFromUTCString("28 July 2021"));
+  AdvanceClock(TimeFromString("28 July 2021", /* is_local */ false));
 
   // Act
   database_table.GetAll([](const bool success,

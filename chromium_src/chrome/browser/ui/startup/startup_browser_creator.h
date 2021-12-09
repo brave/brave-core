@@ -9,7 +9,7 @@
 // Need to friend the right class, overriden to adapt GetCommandLineTabs() in
 // chromium_src/chrome/browser/ui/startup/startup_tab_provider.{h,cc}.
 #define StartupTabProviderImpl ChromiumStartupTabProviderImpl
-#include "../../../../../../chrome/browser/ui/startup/startup_browser_creator.h"
+#include "src/chrome/browser/ui/startup/startup_browser_creator.h"
 #undef StartupTabProviderImpl
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_STARTUP_STARTUP_BROWSER_CREATOR_H_

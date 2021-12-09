@@ -9,7 +9,7 @@
 #define SyncAuthManager BraveSyncAuthManager
 #define SyncStoppedReporter BraveSyncStoppedReporter
 
-#include "../../../../../components/sync/driver/sync_service_impl.cc"
+#include "src/components/sync/driver/sync_service_impl.cc"
 
 #undef SyncAuthManager
 #undef SyncStoppedReporter

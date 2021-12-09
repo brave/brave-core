@@ -40,6 +40,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -55,8 +57,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-public class EditVisibleAssetsBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements View.OnClickListener, OnWalletListItemClick {
+public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
+        implements View.OnClickListener, OnWalletListItemClick, KeyringControllerObserver {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
@@ -89,12 +91,23 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         return null;
     }
 
-    BraveWalletService getBraveWalletService() {
+    private BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getBraveWalletService();
         } else if (activity instanceof BuySendSwapActivity) {
             return ((BuySendSwapActivity) activity).getBraveWalletService();
+        }
+
+        return null;
+    }
+
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        } else if (activity instanceof BuySendSwapActivity) {
+            return ((BuySendSwapActivity) activity).getKeyringController();
         }
 
         return null;
@@ -124,6 +137,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         } catch (IllegalStateException e) {
             Log.e("EditVisibleAssetsBottomSheetDialogFragment", e.getMessage());
         }
+    }
+
+    @Override
+    public void locked() {
+        dismiss();
     }
 
     @Override
@@ -262,7 +280,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             assert braveWalletService != null;
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
-
                 TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId, (userAssets) -> {
                     TokenUtils.getAllTokensFiltered(
                             braveWalletService, ercTokenRegistry, mChainId, tokens -> {
@@ -270,8 +287,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                                 setUpAssetsList(view, tokens, userAssets);
                             });
                 });
-            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
+            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
+                assert mChainId != null && !mChainId.isEmpty();
+                TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId,
+                        tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
+            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
+                    || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, mChainId,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
@@ -280,6 +301,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             }
         }
+        KeyringController keyringController = getKeyringController();
+        assert keyringController != null;
+        keyringController.addObserver(this);
     }
 
     private TextWatcherImpl filterAddCustomAssetTextWatcher = new TextWatcherImpl();
@@ -322,7 +346,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         for (ErcToken userSelectedToken : userSelectedTokens) {
             selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase(Locale.getDefault()));
         }
-
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -392,11 +415,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
             if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
+                    || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST
+                    || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
                 ((BuySendSwapActivity) activity)
                         .updateBuySendAsset(checkedAssets.get(0).getSubTitle(),
                                 checkedAssets.get(0).getErcToken());
-            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
+            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST) {
                 ((BuySendSwapActivity) activity)
                         .updateSwapToAsset(checkedAssets.get(0).getSubTitle(),
                                 checkedAssets.get(0).getErcToken());

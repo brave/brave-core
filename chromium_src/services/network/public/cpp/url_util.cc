@@ -14,7 +14,7 @@
 #include "url/url_constants.h"
 
 #define IsURLHandledByNetworkService IsURLHandledByNetworkService_ChromiumImpl
-#include "../../../../../../services/network/public/cpp/url_util.cc"
+#include "src/services/network/public/cpp/url_util.cc"
 #undef IsURLHandledByNetworkService
 
 namespace network {

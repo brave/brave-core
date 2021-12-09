@@ -22,6 +22,7 @@
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
+#include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -149,16 +150,15 @@ void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
-  const base::Time& next_token_redemption_date =
+  const base::Time& next_token_redemption_at =
       CalculateNextTokenRedemptionDate();
 
-  ConfirmationsState::Get()->SetNextTokenRedemptionDate(
-      next_token_redemption_date);
-  ConfirmationsState::Get()->Save();
+  AdsClientHelper::Get()->SetDoublePref(prefs::kNextTokenRedemptionAt,
+                                        next_token_redemption_at.ToDoubleT());
 
   if (delegate_) {
     delegate_->OnDidScheduleNextUnblindedPaymentTokensRedemption(
-        next_token_redemption_date);
+        next_token_redemption_at);
   }
 
   MaybeRedeemAfterDelay(wallet_);
@@ -189,25 +189,17 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
 }
 
 base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
-  base::Time next_token_redemption_date =
-      ConfirmationsState::Get()->GetNextTokenRedemptionDate();
-
-  if (next_token_redemption_date.is_null()) {
-    next_token_redemption_date = CalculateNextTokenRedemptionDate();
-
-    ConfirmationsState::Get()->SetNextTokenRedemptionDate(
-        next_token_redemption_date);
-    ConfirmationsState::Get()->Save();
-  }
+  const base::Time& next_token_redemption_at = base::Time::FromDoubleT(
+      AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
 
   const base::Time& now = base::Time::Now();
 
   base::TimeDelta delay;
-  if (now >= next_token_redemption_date) {
+  if (now >= next_token_redemption_at) {
     // Browser was launched after the next token redemption date
     delay = base::Seconds(kExpiredNextTokenRedemptionAfterSeconds);
   } else {
-    delay = next_token_redemption_date - now;
+    delay = next_token_redemption_at - now;
   }
 
   return delay;

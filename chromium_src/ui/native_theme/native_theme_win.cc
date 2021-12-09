@@ -12,7 +12,7 @@ bool s_ignore_system_dark_mode_change = false;
     return;                                       \
   }
 
-#include "../../../../ui/native_theme/native_theme_win.cc"  // NOLINT
+#include "src/ui/native_theme/native_theme_win.cc"
 
 namespace ui {
 

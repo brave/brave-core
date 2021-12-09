@@ -12,7 +12,7 @@
 #include "chrome/browser/sync/user_event_service_factory.h"
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
-#include "../../../../../chrome/browser/federated_learning/floc_id_provider_factory.cc"  // NOLINT
+#include "src/chrome/browser/federated_learning/floc_id_provider_factory.cc"
 #undef BuildServiceInstanceFor
 
 namespace federated_learning {

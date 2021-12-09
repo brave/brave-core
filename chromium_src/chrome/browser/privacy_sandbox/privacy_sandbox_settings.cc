@@ -7,7 +7,7 @@
 
 #define OnPrivacySandboxPrefChanged() OnPrivacySandboxPrefChanged_ChromiumImpl()
 
-#include "../../../../../chrome/browser/privacy_sandbox/privacy_sandbox_settings.cc"  // NOLINT
+#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings.cc"
 
 #undef OnPrivacySandboxPrefChanged
 

@@ -7,5 +7,5 @@
 #include "net/dns/context_host_resolver.h"
 
 #define ResolveContext BraveResolveContext
-#include "../../../../net/dns/host_resolver.cc"
+#include "src/net/dns/host_resolver.cc"
 #undef ResolveContext

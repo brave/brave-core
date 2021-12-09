@@ -10,7 +10,7 @@
 #define GetAvatarIcon virtual GetAvatarIcon
 #define GetAvatarTooltipText virtual GetAvatarTooltipText
 #define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #undef BRAVE_AVATAR_BUTTON_H
 #undef GetAvatarIcon
 #undef GetAvatarTooltipText

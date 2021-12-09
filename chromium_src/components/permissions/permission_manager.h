@@ -14,7 +14,7 @@
   friend class BravePermissionManager
 
 #define GetCanonicalOrigin virtual GetCanonicalOrigin
-#include "../../../../components/permissions/permission_manager.h"
+#include "src/components/permissions/permission_manager.h"
 #undef GetCanonicalOrigin
 
 #undef devtools_global_overrides_origin_

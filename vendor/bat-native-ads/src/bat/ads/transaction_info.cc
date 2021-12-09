@@ -19,47 +19,76 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return DoubleEquals(timestamp, rhs.timestamp) &&
-         DoubleEquals(estimated_redemption_value,
-                      rhs.estimated_redemption_value) &&
-         confirmation_type == rhs.confirmation_type;
+  return id == rhs.id && DoubleEquals(created_at, rhs.created_at) &&
+         creative_instance_id == rhs.creative_instance_id &&
+         DoubleEquals(value, rhs.value) && ad_type == rhs.ad_type &&
+         confirmation_type == rhs.confirmation_type &&
+         DoubleEquals(reconciled_at, rhs.reconciled_at);
 }
 
 bool TransactionInfo::operator!=(const TransactionInfo& rhs) const {
   return !(*this == rhs);
 }
 
+bool TransactionInfo::IsValid() const {
+  if (id.empty() || creative_instance_id.empty() ||
+      ad_type == AdType::kUndefined ||
+      confirmation_type == ConfirmationType::kUndefined ||
+      DoubleEquals(created_at, 0.0)) {
+    return false;
+  }
+
+  return true;
+}
+
 void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   DCHECK(dictionary);
 
+  dictionary->SetKey("id", base::Value(id));
+
   dictionary->SetKey("timestamp_in_seconds",
-                     base::Value(base::NumberToString(timestamp)));
+                     base::Value(base::NumberToString(created_at)));
 
-  dictionary->SetKey("estimated_redemption_value",
-                     base::Value(estimated_redemption_value));
+  dictionary->SetKey("estimated_redemption_value", base::Value(value));
 
-  dictionary->SetKey("confirmation_type", base::Value(confirmation_type));
+  dictionary->SetKey("confirmation_type",
+                     base::Value(std::string(confirmation_type)));
+
+  dictionary->SetKey("reconciled_at",
+                     base::Value(base::NumberToString(reconciled_at)));
 }
 
 void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
-  // Timestamp
-  const std::string* timestamp_value =
+  // Id
+  const std::string* id_value = dictionary->FindStringKey("id");
+  if (id_value) {
+    id = *id_value;
+  }
+
+  // Created at
+  const std::string* created_at_value =
       dictionary->FindStringKey("timestamp_in_seconds");
-  if (timestamp_value) {
-    base::StringToDouble(*timestamp_value, &timestamp);
+  if (created_at_value) {
+    base::StringToDouble(*created_at_value, &created_at);
   }
 
   // Estimated redemption value
-  estimated_redemption_value =
-      dictionary->FindDoubleKey("estimated_redemption_value").value_or(0.0);
+  value = dictionary->FindDoubleKey("value").value_or(0.0);
 
   // Confirmation type
   const std::string* confirmation_type_value =
       dictionary->FindStringKey("confirmation_type");
   if (confirmation_type_value) {
-    confirmation_type = *confirmation_type_value;
+    confirmation_type = ConfirmationType(*confirmation_type_value);
+  }
+
+  // Reconciled at
+  const std::string* reconciled_at_value =
+      dictionary->FindStringKey("reconciled_at");
+  if (reconciled_at_value) {
+    base::StringToDouble(*reconciled_at_value, &reconciled_at);
   }
 }
 

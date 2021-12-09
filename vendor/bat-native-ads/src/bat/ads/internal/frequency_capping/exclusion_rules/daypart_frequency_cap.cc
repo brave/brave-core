@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/calendar_util.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/time_util.h"
 
@@ -61,18 +63,19 @@ bool DaypartFrequencyCap::DoesRespectCap(
     return true;
   }
 
-  const base::Time now = base::Time::Now();
+  const base::Time& now = base::Time::Now();
 
-  const int local_minutes_for_today = ConvertHoursAndMinutesToMinutes(now);
+  const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
 
-  const std::string local_day_of_week = GetLocalWeekDay(now);
+  const int day_of_week = GetDayOfWeek(now, /* is_local */ true);
+  const std::string& day_of_week_as_string = base::NumberToString(day_of_week);
 
   for (const CreativeDaypartInfo& daypart : creative_ad.dayparts) {
-    if (!DoesMatchDayOfWeek(daypart, local_day_of_week)) {
+    if (!DoesMatchDayOfWeek(daypart, day_of_week_as_string)) {
       continue;
     }
 
-    if (!DoesMatchTimeSlot(daypart, local_minutes_for_today)) {
+    if (!DoesMatchTimeSlot(daypart, local_time_as_minutes)) {
       continue;
     }
 

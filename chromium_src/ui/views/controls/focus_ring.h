@@ -11,7 +11,7 @@
   SkColor GetColor(View* focus_ring, bool valid); \
   void RefreshLayer
 
-#include "../../../../../ui/views/controls/focus_ring.h"
+#include "src/ui/views/controls/focus_ring.h"
 
 #undef RefreshLayer
 

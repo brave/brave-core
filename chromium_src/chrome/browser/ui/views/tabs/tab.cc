@@ -20,7 +20,7 @@
   showing_close_button_ &= mouse_hovered();
 
 #define AlertIndicator BraveAlertIndicator
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab.cc"  // NOLINT
+#include "src/chrome/browser/ui/views/tabs/tab.cc"
 #undef AlertIndicator
 #undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
 #undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION

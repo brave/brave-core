@@ -66,6 +66,11 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
+async function hasPendingUnlockRequest () {
+  const keyringController = getWalletPanelApiProxy().keyringController
+  return (await keyringController.hasPendingUnlockRequest()).pending
+}
+
 async function getPendingChainRequest () {
   const ethJsonRpcController = getWalletPanelApiProxy().ethJsonRpcController
   const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
@@ -137,6 +142,10 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     store.dispatch(PanelActions.showConnectToSite({ accounts, origin }))
     return
   } else {
+    const unlockRequest = await hasPendingUnlockRequest()
+    if (unlockRequest) {
+      store.dispatch(PanelActions.showUnlock())
+    }
     const chain = await getPendingChainRequest()
     if (chain) {
       store.dispatch(PanelActions.addEthereumChain({ chain }))
@@ -261,6 +270,12 @@ handler.on(PanelActions.showConnectToSite.getType(), async (store: Store, payloa
 
 handler.on(PanelActions.showApproveTransaction.getType(), async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('approveTransaction'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
+handler.on(PanelActions.showUnlock.getType(), async (store: Store) => {
+  store.dispatch(PanelActions.navigateTo('showUnlock'))
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
 })
@@ -431,6 +446,14 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
       const apiProxy = getWalletPanelApiProxy()
       apiProxy.panelHandler.closeUI()
     }
+  }
+})
+
+handler.on(WalletActions.unlocked.getType(), async (store: Store) => {
+  const state = getPanelState(store)
+  if (state.selectedPanel === 'showUnlock') {
+    const apiProxy = getWalletPanelApiProxy()
+    apiProxy.panelHandler.closeUI()
   }
 })
 

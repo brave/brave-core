@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../../components/autofill/core/common/autofill_features.cc"
+#include "src/components/autofill/core/common/autofill_features.cc"
 
 #include "base/feature_override.h"
 

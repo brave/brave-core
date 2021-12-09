@@ -26,7 +26,7 @@
 
 #define CreatePrefService CreatePrefService_ChromiumImpl
 #define RegisterProfilePrefs RegisterProfilePrefs_ChromiumImpl
-#include "../../../../../chrome/browser/profiles/pref_service_builder_utils.cc"
+#include "src/chrome/browser/profiles/pref_service_builder_utils.cc"
 #undef CreatePrefService
 #undef RegisterProfilePrefs
 

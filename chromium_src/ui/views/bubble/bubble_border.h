@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_BORDER_H_
 
 #define GetClientRect virtual GetClientRect
-#include "../../../../../ui/views/bubble/bubble_border.h"
+#include "src/ui/views/bubble/bubble_border.h"
 #undef GetClientRect
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_BORDER_H_

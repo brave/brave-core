@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_GFX_COLOR_PALETTE_H_
 #define BRAVE_CHROMIUM_SRC_UI_GFX_COLOR_PALETTE_H_
 
-#include "../../../../ui/gfx/color_palette.h"
+#include "src/ui/gfx/color_palette.h"
 
 namespace gfx {
 

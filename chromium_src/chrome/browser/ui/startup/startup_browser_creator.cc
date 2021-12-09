@@ -75,5 +75,5 @@ bool BraveStartupBrowserCreatorImpl::Launch(
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
-#include "../../../../../../chrome/browser/ui/startup/startup_browser_creator.cc"  // NOLINT
+#include "src/chrome/browser/ui/startup/startup_browser_creator.cc"
 #undef StartupBrowserCreatorImpl

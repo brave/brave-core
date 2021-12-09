@@ -40,5 +40,5 @@ const base::Feature* BraveFindFeatureExposedToJava(
   if (feature)                                                                \
     return feature;
 
-#include "../../../../../../chrome/browser/flags/android/chrome_feature_list.cc"
+#include "src/chrome/browser/flags/android/chrome_feature_list.cc"
 #undef BRAVE_FIND_FEATURE_EXPOSED_TO_JAVA

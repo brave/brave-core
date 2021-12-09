@@ -6,5 +6,5 @@
 #include "brave/test/base/brave_testing_profile.h"
 
 #define TestingProfile BraveTestingProfile
-#include "../../../../../chrome/browser/push_messaging/push_messaging_service_unittest.cc"
+#include "src/chrome/browser/push_messaging/push_messaging_service_unittest.cc"
 #undef TestingProfile

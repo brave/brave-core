@@ -6,7 +6,7 @@
 #include "extensions/common/extension_urls.h"
 
 #define IsWebstoreUpdateUrl IsWebstoreUpdateUrl_ChromiumImpl
-#include "../../../../extensions/common/extension_urls.cc"
+#include "src/extensions/common/extension_urls.cc"
 #undef IsWebstoreUpdateUrl
 
 namespace extension_urls {

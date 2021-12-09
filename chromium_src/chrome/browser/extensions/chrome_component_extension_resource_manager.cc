@@ -39,5 +39,5 @@
   BRAVE_REWARDS_EXTENSION_RESOURCES                                  \
   BRAVE_WEBTORRENT_RESOURCES
 
-#include "../../../../../chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
+#include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
 #undef BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA

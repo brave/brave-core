@@ -52,7 +52,7 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
-#include "../../../../../chrome/browser/extensions/chrome_content_verifier_delegate.cc"
+#include "src/chrome/browser/extensions/chrome_content_verifier_delegate.cc"
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif

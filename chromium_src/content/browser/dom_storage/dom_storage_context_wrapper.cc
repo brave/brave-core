@@ -12,6 +12,6 @@
     host_storage_key_did_not_match = false;                              \
   }
 
-#include "../../../../../content/browser/dom_storage/dom_storage_context_wrapper.cc"
+#include "src/content/browser/dom_storage/dom_storage_context_wrapper.cc"
 
 #undef BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID

@@ -6,7 +6,7 @@
 #include "ui/native_theme/common_theme.h"
 
 #define GetAuraColor GetAuraColor_ChromiumImpl
-#include "../../../../ui/native_theme/common_theme.cc"
+#include "src/ui/native_theme/common_theme.cc"
 #undef GetAuraColor
 
 namespace ui {

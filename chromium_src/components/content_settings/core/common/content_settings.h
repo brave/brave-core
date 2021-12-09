@@ -8,7 +8,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings.h"
+#include "src/components/content_settings/core/common/content_settings.h"
 
 #undef RendererContentSettingRules
 

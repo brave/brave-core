@@ -33,7 +33,7 @@ const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 }  // namespace
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
-#include "../../../../../chrome/browser/policy/configuration_policy_handler_list_factory.cc"  // NOLINT
+#include "src/chrome/browser/policy/configuration_policy_handler_list_factory.cc"
 #undef BuildHandlerList
 
 namespace policy {

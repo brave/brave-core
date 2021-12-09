@@ -26,7 +26,7 @@
                       base::OnceClosure callback);                     \
   void StoreSpecifics
 
-#include "../../../../components/sync_device_info/device_info_sync_bridge.h"
+#include "src/components/sync_device_info/device_info_sync_bridge.h"
 
 #undef RefreshLocalDeviceInfoIfNeeded
 #undef ForcePulseForTest

@@ -7,5 +7,5 @@
 #include "brave/browser/profiles/brave_profile_avatar_downloader.h"
 
 #define ProfileAvatarDownloader BraveProfileAvatarDownloader
-#include "../../../../../chrome/browser/profiles/profile_attributes_storage.cc"
+#include "src/chrome/browser/profiles/profile_attributes_storage.cc"
 #undef ProfileAvatarDownloader

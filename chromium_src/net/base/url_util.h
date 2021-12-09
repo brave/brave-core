@@ -5,7 +5,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_
 #define BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_
 
-#include "../../../../net/base/url_util.h"
+#include "src/net/base/url_util.h"
 
 #include "net/base/net_export.h"
 

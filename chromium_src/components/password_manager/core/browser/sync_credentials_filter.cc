@@ -6,7 +6,7 @@
 #include "components/password_manager/core/browser/sync_credentials_filter.h"
 
 #define ShouldSave ShouldSave_ChromiumImpl
-#include "../../../../../../components/password_manager/core/browser/sync_credentials_filter.cc"
+#include "src/components/password_manager/core/browser/sync_credentials_filter.cc"
 #undef ShouldSave
 
 namespace password_manager {

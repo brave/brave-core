@@ -11,7 +11,7 @@
     std::auto_ptr<sessions::SessionTab> stub_tab_; \
     friend class BraveRecentTabsSubMenuModel; \
   public:
-#include "../../../../../../chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
+#include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
 

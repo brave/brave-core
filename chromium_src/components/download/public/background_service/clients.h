@@ -8,6 +8,6 @@
 
 #define BRAVE_DOWNLOAD_CLIENT CUSTOM_LIST_SUBSCRIPTIONS = 255,
 
-#include "../../../../../../components/download/public/background_service/clients.h"
+#include "src/components/download/public/background_service/clients.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_DOWNLOAD_PUBLIC_BACKGROUND_SERVICE_CLIENTS_H_

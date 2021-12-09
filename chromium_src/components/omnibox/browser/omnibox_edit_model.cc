@@ -51,6 +51,6 @@ void BraveAdjustTextForCopy(GURL* url) {
   BraveAdjustTextForCopy(url_from_text);
 
 #define OmniboxController BraveOmniboxController
-#include "../../../../../components/omnibox/browser/omnibox_edit_model.cc"  // NOLINT
+#include "src/components/omnibox/browser/omnibox_edit_model.cc"
 #undef OmniboxController
 #undef BRAVE_ADJUST_TEXT_FOR_COPY

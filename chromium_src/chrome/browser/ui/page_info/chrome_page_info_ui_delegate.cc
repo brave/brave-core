@@ -8,7 +8,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 
-#include "../../../../../../chrome/browser/ui/page_info/chrome_page_info_ui_delegate.cc"
+#include "src/chrome/browser/ui/page_info/chrome_page_info_ui_delegate.cc"
 
 bool ChromePageInfoUiDelegate::AddIPFSTabForURL(const GURL& ipfs_url) {
 #if !defined(OS_ANDROID)

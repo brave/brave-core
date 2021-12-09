@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../components/bookmarks/browser/bookmark_model_unittest.cc"
+#include "src/components/bookmarks/browser/bookmark_model_unittest.cc"
 namespace bookmarks {
 
 TEST_F(BookmarkModelTest, BraveMigrateOtherNodeFolder) {

@@ -11,7 +11,7 @@
   const char* GetFolderName(); \
   const char* GetKeyName
 
-#include "../../../../components/os_crypt/key_storage_kwallet.h"
+#include "src/components/os_crypt/key_storage_kwallet.h"
 #undef InitFolder
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OS_CRYPT_KEY_STORAGE_KWALLET_H_

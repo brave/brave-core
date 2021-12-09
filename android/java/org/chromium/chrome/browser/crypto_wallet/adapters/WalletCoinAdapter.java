@@ -41,7 +41,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         ACCOUNTS_LIST,
         BUY_ASSETS_LIST,
         SEND_ASSETS_LIST,
-        SWAP_ASSETS_LIST;
+        SWAP_TO_ASSETS_LIST,
+        SWAP_FROM_ASSETS_LIST;
     }
 
     private Context context;
@@ -112,7 +113,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 onWalletListItemClick.onTransactionClick(walletListItemModel.getTransactionInfo());
             } else if (walletListItemType == Utils.ASSET_ITEM) {
                 if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST
-                        || mType == AdapterType.SWAP_ASSETS_LIST) {
+                        || mType == AdapterType.SWAP_TO_ASSETS_LIST
+                        || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
                     for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
                         WalletListItemModel item = walletListItemModelListCopy.get(i);
                         if (item.getTitle().equals(holder.titleText.getText())
@@ -131,7 +133,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         });
 
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_ASSETS_LIST) {
+                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
+                || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
@@ -163,7 +166,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
 
         if (mType != AdapterType.ACCOUNTS_LIST) {
-            if (!walletListItemModel.getErcToken().logo.isEmpty()) {
+            if (walletListItemModel.getErcToken() == null
+                    || !walletListItemModel.getErcToken().logo.isEmpty()) {
                 Utils.setBitmapResource(mExecutor, mHandler, context,
                         walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
                         holder.iconImg, null, true);
@@ -199,7 +203,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_ASSETS_LIST) {
+                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
+                || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
             walletListItemModelListCopy.addAll(walletListItemModelList);
             mCheckedPositions.clear();
         }

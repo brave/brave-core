@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,9 @@ import java.util.TreeMap;
 public class NTPWidgetManager {
     public static final String PREF_PRIVATE_STATS = "private_stats";
     public static final String PREF_FAVORITES = "favorites";
+    public static final String PREF_BINANCE = "binance";
     public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
+    public static final String PREF_USER_PREF_FOR_BINANCE = "user_pref_for_binance";
 
     private static NTPWidgetManager sInstance;
 
@@ -43,6 +46,12 @@ public class NTPWidgetManager {
                                     R.string.favorites),
                             ContextUtils.getApplicationContext().getResources().getString(
                                     R.string.favorites_text)));
+            put(PREF_BINANCE,
+                    new NTPWidgetItem(PREF_BINANCE,
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.binance),
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.binance_disconnect_text)));
         }
     };
 
@@ -65,6 +74,10 @@ public class NTPWidgetManager {
         return mSharedPreferences.getInt(PREF_FAVORITES, 1);
     }
 
+    public int getBinanceWidget() {
+        return mSharedPreferences.getInt(PREF_BINANCE, 2);
+    }
+
     public void setWidget(String widgetType, int position) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putInt(widgetType, position);
@@ -81,6 +94,16 @@ public class NTPWidgetManager {
         sharedPreferencesEditor.apply();
     }
 
+    public boolean hasUpdatedUserPrefForBinance() {
+        return mSharedPreferences.getBoolean(PREF_USER_PREF_FOR_BINANCE, false);
+    }
+
+    public void setUpdatedUserPrefForBinance() {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_USER_PREF_FOR_BINANCE, true);
+        sharedPreferencesEditor.apply();
+    }
+
     public List<String> getUsedWidgets() {
         Map<Integer, String> usedWidgetMap = new TreeMap<>();
         if (getPrivateStatsWidget() != -1) {
@@ -88,6 +111,9 @@ public class NTPWidgetManager {
         }
         if (getFavoritesWidget() != -1) {
             usedWidgetMap.put(getFavoritesWidget(), PREF_FAVORITES);
+        }
+        if (getBinanceWidget() != -1 && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
+            usedWidgetMap.put(getBinanceWidget(), PREF_BINANCE);
         }
         return new ArrayList<String>(usedWidgetMap.values());
     }
@@ -99,6 +125,9 @@ public class NTPWidgetManager {
         }
         if (getFavoritesWidget() == -1) {
             availableWidgets.add(PREF_FAVORITES);
+        }
+        if (getBinanceWidget() == -1 && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
+            availableWidgets.add(PREF_BINANCE);
         }
         return availableWidgets;
     }

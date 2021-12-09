@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../../../components/autofill/core/common",
-   "+components/autofill/core/common",
-]

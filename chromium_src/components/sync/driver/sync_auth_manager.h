@@ -19,7 +19,7 @@ class BraveSyncAuthManager;
   friend BraveSyncAuthManager;                                 \
   virtual SyncAccountInfo DetermineAccountToUse
 
-#include "../../../../../components/sync/driver/sync_auth_manager.h"
+#include "src/components/sync/driver/sync_auth_manager.h"
 
 #undef RequestAccessToken
 #undef DetermineAccountToUse

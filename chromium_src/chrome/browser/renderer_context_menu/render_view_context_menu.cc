@@ -89,7 +89,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #define RegisterMenuShownCallbackForTesting \
   RegisterMenuShownCallbackForTesting_unused
 
-#include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.cc"
 
 #undef SpellingOptionsSubMenuObserver
 #undef RegisterMenuShownCallbackForTesting

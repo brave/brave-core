@@ -56,6 +56,7 @@ source_set("brave_wallet_delegate") {
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//components/content_settings/core/common",
     "//components/permissions",
     "//content/public/browser",

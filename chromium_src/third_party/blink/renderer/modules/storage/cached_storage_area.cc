@@ -7,7 +7,7 @@
 
 #define CachedStorageArea CachedStorageArea_ChromiumImpl
 
-#include "../../../../../../../third_party/blink/renderer/modules/storage/cached_storage_area.cc"
+#include "src/third_party/blink/renderer/modules/storage/cached_storage_area.cc"
 
 #undef CachedStorageArea
 

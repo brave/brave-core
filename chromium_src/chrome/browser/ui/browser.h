@@ -13,7 +13,7 @@
   friend class BookmarkPrefsService; \
   friend class BraveBrowser;
 
-#include "../../../../../chrome/browser/ui/browser.h"  // NOLINT
+#include "src/chrome/browser/ui/browser.h"
 
 #undef BRAVE_BROWSER_H
 #undef ScheduleUIUpdate

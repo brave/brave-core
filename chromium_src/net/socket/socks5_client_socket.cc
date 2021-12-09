@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../net/socket/socks5_client_socket.cc"  // NOLINT
+#include "src/net/socket/socks5_client_socket.cc"
 
 #include <algorithm>
 #include <memory>

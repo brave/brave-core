@@ -11,7 +11,7 @@
   std::string ChromeURLs() const; \
   void FinishDataRequest
 
-#include "../../../../../../chrome/browser/ui/webui/about_ui.h"
+#include "src/chrome/browser/ui/webui/about_ui.h"
 
 #undef FinishDataRequest
 

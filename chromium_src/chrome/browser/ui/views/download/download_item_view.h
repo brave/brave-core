@@ -43,7 +43,7 @@
 
 #define UpdateLabels virtual UpdateLabels
 #define SetMode virtual SetMode
-#include "../../../../../../../chrome/browser/ui/views/download/download_item_view.h"
+#include "src/chrome/browser/ui/views/download/download_item_view.h"
 #undef SetMode
 #undef UpdateLabels
 #undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

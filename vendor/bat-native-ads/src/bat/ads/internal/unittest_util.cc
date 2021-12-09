@@ -275,9 +275,11 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
 
   mock->SetInt64Pref(prefs::kIssuerPing, 0);
 
-  mock->SetDoublePref(prefs::kUnreconciledTransactions, 0.0);
+  mock->SetDoublePref(prefs::kNextTokenRedemptionAt,
+                      DistantFuture().ToDoubleT());
 
   mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
+  mock->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
 }
 
 }  // namespace

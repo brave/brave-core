@@ -24,7 +24,7 @@
 // for components/content_settings/core/common/cookie_settings_base.{h,cc}.
 #define IsFullCookieAccessAllowed IsEphemeralCookieAccessAllowed
 
-#include "../../../../services/network/restricted_cookie_manager.cc"
+#include "src/services/network/restricted_cookie_manager.cc"
 
 #undef IsFullCookieAccessAllowed
 #undef AnnotateAndMoveUserBlockedCookies

@@ -10,7 +10,7 @@
 #define CanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN) \
   BraveCanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN,  \
                                      content_settings_type_)
-#include "../../../../components/permissions/permission_context_base.cc"
+#include "src/components/permissions/permission_context_base.cc"
 #undef PermissionContextBase
 #undef CanBypassEmbeddingOriginCheck
 

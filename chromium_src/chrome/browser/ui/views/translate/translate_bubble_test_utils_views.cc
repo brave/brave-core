@@ -6,5 +6,5 @@
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 
 #define TranslateBubbleView TranslateBubbleView_ChromiumImpl
-#include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_test_utils_views.cc"
+#include "src/chrome/browser/ui/views/translate/translate_bubble_test_utils_views.cc"
 #undef TranslateBubbleView

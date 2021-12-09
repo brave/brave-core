@@ -23,5 +23,5 @@ void SetTorCircuitIsolation(const ProxyConfigWithAnnotation& config,
 #define BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY \
   SetTorCircuitIsolation(config_.value(), url, result, this);
 
-#include "../../../../net/proxy_resolution/configured_proxy_resolution_service.cc"
+#include "src/net/proxy_resolution/configured_proxy_resolution_service.cc"
 #undef BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY

@@ -5,7 +5,7 @@
 
 #define ParseCommandLineAndFieldTrials \
   ParseCommandLineAndFieldTrials_ChromiumImpl
-#include "../../../../../components/network_session_configurator/browser/network_session_configurator.cc"
+#include "src/components/network_session_configurator/browser/network_session_configurator.cc"
 #undef ParseCommandLineAndFieldTrials
 
 namespace network_session_configurator {

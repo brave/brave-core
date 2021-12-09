@@ -52,7 +52,7 @@ size_t GetBraveAvatarIconStartIndex();
 #define GetDefaultProfileAvatarIconAndLabel \
   GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
 
-#include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
+#include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
 #undef IsDefaultAvatarIconUrl

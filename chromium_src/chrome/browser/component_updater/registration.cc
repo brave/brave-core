@@ -6,7 +6,7 @@
 #include "chrome/browser/component_updater/registration.h"
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/registration.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/registration.cc"
 #undef RegisterComponentsForUpdate
 
 #include "chrome/browser/browser_process.h"

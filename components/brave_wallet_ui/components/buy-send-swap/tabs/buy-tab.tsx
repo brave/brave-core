@@ -3,7 +3,8 @@ import {
   UserAccountType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  EthereumChain
+  EthereumChain,
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -19,10 +20,12 @@ export interface Props {
   assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
+  defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: AccountAssetOptionType) => void
   onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
+  onAddNetwork: () => void
 }
 
 function BuyTab (props: Props) {
@@ -34,10 +37,12 @@ function BuyTab (props: Props) {
     buyAmount,
     showHeader,
     assetOptions,
+    defaultCurrencies,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
-    onSetBuyAmount
+    onSetBuyAmount,
+    onAddNetwork
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(assetOptions[0])
@@ -85,6 +90,7 @@ function BuyTab (props: Props) {
             />
           }
           <Buy
+            defaultCurrencies={defaultCurrencies}
             buyAmount={buyAmount}
             selectedAsset={selectedAsset}
             selectedNetwork={selectedNetwork}
@@ -106,6 +112,7 @@ function BuyTab (props: Props) {
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
+          onAddNetwork={onAddNetwork}
         />
       }
     </>

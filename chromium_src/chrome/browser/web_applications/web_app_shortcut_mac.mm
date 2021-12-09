@@ -11,7 +11,7 @@ namespace {
 base::FilePath GetLocalizableBraveAppShortcutsSubdirName();
 }
 
-#include "../../../../../chrome/browser/web_applications/web_app_shortcut_mac.mm"  // NOLINT
+#include "src/chrome/browser/web_applications/web_app_shortcut_mac.mm"
 
 namespace {
 base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
