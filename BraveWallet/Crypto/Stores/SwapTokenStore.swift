@@ -170,8 +170,8 @@ public class SwapTokenStore: ObservableObject {
     else { return nil }
     
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    let sellAddress = sellToken.swapAddress(in: chainId)
-    let buyAddress = buyToken.swapAddress(in: chainId)
+    let sellAddress = sellToken.contractAddress(in: chainId)
+    let buyAddress = buyToken.contractAddress(in: chainId)
     let sellAmountInWei: String
     let buyAmountInWei: String
     switch base {
@@ -341,7 +341,7 @@ public class SwapTokenStore: ObservableObject {
       let fromToken = selectedFromToken,
       let accountInfo = accountInfo,
       let balanceInWeiHex = weiFormatter.weiString(
-        from: selectedFromTokenBalance?.decimalDescription ?? "",
+        from: selectedFromTokenBalance?.decimalDescription ?? "0",
         radix: .hex,
         decimals: Int(fromToken.decimals)
       )
@@ -352,7 +352,7 @@ public class SwapTokenStore: ObservableObject {
       self.addingUnapprovedTx = true
       self.transactionController.makeErc20ApproveData(
         spenderAddress,
-        amount: balanceInWeiHex
+        amount: "0x\(balanceInWeiHex)"
       ) { success, data in
         defer { self.addingUnapprovedTx = false }
         guard success else { return }
@@ -360,7 +360,7 @@ public class SwapTokenStore: ObservableObject {
           nonce: "",
           gasPrice: "",
           gasLimit: "",
-          to: fromToken.contractAddress,
+          to: fromToken.contractAddress(in: self.chainId),
           value: "0x0",
           data: data
         )
@@ -464,7 +464,7 @@ public class SwapTokenStore: ObservableObject {
         // check for ERC20 token allowance
         if fromToken.isErc20 {
           self.checkAllowance(
-            contractAddress: accountInfo.address,
+            ownerAddress: accountInfo.address,
             spenderAddress: swapResponse.allowanceTarget,
             amountToSend: sellAmountValue,
             fromToken: fromToken
@@ -478,14 +478,14 @@ public class SwapTokenStore: ObservableObject {
   }
   
   private func checkAllowance(
-    contractAddress: String,
+    ownerAddress: String,
     spenderAddress: String,
     amountToSend: BDouble,
     fromToken: BraveWallet.ERCToken
   ) {
     rpcController.erc20TokenAllowance(
-      contractAddress,
-      ownerAddress: contractAddress,
+      fromToken.contractAddress(in: chainId),
+      ownerAddress: ownerAddress,
       spenderAddress: spenderAddress
     ) { [weak self] success, allowance in
       let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
