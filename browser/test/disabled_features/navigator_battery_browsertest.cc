@@ -37,8 +37,7 @@ IN_PROC_BROWSER_TEST_F(NavigatorGetBatteryDisabledTest, IsDisabled) {
 
   bool getBatteryBlocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(getBatteryBlocked())",
+      contents, "window.domAutomationController.send(getBatteryBlocked())",
       &getBatteryBlocked));
   EXPECT_TRUE(getBatteryBlocked);
 }

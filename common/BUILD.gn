@@ -85,21 +85,19 @@ source_set("switches") {
 }
 
 source_set("common") {
-  visibility =
-      brave_common_visibility_targets +
-      # These are layering violation and need to be fixed
-      [
-        "//brave/vendor/bat-native-ads:ads",
-        "//brave/components/p3a",
-        "//brave/components/brave_webtorrent/browser",
-        "//brave/components/brave_referrals/browser",
-        "//brave/components/brave_ads/browser",
-        "//brave/components/brave_wallet/renderer",
-        "//brave/components/content_settings/renderer",
-        "//brave/components/external_intents/android",
-        "//brave/components/webcompat_reporter/browser",
-        "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
-      ]
+  visibility = brave_common_visibility_targets +
+               # These are layering violation and need to be fixed
+               [
+                 "//brave/vendor/bat-native-ads:ads",
+                 "//brave/components/p3a",
+                 "//brave/components/brave_webtorrent/browser",
+                 "//brave/components/brave_referrals/browser",
+                 "//brave/components/brave_ads/browser",
+                 "//brave/components/brave_wallet/renderer",
+                 "//brave/components/content_settings/renderer",
+                 "//brave/components/external_intents/android",
+                 "//brave/components/webcompat_reporter/browser",
+               ]
   if (!is_android && !is_ios) {
     visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
   }

@@ -37,8 +37,7 @@ IN_PROC_BROWSER_TEST_F(NavigatorBluetoothDisabledTest, IsDisabled) {
 
   bool bluetoothBlocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(bluetoothBlocked())",
+      contents, "window.domAutomationController.send(bluetoothBlocked())",
       &bluetoothBlocked));
   EXPECT_TRUE(bluetoothBlocked);
 }
