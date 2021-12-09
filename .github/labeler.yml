@@ -7,6 +7,7 @@ CI/run-audit-deps:
 
 CI/run-network-audit:
 - browser/net/*
+- chromium_src/net/**/*
 - chromium_src/**/*features.cc
 - patches/chrome-VERSION.patch
 
