@@ -759,7 +759,9 @@ void BraveWalletService::OnNetworkChanged() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.
   for (auto& callback : add_suggest_token_callbacks_)
-    std::move(callback.second).Run(false, mojom::ProviderError::kSuccess, "");
+    std::move(callback.second)
+        .Run(false, mojom::ProviderError::kUserRejectedRequest,
+             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   add_suggest_token_callbacks_.clear();
 }
 

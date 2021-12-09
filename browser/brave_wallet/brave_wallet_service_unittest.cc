@@ -440,14 +440,21 @@ class BraveWalletServiceUnitTest : public testing::Test {
         mojom::AddSuggestTokenRequest::New(suggested_token.Clone());
     base::RunLoop run_loop;
     service_->AddSuggestTokenRequest(
-        request.Clone(), base::BindLambdaForTesting(
-                             [&](bool user_approved, mojom::ProviderError error,
-                                 const std::string& error_message) {
-                               EXPECT_EQ(approve, user_approved);
-                               EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-                               EXPECT_TRUE(error_message.empty());
-                               run_loop.Quit();
-                             }));
+        request.Clone(),
+        base::BindLambdaForTesting([&](bool user_approved,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          if (run_switch_network) {
+            EXPECT_FALSE(user_approved);
+            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+            EXPECT_FALSE(error_message.empty());
+          } else {
+            EXPECT_EQ(approve, user_approved);
+            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+            EXPECT_TRUE(error_message.empty());
+          }
+          run_loop.Quit();
+        }));
 
     auto requests = GetPendingAddSuggestTokenRequests();
     ASSERT_EQ(requests.size(), 1u);
@@ -1450,7 +1457,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   // Call AddSuggestTokenRequest and switch network without
   // NotifyAddSuggestTokenRequestsProcessed being called should clear out the
   // pending request and AddSuggestTokenRequestCallback should be run with
-  // approved = false.
+  // kUserRejectedRequest error.
   mojom::ERCTokenPtr busd = mojom::ERCToken::New(
       "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
       false, "BUSD", 18, true, "");
