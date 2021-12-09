@@ -28,14 +28,16 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     if (!selectedAsset) {
       return null
     }
+    const tokenImageURL = stripERC20TokenImageURL(selectedAsset?.logo)
+    const checkIconURL = selectedAsset?.symbol !== 'ETH' && (tokenImageURL === '' || tokenImageURL?.startsWith('http'))
 
     const bg = React.useMemo(() => {
-      if (selectedAsset?.symbol !== 'ETH' && stripERC20TokenImageURL(selectedAsset?.logo) === '') {
+      if (checkIconURL) {
         return background({ seed: selectedAsset.contractAddress ? selectedAsset?.contractAddress.toLowerCase() : selectedAsset.name })
       }
     }, [selectedAsset])
 
-    if (selectedAsset?.symbol !== 'ETH' && stripERC20TokenImageURL(selectedAsset?.logo) === '') {
+    if (checkIconURL) {
       return (
         <IconWrapper
           panelBackground={bg}
