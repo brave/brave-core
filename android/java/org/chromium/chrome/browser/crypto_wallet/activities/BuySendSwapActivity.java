@@ -762,7 +762,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -771,7 +771,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetToDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -1333,6 +1333,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     public BraveWalletService getBraveWalletService() {
         return mBraveWalletService;
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
     }
 
     private void InitBraveWalletService() {
