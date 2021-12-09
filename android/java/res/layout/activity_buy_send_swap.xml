@@ -202,6 +202,14 @@
 
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/from_send_value_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_error_text_color"
+                    android:visibility="gone"
+                    android:textSize="14sp"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -349,6 +357,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/wallet_error_text_color"
+                    android:visibility="gone"
                     android:textSize="14sp"/>
 
             </LinearLayout>

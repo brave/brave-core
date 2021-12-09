@@ -655,8 +655,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
         Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
 
+        boolean otherValidationError =
+                (findViewById(R.id.from_send_value_error_text).getVisibility() == View.VISIBLE);
         boolean buttonShouldBeEnabled = validationSucceeded || !disableButtonOnError;
-        btnBuySendSwap.setEnabled(buttonShouldBeEnabled);
+        btnBuySendSwap.setEnabled(!otherValidationError && buttonShouldBeEnabled);
 
         TextView sendToValidation = findViewById(R.id.to_send_error_text);
 
@@ -666,6 +668,25 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         } else {
             sendToValidation.setText(validationResult);
             sendToValidation.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setFromSendValueValidationResult(String validationResult) {
+        boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+
+        boolean otherValidationError =
+                (findViewById(R.id.to_send_error_text).getVisibility() == View.VISIBLE);
+        btnBuySendSwap.setEnabled(!otherValidationError && validationSucceeded);
+
+        TextView fromSendValueValidation = findViewById(R.id.from_send_value_error_text);
+
+        if (validationSucceeded) {
+            fromSendValueValidation.setText("");
+            fromSendValueValidation.setVisibility(View.GONE);
+        } else {
+            fromSendValueValidation.setText(validationResult);
+            fromSendValueValidation.setVisibility(View.VISIBLE);
         }
     }
 
@@ -709,6 +730,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             toSendValueText.setHint(getText(R.string.to_address_edit));
             mFilterTextWatcherToSend = new FilterTextWatcherToSend();
             toSendValueText.addTextChangedListener(mFilterTextWatcherToSend);
+
+            EditText fromValueText = findViewById(R.id.from_value_text);
+            mFilterTextWatcherFromSendValue = new FilterTextWatcherFromSendValue();
+            fromValueText.addTextChangedListener(mFilterTextWatcherFromSendValue);
+
             arrowDown.setVisibility(View.GONE);
             // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
@@ -1128,6 +1154,32 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         public void afterTextChanged(Editable s) {}
     }
     private FilterTextWatcherToSend mFilterTextWatcherToSend;
+
+    private class FilterTextWatcherFromSendValue implements TextWatcher {
+        public FilterTextWatcherFromSendValue() {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Double fromSendValue = 0d;
+            try {
+                fromSendValue = Double.parseDouble(s.toString());
+            } catch (NumberFormatException ex) {
+            }
+
+            String validationResult = (fromSendValue > mConvertedFromBalance)
+                    ? getString(R.string.crypto_wallet_error_insufficient_balance)
+                    : "";
+
+            setFromSendValueValidationResult(validationResult);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    }
+    private FilterTextWatcherFromSendValue mFilterTextWatcherFromSendValue;
 
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
