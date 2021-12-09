@@ -98,10 +98,18 @@ GURL AssetRatioController::base_url_for_test_;
 
 AssetRatioController::AssetRatioController(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+    : api_request_helper_(new api_request_helper::APIRequestHelper(
+          GetNetworkTrafficAnnotationTag(),
+          url_loader_factory)),
       weak_ptr_factory_(this) {}
 
 AssetRatioController::~AssetRatioController() {}
+
+void AssetRatioController::SetAPIRequestHelperForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_.reset(new api_request_helper::APIRequestHelper(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory));
+}
 
 mojo::PendingRemote<mojom::AssetRatioController>
 AssetRatioController::MakeRemote() {
@@ -166,7 +174,7 @@ void AssetRatioController::GetPrice(
   }
   request_headers["x-brave-key"] = brave_key;
 
-  api_request_helper_.Request(
+  api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
       true, std::move(internal_callback), request_headers);
 }
@@ -201,7 +209,7 @@ void AssetRatioController::GetPriceHistory(
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request(
+  api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
       true, std::move(internal_callback));
 }
@@ -249,8 +257,8 @@ void AssetRatioController::GetEstimatedTime(const std::string& gas_price,
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetEstimatedTime,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET", GetEstimatedTimeURL(gas_price), "", "",
-                              true, std::move(internal_callback));
+  api_request_helper_->Request("GET", GetEstimatedTimeURL(gas_price), "", "",
+                               true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetEstimatedTime(
@@ -276,8 +284,8 @@ void AssetRatioController::GetGasOracle(GetGasOracleCallback callback) {
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetGasOracle,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET", GetGasOracleURL(), "", "", true,
-                              std::move(internal_callback));
+  api_request_helper_->Request("GET", GetGasOracleURL(), "", "", true,
+                               std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetGasOracle(
