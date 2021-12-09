@@ -24,6 +24,7 @@ bool ParseAssetPriceHistory(const std::string& json,
 
 std::string ParseEstimatedTime(const std::string& json);
 mojom::GasEstimation1559Ptr ParseGasOracle(const std::string& json);
+mojom::ERCTokenPtr ParseTokenInfo(const std::string& json);
 
 }  // namespace brave_wallet
 
