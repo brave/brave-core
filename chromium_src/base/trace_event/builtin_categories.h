@@ -19,6 +19,6 @@
   X("brave")                                            \
   X("brave.adblock")
 
-#include "../../../../base/trace_event/builtin_categories.h"
+#include "src/base/trace_event/builtin_categories.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_TRACE_EVENT_BUILTIN_CATEGORIES_H_
