@@ -22,7 +22,7 @@ cargo_build("rust_lib") {
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
-    "//brave/components/skus/browser/rs/cxx:rust_lib",
+    "//brave/components/skus/browser/rs:rust_lib",
     "//brave/components/speedreader/rust/lib",
   ]
 }

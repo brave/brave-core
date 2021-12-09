@@ -6,6 +6,8 @@
 import("//brave/build/cargo.gni")
 
 rust_crate("rust_lib") {
+  visibility = [ "//brave/components/skus/browser/rs:rust_lib" ]
+
   inputs = [
     "Cargo.toml",
     "src/cache.rs",

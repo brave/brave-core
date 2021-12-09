@@ -63,9 +63,14 @@ template("rust_ffi") {
 template("rust_crate") {
   action(target_name) {
     script = "//brave/script/stamp.py"
-    visibility = [ "//brave/build/rust:*" ]
 
     forward_variables_from(invoker, [ "deps" ])
+
+    if (defined(invoker.visibility)) {
+      visibility = invoker.visibility
+    } else {
+      visibility = [ "//brave/build/rust:*" ]
+    }
 
     inputs = [ script ]
 
