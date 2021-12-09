@@ -100,6 +100,13 @@ public class KeyringStore: ObservableObject {
     updateKeyringInfo()
     controller.defaultKeyringInfo { [self] keyringInfo in
       isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
+      if Self.isKeychainPasswordStored && isOnboardingVisible {
+        // If a user deletes the app and they had a stored user password in the past that keychain item
+        // stays persisted. When we grab the keyring for the first time we should check to see if they have
+        // a wallet created _and_ also have a password stored because if they do then it is no longer valid
+        // and should be removed.
+        Self.resetKeychainStoredPassword()
+      }
     }
     controller.autoLockMinutes { minutes in
       self.autoLockInterval = .init(value: minutes)
