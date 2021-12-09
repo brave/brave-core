@@ -268,18 +268,26 @@ extension CGPoint {
 
 // MARK: - Accessibility
 
+private struct ChartAccessibilityViewModifier: ViewModifier {
+  var title: String
+  var dataPoints: [DataPoint]
+  
+  func body(content: Content) -> some View {
+    if #available(iOS 15.0, *) {
+      content
+        .accessibilityElement()
+        .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
+        .accessibilityLabel(title)
+    } else {
+      content
+        .accessibilityLabel(title)
+    }
+  }
+}
+
 extension View {
   func chartAccessibility(title: String, dataPoints: [DataPoint]) -> some View {
-    Group {
-      if #available(iOS 15.0, *) {
-        self
-          .accessibilityElement()
-          .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
-      } else {
-        self
-      }
-    }
-    .accessibilityLabel(title)
+    modifier(ChartAccessibilityViewModifier(title: title, dataPoints: dataPoints))
   }
 }
 

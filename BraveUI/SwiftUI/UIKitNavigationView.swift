@@ -35,8 +35,6 @@ public struct UIKitNavigationView<Content: View>: View {
       )
     }
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
-      (uiViewController.viewControllers.first as? UIHostingController<Content>)?
-        .rootView = content
     }
   }
 }
