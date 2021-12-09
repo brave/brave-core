@@ -171,7 +171,8 @@ void Transactions::Update(
   const std::string query = base::StringPrintf(
       "UPDATE %s "
       "SET reconciled_at = %s "
-      "WHERE id IN %s ",
+      "WHERE reconciled_at == 0 "
+      "AND id IN %s",
       GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str(),
       BuildBindingParameterPlaceholder(transaction_ids.size()).c_str());
 
