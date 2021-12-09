@@ -144,11 +144,9 @@ class FavoritesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
-        // TODO: Issue #4651 - Drag and drop Favourites crashing on iOS-14
-        if #available(iOS 15.0, *) {
-            // Drag should be enabled to rearrange favourite
-            collectionView.dragInteractionEnabled = true
-        }
+        
+        // Drag should be enabled to rearrange favourite
+        collectionView.dragInteractionEnabled = true
         collectionView.keyboardDismissMode = .interactive
         
         dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
