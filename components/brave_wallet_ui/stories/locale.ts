@@ -308,6 +308,8 @@ provideStrings({
   braveWalletSitePermissionsTitle: 'Site permissions',
   braveWalletSitePermissionsAccounts: '$1 accounts connected',
   braveWalletSitePermissionsDisconnect: 'Disconnect',
+  braveWalletSitePermissionsSwitch: 'Switch',
+  braveWalletSitePermissionsNewAccount: 'New account',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',

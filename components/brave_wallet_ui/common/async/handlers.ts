@@ -603,6 +603,12 @@ handler.on(WalletActions.removeSitePermission.getType(), async (store: Store, pa
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.addSitePermission.getType(), async (store: Store, payload: RemoveSitePermissionPayloadType) => {
+  const braveWalletService = getAPIProxy().braveWalletService
+  await braveWalletService.addEthereumPermission(payload.origin, payload.account)
+  await refreshWalletInfo(store)
+})
+
 handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
   const status = payload.txInfo.txStatus
   if (status === TransactionStatus.Confirmed || status === TransactionStatus.Error) {

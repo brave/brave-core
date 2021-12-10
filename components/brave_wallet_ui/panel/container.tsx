@@ -449,8 +449,20 @@ function Container (props: Props) {
     props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
   }
 
-  const removeSitePermission = (origin: string, address: string) => {
+  const removeSitePermission = (origin: string, address: string, connectedAccounts: WalletAccountType[]) => {
     props.walletActions.removeSitePermission({ origin: origin, account: address })
+    if (connectedAccounts.length !== 0) {
+      props.walletActions.selectAccount(connectedAccounts[0])
+    }
+  }
+
+  const addSitePermission = (origin: string, account: WalletAccountType) => {
+    props.walletActions.addSitePermission({ origin: origin, account: account.address })
+    props.walletActions.selectAccount(account)
+  }
+
+  const onSwitchAccount = (account: WalletAccountType) => {
+    props.walletActions.selectAccount(account)
   }
 
   const onAddAccount = () => {
@@ -834,9 +846,14 @@ function Container (props: Props) {
             useSearch={false}
           >
             <SitePermissions
+              accounts={accounts}
               connectedAccounts={connectedAccounts}
+              onConnect={addSitePermission}
               onDisconnect={removeSitePermission}
+              onSwitchAccount={onSwitchAccount}
+              selectedAccount={selectedAccount}
               siteURL={activeOrigin}
+              onAddAccount={onAddAccount}
             />
           </Panel>
         </StyledExtensionWrapper>
