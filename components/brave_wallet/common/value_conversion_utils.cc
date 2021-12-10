@@ -106,4 +106,56 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   return dict;
 }
 
+mojom::ERCTokenPtr ValueToERCToken(const base::Value& value) {
+  mojom::ERCTokenPtr tokenPtr = mojom::ERCToken::New();
+  if (!value.is_dict())
+    return nullptr;
+
+  const std::string* contract_address = value.FindStringKey("contract_address");
+  if (!contract_address)
+    return nullptr;
+  tokenPtr->contract_address = *contract_address;
+
+  const std::string* name = value.FindStringKey("name");
+  if (!name)
+    return nullptr;
+  tokenPtr->name = *name;
+
+  const std::string* symbol = value.FindStringKey("symbol");
+  if (!symbol)
+    return nullptr;
+  tokenPtr->symbol = *symbol;
+
+  const std::string* logo = value.FindStringKey("logo");
+  if (logo) {
+    tokenPtr->logo = *logo;
+  }
+
+  absl::optional<bool> is_erc20 = value.FindBoolKey("is_erc20");
+  if (!is_erc20)
+    return nullptr;
+  tokenPtr->is_erc20 = is_erc20.value();
+
+  absl::optional<bool> is_erc721 = value.FindBoolKey("is_erc721");
+  if (!is_erc721)
+    return nullptr;
+  tokenPtr->is_erc721 = is_erc721.value();
+
+  absl::optional<int> decimals = value.FindIntKey("decimals");
+  if (!decimals)
+    return nullptr;
+  tokenPtr->decimals = decimals.value();
+
+  absl::optional<bool> visible = value.FindBoolKey("visible");
+  if (!visible)
+    return nullptr;
+  tokenPtr->visible = visible.value();
+
+  const std::string* token_id = value.FindStringKey("token_id");
+  if (token_id)
+    tokenPtr->token_id = *token_id;
+
+  return tokenPtr;
+}
+
 }  // namespace brave_wallet

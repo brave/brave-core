@@ -724,4 +724,8 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
   asset_list->Append(std::move(native_asset));
 }
 
+std::string GetCurrentChainId(PrefService* prefs) {
+  return prefs->GetString(kBraveWalletCurrentChainId);
+}
+
 }  // namespace brave_wallet

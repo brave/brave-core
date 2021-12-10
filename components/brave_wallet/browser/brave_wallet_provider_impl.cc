@@ -16,10 +16,10 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -680,6 +680,22 @@ void BraveWalletProviderImpl::OnContentSettingChanged(
   if (content_type == ContentSettingsType::BRAVE_ETHEREUM) {
     UpdateKnownAccounts();
   }
+}
+
+void BraveWalletProviderImpl::AddSuggestToken(
+    mojom::ERCTokenPtr token,
+    AddSuggestTokenCallback callback) {
+  if (!token) {
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto request = mojom::AddSuggestTokenRequest::New(std::move(token));
+  brave_wallet_service_->AddSuggestTokenRequest(std::move(request),
+                                                std::move(callback));
+  delegate_->ShowPanel();
 }
 
 }  // namespace brave_wallet

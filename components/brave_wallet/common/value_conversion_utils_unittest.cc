@@ -5,11 +5,30 @@
 
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
+#include <string>
+#include <vector>
+
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace brave_wallet {
+
+namespace {
+
+void TestValueToERCTokenFailCases(const base::Value& value,
+                                  const std::vector<std::string>& keys) {
+  for (const auto& key : keys) {
+    auto invalid_value = value.Clone();
+    invalid_value.RemoveKey(key);
+    EXPECT_FALSE(ValueToERCToken(invalid_value))
+        << "ValueToERCToken should fail if " << key << " not exists";
+  }
+}
+
+}  // namespace
 
 TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
   {
@@ -118,3 +137,40 @@ TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
   auto result = brave_wallet::ValueToEthereumChain(value);
   ASSERT_TRUE(result->Equals(chain));
 }
+
+TEST(ValueConversionUtilsUnitTest, ValueToERCToken) {
+  absl::optional<base::Value> json_value = base::JSONReader::Read(R"({
+      "contract_address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "name": "Basic Attention Token",
+      "symbol": "BAT",
+      "logo": "bat.png",
+      "is_erc20": true,
+      "is_erc721": false,
+      "decimals": 18,
+      "visible": true,
+      "token_id": ""
+  })");
+  ASSERT_TRUE(json_value);
+
+  mojom::ERCTokenPtr expected_token = mojom::ERCToken::New(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+      "bat.png", true, false, "BAT", 18, true, "");
+
+  mojom::ERCTokenPtr token = ValueToERCToken(json_value.value());
+  EXPECT_EQ(token, expected_token);
+
+  // Test input value with required keys.
+  TestValueToERCTokenFailCases(
+      json_value.value(), {"contract_address", "name", "symbol", "is_erc20",
+                           "is_erc721", "decimals", "visible"});
+
+  // Test input value with optional keys.
+  base::Value optional_value = json_value.value().Clone();
+  optional_value.RemoveKey("logo");
+  optional_value.RemoveKey("token_id");
+  expected_token->logo = "";
+  token = ValueToERCToken(optional_value);
+  EXPECT_EQ(token, expected_token);
+}
+
+}  // namespace brave_wallet

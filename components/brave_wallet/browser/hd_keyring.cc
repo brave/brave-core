@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {

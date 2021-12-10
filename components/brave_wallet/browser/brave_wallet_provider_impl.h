@@ -90,6 +90,9 @@ class BraveWalletProviderImpl final
       GetNetworkAndDefaultKeyringInfoCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
 
+  void AddSuggestToken(mojom::ERCTokenPtr token,
+                       AddSuggestTokenCallback callback) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest, OnAddEthereumChain);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,

@@ -6,7 +6,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

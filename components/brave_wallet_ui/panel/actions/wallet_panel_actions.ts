@@ -6,6 +6,7 @@
 import { createAction } from 'redux-act'
 import {
   AccountPayloadType,
+  AddSuggestTokenProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
@@ -15,6 +16,7 @@ import {
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
 import {
+  AddSuggestTokenRequest,
   SwapErrorResponse,
   SwapResponse,
   SignMessageRequest,
@@ -52,3 +54,5 @@ export const signMessageHardwareProcessed = createAction<SignMessageHardwareProc
 export const approveHardwareTransaction = createAction<TransactionInfo>('approveHardwareTransaction')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet = createAction<TransactionInfo>('cancelConnectHardwareWallet')
+export const addSuggestToken = createAction<AddSuggestTokenRequest>('addSuggestToken')
+export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
