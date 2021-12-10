@@ -93,7 +93,7 @@ struct NTPSponsoredImagesData {
 
   bool IsValid() const;
 
-  void ParseCampaignsList(base::Value campaigns,
+  void ParseCampaignsList(base::Value campaigns_value,
                           const base::FilePath& installed_dir);
 
   // Parse common properties for SI & SR.

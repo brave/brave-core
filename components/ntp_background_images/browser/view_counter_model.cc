@@ -7,6 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 
 namespace ntp_background_images {
 
@@ -15,6 +16,23 @@ ViewCounterModel::ViewCounterModel() {
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
+
+void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
+    const std::vector<size_t>& campaigns_total_image_count) {
+  campaigns_total_branded_image_count_ = campaigns_total_image_count;
+  total_campaign_count_ = campaigns_total_branded_image_count_.size();
+  for (size_t i = 0; i < total_campaign_count_; ++i) {
+    campaigns_current_branded_image_index_.push_back(0);
+  }
+  // Pick the first campaign randomly.
+  current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
+}
+
+std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
+    const {
+  return {current_campaign_index_,
+          campaigns_current_branded_image_index_[current_campaign_index_]};
+}
 
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
   if (always_show_branded_wallpaper_)
@@ -32,14 +50,17 @@ void ViewCounterModel::RegisterPageView() {
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
-  // NTP BI component is not ready.
-  if (total_branded_image_count_ == 0)
+  // NTP SI/SR component is not ready.
+  if (total_campaign_count_ == 0)
     return;
 
   // In SR mode, SR image is always visible regardless of
   if (always_show_branded_wallpaper_) {
-    current_branded_wallpaper_image_index_++;
-    current_branded_wallpaper_image_index_ %= total_branded_image_count_;
+    // SR uses only one campaign.
+    DCHECK_EQ(1UL, total_campaign_count_);
+    campaigns_current_branded_image_index_[0]++;
+    campaigns_current_branded_image_index_[0] %=
+        campaigns_total_branded_image_count_[0];
     return;
   }
 
@@ -56,8 +77,13 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and increse image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-    current_branded_wallpaper_image_index_++;
-    current_branded_wallpaper_image_index_ %= total_branded_image_count_;
+    campaigns_current_branded_image_index_[current_campaign_index_]++;
+    campaigns_current_branded_image_index_[current_campaign_index_] %=
+        campaigns_total_branded_image_count_[current_campaign_index_];
+
+    // Increse campaign index for next time.
+    current_campaign_index_++;
+    current_campaign_index_ %= total_campaign_count_;
     return;
   }
 }
@@ -86,9 +112,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
 void ViewCounterModel::Reset() {
   current_wallpaper_image_index_ = 0;
   total_image_count_ = 0;
-  current_branded_wallpaper_image_index_ = 0;
-  total_branded_image_count_ = 0;
   always_show_branded_wallpaper_ = false;
+  current_campaign_index_ = 0;
+  campaigns_total_branded_image_count_.clear();
+  campaigns_current_branded_image_index_.clear();
 }
 
 }  // namespace ntp_background_images

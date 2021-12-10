@@ -161,7 +161,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
   if (campaigns_value) {
     ParseCampaignsList(campaigns_value->Clone(), installed_dir);
   } else {
-    // Get global campaign directly if campaigns list isn't existed.
+    // Get a global campaign directly if the campaign list doesn't exist.
     const auto campaign =
         GetCampaignFromValue(json_value->Clone(), installed_dir);
     if (campaign.IsValid())
@@ -178,11 +178,15 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 void NTPSponsoredImagesData::ParseCampaignsList(
-    base::Value campaigns,
+    base::Value campaigns_value,
     const base::FilePath& installed_dir) {
-  DCHECK(campaigns.is_list());
-  // TODO(simonhong): Parse campaign list.
-  NOTIMPLEMENTED();
+  DCHECK(campaigns_value.is_list());
+  for (const auto& campaign_value : campaigns_value.GetList()) {
+    const auto campaign =
+        GetCampaignFromValue(campaign_value.Clone(), installed_dir);
+    if (campaign.IsValid())
+      campaigns.push_back(campaign);
+  }
 }
 
 Campaign NTPSponsoredImagesData::GetCampaignFromValue(
