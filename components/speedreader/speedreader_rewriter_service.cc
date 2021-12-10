@@ -29,14 +29,17 @@ namespace speedreader {
 
 namespace {
 
-std::string WrapStylesheetWithCSP(const std::string &stylesheet) {
+std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
   const std::string style_hash = crypto::SHA256HashString(stylesheet);
   const std::string style_hash_b64 =
       base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
 
   return "<meta http-equiv=\"Content-Security-Policy\" content=\""
-      "script-src 'none'; style-src 'sha256-" + style_hash_b64 + "'\">\n"
-      "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
+         "script-src 'none'; style-src 'sha256-" +
+         style_hash_b64 +
+         "'\">\n"
+         "<style id=\"brave_speedreader_style\">" +
+         stylesheet + "</style>";
 }
 
 std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
