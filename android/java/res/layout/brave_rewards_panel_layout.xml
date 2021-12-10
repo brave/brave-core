@@ -18,6 +18,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <include
+                    android:id="@+id/brave_rewards_onboarding_modal_id"
+                    layout="@layout/brave_rewards_onboarding_modal"/>
+
+                <include
+                    android:id="@+id/brave_rewards_onboarding_layout_id"
+                    layout="@layout/brave_rewards_onboarding_layout"/>
+
                 <LinearLayout
                     android:id="@+id/rewards_main_layout"
                     android:layout_width="match_parent"
@@ -206,6 +214,10 @@
                 <include
                     android:id="@+id/brave_rewards_panel_notification_layout_id"
                     layout="@layout/brave_rewards_panel_notification_layout" />
+
+                <include
+                    android:id="@+id/brave_rewards_welcome_layout_id"
+                    layout="@layout/brave_rewards_welcome_layout"/>
 
             </FrameLayout>
 
