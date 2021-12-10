@@ -12,41 +12,29 @@
 namespace ads {
 
 NewTabPageAdInfo BuildNewTabPageAd(
-    const CreativeNewTabPageAdInfo& creative_ad) {
-  const std::string& uuid = base::GenerateGUID();
-  return BuildNewTabPageAd(creative_ad, uuid);
+    const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
+  const std::string uuid = base::GenerateGUID();
+  return BuildNewTabPageAd(creative_new_tab_page_ad, uuid);
 }
 
-NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad,
-                                   const std::string& uuid) {
-  NewTabPageAdInfo ad;
+NewTabPageAdInfo BuildNewTabPageAd(
+    const CreativeNewTabPageAdInfo& creative_new_tab_page_ad,
+    const std::string& uuid) {
+  NewTabPageAdInfo new_tab_page_ad;
 
-  ad.type = AdType::kNewTabPageAd;
-  ad.uuid = uuid;
-  ad.creative_instance_id = creative_ad.creative_instance_id;
-  ad.creative_set_id = creative_ad.creative_set_id;
-  ad.campaign_id = creative_ad.campaign_id;
-  ad.advertiser_id = creative_ad.advertiser_id;
-  ad.segment = creative_ad.segment;
-  ad.company_name = creative_ad.company_name;
-  ad.image_url = creative_ad.image_url;
-  ad.alt = creative_ad.alt;
-  ad.target_url = creative_ad.target_url;
+  new_tab_page_ad.type = AdType::kNewTabPageAd;
+  new_tab_page_ad.uuid = uuid;
+  new_tab_page_ad.creative_instance_id =
+      creative_new_tab_page_ad.creative_instance_id;
+  new_tab_page_ad.creative_set_id = creative_new_tab_page_ad.creative_set_id;
+  new_tab_page_ad.campaign_id = creative_new_tab_page_ad.campaign_id;
+  new_tab_page_ad.advertiser_id = creative_new_tab_page_ad.advertiser_id;
+  new_tab_page_ad.segment = creative_new_tab_page_ad.segment;
+  new_tab_page_ad.target_url = creative_new_tab_page_ad.target_url;
+  new_tab_page_ad.company_name = creative_new_tab_page_ad.company_name;
+  new_tab_page_ad.alt = creative_new_tab_page_ad.alt;
 
-  for (const auto& creative_ad_wallpaper : creative_ad.wallpapers) {
-    NewTabPageAdWallpaperInfo wallpaper;
-
-    wallpaper.image_url = creative_ad_wallpaper.image_url;
-
-    NewTabPageAdWallpaperFocalPointInfo focal_point;
-    focal_point.x = creative_ad_wallpaper.focal_point.x;
-    focal_point.y = creative_ad_wallpaper.focal_point.y;
-    wallpaper.focal_point = focal_point;
-
-    ad.wallpapers.push_back(wallpaper);
-  }
-
-  return ad;
+  return new_tab_page_ad;
 }
 
 }  // namespace ads

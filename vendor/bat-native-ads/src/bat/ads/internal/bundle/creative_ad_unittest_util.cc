@@ -21,19 +21,18 @@ CreativeAdInfo BuildCreativeAd() {
   creative_ad.end_at = DistantFuture();
   creative_ad.daily_cap = 1;
   creative_ad.advertiser_id = base::GenerateGUID();
-  creative_ad.priority = 2;
+  creative_ad.priority = 1;
   creative_ad.ptr = 1.0;
-  creative_ad.per_day = 3;
-  creative_ad.per_week = 4;
-  creative_ad.per_month = 5;
-  creative_ad.total_max = 6;
-  creative_ad.value = 2.0;
+  creative_ad.per_day = 1;
+  creative_ad.per_week = 1;
+  creative_ad.per_month = 1;
+  creative_ad.total_max = 1;
+  creative_ad.value = 1.0;
   creative_ad.segment = "untargeted";
-  creative_ad.split_test_group = "";
-  CreativeDaypartInfo daypart;
-  creative_ad.dayparts = {daypart};
   creative_ad.geo_targets = {"US"};
   creative_ad.target_url = "https://brave.com";
+  CreativeDaypartInfo daypart;
+  creative_ad.dayparts = {daypart};
 
   return creative_ad;
 }

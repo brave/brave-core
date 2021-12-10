@@ -23,7 +23,6 @@ namespace table {
 
 class Campaigns;
 class CreativeAds;
-class CreativeNewTabPageAdWallpapers;
 class Dayparts;
 class GeoTargets;
 class Segments;
@@ -33,7 +32,7 @@ class CreativeNewTabPageAds final : public Table {
   CreativeNewTabPageAds();
   ~CreativeNewTabPageAds() override;
 
-  void Save(const CreativeNewTabPageAdList& creative_ads,
+  void Save(const CreativeNewTabPageAdList& creative_new_tab_page_ads,
             ResultCallback callback);
 
   void Delete(ResultCallback callback);
@@ -58,12 +57,13 @@ class CreativeNewTabPageAds final : public Table {
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
-                      const CreativeNewTabPageAdList& creative_ads);
+  void InsertOrUpdate(
+      mojom::DBTransaction* transaction,
+      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommand* command,
-      const CreativeNewTabPageAdList& creative_ads);
+      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
 
   void OnGetForCreativeInstanceId(mojom::DBCommandResponsePtr response,
                                   const std::string& creative_instance_id,
@@ -76,14 +76,12 @@ class CreativeNewTabPageAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeNewTabPageAdsCallback callback);
 
-  void MigrateToV19(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
-  std::unique_ptr<CreativeNewTabPageAdWallpapers>
-      creative_new_tab_page_ad_wallpapers_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
   std::unique_ptr<Segments> segments_database_table_;

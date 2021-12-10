@@ -252,24 +252,12 @@ bool CatalogInfo::FromJson(const std::string& json,
           auto logo = payload["logo"].GetObject();
 
           creative_info.payload.company_name = logo["companyName"].GetString();
-          creative_info.payload.image_url = logo["imageUrl"].GetString();
           creative_info.payload.alt = logo["alt"].GetString();
           creative_info.payload.target_url = logo["destinationUrl"].GetString();
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
             continue;
-          }
-
-          for (const auto& item : payload["wallpapers"].GetArray()) {
-            CatalogNewTabPageAdWallpaperInfo wallpaper;
-            wallpaper.image_url = item["imageUrl"].GetString();
-
-            const auto& focal_point = item["focalPoint"].GetObject();
-            wallpaper.focal_point.x = focal_point["x"].GetInt();
-            wallpaper.focal_point.y = focal_point["y"].GetInt();
-
-            creative_info.payload.wallpapers.push_back(wallpaper);
           }
 
           creative_set_info.creative_new_tab_page_ads.push_back(creative_info);

@@ -21,8 +21,7 @@ bool NewTabPageAdInfo::IsValid() const {
     return false;
   }
 
-  if (company_name.empty() || image_url.empty() || alt.empty() ||
-      wallpapers.empty()) {
+  if (company_name.empty() || alt.empty()) {
     return false;
   }
 
@@ -76,15 +75,9 @@ bool NewTabPageAdInfo::FromJson(const std::string& json) {
     company_name = document["company_name"].GetString();
   }
 
-  if (document.HasMember("image_url")) {
-    image_url = document["image_url"].GetString();
-  }
-
   if (document.HasMember("alt")) {
     alt = document["alt"].GetString();
   }
-
-  // TODO(tmancey): Read wallpapers JSON
 
   if (document.HasMember("target_url")) {
     target_url = document["target_url"].GetString();
@@ -97,7 +90,7 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string& type = std::string(info.type);
+  const std::string type = std::string(info.type);
   writer->String(type.c_str());
 
   writer->String("uuid");
@@ -121,13 +114,8 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->String("company_name");
   writer->String(info.company_name.c_str());
 
-  writer->String("image_url");
-  writer->String(info.image_url.c_str());
-
   writer->String("alt");
   writer->String(info.alt.c_str());
-
-  // TODO(tmancey): Write wallpapers JSON
 
   writer->String("target_url");
   writer->String(info.target_url.c_str());
