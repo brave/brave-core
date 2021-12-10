@@ -1,9 +1,10 @@
-// Copyright 2018 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_NET_LOG_NET_LOG_EVENT_TYPE_LIST_H_
-#define BRAVE_CHROMIUM_SRC_NET_LOG_NET_LOG_EVENT_TYPE_LIST_H_
+// Intentionally no header guards (see the comment in the overridden .h file).
+// NOLINT(build/header_guard)
 
 #include "src/net/log/net_log_event_type_list.h"
 
@@ -12,5 +13,3 @@ EVENT_TYPE(SOCKS5_AUTH_WRITE)
 
 // The time spent waiting for the authentication response from the SOCKS server
 EVENT_TYPE(SOCKS5_AUTH_READ)
-
-#endif  // BRAVE_CHROMIUM_SRC_NET_LOG_NET_LOG_EVENT_TYPE_LIST_H_
