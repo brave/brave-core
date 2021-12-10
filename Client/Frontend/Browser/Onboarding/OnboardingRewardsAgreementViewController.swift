@@ -83,7 +83,7 @@ extension OnboardingRewardsAgreementViewController {
         var onTermsOfServicePressed: (() -> Void)?
         var onPrivacyPolicyPressed: (() -> Void)?
         
-        let turnOnButton = OnboardingCommon.Views.primaryButton(text: Strings.OBTurnOnButton).then {
+        let turnOnButton = OnboardingCommon.Views.primaryButton(text: Strings.yes).then {
             $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
             $0.backgroundColor = .braveBlurple
             $0.titleLabel?.minimumScaleFactor = 0.75
