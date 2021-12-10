@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
-<translation id="3066983737886188034">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
+<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
+<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini Earn APY</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
 <translation id="6215565499749144110">TAP নেটওয়ার্ক দিয়ে, আপনি জনপ্রিয় নাম-ব্র্যান্ড যুক্ত উপহার কার্ডের জন্য আপনার BAT রিডিম করে নিতে পারেন।</translation>
 <translation id="6915065518766963119">* অনুমোদিত যাচাইকরণের প্রয়োজন।</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x ঠিকানা অথবা url</translation>
 <translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> কে একটি DEX এগ্রিগেটর হিসেবে ব্যবহার করে।</translation>
 <translation id="151946611346774041">0x একটি লেনদেন (কোটগুলি পাওয়া সহ) পরিপূরণ করতে ইথেরিয়াম ঠিকানা এবং IP ঠিকানা প্রক্রিয়াকরণ করবে। 0x শুধুমাত্র লেনদেনগুলি প্রক্রিয়াকরণ করার জন্যই এই ডেটা ব্যবহার করবে।</translation>
+<translation id="4626407663177532837">কোটটিতে 0.875% Brave ফি অন্তর্ভুক্ত আছে।</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
 <translation id="1420318137760245955">নতুন Brave ওয়্যালেটে স্বাগতম</translation>
 <translation id="8303434745767477417">পনার হেফাজতে ক্রিপ্টো সম্পদ রাখুন। পোর্টফোলিও কর্মক্ষমতা ট্র্যাক করুন এবং ওয়েব 3D অ্যাপের সাথে ইন্টারঅ্যাক্ট করুন। DeFi দিয়ে ট্রেড করুন, বিনিয়োগ করুন, ঋণ নিন এবং ঋণ দিন। Brave গোপনীয়তা ব্রাউজার থেকে সকল অধিকার। কোনও এক্সটেনশন, কোনও ডাউনলোড প্রয়োজন বেই।</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> সংযোগ বিচ্ছিন্ন হয়েছে</translation>
 <translation id="5317781812114905957">নির্দেশাবলী</translation>
 <translation id="1178198982208000092">আপনার <ph name="DEVICE_NAME"/> সংযোগ করুন</translation>
+<translation id="4358411489835404360">ডিভাইসে হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">হার্ডওয়্যার ওয়ালেটের <ph name="DEVICE_NAME"/> Ethereum অ্যাপ খোলা প্রয়োজন</translation>
 <translation id="8687869982094542529">পাঠানো হয়েছে</translation>
 <translation id="5013754027092416509">প্রাপ্ত</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON ডেটা প্রত্যাশিত নয়</translation>
 <translation id="3282936527763045737">পাসওয়ার্ড সঠিক নয়</translation>
 <translation id="1119447706177454957">আভ্যন্তরীণ ত্রুটি</translation>
+<translation id="3327639091470204775">Trezor bridge সংযোগ করতে পারেনি</translation>
 <translation id="6672377693827764095">অভ্যন্তরীণ ত্রুটি, অ্যাকাউন্টগুলি আনা যাচ্ছে না</translation>
 <translation id="8933250418452564886">হার্ডওয়্যার লেনদেন খুঁজে পাওয়া যায়নি, অনুগ্রহ করে আবার চেষ্টা করুন</translation>
 <translation id="5999974802900788338">হার্ডওয়্যার ডিভাইস থেকে ত্রুটি প্রাপ্ত হয়েছে, সম্ভবত আপনাকে আপনার ডিভাইসে লেনদেনটিকে নিশ্চিত করতে হবে</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">ডিস্প্লে থেকে আপনার ব্যালান্স লুকিয়ে রাখুন</translation>
 <translation id="4548946945059463969">আপনার ব্যালান্সগুলি স্ক্রিনে দেখান</translation>
 <translation id="242959166945779492">আপনার অ্যাকাউন্টে কোনো ব্যালেন্স নেই। কিছু কিনতে FTX ভিজিট করুন।</translation>
-<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
-<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini Earn APY</translation>
-<translation id="3301417531330431881">হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">অভ্যন্তরীণ ত্রুটি, আইফ্রেম ব্রিজেট তৈরি করা যায়নি</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

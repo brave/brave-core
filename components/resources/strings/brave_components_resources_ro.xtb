@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="3656941797339037856">Conectați Brave Rewards de Gemini!</translation>
-<translation id="3066983737886188034">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Confirmați portofelul dvs. cu recompense Brave și conectați-l la Gemini acum!</translation>
+<translation id="2383784987664887340">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Confirmați portofelul dvs. cu recompense Brave și conectați-l la Gemini acum!</translation>
+<translation id="2237374144728570574">* Randament oferit de Gemini Earn începând cu 15 septembrie 2021</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
 <translation id="6915065518766963119">* Necesită verificare Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Adresă sau URL 0x</translation>
 <translation id="2860280209982026951">Brave utilizează <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ca agregator de schimb descentralizat.</translation>
 <translation id="151946611346774041">0x va procesa adresa Ethereum și adresa IP pentru executarea tranzacției (inclusiv obținerea ofertelor). 0x va utiliza aceste date DOAR în scopul procesării tranzacțiilor.</translation>
+<translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
 <translation id="8303434745767477417">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate web 3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii și nu trebuie să descărcați nimic.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048">Dispozitivul <ph name="DEVICE_NAME"/> este deconectat</translation>
 <translation id="5317781812114905957">Instrucțiuni</translation>
 <translation id="1178198982208000092">Conectați dispozitivul <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Portofelul hardware necesită confirmarea pe dispozitiv. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Portofelul hardware are nevoie de aplicația Ethereum deschisă pe <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">trimisă</translation>
 <translation id="5013754027092416509">s-a primit</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Nu se așteaptă date JSON</translation>
 <translation id="3282936527763045737">Parola nu este corectă</translation>
 <translation id="1119447706177454957">Eroare internă</translation>
+<translation id="3327639091470204775">Nu este posibilă conectarea la Trezor Bridge</translation>
 <translation id="6672377693827764095">Eroare internă: nu se pot obține conturile</translation>
 <translation id="8933250418452564886">Nu se găsește tranzacția hardware. Încercați din nou</translation>
 <translation id="5999974802900788338">S-a primit o eroare de la dispozitivul hardware. Probabil că trebuie să confirmați tranzacția pe dispozitivul dvs.</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
-<translation id="2383784987664887340">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Confirmați portofelul dvs. cu recompense Brave și conectați-l la Gemini acum!</translation>
-<translation id="2237374144728570574">* Randament oferit de Gemini Earn începând cu 15 septembrie 2021</translation>
-<translation id="3301417531330431881">Portofelul hardware necesită confirmarea tranzacției. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Eroare internă: nu se poate crea puntea iframe</translation>
-<translation id="1664949222596149258">Cumpărați la <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

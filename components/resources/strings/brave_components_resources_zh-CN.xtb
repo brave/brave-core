@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
-<translation id="3066983737886188034">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
+<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
+<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日赚取 APY</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x 地址或 url</translation>
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 作为 DEX 聚合器。</translation>
 <translation id="151946611346774041">0x 将处理以太坊地址和 IP 地址以完成交易（包括获取报价）。0x 只会将这些数据用于处理交易的目的。</translation>
+<translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="1420318137760245955">欢迎来到新的 Brave 钱包</translation>
 <translation id="8303434745767477417">保管加密资产。跟踪投资组合表现，并与 web 3 DApps 交互。使用 DeFi 交易、投资、借贷和贷款。所有操作都可以在 Brave 无痕浏览器中完成。无需扩展程序，不需要下载。</translation>
@@ -1160,8 +1162,4 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
-<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
-<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日赚取 APY</translation>
-<translation id="3301417531330431881">硬件钱包需要交易确认。<ph name="DEVICE_NAME"/></translation>
-<translation id="1664949222596149258">以 <ph name="PRODUCE_PRICE"/>的价格购买</translation>
 </translationbundle>

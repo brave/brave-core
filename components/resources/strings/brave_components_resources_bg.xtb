@@ -592,7 +592,8 @@
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="9200453331904391567">Прекъсване на връзката с Brave Rewards</translation>
 <translation id="3656941797339037856">Свържете Rewards към Gemini!</translation>
-<translation id="3066983737886188034">Gemini ви позволява лесно да търгувате, съхранявате и печелите 3,49% APY за BAT. Потвърдете и свържете вашия портфейл Brave Rewards с Gemini сега!</translation>
+<translation id="2383784987664887340">Gemini ви позволява лесно да търгувате, съхранявате и печелите 3,49% APY за BAT. Потвърдете и свържете вашия портфейл Brave Rewards с Gemini сега!</translation>
+<translation id="2237374144728570574">* APY с Gemini Earn от 15 септември 2021 г.</translation>
 <translation id="7404779623219601861">Осребряване на карти за подаръци</translation>
 <translation id="6215565499749144110">С TAP Network можете да осребрите BAT за популярни карти за подаръци с имена.</translation>
 <translation id="6915065518766963119">* Изисква поддържана проверка.</translation>
@@ -878,6 +879,7 @@
 <translation id="8093033115658137576">0x адрес или URL адрес</translation>
 <translation id="2860280209982026951">Brave използва <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> като DEX агрегатор.</translation>
 <translation id="151946611346774041">0x ще обработи Етириум адреса и IP адреса, за да изпълни трансакция (включително получаване на котировки). 0x ще използва тези данни САМО за целите на обработката на трансакции.</translation>
+<translation id="4626407663177532837">Офертата включва такса на Brave от 0,875%.</translation>
 <translation id="6518133107902771759">Потвърждаване</translation>
 <translation id="1420318137760245955">Добре дошли в новия портфейл в Brave</translation>
 <translation id="8303434745767477417">Управлявайте криптовалута. Проследявайте ефективността на портфолиото и взаимодействайте с децентрализирани приложения web3. Търгувайте, инвестирайте, взимайте и давайте назаем с DeFi. Разботи добре от поверителния браузър Brave. Без разширения и изтегляне.</translation>
@@ -1049,6 +1051,7 @@
 <translation id="7051244143160304048">Връзката с <ph name="DEVICE_NAME"/> е прекъсната</translation>
 <translation id="5317781812114905957">Инструкции</translation>
 <translation id="1178198982208000092">Свързване на вашия <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Хардуерният портфейл изисква потвърждение на устройството.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Хардуерният портфейл изисква приложението Ethereum, отворено на<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">изпратено</translation>
 <translation id="5013754027092416509">получено</translation>
@@ -1099,7 +1102,7 @@
 <translation id="5071303414930953888">Сметка <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Портфейлът първо трябва да бъде отключен</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> не е валиден адрес</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> не е валидна мрежа</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> не е текущата мрежа</translation>
 <translation id="7340805872138998391">Неуспешно отключване на устройството, опитайте да се свържете отново</translation>
 <translation id="1984410139271779110">Вътрешна грешка, неизвестна схема</translation>
 <translation id="8682200134223578011">одобрено</translation>
@@ -1108,6 +1111,7 @@
 <translation id="4287068151777838754">Не се очакват JSON данни</translation>
 <translation id="3282936527763045737">Паролата не е правилна</translation>
 <translation id="1119447706177454957">Вътрешна грешка</translation>
+<translation id="3327639091470204775">Не може да се свърже с моста Trezor</translation>
 <translation id="6672377693827764095">Вътрешна грешка, неуспешно извличане на сметките</translation>
 <translation id="8933250418452564886">Не можахме да намерим хардуерна трансакция, моля, опитайте отново</translation>
 <translation id="5999974802900788338">Получена е грешка от хардуерно устройство, вероятно трябва да потвърдите трансакцията на устройство ви</translation>
@@ -1115,7 +1119,7 @@
 <translation id="971552837551838642">Съобщение за грешка при влизане, моля, опитайте отново</translation>
 <translation id="8273603707418703324">Съобщение за грешка при влизането, поискан е неизвестен ключодържател, моля, опитайте отново</translation>
 <translation id="5265455943786954050">Командата Trezor вече се обработва</translation>
-<translation id="7017116822583380542">Trezor bridge не готов</translation>
+<translation id="7017116822583380542">Мостът на Trezor не е готов</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1159,9 +1163,4 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
-<translation id="2383784987664887340">Gemini ви позволява лесно да търгувате, съхранявате и печелите 3,49% APY за BAT. Потвърдете и свържете вашия портфейл Brave Rewards с Gemini сега!</translation>
-<translation id="2237374144728570574">* APY с Gemini Earn от 15 септември 2021 г.</translation>
-<translation id="3301417531330431881">Хардуерният портфейл изисква потвърждаване на трансакция. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Вътрешна грешка, не може да се създаде мост за вложена рамка</translation>
-<translation id="1664949222596149258">Купете за  <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

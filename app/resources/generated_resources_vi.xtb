@@ -4330,7 +4330,7 @@ Bạn có thể gán nhiều công tắc cho thao tác này.</translation>
 <translation id="5582839680698949063">Menu chính</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="5584088138253955452">Bạn muốn lưu tên người dùng?</translation>
-<translation id="5584091888252706332">Khi Khởi động</translation>
+<translation id="5584091888252706332">Khi khởi động</translation>
 <translation id="5584915726528712820"><ph name="BEGIN_PARAGRAPH1"/>Đây là thông tin chung về thiết bị của bạn và cách bạn sử dụng thiết bị (chẳng hạn như mức pin, lỗi cũng như hoạt động của ứng dụng và hệ thống). Dữ liệu này sẽ dùng để cải thiện Android và một số thông tin tổng hợp cũng sẽ giúp các ứng dụng và đối tác của Brave, chẳng hạn như các nhà phát triển Android, cải thiện ứng dụng và sản phẩm của họ.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Việc tắt tính năng này không ảnh hưởng đến khả năng thiết bị gửi thông tin cần thiết cho các dịch vụ thiết yếu như bảo mật và bản cập nhật hệ thống.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>Chủ sở hữu có thể kiểm soát tính năng này trong mục Cài đặt &gt; Nâng cao &gt; Tự động gửi dữ liệu chẩn đoán và dữ liệu sử dụng cho Brave.<ph name="END_PARAGRAPH3"/>
@@ -7103,7 +7103,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8575286410928791436">Giữ phím <ph name="KEY_EQUIVALENT"/> để thoát</translation>
 <translation id="8576885347118332789">{NUM_TABS,plural, =1{Thêm thẻ vào danh sách đọc}other{Thêm các thẻ vào danh sách đọc}}</translation>
 <translation id="8578639784464423491">Không được vượt quá 99 chữ cái</translation>
-<translation id="857943718398505171">Được phép (được đề xuất)</translation>
+<translation id="857943718398505171">Được phép (nên dùng)</translation>
 <translation id="8581809080475256101">Nhấn để tiếp tục, nhấn menu ngữ cảnh để xem lịch sử</translation>
 <translation id="8584280235376696778">&amp;Mở video trong thẻ mới</translation>
 <translation id="8584427708066927472">Đã xóa mật khẩu khỏi thiết bị này</translation>

@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
 <translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
-<translation id="3066983737886188034">Med Gemini kan du enkelt handla, lagra och tjäna 3,49 % APY på din BAT. Verifiera och länka din Brave Rewards-plånbok med Gemini nu!</translation>
+<translation id="2383784987664887340">Med Gemini kan du enkelt handla, lagra och tjäna 3,49 % APY på din BAT. Verifiera och länka din Brave Rewards-plånbok med Gemini nu!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY från och med den 15 september 2021</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x adresser eller url</translation>
 <translation id="2860280209982026951">Brave använder <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
 <translation id="151946611346774041">0x kommer att behandla Ethereum-adressen och IP-numret för att genomföra en transaktion (samt att hämta kurser). 0x kommer ENDAST att använda dessa data till att hantera transaktioner.</translation>
+<translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
 <translation id="8303434745767477417">Håll kryptotillgångar i din förvaring. Spåra portföljprestanda och interagera med web 3 DApps. Handla, investera, låna och låna med DeFi. Okej från Brave sekretesswebbläsare. Inga tillägg, ingen hämtning krävs.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> frånkopplad</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="1178198982208000092">Anslut din <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hårdvaruplånboken kräver att du bekräftar på enheten. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hårdvaruplånboken kräver att Ethereum-appen är öppen på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">skickat</translation>
 <translation id="5013754027092416509">mottagen</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-data är inte väntad</translation>
 <translation id="3282936527763045737">Lösenordet är inte rätt</translation>
 <translation id="1119447706177454957">Internt fel</translation>
+<translation id="3327639091470204775">Det gick inte att ansluta till Trezor-bryggan</translation>
 <translation id="6672377693827764095">Internt fel, kunde inte hämta konton</translation>
 <translation id="8933250418452564886">Det gick inte att hitta hårdvarutransaktionen, försök igen</translation>
 <translation id="5999974802900788338">Tog emot fel från hårdvaruenheten, du behöver troligtvis bekräfta transaktionen på enheten</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
-<translation id="2383784987664887340">Med Gemini kan du enkelt handla, lagra och tjäna 3,49 % APY på din BAT. Verifiera och länka din Brave Rewards-plånbok med Gemini nu!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY från och med den 15 september 2021</translation>
-<translation id="3301417531330431881">Maskinvaruplånbok kräver transaktionsbekräftelse. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Internt fel, kunde inte skapa iframe-bro</translation>
-<translation id="1664949222596149258">Köp för <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

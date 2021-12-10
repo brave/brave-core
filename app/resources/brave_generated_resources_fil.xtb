@@ -55,6 +55,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
 <translation id="6821903322090655051">Naka-disable ang Brave Rewards</translation>
+<translation id="413570371620795359">Buksan ang panel ng Mga Reward para i-enable at magsimula</translation>
 <translation id="3849957491997306859">Awtomatikong na-detect</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
@@ -428,6 +429,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2653659639078652383">Isumite</translation>
 <translation id="2556708692502648323">Mga network ng wallet</translation>
 <translation id="1330032157352961756">Ang id ng bagong chain</translation>
+<translation id="3423620355610881890">Isang positibong decimal na numero</translation>
 <translation id="726121047592132939">Ang pangalan ng bagong chain</translation>
 <translation id="1034112277864078119">Ilagay ang pangalan ng chain</translation>
 <translation id="4672314527143443556">Pangalan ng currency ng chain</translation>
@@ -441,6 +443,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3047726704186619366">Mga URL ng ico</translation>
 <translation id="2487558607408469181">I-block ang mga explorer na URL</translation>
 <translation id="6301398959353668507">Hindi pwedeng blangko ang field.</translation>
+<translation id="7504462451153306677">Invalid na format, ang chain id ay isang positibong numero</translation>
 <translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
 <translation id="650071759190249039">Internal na Error, hindi maidagdag ang network.</translation>
 <translation id="868529041590572443">Pakilagay ang lahat ng impormasyon tungkol sa native na currency</translation>

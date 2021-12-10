@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="3656941797339037856">I-link ang Rewards sa Gemini!</translation>
-<translation id="3066983737886188034">Nagbibigay-daan sa iyo ang Gemini na madaling mag-trade, mag-store, at kumita ng 3.49% APY sa iyong BAT. I-verify at i-link ang iyong Brave Rewards wallet gamit ang Gemini ngayon!</translation>
+<translation id="2383784987664887340">Nagbibigay-daan sa iyo ang Gemini na madaling mag-trade, mag-store, at kumita ng 3.49% APY sa iyong BAT. I-verify at i-link ang iyong Brave Rewards wallet gamit ang Gemini ngayon!</translation>
+<translation id="2237374144728570574">* APY sa Gemini Earn hanggang Sept 15, 2021</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x address o url</translation>
 <translation id="2860280209982026951">Ginagamit ng Brave ang <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> bilang DEX aggregator.</translation>
 <translation id="151946611346774041">Ipoproseso ng 0x ang Ethereum address at IP address para magawa ang isang transaksyon (kasama na ang pagkuha ng mga quote). Gagamitin LANG ng 0x ang data na ito para sa mga layunin ng pagpoproseso ng mga transaksyon.</translation>
+<translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
 <translation id="6518133107902771759">I-verify</translation>
 <translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
 <translation id="8303434745767477417">Alagaan ang iyong mga asset ng cryptocurrency. I-track ang performance ng portfolio, at makipag-ugnayan sa mga web 3 DApp. Mag-trade, mag-invest, humiram, at magpahiram gamit ang DeFi. Iyon na ang lahat para sa pribadong browser ng Brave. Walang mga extension, walang kinakailangang pag-download.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ang nadiskonekta</translation>
 <translation id="5317781812114905957">Mga Tagubilin</translation>
 <translation id="1178198982208000092">Ikonekta ang iyong <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Nangangailangan ng pagkumpirma sa device ang hardware wallet.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Kailangan ng hardware wallet na nakabukas ang Ethereum App sa <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">naipadala</translation>
 <translation id="5013754027092416509">natanggap</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Hindi inaasahan ang JSON data</translation>
 <translation id="3282936527763045737">Mali ang password</translation>
 <translation id="1119447706177454957">Internal na error</translation>
+<translation id="3327639091470204775">Hindi makakonekta sa Trezor bridge</translation>
 <translation id="6672377693827764095">Internal na error, hindi makuha ang mga account</translation>
 <translation id="8933250418452564886">Hindi mahanap ang transaksyon ng hardware, pakisubukan ulit</translation>
 <translation id="5999974802900788338">Nakatanggap ng error mula sa hardware device, posibleng kailangan mong kumpirmahin ang transaksyon sa iyong device</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Error na mensahe sa pag-sign in, pakisubukan ulit</translation>
 <translation id="8273603707418703324">Error na mensahe sa pag-sign, humiling ng hindi alam na keyring, pakisubukan ulit</translation>
 <translation id="5265455943786954050">Kasalukuyang isinasagawa ang Trezor command</translation>
-<translation id="7017116822583380542">Hindi handa ang Trezor bridge</translation>
+<translation id="7017116822583380542">Hindi handa ang bridge ng Trezor</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
-<translation id="2383784987664887340">Nagbibigay-daan sa iyo ang Gemini na madaling mag-trade, mag-store, at kumita ng 3.49% APY sa iyong BAT. I-verify at i-link ang iyong Brave Rewards wallet gamit ang Gemini ngayon!</translation>
-<translation id="2237374144728570574">* APY sa Gemini Earn hanggang Sept 15, 2021</translation>
-<translation id="3301417531330431881">Nangangailangan ng pagkumpirma ng transaksyon ang hardware wallet. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Internal error, unable to create iframe bridget</translation>
-<translation id="1664949222596149258">Bumili sa halagang <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>
