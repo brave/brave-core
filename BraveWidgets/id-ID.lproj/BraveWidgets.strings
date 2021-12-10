@@ -1,122 +1,183 @@
-"0W40Cl" = "New Tab";
+/* (No Comment) */
+"0W40Cl" = "Tab Baru";
 
-"5ixvGX-tYwiRd" = "There are ${count} options matching ‘Est. Time Saved’.";
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Terdapat ${count} pilihan yang sesuai dengan 'Perkiraan Penghematan Waktu'.";
 
-"5ixvGX-vjA5pZ" = "There are ${count} options matching ‘Est. Data Saved’.";
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Terdapat ${count} pilihan yang sesuai dengan 'Perkiraan Penghematan Data'.";
 
-"5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Terdapat ${count} pilihan yang sesuai dengan 'Iklan yang Diblokir'.";
 
-"7JYzOv" = "Type";
+/* (No Comment) */
+"7JYzOv" = "Jenis";
 
+/* (No Comment) */
 "8vyYRy" = "#3";
 
+/* (No Comment) */
 "9E2oRR" = "#1";
 
-"AGMpus" = "Shortcuts Configuration";
+/* (No Comment) */
+"AGMpus" = "Konfigurasi Jalan Pintas";
 
-"EUS9FL" = "Widget Shortcut";
+/* (No Comment) */
+"bUXzTx" = "Jenis Statistik";
 
-"FGO5qW" = "Playlist";
+/* (No Comment) */
+"crhbMy" = "Markah";
 
-"L1fziM-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
 
-"L1fziM-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"e13lS3-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
 
-"L1fziM-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Hanya untuk mengonfirmasi, Anda ingin 'Daftar Putar'?";
 
-"L1fziM-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"e13lS3-nthxSL" = "Hanya untuk mengonfirmasi, Anda ingin 'Unduhan'?";
 
-"L1fziM-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
 
-"L1fziM-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"e13lS3-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
 
-"TxuMja-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"EUS9FL" = "Jalan Pintas Widget";
 
-"TxuMja-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"FGO5qW" = "Daftar Putar";
 
-"TxuMja-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"gpCwrM" = "Konfigurasi Statistik";
 
-"TxuMja-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
-
-"TxuMja-nthxSL" = "There are ${count} options matching ‘Downloads’.";
-
-"TxuMja-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
-
-"VBH4G6" = "History";
-
-"YQiQuz-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
-
-"YQiQuz-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
-
-"YQiQuz-VBH4G6" = "Just to confirm, you wanted ‘History’?";
-
-"YQiQuz-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
-
-"YQiQuz-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
-
-"YQiQuz-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
-
-"bUXzTx" = "Stat Kind";
-
-"crhbMy" = "Bookmarks";
-
-"e13lS3-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
-
-"e13lS3-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
-
-"e13lS3-VBH4G6" = "Just to confirm, you wanted ‘History’?";
-
-"e13lS3-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
-
-"e13lS3-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
-
-"e13lS3-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
-
-"gpCwrM" = "Stats Configuration";
-
+/* (No Comment) */
 "joEZJM" = "#2";
 
-"nthxSL" = "Downloads";
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
 
-"r2EI05-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"L1fziM-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
 
-"r2EI05-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Terdapat ${count} pilihan yang sesuai dengan 'Daftar Putar'.";
 
-"r2EI05-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"L1fziM-nthxSL" = "Terdapat ${count} pilihan yang sesuai dengan 'Unduhan'.";
 
-"r2EI05-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
 
-"r2EI05-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"L1fziM-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
 
-"r2EI05-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"nthxSL" = "Unduhan";
 
-"sdOBtj-tYwiRd" = "Just to confirm, you wanted ‘Est. Time Saved’?";
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
 
-"sdOBtj-vjA5pZ" = "Just to confirm, you wanted ‘Est. Data Saved’?";
+/* (No Comment) */
+"r2EI05-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
 
-"sdOBtj-xcI3h9" = "Just to confirm, you wanted ‘Ads Blocked’?";
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Hanya untuk mengonfirmasi, Anda ingin 'Daftar Putar'?";
 
-"tNCrcE-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"r2EI05-nthxSL" = "Hanya untuk mengonfirmasi, Anda ingin 'Unduhan'?";
 
-"tNCrcE-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
 
-"tNCrcE-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"r2EI05-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
 
-"tNCrcE-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Hanya untuk mengonfirmasi, Anda ingin 'Perkiraan Penghematan Waktu'?";
 
-"tNCrcE-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Hanya untuk mengonfirmasi, Anda ingin 'Perkiraan Penghematan Data'?";
 
-"tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Hanya untuk mengonfirmasi, Anda ingin 'Iklan yang Diblokir'?";
 
-"tVvJ9c" = "Stats Configuration Widget";
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
 
-"tYwiRd" = "Est. Time Saved";
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
 
-"vjA5pZ" = "Est. Data Saved";
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Terdapat ${count} pilihan yang sesuai dengan 'Daftar Putar'.";
 
-"vs094F" = "New Private Tab";
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Terdapat ${count} pilihan yang sesuai dengan 'Unduhan'.";
 
-"xcI3h9" = "Ads Blocked";
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
 
-"ziTvSZ" = "Stats Configuration Widget";
+/* (No Comment) */
+"tNCrcE-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
+
+/* (No Comment) */
+"tVvJ9c" = "Widget Konfigurasi Statistik";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Terdapat ${count} pilihan yang sesuai dengan 'Daftar Putar'.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Terdapat ${count} pilihan yang sesuai dengan 'Unduhan'.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
+
+/* (No Comment) */
+"tYwiRd" = "Perkiraan Penghematan Waktu";
+
+/* (No Comment) */
+"VBH4G6" = "Riwayat";
+
+/* (No Comment) */
+"vjA5pZ" = "Perkiraan Penghematan Data";
+
+/* (No Comment) */
+"vs094F" = "Tab Privat Baru";
+
+/* (No Comment) */
+"xcI3h9" = "Iklan yang Diblokir";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Hanya untuk mengonfirmasi, Anda ingin 'Daftar Putar'?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Hanya untuk mengonfirmasi, Anda ingin 'Unduhan'?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
+
+/* (No Comment) */
+"ziTvSZ" = "Widget Konfigurasi Statistik";
 

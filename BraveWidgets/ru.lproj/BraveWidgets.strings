@@ -1,122 +1,183 @@
-"0W40Cl" = "New Tab";
+/* (No Comment) */
+"0W40Cl" = "Новая вкладка";
 
-"5ixvGX-tYwiRd" = "There are ${count} options matching ‘Est. Time Saved’.";
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Результатов по запросу «Примерная экономия времени»: ${count}.";
 
-"5ixvGX-vjA5pZ" = "There are ${count} options matching ‘Est. Data Saved’.";
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Результатов по запросу «Примерная экономия трафика»: ${count}.";
 
-"5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Результатов по запросу «Блокировка объявлений»: ${count}.";
 
-"7JYzOv" = "Type";
+/* (No Comment) */
+"7JYzOv" = "Тип";
 
-"8vyYRy" = "#3";
+/* (No Comment) */
+"8vyYRy" = "№ 3";
 
-"9E2oRR" = "#1";
+/* (No Comment) */
+"9E2oRR" = "№ 1";
 
-"AGMpus" = "Shortcuts Configuration";
+/* (No Comment) */
+"AGMpus" = "Настройки ярлыков";
 
-"EUS9FL" = "Widget Shortcut";
+/* (No Comment) */
+"bUXzTx" = "Тип показателей";
 
-"FGO5qW" = "Playlist";
+/* (No Comment) */
+"crhbMy" = "Закладки";
 
-"L1fziM-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Показать результаты по запросу «Новая вкладка»?";
 
-"L1fziM-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"e13lS3-crhbMy" = "Показать результаты по запросу «Закладки»?";
 
-"L1fziM-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Показать результаты по запросу «Плейлист»?";
 
-"L1fziM-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"e13lS3-nthxSL" = "Показать результаты по запросу «Скачанные файлы»?";
 
-"L1fziM-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Показать результаты по запросу «История»?";
 
-"L1fziM-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"e13lS3-vs094F" = "Показать результаты по запросу «Новая вкладка инкогнито»?";
 
-"TxuMja-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"EUS9FL" = "Ярлык для виджета";
 
-"TxuMja-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"FGO5qW" = "Плейлист";
 
-"TxuMja-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"gpCwrM" = "Настройки показателей";
 
-"TxuMja-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"joEZJM" = "№ 2";
 
-"TxuMja-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Результатов по запросу «Новая вкладка»: ${count}.";
 
-"TxuMja-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"L1fziM-crhbMy" = "Результатов по запросу «Закладки»: ${count}.";
 
-"VBH4G6" = "History";
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Результатов по запросу «Плейлист»: ${count}.";
 
-"YQiQuz-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"L1fziM-nthxSL" = "Результатов по запросу «Скачанные файлы»: ${count}.";
 
-"YQiQuz-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Результатов по запросу «История»: ${count}.";
 
-"YQiQuz-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"L1fziM-vs094F" = "Результатов по запросу «Новая вкладка инкогнито»: ${count}.";
 
-"YQiQuz-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"nthxSL" = "Скачанные файлы";
 
-"YQiQuz-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Показать результаты по запросу «Новая вкладка»?";
 
-"YQiQuz-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"r2EI05-crhbMy" = "Показать результаты по запросу «Закладки»?";
 
-"bUXzTx" = "Stat Kind";
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Показать результаты по запросу «Плейлист»?";
 
-"crhbMy" = "Bookmarks";
+/* (No Comment) */
+"r2EI05-nthxSL" = "Показать результаты по запросу «Скачанные файлы»?";
 
-"e13lS3-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Показать результаты по запросу «История»?";
 
-"e13lS3-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"r2EI05-vs094F" = "Показать результаты по запросу «Новая вкладка инкогнито»?";
 
-"e13lS3-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Показать результаты по запросу «Примерная экономия времени»?";
 
-"e13lS3-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Показать результаты по запросу «Примерная экономия трафика»?";
 
-"e13lS3-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Показать результаты по запросу «Блокировка объявлений»?";
 
-"e13lS3-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Результатов по запросу «Новая вкладка»: ${count}.";
 
-"gpCwrM" = "Stats Configuration";
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Результатов по запросу «Закладки»: ${count}.";
 
-"joEZJM" = "#2";
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Результатов по запросу «Плейлист»: ${count}.";
 
-"nthxSL" = "Downloads";
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Результатов по запросу «Скачанные файлы»: ${count}.";
 
-"r2EI05-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Результатов по запросу «История»: ${count}.";
 
-"r2EI05-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"tNCrcE-vs094F" = "Результатов по запросу «Новая вкладка инкогнито»: ${count}.";
 
-"r2EI05-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"tVvJ9c" = "Виджет настройки показателей";
 
-"r2EI05-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Результатов по запросу «Новая вкладка»: ${count}.";
 
-"r2EI05-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"TxuMja-crhbMy" = "Результатов по запросу «Закладки»: ${count}.";
 
-"r2EI05-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Результатов по запросу «Плейлист»: ${count}.";
 
-"sdOBtj-tYwiRd" = "Just to confirm, you wanted ‘Est. Time Saved’?";
+/* (No Comment) */
+"TxuMja-nthxSL" = "Результатов по запросу «Скачанные файлы»: ${count}.";
 
-"sdOBtj-vjA5pZ" = "Just to confirm, you wanted ‘Est. Data Saved’?";
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Результатов по запросу «История»: ${count}.";
 
-"sdOBtj-xcI3h9" = "Just to confirm, you wanted ‘Ads Blocked’?";
+/* (No Comment) */
+"TxuMja-vs094F" = "Результатов по запросу «Новая вкладка инкогнито»: ${count}.";
 
-"tNCrcE-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"tYwiRd" = "Примерная экономия времени";
 
-"tNCrcE-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"VBH4G6" = "История";
 
-"tNCrcE-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"vjA5pZ" = "Примерная экономия трафика";
 
-"tNCrcE-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"vs094F" = "Новая вкладка инкогнито";
 
-"tNCrcE-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"xcI3h9" = "Блокировка объявлений";
 
-"tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Показать результаты по запросу «Новая вкладка»?";
 
-"tVvJ9c" = "Stats Configuration Widget";
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Показать результаты по запросу «Закладки»?";
 
-"tYwiRd" = "Est. Time Saved";
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Показать результаты по запросу «Плейлист»?";
 
-"vjA5pZ" = "Est. Data Saved";
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Показать результаты по запросу «Скачанные файлы»?";
 
-"vs094F" = "New Private Tab";
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Показать результаты по запросу «История»?";
 
-"xcI3h9" = "Ads Blocked";
+/* (No Comment) */
+"YQiQuz-vs094F" = "Показать результаты по запросу «Новая вкладка инкогнито»?";
 
-"ziTvSZ" = "Stats Configuration Widget";
+/* (No Comment) */
+"ziTvSZ" = "Виджет настройки показателей";
 

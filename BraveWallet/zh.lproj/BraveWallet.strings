@@ -1,0 +1,642 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "备份";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "输入账户名称";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "账户名称";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "账户详细信息";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "隐私密钥";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "警告：请勿分享您的隐私密钥。任何人拥有此密钥后即可永久取得您的资产。";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "移除此账户？";
+
+/* The message of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmationMessage" = "您确定吗？";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "移除账户";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "账户";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "激活令牌 %@";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "添加";
+
+/* The title of the add account screen */
+"wallet.addAccountTitle" = "添加账户";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "添加自定义资产";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "请验证自定义令牌信息，检查您的网络连接，然后重试。";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "无法添加自定义令牌";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "金额 + Gas";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "%@ 金额";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@ 价格 (%2$@)";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "找不到资产";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "资产";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Brave 钱包自动锁定的等候分钟数";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "自动锁定等待时间";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "恢复密语";
+
+/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
+"wallet.backupRecoveryPhraseDisclaimer" = "我已将我的密语备份到安全位置。";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "按照下方显示的确切顺序写下或复制这些密语，并存储到安全位置。忘记密码、设备遗失或被盗，或是要更换钱包时，只能使用复原密语重新取得账户访问权限。";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "您的恢复密语";
+
+/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
+"wallet.backupRecoveryPhraseWarningPartOne" = "警告：";
+
+/* The second part of the warning displayed on the backup recovery phrase page. */
+"wallet.backupRecoveryPhraseWarningPartTwo" = "请勿分享您的隐私密语。任何人拥有此密语后即可永久取得您的资产。";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "备份钱包";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "我了解如果我丢失了恢复密语，将无法访问我的加密货币钱包。";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "备份加密货币钱包";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "立即备份钱包，保护您的加密货币钱包，确保您不会失去访问权限。";
+
+/* The button title that enables the biometric unlock feature */
+"wallet.biometricsSetupEnableButtonTitle" = "启用";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "尝试启用生物识别解锁时出错。请稍后再试。";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "启用生物识别解锁失败。";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock */
+"wallet.biometricsSetupTitle" = "使用 Face ID、Touch ID 或密码解锁 Brave 钱包";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "报价含 %@ Brave 费用。";
+
+/* The title shown on the wallet settings page. */
+"wallet.braveWallet" = "Brave 钱包";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "购买";
+
+/* The title of the button for users to click when they are ready to buy using Wyre payment */
+"wallet.buyButtonTitle" = "继续前往 Wyre";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "通过 Wyre 使用 Apple Pay、信用卡或借记卡购买加密货币。";
+
+/* The title of the button for users to get ether if the test network has been chosen */
+"wallet.buyTestButtonTitle" = "购买 Ether";
+
+/* The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten' */
+"wallet.buyTestDescription" = "从 %@ 渠道获取 Ether";
+
+/* The title below account picker when user has selected a test network */
+"wallet.buyTestTitle" = "测试渠道";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "日期";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "价格";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "价格数据由 CoinGecko 提供";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "详细信息";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "交易";
+
+/* A button title to confirm a transaction. It is shown below details about a given transaction */
+"wallet.confirmTransactionButtonTitle" = "确认";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "确认交易";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "确认交易";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "继续";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "复制地址";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "复制";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "创建密码";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "使用密码保护您的加密资产";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Brave 钱包";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "自定义";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "全部";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1 天";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 天";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1 小时";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 小时";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1 个月";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 个月";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3 个月";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 个月";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1 周";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 周";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1 年";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 年";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "小数位数";
+
+/* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
+"wallet.defaultAccountName" = "账户 %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
+"wallet.defaultSecondaryAccountName" = "次要账户 %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
+"wallet.deleteCustomToken" = "删除";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "详细信息";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
+"wallet.editGasFeeButtonTitle" = "编辑";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "编辑 Gas";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "编辑可见资产";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "输入金额";
+
+/* A placeholder for the text field that users will input the custom token contract address */
+"wallet.enterContractAddress" = "输入合约地址";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "输入代币名称";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "输入代币符号";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "请重试。";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "导入账户失败。";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Gas 金额限制";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "当前基本费用";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Gas 费用";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "自定义";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "尽管不是保证，但如果您支付更高的费用，矿工将优先考虑您的交易。";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "高";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "低";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "最佳";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "隐藏隐私密钥";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "原始密码";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "输入、粘贴或导入您的隐私密钥字符串文件或 JSON。";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "导入隐私密钥，创建次要账户。";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "导入...";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "密码错误";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "信息";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "无数据。";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "余额不足";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "资金不足";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "Gas 资金不足";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "流动资产不足";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "锁定";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "最高费用";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "最高优先级费用";
+
+/* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
+"wallet.nextTransaction" = "下一笔";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "无账户";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "无资产";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "无次要账户。";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "无交易";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "其他钱包操作";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "密码不得少于 7 个字符，并且至少包含一个字母、一个数字和一个特殊字符。";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "密码";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "验证的密码不匹配";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "粘贴";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "单位 Gas 价格限制 (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "单位 Gas 价格 (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "单位 Gas 小费限制 (Gwei)";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "投资组合";
+
+/* A title above a list of crypto accounts that are not imported */
+"wallet.primaryCryptoAccountsTitle" = "主要加密账户";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "刷新市场价格";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "拒绝 %d 笔交易";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "拒绝";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "请验证这是新的自定义资产，检查您的网络连接，然后重试。";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "无法移除自定义令牌";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "重命名";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "验证密码";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "还原钱包";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "还原";
+
+/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "从旧版 Brave 加密钱包导入？";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "新密码";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "恢复密语无效";
+
+/* The placeholder on the mneomic/recovery phrase text field */
+"wallet.restoreWalletPhrasePlaceholder" = "输入您的恢复密语";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "显示恢复密语";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "输入您的恢复密语，还原您的 Brave 钱包加密账户。";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "还原加密账户";
+
+/* A button title for saving the users selected gas fee options */
+"wallet.saveGasFee" = "保存";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "扫描二维码";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "搜索资产";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "使用单独的种子密语导入外部钱包账户。";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsTitle" = "次要账户";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "选择账户";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "选中的账户";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "选中的网络";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "发送";
+
+/* A placeholder of the address text field. */
+"wallet.sendCryptoAddressPlaceholder" = "输入地址或 URL";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "输入待发送的 %@ 金额";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "自";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "发送";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "当前无法处理您的交易";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "至";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "发送代币，或将代币从一个账户转入另一账户。";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "设置";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "重置";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "重置钱包";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "此操作无法撤销。您只能使用恢复密语重获加密资产账户访问权限。";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "确定要重置 Brave 钱包吗？";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "欢迎";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "开始使用";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "保管加密资产，跟踪投资组合表现。Brave 隐私浏览器让您一网打尽。";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "欢迎使用全新的 Brave 钱包";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "显示隐私密钥";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "跳过";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "兑换";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "收到的 %@ 金额（预估）";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "输入要兑换的 %@ 金额";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "自";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "%@ 市场价格";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "价格下滑容忍度";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "兑换";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "至";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Brave 当前不支持在 %@ 中进行兑换。请切换为支持的区块链。";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "不支持的区块链";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "使用 Brave DEX 聚合器兑换加密资产。";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "0x 将处理 Ethereum 地址和 IP 地址以履行交易（包括获得报价）。0x 仅会将数据用于处理交易目的。";
+
+/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave 使用 0x 作为 DEX 聚合器。";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "限制";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "市场";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "订单类型";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "今天";
+
+/* A title that will be displayed on top of the text field for users to input the custom token contract address */
+"wallet.tokenContractAddress" = "代币合约地址";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "代币名称";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "代币符号";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "总计";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "已批准 %1$@ %2$@";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "第 %1$lld 笔，共 %2$lld 笔";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "自：%1$@。至：%2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "已发送 %1$@ %2$@ (%3$@)";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "已批准";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "已确认";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "错误";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "已拒绝";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "已提交";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "未批准";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "未知";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "交易";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "费用：%1$@ %2$@ (%3$@)";
+
+/* A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\" */
+"wallet.transactionSwapTitle" = "已兑换 %1$@ %2$@ (%3$@)";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "审批";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionUnknownApprovalTitle" = "已批准";
+
+/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "已发送 %@";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "未知错误";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "解锁";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletTitle" = "输入密码以解锁钱包";
+
+/* The button title to verify if the user has put all recovery words in the right order */
+"wallet.verifyButtonTitle" = "验证";
+
+/* The subtitle of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseSubtitle" = "按正确顺序选择恢复密语中的词语。";
+
+/* The title of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseTitle" = "验证恢复密语";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "查看拦截浏览器";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "钱包";
+

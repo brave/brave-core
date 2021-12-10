@@ -1,0 +1,642 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Yedekle";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Hesap adını girin";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Hesap Adı";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Hesap Detayları";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Özel Anahtar";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Uyarı: Özel anahtarınızı kimseyle paylaşmayın. Bu anahtara sahip olan herkes varlıklarınızı sonsuza dek alabilir.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "Bu hesap kaldırılsın mı?";
+
+/* The message of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmationMessage" = "Emin misiniz?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Hesabı Kaldır";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Hesaplar";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "%@ Token'ını Etkinleştir";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Ekle";
+
+/* The title of the add account screen */
+"wallet.addAccountTitle" = "Hesap Ekleyin";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Özel varlık ekle";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Lütfen özel token bilgilerini doğrulayın, internet bağlantınızı kontrol edin ve tekrar deneyin.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "Özel token eklenemiyor";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Tutar + GAS";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "%@ cinsinden tutar";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@ Fiyatı (%2$@)";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "Varlık bulunamadı";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Varlıklar";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Brave Cüzdanı'nın otomatik olarak kilitlenmesi için beklemeniz dakika sayısı";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Şu Süreden Sonra Otomatik Kilitle:";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Kurtarma İfadesi";
+
+/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
+"wallet.backupRecoveryPhraseDisclaimer" = "İfademi güvenli bir yere yedekledim.";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "Bu kelimeleri aşağıda gösterilenle aynı sırada yazın veya kopyalayın ve güvenli bir yerde saklayın. Kurtarma ifadeniz şifrenin unutulması, cihazın kaybedilmesi veya çalınması ya da cüzdan değiştirmek istemeniz durumlarında hesabınıza tekrar erişim sağlamanın tek yoludur.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Kurtarma ifadeniz";
+
+/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
+"wallet.backupRecoveryPhraseWarningPartOne" = "UYARI:";
+
+/* The second part of the warning displayed on the backup recovery phrase page. */
+"wallet.backupRecoveryPhraseWarningPartTwo" = "Kurtarma ifadenizi kimseyle paylaşmayın. Bu ifadeyi bilen herkes varlıklarınızı sonsuza dek çalabilir.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Cüzdanı Yedekleyin";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Kurtarma ifademi kaybedersem, kripto cüzdanıma erişemeyeceğimi anladım.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Kripto cüzdanınızı yedekleyin";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Kripto varlıklarınızı korumak ve erişimi asla kaybetmediğinizden emin olmak için cüzdanınızı şimdi yedekleyin.";
+
+/* The button title that enables the biometric unlock feature */
+"wallet.biometricsSetupEnableButtonTitle" = "Etkinleştir";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Biyometrik kilit açmayı etkinleştirmeye çalışırken bir hatayla karşılaştık. Lütfen daha sonra tekrar deneyin.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Biyometrik kilit açmanın etkinleştirilmesi başarısız.";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock */
+"wallet.biometricsSetupTitle" = "Brave Cüzdanı'nın kilidini Face ID, Touch ID veya şifreyle açın.";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "Teklif, %@ tutarında bir Brave ücretini de içerir.";
+
+/* The title shown on the wallet settings page. */
+"wallet.braveWallet" = "Brave Cüzdanı";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Satın Al";
+
+/* The title of the button for users to click when they are ready to buy using Wyre payment */
+"wallet.buyButtonTitle" = "Wyre'a Devam Et";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "Apple Pay, kredi veya banka kartıyla Wyre üzerinden kripto satın alın.";
+
+/* The title of the button for users to get ether if the test network has been chosen */
+"wallet.buyTestButtonTitle" = "Ether Al";
+
+/* The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten' */
+"wallet.buyTestDescription" = "%@ ağındaki bir musluktan Ether alın";
+
+/* The title below account picker when user has selected a test network */
+"wallet.buyTestTitle" = "Musluğu test edin";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Tarih";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Fiyat";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Fiyat verisi CoinGecko tarafından sağlanmaktadır";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Detaylar";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "İşlem";
+
+/* A button title to confirm a transaction. It is shown below details about a given transaction */
+"wallet.confirmTransactionButtonTitle" = "Onayla";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "İşlemleri Onaylayın";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "İşlemi Onaylayın";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Devam et";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Adresi Kopyala";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Kopyala";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Şifre oluşturun";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Kripto varlıklarınızı bir şifreyle güvenceye alın";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Brave Cüzdanı";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Özel";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Tümü";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1G";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 Gün";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1S";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 Saat";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1A";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 Ay";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3A";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 Ay";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1H";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 Hafta";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1Y";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 Yıl";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "Kesinlik ondalıkları";
+
+/* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
+"wallet.defaultAccountName" = "Hesap %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
+"wallet.defaultSecondaryAccountName" = "İkincil Hesap %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
+"wallet.deleteCustomToken" = "Sil";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Detaylar";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
+"wallet.editGasFeeButtonTitle" = "Düzenle";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "GAS'ı Düzenleyin";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Görünür Varlıkları Düzenle";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Tutarı girin";
+
+/* A placeholder for the text field that users will input the custom token contract address */
+"wallet.enterContractAddress" = "Kontrat adresini girin";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Token adını girin";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Token sembolünü girin";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Lütfen tekrar deneyin.";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Hesabın içe aktarımı başarısız oldu.";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "GAS tutarı sınırı";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Mevcut taban ücret";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "GAS Ücreti";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Özel";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "Garanti olmamak üzere, daha yüksek bir ücret ödediğiniz takdirde madencilerin işleminizi daha erken önceliklendirme ihtimali bulunmaktadır.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Yüksek";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Düşük";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Optimum";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Özel Anahtarı Gizle";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Kaynak Şifresi";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Özel anahtar dizisi dosyasını veya JSON'u girin, yapıştırın veya içeri aktarın.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Özel anahtarınızı içeri aktararak ikincil bir hesap oluşturabilirsiniz.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "İçe aktar...";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Hatalı şifre";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Bilgi";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "Veri yok.";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Yetersiz bakiye";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "Yetersiz tutar";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "GAS için yetersiz tutar";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Yetersiz likidite";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Kilitle";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Maksimum ücret";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Maksimum Öncelik Ücreti";
+
+/* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
+"wallet.nextTransaction" = "Sonraki";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "Hesap Yok";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "Varlık Yok";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "İkincil hesap yok.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "İşlem Yok";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Diğer cüzdan eylemleri";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "Şifrelerin en az 7 karakter olması ve en az bir harf, bir rakam ve bir özel karakter içermesi gerekir.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Şifre";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "Doğrulanan şifre eşleşmiyor";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Yapıştır";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "GAS başına fiyat limiti (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "GAS başına fiyat (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "GAS başına bahşiş limiti (Gwei)";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portföy";
+
+/* A title above a list of crypto accounts that are not imported */
+"wallet.primaryCryptoAccountsTitle" = "Ana Kripto Hesapları";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Piyasa fiyatını yenileyin";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "%d İşlemi Reddet";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Reddet";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Lütfen bunun özel bir varlık olduğunu doğrulayın, internet bağlantınızı kontrol edin ve tekrar deneyin.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "Özel token kaldırılamıyor";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Yeniden adlandır";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Şifreyi doğrulayın";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Cüzdanı Geri Yükleyin";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Geri yükle";
+
+/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "Eski sürüm Brave kripto cüzdanlarından içe aktarım yapmak istiyor musunuz?";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Yeni Şifre";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Geçersiz kurtarma ifadesi";
+
+/* The placeholder on the mneomic/recovery phrase text field */
+"wallet.restoreWalletPhrasePlaceholder" = "Kurtarma ifadenizi girin";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Kurtarma İfadesini Göster";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "Brave cüzdanı kripto hesabınızı geri yüklemek için kurtarma ifadenizi girin.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Kripto Hesabınızı Geri Yükleyin";
+
+/* A button title for saving the users selected gas fee options */
+"wallet.saveGasFee" = "Kaydet";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "QR kodunu tarayın";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Varlıkları arayın";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Harici cüzdan hesabınızı ayrı bir çekirdek ifadeyle içeri aktarın.";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsTitle" = "İkincil Hesaplar";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Hesap Seçin";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Seçili Hesap";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Seçili Ağ";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Gönder";
+
+/* A placeholder of the address text field. */
+"wallet.sendCryptoAddressPlaceholder" = "Adresi veya URL'yi girin";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Gönderilecek %@ miktarını girin";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "Şuradan:";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Gönder";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "Şu anda işleminizle ilerleyemiyoruz";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "Şuraya:";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "Bir hesaptan diğerine kripto gönderin veya aktarın.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Ayarlar";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Sıfırla";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Cüzdanı Sıfırla";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Bu eylem geri alınamaz. Kurtarma ifadeniz, kripto varlıklarınıza yeniden erişim hakkını elde etmenin tek yoludur.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "Brave Cüzdanı'nı sıfırlamak istediğinizden emin misiniz?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Hoş geldiniz";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Başlayın";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Kripto varlıklarınızı kontrolünüz altında tutun ve portföy performansınızı izleyin. Hepsi doğrudan Brave gizlilik tarayıcısında.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Yeni Brave Cüzdanı'na hoş geldiniz";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Özel Anahtarı Göster";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Atla";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Takas";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "%@ türünden alınacak tutar (tahmini)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Takas edilecek %@ miktarını girin";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "Şundan:";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "%@ türünden Piyasa Fiyatı";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Slipaj Toleransı";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Takas";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "Şuna:";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Brave şu anda %@ ağında takası desteklemiyor. Lütfen desteklenen bir zincire geçin.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Desteklenmeyen zincir";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Brave DEX toplayıcısıyla kripto varlıkları takas edin.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "0x, bir işlemi gerçekleştirmek için (teklif alımları dahil) Ethereum adresini ve IP adresini işleyecektir. 0X, bu verileri SADECE işlemi gerçekleştirmek amacıyla kullanacaktır.";
+
+/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave, bir DEX toplayıcısı olarak 0x platformunu kullanır.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "Limit";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Piyasa";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Sipariş Tipi";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "Bugün";
+
+/* A title that will be displayed on top of the text field for users to input the custom token contract address */
+"wallet.tokenContractAddress" = "Token kontrat adresi";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Token adı";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Token sembolü";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Toplam";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ Onaylandı";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%2$lld işlemden %1$lld tanesi";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "Şuradan: %1$@. Şuraya: %2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "%1$@ %2$@ (%3$@) Gönderildi";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Tasdik Edildi";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Onaylandı";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Hata";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Reddedildi";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Gönderildi";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Tasdik Edilmedi";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Bilinmiyor";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "İşlemler";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Ücret: %1$@ %2$@ (%3$@)";
+
+/* A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\" */
+"wallet.transactionSwapTitle" = "%1$@ %2$@ (%3$@) Takas Edildi";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Tasdik Et";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionUnknownApprovalTitle" = "Tasdik Edildi";
+
+/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "%@ Gönderildi";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Bilinmeyen hata";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Kilidi aç";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletTitle" = "Cüzdanın kilidini açmak için şifreyi girin";
+
+/* The button title to verify if the user has put all recovery words in the right order */
+"wallet.verifyButtonTitle" = "Doğrula";
+
+/* The subtitle of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseSubtitle" = "Kurtarma ifadenizdeki kelimeleri doğru sırayla seçin.";
+
+/* The title of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseTitle" = "Kurtarma ifadesini doğrula";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Blok gezgininde görüntüle";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Cüzdan";
+

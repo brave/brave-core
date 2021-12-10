@@ -116,7 +116,7 @@
 "BlockScriptsDescription" = "阻止 JavaScript（可能会破坏站点）。";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "为所有标签添加书签";
+"BookmarkAllTabsTitle" = "将所有标签添加为书签";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "书签文件夹";
@@ -183,6 +183,39 @@
 
 /* Settings item for clearing the cache */
 "Cache" = "高速缓存";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "将 Brave 设置为默认浏览器，您单击的每个链接都会在 Brave 的隐私保护下开启。";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "设置为默认浏览器";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "已经是默认浏览器？";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "跳过此步骤";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "将 Brave 设置为默认浏览器";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "观看视频";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "...随时随地播放。后台播放、画中画甚至离线播放。当然，完全无广告。";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "将视频添加至播放列表...";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "在您的计算机或平板电脑上体验 Brave 隐私保护，在设备间同步书签和扩展部件。";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "立即同步";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "隐私保护无处不在。";
 
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "取消";
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "输入文件夹名称";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "尝试重新输入 URL，或打开搜索引擎，搜索新的 URL。";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "在 Safari 中打开";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "重试";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "高级";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "警告：我们无法确认您连接的该网站是否安全";
+"ErrorPageReloadButtonTitle" = "重新加载";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "这可能是由攻击者造成的配置错误或篡改。如果您接受它带来的潜在风险，请继续。";
+"ErrorPagesAdvancedWarningDetails" = "此服务器无法证明它是 %@；其安全证书不受设备的操作系统信任。原因可能是配置错误，或攻击者正尝试拦截您的连接。";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "%@ 的所有者未正确配置其网站。为了防止您的信息被盗，Brave 尚未连接到此网站。";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "攻击者可能正尝试从 %@ 盗取您的信息（例如密码、消息或信用卡）。";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "返回安全页面";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "此站点无法提供安全连接";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "您的连接不是私人连接";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "返回";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "隐藏详细信息";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "了解更多";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "更多详细信息";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "无网络访问权限";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "您似乎不在线。要修复此问题，请尝试";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "检查网线、交换机和路由器";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "重新连接至 Wi-Fi";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "继续访问网站";
+"ErrorPagesProceedAnywayButton" = "继续前往 %@（不安全）";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "预计时间 \n已保存";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "“仅私密浏览”模式下无法查看历史记录。";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "搜索历史记录";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "历史记录";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "将连接升级为 HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "使用安全的 HTTPS 连接（而不是纯 HTTP）打开某些站点。";
+"HTTPSEverywhereDescription" = "尽量使用安全 HTTPS 打开站点，而不要使用 HTTP。";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 升级";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "已保存的登录将会永久移除。";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "创建时间：%@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "登录详细信息";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "密码";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "用户名";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "网站";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "如需查看密码，您必须首先在设备上设置一个密码。";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "设置密码";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "找不到登录";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "登录 & 密码";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "保存的登录";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "筛选";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改 %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "启用背景音频";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "启用自动播放";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "复制";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "新标签页";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "找不到搜索结果。";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "输入所有文字并重试。";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "开启 Rewards 即表示您同意 %@。";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "点击任何站点上的盾牌，查看屏蔽的所有内容。";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave 在以下站点屏蔽了 %1$@：%2$@。";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave 在以下站点屏蔽了 %1$@ 和另外 %2$d 个跟踪程序：%3$@。";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave 在以下站点屏蔽了 %1$@ 和另外 %2$d 个跟踪程序：%3$@。";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "查看设置菜单，了解更多优秀的隐私功能！";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "全部完成！";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "屏蔽跟踪程序和广告后，可将网站数据用量减少，加载速度更快。";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "继续体验";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "距离最佳线上隐私体验仅一步之遥。准备好了吗？";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "轻松保护隐私";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "...见证这些跟踪程序和广告消失。";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "在下方选择一个热门站点，或自行输入...";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "现在可以开始浏览了！";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "输入网站";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "欢迎使用 Brave！";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "打开所有（%i）";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "开启网站";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "私密新闻订阅源中的今日头条新闻";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "新闻";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "保留任何视频/流媒体的离线播放列表";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "播放列表";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "直接在浏览器中完成私密视频通话";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "在线保护您的完整设备";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "安全加密货币钱包，无需扩展程序";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Brave 功能";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "其他隐私设置";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "配对";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "密码";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "摄影者：%@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "脚本已被拦截";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "搜索书签";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 搜索";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
 
+/* Sync Error Description */
+"syncExpiredError" = "已过期";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "太新";
+
+/* Sync Error Description */
+"syncGenericError" = "抱歉，出错了";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "导入的书签";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "同步通信错误";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "不支持的旧版本";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "无效格式";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "这样会与生成此二维码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认此二维码是由您所拥有的设备生成的。确定要这么做吗？";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "这样会与生成这些代码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认这些代码是由您所拥有的设备生成的。确定要这么做吗？";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "警告";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "不支持的版本";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "检查您的网络连接并重试。";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "无法连接到同步";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "不再支持的版本";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "在所有设备上，本地设备数据将保持不变。同步链中的其他设备将保持同步。";

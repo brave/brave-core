@@ -146,16 +146,7 @@
 "OBPrivacyConsentYesButton" = "一回限りのクリップボードチェックを許可する";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "「開始する」をタップすると以下に同意したものと見なされます: ";
-
-/* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "利用規約";
-
-/* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewardsでクリエイターを支援する";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "ブラウジング中にプライバシーを重視した匿名広告を表示して、クリエイターを支援しましょう";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
@@ -841,29 +832,14 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "次回以降表示しない";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "見てみる";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "お知らせをシェアする";
-
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shieldsはすべてのサイトであなたのオンラインでのプライバシーを保護します。";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "%ld+ トラッカーと広告がこのページでブロックされました。";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shieldsがあなたのオンラインでのプライバシーを保護しました。";
 
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "トラッカーと広告がこのページでブロックされました。";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
-
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld トラッカーと広告がブロックされました。";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "広告がなければ動画のデータ量はより少なくなります。";
@@ -1142,16 +1118,7 @@
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "以下について詳しく";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "BATはお客様がアカウントを作成された地域では現在サポートされていません。また時間をおいてステータスを確認して見てください。";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "閉じる";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "未対応地域";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Upholdのアカウントにログインする際に問題が発生しました。後ほど再度お試しください。";

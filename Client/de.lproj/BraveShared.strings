@@ -17,5 +17,5 @@
 "unsupportedInstrumentMessage" = "Nicht unterstützte Zahlungsmethoden";
 
 /* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Benutzer annuliert";
+"userCancelledMessage" = "Stornierung durch Benutzer";
 

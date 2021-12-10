@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Ketik dua kali untuk togol Brave Shields";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Tambah";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Benarkan semakan papan klip satu kali";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Dengan mengetik Mula, anda bersetuju dengan";
+"OBRewardsAgreementDetail" = "Apabila anda mengetik Ya, maksudnya anda bersetuju dengan";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Syarat Perkhidmatan";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "dan";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards menyokong pencipta";
+"OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Mula menyokong pencipta dengan iklan peribadi dan tanpa nama sambil anda menyemak imbas";
+"OBRewardsDetail" = "Langkah memilih untuk menerima paparan Brave Private Ads dapat menyokong penerbit dan pencipta kandungan bagi setiap iklan yang dipaparkan.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Dapatkan token dan beri ganjaran kepada pencipta untuk kandungan hebat sambil anda menyemak lalu.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Dasar Privasi";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Tambah Enjin Carian Tersuai";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Tahniah atas pencapaian peristiwa penting privasi ini.";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Tahniah. Anda ialah sebahagian daripada kelab eksklusif.  ";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Jangan tunjukkan ini lagi";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Lihat";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Kongsi berita";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields melindungi privasi dalam talian anda pada setiap laman.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "%ld+ penjejak & iklan disekat pada halaman ini.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields baru sahaja melindungi privasi dalam talian anda. ";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "Penjejak & iklan disekat pada halaman ini.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Tahniah. Anda agak istimewa.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld penjejak & iklan disekat";
+"shieldEducation.trackerCountShareTitle" = "%ld penjejak & iklan disekat!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Video tanpa iklan menggunakan data yang kurang.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Hidupkan cadangan carian?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Ketahui lebih lanjut";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "BAT tidak disokong di rantau anda pada masa ini berdasarkan lokasi akaun anda dibuka. Semak semula kemudian untuk ketersediaan.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Tutup";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Rantau tidak disokong";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Terdapat masalah untuk log masuk ke akaun Uphold anda. Sila cuba lagi";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Satu tahun";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Capai laman web kegemaran anda dengan cepat.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Kegemaran";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Sila buka Brave untuk melihat kegemaran anda di sini";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Ringkasan tentang cara Brave menjimatkan masa anda dan melindungi anda dalam talian.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Statistik Privasi";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Statistik Privasi";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Cari atau taip URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Tab Baharu";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Senarai Main";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Tab Peribadi";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Capaian cepat untuk membuat carian melalui web atau membuka halaman web dalam Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Pintasan";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Ringkasan tentang cara Brave telah melindungi anda dalam talian.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Statistik Privasi";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";

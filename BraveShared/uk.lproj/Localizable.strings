@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Додати";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Торкнувшись пункту «Почати», ви погоджуєтеся";
+"OBRewardsAgreementDetail" = "Якщо ви торкаєтеся «Так», ви погоджуєтеся з";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Умови обслуговування";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "та";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Підтримка авторів у Brave Rewards";
+"OBRewardsAgreementTitle" = "Нагороди Brave";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Переглядайте приватну та персоналізовану рекламу під час користування Інтернетом, щоб підтримати авторів";
+"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Політика конфіденційності";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -221,7 +230,7 @@
 "playlist.menuBadgeOptionTitle" = "Показувати позначку сповіщення на меню";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Brave у браузері.";
+"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Brave у браузері";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Немає жодного доступного файлу";
@@ -359,7 +368,7 @@
 "playList.savingForOfflineLabelTitle" = "Збереження для доступу офлайн…";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Ви можете відкрити поточний елемент у новій вкладці або надіслати його через меню спільного доступу.";
+"playlist.sharePlaylistActionDetailsTitle" = "Ви можете відкрити поточний елемент у новій вкладці або надіслати його через меню спільного доступу";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionTitle" = "Меню списка відтворення в браузері";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Додавання користувацької пошукової системи";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Вітаємо з досягненням цього рівня конфіденційності.";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Вітаємо! Ви стали учасником ексклюзивного клубу.";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Більше не показувати";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Зверніть увагу";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields захищає вашу конфіденційність на кожному вебсайті.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "Заблоковано трекерів і реклами на цій сторінці: %ld+.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields захищає вашу конфіденційність онлайн.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "Трекери та реклама заблоковані на цій сторінці.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і реклами: %ld+.";
+"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld.";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Відео без реклами дозволяють заощадити дані.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Докладніше";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "Наразі кошти в BAT не підтримуються в регіоні, в якому було відкрито ваш рахунок. Перевірте наявність сервісу пізніше.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Закрити";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Не підтримується в цьому регіоні";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Під час входу до акаунту Uphold сталася помилка. Спробуйте пізніше";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Річна";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Швидкий доступ до улюблених вебсайтів.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Вибране";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Відкрийте Brave, щоб переглянути свій перелік вибраного";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Короткий опис того, як Brave заощаджує ваш час і захищає вас в Інтернеті.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Звіти про конфіденційність";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Звіти про конфіденційність";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Шукати або ввести URL-адресу";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Нова вкладка";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Список відтворення";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Приватна вкладка";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Швидкий доступ до пошуку в Інтернеті або відкривання вебсторінок у Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Ярлики швидкого доступу";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Короткий опис того, як Brave захищає вас в Інтернеті.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Звіт про конфіденційність";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Так";
