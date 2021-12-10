@@ -4,7 +4,8 @@ import {
   BuySendSwapViewTypes,
   EthereumChain,
   ToOrFromType,
-  MAINNET_CHAIN_ID
+  MAINNET_CHAIN_ID,
+  DefaultCurrencies
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -22,6 +23,7 @@ export interface Props {
   selectedNetwork: EthereumChain
   buyAmount: string
   networkList: EthereumChain[]
+  defaultCurrencies: DefaultCurrencies
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -33,6 +35,7 @@ function Buy (props: Props) {
     selectedAsset,
     buyAmount,
     networkList,
+    defaultCurrencies,
     onInputChange,
     onSubmit,
     onChangeBuyView
@@ -50,6 +53,7 @@ function Buy (props: Props) {
     <StyledWrapper>
       {selectedNetwork.chainId === MAINNET_CHAIN_ID ? (
         <SwapInputComponent
+          defaultCurrencies={defaultCurrencies}
           componentType='buyAmount'
           onInputChange={onInputChange}
           selectedAssetInputAmount={buyAmount}

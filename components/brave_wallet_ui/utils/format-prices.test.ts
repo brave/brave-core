@@ -19,12 +19,17 @@ describe('Check Formating with Commas and Decimals', () => {
 describe('Check Formating with Commas and Decimals for Fiat', () => {
   test('Value was empty, should return an empty string', () => {
     const value = ''
-    expect(formatFiatAmountWithCommasAndDecimals(value)).toEqual('')
+    expect(formatFiatAmountWithCommasAndDecimals(value, 'USD')).toEqual('')
   })
 
-  test('Value is 0 should return $0.00', () => {
+  test('USD Value is 0 should return $0.00', () => {
     const value = '0'
-    expect(formatFiatAmountWithCommasAndDecimals(value)).toEqual('$0.00')
+    expect(formatFiatAmountWithCommasAndDecimals(value, 'USD')).toEqual('$0.00')
+  })
+
+  test('RUB Value is 0 should return $0.00', () => {
+    const value = '0'
+    expect(formatFiatAmountWithCommasAndDecimals(value, 'RUB')).toEqual('₽0.00')
   })
 })
 

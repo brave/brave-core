@@ -25,7 +25,8 @@ import {
   WalletAccountType,
   WalletState,
   WalletInfoBase,
-  WalletInfo
+  WalletInfo,
+  DefaultCurrencies
 } from '../../constants/types'
 import {
   ActiveOriginChanged,
@@ -76,7 +77,11 @@ const defaultState: WalletState = {
   activeOrigin: '',
   gasEstimates: undefined,
   connectedAccounts: [],
-  isMetaMaskInstalled: false
+  isMetaMaskInstalled: false,
+  defaultCurrencies: {
+    fiat: '',
+    crypto: ''
+  }
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -166,8 +171,8 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
   accounts.forEach((account, index) => {
     if (payload.balances[index].success) {
       accounts[index].balance = payload.balances[index].balance
-      accounts[index].fiatBalance = payload.usdPrice !== ''
-        ? formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.usdPrice).toString()
+      accounts[index].fiatBalance = payload.fiatPrice !== ''
+        ? formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.fiatPrice).toString()
         : ''
     }
   })
@@ -432,6 +437,13 @@ reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: WalletInfoBas
   return {
     ...state,
     accounts: updatedAccounts
+  }
+})
+
+reducer.on(WalletActions.defaultCurrenciesUpdated, (state: any, payload: DefaultCurrencies) => {
+  return {
+    ...state,
+    defaultCurrencies: payload
   }
 })
 

@@ -276,8 +276,11 @@ interface KeyringController {
 interface AssetRatioController {
   GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetPrice> values);
-  GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
-      (bool success, array<AssetTimePrice> values);
+
+  // Obtains the price history for a specific asset
+  GetPriceHistory(string asset, string vs_asset,
+      AssetPriceTimeframe timeframe) =>
+          (bool success, array<AssetTimePrice> values);
 
   // Gas estimation APIs
   GetEstimatedTime(string gas_price /* decimal string in wei */) =>

@@ -30,8 +30,8 @@ const defaultState: PageState = {
   importWalletError: { hasError: false },
   selectedTimeline: AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
-  selectedUSDAssetPrice: undefined,
-  selectedBTCAssetPrice: undefined,
+  selectedAssetFiatPrice: undefined,
+  selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
@@ -115,8 +115,8 @@ reducer.on(Actions.updatePriceInfo, (state: PageState, payload: SelectAssetPaylo
   const history = payload.priceHistory ? payload.priceHistory.values : []
   return {
     ...state,
-    selectedUSDAssetPrice: payload.usdPriceInfo,
-    selectedBTCAssetPrice: payload.btcPriceInfo,
+    selectedAssetFiatPrice: payload.defaultFiatPrice,
+    selectedAssetCryptoPrice: payload.defaultCryptoPrice,
     selectedAssetPriceHistory: history,
     selectedTimeline: payload.timeFrame,
     isFetchingPriceHistory: false
