@@ -430,7 +430,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
   }
 
-
   public static double probiToDouble(String probi) {
       final String PROBI_POWER = "1000000000000000000";
       double val = Double.NaN;
@@ -444,7 +443,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
       }
       return val;
   }
-
 
     /**
      * Expands touchable area of a small view

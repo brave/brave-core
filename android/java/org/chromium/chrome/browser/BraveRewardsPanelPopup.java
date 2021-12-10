@@ -121,7 +121,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final int REWARDS_NOTIFICATION_NO_INTERNET = 1000;
     private static final String REWARDS_NOTIFICATION_NO_INTERNET_ID = "29d835c2-5752-4152-93c3-8a1ded9dd4ec";
     private static final int REWARDS_PROMOTION_CLAIM_ERROR = REWARDS_NOTIFICATION_NO_INTERNET + 1;
-    private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID = "rewards_promotion_claim_error_id";
+    private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID =
+            "rewards_promotion_claim_error_id";
 
     // Auto contribute results
     private static final String AUTO_CONTRIBUTE_SUCCESS = "0";

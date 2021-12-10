@@ -433,7 +433,8 @@ public class BraveRewardsNativeWorker {
 
     public void getAdsAccountStatement() {
         synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
