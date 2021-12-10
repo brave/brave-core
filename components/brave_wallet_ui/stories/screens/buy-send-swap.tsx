@@ -10,7 +10,8 @@ import {
   EthereumChain,
   BuySupportedChains,
   SwapSupportedChains,
-  SwapValidationErrorType
+  SwapValidationErrorType,
+  DefaultCurrencies
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -49,6 +50,7 @@ export interface Props {
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   customSlippageTolerance: string
+  defaultCurrencies: DefaultCurrencies
   onCustomSlippageToleranceChange: (value: string) => void
   onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
@@ -104,6 +106,7 @@ function BuySendSwap (props: Props) {
     isFetchingSwapQuote,
     isSwapSubmitDisabled,
     customSlippageTolerance,
+    defaultCurrencies,
     onCustomSlippageToleranceChange,
     onSubmitBuy,
     onSubmitSend,
@@ -222,6 +225,7 @@ function BuySendSwap (props: Props) {
       }
       {selectedTab === 'buy' &&
         <Buy
+          defaultCurrencies={defaultCurrencies}
           accounts={accounts}
           networkList={networkList}
           buyAmount={buyAmount}

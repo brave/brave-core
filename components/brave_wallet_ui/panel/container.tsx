@@ -102,7 +102,8 @@ function Container (props: Props) {
     gasEstimates,
     connectedAccounts,
     activeOrigin,
-    pendingTransactions
+    pendingTransactions,
+    defaultCurrencies
   } = props.wallet
 
   const {
@@ -513,6 +514,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <ConfirmTransactionPanel
+            defaultCurrencies={defaultCurrencies}
             siteURL={activeOrigin}
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
@@ -733,6 +735,7 @@ function Container (props: Props) {
           >
             <SendWrapper>
               <Buy
+                defaultCurrencies={defaultCurrencies}
                 onChangeBuyView={onChangeSendView}
                 onInputChange={onSetBuyAmount}
                 onSubmit={onSubmitBuy}
@@ -815,6 +818,7 @@ function Container (props: Props) {
   return (
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
+        defaultCurrencies={defaultCurrencies}
         selectedAccount={selectedAccount}
         selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}

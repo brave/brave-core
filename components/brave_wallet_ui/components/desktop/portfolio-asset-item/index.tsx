@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 // Options
-import { ERCToken } from '../../../constants/types'
+import { ERCToken, DefaultCurrencies } from '../../../constants/types'
 import { hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
@@ -25,10 +25,17 @@ export interface Props {
   assetBalance: string
   fiatBalance: string
   token: ERCToken
+  defaultCurrencies: DefaultCurrencies
 }
 
 const PortfolioAssetItem = (props: Props) => {
-  const { assetBalance, fiatBalance, action, token } = props
+  const {
+    assetBalance,
+    fiatBalance,
+    action,
+    token,
+    defaultCurrencies
+  } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
@@ -47,7 +54,7 @@ const PortfolioAssetItem = (props: Props) => {
           </NameAndIcon>
           <BalanceColumn>
             {!token.isErc721 &&
-              <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+              <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
             }
             <AssetBalanceText>{formatedAssetBalance}</AssetBalanceText>
           </BalanceColumn>

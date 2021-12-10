@@ -7,7 +7,10 @@ import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { UpdateAccountNamePayloadType } from '../../constants/types'
+import {
+  UpdateAccountNamePayloadType,
+  WalletState
+} from '../../constants/types'
 import {
   CreateWalletPayloadType,
   RestoreWalletPayloadType,
@@ -29,6 +32,10 @@ import { Store } from '../../common/async/types'
 import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 const handler = new AsyncActionHandler()
+
+function getWalletState (store: Store): WalletState {
+  return store.getState().wallet
+}
 
 async function refreshWalletInfo (store: Store) {
   const walletHandler = getWalletPageApiProxy().walletHandler
@@ -75,12 +82,16 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const assetPriceController = getWalletPageApiProxy().assetRatioController
+  const walletState = getWalletState(store)
+  const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
+  const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
   if (payload.asset) {
-    const priceInfo = await assetPriceController.getPrice([payload.asset.symbol.toLowerCase()], ['usd', 'btc'], payload.timeFrame)
-    const priceHistory = await assetPriceController.getPriceHistory(payload.asset.symbol.toLowerCase(), payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, usdPriceInfo: priceInfo.values[0], btcPriceInfo: priceInfo.values[1], timeFrame: payload.timeFrame }))
+    const selectedAssetSymbol = payload.asset.symbol.toLowerCase()
+    const defaultPrices = await assetPriceController.getPrice([selectedAssetSymbol], [defaultFiat, defaultCrypto], payload.timeFrame)
+    const priceHistory = await assetPriceController.getPriceHistory(selectedAssetSymbol, defaultFiat, payload.timeFrame)
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
   } else {
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, btcPriceInfo: undefined, usdPriceInfo: undefined, timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
   }
 })
 

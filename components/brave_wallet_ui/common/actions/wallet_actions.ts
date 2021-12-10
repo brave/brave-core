@@ -43,7 +43,8 @@ import {
   GasEstimation1559,
   ApproveERC20Params,
   WalletInfoBase,
-  WalletInfo
+  WalletInfo,
+  DefaultCurrencies
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -110,3 +111,4 @@ export const autoLockMinutesChanged = createAction('autoLockMinutesChanged')
 export const retryTransaction = createAction<TransactionInfo>('retryTransaction')
 export const cancelTransaction = createAction<TransactionInfo>('cancelTransaction')
 export const speedupTransaction = createAction<TransactionInfo>('speedupTransaction')
+export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('defaultCurrenciesUpdated')
