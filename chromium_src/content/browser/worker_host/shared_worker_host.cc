@@ -12,8 +12,7 @@ void SharedWorkerHost::AllowFingerprinting(
     base::OnceCallback<void(bool)> callback) {
   std::move(callback).Run(
       GetContentClient()->browser()->AllowWorkerFingerprinting(
-          url, GetProcessHost()->GetBrowserContext(),
-          GetRenderFrameIDsForWorker()));
+          url, GetProcessHost()->GetBrowserContext()));
 }
 
 void SharedWorkerHost::GetBraveFarblingLevel(
@@ -21,8 +20,7 @@ void SharedWorkerHost::GetBraveFarblingLevel(
     base::OnceCallback<void(uint8_t)> callback) {
   std::move(callback).Run(
       GetContentClient()->browser()->WorkerGetBraveFarblingLevel(
-          url, GetProcessHost()->GetBrowserContext(),
-          GetRenderFrameIDsForWorker()));
+          url, GetProcessHost()->GetBrowserContext()));
 }
 
 }  // namespace content

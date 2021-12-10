@@ -394,16 +394,14 @@ bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
-    content::BrowserContext* browser_context,
-    const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
-  return WorkerGetBraveFarblingLevel(url, browser_context, render_frames) !=
+    content::BrowserContext* browser_context) {
+  return WorkerGetBraveFarblingLevel(url, browser_context) !=
          BraveFarblingLevel::MAXIMUM;
 }
 
 uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
-    content::BrowserContext* browser_context,
-    const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
+    content::BrowserContext* browser_context) {
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(browser_context);
   const bool shields_up =

@@ -17,15 +17,13 @@ std::string ContentBrowserClient::GetEffectiveUserAgent(
 
 bool ContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
-    BrowserContext* browser_context,
-    const std::vector<GlobalRenderFrameHostId>& render_frames) {
+    BrowserContext* browser_context) {
   return true;
 }
 
 uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
-    BrowserContext* browser_context,
-    const std::vector<GlobalRenderFrameHostId>& render_frames) {
+    BrowserContext* browser_context) {
   return 1 /* OFF */;
 }
 

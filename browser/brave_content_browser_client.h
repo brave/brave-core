@@ -63,15 +63,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   bool AllowWorkerFingerprinting(
       const GURL& url,
-      content::BrowserContext* browser_context,
-      const std::vector<content::GlobalRenderFrameHostId>& render_frames)
-      override;
+      content::BrowserContext* browser_context) override;
 
   uint8_t WorkerGetBraveFarblingLevel(
       const GURL& url,
-      content::BrowserContext* browser_context,
-      const std::vector<content::GlobalRenderFrameHostId>& render_frames)
-      override;
+      content::BrowserContext* browser_context) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,

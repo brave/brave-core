@@ -19,15 +19,9 @@ void ServiceWorkerContentSettingsProxyImpl::AllowFingerprinting(
     std::move(callback).Run(false);
     return;
   }
-  // |render_frames| is used to show UI for the frames affected by the
-  // content setting. However, service worker is not necessarily associated
-  // with frames or making the request on behalf of frames,
-  // so just pass an empty |render_frames|.
-  std::vector<GlobalRenderFrameHostId> render_frames;
   std::move(callback).Run(
       GetContentClient()->browser()->AllowWorkerFingerprinting(
-          origin_.GetURL(), context_wrapper_->browser_context(),
-          render_frames));
+          origin_.GetURL(), context_wrapper_->browser_context()));
 }
 
 void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
@@ -42,15 +36,9 @@ void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
     std::move(callback).Run(1 /* OFF */);
     return;
   }
-  // |render_frames| is used to show UI for the frames affected by the
-  // content setting. However, service worker is not necessarily associated
-  // with frames or making the request on behalf of frames,
-  // so just pass an empty |render_frames|.
-  std::vector<GlobalRenderFrameHostId> render_frames;
   std::move(callback).Run(
       GetContentClient()->browser()->WorkerGetBraveFarblingLevel(
-          origin_.GetURL(), context_wrapper_->browser_context(),
-          render_frames));
+          origin_.GetURL(), context_wrapper_->browser_context()));
 }
 
 }  // namespace content
