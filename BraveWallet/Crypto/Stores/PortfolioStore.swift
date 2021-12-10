@@ -117,7 +117,9 @@ public class PortfolioStore: ObservableObject {
       timeframe: timeframe
     ) { [weak self] success, assetPrices in
       defer { group.leave() }
-      guard let self = self, success else { return }
+      // `success` only refers to finding _all_ prices and if even 1 of N prices
+      // fail to fetch it will be false
+      guard let self = self else { return }
       for assetPrice in assetPrices {
         if let index = self.userVisibleAssets.firstIndex(where: {
           $0.token.symbol.caseInsensitiveCompare(assetPrice.fromAsset) == .orderedSame
