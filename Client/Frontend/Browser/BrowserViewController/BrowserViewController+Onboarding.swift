@@ -140,33 +140,54 @@ extension BrowserViewController {
         
         let popover = PopoverController(contentController: controller)
         popover.arrowDistance = 10.0
-        popover.present(from: borderView, on: self)
-        
-        // Mask the shadow
-        let maskFrame = view.convert(frame, to: popover.backgroundOverlayView)
-        let maskShape = CAShapeLayer().then {
-            $0.fillRule = .evenOdd
-            $0.fillColor = UIColor.white.cgColor
-            $0.strokeColor = UIColor.clear.cgColor
-        }
-        
-        popover.backgroundOverlayView.layer.mask = maskShape
-        popover.popoverDidDismiss = { [weak self] _ in
-            maskShape.removeFromSuperlayer()
-            borderView.removeFromSuperview()
-            Preferences.FullScreenCallout.ntpCalloutCompleted.value = true
-            self?.presentNTPMenuOnboarding()
-        }
-        
-        DispatchQueue.main.async {
-            maskShape.path = {
-                let path = CGMutablePath()
-                path.addRect(popover.backgroundOverlayView.bounds)
-                path.addRoundedRect(in: maskFrame,
-                                    cornerWidth: 12.0,
-                                    cornerHeight: 12.0)
-                return path
-            }()
+        popover.present(from: borderView, on: self) { [weak popover, weak self] in
+            guard let popover = popover,
+                  let self = self else { return }
+            
+            // Mask the shadow
+            let maskFrame = self.view.convert(frame, to: popover.backgroundOverlayView)
+            guard !maskFrame.isNull &&
+                  !maskFrame.isInfinite &&
+                  !maskFrame.isEmpty &&
+                  !popover.backgroundOverlayView.bounds.isNull &&
+                  !popover.backgroundOverlayView.bounds.isInfinite &&
+                  !popover.backgroundOverlayView.bounds.isEmpty else {
+                return
+            }
+            
+            guard maskFrame.origin.x.isFinite &&
+                    maskFrame.origin.y.isFinite &&
+                    maskFrame.size.width.isFinite &&
+                    maskFrame.size.height.isFinite &&
+                    maskFrame.size.width > 0 &&
+                    maskFrame.size.height > 0 else {
+                return
+            }
+            
+            let maskShape = CAShapeLayer().then {
+                $0.fillRule = .evenOdd
+                $0.fillColor = UIColor.white.cgColor
+                $0.strokeColor = UIColor.clear.cgColor
+            }
+            
+            popover.backgroundOverlayView.layer.mask = maskShape
+            popover.popoverDidDismiss = { [weak self] _ in
+                maskShape.removeFromSuperlayer()
+                borderView.removeFromSuperview()
+                Preferences.FullScreenCallout.ntpCalloutCompleted.value = true
+                self?.presentNTPMenuOnboarding()
+            }
+            
+            DispatchQueue.main.async {
+                maskShape.path = {
+                    let path = CGMutablePath()
+                    path.addRect(popover.backgroundOverlayView.bounds)
+                    path.addRoundedRect(in: maskFrame,
+                                        cornerWidth: 12.0,
+                                        cornerHeight: 12.0)
+                    return path
+                }()
+            }
         }
     }
     
