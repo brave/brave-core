@@ -171,7 +171,7 @@ const util = {
           "src/chrome/tools/test/reference_build/chrome_win": "%None%"
         },
         custom_vars: {
-          "checkout_pgo_profiles": "%False%"
+          "checkout_pgo_profiles": config.chromePgoPhase === 2 ? "%True%" : "%False%"
         }
       },
       {
