@@ -1,122 +1,183 @@
-"0W40Cl" = "New Tab";
+/* (No Comment) */
+"0W40Cl" = "Ny flik";
 
-"5ixvGX-tYwiRd" = "There are ${count} options matching ‘Est. Time Saved’.";
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Det finns ${count} alternativ som matchar ”Uppskattad tid sparad”.";
 
-"5ixvGX-vjA5pZ" = "There are ${count} options matching ‘Est. Data Saved’.";
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Det finns ${count} alternativ som matchar ”Uppskattade data sparade”.";
 
-"5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Det finns ${count} alternativ som matchar ”Blockerade annonser”.";
 
-"7JYzOv" = "Type";
+/* (No Comment) */
+"7JYzOv" = "Typ";
 
-"8vyYRy" = "#3";
+/* (No Comment) */
+"8vyYRy" = "3";
 
-"9E2oRR" = "#1";
+/* (No Comment) */
+"9E2oRR" = "1";
 
-"AGMpus" = "Shortcuts Configuration";
+/* (No Comment) */
+"AGMpus" = "Genvägskonfigurering";
 
-"EUS9FL" = "Widget Shortcut";
+/* (No Comment) */
+"bUXzTx" = "Statistiktyp";
 
-"FGO5qW" = "Playlist";
+/* (No Comment) */
+"crhbMy" = "Bokmärken";
 
-"L1fziM-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
 
-"L1fziM-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"e13lS3-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
-"L1fziM-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Var det ”Spellista” du sökte efter?";
 
-"L1fziM-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"e13lS3-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
 
-"L1fziM-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
-"L1fziM-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"e13lS3-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
-"TxuMja-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"EUS9FL" = "Widgetgenväg";
 
-"TxuMja-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"FGO5qW" = "Spellista";
 
-"TxuMja-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"gpCwrM" = "Statistikkonfigurering";
 
-"TxuMja-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"joEZJM" = "2";
 
-"TxuMja-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
 
-"TxuMja-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"L1fziM-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
-"VBH4G6" = "History";
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
 
-"YQiQuz-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"L1fziM-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
 
-"YQiQuz-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
-"YQiQuz-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"L1fziM-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
-"YQiQuz-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"nthxSL" = "Nedladdningar";
 
-"YQiQuz-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
 
-"YQiQuz-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"r2EI05-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
-"bUXzTx" = "Stat Kind";
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Var det ”Spellista” du sökte efter?";
 
-"crhbMy" = "Bookmarks";
+/* (No Comment) */
+"r2EI05-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
 
-"e13lS3-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
-"e13lS3-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"r2EI05-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
-"e13lS3-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Var det ”Uppskattad tid sparad” du sökte efter?";
 
-"e13lS3-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Var det ”Uppskattade data sparade” du sökte efter?";
 
-"e13lS3-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Var det ”Blockerade annonser” du sökte efter?";
 
-"e13lS3-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
 
-"gpCwrM" = "Stats Configuration";
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
-"joEZJM" = "#2";
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
 
-"nthxSL" = "Downloads";
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
 
-"r2EI05-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
-"r2EI05-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"tNCrcE-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
-"r2EI05-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"tVvJ9c" = "Widget för statistikkonfigurering";
 
-"r2EI05-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
 
-"r2EI05-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"TxuMja-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
-"r2EI05-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Det finns ${count} alternativ som matchar ”Spellista”.";
 
-"sdOBtj-tYwiRd" = "Just to confirm, you wanted ‘Est. Time Saved’?";
+/* (No Comment) */
+"TxuMja-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
 
-"sdOBtj-vjA5pZ" = "Just to confirm, you wanted ‘Est. Data Saved’?";
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
-"sdOBtj-xcI3h9" = "Just to confirm, you wanted ‘Ads Blocked’?";
+/* (No Comment) */
+"TxuMja-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
-"tNCrcE-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"tYwiRd" = "Uppskattad tid sparad";
 
-"tNCrcE-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"VBH4G6" = "Historik";
 
-"tNCrcE-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"vjA5pZ" = "Uppskattade data sparade";
 
-"tNCrcE-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"vs094F" = "Ny privat flik";
 
-"tNCrcE-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"xcI3h9" = "Blockerade annonser";
 
-"tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
 
-"tVvJ9c" = "Stats Configuration Widget";
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
-"tYwiRd" = "Est. Time Saved";
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Var det ”Spellista” du sökte efter?";
 
-"vjA5pZ" = "Est. Data Saved";
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
 
-"vs094F" = "New Private Tab";
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
-"xcI3h9" = "Ads Blocked";
+/* (No Comment) */
+"YQiQuz-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
-"ziTvSZ" = "Stats Configuration Widget";
+/* (No Comment) */
+"ziTvSZ" = "Widget för statistikkonfigurering";
 

@@ -1,0 +1,642 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Sauvegarder";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Saisir le nom du compte";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Nom du compte";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Détails du compte";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Clé privée";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Avertissement : Ne partagez jamais votre clé privée. Toute personne disposant de cette clé pourra voler vos actifs sans aucun recours possible.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "Supprimer ce compte ?";
+
+/* The message of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmationMessage" = "Êtes-vous sûr ?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Supprimer le compte";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Comptes";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "Activer le jeton %@";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Ajouter";
+
+/* The title of the add account screen */
+"wallet.addAccountTitle" = "Ajouter un compte";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Ajouter un actif personnalisé";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Vérifiez les informations du jeton personnalisé ainsi que votre connexion Internet, puis réessayez.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "Impossible d'ajouter le jeton personnalisé";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Montant + Gas";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "Montant en %@";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "Cours du %1$@ (%2$@)";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "Aucun actif trouvé";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Actifs";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Le nombre de minutes à attendre avant que le portefeuille Brave se verrouille automatiquement";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Verrouiller automatiquement après";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Phrase de récupération";
+
+/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
+"wallet.backupRecoveryPhraseDisclaimer" = "J'ai sauvegardé ma phrase à un endroit sécurisé.";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "Écrirez ou copiez ces mots dans l'ordre exact indiqué ci-dessous et sauvegardez-les à un endroit sécurisé. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte si vous oubliez votre mot de passe, si votre appareil est perdu ou volé, ou si vous voulez changer de portefeuille.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Votre phrase de récupération";
+
+/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
+"wallet.backupRecoveryPhraseWarningPartOne" = "AVERTISSEMENT :";
+
+/* The second part of the warning displayed on the backup recovery phrase page. */
+"wallet.backupRecoveryPhraseWarningPartTwo" = "Ne partagez jamais votre phrase de récupération. Toute personne disposant de cette phrase pourra voler vos actifs sans aucun recours possible.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Sauvegarder le portefeuille";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Je comprends que si je perds ma phrase de récupération, je ne pourrai plus accéder à mon portefeuille de cryptomonnaie.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Sauvegardez votre portefeuille de cryptomonnaie";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Sauvegardez votre portefeuille dès maintenant pour protéger vos crypto-actifs et vous assurer de ne jamais perdre l'accès.";
+
+/* The button title that enables the biometric unlock feature */
+"wallet.biometricsSetupEnableButtonTitle" = "Activer";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Une erreur est survenue lors de la tentative d'activation du déverrouillage biométrique. Veuillez réessayer ultérieurement.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Impossible d'activer le déverrouillage biométrique.";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock */
+"wallet.biometricsSetupTitle" = "Déverrouillez votre portefeuille Brave avec Face ID, Touch ID ou un mot de passe.";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "Le devis inclut des frais Brave de %@.";
+
+/* The title shown on the wallet settings page. */
+"wallet.braveWallet" = "Portefeuille Brave";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Acheter";
+
+/* The title of the button for users to click when they are ready to buy using Wyre payment */
+"wallet.buyButtonTitle" = "Poursuivre vers Wyre";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "Achetez des cryptos avec Apple Pay ou une carte bancaire via Wyre.";
+
+/* The title of the button for users to get ether if the test network has been chosen */
+"wallet.buyTestButtonTitle" = "Obtenir de l'Ether";
+
+/* The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten' */
+"wallet.buyTestDescription" = "Obtenir de l'Ether depuis un faucet pour %@";
+
+/* The title below account picker when user has selected a test network */
+"wallet.buyTestTitle" = "Faucet de test";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Date";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Prix";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Données financières fournies par CoinGecko";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Détails";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "Transaction";
+
+/* A button title to confirm a transaction. It is shown below details about a given transaction */
+"wallet.confirmTransactionButtonTitle" = "Confirmer";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "Confirmer les transactions";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "Confirmer la transaction";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Continuer";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Copier l'adresse";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Copier";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Créer un mot de passe";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Protégez vos crypto-actifs à l'aide d'un mot de passe";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Portefeuille Brave";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Personnalisé";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Tout";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1 j";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 jour";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1 h";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 heure";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1 m";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 mois";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3 m";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 mois";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1 s";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 semaine";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1 a";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 an";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "Précision décimale";
+
+/* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
+"wallet.defaultAccountName" = "Compte %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
+"wallet.defaultSecondaryAccountName" = "Compte secondaire %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
+"wallet.deleteCustomToken" = "Supprimer";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Détails";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
+"wallet.editGasFeeButtonTitle" = "Modifier";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Modifier le Gas";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Modifier les actifs visibles";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Saisir un montant";
+
+/* A placeholder for the text field that users will input the custom token contract address */
+"wallet.enterContractAddress" = "Saisir l'adresse du contrat";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Saisir le nom du jeton";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Saisir le symbole du jeton";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Veuillez réessayer.";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Impossible d'importer le compte.";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Frais Gas max.";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Frais de base actuel";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Frais Gas";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Personnalisé";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "Bien que cela ne soit pas garanti, les mineurs donneront probablement la priorité à votre transaction si vous payez des frais plus élevés.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Élevé";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Bas";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Optimal";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Masquer la clé privée";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Mot de passe d'origine";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Saisissez, collez ou importez le fichier ou JSON contenant votre clé privée.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Vous pouvez créer un compte secondaire en important votre clé privée.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "Importation…";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Mot de passe incorrect";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Informations";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "Aucune donnée.";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Solde insuffisant";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "Fonds insuffisants";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "Fonds insuffisants pour les frais Gas";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Liquidités insuffisantes";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Verrouiller";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Frais maximums";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Frais de priorité max.";
+
+/* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
+"wallet.nextTransaction" = "Suivant";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "Aucun compte";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "Aucun actif";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "Aucun compte secondaire.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "Aucune transaction";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Autres actions du portefeuille";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "Les mots de passe doivent comporter au moins 7 caractères et contenir au moins une lettre, un chiffre et un caractère spécial.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Mot de passe";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "Le mot de passe de confirmation ne correspond pas";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Coller";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Limite de prix par Gas (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Prix par Gas (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Limite de Gas par contribution (Gwei)";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portefeuille";
+
+/* A title above a list of crypto accounts that are not imported */
+"wallet.primaryCryptoAccountsTitle" = "Comptes de cryptomonnaie principaux";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Actualiser le cours du marché";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "Refuser %d transactions";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Refuser";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Vérifiez qu'il s'agit d'un nouvel actif personnalisé, vérifiez votre connexion Internet, et réessayez.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "Impossible de supprimer le jeton personnalisé";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Renommer";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Confirmer le mot de passe";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Restaurer le portefeuille";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Restaurer";
+
+/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "Importer depuis les portefeuilles de cryptomonnaie Brave existants ?";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Nouveau mot de passe";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Phrase de récupération non valide";
+
+/* The placeholder on the mneomic/recovery phrase text field */
+"wallet.restoreWalletPhrasePlaceholder" = "Saisissez votre phrase de récupération";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Afficher la phrase de récupération";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "Saisissez votre phrase de récupération pour restaurer le compte de cryptomonnaie associé à votre portefeuille Brave.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Restaurer le compte de cryptomonnaie";
+
+/* A button title for saving the users selected gas fee options */
+"wallet.saveGasFee" = "Enregistrer";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "Scanner un code QR";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Rechercher des actifs";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Importez le compte associé à votre portefeuille externe avec une phrase seed séparée.";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsTitle" = "Comptes secondaires";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Sélectionner un compte";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Compte sélectionné";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Réseau sélectionné";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Envoyer";
+
+/* A placeholder of the address text field. */
+"wallet.sendCryptoAddressPlaceholder" = "Saisir une adresse ou un lien";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Saisir le montant de %@ à envoyer";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "De";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Envoyer";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "Nous ne pouvons pas traiter votre transaction pour le moment";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "Vers";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "Envoyez des cryptos ou transférez-les d'un compte à l'autre.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Paramètres";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Réinitialiser";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Réinitialiser le portefeuille";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Cette action est irréversible. Votre phrase de récupération est le seul moyen de récupérer l'accès au compte associé à vos crypto-actifs.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "Voulez-vous vraiment réinitialiser le portefeuille Brave ?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Bienvenue";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Démarrer";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Conservez vos crypto-actifs et suivez les performances de votre portefeuille, le tout directement depuis le navigateur privé Brave.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Bienvenue dans le nouveau portefeuille Brave";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Afficher la clé privée";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Ignorer";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Échanger";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "Montant reçu en %@ (estimation)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Saisir le montant de %@ à échanger";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "De";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "Prix du marché en %@";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Tolérance au glissement";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Échanger";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "Vers";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Actuellement, Brave ne prend pas en charge les échanges sur le %@. Veuillez passer à une chaîne prise en charge.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Chaîne non prise en charge";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Échangez des crypto-actifs avec l'agrégateur DEX de Brave.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "0x traitera l'adresse Ethereum et l'adresse IP pour compléter une transaction (y compris pour obtenir des devis). 0x utilisera ces données UNIQUEMENT dans le but de traiter les transactions.";
+
+/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave utilise 0x en tant qu'agrégateur DEX.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "À cours limité";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Au cours du marché";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Type d'ordre";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "Aujourd'hui";
+
+/* A title that will be displayed on top of the text field for users to input the custom token contract address */
+"wallet.tokenContractAddress" = "Adresse du contrat du jeton";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Nom du jeton";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Symbole du jeton";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Total";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ approuvés";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld de %2$lld";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "De : %1$@. À : %2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "%1$@ %2$@ (%3$@) envoyés";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Approuvé";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Confirmé";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Erreur";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Refusé";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Envoyé";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Non approuvé";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Inconnu";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "Transactions";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Frais : %1$@ %2$@ (%3$@)";
+
+/* A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\" */
+"wallet.transactionSwapTitle" = "%1$@ %2$@ (%3$@) échangés";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Approuver";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionUnknownApprovalTitle" = "Approuvé";
+
+/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "%@ envoyés";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Erreur inconnue";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Déverrouiller";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletTitle" = "Saisir le mot de passe pour déverrouiller le portefeuille";
+
+/* The button title to verify if the user has put all recovery words in the right order */
+"wallet.verifyButtonTitle" = "Vérifier";
+
+/* The subtitle of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseSubtitle" = "Sélectionnez les mots de votre phrase de récupération dans le bon ordre.";
+
+/* The title of the verify recovery phrase screen */
+"wallet.verifyRecoveryPhraseTitle" = "Vérifier la phrase de récupération";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Afficher sur l'explorateur de blocs";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Portefeuille";
+

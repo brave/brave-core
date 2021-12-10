@@ -184,6 +184,39 @@
 /* Settings item for clearing the cache */
 "Cache" = "Tembolok";
 
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai bawaan, setiap tautan yang Anda klik akan terbuka dengan perlindungan privasi Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai bawaan";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah menjadi bawaan?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Lewati ini";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Jadikan Brave peramban bawaan Anda";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "Tonton video";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "...putar di mana saja, kapan saja. Pada latar belakang, gambar-ke-gambar, atau bahkan luring. Dan tentu saja, bebas iklan.";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "Tambahkan video ke Daftar Putar...";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Dapatkan privasi Brave pada komputer atau tablet Anda, dan sinkronisasikan markah & ekstensi antar perangkat.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Sinkronikasikan sekarang";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Privasi. Di mana pun.";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Batal";
 
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Coba ketik ulang URL, atau membuka mesin pencarian dan mencari URL baru.";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Buka di Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Coba lagi";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "Tingkat Lanjut";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "Peringatan: kami tidak dapat mengkonfirmasi bahwa sambungan Anda ke situs ini aman.";
+"ErrorPageReloadButtonTitle" = "Muat ulang";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "Hal ini mungkin terjadi karena kesalahan konfigurasi atau dirusak oleh penyerang. Lanjutkan jika Anda menerima potensi risiko tersebut.";
+"ErrorPagesAdvancedWarningDetails" = "Peladen ini tidak dapat membuktikan bahwa ini adalah %@; sertifikat keamanannya tidak dipercaya sistem pengoperasian perangkat Anda. Ini mungkin disebabkan karena kesalahan konfigurasi atau penyerang yang mencoba mencegat koneksi Anda.";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "Pemilik %@ telah salah mengkonfigurasi situs webnya. Untuk melindungi informasi agar tidak dicuri, Brave tidak tersambung ke situs web ini. ";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Penyerang mungkin mencoba mencuri informasi Anda dari %@ (contohnya, kata sandi, pesan, atau kartu kredit).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Kembali aman";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Situs ini tidak menyediakan koneksi aman";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "Sambungan Anda tidak pribadi";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "Kembali";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Sembunyikan detail";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Pelajari lebih lanjut";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Detail lebih banyak";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Tidak ada akses internet";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Sepertinya Anda tidak sedang daring. Untuk memperbaikinya, coba";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Memeriksa kabel jaringan, modem, dan perute";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Menyambungkan ulang ke Wi-Fi";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "Tetap kunjungi situs ";
+"ErrorPagesProceedAnywayButton" = "Melanjutkan ke %@ (tidak aman)";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Perkiraan Waktu \nDisimpan";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "Riwayat tidak tersedia di mode Hanya Perambanan Privat.";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Cari di Riwayat";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Riwayat";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "Tingkatkan Koneksi ke HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Membuka beberapa situs menggunakan koneksi HTTPS yang aman, bukan sekadar HTTP.";
+"HTTPSEverywhereDescription" = "Membuka situs dengan menggunakan HTTPS aman daripada dengan HTTP kapan saja memungkinkan.";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Peningkatan HTTPS";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Pelajari Lebih Lanjut";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Login yang Disimpan akan dihapus permanen.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Dibuat pada %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Detail Login";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Kata Sandi";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Nama Pengguna";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Situs Web";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Untuk melihat kata sandi, Anda harus terlebih dahulu mengatur kode masuk ke perangkat Anda.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Atur Kode Masuk";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Login tidak ditemukan";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Login & Kata Sandi";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Login yang Disimpan";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir dimodifikasi %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Aktifkan Audio Latar";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Aktifkan Putar Otomatis";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Salin";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "Tab Baru";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Hasil pencarian tidak ditemukan.";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Masukkan semua kata, lalu coba lagi.";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan mengaktifkan Rewards, berarti Anda setuju dengan %@.";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Ketuk Perisai dari situs mana pun untuk melihat semua hal yang telah kami blokir.";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave memblokir %1$@ di: %2$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave memblokir %1$@ dan %2$d pelacak lainnya di: %3$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave memblokir %1$@ dan %2$d pelacak lainnya di: %3$@.";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "Periksa menu pengaturan dan fitur kerahasiaan yang hebat lainnya!";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "Selesai!";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Dengan memblokir pelacak & iklan, situs web menggunakan lebih sedikit data dan memuat lebih cepat.";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "Mari mulai";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "Sedikit lagi Anda akan memiliki kerahasiaan daring terbaik. Siap?";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "Kerahasiaan yang mudah";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "...dan perhatikan pelacak & iklan tersebut menghilang.";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "Pilih situs populer berikut atau masukkan milik Anda sendiri...";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "Anda siap untuk menjelajah!";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "Masukkan situs web";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Selamat Datang di Brave!";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Buka Situs Web";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Berita utama hari ini dalam umpan berita pribadi";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Berita";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Pertahankan daftar putar luring setiap video/aliran";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Daftar Putar";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Panggilan video pribadi, langsung di peramban Anda";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Bicara";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Lindungi semua perangkat Anda secara daring";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Dompet kripto aman, tidak memerlukan perluasan";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Fitur Brave";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Pengaturan Privasi Lain";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Pasangkan";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Kata Sandi";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Skrip Diblokir";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Cari Markah";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Pencarian %@";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Perangkat & Pengaturan";
 
+/* Sync Error Description */
+"syncExpiredError" = "Telah Kedaluwarsa";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "Terlalu Baru";
+
+/* Sync Error Description */
+"syncGenericError" = "Maaf, telah terjadi kesalahan";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Markah Buku yang Diimpor";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Kesalahan Komunikasi Sinkronisasi";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "Versi lebih lama yang tidak didukung";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "Format yang Tidak Valid";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "Ini akan membagikan data Brave Anda, termasuk kemungkinan kata sandi Anda, dengan menggunakan perangkat yang menghasilkan kode QR ini. Silakan periksa kembali jika kode QR ini dihasilkan oleh perangkat yang Anda miliki. Anda yakin ingin melakukan ini?";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "Ini akan membagikan data Brave Anda, termasuk kemungkinan kata sandi Anda, dengan menggunakan perangkat yang menghasilkan kata kode ini. Silakan periksa kembali jika kata kode ini dihasilkan oleh perangkat yang Anda miliki. Anda yakin ingin melakukan ini?";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "Peringatan";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "Versi yang tidak didukung";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Tidak dapat tersambung untuk sinkronisasi";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "Versi yang tidak didukung lagi";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Data perangkat lokal akan tetap tersimpan di semua perangkat. Perangkat lainnya dalam Rantai Sinkronisasi ini akan tetap disinkronisasi. ";

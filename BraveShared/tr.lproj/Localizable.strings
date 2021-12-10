@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Kalkanları'nı değiştirmek için iki kez dokunun";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Sohbet";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Ekle";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Tek seferlik pano denetimine izin ver";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Başlangıç ekranına dokunarak, şunu kabul etmiş olursunuz:";
+"OBRewardsAgreementDetail" = "Evet'e dokunarak, şunları kabul etmiş olursunuz:";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Hizmet Şartları";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "ve";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards içerik üreticilerini destekliyor";
+"OBRewardsAgreementTitle" = "Brave Ödülleri";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Göz atarken içerik üreticileri özel ve anonimleştirilmiş reklamlarla desteklemeye başlayın";
+"OBRewardsDetail" = "Brave Özel Reklamlara abone olmak, görüntülenen her reklamla birlikte yayıncıları ve içerik üreticilerini destekler.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Göz atarken harika içerikler için jetonlar kazanın ve içerik üreticilerini ödüllendirin.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Gizlilik Politikası";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Ödülleri";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Özel Arama Motoru Ekle";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Gizlilik yolundaki bu kilometre taşına ulaştığınız için tebrikler.";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Tebrikler. Özel bir kulübün parçası oldun.";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Bunu bir daha gösterme";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Bir göz atın";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Haberi paylaşın";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Kalkanları, her sitede çevrimiçi gizliliğinizi korur.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "%ld+ izleyici & reklam bu sayfada engellendi.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Kalkanları çevrimiçi gizliliğinizi korudu.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "İzleyiciler ve reklamlar bu sayfada engellendi.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Tebrikler. Çok özelsin.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld izleyici ve reklam engellendi";
+"shieldEducation.trackerCountShareTitle" = "%ld izleyici ve reklam engellendi!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Reklam içermeyen videolar daha az veri kullanır.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Arama önerileri açılsın mı?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Daha fazla bilgi edinin";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "BAT şu anda bölgenizde hesabınızın açıldığı konuma göre desteklenmemektedir. Kullanılabilirlik için daha sonra tekrar kontrol edin.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Kapat";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Bölge desteklenmiyor";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Destek hesabınıza giriş yaparken bir sorun meydana geldi. Lütfen yeniden deneyin";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Bir yıl";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "En sevdiğiniz web sitelerine hızlıca erişin.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Favoriler";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Lütfen favorilerinizi burada görüntülemek için Brave'i açın";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Brave'in size nasıl zaman kazandırdığı ve çevrimiçi dünyada sizi nasıl koruduğuna dair bir özet.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Gizlilik İstatistikleri";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Gizlilik İstatistikleri";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Bir URL arayın veya yazın";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Yeni Sekme";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Oynatma listesi";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Gizli Sekme";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Web'de arama yapmak veya Brave'de web sayfaları açmak için hızlı erişim.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Kısayollar";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Brave'in sizi çevrimiçi dünyada nasıl koruduğunun özeti.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Gizlilik İstatistiği";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Evet";

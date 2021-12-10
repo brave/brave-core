@@ -397,29 +397,8 @@
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Safari で開く";
 
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "やり直す";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "高度";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "警告: このウェブサイトへの接続の安全性が確認できません。";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "構成に問題が生じたり攻撃者による改ざんを受ける恐れがあります。潜在的なリスクを許容する場合は続行してください。";
-
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "%@ の所有者はウェブサイトを不適切に構成しています。情報漏洩を防ぐために、Brave はこのウェブサイトにアクセスしませんでした。";
-
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "接続はプライベートではありません";
-
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "戻る";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "それでもサイトを訪問";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "節約できた\n時間(推定)";
@@ -526,9 +505,6 @@
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPSに接続をアップグレードする";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "ウェブサイトをHTTPではなく、よりセキュアなHTTPSで接続する";
-
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";
 
@@ -573,9 +549,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "音声のバックグラウンド再生を有効にする";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "自動再生を有効にする";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "コピー";
@@ -1125,6 +1098,12 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Syncの接続エラー";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。このQRコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "この操作を行うと、パスワードを含むBraveのデータが、これらのコード単語を生成したデバイスと共有されます。これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";

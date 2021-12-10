@@ -184,6 +184,39 @@
 /* Settings item for clearing the cache */
 "Cache" = "Hurtigminne";
 
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Med Brave som standard åpnes alle linker du klikker på, med Braves innebygde standardinnstillinger.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Angi som standard";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Allerede angitt som standard?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Hopp over dette";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Gjør Brave til standardnettleseren";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "Se på videoen";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "… spill av spillelisten hvor som helst – i bakgrunnen, som bilde-i-bilde eller offline – og selvsagt uten annonser.";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "Legg til video i Spillelisten …";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Få Brave-personvernfunksjonalitet på datamaskinen eller nettbrettet, og synkroniser bokmerker og utvidelser mellom enheter.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Synkroniser nå";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Personvern. Over alt.";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Avbryt";
 
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Tast inn navn på mappe";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Prøv å skrive inn nettadressen på nytt eller åpne en søkemotor og søke etter den nye URL-en.";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Åpne i Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Prøv igjen";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "Avansert";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "Advarsel: Vi kan ikke bekrefte at tilkoblingen din til denne hjemmesiden er sikker.";
+"ErrorPageReloadButtonTitle" = "Last inn på nytt";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "Det kan skyldes en feil i innstillingene eller handlingene til en angriper. Fortsett hvis du godtar den potensielle risikoen.";
+"ErrorPagesAdvancedWarningDetails" = "Denne serveren kunne ikke bevise at domenet er %@ – sikkerhetssertifikatet kan ikke klareres av operativsystemet på enheten din. Dette kan skyldes en feilkonfigurering, eller at en ondsinnet tredjepart prøver å koble seg på tilkoblingen din.";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "Eieren av %@ har ikke satt opp hjemmesiden sin på riktig måte. For å beskytte deg mot at opplysninger blir stjålet, har ikke Brave koblet seg til denne hjemmesiden.";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Ondsinnede aktører kan prøve å stjele informasjonen din fra %@ (for eksempel passord, meldinger eller kredittkortinformasjon).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Gå tilbake til det sikre området";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Denne siden kan ikke opprette en sikker tilkobling";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "Tilkoblingen din er ikke privat";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "Gå tilbake";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Skjul detaljer";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Finn ut mer";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Mer informasjon";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Ingen internettilgang";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Det ser ut til at du ikke er online. For å fikse dette kan du prøve:";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "å sjekke nettverkskablene, modemet og ruteren din";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "å koble til det trådløse nettverket på nytt";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "Besøk siden allikevel";
+"ErrorPagesProceedAnywayButton" = "Gå videre til %@ (kan være farlig)";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Est. tid \nSpart";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "Logging er ikke tilgjengelig i privat modus.";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Søkelogg";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Logg";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "Oppgrader tilkoblinger til HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Åpner noen nettsteder med en sikker HTTPS-tilkobling i stedet for vanlig HTTP.";
+"HTTPSEverywhereDescription" = "Åpner nettsteder via sikker HTTPS i stedet for HTTP når det er mulig";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-oppgraderinger";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Lær mer";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Den lagrede påloggingsinformasjonen slettes permanent.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Opprettet %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Påloggingsinformasjon";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Passord";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Brukernavn";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Nettsted";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "For å se passord må du først angi en passkode på enheten din.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Angi en passkode";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Fant ingen pålogginger";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Pålogginger og passord";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Lagrede pålogginger";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Filtrer";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Sist modifisert %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Aktiver bakgrunnslyd";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Aktiver automatisk avspilling";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopier";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "Ny fane";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Fant ingen søkeresultater.";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen.";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ved å slå på Rewards, godtar du %@.";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Trykk på Skjoldet på et hvilket som helst nettsted for å se alt vi har blokkert.";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave blokkerte %1$@ for: %2$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave blblokkerteocked %1$@ og %2$d trackere til: %3$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave blokkerte %1$@ og %2$d tracker til: %3$@.";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "Sjekk menyen for å se gjennom innstillingene og enda mer personvernfunksjonalitet av høy kvalitet!";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "Alt er klart!";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Ved å blokkere trackere og annonser bruker nettsidene mindre data og lastes mye raskere inn.";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "Sett i gang";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "Du er bare ett trinn unna den beste personvernfunksjonaliteten du kan få på nettet. Er du klar?";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "Personvern – helt enkelt";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "… og se atalt av trackere og annonser forsvinner.";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "Velg et populært nettsted nedenfor, eller skriv inn en adresse selv …";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "Du er klar til å surfe på nettet!";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "Skriv inn en nettstedsadresse";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Velkommen til Brave!";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Åpne nettside";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Dagens toppsaker i en privat nyhetsfeed";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Nyheter";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Lagre en offline-spilleliste av alle videoer/strømmer du vil";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Spilleliste";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Private videosamtaler direkte i nettleseren";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Prat";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Beskytt hele enheten din på nettet";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Den sikre kryptolommeboken – ingen utvidelser kreves";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Funksjoner i Brave";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Andre personverninnstillinger";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Par";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Passord";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Bilde av %@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Skripter blokkert";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Søk i bokmerker";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@-søk";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter og innstillinger";
 
+/* Sync Error Description */
+"syncExpiredError" = "Utløpt";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "For ny versjon";
+
+/* Sync Error Description */
+"syncGenericError" = "Beklager, en feil har oppstått";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Importerte bokmerker";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Kommunikasjonsfeil ved synkronisering";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "Eldre versjon som ikke støttes";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "Ugyldig format";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "Dette gjør at Brave-dataene dine, potensielt inkludert passordene dine, deles med enheten som genererte denne QR-koden. Dobbeltsjekk at denne QR-koden ble generert av en av dine egne enheter. Er du sikker på at du vil gjøre dette?";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "Dette gjør at Brave-dataene dine, potensielt inkludert passordene dine, deles med enheten som genererte disse kodeordene. Dobbeltsjekk at disse kodeordene ble generert av en av dine egne enheter. Er du sikker på at du vil gjøre dette?";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "Advarsel";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "Versjonen støttes ikke";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Sjekk nettforbindelsen, og prøv igjen.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Kan ikke koble til synkronisering";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "Denne versjonen støttes ikke lenger";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Data på den lokale enheten blir værende på alle enheter. Andre enheter i denne synkkjeden blir værende synkronisert. ";

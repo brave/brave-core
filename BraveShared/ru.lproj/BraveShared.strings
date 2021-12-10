@@ -116,7 +116,7 @@
 "BlockScriptsDescription" = "Блокирует JavaScript (это может нарушать работу сайтов).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "Добавить все вкладки в избранное";
+"BookmarkAllTabsTitle" = "Добавить все открытые вкладки в избранное";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Папка закладок";
@@ -183,6 +183,39 @@
 
 /* Settings item for clearing the cache */
 "Cache" = "Кеш";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "При открытии всех ссылок будут использоваться средства защиты конфиденциальности Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Сделать браузером по умолчанию";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Brave уже используется по умолчанию?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Пропустить";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Сделайте Brave браузером по умолчанию";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "Смотреть видео";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "Смотрите видео без рекламы где угодно и когда угодно. Доступно фоновое воспроизведение, офлайн-режим и функция «Картинка в картинке».";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "Добавьте видео в плейлист";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Установите Brave на компьютере или планшете и синхронизируйте закладки и расширения на всех устройствах.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Синхронизировать";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Обеспечьте конфиденциальность везде";
 
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Отмена";
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Введите название папки";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Введите URL-адрес еще раз или откройте поисковую систему и укажите другой.";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Открыть в Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Повторить";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "Дополнительные действия";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "Внимание! Мы не можем гарантировать, что подключение к этому сайту безопасно.";
+"ErrorPageReloadButtonTitle" = "Перезагрузить";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "Возможно, дело в неправильной конфигурации или здесь поработали злоумышленники. Продолжайте, если не боитесь последствий.";
+"ErrorPagesAdvancedWarningDetails" = "Сервер не может подтвердить связь с доменом %@. Сертификат безопасности сайта не является доверенным в операционной системе устройства. Возможно, сервер настроен неправильно или кто-то пытается перехватить ваши данные.";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "Владелец %@ неправильно настроил свой сайт. Подключение прервано в целях защиты ваших данных от кражи.";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Злоумышленники могут пытаться похитить информацию с сайта %@ (например, пароли, сообщения или данные банковских карт).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Назад";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Этот сайт не может обеспечить безопасное соединение";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "Подключение не защищено";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "Назад";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Скрыть";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Подробнее";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Подробные сведения";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Нет подключения к Интернету";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Вы не в Сети. Попробуйте выполнить следующие действия:";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Проверьте сетевые кабели, модем и маршрутизатор.";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Подключитесь к сети Wi-Fi еще раз.";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "Все равно перейти на сайт";
+"ErrorPagesProceedAnywayButton" = "Перейти на сайт %@ (небезопасно)";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Времени\nсэкономлено";
@@ -467,7 +521,7 @@
 "FingerprintingMethods" = "Методы идентификации";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Блокировка идентификации";
+"FingerprintingProtection" = "Блокировать идентификацию";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Усложняет для сайтов определение отличительных характеристик вашего устройства.";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "В режиме инкогнито история недоступна";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "История поиска";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "История";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "Переведите подключения на HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Открывает некоторые сайты с помощью защищенного соединения HTTPS, а не обычного протокола HTTP.";
+"HTTPSEverywhereDescription" = "Использовать для подключения к сайтам защищенный протокол HTTPS, а не HTTP (когда это возможно).";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Смена HTTP на HTTPS";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Подробнее";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Сохраненные учетные данные будут удалены навсегда.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Дата создания: %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Учетные данные";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Пароль";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Имя пользователя";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Сайт";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Для просмотра паролей необходимо установить код доступа на устройстве.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Установите код доступа";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Нет данных";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Учетные данные";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Сохраненные учетные данные";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Укажите запрос";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Последнее изменение: %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Разрешить фоновое аудио";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Включить автовоспроизведение";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Копировать";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "Новая вкладка";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Нет результатов";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Введите все слова и повторите попытку.";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Включая Brave Rewards, вы принимаете";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Чтобы увидеть заблокированные трекеры, нажмите на значок щита на сайте.";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "На сайте %2$@ заблокирован трекер %1$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "На сайте %3$@ заблокирован трекер %1$@ и еще %2$d.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "На сайте %3$@ заблокирован трекер %1$@ и еще %2$d.";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "Настройки и другие средства защиты конфиденциальности доступны в меню.";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "Готово!";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Блокировка трекеров и рекламы ускоряет загрузку сайтов и экономит трафик.";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "Начать";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "Получите доступ к лучшим средствам для обеспечения конфиденциальности в Интернете.";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "Защитите данные одним нажатием";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "От трекеров и рекламных объявлений не останется и следа.";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "Введите адрес сайта или выберите один из вариантов ниже.";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "Все готово!";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "Укажите сайт";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Добро пожаловать в Brave!";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Открыть все (%i)";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Открыть сайт";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Главные новости дня в приватной ленте.";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Brave Новости";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Офлайн-доступ к видео и трансляциям в плейлисте.";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Brave Плейлист";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Защищенные видеовстречи прямо в браузере.";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Brave Разговоры";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Защита данных в Интернете.";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "Brave VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Защита криптокошелька без дополнительных расширений.";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Функции Brave";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Другие настройки конфиденциальности";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Связать устройства";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Пароли";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Автор фото: %@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Скрипты";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Поиск в закладках";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Поиск: %@";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
 
+/* Sync Error Description */
+"syncExpiredError" = "Срок действия закончился.";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "Новая версия не поддерживается.";
+
+/* Sync Error Description */
+"syncGenericError" = "Произошла ошибка.";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Импортированные закладки";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Ошибка связи";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "Старая версия больше не поддерживается.";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "Недопустимый формат.";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "Устройство, на котором был сгенерирован этот QR-код, получит доступ к данным браузера Brave, включая ваши пароли. Убедитесь, что оно принадлежит вам. Продолжить?";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "Устройство, на котором были сгенерированы эти кодовые слова, получит доступ к данным браузера Brave, включая ваши пароли. Убедитесь, что оно принадлежит вам. Продолжить?";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "Внимание!";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "Версия не поддерживается.";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Не удалось подключиться";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "Версия больше не поддерживается.";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Все локальные данные останутся на устройствах. Удаление не повлияет на другие устройства в цепочке.";

@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Разговоры";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Добавить";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Разрешить однократную проверку буфера обмена";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Нажимая «Начать», вы принимаете";
+"OBRewardsAgreementDetail" = "Нажимая «Да», вы принимаете";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Условия использования";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "и";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards поддерживает создателей контента";
+"OBRewardsAgreementTitle" = "Brave Награды";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Начните поддерживать создателей контента, просматривая в Интернете объявления, которые не будут нарушать конфиденциальность ваших данных.";
+"OBRewardsDetail" = "Подключив функцию «Brave Реклама», которая не нарушает конфиденциальность ваших данных, вы сможете поддерживать создателей контента и издателей за счет просмотра объявлений.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Зарабатывайте баллы и вознаграждайте авторов контента, пользуясь браузером.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Политика конфиденциальности";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -221,7 +230,7 @@
 "playlist.menuBadgeOptionTitle" = "Включить уведомления на значке меню";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Добавляйте в браузере аудио и видео в ваш Brave Playlist";
+"playList.noItemLabelDetailLabel" = "Добавляйте в браузере аудио и видео в ваш плейлист Brave";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Нет доступных объектов";
@@ -359,10 +368,10 @@
 "playList.savingForOfflineLabelTitle" = "Сохранение для офлайн-доступа…";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Вы можете открыть текущий контент в новой вкладке или поделиться им через меню System Share";
+"playlist.sharePlaylistActionDetailsTitle" = "Вы можете открыть текущий контент в новой вкладке или отправить его через меню «Поделиться»";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Меню Brave Playlist";
+"playlist.sharePlaylistActionTitle" = "Меню плейлиста Brave";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Открыть во вкладке инкогнито";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Добавление системы пользовательского поиска";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Поздравляем с достижением!";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем с вступлением в клуб!";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Не показывать снова";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Посмотрите";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Поделиться новостями";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields защищает вашу конфиденциальность на каждом сайте.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "Трекеров и рекламы заблокировано на странице: %ld+";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields защищает вашу конфиденциальность.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "Трекеры и реклама блокируются на этой странице";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Поздравляем! Отличный результат!";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "Трекеров и рекламы заблокировано: %ld";
+"shieldEducation.trackerCountShareTitle" = "Вот сколько трекеров и объявлений уже заблокировано: целых %ld!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Видео без рекламы используют меньше данных.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Подробнее";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "К сожалению, криптовалюта BAT пока не поддерживается в регионе, который вы указали в своем аккаунте. Возможно, она станет доступна позже. Следите за обновлениями.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Закрыть";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Регион не поддерживается";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Не удалось войти в аккаунт Uphold. Повторите попытку.";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Годовая";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Быстрый доступ к любимым сайтам.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Избранное";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Откройте Brave, чтобы добавить сюда избранные сайты.";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Информация о том, как Brave экономит ваше время и обеспечивает конфиденциальность в Интернете.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Показатели";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Показатели";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Ввести запрос или URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Новая вкладка";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Плейлист";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Вкладка инкогнито";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Быстрый доступ к поиску и веб-страницам в Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Ярлыки";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Информация о том, как Brave обеспечивает вашу безопасность в Интернете.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Конфиденциальность";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Да";

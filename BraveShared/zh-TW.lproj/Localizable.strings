@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "新增";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "允許查看一次剪貼簿";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "點選「開始」即代表您同意";
+"OBRewardsAgreementDetail" = "點選「是」即代表您同意";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "服務條款";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "和";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards 全力支持創作者";
+"OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "開始在瀏覽時透過私密的匿名廣告支持創作者";
+"OBRewardsDetail" = "啟用 Brave Private Ads 後，瀏覽的所有廣告都是對發佈者和內容創作者的支持。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "隱私政策";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "新增自訂搜尋引擎";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "恭喜您達到此隱私里程碑。";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "恭喜，您已加入獨家社團。";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "不再顯示";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "立即查看";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "分享消息";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields 會在每個網站上保護您線上活動的隱私。";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "已封鎖此頁面上超過 %ld 個追蹤程式和廣告。";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 剛剛保護了您線上活動的隱私。";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "已封鎖此頁面上的追蹤程式和廣告。";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "恭喜，您已具有特別的地位。";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "已封鎖 %ld 個追蹤程式和廣告";
+"shieldEducation.trackerCountShareTitle" = "封鎖了 %ld 個追蹤程式和廣告！";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "不含廣告的影片會耗用較少數據量。";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "開啟搜尋建議？";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "了解更多";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "根據您設立帳戶的地點，您所在地區目前不支援 BAT。 請稍後再回來檢視可用性。";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "關閉";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "未支援此地區";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "登入您的 Uphold 帳戶時出現問題。請再試一次。";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "1 年";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "快速存取您喜愛的網站。";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "我的最愛";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "請開啟 Brave，以在此瀏覽您的最愛";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Brave 在線上為您節省時間和保護隱私的方法摘要。";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "隱私統計資料";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "隱私統計資料";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "搜尋或輸入 URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "新分頁";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "播放清單";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "隱私分頁";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "在 Brave 中快速搜尋網頁或開啟新網頁。";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "捷徑";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Brave 在線上為您保護隱私的方法摘要。";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "隱私統計資料";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";

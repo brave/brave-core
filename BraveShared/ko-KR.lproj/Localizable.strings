@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "두 번 탭하여 Brave Shields 토글";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "추가";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "일회성 클립보드 확인 허용";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "시작을 탭하면 다음에 동의하는 것으로 간주됩니다.";
+"OBRewardsAgreementDetail" = "예를 탭하면 다음에 동의하는 것으로 간주됩니다.";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "서비스 약관";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "및";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards, 제작자를 지원하는 방법";
+"OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "브라우징 시 비공개/익명 광고를 보고 콘텐츠 크리에이터 지원을 시작하세요.";
+"OBRewardsDetail" = "Brave Private Ads를 선택하면 광고를 보고 게시자와 콘텐츠 제작자를 지원할 수 있습니다.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "개인정보 취급방침";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "맞춤 검색 엔진 추가";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "이 프라이버시 마일스톤에 도달하신 것을 축하합니다.";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "축하합니다. 익스클루시브 클럽원이십니다.";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "다시 표시하지 않음";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "살펴보기";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "뉴스 공유";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields가 모든 사이트에서 온라인 프라이버시를 보호해드립니다.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "이 페이지에서 %ld개 이상의 트래커와 광고가 차단되었습니다.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields가 방금 온라인 프라이버시를 보호해드렸습니다.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "이 페이지에서 트래커와 광고가 차단되었습니다.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "축하합니다. 정말 특별하십니다.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld개의 트래커 및 광고 차단됨";
+"shieldEducation.trackerCountShareTitle" = "%ld개의 트래커 및 광고가 차단되었습니다!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "동영상에서 광고가 제외되면 데이터를 덜 사용합니다.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "자세히 알아보기";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "계정이 개설된 위치를 기반으로 판단한 귀하의 거주 지역에서는 현재 BAT가 지원되지 않습니다. 나중에 사용 가능 여부를 다시 확인해주세요.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "닫기";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "지원되지 않는 지역";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Uphold 계정에 로그인하는 중에 문제가 발생했습니다. 다시 시도하세요.";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "1년";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "즐겨찾는 웹사이트에 빠르게 액세스할 수 있습니다.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "즐겨찾기";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "여기서 즐겨찾기를 보려면 Brave를 여세요.";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Brave가 어떻게 시간을 절약하고 온라인 프라이버시를 보호하는지에 대한 개요가 제공됩니다.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "프라이버시 통계";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "프라이버시 통계";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "URL 검색 또는 직접 입력";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "새 탭";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "재생목록";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "비공개 탭";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "빠르게 액세스하여 웹을 검색하거나 Brave에서 웹페이지를 열 수 있습니다.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "바로가기";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Brave가 어떻게 온라인 프라이버시를 보호하는지에 대한 개요가 제공됩니다.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "프라이버시 통계";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "예";

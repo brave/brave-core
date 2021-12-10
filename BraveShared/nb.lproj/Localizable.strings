@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dobbeltklikk for å skru av og på Brave Shields";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Prat";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Legg til";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Tillat engangskontroll av utklippstavle";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Ved å trykke på Start godtar du";
+"OBRewardsAgreementDetail" = "Ved å trykke på «Ja» samtykker du i";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Vilkår for bruk";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "og";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards støtter innholdsskapere";
+"OBRewardsAgreementTitle" = "Brave Belønninger";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Begynn å støtte skapere med private og anonymiserte annonser mens du surfer";
+"OBRewardsDetail" = "Ved å takke ja til Brave Private Annonser støtter du innholdsutgivere og -produsenter hver gang du ser på en annonse.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Personvernreglene";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Legg til tilpasset søkemotor";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Gratulerer!";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Gratulerer. Du er en del av en eksklusiv klubb.";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Ikke vis dette på nytt";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Ta en titt";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Del nyhetene";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields beskytter personvernet ditt på hvert nettsted.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "%ld+ sporere og annonser blokkerte på denne siden.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "Brave Shields beskyttet nettopp personvernet ditt på nettet.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "Sporere og annonser blokkert på denne siden.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Gratulerer. Du er noe for deg selv.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld sporere og annonser blokkerte";
+"shieldEducation.trackerCountShareTitle" = "%ld trackere og annonser er blokkert!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Videoer uten annonser bruker mindre data.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Slå på søkeforslag?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Lær mer";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "BAT støttes for øyeblikket ikke i regionen din basert på stedet kontoen din er åpnet. Kom tilbake senere for tilgjengelighet.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Lukk";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Regionen støttes ikke";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Det oppstod et problem med å logge på Uphold-kontoen din. Vennligst prøv på nytt";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Ett år";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Få umiddelbar tilgang til favorittnettstedene dine.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Favoritter";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Åpne Brave for å se favorittene dine her";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "En oversikt over hvordan Brave beskytter deg på nettet og gjør at du sparer tid.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Personvernstatistikk";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Personvernstatistikk";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Søk etter eller skriv inn en URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Ny fane";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Spilleliste";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Privat fane";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Rask tilgang til å søke på nettet eller åpne nettsider i Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Snarveier";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "En oversikt over hvordan Brave beskytter deg på nettet.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Personvernstatistikk";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";

@@ -184,6 +184,39 @@
 /* Settings item for clearing the cache */
 "Cache" = "Кеш";
 
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Якщо ви встановите Brave як браузер за замовчуванням, кожне посилання, яке ви натискаєте, буде відкриватися за допомогою засобів захисту конфіденційності Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити як браузер за замовчуванням";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Уже є браузером за замовчуванням?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Пропустити";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Установіть Brave як браузер за замовчуванням";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "Переглянути відео";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "…грайте будь-де й будь-коли. У фоновому режимі, у режимі «картинка в картинці» й навіть в автономному режимі. І, звичайно ж, без реклами.";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "Додавайте відео в список відтворення…";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Brave на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Синхронізувати";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Конфіденційність. Цілковита.";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Скасувати";
 
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Уведіть назву папки";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Спробуйте ще раз увести URL-адресу або відкрийте пошукову систему й знайдіть нову URL-адресу.";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Відкрити в Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Спробувати ще раз";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "Додатково";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "Попередження. З’єднання з цим сайтом не захищено.";
+"ErrorPageReloadButtonTitle" = "Перезавантажити";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "Це може бути неправильне налаштування або втручання зловмисника. Продовжуйте на власний розсуд.";
+"ErrorPagesAdvancedWarningDetails" = "Сервер не може довести, що він є %@; його сертифікат безпеки не є довіреним сертифікатом для операційної системи вашого пристрою. Це могло статися через помилку конфігурації або через спроби зловмисника перехопити ваше під’єднання.";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "Веб-сайт %@ неправильно налаштовано. Щоб захистити вас від крадіжки даних, з’єднання з цим сайтом не будет встановлено.";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Зловмисники можуть намагатися викрасти вашу інформацію з %@ (наприклад, паролі, повідомлення або дані кредитних карток).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Назад до розділу безпеки";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Сайт не може гарантувати безпечне з’єднання";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "Ваше з’єднання не захищено";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "Перейти назад";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Сховати подробиці";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Докладніше";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Показати повну інформацію";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Немає доступу до Інтернету";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Схоже, що ви не в мережі. Спробуйте наведені далі дії.";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Перевірте стан мережевих кабелів, модема й маршрутизатора.";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Повторно під’єднайтеся до Wi-Fi.";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "Все одно перейти до сайту";
+"ErrorPagesProceedAnywayButton" = "Перейти на %@ (небезпечно)";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Заощаджено\nчасу (приблизно)";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "Історія недоступна в режимі приватного перегляду.";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Історія пошуку";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Історія";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "Оновити під’єднання до HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Відкриває деякі вебсайти за допомогою безпечного підключення HTTPS замість простого HTTP.";
+"HTTPSEverywhereDescription" = "За можливості відкривати сайти через безпечний протокол HTTPS замість HTTP.";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Оновлення HTTPS";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Докладніше";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Збережене ім’я для входу буде видалено назавжди.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Створено: %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Інформація про ім’я для входу";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Пароль";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Ім’я користувача";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Вебсайт";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Щоб переглядати паролі, вам спершу слід установити код доступу на пристрої.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Установити код доступу";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Імена для входу не знайдено";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Імена для входу й паролі";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Збережені імена для входу";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Фільтрувати";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Дозволити програвання аудіо у фоновому режимі";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Увімкнути автовідтворення";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Скопіювати";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "Нова вкладка";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Пошук не дав результатів.";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Увімкнувши Rewards, ви приймаєте умови документа %@.";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Торкніться піктограми щита на будь-якому сайті, щоб переглянути заблокований уміст.";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave заблокував трекер «%1$@» на %2$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave заблокував трекер «%1$@» та ще %2$d: %3$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave заблокував трекер «%1$@» та ще %2$d: %3$@.";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "Перейдіть у меню, щоб переглянути налаштування й інші функції конфіденційності.";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "Готово!";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Завдяки блокуванню трекерів і реклами вебсайти використовують менше даних і завантажуються набагато швидше.";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "Почнімо";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "Ви лише за крок від найкращої конфіденційності, яку можна отримати в Інтернеті. Готові?";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "Конфіденційність стала доступною";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "…і спостерігайте, як зникають трекери й реклама.";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "Виберіть популярний сайт нижче або введіть власний…";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "Ви готові до перегляду сторінок!";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "Уведіть вебсайт";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Вітаємо в Brave!";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Відкрити вебсайт";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Найпопулярніші історії за сьогодні в приватній стрічці новин";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Новини";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Зберігайте офлайн-список відтворення будь-яких відео / трансляцій";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Список відтворення";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Приватні відеодзвінки безпосередньо у вашому браузері";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Цілковитий захист пристрою в Інтернеті";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Захищений криптовалютний гаманець, який не потребує розширень";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Функції Brave";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Інші налаштування конфіденційності";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "З'єднати";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Паролі";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Заблоковані скрипти";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Пошук закладок";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Пошукова система %@ ";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
 
+/* Sync Error Description */
+"syncExpiredError" = "Термін дії завершився";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "Елемент зановий";
+
+/* Sync Error Description */
+"syncGenericError" = "Сталася помилка";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Імпортовані закладки";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "Застаріла непідтримувана версія";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "Недійсний формат";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "Унаслідок цієї дії ваші дані Brave, зокрема паролі, стануть доступними для пристрою, на якому згенеровано QR-код. Переконайтеся, що QR-код було згенеровано саме на вашому пристрої. Дійсно виконати цю дію?";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "Унаслідок цієї дії ваші дані Brave, зокрема паролі, стануть доступними для пристрою, на якому згенеровано кодові слова. Переконайтеся, що кодові слова було згенеровано саме на вашому пристрої. Дійсно виконати цю дію?";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "Попередження";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "Непідтримувана версія";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Неможливо під'єднатися до синхронізації";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "Версія, яка більше не підтримується";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Дані локального пристрою залишаться без змін на всіх пристроях. Інші пристрої в цьому ланцюжку залишаться синхронізованими.";

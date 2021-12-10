@@ -184,6 +184,39 @@
 /* Settings item for clearing the cache */
 "Cache" = "Cache";
 
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Con Brave come browser predefinito, ogni link su cui fai clic si apre con le protezioni della privacy di Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Imposta come predefinito";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Già predefinito?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Salta";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Rendi Brave il tuo browser predefinito";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "Guarda il video";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "… riproduci ovunque, in qualsiasi momento. In background, picture-in-picture o anche offline. E, naturalmente, senza pubblicità.";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "Aggiungi video alla playlist…";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Ottieni la privacy di Brave sul tuo computer o tablet e sincronizza segnalibri ed estensioni tra i dispositivi.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Sincronizza subito";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Privacy. Ovunque.";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Annulla";
 
@@ -394,32 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Inserisci nome cartella";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Prova a digitare nuovamente l’URL o ad aprire un motore di ricerca e cercare il nuovo URL.";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Apri con Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Riprova";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesAdvancedButton" = "Avanzate";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "Attenzione: non possiamo confermare che la connessione a questo sito web sia sicura.";
+"ErrorPageReloadButtonTitle" = "Ricarica";
 
 /* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning2" = "Potrebbe trattarsi di una configurazione errata o di una manomissione da parte di un utente malintenzionato. Procedi se accetti il rischio.";
+"ErrorPagesAdvancedWarningDetails" = "Questo server non ha potuto verificare che si tratta di %@; il suo certificato di sicurezza non è considerato attendibile dal sistema operativo del dispositivo. Ciò può essere causato da una configurazione errata o da un utente malintenzionato che tenta di intercettare la connessione.";
 
-/* Warning text on the certificate error page */
-"ErrorPagesCertWarningDescription" = "Il proprietario di %@ ha configurato il proprio sito web in modo improprio. Per proteggere le tue informazioni personali da possibili furti, Brave non si è connesso al sito.";
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Gli utenti malintenzionati potrebbero tentare di rubare le tue informazioni da %@ (ad esempio password, messaggi o carte di credito).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Torna al sicuro";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Questo sito non può fornire una connessione sicura";
 
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "La tua connessione non è privata";
 
-/* Label for button to go back from the error page */
-"ErrorPagesGoBackButton" = "Torna indietro";
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Nascondi dettagli";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Scopri di più";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Altri dettagli";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Nessun accesso a internet";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Sembra che tu non sia online. Per risolvere questo problema, prova";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Controllo dei cavi di rete, del modem e del router";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Riconnessione al Wi-Fi";
 
 /* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesVisitOnceButton" = "Visita comunque il sito";
+"ErrorPagesProceedAnywayButton" = "Continua su %@ (non sicuro)";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Tempo \nrisparmiato";
@@ -517,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "La cronologia non è disponibile nella modalità che prevede solo la navigazione privata.";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Cronologia delle ricerche";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Cronologia";
 
@@ -527,7 +584,7 @@
 "HTTPSEverywhere" = "Aggiorna le connessioni a HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Apre alcuni siti utilizzando una connessione HTTPS sicura invece della normale connessione HTTP.";
+"HTTPSEverywhereDescription" = "Quando possibile, apre i siti utilizzando l’HTTPS sicuro invece dell’HTTP.";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Aggiornamenti HTTPS";
@@ -546,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Scopri di più";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "L’accesso salvato verrà rimosso in modo definitivo.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Creazione in data: %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Dettagli accesso";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Password";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Nome utente";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Sito web";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Per vedere le password, devi prima impostare un codice sul tuo dispositivo.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Imposta un codice";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Nessun accesso trovato";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Accessi e password";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Accessi salvati";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Filtra";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ultima modifica: %@";
@@ -573,9 +666,6 @@
 
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Attiva l’audio in sottofondo";
-
-/* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Attiva la riproduzione automatica";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Copia";
@@ -618,6 +708,9 @@
 
 /* New Tab title */
 "NewTab" = "Nuova scheda";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Nessun risultato di ricerca trovato.";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Inserisci tutte le parole e riprova.";
@@ -673,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Attivando Rewards, accetti %@.";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Tocca lo Scudo su qualsiasi sito per vedere tutti i contenuti che abbiamo bloccato.";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave ha bloccato %1$@ su: %2$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave ha bloccato %1$@ e altri %2$d tracker su: %3$@.";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave ha bloccato %1$@ e altri %2$d tracker su: %3$@.";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "Controlla il menu per le impostazioni e altre fantastiche funzioni per la privacy!";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "Tutto pronto!";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Bloccando i tracker e gli annunci, i siti web utilizzano meno dati e si caricano molto più velocemente.";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "Andiamo";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "Sei solo a un passo dalla migliore privacy online. Iniziamo?";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "Privacy in tutta semplicità";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "… e guarda scomparire tracker e annunci.";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "Seleziona un sito noto di seguito o inserisci il tuo…";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "È tutto pronto per navigare!";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "Inserisci un sito web";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Ti diamo il benvenuto a Brave!";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Apri tutti (%i)";
 
@@ -694,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Apri sito web";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Le migliori storie di oggi in un feed di notizie privato";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Notizie";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Mantieni una playlist offline di qualsiasi video/stream";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Playlist";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Videochiamate private, direttamente nel tuo browser";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Proteggi il tuo dispositivo online";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Il portafoglio di criptovalute sicuro, nessuna estensione necessaria";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Funzioni di Brave";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Altre impostazioni della privacy";
 
@@ -702,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Associa";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Password";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo di %@";
@@ -879,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Script bloccati";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Cerca segnalibri";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Ricerca %@";
@@ -1117,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivi e impostazioni";
 
+/* Sync Error Description */
+"syncExpiredError" = "Scaduta";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "Troppo nuova";
+
+/* Sync Error Description */
+"syncGenericError" = "Spiacenti, si è verificato un errore";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Segnalibri importati";
 
@@ -1126,11 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Errore di comunicazione nella sincronizzazione";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "Versione precedente non supportata";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "Formato non valido";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "I tuoi dati Brave, incluse potenzialmente le tue password, verranno condivisi con il dispositivo che ha generato questo codice QR. Verifica che questo codice QR sia stato generato da un dispositivo di tua proprietà. Confermi questa operazione?";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "I tuoi dati Brave, incluse potenzialmente le tue password, verranno condivisi con il dispositivo che ha generato queste parole in codice. Verifica che queste parole in codice siano state generate da un dispositivo di tua proprietà. Confermi questa operazione?";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "Avviso";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "Versione non supportata";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Controlla la tua connessione Internet e riprova.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Impossibile connettersi per la sincronizzazione";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "Versione non più supportata";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "I dati del dispositivo locale rimarranno intatti su tutti i dispositivi. Gli altri dispositivi in questa catena di sincronizzazione resteranno sincronizzati.";

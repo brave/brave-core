@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Toque duas vezes para ativar/desativar o Brave Shields";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Adicionar";
 
@@ -146,19 +149,25 @@
 "OBPrivacyConsentYesButton" = "Permitir verificação única da área de transferência";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Ao tocar em \"Iniciar\", você concorda com os";
+"OBRewardsAgreementDetail" = "Ao tocar em \"Sim,\" você concorda com";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Termos de Serviço";
 
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "e";
+
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "O Brave Rewards apoia criadores de conteúdo";
+"OBRewardsAgreementTitle" = "Recompensas Brave";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Comece a apoiar criadores de conteúdo com a exibição de anúncios privados e anonimizados enquanto você navega";
+"OBRewardsDetail" = "A ativação dos Anúncios privados do Brave apoia editores e criadores de conteúdo com cada anúncio visualizado.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Ganhe tokens enquanto navega e doe-os a criadores pelo conteúdo de qualidade que eles produzem.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Política de Privacidade";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -818,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "Adicionar mecanismo de pesquisa personalizado";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Parabéns por alcançar este marco de privacidade.";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Parabéns. Você faz parte de um clube exclusivo.";
 
 /* Subtitle for tracker benchmark Share */
@@ -841,29 +853,17 @@
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Não mostrar isso novamente";
 
-/* Action title for inspectable Education warnings */
-"shieldEducation.inspectTitle" = "Conferir";
-
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Compartilhe a novidade";
 
-/* Subtitle for Shield Education Tracker Ad Count Block */
-"shieldEducation.trackerAdCountBlockSubtitle" = "O Brave Shields protege sua privacidade on-line em todos os sites.";
-
-/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
-"shieldEducation.trackerAdCountBlockTitle" = "Pelo menos %ld rastreadores e anúncios bloqueados nesta página.";
-
 /* Subtitle for Shield Education Tracker Ad Warning */
 "shieldEducation.trackerAdWarningSubTitle" = "O Brave Shields acabou de proteger sua privacidade on-line.";
-
-/* Title for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningTitle" = "Rastreadores e anúncios bloqueados nesta página";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Parabéns. Você é muito especial.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld rastreadores e anúncios bloqueados";
+"shieldEducation.trackerCountShareTitle" = "%ld rastreadores e anúncios bloqueados!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Vídeos sem anúncios consomem menos dados.";
@@ -1142,16 +1142,7 @@
 "Turn on search suggestions?" = "Ativar as sugestões de pesquisa?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Saiba mais";
-
-/* No comment provided by engineer. */
-"UserWalletBATNotAllowedMessage" = "Com base no local em que sua conta foi aberta, os BATs não estão disponíveis na sua região. Retorne posteriormente para verificar a disponibilidade.";
-
-/* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Fechar";
-
-/* No comment provided by engineer. */
-"UserWalletDetailsDisconnectButtonTitle" = "Recurso indisponível na região";
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorMessage" = "Houve um problema ao fazer login na sua conta da Uphold. Tente novamente";
@@ -1425,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Um ano";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Acesse rapidamente seus sites favoritos.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Favoritos";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Abra o Brave para ver seus favoritos aqui";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Um resumo de como o Brave economiza seu tempo e protege você on-line.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Estatísticas de privacidade";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Estatísticas de privacidade";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Pesquise ou digite um URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Nova guia";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Playlist";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Guia privada";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Acesso rápido para pesquisar na web ou abrir páginas da web no Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Atalhos";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Um resumo de como o Brave tem protegido você on-line.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Estatística de privacidade";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Sim";

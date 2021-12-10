@@ -1,122 +1,183 @@
-"0W40Cl" = "New Tab";
+/* (No Comment) */
+"0W40Cl" = "Nueva pestaña";
 
-"5ixvGX-tYwiRd" = "There are ${count} options matching ‘Est. Time Saved’.";
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Hay ${count} opciones que coinciden con \"Tiempo estimado ahorrado\".";
 
-"5ixvGX-vjA5pZ" = "There are ${count} options matching ‘Est. Data Saved’.";
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Hay ${count} opciones que coinciden con \"Datos estimados ahorrados\".";
 
-"5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Hay ${count} opciones que coinciden con \"Anuncios bloqueados\".";
 
-"7JYzOv" = "Type";
+/* (No Comment) */
+"7JYzOv" = "Tipo";
 
-"8vyYRy" = "#3";
+/* (No Comment) */
+"8vyYRy" = "n.º 3";
 
-"9E2oRR" = "#1";
+/* (No Comment) */
+"9E2oRR" = "n.º 1";
 
-"AGMpus" = "Shortcuts Configuration";
+/* (No Comment) */
+"AGMpus" = "Configuración de accesos directos";
 
-"EUS9FL" = "Widget Shortcut";
+/* (No Comment) */
+"bUXzTx" = "Tipo de estadística";
 
-"FGO5qW" = "Playlist";
+/* (No Comment) */
+"crhbMy" = "Marcadores";
 
-"L1fziM-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
 
-"L1fziM-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"e13lS3-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
-"L1fziM-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
 
-"L1fziM-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"e13lS3-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
 
-"L1fziM-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
 
-"L1fziM-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"e13lS3-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
 
-"TxuMja-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"EUS9FL" = "Accesos directos al widget";
 
-"TxuMja-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"FGO5qW" = "Lista de reproducción";
 
-"TxuMja-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"gpCwrM" = "Configuración de estadísticas";
 
-"TxuMja-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"joEZJM" = "n.º 2";
 
-"TxuMja-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
 
-"TxuMja-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"L1fziM-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
-"VBH4G6" = "History";
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
 
-"YQiQuz-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"L1fziM-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
 
-"YQiQuz-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
 
-"YQiQuz-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"L1fziM-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
-"YQiQuz-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"nthxSL" = "Descargas";
 
-"YQiQuz-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
 
-"YQiQuz-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"r2EI05-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
-"bUXzTx" = "Stat Kind";
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
 
-"crhbMy" = "Bookmarks";
+/* (No Comment) */
+"r2EI05-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
 
-"e13lS3-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
 
-"e13lS3-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"r2EI05-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
 
-"e13lS3-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Solo para confirmar: ¿querías decir \"Tiempo estimado ahorrado\"?";
 
-"e13lS3-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Solo para confirmar: ¿querías decir \"Datos estimados ahorrados\"?";
 
-"e13lS3-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Solo para confirmar: ¿querías decir \"Anuncios bloqueados\"?";
 
-"e13lS3-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
 
-"gpCwrM" = "Stats Configuration";
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
-"joEZJM" = "#2";
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
 
-"nthxSL" = "Downloads";
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
 
-"r2EI05-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
 
-"r2EI05-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"tNCrcE-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
-"r2EI05-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"tVvJ9c" = "Widget de configuración de estadísticas";
 
-"r2EI05-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
 
-"r2EI05-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"TxuMja-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
-"r2EI05-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción\".";
 
-"sdOBtj-tYwiRd" = "Just to confirm, you wanted ‘Est. Time Saved’?";
+/* (No Comment) */
+"TxuMja-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
 
-"sdOBtj-vjA5pZ" = "Just to confirm, you wanted ‘Est. Data Saved’?";
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
 
-"sdOBtj-xcI3h9" = "Just to confirm, you wanted ‘Ads Blocked’?";
+/* (No Comment) */
+"TxuMja-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
-"tNCrcE-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"tYwiRd" = "Tiempo estimado ahorrado";
 
-"tNCrcE-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"VBH4G6" = "Historial";
 
-"tNCrcE-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"vjA5pZ" = "Datos estimados ahorrados";
 
-"tNCrcE-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"vs094F" = "Nueva pestaña privada";
 
-"tNCrcE-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"xcI3h9" = "Anuncios bloqueados";
 
-"tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
 
-"tVvJ9c" = "Stats Configuration Widget";
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
-"tYwiRd" = "Est. Time Saved";
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción\"?";
 
-"vjA5pZ" = "Est. Data Saved";
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
 
-"vs094F" = "New Private Tab";
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
 
-"xcI3h9" = "Ads Blocked";
+/* (No Comment) */
+"YQiQuz-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
 
-"ziTvSZ" = "Stats Configuration Widget";
+/* (No Comment) */
+"ziTvSZ" = "Widget de configuración de estadísticas";
 

@@ -1,122 +1,183 @@
-"0W40Cl" = "New Tab";
+/* (No Comment) */
+"0W40Cl" = "新分頁";
 
-"5ixvGX-tYwiRd" = "There are ${count} options matching ‘Est. Time Saved’.";
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "有 ${count} 個選項符合「預計節省時間」。";
 
-"5ixvGX-vjA5pZ" = "There are ${count} options matching ‘Est. Data Saved’.";
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "有 ${count} 個選項符合「預計節省數據量」。";
 
-"5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "有 ${count} 個選項符合「已封鎖廣告」。";
 
-"7JYzOv" = "Type";
+/* (No Comment) */
+"7JYzOv" = "類型";
 
+/* (No Comment) */
 "8vyYRy" = "#3";
 
+/* (No Comment) */
 "9E2oRR" = "#1";
 
-"AGMpus" = "Shortcuts Configuration";
+/* (No Comment) */
+"AGMpus" = "捷徑組態";
 
-"EUS9FL" = "Widget Shortcut";
+/* (No Comment) */
+"bUXzTx" = "統計資料種類";
 
-"FGO5qW" = "Playlist";
+/* (No Comment) */
+"crhbMy" = "書籤";
 
-"L1fziM-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"e13lS3-0W40Cl" = "您要的是「新分頁」，對嗎？";
 
-"L1fziM-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"e13lS3-crhbMy" = "您要的是「書籤」，對嗎？";
 
-"L1fziM-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"e13lS3-FGO5qW" = "您要的是「播放清單」，對嗎？";
 
-"L1fziM-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"e13lS3-nthxSL" = "您要的是「下載」，對嗎？";
 
-"L1fziM-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"e13lS3-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
-"L1fziM-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"e13lS3-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
-"TxuMja-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"EUS9FL" = "小工具捷徑";
 
-"TxuMja-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"FGO5qW" = "播放清單";
 
-"TxuMja-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"gpCwrM" = "統計資料組態";
 
-"TxuMja-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
-
-"TxuMja-nthxSL" = "There are ${count} options matching ‘Downloads’.";
-
-"TxuMja-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
-
-"VBH4G6" = "History";
-
-"YQiQuz-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
-
-"YQiQuz-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
-
-"YQiQuz-VBH4G6" = "Just to confirm, you wanted ‘History’?";
-
-"YQiQuz-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
-
-"YQiQuz-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
-
-"YQiQuz-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
-
-"bUXzTx" = "Stat Kind";
-
-"crhbMy" = "Bookmarks";
-
-"e13lS3-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
-
-"e13lS3-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
-
-"e13lS3-VBH4G6" = "Just to confirm, you wanted ‘History’?";
-
-"e13lS3-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
-
-"e13lS3-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
-
-"e13lS3-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
-
-"gpCwrM" = "Stats Configuration";
-
+/* (No Comment) */
 "joEZJM" = "#2";
 
-"nthxSL" = "Downloads";
+/* (No Comment) */
+"L1fziM-0W40Cl" = "有 ${count} 個選項符合「新分頁」。";
 
-"r2EI05-0W40Cl" = "Just to confirm, you wanted ‘New Tab’?";
+/* (No Comment) */
+"L1fziM-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
-"r2EI05-FGO5qW" = "Just to confirm, you wanted ‘Playlist’?";
+/* (No Comment) */
+"L1fziM-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
 
-"r2EI05-VBH4G6" = "Just to confirm, you wanted ‘History’?";
+/* (No Comment) */
+"L1fziM-nthxSL" = "有 ${count} 個選項符合「下載」。";
 
-"r2EI05-crhbMy" = "Just to confirm, you wanted ‘Bookmarks’?";
+/* (No Comment) */
+"L1fziM-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
-"r2EI05-nthxSL" = "Just to confirm, you wanted ‘Downloads’?";
+/* (No Comment) */
+"L1fziM-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
-"r2EI05-vs094F" = "Just to confirm, you wanted ‘New Private Tab’?";
+/* (No Comment) */
+"nthxSL" = "下載";
 
-"sdOBtj-tYwiRd" = "Just to confirm, you wanted ‘Est. Time Saved’?";
+/* (No Comment) */
+"r2EI05-0W40Cl" = "您要的是「新分頁」，對嗎？";
 
-"sdOBtj-vjA5pZ" = "Just to confirm, you wanted ‘Est. Data Saved’?";
+/* (No Comment) */
+"r2EI05-crhbMy" = "您要的是「書籤」，對嗎？";
 
-"sdOBtj-xcI3h9" = "Just to confirm, you wanted ‘Ads Blocked’?";
+/* (No Comment) */
+"r2EI05-FGO5qW" = "您要的是「播放清單」，對嗎？";
 
-"tNCrcE-0W40Cl" = "There are ${count} options matching ‘New Tab’.";
+/* (No Comment) */
+"r2EI05-nthxSL" = "您要的是「下載」，對嗎？";
 
-"tNCrcE-FGO5qW" = "There are ${count} options matching ‘Playlist’.";
+/* (No Comment) */
+"r2EI05-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
-"tNCrcE-VBH4G6" = "There are ${count} options matching ‘History’.";
+/* (No Comment) */
+"r2EI05-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
-"tNCrcE-crhbMy" = "There are ${count} options matching ‘Bookmarks’.";
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "您要的是「預計節省時間」，對嗎？";
 
-"tNCrcE-nthxSL" = "There are ${count} options matching ‘Downloads’.";
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "您要的是「預計節省數據量」，對嗎？";
 
-"tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "您要的是「已封鎖廣告」，對嗎？";
 
-"tVvJ9c" = "Stats Configuration Widget";
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "有 ${count} 個選項符合「新分頁」。";
 
-"tYwiRd" = "Est. Time Saved";
+/* (No Comment) */
+"tNCrcE-crhbMy" = "有 ${count} 個選項符合「書籤」。";
 
-"vjA5pZ" = "Est. Data Saved";
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
 
-"vs094F" = "New Private Tab";
+/* (No Comment) */
+"tNCrcE-nthxSL" = "有 ${count} 個選項符合「下載」。";
 
-"xcI3h9" = "Ads Blocked";
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
-"ziTvSZ" = "Stats Configuration Widget";
+/* (No Comment) */
+"tNCrcE-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
+
+/* (No Comment) */
+"tVvJ9c" = "統計資料組態小工具";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "有 ${count} 個選項符合「新分頁」。";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "有 ${count} 個選項符合「書籤」。";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "有 ${count} 個選項符合「播放清單」。";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "有 ${count} 個選項符合「下載」。";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
+
+/* (No Comment) */
+"tYwiRd" = "預計節省時間";
+
+/* (No Comment) */
+"VBH4G6" = "歷史記錄";
+
+/* (No Comment) */
+"vjA5pZ" = "預計節省數據量";
+
+/* (No Comment) */
+"vs094F" = "新隱私分頁";
+
+/* (No Comment) */
+"xcI3h9" = "已封鎖廣告";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "您要的是「新分頁」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "您要的是「書籤」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "您要的是「播放清單」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "您要的是「下載」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "您要的是「新隱私分頁」，對嗎？";
+
+/* (No Comment) */
+"ziTvSZ" = "統計資料組態小工具";
 
