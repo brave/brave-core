@@ -149,6 +149,9 @@ class ADS_EXPORT Ads {
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) = 0;
 
+  // Should be called to get an eligible new tab page ad
+  virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
+
   // Should be called when a user views or clicks a new tab page ad
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,

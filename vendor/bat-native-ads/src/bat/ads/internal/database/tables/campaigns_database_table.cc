@@ -86,8 +86,8 @@ void Campaigns::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 16: {
-      MigrateToV16(transaction);
+    case 19: {
+      MigrateToV19(transaction);
       break;
     }
 
@@ -119,7 +119,7 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::MigrateToV16(mojom::DBTransaction* transaction) {
+void Campaigns::MigrateToV19(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, GetTableName());

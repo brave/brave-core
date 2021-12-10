@@ -5,23 +5,24 @@
 
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
 
-#include "bat/ads/ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/new_tab_page_ad_uuid_frequency_cap.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 
 namespace ads {
 namespace new_tab_page_ads {
 namespace frequency_capping {
 
-ExclusionRules::ExclusionRules(const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+ExclusionRules::ExclusionRules(
+    const AdEventList& ad_events,
+    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    resource::AntiTargeting* anti_targeting_resource,
+    const BrowsingHistoryList& browsing_history)
+    : ExclusionRulesBase(ad_events,
+                         subdivision_targeting,
+                         anti_targeting_resource,
+                         browsing_history) {}
 
 ExclusionRules::~ExclusionRules() = default;
-
-bool ExclusionRules::ShouldExcludeAd(const AdInfo& ad) const {
-  NewTabPageAdUuidFrequencyCap frequency_cap(ad_events_);
-  return ShouldExclude(ad, &frequency_cap);
-}
 
 }  // namespace frequency_capping
 }  // namespace new_tab_page_ads

@@ -12,11 +12,16 @@ CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo() = default;
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
     const CreativeNewTabPageAdInfo& info) = default;
 
+CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
+    const CreativeAdInfo& creative_ad)
+    : CreativeAdInfo(creative_ad) {}
+
 CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(
     const CreativeNewTabPageAdInfo& rhs) const {
-  return company_name == rhs.company_name && alt == rhs.alt;
+  return company_name == rhs.company_name && image_url == rhs.image_url &&
+         alt == rhs.alt && wallpapers == rhs.wallpapers;
 }
 
 bool CreativeNewTabPageAdInfo::operator!=(
