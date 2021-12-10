@@ -55,7 +55,7 @@ def main():
   v = run(args.cargo_path, args.args, args.cc, False)
   if v != 0:
     return v
-  v = run(args.cargo_path, args.args, args.cc, False)
+  v = run(args.cargo_path, args.args, args.header, True)
 
 
 if __name__ == '__main__':

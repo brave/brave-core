@@ -6,10 +6,10 @@
 source_set("skus") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    "sdk_controller_factory.cc",
+    "sdk_controller_factory.h",
     "skus_sdk_factory_wrappers.h",
     "skus_sdk_factory_wrappers.mm",
-    "skus_sdk_service_factory.cc",
-    "skus_sdk_service_factory.h",
   ]
   deps = [
     "//brave/components/skus/browser",

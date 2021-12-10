@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@protocol SkusSkusSdk;
+@protocol SkusSdkController;
 
 OBJC_EXPORT
-NS_SWIFT_NAME(Skus.SkusSkusSdk)
-@interface SkusSkusSdkFactory : KeyedServiceFactoryWrapper<id<SkusSkusSdk>>
-@end
+NS_SWIFT_NAME(Skus.SdkController)
+@interface SkusSdkControllerFactory
+    : KeyedServiceFactoryWrapper < id <SkusSdkController>
+> @end
 
 #endif  // BRAVE_IOS_BROWSER_SKUS_SKUS_SDK_FACTORY_WRAPPERS_H_
