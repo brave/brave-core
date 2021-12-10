@@ -178,7 +178,9 @@ const util = {
       {
         managed: "%False%",
         name: "src/brave",
-        url: config.braveCoreRepo
+        // We do not use gclient to manage brave-core, so this should
+        // not actually get used.
+        url: 'https://github.com/brave/brave-core.git'
       }
     ]
 
@@ -669,7 +671,7 @@ const util = {
     return needsUpdate
   },
 
-  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, shouldCheckChromiumVersion = true, options = {}) => {
+  gclientSync: (forceReset = false, cleanup = false, shouldCheckChromiumVersion = true, options = {}) => {
     let reset = forceReset
 
     // base args
@@ -679,37 +681,6 @@ const util = {
 
     let args = [...initialArgs]
     let didUpdateChromium = false
-
-    if (forceReset || braveCoreRef) {
-      if (!braveCoreRef) {
-        // Use current branch (sync will then pull latest) or current exact hash
-        // if we're not in a branch.
-        braveCoreRef = util.runGit(config.braveCoreDir, ['rev-parse', '--abbrev-ref', 'HEAD'])
-        if (braveCoreRef === 'HEAD') {
-          // get the rev hash if we're not in a branch
-          braveCoreRef = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
-        }
-      }
-
-      // re-checkout as the commit ref because otherwise gclient sync clobbers
-      // the branch for braveCoreRef and doesn't set it to the correct commit
-      // for some reason
-      if (fs.existsSync(config.braveCoreDir)) {
-        const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
-        Log.progress(`Resetting brave core to "${braveCoreSha}"...`)
-        util.runGit(config.braveCoreDir, ['reset', '--hard', 'HEAD'], true)
-        let checkoutResult = util.runGit(config.braveCoreDir, ['checkout', braveCoreSha], true)
-        // Handle checkout failure
-        if (checkoutResult === null) {
-          Log.error('Could not checkout: ' + braveCoreSha)
-        }
-        // Checkout was successful
-        Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
-      }
-
-      args = args.concat(['--revision', 'src/brave@' + braveCoreRef])
-      reset = true
-    }
 
     if (!shouldCheckChromiumVersion) {
       const chromiumNeedsUpdate = util.shouldUpdateChromium()
@@ -741,8 +712,7 @@ const util = {
     restoreBraveCoreGitUrlIfGitCacheEnabled()
 
     return {
-      didUpdateChromium,
-      braveCoreRef
+      didUpdateChromium
     }
   },
 
