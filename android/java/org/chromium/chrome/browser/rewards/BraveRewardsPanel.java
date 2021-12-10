@@ -123,6 +123,8 @@ public class BraveRewardsPanel
     private static final String AUTO_CONTRIBUTE_TIPPING_ERROR = "16";
     private static final String ERROR_CONVERT_PROBI = "ERROR";
 
+    private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
+
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
@@ -222,6 +224,7 @@ public class BraveRewardsPanel
             mBraveRewardsNativeWorker.AddObserver(this);
         }
         mBalanceUpdater = new Timer();
+        createUpdateBalanceTask();
         setUpViews();
     }
 
@@ -1437,7 +1440,7 @@ public class BraveRewardsPanel
         return mPopupWindow.isShowing();
     }
 
-    private void CreateUpdateBalanceTask() {
+    private void createUpdateBalanceTask() {
         mBalanceUpdater.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -1447,7 +1450,7 @@ public class BraveRewardsPanel
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // mBraveRewardsNativeWorker.FetchGrants();
+                        mBraveRewardsNativeWorker.FetchGrants();
                     }
                 });
             }
