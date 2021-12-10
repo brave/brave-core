@@ -109,15 +109,12 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   Save(creative_ads);
 
   // Act
+  const InlineContentAdInfo expected_ad = BuildInlineContentAd(creative_ad);
+
   ad_serving_->MaybeServeAd(
       "200x100",
-      [&creative_ad](const bool success, const std::string& dimensions,
+      [&expected_ad](const bool success, const std::string& dimensions,
                      const InlineContentAdInfo& ad) {
-        ASSERT_TRUE(success);
-
-        InlineContentAdInfo expected_ad = BuildInlineContentAd(creative_ad);
-        expected_ad.uuid = ad.uuid;
-
         EXPECT_EQ(expected_ad, ad);
       });
 

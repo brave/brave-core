@@ -27,7 +27,6 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
-#include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -95,7 +94,6 @@ AdsImpl::~AdsImpl() {
   inline_content_ad_->RemoveObserver(this);
   inline_content_ad_serving_->RemoveObserver(this);
   new_tab_page_ad_->RemoveObserver(this);
-  new_tab_page_ad_serving_->RemoveObserver(this);
   promoted_content_ad_->RemoveObserver(this);
 }
 
@@ -335,18 +333,6 @@ void AdsImpl::OnAdNotificationEvent(
   ad_notification_->FireEvent(uuid, event_type);
 }
 
-void AdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
-  if (!IsInitialized()) {
-    callback(/* success */ false, {});
-    return;
-  }
-
-  new_tab_page_ad_serving_->MaybeServeAd(
-      [=](const bool success, const NewTabPageAdInfo& ad) {
-        callback(success, ad);
-      });
-}
-
 void AdsImpl::OnNewTabPageAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
@@ -559,9 +545,6 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   database_ = std::make_unique<database::Initialize>();
 
-  new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::AdServing>(
-      subdivision_targeting_.get(), anti_targeting_resource_.get());
-  new_tab_page_ad_serving_->AddObserver(this);
   new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
   new_tab_page_ad_->AddObserver(this);
 
@@ -817,11 +800,6 @@ void AdsImpl::OnAdNotificationEventFailed(
     const mojom::AdNotificationEventType event_type) {
   BLOG(1, "Failed to fire ad notification " << event_type << " event for uuid "
                                             << uuid);
-}
-
-void AdsImpl::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  new_tab_page_ad_->FireEvent(ad.uuid, ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kServed);
 }
 
 void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {

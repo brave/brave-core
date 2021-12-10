@@ -9,23 +9,19 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_wallpaper_info_aliases.h"
 
 namespace ads {
 
 struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
   CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& info);
-  explicit CreativeNewTabPageAdInfo(const CreativeAdInfo& creative_ad);
   ~CreativeNewTabPageAdInfo();
 
   bool operator==(const CreativeNewTabPageAdInfo& rhs) const;
   bool operator!=(const CreativeNewTabPageAdInfo& rhs) const;
 
   std::string company_name;
-  std::string image_url;
   std::string alt;
-  CreativeNewTabPageAdWallpaperList wallpapers;
 };
 
 }  // namespace ads

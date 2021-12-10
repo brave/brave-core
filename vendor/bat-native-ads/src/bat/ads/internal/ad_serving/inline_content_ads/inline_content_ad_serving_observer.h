@@ -14,10 +14,10 @@ struct InlineContentAdInfo;
 
 class InlineContentAdServingObserver : public base::CheckedObserver {
  public:
-  // Invoked when an inline content ad is served
+  // Invoked when an ad notification is served
   virtual void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad fails to serve
+  // Invoked when an ad notification fails to serve
   virtual void OnFailedToServeInlineContentAd() {}
 
  protected:

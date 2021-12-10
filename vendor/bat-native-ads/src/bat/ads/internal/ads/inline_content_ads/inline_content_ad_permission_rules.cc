@@ -22,25 +22,21 @@ PermissionRules::PermissionRules() = default;
 PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
-  // TODO(tmancey): Move to permission rules base class
   CatalogFrequencyCap catalog_frequency_cap;
   if (!ShouldAllow(&catalog_frequency_cap)) {
     return false;
   }
 
-  // TODO(tmancey): Move to permission rules base class
   IssuersFrequencyCap issuers_frequency_cap;
   if (!ShouldAllow(&issuers_frequency_cap)) {
     return false;
   }
 
-  // TODO(tmancey): Move to permission rules base class
   UnblindedTokensFrequencyCap unblinded_tokens_frequency_cap;
   if (!ShouldAllow(&unblinded_tokens_frequency_cap)) {
     return false;
   }
 
-  // TODO(tmancey): Move to permission rules base class
   UserActivityFrequencyCap user_activity_frequency_cap;
   if (!ShouldAllow(&user_activity_frequency_cap)) {
     return false;

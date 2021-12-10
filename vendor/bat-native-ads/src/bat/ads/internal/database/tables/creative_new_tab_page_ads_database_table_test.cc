@@ -40,14 +40,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const SegmentList& segments = {"technology & computing"};
+  const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForSegments(
+  database::table::CreativeNewTabPageAds creative_new_tab_page_ads;
+  creative_new_tab_page_ads.GetForSegments(
       segments, [](const bool success, const SegmentList& segments,
-                   const CreativeNewTabPageAdList& creative_ads) {
+                   const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
         EXPECT_TRUE(success);
-        EXPECT_EQ(1UL, creative_ads.size());
+        EXPECT_EQ(1UL, creative_new_tab_page_ads.size());
       });
 }
 

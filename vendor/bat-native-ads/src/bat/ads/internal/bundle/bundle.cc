@@ -19,8 +19,6 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_creative_set_info.h"
@@ -29,7 +27,6 @@
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
-#include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
@@ -302,23 +299,9 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
         info.target_url = creative.payload.target_url;
+
         info.company_name = creative.payload.company_name;
-        info.image_url = creative.payload.image_url;
         info.alt = creative.payload.alt;
-
-        for (const auto& catalog_new_tab_page_ad_wallpaper :
-             creative.payload.wallpapers) {
-          CreativeNewTabPageAdWallpaperInfo wallpaper;
-
-          wallpaper.image_url = catalog_new_tab_page_ad_wallpaper.image_url;
-
-          CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;
-          focal_point.x = catalog_new_tab_page_ad_wallpaper.focal_point.x;
-          focal_point.y = catalog_new_tab_page_ad_wallpaper.focal_point.y;
-          wallpaper.focal_point = focal_point;
-
-          info.wallpapers.push_back(wallpaper);
-        }
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -450,7 +433,6 @@ void Bundle::DeleteDatabaseTables() {
   DeleteCreativeAdNotifications();
   DeleteCreativeInlineContentAds();
   DeleteCreativeNewTabPageAds();
-  DeleteCreativeNewTabPageAdWallpapers();
   DeleteCreativePromotedContentAds();
   DeleteCampaigns();
   DeleteSegments();
@@ -492,18 +474,6 @@ void Bundle::DeleteCreativeNewTabPageAds() {
     }
 
     BLOG(3, "Successfully deleted creative new tab page ads state");
-  });
-}
-
-void Bundle::DeleteCreativeNewTabPageAdWallpapers() {
-  database::table::CreativeNewTabPageAdWallpapers database_table;
-  database_table.Delete([](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ad wallpapers state");
-      return;
-    }
-
-    BLOG(3, "Successfully deleted creative new tab page ad wallpapers state");
   });
 }
 

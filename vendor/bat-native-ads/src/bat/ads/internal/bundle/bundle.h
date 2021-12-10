@@ -32,7 +32,6 @@ class Bundle final {
   void DeleteCampaigns();
   void DeleteSegments();
   void DeleteCreativeAds();
-  void DeleteCreativeNewTabPageAdWallpapers();
   void DeleteDayparts();
   void DeleteGeoTargets();
 
