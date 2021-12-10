@@ -39,7 +39,13 @@ public class SwapTokenStore: ObservableObject {
   /// The current market price for selected token to swap from.
   @Published var selectedFromTokenPrice = "0"
   /// The state of swap screen
-  @Published var state: SwapState = .idle
+  @Published var state: SwapState = .idle {
+    didSet {
+      if case .error = state {
+        isMakingTx = false
+      }
+    }
+  }
   /// The sell amount in this swap
   @Published var sellAmount = "" {
     didSet {
@@ -47,7 +53,7 @@ public class SwapTokenStore: ObservableObject {
         state = .idle
         return
       }
-      if oldValue != sellAmount && !updatingPriceQuote && !addingUnapprovedTx {
+      if oldValue != sellAmount && !updatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
           self?.fetchPriceQuote(base: .perSellAsset)
@@ -62,7 +68,7 @@ public class SwapTokenStore: ObservableObject {
         state = .idle
         return
       }
-      if oldValue != buyAmount && !updatingPriceQuote && !addingUnapprovedTx {
+      if oldValue != buyAmount && !updatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
           self?.fetchPriceQuote(base: .perBuyAsset)
@@ -106,7 +112,6 @@ public class SwapTokenStore: ObservableObject {
     }
   }
   private var updatingPriceQuote = false
-  private var addingUnapprovedTx = false
   private var timer: Timer?
   
   enum SwapParamsBase {
@@ -217,11 +222,7 @@ public class SwapTokenStore: ObservableObject {
         self?.clearAllAmount()
         return
       }
-      defer { self.isMakingTx = false }
-      
-      self.addingUnapprovedTx = true
       self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
-        defer { self.addingUnapprovedTx = false }
         guard success else {
           self.state = .error(Strings.Wallet.unknownError)
           self.clearAllAmount()
@@ -251,12 +252,12 @@ public class SwapTokenStore: ObservableObject {
           self.makeEIP1559Tx(chainId: network.chainId,
                              baseData: baseData,
                              from: accountInfo) { success in
-            // should be observed
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
               return
             }
+            self.isMakingTx = false
           }
         } else {
           let baseData: BraveWallet.TxData = .init(
@@ -268,12 +269,12 @@ public class SwapTokenStore: ObservableObject {
             data: data
           )
           self.transactionController.addUnapprovedTransaction(baseData, from: accountInfo.address) { success, txMetaId, error in
-            // should be observed
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
               return
             }
+            self.isMakingTx = false
           }
         }
       }
@@ -347,14 +348,13 @@ public class SwapTokenStore: ObservableObject {
       )
     else { return }
     
+    isMakingTx = true
     rpcController.network { [weak self] network in
       guard let self = self else { return }
-      self.addingUnapprovedTx = true
       self.transactionController.makeErc20ApproveData(
         spenderAddress,
         amount: "0x\(balanceInWeiHex)"
       ) { success, data in
-        defer { self.addingUnapprovedTx = false }
         guard success else { return }
         let baseData = BraveWallet.TxData(
           nonce: "",
@@ -373,18 +373,19 @@ public class SwapTokenStore: ObservableObject {
               self.clearAllAmount()
               return
             }
+            self.isMakingTx = false
           }
         } else {
           self.transactionController.addUnapprovedTransaction(
               baseData,
               from: accountInfo.address,
               completion: { success, txMetaId, error in
-                // should be observed
                 guard success else {
                   self.state = .error(Strings.Wallet.unknownError)
                   self.clearAllAmount()
                   return
                 }
+                self.isMakingTx = false
               }
           )
         }
