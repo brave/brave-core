@@ -5,19 +5,9 @@
 
 #include "chrome/browser/signin/account_consistency_mode_manager.h"
 
-#include "base/notreached.h"
-
-#if defined(OS_ANDROID)
-#undef BUILDFLAG_INTERNAL_ENABLE_MIRROR
-#define BUILDFLAG_INTERNAL_ENABLE_MIRROR() (0)
-
-#undef NOTREACHED
-#define NOTREACHED() DCHECK(true)
-#endif
+#define BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD \
+  return AccountConsistencyMethod::kDisabled;
 
 #include "src/chrome/browser/signin/account_consistency_mode_manager.cc"
 
-#if defined(OS_ANDROID)
-#undef BUILDFLAG_INTERNAL_ENABLE_MIRROR
-#undef NOTREACHED
-#endif
+#undef BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD
