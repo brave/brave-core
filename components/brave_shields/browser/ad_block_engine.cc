@@ -245,38 +245,6 @@ bool AdBlockEngine::Init(AdBlockSourceProvider* source_provider,
   return true;
 }
 
-void AdBlockEngine::GetDATFileData(const base::FilePath& dat_file_path,
-                                   bool deserialize,
-                                   base::OnceClosure callback) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          deserialize
-              ? &brave_component_updater::LoadDATFileData<adblock::Engine>
-              : &brave_component_updater::LoadRawFileData<adblock::Engine>,
-          dat_file_path),
-      base::BindOnce(&AdBlockEngine::OnGetDATFileData,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AdBlockEngine::OnGetDATFileData(base::OnceClosure callback,
-                                     GetDATFileDataResult result) {
-  if (result.second.empty()) {
-    LOG(ERROR) << "Could not obtain ad block data";
-    return;
-  }
-  if (!result.first.get()) {
-    LOG(ERROR) << "Failed to deserialize ad block data";
-    return;
-  }
-  GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockEngine::UpdateAdBlockClient,
-                     base::Unretained(this), std::move(result.first)));
-  // TODO(bridiver) this needs to happen after adblock client is actually reset
-  std::move(callback).Run();
-}
-
 void AdBlockEngine::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
