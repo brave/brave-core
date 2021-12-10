@@ -13,12 +13,10 @@ namespace ads {
 struct NewTabPageAdInfo;
 struct CreativeNewTabPageAdInfo;
 
-NewTabPageAdInfo BuildNewTabPageAd(
-    const CreativeNewTabPageAdInfo& creative_new_tab_page_ad);
+NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad);
 
-NewTabPageAdInfo BuildNewTabPageAd(
-    const CreativeNewTabPageAdInfo& creative_new_tab_page_ad,
-    const std::string& uuid);
+NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad,
+                                   const std::string& uuid);
 
 }  // namespace ads
 

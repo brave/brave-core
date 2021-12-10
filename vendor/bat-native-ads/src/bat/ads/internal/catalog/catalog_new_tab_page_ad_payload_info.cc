@@ -16,8 +16,9 @@ CatalogNewTabPageAdPayloadInfo::~CatalogNewTabPageAdPayloadInfo() = default;
 
 bool CatalogNewTabPageAdPayloadInfo::operator==(
     const CatalogNewTabPageAdPayloadInfo& rhs) const {
-  return company_name == rhs.company_name && alt == rhs.alt &&
-         target_url == rhs.target_url;
+  return company_name == rhs.company_name && image_url == rhs.image_url &&
+         alt == rhs.alt && target_url == rhs.target_url &&
+         wallpapers == rhs.wallpapers;
 }
 
 bool CatalogNewTabPageAdPayloadInfo::operator!=(
