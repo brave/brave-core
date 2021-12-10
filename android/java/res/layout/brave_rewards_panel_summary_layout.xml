@@ -162,6 +162,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/auto_contribute_summary_seperator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
@@ -169,6 +170,7 @@
             android:background="@color/rewards_settings_seperator_color" />
 
         <LinearLayout
+            android:id="@+id/auto_contribute_summary_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

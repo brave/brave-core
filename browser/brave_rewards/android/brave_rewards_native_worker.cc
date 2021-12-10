@@ -101,6 +101,26 @@ void BraveRewardsNativeWorker::OnPanelPublisherInfo(
         weak_java_brave_rewards_native_worker_.get(env), tabId);
 }
 
+void BraveRewardsNativeWorker::OnUnblindedTokensReady(
+    brave_rewards::RewardsService* rewards_service) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onUnblindedTokensReady(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::OnReconcileComplete(
+    brave_rewards::RewardsService* rewards_service,
+    const ledger::type::Result result,
+    const std::string& contribution_id,
+    const double amount,
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onReconcileComplete(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result), static_cast<int>(type), amount);
+}
+
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =

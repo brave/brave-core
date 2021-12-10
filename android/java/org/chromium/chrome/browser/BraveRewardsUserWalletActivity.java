@@ -100,6 +100,10 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
+        txtUserId.setCompoundDrawablesWithIntrinsicBounds(
+                walletType.equals(BraveWalletProvider.UPHOLD) ? R.drawable.uphold_green
+                                                              : R.drawable.ic_logo_bitflyer_colored,
+                0, 0, 0);
         SetDisconnectBtnClickHandler();
     }
 

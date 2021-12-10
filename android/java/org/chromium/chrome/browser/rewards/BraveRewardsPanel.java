@@ -333,6 +333,15 @@ public class BraveRewardsPanel
         TextView monthYearText = mPopupView.findViewById(R.id.month_year_text);
         monthYearText.setText(monthYear);
 
+        if (mBraveRewardsNativeWorker != null) {
+            String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+            TextView mywalletText = mPopupView.findViewById(R.id.my_wallet_text);
+            mywalletText.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                    walletType.equals(BraveWalletProvider.UPHOLD) ? R.drawable.uphold_white
+                                                                  : R.drawable.ic_logo_bitflyer,
+                    0);
+        }
+
         mPopupWindow.setContentView(mPopupView);
     }
 
@@ -781,6 +790,28 @@ public class BraveRewardsPanel
     @Override
     public void OnGrantFinish(int result) {
         Log.e(TAG, "OnGrantFinish");
+        // mBraveRewardsNativeWorker.GetAllNotifications();
+        // mBraveRewardsNativeWorker.GetRewardsParameters();
+        // mBraveRewardsNativeWorker.GetExternalWallet();
+        // mBraveRewardsNativeWorker.getAdsAccountStatement();
+        // mBraveRewardsNativeWorker.GetCurrentBalanceReport();
+    }
+
+    @Override
+    public void onUnblindedTokensReady() {
+        Log.e("NTP", "onUnblindedTokensReady");
+        mBraveRewardsNativeWorker.GetAllNotifications();
+        mBraveRewardsNativeWorker.GetRewardsParameters();
+        mBraveRewardsNativeWorker.GetExternalWallet();
+        mBraveRewardsNativeWorker.getAdsAccountStatement();
+        mBraveRewardsNativeWorker.GetCurrentBalanceReport();
+    }
+
+    @Override
+    public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
+        Log.e("NTP",
+                "onReconcileComplete : resultCode : " + resultCode
+                        + " : rewardsType : " + rewardsType + " : amouont : " + amount);
         mBraveRewardsNativeWorker.GetAllNotifications();
         mBraveRewardsNativeWorker.GetRewardsParameters();
         mBraveRewardsNativeWorker.GetExternalWallet();
@@ -1128,6 +1159,15 @@ public class BraveRewardsPanel
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(text);
             tv.setText(toInsert);
             tvUSD.setText(textUSD);
+            if (mBraveRewardsNativeWorker != null) {
+                String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+                mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
+                        .setVisibility(walletType.equals(BraveWalletProvider.UPHOLD) ? View.VISIBLE
+                                                                                     : View.GONE);
+                mPopupView.findViewById(R.id.auto_contribute_summary_layout)
+                        .setVisibility(walletType.equals(BraveWalletProvider.UPHOLD) ? View.VISIBLE
+                                                                                     : View.GONE);
+            }
             // if (tv != null && tvUSD != null &&
             //         !text.isEmpty() && !textUSD.isEmpty()) {
             //     // tvTitle.setVisibility(hideControls ? View.GONE : View.VISIBLE);
@@ -1288,6 +1328,7 @@ public class BraveRewardsPanel
         int rightDrawable = 0;
         int leftDrawable = 0;
         int text = 0;
+        String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
 
         switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
@@ -1313,7 +1354,9 @@ public class BraveRewardsPanel
                 editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
                 editor.apply();
 
-                leftDrawable = R.drawable.uphold_white;
+                leftDrawable = walletType.equals(BraveWalletProvider.UPHOLD)
+                        ? R.drawable.uphold_white
+                        : R.drawable.ic_logo_bitflyer;
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_verified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(
@@ -1327,7 +1370,9 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
             case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                leftDrawable = R.drawable.uphold_white;
+                leftDrawable = walletType.equals(BraveWalletProvider.UPHOLD)
+                        ? R.drawable.uphold_white
+                        : R.drawable.ic_logo_bitflyer;
                 text = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
                 btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
@@ -1409,6 +1454,7 @@ public class BraveRewardsPanel
         if (currentActiveTab != null && !currentActiveTab.isIncognito()) {
             String url = currentActiveTab.getUrl().getSpec();
             if (URLUtil.isValidUrl(url)) {
+                Log.e("NTP", "publisher : " + url);
                 mBraveRewardsNativeWorker.GetPublisherInfo(currentActiveTab.getId(), url);
                 mPublisherFetcher = new Timer();
                 mPublisherFetcher.schedule(new PublisherFetchTimer(currentActiveTab.getId(), url),
@@ -1427,6 +1473,7 @@ public class BraveRewardsPanel
 
     @Override
     public void OnPublisherInfo(int tabId) {
+        Log.e("NTP", "OnPublisherInfo");
         mPublisherExist = true;
         mCurrentTabId = tabId;
         // RemoveRewardsSummaryMonthYear();

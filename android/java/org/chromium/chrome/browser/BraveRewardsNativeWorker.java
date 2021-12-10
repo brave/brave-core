@@ -655,6 +655,20 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void onUnblindedTokensReady() {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onUnblindedTokensReady();
+        }
+    }
+
+    @CalledByNative
+    public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onReconcileComplete(resultCode, rewardsType, amount);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveRewardsNativeWorker caller);

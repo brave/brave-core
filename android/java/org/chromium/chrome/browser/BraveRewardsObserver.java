@@ -28,6 +28,8 @@ public interface BraveRewardsObserver {
   default public void OnProcessRewardsPageUrl(int error_code,
           String wallet_type, String action, String json_args ) {};
   default public void OnClaimPromotion(int error_code) {};
+  default public void onUnblindedTokensReady() {}
+  default public void onReconcileComplete(int resultCode, int rewardsType, double amount) {}
   default public void OnRecoverWallet(int errorCode) {};
   default public void OnRefreshPublisher(int status, String publisherKey){};
   default public void OnOneTimeTip(){};

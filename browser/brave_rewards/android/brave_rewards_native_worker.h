@@ -168,6 +168,17 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         brave_rewards::RewardsService* rewards_service,
         ledger::type::RewardsParametersPtr parameters);
 
+    void OnUnblindedTokensReady(
+        brave_rewards::RewardsService* rewards_service) override;
+
+    void OnReconcileComplete(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::type::Result result,
+        const std::string& contribution_id,
+        const double amount,
+        const ledger::type::RewardsType type,
+        const ledger::type::ContributionProcessor processor) override;
+
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&

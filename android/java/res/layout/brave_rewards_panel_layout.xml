@@ -50,6 +50,7 @@
                             tools:ignore="UseCompoundDrawables">
 
                             <TextView
+                                android:id="@+id/my_wallet_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
