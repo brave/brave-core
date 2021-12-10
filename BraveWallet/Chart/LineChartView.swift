@@ -273,24 +273,15 @@ private struct ChartAccessibilityViewModifier: ViewModifier {
   var dataPoints: [DataPoint]
   
   func body(content: Content) -> some View {
-    // This crashes on iOS 14 with optimized builds due to some sort of Swift runtime bug where it cannot
-    // resolve a manged symbol.
-    //
-    // Last checked: Xcode 13.2 (13C90)
-    //
-    //    if #available(iOS 15.0, *) {
-    //      content
-    //        .accessibilityElement()
-    //        .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
-    //        .accessibilityLabel(title)
-    //    } else {
-    //      content
-    //        .accessibilityLabel(title)
-    //    }
-    //
-    // For now we will just apply the title as the accessibility label
-    content
-      .accessibilityLabel(title)
+    if #available(iOS 15.0, *) {
+      content
+        .accessibilityElement()
+        .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
+        .accessibilityLabel(title)
+    } else {
+      content
+        .accessibilityLabel(title)
+    }
   }
 }
 
