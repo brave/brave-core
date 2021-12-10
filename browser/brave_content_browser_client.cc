@@ -404,9 +404,8 @@ uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
     content::BrowserContext* browser_context,
     const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
-  Profile* profile = Profile::FromBrowserContext(browser_context);
   HostContentSettingsMap* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
   const bool shields_up =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   if (!shields_up)
