@@ -17,6 +17,7 @@ import {
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
+import { GetTokenParam } from '../../utils/api-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -190,8 +191,12 @@ export function refreshPrices () {
         price: '',
         toAsset: defaultFiatCurrency
       }
-      const price = await assetRatioController.getPrice([token.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
-      return price.success ? price.values[0] : emptyPrice
+      const price = await assetRatioController.getPrice([GetTokenParam(selectedNetwork, token)], [defaultFiatCurrency], selectedPortfolioTimeline)
+      const tokenPrice = {
+        ...price.values[0],
+        fromAsset: token.symbol.toLowerCase()
+      }
+      return price.success ? tokenPrice : emptyPrice
     }))
     const getERCTokenBalanceReturnInfos = accounts.map((account) => {
       return account.tokens.map((token) => {
@@ -217,14 +222,13 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
     const apiProxy = getAPIProxy()
     const { assetRatioController } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies } } = getState()
-
+    const { wallet: { accounts, defaultCurrencies, selectedNetwork } } = getState()
     const result = await Promise.all(accounts.map(async (account) => {
       return Promise.all(account.tokens.filter((t) => !t.asset.isErc721).map(async (token) => {
         return {
           token: token,
           history: await assetRatioController.getPriceHistory(
-            token.asset.symbol.toLowerCase(), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+            GetTokenParam(selectedNetwork, token.asset), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
           )
         }
       }))
