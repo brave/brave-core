@@ -10,7 +10,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -19,7 +21,7 @@ namespace brave_wallet {
 bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,
-                     std::vector<brave_wallet::mojom::AssetPricePtr>* values) {
+                     std::vector<mojom::AssetPricePtr>* values) {
   // Parses results like this:
   // /v2/relative/provider/coingecko/bat,chainlink/btc,usd/1w
   // {
@@ -76,7 +78,7 @@ bool ParseAssetPrice(const std::string& json,
     }
 
     for (const std::string& to_asset : to_assets) {
-      auto asset_price = brave_wallet::mojom::AssetPrice::New();
+      auto asset_price = mojom::AssetPrice::New();
       asset_price->from_asset = from_asset;
       asset_price->to_asset = to_asset;
 
@@ -103,9 +105,8 @@ bool ParseAssetPrice(const std::string& json,
   return true;
 }
 
-bool ParseAssetPriceHistory(
-    const std::string& json,
-    std::vector<brave_wallet::mojom::AssetTimePricePtr>* values) {
+bool ParseAssetPriceHistory(const std::string& json,
+                            std::vector<mojom::AssetTimePricePtr>* values) {
   DCHECK(values);
 
   // {  "payload":
@@ -170,7 +171,7 @@ bool ParseAssetPriceHistory(
     double price = price_value.GetDouble();
 
     base::Time date = base::Time::FromJsTime(date_dbl);
-    auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
+    auto asset_time_price = mojom::AssetTimePrice::New();
     asset_time_price->date = base::Milliseconds(date.ToJavaTime());
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
@@ -207,8 +208,7 @@ std::string ParseEstimatedTime(const std::string& json) {
   return result ? *result : "";
 }
 
-brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
-    const std::string& json) {
+mojom::GasEstimation1559Ptr ParseGasOracle(const std::string& json) {
   // {
   //   "payload": {
   //     "status": "1",
@@ -266,8 +266,7 @@ brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
     return nullptr;
   }
 
-  mojom::GasEstimation1559Ptr estimation =
-      brave_wallet::mojom::GasEstimation1559::New();
+  mojom::GasEstimation1559Ptr estimation = mojom::GasEstimation1559::New();
 
   // We save the original value in wei as the base_fee_per_gas, but use only
   // the integer part in gwei value to calculate the priority fee.
@@ -324,6 +323,98 @@ brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
       static_cast<uint256_t>(1e9));
 
   return estimation;
+}
+
+mojom::ERCTokenPtr ParseTokenInfo(const std::string& json) {
+  // {
+  //   "payload": {
+  //     "status": "1",
+  //     "message": "OK",
+  //     "result": [
+  //       {
+  //         "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  //         "tokenName": "Tether USD",
+  //         "symbol": "USDT",
+  //         "divisor": "6",
+  //         "tokenType": "ERC20",
+  //         "totalSupply": "39828710009874796",
+  //         "blueCheckmark": "true",
+  //         "description": "Tether gives you the joint benefits of open...",
+  //         "website": "https://tether.to/",
+  //         "email": "support@tether.to",
+  //         "blog": "https://tether.to/category/announcements/",
+  //         "reddit": "",
+  //         "slack": "",
+  //         "facebook": "",
+  //         "twitter": "https://twitter.com/Tether_to",
+  //         "bitcointalk": "",
+  //         "github": "",
+  //         "telegram": "",
+  //         "wechat": "",
+  //         "linkedin": "",
+  //         "discord": "",
+  //         "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+  //         "tokenPriceUSD": "1.000000000000000000"
+  //       }
+  //     ]
+  //   },
+  //   "lastUpdated": "2021-12-09T22:02:23.187Z"
+  // }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return nullptr;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict))
+    return nullptr;
+
+  const base::Value* result = response_dict->FindListPath("payload.result");
+  if (!result || !result->is_list())
+    return nullptr;
+
+  auto result_list = result->GetList();
+  if (result_list.size() != 1 || !result_list[0].is_dict())
+    return nullptr;
+  const base::Value* token = &result_list[0];
+
+  const std::string* contract_address = token->FindStringKey("contractAddress");
+  if (!contract_address)
+    return nullptr;
+  const auto eth_addr = EthAddress::FromHex(*contract_address);
+  if (eth_addr.IsEmpty())
+    return nullptr;
+
+  const std::string* name = token->FindStringKey("tokenName");
+  if (!name || name->empty())
+    return nullptr;
+
+  const std::string* symbol = token->FindStringKey("symbol");
+  if (!symbol || symbol->empty())
+    return nullptr;
+
+  const std::string* decimals_string = token->FindStringKey("divisor");
+  int decimals = 0;
+  if (!decimals_string || !base::StringToInt(*decimals_string, &decimals))
+    return nullptr;
+
+  const std::string* token_type = token->FindStringKey("tokenType");
+  if (!token_type)
+    return nullptr;
+
+  bool is_erc20 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC20");
+  bool is_erc721 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC721");
+  if (!is_erc20 && !is_erc721)  // unsupported token
+    return nullptr;
+
+  return mojom::ERCToken::New(eth_addr.ToChecksumAddress(), *name,
+                              "" /* logo */, is_erc20, is_erc721, *symbol,
+                              decimals, true, "");
 }
 
 }  // namespace brave_wallet

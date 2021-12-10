@@ -434,6 +434,9 @@ interface AssetRatioController {
   GetEstimatedTime(string gas_price /* decimal string in wei */) =>
       (bool success, string seconds);
   GetGasOracle() => (GasEstimation1559? estimation);
+
+  // Obtain token info via contract address through etherscan API.
+  GetTokenInfo(string contract_address) => (ERCToken? token);
 };
 
 // Implements swapping related functionality through the 0x API.

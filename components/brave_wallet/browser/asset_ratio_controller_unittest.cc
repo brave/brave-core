@@ -8,6 +8,7 @@
 
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
@@ -92,6 +93,18 @@ class AssetRatioControllerUnitTest : public testing::Test {
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           net::HTTP_REQUEST_TIMEOUT);
         }));
+  }
+
+  void GetTokenInfo(const std::string& contract_address,
+                    mojom::ERCTokenPtr expected_token) {
+    base::RunLoop run_loop;
+    asset_ratio_controller_->GetTokenInfo(
+        contract_address,
+        base::BindLambdaForTesting([&](mojom::ERCTokenPtr token) {
+          EXPECT_EQ(token, expected_token);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
  protected:
@@ -418,6 +431,64 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryURL) {
             AssetRatioController::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::All)
                 .path());
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetTokenInfoURL) {
+  std::string url(kAssetRatioBaseURL);
+  EXPECT_EQ(url +
+                "v2/etherscan/"
+                "passthrough?module=token&action=tokeninfo&contractaddress="
+                "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            AssetRatioController::GetTokenInfoURL(
+                "0xdac17f958d2ee523a2206206994597c13d831ec7")
+                .spec());
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetTokenInfo) {
+  SetInterceptor(R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "OK",
+        "result": [{
+          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "tokenName": "Tether USD",
+          "symbol": "USDT",
+          "divisor": "6",
+          "tokenType": "ERC20",
+          "totalSupply": "39828710009874796",
+          "blueCheckmark": "true",
+          "description": "Tether gives you the joint benefits of open...",
+          "website": "https://tether.to/",
+          "email": "support@tether.to",
+          "blog": "https://tether.to/category/announcements/",
+          "reddit": "",
+          "slack": "",
+          "facebook": "",
+          "twitter": "https://twitter.com/Tether_to",
+          "bitcointalk": "",
+          "github": "",
+          "telegram": "",
+          "wechat": "",
+          "linkedin": "",
+          "discord": "",
+          "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+          "tokenPriceUSD": "1.000000000000000000"
+        }]
+      },
+      "lastUpdated": "2021-12-09T22:02:23.187Z"
+    }
+  )");
+  GetTokenInfo(
+      "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      mojom::ERCToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7",
+                           "Tether USD", "", true, false, "USDT", 6, true, ""));
+
+  SetInterceptor("unexpected response");
+  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
+
+  SetErrorInterceptor("error");
+  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
 }
 
 }  // namespace brave_wallet
