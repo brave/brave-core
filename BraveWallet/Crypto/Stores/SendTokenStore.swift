@@ -220,14 +220,17 @@ public class SendTokenStore: ObservableObject {
     isMakingTx = true
     rpcController.network { [weak self] network in
       guard let self = self else { return }
-      defer { self.isMakingTx = false }
 
       if token.isETH {
         let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
         if network.isEip1559 {
-          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress, completion: completion)
+          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
+            self.isMakingTx = false
+            completion(success)
+          }
         } else {
           self.transactionController.addUnapprovedTransaction(baseData, from: fromAddress) { success, txMetaId, errorMessage in
+            self.isMakingTx = false
             completion(success)
           }
         }
@@ -239,9 +242,13 @@ public class SendTokenStore: ObservableObject {
           }
           let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
           if network.isEip1559 {
-            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress, completion: completion)
+            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
+              self.isMakingTx = false
+              completion(success)
+            }
           } else {
             self.transactionController.addUnapprovedTransaction(baseData, from: fromAddress) { success, txMetaId, errorMessage in
+              self.isMakingTx = false 
               completion(success)
             }
           }
