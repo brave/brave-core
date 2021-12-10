@@ -13,7 +13,6 @@
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
@@ -41,12 +40,12 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
   }
 
   const std::string style_hash = crypto::SHA256HashString(stylesheet);
-  const std::string style_hash_b64 = base::Base64Encode(base::as_bytes(
-    base::make_span(style_hash)));
+  const std::string style_hash_b64 =
+      base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
 
   return "<meta http-equiv=\"Content-Security-Policy\" content=\""
-            "script-src 'none'; style-src 'sha256-" + style_hash_b64 + "'\">\n"
-         "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
+      "script-src 'none'; style-src 'sha256-" + style_hash_b64 + "'\">\n"
+      "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
 }
 
 }  // namespace
