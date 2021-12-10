@@ -13,18 +13,18 @@ import {
 export interface Props {
   title: string
   hasAddButton?: boolean
-  onAddAccount?: () => void
+  onClickAdd?: () => void
   onBack: () => void
 }
 
 function SelectHeader (props: Props) {
-  const { onBack, title, hasAddButton, onAddAccount } = props
+  const { onBack, title, hasAddButton, onClickAdd } = props
   return (
     <Header>
       <Button onClick={onBack}><BackIcon /></Button>
       <HeaderText>{title}</HeaderText>
       {hasAddButton ? (
-        <Button onClick={onAddAccount}>
+        <Button onClick={onClickAdd}>
           <PlusIcon />
         </Button>
       ) : (

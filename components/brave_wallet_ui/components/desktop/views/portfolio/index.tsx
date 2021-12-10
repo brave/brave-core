@@ -79,11 +79,12 @@ export interface Props {
   onSelectAsset: (asset: ERCToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: () => void
-  fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
   onAddUserAsset: (token: ERCToken) => void
   onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
+  onShowVisibleAssetsModal: (showModal: boolean) => void
   onRemoveUserAsset: (token: ERCToken) => void
+  showVisibleAssetsModal: boolean
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   selectedNetwork: EthereumChain
@@ -117,10 +118,11 @@ const Portfolio = (props: Props) => {
     onSelectAccount,
     onClickAddAccount,
     onSelectNetwork,
-    fetchFullTokenList,
     onAddUserAsset,
     onSetUserAssetVisible,
     onRemoveUserAsset,
+    onShowVisibleAssetsModal,
+    showVisibleAssetsModal,
     defaultCurrencies,
     addUserAssetError,
     userVisibleTokensInfo,
@@ -151,7 +153,6 @@ const Portfolio = (props: Props) => {
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
-  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
   const toggleShowNetworkDropdown = () => {
@@ -229,10 +230,7 @@ const Portfolio = (props: Props) => {
   }
 
   const toggleShowVisibleAssetModal = () => {
-    if (fullAssetList.length === 0) {
-      fetchFullTokenList()
-    }
-    setShowVisibleAssetsModal(!showVisibleAssetsModal)
+    onShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
   const getFiatBalance = (account: WalletAccountType, asset: ERCToken) => {

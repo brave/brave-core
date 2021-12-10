@@ -26,6 +26,7 @@ export interface Props {
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
   onAddNetwork: () => void
+  onAddAsset: () => void
 }
 
 function BuyTab (props: Props) {
@@ -38,6 +39,7 @@ function BuyTab (props: Props) {
     showHeader,
     assetOptions,
     defaultCurrencies,
+    onAddAsset,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
@@ -113,6 +115,7 @@ function BuyTab (props: Props) {
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onAddAsset}
         />
       }
     </>

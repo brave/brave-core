@@ -66,7 +66,6 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onRemoveAccount: (address: string, hardware: boolean) => void
-  fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
@@ -78,6 +77,8 @@ export interface Props {
   onSelectAsset: (asset: ERCToken | undefined) => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onShowBackup: () => void
+  onShowVisibleAssetsModal: (value: boolean) => void
+  showVisibleAssetsModal: boolean
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -105,6 +106,8 @@ const CryptoStoryView = (props: Props) => {
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
+    showVisibleAssetsModal,
+    onShowVisibleAssetsModal,
     onAddUserAsset,
     onSetUserAssetVisible,
     onRemoveUserAsset,
@@ -118,7 +121,6 @@ const CryptoStoryView = (props: Props) => {
     getBalance,
     onImportAccount,
     onUpdateAccountName,
-    fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
     onRemoveAccount,
@@ -277,7 +279,6 @@ const CryptoStoryView = (props: Props) => {
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          fetchFullTokenList={fetchFullTokenList}
           addUserAssetError={false}
           onAddUserAsset={onAddUserAsset}
           onRemoveUserAsset={onRemoveUserAsset}
@@ -298,6 +299,8 @@ const CryptoStoryView = (props: Props) => {
           onRetryTransaction={onClickRetryTransaction}
           onSpeedupTransaction={onClickSpeedupTransaction}
           onCancelTransaction={onClickCancelTransaction}
+          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+          showVisibleAssetsModal={showVisibleAssetsModal}
         />
       }
       {selectedTab === 'accounts' &&

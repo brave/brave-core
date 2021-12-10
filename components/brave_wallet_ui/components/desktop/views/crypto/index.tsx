@@ -45,7 +45,6 @@ export interface Props {
   onShowAddModal: () => void
   onHideAddModal: () => void
   onSelectNetwork: (network: EthereumChain) => void
-  fetchFullTokenList: () => void
   onRemoveAccount: (address: string, hardware: boolean) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
@@ -84,6 +83,8 @@ export interface Props {
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void
   onCancelTransaction: (transaction: TransactionInfo) => void
+  onShowVisibleAssetsModal: (showModal: boolean) => void
+  showVisibleAssetsModal: boolean
 }
 
 const CryptoView = (props: Props) => {
@@ -99,7 +100,6 @@ const CryptoView = (props: Props) => {
     getBalance,
     onImportAccount,
     onUpdateAccountName,
-    fetchFullTokenList,
     onSelectNetwork,
     onRemoveAccount,
     onViewPrivateKey,
@@ -112,6 +112,8 @@ const CryptoView = (props: Props) => {
     onOpenWalletSettings,
     onShowAddModal,
     onHideAddModal,
+    onShowVisibleAssetsModal,
+    showVisibleAssetsModal,
     defaultCurrencies,
     defaultWallet,
     addUserAssetError,
@@ -156,9 +158,13 @@ const CryptoView = (props: Props) => {
   React.useEffect(() => {
     if (category === 'portfolio') {
       if (id !== undefined) {
-        const asset = userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
-        onSelectAsset(asset)
-        setHideNav(true)
+        if (id === 'add-asset') {
+          onShowVisibleAssetsModal(true)
+        } else {
+          const asset = userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
+          onSelectAsset(asset)
+          setHideNav(true)
+        }
       } else {
         onSelectAsset(undefined)
         setHideNav(false)
@@ -274,7 +280,6 @@ const CryptoView = (props: Props) => {
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          fetchFullTokenList={fetchFullTokenList}
           onAddUserAsset={onAddUserAsset}
           onSetUserAssetVisible={onSetUserAssetVisible}
           onRemoveUserAsset={onRemoveUserAsset}
@@ -292,6 +297,8 @@ const CryptoView = (props: Props) => {
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
           transactionSpotPrices={transactionSpotPrices}
           addUserAssetError={addUserAssetError}
+          showVisibleAssetsModal={showVisibleAssetsModal}
+          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
           onRetryTransaction={onRetryTransaction}
           onSpeedupTransaction={onSpeedupTransaction}
           onCancelTransaction={onCancelTransaction}
