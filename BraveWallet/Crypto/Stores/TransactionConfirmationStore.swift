@@ -160,7 +160,9 @@ public class TransactionConfirmationStore: ObservableObject {
         toAssets: ["usd"],
         timeframe: .oneDay
       ) { [weak self] success, prices in
-        guard let self = self, success,
+        // `success` only refers to finding _all_ prices and if even 1 of N prices
+        // fail to fetch it will be false
+        guard let self = self,
               self.state.symbol.caseInsensitiveCompare(symbol) == .orderedSame else {
                 return
               }
