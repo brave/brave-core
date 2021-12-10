@@ -7,13 +7,15 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_WORKERS_SHARED_WORKER_CONTENT_SETTINGS_PROXY_H_
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 
-#define BRAVE_SHARED_WORKER_CONTENT_SETTINGS_PROXY_H            \
-  bool AllowFingerprinting(bool enabled_per_settings) override; \
-  BraveFarblingLevel GetBraveFarblingLevel() override;
+#define AllowStorageAccessSync                             \
+  AllowFingerprinting(bool enabled_per_settings) override; \
+  BraveFarblingLevel GetBraveFarblingLevel() override;     \
+  bool AllowStorageAccessSync
 
 #include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h"
 
-#undef BRAVE_SHARED_WORKER_SETTINGS_PROXY_H
+#undef AllowStorageAccessSync
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_WORKERS_SHARED_WORKER_CONTENT_SETTINGS_PROXY_H_
