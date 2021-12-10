@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
+#include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
@@ -39,6 +40,10 @@ class AdServing;
 namespace inline_content_ads {
 class AdServing;
 }  // namespace inline_content_ads
+
+namespace new_tab_page_ads {
+class AdServing;
+}  // namespace new_tab_page_ads
 
 namespace ad_targeting {
 
@@ -108,6 +113,7 @@ class AdsImpl final : public Ads,
                       public InlineContentAdServingObserver,
                       public ConversionsObserver,
                       public NewTabPageAdObserver,
+                      public NewTabPageAdServingObserver,
                       public PromotedContentAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
@@ -165,6 +171,8 @@ class AdsImpl final : public Ads,
   void OnAdNotificationEvent(
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) override;
+
+  void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -243,6 +251,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
+  std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<BrowserManager> browser_manager_;
@@ -295,6 +304,9 @@ class AdsImpl final : public Ads,
   void OnAdNotificationEventFailed(
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) override;
+
+  // NewTabPageAdServingObserver:
+  void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // NewTabPageAdObserver:
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;

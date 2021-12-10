@@ -118,7 +118,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   ad_predictor.score = ComputePredictorScore(ad_predictor);
 
   // Assert
-  const double expected_score = 0.0 + 1.0 + 1.0 * (15 / 24.0) + 1.0 * 1.0;
+  const double expected_score =
+      0.0 + 1.0 + 1.0 * (15 / 24.0) + (1.0 / 2.0) * 1.0;
   EXPECT_EQ(expected_score, ad_predictor.score);
 }
 

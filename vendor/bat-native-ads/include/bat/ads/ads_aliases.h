@@ -12,12 +12,16 @@
 namespace ads {
 
 struct InlineContentAdInfo;
+struct NewTabPageAdInfo;
 struct StatementInfo;
 
 using InitializeCallback = std::function<void(const bool)>;
 using ShutdownCallback = std::function<void(const bool)>;
 
 using RemoveAllHistoryCallback = std::function<void(const bool)>;
+
+using GetNewTabPageAdCallback =
+    std::function<void(const bool, const NewTabPageAdInfo&)>;
 
 using GetInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;

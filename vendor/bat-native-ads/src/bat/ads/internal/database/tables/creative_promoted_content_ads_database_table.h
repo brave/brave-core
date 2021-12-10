@@ -77,7 +77,7 @@ class CreativePromotedContentAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativePromotedContentAdsCallback callback);
 
-  void MigrateToV16(mojom::DBTransaction* transaction);
+  void MigrateToV19(mojom::DBTransaction* transaction);
 
   int batch_size_;
 
