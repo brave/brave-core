@@ -7,10 +7,13 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
+#include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
@@ -19,6 +22,7 @@
 #include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "crypto/sha2.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -36,7 +40,13 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
         IDR_SPEEDREADER_STYLE_DESKTOP);
   }
 
-  return "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
+  const std::string style_hash = crypto::SHA256HashString(stylesheet);
+  const std::string style_hash_b64 = base::Base64Encode(base::as_bytes(
+    base::make_span(style_hash)));
+
+  return "<meta http-equiv=\"Content-Security-Policy\" content=\""
+            "script-src 'none'; style-src 'sha256-" + style_hash_b64 + "'\">\n"
+         "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
 }
 
 }  // namespace
