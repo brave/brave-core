@@ -15,6 +15,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Shader;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -227,7 +228,7 @@ public class SmoothLineChartEquallySpaced extends View {
             } else if (possibleValue >= mDates.length) {
                 possibleValue = mDates.length - 1;
             }
-            Paint paintText = new Paint();
+            TextPaint paintText = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             paintText.setColor(getResources().getColor(R.color.wallet_text_color));
             paintText.setTextSize(35);
             float textX = mCurrentLineX - 150;
