@@ -132,14 +132,12 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     private void goToTheNextPage(String passwordInput) {
         KeyringController keyringController = getKeyringController();
         if (keyringController != null) {
-            keyringController.createWallet(passwordInput,
-                    recoveryPhrases
-                    -> {
-                            // Do nothing with recovery phrase for now
-                    });
+            keyringController.createWallet(passwordInput, recoveryPhrases -> {
+                // Go to the next page after wallet creation is done
+                Utils.setCryptoOnboarding(false);
+                onNextPage.gotoNextPage(false);
+            });
         }
-        Utils.setCryptoOnboarding(false);
-        onNextPage.gotoNextPage(false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
