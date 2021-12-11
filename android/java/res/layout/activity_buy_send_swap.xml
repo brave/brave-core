@@ -126,7 +126,7 @@
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:inputType="number"
+                      android:inputType="numberDecimal"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
@@ -319,7 +319,7 @@
                     android:id="@+id/to_value_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
