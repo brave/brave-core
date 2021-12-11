@@ -163,8 +163,9 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
             }
 
             if (recoveryPhrasesAdapter != null && recoveryPhrasesToVerifyAdapter != null) {
-                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
-                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                List<String> newList =
+                        new ArrayList<>(recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(newList);
                 recoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
             }
 
