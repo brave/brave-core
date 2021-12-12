@@ -82,7 +82,7 @@ interface BraveWalletProvider {
                                         KeyringInfo keyring_info);
 
   // Used for eth_accounts method requests and as part of RequestEthereumPermissions
-  GetAllowedAccounts() => (array<string> accounts, ProviderError error, string message);
+  GetAllowedAccounts(bool include_accounts_when_locked) => (array<string> accounts, ProviderError error, string message);
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);

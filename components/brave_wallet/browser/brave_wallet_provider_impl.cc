@@ -210,6 +210,7 @@ void BraveWalletProviderImpl::AddAndApproveTransaction(
   }
 
   GetAllowedAccounts(
+      false,
       base::BindOnce(&BraveWalletProviderImpl::ContinueAddAndApproveTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      std::move(tx_data), from));
@@ -275,6 +276,7 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
         from));
   } else {
     GetAllowedAccounts(
+        false,
         base::BindOnce(&BraveWalletProviderImpl::
                            ContinueAddAndApprove1559TransactionWithAccounts,
                        weak_factory_.GetWeakPtr(), std::move(callback),
@@ -289,6 +291,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
     const std::string& chain_id) {
   tx_data->chain_id = chain_id;
   GetAllowedAccounts(
+      false,
       base::BindOnce(&BraveWalletProviderImpl::
                          ContinueAddAndApprove1559TransactionWithAccounts,
                      weak_factory_.GetWeakPtr(), std::move(callback),
@@ -359,10 +362,12 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
 
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
-  GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderImpl::ContinueSignMessage, weak_factory_.GetWeakPtr(),
-      checksum_address.ToChecksumAddress(), message_str,
-      std::move(message_bytes), std::move(callback), false));
+  GetAllowedAccounts(
+      false,
+      base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
+                     weak_factory_.GetWeakPtr(),
+                     checksum_address.ToChecksumAddress(), message_str,
+                     std::move(message_bytes), std::move(callback), false));
 }
 
 void BraveWalletProviderImpl::SignTypedMessage(
@@ -397,10 +402,11 @@ void BraveWalletProviderImpl::SignTypedMessage(
 
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
-  GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderImpl::ContinueSignMessage, weak_factory_.GetWeakPtr(),
-      checksum_address.ToChecksumAddress(), message, std::move(eip712_hash),
-      std::move(callback), true));
+  GetAllowedAccounts(
+      false, base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
+                            weak_factory_.GetWeakPtr(),
+                            checksum_address.ToChecksumAddress(), message,
+                            std::move(eip712_hash), std::move(callback), true));
 }
 
 void BraveWalletProviderImpl::ContinueSignMessage(
@@ -563,9 +569,11 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
 }
 
 void BraveWalletProviderImpl::GetAllowedAccounts(
+    bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   DCHECK(delegate_);
   delegate_->GetAllowedAccounts(
+      include_accounts_when_locked,
       base::BindOnce(&BraveWalletProviderImpl::OnGetAllowedAccounts,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -580,8 +588,8 @@ void BraveWalletProviderImpl::OnGetAllowedAccounts(
 
 void BraveWalletProviderImpl::UpdateKnownAccounts() {
   GetAllowedAccounts(
-      base::BindOnce(&BraveWalletProviderImpl::OnUpdateKnownAccounts,
-                     weak_factory_.GetWeakPtr()));
+      false, base::BindOnce(&BraveWalletProviderImpl::OnUpdateKnownAccounts,
+                            weak_factory_.GetWeakPtr()));
 }
 
 void BraveWalletProviderImpl::OnUpdateKnownAccounts(

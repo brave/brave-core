@@ -681,11 +681,12 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     return false;
 
   if (method == kEthAccounts) {
-    brave_wallet_provider_->GetAllowedAccounts(base::BindOnce(
-        &BraveWalletJSHandler::OnGetAllowedAccounts,
-        weak_ptr_factory_.GetWeakPtr(), std::move(id),
-        std::move(global_context), std::move(global_callback),
-        std::move(promise_resolver), isolate, force_json_response));
+    brave_wallet_provider_->GetAllowedAccounts(
+        false, base::BindOnce(
+                   &BraveWalletJSHandler::OnGetAllowedAccounts,
+                   weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                   std::move(global_context), std::move(global_callback),
+                   std::move(promise_resolver), isolate, force_json_response));
   } else if (method == kEthRequestAccounts) {
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &BraveWalletJSHandler::OnEthereumPermissionRequested,
@@ -788,11 +789,12 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
         std::move(global_context), std::move(global_callback),
         std::move(promise_resolver), isolate, force_json_response));
   } else if (method == kGetPermissionsMethod) {
-    brave_wallet_provider_->GetAllowedAccounts(base::BindOnce(
-        &BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested,
-        weak_ptr_factory_.GetWeakPtr(), std::move(id),
-        std::move(global_context), std::move(global_callback),
-        std::move(promise_resolver), isolate, force_json_response));
+    brave_wallet_provider_->GetAllowedAccounts(
+        true, base::BindOnce(
+                  &BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested,
+                  weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                  std::move(global_context), std::move(global_callback),
+                  std::move(promise_resolver), isolate, force_json_response));
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,

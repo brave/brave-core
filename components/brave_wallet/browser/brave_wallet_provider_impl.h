@@ -58,7 +58,8 @@ class BraveWalletProviderImpl final
                                     mojom::ProviderError error,
                                     const std::string& error_message);
   void GetChainId(GetChainIdCallback callback) override;
-  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void GetAllowedAccounts(bool include_accounts_when_locked,
+                          GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(const std::string& json_payload,
                         AddEthereumChainCallback callback) override;
   void SwitchEthereumChain(const std::string& chain_id,

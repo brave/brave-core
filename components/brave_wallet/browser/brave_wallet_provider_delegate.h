@@ -36,7 +36,8 @@ class BraveWalletProviderDelegate {
   virtual GURL GetOrigin() const = 0;
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;
-  virtual void GetAllowedAccounts(GetAllowedAccountsCallback callback) = 0;
+  virtual void GetAllowedAccounts(bool include_accounts_when_locked,
+                                  GetAllowedAccountsCallback callback) = 0;
 };
 
 }  // namespace brave_wallet
