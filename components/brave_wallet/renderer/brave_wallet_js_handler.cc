@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -118,6 +119,47 @@ std::unique_ptr<base::Value> GetJsonRpcRequest(
 
 namespace brave_wallet {
 
+void BraveWalletJSHandler::OnRequestPermissionsAccountsRequested(
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  first_allowed_account_.clear();
+  if (accounts.size() > 0)
+    first_allowed_account_ = accounts[0];
+  // Note that we'll update this from `AccountsChangedEvent` as well, but we
+  // need to update it earlier here before we give a response in case the JS
+  // page has a handler that checks window.ethereum.selectedAddress
+  UpdateAndBindJSProperties();
+  std::unique_ptr<base::Value> formed_response;
+  bool success = error == mojom::ProviderError::kSuccess;
+  if (success && accounts.empty()) {
+    formed_response =
+        GetProviderErrorDictionary(mojom::ProviderError::kUserRejectedRequest,
+                                   "User rejected the request.");
+  } else if (!success) {
+    formed_response = GetProviderErrorDictionary(error, error_message);
+  } else {
+    formed_response =
+        base::Value::ToUniquePtrValue(PermissionRequestResponseToValue(
+            url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin()),
+            accounts));
+  }
+
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response),
+               success && !accounts.empty());
+}
+
 void BraveWalletJSHandler::OnEthereumPermissionRequested(
     base::Value id,
     v8::Global<v8::Context> global_context,
@@ -197,6 +239,42 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
     for (size_t i = 0; i < accounts.size(); i++) {
       formed_response->Append(base::Value(accounts[i]));
     }
+  }
+
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
+}
+
+void BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested(
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  first_allowed_account_.clear();
+  if (accounts.size() > 0)
+    first_allowed_account_ = accounts[0];
+  // Note that we'll update this from `AccountsChangedEvent` as well, but we
+  // need to update it earlier here before we give a response in case the JS
+  // page has a handler that checks window.ethereum.selectedAddress
+  UpdateAndBindJSProperties();
+  std::unique_ptr<base::Value> formed_response;
+  if (error == mojom::ProviderError::kSuccess) {
+    formed_response =
+        base::Value::ToUniquePtrValue(PermissionRequestResponseToValue(
+            url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin()),
+            accounts));
+  } else {
+    formed_response = GetProviderErrorDictionary(error, error_message);
   }
 
   SendResponse(std::move(id), std::move(global_context),
@@ -603,11 +681,12 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     return false;
 
   if (method == kEthAccounts) {
-    brave_wallet_provider_->GetAllowedAccounts(base::BindOnce(
-        &BraveWalletJSHandler::OnGetAllowedAccounts,
-        weak_ptr_factory_.GetWeakPtr(), std::move(id),
-        std::move(global_context), std::move(global_callback),
-        std::move(promise_resolver), isolate, force_json_response));
+    brave_wallet_provider_->GetAllowedAccounts(
+        false, base::BindOnce(
+                   &BraveWalletJSHandler::OnGetAllowedAccounts,
+                   weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                   std::move(global_context), std::move(global_callback),
+                   std::move(promise_resolver), isolate, force_json_response));
   } else if (method == kEthRequestAccounts) {
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &BraveWalletJSHandler::OnEthereumPermissionRequested,
@@ -696,6 +775,26 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,
                        force_json_response));
+  } else if (method == kRequestPermissionsMethod) {
+    std::vector<std::string> restricted_methods;
+    if (!ParseRequestPermissionsParams(normalized_json_request,
+                                       &restricted_methods))
+      return false;
+    if (std::find(restricted_methods.begin(), restricted_methods.end(),
+                  "eth_accounts") == restricted_methods.end())
+      return false;
+    brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
+        &BraveWalletJSHandler::OnRequestPermissionsAccountsRequested,
+        weak_ptr_factory_.GetWeakPtr(), std::move(id),
+        std::move(global_context), std::move(global_callback),
+        std::move(promise_resolver), isolate, force_json_response));
+  } else if (method == kGetPermissionsMethod) {
+    brave_wallet_provider_->GetAllowedAccounts(
+        true, base::BindOnce(
+                  &BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested,
+                  weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                  std::move(global_context), std::move(global_callback),
+                  std::move(promise_resolver), isolate, force_json_response));
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,

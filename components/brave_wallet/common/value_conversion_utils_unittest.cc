@@ -173,4 +173,86 @@ TEST(ValueConversionUtilsUnitTest, ValueToERCToken) {
   EXPECT_EQ(token, expected_token);
 }
 
+TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
+  url::Origin origin = url::Origin::Create(GURL("https://brave.com"));
+  std::vector<std::string> accounts{
+      "0xA99D71De40D67394eBe68e4D0265cA6C9D421029"};
+  base::Value value = PermissionRequestResponseToValue(origin, accounts);
+
+  // [{
+  //   "caveats":[
+  //     {
+  //       "name":"primaryAccountOnly",
+  //        "type":"limitResponseLength",
+  //        "value":1
+  //     }, {
+  //       "name":"exposedAccounts",
+  //       "type":"filterResponse",
+  //       "value": ["0xA99D71De40D67394eBe68e4D0265cA6C9D421029"]
+  //     }
+  //   ],
+  //   "context":[
+  //     "https://github.com/MetaMask/rpc-cap"
+  //   ],
+  //   "date":1.637594791027276e+12,
+  //   "id":"2485c0da-2131-4801-9918-26e8de929a29",
+  //   "invoker":"https://brave.com",
+  //   "parentCapability":"eth_accounts"
+  // }]"
+
+  base::ListValue* list_value;
+  ASSERT_TRUE(value.GetAsList(&list_value));
+  ASSERT_EQ(list_value->GetList().size(), 1UL);
+
+  base::Value& param0 = list_value->GetList()[0];
+  base::Value* caveats = param0.FindListPath("caveats");
+  ASSERT_NE(caveats, nullptr);
+  ASSERT_EQ(caveats->GetList().size(), 2UL);
+
+  base::Value& caveats0 = caveats->GetList()[0];
+  std::string* name = caveats0.FindStringKey("name");
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(*name, "primaryAccountOnly");
+  std::string* type = caveats0.FindStringKey("type");
+  ASSERT_NE(type, nullptr);
+  EXPECT_EQ(*type, "limitResponseLength");
+  absl::optional<int> primary_accounts_only_value =
+      caveats0.FindIntKey("value");
+  ASSERT_NE(primary_accounts_only_value, absl::nullopt);
+  EXPECT_EQ(*primary_accounts_only_value, 1);
+
+  base::Value& caveats1 = caveats->GetList()[1];
+  name = caveats1.FindStringKey("name");
+  ASSERT_NE(name, nullptr);
+  EXPECT_EQ(*name, "exposedAccounts");
+  type = caveats1.FindStringKey("type");
+  ASSERT_NE(type, nullptr);
+  EXPECT_EQ(*type, "filterResponse");
+  base::Value* exposed_accounts = caveats1.FindListKey("value");
+  ASSERT_NE(exposed_accounts, nullptr);
+  ASSERT_EQ(exposed_accounts->GetList().size(), 1UL);
+  EXPECT_EQ(exposed_accounts->GetList()[0],
+            base::Value("0xA99D71De40D67394eBe68e4D0265cA6C9D421029"));
+
+  base::Value* context = param0.FindListPath("context");
+  ASSERT_NE(context, nullptr);
+  ASSERT_EQ(context->GetList().size(), 1UL);
+  EXPECT_EQ(context->GetList()[0],
+            base::Value("https://github.com/MetaMask/rpc-cap"));
+
+  absl::optional<double> date = param0.FindDoubleKey("date");
+  ASSERT_NE(date, absl::nullopt);
+
+  std::string* id = param0.FindStringKey("id");
+  ASSERT_NE(id, nullptr);
+
+  std::string* invoker = param0.FindStringKey("invoker");
+  ASSERT_NE(invoker, nullptr);
+  EXPECT_EQ(*invoker, "https://brave.com");
+
+  std::string* parent_capability = param0.FindStringKey("parentCapability");
+  ASSERT_NE(parent_capability, nullptr);
+  EXPECT_EQ(*parent_capability, "eth_accounts");
+}
+
 }  // namespace brave_wallet

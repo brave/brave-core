@@ -71,13 +71,14 @@ void OnRequestEthereumPermissions(
 }
 
 void OnGetAllowedAccounts(
+    bool include_accounts_when_locked,
     const absl::optional<std::string>& selected_account,
     bool keyring_locked,
     BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
     bool success,
     const std::vector<std::string>& allowed_accounts) {
   std::vector<std::string> filtered_accounts;
-  if (!keyring_locked) {
+  if (!keyring_locked || include_accounts_when_locked) {
     filtered_accounts = FilterAccounts(allowed_accounts, selected_account);
   }
 
@@ -126,9 +127,11 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     return;
   }
 
-  GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  GetAllowedAccounts(
+      false,
+      base::BindOnce(
+          &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
@@ -185,12 +188,13 @@ void BraveWalletProviderDelegateImpl::
 }
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+    bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   absl::optional<std::string> selected_account =
       keyring_controller_->GetSelectedAccount();
   keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
       [](const content::GlobalRenderFrameHostId& host_id,
-         GetAllowedAccountsCallback callback,
+         GetAllowedAccountsCallback callback, bool include_accounts_when_locked,
          const absl::optional<std::string>& selected_account,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         std::vector<std::string> addresses;
@@ -200,10 +204,12 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
 
         permissions::BraveEthereumPermissionContext::GetAllowedAccounts(
             content::RenderFrameHost::FromID(host_id), addresses,
-            base::BindOnce(&OnGetAllowedAccounts, selected_account,
-                           keyring_info->is_locked, std::move(callback)));
+            base::BindOnce(&OnGetAllowedAccounts, include_accounts_when_locked,
+                           selected_account, keyring_info->is_locked,
+                           std::move(callback)));
       },
-      host_id_, std::move(callback), selected_account));
+      host_id_, std::move(callback), include_accounts_when_locked,
+      selected_account));
 }
 
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {

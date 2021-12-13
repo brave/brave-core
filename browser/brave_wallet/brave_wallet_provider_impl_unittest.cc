@@ -253,12 +253,15 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  std::vector<std::string> GetAllowedAccounts() {
+  std::vector<std::string> GetAllowedAccounts(
+      bool include_accounts_when_locked) {
     std::vector<std::string> allowed_accounts;
     base::RunLoop run_loop;
-    provider()->GetAllowedAccounts(base::BindLambdaForTesting(
-        [&](const std::vector<std::string>& accounts,
-            mojom::ProviderError error, const std::string& error_message) {
+    provider()->GetAllowedAccounts(
+        include_accounts_when_locked,
+        base::BindLambdaForTesting([&](const std::vector<std::string>& accounts,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
           allowed_accounts = accounts;
           EXPECT_EQ(error, mojom::ProviderError::kSuccess);
           EXPECT_TRUE(error_message.empty());
@@ -293,6 +296,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   KeyringController* keyring_controller() { return keyring_controller_; }
   BraveWalletProviderImpl* provider() { return provider_.get(); }
   std::string from(size_t from_index = 0) {
+    CHECK(!keyring_controller_->IsLocked());
     return keyring_controller()->default_keyring_->GetAddress(from_index);
   }
 
@@ -994,11 +998,14 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   GURL url("https://brave.com");
   Navigate(url);
 
+  std::string account0 = from(0);
+
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(url, 0);
   Lock();
   // Allowed accounts is empty when locked
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   std::vector<std::string> allowed_accounts;
   base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
@@ -1012,12 +1019,13 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
 
   EXPECT_TRUE(keyring_controller()->HasPendingUnlockRequest());
   // Allowed accounts is still empty when locked
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   Unlock();
   run_loop.Run();
 
   EXPECT_FALSE(keyring_controller()->HasPendingUnlockRequest());
-  EXPECT_EQ(allowed_accounts, std::vector<std::string>{from(0)});
+  EXPECT_EQ(allowed_accounts, std::vector<std::string>{account0});
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
@@ -1383,42 +1391,59 @@ TEST_F(BraveWalletProviderImplUnitTest, GetAllowedAccounts) {
   GURL url("https://brave.com");
   Navigate(url);
 
+  std::string account0 = from(0);
+  std::string account1 = from(1);
+
   // When nothing is allowed, empty array should be returned
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>());
 
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(url, 0);
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
 
   // Multiple accounts can be returned
   AddEthereumPermission(url, 1);
-  EXPECT_EQ(GetAllowedAccounts(), (std::vector<std::string>{from(0), from(1)}));
+  EXPECT_EQ(GetAllowedAccounts(false),
+            (std::vector<std::string>{account0, account1}));
+  EXPECT_EQ(GetAllowedAccounts(true),
+            (std::vector<std::string>{account0, account1}));
 
   // Resetting permissions should return the remaining allowed account
   ResetEthereumPermission(url, 1);
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
 
   // Locking the keyring does not return any accounts
   Lock();
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
 
   // Unlocking restores the accounts that were previously allowed
   Unlock();
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(url, 1);
   SetSelectedAccount(from(0));
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(0)});
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   SetSelectedAccount(from(1));
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>{from(1)});
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account1});
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account1});
   SetSelectedAccount(from(2));
-  EXPECT_EQ(GetAllowedAccounts(), (std::vector<std::string>{from(0), from(1)}));
+  EXPECT_EQ(GetAllowedAccounts(false),
+            (std::vector<std::string>{account0, account1}));
+  EXPECT_EQ(GetAllowedAccounts(true),
+            (std::vector<std::string>{account0, account1}));
 
   // Resetting all accounts should return an empty array again
   ResetEthereumPermission(url, 0);
   ResetEthereumPermission(url, 1);
-  EXPECT_EQ(GetAllowedAccounts(), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
+  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>());
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {

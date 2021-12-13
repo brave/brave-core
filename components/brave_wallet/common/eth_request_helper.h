@@ -51,6 +51,9 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
 bool ParseWalletWatchAssetParams(const std::string& json,
                                  mojom::ERCTokenPtr* token,
                                  std::string* error_message);
+bool ParseRequestPermissionsParams(
+    const std::string& json,
+    std::vector<std::string>* restricted_methods);
 
 }  // namespace brave_wallet
 

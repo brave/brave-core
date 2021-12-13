@@ -40,7 +40,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   GURL GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void GetAllowedAccounts(bool include_accounts_when_locked,
+                          GetAllowedAccountsCallback callback) override;
 
  private:
   void ContinueRequestEthereumPermissions(

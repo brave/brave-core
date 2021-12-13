@@ -834,4 +834,50 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   EXPECT_TRUE(error_message.empty());
 }
 
+TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
+  std::vector<std::string> restricted_methods;
+
+  std::string json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>{"eth_accounts"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+          "eth_someFutureMethod": {}
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods,
+            (std::vector<std::string>{"eth_accounts", "eth_someFutureMethod"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{}]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>()));
+
+  EXPECT_FALSE(ParseRequestPermissionsParams(json, nullptr));
+  EXPECT_FALSE(ParseRequestPermissionsParams("", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("\"42\"", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{}", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("[]", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: 5 }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [5] }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [] }", &restricted_methods));
+}
+
 }  // namespace brave_wallet
