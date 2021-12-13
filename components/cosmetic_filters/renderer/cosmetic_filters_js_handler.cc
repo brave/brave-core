@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -325,11 +326,14 @@ bool CosmeticFiltersJSHandler::ProcessURL(
   if (callback.has_value()) {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
         "Brave.CosmeticFilters.UrlCosmeticResources");
+    TRACE_EVENT1("brave.adblock", "UrlCosmeticResources", "url", url_.spec());
     cosmetic_filters_resources_->UrlCosmeticResources(
         url_.spec(),
         base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
                        base::Unretained(this), std::move(callback.value())));
   } else {
+    TRACE_EVENT1("brave.adblock", "UrlCosmeticResourcesSync", "url",
+                 url_.spec());
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
         "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
     base::Value result;
