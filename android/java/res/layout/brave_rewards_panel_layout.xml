@@ -19,6 +19,10 @@
                 android:layout_height="wrap_content">
 
                 <include
+                    android:id="@+id/brave_rewards_panel_notification_layout_id"
+                    layout="@layout/brave_rewards_panel_notification_layout" />
+
+                <include
                     android:id="@+id/brave_rewards_onboarding_modal_id"
                     layout="@layout/brave_rewards_onboarding_modal"/>
 
@@ -211,10 +215,6 @@
                         layout="@layout/brave_rewards_panel_settings_layout" />
 
                 </LinearLayout>
-
-                <include
-                    android:id="@+id/brave_rewards_panel_notification_layout_id"
-                    layout="@layout/brave_rewards_panel_notification_layout" />
 
                 <include
                     android:id="@+id/brave_rewards_welcome_layout_id"

@@ -53,6 +53,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -144,6 +145,7 @@ public class BraveRewardsPanel
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
+    private LinearLayout mRewardsMainLayout;
     private final BraveActivity mBraveActivity;
     private final ChromeTabbedActivity mActivity;
     private BraveRewardsHelper mIconFetcher;
@@ -256,6 +258,8 @@ public class BraveRewardsPanel
         LayoutInflater inflater = (LayoutInflater) mAnchorView.getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
+
+        mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
 
         ImageView btnRewardsSettings = mPopupView.findViewById(R.id.btn_rewards_settings);
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
@@ -675,6 +679,11 @@ public class BraveRewardsPanel
         if (mNotificationLayout != null) {
             Log.e(TAG, "mNotificationLayout visible");
             mNotificationLayout.setVisibility(View.VISIBLE);
+            // mRewardsMainLayout.setAlpha(0.4f);
+            int foregroundColor = R.color.rewards_foreground_color;
+            mRewardsMainLayout.setForeground(
+                    new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
+            disableControls(false, mRewardsMainLayout);
         }
 
         setNotificationButtoClickListener();
@@ -767,6 +776,9 @@ public class BraveRewardsPanel
         Log.e(TAG, "hideNotifications");
         if (mNotificationLayout != null) {
             mNotificationLayout.setVisibility(View.GONE);
+            // mRewardsMainLayout.setAlpha(1.0f);
+            mRewardsMainLayout.setForeground(null);
+            disableControls(true, mRewardsMainLayout);
         }
     }
 
@@ -863,13 +875,12 @@ public class BraveRewardsPanel
         setNotificationsControls();
         if (mPopupView != null && PackageUtils.isFirstInstall(mActivity)
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-            if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
-                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                     && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                             Profile.getLastUsedRegularProfile())) {
                 showBraveRewardsOnboardingModal(mPopupView);
                 BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
             } else if (SharedPreferencesManager.getInstance().readInt(
                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                             > BraveRewardsHelper.getBraveRewardsAppOpenCount()
@@ -888,6 +899,12 @@ public class BraveRewardsPanel
     private void showBraveRewardsOnboardingModal(View root) {
         braveRewardsOnboardingModalView = root.findViewById(R.id.brave_rewards_onboarding_modal_id);
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
+
+        // mRewardsMainLayout.setAlpha(0.4f);
+        int foregroundColor = R.color.rewards_foreground_color;
+        mRewardsMainLayout.setForeground(
+                new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
+        disableControls(false, mRewardsMainLayout);
 
         String tosText =
                 String.format(mActivity.getResources().getString(R.string.brave_rewards_tos_text),
@@ -966,6 +983,7 @@ public class BraveRewardsPanel
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(root, true);
             }
         }));
@@ -975,11 +993,20 @@ public class BraveRewardsPanel
             @Override
             public void onClick(View v) {
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
+                // mRewardsMainLayout.setAlpha(1.0f);
+                mRewardsMainLayout.setForeground(null);
+                disableControls(true, mRewardsMainLayout);
             }
         }));
     }
 
     private void showBraveRewardsOnboarding(View root, boolean shouldShowMoreOption) {
+        // mRewardsMainLayout.setAlpha(0.4f);
+        int foregroundColor = R.color.rewards_foreground_color;
+        mRewardsMainLayout.setForeground(
+                new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
+        disableControls(false, mRewardsMainLayout);
+
         braveRewardsOnboardingView = root.findViewById(R.id.brave_rewards_onboarding_layout_id);
         braveRewardsOnboardingView.setVisibility(View.VISIBLE);
         final Button btnNext = braveRewardsOnboardingView.findViewById(R.id.btn_next);
@@ -1038,6 +1065,9 @@ public class BraveRewardsPanel
             @Override
             public void onClick(View v) {
                 braveRewardsOnboardingView.setVisibility(View.GONE);
+                // mRewardsMainLayout.setAlpha(1.0f);
+                mRewardsMainLayout.setForeground(null);
+                disableControls(true, mRewardsMainLayout);
             }
         }));
         braveRewardsOnboardingView.findViewById(R.id.onboarding_first_screen_layout)
@@ -1063,6 +1093,9 @@ public class BraveRewardsPanel
                             == braveRewardsOnboardingPagerAdapter.getCount() - 1) {
                         if (braveRewardsOnboardingView != null) {
                             braveRewardsOnboardingView.setVisibility(View.GONE);
+                            // mRewardsMainLayout.setAlpha(1.0f);
+                            mRewardsMainLayout.setForeground(null);
+                            disableControls(true, mRewardsMainLayout);
                         }
                         if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                     Profile.getLastUsedRegularProfile())) {
@@ -1420,11 +1453,20 @@ public class BraveRewardsPanel
                                 && !isVerifyWalletEnabled()) {
                             showUpholdLoginPopupWindow(btnVerifyWallet);
                         } else {
-                            int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
-                                    ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                                    : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                            Intent intent = BuildVerifyWalletActivityIntent(status);
-                            mActivity.startActivityForResult(intent, requestCode);
+                            if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
+                                BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
+                                        BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_PROVIDER_URL);
+                                dismiss();
+                            } else {
+                                int requestCode =
+                                        (status == BraveRewardsExternalWallet.NOT_CONNECTED)
+                                        ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                                        : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                                Intent intent = BuildVerifyWalletActivityIntent(status);
+                                if (intent != null) {
+                                    mActivity.startActivityForResult(intent, requestCode);
+                                }
+                            }
                         }
                         break;
                     case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
@@ -1767,9 +1809,14 @@ public class BraveRewardsPanel
     private void showUpholdLoginPopupWindow(final View view) {
         PopupWindow loginPopupWindow = new PopupWindow(mActivity);
 
+        // mRewardsMainLayout.setAlpha(0.4f);
+        int foregroundColor = R.color.rewards_foreground_color;
+        mRewardsMainLayout.setForeground(
+                new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
+        disableControls(false, mRewardsMainLayout);
+
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup rewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
         View loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, mPopupView);
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
@@ -1874,9 +1921,6 @@ public class BraveRewardsPanel
     private Intent BuildVerifyWalletActivityIntent(@WalletStatus final int status) {
         Class clazz = null;
         switch (status) {
-            case BraveRewardsExternalWallet.NOT_CONNECTED:
-                clazz = BraveRewardsVerifyWalletActivity.class;
-                break;
             case BraveRewardsExternalWallet.CONNECTED:
             case BraveRewardsExternalWallet.PENDING:
             case BraveRewardsExternalWallet.VERIFIED:
@@ -1897,5 +1941,15 @@ public class BraveRewardsPanel
         intent.putExtra(BraveRewardsExternalWallet.VERIFY_URL, mExternalWallet.getVerifyUrl());
         intent.putExtra(BraveRewardsExternalWallet.WITHDRAW_URL, mExternalWallet.getWithdrawUrl());
         return intent;
+    }
+
+    private void disableControls(boolean enable, ViewGroup vg) {
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            View child = vg.getChildAt(i);
+            child.setEnabled(enable);
+            if (child instanceof ViewGroup) {
+                disableControls(enable, (ViewGroup) child);
+            }
+        }
     }
 }

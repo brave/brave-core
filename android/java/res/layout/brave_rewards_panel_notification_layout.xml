@@ -91,8 +91,9 @@
             <ProgressBar
                 android:id="@+id/claim_progress"
                 android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
-                android:layout_height="40dp"
-                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_width="48dp"
+                android:layout_marginBottom="16dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:visibility="visible"/>

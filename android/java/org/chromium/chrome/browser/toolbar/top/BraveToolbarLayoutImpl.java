@@ -403,7 +403,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     showBraveRewardsOnboardingModal();
                     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                    BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                    // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 }
             }
 
@@ -770,6 +770,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             public void onClick(View v) {
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 dialog.dismiss();
             }
         }));
