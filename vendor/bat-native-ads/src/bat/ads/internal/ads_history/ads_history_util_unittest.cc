@@ -51,6 +51,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
   expected_ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
   expected_ad_history.ad_content.creative_set_id = ad.creative_set_id;
   expected_ad_history.ad_content.campaign_id = ad.campaign_id;
+  expected_ad_history.ad_content.advertiser_id = ad.advertiser_id;
   expected_ad_history.ad_content.brand = "title";
   expected_ad_history.ad_content.brand_info = "description";
   expected_ad_history.ad_content.brand_display_url =

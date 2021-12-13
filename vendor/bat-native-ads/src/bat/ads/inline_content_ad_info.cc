@@ -5,6 +5,7 @@
 
 #include "bat/ads/inline_content_ad_info.h"
 
+#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -36,6 +37,99 @@ bool InlineContentAdInfo::IsValid() const {
   if (title.empty() || description.empty() || image_url.empty() ||
       dimensions.empty() || cta_text.empty()) {
     return false;
+  }
+
+  return true;
+}
+
+base::DictionaryValue InlineContentAdInfo::ToValue() const {
+  base::DictionaryValue dictionary;
+
+  dictionary.SetKey("uuid", base::Value(uuid));
+  dictionary.SetKey("creativeInstanceId", base::Value(creative_instance_id));
+  dictionary.SetKey("creativeSetId", base::Value(creative_set_id));
+  dictionary.SetKey("campaignId", base::Value(campaign_id));
+  dictionary.SetKey("advertiserId", base::Value(advertiser_id));
+  dictionary.SetKey("segment", base::Value(segment));
+  dictionary.SetKey("title", base::Value(title));
+  dictionary.SetKey("description", base::Value(description));
+  dictionary.SetKey("imageUrl", base::Value(image_url));
+  dictionary.SetKey("dimensions", base::Value(dimensions));
+  dictionary.SetKey("ctaText", base::Value(cta_text));
+  dictionary.SetKey("targetUrl", base::Value(target_url));
+
+  return dictionary;
+}
+
+bool InlineContentAdInfo::FromValue(const base::Value& value) {
+  const base::DictionaryValue* dictionary = nullptr;
+  if (!(&value)->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  const std::string* uuid_value = dictionary->FindStringKey("uuid");
+  if (uuid_value) {
+    uuid = *uuid_value;
+  }
+
+  const std::string* creative_instance_id_value =
+      dictionary->FindStringKey("creativeInstanceId");
+  if (creative_instance_id_value) {
+    creative_instance_id = *creative_instance_id_value;
+  }
+
+  const std::string* creative_set_id_value =
+      dictionary->FindStringKey("creativeSetId");
+  if (creative_set_id_value) {
+    creative_set_id = *creative_set_id_value;
+  }
+
+  const std::string* campaign_id_value =
+      dictionary->FindStringKey("campaignId");
+  if (campaign_id_value) {
+    campaign_id = *campaign_id_value;
+  }
+
+  const std::string* advertiser_id_value =
+      dictionary->FindStringKey("advertiserId");
+  if (advertiser_id_value) {
+    advertiser_id = *campaign_id_value;
+  }
+
+  const std::string* segment_value = dictionary->FindStringKey("segment");
+  if (segment_value) {
+    segment = *segment_value;
+  }
+
+  const std::string* title_value = dictionary->FindStringKey("title");
+  if (title_value) {
+    title = *title_value;
+  }
+
+  const std::string* description_value =
+      dictionary->FindStringKey("description");
+  if (description_value) {
+    description = *description_value;
+  }
+
+  const std::string* image_url_value = dictionary->FindStringKey("imageUrl");
+  if (image_url_value) {
+    image_url = *image_url_value;
+  }
+
+  const std::string* dimensions_value = dictionary->FindStringKey("dimensions");
+  if (dimensions_value) {
+    dimensions = *dimensions_value;
+  }
+
+  const std::string* cta_text_value = dictionary->FindStringKey("ctaText");
+  if (cta_text_value) {
+    cta_text = *cta_text_value;
+  }
+
+  const std::string* target_url_value = dictionary->FindStringKey("targetUrl");
+  if (target_url_value) {
+    target_url = *target_url_value;
   }
 
   return true;

@@ -14,6 +14,7 @@
 #include "bat/ads/export.h"
 
 namespace base {
+class DictionaryValue;
 class Value;
 }  // namespace base
 
@@ -30,7 +31,7 @@ struct ADS_EXPORT AdContentInfo final {
   AdContentLikeActionType ToggleThumbUpActionType() const;
   AdContentLikeActionType ToggleThumbDownActionType() const;
 
-  base::Value ToValue() const;
+  base::DictionaryValue ToValue() const;
   bool FromValue(const base::Value& value);
 
   std::string ToJson() const;
@@ -41,6 +42,7 @@ struct ADS_EXPORT AdContentInfo final {
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
+  std::string advertiser_id;
   std::string brand;
   std::string brand_info;
   std::string brand_display_url;

@@ -17,7 +17,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
-#include "bat/ads/internal/client/preferences/filtered_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info_aliases.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
 #include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
@@ -49,7 +49,7 @@ class Client final {
 
   void Initialize(InitializeCallback callback);
 
-  FilteredAdList GetFilteredAds() const;
+  FilteredAdvertiserList GetFilteredAdvertisers() const;
   FilteredCategoryList GetFilteredCategories() const;
   FlaggedAdList GetFlaggedAds() const;
 

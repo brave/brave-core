@@ -22,8 +22,8 @@ bool AdContentInfo::operator==(const AdContentInfo& rhs) const {
   return type == rhs.type && uuid == rhs.uuid &&
          creative_instance_id == rhs.creative_instance_id &&
          creative_set_id == rhs.creative_set_id &&
-         campaign_id == rhs.campaign_id && brand == rhs.brand &&
-         brand_info == rhs.brand_info &&
+         campaign_id == rhs.campaign_id && advertiser_id == rhs.advertiser_id &&
+         brand == rhs.brand && brand_info == rhs.brand_info &&
          brand_display_url == rhs.brand_display_url &&
          brand_url == rhs.brand_url &&
          like_action_type == rhs.like_action_type &&
@@ -51,14 +51,15 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
   }
 }
 
-base::Value AdContentInfo::ToValue() const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+base::DictionaryValue AdContentInfo::ToValue() const {
+  base::DictionaryValue dictionary;
 
   dictionary.SetKey("adType", base::Value(type.value()));
   dictionary.SetKey("uuid", base::Value(uuid));
   dictionary.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   dictionary.SetKey("creativeSetId", base::Value(creative_set_id));
   dictionary.SetKey("campaignId", base::Value(campaign_id));
+  dictionary.SetKey("advertiserId", base::Value(advertiser_id));
   dictionary.SetKey("brand", base::Value(brand));
   dictionary.SetKey("brandInfo", base::Value(brand_info));
   dictionary.SetKey("brandDisplayUrl", base::Value(brand_display_url));
@@ -104,6 +105,12 @@ bool AdContentInfo::FromValue(const base::Value& value) {
       dictionary->FindStringKey("campaignId");
   if (campaign_id_value) {
     campaign_id = *campaign_id_value;
+  }
+
+  const std::string* advertiser_id_value =
+      dictionary->FindStringKey("advertiserId");
+  if (advertiser_id_value) {
+    advertiser_id = *advertiser_id_value;
   }
 
   const std::string* brand_value = dictionary->FindStringKey("brand");
@@ -191,6 +198,10 @@ bool AdContentInfo::FromJson(const std::string& json) {
     campaign_id = document["campaign_id"].GetString();
   }
 
+  if (document.HasMember("advertiser_id")) {
+    advertiser_id = document["advertiser_id"].GetString();
+  }
+
   if (document.HasMember("brand")) {
     brand = document["brand"].GetString();
   }
@@ -245,6 +256,9 @@ void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
 
   writer->String("campaign_id");
   writer->String(info.campaign_id.c_str());
+
+  writer->String("advertiser_id");
+  writer->String(info.advertiser_id.c_str());
 
   writer->String("brand");
   writer->String(info.brand.c_str());

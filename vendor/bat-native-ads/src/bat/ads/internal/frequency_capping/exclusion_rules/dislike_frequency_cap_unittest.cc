@@ -15,8 +15,7 @@
 namespace ads {
 
 namespace {
-const char kCreativeInstanceId[] = "9cf19f6e-25b8-44f1-9050-2a7247185489";
-const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+const char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
 }  // namespace
 
 class BatAdsDislikeFrequencyCapTest : public UnitTestBase {
@@ -29,8 +28,7 @@ class BatAdsDislikeFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsDislikeFrequencyCapTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.advertiser_id = kAdvertiserId;
 
   // Act
   DislikeFrequencyCap frequency_cap;
@@ -43,12 +41,10 @@ TEST_F(BatAdsDislikeFrequencyCapTest, AllowAd) {
 TEST_F(BatAdsDislikeFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.advertiser_id = kAdvertiserId;
 
   AdContentInfo ad_content;
-  ad_content.creative_instance_id = kCreativeInstanceId;
-  ad_content.creative_set_id = kCreativeSetId;
+  ad_content.advertiser_id = kAdvertiserId;
   ad_content.like_action_type = AdContentLikeActionType::kNeutral;
   Client::Get()->ToggleAdThumbDown(ad_content);
 

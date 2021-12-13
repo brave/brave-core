@@ -1277,19 +1277,7 @@ void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
     ads::InlineContentAdInfo ad;
     ad.FromJson(json);
 
-    dictionary.SetKey("uuid", base::Value(ad.uuid));
-    dictionary.SetKey("creativeInstanceId",
-                      base::Value(ad.creative_instance_id));
-    dictionary.SetKey("creativeSetId", base::Value(ad.creative_set_id));
-    dictionary.SetKey("campaignId", base::Value(ad.campaign_id));
-    dictionary.SetKey("advertiserId", base::Value(ad.advertiser_id));
-    dictionary.SetKey("segment", base::Value(ad.segment));
-    dictionary.SetKey("title", base::Value(ad.title));
-    dictionary.SetKey("description", base::Value(ad.description));
-    dictionary.SetKey("imageUrl", base::Value(ad.image_url));
-    dictionary.SetKey("dimensions", base::Value(ad.dimensions));
-    dictionary.SetKey("ctaText", base::Value(ad.cta_text));
-    dictionary.SetKey("targetUrl", base::Value(ad.target_url));
+    dictionary = ad.ToValue();
   }
 
   std::move(callback).Run(success, dimensions, dictionary);
@@ -1303,58 +1291,24 @@ void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
   // Build the list structure required by the webUI
   int uuid = 0;
   base::ListValue list;
+
   for (const auto& item : ads_history.items) {
-    base::DictionaryValue ad_content_dictionary;
-    ad_content_dictionary.SetKey("adType",
-                                 base::Value(item.ad_content.type.value()));
-    ad_content_dictionary.SetKey("uuid", base::Value(item.ad_content.uuid));
-    ad_content_dictionary.SetKey(
-        "creativeInstanceId",
-        base::Value(item.ad_content.creative_instance_id));
-    ad_content_dictionary.SetKey("creativeSetId",
-                                 base::Value(item.ad_content.creative_set_id));
-    ad_content_dictionary.SetKey("campaignId",
-                                 base::Value(item.ad_content.campaign_id));
-    ad_content_dictionary.SetKey("brand", base::Value(item.ad_content.brand));
-    ad_content_dictionary.SetKey("brandInfo",
-                                 base::Value(item.ad_content.brand_info));
-    ad_content_dictionary.SetKey(
-        "brandDisplayUrl", base::Value(item.ad_content.brand_display_url));
-    ad_content_dictionary.SetKey("brandUrl",
-                                 base::Value(item.ad_content.brand_url));
-    ad_content_dictionary.SetKey(
-        "likeAction",
-        base::Value(static_cast<int>(item.ad_content.like_action_type)));
-    ad_content_dictionary.SetKey(
-        "adAction",
-        base::Value(std::string(item.ad_content.confirmation_type)));
-    ad_content_dictionary.SetKey("savedAd",
-                                 base::Value(item.ad_content.is_saved));
-    ad_content_dictionary.SetKey("flaggedAd",
-                                 base::Value(item.ad_content.is_flagged));
-
-    base::DictionaryValue category_content_dictionary;
-    category_content_dictionary.SetKey(
-        "category", base::Value(item.category_content.category));
-    category_content_dictionary.SetKey(
-        "optAction",
-        base::Value(static_cast<int>(item.category_content.opt_action_type)));
-
     base::DictionaryValue ad_history_dictionary;
+    base::DictionaryValue ad_content_dictionary = item.ad_content.ToValue();
     ad_history_dictionary.SetPath("adContent",
                                   std::move(ad_content_dictionary));
+    base::DictionaryValue category_content_dictionary =
+        item.category_content.ToValue();
     ad_history_dictionary.SetPath("categoryContent",
                                   std::move(category_content_dictionary));
-
-    base::DictionaryValue dictionary;
-
-    dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
-    auto time = base::Time::FromDoubleT(item.timestamp);
-    auto js_time = time.ToJsTime();
-    dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
-
     base::ListValue ad_history_list;
     ad_history_list.Append(std::move(ad_history_dictionary));
+
+    base::DictionaryValue dictionary;
+    dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
+    const base::Time time = base::Time::FromDoubleT(item.timestamp);
+    const double js_time = time.ToJsTimeIgnoringNull();
+    dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
     dictionary.SetPath("adDetailRows", std::move(ad_history_list));
 
     list.Append(std::move(dictionary));
