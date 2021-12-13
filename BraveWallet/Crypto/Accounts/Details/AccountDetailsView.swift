@@ -93,7 +93,7 @@ struct AccountDetailsView: View {
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { presentationMode.dismiss() }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }

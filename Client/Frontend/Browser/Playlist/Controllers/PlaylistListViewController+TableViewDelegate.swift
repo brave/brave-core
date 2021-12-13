@@ -62,7 +62,7 @@ extension PlaylistListViewController: UITableViewDelegate {
                             tableView.reloadRows(at: [indexPath], with: .automatic)
                         }))
                         
-                        alert.addAction(UIAlertAction(title: Strings.CancelString, style: .cancel, handler: nil))
+                        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     } else {
                         PlaylistManager.shared.download(item: currentItem)

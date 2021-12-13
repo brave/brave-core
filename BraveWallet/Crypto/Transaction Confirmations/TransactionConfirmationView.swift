@@ -6,8 +6,8 @@
 import SwiftUI
 import BraveCore
 import BraveUI
-import struct Shared.Strings
 import BigNumber
+import Shared
 
 struct TransactionConfirmationView: View {
   var transactions: [BraveWallet.TransactionInfo]
@@ -301,7 +301,7 @@ struct TransactionConfirmationView: View {
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { presentationMode.dismiss() }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }

@@ -132,7 +132,7 @@ struct AccountPicker: View {
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { isPresentingPicker = false }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }

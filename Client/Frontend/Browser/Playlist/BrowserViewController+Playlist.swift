@@ -346,7 +346,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
                 }
             }))
             
-            alert.addAction(UIAlertAction(title: Strings.CancelString, style: .cancel, handler: { _ in
+            alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { _ in
                 completion?(false)
             }))
             

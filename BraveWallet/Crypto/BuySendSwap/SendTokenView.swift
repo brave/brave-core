@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
-import struct Shared.Strings
+import Shared
 import BraveUI
 import BigNumber
 
@@ -180,7 +180,7 @@ struct SendTokenView: View {
           Button(action: {
             presentationMode.dismiss()
           }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }

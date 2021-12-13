@@ -5,8 +5,8 @@
 
 import SwiftUI
 import AVFoundation
-import Shared
 import SnapKit
+import Shared
 
 struct AddressQRCodeScannerView: View {
   @Binding var address: String
@@ -33,7 +33,7 @@ struct AddressQRCodeScannerView: View {
           Button(action: {
             presentationMode.dismiss()
           }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }
@@ -51,7 +51,7 @@ struct AddressQRCodeScannerView: View {
             Button(action: {
               presentationMode.dismiss()
             }) {
-              Text(Strings.CancelString)
+              Text(Strings.cancelButtonTitle)
                 .foregroundColor(Color(.braveOrange))
             }
           }
