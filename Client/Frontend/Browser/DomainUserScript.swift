@@ -75,7 +75,7 @@ enum DomainUserScript: CaseIterable {
         case .archive:
             return "ArchiveIsCompat"
         case .braveSearch:
-            return "BraveServicesHelper"
+            return "BraveSearchHelper"
         case .braveTalk:
             return "BraveTalkHelper"
         }
