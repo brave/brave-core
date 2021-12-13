@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Lengkapkan pengesahan dompet</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
 <translation id="3656941797339037856">Pautkan Ganjaran ke Gemini!</translation>
-<translation id="3066983737886188034">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
+<translation id="2383784987664887340">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
+<translation id="2237374144728570574">* APY Gemini Earn setakat 15 September 2021</translation>
 <translation id="7404779623219601861">Menebus BAT untuk Kad Hadiah</translation>
 <translation id="6215565499749144110">Dengan Rangkaian TAP, anda boleh menebus BAT anda untuk kad hadiah jenama terkenal.</translation>
 <translation id="6915065518766963119">* Memerlukan Pengesahan Jaminan.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">alamat 0x atau url</translation>
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
+<translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
 <translation id="8303434745767477417">Tahan aset kripto dalam jagaan anda. Jejak prestasi portfolio, dan berinteraksi dengan aplikasi nyahpusat web 3. Dagangkan, labur, pinjam, dan beri pinjam dengan DeFi. Semuanya daripada pelayar privasi Brave. Tiada sambungan dan muat turut diperlukan.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
 <translation id="5317781812114905957">Arahan</translation>
 <translation id="1178198982208000092">Sambungkan <ph name="DEVICE_NAME"/> anda</translation>
+<translation id="4358411489835404360">Dompet perkakasan memerlukan pengesahan pada peranti. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Dompet perkakasan memerlukan Aplikasi Ethereum dibuka pada <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dihantar</translation>
 <translation id="5013754027092416509">diterima</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Data JSON tidak dijangka</translation>
 <translation id="3282936527763045737">Kata laluan tidak betul</translation>
 <translation id="1119447706177454957">Ralat dalaman</translation>
+<translation id="3327639091470204775">Tidak dapat menyambung ke jambatan Trezor</translation>
 <translation id="6672377693827764095">Ralat dalaman, Gagal untuk mendapatkan akaun</translation>
 <translation id="8933250418452564886">Tidak dapat mencari transaksi perkakasan, sila cuba lagi</translation>
 <translation id="5999974802900788338">Menerima ralat dari peranti perkakasan, mungkin anda perlu mengesahkan transaksi pada peranti anda</translation>

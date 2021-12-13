@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="6821903322090655051">ปิดใช้งาน Brave Rewards แล้ว</translation>
+<translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
@@ -103,6 +104,7 @@
 <translation id="7895302206188277628">เนื้อหาที่เชื่อมโยง</translation>
 <translation id="3654831858282189202">เผยแพร่ด้วยคีย์ IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">นำเข้าข้อความที่เลือกไปยัง IPFS</translation>
 <translation id="6925604404524625582">นำเข้าและคัดลอกลิงค์ไปยังสแนปชอต IPFS</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
@@ -225,6 +227,7 @@
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับ DNS ตลอดจนการพิจารณาความเป็นส่วนตัวของ HTTPS และ Ethereum</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">ตั้งค่าคีย์ IPNS ของคุณ</translation>
 <translation id="951216659045543447">ลงชื่อเนื้อหาโดยใช้คีย์ส่วนตัวที่เกี่ยวข้องและเผยแพร่ไปยัง IPNS</translation>
@@ -426,6 +429,7 @@
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="2556708692502648323">เครือข่ายกระเป๋าเงิน</translation>
 <translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
+<translation id="3423620355610881890">เลขทศนิยมฐานสิบ</translation>
 <translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
 <translation id="1034112277864078119">ระบุชื่อ Chain</translation>
 <translation id="4672314527143443556">ชื่อสกุลเงินของ Chain</translation>
@@ -439,6 +443,7 @@
 <translation id="3047726704186619366">URL ไอคอน</translation>
 <translation id="2487558607408469181">URL ของ Block Explorer</translation>
 <translation id="6301398959353668507">ต้องกรอกข้อมูลในช่องนี้</translation>
+<translation id="7504462451153306677">รูปแบบไม่ถูกต้อง Chain ID ต้องเป็นจำนวนบวก</translation>
 <translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
 <translation id="650071759190249039">เกิดข้อผิดพลาดภายใน ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="868529041590572443">กรุณากรอกข้อมูลเกี่ยวกับสกุลเงินประจำกระดานเทรดทั้งหมด</translation>

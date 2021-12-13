@@ -55,6 +55,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="6821903322090655051">Brave Rewards ir atspējots</translation>
+<translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="3849957491997306859">Automātiski uztverts</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
 <translation id="4176463684765177261">Atspējots</translation>
@@ -428,6 +429,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
 <translation id="2556708692502648323">Maciņa tīkli</translation>
 <translation id="1330032157352961756">Jaunās ķēdes ID</translation>
+<translation id="3423620355610881890">Pozitīvs decimālskaitlis</translation>
 <translation id="726121047592132939">Jaunas ķēdes nosaukums</translation>
 <translation id="1034112277864078119">Ievadīt ķēdes nosaukumu</translation>
 <translation id="4672314527143443556">Ķēdes valūtas nosaukums</translation>
@@ -441,6 +443,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3047726704186619366">Ikonas URL</translation>
 <translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
 <translation id="6301398959353668507">Šis lauks nevar būt tukšs.</translation>
+<translation id="7504462451153306677">Nederīgs formāts, ķēdes ID ir pozitīvs skaitlis</translation>
 <translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
 <translation id="650071759190249039">Iekšēja kļūda, nav iespējams pievienot tīklu.</translation>
 <translation id="868529041590572443">Lūdzu, ievadiet informāciju par pamata valūtu</translation>

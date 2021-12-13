@@ -527,27 +527,27 @@
 <translation id="6146966915297143881">המשיכו לכניסה</translation>
 <translation id="1483493594462132177">שלח</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="8825032646286791700">DeFi &amp; אבטחת מטבע קריפטו</translation>
-<translation id="5460364286096798286">החזקת מטבע קריפטו במשמורת שלך. מסחר בנכסים. הצגת מחירים וביצועי תיק השקעות. השקעה שאילה והשאלה עם DeFi.</translation>
-<translation id="1748009926009835882">הגדר קריפטו</translation>
+<translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
+<translation id="8339846196588658366">החזק נכסי קריפטו במשמורת שלך ועקוב אחרי ביצועי תיק ההשקעות. כל זה ישירות בדפדפן הפרטיות של Brave.</translation>
+<translation id="4472575034687746823">תחילת העבודה</translation>
 <translation id="2759836790106646094">גבה את הארנק שלך כעת!</translation>
-<translation id="5156354224138379811">בשלב הבא יופיעו 12 מילים שמאפשרות לך לשחזר את ארנק הקריפטו שלך.</translation>
+<translation id="1078873179929044999">בצעד הבא תראה’ ביטוי שחזור בן 12 מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
 <translation id="2359808026110333948">המשך</translation>
-<translation id="5024543173656851695">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
+<translation id="1904000155026201268">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="3933122286596948824">ביטוי השחזור שלך</translation>
-<translation id="6146351434671268516">יש לרשום או להעתיק מילים אלה בסדר הנכון ולשמור אותן במקום בטוח.</translation>
-<translation id="7408247683131762445">אזהרה: לעולם אין לחשוף את ביטוי הגיבוי שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
-<translation id="939275786514736244">גיביתי את הסיסמה שלי במקום בטוח</translation>
+<translation id="5077747669435508720">יש לרשום או להעתיק את המילים האלה בסדר המדויק המוצג להלן, ולשמור אותן במקום בטוח. ביטוי השחזור שלך הוא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם ברצונך להחליף ארנק.</translation>
+<translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
+<translation id="111912712268284159">גיביתי את ביטוי השחזור שלי במקום בטוח</translation>
 <translation id="6896758677409633944">העתקה</translation>
-<translation id="2604744480284798833">גבה כעת את ארנקך כעת כדי להגן על תיק הקריפטו שלך מפני אובדן גישה.</translation>
-<translation id="8289942708804097960">קנה מטבע קריפטו עם Apple Pay, כרטיס אשראי או חיוב</translation>
+<translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
+<translation id="8289942708804097960">קנה קריפטו עם כרטיס אשראי או חיוב.</translation>
 <translation id="841880029259839903">שלח מטבע קריפטו או העבר מחשבון אחד לשני.</translation>
 <translation id="8982246458261383692">החלף נכסי קריפטו עם אגרגטור Brave DEX.</translation>
 <translation id="1783600039044302171">אבטח את מטבע הקריפטו שלך עם סיסמה</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
-<translation id="4450951602553063001">הזן מחדש סיסמה</translation>
-<translation id="1783870616707290226">הסיסמה חייבת להיות באורך של 7 ספרות או יותר</translation>
-<translation id="7383102760859258982">הסיסמה שהוקלדה מחדש אינה תואמת</translation>
+<translation id="3038243139480464605">אמת סיסמה</translation>
+<translation id="3717685683157254329">הסיסמה חייבת להיות באורך של 7 תווים לפחות ולהכיל לפחות אות אחת, מספר אחד ותו מיוחד אחד.</translation>
+<translation id="7396672979287122068">הסיסמה המאומתת אינה תואמת</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">יום אחד</translation>
 <translation id="7640956400175663828">שבוע אחד</translation>
@@ -556,24 +556,25 @@
 <translation id="6977728312178289892">שנה אחת</translation>
 <translation id="6895566650974550243">הכול</translation>
 <translation id="5071303414930953888">חשבון <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">הוסף חשבון</translation>
-<translation id="2632612428525029752">עדכון חשבון</translation>
+<translation id="7665369617277396874">חשבון חדש</translation>
+<translation id="3448492834076427715">עדכן חשבון</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">להפעיל ביטול נעילה בטביעת אצבע?</translation>
 <translation id="5493402808936397665">הפעלת ביומטריה כדי לבטל נעילה במהירות של הארנק שלך מבלי להזין סיסמה.</translation>
-<translation id="1544192797660353713">ארנק</translation>
+<translation id="8030647312184163932">ביטול נעילה באמצעות טביעת אצבע</translation>
+<translation id="4090490645603511157">השתמש בביומטריה כדי לבטל את נעילת הארנק שלך במהירות מבלי להזין סיסמה.</translation>
+<translation id="5379398699598690674">ארנק (בטא)</translation>
 <translation id="6901810042765869341">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
-<translation id="1970161551843843564">שחזר חשבון קריפטו</translation>
+<translation id="9120654436199628567">שחזר חשבון קריפטו</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
 <translation id="283071225285270357">יש להזין את ביטוי השחזור שלך</translation>
 <translation id="2339124864228588937">אמת ביטוי שחזור</translation>
-<translation id="2718669004132381989">הקש על המילים כדי לשים אותן זו לצד זו בסדר הנכון.</translation>
+<translation id="3747079125031086337">בחר את המילים בביטוי השחזור שלך בסדר הנכון שלהן.</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="3157931365184549694">שחזר</translation>
 <translation id="9111102763498581341">בטל נעילה</translation>
 <translation id="6657585470893396449">סיסמה</translation>
-<translation id="1569452037668432756">הזן את הסיסמה שלך כדי לבטל נעילה</translation>
-<translation id="3717685683157254329">הסיסמה חייבת להיות באורך של 7 תווים לפחות והיא חייבת להכיל לפחות מספר אחד ותו מיוחד אחד</translation>
+<translation id="5168349973342709369">הזן סיסמה כדי לפתוח את הארנק</translation>
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="5760476995887363522">ביטויים לא תואמים, יש לנסות שוב.</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
@@ -584,7 +585,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">עד (הערכה)</translation>
 <translation id="6998989275928107238">אל</translation>
-<translation id="6664416064035847539">כתובת או url</translation>
+<translation id="2589431635772931954">כתובת או URL</translation>
 <translation id="632241521608275119">רגישות למעידה</translation>
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="3535654229833214438">העברות</translation>
@@ -614,11 +615,12 @@
 <translation id="2490428413101944234">בדיקת ברז (Faucet)</translation>
 <translation id="2581671693710952401">השג/י את'ר</translation>
 <translation id="8165484222652118977">קבל Ether מברז עבור <ph name="NETWORK"/> בדיקת רשת</translation>
-<translation id="7420359180991315365">המשך אל Wire</translation>
+<translation id="7420359180991315365">המשך ל-Wyre</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
+<translation id="3784455785234192852">נעל</translation>
 <translation id="5040262127954254034">פרטיות</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
-<translation id="414639769490080648">לכמה דקות הנך זקוק לפני הנעילה האוטומטית של ארנק Brave?</translation>
+<translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
 <translation id="6369495274982305511">האם אתה בטוח שברצונך לאפס את הארנק שלך? אם אין גיבוי לארנק שלך, האיפוס יגרום לך לאבד את כל נתוני החשבון (כולל את כל הכספים המשויכים). הקלד "<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# דקה} other {# דקות}}</translation>
@@ -705,7 +707,7 @@
 <translation id="7995708795274219641">סכום + גז</translation>
 <translation id="1950052789869821983">עסקה</translation>
 <translation id="6122742277607781713">תיק השקעות</translation>
-<translation id="750843150060816463">מחיר דלק (Gwei)</translation>
+<translation id="750843150060816463">מחיר Gas (Gwei)</translation>
 <translation id="1426320910664514906">הגבלת דלק</translation>
 <translation id="6389441740143786465">כבה את מרכז השיתוף</translation>
 <translation id="9065203028668620118">עריכה</translation>
@@ -746,6 +748,8 @@
 <translation id="3211051910418903298">מלא את חבילת הגלישה בטלפון בתדירות נמוכה יותר</translation>
 <translation id="1092355580602106002">פחות פרסומות =פחות נתונים בכל דף שאתה טוען. השתמש ב-Brave בכל הגלישות שלך באינטרנט.</translation>
 <translation id="623962032102267945">Brave =פחות נתונים בכל דף</translation>
+<translation id="4355217341028673744">• פרטיות משופרת</translation>
+<translation id="3679020972083025535">• ללא פרסומות מטרידות</translation>
 <translation id="8047527352810290817">עריכת דלק</translation>
 <translation id="7358989216567322955">תעריף עדיפות מירבי</translation>
 <translation id="9091334651803050473">למרות שזה לא מובטח, סביר להניח שכורים יעדיפו את העסקה שלך אם תשלם עמלה גבוהה יותר.</translation>
@@ -758,4 +762,19 @@
 <translation id="1011713837432053857">מגבלת סכום דלק</translation>
 <translation id="1254969878422524947">הגבלת טיפ לפי הדלק(Gwei)</translation>
 <translation id="7373308452149471621">הגבלת מחיר דלק (Gwei)</translation>
+<translation id="5891811606602061966">ייבוא החשבון נכשל. נסה שוב.</translation>
+<translation id="7033470144757208254">Brave משתמש ב-0x כאגרגטור DEX.</translation>
+<translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
+<translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
+<translation id="8574289650879708853">הוסף נכס מותאם אישית</translation>
+<translation id="7791543448312431591">הוספה</translation>
+<translation id="6600400596821238377">שם Token</translation>
+<translation id="4432966365400169165">כתובת חוזה אסימון</translation>
+<translation id="4092152169181928870">סמל אסימון</translation>
+<translation id="4351811224047421378">רמת דיוק עשרוני</translation>
+<translation id="8614026298974065517">הסר נכס מותאם אישית</translation>
+<translation id="4378941981362528553">האם ברצונך להסיר אסימון <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
+<translation id="749944179568745958">כתובת ETH לא חוקית</translation>
+<translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
 </translationbundle>

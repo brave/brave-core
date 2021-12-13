@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="3656941797339037856">Enllaça Brave Rewards amb Gemini!</translation>
-<translation id="3066983737886188034">Gemini us permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49% en els vostres BAT fàcilment. Verifiqueu la vostra cartera de Brave Rewards i enllaceu-la amb Gemini ara!</translation>
+<translation id="2383784987664887340">Gemini us permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49% en els vostres BAT fàcilment. Verifiqueu la vostra cartera de Brave Rewards i enllaceu-la amb Gemini ara!</translation>
+<translation id="2237374144728570574">* Taxa de rendiment anual de Gemini Earn a partir del 15 de setembre de 2021</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x adreça o URL</translation>
 <translation id="2860280209982026951">Brave utilitza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> com a agregador DEX.</translation>
 <translation id="151946611346774041">0x processarà l'adreça ethereum i l'adreça IP per complir una transacció (incloent-hi les cotitzacions). 0x NOMÉS utilitzarà aquestes dades amb l'objectiu de processar transaccions.</translation>
+<translation id="4626407663177532837">El pressupost inclou una taxa de 0,875% de Brave.</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvinguts a la nova cartera de Brave</translation>
 <translation id="8303434745767477417">Mantingueu actius en criptomoneda sota la vostra custòdia. Feu un seguiment del rendiment de la cartera i interactueu amb aplicacions descentralitzades de Web3. Comercialitzeu, invertiu, manlleveu i presteu amb DeFi. Tot des del navegador de privadesa de Brave. Sense extensions ni descàrregues.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconnectat</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="1178198982208000092">Connecta el teu <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">La moneder de maquinari requereix confirmació al dispositiu.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">La cartera de hardware requereix l'aplicació Ethereum oberta a<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">rebut</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">No s'esperen dades JSON</translation>
 <translation id="3282936527763045737">La contrasenya no és correcta</translation>
 <translation id="1119447706177454957">Error intern</translation>
+<translation id="3327639091470204775">No s'ha pogut connectar al pont de Trezor</translation>
 <translation id="6672377693827764095">Error intern, no s'han pogut obtenir els comptes</translation>
 <translation id="8933250418452564886">No s'ha pogut trobar la transacció del hardware, torna-ho a provar</translation>
 <translation id="5999974802900788338">S'ha rebut un error del dispositiu de hardware, probablement cal confirmar la transacció del dispositiu</translation>

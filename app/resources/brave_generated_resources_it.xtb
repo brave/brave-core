@@ -55,6 +55,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
 <translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
 <translation id="6821903322090655051">Ricompense Brave disabilitate</translation>
+<translation id="413570371620795359">Apri il pannello Ricompense per eseguire l’attivazione e iniziare</translation>
 <translation id="3849957491997306859">Rilevamento automatico</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
@@ -428,6 +429,7 @@ Confermi di voler procedere?</translation>
 <translation id="2653659639078652383">Invia</translation>
 <translation id="2556708692502648323">Reti del portafoglio</translation>
 <translation id="1330032157352961756">L'id della nuova catena</translation>
+<translation id="3423620355610881890">Un numero decimale positivo</translation>
 <translation id="726121047592132939">Il nome della nuova catena</translation>
 <translation id="1034112277864078119">Inserisci il nome della catena</translation>
 <translation id="4672314527143443556">Nome della valuta della catena</translation>
@@ -441,6 +443,7 @@ Confermi di voler procedere?</translation>
 <translation id="3047726704186619366">URL icona</translation>
 <translation id="2487558607408469181">URL dell'esploratore di blocchi</translation>
 <translation id="6301398959353668507">Questo campo non può essere vuoto.</translation>
+<translation id="7504462451153306677">Formato non valido, l’ID della catena è un numero positivo</translation>
 <translation id="8325036459845654666">Questa rete è già stata aggiunta.</translation>
 <translation id="650071759190249039">Errore interno, impossibile aggiungere la rete</translation>
 <translation id="868529041590572443">Inserisci tutte le informazioni relative alla valuta nativa</translation>

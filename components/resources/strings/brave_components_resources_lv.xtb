@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Pabeigt maka verifikāciju</translation>
 <translation id="9200453331904391567">Atspējot Brave balvas</translation>
 <translation id="3656941797339037856">Saistiet Rewards ar Gemini!</translation>
-<translation id="3066983737886188034">Gemini ļauj ērti tirgoties, uzglabāt un nopelnīt 3,49 % APY par BAT. Verificējiet un saistiet Brave balvu maku ar Gemini jau tagad!</translation>
+<translation id="2383784987664887340">Gemini ļauj ērti tirgoties, uzglabāt un nopelnīt 3,49 % APY par BAT. Verificējiet un saistiet Brave balvu maku ar Gemini jau tagad!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY no 2021. gada 15. septembra</translation>
 <translation id="7404779623219601861">Izpirkt BAT, iegādājoties dāvanu kartes</translation>
 <translation id="6215565499749144110">Izmantojot TAP Network, jūs varat izpirkt savus BAT, iegādājoties populāru zīmolu dāvanu kartes.</translation>
 <translation id="6915065518766963119">* Nepieciešama Uphold verifikācija.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x adrese vai url</translation>
 <translation id="2860280209982026951">Brave izmanto<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kā DEX apkopotāju.</translation>
 <translation id="151946611346774041">0x apstrādā Ethereum adresi un IP adresi, lai veiktu darījumu (tai skaitā cenu saņemšanu). 0x šos datus izmanto VIENĪGI darījumu apstrādei.</translation>
+<translation id="4626407663177532837">Piedāvājuma cenā ir iekļauta Brave maksa 0,875% apmērā.</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
 <translation id="8303434745767477417">Turiet kripto līdzekļus savā īpašumā. Sekojiet portfeļa efektivitātei un darbojieties ar tīmekļa 3 DApps. Tirgojieties, ieguldiet, aizņemieties un aizdodiet ar DeFi. Brave privātuma pārlūks to atbalsta. Bez paplašinājumiem, bez lejupielādes.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atvienots</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
 <translation id="1178198982208000092">Savienojiet savu <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Aparatūras maks pieprasa apstiprināšanu ierīcē. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Aparatūras maciņam nepieciešams, lai lietotne Ethereum būtu atvērta<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">nosūtīts</translation>
 <translation id="5013754027092416509">saņemts</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON dati nav paredzēti</translation>
 <translation id="3282936527763045737">Parole nav pareiza</translation>
 <translation id="1119447706177454957">Iekšēja kļūda</translation>
+<translation id="3327639091470204775">Nav iespējams savienot ar Trezot tiltu</translation>
 <translation id="6672377693827764095">Iekšējā kļūda, kontus nevarēja iegūt</translation>
 <translation id="8933250418452564886">Nevar atrast aparatūras darījumu, mēģiniet vēlreiz</translation>
 <translation id="5999974802900788338">Saņemta kļūda no aparatūras ierīces, iespējams, jums savā ierīcē jāapstiprina darījums</translation>

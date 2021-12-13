@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">Daftar keluar dalam talian</translation>
 <translation id="6583902294974160967">Sokongan</translation>
 <translation id="1799030480311994998">Ciri</translation>
-<translation id="2005732746077850308">Brave Shields &amp; privasi</translation>
+<translation id="2005732746077850308">Perisai Brave &amp; privasi</translation>
 <translation id="4692623383562244444">Enjin carian</translation>
 <translation id="1468415711258933398">Tab Standard</translation>
 <translation id="3377025655491224618">Tab Peribadi</translation>
@@ -526,27 +526,27 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6146966915297143881">teruskan ke log masuk</translation>
 <translation id="1483493594462132177">Hantar</translation>
 <translation id="538450413584738399">Pertukaran</translation>
-<translation id="8825032646286791700">Simpanan Kripto Selamat&amp; DeFi</translation>
-<translation id="5460364286096798286">Tahan kripto dalam jagaan anda. Dagangkan aset. Lihat Harga dan prestasi portfolio. Labur, Pinjam, dan beri pinjaman dengan DeFi.</translation>
-<translation id="1748009926009835882">Sediakan Kripto</translation>
+<translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
+<translation id="8339846196588658366">Pegang aset kripto dalam jagaan anda dan jejak prestasi portfolio. Semuanya terus dari pelayar privasi Brave.</translation>
+<translation id="4472575034687746823">Bermula</translation>
 <translation id="2759836790106646094">Sandarkan dompet anda sekarang!</translation>
-<translation id="5156354224138379811">Pada langkah seterusnya, anda akan melihat 12 perkataan yang membolehkan anda memulihkan dompet kripto anda.</translation>
+<translation id="1078873179929044999">Pada langkah seterusnya, anda’ akan melihat frasa pemulihan 12 perkataan yang boleh digunakan untuk mendapatkan akaun kripto utama anda semula. Simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses sekiranya anda terlupa kata laluan, peranti anda hilang atau dicuri, atau anda ingin beralih dompet.</translation>
 <translation id="2359808026110333948">Teruskan</translation>
-<translation id="5024543173656851695">Saya faham bahawa jika saya kehilangan perkataan pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
+<translation id="1904000155026201268">Saya faham bahawa jika saya kehilangan frasa pemulihan saya, saya tidak akan dapat mengakses dompet kripto saya.</translation>
 <translation id="3933122286596948824">Frasa pemulihan anda</translation>
-<translation id="6146351434671268516">Tulis atau salin perkataan ini dengan susunan yang betul dan simpan ia di tempat yang selamat.</translation>
-<translation id="7408247683131762445">AMARAN: Jangan sekali-kali mendedahkan frasa sandaran anda. Sesiapa yang mempunyai frasa ini dapat mengambil dana anda selama-lamanya.</translation>
-<translation id="939275786514736244">Saya telah menyandarkan frasa saya di tempat yang selamat</translation>
+<translation id="5077747669435508720">Tulis atau salin perkataan ini mengikut urutan yang sebenar yang ditunjukkan di bawah, dan simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses akaun sekiranya anda terlupa kata laluan, kehilangan peranti atau dicuri, atau anda mahu menukar dompet.</translation>
+<translation id="2708402071160162126">AMARAN: Jangan sekali-kali berkongsi frasa pemulihan anda. Sesiapa yang mempunyai frasa ini boleh mengambil aset anda selama-lamanya.</translation>
+<translation id="111912712268284159">Saya telah menyandarkan frasa saya di tempat yang selamat.</translation>
 <translation id="6896758677409633944">Salin</translation>
-<translation id="2604744480284798833">Buat sandaran dompet anda sekarang untuk melindungi portfolio kripto anda daripada kehilangan akses.</translation>
-<translation id="8289942708804097960">Beli kripto dengan Apple Pay, kad kredit atau debit.</translation>
+<translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
+<translation id="8289942708804097960">Beli kripto dengan kad kredit atau debit.</translation>
 <translation id="841880029259839903">Hantar kripto atau pindahkan dari satu akaun ke akaun lain.</translation>
 <translation id="8982246458261383692">Tukar aset kripto dengan pengagregat Brave DEX.</translation>
 <translation id="1783600039044302171">Lindungi keselamatan kripto anda dengan kata laluan</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
-<translation id="4450951602553063001">Masukkan semula kata laluan</translation>
-<translation id="1783870616707290226">Kata laluan mesti 7 atau lebih aksara</translation>
-<translation id="7383102760859258982">Kata laluan yang ditaip semula tidak sepadan</translation>
+<translation id="3038243139480464605">Sahkan kata laluan</translation>
+<translation id="3717685683157254329">Kata laluan mestilah sekurang-kurangnya 7 aksara, dan mengandungi sekurang-kurangnya satu huruf, satu nombor dan satu aksara khas.</translation>
+<translation id="7396672979287122068">Kata laluan yang disahkan tidak sepadan</translation>
 <translation id="3188963375823360044">1J</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -555,24 +555,25 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">SEMUA</translation>
 <translation id="5071303414930953888">Akaun <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Tambah Akaun</translation>
-<translation id="2632612428525029752">Kemas Kini Akaun</translation>
+<translation id="7665369617277396874">Tambah akaun</translation>
+<translation id="3448492834076427715">Kemas kini akaun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Dayakan buka kunci cap jari?</translation>
 <translation id="5493402808936397665">Dayakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
-<translation id="1544192797660353713">Dompet</translation>
+<translation id="8030647312184163932">Buka kunci cap jari</translation>
+<translation id="4090490645603511157">Gunakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
+<translation id="5379398699598690674">Dompet (beta)</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto Brave Wallet anda.</translation>
-<translation id="1970161551843843564">Pulihkan Akaun Kripto</translation>
+<translation id="9120654436199628567">Pulihkan akaun kripto</translation>
 <translation id="4811736040444856406">Tunjukkan frasa pemulihan</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan anda</translation>
 <translation id="2339124864228588937">Sahkan frasa pemulihan</translation>
-<translation id="2718669004132381989">Ketik perkataan untuk meletakkan perkataan itu di sebelah satu sama lain mengikut urutan yang betul.</translation>
+<translation id="3747079125031086337">Pilih perkataan dalam frasa pemulihan anda mengikut urutan yang betul.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
-<translation id="1569452037668432756">Masukkan kata laluan anda untuk membuka kunci</translation>
-<translation id="3717685683157254329">Kata laluan mesti sekurang-kurangnya 7 aksara yang mengandungi sekurang-kurangnya satu nombor dan satu aksara khas</translation>
+<translation id="5168349973342709369">Masukkan kata laluan untuk membuka kunci dompet</translation>
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="5760476995887363522">Frasa tidak sepadan. Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
@@ -583,7 +584,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Hingga (anggaran)</translation>
 <translation id="6998989275928107238">Kepada</translation>
-<translation id="6664416064035847539">alamat atau url</translation>
+<translation id="2589431635772931954">Alamat atau URL</translation>
 <translation id="632241521608275119">Toleransi gelinciran</translation>
 <translation id="1987317783729300807">Akaun</translation>
 <translation id="3535654229833214438">Transaksi</translation>
@@ -613,11 +614,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2490428413101944234">Ujian faucet</translation>
 <translation id="2581671693710952401">Dapatkan Ether</translation>
 <translation id="8165484222652118977">Dapatkan Eter dari faucet untuk <ph name="NETWORK"/> Rangkaian Ujian</translation>
-<translation id="7420359180991315365">Teruskan ke Wire</translation>
+<translation id="7420359180991315365">Teruskan ke Wyre</translation>
 <translation id="8488282162676695335">Dompet Brave</translation>
+<translation id="3784455785234192852">Kunci</translation>
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
-<translation id="414639769490080648">Berapa minit anda mahu sebelum mengunci brave wallet anda secara automatik?</translation>
+<translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="4993345308607970390">Tetapkan Semula Brave Wallet</translation>
 <translation id="6369495274982305511">Adakah anda pasti anda mahu menetapkan semula dompet anda? Jika dompet anda tidak disandarkan, penetapan semula akan menyebabkan anda kehilangan semua data akaun (termasuk sebarang dana yang berkaitan). Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
@@ -721,7 +723,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5932938770824268122">Kekunci Persendirian</translation>
 <translation id="2472882733835903303">Tunjukkan Kekunci Persendirian</translation>
 <translation id="4391056902675005799">Sembunyikan Kekunci Persendirian</translation>
-<translation id="7518007103754668253">Amaran: Jangan sekali-kali dedahkan kunci ini. Sesiapa sahaja dengan kunci persendirian boleh mencuri mana-mana aset yang tersimpan dalam akaun anda.</translation>
+<translation id="7518007103754668253">Amaran: Jangan sekali-kali mendedahkan kunci ini. Sesiapa sahaja yang mempunyai kunci peribadi ini boleh mencuri sebarang aset yang disimpan dalam akaun anda.</translation>
 <translation id="1133619932669546254">Aktifkan <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">JENIS FUNGSI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Tiada data</translation>
@@ -745,6 +747,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="3211051910418903298">Kurangkan kekerapan anda menambah nilai data mudah alih</translation>
 <translation id="1092355580602106002">Kurang iklan = kurang data pada setiap halaman yang anda muatkan. Gunakan Brave untuk semua penyemakan imbas web anda.</translation>
 <translation id="623962032102267945">Brave = kurang data mudah alih pada setiap halaman</translation>
+<translation id="4355217341028673744">• Privasi lebih baik</translation>
+<translation id="3679020972083025535">• Tiada iklan yang menjengkelkan</translation>
 <translation id="8047527352810290817">Edit gas</translation>
 <translation id="7358989216567322955">Yuran Prioriti Maksimum</translation>
 <translation id="9091334651803050473">Walaupun bukan satu jaminan, pelombong kemungkinan akan mengutamakan transaksi anda jika anda membayar fi yang lebih tinggi.</translation>
@@ -757,4 +761,19 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1011713837432053857">Had amaun gas</translation>
 <translation id="1254969878422524947">Had tip per gas (Gwei)</translation>
 <translation id="7373308452149471621">Had harga per gas (Gwei)</translation>
+<translation id="5891811606602061966">Gagal mengimport akaun, sila cuba lagi.</translation>
+<translation id="7033470144757208254">Brave menggunakan 0x sebagai agregator DEX.</translation>
+<translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
+<translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
+<translation id="8574289650879708853">Tambah aset tersuai</translation>
+<translation id="7791543448312431591">Tambah</translation>
+<translation id="6600400596821238377">Nama token</translation>
+<translation id="4432966365400169165">Alamat kontrak token</translation>
+<translation id="4092152169181928870">Simbol token</translation>
+<translation id="4351811224047421378">Titik perpuluhan tepat</translation>
+<translation id="8614026298974065517">Alih keluar aset tersuai</translation>
+<translation id="4378941981362528553">Adakah anda mahu mengalih keluar <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
+<translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
+<translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
+<translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
 </translationbundle>
