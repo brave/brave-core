@@ -30,9 +30,9 @@ using brave_shields::ControlType;
 using brave_shields::features::kBraveDarkModeBlock;
 
 const char kEmbeddedTestServerDirectory[] = "dark_mode_block";
-const char kMatchDarkMode[] =
-    "window.domAutomationController.send(window.matchMedia('(prefers-color-"
-    "scheme: dark)').matches)";
+const char kMatchDarkModeFormatString[] =
+    "window.domAutomationController.send(window."
+    "matchMedia('(prefers-color-scheme: %s)').matches)";
 
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
@@ -92,6 +92,37 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
+  void SetDarkMode(bool dark_mode) {
+    test_theme_.SetDarkMode(dark_mode);
+    browser()
+        ->tab_strip_model()
+        ->GetActiveWebContents()
+        ->OnWebPreferencesChanged();
+  }
+
+  bool IsReportingDarkMode() {
+    bool light_mode_result = false;
+    EXPECT_TRUE(content::ExecuteScriptAndExtractBool(
+        contents(), base::StringPrintf(kMatchDarkModeFormatString, "light"),
+        &light_mode_result));
+
+    if (!light_mode_result) {
+      // Sanity check to make sure that 'dark' is reported for
+      // prefers-color-scheme when 'light' was not found before.
+      bool dark_mode_result = false;
+      EXPECT_TRUE(content::ExecuteScriptAndExtractBool(
+          contents(), base::StringPrintf(kMatchDarkModeFormatString, "dark"),
+          &dark_mode_result));
+      EXPECT_TRUE(dark_mode_result);
+
+      // Report dark mode.
+      return true;
+    }
+
+    // Report light mode.
+    return false;
+  }
+
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -110,57 +141,69 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {
-  test_theme_.SetDarkMode(true);
+  SetDarkMode(true);
+
   // On fingerprinting off, should return dark mode
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  std::u16string tab_title;
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
+  ASSERT_TRUE(IsReportingDarkMode());
+
   // On fingerprinting default, should return dark mode
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
+  ASSERT_TRUE(IsReportingDarkMode());
+
   // On fingerprinting block, should return light
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"light", tab_title);
+  ASSERT_FALSE(IsReportingDarkMode());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
                        RegressionCheck) {
-  test_theme_.SetDarkMode(false);
+  SetDarkMode(false);
+
   // On all modes, should return light
   // Fingerprinting off
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  std::u16string tab_title;
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"light", tab_title);
+  ASSERT_FALSE(IsReportingDarkMode());
+
   // Fingerprinting default
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"light", tab_title);
+  ASSERT_FALSE(IsReportingDarkMode());
+
   // Fingerprinting strict/block
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"light", tab_title);
+  ASSERT_FALSE(IsReportingDarkMode());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
                        SettingsPagesCheck) {
   // On settings page should get dark mode with fingerprinting strict
-  test_theme_.SetDarkMode(true);
+  SetDarkMode(true);
+
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(GURL("brave://settings"));
-  bool result;
-  ASSERT_TRUE(content::ExecuteScriptAndExtractBool(contents(), kMatchDarkMode,
-                                                   &result));
-  EXPECT_TRUE(result);
+  ASSERT_TRUE(IsReportingDarkMode());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
+                       PrefersColorSchemeWithDefaultFingerprinting) {
+  SetFingerprintingDefault();
+
+  SetDarkMode(false);
+  NavigateToURLUntilLoadStop(dark_mode_url());
+  std::u16string tab_title;
+  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
+  EXPECT_EQ(u"light", tab_title);
+
+  SetDarkMode(true);
+  NavigateToURLUntilLoadStop(dark_mode_url());
+  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
+  EXPECT_EQ(u"dark", tab_title);
 }
 
 class BraveDarkModeFingerprintProtectionFlagDisabledTest
@@ -176,21 +219,21 @@ class BraveDarkModeFingerprintProtectionFlagDisabledTest
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionFlagDisabledTest,
                        WithFeatureDisabled) {
-  test_theme_.SetDarkMode(true);
+  SetDarkMode(true);
+
   // On fingerprinting off, should return dark mode
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  std::u16string tab_title;
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
+  ASSERT_TRUE(IsReportingDarkMode());
+
   // On fingerprinting default, should return dark mode
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
-  // On fingerprinting block, should still return dark
+  ASSERT_TRUE(IsReportingDarkMode());
+
+  // On fingerprinting block, should still return dark due to the
+  // BraveDarkModeBlock feature being disabled for this test.
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
+  ASSERT_TRUE(IsReportingDarkMode());
 }
