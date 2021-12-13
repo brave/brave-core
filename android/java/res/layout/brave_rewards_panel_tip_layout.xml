@@ -35,7 +35,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/attention"
-                android:textColor="#212529"
+                android:textColor="@color/settings_section_text_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -43,8 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="17%"
-                android:textColor="#212529"
+                android:textColor="@color/settings_section_text_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -69,7 +68,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/include_auto_contribute"
-                android:textColor="#868E96"
+                android:textColor="@color/settings_section_text_light_color"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -94,7 +93,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/monthly_contribution"
-                android:textColor="#868E96"
+                android:textColor="@color/settings_section_text_light_color"
                 android:textSize="16sp" />
 
             <TextView

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="400dp"
-    android:background="#FAFCFF"
+    android:background="@color/rewards_panel_card_bg_color"
     android:layout_margin="12dp"
     app:cardCornerRadius="16dp">
 
@@ -97,109 +97,138 @@
                         android:baselineAligned="false"
                         android:orientation="horizontal">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:paddingStart="16dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.65"
-                                android:text="@string/your_balance"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                            android:layout_weight="0.5">           
 
                             <LinearLayout
+                                android:id="@+id/wallet_balance_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/bat_balance_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="4dp"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="24sp" />
+                                android:paddingStart="16dp"
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha="0.65"
-                                    android:text="BAT"
+                                    android:text="@string/your_balance"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/bat_balance_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="4dp"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="24sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:alpha="0.65"
+                                        android:text="@string/bat_text"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/usd_balance_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.65"
                                     android:textColor="@android:color/white"
                                     android:textSize="14sp" />
 
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/usd_balance_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.65"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                            <ProgressBar
+                                android:id="@+id/wallet_balance_progress"
+                                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                                android:layout_height="40dp"
+                                android:layout_width="40dp"
+                                android:layout_gravity="center"
+                                android:visibility="gone"/>
 
-                        </LinearLayout>
+                        </FrameLayout>
 
-
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:paddingEnd="32dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/ads_monthly_statement_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.65"
-                                android:text="@string/estimated_earnings"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                            android:layout_weight="0.5">
 
                             <LinearLayout
+                                android:id="@+id/ads_statement_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:paddingEnd="32dp"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/bat_balance_ads_text"
+                                    android:id="@+id/ads_monthly_statement_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="4dp"
                                     android:textColor="@android:color/white"
-                                    android:textSize="24sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha="0.65"
-                                    android:text="BAT"
+                                    android:text="@string/estimated_earnings"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/bat_balance_ads_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="4dp"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="24sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:alpha="0.65"
+                                        android:text="@string/bat_text"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/usd_balance_ads_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:alpha="0.65"
                                     android:textColor="@android:color/white"
                                     android:textSize="14sp" />
 
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/usd_balance_ads_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.65"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                            <ProgressBar
+                                android:id="@+id/ads_statement_progress"
+                                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                                android:layout_height="40dp"
+                                android:layout_width="40dp"
+                                android:layout_gravity="center"
+                                android:visibility="gone"/>
 
-                        </LinearLayout>
+                        </FrameLayout>
 
                     </LinearLayout>
 

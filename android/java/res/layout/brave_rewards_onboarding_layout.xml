@@ -98,10 +98,10 @@
                     android:clickable="true"
                     android:drawableStart="@drawable/ic_chevron_left"
                     android:drawablePadding="4dp"
-                    android:drawableTint="#868E96"
+                    android:drawableTint="@color/settings_section_text_light_color"
                     android:focusable="true"
                     android:text="@string/go_back"
-                    android:textColor="#868E96" />
+                    android:textColor="@color/settings_section_text_light_color" />
 
                 <View
                   android:layout_width="0dp"

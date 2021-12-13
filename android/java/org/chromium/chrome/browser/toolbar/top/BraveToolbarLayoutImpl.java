@@ -403,7 +403,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     showBraveRewardsOnboardingModal();
                     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                    // BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 }
             }
 

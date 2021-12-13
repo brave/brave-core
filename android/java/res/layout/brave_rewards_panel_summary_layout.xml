@@ -97,7 +97,6 @@
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
                 android:fontFamily="sans-serif"
-                android:textColor="#C12D7C"
                 android:textSize="14sp" />
 
             <TextView
@@ -106,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:fontFamily="sans-serif"
-                android:text="0.25 USD"
                 android:textColor="@color/settings_section_text_light_color"
                 android:textSize="12sp" />
 
@@ -147,7 +145,6 @@
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
                 android:fontFamily="sans-serif"
-                android:textColor="#C12D7C"
                 android:textSize="14sp" />
 
             <TextView
@@ -156,7 +153,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:fontFamily="sans-serif"
-                android:text="0.25 USD"
                 android:textColor="@color/settings_section_text_light_color"
                 android:textSize="12sp" />
 
@@ -208,7 +204,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:fontFamily="sans-serif"
-                android:text="0.25 USD"
                 android:textColor="@color/settings_section_text_light_color"
                 android:textSize="12sp" />
 
@@ -258,7 +253,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:fontFamily="sans-serif"
-                android:text="0.25 USD"
                 android:textColor="@color/settings_section_text_light_color"
                 android:textSize="12sp" />
 
@@ -308,7 +302,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:fontFamily="sans-serif"
-                android:text="0.25 USD"
                 android:textColor="@color/settings_section_text_light_color"
                 android:textSize="12sp" />
 

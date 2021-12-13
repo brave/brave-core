@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tip"
                 android:textAllCaps="false"
-                android:textColor="#868E96"
+                android:textColor="@color/settings_section_text_light_color"
                 android:textSize="16sp"/>
 
         </LinearLayout>
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/summary"
                 android:textAllCaps="false"
-                android:textColor="#868E96"
+                android:textColor="@color/settings_section_text_light_color"
                 android:textSize="16sp"/>
 
         </LinearLayout>
@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#E9E9F4" />
+            android:background="@color/rewards_divider_color" />
 
         <ImageView
             android:id="@+id/btn_rewards_settings"

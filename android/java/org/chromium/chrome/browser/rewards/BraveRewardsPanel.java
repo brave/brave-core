@@ -188,6 +188,11 @@ public class BraveRewardsPanel
     private View braveRewardsOnboardingView;
     // private View braveRewardsWelcomeView;
 
+    private LinearLayout mWalletBalanceLayout;
+    private LinearLayout mAdsStatementLayout;
+    private View mWalletBalanceProgress;
+    private View mAdsStatementProgress;
+
     public BraveRewardsPanel(View anchorView) {
         mCurrentNotificationId = "";
         mPublisherExist = false;
@@ -260,6 +265,11 @@ public class BraveRewardsPanel
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
 
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
+
+        mWalletBalanceLayout = mPopupView.findViewById(R.id.wallet_balance_layout);
+        mAdsStatementLayout = mPopupView.findViewById(R.id.ads_statement_layout);
+        mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_balance_progress);
+        mAdsStatementProgress = mPopupView.findViewById(R.id.ads_statement_progress);
 
         ImageView btnRewardsSettings = mPopupView.findViewById(R.id.btn_rewards_settings);
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
@@ -381,9 +391,6 @@ public class BraveRewardsPanel
                 mPopupView.findViewById(R.id.brave_rewards_panel_notification_layout_id);
 
         Log.e(TAG, "setNotificationsControls");
-        if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.GetAllNotifications();
-        }
 
         ImageView btnCloseNotification = mPopupView.findViewById(R.id.btn_close_notification);
         if (btnCloseNotification != null) {
@@ -739,6 +746,8 @@ public class BraveRewardsPanel
                             BraveRewardsHelper.CROSS_FADE_DURATION);
 
                     mBraveRewardsNativeWorker.GetGrant(promId);
+                    mWalletBalanceLayout.setAlpha(0.4f);
+                    mWalletBalanceProgress.setVisibility(View.VISIBLE);
                     // walletDetailsReceived = false; //re-read wallet status
                     // EnableWalletDetails(false);
                 }
@@ -789,34 +798,24 @@ public class BraveRewardsPanel
             showNotification(
                     REWARDS_PROMOTION_CLAIM_ERROR_ID, REWARDS_PROMOTION_CLAIM_ERROR, 0, args);
         }
-        // TODO add logic for balance refresh
-        else if (responseCode == BraveRewardsNativeWorker.LEDGER_OK) {
-            Log.e(TAG, "BraveRewardsNativeWorker.LEDGER_OK");
-            // mBraveRewardsNativeWorker.GetRewardsParameters();
-            // mBraveRewardsNativeWorker.GetExternalWallet();
-            // mBraveRewardsNativeWorker.getAdsAccountStatement();
-            // mBraveRewardsNativeWorker.GetCurrentBalanceReport();
-        }
-    }
-
-    @Override
-    public void OnGrantFinish(int result) {
-        Log.e(TAG, "OnGrantFinish");
-        // mBraveRewardsNativeWorker.GetAllNotifications();
-        // mBraveRewardsNativeWorker.GetRewardsParameters();
-        // mBraveRewardsNativeWorker.GetExternalWallet();
-        // mBraveRewardsNativeWorker.getAdsAccountStatement();
-        // mBraveRewardsNativeWorker.GetCurrentBalanceReport();
     }
 
     @Override
     public void onUnblindedTokensReady() {
         Log.e("NTP", "onUnblindedTokensReady");
-        mBraveRewardsNativeWorker.GetAllNotifications();
+        fetchRewardsData();
+    }
+
+    private void fetchRewardsData() {
+        mWalletBalanceLayout.setAlpha(0.4f);
+        mWalletBalanceProgress.setVisibility(View.VISIBLE);
         mBraveRewardsNativeWorker.GetRewardsParameters();
         mBraveRewardsNativeWorker.GetExternalWallet();
+        mAdsStatementLayout.setAlpha(0.4f);
+        mAdsStatementProgress.setVisibility(View.VISIBLE);
         mBraveRewardsNativeWorker.getAdsAccountStatement();
         mBraveRewardsNativeWorker.GetCurrentBalanceReport();
+        mBraveRewardsNativeWorker.GetAllNotifications();
     }
 
     @Override
@@ -824,11 +823,7 @@ public class BraveRewardsPanel
         Log.e("NTP",
                 "onReconcileComplete : resultCode : " + resultCode
                         + " : rewardsType : " + rewardsType + " : amouont : " + amount);
-        mBraveRewardsNativeWorker.GetAllNotifications();
-        mBraveRewardsNativeWorker.GetRewardsParameters();
-        mBraveRewardsNativeWorker.GetExternalWallet();
-        mBraveRewardsNativeWorker.getAdsAccountStatement();
-        mBraveRewardsNativeWorker.GetCurrentBalanceReport();
+        fetchRewardsData();
     }
 
     OnCheckedChangeListener autoContributeSwitchListener = new OnCheckedChangeListener() {
@@ -868,10 +863,7 @@ public class BraveRewardsPanel
     @Override
     public void OnStartProcess() {
         requestPublisherInfo();
-        mBraveRewardsNativeWorker.GetRewardsParameters();
-        mBraveRewardsNativeWorker.GetExternalWallet();
-        mBraveRewardsNativeWorker.getAdsAccountStatement();
-        mBraveRewardsNativeWorker.GetCurrentBalanceReport();
+        fetchRewardsData();
         setNotificationsControls();
         if (mPopupView != null && PackageUtils.isFirstInstall(mActivity)
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
@@ -1152,7 +1144,7 @@ public class BraveRewardsPanel
                     //         R.string.brave_ui_token_grant_claimed));
                     tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#8E2995>" + value + "</font><font color=#000000> " + batText
+                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
                             + "</font>";
                     textUSD = usdValue;
                     break;
@@ -1160,7 +1152,7 @@ public class BraveRewardsPanel
                     // tvTitle = (TextView)root.findViewById(R.id.br_earnings_ads_title);
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
-                    text = "<font color=#8E2995>" + value + "</font><font color=#000000> " + batText
+                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
                             + "</font>";
                     textUSD = usdValue;
                     break;
@@ -1168,7 +1160,7 @@ public class BraveRewardsPanel
                     // tvTitle = (TextView)root.findViewById(R.id.br_auto_contribute_title);
                     tv = mPopupView.findViewById(R.id.auto_contribute_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.auto_contribute_usd_text);
-                    text = "<font color=#6537AD>" + value + "</font><font color=#000000> " + batText
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
                             + "</font>";
                     textUSD = usdValue;
                     break;
@@ -1176,7 +1168,7 @@ public class BraveRewardsPanel
                     // tvTitle = (TextView)root.findViewById(R.id.br_recurring_donation_title);
                     tv = mPopupView.findViewById(R.id.one_time_tip_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.one_time_tip_usd_text);
-                    text = "<font color=#392DD1>" + value + "</font><font color=#000000> " + batText
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
                             + "</font>";
                     textUSD = usdValue;
                     break;
@@ -1184,7 +1176,7 @@ public class BraveRewardsPanel
                     // tvTitle = (TextView)root.findViewById(R.id.br_one_time_donation_title);
                     tv = mPopupView.findViewById(R.id.monthly_tips_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.monthly_tips_usd_text);
-                    text = "<font color=#392DD1>" + value + "</font><font color=#000000> " + batText
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
                             + "</font>";
                     textUSD = usdValue;
                     break;
@@ -1236,6 +1228,8 @@ public class BraveRewardsPanel
     @Override
     public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth) {
+        mAdsStatementLayout.setAlpha(1.0f);
+        mAdsStatementProgress.setVisibility(View.GONE);
         DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.FLOOR);
         df.setMinimumFractionDigits(3);
@@ -1252,6 +1246,8 @@ public class BraveRewardsPanel
     @Override
     public void OnRewardsParameters(int errorCode) {
         Log.e(TAG, "OnRewardsParameters");
+        mWalletBalanceLayout.setAlpha(1.0f);
+        mWalletBalanceProgress.setVisibility(View.GONE);
         // boolean formerWalletDetailsReceived = walletDetailsReceived;
         if (errorCode == BraveRewardsNativeWorker.LEDGER_OK) {
             // DismissNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID);

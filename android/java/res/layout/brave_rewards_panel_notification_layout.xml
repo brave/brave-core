@@ -28,7 +28,6 @@
                 android:id="@+id/notification_day_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MAY 5"
                 android:drawablePadding="8dp"
                 android:background="@drawable/unverified_48_rounded_bg"
                 android:paddingTop="4dp"
@@ -52,9 +51,8 @@
             android:id="@+id/notification_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ads earnings recieved"
             android:textSize="18sp"
-            android:textColor="#212529"
+            android:textColor="@color/settings_section_text_color"
             android:drawablePadding="4dp"
             android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal"
@@ -64,28 +62,25 @@
             android:id="@+id/notification_subtitle_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You earned 80.3 BAT from Brave Private Ads!"
             android:textSize="14sp"
-            android:textColor="#495057"
+            android:textColor="@color/rewards_secondary_layout_text_color"
             android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:id="@+id/btn_action_notification"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/blue_48_rounded_bg"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:gravity="center_horizontal"
-                android:padding="16dp"
-                android:text="Claim earnings"
+                android:gravity="center"
                 android:textColor="@android:color/white" />
 
             <ProgressBar
@@ -93,7 +88,6 @@
                 android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
                 android:layout_height="48dp"
                 android:layout_width="48dp"
-                android:layout_marginBottom="16dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:visibility="visible"/>

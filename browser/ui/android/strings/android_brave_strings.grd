@@ -2775,6 +2775,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MONTHLY_CONTRIBUTION" desc="Brave rewards panel text">
       Monthly contribution
     </message>
+    <message name="IDS_BAT_TEXT" desc="Brave rewards panel text">
+      BAT
+    </message>
     <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
       ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
     </message>
