@@ -13,6 +13,8 @@ import BraveCore
 extension BrowserViewController {
     
     func presentOnboardingIntro() {
+        if Preferences.DebugFlag.skipOnboardingIntro == true { return }
+        
         if Preferences.URP.referralCode.value == nil &&
             UIPasteboard.general.hasStrings &&
             (Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue &&
