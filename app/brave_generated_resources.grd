@@ -280,11 +280,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Profile name and icon
       </message>
       <!-- Settings / Cookies and other site data -->
-      <message name="IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS" desc="Title of the list containing sites to always use Ephemeral Storage">
-        Sites that should use Ephemeral Storage
+      <message name="IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS" desc="Title of the list containing sites to clear cookies when all windows with the site are closed">
+        Sites that clear cookies when you close them
       </message>
-      <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling only Ephemeral Storage access.">
-        Use Ephemeral Storage
+      <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling cookies cleanup when all windows with the site are clsoed.">
+        Clear on site close
       </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">

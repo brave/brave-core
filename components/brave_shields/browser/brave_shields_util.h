@@ -32,9 +32,14 @@ enum ControlType {
   AGGRESSIVE
 };
 
+// List of possible blocking modes when accessing blocked websites.
 enum class DomainBlockingType {
+  // Don't block a website, open as is.
   kNone,
+  // Proceed to a website, but use Ephemeral Storage for privacy-sensitive data
+  // (cookies, etc.).
   k1PES,
+  // Show an interstitial before proceeding to as website.
   kAggressive,
 };
 

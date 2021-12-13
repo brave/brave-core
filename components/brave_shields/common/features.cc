@@ -43,8 +43,8 @@ const base::Feature kBraveDomainBlock{"BraveDomainBlock",
                                       base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will attempt to enable 1PES mode in a standard blocking
 // mode when a user visists a domain that is present in currently active adblock
-// filters. 1PES will be enabled only if nor cookies nor localStorage data is
-// stored for the website.
+// filters. 1PES will be enabled only if neither cookies nor localStorage data
+// is stored for the website.
 const base::Feature kBraveDomainBlock1PES{"BraveDomainBlock1PES",
                                           base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, network requests initiated by extensions will be checked and
