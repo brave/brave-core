@@ -83,6 +83,11 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
   if (!download_manager)
     return;
 
+  if (!completion_info.response_headers) {
+    download_manager->OnDownloadFailed(guid);
+    return;
+  }
+
   std::string mimetype;
   if (!completion_info.response_headers->GetMimeType(&mimetype)) {
     download_manager->OnDownloadFailed(guid);
