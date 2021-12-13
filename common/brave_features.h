@@ -17,7 +17,6 @@ COMPONENT_EXPORT(CHROME_FEATURES)
 extern const base::Feature kBraveRewards;
 #endif  // defined(OS_ANDROID)
 
-COMPONENT_EXPORT(CHROME_FEATURES)
 extern const base::Feature kTabAudioIconInteractive;
 
 }  // namespace features
