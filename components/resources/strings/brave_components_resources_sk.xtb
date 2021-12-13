@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Dokončiť verifikáciu peňaženky</translation>
 <translation id="9200453331904391567">Odpojiť od Brave Rewards</translation>
 <translation id="3656941797339037856">Prepojte odmeny s Gemini!</translation>
-<translation id="3066983737886188034">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Overte a prepojte si peňaženku Brave Rewards s Gemini!</translation>
+<translation id="2383784987664887340">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Overte a prepojte si peňaženku Brave Rewards s Gemini!</translation>
+<translation id="2237374144728570574">* Zárobok APY cez Gemini k 15. septembru 2021</translation>
 <translation id="7404779623219601861">Uplatniť BAT na darčekové karty</translation>
 <translation id="6215565499749144110">So sieťou TAP si môžete uplatniť svoje BAT na populárne značkové darčekové karty.</translation>
 <translation id="6915065518766963119">* Vyžaduje sa potvrdená verifikácia.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Adresa 0x alebo adresa URL</translation>
 <translation id="2860280209982026951">Brave používa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ako agregátor DEX.</translation>
 <translation id="151946611346774041">Ox spracuje adresu Etherea a IP adresu na vykonanie transakcie (vrátane získania kotácií). 0x bude tieto údaje používať IBA na účely spracovania transakcií.</translation>
+<translation id="4626407663177532837">Cenová ponuka zahŕňa poplatok Brave vo výške 0,875 %.</translation>
 <translation id="6518133107902771759">Overiť</translation>
 <translation id="1420318137760245955">Vitajte v novej peňaženke Brave</translation>
 <translation id="8303434745767477417">Držte kryptoaktíva vo svojej úschove. Sledujte výkonnosť portfólia a komunikujte s webovými aplikáciami 3 DApps. Obchodujte, investujte, požičiavajte si a požičiavajte s DeFi. Všetko priamo zo súkromného prehliadača Brave. Žiadne rozšírenia, žiadne sťahovanie nie je potrebné.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odpojené</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="1178198982208000092">Pripojte si <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardvérová peňaženka vyžaduje potvrdenie na zariadení. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hardvérová peňaženka vyžaduje otvorenie aplikácie Ethereum na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">odoslané</translation>
 <translation id="5013754027092416509">prijaté</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Dáta z JSON nie sú očakávané</translation>
 <translation id="3282936527763045737">Heslo nie je správne</translation>
 <translation id="1119447706177454957">Interná chyba</translation>
+<translation id="3327639091470204775">Nepodarilo sa pripojiť k premosteniu Trezor</translation>
 <translation id="6672377693827764095">Interná chyba, nepodarilo sa načítať účty</translation>
 <translation id="8933250418452564886">Nie je možné nájsť transakciu hardvéru, skúste to znova</translation>
 <translation id="5999974802900788338">Na hardvérovom zariadení sa vyskytla chyba, pravdepodobne musíte potvrdiť transakciu na svojom zariadení</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
 <translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 <translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
-<translation id="2383784987664887340">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Overte a prepojte si peňaženku Brave Rewards s Gemini!</translation>
-<translation id="2237374144728570574">* Zárobok APY cez Gemini k 15. septembru 2021</translation>
-<translation id="3301417531330431881">Hardvérová peňaženka vyžaduje potvrdenie transakcie. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Interná chyba, nepodarilo sa vytvoriť rozpočet pre iframe</translation>
-<translation id="1664949222596149258">Kúpiť za <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
 <translation id="3656941797339037856">Vincule o Rewards ao Gemini!</translation>
-<translation id="3066983737886188034">Com o Gemini, você pode negociar, armazenar e ganhar 3,49% de APY (rendimento percentual anual) sobre seus BATs com facilidade. Verifique e vincule sua carteira das Recompensas do Brave ao Gemini agora mesmo!</translation>
+<translation id="2383784987664887340">Com o Gemini, você pode negociar, armazenar e ganhar 3,49% de APY (rendimento percentual anual) sobre seus BATs com facilidade. Verifique e vincule sua carteira das Recompensas do Brave ao Gemini agora mesmo!</translation>
+<translation id="2237374144728570574">* Ganhos de APY do Gemini em 15 de setembro de 2021</translation>
 <translation id="7404779623219601861">Trocar BAT por vales-presente</translation>
 <translation id="6215565499749144110">Com a TAP Network, você pode trocar sua BAT por vales-presente de marcas famosas.</translation>
 <translation id="6915065518766963119">* É necessário uma verificação da Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Endereço ou URL 0x</translation>
 <translation id="2860280209982026951">O Brave usa a <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">A 0x processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). A 0x usará esses dados SOMENTE para fins de processamento de transações.</translation>
+<translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
 <translation id="6518133107902771759">Confirmar</translation>
 <translation id="1420318137760245955">Esta é a nova Carteira Brave</translation>
 <translation id="8303434745767477417">Guarde criptoativos em custódia. Monitore o desempenho do portfólio e interaja com dapps Web 3. Negocie, solicite e faça empréstimos e invista com DeFi. Tudo isso diretamente na privacidade do navegador Brave. Sem necessidade de extensões nem downloads.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
 <translation id="5317781812114905957">Instruções</translation>
 <translation id="1178198982208000092">Conecte sua <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">A carteira de hardware exige confirmação no dispositivo. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">A carteira de hardware exige que o app Ethereum esteja aberto na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">recebida</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Os dados JSON não são esperados</translation>
 <translation id="3282936527763045737">A senha não está correta</translation>
 <translation id="1119447706177454957">Erro interno</translation>
+<translation id="3327639091470204775">Não foi possível se conectar à ponte Trezor</translation>
 <translation id="6672377693827764095">Erro interno. Não foi possível obter as contas.</translation>
 <translation id="8933250418452564886">Não foi possível encontrar a transação de hardware. Tente novamente.</translation>
 <translation id="5999974802900788338">Erro recebido do dispositivo de hardware. Você provavelmente precisa confirmar a transação no seu dispositivo.</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Erro ao assinar mensagem. Tente novamente.</translation>
 <translation id="8273603707418703324">Erro ao assinar mensagem: token de autenticação desconhecido solicitado. Tente novamente.</translation>
 <translation id="5265455943786954050">O comando Trezor já está em andamento</translation>
-<translation id="7017116822583380542">O Trezor Bridge não está pronto</translation>
+<translation id="7017116822583380542">A ponte Trezor não está pronta</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
-<translation id="2383784987664887340">Com o Gemini, você pode negociar, armazenar e ganhar 3,49% de APY (rendimento percentual anual) sobre seus BATs com facilidade. Verifique e vincule sua carteira das Recompensas do Brave ao Gemini agora mesmo!</translation>
-<translation id="2237374144728570574">* Ganhos de APY do Gemini em 15 de setembro de 2021</translation>
-<translation id="3301417531330431881">A carteira de hardware exige a confirmação da transação. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Erro interno. Não foi possível criar o iframe bridge</translation>
-<translation id="1664949222596149258">Comprar por <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

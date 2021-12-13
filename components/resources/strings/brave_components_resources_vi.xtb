@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
-<translation id="3066983737886188034">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
+<translation id="2383784987664887340">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
+<translation id="2237374144728570574">* APY của Gemini Earn tính đến ngày 15 tháng 9 năm 2021</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Địa chỉ hoặc URL của 0x</translation>
 <translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
+<translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
 <translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048">Đã ngắt kết nối <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Hướng dẫn</translation>
 <translation id="1178198982208000092">Kết nối <ph name="DEVICE_NAME"/> của bạn</translation>
+<translation id="4358411489835404360">Ví phần cứng yêu cầu xác nhận trên thiết bị. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Ví phần cứng yêu cầu mở Ứng dụng Ethereum trên <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">đã gửi</translation>
 <translation id="5013754027092416509">đã nhận</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Dữ liệu JSON không được kỳ vọng</translation>
 <translation id="3282936527763045737">Mật khẩu không đúng</translation>
 <translation id="1119447706177454957">Lỗi nội bộ</translation>
+<translation id="3327639091470204775">Không thể kết nối đến cầu Trezor</translation>
 <translation id="6672377693827764095">Lỗi nội bộ, không thể lấy tài khoản</translation>
 <translation id="8933250418452564886">Không tìm được giao dịch phần cứng, hãy thử lại</translation>
 <translation id="5999974802900788338">Đã nhận lỗi từ thiết bị phần cứng, có lẽ bạn cần xác nhận giao dịch trên thiết bị của bạn</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
-<translation id="2383784987664887340">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
-<translation id="2237374144728570574">* APY của Gemini Earn tính đến ngày 15 tháng 9 năm 2021</translation>
-<translation id="3301417531330431881">Ví phần cứng yêu cầu xác nhận giao dịch. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Lỗi nội bộ, không thể tạo cầu iframe</translation>
-<translation id="1664949222596149258">Mua với giá <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

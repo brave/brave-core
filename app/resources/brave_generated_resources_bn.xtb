@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
+<translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
@@ -428,6 +429,7 @@
 <translation id="2653659639078652383">জমা দিন</translation>
 <translation id="2556708692502648323">ওয়ালেট নেটওয়ার্ক</translation>
 <translation id="1330032157352961756">নতুন চেইনের id</translation>
+<translation id="3423620355610881890">একটি ইতিবাচক দশমিক সংখ্যা</translation>
 <translation id="726121047592132939">নতুন চেইনের নাম</translation>
 <translation id="1034112277864078119">চেইনের নাম এন্টার করুন</translation>
 <translation id="4672314527143443556">চেইনের মুদ্রার নাম</translation>
@@ -441,6 +443,7 @@
 <translation id="3047726704186619366">আইকন URLগুলি</translation>
 <translation id="2487558607408469181">এক্সপ্লোরার URLগুলি ব্লক করুন</translation>
 <translation id="6301398959353668507">এই ক্ষেত্রটি খালি রাখা যাবে না।</translation>
+<translation id="7504462451153306677">অবৈধ ফরম্যাট, চেন আইডিটি একটি পজিটিভ নম্বর</translation>
 <translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
 <translation id="650071759190249039">অভ্যন্তরীণ ত্রুটি, নেটওয়ার্ক যোগ করা যায়নি।</translation>
 <translation id="868529041590572443">দেশীয় মুদ্রা সম্পর্কিত সমস্ত তথ্য পূরণ করুন</translation>

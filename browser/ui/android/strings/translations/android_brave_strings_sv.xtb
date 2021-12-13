@@ -405,12 +405,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -527,27 +527,27 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6146966915297143881">fortsätta till inloggning</translation>
 <translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="8825032646286791700">Decentraliserad finans och säker kryptoförvaring</translation>
-<translation id="5460364286096798286">Håll krypto. Handla med tillgångar. Se priser och följ portföljens utveckling. Investera, låna och låna ut med decentraliserad finans.</translation>
-<translation id="1748009926009835882">Ställ in krypto</translation>
+<translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
+<translation id="8339846196588658366">Spara dina kryptotillgångar och övervaka portföljens resultat. Allt från Brave, sekretesswebbläsaren.</translation>
+<translation id="4472575034687746823">Kom igång</translation>
 <translation id="2759836790106646094">Säkerhetskopiera din plånbok nu!</translation>
-<translation id="5156354224138379811">I nästa steg kommer du att se 12 ord som gör att du kan återställa din kryptoplånbok.</translation>
+<translation id="1078873179929044999">I nästa steg kommer du att se en återställningsfras på 12 ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
-<translation id="5024543173656851695">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsnyckel.</translation>
+<translation id="1904000155026201268">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsfras.</translation>
 <translation id="3933122286596948824">Din återställningsfras</translation>
-<translation id="6146351434671268516">Skriv ner eller kopiera de här orden i rätt ordning och spara dem på en säker plats.</translation>
-<translation id="7408247683131762445">VARNING: Avslöja aldrig din återställningsfras. Den som känner till frasen kan ta dina medel för alltid.</translation>
-<translation id="939275786514736244">Jag har sparat frasen på en säker plats</translation>
+<translation id="5077747669435508720">Skriv ner eller kopiera dessa ord i exakt ordning som visas nedan och spara dem någonstans säkert. Din återställningsfras är det enda sättet att återfå kontotillgång vid glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånbok.</translation>
+<translation id="2708402071160162126">VARNING: Dela aldrig din återställningsfras. Alla med denna fras kan ta dina tillgångar för alltid.</translation>
+<translation id="111912712268284159">Jag har säkerhetskopierat min fras någonstans säkert.</translation>
 <translation id="6896758677409633944">Kopiera</translation>
-<translation id="2604744480284798833">Säkerhetskopiera din plånbok nu för att skydda din kryptoportfölj från förlust av åtkomst.</translation>
-<translation id="8289942708804097960">Köp krypto med Apple Pay eller betalkort</translation>
+<translation id="375882617301124395">Säkerhetskopiera din kryptoplånbok</translation>
+<translation id="8289942708804097960">Köp krypto med Apple Pay eller betalkort.</translation>
 <translation id="841880029259839903">Skicka krypto eller för över från ett konto till ett annat.</translation>
 <translation id="8982246458261383692">Byt kryptotillgångar med Braves DEX-aggregator.</translation>
 <translation id="1783600039044302171">Skydda din krypto med ett lösenord</translation>
 <translation id="3726490322412361740">Ange lösenord</translation>
-<translation id="4450951602553063001">Ange lösenord igen</translation>
-<translation id="1783870616707290226">Lösenordet måste vara minst 7 tecken långt</translation>
-<translation id="7383102760859258982">Lösenorden matchar inte</translation>
+<translation id="3038243139480464605">Bekräfta lösenord</translation>
+<translation id="3717685683157254329">Lösenord måste bestå av minst 7 tecken och innehålla minst en bokstav, en siffra och ett specialtecken.</translation>
+<translation id="7396672979287122068">Lösenorden matchar inte</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1V</translation>
@@ -556,24 +556,25 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6977728312178289892">1Å</translation>
 <translation id="6895566650974550243">ALLA</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Lägg till konto</translation>
-<translation id="2632612428525029752">Uppdatera konto</translation>
+<translation id="7665369617277396874">Lägg till konto</translation>
+<translation id="3448492834076427715">Uppdatera konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Vill du aktivera upplåsning med fingeravtryck?</translation>
 <translation id="5493402808936397665">Aktivera biometri för att snabbt låsa upp din plånbok utan att behöva ange ditt lösenord.</translation>
-<translation id="1544192797660353713">Plånbok</translation>
+<translation id="8030647312184163932">Lås upp med fingeravtryck</translation>
+<translation id="4090490645603511157">Använd biometri för att snabbt låsa upp plånboken utan att behöva ange lösenordet.</translation>
+<translation id="5379398699598690674">Wallet (beta)</translation>
 <translation id="6901810042765869341">Ange din återställningsfras för att återställa ditt Brave Wallet-kryptokonto.</translation>
-<translation id="1970161551843843564">Återställ kryptoplånbok</translation>
+<translation id="9120654436199628567">Återställ kryptokonto</translation>
 <translation id="4811736040444856406">Visa återställningsfras</translation>
 <translation id="283071225285270357">Ange din återställningsfras</translation>
 <translation id="2339124864228588937">Bekräfta återställningsfras</translation>
-<translation id="2718669004132381989">Tryck på orden för att sätta dem bredvid varandra i rätt ordning.</translation>
+<translation id="3747079125031086337">Välj orden i din återställningsfras i rätt ordning.</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="3157931365184549694">Återställ</translation>
 <translation id="9111102763498581341">Lås upp</translation>
 <translation id="6657585470893396449">Lösenord</translation>
-<translation id="1569452037668432756">Ange ditt lösenord för att låsa upp</translation>
-<translation id="3717685683157254329">Lösenordet måste vara minst 7 tecken långt, varav minst en siffra och ett specialtecken</translation>
+<translation id="5168349973342709369">Ange lösenord för att låsa upp plånboken</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
 <translation id="5760476995887363522">Meningarna matchade inte. Försök igen.</translation>
 <translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
@@ -584,7 +585,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Till (beräknat)</translation>
 <translation id="6998989275928107238">Till</translation>
-<translation id="6664416064035847539">adress eller url</translation>
+<translation id="2589431635772931954">Adress eller URL</translation>
 <translation id="632241521608275119">Tolererade transaktionskostnader</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
@@ -614,11 +615,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2490428413101944234">Testkran</translation>
 <translation id="2581671693710952401">Skaffa Ether</translation>
 <translation id="8165484222652118977">Hämta Ether från en kran för <ph name="NETWORK"/>-testnätverk</translation>
-<translation id="7420359180991315365">Fortsätt till Wire</translation>
+<translation id="7420359180991315365">Fortsätt till Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="3784455785234192852">Lås</translation>
 <translation id="5040262127954254034">Sekretess</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
-<translation id="414639769490080648">Hur många minuter vill du att det ska ta innan din Brave-plånbok låses automatiskt?</translation>
+<translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
 <translation id="6369495274982305511">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minut} other {# minuter}}</translation>
@@ -722,7 +724,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5932938770824268122">Privat nyckel</translation>
 <translation id="2472882733835903303">Visa privat nyckel</translation>
 <translation id="4391056902675005799">Dölj privat nyckel</translation>
-<translation id="7518007103754668253">Varning: Lämna aldrig ut den här nyckeln. Alla med privat nyckel kan stjäla eventuella tillgångar som finns på ditt konto.</translation>
+<translation id="7518007103754668253">Varning! Lämna aldrig ut den här nyckeln. Alla med den här privata nyckeln kan stjäla eventuella tillgångar som finns på ditt konto.</translation>
 <translation id="1133619932669546254">Aktivera <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKTIONSTYP: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Inga data</translation>
@@ -746,6 +748,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="3211051910418903298">Fyll på dina mobildata mindre ofta</translation>
 <translation id="1092355580602106002">Färre annonser = mindre data på varje sida du läser in. Använd Brave för all din surf på webben.</translation>
 <translation id="623962032102267945">Brave = mindre mobildata på varje sida</translation>
+<translation id="4355217341028673744">• Starkare integritet</translation>
+<translation id="3679020972083025535">• Inga irriterande annonser</translation>
 <translation id="8047527352810290817">Redigera gas</translation>
 <translation id="7358989216567322955">Max prioritetsavgift</translation>
 <translation id="9091334651803050473">Även om det inte är en garanti kommer gruvarbetare sannolikt att prioritera din transaktion om du betalar en högre avgift.</translation>
@@ -758,47 +762,19 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1011713837432053857">Maxbelopp för bränsle</translation>
 <translation id="1254969878422524947">Gräns per spets (Gwei)</translation>
 <translation id="7373308452149471621">Prisgräns per gas (Gwei)</translation>
-<translation id="5345505584130165588">Brave Shields och sekretess</translation>
-<translation id="7822245778264751380">Ethereum-pris (ETH)</translation>
-<translation id="7384441892795736634">Ladda om data</translation>
-<translation id="4804818685124855865">Koppla från</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
-<translation id="5110244215256675209">Köp kryptovaluta</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
-<translation id="4670943871783273148">Din text har sparats till en textfil.</translation>
-<translation id="4432845796903761592">Fil ej sparad.</translation>
-<translation id="7144878232160441200">Försök igen</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="2956070106555335453">Sammanfattning</translation>
-<translation id="1366855498335432549">Sätt in</translation>
-<translation id="1301340234286078471">Omvandla</translation>
-<translation id="1714829281959608206">Koppla till Binance för att se kontobalansen där och handla med kryptovaluta.</translation>
-<translation id="4584930231524505442">Jag vill omvandla ...</translation>
-<translation id="5749014321384313843">Jag vill spendera ...</translation>
-<translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
-<translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Kan inte ansluta</translation>
-<translation id="7742417737698031726">Avgift</translation>
-<translation id="2122225204180056042">Du erhåller</translation>
-<translation id="6432284126416751397">Bekräfta omvandling</translation>
-<translation id="3891414008432200754">Pris</translation>
-<translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
-<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
-<translation id="5317780077021120954">Spara</translation>
-<translation id="1202920745614909195">Köp krypto med Apple Pay eller betalkort</translation>
-<translation id="224719674509047150">Lösenordet måste vara minst 7 tecken långt, varav minst en siffra och ett specialtecken</translation>
-<translation id="4636930964841734540">Info</translation>
-<translation id="8094541587800369158">Dessa konton kan användas med web 3-dappar och kan visas i din portfölj, men de kan inte återställas via återställningsfras från din primära kontobackup. Aktivera Brave Sync-konton för att återställa sekundära konton automatiskt.</translation>
-<translation id="6083912983861746409">Gaspris(GWEI)</translation>
-<translation id="2499079593046817044">Gasgräns(GWEI)</translation>
-<translation id="5929798090073091848">Varning: Lämna aldrig ut den här nyckeln. Alla med privat nyckel kan stjäla eventuella tillgångar som finns på ditt konto.</translation>
+<translation id="5891811606602061966">Det gick inte att importera kontot. Vänligen försök igen.</translation>
+<translation id="7033470144757208254">Brave använder 0x som en DEX-aggregator.</translation>
+<translation id="5061574358754621254">Prisdata från CoinGecko</translation>
+<translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
+<translation id="8574289650879708853">Lägg till anpassad tillgång</translation>
+<translation id="7791543448312431591">Lägg till</translation>
+<translation id="6600400596821238377">Token namn</translation>
+<translation id="4432966365400169165">Kontraktsadress för token</translation>
+<translation id="4092152169181928870">Tokensymbol</translation>
+<translation id="4351811224047421378">Precisionsdecimaler</translation>
+<translation id="8614026298974065517">Ta bort anpassad tillgång</translation>
+<translation id="4378941981362528553">Vill du ta bort token för <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
+<translation id="749944179568745958">Inte en giltig ETH-adress</translation>
+<translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
 </translationbundle>

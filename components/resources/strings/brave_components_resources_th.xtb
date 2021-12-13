@@ -592,7 +592,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="3656941797339037856">เชื่อมโยง Rewards กับ Gemini!</translation>
-<translation id="3066983737886188034">Gemini ช่วยให้คุณเทรด จัดเก็บ และรับ APY 3.49% สำหรับ BAT ของคุณได้ง่ายๆ ยืนยันและเชื่อมโยงวอลเล็ต Brave รีวอร์ด ของคุณกับ Gemini เลยวันนี้!</translation>
+<translation id="2383784987664887340">Gemini ช่วยให้คุณเทรด จัดเก็บ และรับ APY 3.49% สำหรับ BAT ของคุณได้ง่ายๆ ยืนยันและเชื่อมโยงวอลเล็ต Brave รีวอร์ด ของคุณกับ Gemini เลยวันนี้!</translation>
+<translation id="2237374144728570574">* APY ที่ได้รับจาก Gemini ณ วันที่ 15 ก.ย. 2021</translation>
 <translation id="7404779623219601861">แลก BAT เป็นบัตรของขวัญ</translation>
 <translation id="6215565499749144110">การใช้เครือข่าย TAP จะทำให้คุณแลก BAT เป็นบัตรของขวัญจากสินค้าแบรนด์เนมยอดนิยมได้</translation>
 <translation id="6915065518766963119">* ต้องตรวจสอบความถูกต้องกับ Uphold</translation>
@@ -877,6 +878,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8093033115658137576">ที่อยู่หรือ URL 0x</translation>
 <translation id="2860280209982026951">Brave ใช้ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> เป็นระบบค้นหาตลาดแลกเปลี่ยน (DEX Aggregator)</translation>
 <translation id="151946611346774041">0x จะประมวลผลที่อยู่ Ethereum และที่อยู่ IP เพื่อดำเนินธุรกรรมให้สำเร็จ (รวมถึงการขอรับใบเสนอราคา) โดย 0x จะใช้ข้อมูลนี้เพื่อวัตถุประสงค์ในการประมวลผลธุรกรรมเท่านั้น</translation>
+<translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
 <translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
 <translation id="8303434745767477417">ถือครองสินทรัพย์คริปโตไว้ในการดูแลของคุณ ติดตามผลงานของพอร์ตโฟลิโอและโต้ตอบด้วย web3 DApps เทรด ลงทุน ยืม และให้กู้ยืมด้วย DeFi ทั้งหมดนี้ทำได้จากเบราว์เซอร์ที่มีความเป็นส่วนตัวจาก Brave โดยไม่ต้องใช้ส่วนขยาย ไม่ต้องมีการดาวน์โหลด</translation>
@@ -1048,6 +1050,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7051244143160304048">ยกเลิกการเชื่อมต่อ <ph name="DEVICE_NAME"/> แล้ว</translation>
 <translation id="5317781812114905957">คำแนะนำ</translation>
 <translation id="1178198982208000092">เชื่อมต่อ <ph name="DEVICE_NAME"/> ของคุณ</translation>
+<translation id="4358411489835404360">Hardware Wallet ต้องการการยืนยันบนอุปกรณ์ <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">กระเป๋าเงินฮาร์ดแวร์ต้องเปิดแอป Ethereum บน <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">ส่งแล้ว</translation>
 <translation id="5013754027092416509">ได้รับแล้ว</translation>
@@ -1107,6 +1110,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4287068151777838754">ข้อมูล JSON ไม่ได้รับการคาดหวัง</translation>
 <translation id="3282936527763045737">รหัสผ่านไม่ถูกต้อง</translation>
 <translation id="1119447706177454957">ข้อผิดพลาดภายใน</translation>
+<translation id="3327639091470204775">ไม่สามารถเชื่อมต่อกับ Trezor Bridge ได้</translation>
 <translation id="6672377693827764095">เกิดข้อผิดพลาดภายใน ไม่สามารถดึงข้อมูลบัญชีได้</translation>
 <translation id="8933250418452564886">ไม่พบธุรกรรมในฮาร์ดแวร์ กรุณาลองอีกครั้ง</translation>
 <translation id="5999974802900788338">เกิดข้อผิดพลาดจากอุปกรณ์ฮาร์ดแวร์ คุณอาจต้องยืนยันธุรกรรมบนอุปกรณ์ของคุณ</translation>
@@ -1158,9 +1162,4 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
-<translation id="2383784987664887340">Gemini ช่วยให้คุณเทรด จัดเก็บ และรับ APY 3.49% สำหรับ BAT ของคุณได้ง่ายๆ ยืนยันและเชื่อมโยงวอลเล็ต Brave รีวอร์ด ของคุณกับ Gemini เลยวันนี้!</translation>
-<translation id="2237374144728570574">* APY ที่ได้รับจาก Gemini ณ วันที่ 15 ก.ย. 2021</translation>
-<translation id="3301417531330431881">Hardware Wallet ต้องการให้ยืนยันการทำธุรกรรม <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">เกิดข้อผิดพลาดภายใน ไม่สามารถสร้าง iframe bridge</translation>
-<translation id="1664949222596149258">ซื้อ <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

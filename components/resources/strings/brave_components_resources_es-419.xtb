@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="3656941797339037856">¡Asocia Rewards con Gemini!</translation>
-<translation id="3066983737886188034">Con Gemini, puede intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual del 3,49 % por sus BAT. ¡Verifique y vincule su billetera de Recompensas Brave con Gemini!</translation>
+<translation id="2383784987664887340">Con Gemini, puede intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual del 3,49 % por sus BAT. ¡Verifique y vincule su billetera de Recompensas Brave con Gemini!</translation>
+<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Dirección o URL 0x</translation>
 <translation id="2860280209982026951">Brave utiliza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">0x procesará la dirección IP y la dirección de Ethereum para completar una transacción (incluida la obtención de cotizaciones). 0x SOLO utilizará estos datos con el fin de procesar transacciones.</translation>
+<translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
 <translation id="8303434745767477417">Conserve criptoactivos bajo su custodia. Realice un seguimiento del rendimiento de la cartera e interactúe con aplicaciones descentralizadas de Web 3. Gracias a las finanzas descentralizadas, podrá intercambiar criptoactivos, invertirlos, tomarlos prestados y prestarlos. Todo desde el navegador de Brave para proteger su privacidad. No se requieren extensiones ni descargas.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
 <translation id="5317781812114905957">Instrucciones</translation>
 <translation id="1178198982208000092">Conecte su <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">La billetera de hardware requiere confirmación en el dispositivo. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">La billetera de hardware requiere que la App Ethereum esté abierta en <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">recibida</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">No se esperan datos JSON</translation>
 <translation id="3282936527763045737">La contraseña no es correcta</translation>
 <translation id="1119447706177454957">Error interno</translation>
+<translation id="3327639091470204775">No se puede conectar a Trezor</translation>
 <translation id="6672377693827764095">Error interno. No ha sido posible obtener las cuentas.</translation>
 <translation id="8933250418452564886">No es posible encontrar la transacción de hardware. Inténtalo de nuevo</translation>
 <translation id="5999974802900788338">Error del dispositivo de hardware. Es probable que debas confirmar la transacción en tu dispositivo</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Mensaje de error de acceso. Inténtalo de nuevo</translation>
 <translation id="8273603707418703324">Mensaje de error de acceso. Se solicitó un archivo de claves desconocido. Inténtalo de nuevo</translation>
 <translation id="5265455943786954050">El comando Trezor ya está en curso</translation>
-<translation id="7017116822583380542">Trezor Bridge no está listo</translation>
+<translation id="7017116822583380542">El puente de Trezor no está listo</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
-<translation id="2383784987664887340">Con Gemini, puede intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual del 3,49 % por sus BAT. ¡Verifique y vincule su billetera de Recompensas Brave con Gemini!</translation>
-<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
-<translation id="3301417531330431881">La billetera de hardware requiere confirmación de la transacción. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Error interno. No ha sido posible crear el puente de iframe.</translation>
-<translation id="1664949222596149258">Contratar por <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
 <translation id="9200453331904391567">Від'єднатись від Винагород Brave</translation>
 <translation id="3656941797339037856">Прив’яжіть Rewards до Gemini!</translation>
-<translation id="3066983737886188034">Gemini дає вам можливість легко продавати, зберігати й заробляти 3,49 % APY на ваших BAT. Підтвердьте й пов’яжіть гаманець «Нагород Brave» до Gemini вже зараз!</translation>
+<translation id="2383784987664887340">Gemini дає вам можливість легко продавати, зберігати й заробляти 3,49 % APY на ваших BAT. Підтвердьте й пов’яжіть гаманець «Нагород Brave» до Gemini вже зараз!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY станом на 15 вересня 2021 р.</translation>
 <translation id="7404779623219601861">Отримати BAT за Подарункові картки</translation>
 <translation id="6215565499749144110">З Мережею TAP ви можете отримати свої BAT за подарункові картки популярного іменного бренду.</translation>
 <translation id="6915065518766963119">* Потрібна підтверджувальна верифікація</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Адреса 0x чи url</translation>
 <translation id="2860280209982026951">Brave використовує <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> як агрегатор DEX.</translation>
 <translation id="151946611346774041">0x обробить адресу Ethereum та IP-адресу для проведення транзакції (зокрема отримання розцінок). 0x використовуватиме ці дані ВИКЛЮЧНО для обробки транзакцій.</translation>
+<translation id="4626407663177532837">Розцінка включає збір Brave у розмірі 0,875 %.</translation>
 <translation id="6518133107902771759">Підтвердити</translation>
 <translation id="1420318137760245955">Вітаємо в новому гаманці Brave</translation>
 <translation id="8303434745767477417">Зберігайте криптовалюту під контролем. Відстежуйте показники портфоліо та взаємодійте з додатками web 3 DApps. Торгуйте, інвестуйте, позичайте та надавайте кредити з DeFi. Усе це можна зробити безпосередньо з конфіденційного браузера Brave. Не потрібні розширення й завантаження.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> відключено</translation>
 <translation id="5317781812114905957">Інструкції</translation>
 <translation id="1178198982208000092">Підключіть <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Апаратний гаманець потребує підтвердження на пристрої. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Апаратний гаманець потребує відкриття додатка Ethereum на <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">надіслано</translation>
 <translation id="5013754027092416509">отримано</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Дані JSON не є очікуваними</translation>
 <translation id="3282936527763045737">Неправильний пароль</translation>
 <translation id="1119447706177454957">Внутрішня помилка</translation>
+<translation id="3327639091470204775">Не вдалося підключитися до Trezor bridge</translation>
 <translation id="6672377693827764095">Внутрішня помилка, не вдається отримати облікові записи</translation>
 <translation id="8933250418452564886">Не вдалося знайти апаратний засіб для транзакції, повторіть спробу</translation>
 <translation id="5999974802900788338">Отримано повідомлення про помилку від апаратного пристрою, можливо, потрібно підтвердити транзакцію на вашому пристрої</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Повідомлення про помилку підписання, повторіть спробу</translation>
 <translation id="8273603707418703324">Повідомлення про помилку підписання, запит до невідомого сховища ключів, повторіть спробу</translation>
 <translation id="5265455943786954050">Команда Trezor уже виконується</translation>
-<translation id="7017116822583380542">Додаток Trezor Bridge не готовий</translation>
+<translation id="7017116822583380542">Міст Trezor не готовий</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
 <translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 <translation id="242959166945779492">У вас немає залишків на рахунку. Відвідайте FTX, щоб поповнити його.</translation>
-<translation id="2383784987664887340">Gemini дає вам можливість легко продавати, зберігати й заробляти 3,49 % APY на ваших BAT. Підтвердьте й пов’яжіть гаманець «Нагород Brave» до Gemini вже зараз!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY станом на 15 вересня 2021 р.</translation>
-<translation id="3301417531330431881">Апаратний гаманець потребує підтвердження транзакції. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Внутрішня помилка, не вдалося створити міст iframe</translation>
-<translation id="1664949222596149258">Придбати за <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
 <translation id="3656941797339037856">Collega Rewards a Gemini!</translation>
-<translation id="3066983737886188034">Con Gemini puoi scambiare, archiviare e guadagnare facilmente il 3,49% di rendimento percentuale annuo (APY) sui tuoi BAT. Verifica e collega subito il tuo portafoglio Brave Rewards a Gemini!</translation>
+<translation id="2383784987664887340">Con Gemini puoi scambiare, archiviare e guadagnare facilmente il 3,49% di rendimento percentuale annuo (APY) sui tuoi BAT. Verifica e collega subito il tuo portafoglio Brave Rewards a Gemini!</translation>
+<translation id="2237374144728570574">* Gemini guadagna APY a partire dal 15 settembre 2021</translation>
 <translation id="7404779623219601861">Riscatta BAT per Carte Regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puoi riscattare i tuoi BAT per carte regalo di marchi popolari.</translation>
 <translation id="6915065518766963119">* Richiede verifica Uphold</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Indirizzo 0x o URL</translation>
 <translation id="2860280209982026951">Brave usa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> come aggregatore DEX.</translation>
 <translation id="151946611346774041">0x utilizzerà l’indirizzo Ethereum e l’indirizzo IP per completare le transazioni (richieste di quotazioni incluse). 0x userà questi dati SOLO per gestire le transazioni.</translation>
+<translation id="4626407663177532837">La quotazione include una commissione dello 0,875% per Brave.</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
 <translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> scollegato</translation>
 <translation id="5317781812114905957">Istruzioni</translation>
 <translation id="1178198982208000092">Collega il tuo <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Per il portafoglio hardware serve la conferma sul dispositivo. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Il portafoglio richiede che l’app di Ethereum sia aperta su <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">inviata</translation>
 <translation id="5013754027092416509">ricevuta</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Dati JSON non previsti</translation>
 <translation id="3282936527763045737">La password non è corretta</translation>
 <translation id="1119447706177454957">Errore interno</translation>
+<translation id="3327639091470204775">Impossibile collegarsi al bridge di Trezor</translation>
 <translation id="6672377693827764095">Errore interno, impossibile recuperare gli account</translation>
 <translation id="8933250418452564886">Impossibile trovare la transazione dell’hardware, riprova</translation>
 <translation id="5999974802900788338">Errore ricevuto dall’hardware, probabilmente devi confermare la transazione sul tuo dispositivo</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
-<translation id="2383784987664887340">Con Gemini puoi scambiare, archiviare e guadagnare facilmente il 3,49% di rendimento percentuale annuo (APY) sui tuoi BAT. Verifica e collega subito il tuo portafoglio Brave Rewards a Gemini!</translation>
-<translation id="2237374144728570574">* Gemini guadagna APY a partire dal 15 settembre 2021</translation>
-<translation id="3301417531330431881">Il portafoglio hardware richiede la conferma della transazione. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Errore interno, impossibile creare il bridge iframe</translation>
-<translation id="1664949222596149258">Acquista per <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

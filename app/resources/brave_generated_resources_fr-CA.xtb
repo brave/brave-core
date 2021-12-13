@@ -55,6 +55,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="6821903322090655051">Les récompenses Brave sont désactivées</translation>
+<translation id="413570371620795359">Ouvrez la section Récompenses pour activer cette fonctionnalité et vous lancer</translation>
 <translation id="3849957491997306859">Détection automatique</translation>
 <translation id="8798099450830957504">Par défaut</translation>
 <translation id="4176463684765177261">Désactivé</translation>
@@ -428,6 +429,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2653659639078652383">Envoyer</translation>
 <translation id="2556708692502648323">Réseaux du portefeuille</translation>
 <translation id="1330032157352961756">Identifiant de la nouvelle chaîne</translation>
+<translation id="3423620355610881890">Un nombre décimal positif</translation>
 <translation id="726121047592132939">Nom de la nouvelle chaîne</translation>
 <translation id="1034112277864078119">Saisir le nom de la chaîne</translation>
 <translation id="4672314527143443556">Nom de devise de la chaîne</translation>
@@ -441,6 +443,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3047726704186619366">URL d'icône</translation>
 <translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
 <translation id="6301398959353668507">Champ obligatoire.</translation>
+<translation id="7504462451153306677">Format non valide : l'identifiant de la chaîne est un nombre positif</translation>
 <translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
 <translation id="650071759190249039">Erreur interne, impossible d'ajouter le réseau.</translation>
 <translation id="868529041590572443">Veuillez remplir tous les renseignements sur la devise native</translation>

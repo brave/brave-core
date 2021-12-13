@@ -389,12 +389,12 @@ Are you sure you want to do this?</translation>
 <translation id="7427567994475794038">Turn on privacy reports to see how many trackers &amp; ads have been blocked in the past 3 hours.</translation>
 <translation id="2053891538879944400">You saved <ph name="DATA"/> <ph name="DATA_TEXT"/> data with Brave browser.</translation>
 <translation id="8640064498452534195">Turn on privacy reports to see how much data you've saved.</translation>
-<translation id="2252497442547961651">Brave browser uses 40% less battery on average.🔋</translation>
+<translation id="2252497442547961651">Brave browser uses 40% less battery on average.&#128267;</translation>
 <translation id="1945330434665345785">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser last week.</translation>
 <translation id="2883868922264431515">Earn tokens by viewing privacy-respecting ads and support your favourite websites.</translation>
-<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥</translation>
-<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.🔋</translation>
-<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.💨💨</translation>
+<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.&#128293;</translation>
+<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.&#128267;</translation>
+<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Start browsing to see privacy reporting</translation>
 <translation id="9080777565335515917">Set Brave as your default browser for private and secure browsing.</translation>
 <translation id="1390943217516275883">Allows Brave to show your privacy statistics</translation>
@@ -511,27 +511,27 @@ Are you sure you want to do this?</translation>
 <translation id="6146966915297143881">continue to login</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="8825032646286791700">DeFi &amp; Secure Crypto Storage</translation>
-<translation id="5460364286096798286">Hold crypto in your custody. Trade assets. View prices and portfolio performance. Invest, borrow and lend with DeFi.</translation>
-<translation id="1748009926009835882">Set up crypto</translation>
+<translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
+<translation id="8339846196588658366">Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.</translation>
+<translation id="4472575034687746823">Get started</translation>
 <translation id="2759836790106646094">Back up your wallet now!</translation>
-<translation id="5156354224138379811">In the next step, you will see 12 words that allow you to recover your crypto wallet.</translation>
+<translation id="1078873179929044999">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
 <translation id="2359808026110333948">Continue</translation>
-<translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
+<translation id="1904000155026201268">I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.</translation>
 <translation id="3933122286596948824">Your recovery phrase</translation>
-<translation id="6146351434671268516">Write down or copy these words in the right order and save them somewhere safe.</translation>
-<translation id="7408247683131762445">WARNING: never disclose your backup phrase. Anyone with this phrase can take your funds forever.</translation>
-<translation id="939275786514736244">I have backed up my phrase somewhere safe</translation>
+<translation id="5077747669435508720">Write down or copy these words in the exact order shown below and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of a forgotten password, lost or stolen device, or if you want to switch wallets.</translation>
+<translation id="2708402071160162126">WARNING: never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
+<translation id="111912712268284159">I have backed up my phrase somewhere safe.</translation>
 <translation id="6896758677409633944">Copy</translation>
-<translation id="2604744480284798833">Back up your wallet now to protect your crypto portfolio from loss of access.</translation>
-<translation id="8289942708804097960">Buy crypto with Apple Pay, credit or debit card.</translation>
+<translation id="375882617301124395">Back up your crypto wallet</translation>
+<translation id="8289942708804097960">Buy crypto with credit or debit card.</translation>
 <translation id="841880029259839903">Send crypto or transfer from one account to another.</translation>
 <translation id="8982246458261383692">Swap crypto assets with Brave DEX aggregator.</translation>
 <translation id="1783600039044302171">Secure your crypto with a password</translation>
 <translation id="3726490322412361740">Enter password</translation>
-<translation id="4450951602553063001">Re-enter password</translation>
-<translation id="1783870616707290226">Password must be 7 or more characters</translation>
-<translation id="7383102760859258982">Re-typed password did not match</translation>
+<translation id="3038243139480464605">Verify password</translation>
+<translation id="3717685683157254329">Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.</translation>
+<translation id="7396672979287122068">Verified password did not match</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -540,24 +540,25 @@ Are you sure you want to do this?</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">ALL</translation>
 <translation id="5071303414930953888">Account <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Add account</translation>
-<translation id="2632612428525029752">Update account</translation>
+<translation id="7665369617277396874">Add account</translation>
+<translation id="3448492834076427715">Update account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Enable fingerprint unlock?</translation>
 <translation id="5493402808936397665">Enable biometrics to quickly unlock your wallet without entering your password.</translation>
-<translation id="1544192797660353713">Wallet</translation>
+<translation id="8030647312184163932">Fingerprint unlock</translation>
+<translation id="4090490645603511157">Use biometrics to quickly unlock your wallet without entering your password.</translation>
+<translation id="5379398699598690674">Wallet (beta)</translation>
 <translation id="6901810042765869341">Enter your recovery phrase to restore your Brave Wallet crypto account.</translation>
-<translation id="1970161551843843564">Restore crypto account</translation>
+<translation id="9120654436199628567">Restore crypto account</translation>
 <translation id="4811736040444856406">Show recovery phrase</translation>
 <translation id="283071225285270357">Enter your recovery phrase</translation>
 <translation id="2339124864228588937">Verify recovery phrase</translation>
-<translation id="2718669004132381989">Tap the words to put them next to each other in the correct order.</translation>
+<translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
 <translation id="6518133107902771759">Verify</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Password</translation>
-<translation id="1569452037668432756">Enter your password to unlock</translation>
-<translation id="3717685683157254329">Password must be at least 7 characters containg at least one number and a special character</translation>
+<translation id="5168349973342709369">Enter password to unlock wallet</translation>
 <translation id="1144810021918451336">Does not protect you against dangerous websites, downloads and extensions.</translation>
 <translation id="5760476995887363522">Phrases did not match. Please try again.</translation>
 <translation id="2360588547830602174">Account recovery failed. Please try again.</translation>
@@ -568,7 +569,7 @@ Are you sure you want to do this?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">To (estimate)</translation>
 <translation id="6998989275928107238">To</translation>
-<translation id="6664416064035847539">address or url</translation>
+<translation id="2589431635772931954">Address or URL</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="3535654229833214438">Transactions</translation>
@@ -598,11 +599,12 @@ Are you sure you want to do this?</translation>
 <translation id="2490428413101944234">Test faucet</translation>
 <translation id="2581671693710952401">Get Ether</translation>
 <translation id="8165484222652118977">Get Ether from a faucet for <ph name="NETWORK"/> Test Network</translation>
-<translation id="7420359180991315365">Continue to Wire</translation>
+<translation id="7420359180991315365">Continue to Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="3784455785234192852">Lock</translation>
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
-<translation id="414639769490080648">How many minutes do you want before automatically lock your brave wallet?</translation>
+<translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
 <translation id="4993345308607970390">Reset Brave Wallet</translation>
 <translation id="6369495274982305511">Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
@@ -706,7 +708,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5932938770824268122">Private Key</translation>
 <translation id="2472882733835903303">Show private key</translation>
 <translation id="4391056902675005799">Hide private key</translation>
-<translation id="7518007103754668253">Warning: never disclose this key. Anyone with private key can steal any assets held in your account.</translation>
+<translation id="7518007103754668253">Warning: Never disclose this key. Anyone with this private key can steal any assets held in your account.</translation>
 <translation id="1133619932669546254">Activate <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNCTION TYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No data</translation>
@@ -730,6 +732,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3211051910418903298">Top up your mobile data less often</translation>
 <translation id="1092355580602106002">Fewer ads = less data on every page you load. Use Brave for all your web browsing.</translation>
 <translation id="623962032102267945">Brave = less mobile data on every page</translation>
+<translation id="4355217341028673744">• Better privacy</translation>
+<translation id="3679020972083025535">• No annoying ads</translation>
 <translation id="8047527352810290817">Edit gas</translation>
 <translation id="7358989216567322955">Max Priority Fee</translation>
 <translation id="9091334651803050473">While not a guarantee, miners will likely prioritise your transaction if you pay a higher fee.</translation>
@@ -742,47 +746,19 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1011713837432053857">Gas amount limit</translation>
 <translation id="1254969878422524947">Per-gas tip limit (Gwei)</translation>
 <translation id="7373308452149471621">Per-gas price limit (Gwei)</translation>
-<translation id="5345505584130165588">Brave shields &amp; privacy</translation>
-<translation id="7822245778264751380">Ethereum price (ETH)</translation>
-<translation id="7384441892795736634">Refresh data</translation>
-<translation id="4804818685124855865">Disconnect</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Deposit Address</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Deposit Memo</translation>
-<translation id="5110244215256675209">Buy crypto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Buy <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Available <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Preview conversion</translation>
-<translation id="4670943871783273148">Your text has been saved to a text file.</translation>
-<translation id="4432845796903761592">File not saved.</translation>
-<translation id="7144878232160441200">Retry</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="2956070106555335453">Summary</translation>
-<translation id="1366855498335432549">Deposit</translation>
-<translation id="1301340234286078471">Convert</translation>
-<translation id="1714829281959608206">Enable Binance connection to view Binance account balance and trade crypto.</translation>
-<translation id="4584930231524505442">I want to convert...</translation>
-<translation id="5749014321384313843">I want to spend...</translation>
-<translation id="2480674848181564169">Not enough balance for conversion</translation>
-<translation id="2215334405220411393">Minimum amount to convert is : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Unable to connect</translation>
-<translation id="7742417737698031726">Fee</translation>
-<translation id="2122225204180056042">You will receive</translation>
-<translation id="6432284126416751397">Confirm conversion</translation>
-<translation id="3891414008432200754">Price</translation>
-<translation id="3733576242118819803">Confirm (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Conversion Failed. Please try again.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
-<translation id="3604285424134705930">You converted <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Please check your network connection.</translation>
-<translation id="5317780077021120954">Save</translation>
-<translation id="1202920745614909195">Buy crypto with Apple Pay, credit or debit card.</translation>
-<translation id="224719674509047150">Password must be at least 7 characters containg at least one number and a special character</translation>
-<translation id="4636930964841734540">Info</translation>
-<translation id="8094541587800369158">These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.</translation>
-<translation id="6083912983861746409">Gas price(GWEI)</translation>
-<translation id="2499079593046817044">Gas limit(GWEI)</translation>
-<translation id="5929798090073091848">Warning: never disclose this key. Anyone with private key can steal any assets held in your account.</translation>
+<translation id="5891811606602061966">Failed to import account, please try again.</translation>
+<translation id="7033470144757208254">Brave uses 0x as a DEX aggregator.</translation>
+<translation id="5061574358754621254">Price data powered by CoinGecko</translation>
+<translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
+<translation id="8574289650879708853">Add custom asset</translation>
+<translation id="7791543448312431591">Add</translation>
+<translation id="6600400596821238377">Token name</translation>
+<translation id="4432966365400169165">Token contract address</translation>
+<translation id="4092152169181928870">Token symbol</translation>
+<translation id="4351811224047421378">Decimals of precision</translation>
+<translation id="8614026298974065517">Remove custom asset</translation>
+<translation id="4378941981362528553">Do you want to remove <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
+<translation id="8971278306757462297">The receiving address is your own address</translation>
+<translation id="749944179568745958">Not a valid ETH address</translation>
+<translation id="3506416339268164412">The receiving address is a token's contract address</translation>
 </translationbundle>

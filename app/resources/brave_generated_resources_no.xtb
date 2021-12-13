@@ -55,6 +55,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
 <translation id="6821903322090655051">Brave Rewards er deaktivert</translation>
+<translation id="413570371620795359">Åpne Belønninger-panelet for å aktivere og komme i gang</translation>
 <translation id="3849957491997306859">Automatisk oppdaget</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="4176463684765177261">Deaktivert</translation>
@@ -428,6 +429,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2653659639078652383">Send</translation>
 <translation id="2556708692502648323">Lommeboknettverk</translation>
 <translation id="1330032157352961756">Den nye kjedens ID</translation>
+<translation id="3423620355610881890">Et positivt desimaltall</translation>
 <translation id="726121047592132939">Den nye kjedens navn</translation>
 <translation id="1034112277864078119">Skriv inn kjedenavn</translation>
 <translation id="4672314527143443556">Kjedens valutanavn</translation>
@@ -441,6 +443,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3047726704186619366">Ikonnettadresser</translation>
 <translation id="2487558607408469181">Blokker utforskernettadresser</translation>
 <translation id="6301398959353668507">Dette feltet kan ikke stå tomt.</translation>
+<translation id="7504462451153306677">Ugyldig format, kjede-ID er et positivt tall</translation>
 <translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
 <translation id="650071759190249039">Intern feil, kan ikke legge til nettverk.</translation>
 <translation id="868529041590572443">Fyll inn all informasjon om innebygd valuta</translation>

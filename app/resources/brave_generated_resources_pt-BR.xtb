@@ -55,6 +55,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6285118765755298263">Indexar outros mecanismos de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente sites que seguem a especificação OpenSearch.</translation>
 <translation id="6821903322090655051">As Recompensas do Brave estão desativadas</translation>
+<translation id="413570371620795359">Abra o painel "Recompensas" para ativar e começar</translation>
 <translation id="3849957491997306859">Detectadas automaticamente</translation>
 <translation id="8798099450830957504">Padrão</translation>
 <translation id="4176463684765177261">Desativado</translation>
@@ -428,6 +429,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="2556708692502648323">Redes de carteiras</translation>
 <translation id="1330032157352961756">O ID da nova cadeia</translation>
+<translation id="3423620355610881890">Um número decimal positivo</translation>
 <translation id="726121047592132939">O nome da nova cadeia</translation>
 <translation id="1034112277864078119">Insira o nome da cadeia</translation>
 <translation id="4672314527143443556">Nome da moeda da cadeia</translation>
@@ -441,6 +443,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3047726704186619366">URLs de ícone</translation>
 <translation id="2487558607408469181">URLs do Block Explorer</translation>
 <translation id="6301398959353668507">Este campo não pode ficar em branco.</translation>
+<translation id="7504462451153306677">Formato inválido. O ID da cadeia é um número positivo</translation>
 <translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 <translation id="650071759190249039">Erro interno. Não foi possível adicionar a rede.</translation>
 <translation id="868529041590572443">Preencha todas as informações sobre a moeda nativa</translation>

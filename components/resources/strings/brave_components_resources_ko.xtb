@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="3656941797339037856">Rewards를 Gemini에 연결하세요!</translation>
-<translation id="3066983737886188034">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
+<translation id="2383784987664887340">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
+<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini Earn APY</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x 주소 또는 URL</translation>
 <translation id="2860280209982026951">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>를 사용합니다.</translation>
 <translation id="151946611346774041">0x는 이더리움 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). 0x는 거래 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
 <translation id="6518133107902771759">확인</translation>
 <translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
 <translation id="8303434745767477417">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, web 3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 연결 해제됨</translation>
 <translation id="5317781812114905957">지침</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> 연결</translation>
+<translation id="4358411489835404360">하드웨어 월렛에는 트랜잭션 확인이 필요합니다. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">하드웨어 월렛에는 <ph name="DEVICE_NAME"/>에 열려 있는 이더리움 앱이 필요합니다.</translation>
 <translation id="8687869982094542529">보냄</translation>
 <translation id="5013754027092416509">받음</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">예상된 JSON 데이터가 아님</translation>
 <translation id="3282936527763045737">비밀번호가 맞지 않음</translation>
 <translation id="1119447706177454957">내부 오류</translation>
+<translation id="3327639091470204775">Trezor 브리지에 연결할 수 없음</translation>
 <translation id="6672377693827764095">내부 오류. 계정을 가져올 수 없습니다.</translation>
 <translation id="8933250418452564886">하드웨어 트랜잭션을 찾을 수 없습니다. 다시 시도하세요.</translation>
 <translation id="5999974802900788338">하드웨어 기기에서 오류가 수신되었습니다. 기기에서 트랜잭션을 확인해야 할 수 있습니다.</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
-<translation id="2383784987664887340">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
-<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini Earn APY</translation>
-<translation id="3301417531330431881">하드웨어 월렛에는 트랜잭션 확인이 필요합니다. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">내부 오류. iframe 브리지를 생성할 수 없습니다.</translation>
-<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/>에 구매</translation>
 </translationbundle>

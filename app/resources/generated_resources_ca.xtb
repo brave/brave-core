@@ -1222,7 +1222,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2263371730707937087">Freqüència d'actualització de la pantalla</translation>
 <translation id="7829329302663082098">Els suggeriments ens ajuden a millorar Brave Cast. Si vols obtenir assistència per resoldre problemes amb l'emissió de contingut, consulta el <ph name="BEGIN_LINK"/>Centre d'ajuda<ph name="END_LINK"/>.</translation>
 <translation id="22665427234727190">Pregunta'm quan un lloc web vulgui accedir a dispositius Bluetooth (opció recomanada)</translation>
-<translation id="2266957463645820432">IPP per USB (IPPUSB)</translation>
+<translation id="2266957463645820432">IPP a través d'USB (IPPUSB)</translation>
 <translation id="2270450558902169558">Intercanviar dades amb un altre dispositiu del domini <ph name="DOMAIN"/></translation>
 <translation id="2270612886833477697"><ph name="BEGIN_PARAGRAPH1"/>La instal·lació <ph name="BEGIN_BOLD"/>esborrarà tota la unitat de disc dur<ph name="END_BOLD"/>. Assegura't de tenir còpies de seguretat de les dades.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Quan comenci la instal·lació, no es podrà cancel·lar.<ph name="END_PARAGRAPH2"/></translation>
@@ -2737,7 +2737,7 @@ i Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="3839526976593488376">Personalitza per a cada lloc web</translation>
 <translation id="3841964634449506551">La contrasenya no és vàlida</translation>
 <translation id="3842552989725514455">Tipus de lletra Serif</translation>
-<translation id="3843464315703645664">Inclòs internament a la llista de permesos</translation>
+<translation id="3843464315703645664">Inclòs internament a la llista d'accés permès</translation>
 <translation id="3844888638014364087">S'ha inserit l'emoji</translation>
 <translation id="384513009320852920">Comprova que el dispositiu Bluetooth es trobi a prop i en mode de vinculació. <ph name="BEGIN_LINK_LEARN_MORE"/>Més informació<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3846116211488856547">Obtén eines per desenvolupar llocs web i aplicacions d'Android, entre d'altres. En instal·lar Linux, es baixaran <ph name="DOWNLOAD_SIZE"/> de dades.</translation>
@@ -5478,7 +5478,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6860097299815761905">Config. servidor interm.</translation>
 <translation id="6860427144121307915">Obre en una pestanya</translation>
 <translation id="686366188661646310">Vols suprimir la contrasenya?</translation>
-<translation id="6865313869410766144">Dades d'Emplenament automàtic de formularis</translation>
+<translation id="6865313869410766144">Dades d'emplenament automàtic de formularis</translation>
 <translation id="6865598234501509159">La pàgina no està en <ph name="LANGUAGE"/></translation>
 <translation id="6865708901122695652">Registres d'esdeveniments de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="686609795364435700">Baix</translation>
@@ -6553,7 +6553,7 @@ Prem un interruptor o una tecla assignats per suprimir una assignació.</transla
 <translation id="7978412674231730200">Clau privada</translation>
 <translation id="6417033266065686942">Aquesta acció tancarà la sessió dels Comptes de Brave. Les adreces d'interès, l'historial, les contrasenyes i altres opcions es deixaran de sincronitzar.</translation>
 <translation id="7980084013673500153">Identificador de l'element: <ph name="ASSET_ID"/></translation>
-<translation id="7981313251711023384">Carrega les pàgines prèviament per poder-hi navegar i fer cerques més de pressa</translation>
+<translation id="7981313251711023384">Precarrega les pàgines per navegar i fer cerques més de pressa</translation>
 <translation id="798145602633458219">Afegeix el suggeriment <ph name="SUGGESTION_NAME"/> al quadre de cerca</translation>
 <translation id="7981662863948574132">Mostra la finestra emergent amb el codi QR i amb l'EID del dispositiu</translation>
 <translation id="7982083145464587921">Reinicieu el dispositiu per corregir aquest error.</translation>
@@ -7353,7 +7353,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8838601485495657486">Opac</translation>
 <translation id="8838770651474809439">Hamburguesa</translation>
 <translation id="883911313571074303">Afegeix una anotació a la imatge</translation>
-<translation id="8841843049738266382">Llegir i canviar els usuaris de la llista de permesos</translation>
+<translation id="8841843049738266382">Llegir i canviar els usuaris de la llista d'accés permès</translation>
 <translation id="8842594465773264717">Suprimeix aquesta empremta digital</translation>
 <translation id="8845001906332463065">Obteniu ajuda</translation>
 <translation id="8846132060409673887">Consultar el fabricant i el model d'aquest ordinador</translation>
