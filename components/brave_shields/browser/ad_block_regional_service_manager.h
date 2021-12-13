@@ -18,6 +18,7 @@
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_source_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -38,7 +39,8 @@ class AdBlockRegionalService;
 
 // The AdBlock regional service manager, in charge of initializing and
 // managing regional AdBlock clients.
-class AdBlockRegionalServiceManager {
+class AdBlockRegionalServiceManager
+    : public AdBlockRegionalCatalogProvider::Observer {
  public:
   explicit AdBlockRegionalServiceManager(
       PrefService* local_state,
@@ -48,7 +50,7 @@ class AdBlockRegionalServiceManager {
   AdBlockRegionalServiceManager(const AdBlockRegionalServiceManager&) = delete;
   AdBlockRegionalServiceManager& operator=(
       const AdBlockRegionalServiceManager&) = delete;
-  ~AdBlockRegionalServiceManager();
+  ~AdBlockRegionalServiceManager() override;
 
   std::unique_ptr<base::ListValue> GetRegionalLists();
 
@@ -78,7 +80,11 @@ class AdBlockRegionalServiceManager {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void Init(AdBlockResourceProvider* resource_provider);
+  void Init(AdBlockResourceProvider* resource_provider,
+            AdBlockRegionalCatalogProvider* catalog_provider);
+
+  // AdBlockRegionalCatalogProvider::Observer
+  void OnRegionalCatalogLoaded(const std::string& catalog_json) override;
 
  private:
   friend class ::AdBlockServiceTest;
@@ -98,8 +104,6 @@ class AdBlockRegionalServiceManager {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
-
-  DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalServiceManager);
 };
 
 // Creates the AdBlockRegionalServiceManager

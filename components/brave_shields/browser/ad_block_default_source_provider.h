@@ -11,6 +11,7 @@
 #include "base/callback.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_source_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -30,12 +31,11 @@ class AdBlockServiceTest;
 namespace brave_shields {
 
 class AdBlockDefaultSourceProvider : public AdBlockSourceProvider,
-                                     public AdBlockResourceProvider {
+                                     public AdBlockResourceProvider,
+                                     public AdBlockRegionalCatalogProvider {
  public:
-  AdBlockDefaultSourceProvider(
-      component_updater::ComponentUpdateService* cus,
-      base::RepeatingCallback<void(const std::string& regional_catalog)>
-          regional_catalog_available_cb);
+  explicit AdBlockDefaultSourceProvider(
+      component_updater::ComponentUpdateService* cus);
   ~AdBlockDefaultSourceProvider() override;
 
   void LoadDATBuffer(
@@ -45,12 +45,12 @@ class AdBlockDefaultSourceProvider : public AdBlockSourceProvider,
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)>) override;
 
+  void LoadRegionalCatalog(
+      base::OnceCallback<void(const std::string& catalog_json)>) override;
+
  private:
   friend class ::AdBlockServiceTest;
   void OnComponentReady(const base::FilePath&);
-
-  base::RepeatingCallback<void(const std::string& regional_catalog)>
-      regional_catalog_available_cb_;
 
   base::FilePath component_path_;
 

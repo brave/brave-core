@@ -10,6 +10,8 @@ static_library("browser") {
     "ad_block_engine.h",
     "ad_block_pref_service.cc",
     "ad_block_pref_service.h",
+    "ad_block_regional_catalog_provider.cc",
+    "ad_block_regional_catalog_provider.h",
     "ad_block_regional_service_manager.cc",
     "ad_block_regional_service_manager.h",
     "ad_block_regional_source_provider.cc",

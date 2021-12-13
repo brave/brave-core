@@ -210,7 +210,8 @@ AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
     regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
             local_state_, locale_, component_update_service_, GetTaskRunner());
-    regional_service_manager_->Init(resource_provider());
+    regional_service_manager_->Init(resource_provider(),
+                                    regional_catalog_provider());
   }
   return regional_service_manager_.get();
 }
@@ -225,6 +226,10 @@ AdBlockEngine* AdBlockService::default_service() {
 }
 
 AdBlockResourceProvider* AdBlockService::resource_provider() {
+  return default_source_provider_.get();
+}
+
+AdBlockRegionalCatalogProvider* AdBlockService::regional_catalog_provider() {
   return default_source_provider_.get();
 }
 
@@ -264,9 +269,7 @@ AdBlockService::AdBlockService(
       subscription_service_manager_(std::move(subscription_service_manager)) {
   default_source_provider_ =
       std::make_unique<brave_shields::AdBlockDefaultSourceProvider>(
-          component_update_service_,
-          base::BindRepeating(&AdBlockService::OnRegionalCatalogFileDataReady,
-                              weak_factory_.GetWeakPtr()));
+          component_update_service_);
   custom_filters_source_provider_ =
       std::make_unique<brave_shields::AdBlockCustomFiltersSourceProvider>(
           local_state_);
@@ -290,12 +293,6 @@ bool AdBlockService::Start() {
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   // Tags only need to be modified for the default engine.
   default_service()->EnableTag(tag, enabled);
-}
-
-void AdBlockService::OnRegionalCatalogFileDataReady(
-    const std::string& catalog_json) {
-  regional_service_manager()->SetRegionalCatalog(
-      RegionalCatalogFromJSON(catalog_json));
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {

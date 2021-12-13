@@ -22,10 +22,7 @@ const char kAdBlockResourcesFilename[] = "resources.json";
 namespace brave_shields {
 
 AdBlockDefaultSourceProvider::AdBlockDefaultSourceProvider(
-    component_updater::ComponentUpdateService* cus,
-    base::RepeatingCallback<void(const std::string& regional_catalog)>
-        regional_catalog_available_cb)
-    : regional_catalog_available_cb_(std::move(regional_catalog_available_cb)) {
+    component_updater::ComponentUpdateService* cus) {
   // Can be nullptr in unit tests
   if (cus) {
     RegisterAdBlockDefaultComponent(
@@ -62,7 +59,8 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(REGIONAL_CATALOG)),
-      base::BindOnce(regional_catalog_available_cb_));
+      base::BindOnce(&AdBlockDefaultSourceProvider::OnRegionalCatalogLoaded,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockDefaultSourceProvider::LoadDATBuffer(
@@ -93,6 +91,21 @@ void AdBlockDefaultSourceProvider::LoadResources(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(kAdBlockResourcesFilename)),
+      std::move(cb));
+}
+
+void AdBlockDefaultSourceProvider::LoadRegionalCatalog(
+    base::OnceCallback<void(const std::string& catalog_json)> cb) {
+  if (component_path_.empty()) {
+    // If the path is not ready yet, don't run the callback. An update should be
+    // pushed soon.
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     component_path_.AppendASCII(REGIONAL_CATALOG)),
       std::move(cb));
 }
 

@@ -38,6 +38,7 @@ class AdBlockEngine;
 class AdBlockDefaultSourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersSourceProvider;
+class AdBlockRegionalCatalogProvider;
 class AdBlockResourceProvider;
 class AdBlockSourceProvider;
 class AdBlockSubscriptionServiceManager;
@@ -80,14 +81,13 @@ class AdBlockService {
 
   AdBlockCustomFiltersSourceProvider* custom_filters_source_provider();
 
+  AdBlockRegionalCatalogProvider* regional_catalog_provider();
+
   void EnableTag(const std::string& tag, bool enabled);
 
   base::SequencedTaskRunner* GetTaskRunner() { return task_runner_.get(); }
 
   bool Start();
-
- protected:
-  void OnRegionalCatalogFileDataReady(const std::string& catalog_json);
 
  private:
   friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
