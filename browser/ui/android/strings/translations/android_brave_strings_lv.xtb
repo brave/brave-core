@@ -405,12 +405,12 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7427567994475794038">Ieslēdziet privātuma ziņojumus, lai redzētu, cik izsekotāju un reklāmu bloķēts pēdējo 3 stundu laikā.</translation>
 <translation id="2053891538879944400">Ar Brave pārlūku jūs esat ietaupījis <ph name="DATA"/> <ph name="DATA_TEXT"/> datu.</translation>
 <translation id="8640064498452534195">Ieslēdziet privātuma ziņojumus, lai redzētu, cik datu esat ietaupījis.</translation>
-<translation id="2252497442547961651">Brave pārlūks patērē vidēji par 40 % mazāk baterijas.🔋</translation>
+<translation id="2252497442547961651">Brave pārlūks patērē vidēji par 40 % mazāk baterijas.&#128267;</translation>
 <translation id="1945330434665345785">Ar Brave pārlūku jūs pēdējā nedēļā esat bloķējis <ph name="COUNT"/> izsekotājus un reklāmas.</translation>
 <translation id="2883868922264431515">Nopelniet marķierus, skatot privātumu cienošas reklāmas, un atbalstiet savas iecienītās vietnes.</translation>
-<translation id="5678925890616256956">Lieliski! Ar Brave pārlūku jūs esat nobloķējis 250 izsekotāju un reklāmu.🔥</translation>
-<translation id="9199047775708635708">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 MB.🔋</translation>
-<translation id="1880168210969863408">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 minūtes ielādes laika.💨💨</translation>
+<translation id="5678925890616256956">Lieliski! Ar Brave pārlūku jūs esat nobloķējis 250 izsekotāju un reklāmu.&#128293;</translation>
+<translation id="9199047775708635708">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 MB.&#128267;</translation>
+<translation id="1880168210969863408">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 minūtes ielādes laika.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Sāciet pārlūkot, lai redzētu privātuma ziņojumus</translation>
 <translation id="9080777565335515917">Iestatiet Brave kā savu noklusējuma pārlūku privātai un drošai pārlūkošanai.</translation>
 <translation id="1390943217516275883">Ļauj Brave rādīt jūsu privātuma statistiku</translation>
@@ -527,27 +527,27 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6146966915297143881">turpiniet ar pieteikšanos</translation>
 <translation id="1483493594462132177">Sūtīt</translation>
 <translation id="538450413584738399">Mijmaiņa</translation>
-<translation id="8825032646286791700">DeFi un drošā kriptovalūtas krātuve</translation>
-<translation id="5460364286096798286">Glabājiet kriptovalūtas savā īpašumā. Tirgojieties ar līdzekļiem. Skatiet cenas un portfeļa rezultatīvos rādītājus. Ieguldiet, aizņemieties un aizdodiet, izmantojot DeFi.</translation>
-<translation id="1748009926009835882">Iestatīt kripto</translation>
+<translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
+<translation id="8339846196588658366">Glabājiet kriptovalūtas savā īpašumā un sekojiet līdzi portfeļa efektivitātei. Turklāt to visu varat darīt tieši Brave privātuma pārlūkā.</translation>
+<translation id="4472575034687746823">Sākt darbu</translation>
 <translation id="2759836790106646094">Dublējiet savu maku tagad!</translation>
-<translation id="5156354224138379811">Nākamajā solī jūs redzēsiet 12 vārdus, kas ļaus jums atgūt savu kriptovalūtas maciņu.</translation>
+<translation id="1078873179929044999">Nākamajā solī redzēsiet 12 vārdu atkopšanas frāzi, kuru varat izmantot, lai atkoptu primāros kriptovalūtas kontus. Glabājiet to drošā vietā. Jūsu atkopšanas frāze ir vienīgais veids, kā atgūt piekļuvi kontam gadījumā, ja aizmirsīsiet paroli, nozaudēsiet vai jums nozags ierīci, vai arī vēlēsieties mainīt maku.</translation>
 <translation id="2359808026110333948">Turpināt</translation>
-<translation id="5024543173656851695">Es apzinos, ka gadījumā, ja pazaudēšu savus atkopšanas vārdus, nevarēšu piekļūt kripto makam.</translation>
+<translation id="1904000155026201268">Es apzinos, ka gadījumā, ja pazaudēšu savus atkopšanas vārdus, nevarēšu piekļūt savam kriptovalūtas makam.</translation>
 <translation id="3933122286596948824">Jūsu atkopšanas frāze</translation>
-<translation id="6146351434671268516">Pierakstiet vai nokopējiet šos vārdus pareizajā secībā un noglabājiet tos drošā vietā.</translation>
-<translation id="7408247683131762445">BRĪDINĀJUMS! Nekādā gadījumā neizpaudiet savu dublēšanas frāzi. Ikviens, kam pieejama šī frāze, var uz visiem laikiem pārņemt jūsu līdzekļus.</translation>
-<translation id="939275786514736244">Esmu saglabājis savu frāzi drošā vietā.</translation>
+<translation id="5077747669435508720">Pierakstiet vai nokopējiet šos vārdus tieši tādā pašā secībā, kāda parādīta zemāk, un glabājiet tos drošā vietā. Jūsu atkopšanas frāze ir vienīgais veids, kā atgūt piekļuvi kontam gadījumā, ja aizmirsīsiet paroli, nozaudēsiet vai jums nozags ierīci, vai arī vēlēsieties mainīt maku.</translation>
+<translation id="2708402071160162126">BRĪDINĀJUMS: Nekad neizpaudiet atkopšanas frāzi. Jebkurš, kam ir šī frāze, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
+<translation id="111912712268284159">Mana frāze ir dublēta drošā vietā.</translation>
 <translation id="6896758677409633944">Kopēt</translation>
-<translation id="2604744480284798833">Dublējiet maku tagad, lai aizsargātu savu kripto portfeli no piekļuves zaudēšanas.</translation>
-<translation id="8289942708804097960">Pirkt kripto ar Apple Pay, kredītkarti vai debetkarti.</translation>
+<translation id="375882617301124395">Dublējiet kripto maku</translation>
+<translation id="8289942708804097960">Pērciet kripto ar kredītkarti vai debetkarti.</translation>
 <translation id="841880029259839903">Sūtīt kripto vai pārskaitīt to no viena konta uz citu kontu.</translation>
 <translation id="8982246458261383692">Mainīt kripto līdzekļus, izmantojot Brave Dex apkopotāju.</translation>
 <translation id="1783600039044302171">Aizsargāt savus kripto ar paroli</translation>
 <translation id="3726490322412361740">Ievadiet paroli</translation>
-<translation id="4450951602553063001">Atkārtojiet paroli</translation>
-<translation id="1783870616707290226">Parolei jābūt vismaz 7 rakstzīmes garai</translation>
-<translation id="7383102760859258982">Ievadiet vēlreiz, jo paroles nesakrīt</translation>
+<translation id="3038243139480464605">Atkārtojiet paroli</translation>
+<translation id="3717685683157254329">Parolei jābūt vismaz 7 rakstzīmes garai un jāietver vismaz viens burts, viens cipars un viena īpašā rakstzīme.</translation>
+<translation id="7396672979287122068">Atkārtoti ievadītā parole nesakrīt</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1N</translation>
@@ -556,24 +556,25 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6977728312178289892">1G</translation>
 <translation id="6895566650974550243">VISI</translation>
 <translation id="5071303414930953888">Konts <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Pievienot kontu</translation>
-<translation id="2632612428525029752">Atjaunināt kontu</translation>
+<translation id="7665369617277396874">Pievienot kontu</translation>
+<translation id="3448492834076427715">Atjaunināt kontu</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Vai iespējot atbloķēšanu, izmantojot pirksta nospiedumu?</translation>
 <translation id="5493402808936397665">Iespējojiet biometriju, lai ātri atbloķētu savu maku, neievadot paroli.</translation>
-<translation id="1544192797660353713">Maks</translation>
+<translation id="8030647312184163932">Atbloķēšana ar pirksta nospiedumu</translation>
+<translation id="4090490645603511157">Izmantojiet biometriju, lai ātri atbloķētu savu maku, neievadot paroli.</translation>
+<translation id="5379398699598690674">Maks (beta)</translation>
 <translation id="6901810042765869341">Ievadiet savu atkopšanas frāzi, lai atjaunotu savu Brave Wallet kripto kontu.</translation>
-<translation id="1970161551843843564">Atjaunot kripto kontu</translation>
+<translation id="9120654436199628567">Atjaunot kriptovalūtas kontu</translation>
 <translation id="4811736040444856406">Rādīt atkopšanas frāzi</translation>
 <translation id="283071225285270357">Ievadiet savu atkopšanas frāzi</translation>
 <translation id="2339124864228588937">Verificēt atkopšanas frāzi</translation>
-<translation id="2718669004132381989">Pieskarieties vārdiem, lai novietotu tos vienu otram blakus pareizajā secībā.</translation>
+<translation id="3747079125031086337">Atlasiet atkopšanas frāzes vārdus pareizajā secībā.</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="3157931365184549694">Atjaunot</translation>
 <translation id="9111102763498581341">Atbloķēt</translation>
 <translation id="6657585470893396449">Parole</translation>
-<translation id="1569452037668432756">Ievadiet savu paroli, lai atbloķētu</translation>
-<translation id="3717685683157254329">Parolei jābūt vismaz 7 rakstzīmes garai, kā arī jāietver vismaz viens cipars un īpašā rakstzīme</translation>
+<translation id="5168349973342709369">Ievadiet paroli, lai atbloķētu maku</translation>
 <translation id="1144810021918451336">Nepasargā jūs no bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
 <translation id="5760476995887363522">Frāzes nesakrita. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="2360588547830602174">Kontu neizdevās atkopt. Lūdzu, mēģiniet vēlreiz.</translation>
@@ -584,7 +585,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Uz (aprēķināt)</translation>
 <translation id="6998989275928107238">Uz</translation>
-<translation id="6664416064035847539">adrese vai URL</translation>
+<translation id="2589431635772931954">Adrese vai URL</translation>
 <translation id="632241521608275119">Pieļaujamā novirze</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3535654229833214438">Pārskaitījumi</translation>
@@ -616,9 +617,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8165484222652118977">Saņemiet Ether no plūsmas <ph name="NETWORK"/> testa tīklam</translation>
 <translation id="7420359180991315365">Pāriet uz Wyre</translation>
 <translation id="8488282162676695335">Brave maks</translation>
+<translation id="3784455785234192852">Bloķēt</translation>
 <translation id="5040262127954254034">Konfidencialitāte</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
-<translation id="414639769490080648">Pēc cik minūtēm vēlaties automātiski bloķēt Brave maku?</translation>
+<translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
 <translation id="4993345308607970390">Atiestatīt Brave maku</translation>
 <translation id="6369495274982305511">Vai tiešām vēlaties atiestatīt maku? Ja jūsu maks nav dublēts, atiestatot jūs zaudēsiet visus konta datus (tostarp visus saistītos līdzekļus). Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
@@ -722,7 +724,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5932938770824268122">Privātā atslēga</translation>
 <translation id="2472882733835903303">Rādīt privāto atslēgu</translation>
 <translation id="4391056902675005799">Slēpt privāto atslēgu</translation>
-<translation id="7518007103754668253">Brīdinājums: nekad neatklājiet šo atslēgu. Jebkurš, kam ir pieeja privātajai atslēgai, var nozagt jūsu  kontā esošos aktīvus.</translation>
+<translation id="7518007103754668253">Brīdinājums! Nekādā gadījumā neatklājiet šo atslēgu. Ikviens, kam ir piekļuve šai privātajai atslēgai, var nozagt jūsu kontā esošos līdzekļus.</translation>
 <translation id="1133619932669546254">Aktivizējiet <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKCIJAS VEIDS: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nav datu</translation>
@@ -746,6 +748,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="3211051910418903298">Papildiniet mobilos datus retāk</translation>
 <translation id="1092355580602106002">Mazāk reklāmu = mazāk datu katrā lapā, ko ielādējat. Izmantojiet Brave tīmekļa pārlūkošanai.</translation>
 <translation id="623962032102267945">Brave = mazāk mobilo datu katrā lapā</translation>
+<translation id="4355217341028673744">• Lielāks privātums</translation>
+<translation id="3679020972083025535">• Bez kaitinošām reklāmām</translation>
 <translation id="8047527352810290817">Rediģēt Gas</translation>
 <translation id="7358989216567322955">Maksimālā prioritātes maksa</translation>
 <translation id="9091334651803050473">Lai gan garantijas nav, racēji, visticamāk, prioritizēs jūsu darījumu, ja piedāvāsiet lielāku maksu.</translation>
@@ -758,47 +762,19 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1011713837432053857">Gas apjoma ierobežojums</translation>
 <translation id="1254969878422524947">Dzeramnaudas ierobežojums par Gas (Gwei)</translation>
 <translation id="7373308452149471621">Cenas ierobežojums par Gas (Gwei)</translation>
-<translation id="5345505584130165588">Brave aizsargi un privātums</translation>
-<translation id="7822245778264751380">Ethereum cena (ETH)</translation>
-<translation id="7384441892795736634">Atsvaidzināt datus</translation>
-<translation id="4804818685124855865">Atvienot</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Depozīta adrese</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Iemaksas rēķins</translation>
-<translation id="5110244215256675209">Pirkt kriptovalūtu</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Iegādāties <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Pieejams <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Priekšskatīt konversiju</translation>
-<translation id="4670943871783273148">Jūsu teksts ir saglabāts teksta failā.</translation>
-<translation id="4432845796903761592">Fails netika saglabāts.</translation>
-<translation id="7144878232160441200">Mēģināt vēlreiz</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="2956070106555335453">Kopsavilkums</translation>
-<translation id="1366855498335432549">Depozīts</translation>
-<translation id="1301340234286078471">Konvertēt</translation>
-<translation id="1714829281959608206">Iespējojiet Binance savienojumu, lai skatītu Binance konta atlikumu un pārdotu kriptovalūtu.</translation>
-<translation id="4584930231524505442">Es vēlot konvertēt...</translation>
-<translation id="5749014321384313843">Es vēlos tērēt...</translation>
-<translation id="2480674848181564169">Nepietiekama bilance konvertācijai</translation>
-<translation id="2215334405220411393">Minimālā konvertējamā summa ir: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Nevar pieslēgties</translation>
-<translation id="7742417737698031726">Maksa</translation>
-<translation id="2122225204180056042">Jūs saņemsiet</translation>
-<translation id="6432284126416751397">Apstiprināt konversiju</translation>
-<translation id="3891414008432200754">Cena</translation>
-<translation id="3733576242118819803">Apstiprināt (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Konversija neizdevās. Lūdzu, mēģiniet vēlreiz.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
-<translation id="3604285424134705930">Jūs konvertējāt <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> uz <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Lūdzu, pārbaudiet savu tīkla savienojumu.</translation>
-<translation id="5317780077021120954">Saglabāt</translation>
-<translation id="1202920745614909195">Pirkt kripto ar Apple Pay, kredītkarti vai debetkarti.</translation>
-<translation id="224719674509047150">Parolei jābūt vismaz 7 rakstzīmes garai, kā arī jāietver vismaz viens cipars un īpašā rakstzīme</translation>
-<translation id="4636930964841734540">Informācija</translation>
-<translation id="8094541587800369158">Šos kontus var izmantot ar tīmekļa 3 dapp, un tos var parādīt jūsu portfelī, tomēr tos nevar atjaunot, izmantojot primārā konta dublējuma atkopšanas frāzi. Iespējojiet Brave Sync kontus, lai veiktu automātisku sekundāro kontu atjaunošanu.</translation>
-<translation id="6083912983861746409">Gas cena (GWEI)</translation>
-<translation id="2499079593046817044">Gas ierobežojums (GWEI)</translation>
-<translation id="5929798090073091848">Brīdinājums: nekad neatklājiet šo atslēgu. Jebkurš, kam ir pieeja privātajai atslēgai, var nozagt jūsu  kontā esošos aktīvus.</translation>
+<translation id="5891811606602061966">Neizdevās importēt kontu. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="7033470144757208254">Brave izmanto 0x kā DEX apkopotāju.</translation>
+<translation id="5061574358754621254">Cenas datus nodrošina CoinGecko</translation>
+<translation id="4626407663177532837">Piedāvājuma cenā ir iekļauta Brave maksa 0,875% apmērā.</translation>
+<translation id="8574289650879708853">Pievienot pielāgotu līdzekli</translation>
+<translation id="7791543448312431591">Pievienot</translation>
+<translation id="6600400596821238377">Marķiera nosaukums</translation>
+<translation id="4432966365400169165">Marķiera līguma adrese</translation>
+<translation id="4092152169181928870">Marķiera simbols</translation>
+<translation id="4351811224047421378">Precizitātes decimāldaļas</translation>
+<translation id="8614026298974065517">Noņemt pielāgotu līdzekli</translation>
+<translation id="4378941981362528553">Vai vēlaties noņemt marķieri<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Saņēmēja adrese ir jūsu paša adrese</translation>
+<translation id="749944179568745958">ETH adrese nav derīga</translation>
+<translation id="3506416339268164412">Saņēmēja adrese ir marķiera līguma adrese</translation>
 </translationbundle>

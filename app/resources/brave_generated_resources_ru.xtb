@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
 <translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
 <translation id="6821903322090655051">Функция Brave Rewards отключена.</translation>
+<translation id="413570371620795359">Чтобы начать, откройте раздел «Награды»</translation>
 <translation id="3849957491997306859">Автообнаружение</translation>
 <translation id="8798099450830957504">По умолчанию</translation>
 <translation id="4176463684765177261">Отключено</translation>
@@ -226,6 +227,7 @@
 <translation id="414639769490080648">Через сколько минут кошелек Brave автоматически блокируется</translation>
 <translation id="6864914031231797928">Разрешить вход с помощью Google для расширений</translation>
 <translation id="5927916530277631319">Метод устранения Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Узнайте больше<ph name="END_LINK"/> о технологии «DNS поверх HTTPS» и обеспечении конфиденциальности Ethereum.</translation>
 <translation id="5248318250177143470">Метод разрешения службы имен Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Настроить ключи IPNS</translation>
 <translation id="951216659045543447">Подпишите содержимое соответствующим закрытым ключом и опубликуйте в IPNS.</translation>
@@ -260,6 +262,7 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальный узел</translation>
 <translation id="4927734062756955434">Адрес общего шлюза IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном шлюзе и узле IPFS.</translation>
 <translation id="8425213833346101688">Изменить</translation>
 <translation id="557281710253742286">Задать IPFS-шлюз</translation>
 <translation id="8571837315037233299">Адрес шлюза</translation>
@@ -426,6 +429,7 @@
 <translation id="2653659639078652383">Отправить</translation>
 <translation id="2556708692502648323">Сети кошелька</translation>
 <translation id="1330032157352961756">Идентификатор новой цепи</translation>
+<translation id="3423620355610881890">Положительное десятичное число</translation>
 <translation id="726121047592132939">Название новой цепи</translation>
 <translation id="1034112277864078119">Введите название цепи</translation>
 <translation id="4672314527143443556">Название валюты цепи</translation>
@@ -439,6 +443,7 @@
 <translation id="3047726704186619366">URL значка</translation>
 <translation id="2487558607408469181">Блокировка ссылок Explorer</translation>
 <translation id="6301398959353668507">Это поле не может быть пустым.</translation>
+<translation id="7504462451153306677">Идентификатор цепи должен быть положительным числом.</translation>
 <translation id="8325036459845654666">Эта сеть уже добавлена.</translation>
 <translation id="650071759190249039">Внутренняя ошибка. Невозможно добавить сеть.</translation>
 <translation id="868529041590572443">Заполните всю информацию о национальной валюте.</translation>

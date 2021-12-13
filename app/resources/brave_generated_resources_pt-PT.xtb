@@ -55,6 +55,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="6285118765755298263">Indexar outros motores de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente Web sites que seguem a especificação OpenSearch</translation>
 <translation id="6821903322090655051">Recompensas Brave desativadas</translation>
+<translation id="413570371620795359">Abra o painel "Recompensas" para ativar e começar</translation>
 <translation id="3849957491997306859">Detetado automaticamente</translation>
 <translation id="8798099450830957504">Predefinição</translation>
 <translation id="4176463684765177261">Desativada</translation>
@@ -103,6 +104,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="7895302206188277628">Conteúdo associado</translation>
 <translation id="3654831858282189202">Publicar com chave IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importar texto selecionado para o IPFS</translation>
 <translation id="6925604404524625582">Importar e copiar link para instântaneo IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
 <translation id="4703780849509456860">Abrir Ligação em Janela Privada com o Tor</translation>
@@ -225,6 +227,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="414639769490080648">O número de minutos a aguardar até a Carteira Brave ser automaticamente bloqueada</translation>
 <translation id="6864914031231797928">Autorizar logins do Google para extensões</translation>
 <translation id="5927916530277631319">Método para resolver Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> a respeito de DNS sobre HTTPS e configurações de privacidade Ethereum.</translation>
 <translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurar as suas chaves IPNS</translation>
 <translation id="951216659045543447">Assine conteúdo utilizando a chave privada correspondente e publique em IPNS</translation>
@@ -259,6 +262,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço gateway público IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local IPFS e considerações de privacidade do gateway.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway IPFS</translation>
 <translation id="8571837315037233299">Endereço gateway</translation>
@@ -425,6 +429,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="2653659639078652383">Submeter</translation>
 <translation id="2556708692502648323">Redes da carteira</translation>
 <translation id="1330032157352961756">O ID da nova cadeia</translation>
+<translation id="3423620355610881890">Um número decimal positivo</translation>
 <translation id="726121047592132939">O nome da nova cadeia</translation>
 <translation id="1034112277864078119">Introduzir nome da cadeia</translation>
 <translation id="4672314527143443556">Nome da moeda da cadeia</translation>
@@ -438,6 +443,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="3047726704186619366">URLs de ícones</translation>
 <translation id="2487558607408469181">URLs do Block Explorer</translation>
 <translation id="6301398959353668507">Este campo não pode estar em branco.</translation>
+<translation id="7504462451153306677">Formato inválido, o ID da cadeia é um número positivo</translation>
 <translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 <translation id="650071759190249039">Erro interno. Não é possível adicionar a rede.</translation>
 <translation id="868529041590572443">Preencha todas as informações sobre a moeda nativa</translation>

@@ -56,6 +56,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
 <translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
+<translation id="413570371620795359">Open het venster Beloningen om in te schakelen en aan de slag te gaan</translation>
 <translation id="3849957491997306859">Automatisch gedetecteerd</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
@@ -429,6 +430,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="2556708692502648323">Wallet-netwerken</translation>
 <translation id="1330032157352961756">ID van nieuwe keten</translation>
+<translation id="3423620355610881890">Een positief decimaal getal</translation>
 <translation id="726121047592132939">De naam van de nieuwe keten</translation>
 <translation id="1034112277864078119">Voer ketennaam in</translation>
 <translation id="4672314527143443556">Valutanaam van keten</translation>
@@ -442,6 +444,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3047726704186619366">Pictogram-URL's</translation>
 <translation id="2487558607408469181">Explorer-URL's blokkeren</translation>
 <translation id="6301398959353668507">Dit veld mag niet leeg zijn.</translation>
+<translation id="7504462451153306677">Ongeldige notatie, de keten-ID is een positief nummer</translation>
 <translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
 <translation id="650071759190249039">Interne fout, kan netwerk niet toevoegen.</translation>
 <translation id="868529041590572443">Verstrek alle informatie over de oorspronkelijke valuta</translation>

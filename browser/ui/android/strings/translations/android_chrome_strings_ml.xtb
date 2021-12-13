@@ -78,7 +78,7 @@
 <translation id="1409879593029778104">ഫയൽ ഇതിനകം തന്നെ ഉള്ളതിനാൽ <ph name="FILE_NAME"/> ഡൗൺലോഡ് തടഞ്ഞു.</translation>
 <translation id="1853026300647876496">Brave-നെ ബന്ധപ്പെടുന്നു. ഇതിന് ഒരു മിനിറ്റ് എടുത്തേക്കാം…</translation>
 <translation id="1416550906796893042">ആപ്പ് പതിപ്പ്</translation>
-<translation id="1430915738399379752">അച്ചടിക്കുക</translation>
+<translation id="1430915738399379752">പ്രിന്റ് ചെയ്യുക</translation>
 <translation id="1450753235335490080"><ph name="CONTENT_TYPE"/> പങ്കിടാനാവുന്നില്ല</translation>
 <translation id="5598889255595678761">Brave-ന്റെ ഭാഷ തിരഞ്ഞെടുക്കുക</translation>
 <translation id="147113415845704694">“ഇന്നത്തെ കാലാവസ്ഥ എന്താണ്?” എന്ന് പറഞ്ഞ് ശ്രമിക്കുക</translation>
@@ -621,7 +621,7 @@
 <translation id="4831037795716408498">ഉള്ളടക്കം ഡൗൺലോഡ് ചെയ്യുക</translation>
 <translation id="4834007576107377210">ബാധകമെങ്കിൽ, നിങ്ങളുടെ തിരയൽ ചരിത്രം ഇല്ലാതാക്കാനുള്ള തിരയൽ യന്ത്രത്തിന്റെ നിർദ്ദേശങ്ങൾ കാണുക</translation>
 <translation id="2593289874938379417">അഭ്യർത്ഥിച്ച ഉറവിടത്തിലേക്ക് Brave-ന് ആക്‌സസ് ഇല്ല.</translation>
-<translation id="4837753911714442426">പേജ് അച്ചടിക്കുന്നതിനുള്ള ഓപ്‌ഷനുകൾ തുറക്കുക</translation>
+<translation id="4837753911714442426">പേജ് പ്രിന്റ് ചെയ്യുന്നതിനുള്ള ഓപ്‌ഷനുകൾ തുറക്കുക</translation>
 <translation id="4842092870884894799">പാസ്‌വേഡ് സൃഷ്ടിക്കൽ പോപ്പ് അപ്പ് കാണിക്കുന്നു</translation>
 <translation id="4850886885716139402">കാണുക</translation>
 <translation id="4860895144060829044">വിളിക്കുക</translation>
@@ -1002,7 +1002,7 @@
 <translation id="7001056293070445572">ഈ ഫയൽ വലുതാണ് (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7020741890149022655">വായനാ ലിസ്റ്റിൽ ചേർക്കൂ <ph name="BEGIN_NEW"/>പുതിയത്<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">ബ്രൗസറിൽ തുറക്കുക</translation>
-<translation id="702463548815491781">TalkBack അല്ലെങ്കിൽ ആക്‌സസ് മാറുക ഓണായിരിക്കുമ്പോൾ ശുപാർശ ചെയ്യുന്നു</translation>
+<translation id="702463548815491781">TalkBack അല്ലെങ്കിൽ സ്വിച്ച് ആക്‌സസ് ഓണായിരിക്കുമ്പോൾ ശുപാർശ ചെയ്യുന്നു</translation>
 <translation id="7027549951530753705"><ph name="ITEM_TITLE"/> പുനഃസ്ഥാപിച്ചു</translation>
 <translation id="7029390216614421513">ഈ ഫ്രെയിമിൽ QR കോഡ്/ബാർ‌കോഡ് സ്ഥാപിക്കുക.</translation>
 <translation id="7029809446516969842">പാസ്‌വേഡുകള്‍</translation>

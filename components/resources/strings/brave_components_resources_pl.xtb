@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
 <translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
 <translation id="3656941797339037856">Połącz Rewards z Gemini!</translation>
-<translation id="3066983737886188034">Gemini pozwala łatwo handlować swoimi BAT, przechowywać je i zarabiać na nich 3,49% APY. Zweryfikuj i połącz Twój portfel Nagród Brave z Gemini już teraz.</translation>
+<translation id="2383784987664887340">Gemini pozwala łatwo handlować swoimi BAT, przechowywać je i zarabiać na nich 3,49% APY. Zweryfikuj i połącz Twój portfel Nagród Brave z Gemini już teraz.</translation>
+<translation id="2237374144728570574">* Gemini Earn APY na dzień 15 września 2021 r.</translation>
 <translation id="7404779623219601861">Wymieniaj tokeny BAT na karty upominkowe</translation>
 <translation id="6215565499749144110">Dzięki sieci TAP możesz wymienić swoje tokeny BAT na popularne karty upominkowe znanych marek.</translation>
 <translation id="6915065518766963119">* Wymaga weryfikacji przez Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Adres 0x lub URL</translation>
 <translation id="2860280209982026951">Brave korzysta z <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregatora DEX.</translation>
 <translation id="151946611346774041">0x przetworzy adres Ethereum i adres IP, aby zrealizować transakcję (z uwzględnieniem odbioru ofert). 0x będzie korzystać z tych danych WYŁĄCZNIE do celów przetwarzania transakcji.</translation>
+<translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="1420318137760245955">Witamy w nowym portfelu Brave</translation>
 <translation id="8303434745767477417">Przechowuj kryptoaktywa. Śledź wyniki portfela i wchodź w interakcje z aplikacjami web 3 DApps. Handluj, inwestuj i pożyczaj, korzystając z DeFi. A wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i dodatkowych pobrań.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048">Odłączono portfel <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Instrukcje</translation>
 <translation id="1178198982208000092">Podłączanie portfela <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Portfel sprzętowy wymaga potwierdzenia na urządzeniu.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Portfel sprzętowy wymaga otwarcia aplikacji Ethereum <ph name="DEVICE_NAME"/>.</translation>
 <translation id="8687869982094542529">przesłana</translation>
 <translation id="5013754027092416509">odebrana</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Dane JSON nie są oczekiwane</translation>
 <translation id="3282936527763045737">Hasło jest niepoprawne</translation>
 <translation id="1119447706177454957">Błąd wewnętrzny</translation>
+<translation id="3327639091470204775">Nie można połączy z mostkiem Trezor</translation>
 <translation id="6672377693827764095">Błąd wewnętrzny. Nie można pobrać kont.</translation>
 <translation id="8933250418452564886">Nie można znaleźć transakcji sprzętowej. Ponów próbę.</translation>
 <translation id="5999974802900788338">Odebrano błąd z urządzenia sprzętowego. Prawdopodobnie musisz potwierdzić transakcję na urządzeniu.</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
-<translation id="2383784987664887340">Gemini pozwala łatwo handlować swoimi BAT, przechowywać je i zarabiać na nich 3,49% APY. Zweryfikuj i połącz Twój portfel Nagród Brave z Gemini już teraz.</translation>
-<translation id="2237374144728570574">* Gemini Earn APY na dzień 15 września 2021 r.</translation>
-<translation id="3301417531330431881">Portfel sprzętowy wymaga potwierdzenia transakcji. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Błąd wewnętrzny. Nie można utworzyć mostka iframe.</translation>
-<translation id="1664949222596149258">Kup za <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

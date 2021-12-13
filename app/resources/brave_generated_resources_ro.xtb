@@ -55,6 +55,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="6821903322090655051">Opțiunea Brave Rewards este dezactivată</translation>
+<translation id="413570371620795359">Accesați panoul Brave Rewards, pentru a activa opțiunea și a începe utilizarea</translation>
 <translation id="3849957491997306859">Detectare automată</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
 <translation id="4176463684765177261">Dezactivat</translation>
@@ -103,6 +104,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7895302206188277628">Conținut corelat</translation>
 <translation id="3654831858282189202">Publicați cu cheia IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importați textul selectat în IPFS</translation>
 <translation id="6925604404524625582">Importați și copiați linkul în IPFS Snapshot</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
@@ -225,6 +227,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre confidențialitatea DNS prin HTTPS și Ethereum.</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurați-vă cheile IPNS</translation>
 <translation id="951216659045543447">Semnați conținutul cu cheiaprivată corespunzătoare și publicați-l pe IPNS</translation>
@@ -259,6 +262,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și confidențialitatea gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -425,6 +429,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2653659639078652383">Trimite</translation>
 <translation id="2556708692502648323">Rețele portofele</translation>
 <translation id="1330032157352961756">Identificatorul noului lanț</translation>
+<translation id="3423620355610881890">Un număr zecimal pozitiv</translation>
 <translation id="726121047592132939">Numele noului lanț</translation>
 <translation id="1034112277864078119">Introduceți numele lanțului</translation>
 <translation id="4672314527143443556">Numele monedei lanțului</translation>
@@ -438,6 +443,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3047726704186619366">Adrese URL pictograme</translation>
 <translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
 <translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
+<translation id="7504462451153306677">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
 <translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 <translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
 <translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>

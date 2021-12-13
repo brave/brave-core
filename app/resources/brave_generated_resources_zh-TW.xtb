@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="6821903322090655051">Brave 獎勵已停用</translation>
+<translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="3849957491997306859">自動偵測</translation>
 <translation id="8798099450830957504">預設</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -428,6 +429,7 @@
 <translation id="2653659639078652383">提交</translation>
 <translation id="2556708692502648323">錢包網路</translation>
 <translation id="1330032157352961756">新鏈 ID</translation>
+<translation id="3423620355610881890">十進位正數</translation>
 <translation id="726121047592132939">新鏈名稱</translation>
 <translation id="1034112277864078119">輸入鏈名稱</translation>
 <translation id="4672314527143443556">鏈的貨幣名稱</translation>
@@ -441,6 +443,7 @@
 <translation id="3047726704186619366">圖示 URL</translation>
 <translation id="2487558607408469181">區塊瀏覽器 URL</translation>
 <translation id="6301398959353668507">這個欄位不能留空。</translation>
+<translation id="7504462451153306677">格式無效，區塊鏈 ID 必須是正數。</translation>
 <translation id="8325036459845654666">此網路已新增。</translation>
 <translation id="650071759190249039">內部錯誤，無法新增網路。</translation>
 <translation id="868529041590572443">請填寫關於原生貨幣的所有資訊</translation>

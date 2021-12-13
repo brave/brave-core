@@ -55,6 +55,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6285118765755298263">Index other search engines</translation>
 <translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
 <translation id="6821903322090655051">Brave Rewards are disabled</translation>
+<translation id="413570371620795359">Open Rewards panel to enable and get started</translation>
 <translation id="3849957491997306859">Auto-detected</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Disabled</translation>
@@ -428,6 +429,7 @@ Are you sure you want to do this?</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="2556708692502648323">Wallet networks</translation>
 <translation id="1330032157352961756">The id of new chain</translation>
+<translation id="3423620355610881890">A positive decimal number</translation>
 <translation id="726121047592132939">The name of new chain</translation>
 <translation id="1034112277864078119">Enter chain name</translation>
 <translation id="4672314527143443556">Chain's currency name</translation>
@@ -441,6 +443,7 @@ Are you sure you want to do this?</translation>
 <translation id="3047726704186619366">Icon URLs</translation>
 <translation id="2487558607408469181">Block explorer URLs</translation>
 <translation id="6301398959353668507">This field cannot be blank.</translation>
+<translation id="7504462451153306677">Invalid format, the chain ID is a positive number</translation>
 <translation id="8325036459845654666">This network is already added.</translation>
 <translation id="650071759190249039">Internal error, unable to add network.</translation>
 <translation id="868529041590572443">Please fill in all infromation about native currency</translation>

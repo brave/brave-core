@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">完成電子錢包驗證</translation>
 <translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
 <translation id="3656941797339037856">將 Rewards 連結至 Gemini！</translation>
-<translation id="3066983737886188034">Gemini 可讓您輕鬆交易、儲存與賺取 3.49% APY 的 BAT。立即驗證並連結 Brave 獎勵錢包與 Gemini！</translation>
+<translation id="2383784987664887340">Gemini 可讓您輕鬆交易、儲存與賺取 3.49% APY 的 BAT。立即驗證並連結 Brave 獎勵錢包與 Gemini！</translation>
+<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日起賺取 APY</translation>
 <translation id="7404779623219601861">使用 BAT 兌換禮物卡</translation>
 <translation id="6215565499749144110">使用 TAP 網路，您可以使用您的 BAT 來兌換熱門名牌禮物卡。</translation>
 <translation id="6915065518766963119">* 需要 Uphold 驗證。</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x 位址或 url</translation>
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 做為 DEX 彙總工具。</translation>
 <translation id="151946611346774041">0x 將會處理 Ethereum 位址和 IP 位址以履行交易 (包括取得報價)。0x 只會將此資料用於處理交易的用途。</translation>
+<translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
 <translation id="6518133107902771759">驗證</translation>
 <translation id="1420318137760245955">歡迎使用新 Brave 錢包</translation>
 <translation id="8303434745767477417">保管加密資產。追蹤投資組合表現，並與 web 3 DApps 互動。使用 DeFi 交易、投資、借貸和貸款。所有這一切皆可在 Brave 私密瀏覽器中完成。無需延伸組件，無需下載。</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已中斷連線</translation>
 <translation id="5317781812114905957">說明</translation>
 <translation id="1178198982208000092">連接 <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">須先在裝置上完成確認，才能使用硬體錢包。<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">硬體錢包要求在 <ph name="DEVICE_NAME"/> 上開啟 Ethereum 應用程式</translation>
 <translation id="8687869982094542529">已傳送</translation>
 <translation id="5013754027092416509">已收到</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">非預期的 JSON 資料</translation>
 <translation id="3282936527763045737">密碼不正確</translation>
 <translation id="1119447706177454957">內部錯誤</translation>
+<translation id="3327639091470204775">無法連線 Trezor Bridge</translation>
 <translation id="6672377693827764095">內部錯誤，無法提取帳戶</translation>
 <translation id="8933250418452564886">無法找到硬體交易，請再試一次</translation>
 <translation id="5999974802900788338">收到來自硬體裝置的錯誤，您可能需要在裝置上確認交易</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
-<translation id="2383784987664887340">Gemini 可讓您輕鬆交易、儲存與賺取 3.49% APY 的 BAT。立即驗證並連結 Brave 獎勵錢包與 Gemini！</translation>
-<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日起賺取 APY</translation>
-<translation id="3301417531330431881">硬體錢包需要交易確認。 <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">內部錯誤，無法建立 iframe bridget</translation>
-<translation id="1664949222596149258">以 <ph name="PRODUCE_PRICE"/> 購買</translation>
 </translationbundle>
