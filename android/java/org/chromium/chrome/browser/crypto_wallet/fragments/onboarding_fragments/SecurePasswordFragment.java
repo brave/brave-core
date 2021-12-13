@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.concurrent.Executor;
 
 public class SecurePasswordFragment extends CryptoOnboardingFragment {
+    private boolean mCreateWalletClicked;
 
     private KeyringController getKeyringController() {
         Activity activity = getActivity();
@@ -54,6 +55,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mCreateWalletClicked = false;
         View view = inflater.inflate(R.layout.fragment_secure_password, container, false);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -73,6 +75,10 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         super.onViewCreated(view, savedInstanceState);
         Button secureCryptoButton = view.findViewById(R.id.btn_secure_crypto_continue);
         secureCryptoButton.setOnClickListener(v -> {
+            if (mCreateWalletClicked) {
+                return;
+            }
+            mCreateWalletClicked = true;
             EditText passwordEdittext = view.findViewById(R.id.secure_crypto_password);
             String passwordInput = passwordEdittext.getText().toString();
 
@@ -81,6 +87,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             keyringController.isStrongPassword(passwordInput, result -> {
                 if (!result) {
                     passwordEdittext.setError(getResources().getString(R.string.password_text));
+                    mCreateWalletClicked = false;
 
                     return;
                 }
@@ -95,6 +102,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         if (!passwordInput.equals(retypePasswordInput)) {
             retypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
+            mCreateWalletClicked = false;
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 final BiometricPrompt.AuthenticationCallback authenticationCallback =
