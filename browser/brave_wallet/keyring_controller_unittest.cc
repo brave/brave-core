@@ -268,6 +268,19 @@ class KeyringControllerUnitTest : public testing::Test {
     return result;
   }
 
+  static std::string GetChecksumEthAddress(KeyringController* controller,
+                                           const std::string& address) {
+    std::string checksum_address;
+    base::RunLoop run_loop;
+    controller->GetChecksumEthAddress(
+        address, base::BindLambdaForTesting([&](const std::string& v) {
+          checksum_address = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return checksum_address;
+  }
+
   static bool Lock(KeyringController* controller) {
     controller->Lock();
     return controller->IsLocked();
@@ -2156,6 +2169,27 @@ TEST_F(KeyringControllerUnitTest, IsStrongPassword) {
   EXPECT_FALSE(IsStrongPassword(&controller, "a7_&YF"));
   // Empty password is not accepted
   EXPECT_FALSE(IsStrongPassword(&controller, ""));
+}
+
+TEST_F(KeyringControllerUnitTest, GetChecksumEthAddress) {
+  KeyringController controller(GetPrefs());
+  EXPECT_EQ(GetChecksumEthAddress(&controller,
+                                  "0x0D8775F648430679A709E98D2B0CB6250D2887EF"),
+            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  EXPECT_EQ(GetChecksumEthAddress(&controller,
+                                  "0x0d8775f648430679a709e98d2b0cb6250d2887ef"),
+            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  EXPECT_EQ(GetChecksumEthAddress(&controller,
+                                  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"),
+            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  EXPECT_EQ(GetChecksumEthAddress(&controller,
+                                  "0x0000000000000000000000000000000000000000"),
+            "0x0000000000000000000000000000000000000000");
+  // Invalid input
+  EXPECT_EQ(GetChecksumEthAddress(&controller, ""), "0x");
+  EXPECT_EQ(GetChecksumEthAddress(&controller, "0"), "0x");
+  EXPECT_EQ(GetChecksumEthAddress(&controller, "0x"), "0x");
+  EXPECT_EQ(GetChecksumEthAddress(&controller, "hello"), "0x");
 }
 
 }  // namespace brave_wallet

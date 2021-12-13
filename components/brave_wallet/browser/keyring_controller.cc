@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -1363,6 +1364,12 @@ void KeyringController::IsStrongPassword(const std::string& password,
   }
 
   std::move(callback).Run(true);
+}
+
+void KeyringController::GetChecksumEthAddress(
+    const std::string& address,
+    GetChecksumEthAddressCallback callback) {
+  std::move(callback).Run(EthAddress::FromHex(address).ToChecksumAddress());
 }
 
 void KeyringController::HasPendingUnlockRequest(
