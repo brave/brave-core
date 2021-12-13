@@ -37,7 +37,7 @@ class ThirdPartySearchAlerts: UIAlertController {
         )
 
         let noOption = UIAlertAction(
-            title: Strings.CancelString,
+            title: Strings.cancelButtonTitle,
             style: .cancel,
             handler: completion
         )

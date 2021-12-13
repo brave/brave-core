@@ -458,7 +458,7 @@ struct SwapCryptoView: View {
           Button(action: {
             presentationMode.dismiss()
           }) {
-            Text(Strings.CancelString)
+            Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }
