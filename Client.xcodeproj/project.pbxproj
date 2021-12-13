@@ -1859,6 +1859,7 @@
 		27036F9625684F9F004EF6B6 /* AdsNotificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsNotificationHandler.swift; sourceTree = "<group>"; };
 		27036F9725684F9F004EF6B6 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
+		270697092766F677005B44D2 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveWallet.strings; sourceTree = "<group>"; };
 		270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWalletTransferStatusButton.swift; sourceTree = "<group>"; };
 		270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetListStyleModifier.swift; sourceTree = "<group>"; };
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
@@ -9313,6 +9314,7 @@
 				611219E42763E438003F26FD /* zh */,
 				6128310A2763E4420086D3B4 /* zh-TW */,
 				275AF3342766F4A0004F2993 /* en */,
+				270697092766F677005B44D2 /* ja */,
 			);
 			name = BraveWallet.strings;
 			sourceTree = "<group>";
