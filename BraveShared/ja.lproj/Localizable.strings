@@ -40,6 +40,9 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
 
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "追加する";
 
@@ -146,10 +149,25 @@
 "OBPrivacyConsentYesButton" = "一回限りのクリップボードチェックを許可する";
 
 /* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "「開始する」をタップすると、以下に同意したものとみなされます";
+
+/* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "利用規約";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "、";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Braveプライベート広告を受け入れることで、広告を見るだけでウェブサイトやコンテンツクリエイターを支援することができます。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "プライバシーポリシー";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -809,6 +827,9 @@
 "searchSettingAddCustomEngineCellTitle" = "カスタム検索エンジンを追加する";
 
 /* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "おめでとうございます。たくさんプライバシーを保護しましたね。";
+
+/* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "おめでとうございます。あなたはもう上級者クラブの一員です。";
 
 /* Subtitle for tracker benchmark Share */
@@ -840,6 +861,9 @@
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld トラッカーと広告をブロックしました！";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "広告がなければ動画のデータ量はより少なくなります。";
@@ -1392,6 +1416,48 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "1年間";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "お気にいりのウェブサイトに素早くアクセス";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "お気に入り";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Braveを開いてお気に入りのサイトを追加してください";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Braveによって時間がどれだけ節約され、オンライン上でプライバシーが保護されたかのまとめです。";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "プライバシー統計";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "プライバシー統計";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "検索するか、URLを入力";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "新しいタブ";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Playlist";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "プライベートタブ";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "簡単に素早くBraveでウェブを検索したりウェブページを開く";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "ショートカット";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Braveがオンライン上でどれくらいプライバシーを保護したかのまとめです。";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "プライバシー統計";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";

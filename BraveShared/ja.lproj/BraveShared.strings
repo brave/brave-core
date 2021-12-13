@@ -184,6 +184,39 @@
 /* Settings item for clearing the cache */
 "Cache" = "キャッシュ";
 
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Braveをデフォルトに設定すると、すべてのリンクをBraveによりプライバシーを保護しながら開くことができます。";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "デフォルトに設定する";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "すでにデフォルトに設定していますか？";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "スキップする";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Braveをデフォルトのブラウザに設定する";
+
+/* Button title for Playlist Onboarding View */
+"callout.playlistOnboardingViewButtonTitle" = "動画を見る";
+
+/* Description for Playlist Onboarding View */
+"callout.playlistOnboardingViewDescription" = "どこでも、好きなときに動画を楽しめます。バックグラウンド再生、ピクチャーインピクチャー再生、オフライン再生も可能です。そしてもちろん、広告は表示されません。";
+
+/* Title for Playlist Onboarding View */
+"callout.playlistOnboardingViewTitle" = "動画をPlaylistに追加しよう";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Braveによるプライバシー保護を、パソコンやタブレットでも活用しよう。ブックマークや拡張機能をデバイス間で同期することもできます。";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "同期を開始する";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "あらゆる場面でプライバシーを。";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "キャンセル";
 
@@ -394,11 +427,53 @@
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
 
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "URLの再入力をお試しいただくか、検索エンジンを開いて新しいURLを検索してみてください。";
+
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
 "ErrorPageOpenInSafariButtonTitle" = "Safari で開く";
 
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "リロード";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "このサーバーは、%@ であることを証明できませんでした。セキュリティ証明書があなたのデバイスのオペレーションシステムによって信頼されていません。これは、設定の間違いか、あなたの接続に介入しようとする攻撃者によって生じている可能性があります。";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "攻撃者があなたの情報（例えば、パスワード、メッセージ、クレジットカード情報など）を %@ から盗もうと試みている可能性があります。";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "安全のため戻る";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "このサイトは安全な接続を提供することができません。";
+
 /* Title on the certificate error page */
 "ErrorPagesCertWarningTitle" = "接続はプライベートではありません";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "詳細を隠す";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "詳細はこちら";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "更に詳しく";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "インターネット接続がありません";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "あなたはオンラインではないようです。これらを試してみてください。";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "ネットワークケーブルとルーターを確認する";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Wi-Fiに再接続する";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "%@ （安全ではありません）に進む";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "節約できた\n時間(推定)";
@@ -496,6 +571,9 @@
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
 "history.historyPrivateModeOnlyStateTitle" = "常にプライベート・ブラウジングを行うモードでは、履歴は利用できません。";
 
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "検索履歴";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "履歴";
 
@@ -504,6 +582,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPSに接続をアップグレードする";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "可能な場合、HTTPではなく安全なHTTPSでサイトを開く";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";
@@ -522,6 +603,42 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "詳しく";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "保存されたログイン情報が永久に削除されます。";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "%@ を作成しました";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "ログインの詳細";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "パスワード";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "ユーザー名";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "ウェブサイト";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "パスワードを見るには、まずあなたのデバイスにパスコードが設定されている必要があります。";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "パスコードを設定する";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "ログイン情報が見つかりませんでした。";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "ログイン情報とパスワード";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "保存されたログイン情報";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "フィルター";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -592,6 +709,9 @@
 /* New Tab title */
 "NewTab" = "新しいタブ";
 
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "検索結果が見つかりませんでした。";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
 
@@ -646,6 +766,51 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewardsを有効にすると、以下に同意したものとみなされます: %@";
 
+/* The description of the popover showing trackers that were blocked. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "どのサイトでも、このアイコンをタップするとブロックされたものをすべて確認できます。";
+
+/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Braveが %1$@ を %2$@ でブロックしました。";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Braveが %1$@ と %2$d のその他のトラッカーを %3$@ でブロックしました。";
+
+/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
+"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Braveが %1$@ と %2$d のその他のトラッカーを %3$@ でブロックしました。";
+
+/* DEscription for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneDescription" = "メニューを開いて設定やその他の素晴らしい機能を確認してみてください！";
+
+/* Title for the NTP pop-over that describes the onboarding is done */
+"onboarding.ntpOnboardingPopoverDoneTitle" = "準備完了です！";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "トラッカーと広告をブロックすることで、ウェブサイトの使用するデータ通信量が減少し、より速く読み込むことができます。";
+
+/* Button Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenButtonTitle" = "始める";
+
+/* Description for Privacy Screen in Onboarding */
+"onboarding.privacyScreenDescription" = "もうすぐ最高のオンライン・プライバシーが手に入ります。準備はいいですか？";
+
+/* Title for Privacy Screen in Onboarding */
+"onboarding.privacyScreenTitle" = "プライバシーを、簡単に。";
+
+/* Additional Description for Ready Screen in Onboarding */
+"onboarding.readyScreenAdditionalDescription" = "そして、トラッカーや広告がすっかりなくなっているのを見てみてください。";
+
+/* Description for Ready Screen in Onboarding */
+"onboarding.readyScreenDescription" = "人気のサイトを選ぶか、好きなサイトを検索してみてください。";
+
+/* Title for Ready Screen in Onboarding */
+"onboarding.readyScreenTitle" = "ウェブサイトを見てみよう！";
+
+/* The title of the row asking user to enter a website url */
+"onboarding.searchViewEnterWebsiteRowTitle" = "ウェブサイトを入力する";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Braveにようこそ！";
+
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
 
@@ -667,6 +832,36 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "ウェブサイトを開く";
 
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "プライバシーが保護されたニュースフィードで今日のトップニュースを。";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "News";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生用のプレイリストに保存。";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Playlist";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "プライバシーが保護されたビデオ通話を、あなたのブラウザで。";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "デバイス全体でインターネット接続を保護";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "安全な暗号資産ウォレット。拡張機能は必要ありません";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Braveの機能";
+
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "その他のプライバシー設定";
 
@@ -675,6 +870,9 @@
 
 /* Sync pair device settings section title */
 "Pair" = "ペア";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "パスワード";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo by %@";
@@ -852,6 +1050,9 @@
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "ブロック済みのスクリプト";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "ブックマークを検索";
 
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 検索";
@@ -1090,6 +1291,15 @@
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
 
+/* Sync Error Description */
+"syncExpiredError" = "期限切れ";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "新しすぎます";
+
+/* Sync Error Description */
+"syncGenericError" = "すみません。問題が発生しました";
+
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "インポートされたブックマーク";
 
@@ -1099,17 +1309,32 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Syncの接続エラー";
 
+/* Sync Error Description */
+"syncInsecureVersionError" = "サポートされていない古いバージョンです";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "フォーマットが正しくありません";
+
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。このQRコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
 
 /* Default name for a device */
 "syncJoinChainCodewordsWarning" = "この操作を行うと、パスワードを含むBraveのデータが、これらのコード単語を生成したデバイスと共有されます。これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
 
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "警告";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "サポートされていないバージョンです";
+
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "同期に接続できません";
+
+/* Sync Error Description */
+"syncOlderVersionError" = "すでにサポートの終了したバージョンです";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "ローカルのデバイスデータは、すべてのデバイスでそのまま残ります。この同期チェーンに含まれるその他のデバイスは、引き続き同期されます。";
