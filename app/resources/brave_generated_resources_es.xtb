@@ -55,6 +55,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
 <translation id="6821903322090655051">Las Brave Rewards están deshabilitadas</translation>
+<translation id="413570371620795359">Abre el panel Recompensas para habilitarlas y empezar</translation>
 <translation id="3849957491997306859">Detectar automáticamente</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
@@ -428,6 +429,7 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="2556708692502648323">Redes de carteras</translation>
 <translation id="1330032157352961756">El ID de la nueva cadena</translation>
+<translation id="3423620355610881890">Un número decimal positivo</translation>
 <translation id="726121047592132939">El nombre de la nueva cadena</translation>
 <translation id="1034112277864078119">Introduce el nombre de la cadena</translation>
 <translation id="4672314527143443556">Nombre de la divisa de la cadena</translation>
@@ -441,6 +443,7 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="3047726704186619366">URL de los iconos</translation>
 <translation id="2487558607408469181">URL de exploradores de bloques</translation>
 <translation id="6301398959353668507">Este campo no puede quedar en blanco.</translation>
+<translation id="7504462451153306677">Formato no válido; el ID de la cadena es un número positivo</translation>
 <translation id="8325036459845654666">Ya se ha añadido esta red.</translation>
 <translation id="650071759190249039">Error interno; no ha sido posible añadir la red.</translation>
 <translation id="868529041590572443">Introduce toda la información relativa a la divisa nativa</translation>

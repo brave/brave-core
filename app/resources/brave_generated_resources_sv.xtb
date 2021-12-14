@@ -55,6 +55,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="6821903322090655051">Brave Rewards är inaktiverade</translation>
+<translation id="413570371620795359">Öppna Rewards-panelen för att aktivera och komma igång</translation>
 <translation id="3849957491997306859">Auto-upptäck</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
@@ -428,6 +429,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2653659639078652383">Skicka</translation>
 <translation id="2556708692502648323">Plånboksnätverk</translation>
 <translation id="1330032157352961756">En ny kedjas ID</translation>
+<translation id="3423620355610881890">Ett positivt decimaltal</translation>
 <translation id="726121047592132939">Namnet på en ny kedja</translation>
 <translation id="1034112277864078119">Ange kedjenamn</translation>
 <translation id="4672314527143443556">Kedjans valutanamn</translation>
@@ -441,6 +443,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3047726704186619366">Symbol URL:er</translation>
 <translation id="2487558607408469181">Blockera explorer URL:er</translation>
 <translation id="6301398959353668507">Fältet kan inte vara tomt.</translation>
+<translation id="7504462451153306677">Ogiltigt format, kedjans id är ett positivt tal</translation>
 <translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 <translation id="650071759190249039">Internt fel, kunde inte lägga till nätverk.</translation>
 <translation id="868529041590572443">Fyll i all information om ursprungsvalutan</translation>

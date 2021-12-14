@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="6821903322090655051">«پاداش‌های Brave» غیرفعال است</translation>
+<translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="3849957491997306859">به‌طور خودکار شناسایی شد</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
@@ -428,6 +429,7 @@
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="2556708692502648323">شبکه‌های کیف پول</translation>
 <translation id="1330032157352961756">شناسه زنجیره جدید</translation>
+<translation id="3423620355610881890">یک عدد اعشاری مثبت</translation>
 <translation id="726121047592132939">نام زنجیره جدید</translation>
 <translation id="1034112277864078119">نام زنجیره را وارد کنید</translation>
 <translation id="4672314527143443556">نام ارز زنجیره</translation>
@@ -441,6 +443,7 @@
 <translation id="3047726704186619366">آدرس وب نماد</translation>
 <translation id="2487558607408469181">آدرس وب کاوشگر بلوک</translation>
 <translation id="6301398959353668507">این فیلد نباید خالی باشد.</translation>
+<translation id="7504462451153306677">قالب نامعتبر است، شناسه‌ی زنجیره یک عدد مثبت است</translation>
 <translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
 <translation id="650071759190249039">خطای داخلی، افزودن شبکه امکان‌پذیر نیست.</translation>
 <translation id="868529041590572443">لطفاً همه اطلاعات مربوط به ارز بومی را وارد کنید</translation>

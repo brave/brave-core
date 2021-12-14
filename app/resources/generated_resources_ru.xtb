@@ -3454,7 +3454,7 @@
 <translation id="4627442949885028695">Продолжить на другом устройстве</translation>
 <translation id="4628762811416793313">Не удалось завершить настройку контейнера Linux. Повторите попытку.</translation>
 <translation id="4629521233550547305">Открыть профиль <ph name="PROFILE_NAME"/></translation>
-<translation id="4632655012900268062">Настроить подсказки</translation>
+<translation id="4632655012900268062">Настроить карточки</translation>
 <translation id="4633003931260532286">Для расширения требуется <ph name="IMPORT_NAME"/> версии не ранее <ph name="IMPORT_VERSION"/>. Сейчас установлена версия <ph name="INSTALLED_VERSION"/>.</translation>
 <translation id="4633757335284074492">Сохранение резервных копий на Brave Диске. Позволяет в любой момент восстанавливать данные (в том числе из приложений) или переносить их с одного устройства на другое. Резервные копии загружаются в Brave и шифруются с помощью пароля аккаунта Brave вашего ребенка.</translation>
 <translation id="4634575639321169635">Настройте устройство для использования в служебных или личных целях.</translation>
@@ -4985,7 +4985,7 @@
 <translation id="6321407676395378991">Включить заставку</translation>
 <translation id="6322370287306604163">Снимайте блокировку с помощью отпечатка пальца ещё быстрее</translation>
 <translation id="6322653941595359182">Отправлять и получать SMS на устройстве Bravebook</translation>
-<translation id="6324916366299863871">Изменение ярлыка</translation>
+<translation id="6324916366299863871">Изменить ярлык</translation>
 <translation id="6325191661371220117">Отключить автозапуск</translation>
 <translation id="5267531627648004734">Удалить</translation>
 <translation id="6326855256003666642">Количество соединений keepalive</translation>

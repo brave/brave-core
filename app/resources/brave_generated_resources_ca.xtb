@@ -55,6 +55,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="6821903322090655051">Brave Rewards està inhabilitat</translation>
+<translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
 <translation id="3849957491997306859">Detectat automàticament</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
 <translation id="4176463684765177261">Desactivat</translation>
@@ -429,6 +430,7 @@ Segur que vols continuar?</translation>
 <translation id="2653659639078652383">Envia</translation>
 <translation id="2556708692502648323">Xarxes del moneder</translation>
 <translation id="1330032157352961756">La ID de la nova cadena</translation>
+<translation id="3423620355610881890">Un número decimal positiu</translation>
 <translation id="726121047592132939">El nom de la nova cadena</translation>
 <translation id="1034112277864078119">Introdueix el nom de la cadena</translation>
 <translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
@@ -442,6 +444,7 @@ Segur que vols continuar?</translation>
 <translation id="3047726704186619366">URL d'icona</translation>
 <translation id="2487558607408469181">Bloquejar URL de l'explorador</translation>
 <translation id="6301398959353668507">Aquest camp no pot estar buit.</translation>
+<translation id="7504462451153306677">Format no vàlid, l'ID de la cadena és un número positiu</translation>
 <translation id="8325036459845654666">Ja s'ha afegit aquesta xarxa.</translation>
 <translation id="650071759190249039">Error intern, no s'ha pogut afegir la xarxa.</translation>
 <translation id="868529041590572443">Emplena tota la informació sobre la moneda nativa</translation>

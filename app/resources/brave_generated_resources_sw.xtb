@@ -55,6 +55,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
 <translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
 <translation id="6821903322090655051">Brave Rewards imelemazwa</translation>
+<translation id="413570371620795359">Fungua paneli ya Zawadi ili kuwezesha na kuanza</translation>
 <translation id="3849957491997306859">Imetambuliwa kiotomatiki</translation>
 <translation id="8798099450830957504">Chaguomsingi</translation>
 <translation id="4176463684765177261">Imezimwa</translation>
@@ -226,6 +227,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="414639769490080648">Idadi ya dakika za kusubiri hadi Brave Wallet ifungwe kiotomatiki</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
 <translation id="5927916530277631319">Mbinu ya kusuluhisha Vikoa Visivyoweza Kusimamishwa</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Jifunze Zaidi<ph name="END_LINK"/> kuhusu DNS juu ya HTTPS na uzingatiaji wa faragha ya Ethereum.</translation>
 <translation id="5248318250177143470">Mbinu ya kusuluhisha Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Weka funguo zako za IPNS</translation>
 <translation id="951216659045543447">Tia sahihi maudhui kulingana na ufunguo wa faragha unaooana na uyachapishe kwenye IPNS</translation>
@@ -260,6 +262,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="1327977588028644528">Lango</translation>
 <translation id="80225669816651290">Fundo la karibu</translation>
 <translation id="4927734062756955434">Anwani ya lango la umma la IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Jifunze zaidi <ph name="END_LINK_MPL"/> kuhusu nodi ya ndani ya IPFS na uzingatiaji wa faragha ya kifaa cha kuunganisha.</translation>
 <translation id="8425213833346101688">Badilisha</translation>
 <translation id="557281710253742286">Weka lango la IPFS</translation>
 <translation id="8571837315037233299">Anwani ya lango</translation>
@@ -427,6 +430,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
 <translation id="2556708692502648323">Mitandao ya pochi</translation>
 <translation id="1330032157352961756">Kitambulisho cha mnyororo mpya</translation>
+<translation id="3423620355610881890">Nambari chanya ya desimali</translation>
 <translation id="726121047592132939">Jina la mnyororo mpya</translation>
 <translation id="1034112277864078119">Weka jina la mnyororo</translation>
 <translation id="4672314527143443556">Jina la sarafu ya mnyororo</translation>
@@ -440,6 +444,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="3047726704186619366">URL za Ikoni</translation>
 <translation id="2487558607408469181">Zuia URL za explorer</translation>
 <translation id="6301398959353668507">Sehemu hii haiwezi kuwa tupu.</translation>
+<translation id="7504462451153306677">Umbizo batili, kitambulisho cha mtungo ni nambari chanya</translation>
 <translation id="8325036459845654666">Mtandao huu tayari umeongezwa.</translation>
 <translation id="650071759190249039">Hitilafu ya ndani, imeshindwa kuongeza mtandao.</translation>
 <translation id="868529041590572443">Tafadhali jaza maelezo yote kuhusu sarafu ya asili</translation>

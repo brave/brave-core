@@ -55,6 +55,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Menyusun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="6821903322090655051">Brave Rewards dinonaktifkan</translation>
+<translation id="413570371620795359">Buka panel Rewards untuk mengaktifkan dan memulai</translation>
 <translation id="3849957491997306859">Terdeteksi Otomatis</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
@@ -428,6 +429,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2653659639078652383">Kirim</translation>
 <translation id="2556708692502648323">Jaringan dompet</translation>
 <translation id="1330032157352961756">ID rantai baru</translation>
+<translation id="3423620355610881890">Sebuah angka desimal positif</translation>
 <translation id="726121047592132939">Nama rantai baru</translation>
 <translation id="1034112277864078119">Masukkan nama rantai</translation>
 <translation id="4672314527143443556">Nama mata uang rantai</translation>
@@ -441,6 +443,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3047726704186619366">URL Ikon</translation>
 <translation id="2487558607408469181">Blokir URL penjelajah</translation>
 <translation id="6301398959353668507">Bidang ini tidak dapat dibiarkan kosong.</translation>
+<translation id="7504462451153306677">Format tidak valid, id rantai ini adalah angka positif</translation>
 <translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
 <translation id="650071759190249039">Kesalahan Internal, tidak dapat menambahkan jaringan.</translation>
 <translation id="868529041590572443">Silakan mengisi semua informasi tentang mata uang asal</translation>

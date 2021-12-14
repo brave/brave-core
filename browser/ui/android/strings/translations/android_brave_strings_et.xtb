@@ -405,12 +405,12 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7427567994475794038">Lülita sisse privaatsusaruanded, et näha, kui palju jälitajaid ja reklaame on blokeeritud viimase 3 tunni jooksul.</translation>
 <translation id="2053891538879944400">Salvestasid Brave'i brauseris <ph name="DATA"/> <ph name="DATA_TEXT"/> andmed.</translation>
 <translation id="8640064498452534195">Lülita sisse privaatsusaruanded, et näha, kui palju andmemahtu oled säästnud.</translation>
-<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.🔋</translation>
+<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.&#128267;</translation>
 <translation id="1945330434665345785">Blokeerisid eelmisel nädalal Brave'i brauseris <ph name="COUNT"/> jälitajat ja reklaami.</translation>
 <translation id="2883868922264431515">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest ja toeta oma lemmikuid veebilehti.</translation>
-<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.🔥</translation>
-<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.🔋</translation>
-<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.💨💨</translation>
+<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.&#128293;</translation>
+<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.&#128267;</translation>
+<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Privaatsusaruannete vaatamiseks alusta sirvimist</translation>
 <translation id="9080777565335515917">Privaatseks ja turvaliseks sirvimiseks määra Brave vaikebrauseriks.</translation>
 <translation id="1390943217516275883">Võimaldab Brave'il kuvada sinu privaatsuse statistikat.</translation>
@@ -527,27 +527,27 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6146966915297143881">jätka sisse logimisega</translation>
 <translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="8825032646286791700">DeFi &amp; Secure Crypto Storage</translation>
-<translation id="5460364286096798286">Hoidke krüptot oma valduses. Kaubelge varadega. Vaadake hindu ja portfelli tulemuslikkust. Investeerige, laenake ja laenake koos DeFi'ga.</translation>
-<translation id="1748009926009835882">Krüpto seadistamine</translation>
+<translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
+<translation id="8339846196588658366">Hoidke krüptovarad oma valduses ja jälgige portfelli tulemusi. Kõik otse Brave'i privaatsest brauserist.</translation>
+<translation id="4472575034687746823">Alustamine</translation>
 <translation id="2759836790106646094">Varundage oma rahakott kohe!</translation>
-<translation id="5156354224138379811">Järgmises etapis näete 12 sõna, mille abil saate oma krüptorahakoti taastada.</translation>
+<translation id="1078873179929044999">Järgmises etapis näete 12-sõnalist taastefraasi, mille abil saate taastada oma põhikrüptokontod. Hoidke seda turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
 <translation id="2359808026110333948">Jätka</translation>
-<translation id="5024543173656851695">Mõistan, et kui ma kaotan oma taastamise sõnad, ei pääse ma oma krüptorahakotile ligi.</translation>
+<translation id="1904000155026201268">Saan aru, et kui kaotan taastefraasi, pole mul võimalik oma krüptorahakotile juurde pääseda.</translation>
 <translation id="3933122286596948824">Teie taastamise lause</translation>
-<translation id="6146351434671268516">Märkige või kopeerige need sõnad õiges järjekorras ja talletage need kindlasse kohta.</translation>
-<translation id="7408247683131762445">HOIATUS: Mitte kunagi ei tohi avaldada oma turvalauset. Igaüks, kellel on see lause, võib teie raha igaveseks ära võtta.</translation>
-<translation id="939275786514736244">Ma olen oma lause talletanud kindlasse kohta</translation>
+<translation id="5077747669435508720">Kirjutage need sõnad üles või kopeerige täpselt alltoodud järjekorras ning hoidke neid turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
+<translation id="2708402071160162126">HOIATUS! Ärge jagage oma taastefraasi. Igaüks, kes seda fraasi teab, saab teie varad jäädavalt endale võtta.</translation>
+<translation id="111912712268284159">Olen oma fraasi turvaliselt varundanud.</translation>
 <translation id="6896758677409633944">Kopeeri</translation>
-<translation id="2604744480284798833">Varundage rahakott kohe, et kaitsta oma krüptoportfelli juurdepääsu kaotsimineku eest.</translation>
-<translation id="8289942708804097960">Ostke krüptot Apple Pay, krediit- või deebetkaardiga.</translation>
+<translation id="375882617301124395">Varundage oma krüptorahakott</translation>
+<translation id="8289942708804097960">Ostke krüptot krediit- või deebetkaardiga.</translation>
 <translation id="841880029259839903">Saatke krüptot või tehke ülekandeid ühelt kontolt teisele.</translation>
 <translation id="8982246458261383692">Vahetage krüptovarasid Brave DEX agregaatoriga.</translation>
 <translation id="1783600039044302171">Kaitske oma krüptot parooliga</translation>
 <translation id="3726490322412361740">Sisestage parool</translation>
-<translation id="4450951602553063001">Sisestage parool uuesti</translation>
-<translation id="1783870616707290226">Parooli pikkus peab olema 7 või enam tähemärki</translation>
-<translation id="7383102760859258982">Uuesti sisestatud parool ei ühtinud</translation>
+<translation id="3038243139480464605">Parooli kinnitamine</translation>
+<translation id="3717685683157254329">Parool peab koosnema vähemalt 7 märgist, sisaldama vähemalt ühte tähte, numbrit ja ühte erimärki.</translation>
+<translation id="7396672979287122068">Kinnitatud parool ei sobinud</translation>
 <translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -556,24 +556,25 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">KÕIK</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Lisage konto</translation>
-<translation id="2632612428525029752">Uuenda konto</translation>
+<translation id="7665369617277396874">Konto lisamine</translation>
+<translation id="3448492834076427715">Uuenda kontot</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Kas lubada sõrmejäljeluku avamine?</translation>
 <translation id="5493402808936397665">Lubage biomeetriliste andmete kasutamine, et avada oma rahakott kiiresti ilma parooli sisestamata.</translation>
-<translation id="1544192797660353713">Rahakott</translation>
+<translation id="8030647312184163932">Sõrmejäljega avamine</translation>
+<translation id="4090490645603511157">Kasutage biomeetriat, et avada rahakott kiiresti parooli sisestamata.</translation>
+<translation id="5379398699598690674">Rahakott (beeta)</translation>
 <translation id="6901810042765869341">Sisestage oma taastamise lause, et taastada oma Brave'i rahakoti krüptokonto.</translation>
-<translation id="1970161551843843564">Krüptokonto taastamine</translation>
+<translation id="9120654436199628567">Krüptokonto taastamine</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
 <translation id="283071225285270357">Sisestage oma taastamise lause</translation>
 <translation id="2339124864228588937">Taastamise lause kinnitamine</translation>
-<translation id="2718669004132381989">Puudutage sõnu, et asetada need õiges järjekorras üksteise kõrvale.</translation>
+<translation id="3747079125031086337">Valige oma taastefraasi sõnad õiges järjekorras.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="3157931365184549694">Taasta</translation>
 <translation id="9111102763498581341">Ava lukk</translation>
 <translation id="6657585470893396449">Parool</translation>
-<translation id="1569452037668432756">Avamiseks sisestage oma parool</translation>
-<translation id="3717685683157254329">Parooli pikkuseks peab olema vähemalt 7 tähemärki, sisaldades vähemalt ühte numbrit ja ühte erimärki.</translation>
+<translation id="5168349973342709369">Rahakoti avamiseks sisestage parool</translation>
 <translation id="1144810021918451336">Ei kaitse sind ohtlike veebisaitide, allalaaditavate failide ja laienduste eest.</translation>
 <translation id="5760476995887363522">Fraasid ei olnud ühesugused. Proovige uuesti.</translation>
 <translation id="2360588547830602174">Konto taastamine ebaõnnestus. Palun proovige uuesti.</translation>
@@ -584,7 +585,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Kuni (hinnanguliselt)</translation>
 <translation id="6998989275928107238">Saaja</translation>
-<translation id="6664416064035847539">aadress või URL</translation>
+<translation id="2589431635772931954">Aadress või URL</translation>
 <translation id="632241521608275119">Varieeruvuse tolerants</translation>
 <translation id="1987317783729300807">Kontod</translation>
 <translation id="3535654229833214438">Tehingud</translation>
@@ -614,11 +615,12 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2490428413101944234">Katseta kraani</translation>
 <translation id="2581671693710952401">Hankige eetrit</translation>
 <translation id="8165484222652118977">Eetri hankimine kraanist proovivõrgule <ph name="NETWORK"/></translation>
-<translation id="7420359180991315365">Ava Wire</translation>
+<translation id="7420359180991315365">Ava Wyre</translation>
 <translation id="8488282162676695335">Brave'i rahakott</translation>
+<translation id="3784455785234192852">Lukusta</translation>
 <translation id="5040262127954254034">Privaatsus</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
-<translation id="414639769490080648">Mitme minuti möödumisel soovite oma Brave'i rahakoti automaatselt lukustada?</translation>
+<translation id="414639769490080648">Minutite arv enne Brave’i rahakoti automaatset lukustamist</translation>
 <translation id="4993345308607970390">Brave'i rahakoti lähtestamine</translation>
 <translation id="6369495274982305511">Kas soovite kindlasti rahakoti lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minut} other {# minutit}}</translation>
@@ -722,7 +724,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5932938770824268122">Privaatvõti</translation>
 <translation id="2472882733835903303">Kuva privaatvõti</translation>
 <translation id="4391056902675005799">Peida privaatvõti</translation>
-<translation id="7518007103754668253">Hoiatus: seda võtit ei tohi mingil juhul avaldada. Igaüks, kes teab privaatvõtit, saab varastada kõiki teie kontol olevaid varasid.</translation>
+<translation id="7518007103754668253">Hoiatus: seda võtit ei tohi mingil juhul avaldada. Igaüks, kes teab seda privaatvõtit, saab varastada kõiki teie kontol olevaid varasid.</translation>
 <translation id="1133619932669546254">Aktiveerige <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKTSIOONI TÜÜP: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Andmeid pole</translation>
@@ -760,47 +762,19 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1011713837432053857">Gaasikoguse piirmäär</translation>
 <translation id="1254969878422524947">Gaasiühiku preemialimiit (Gwei)</translation>
 <translation id="7373308452149471621">Gaasiühiku hinnalimiit (Gwei)</translation>
-<translation id="5345505584130165588">Brave'i kaitsed ja privaatsus</translation>
-<translation id="7822245778264751380">Ethereumi hind (ETH)</translation>
-<translation id="7384441892795736634">Värskenda andmeid</translation>
-<translation id="4804818685124855865">Katkesta ühendus</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Sissemakse aadress</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Sissemakse meeldetuletus</translation>
-<translation id="5110244215256675209">Osta krüptot</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Saadaval <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Teisendamise eelvaade</translation>
-<translation id="4670943871783273148">Teie tekst salvestati tekstifaili.</translation>
-<translation id="4432845796903761592">Faili ei ole salvestatud.</translation>
-<translation id="7144878232160441200">Proovi uuesti</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="2956070106555335453">Kokkuvõte</translation>
-<translation id="1366855498335432549">Sissemakse</translation>
-<translation id="1301340234286078471">Teisenda</translation>
-<translation id="1714829281959608206">Luba Binance'i ühendus, et vaadata Binance'i konto saldot ja kaubelda krüptodega.</translation>
-<translation id="4584930231524505442">Soovin teisendada ...</translation>
-<translation id="5749014321384313843">Soovin kulutada ...</translation>
-<translation id="2480674848181564169">Teisendamiseks pole piisavalt saldot</translation>
-<translation id="2215334405220411393">Minimaalne teisendatav summa on: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Ei saa ühendust luua</translation>
-<translation id="7742417737698031726">Tasu</translation>
-<translation id="2122225204180056042">Saate</translation>
-<translation id="6432284126416751397">Kinnita teisendamine</translation>
-<translation id="3891414008432200754">Hind</translation>
-<translation id="3733576242118819803">Kinnita (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Teisendamine nurjus. Proovige uuesti.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
-<translation id="3604285424134705930">Konverteerisite <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> vääringusse <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Kontrollige oma võrguühendust.</translation>
-<translation id="5317780077021120954">Salvesta</translation>
-<translation id="1202920745614909195">Ostke krüptot Apple Pay, krediit- või deebetkaardiga.</translation>
-<translation id="224719674509047150">Parooli pikkuseks peab olema vähemalt 7 tähemärki, sisaldades vähemalt ühte numbrit ja ühte erimärki.</translation>
-<translation id="4636930964841734540">Teave</translation>
-<translation id="8094541587800369158">Neid kontosid saab kasutada Web 3 detsentraliseeritud rakendustega ja kuvada teie portfellis, kuid neid ei saa taastefraasi abil põhikonto varukoopiast taastada. Teiseste kontode automaatseks taastamiseks lubage Brave Synci kontod.</translation>
-<translation id="6083912983861746409">Gaasi hind (GWEI)</translation>
-<translation id="2499079593046817044">Gaasi limiit (GWEI)</translation>
-<translation id="5929798090073091848">Hoiatus: seda võtit ei tohi mingil juhul avaldada. Igaüks, kes teab privaatvõtit, saab varastada kõiki teie kontol olevaid varasid.</translation>
+<translation id="5891811606602061966">Konto importimine nurjus, proovige uuesti.</translation>
+<translation id="7033470144757208254">Brave'is on DEX-i agregaatorina kasutusel 0x.</translation>
+<translation id="5061574358754621254">Hinnaandmete platvorm: CoinGecko</translation>
+<translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
+<translation id="8574289650879708853">Lisa kohandatud vara</translation>
+<translation id="7791543448312431591">Lisa</translation>
+<translation id="6600400596821238377">Tokeni nimi</translation>
+<translation id="4432966365400169165">Tokeni lepinguaadress</translation>
+<translation id="4092152169181928870">Tokeni sümbol</translation>
+<translation id="4351811224047421378">Täpsuse kümnendkohad</translation>
+<translation id="8614026298974065517">Kohandatud vara eemaldamine</translation>
+<translation id="4378941981362528553">Kas soovite eemaldada tokeni <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
+<translation id="749944179568745958">Ei ole kehtiv ETH-i aadress</translation>
+<translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
 </translationbundle>

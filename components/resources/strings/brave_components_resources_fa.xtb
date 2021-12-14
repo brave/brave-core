@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="3656941797339037856">Rewards را به Gemini مرتبط کنید!</translation>
-<translation id="3066983737886188034">Gemini به شما امکان می‌دهد به‌راحتی معامله کنید، ذخیره کنید و 3.49 درصد APY در BAT خود به دست آورید. اکنون کیف پول Brave Rewards خود را تأیید کنید و با Gemini پیوند دهید!</translation>
+<translation id="2383784987664887340">Gemini به شما امکان می‌دهد به‌راحتی معامله کنید، ذخیره کنید و 3.49 درصد APY در BAT خود به دست آورید. اکنون کیف پول Brave Rewards خود را تأیید کنید و با Gemini پیوند دهید!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY از تاریخ 15 سپتامبر 2021</translation>
 <translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
 <translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>
 <translation id="6915065518766963119">* به تأیید نگهداری نیاز دارد.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">آدرس یا آدرس وب 0x</translation>
 <translation id="2860280209982026951">Brave از <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> به‌عنوان گردآورنده DEX استفاده می‌کند.</translation>
 <translation id="151946611346774041">0x نشانی اتریوم و نشانی IP را پردازش می‌کند تا تراکنش را تکمیل کند (دریافت نرخ لحظه‌ای را شامل می‌شود). 0x از این داده‌ها «فقط» برای اهادف پردازش تراکنش‌ها استفاده می‌کند.</translation>
+<translation id="4626407663177532837">مظنه شامل 0.875 درصد از هزینه Brave است.</translation>
 <translation id="6518133107902771759">تأیید</translation>
 <translation id="1420318137760245955">به «کیف پول Brave» خوش آمدید</translation>
 <translation id="8303434745767477417">دارایی‌های رمزارز را در اختیار خود نگه دارید. عملکرد پرتفوی را ردیابی کنید، و با web 3 DApp تعامل برقرار کنید. با دیفای تجارت کنید، سرمایه‌گذاری کنید، وام بگیرید و قرض دهید. همه این کارها را مستقیماً از مرورگر حریم خصوصی Brave انجام دهید. بدون افزونه. نیازی به دانلود هم نیست.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048">اتصال <ph name="DEVICE_NAME"/> قطع شد</translation>
 <translation id="5317781812114905957">دستورالعمل‌ها</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> را متصل کنید</translation>
+<translation id="4358411489835404360">کیف پول سخت افزاری باید روی دستگاه تأیید شود.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">کیف پول سخت‌افزار نیاز دارد که «برنامه اتریوم» در <ph name="DEVICE_NAME"/> باز باشد</translation>
 <translation id="8687869982094542529">ارسال شد</translation>
 <translation id="5013754027092416509">دریافت شد</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">داده‌های JSON پیش‌بینی نمی‌شود</translation>
 <translation id="3282936527763045737">رمز عبور صحیح نیست</translation>
 <translation id="1119447706177454957">خطای داخلی</translation>
+<translation id="3327639091470204775">امکان انصال به پل Trezor وجود ندارد</translation>
 <translation id="6672377693827764095">خطای داخلی، واکشی حساب‌ها امکان‌پذیر نیست</translation>
 <translation id="8933250418452564886">تراکنش سخت‌افزار یافت نشد، لطفاً دوباره تلاش کنید</translation>
 <translation id="5999974802900788338">خطایی از دستگاه سخت‌افزار دریافت شد، احتمالاً باید تراکنش را در دستگاهتان تأیید کنید</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
-<translation id="2383784987664887340">Gemini به شما امکان می‌دهد به‌راحتی معامله کنید، ذخیره کنید و 3.49 درصد APY در BAT خود به دست آورید. اکنون کیف پول Brave Rewards خود را تأیید کنید و با Gemini پیوند دهید!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY از تاریخ 15 سپتامبر 2021</translation>
-<translation id="3301417531330431881">کیف پول سخت‌افزاری به تأیید تراکنش نیاز دارد. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">خطای داخلی، ایجاد پل iframe امکان‌پذیر است</translation>
-<translation id="1664949222596149258">خرید به‌ازای <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

@@ -55,6 +55,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
 <translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
 <translation id="6821903322090655051">Onemogućene Nagrade Brave</translation>
+<translation id="413570371620795359">Otvori ploču Nagrade za omogućavanje i početak</translation>
 <translation id="3849957491997306859">Automatski otkriveno</translation>
 <translation id="8798099450830957504">Zadano</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
@@ -428,6 +429,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="2556708692502648323">Mreže novčanika</translation>
 <translation id="1330032157352961756">ID novog lanca</translation>
+<translation id="3423620355610881890">Pozitivan decimalni broj</translation>
 <translation id="726121047592132939">Naziv novog lanca</translation>
 <translation id="1034112277864078119">Upiši naziv lanca</translation>
 <translation id="4672314527143443556">Naziv valute lanca</translation>
@@ -441,6 +443,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="3047726704186619366">URL-ovi ikone</translation>
 <translation id="2487558607408469181">URL-ovi tražilice Block Explorer</translation>
 <translation id="6301398959353668507">Polje ne smije biti prazno.</translation>
+<translation id="7504462451153306677">Nevažeći oblik, identifikacijska oznaka lanca pozitivan je broj</translation>
 <translation id="8325036459845654666">Mreža već dodana.</translation>
 <translation id="650071759190249039">Interna pogreška, nemogućnost dodavanja mreže.</translation>
 <translation id="868529041590572443">Upišite sve informacije o domaćoj valuti</translation>

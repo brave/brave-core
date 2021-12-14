@@ -55,6 +55,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
 <translation id="6821903322090655051">Phần thưởng Brave bị tắt đi</translation>
+<translation id="413570371620795359">Mở khung Phần thưởng để bật và bắt đầu</translation>
 <translation id="3849957491997306859">Đã tự động phát hiện</translation>
 <translation id="8798099450830957504">Mặc định</translation>
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
@@ -428,6 +429,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2653659639078652383">Gửi</translation>
 <translation id="2556708692502648323">Mạng ví</translation>
 <translation id="1330032157352961756">ID của chuỗi mới</translation>
+<translation id="3423620355610881890">Một số thập phân dương</translation>
 <translation id="726121047592132939">Tên của chuỗi mới</translation>
 <translation id="1034112277864078119">Nhập tên chuỗi</translation>
 <translation id="4672314527143443556">Tên tiền tệ của chuỗi</translation>
@@ -441,6 +443,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3047726704186619366">URL biểu tượng</translation>
 <translation id="2487558607408469181">Chặn URL trình khám phá</translation>
 <translation id="6301398959353668507">Trường này không được trống.</translation>
+<translation id="7504462451153306677">Định dạng không hợp lệ, ID chuỗi là một số dương</translation>
 <translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 <translation id="650071759190249039">Lỗi nội bộ, không thể thêm mạng.</translation>
 <translation id="868529041590572443">Vui lòng điền tất cả thông tin về đồng tiền nguyên bản</translation>

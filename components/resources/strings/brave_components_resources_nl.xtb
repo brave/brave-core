@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="3656941797339037856">Koppel beloningen aan Gemini!</translation>
-<translation id="3066983737886188034">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Verifieer je Brave Rewards-wallet en koppel hem nu aan Gemini!</translation>
+<translation id="2383784987664887340">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Verifieer je Brave Rewards-wallet en koppel hem nu aan Gemini!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY vanaf 15 september 2021</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x-adres of URL</translation>
 <translation id="2860280209982026951">Brave gebruikt <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-aggregator.</translation>
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
+<translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
 <translation id="6518133107902771759">Verifieer</translation>
 <translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
 <translation id="8303434745767477417">Houd cryptoassets in je eigen bezit. Volg portfolioprestaties en communiceer met web 3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> losgekoppeld</translation>
 <translation id="5317781812114905957">Instructies</translation>
 <translation id="1178198982208000092">Maak verbinding met <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardwarewallet vereist bevestiging op apparaat.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hardwarewallet vereist een geopende Ethereum-app op de <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">verzonden</translation>
 <translation id="5013754027092416509">ontvangen</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-gegevens niet verwacht</translation>
 <translation id="3282936527763045737">Wachtwoord is onjuist</translation>
 <translation id="1119447706177454957">Interne fout</translation>
+<translation id="3327639091470204775">Kan geen verbinding maken met de Trezor-brug</translation>
 <translation id="6672377693827764095">Interne fout, accounts kunnen niet worden opgehaald</translation>
 <translation id="8933250418452564886">Kan hardwaretransactie niet vinden, probeer het opnieuw</translation>
 <translation id="5999974802900788338">Foutmelding ontvangen van hardware; mogelijk moet je de transactie op je apparaat bevestigen</translation>
@@ -1157,9 +1161,4 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
-<translation id="2383784987664887340">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Verifieer je Brave Rewards-wallet en koppel hem nu aan Gemini!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY vanaf 15 september 2021</translation>
-<translation id="3301417531330431881">Hardware wallet vereist transactiebevestiging. <ph name="DEVICE_NAME"/></translation>
-<translation id="3327639091470204775">Interne fout, kan iframe-bridget niet aanmaken</translation>
-<translation id="1664949222596149258">Kopen voor <ph name="PRODUCE_PRICE"/></translation>
 </translationbundle>

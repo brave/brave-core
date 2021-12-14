@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="6821903322090655051">Brave Rewards가 비활성화되어 있습니다.</translation>
+<translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="3849957491997306859">자동 감지됨</translation>
 <translation id="8798099450830957504">기본값</translation>
 <translation id="4176463684765177261">사용 중지</translation>
@@ -428,6 +429,7 @@
 <translation id="2653659639078652383">제출</translation>
 <translation id="2556708692502648323">월렛 네트워크</translation>
 <translation id="1330032157352961756">새 체인의 ID</translation>
+<translation id="3423620355610881890">양의 십진수</translation>
 <translation id="726121047592132939">새 체인의 이름</translation>
 <translation id="1034112277864078119">체인 이름 입력</translation>
 <translation id="4672314527143443556">체인의 통화 이름</translation>
@@ -441,6 +443,7 @@
 <translation id="3047726704186619366">아이콘 URL</translation>
 <translation id="2487558607408469181">블록 탐색기 URL</translation>
 <translation id="6301398959353668507">이 필드는 비워 둘 수 없습니다.</translation>
+<translation id="7504462451153306677">유효하지 않은 형식입니다. 체인 ID는 양수입니다.</translation>
 <translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
 <translation id="650071759190249039">내부 오류. 네트워크를 추가할 수 없습니다.</translation>
 <translation id="868529041590572443">네이티브 통화에 대한 모든 정보를 입력하세요.</translation>
