@@ -108,6 +108,8 @@ export interface Props {
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void
   onCancelTransaction: (transaction: TransactionInfo) => void
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress?: ERCToken
 }
 
 const Portfolio = (props: Props) => {
@@ -145,7 +147,9 @@ const Portfolio = (props: Props) => {
     transactionSpotPrices,
     onRetryTransaction,
     onSpeedupTransaction,
-    onCancelTransaction
+    onCancelTransaction,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
@@ -436,6 +440,8 @@ const Portfolio = (props: Props) => {
           onSetUserAssetVisible={onSetUserAssetVisible}
           onRemoveUserAsset={onRemoveUserAsset}
           selectedNetwork={selectedNetwork}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
         />
       }
     </StyledWrapper>

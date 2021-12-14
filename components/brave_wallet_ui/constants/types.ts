@@ -384,6 +384,10 @@ export interface GetEthAddrReturnInfo {
   address: string
 }
 
+export interface GetERCTokenInfoReturnInfo {
+  token: BraveWallet.ERCToken | null
+}
+
 export interface GetIsStrongPassswordReturnInfo {
   result: boolean
 }

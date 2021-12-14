@@ -54,11 +54,19 @@ import {
   getBalance,
   getERC20Allowance,
   onConnectHardwareWallet,
-  isStrongPassword
+  isStrongPassword,
+  getERCTokenInfo
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
-import { useSwap, useAssets, useBalance, useSend, usePreset } from '../common/hooks'
+import {
+  useSwap,
+  useAssets,
+  useBalance,
+  useSend,
+  usePreset,
+  useTokenInfo
+} from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 import { HardwareWalletAccount } from '../common/hardware/types'
 
@@ -126,6 +134,11 @@ function Container (props: Props) {
     userVisibleTokenOptions,
     sendAssetOptions
   } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
+
+  const {
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
+  } = useTokenInfo(getERCTokenInfo, userVisibleTokenOptions, tokenOptions, selectedNetwork)
 
   const {
     exchangeRate,
@@ -639,6 +652,8 @@ function Container (props: Props) {
                 onCancelTransaction={onCancelTransaction}
                 onShowVisibleAssetsModal={onShowVisibleAssetsModal}
                 showVisibleAssetsModal={showVisibleAssetsModal}
+                onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+                foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
               />
             }
           </Route>

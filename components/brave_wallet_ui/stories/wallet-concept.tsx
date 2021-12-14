@@ -257,6 +257,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [customTolerance, setCustomTolerance] = React.useState('')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
+  const [foundTokenInfo, setFoundTokenInfo] = React.useState<ERCToken | undefined>()
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -680,6 +681,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowVisibleAssetsModal(value)
   }
 
+  const onFindTokenInfoByContractAddress = (contractAddress: string) => {
+    const foundToken = NewAssetOptions.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+    setFoundTokenInfo(foundToken)
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -780,6 +786,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               userVisibleTokensInfo={[]}
                               onShowVisibleAssetsModal={onShowVisibleAssetsModal}
                               showVisibleAssetsModal={showVisibleAssetsModal}
+                              onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+                              foundTokenInfoByContractAddress={foundTokenInfo}
                             />
                           )}
                         </>

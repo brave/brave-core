@@ -79,6 +79,8 @@ export interface Props {
   onShowBackup: () => void
   onShowVisibleAssetsModal: (value: boolean) => void
   showVisibleAssetsModal: boolean
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress?: ERCToken
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -127,7 +129,9 @@ const CryptoStoryView = (props: Props) => {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
-    onSetImportError
+    onSetImportError,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
@@ -301,6 +305,8 @@ const CryptoStoryView = (props: Props) => {
           onCancelTransaction={onClickCancelTransaction}
           onShowVisibleAssetsModal={onShowVisibleAssetsModal}
           showVisibleAssetsModal={showVisibleAssetsModal}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
         />
       }
       {selectedTab === 'accounts' &&
