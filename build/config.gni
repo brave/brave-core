@@ -40,6 +40,15 @@ declare_args() {
   last_chrome_installer = ""
 }
 
+declare_args() {
+  if (is_official_build) {
+    # Generate all symbols (breakpad + native) for Release builds
+    brave_debug_symbol_level = 2
+  } else {
+    brave_debug_symbol_level = 1
+  }
+}
+
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
 if (brave_exe == "") {
