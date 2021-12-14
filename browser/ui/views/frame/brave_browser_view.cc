@@ -15,6 +15,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -127,10 +128,14 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
-  pref_change_registrar_.Add(
-      kTabsSearchShow,
-      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                          base::Unretained(this)));
+  if (!WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser_.get())) {
+    pref_change_registrar_.Add(
+        kTabsSearchShow,
+        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                            base::Unretained(this)));
+    // Show the correct value in settings on initial start
+    UpdateSearchTabsButtonState();
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
@@ -139,8 +144,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  // Show the correct value in settings on initial start
-  UpdateSearchTabsButtonState();
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
   if (!sidebar::CanUseSidebar(browser_->profile()) ||
@@ -189,9 +192,11 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
   if (auto* button = tab_strip_region_view()->tab_search_button()) {
-    auto is_tab_search_visible =
-        GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-    button->SetVisible(is_tab_search_visible);
+    if (button) {
+      auto is_tab_search_visible =
+          GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
+      button->SetVisible(is_tab_search_visible);
+    }
   }
 }
 
