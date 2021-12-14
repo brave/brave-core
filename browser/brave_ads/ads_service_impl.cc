@@ -517,8 +517,12 @@ bool AdsServiceImpl::ShouldStart() const {
 int64_t AdsServiceImpl::GetAdsPerHour() const {
   int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
-    const base::Feature kAdServing{"AdServing",
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
+    // Use static storage to make sure that we always pass the exact same data
+    // to GetFieldTrialParamByFeatureAsInt() each time it's called (i.e. that
+    // kAdServing is stored in the same memory slot) or we'll get a crash on
+    // DCHECK-enabled builds due to base::FeatureList::CheckFeatureIdentity().
+    static const base::Feature kAdServing{"AdServing",
+                                          base::FEATURE_ENABLED_BY_DEFAULT};
 
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kAdServing, "default_ad_notifications_per_hour",
