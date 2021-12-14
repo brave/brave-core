@@ -26,12 +26,12 @@ export interface Props {
   isRecoveryTermsAccepted: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
   recoverPhrase: string[]
-  recoverPhraseCopied: boolean
+  isRecoverPhraseCopied: boolean
   onCopy: () => void
 }
 
 function OnboardingBackup (props: Props) {
-  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, recoverPhraseCopied, onCopy } = props
+  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, isRecoverPhraseCopied, onCopy } = props
 
   return (
     <StyledWrapper>
@@ -53,8 +53,8 @@ function OnboardingBackup (props: Props) {
       </RecoveryPhraseContainer>
       <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
         <CopyButton onClick={onCopy}>
-          {recoverPhraseCopied && <BigCheckMark />}
-          {recoverPhraseCopied ? getLocale('braveWalletButtonCopied') : getLocale('braveWalletButtonCopy')}
+          {isRecoverPhraseCopied && <BigCheckMark />}
+          {isRecoverPhraseCopied ? getLocale('braveWalletButtonCopied') : getLocale('braveWalletButtonCopy')}
         </CopyButton>
       </Tooltip>
       <TermsRow>
