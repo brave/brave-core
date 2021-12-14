@@ -8,7 +8,9 @@
 
 #include <cstdint>
 #include <string>
+
 #include "base/time/time.h"
+#include "base/values.h"
 
 namespace brave_pyxis {
 class RawP3AValue;
@@ -31,10 +33,16 @@ struct MessageMetainfo {
   std::string refcode;
 };
 
+// This is legacy and will be removed once we verify the JSON version works
+// fine with the backends.
 void GenerateP3AMessage(uint64_t metric_hash,
                         uint64_t metric_value,
                         const MessageMetainfo& meta,
                         brave_pyxis::RawP3AValue* p3a_message);
+
+base::Value GenerateP3AJsonMessage(uint64_t metric_hash,
+                                   uint64_t metric_value,
+                                   const MessageMetainfo& meta);
 
 // Ensures that country/refcode represent the big enough cohort that will not
 // let anybody identify the sender.

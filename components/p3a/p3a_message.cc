@@ -67,6 +67,37 @@ void GenerateP3AMessage(uint64_t metric_hash,
   p3a_message->set_p3a_info(data, kDataLength);
 }
 
+base::Value GenerateP3AJsonMessage(uint64_t metric_hash,
+                                   uint64_t metric_value,
+                                   const MessageMetainfo& meta) {
+  base::Value result(base::Value::Type::DICTIONARY);
+
+  // Find out years of install and survey.
+  base::Time::Exploded exploded;
+  meta.date_of_survey.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  result.SetIntKey("yos", exploded.year);
+
+  meta.date_of_install.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  result.SetIntKey("yoi", exploded.year);
+
+  // Fill meta.
+  result.SetStringKey("country_code", meta.country_code);
+  result.SetStringKey("platform", meta.platform);
+  result.SetStringKey("version", meta.version);
+  result.SetStringKey("channel", meta.channel);
+  result.SetIntKey("woi", meta.woi);
+  result.SetIntKey("wos", meta.wos);
+  result.SetStringKey("refcode", meta.refcode);
+
+  // Set the metric
+  result.SetStringKey("metric_hash", base::NumberToString(metric_hash));
+  result.SetIntKey("metric_value", metric_value);
+
+  return result;
+}
+
 void MaybeStripRefcodeAndCountry(MessageMetainfo* meta) {
   const std::string& refcode = meta->refcode;
   const std::string& country = meta->country_code;

@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
+#include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
@@ -28,6 +29,7 @@
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
+#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
@@ -52,6 +54,9 @@ constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
 constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
 constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
+
+constexpr char kP3AJsonServerUrl[] = "https://p3a-json.brave.com/";
+constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -281,6 +286,9 @@ void BraveP3AService::Init(
       url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
       base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this)));
 
+  new_uploader_.reset(new BraveP3ANewUploader(
+      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl)));
+
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),
       (randomize_upload_interval_
@@ -295,8 +303,9 @@ void BraveP3AService::Init(
   }
 }
 
-std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
-                                       uint64_t value) {
+BraveP3ALogStore::LogForJsonMigration
+BraveP3AService::Serialize(base::StringPiece histogram_name,
+                           uint64_t value) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
@@ -307,7 +316,18 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   UpdateMessageMeta();
   brave_pyxis::RawP3AValue message;
   GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
-  return message.SerializeAsString();
+
+  base::Value p3a_json_value = GenerateP3AJsonMessage(histogram_name_hash,
+                                                      value,
+                                                      message_meta_);
+  std::string p3a_json_message;
+  const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
+  DCHECK(ok);
+
+  return {
+    message.SerializeAsString(),
+    p3a_json_message
+  };
 }
 
 bool
@@ -408,6 +428,11 @@ void BraveP3AService::StartScheduledUpload() {
     VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
             << "of type " << log_type;
     uploader_->UploadLog(log, log_type);
+
+    // We duplicate the uploads to test that the new approach works as fine
+    // as the legacy one. Once we are ready, we will remove the old
+    // uploader.
+    new_uploader_->UploadLog(log_store_->staged_json_log(), log_type);
   }
 }
 
@@ -513,7 +538,7 @@ void BraveP3AService::DoRotation() {
 void BraveP3AService::UpdateRotationTimer() {
   base::Time now = base::Time::Now();
   base::Time next_rotation = rotation_interval_.is_zero()
-                                 ? NextMonday(base::Time::Now())
+                                 ? NextMonday(now)
                                  : now + rotation_interval_;
   if (now >= next_rotation) {
     // Should never happen, but let's stay on the safe side.
