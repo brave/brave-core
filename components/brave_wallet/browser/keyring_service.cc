@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -33,10 +32,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(FILECOIN_ENABLED)
-#include "brave/components/brave_wallet/browser/filecoin_keyring.h"
-#endif
 
 /* kBraveWalletKeyrings structure
  *
@@ -456,11 +451,10 @@ HDKeyring* KeyringService::CreateKeyring(const std::string& keyring_id,
     observer->KeyringCreated();
   }
   ResetAutoLockTimer();
-#if BUILDFLAG(FILECOIN_ENABLED)
-  if (keyring_id == kFilecoinKeyringId) {
+
+  if (IsFilecoinEnabled() && keyring_id == kFilecoinKeyringId) {
     return filecoin_keyring_.get();
   }
-#endif
 
   if (IsFilecoinEnabled() && keyring_id == kFilecoinKeyringId) {
     return filecoin_keyring_.get();
@@ -662,7 +656,7 @@ void KeyringService::GetPrivateKeyForDefaultKeyringAccount(
   std::string private_key = hd_key->GetHexEncodedPrivateKey();
   std::move(callback).Run(!private_key.empty(), private_key);
 }
-#if BUILDFLAG(FILECOIN_ENABLED)
+
 bool KeyringController::IsFilecoinAccount(const std::string& account) const {
   for (const auto& filecoin_account_info :
        GetImportedAccountsForKeyring(prefs_, kFilecoinKeyringId)) {
@@ -679,12 +673,10 @@ void KeyringController::ImportFilecoinSECP256K1Account(
     const std::string& private_key_hex,
     const std::string& network,
     ImportFilecoinSECP256K1AccountCallback callback) {
-  /*std::string private_key_decoded;
-  base::Base64Decode(private_key_hex,
-                          &private_key_decoded);
-  std::vector<uint8_t> aaa(private_key_decoded.begin(),
-  private_key_decoded.end()); LOG(ERROR) << "from:" << private_key_hex <<
-                " to:" << base::ToLowerASCII(base::HexEncode(aaa));*/
+  if (!IsFilecoinEnabled()) {
+    VLOG(1) << "Filecoin feature is not enabled";
+    return;
+  }
   if (account_name.empty() || private_key_hex.empty() || !encryptor_) {
     std::move(callback).Run(false, "");
     return;
@@ -711,6 +703,11 @@ void KeyringController::ImportFilecoinBLSAccount(
     const std::string& public_key_hex,
     const std::string& network,
     ImportFilecoinBLSAccountCallback callback) {
+  if (!IsFilecoinEnabled()) {
+    VLOG(1) << "Filecoin feature is not enabled";
+    return;
+  }
+
   if (account_name.empty() || private_key_hex.empty() ||
       public_key_hex.empty() || !encryptor_) {
     std::move(callback).Run(false, "");
@@ -744,7 +741,7 @@ KeyringController::ImportSECP256K1AccountForFilecoinKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
-  if (!filecoin_keyring_) {
+  if (!filecoin_keyring_ || !IsFilecoinEnabled()) {
     return absl::nullopt;
   }
 
@@ -774,7 +771,7 @@ KeyringController::ImportBLSAccountForFilecoinKeyring(
     const std::vector<uint8_t>& private_key,
     const std::vector<uint8_t>& public_key,
     const std::string& network) {
-  if (!filecoin_keyring_) {
+  if (!filecoin_keyring_ || !IsFilecoinEnabled()) {
     return absl::nullopt;
   }
 
@@ -797,7 +794,6 @@ KeyringController::ImportBLSAccountForFilecoinKeyring(
 
   return address;
 }
-#endif
 
 bool KeyringService::IsFilecoinAccount(const std::string& account) const {
   for (const auto& filecoin_account_info :
