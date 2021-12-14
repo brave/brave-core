@@ -101,6 +101,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
                             Utils.setCryptoOnboarding(false);
+                            keyringController.notifyWalletBackupComplete();
                             Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);

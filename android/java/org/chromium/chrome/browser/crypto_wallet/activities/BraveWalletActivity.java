@@ -539,4 +539,9 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     public void locked() {
         setNavigationFragments(UNLOCK_WALLET_ACTION);
     }
+
+    @Override
+    public void backedUp() {
+        findViewById(R.id.wallet_backup_banner).setVisibility(View.GONE);
+    }
 }
