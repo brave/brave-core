@@ -4,19 +4,30 @@ const path = require('path')
 const fs = require('fs-extra')
 
 const isOverrideNewer = (original, override) => {
-  return (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0)
+  const overrideMTime = fs.statSync(override).mtimeMs
+  const origMTime = fs.statSync(original).mtimeMs
+  const isNewer = (override - origMTime) > 0
+  return {
+    isNewer,
+    origMTime,
+    overrideMTime
+  }
 }
 
 const updateFileUTimesIfOverrideIsNewer = (original, override) => {
-  if (isOverrideNewer(original, override)) {
+  const overrideInfo = isOverrideNewer(original, override)
+  if (overrideInfo.isNewer) {
+    const overrideDate = new Date(overrideInfo.origMTime)
+    const origDate = new Date(overrideInfo.origMTime)
     const date = new Date()
     fs.utimesSync(original, date, date)
-    console.log(original + ' is touched.')
+    const relativePath = path.relative(config.srcDir, original)
+    console.log(`Chromium_src override: touching original because it had an older time (${origDate}) compared to override (${overrideDate}) - ${relativePath}`)
   }
 }
 
 const deleteFileIfOverrideIsNewer = (original, override) => {
-  if (fs.existsSync(original) && isOverrideNewer(original, override)) {
+  if (fs.existsSync(original) && isOverrideNewer(original, override).isNewer) {
     try {
       fs.unlinkSync(original)
       console.log(original + ' has been deleted.')

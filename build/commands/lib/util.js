@@ -288,20 +288,33 @@ const util = {
 
       for (const sourceFile of sourceFiles) {
         let destinationFile = path.join(output, path.relative(source, sourceFile))
-
-        // The destination file might be newer when updating chromium so
-        // we check for an exact match on the timestamp. We use seconds instead
-        // of ms because utimesSync doesn't set the times with ms precision
-        if (!fs.existsSync(destinationFile) ||
-            Math.floor(new Date(fs.statSync(sourceFile).mtimeMs).getTime() / 1000) !=
-            Math.floor(new Date(fs.statSync(destinationFile).mtimeMs).getTime() / 1000)) {
-          fs.copySync(sourceFile, destinationFile)
-          // can't set the date in the past so update the source file
-          // to match the newly copied destionation file
-          const date = fs.statSync(destinationFile).mtime
-          fs.utimesSync(sourceFile, date, date)
-          console.log(sourceFile + ' copied to ' + destinationFile)
+        let sourceDate, destinationDate
+        if (fs.existsSync(destinationFile)) {
+          const sourceDate = new Date(fs.statSync(sourceFile).mtimeMs)
+          const destinationDate = new Date(fs.statSync(destinationFile).mtimeMs)
+          // The destination file might be newer when updating chromium so
+          // we check for an exact match on the timestamp. We use seconds instead
+          // of ms because utimesSync doesn't set the times with ms precision
+          if (Math.floor(sourceDate.getTime() / 1000) ==
+            Math.floor(destinationDate.getTime() / 1000)) {
+              // Exists and exact mtime match means no change to the versions
+              // in src/brave or src/ since we last copied.
+              continue
+          }
+          console.log(`Branding - copying override as mtime did not match...`)
+          console.log(` - source mtime: ${sourceDate}`)
+          console.log(` - destination mtime: ${destinationDate}`)
+        } else {
+          console.log(`Branding - copying override as file did not exist yet...`)
         }
+        const sourceRelativePath = path.relative(config.srcDir, sourceFile)
+        console.log(` - path: ${sourceRelativePath}`)
+        fs.copySync(sourceFile, destinationFile)
+        // can't set the date in the past so update the source file
+        // to match the newly copied destionation file
+        const date = fs.statSync(destinationFile).mtime
+        fs.utimesSync(sourceFile, date, date)
+        console.log(` - new mtime to compare next time is: ${(new Date(date))}.`)
       }
     }
 
