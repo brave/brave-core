@@ -21,11 +21,17 @@ declare_args() {
   rewards_grant_prod_endpoint = ""
 }
 
-if (is_official_build && !is_ios) {
-  assert(uphold_client_id != "")
-  assert(uphold_client_secret != "")
-  assert(gemini_api_url != "")
-  assert(gemini_oauth_url != "")
-  assert(gemini_wallet_client_id != "")
-  assert(gemini_wallet_client_secret != "")
+if (is_official_build) {
+  if (!is_ios) {
+    assert(uphold_client_id != "")
+    assert(uphold_client_secret != "")
+    assert(gemini_api_url != "")
+    assert(gemini_oauth_url != "")
+    assert(gemini_wallet_client_id != "")
+    assert(gemini_wallet_client_secret != "")
+  }
+
+  assert(rewards_grant_dev_endpoint != "")
+  assert(rewards_grant_staging_endpoint != "")
+  assert(rewards_grant_prod_endpoint != "")
 }
