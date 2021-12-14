@@ -108,20 +108,16 @@ IN_PROC_BROWSER_TEST_F(
       publisher);
 
   // Open the Rewards popup
-  content::WebContents* popup_contents =
+  base::WeakPtr<content::WebContents> popup_contents =
       context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "[id='wallet-panel']",
-      "Brave Verified Creator");
+      popup_contents.get(), "[id='wallet-panel']", "Brave Verified Creator");
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "[id='wallet-panel']",
-      publisher);
+      popup_contents.get(), "[id='wallet-panel']", publisher);
 
   // Retrieve the inner HTML of the wallet panel and verify that it
   // contains the expected favicon
@@ -129,9 +125,7 @@ IN_PROC_BROWSER_TEST_F(
     const std::string favicon =
         "chrome://favicon/size/64@1x/https://" + publisher;
     rewards_browsertest_util::WaitForElementToContainHTML(
-        popup_contents,
-        "#wallet-panel",
-        favicon);
+        popup_contents.get(), "#wallet-panel", favicon);
   }
 }
 
