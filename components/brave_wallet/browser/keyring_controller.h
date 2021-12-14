@@ -166,6 +166,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
       const std::string& address,
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
+  bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
+                                      const std::vector<uint8_t>& signature,
+                                      std::string* address);
 
   void AddAccountsWithDefaultName(size_t number);
 

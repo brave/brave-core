@@ -66,6 +66,9 @@ interface BraveWalletProvider {
   // Used for eth_sign and personal_sign
   SignMessage(string address, string message) => (string signature, ProviderError error, string error_message);
 
+  // Used for personal_ecRecover
+  RecoverAddress(string message, string signature) => (string address, ProviderError error, string error_message);
+
   // Used for eth_signTypedData
   // message is for displaying the sign request to users
   // message_to_sign is the hex representation without 0x for eip712 hash

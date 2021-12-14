@@ -30,6 +30,9 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
     mojom::ERCTokenPtr token;
     EXPECT_FALSE(ParseWalletWatchAssetParams(error_case, &token, &message));
+    std::string signature;
+    EXPECT_FALSE(
+        ParsePersonalEcRecoverParams(error_case, &message, &signature));
   }
 }
 
@@ -373,14 +376,6 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
       signature,
       "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
       "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
-
-  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, &message, nullptr));
-  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, nullptr, &signature));
-  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, nullptr, nullptr));
-  EXPECT_FALSE(
-      ParsePersonalEcRecoverParams("{\"params\":[{}]}", &message, &signature));
-  EXPECT_FALSE(ParsePersonalEcRecoverParams("{\"params\":[\"123\",123]}",
-                                            &message, &signature));
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {

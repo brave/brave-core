@@ -965,6 +965,14 @@ KeyringController::SignMessageByDefaultKeyring(
   return ret;
 }
 
+bool KeyringController::RecoverAddressByDefaultKeyring(
+    const std::vector<uint8_t>& message,
+    const std::vector<uint8_t>& signature,
+    std::string* address) {
+  CHECK(address);
+  return default_keyring_->RecoverAddress(message, signature, address);
+}
+
 void KeyringController::AddAccountsWithDefaultName(size_t number) {
   if (!default_keyring_) {
     DCHECK(false) << "Should only be called when default keyring exists";

@@ -397,6 +397,28 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void RecoverAddress(const std::string& message,
+                      const std::string& signature,
+                      std::string* address_out,
+                      mojom::ProviderError* error_out,
+                      std::string* error_message_out) {
+    if (!address_out || !error_out || !error_message_out)
+      return;
+
+    base::RunLoop run_loop;
+    provider()->RecoverAddress(
+        message, signature,
+        base::BindLambdaForTesting([&](const std::string& signature,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          *address_out = signature;
+          *error_out = error;
+          *error_message_out = error_message;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void SignTypedMessage(absl::optional<bool> user_approved,
                         const std::string& address,
                         const std::string& message,
@@ -1095,6 +1117,60 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
                                       base::ASCIIToUTF16(addresses[0])));
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, RecoverAddress) {
+  CreateWallet();
+  AddAccount();
+
+  std::string signature;
+  mojom::ProviderError error;
+  std::string error_message;
+  const std::vector<std::string> addresses = GetAddresses();
+
+  std::string message = "0x68656c6c6f20776f726c64";
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
+  SignMessage(true, addresses[0], message, &signature, &error, &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
+  // 132 = 65 * 2 chars per byte + 2 chars for 0x
+  EXPECT_EQ(signature.size(), 132UL);
+
+  // Keyring can be locked
+  Lock();
+
+  std::string out_address;
+  RecoverAddress(message, signature, &out_address, &error, &error_message);
+  EXPECT_EQ(out_address, addresses[0]);
+  EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
+
+  // Must have hex input at this point
+  // text input is converted in ParsePersonalEcRecoverParams
+  RecoverAddress("hello world", signature, &out_address, &error,
+                 &error_message);
+  EXPECT_EQ(out_address, "");
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Invalid signature
+  RecoverAddress(message, "zzzzz", &out_address, &error, &error_message);
+  EXPECT_EQ(out_address, "");
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Signature too long
+  signature += "12";
+  RecoverAddress("hello world", signature, &out_address, &error,
+                 &error_message);
+  EXPECT_EQ(out_address, "");
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
