@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.brave_news;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,7 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
         Button newTab = view.findViewById(R.id.new_tab);
         Button privateTab = view.findViewById(R.id.new_private_tab);
         Button disable = view.findViewById(R.id.disable_content);
+        Button share = view.findViewById(R.id.share_content);
 
         title.setText(mUrl);
         StringBuilder disableText = new StringBuilder();
@@ -118,6 +120,17 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                      R.string.brave_news_disabled_content, mPublisherName),
                              Toast.LENGTH_SHORT)
                         .show();
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_TEXT, mUrl);
+                startActivity(Intent.createChooser(share, mUrl));
             }
         });
     }

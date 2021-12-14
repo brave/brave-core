@@ -44,6 +44,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
@@ -444,7 +445,6 @@ public class CardBuilderFeedCard {
                     row1.addView(layout3);
 
                     rowTop.setLayoutParams(tableParamsTopNews);
-                    // topText.setText("DEALS OF THE DAY");
                     setTextFromFeed(topText, DEALS, 0);
                     topText.setTextSize(17);
                     topText.setTextColor(
@@ -750,12 +750,12 @@ public class CardBuilderFeedCard {
                     layout.addView(desc);
                     layout.addView(publisher);
 
-                    imageParams.height = 500; // LinearLayout.LayoutParams.WRAP_CONTENT;
+                    imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
+                    imageParams.height = 600;
+                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    image.setLayoutParams(imageParams);
 
                     setImage(image, "image", index);
-
-                    imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    image.setLayoutParams(imageParams);
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                     title.setTextSize(17);
@@ -1053,6 +1053,7 @@ public class CardBuilderFeedCard {
                     title.setLayoutParams(titleRowParams);
                     title.setMaxLines(4);
                     title.setEllipsize(TextUtils.TruncateAt.END);
+
                     layoutSingleCard.addView(title);
 
                     descRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -1067,7 +1068,7 @@ public class CardBuilderFeedCard {
                     layoutRowPhotos.addView(layoutSingleCard);
 
                     imageRowParams.width = 0;
-                    imageRowParams.height = 300;
+                    imageRowParams.height = 350;
 
                     imageRowParams.weight = 1;
                     imageRowParams.setMargins(0, 0, 0, 0);
@@ -1320,37 +1321,17 @@ public class CardBuilderFeedCard {
                     Bitmap decodedByte =
                             BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                     if (!type.equals("paired")) {
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions = requestOptions.centerInside().override(0, 800).transform(
+                                new CenterCrop(), new GranularRoundedCorners(30, 30, 0, 0));
                         Glide.with(mActivity)
                                 .asBitmap()
                                 .load(decodedByte)
-                                .placeholder(new ColorDrawable(
-                                        mActivity.getResources().getColor(R.color.card_background)))
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .apply(RequestOptions
-                                                .bitmapTransform(
-                                                        new GranularRoundedCorners(30, 30, 0, 0))
-                                                .diskCacheStrategy(DiskCacheStrategy.ALL))
-                                .into(new CustomTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(@NonNull Bitmap resource,
-                                            @Nullable Transition<? super Bitmap> transition) {
-                                        imageView.setImageBitmap(resource);
-                                    }
-                                    @Override
-                                    public void onLoadCleared(@Nullable Drawable placeholder) {}
-                                });
-                        imageView.setAdjustViewBounds(true);
-                        imageView.setClipToOutline(true);
+                                .centerCrop()
+                                .apply(requestOptions)
+                                .into(imageView);
                     } else {
                         imageView.setImageBitmap(decodedByte);
-                    }
-
-                    if (!type.equals("paired")) {
-                        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-                        imageParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                        imageView.setLayoutParams(imageParams);
                     }
                 }
             });

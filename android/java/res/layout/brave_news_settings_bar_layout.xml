@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_settings_bar"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:background="@color/card_background_solid"
     android:orientation="horizontal"
     android:alpha="0"
