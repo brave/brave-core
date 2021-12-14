@@ -132,6 +132,7 @@ public class PortfolioStore: ObservableObject {
       group.enter()
       assetRatioController.priceHistory(
         asset.token.symbol,
+        vsAsset: "usd",
         timeframe: timeframe
       ) { [weak self] success, history in
         defer { group.leave() }

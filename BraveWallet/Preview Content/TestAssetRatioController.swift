@@ -19,7 +19,7 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
     }
     completion(!prices.isEmpty, Array(prices.values))
   }
-  func priceHistory(_ asset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
+  func priceHistory(_ asset: String, vsAsset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
     //    completion(true, assets)
   }
   
