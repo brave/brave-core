@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ERCToken } from '../../../constants/types'
 import { IconWrapper, PlaceholderText } from './style'
-import { stripERC20TokenImageURL } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL, isRemoteImageURL } from '../../../utils/string-utils'
 import { background } from 'ethereum-blockies'
 import { ETH } from '../../../options/asset-options'
 
@@ -28,14 +28,16 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     if (!selectedAsset) {
       return null
     }
+    const tokenImageURL = stripERC20TokenImageURL(selectedAsset?.logo)
+    const checkIconURL = selectedAsset?.symbol !== 'ETH' && (tokenImageURL === '' || isRemoteImageURL(tokenImageURL))
 
     const bg = React.useMemo(() => {
-      if (selectedAsset?.symbol !== 'ETH' && stripERC20TokenImageURL(selectedAsset?.logo) === '') {
+      if (checkIconURL) {
         return background({ seed: selectedAsset.contractAddress ? selectedAsset?.contractAddress.toLowerCase() : selectedAsset.name })
       }
     }, [selectedAsset])
 
-    if (selectedAsset?.symbol !== 'ETH' && stripERC20TokenImageURL(selectedAsset?.logo) === '') {
+    if (checkIconURL) {
       return (
         <IconWrapper
           panelBackground={bg}

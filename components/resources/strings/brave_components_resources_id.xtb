@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="3656941797339037856">Tautkan Rewards ke Gemini!</translation>
-<translation id="3066983737886188034">Gemini memungkinkan Anda untuk dengan mudah menukarkan, menyimpan, dan mendapatkan 3,49% APY dengan BAT Anda. Verifikasi dan tautkan dompet Brave Rewards Anda dengan Gemini sekarang!</translation>
+<translation id="2383784987664887340">Gemini memungkinkan Anda untuk dengan mudah menukarkan, menyimpan, dan mendapatkan 3,49% APY dengan BAT Anda. Verifikasi dan tautkan dompet Brave Rewards Anda dengan Gemini sekarang!</translation>
+<translation id="2237374144728570574">* APY Gemini Earn sejak 15 September 2021</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6915065518766963119">* Harus Lolos Verifikasi</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x alamat atau url</translation>
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregrator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan tagihan). 0x HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
+<translation id="4626407663177532837">Penawaran termasuk 0,875% biaya Brave.</translation>
 <translation id="6518133107902771759">Verifikasi</translation>
 <translation id="1420318137760245955">Selamat datang di Brave Wallet yang baru</translation>
 <translation id="8303434745767477417">Pertahankan aset kripto dalam penyimpanan Anda. Lacak kinerja portofolio, dan berinteraksi dengan web 3 DApps. Perdagangkan, investasikan, pinjam, dan pinjamkan dengan DeFi. Seluruhnya langsung dari perambah privasi Brave. Tanpa ekstensi, tanpa perlu mengunduh.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus</translation>
 <translation id="5317781812114905957">Instruksi</translation>
 <translation id="1178198982208000092">Hubungkan <ph name="DEVICE_NAME"/> Anda</translation>
+<translation id="4358411489835404360">Dompet peranti keras memerlukan konfirmasi pada perangkat. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Dompet peranti keras perlu membuka Aplikasi Ethereum di <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dikirim</translation>
 <translation id="5013754027092416509">diterima</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Data JSON tidak diharapkan</translation>
 <translation id="3282936527763045737">Kata sandi tidak benar</translation>
 <translation id="1119447706177454957">Kesalahan internal</translation>
+<translation id="3327639091470204775">Tidak dapat terhubung ke jembatan Trezor</translation>
 <translation id="6672377693827764095">Kesalahan internal, Tidak Dapat mengambil akun</translation>
 <translation id="8933250418452564886">Transaksi peranti keras tidak dapat ditemukan, silakan coba lagi</translation>
 <translation id="5999974802900788338">Menerima pesan kesalahan dari perangkat keras, mungkin Anda perlu mengonfirmasi transaksi di perangkat Anda</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Pesan kesalahan masuk, silakan coba lagi</translation>
 <translation id="8273603707418703324">Pesan kesalahan masuk, kumpulan kunci yang tak dikenal telah diminta, silakan coba lagi</translation>
 <translation id="5265455943786954050">Perintah Trezor sudah berlangsung</translation>
-<translation id="7017116822583380542">Trezor Bridge belum siap</translation>
+<translation id="7017116822583380542">Jembatan Trezor belum siap</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>

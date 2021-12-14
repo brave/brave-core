@@ -11,19 +11,31 @@ import {
   NameAndAddressColumn,
   AccountCircle,
   LeftSide,
-  DisconnectButton
+  PrimaryButton,
+  RightSide
 } from './style'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 
 export interface Props {
+  isActive: boolean
+  hasPermission: boolean
   account: WalletAccountType
   onDisconnect: (address: string) => void
+  onConnect: (account: WalletAccountType) => void
+  onSwitchAccount: (account: WalletAccountType) => void
 }
 
-const ConnectedAccountItem = (props: Props) => {
-  const { account, onDisconnect } = props
+const SitePermissionAccountItem = (props: Props) => {
+  const {
+    account,
+    isActive,
+    hasPermission,
+    onDisconnect,
+    onConnect,
+    onSwitchAccount
+  } = props
 
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -31,6 +43,14 @@ const ConnectedAccountItem = (props: Props) => {
 
   const onClickDisconnect = () => {
     onDisconnect(account.address)
+  }
+
+  const onClickConnect = () => {
+    onConnect(account)
+  }
+
+  const onClickSwitchAccount = () => {
+    onSwitchAccount(account)
   }
 
   return (
@@ -44,9 +64,27 @@ const ConnectedAccountItem = (props: Props) => {
           </AccountAddressText>
         </NameAndAddressColumn>
       </LeftSide>
-      <DisconnectButton onClick={onClickDisconnect}>{getLocale('braveWalletSitePermissionsDisconnect')}</DisconnectButton>
+      <RightSide>
+        <PrimaryButton
+          onClick={
+            hasPermission
+              ? isActive
+                ? onClickDisconnect
+                : onClickSwitchAccount
+              : onClickConnect
+          }
+        >
+          {
+            hasPermission
+              ? isActive
+                ? getLocale('braveWalletSitePermissionsDisconnect')
+                : getLocale('braveWalletSitePermissionsSwitch')
+              : getLocale('braveWalletAddAccountConnect')
+          }
+        </PrimaryButton>
+      </RightSide>
     </StyledWrapper>
   )
 }
 
-export default ConnectedAccountItem
+export default SitePermissionAccountItem

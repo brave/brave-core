@@ -11,4 +11,4 @@
   case protodb::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS: \
     return DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
 
-#include "../../../../../../components/download/internal/background_service/proto_conversions.cc"
+#include "src/components/download/internal/background_service/proto_conversions.cc"

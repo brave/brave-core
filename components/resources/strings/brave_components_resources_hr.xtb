@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Završi provjeru novčanika</translation>
 <translation id="9200453331904391567">Poništi vezu s nagradama Brave</translation>
 <translation id="3656941797339037856">Povežite uslugu Rewards s uslugom Gemini!</translation>
-<translation id="3066983737886188034">Putem usluge Gemini možete jednostavno trgovati, pohranjivati i zarađivati 3,49 % APY svog BAT-a. Odmah potvrdite i povežite svoj novčanik za značajku Nagrade Brave s uslugom Gemini!</translation>
+<translation id="2383784987664887340">Putem usluge Gemini možete jednostavno trgovati, pohranjivati i zarađivati 3,49 % APY svog BAT-a. Odmah potvrdite i povežite svoj novčanik za značajku Nagrade Brave s uslugom Gemini!</translation>
+<translation id="2237374144728570574">*Zarada APY-ja uslugom Gemini Earn dostupna od 15. rujna 2021.</translation>
 <translation id="7404779623219601861">Zatraži BAT za darovne kartice</translation>
 <translation id="6215565499749144110">Uz mrežu TAP možete zatražiti svoje BAT-ove za darovne kartice popularnih trgovačkih marki.</translation>
 <translation id="6915065518766963119">* Zahtijeva se podržana provjera.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Adresa 0x ili URL</translation>
 <translation id="2860280209982026951">Preglednikom Brave upotrebljava se <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kao agregator DEX.</translation>
 <translation id="151946611346774041">Protokolom 0x obrađuju se adresa Ethereum i IP adresa radi obavljanja transakcije (uključujući dobivanje ponuda). Protokolom 0x upotrebljavaju se ovi podatci ISKLJUČIVO za svrhe obrađivanja transakcija.</translation>
+<translation id="4626407663177532837">Ponudom se uključuje naknada od 0,875 % za preglednik Brave.</translation>
 <translation id="6518133107902771759">Potvrdi</translation>
 <translation id="1420318137760245955">Dobro došli u Braveov novi novčanik</translation>
 <translation id="8303434745767477417">Čuvajte kriptoimovinu. Pratite učinak portfelja i upotrebljavajte 3 mrežne decentralizirane aplikacije. Mijenjajte, ulažite, posuđujte i pozajmljujte pomoću DeFija. Sve izravno iz privatnog preglednika Braver. Ne trebaju proširenja ni preuzimanja.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odspojen</translation>
 <translation id="5317781812114905957">Upute</translation>
 <translation id="1178198982208000092">Poveži svoj <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Za novčanik hardvera treba potvrda na uređaju. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Novčanikom hardvera zahtijeva se otvaranje aplikacije Ethereum na<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
 <translation id="5013754027092416509">primljeno</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Podatci JSON nisu očekivani</translation>
 <translation id="3282936527763045737">Neispravna lozinka</translation>
 <translation id="1119447706177454957">Interna pogreška</translation>
+<translation id="3327639091470204775">Nemogućnost povezivanja s mostom trezora</translation>
 <translation id="6672377693827764095">Interna pogreška, nemogućnost dohvaćanja računa</translation>
 <translation id="8933250418452564886">Nije moguće pronaći hardversku transakciju, pokušajte ponovno</translation>
 <translation id="5999974802900788338">Primljena pogreška od hardverskog uređaja, vjerojatno trebate potvrditi transakciju na svom uređaju</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Pogreška potpisivanja poruke, pokušajte ponovno</translation>
 <translation id="8273603707418703324">Pogreška potpisivanja poruke, zatražena nepoznata lozinka za spremište lozinki, pokušajte ponovno</translation>
 <translation id="5265455943786954050">Naredba Trezora već je u tijeku</translation>
-<translation id="7017116822583380542">Trezor Bridge nije spreman</translation>
+<translation id="7017116822583380542">Most trezora nije spreman</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="3745016858329272300">Opće informacije</translation>
 <translation id="4045404575593562245">Događaji kontrole Tor</translation>

@@ -13,4 +13,4 @@
 
 #endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
 
-#include "../../../../../chrome/browser/sync/chrome_sync_client.cc"
+#include "src/chrome/browser/sync/chrome_sync_client.cc"

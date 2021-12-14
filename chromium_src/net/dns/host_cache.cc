@@ -11,5 +11,5 @@
     copy.set_text_records(std::move(copy_text_records)); \
   }
 
-#include "../../../../net/dns/host_cache.cc"
+#include "src/net/dns/host_cache.cc"
 #undef BRAVE_COPY_WITH_DEFAULT_PORT

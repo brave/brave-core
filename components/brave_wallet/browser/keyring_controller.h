@@ -170,6 +170,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void AddAccountsWithDefaultName(size_t number);
 
   bool IsLocked() const;
+  bool HasPendingUnlockRequest() const;
+  void RequestUnlock();
+  absl::optional<std::string> GetSelectedAccount() const;
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
@@ -182,6 +185,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                           SetAutoLockMinutesCallback callback) override;
   void IsStrongPassword(const std::string& password,
                         IsStrongPasswordCallback callback) override;
+  void GetChecksumEthAddress(const std::string& address,
+                             GetChecksumEthAddressCallback callback) override;
+  void HasPendingUnlockRequest(
+      HasPendingUnlockRequestCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
@@ -273,6 +280,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   // std::vector<std::unique_ptr<HDKeyring>> keyrings_;
 
   PrefService* prefs_;
+  bool request_unlock_pending_ = false;
 
   mojo::RemoteSet<mojom::KeyringControllerObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringController> receivers_;

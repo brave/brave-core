@@ -18,11 +18,11 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -434,8 +434,7 @@ void EthTxController::ProcessHardwareSignature(
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
   auto data = meta->tx->GetSignedTransaction();
-  PublishTransaction(tx_meta_id, data);
-  std::move(callback).Run(true);
+  PublishTransaction(tx_meta_id, data, std::move(callback));
 }
 
 void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
@@ -458,15 +457,13 @@ void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
   if (!meta->tx->nonce()) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
-        from,
-        base::BindOnce(&EthTxController::OnGetNextNonce,
-                       weak_factory_.GetWeakPtr(), std::move(meta), chain_id));
+        from, base::BindOnce(&EthTxController::OnGetNextNonce,
+                             weak_factory_.GetWeakPtr(), std::move(meta),
+                             chain_id, std::move(callback)));
   } else {
     uint256_t nonce = meta->tx->nonce().value();
-    OnGetNextNonce(std::move(meta), chain_id, true, nonce);
+    OnGetNextNonce(std::move(meta), chain_id, std::move(callback), true, nonce);
   }
-
-  std::move(callback).Run(true);
 }
 
 void EthTxController::RejectTransaction(const std::string& tx_meta_id,
@@ -486,12 +483,14 @@ void EthTxController::RejectTransaction(const std::string& tx_meta_id,
 void EthTxController::OnGetNextNonce(
     std::unique_ptr<EthTxStateManager::TxMeta> meta,
     uint256_t chain_id,
+    ApproveTransactionCallback callback,
     bool success,
     uint256_t nonce) {
   if (!success) {
     meta->status = mojom::TransactionStatus::Error;
     tx_state_manager_->AddOrUpdateTx(*meta);
     LOG(ERROR) << "GetNextNonce failed";
+    std::move(callback).Run(false);
     return;
   }
   meta->tx->set_nonce(nonce);
@@ -502,27 +501,31 @@ void EthTxController::OnGetNextNonce(
   tx_state_manager_->AddOrUpdateTx(*meta);
   if (!meta->tx->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
+    std::move(callback).Run(false);
     return;
   }
-  PublishTransaction(meta->id, meta->tx->GetSignedTransaction());
+  PublishTransaction(meta->id, meta->tx->GetSignedTransaction(),
+                     std::move(callback));
 }
 
-void EthTxController::PublishTransaction(
-    const std::string& tx_meta_id,
-    const std::string& signed_transaction) {
+void EthTxController::PublishTransaction(const std::string& tx_meta_id,
+                                         const std::string& signed_transaction,
+                                         ApproveTransactionCallback callback) {
   rpc_controller_->SendRawTransaction(
-      signed_transaction,
-      base::BindOnce(&EthTxController::OnPublishTransaction,
-                     weak_factory_.GetWeakPtr(), tx_meta_id));
+      signed_transaction, base::BindOnce(&EthTxController::OnPublishTransaction,
+                                         weak_factory_.GetWeakPtr(), tx_meta_id,
+                                         std::move(callback)));
 }
 
 void EthTxController::OnPublishTransaction(std::string tx_meta_id,
+                                           ApproveTransactionCallback callback,
                                            bool status,
                                            const std::string& tx_hash) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =
       tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
+    std::move(callback).Run(false);
     return;
   }
 
@@ -539,6 +542,7 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
   if (status) {
     UpdatePendingTransactions();
   }
+  std::move(callback).Run(true);
 }
 
 void EthTxController::MakeERC20TransferData(

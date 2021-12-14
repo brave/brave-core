@@ -21,7 +21,7 @@
                              base::OnceClosure callback);        \
   void OnUpdateError
 
-#include "../../../../components/component_updater/component_installer.h"
+#include "src/components/component_updater/component_installer.h"
 
 #undef OnUpdateError
 

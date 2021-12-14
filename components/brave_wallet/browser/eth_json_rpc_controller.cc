@@ -12,11 +12,11 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -68,7 +68,9 @@ namespace brave_wallet {
 EthJsonRpcController::EthJsonRpcController(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+    : api_request_helper_(new api_request_helper::APIRequestHelper(
+          GetNetworkTrafficAnnotationTag(),
+          url_loader_factory)),
       prefs_(prefs),
       weak_ptr_factory_(this) {
   SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
@@ -77,6 +79,12 @@ EthJsonRpcController::EthJsonRpcController(
                  LOG(ERROR)
                      << "Could not set netowrk from EthJsonRpcController()";
              }));
+}
+
+void EthJsonRpcController::SetAPIRequestHelperForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_.reset(new api_request_helper::APIRequestHelper(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -131,9 +139,9 @@ void EthJsonRpcController::RequestInternal(const std::string& json_payload,
   }
   request_headers["x-brave-key"] = brave_key;
 
-  api_request_helper_.Request("POST", network_url, json_payload,
-                              "application/json", auto_retry_on_network_change,
-                              std::move(callback), request_headers);
+  api_request_helper_->Request("POST", network_url, json_payload,
+                               "application/json", auto_retry_on_network_change,
+                               std::move(callback), request_headers);
 }
 
 void EthJsonRpcController::FirePendingRequestCompleted(
@@ -1021,10 +1029,10 @@ void EthJsonRpcController::NotifySwitchChainRequestProcessed(
   switch_chain_callbacks_.erase(origin);
 
   if (approved)
-    std::move(callback).Run(0, "");
+    std::move(callback).Run(mojom::ProviderError::kSuccess, "");
   else
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
@@ -1034,7 +1042,7 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
     SwitchEthereumChainRequestCallback callback) {
   if (!GetNetworkURL(prefs_, chain_id).is_valid()) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUnknownChain),
+        mojom::ProviderError::kUnknownChain,
         l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
                                   base::ASCIIToUTF16(chain_id)));
     return false;
@@ -1042,14 +1050,14 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
 
   // Already on the chain
   if (GetChainId() == chain_id) {
-    std::move(callback).Run(0, "");
+    std::move(callback).Run(mojom::ProviderError::kSuccess, "");
     return false;
   }
 
   // There can be only 1 request per origin
   if (switch_chain_requests_.contains(origin)) {
     std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return false;
   }

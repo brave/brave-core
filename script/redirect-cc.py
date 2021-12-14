@@ -9,17 +9,33 @@ IS_WIN32 = sys.platform == 'win32'
 
 def main():
     args = sys.argv[1:]
+    append_root_dir_to_clang_include_search_path(args)
     brave_path = replace_cc_arg(args)
     if 'CC_WRAPPER' in os.environ:
         args = [os.environ['CC_WRAPPER']] + args
     cc_retcode = subprocess.call(args)
-    # To check the redirected file timestamp, it should be marked as dependency for ninja.
+    # To check the redirected file timestamp, it should be marked as dependency
+    # for ninja.
     # Linux/MacOS gcc deps format includes this file properly.
     # Windows msvc deps format does not include it, so we do it manually here.
     if IS_WIN32 and cc_retcode == 0 and brave_path:
-        # This is a specially crafted string that ninja will look for to create deps.
+        # This is a specially crafted string that ninja will look for to create
+        # deps.
         sys.stderr.write('Note: including file: %s\n' % brave_path)
     return cc_retcode
+
+
+# Append a root directory to Clang include search path so we can #include
+# original Chromium files using fixed `src/` prefix instead of a variable
+# relative path.
+# Adding the search path as a last one is important, because it should have the
+# lowest priority to not break compile steps when a path clash is possible,
+# for example: `base/macros.h` and `third_party/v8/src/base/macros.h`.
+def append_root_dir_to_clang_include_search_path(args):
+    for arg in args:
+        if arg.startswith('-I') and arg.endswith('brave/chromium_src'):
+            args.append(arg + '/../../..')
+            return
 
 
 def replace_cc_arg(args):
@@ -29,11 +45,11 @@ def replace_cc_arg(args):
             index_c = args.index('/c')
         else:
             index_c = args.index('-c')
-    except Exception:
+    except ValueError:
         # no -c or /c so just skip
         return
 
-    if 0 == len(args) or index_c == len(args) - 1:
+    if len(args) == 0 or index_c == len(args) - 1:
         # Something wrong, we have -c but have no path in the next arg
         # Just then give all to cc as is
         return

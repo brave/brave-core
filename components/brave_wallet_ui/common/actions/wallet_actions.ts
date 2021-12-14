@@ -21,6 +21,7 @@ import {
   UpdateUnapprovedTransactionGasFieldsType,
   SitePermissionsPayloadType,
   RemoveSitePermissionPayloadType,
+  AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
 import {
@@ -43,7 +44,8 @@ import {
   GasEstimation1559,
   ApproveERC20Params,
   WalletInfoBase,
-  WalletInfo
+  WalletInfo,
+  DefaultCurrencies
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -102,6 +104,7 @@ export const defaultBaseCurrencyChanged = createAction<DefaultBaseCurrencyChange
 export const defaultBaseCryptocurrencyChanged = createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged')
 export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
 export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
+export const addSitePermission = createAction<AddSitePermissionPayloadType>('addSitePermission')
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
 export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
@@ -110,3 +113,5 @@ export const autoLockMinutesChanged = createAction('autoLockMinutesChanged')
 export const retryTransaction = createAction<TransactionInfo>('retryTransaction')
 export const cancelTransaction = createAction<TransactionInfo>('cancelTransaction')
 export const speedupTransaction = createAction<TransactionInfo>('speedupTransaction')
+export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('defaultCurrenciesUpdated')
+export const expandWalletNetworks = createAction('expandWalletNetworks')

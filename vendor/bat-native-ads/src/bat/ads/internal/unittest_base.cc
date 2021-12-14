@@ -107,10 +107,6 @@ AdsImpl* UnitTestBase::GetAds() const {
   return ads_.get();
 }
 
-AdRewards* UnitTestBase::GetAdRewards() const {
-  return ad_rewards_.get();
-}
-
 void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
@@ -202,10 +198,7 @@ void UnitTestBase::Initialize() {
   ad_notifications_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 
-  ad_rewards_ = std::make_unique<AdRewards>();
-
-  confirmations_state_ =
-      std::make_unique<ConfirmationsState>(ad_rewards_.get());
+  confirmations_state_ = std::make_unique<ConfirmationsState>();
   confirmations_state_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 

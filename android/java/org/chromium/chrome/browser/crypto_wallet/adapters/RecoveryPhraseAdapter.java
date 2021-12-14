@@ -23,6 +23,7 @@ import java.util.List;
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
     List<String> recoveryPhraseList = new ArrayList<>();
     List<String> selectedRecoveryPhraseList = new ArrayList<>();
+    List<Integer> selectedPositions = new ArrayList<>();
     private VerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected onRecoveryPhraseSelected;
     private boolean isSelectedRecoveryPhrase;
 
@@ -47,11 +48,13 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
                     recoveryPhraseList.remove(recoveryPhrase);
                 } else {
                     selectedRecoveryPhraseList.add(recoveryPhrase);
+                    selectedPositions.add(position);
                 }
                 onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
             });
             if (!isSelectedRecoveryPhrase) {
-                if (selectedRecoveryPhraseList.contains(recoveryPhrase)) {
+                if (selectedRecoveryPhraseList.contains(recoveryPhrase)
+                        && selectedPositions.contains(position)) {
                     holder.recoveryPhraseText.setEnabled(false);
                     holder.recoveryPhraseText.setAlpha(0.5f);
                     holder.recoveryPhraseText.setText("");
@@ -77,6 +80,13 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     public void removeSelectedPhrase(String phrase) {
         this.selectedRecoveryPhraseList.remove(phrase);
+        // We have to iterate as words sometimes can be duplicated in the recovery phrase
+        for (int i = 0; i < recoveryPhraseList.size(); i++) {
+            if (recoveryPhraseList.get(i).contains(phrase) && selectedPositions.contains(i)) {
+                selectedPositions.remove((Integer) i);
+                break;
+            }
+        }
     }
 
     public void setRecoveryPhraseList(List<String> recoveryPhraseList) {

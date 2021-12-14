@@ -14,7 +14,7 @@ class WebDiscoveryDialogClientView;
   void SetupButtonsLayoutVertically();         \
   virtual void SetupLayout
 
-#include "../../../../../ui/views/window/dialog_client_view.h"
+#include "src/ui/views/window/dialog_client_view.h"
 
 #undef SetupLayout
 

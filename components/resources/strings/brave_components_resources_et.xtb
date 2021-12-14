@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="3656941797339037856">Siduge Rewards Geminiga!</translation>
-<translation id="3066983737886188034">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
+<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
+<translation id="2237374144728570574">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. september 2021</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x aadress või URL</translation>
 <translation id="2860280209982026951">Brave'is on DEX-i agregaatorina kasutusel <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
 <translation id="151946611346774041">0x töötleb Ethereumi aadressi ja IP-aadressi, et sooritada tehing (sealhulgas saada hinnapakkumisi). 0x kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
+<translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
 <translation id="8303434745767477417">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>

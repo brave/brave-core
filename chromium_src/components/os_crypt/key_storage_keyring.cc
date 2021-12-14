@@ -23,7 +23,7 @@ void Dummy(const GnomeKeyringPasswordSchema*,
   &kSchema, &password_c, "application", GetApplicationName(), nullptr); \
   if (false) Dummy(
 
-#include "../../../../components/os_crypt/key_storage_keyring.cc"
+#include "src/components/os_crypt/key_storage_keyring.cc"
 #undef BRAVE_KEY_STORAGE_KEYRING_GET_KEY_IMPL
 
 namespace {

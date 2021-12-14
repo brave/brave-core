@@ -6,17 +6,23 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_UTIL_H_
 
-#include <string>
-
 namespace base {
 class Time;
 }  // namespace base
 
 namespace ads {
 
-std::string GetLocalWeekDay(const base::Time& time);
+int GetLocalTimeAsMinutes(const base::Time& time);
 
-int ConvertHoursAndMinutesToMinutes(const base::Time& time);
+base::Time AdjustTimeToBeginningOfPreviousMonth(const base::Time& time);
+base::Time AdjustTimeToEndOfPreviousMonth(const base::Time& time);
+base::Time AdjustTimeToBeginningOfMonth(const base::Time& time);
+base::Time AdjustTimeToEndOfMonth(const base::Time& time);
+
+base::Time GetTimeAtBeginningOfLastMonth();
+base::Time GetTimeAtEndOfLastMonth();
+base::Time GetTimeAtBeginningOfThisMonth();
+base::Time GetTimeAtEndOfThisMonth();
 
 }  // namespace ads
 

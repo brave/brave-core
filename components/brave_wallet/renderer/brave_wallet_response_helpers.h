@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
@@ -19,7 +19,7 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     const std::string& controller_response,
     bool* reject);
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
-    ProviderErrors code,
+    mojom::ProviderError code,
     const std::string& message);
 std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
                                                 base::Value* result,

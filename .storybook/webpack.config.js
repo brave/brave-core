@@ -1,6 +1,18 @@
 const path = require('path')
 const AliasPlugin = require('enhanced-resolve/lib/AliasPlugin')
 
+const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
+const extraArchitectures = ['arm64', 'x86']
+
+function getBuildOuptutPathList(buildOutputRelativePath) {
+  return buildConfigs.flatMap(config => [
+    path.resolve(__dirname, `../../out/${config}/${buildOutputRelativePath}`),
+    ...extraArchitectures.map(arch =>
+      path.resolve(__dirname, `../../out/${config}_${arch}/${buildOutputRelativePath}`)
+    )
+  ])
+}
+
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
   // Make whatever fine-grained changes you need
@@ -47,10 +59,7 @@ module.exports = async ({ config, mode }) => {
             // build, but has previously made a Component build, then an outdated
             // version of a module will be used. Instead, accept a cli argument
             // or environment variable containing which build target to use.
-            path.resolve(__dirname, '../../out/Component/gen/ui/webui/resources'),
-            path.resolve(__dirname, '../../out/Static/gen/ui/webui/resources'),
-            path.resolve(__dirname, '../../out/Debug/gen/ui/webui/resources'),
-            path.resolve(__dirname, '../../out/Release/gen/ui/webui/resources'),
+            ...getBuildOuptutPathList('gen/ui/webui/resources')
           ]
         },
         {
@@ -62,10 +71,7 @@ module.exports = async ({ config, mode }) => {
             // build, but has previously made a Component build, then an outdated
             // version of a module will be used. Instead, accept a cli argument
             // or environment variable containing which build target to use.
-            path.resolve(__dirname, '../../out/Component/gen'),
-            path.resolve(__dirname, '../../out/Static/gen'),
-            path.resolve(__dirname, '../../out/Debug/gen'),
-            path.resolve(__dirname, '../../out/Release/gen'),
+            ...getBuildOuptutPathList('gen')
           ]
         },
       ], 'resolve'

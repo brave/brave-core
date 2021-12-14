@@ -6,5 +6,5 @@
 #include "brave/common/extensions/brave_extensions_client.h"
 
 #define ChromeExtensionsClient BraveExtensionsClient
-#include "../../../../chrome/common/initialize_extensions_client.cc"
+#include "src/chrome/common/initialize_extensions_client.cc"
 #undef ChromeExtensionsClient

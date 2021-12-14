@@ -77,9 +77,7 @@ class TestEthTxControllerObserver
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx) override {}
 
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
-    if (tx->tx_status == mojom::TransactionStatus::Submitted) {
-      run_loop_approved_->Quit();
-    } else if (tx->tx_status == mojom::TransactionStatus::Rejected) {
+    if (tx->tx_status == mojom::TransactionStatus::Rejected) {
       run_loop_rejected_->Quit();
     }
   }
@@ -87,11 +85,6 @@ class TestEthTxControllerObserver
   void WaitForNewUnapprovedTx() {
     run_loop_new_unapproved_ = std::make_unique<base::RunLoop>();
     run_loop_new_unapproved_->Run();
-  }
-
-  void WaitForApprovedStatus() {
-    run_loop_approved_ = std::make_unique<base::RunLoop>();
-    run_loop_approved_->Run();
   }
 
   void WaitForRjectedStatus() {
@@ -111,7 +104,6 @@ class TestEthTxControllerObserver
   mojo::Receiver<brave_wallet::mojom::EthTxControllerObserver>
       observer_receiver_{this};
   std::unique_ptr<base::RunLoop> run_loop_new_unapproved_;
-  std::unique_ptr<base::RunLoop> run_loop_approved_;
   std::unique_ptr<base::RunLoop> run_loop_rejected_;
   bool expect_eip1559_tx_ = false;
 };
@@ -295,7 +287,6 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     eth_tx_controller_->ApproveTransaction(
         tx_meta_id, base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
-          observer()->WaitForApprovedStatus();
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -673,6 +664,57 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain.Clone());
 
   TestUserApproved("request", true /* skip_restore */);
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {
+  RestoreWallet();
+  AddAccount("account 2");
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+  CallEthereumEnable();
+
+  // 2nd call should fail
+  CallEthereumEnable();
+  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractBool(),
+            false);
+
+  // But now user should still be able to resolve the first call
+  UserGrantPermission(true);
+  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractBool(),
+            true);
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+                       EnableCallRequestsUnlockIfLocked) {
+  RestoreWallet();
+  AddAccount("account 2");
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+  CallEthereumEnable();
+
+  // 2nd call should fail
+  CallEthereumEnable();
+  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractBool(),
+            false);
+
+  // But now user should still be able to resolve the first call
+  UserGrantPermission(true);
+  ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractBool(),
+            true);
 }
 
 }  // namespace brave_wallet

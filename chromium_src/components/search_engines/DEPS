@@ -1,7 +1,5 @@
 include_rules = [
-  "+../../../../components/search_engines",
   "+components/country_codes",
-  "+components/search_engines",
 ]
 
 # Existing exceptions

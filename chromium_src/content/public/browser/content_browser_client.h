@@ -17,7 +17,7 @@
   virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
                                             const GURL& url);
 
-#include "../../../../../content/public/browser/content_browser_client.h"
+#include "src/content/public/browser/content_browser_client.h"
 
 #undef BRAVE_CONTENT_BROWSER_CLIENT_H
 

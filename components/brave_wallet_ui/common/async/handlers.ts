@@ -16,8 +16,6 @@ import {
   SetUserAssetVisiblePayloadType,
   SwapParamsPayloadType,
   UnlockWalletPayloadType,
-  // DefaultBaseCurrencyChanged,
-  // DefaultBaseCryptocurrencyChanged,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType,
   TransactionStatusChanged
@@ -159,8 +157,13 @@ handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 
-// handler.on(WalletActions.defaultBaseCurrencyChanged.getType(), async (store, payload: DefaultBaseCurrencyChanged) => {})
-// handler.on(WalletActions.defaultBaseCryptocurrencyChanged.getType(), async (store, payload: DefaultBaseCryptocurrencyChanged) => {})
+handler.on(WalletActions.defaultBaseCurrencyChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.defaultBaseCryptocurrencyChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
 
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = getAPIProxy().keyringController
@@ -208,6 +211,14 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
   interactionNotifier.beginWatchingForInteraction(50000, state.isWalletLocked, async () => {
     keyringController.notifyUserInteraction()
   })
+  const braveWalletService = getAPIProxy().braveWalletService
+  const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
+  const defualtCrypo = await braveWalletService.getDefaultBaseCryptocurrency()
+  const defaultCurrencies = {
+    fiat: defaultFiat.currency,
+    crypto: defualtCrypo.cryptocurrency
+  }
+  store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
     const currentNetwork = await store.dispatch(refreshNetworkInfo())
@@ -215,6 +226,7 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   }
+
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
     await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
@@ -591,6 +603,12 @@ handler.on(WalletActions.removeSitePermission.getType(), async (store: Store, pa
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.addSitePermission.getType(), async (store: Store, payload: RemoveSitePermissionPayloadType) => {
+  const braveWalletService = getAPIProxy().braveWalletService
+  await braveWalletService.addEthereumPermission(payload.origin, payload.account)
+  await refreshWalletInfo(store)
+})
+
 handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
   const status = payload.txInfo.txStatus
   if (status === TransactionStatus.Confirmed || status === TransactionStatus.Error) {
@@ -641,6 +659,14 @@ handler.on(WalletActions.cancelTransaction.getType(), async (store: Store, paylo
     // Refresh the transaction history of the origin account.
     await store.dispatch(refreshTransactionHistory(payload.fromAddress))
   }
+})
+
+handler.on(WalletActions.expandWalletNetworks.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 export default handler.middleware

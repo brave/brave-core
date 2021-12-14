@@ -1,3 +1,4 @@
+import { CurrencySymbols } from './currency-symbols'
 const addCommas = (value: string) => {
   const parts = value.split('.')
   return (
@@ -31,15 +32,18 @@ export const formatWithCommasAndDecimals = (value: string) => {
   return addCommas(valueToNumber.toFixed(added))
 }
 
-export const formatFiatAmountWithCommasAndDecimals = (value: string): string => {
+export const formatFiatAmountWithCommasAndDecimals = (value: string, defaultCurrency: string): string => {
   if (!value) {
     return ''
   }
+
+  const currencySymbol = CurrencySymbols[defaultCurrency]
+
   // Check to make sure a formated value is returned before showing the fiat symbol
   if (!formatWithCommasAndDecimals(value)) {
     return ''
   }
-  return '$' + formatWithCommasAndDecimals(value)
+  return currencySymbol + formatWithCommasAndDecimals(value)
 }
 
 export const formatTokenAmountWithCommasAndDecimals = (value: string, symbol: string): string => {

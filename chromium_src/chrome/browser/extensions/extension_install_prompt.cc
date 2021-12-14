@@ -11,7 +11,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #define GetDialogTitle GetDialogTitle_ChromiumImpl
-#include "../../../../../chrome/browser/extensions/extension_install_prompt.cc"
+#include "src/chrome/browser/extensions/extension_install_prompt.cc"
 #undef GetDialogTitle
 
 std::u16string ExtensionInstallPrompt::Prompt::GetDialogTitle() const {

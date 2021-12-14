@@ -9,7 +9,7 @@
 #define IsOffTheRecord \
   IsTor() const;       \
   virtual bool IsOffTheRecord
-#include "../../../../../content/public/browser/browser_context.h"
+#include "src/content/public/browser/browser_context.h"
 #undef IsOffTheRecord
 
 #include <string>

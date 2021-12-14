@@ -31,6 +31,8 @@ class ERCTokenRegistry : public mojom::ERCTokenRegistry {
 
   void UpdateTokenList(std::vector<mojom::ERCTokenPtr> erc_tokens);
 
+  mojom::ERCTokenPtr GetTokenByContract(const std::string& contract);
+
   // ERCTokenRegistry interface methods
   void GetTokenByContract(const std::string& contract,
                           GetTokenByContractCallback callback) override;

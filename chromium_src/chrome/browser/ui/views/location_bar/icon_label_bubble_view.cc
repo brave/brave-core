@@ -15,5 +15,5 @@
   const SkRect new_rect = RectToSkRect(highlight_bounds);                  \
   return SkPath().addRoundRect(new_rect, layout_radius, layout_radius);
 
-#include "../../../../../../../chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc"
+#include "src/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc"
 #undef BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH

@@ -7,7 +7,7 @@
 
 #define LocalStorageImpl LocalStorageImpl_ChromiumImpl
 
-#include "../../../../../../components/services/storage/dom_storage/local_storage_impl.cc"
+#include "src/components/services/storage/dom_storage/local_storage_impl.cc"
 
 #undef LocalStorageImpl
 

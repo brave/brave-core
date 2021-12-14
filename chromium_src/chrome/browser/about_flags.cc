@@ -6,4 +6,4 @@
 
 #include "brave/browser/about_flags.cc"
 
-#include "../../../../chrome/browser/about_flags.cc"
+#include "src/chrome/browser/about_flags.cc"

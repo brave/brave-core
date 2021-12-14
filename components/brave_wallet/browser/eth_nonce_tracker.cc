@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet {
 

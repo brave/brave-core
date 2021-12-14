@@ -15,22 +15,6 @@ extern const char kDisconnectEvent[];
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
 
-// https://eips.ethereum.org/EIPS/eip-1193#provider-errors
-// https://eips.ethereum.org/EIPS/eip-1474#error-codes
-enum class ProviderErrors {
-  kUserRejectedRequest = 4001,  // User rejected the request
-  kUnauthorized = 4100,         // The requested account and/or method has not
-                                // been authorized by the user
-  kUnsupportedMethod = 4200,    // The requested method is not supported by this
-                                // Ethereum provider
-  kDisconnected = 4900,         // The provider is disconnected from all chains
-  kChainDisconnected = 4901,    // The provider is disconnected from the
-                                // specified chain
-  kUnknownChain = 4902,         // The provider doesn't know this chain
-  kInvalidParams = -32602,      // Invalid method parameters
-  kInternalError = -32603,      // Internal JSON-RPC error
-};
-
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kEthSendTransaction[] = "eth_sendTransaction";
@@ -38,6 +22,8 @@ constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
 constexpr char kEthBlockNumber[] = "eth_blockNumber";
 constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
+constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
+constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
 // We currently don't handle it until MetaMask point it to v3 or v4 other than
 // v1 or v2
 constexpr char kEthSignTypedData[] = "eth_signTypedData";
@@ -48,6 +34,8 @@ constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
 constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
 constexpr char kSwitchEthereumChainMethod[] = "wallet_switchEthereumChain";
+constexpr char kRequestPermissionsMethod[] = "wallet_requestPermissions";
+constexpr char kGetPermissionsMethod[] = "wallet_getPermissions";
 
 }  // namespace brave_wallet
 

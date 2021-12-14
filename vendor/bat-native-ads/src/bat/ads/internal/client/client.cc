@@ -34,15 +34,16 @@ const char kClientFilename[] = "client.json";
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
-FilteredAdList::iterator FindFilteredAd(const std::string& creative_instance_id,
-                                        FilteredAdList* filtered_ads) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(filtered_ads);
+FilteredAdvertiserList::iterator FindFilteredAdvertiser(
+    const std::string& advertiser_id,
+    FilteredAdvertiserList* filtered_advertisers) {
+  DCHECK(!advertiser_id.empty());
+  DCHECK(filtered_advertisers);
 
   return std::find_if(
-      filtered_ads->begin(), filtered_ads->end(),
-      [&creative_instance_id](const FilteredAdInfo& filtered_ad) {
-        return filtered_ad.creative_instance_id == creative_instance_id;
+      filtered_advertisers->begin(), filtered_advertisers->end(),
+      [&advertiser_id](const FilteredAdvertiserInfo& filtered_advertiser) {
+        return filtered_advertiser.id == advertiser_id;
       });
 }
 
@@ -98,10 +99,10 @@ bool Client::HasInstance() {
   return g_client;
 }
 
-FilteredAdList Client::GetFilteredAds() const {
+FilteredAdvertiserList Client::GetFilteredAdvertisers() const {
   DCHECK(is_initialized_);
 
-  return client_->ad_preferences.filtered_ads;
+  return client_->ad_preferences.filtered_advertisers;
 }
 
 FilteredCategoryList Client::GetFilteredCategories() const {
@@ -181,10 +182,10 @@ AdContentLikeActionType Client::ToggleAdThumbUp(
     const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  const auto iter = FindFilteredAd(ad_content.creative_instance_id,
-                                   &client_->ad_preferences.filtered_ads);
-  if (iter != client_->ad_preferences.filtered_ads.end()) {
-    client_->ad_preferences.filtered_ads.erase(iter);
+  const auto iter = FindFilteredAdvertiser(
+      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
+  if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+    client_->ad_preferences.filtered_advertisers.erase(iter);
   }
 
   const AdContentLikeActionType like_action_type =
@@ -209,20 +210,20 @@ AdContentLikeActionType Client::ToggleAdThumbDown(
   const AdContentLikeActionType like_action_type =
       ad_content.ToggleThumbDownActionType();
 
-  const auto iter = FindFilteredAd(ad_content.creative_instance_id,
-                                   &client_->ad_preferences.filtered_ads);
+  const auto iter = FindFilteredAdvertiser(
+      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
 
   if (like_action_type == AdContentLikeActionType::kNeutral) {
-    if (iter != client_->ad_preferences.filtered_ads.end()) {
-      client_->ad_preferences.filtered_ads.erase(iter);
+    if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+      client_->ad_preferences.filtered_advertisers.erase(iter);
     }
   } else {
-    if (iter == client_->ad_preferences.filtered_ads.end()) {
-      FilteredAdInfo filtered_ad;
-      filtered_ad.creative_instance_id = ad_content.creative_instance_id;
-      filtered_ad.creative_set_id = ad_content.creative_set_id;
+    if (iter == client_->ad_preferences.filtered_advertisers.end()) {
+      FilteredAdvertiserInfo filtered_advertiser;
+      filtered_advertiser.id = ad_content.advertiser_id;
 
-      client_->ad_preferences.filtered_ads.push_back(filtered_ad);
+      client_->ad_preferences.filtered_advertisers.push_back(
+          filtered_advertiser);
     }
   }
 

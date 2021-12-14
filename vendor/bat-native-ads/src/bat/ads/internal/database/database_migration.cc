@@ -20,11 +20,13 @@
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
+#include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
+#include "bat/ads/internal/database/tables/transactions_database_table.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -74,6 +76,9 @@ void Migration::ToVersion(mojom::DBTransaction* transaction,
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
 
+  table::Transactions transactions_database_table;
+  transactions_database_table.Migrate(transaction, to_version);
+
   table::Campaigns campaigns_database_table;
   campaigns_database_table.Migrate(transaction, to_version);
 
@@ -88,6 +93,11 @@ void Migration::ToVersion(mojom::DBTransaction* transaction,
 
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
   creative_new_tab_page_ads_database_table.Migrate(transaction, to_version);
+
+  table::CreativeNewTabPageAdWallpapers
+      creative_new_tab_page_ad_wallpapers_database_table;
+  creative_new_tab_page_ad_wallpapers_database_table.Migrate(transaction,
+                                                             to_version);
 
   table::CreativePromotedContentAds
       creative_promoted_content_ads_database_table;

@@ -19,6 +19,6 @@
   }                                                                      \
   frame->GetRemoteNavigationAssociatedInterfaces
 
-#include "../../../../../../../third_party/blink/renderer/modules/broadcastchannel/broadcast_channel.cc"
+#include "src/third_party/blink/renderer/modules/broadcastchannel/broadcast_channel.cc"
 
 #undef GetRemoteNavigationAssociatedInterfaces

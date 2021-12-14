@@ -11,7 +11,7 @@
 #include "components/version_info/version_info.h"
 
 #define IsFlagExpired IsFlagExpired_ChromiumImpl
-#include "../../../../chrome/browser/unexpire_flags.cc"
+#include "src/chrome/browser/unexpire_flags.cc"
 #undef IsFlagExpired
 
 namespace flags {

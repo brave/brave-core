@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
+#include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
@@ -39,6 +40,10 @@ class AdServing;
 namespace inline_content_ads {
 class AdServing;
 }  // namespace inline_content_ads
+
+namespace new_tab_page_ads {
+class AdServing;
+}  // namespace new_tab_page_ads
 
 namespace ad_targeting {
 
@@ -82,6 +87,7 @@ class BrowserManager;
 class Catalog;
 class Client;
 class Conversions;
+class ConfirmationsState;
 class InlineContentAd;
 class NewTabPageAd;
 class PromotedContentAd;
@@ -91,6 +97,7 @@ struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
 struct ConversionQueueItemInfo;
+struct CreativeAdInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
@@ -106,6 +113,7 @@ class AdsImpl final : public Ads,
                       public InlineContentAdServingObserver,
                       public ConversionsObserver,
                       public NewTabPageAdObserver,
+                      public NewTabPageAdServingObserver,
                       public PromotedContentAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
@@ -164,6 +172,8 @@ class AdsImpl final : public Ads,
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) override;
 
+  void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
+
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
@@ -185,8 +195,6 @@ class AdsImpl final : public Ads,
   void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) override;
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
-
-  void ReconcileAdRewards() override;
 
   AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
                                const AdsHistorySortType sort_type,
@@ -240,8 +248,10 @@ class AdsImpl final : public Ads,
   std::unique_ptr<inline_content_ads::AdServing> inline_content_ad_serving_;
   std::unique_ptr<InlineContentAd> inline_content_ad_;
   std::unique_ptr<Client> client_;
+  std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
+  std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<BrowserManager> browser_manager_;
@@ -253,6 +263,7 @@ class AdsImpl final : public Ads,
   void InitializeBrowserManager();
   void InitializeDatabase(InitializeCallback callback);
   void MigrateConversions(InitializeCallback callback);
+  void MigrateRewards(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);
   void LoadConfirmationsState(InitializeCallback callback);
   void LoadAdNotificationsState(InitializeCallback callback);
@@ -272,6 +283,11 @@ class AdsImpl final : public Ads,
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
   void OnWalletDidChange(const WalletInfo& wallet) override;
   void OnInvalidWallet() override;
+  void OnDepositedFunds(const TransactionInfo& transaction) override;
+  void OnFailedToDepositFunds(
+      const CreativeAdInfo& creative_ad,
+      const AdType& ad_type,
+      const ConfirmationType& confirmation_type) override;
   void OnStatementOfAccountsDidChange() override;
 
   // AdServerObserver:
@@ -288,6 +304,9 @@ class AdsImpl final : public Ads,
   void OnAdNotificationEventFailed(
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) override;
+
+  // NewTabPageAdServingObserver:
+  void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // NewTabPageAdObserver:
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;

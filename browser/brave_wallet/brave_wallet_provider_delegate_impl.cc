@@ -15,15 +15,41 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
 namespace {
 
+// Common logic for filtering the list of accounts based on the selected account
+std::vector<std::string> FilterAccounts(
+    const std::vector<std::string>& accounts,
+    const absl::optional<std::string>& selected_account) {
+  // If one of the accounts matches the selected account, then only
+  // return that account.  This is for webcompat reasons.
+  // Some Dapps select the first account in the list, and some the
+  // last. So having only 1 item returned here makes it work for
+  // all Dapps.
+  std::vector<std::string> filtered_accounts;
+  for (const auto& account : accounts) {
+    if (selected_account &&
+        base::CompareCaseInsensitiveASCII(account, *selected_account) == 0) {
+      filtered_accounts.clear();
+      filtered_accounts.push_back(account);
+      break;
+    } else {
+      filtered_accounts.push_back(account);
+    }
+  }
+  return filtered_accounts;
+}
+
 void OnRequestEthereumPermissions(
     const std::vector<std::string>& accounts,
+    const absl::optional<std::string>& selected_account,
     BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback,
     const std::vector<ContentSetting>& responses) {
   DCHECK(responses.empty() || responses.size() == accounts.size());
@@ -36,14 +62,31 @@ void OnRequestEthereumPermissions(
   }
 
   // The responses array will be empty if operation failed.
-  std::move(callback).Run(!responses.empty(), granted_accounts);
+  bool success = !responses.empty();
+  std::move(callback).Run(
+      FilterAccounts(granted_accounts, selected_account),
+      success ? mojom::ProviderError::kSuccess
+              : mojom::ProviderError::kInternalError,
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 void OnGetAllowedAccounts(
+    bool include_accounts_when_locked,
+    const absl::optional<std::string>& selected_account,
+    bool keyring_locked,
     BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
     bool success,
     const std::vector<std::string>& allowed_accounts) {
-  std::move(callback).Run(success, allowed_accounts);
+  std::vector<std::string> filtered_accounts;
+  if (!keyring_locked || include_accounts_when_locked) {
+    filtered_accounts = FilterAccounts(allowed_accounts, selected_account);
+  }
+
+  std::move(callback).Run(
+      filtered_accounts,
+      success ? mojom::ProviderError::kSuccess
+              : mojom::ProviderError::kInternalError,
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace
@@ -74,40 +117,55 @@ void BraveWalletProviderDelegateImpl::ShowPanel() {
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
-  GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  // Check if there's already a permission request in progress
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (rfh &&
+      permissions::BraveEthereumPermissionContext::HasRequestsInProgress(rfh)) {
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    return;
+  }
+
+  GetAllowedAccounts(
+      false,
+      base::BindOnce(
+          &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback,
-    bool success,
-    const std::vector<std::string>& allowed_accounts) {
-  if (!success) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    const std::vector<std::string>& allowed_accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run(std::vector<std::string>(), error, error_message);
     return;
   }
 
-  if (success && !allowed_accounts.empty()) {
-    std::move(callback).Run(true, allowed_accounts);
+  if (error == mojom::ProviderError::kSuccess && !allowed_accounts.empty()) {
+    std::move(callback).Run(allowed_accounts, mojom::ProviderError::kSuccess,
+                            "");
     return;
   }
 
   // Request accounts if no accounts are connected.
-  keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
-      &BraveWalletProviderDelegateImpl::
-          ContinueRequestEthereumPermissionsKeyringInfo,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback), allowed_accounts));
+  keyring_controller_->GetDefaultKeyringInfo(
+      base::BindOnce(&BraveWalletProviderDelegateImpl::
+                         ContinueRequestEthereumPermissionsKeyringInfo,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::
     ContinueRequestEthereumPermissionsKeyringInfo(
         RequestEthereumPermissionsCallback callback,
-        const std::vector<std::string>& allowed_accounts,
         brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   if (!keyring_info->is_default_keyring_created) {
     ShowWalletOnboarding(web_contents_);
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -115,46 +173,43 @@ void BraveWalletProviderDelegateImpl::
   for (const auto& account_info : keyring_info->account_infos) {
     addresses.push_back(account_info->address);
   }
+
+  if (keyring_info->is_locked) {
+    std::move(callback).Run(std::vector<std::string>(),
+                            mojom::ProviderError::kSuccess, "");
+    return;
+  }
+
   permissions::BraveEthereumPermissionContext::RequestPermissions(
       content::RenderFrameHost::FromID(host_id_), addresses,
       base::BindOnce(&OnRequestEthereumPermissions, addresses,
+                     keyring_controller_->GetSelectedAccount(),
                      std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+    bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
-  keyring_controller_->GetSelectedAccount(base::BindOnce(
-      &BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts(
-    BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
-    const absl::optional<std::string>& selected_account) {
+  absl::optional<std::string> selected_account =
+      keyring_controller_->GetSelectedAccount();
   keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
       [](const content::GlobalRenderFrameHostId& host_id,
-         GetAllowedAccountsCallback callback,
+         GetAllowedAccountsCallback callback, bool include_accounts_when_locked,
          const absl::optional<std::string>& selected_account,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         std::vector<std::string> addresses;
-        if (!keyring_info->is_locked) {
-          for (const auto& account_info : keyring_info->account_infos) {
-            // If one of the selected accounts is an allowed account, then make
-            // the selected account the first item that is returned.
-            if (selected_account &&
-                base::CompareCaseInsensitiveASCII(account_info->address,
-                                                  *selected_account) == 0) {
-              addresses.insert(addresses.begin(), account_info->address);
-            } else {
-              addresses.push_back(account_info->address);
-            }
-          }
+        for (const auto& account_info : keyring_info->account_infos) {
+          addresses.push_back(account_info->address);
         }
+
         permissions::BraveEthereumPermissionContext::GetAllowedAccounts(
             content::RenderFrameHost::FromID(host_id), addresses,
-            base::BindOnce(&OnGetAllowedAccounts, std::move(callback)));
+            base::BindOnce(&OnGetAllowedAccounts, include_accounts_when_locked,
+                           selected_account, keyring_info->is_locked,
+                           std::move(callback)));
       },
-      host_id_, std::move(callback), selected_account));
+      host_id_, std::move(callback), include_accounts_when_locked,
+      selected_account));
 }
 
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {

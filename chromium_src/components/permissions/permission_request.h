@@ -10,7 +10,7 @@
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
-#include "../../../../components/permissions/permission_request.h"
+#include "src/components/permissions/permission_request.h"
 #undef IsDuplicateOf
 #undef PermissionRequest
 

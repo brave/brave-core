@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -443,6 +444,11 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
   ResetAutoLockTimer();
 
   return default_keyring_.get();
+}
+
+void KeyringController::RequestUnlock() {
+  DCHECK(IsLocked());
+  request_unlock_pending_ = true;
 }
 
 HDKeyring* KeyringController::ResumeDefaultKeyring(
@@ -975,6 +981,18 @@ bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
 
+bool KeyringController::HasPendingUnlockRequest() const {
+  return request_unlock_pending_;
+}
+
+absl::optional<std::string> KeyringController::GetSelectedAccount() const {
+  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
+  if (address.empty()) {
+    return absl::nullopt;
+  }
+  return address;
+}
+
 void KeyringController::Lock() {
   if (IsLocked() || !default_keyring_)
     return;
@@ -1005,6 +1023,7 @@ void KeyringController::Unlock(const std::string& password,
   }
 
   UpdateLastUnlockPref(prefs_);
+  request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();
   }
@@ -1158,12 +1177,7 @@ void KeyringController::NotifyUserInteraction() {
 
 void KeyringController::GetSelectedAccount(
     GetSelectedAccountCallback callback) {
-  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
-  if (address.empty()) {
-    std::move(callback).Run(absl::nullopt);
-    return;
-  }
-  std::move(callback).Run(address);
+  std::move(callback).Run(GetSelectedAccount());
 }
 
 void KeyringController::SetSelectedAccount(
@@ -1350,6 +1364,17 @@ void KeyringController::IsStrongPassword(const std::string& password,
   }
 
   std::move(callback).Run(true);
+}
+
+void KeyringController::GetChecksumEthAddress(
+    const std::string& address,
+    GetChecksumEthAddressCallback callback) {
+  std::move(callback).Run(EthAddress::FromHex(address).ToChecksumAddress());
+}
+
+void KeyringController::HasPendingUnlockRequest(
+    HasPendingUnlockRequestCallback callback) {
+  std::move(callback).Run(HasPendingUnlockRequest());
 }
 
 }  // namespace brave_wallet

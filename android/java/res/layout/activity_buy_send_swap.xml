@@ -126,7 +126,7 @@
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:inputType="number"
+                      android:inputType="numberDecimal"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
@@ -201,6 +201,14 @@
                         android:text="@string/all" />
 
                 </RadioGroup>
+
+                <TextView
+                    android:id="@+id/from_send_value_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_error_text_color"
+                    android:visibility="gone"
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -311,7 +319,7 @@
                     android:id="@+id/to_value_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
@@ -343,6 +351,14 @@
                         tools:ignore="contentDescription" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/to_send_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_error_text_color"
+                    android:visibility="gone"
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 

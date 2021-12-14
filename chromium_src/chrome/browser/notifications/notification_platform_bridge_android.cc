@@ -21,5 +21,5 @@ class UnusedClass {
 
 #define Java_NotificationPlatformBridge_create \
   Java_BraveNotificationPlatformBridge_create
-#include "../../../../../chrome/browser/notifications/notification_platform_bridge_android.cc"
+#include "src/chrome/browser/notifications/notification_platform_bridge_android.cc"
 #undef Java_NotificationPlatformBridge_create

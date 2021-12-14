@@ -39,7 +39,7 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
 
 TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
-  const AdEventInfo ad_event = BuildAdEvent(ConfirmationType::kViewed);
+  const AdEventInfo& ad_event = BuildAdEvent(ConfirmationType::kViewed);
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {

@@ -5,7 +5,7 @@
 
 #include "content/public/browser/content_browser_client.h"
 
-#include "../../../../../content/public/browser/content_browser_client.cc"
+#include "src/content/public/browser/content_browser_client.cc"
 
 namespace content {
 

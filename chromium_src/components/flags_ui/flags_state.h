@@ -17,7 +17,7 @@
   }                                                                     \
   void SetFeatureEntryEnabled
 
-#include "../../../../components/flags_ui/flags_state.h"
+#include "src/components/flags_ui/flags_state.h"
 #undef SetFeatureEntryEnabled
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_FLAGS_UI_FLAGS_STATE_H_

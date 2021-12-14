@@ -28,5 +28,5 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
                          ? 0                       \
                          : GetBubbleFrameView()->GetCornerRadius();
 
-#include "../../../../../../../chrome/browser/ui/views/extensions/extension_popup.cc"
+#include "src/chrome/browser/ui/views/extensions/extension_popup.cc"
 #undef BRAVE_ADDED_TO_WIDGET

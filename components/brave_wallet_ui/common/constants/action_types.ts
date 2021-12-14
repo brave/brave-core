@@ -102,3 +102,8 @@ export type RemoveSitePermissionPayloadType = {
   origin: string
   account: string
 }
+
+export type AddSitePermissionPayloadType = {
+  origin: string
+  account: string
+}

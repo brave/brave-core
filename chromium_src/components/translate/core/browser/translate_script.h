@@ -18,7 +18,7 @@ using BraveTranslateScript = TranslateScript;
   callback_list_;                                  \
   static GURL AddHostLocaleToUrl(const GURL& url); \
   friend BraveTranslateScript
-#include "../../../../../../components/translate/core/browser/translate_script.h"
+#include "src/components/translate/core/browser/translate_script.h"
 #undef callback_list_
 #undef Request
 #undef OnScriptFetchComplete

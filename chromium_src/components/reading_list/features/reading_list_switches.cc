@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../components/reading_list/features/reading_list_switches.cc"
+#include "src/components/reading_list/features/reading_list_switches.cc"
 
 #include "base/feature_override.h"
 

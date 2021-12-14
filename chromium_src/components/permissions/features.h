@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_FEATURES_H_
 
-#include "../../../../components/permissions/features.h"
+#include "src/components/permissions/features.h"
 
 namespace permissions {
 namespace features {

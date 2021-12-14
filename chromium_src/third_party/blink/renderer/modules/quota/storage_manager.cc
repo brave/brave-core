@@ -19,5 +19,5 @@ class BraveStorageEstimate : public StorageEstimate {
 }  // namespace blink
 
 #define StorageEstimate BraveStorageEstimate
-#include "../../../../../../../third_party/blink/renderer/modules/quota/storage_manager.cc"
+#include "src/third_party/blink/renderer/modules/quota/storage_manager.cc"
 #undef StorageEstimate

@@ -28,7 +28,7 @@
                                          const std::string& name);        \
   void BraveInit
 
-#include "../../../../../../components/content_settings/core/browser/content_settings_registry.h"
+#include "src/components/content_settings/core/browser/content_settings_registry.h"
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_CONTENT_SETTINGS_REGISTRY_H_

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -42,6 +43,7 @@ class AssetRatioController : public KeyedService,
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::AssetRatioController> receiver);
 
+  // mojom::AssetRatioController
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
                 brave_wallet::mojom::AssetPriceTimeframe timeframe,
@@ -51,6 +53,11 @@ class AssetRatioController : public KeyedService,
                        const std::string& vs_asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
+  void GetEstimatedTime(const std::string& gas_price,
+                        GetEstimatedTimeCallback callback) override;
+  void GetGasOracle(GetGasOracleCallback callback) override;
+  void GetTokenInfo(const std::string& contract_address,
+                    GetTokenInfoCallback callback) override;
 
   static GURL GetPriceURL(const std::vector<std::string>& from_assets,
                           const std::vector<std::string>& to_assets,
@@ -59,15 +66,13 @@ class AssetRatioController : public KeyedService,
       const std::string& asset,
       const std::string& vs_asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
-
-  void GetEstimatedTime(const std::string& gas_price,
-                        GetEstimatedTimeCallback callback) override;
-  void GetGasOracle(GetGasOracleCallback callback) override;
-
   static GURL GetEstimatedTimeURL(const std::string& gas_price);
   static GURL GetGasOracleURL();
+  static GURL GetTokenInfoURL(const std::string& contract_address);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
+  void SetAPIRequestHelperForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   void OnGetPrice(std::vector<std::string> from_assets,
@@ -93,10 +98,15 @@ class AssetRatioController : public KeyedService,
                       const std::string& body,
                       const base::flat_map<std::string, std::string>& headers);
 
+  void OnGetTokenInfo(GetTokenInfoCallback callback,
+                      const int status,
+                      const std::string& body,
+                      const base::flat_map<std::string, std::string>& headers);
+
   mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
 
   static GURL base_url_for_test_;
-  api_request_helper::APIRequestHelper api_request_helper_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<AssetRatioController> weak_ptr_factory_;
 };
 

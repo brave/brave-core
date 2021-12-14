@@ -11,6 +11,7 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textFilter"
         android:layout_marginStart="21dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="27dp"/>
@@ -52,10 +53,8 @@
         android:text="@string/save_account_watchlist"
         android:textAllCaps="false"
         android:textSize="16sp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:textColor="@android:color/white"
         style="?android:attr/borderlessButtonStyle"/>
 

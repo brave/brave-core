@@ -8,6 +8,6 @@
 #define kMinimumContentsWidthForCloseButtons \
   kMinimumContentsWidthForCloseButtons = 55; \
   static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab.h"
+#include "src/chrome/browser/ui/views/tabs/tab.h"
 #undef kMinimumContentsWidthForCloseButtons
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_

@@ -14,4 +14,4 @@ void BraveRegisterBrowserStatePrefs(
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS BraveRegisterBrowserStatePrefs(registry);
-#include "../../../../../../ios/chrome/browser/prefs/browser_prefs.mm"
+#include "src/ios/chrome/browser/prefs/browser_prefs.mm"

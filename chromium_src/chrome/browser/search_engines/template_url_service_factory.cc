@@ -8,7 +8,7 @@
 #include "chrome/browser/web_data_service_factory.h"
 
 #define GetBrowserContextToUse GetBrowserContextToUse_unused
-#include "../../../../../chrome/browser/search_engines/template_url_service_factory.cc"
+#include "src/chrome/browser/search_engines/template_url_service_factory.cc"
 #undef GetBrowserContextToUse
 
 content::BrowserContext* TemplateURLServiceFactory::GetBrowserContextToUse(

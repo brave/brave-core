@@ -5,7 +5,7 @@
 
 #include "brave/components/sync_device_info/brave_device_info.h"
 
-#include "../../../../components/sync_device_info/fake_device_info_tracker.cc"
+#include "src/components/sync_device_info/fake_device_info_tracker.cc"
 
 namespace syncer {
 

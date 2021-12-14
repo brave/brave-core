@@ -27,6 +27,7 @@ export interface Props {
   onClickSelectNetwork: (network: EthereumChain) => () => void
   onSelectedAsset: (account: AccountAssetOptionType) => () => void
   goBack: () => void
+  onAddNetwork: () => void
 }
 
 function SelectHeader (props: Props) {
@@ -39,7 +40,8 @@ function SelectHeader (props: Props) {
     onClickSelectAccount,
     goBack,
     onSelectedAsset,
-    onClickSelectNetwork
+    onClickSelectNetwork,
+    onAddNetwork
   } = props
 
   return (
@@ -64,6 +66,8 @@ function SelectHeader (props: Props) {
           networks={networkList}
           onSelectNetwork={onClickSelectNetwork}
           onBack={goBack}
+          hasAddButton={true}
+          onAddNetwork={onAddNetwork}
         />
       }
     </StyledWrapper>

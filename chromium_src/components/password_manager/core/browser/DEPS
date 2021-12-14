@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../../../components/password_manager/core/browser",
-  "+components/password_manager/core/browser",
-]

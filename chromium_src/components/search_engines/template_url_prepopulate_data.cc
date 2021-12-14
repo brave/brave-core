@@ -23,7 +23,7 @@
 #define GetPrepopulatedDefaultSearch GetPrepopulatedDefaultSearch_Unused
 #define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
 #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
-#include "../../../../components/search_engines/template_url_prepopulate_data.cc"
+#include "src/components/search_engines/template_url_prepopulate_data.cc"
 #undef GetDataVersion
 #if defined(OS_ANDROID)
 #undef GetLocalPrepopulatedEngines

@@ -254,6 +254,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         let charset_blob = format!("<meta charset=\"{}\"/>", charset);
         content = charset_blob + &content;
     }
+    if !meta.title.is_empty() {
+        let title_blob = format!("<title>{}</title>", &meta.title);
+        content = title_blob + &content;
+    }
     Ok(Product { meta, content })
 }
 

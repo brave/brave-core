@@ -18,7 +18,8 @@ import {
   AssetPriceTimeframe,
   EthereumChain,
   ERCToken,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  DefaultCurrencies
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -33,6 +34,7 @@ import {
 import { HardwareWalletAccount } from './../../common/hardware/types'
 
 export interface Props {
+  defaultCurrencies: DefaultCurrencies
   isFetchingPortfolioPriceHistory: boolean
   selectedNetwork: EthereumChain
   showAddModal: boolean
@@ -41,8 +43,8 @@ export interface Props {
   transactions: AccountTransactions
   portfolioBalance: string
   selectedAsset: ERCToken | undefined
-  selectedBTCAssetPrice: AssetPrice | undefined
-  selectedUSDAssetPrice: AssetPrice | undefined
+  selectedAssetFiatPrice: AssetPrice | undefined
+  selectedAssetCryptoPrice: AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   selectedPortfolioTimeline: AssetPriceTimeframe
@@ -80,6 +82,7 @@ export interface Props {
 
 const CryptoStoryView = (props: Props) => {
   const {
+    defaultCurrencies,
     hasImportError,
     userVisibleTokensInfo,
     transactionSpotPrices,
@@ -97,8 +100,8 @@ const CryptoStoryView = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    selectedUSDAssetPrice,
-    selectedBTCAssetPrice,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
@@ -262,6 +265,7 @@ const CryptoStoryView = (props: Props) => {
       }
       {selectedTab === 'portfolio' &&
         <PortfolioView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
           networkList={networkList}
@@ -282,8 +286,8 @@ const CryptoStoryView = (props: Props) => {
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
           transactions={transactions}
-          selectedUSDAssetPrice={selectedUSDAssetPrice}
-          selectedBTCAssetPrice={selectedBTCAssetPrice}
+          selectedAssetFiatPrice={selectedAssetFiatPrice}
+          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
           userAssetList={userAssetList}
           isLoading={isLoading}
           selectedNetwork={selectedNetwork}
@@ -298,6 +302,7 @@ const CryptoStoryView = (props: Props) => {
       }
       {selectedTab === 'accounts' &&
         <AccountsView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
           onClickBackup={onShowBackup}

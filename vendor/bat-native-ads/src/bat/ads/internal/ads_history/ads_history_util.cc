@@ -27,6 +27,7 @@ AdHistoryInfo BuildAdHistory(const AdInfo& ad,
   ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
   ad_history.ad_content.creative_set_id = ad.creative_set_id;
   ad_history.ad_content.campaign_id = ad.campaign_id;
+  ad_history.ad_content.advertiser_id = ad.advertiser_id;
   ad_history.ad_content.brand = title;
   ad_history.ad_content.brand_info = description;
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);

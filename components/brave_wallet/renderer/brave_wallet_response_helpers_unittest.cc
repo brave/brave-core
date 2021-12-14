@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 TEST(BraveWalletResponseHelpersTest, GetProviderErrorDictionary) {
-  ProviderErrors code = ProviderErrors::kUnsupportedMethod;
+  mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
   std::string message = "HTTP Status code: " + base::NumberToString(400);
   std::unique_ptr<base::Value> result =
       GetProviderErrorDictionary(code, message);
@@ -63,7 +63,8 @@ TEST(BraveWalletResponseHelpersTest,
   const base::Value* result_message = result->FindKey("message");
   EXPECT_TRUE(result_code && result_code->is_int());
   EXPECT_TRUE(result_message && result_message->is_string());
-  EXPECT_EQ(result_code->GetInt(), (int)ProviderErrors::kUnsupportedMethod);
+  EXPECT_EQ(result_code->GetInt(),
+            (int)mojom::ProviderError::kUnsupportedMethod);
   EXPECT_EQ(result_message->GetString(), "HTTP Status code: 400");
 }
 

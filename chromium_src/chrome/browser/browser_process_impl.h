@@ -29,7 +29,7 @@
 #include "services/network/public/mojom/network_service.mojom-forward.h"
 
 #define Init virtual Init
-#include "../../../../chrome/browser/browser_process_impl.h"
+#include "src/chrome/browser/browser_process_impl.h"
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSER_PROCESS_IMPL_H_

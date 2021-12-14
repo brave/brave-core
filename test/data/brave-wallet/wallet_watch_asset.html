@@ -1,0 +1,75 @@
+<html>
+
+<script>
+  var walletWatchAssetResult, walletWatchAssetError
+  function wallet_watchAsset(method, type, address, symbol, decimals) {
+    const params = {
+      options: {
+        address,
+        symbol,
+        decimals
+      },
+      type
+    }
+
+    if (method == 'request') {
+      window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params
+      }).then(result => {
+        walletWatchAssetResult = result
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        walletWatchAssetError = error.message
+        window.domAutomationController.send(walletWatchAssetError)
+      })
+    } else if (method == 'send1') {
+      window.ethereum.send({
+        id: 'hello',
+        method: 'wallet_watchAsset',
+        params
+      }, (err, result) => {
+        walletWatchAssetError = err && err.error ? err.error.message : undefined
+        walletWatchAssetResult = result ? result.result : undefined
+        if (walletWatchAssetError)
+          window.domAutomationController.send(walletWatchAssetError)
+        else
+          window.domAutomationController.send('result ready')
+      })
+    } else if (method == 'send2') {
+      window.ethereum.send('wallet_watchAsset', [params])
+        .then(result => {
+          walletWatchAssetResult = result.result
+          window.domAutomationController.send('result ready')
+        }).catch(error => {
+          walletWatchAssetError = error.error.message
+          window.domAutomationController.send(walletWatchAssetError)
+        })
+    } else if (method == 'sendAsync') {
+      window.ethereum.sendAsync({
+        id: 'hello',
+        method: 'wallet_watchAsset',
+        params
+    }, (err, result) => {
+        walletWatchAssetError = err && err.error ? err.error.message : undefined
+        walletWatchAssetResult = result ? result.result : undefined
+        if (walletWatchAssetError)
+          window.domAutomationController.send(walletWatchAssetError)
+        else
+          window.domAutomationController.send('result ready')
+      })
+    }
+  }
+
+  function getWalletWatchAssetResult() {
+    window.domAutomationController.send(walletWatchAssetResult)
+  }
+  function getWalletWatchAssetError() {
+    window.domAutomationController.send(walletWatchAssetError)
+  }
+</script>
+
+<body>
+</body>
+</html>
+

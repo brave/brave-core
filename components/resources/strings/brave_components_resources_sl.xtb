@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="3656941797339037856">Povežite Rewards z Gemini!</translation>
-<translation id="3066983737886188034">Gemini vam omogoča enostavno trgovanje, shranjevanje in zaslužek 3,49% APY na vašem BAT-u. Preverite in povežite svojo denarnico Brave Rewards z Gemini!</translation>
+<translation id="2383784987664887340">Gemini vam omogoča enostavno trgovanje, shranjevanje in zaslužek 3,49% APY na vašem BAT-u. Preverite in povežite svojo denarnico Brave Rewards z Gemini!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY od 15.9.2021</translation>
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6915065518766963119">* Zahteva preverjanje računa Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x naslov ali url</translation>
 <translation id="2860280209982026951">Brave uporablja <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kot DEX agregator.</translation>
 <translation id="151946611346774041">0x bo obdelal naslov Ethereum in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). 0x bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
+<translation id="4626407663177532837">Ponudba vključuje 0,875 % Brave pristojbine.</translation>
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="1420318137760245955">Dobrodošli v novi Brave denarnici</translation>
 <translation id="8303434745767477417">V lasti imejte kripto sredstva. Sledite uspešnosti portfelja in sodelujte z aplikacijami web3 DApps. Trgujte, vlagajte, izposojajte in posojajte z DeFi. Vse v brskalniku zasebnosti Brave. Brez razširitev, prenos ni potreben.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> prekinjena</translation>
 <translation id="5317781812114905957">Navodila</translation>
 <translation id="1178198982208000092">Povežite <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardverska denarnica zahteva potrditev na napravi.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Za hardversko denarnico je potrebna odprta aplikacija Ethereum <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
 <translation id="5013754027092416509">prejeto</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Podatki JSON niso pričakovani</translation>
 <translation id="3282936527763045737">Geslo ni pravilno</translation>
 <translation id="1119447706177454957">Interna napaka</translation>
+<translation id="3327639091470204775">Povezave z mostom Trezor ni mogoče vzpostaviti</translation>
 <translation id="6672377693827764095">Interna napaka, ni mogoče pridobiti računov</translation>
 <translation id="8933250418452564886">Transakcije strojne opreme ni mogoče najti, poskusite znova</translation>
 <translation id="5999974802900788338">Prejeta napaka iz strojne naprave, verjetno morate potrditi transakcijo na svoji napravi</translation>

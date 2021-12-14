@@ -11,7 +11,7 @@
   Delegate* delegate() const { return delegate_; } \
   size_t PermissionCount
 
-#include "../../../../../components/permissions/android/permission_prompt_android.h"
+#include "src/components/permissions/android/permission_prompt_android.h"
 
 #undef PermissionCount
 

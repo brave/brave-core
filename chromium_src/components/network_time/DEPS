@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../components/network_time",
-  "+components/network_time",
-]

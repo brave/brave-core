@@ -43,7 +43,7 @@ class ConfirmationType final {
   bool operator!=(const ConfirmationType& rhs) const;
 
  private:
-  Value value_;
+  Value value_ = kUndefined;
 };
 
 }  // namespace ads

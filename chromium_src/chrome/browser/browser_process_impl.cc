@@ -9,7 +9,7 @@
 #include "brave/browser/extensions/brave_extensions_browser_client_impl.h"
 #define ChromeExtensionsBrowserClient BraveExtensionsBrowserClientImpl
 #endif
-#include "../../../../chrome/browser/browser_process_impl.cc"
+#include "src/chrome/browser/browser_process_impl.cc"
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #undef ChromeExtensionsBrowserClient
 #endif

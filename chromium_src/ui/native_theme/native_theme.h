@@ -13,7 +13,7 @@
   static NativeTheme* BraveGetInstanceForNativeUi();                  \
   virtual SkColor GetSystemButtonPressedColor
 
-#include "../../../../ui/native_theme/native_theme.h"
+#include "src/ui/native_theme/native_theme.h"
 #undef GetSystemButtonPressedColor
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_H_

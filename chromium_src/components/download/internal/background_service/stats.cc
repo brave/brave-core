@@ -6,4 +6,4 @@
 #define BRAVE_CLIENT_TO_HISTOGRAM_SUFFIX          \
   case DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS: \
     return "CustomListSubscriptions";
-#include "../../../../../../components/download/internal/background_service/stats.cc"
+#include "src/components/download/internal/background_service/stats.cc"

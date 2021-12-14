@@ -39,7 +39,7 @@ constexpr int brave_value(int incr) {
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings.cc"
+#include "src/components/content_settings/core/common/content_settings.cc"
 
 #undef RendererContentSettingRules
 #undef ContentSettingTypeToHistogramValue

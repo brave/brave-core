@@ -149,6 +149,9 @@ class ADS_EXPORT Ads {
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) = 0;
 
+  // Should be called to get an eligible new tab page ad
+  virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
+
   // Should be called when a user views or clicks a new tab page ad
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -179,10 +182,6 @@ class ADS_EXPORT Ads {
   // argument - |bool| should be set to |true| if successful otherwise should be
   // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
-
-  // Should be called to reconcile ad rewards with the server, i.e. after an
-  // ad grant is claimed
-  virtual void ReconcileAdRewards() = 0;
 
   // Should be called to get ads history for a specified date range. Returns
   // |AdsHistoryInfo|

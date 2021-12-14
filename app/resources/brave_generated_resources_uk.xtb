@@ -54,6 +54,7 @@
 <translation id="6285118765755298263">Індексування інших пошукових систем</translation>
 <translation id="919715748352669592">Автоматична індексація вебсайтів, які відповідають специфікації OpenSearch.</translation>
 <translation id="6821903322090655051">Винагороди Brave вимкнено</translation>
+<translation id="413570371620795359">Відкрийте панель «Нагороди», щоб увімкнути й почати роботу</translation>
 <translation id="3849957491997306859">Визначено автоматично</translation>
 <translation id="8798099450830957504">За умовчанням</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
@@ -427,6 +428,7 @@
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="2556708692502648323">Мережі гаманця</translation>
 <translation id="1330032157352961756">Ідентифікатор нового ланцюга</translation>
+<translation id="3423620355610881890">Додатне десяткове число</translation>
 <translation id="726121047592132939">Назва нового ланцюга</translation>
 <translation id="1034112277864078119">Уведіть назву ланцюга</translation>
 <translation id="4672314527143443556">Назва валюти ланцюга</translation>
@@ -440,6 +442,7 @@
 <translation id="3047726704186619366">URL-адреси значків</translation>
 <translation id="2487558607408469181">URL-адреси диспетчера блоків</translation>
 <translation id="6301398959353668507">Це поле не може бути порожнім.</translation>
+<translation id="7504462451153306677">Недійсний формат, ідентифікатором ланцюга є додатне число</translation>
 <translation id="8325036459845654666">Мережу вже додано.</translation>
 <translation id="650071759190249039">Внутрішня помилка, не вдається додати мережу.</translation>
 <translation id="868529041590572443">Уведіть усю інформацію про рідну валюту</translation>

@@ -21,6 +21,6 @@
   }                                                                           \
   GURL URLRequestJob::ComputeReferrerForPolicy_Chromium
 
-#include "../../../../net/url_request/url_request_job.cc"
+#include "src/net/url_request/url_request_job.cc"
 
 #undef ComputeReferrerForPolicy

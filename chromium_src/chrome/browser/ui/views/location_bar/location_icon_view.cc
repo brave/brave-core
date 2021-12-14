@@ -8,5 +8,5 @@
 #define BRAVE_SHOULD_SHOW_URL_IPFS_CHECK \
   url.SchemeIs(ipfs::kIPFSScheme) || url.SchemeIs(ipfs::kIPNSScheme) ||
 
-#include "../../../../../../../chrome/browser/ui/views/location_bar/location_icon_view.cc"
+#include "src/chrome/browser/ui/views/location_bar/location_icon_view.cc"
 #undef BRAVE_SHOULD_SHOW_URL_IPFS_CHECK

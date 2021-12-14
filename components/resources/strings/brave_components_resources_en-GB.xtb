@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
 <translation id="3656941797339037856">Link Rewards to Gemini!</translation>
-<translation id="3066983737886188034">Gemini lets you easily trade, store and earn 3.49% APY on your BAT. Verify and link your Brave Rewards wallet with Gemini now!</translation>
+<translation id="2383784987664887340">Gemini lets you easily trade, store and earn 3.49% APY on your BAT. Verify and link your Brave Rewards wallet with Gemini now!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY as of 15 Sept 2021</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6915065518766963119">* Requires Uphold verification.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x address or url</translation>
 <translation id="2860280209982026951">Brave uses <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
+<translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
 <translation id="6518133107902771759">Verify</translation>
 <translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
 <translation id="8303434745767477417">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="1178198982208000092">Connect your <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardware wallet requires confirmation on device. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hardware wallet requires Ethereum App opened on <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sent</translation>
 <translation id="5013754027092416509">received</translation>
@@ -1097,7 +1100,7 @@
 <translation id="5071303414930953888">Account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Wallet needs to be unlocked first</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> is not a valid address</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> is not current network</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> is not the current network</translation>
 <translation id="7340805872138998391">Unable to unlock device, try to reconnect</translation>
 <translation id="1984410139271779110">Internal error, unknown scheme</translation>
 <translation id="8682200134223578011">approved</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON data is not expected</translation>
 <translation id="3282936527763045737">Password is not correct</translation>
 <translation id="1119447706177454957">Internal error</translation>
+<translation id="3327639091470204775">Unable to connect to the Trezor bridge</translation>
 <translation id="6672377693827764095">Internal error, unable to fetch accounts</translation>
 <translation id="8933250418452564886">Unable to find hardware transaction, please try again</translation>
 <translation id="5999974802900788338">Received error from hardware device, probably you need to confirm the transaction on your device</translation>

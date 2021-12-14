@@ -31,7 +31,7 @@
 <translation id="2218918398178303658">HTTPS के ऊपर DNS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6252490671914511928">आज की शीर्ष कहानियाँ पूरी तरह से प्राइवेट फ़ीड में, सिर्फ आपके लिए.</translation>
-<translation id="7266075701303521777">Brave News आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान  विज्ञापनों से विज्ञापन समर्थित है.</translation>
+<translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
 <translation id="1765217911817124376">Brave न्यूज़ शुरू करें</translation>
 <translation id="1654539412343893324">डेटा के बारे में अधिक जानें</translation>
@@ -523,27 +523,27 @@
 <translation id="6146966915297143881">लॉगिन ब्लॉक करना जारी रखें</translation>
 <translation id="1483493594462132177">भेजें</translation>
 <translation id="538450413584738399">स्वैप</translation>
-<translation id="8825032646286791700">DeFi &amp; सुरक्षित क्रिप्टो स्टोरेज</translation>
-<translation id="5460364286096798286">क्रिप्टो को अपनी कस्टडी में रखें. व्यापार संपत्ति. मूल्य और पोर्टफोलियो प्रदर्शन देखें. DeFi के साथ निवेश करें, उधार लें और उधार दें.</translation>
-<translation id="1748009926009835882">क्रिप्टो सेटअप करें</translation>
+<translation id="1420318137760245955">नए Brave Wallet में आपका स्वागत है</translation>
+<translation id="8339846196588658366">क्रिप्टो एसेट को अपने पास रखें और पोर्टफ़ोलिओ के प्रदर्शन को ट्रैक करें. Brave  गोपनीयता ब्राउज़र से ठीक है.</translation>
+<translation id="4472575034687746823">आरंभ करें</translation>
 <translation id="2759836790106646094">अपने वॉलेट का बैकअप लें</translation>
-<translation id="5156354224138379811">अगले चरण में आपको 12 शब्द दिखाई देंगे जिनसे आप अपना क्रिप्टो वॉलेट रिकवर कर सकेंगे.</translation>
+<translation id="1078873179929044999">अगले स्टेप में आपको एक 12 शब्दों का एक रिकवरी फ़्रेज़ दिखाई देगा, जिसका इस्तेमाल आप अपने प्राथमिक क्रिप्टो अकाउंट को रिकवर करने के लिए कर सकते हैं. इसे किसी सुरक्षित जगह पर सेव करें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में या अगर आप वॉलेट बदलना चाहते हैं, तो अपने अकाउंट को फिर से पाने के लिए रिकवरी फ़्रेज़ एकमात्र तरीका है.</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
-<translation id="5024543173656851695">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
+<translation id="1904000155026201268">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="3933122286596948824">आपका रिकवरी वाक्यांश</translation>
-<translation id="6146351434671268516">इन शब्दों को सही क्रम में लिखें या कॉपी करके कहीं सुरक्षित रख लें.</translation>
-<translation id="7408247683131762445">चेतावनी: अपने बैकअप फ़्रेज़ को कभी भी ज़ाहिर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपके पैसे को हमेशा के लिए ले सकता है.</translation>
-<translation id="939275786514736244">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
+<translation id="5077747669435508720">इन शब्दों को नीचे दिखाए गए सटीक क्रम में लिखें या कॉपी करें, और उन्हें कहीं सुरक्षित रखें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में, या आप वॉलेट स्विच करना चाहते हैं, तो रिकवरी फ़्रेज़ ही आपका अकाउंट एक्सेस प्राप्त करने का एकमात्र तरीका है.</translation>
+<translation id="2708402071160162126">चेतावनी: अपने रिकवरी फ़्रेज़ को कभी भी शेयर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपकी संपत्ति को हमेशा के लिए ले सकता है.</translation>
+<translation id="111912712268284159">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
 <translation id="6896758677409633944">कॉपी</translation>
-<translation id="2604744480284798833">अपने क्रिप्टो पोर्टफ़ोलिओ को एक्सेस के नुकसान से बचाने के लिए अभी अपने वॉलेट का बैकअप लें.</translation>
-<translation id="8289942708804097960">Apple Pay, क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
+<translation id="375882617301124395">अपने क्रिप्टो वॉलेट का बैकअप लें</translation>
+<translation id="8289942708804097960">क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
 <translation id="841880029259839903">क्रिप्टो भेजें या एक अकाउंट से दूसरे अकॉउंट में ट्रांसफर करें.</translation>
 <translation id="8982246458261383692">Brave DEX एग्रीगेटर से क्रिप्टो एसेट को स्वैप करें.</translation>
 <translation id="1783600039044302171">पासवर्ड से अपना क्रिप्टो सुरक्षित करें</translation>
 <translation id="3726490322412361740">पासवर्ड एंटर करें</translation>
-<translation id="4450951602553063001">दोबारा पासवर्ड एंटर करें</translation>
-<translation id="1783870616707290226">पासवर्ड में कम से कम 7 वर्ण या ज़्यादा होने चाहिए</translation>
-<translation id="7383102760859258982">दोबारा टाइप किया गया पासवर्ड मेल नहीं खाता</translation>
+<translation id="3038243139480464605">पासवर्ड वेरीफ़ाई करें</translation>
+<translation id="3717685683157254329">पासवर्ड कम से कम 7 कैरेक्टर का होना चाहिए, और इसमें कम से कम एक नंबर और एक स्पेशल कैरेक्टर होना चाहिए.</translation>
+<translation id="7396672979287122068">वेरीफ़ाई किया गया पासवर्ड मेल नहीं खाता</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1 दिन</translation>
 <translation id="7640956400175663828">1 हफ़्ता</translation>
@@ -552,24 +552,25 @@
 <translation id="6977728312178289892">1 साल</translation>
 <translation id="6895566650974550243">सब</translation>
 <translation id="5071303414930953888">अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">अकाउंट जोड़ें</translation>
-<translation id="2632612428525029752">अकाउंट अपडेट करें</translation>
+<translation id="7665369617277396874">खाता जोड़ें</translation>
+<translation id="3448492834076427715">अकाउंट अपडेट करें</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
-<translation id="1544192797660353713">वॉलेट</translation>
+<translation id="8030647312184163932">फिंगरप्रिंट अनलॉक किया गया</translation>
+<translation id="4090490645603511157">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स का इस्तेमाल करें.</translation>
+<translation id="5379398699598690674">वॉलेट (बीटा)</translation>
 <translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
-<translation id="1970161551843843564">क्रिप्टो अकाउंट रिस्टोर करें</translation>
+<translation id="9120654436199628567">क्रिप्टो अकाउंट रिस्टोर करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
 <translation id="283071225285270357">रिकवरी फ्रेज़ एंटर करें</translation>
 <translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
-<translation id="2718669004132381989">ऊपर दिए गए शब्दों को सही क्रम में एक दूसरे के बगल में रखने के लिए टैप करें.</translation>
+<translation id="3747079125031086337">अपने रिकवरी फ़्रेज़ में शब्दों को उनके सही क्रम में चुनें.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
 <translation id="9111102763498581341">अनलॉक करें</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
-<translation id="1569452037668432756">अनलॉक करने के लिए अपना पासवर्ड एंटर करें</translation>
-<translation id="3717685683157254329">पासवर्ड कम से कम 7 वर्णों का होना चाहिए जिसमें कम से कम एक संख्या और एक विशेष वर्ण हो</translation>
+<translation id="5168349973342709369">वॉलेट अनलॉक करने के लिए पासवर्ड एंटर करें</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="5760476995887363522">वाक्य मेल नहीं खा रहे. कृपया फिर से कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
@@ -580,7 +581,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">(अंदाज़ा) लगाने के लिए</translation>
 <translation id="6998989275928107238">सेवा में</translation>
-<translation id="6664416064035847539">पता या url</translation>
+<translation id="2589431635772931954">पता या url</translation>
 <translation id="632241521608275119">फिसलन सहनशीलता</translation>
 <translation id="1987317783729300807">खाते</translation>
 <translation id="3535654229833214438">लेन-देन</translation>
@@ -610,11 +611,12 @@
 <translation id="2490428413101944234">टेस्ट फ़ॉसेट</translation>
 <translation id="2581671693710952401">Ether पाएँ</translation>
 <translation id="8165484222652118977"><ph name="NETWORK"/> टेस्ट नेटवर्क के लिए फॉसेट से ईथर प्राप्त करें</translation>
-<translation id="7420359180991315365">Wire को जारी रखें</translation>
+<translation id="7420359180991315365">Wyre को जारी रखें</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
+<translation id="3784455785234192852">लॉक करें</translation>
 <translation id="5040262127954254034">निजता</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
-<translation id="414639769490080648">अपने Brave Wallet को अपने आप लॉक करने से पहले आपको कितने मिनट चाहिए?</translation>
+<translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
 <translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
@@ -742,6 +744,8 @@
 <translation id="3211051910418903298">अपना मोबाइल डेटा बार-बार न भरवाएँ</translation>
 <translation id="1092355580602106002">कम विज्ञापन = आप जो भी पेज लोड करते हैं, उसमें कम डेटा. अपनी सभी ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
 <translation id="623962032102267945">Brave = हर पेज पर मोबाइल का कम डेटा</translation>
+<translation id="4355217341028673744">• बेहतर प्राइवेसी</translation>
+<translation id="3679020972083025535">• परेशान करने वाले कोई ऐड नहीं</translation>
 <translation id="8047527352810290817">गैस एडिट करें</translation>
 <translation id="7358989216567322955">अधिकतम प्राथमिकता शुल्क</translation>
 <translation id="9091334651803050473">गारंटी नहीं होने पर, अगर आप ज़्यादा शुल्क की पेमेंट करते हैं तो माइनर आपके लेनदेन को प्राथमिकता देंगे.</translation>
@@ -754,4 +758,19 @@
 <translation id="1011713837432053857">गैस राशि की सीमा</translation>
 <translation id="1254969878422524947">प्रति-गैस टिप सीमा (Gwei)</translation>
 <translation id="7373308452149471621">प्रति-गैस मूल्य सीमा (Gwei)</translation>
+<translation id="5891811606602061966">अकाउंट इम्पोर्ट नहीं हो पाया, कृपया दोबारा कोशिश करें.</translation>
+<translation id="7033470144757208254">Brave 0x का इस्तेमाल DEX एग्रीगेटर के तौर पर करता है.</translation>
+<translation id="5061574358754621254">मूल्य डेटा CoinGecko द्वारा संचालित है</translation>
+<translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
+<translation id="8574289650879708853">कस्टम एसेट जोड़ें</translation>
+<translation id="7791543448312431591">जोड़ें</translation>
+<translation id="6600400596821238377">टोकन नेम</translation>
+<translation id="4432966365400169165">टोकन कॉन्ट्रैक्ट एड्रेस</translation>
+<translation id="4092152169181928870">टोकन प्रतीक</translation>
+<translation id="4351811224047421378">डेसिमल ऑफ़ प्रिसिशन</translation>
+<translation id="8614026298974065517">कस्टम एसेट हटाएँ</translation>
+<translation id="4378941981362528553">क्या आप <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) टोकन हटाना चाहते हैं?</translation>
+<translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
+<translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
+<translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 </translationbundle>

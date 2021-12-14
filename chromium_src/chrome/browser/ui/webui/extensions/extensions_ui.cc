@@ -47,4 +47,4 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source) {
 #define IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
   IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
 
-#include "../../../../../../../chrome/browser/ui/webui/extensions/extensions_ui.cc"
+#include "src/chrome/browser/ui/webui/extensions/extensions_ui.cc"

@@ -75,8 +75,10 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
@@ -97,7 +99,8 @@ import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver {
+                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver,
+                   ApprovedTxObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
@@ -107,7 +110,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
-    private boolean mInitialLayoutInflationComplete = false;
+    private boolean mInitialLayoutInflationComplete;
 
     public enum ActivityType {
         BUY(0),
@@ -375,6 +378,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
             swapParams.buyAmount = "";
         }
+        if (swapParams.sellAmount.isEmpty() && swapParams.buyAmount.isEmpty()) {
+            Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+            btnBuySendSwap.setEnabled(false);
+            btnBuySendSwap.setText(getString(R.string.swap));
+
+            return;
+        }
         swapParams.buyToken = buyAddress;
         swapParams.sellToken = sellAddress;
         try {
@@ -641,6 +651,45 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         return 0;
     }
 
+    private void setSendToValidationResult(String validationResult, boolean disableButtonOnError) {
+        boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+
+        boolean otherValidationError =
+                (findViewById(R.id.from_send_value_error_text).getVisibility() == View.VISIBLE);
+        boolean buttonShouldBeEnabled = validationSucceeded || !disableButtonOnError;
+        btnBuySendSwap.setEnabled(!otherValidationError && buttonShouldBeEnabled);
+
+        TextView sendToValidation = findViewById(R.id.to_send_error_text);
+
+        if (validationSucceeded) {
+            sendToValidation.setText("");
+            sendToValidation.setVisibility(View.GONE);
+        } else {
+            sendToValidation.setText(validationResult);
+            sendToValidation.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setFromSendValueValidationResult(String validationResult) {
+        boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+
+        boolean otherValidationError =
+                (findViewById(R.id.to_send_error_text).getVisibility() == View.VISIBLE);
+        btnBuySendSwap.setEnabled(!otherValidationError && validationSucceeded);
+
+        TextView fromSendValueValidation = findViewById(R.id.from_send_value_error_text);
+
+        if (validationSucceeded) {
+            fromSendValueValidation.setText("");
+            fromSendValueValidation.setVisibility(View.GONE);
+        } else {
+            fromSendValueValidation.setText(validationResult);
+            fromSendValueValidation.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void adjustControls() {
         EditText toValueText = findViewById(R.id.to_value_text);
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
@@ -679,6 +728,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             EditText toSendValueText = findViewById(R.id.to_send_value_text);
             toSendValueText.setText("");
             toSendValueText.setHint(getText(R.string.to_address_edit));
+            mFilterTextWatcherToSend = new FilterTextWatcherToSend();
+            toSendValueText.addTextChangedListener(mFilterTextWatcherToSend);
+
+            EditText fromValueText = findViewById(R.id.from_value_text);
+            mFilterTextWatcherFromSendValue = new FilterTextWatcherFromSendValue();
+            fromValueText.addTextChangedListener(mFilterTextWatcherFromSendValue);
+
             arrowDown.setVisibility(View.GONE);
             // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
@@ -749,7 +805,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -758,7 +814,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             assetToDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST);
                 bottomSheetDialogFragment.setChainId(mCurrentChainId);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -1072,6 +1128,59 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         public void afterTextChanged(Editable s) {}
     };
 
+    private class FilterTextWatcherToSend implements TextWatcher {
+        Validations.SendToAccountAddress mValidator;
+
+        public FilterTextWatcherToSend() {
+            mValidator = new Validations.SendToAccountAddress();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
+                    mAccountSpinner.getSelectedItemPosition());
+
+            mValidator.validate(mCurrentChainId, getErcTokenRegistry(), getBraveWalletService(),
+
+                    fromAccountAddress, s.toString(), (String validationResult) -> {
+                        setSendToValidationResult(validationResult, true);
+                    });
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    }
+    private FilterTextWatcherToSend mFilterTextWatcherToSend;
+
+    private class FilterTextWatcherFromSendValue implements TextWatcher {
+        public FilterTextWatcherFromSendValue() {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Double fromSendValue = 0d;
+            try {
+                fromSendValue = Double.parseDouble(s.toString());
+            } catch (NumberFormatException ex) {
+            }
+
+            String validationResult = (fromSendValue > mConvertedFromBalance)
+                    ? getString(R.string.crypto_wallet_error_insufficient_balance)
+                    : "";
+
+            setFromSendValueValidationResult(validationResult);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    }
+    private FilterTextWatcherFromSendValue mFilterTextWatcherFromSendValue;
+
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
         assert mEthTxController != null;
@@ -1125,21 +1234,25 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
                 txData1559.gasEstimation.fastMaxFeePerGas = "";
                 txData1559.gasEstimation.baseFeePerGas = "";
-                mEthTxController.addUnapproved1559Transaction(txData1559, from,
-                        (success, tx_meta_id, error_message)
-                                -> {
-                                        // Do nothing here as we will receive an
-                                        // unapproved transaction in
-                                        // EthTxControllerObserverImpl
-                                });
+                mEthTxController.addUnapproved1559Transaction(
+                        txData1559, from, (success, tx_meta_id, error_message) -> {
+                            // Do nothing here when success as we will receive an
+                            // unapproved transaction in
+                            // EthTxControllerObserverImpl
+                            // When we have error, let the user know,
+                            // error_message is localized, do not disable send button
+                            setSendToValidationResult(error_message, false);
+                        });
             } else {
-                mEthTxController.addUnapprovedTransaction(data, from,
-                        (success, tx_meta_id, error_message)
-                                -> {
-                                        // Do nothing here as we will receive an
-                                        // unapproved transaction in
-                                        // EthTxControllerObserverImpl
-                                });
+                mEthTxController.addUnapprovedTransaction(
+                        data, from, (success, tx_meta_id, error_message) -> {
+                            // Do nothing here when success as we will receive an
+                            // unapproved transaction in
+                            // EthTxControllerObserverImpl
+                            // When we have error, let the user know,
+                            // error_message is localized, do not disable send button
+                            setSendToValidationResult(error_message, false);
+                        });
             }
         });
     }
@@ -1176,8 +1289,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
                 ApproveTxBottomSheetDialogFragment.newInstance(txInfo, accountName);
+        approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
         approveTxBottomSheetDialogFragment.show(
                 getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    @Override
+    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
+        if (approved) {
+            finish();
+        }
     }
 
     public void showSwapButtonText() {
@@ -1312,6 +1433,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     public BraveWalletService getBraveWalletService() {
         return mBraveWalletService;
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
     }
 
     private void InitBraveWalletService() {

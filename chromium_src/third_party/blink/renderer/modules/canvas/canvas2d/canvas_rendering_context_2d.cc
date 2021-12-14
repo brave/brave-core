@@ -12,7 +12,7 @@
     return MakeGarbageCollected<TextMetrics>();
 
 #define getImageDataInternal getImageDataInternal_Unused
-#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
+#include "src/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
 #undef getImageDataInternal
 #undef BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT
 

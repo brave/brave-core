@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Kamilisha uthibitishaji pochi</translation>
 <translation id="9200453331904391567">Ondoa kwenye Brave Rewards</translation>
 <translation id="3656941797339037856">Unganisha Zawadi kwa Gemini!</translation>
-<translation id="3066983737886188034">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY kwenye BAT yako. Thibitisha na uunganishe pochi yako ya Brave Rewards na Gemini sasa!</translation>
+<translation id="2383784987664887340">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY kwenye BAT yako. Thibitisha na uunganishe pochi yako ya Brave Rewards na Gemini sasa!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY kuanzia tarehe 15 Septemba, 2021</translation>
 <translation id="7404779623219601861">Tumia BAT upate Kadi za Zawadi</translation>
 <translation id="6215565499749144110">Unaweza kurudisha BAT yako kwa kadi za zawadi za chapa ya jina maarufu ukiwa na Mtandao wa TAP.</translation>
 <translation id="6915065518766963119">* Inahitaji Uthibitisho wa Kudumisha.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Anwani au url ya 0x</translation>
 <translation id="2860280209982026951">Brave hutumia <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kama kijumlishaji cha DEX.</translation>
 <translation id="151946611346774041">0x itachakata anwani ya Ethereum na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata makadirio ya gharama). 0x itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
+<translation id="4626407663177532837">Ukadiriaji wa gharama unajumuisha ada ya Brave ya 0.875%.</translation>
 <translation id="6518133107902771759">Thibitisha</translation>
 <translation id="1420318137760245955">Karibu kwenye Brave Wallet mpya</translation>
 <translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> imetenganishwa</translation>
 <translation id="5317781812114905957">Maagizo</translation>
 <translation id="1178198982208000092">Unganisha <ph name="DEVICE_NAME"/>yako</translation>
+<translation id="4358411489835404360">Pochi ya maunzi inahitaji uthibitishaji kwenye kifaa. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Pochi ya maunzi inahitaji Programu ya Ethereum ifunguliwe kwenye <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">limetumwa</translation>
 <translation id="5013754027092416509">limepokelewa</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Data ya JSON haitarajiwi</translation>
 <translation id="3282936527763045737">Nenosiri si sahihi</translation>
 <translation id="1119447706177454957">Hitilafu ya ndani</translation>
+<translation id="3327639091470204775">Imeshindwa kuunganisha Trezor bridge</translation>
 <translation id="6672377693827764095">Hitilafu ya ndani, Imeshindwa kupata akaunti</translation>
 <translation id="8933250418452564886">Imeshindwa kupata muamala wa maunzi, tafadhali jaribu tena</translation>
 <translation id="5999974802900788338">Hitilafu imepokewa kutoka kwa kifaa cha maunzi, huenda unahitaji kuthibitisha muamala kwenye kifaa chako</translation>

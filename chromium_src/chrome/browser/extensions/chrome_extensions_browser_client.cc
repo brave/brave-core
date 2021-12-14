@@ -9,6 +9,6 @@
 
 #define ChromeExtensionsAPIClient BraveExtensionsAPIClient
 #define ChromeUpdateClientConfig BraveUpdateClientConfig
-#include "../../../../../chrome/browser/extensions/chrome_extensions_browser_client.cc"
+#include "src/chrome/browser/extensions/chrome_extensions_browser_client.cc"
 #undef ChromeExtensionsAPIClient
 #undef ChromeUpdateClientConfig

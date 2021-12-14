@@ -1,8 +1,5 @@
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 import { EthereumChain } from '../../../constants/types'
-import { reduceAddress } from '../../../utils/reduce-address'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
 import { NavButton, PanelTab } from '..'
 
@@ -21,21 +18,15 @@ import {
 
 import {
   StyledWrapper,
-  AccountCircle,
-  AddressAndOrb,
-  AddressText,
   CenterColumn,
   Description,
-  NetworkText,
-  PanelTitle,
-  TopRow
+  PanelTitle
 } from '../shared-panel-styles'
 
 export type tabs = 'network' | 'details'
 
 export interface Props {
   siteOrigin: string
-  selectedNetwork: EthereumChain
   networkPayload: EthereumChain
   panelType: 'add' | 'change'
   onCancel: () => void
@@ -47,7 +38,6 @@ export interface Props {
 function AllowAddChangeNetworkPanel (props: Props) {
   const {
     siteOrigin,
-    selectedNetwork,
     networkPayload,
     panelType,
     onCancel,
@@ -55,28 +45,16 @@ function AllowAddChangeNetworkPanel (props: Props) {
     onApproveChangeNetwork,
     onLearnMore
   } = props
-  const selectedNetworkUrl = selectedNetwork.rpcUrls.length ? (new URL(selectedNetwork.rpcUrls[0])).hostname : ''
   const rpcUrl = networkPayload.rpcUrls.length ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
   const blockUrl = networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''
 
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
-  const orb = React.useMemo(() => {
-    return create({ seed: rpcUrl, size: 8, scale: 16 }).toDataURL()
-  }, [rpcUrl])
-
   const onSelectTab = (tab: tabs) => () => {
     setSelectedTab(tab)
   }
 
   return (
     <StyledWrapper>
-      <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
-        <AddressAndOrb>
-          <AddressText>{reduceAddress(selectedNetworkUrl)}</AddressText>
-          <AccountCircle orb={orb} />
-        </AddressAndOrb>
-      </TopRow>
       <CenterColumn>
         <FavIcon src={`chrome://favicon/size/64@1x/${siteOrigin}`} />
         <URLText>{siteOrigin}</URLText>

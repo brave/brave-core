@@ -19,7 +19,7 @@ using CachedStorageArea_BraveImpl = CachedStorageArea;
   friend CachedStorageArea_BraveImpl; \
   virtual void EnsureLoaded
 
-#include "../../../../../../../third_party/blink/renderer/modules/storage/cached_storage_area.h"
+#include "src/third_party/blink/renderer/modules/storage/cached_storage_area.h"
 
 #undef EnsureLoaded
 #undef CachedStorageArea

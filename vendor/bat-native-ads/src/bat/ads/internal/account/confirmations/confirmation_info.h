@@ -30,6 +30,7 @@ struct ConfirmationInfo final {
   bool IsValid() const;
 
   std::string id;
+  std::string transaction_id;
   std::string creative_instance_id;
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;

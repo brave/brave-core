@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Dokončit ověření peněženky</translation>
 <translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
 <translation id="3656941797339037856">Propojte odměny s Gemini!</translation>
-<translation id="3066983737886188034">Gemini vám umožňuje snadno obchodovat, ukládat a vydělávat 3,49 % RPSN na vašich BAT. Ověřte a propojte svou peněženku Brave Rewards s Gemini hned teď!</translation>
+<translation id="2383784987664887340">Gemini vám umožňuje snadno obchodovat, ukládat a vydělávat 3,49 % RPSN na vašich BAT. Ověřte a propojte svou peněženku Brave Rewards s Gemini hned teď!</translation>
+<translation id="2237374144728570574">* Výnos Gemini na RPSN k 15. září 2021</translation>
 <translation id="7404779623219601861">Směňujte BAT za dárkové karty</translation>
 <translation id="6215565499749144110">Díky síti TAP Network můžete směňovat vaše BAT za dárkové karty populárních značek.</translation>
 <translation id="6915065518766963119">* Je třeba ověření na Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Adresa 0x nebo URL</translation>
 <translation id="2860280209982026951">Brave používá <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregátor DEX.</translation>
 <translation id="151946611346774041">0x zpracuje adresu Etherea a IP adresu pro provedení transakce (včetně získání cenových nabídek). 0x bude tyto údaje používat POUZE pro účely zpracování transakcí.</translation>
+<translation id="4626407663177532837">Cenová nabídka zahrnuje poplatek pro Brave ve výši $0,875 %.</translation>
 <translation id="6518133107902771759">Ověřit</translation>
 <translation id="1420318137760245955">Vítejte v nové peněžence Brave Wallet</translation>
 <translation id="8303434745767477417">Držte kryptoaktiva ve své úschově. Sledujte výkonnost portfolia a komunikujte s webovými 3 DApps. Obchodujte, investujte, půjčujte si a půjčujte s DeFi. To vše přímo ze soukromého prohlížeče Brave. Nejsou nutná žádná rozšíření ani stahování.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> je odpojen</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="1178198982208000092">Připojte svůj <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardwarová peněženka vyžaduje v zařízení. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hardwarová peněženka vyžaduje aplikaci Ethereum otevřenou v <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">odesláno</translation>
 <translation id="5013754027092416509">obdrženo</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Neočekávají se data JSON</translation>
 <translation id="3282936527763045737">Nesprávné heslo</translation>
 <translation id="1119447706177454957">Interní chyba</translation>
+<translation id="3327639091470204775">Nebylo možné se připojit k Trezor Bridge</translation>
 <translation id="6672377693827764095">Interní chyba, nelze načíst účty</translation>
 <translation id="8933250418452564886">Nepodařilo se najít hardwarovou transakci, zkuste to znovu</translation>
 <translation id="5999974802900788338">Byla přijata chyba z hardwarového zařízení, pravděpodobně je třeba potvrdit transakci v zařízení</translation>

@@ -8,7 +8,7 @@
 
 #define ReportSyncStopped virtual ReportSyncStopped
 
-#include "../../../../../components/sync/driver/sync_stopped_reporter.h"
+#include "src/components/sync/driver/sync_stopped_reporter.h"
 
 #undef ReportSyncStopped
 

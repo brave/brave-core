@@ -25,7 +25,7 @@ FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
 
 #define OnCommitResponse virtual OnCommitResponse
 
-#include "../../../../../components/sync/engine/model_type_worker.h"
+#include "src/components/sync/engine/model_type_worker.h"
 
 #undef OnCommitResponse
 #undef BRAVE_MODEL_TYPE_WORKER_H_

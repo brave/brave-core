@@ -6,6 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_NETWORK_SERVICE_NETWORK_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_NETWORK_SERVICE_NETWORK_DELEGATE_H_
 
-#include "../../../../services/network/network_service_network_delegate.h"
+#include "src/services/network/network_service_network_delegate.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_NETWORK_SERVICE_NETWORK_DELEGATE_H_

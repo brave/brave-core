@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #define AddNativeUiColorMixer AddNativeUiColorMixer_Chromium
-#include "../../../../../ui/color/mac/native_color_mixers_mac.mm"
+#include "src/ui/color/mac/native_color_mixers_mac.mm"
 #undef AddNativeUiColorMixer
 
 namespace ui {

@@ -40,20 +40,18 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   GURL GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void GetAllowedAccounts(bool include_accounts_when_locked,
+                          GetAllowedAccountsCallback callback) override;
 
  private:
   void ContinueRequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback,
-      bool success,
-      const std::vector<std::string>& allowed_accounts);
+      const std::vector<std::string>& allowed_accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
   void ContinueRequestEthereumPermissionsKeyringInfo(
       RequestEthereumPermissionsCallback callback,
-      const std::vector<std::string>& allowed_accounts,
       brave_wallet::mojom::KeyringInfoPtr keyring_info);
-  void ContinueGetAllowedAccounts(
-      BraveWalletProviderDelegate::GetAllowedAccountsCallback callback,
-      const absl::optional<std::string>& selected_account);
 
   // content::WebContentsObserver overrides
   void WebContentsDestroyed() override;

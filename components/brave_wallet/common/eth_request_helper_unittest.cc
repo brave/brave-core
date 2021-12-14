@@ -28,6 +28,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
     std::string chain_id;
     EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
+    mojom::ERCTokenPtr token;
+    EXPECT_FALSE(ParseWalletWatchAssetParams(error_case, &token, &message));
   }
 }
 
@@ -552,6 +554,330 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
+}
+
+TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
+  std::string json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "https://test.com/test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+
+  mojom::ERCTokenPtr expected_token = mojom::ERCToken::New(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
+      "https://test.com/test.png", true, false, "BAT", 18, true, "");
+
+  mojom::ERCTokenPtr token;
+  std::string error_message;
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  expected_token->logo = "";
+
+  // Test optional image and non-checksum address.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Decimals as string is allowed for web compability.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": "18",
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Missing type
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+      }
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing address
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid address
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "123",
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing symbol
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid symbol, len = 12
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "LOOOOOOOOONG",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing decimals
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid decimals, negative number or larger than 36.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": -1,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 37,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Params in an array should work for legacy send.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": [{
+      "options": {
+        "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+        "symbol": "BAT",
+        "decimals": 18
+      },
+      "type": "ERC20"
+    }]
+  })";
+
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Test image parameter
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "http://test.com/test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "http://test.com/test.png";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo =
+      "data:image/"
+      "png;base64,"
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3"
+      "A0FDAAAAAElFTkSuQmCC";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Invalid image parameter will have empty logo string.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+}
+
+TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
+  std::vector<std::string> restricted_methods;
+
+  std::string json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>{"eth_accounts"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+          "eth_someFutureMethod": {}
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods,
+            (std::vector<std::string>{"eth_accounts", "eth_someFutureMethod"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{}]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>()));
+
+  EXPECT_FALSE(ParseRequestPermissionsParams(json, nullptr));
+  EXPECT_FALSE(ParseRequestPermissionsParams("", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("\"42\"", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{}", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("[]", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: 5 }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [5] }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [] }", &restricted_methods));
 }
 
 }  // namespace brave_wallet

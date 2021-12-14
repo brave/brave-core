@@ -94,6 +94,11 @@ const accounts: WalletAccountType[] = [
   }
 ]
 
+const mockDefaultCurrencies = {
+  fiat: 'USD',
+  crypto: 'BTC'
+}
+
 export const _ConfirmTransaction = () => {
   const transactionInfo: TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -171,6 +176,7 @@ export const _ConfirmTransaction = () => {
   return (
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
+        defaultCurrencies={mockDefaultCurrencies}
         siteURL='https://app.uniswap.org'
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransction={onQueueNextTransction}
@@ -215,7 +221,6 @@ export const _AllowAddChangeNetwork = () => {
       <AllowAddChangeNetworkPanel
         siteOrigin='https://app.uniswap.org'
         panelType='change'
-        selectedNetwork={mockNetworks[0]}
         onApproveAddNetwork={onApprove}
         onApproveChangeNetwork={onApprove}
         onCancel={onCancel}
@@ -461,9 +466,19 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(`Will disconnect ${address} from ${origin}`)
   }
 
+  const onConnectToOrigin = (origin: string, account: WalletAccountType) => {
+    console.log(`Will connect ${account.address} to ${origin}`)
+  }
+
   const onAddAccount = () => {
     console.log('Will Expand to the Accounts Page')
   }
+
+  const onAddNetwork = () => {
+    console.log('Will redirect user to network settings')
+  }
+
+  const connectedAccounts = accounts.slice(0, 2)
 
   return (
     <StyledExtensionWrapper>
@@ -479,6 +494,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         <>
           {selectedPanel === 'main' ? (
             <ConnectedPanel
+              defaultCurrencies={mockDefaultCurrencies}
               selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}
               isConnected={true}
@@ -516,6 +532,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     networks={mockNetworks}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}
+                    hasAddButton={true}
+                    onAddNetwork={onAddNetwork}
                   />
                 </SelectContainer>
               }
@@ -552,6 +570,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     }
                     {selectedPanel === 'buy' &&
                       <Buy
+                        defaultCurrencies={mockDefaultCurrencies}
                         onChangeBuyView={onChangeSendView}
                         onInputChange={onSetBuyAmount}
                         onSubmit={onSubmitBuy}
@@ -563,9 +582,14 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     }
                     {selectedPanel === 'sitePermissions' &&
                       <SitePermissions
+                        selectedAccount={selectedAccount}
                         siteURL='https://app.uniswap.org'
                         onDisconnect={onDisconnectFromOrigin}
-                        connectedAccounts={accounts}
+                        connectedAccounts={connectedAccounts}
+                        accounts={accounts}
+                        onSwitchAccount={onSelectAccount}
+                        onConnect={onConnectToOrigin}
+                        onAddAccount={onAddAccount}
                       />
                     }
                   </ScrollContainer>

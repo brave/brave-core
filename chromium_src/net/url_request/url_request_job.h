@@ -12,7 +12,7 @@
       const GURL& destination, bool* same_origin_out_for_metrics = nullptr); \
   static GURL ComputeReferrerForPolicy_Chromium
 
-#include "../../../../net/url_request/url_request_job.h"
+#include "src/net/url_request/url_request_job.h"
 
 #undef ComputeReferrerForPolicy
 

@@ -25,5 +25,5 @@ base::Time BraveCanonExpiration(const base::Time& cookie_expires,
 #define BRAVE_CREATE \
   cookie_expires = BraveCanonExpiration(cookie_expires, creation_time);
 
-#include "../../../../net/cookies/canonical_cookie.cc"
+#include "src/net/cookies/canonical_cookie.cc"
 #undef BRAVE_CREATE

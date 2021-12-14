@@ -45,7 +45,7 @@ bool ShouldIgnoreHarmonySpec(const views::View& view) {
 }  // namespace
 
 #define ChromeTypographyProvider ChromeTypographyProvider_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.cc"
+#include "src/chrome/browser/ui/views/chrome_typography_provider.cc"
 #undef ChromeTypographyProvider
 
 SkColor ChromeTypographyProvider::GetColor(const views::View& view,

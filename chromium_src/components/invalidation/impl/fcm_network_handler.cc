@@ -6,7 +6,7 @@
 #include "components/invalidation/impl/fcm_network_handler.h"
 
 #define StartListening StartListening_ChromiumImpl
-#include "../../../../../components/invalidation/impl/fcm_network_handler.cc"
+#include "src/components/invalidation/impl/fcm_network_handler.cc"
 #undef StartListening
 
 namespace invalidation {

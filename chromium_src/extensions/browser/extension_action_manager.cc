@@ -12,5 +12,5 @@
        extension.id() == brave_extension_id) ?         \
         kBraveActionGraphicSize :
 
-#include "../../../../extensions/browser/extension_action_manager.cc"
+#include "src/extensions/browser/extension_action_manager.cc"
 #undef BRAVE_GET_EXTENSION_ACTION

@@ -55,6 +55,7 @@
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="6821903322090655051">Brave Rewardsは無効です</translation>
+<translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="3849957491997306859">自動検出</translation>
 <translation id="8798099450830957504">デフォルト</translation>
 <translation id="4176463684765177261">無効</translation>
@@ -429,6 +430,7 @@
 <translation id="2653659639078652383">送信</translation>
 <translation id="2556708692502648323">ウォレットネットワーク</translation>
 <translation id="1330032157352961756">新規チェーンID</translation>
+<translation id="3423620355610881890">正の10進数</translation>
 <translation id="726121047592132939">新規チェーン名</translation>
 <translation id="1034112277864078119">チェーン名を入力</translation>
 <translation id="4672314527143443556">チェーンの通貨名</translation>
@@ -442,6 +444,7 @@
 <translation id="3047726704186619366">アイコンURL</translation>
 <translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
 <translation id="6301398959353668507">この項目は必須です。</translation>
+<translation id="7504462451153306677">形式が無効です。チェーンIDは正の数にしてください</translation>
 <translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
 <translation id="650071759190249039">内部エラーが発生しました。ネットワークを追加できません。</translation>
 <translation id="868529041590572443">ネイティブ通貨についての情報をすべて入力してください</translation>

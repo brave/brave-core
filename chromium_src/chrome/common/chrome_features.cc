@@ -6,7 +6,7 @@
 #include "chrome/common/chrome_features.h"
 
 #define kDnsOverHttpsShowUiParam kDnsOverHttpsShowUiParamDisabled
-#include "../../../../chrome/common/chrome_features.cc"
+#include "src/chrome/common/chrome_features.cc"
 #undef kDnsOverHttpsShowUiParam
 
 #include "base/feature_override.h"

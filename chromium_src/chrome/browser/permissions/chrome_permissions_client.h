@@ -14,7 +14,7 @@
                                      ContentSettingsType type) override; \
   bool CanBypassEmbeddingOriginCheck
 
-#include "../../../../../chrome/browser/permissions/chrome_permissions_client.h"
+#include "src/chrome/browser/permissions/chrome_permissions_client.h"
 #undef CanBypassEmbeddingOriginCheck
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_CHROME_PERMISSIONS_CLIENT_H_

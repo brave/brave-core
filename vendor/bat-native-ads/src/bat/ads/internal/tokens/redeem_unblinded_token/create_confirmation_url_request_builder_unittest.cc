@@ -40,6 +40,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -76,6 +77,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -112,6 +114,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -148,6 +151,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -184,6 +188,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -220,6 +225,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -256,6 +262,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -292,6 +299,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -328,6 +336,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -364,6 +373,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -400,6 +410,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
@@ -436,6 +447,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 

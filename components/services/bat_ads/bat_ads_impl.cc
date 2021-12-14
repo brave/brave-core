@@ -190,10 +190,6 @@ void BatAdsImpl::OnWalletUpdated(
   ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::ReconcileAdRewards() {
-  ads_->ReconcileAdRewards();
-}
-
 void BatAdsImpl::GetAdsHistory(const double from_timestamp,
                                const double to_timestamp,
                                GetAdsHistoryCallback callback) {

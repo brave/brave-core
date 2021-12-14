@@ -47,7 +47,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 
 #define GetVersionNumber GetBraveVersionNumberForDisplay
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
+#include "src/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
 #undef GetVersionNumber
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"

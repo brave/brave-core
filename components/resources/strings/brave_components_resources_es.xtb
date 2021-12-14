@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Finaliza la verificación de tu monedero</translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="3656941797339037856">¡Vincula Brave Rewards con Gemini!</translation>
-<translation id="3066983737886188034">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
+<translation id="2383784987664887340">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
+<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
 <translation id="7404779623219601861">Canjear BAT para las tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">Dirección o URL 0x</translation>
 <translation id="2860280209982026951">Brave utiliza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">0x procesará la dirección Ethereum y la dirección IP para completar una transacción (se ocupará incluso de calcular los presupuestos). 0x SOLO utilizará estos datos con el propósito de procesar las transacciones.</translation>
+<translation id="4626407663177532837">El presupuesto incluye una comisión de Brave del 0,875 %.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Te damos la bienvenida a la nueva experiencia de Brave Wallet</translation>
 <translation id="8303434745767477417">Conserva criptoactivos bajo tu custodia. Lleva un seguimiento del rendimiento de tu cartera e interactúa con aplicaciones descentralizadas de Web3. Intercambia, invierte, toma prestados y presta activos haciendo operaciones DeFi. Y todo ello sin salir del navegador de Brave, para no poner en riesgo tu privacidad. No se requieren extensiones ni descargas.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
 <translation id="5317781812114905957">Instrucciones</translation>
 <translation id="1178198982208000092">Conecta tu <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">La cartera de hardware requiere confirmación en el dispositivo. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">La cartera de hardware requiere que la aplicación de Ethereum esté abierta en <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">recibida</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">No se esperan datos JSON</translation>
 <translation id="3282936527763045737">La contraseña no es correcta</translation>
 <translation id="1119447706177454957">Error interno</translation>
+<translation id="3327639091470204775">No ha sido posible establecer conexión con el puente de Trezor</translation>
 <translation id="6672377693827764095">Error interno. No ha sido posible obtener las cuentas.</translation>
 <translation id="8933250418452564886">No se ha podido encontrar la transacción del hardware. Inténtalo de nuevo</translation>
 <translation id="5999974802900788338">Se ha recibido un error del dispositivo de hardware. Probablemente tengas que confirmar la transacción en tu dispositivo</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Mensaje de error al iniciar sesión. Inténtalo de nuevo</translation>
 <translation id="8273603707418703324">Mensaje de error al iniciar sesión. Se ha solicitado un conjunto de claves desconocido. Inténtalo de nuevo</translation>
 <translation id="5265455943786954050">El comando de Trezor ya está en curso</translation>
-<translation id="7017116822583380542">Trezor Bridge no está listo</translation>
+<translation id="7017116822583380542">El puente de Trezor no está listo</translation>
 <translation id="3155170474926428993">Lanzador de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Control de eventos de Tor</translation>

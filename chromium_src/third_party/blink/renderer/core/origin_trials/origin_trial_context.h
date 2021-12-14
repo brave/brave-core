@@ -14,7 +14,7 @@
   AddForceEnabledTrials_ChromiumImpl(const Vector<String>& trial_names); \
   void AddForceEnabledTrials
 
-#include "../../../../../../../third_party/blink/renderer/core/origin_trials/origin_trial_context.h"
+#include "src/third_party/blink/renderer/core/origin_trials/origin_trial_context.h"
 #undef AddForceEnabledTrials
 #undef AddFeature
 

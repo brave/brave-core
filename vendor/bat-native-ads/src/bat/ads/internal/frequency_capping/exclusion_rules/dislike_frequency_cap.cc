@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info.h"
 
 namespace ads {
 
@@ -17,14 +17,14 @@ DislikeFrequencyCap::~DislikeFrequencyCap() = default;
 
 std::string DislikeFrequencyCap::GetUuid(
     const CreativeAdInfo& creative_ad) const {
-  return creative_ad.creative_set_id;
+  return creative_ad.advertiser_id;
 }
 
 bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
     last_message_ =
-        base::StringPrintf("creativeSetId %s excluded due to being disliked",
-                           creative_ad.creative_set_id.c_str());
+        base::StringPrintf("advertiserId %s excluded due to being disliked",
+                           creative_ad.advertiser_id.c_str());
 
     return true;
   }
@@ -37,18 +37,19 @@ std::string DislikeFrequencyCap::GetLastMessage() const {
 }
 
 bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  const FilteredAdList filtered_ads = Client::Get()->GetFilteredAds();
-  if (filtered_ads.empty()) {
+  const FilteredAdvertiserList filtered_advertisers =
+      Client::Get()->GetFilteredAdvertisers();
+  if (filtered_advertisers.empty()) {
     return true;
   }
 
   const auto iter = std::find_if(
-      filtered_ads.cbegin(), filtered_ads.cend(),
-      [&creative_ad](const FilteredAdInfo& filtered_ad) {
-        return filtered_ad.creative_set_id == creative_ad.creative_set_id;
+      filtered_advertisers.cbegin(), filtered_advertisers.cend(),
+      [&creative_ad](const FilteredAdvertiserInfo& filtered_advertiser) {
+        return filtered_advertiser.id == creative_ad.advertiser_id;
       });
 
-  if (iter == filtered_ads.end()) {
+  if (iter == filtered_advertisers.end()) {
     return true;
   }
 

@@ -46,3 +46,8 @@ export type SwitchEthereumChainProcessedPayload = {
   approved: boolean
   origin: Url
 }
+
+export type AddSuggestTokenProcessedPayload = {
+  approved: boolean
+  contractAddress: string
+}

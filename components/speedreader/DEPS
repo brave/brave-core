@@ -3,6 +3,7 @@ include_rules = [
   "+components/prefs",
   "+components/sessions/content",
   "+content/public/browser",
+  "+crypto",
   "+services/network/public",
   "+services/network/public/cpp",
   "+services/network/public/mojom",

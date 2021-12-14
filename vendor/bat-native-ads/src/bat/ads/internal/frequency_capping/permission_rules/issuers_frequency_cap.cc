@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap.h"
 
-#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
+#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/tokens/issuers/issuer_types.h"
 #include "bat/ads/internal/tokens/issuers/issuers_util.h"
 

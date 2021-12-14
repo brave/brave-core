@@ -19,6 +19,6 @@
           testsuite_name.c_str(), result.GetTestName().c_str(),              \
           failure_data.c_str());
 
-#include "../../../../../base/test/launcher/test_results_tracker.cc"
+#include "src/base/test/launcher/test_results_tracker.cc"
 
 #undef TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS

@@ -11,6 +11,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -21,18 +22,31 @@ PermissionRules::PermissionRules() = default;
 PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
+  // permission rules base class
   CatalogFrequencyCap catalog_frequency_cap;
   if (!ShouldAllow(&catalog_frequency_cap)) {
     return false;
   }
 
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
+  // permission rules base class
   IssuersFrequencyCap issuers_frequency_cap;
   if (!ShouldAllow(&issuers_frequency_cap)) {
     return false;
   }
 
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
+  // permission rules base class
   UnblindedTokensFrequencyCap unblinded_tokens_frequency_cap;
   if (!ShouldAllow(&unblinded_tokens_frequency_cap)) {
+    return false;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
+  // permission rules base class
+  UserActivityFrequencyCap user_activity_frequency_cap;
+  if (!ShouldAllow(&user_activity_frequency_cap)) {
     return false;
   }
 

@@ -78,7 +78,9 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       std::unique_ptr<v8::Global<v8::Function>> callback,
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
-      bool force_json_response);
+      bool force_json_response,
+      mojom::ProviderError* error,
+      std::string* error_message);
 
   void OnCommonRequestOrSendAsync(
       base::Value id,
@@ -103,8 +105,30 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      bool success,
-      const std::vector<std::string>& accounts);
+      const std::vector<std::string>& accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void OnRequestPermissionsAccountsRequested(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      const std::vector<std::string>& accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void OnGetGetPermissionsAccountsRequested(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      const std::vector<std::string>& accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+
   void OnIsUnlocked(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
@@ -115,8 +139,18 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                             v8::Global<v8::Promise::Resolver> promise_resolver,
                             v8::Isolate* isolate,
                             bool force_json_response,
-                            bool success,
-                            const std::vector<std::string>& accounts);
+                            const std::vector<std::string>& accounts,
+                            mojom::ProviderError error,
+                            const std::string& error_message);
+  void OnGetPermissions(base::Value id,
+                        v8::Global<v8::Context> global_context,
+                        std::unique_ptr<v8::Global<v8::Function>> callback,
+                        v8::Global<v8::Promise::Resolver> promise_resolver,
+                        v8::Isolate* isolate,
+                        bool force_json_response,
+                        const std::vector<std::string>& accounts,
+                        mojom::ProviderError error,
+                        const std::string& error_message);
   void OnAddOrSwitchEthereumChain(
       base::Value id,
       v8::Global<v8::Context> global_context,
@@ -124,7 +158,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      int provider_error,
+      mojom::ProviderError error,
       const std::string& error_message);
   void OnAddAndApproveTransaction(
       base::Value id,
@@ -133,8 +167,8 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      bool success,
       const std::string& tx_meta_id,
+      mojom::ProviderError error,
       const std::string& error_message);
   void OnSignMessage(base::Value id,
                      v8::Global<v8::Context> global_context,
@@ -143,7 +177,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                      v8::Isolate* isolate,
                      bool force_json_response,
                      const std::string& signature,
-                     int error,
+                     mojom::ProviderError error,
                      const std::string& error_message);
   void SendResponse(base::Value id,
                     v8::Global<v8::Context> global_context,
@@ -163,6 +197,17 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       bool force_json_response,
       mojom::EthereumChainPtr chain,
       mojom::KeyringInfoPtr keyring_info);
+
+  void OnAddSuggestToken(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> global_callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      bool accepted,
+      mojom::ProviderError error,
+      const std::string& error_message);
 
   content::RenderFrame* render_frame_;
   bool brave_use_native_wallet_;

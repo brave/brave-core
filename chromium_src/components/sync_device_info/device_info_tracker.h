@@ -19,7 +19,7 @@ class BraveDeviceInfo;
   GetAllBraveDeviceInfo() const = 0;                                           \
   virtual void ForcePulseForTest
 
-#include "../../../../components/sync_device_info/device_info_tracker.h"
+#include "src/components/sync_device_info/device_info_tracker.h"
 
 #undef ForcePulseForTest
 

@@ -10,7 +10,7 @@
   CanShowEnhancedProtectionMessage() { return false; } \
   bool CanShowEnhancedProtectionMessage_ChromiumImpl
 
-#include "../../../../../components/security_interstitials/core/base_safe_browsing_error_ui.h"
+#include "src/components/security_interstitials/core/base_safe_browsing_error_ui.h"
 #undef CanShowEnhancedProtectionMessage
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SECURITY_INTERSTITIALS_CORE_BASE_SAFE_BROWSING_ERROR_UI_H_
