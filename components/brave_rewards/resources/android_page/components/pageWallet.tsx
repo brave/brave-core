@@ -862,7 +862,7 @@ class PageWallet extends React.Component<Props, State> {
           summaryData={summaryData}
           autoContributeEnabled={enabledContribute}
           onExternalWalletAction={this.onExternalWalletAction}
-          onViewPendingTips={this.onModalPendingToggle}
+          onViewPendingTips={undefined}
         />
         <ManageWalletButton onClick={this.onModalBackupOpen} />
         {
