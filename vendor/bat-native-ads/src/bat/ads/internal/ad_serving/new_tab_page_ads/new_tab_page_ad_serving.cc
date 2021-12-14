@@ -112,7 +112,8 @@ bool AdServing::ServeAd(const NewTabPageAdInfo& ad,
                         GetNewTabPageAdCallback callback) const {
   DCHECK(ad.IsValid());
 
-  // TODO(tmancey): Add logging for wallpapers
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Add logging for
+  // wallpapers
   BLOG(1, "Serving new tab page ad:\n"
               << "  uuid: " << ad.uuid << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"

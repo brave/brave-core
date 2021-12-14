@@ -84,7 +84,8 @@ bool NewTabPageAdInfo::FromJson(const std::string& json) {
     alt = document["alt"].GetString();
   }
 
-  // TODO(tmancey): Read wallpapers JSON
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Read wallpapers
+  // JSON
 
   if (document.HasMember("target_url")) {
     target_url = document["target_url"].GetString();
@@ -127,7 +128,8 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->String("alt");
   writer->String(info.alt.c_str());
 
-  // TODO(tmancey): Write wallpapers JSON
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Write wallpapers
+  // JSON
 
   writer->String("target_url");
   writer->String(info.target_url.c_str());
