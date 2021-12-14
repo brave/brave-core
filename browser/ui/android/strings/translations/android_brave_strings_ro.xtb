@@ -357,6 +357,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5617673581653540121">Conexiunea dvs. este acum criptată.</translation>
 <translation id="4055107796760496928">Dacă este disponibilă, Brave va trece automat la o conexiune securizată.</translation>
 <translation id="8869714780588464835">Dați vestea mai departe</translation>
+<translation id="7427391215172269363">În fiecare zi, economisesc date folosind browserul Brave.</translation>
 <translation id="5372054974373489308">1000 de urmăriri și reclame blocate!</translation>
 <translation id="2338952568654182692">5000 de urmăriri și reclame blocate!</translation>
 <translation id="5289711064670408815">10.000 de urmăriri și reclame blocate!</translation>
@@ -524,27 +525,27 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6146966915297143881">continuați la conectare</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
-<translation id="8825032646286791700">DeFi și stocarea de criptomonede în siguranță</translation>
-<translation id="5460364286096798286">Păstrați criptomonede. Tranzacționați active. Vedeți prețurile și performanța portofoliului. Investiți, obțineți și oferiți împrumuturi cu DeFi!</translation>
-<translation id="1748009926009835882">Configurare portofel de criptomonede</translation>
+<translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
+<translation id="8339846196588658366">Păstrați în custodie criptomonede și monitorizați performanța portofoliului, totul direct din browserul Brave, care protejează confidențialitatea dvs.</translation>
+<translation id="4472575034687746823">Începeți</translation>
 <translation id="2759836790106646094">Realizați o copie de rezervă după portofelul dvs. acum!</translation>
-<translation id="5156354224138379811">La pasul următor, veți vedea 12 cuvinte care vă permit să recuperați portofelul dvs. pentru criptomonede</translation>
+<translation id="1078873179929044999">La pasul următor, veți vedea o expresie de recuperare din 12 cuvinte, pe care o puteți folosi pentru a recupera principalele dvs. conturi de criptomonede. Salvați expresia într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="2359808026110333948">Continuă</translation>
-<translation id="5024543173656851695">Înțeleg faptul că, dacă pierd cuvintele pentru recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
+<translation id="1904000155026201268">Înțeleg faptul că, dacă pierd expresia de recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
 <translation id="3933122286596948824">Expresia dvs. de recuperare</translation>
-<translation id="6146351434671268516">Scrieți sau copiați aceste cuvinte în ordinea corectă și salvați-le într-un loc sigur!</translation>
-<translation id="7408247683131762445">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua fondurile definitiv.</translation>
-<translation id="939275786514736244">Am realizat o copie de rezervă după expresia mea într-un loc sigur</translation>
+<translation id="5077747669435508720">Scrieți sau copiați aceste cuvinte exact în ordinea indicată mai jos și salvați-le într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
+<translation id="2708402071160162126">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua activele definitiv.</translation>
+<translation id="111912712268284159">Am realizat o copie de rezervă după expresia mea într-un loc sigur.</translation>
 <translation id="6896758677409633944">Copiază</translation>
-<translation id="2604744480284798833">Realizați o copie de rezervă după portofel, pentru a vă proteja portofoliul de criptomonede în cazul pierderii accesului.</translation>
-<translation id="8289942708804097960">Cumpărați criptomonede folosind Apple Pay, un card de credit ori un card de debit</translation>
+<translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
+<translation id="8289942708804097960">Cumpărați criptomonede folosind un card de credit ori un card de debit.</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
 <translation id="8982246458261383692">Tranzacționați criptomonede cu agregatorul de schimb descentralizat Brave!</translation>
 <translation id="1783600039044302171">Securizați contul dvs. pentru criptomonede cu o parolă</translation>
 <translation id="3726490322412361740">Introduceți parola</translation>
-<translation id="4450951602553063001">Reintroduceți parola</translation>
-<translation id="1783870616707290226">Parolele trebuie să aibă cel puțin 7 caractere</translation>
-<translation id="7383102760859258982">Parola introdusă a doua oară nu este identică cu prima</translation>
+<translation id="3038243139480464605">Confirmați parola</translation>
+<translation id="3717685683157254329">Parolele trebuie să aibă cel puțin 7 caractere și să conțină o literă, o cifră și un caracter special.</translation>
+<translation id="7396672979287122068">Parola de confirmare nu este identică cu prima</translation>
 <translation id="3188963375823360044">1 oră</translation>
 <translation id="8163269366661594721">1 zi</translation>
 <translation id="7640956400175663828">1 săpt.</translation>
@@ -553,24 +554,25 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6895566650974550243">TOATĂ PERIOADA</translation>
 <translation id="5071303414930953888">Contul <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Adăugați un cont</translation>
-<translation id="2632612428525029752">Actualizați contul</translation>
+<translation id="7665369617277396874">Adaugă un cont</translation>
+<translation id="3448492834076427715">Actualizează contul</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activați deblocarea cu amprentă?</translation>
 <translation id="5493402808936397665">Activați datele biometrice, pentru a debloca rapid portofelul fără a introduce parola.</translation>
-<translation id="1544192797660353713">Portofel</translation>
+<translation id="8030647312184163932">Deblocare cu amprentă</translation>
+<translation id="4090490645603511157">Utilizați datele biometrice pentru a debloca rapid portofelul fără a introduce parola.</translation>
+<translation id="5379398699598690674">Portofel (beta)</translation>
 <translation id="6901810042765869341">Introduceți expresia de recuperare, pentru a restabili contul dvs. de criptomonede Brave Wallet.</translation>
-<translation id="1970161551843843564">Restabiliți contul pentru criptomonede</translation>
+<translation id="9120654436199628567">Restabiliți contul pentru criptomonede</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
 <translation id="283071225285270357">Introduceți expresia de recuperare</translation>
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
-<translation id="2718669004132381989">Atingeți cuvintele, pentru a le pune unele lângă altele în ordinea corectă.</translation>
+<translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="3157931365184549694">Restabilește</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="6657585470893396449">Parolă</translation>
-<translation id="1569452037668432756">Pentru deblocare, introduceți parola</translation>
-<translation id="3717685683157254329">Parola trebuie să conțină cel puțin 7 caractere, dintre care o cifră și un caracter special</translation>
+<translation id="5168349973342709369">Introduceți parola pentru a debloca portofelul</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="5760476995887363522">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
@@ -581,7 +583,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Până la (estimare)</translation>
 <translation id="6998989275928107238">Către</translation>
-<translation id="6664416064035847539">adresă sau url</translation>
+<translation id="2589431635772931954">Adresă sau URL</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
 <translation id="1987317783729300807">Conturi</translation>
 <translation id="3535654229833214438">Tranzacții</translation>
@@ -611,11 +613,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2490428413101944234">Robinet de testare</translation>
 <translation id="2581671693710952401">Obțineți Ether</translation>
 <translation id="8165484222652118977">Obțineți Ether de la un robinet pentru rețeaua de test <ph name="NETWORK"/></translation>
-<translation id="7420359180991315365">Continuați la Wire</translation>
+<translation id="7420359180991315365">Continuați la Wyre</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
+<translation id="3784455785234192852">Blocați</translation>
 <translation id="5040262127954254034">Confidențialitate</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
-<translation id="414639769490080648">Câte minute doriți să așteptați până la blocarea automată a portofelului Brave?</translation>
+<translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="4993345308607970390">Resetați portofelul Brave</translation>
 <translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="930472263779999522">{MINUTE, plural, =1 {# minut} other {# minute}}</translation>
@@ -743,6 +746,8 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3211051910418903298">Reîncărcați mai rar opțiunea de date mobile</translation>
 <translation id="1092355580602106002">Mai puține reclame înseamnă mai puține date în fiecare pagină pe care o încărcați. Folosiți Brave pentru navigarea pe internet!</translation>
 <translation id="623962032102267945">Brave înseamnă mai puține date mobile la fiecare pagină</translation>
+<translation id="4355217341028673744">• Un plus de confidențialitate</translation>
+<translation id="3679020972083025535">• Fără reclame deranjante</translation>
 <translation id="8047527352810290817">Editare gas</translation>
 <translation id="7358989216567322955">Taxa maximă pentru prioritate</translation>
 <translation id="9091334651803050473">Deși nu există garanții, probabil că minerii vor acorda prioritate tranzacției dvs. dacă plătiți o taxă mai mare.</translation>
@@ -755,4 +760,19 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1011713837432053857">Limită Gas</translation>
 <translation id="1254969878422524947">Limita contribuției pentru gas (Gwei)</translation>
 <translation id="7373308452149471621">Limita prețului pentru gas (Gwei)</translation>
+<translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
+<translation id="7033470144757208254">Brave utilizează 0x ca agregator de schimb descentralizat.</translation>
+<translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
+<translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
+<translation id="8574289650879708853">Adăugați activ personalizat</translation>
+<translation id="7791543448312431591">Adaugă</translation>
+<translation id="6600400596821238377">Numele token-ului</translation>
+<translation id="4432966365400169165">Adresă contract token</translation>
+<translation id="4092152169181928870">Simbol token</translation>
+<translation id="4351811224047421378">Zecimale de precizie</translation>
+<translation id="8614026298974065517">Eliminați activ personalizat</translation>
+<translation id="4378941981362528553">Doriți să eliminați tokenul <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Adresa destinatară este propria dvs. adresă</translation>
+<translation id="749944179568745958">Nu este o adresă ETH validă</translation>
+<translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
 </translationbundle>

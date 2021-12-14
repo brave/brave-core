@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
 <translation id="3656941797339037856">Knyt Rewards til Gemini!</translation>
-<translation id="3066983737886188034">Med Gemini kan du nemt handle, opbevare og tjene 3,49 % APY* på dine BAT. Bekræft, og link din Brave Rewards-wallet til Gemini nu!</translation>
+<translation id="2383784987664887340">Med Gemini kan du nemt handle, opbevare og tjene 3,49 % APY* på dine BAT. Bekræft, og link din Brave Rewards-wallet til Gemini nu!</translation>
+<translation id="2237374144728570574">* Gemini optjener APY fra 15. sep. 2021</translation>
 <translation id="7404779623219601861">Indløs BAT for gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du indløse din BAT for populære gavekort til mærkevarer.</translation>
 <translation id="6915065518766963119">* Kræver støtte-verificering.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x-adresse eller -url</translation>
 <translation id="2860280209982026951">Brave bruger <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
 <translation id="151946611346774041">0x vil behanle Ethereum-adressen og IP-adresen for at gennemføre en transaktion (deriblandt modtagelse af tilbud). 0x vil KUN bruge disse data i forbindelse med behandling af transaktioner.</translation>
+<translation id="4626407663177532837">Priser inkluderer et Brave-gebyr på 0,875 %.</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave Wallet</translation>
 <translation id="8303434745767477417">Behold crypto-aktiver i dine varetægt. Følg porteføljepræstation, og interagér med web 3 DApps. Handl, investér, lån og udlån med DeFi. Det hele direkte fra din Brave-browser. Ingen udvidelser, ingen downloads kræves.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> afbrudt</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="1178198982208000092">Opret forbindelse til <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hardware Wallet kræver bekræftelse på enheden. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Hardware Wallet kræver, at Ethereum-appen er åben på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">modtaget</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-data ikke forventet</translation>
 <translation id="3282936527763045737">Adgangskoden er ikke korrekt</translation>
 <translation id="1119447706177454957">Intern fejl.</translation>
+<translation id="3327639091470204775">Kunne ikke oprette forbindelse til Trezor-bro</translation>
 <translation id="6672377693827764095">Intern fejl. Kunne ikke hente konti</translation>
 <translation id="8933250418452564886">Hardware-transaktionen blev ikke fundet, prøv venligst igen</translation>
 <translation id="5999974802900788338">Fejl modtaget fra hardware-enhed. Du skal formentlig bekræfte transaktionen på din enhed</translation>

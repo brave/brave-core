@@ -526,27 +526,27 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6146966915297143881">fortsett til innlogging</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Bytt</translation>
-<translation id="8825032646286791700">DeFi &amp; sikker kryptolagring</translation>
-<translation id="5460364286096798286">Ha kryptoen i din varetekt. Bytt verdier, se priser og hvordan porteføljen din presterer. Invester, lån og lån ut med DeFi.</translation>
-<translation id="1748009926009835882">Sett opp Krypto</translation>
+<translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
+<translation id="8339846196588658366">Hold kryptoaktivaene dine nært og følg prestasjonen til porteføljen din. Alt i den personvernfokuserte nettleseren fra Brave.</translation>
+<translation id="4472575034687746823">Kom i gang</translation>
 <translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
-<translation id="5156354224138379811">I neste trinn får du se 12 ord som lar deg gjenopprette kryptolommeboken din.</translation>
+<translation id="1078873179929044999">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
-<translation id="5024543173656851695">Jeg forstår at hvis jeg mister ordene for gjenoppretting, mister jeg også tilgangen til kryptolommeboken min.</translation>
+<translation id="1904000155026201268">Jeg forstår at jeg ikke får tilgang til kryptolommeboken min igjen om jeg mister gjenopprettingsfrasen.</translation>
 <translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
-<translation id="6146351434671268516">Skriv ned eller kopier disse ordene i korrekt rekkefølge, og oppbevar dem på et sikkert sted.</translation>
-<translation id="7408247683131762445">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen kan ta ut verdiene dine for alltid.</translation>
-<translation id="939275786514736244">Jeg har tatt sikkerhetskopi av frasen min og lagret den på et sikkert sted</translation>
+<translation id="5077747669435508720">Skriv ned eller kopier disse ordene i den nøyaktige rekkefølgen vist nedenfor, og lagre informasjonen på et trygt sted. Sikkerhetsfrasen din er den eneste måten du kan gjenopprette kontotilgangen på hvis du glemmer passordet, enheten din går tapt eller du vil bytte lommebøker.</translation>
+<translation id="2708402071160162126">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen, kan ta ut verdiene dine for alltid.</translation>
+<translation id="111912712268284159">Jeg har lagret sikkerhetsfrasen på et trygt sted.</translation>
 <translation id="6896758677409633944">Kopier</translation>
-<translation id="2604744480284798833">Sikkerhetskopier lommeboken din nå for å beskytte kryptolommeboken din fra tap av tilgang</translation>
-<translation id="8289942708804097960">Kjøp krypto med Apple Pay, kreditt- eller debetkort.</translation>
+<translation id="375882617301124395">Lag en sikkerhetskopi av kryptolommeboken din</translation>
+<translation id="8289942708804097960">Kjøp krypto med kreditt- eller debetkort.</translation>
 <translation id="841880029259839903">Send krypto eller overfør fra en konto til en annen.</translation>
 <translation id="8982246458261383692">Bytt kryptoverdier med Brave DEX-samler.</translation>
 <translation id="1783600039044302171">Sikre kryptoen din med et passord</translation>
 <translation id="3726490322412361740">Angi passord</translation>
-<translation id="4450951602553063001">Angi passord på nytt</translation>
-<translation id="1783870616707290226">Passordet må ha 7 tegn eller mer</translation>
-<translation id="7383102760859258982">Passordet som ble skrevet inn på nytt, stemmer ikke</translation>
+<translation id="3038243139480464605">Bekreft passord</translation>
+<translation id="3717685683157254329">Passordet må være minst 7 tegn langt og inneholde minst én bokstav, ett tall og ett spesialtegn.</translation>
+<translation id="7396672979287122068">Det bekreftede passordet samsvarte ikke</translation>
 <translation id="3188963375823360044">1 t</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1U</translation>
@@ -555,24 +555,25 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6977728312178289892">1Å</translation>
 <translation id="6895566650974550243">ALLE</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Legg til konto</translation>
-<translation id="2632612428525029752">Oppdater konto</translation>
+<translation id="7665369617277396874">Legg til konto</translation>
+<translation id="3448492834076427715">Oppdater kontoen</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivere åpning med fingeravtrykk?</translation>
 <translation id="5493402808936397665">Aktiver biometri for å raskt åpne lommeboken din uten bruk av passord.</translation>
-<translation id="1544192797660353713">Lommebok</translation>
+<translation id="8030647312184163932">Opplåsing med fingeravtrykk</translation>
+<translation id="4090490645603511157">Bruk biometri for raskt å låse opp lommeboken uten å skrive inn passordet ditt.</translation>
+<translation id="5379398699598690674">Lommebok (beta)</translation>
 <translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
-<translation id="1970161551843843564">Gjenopprett kryptokonto</translation>
+<translation id="9120654436199628567">Gjenopprett kryptokonto</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
 <translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
 <translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
-<translation id="2718669004132381989">Trykk på ordene for å sette dem ved siden av hverandre i riktig rekkefølge.</translation>
+<translation id="3747079125031086337">Velg ordene i sikkerhetsfrasen din i riktig rekkefølge.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="9111102763498581341">Lås opp</translation>
 <translation id="6657585470893396449">Passord</translation>
-<translation id="1569452037668432756">Angi passordet for å låse opp</translation>
-<translation id="3717685683157254329">Passordet må ha 7 tegn eller mer og må inneholde minst ett tall og et spesialtegn</translation>
+<translation id="5168349973342709369">Skriv inn passordet for å åpne lommeboken</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
 <translation id="5760476995887363522">Ordene stemte ikke overens. Prøv på nytt.</translation>
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
@@ -583,7 +584,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Til (anslag)</translation>
 <translation id="6998989275928107238">Til</translation>
-<translation id="6664416064035847539">adresse eller URL</translation>
+<translation id="2589431635772931954">Adresse eller nettadresse</translation>
 <translation id="632241521608275119">Slingringstoleranse</translation>
 <translation id="1987317783729300807">Kontoer</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
@@ -613,11 +614,12 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2490428413101944234">Test faucet</translation>
 <translation id="2581671693710952401">Skaff Ether</translation>
 <translation id="8165484222652118977">Få Ether fra en kran for <ph name="NETWORK"/> Test nettverk</translation>
-<translation id="7420359180991315365">Fortsett til Wire</translation>
+<translation id="7420359180991315365">Fortsett til Wyre</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
+<translation id="3784455785234192852">Lås</translation>
 <translation id="5040262127954254034">Personvern</translation>
 <translation id="8239147115686034860">Lås Brave-lommeboken automatisk</translation>
-<translation id="414639769490080648">Etter hvor mange minutter skal Brave-lommeboken din låses automatisk?</translation>
+<translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="4993345308607970390">Tilbakestill Brave-lommebok</translation>
 <translation id="6369495274982305511">Er du sikker på at du vil tilbakestille lommeboken? Om lommeboken din ikke er sikkerhetskopiert, vil tilbakestilling føre til at du mister alle kontodata (inkludert eventuelle tilknyttede midler). Skriv «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minutt} other {# minutter}}</translation>
@@ -721,7 +723,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="5932938770824268122">Privat nøkkel</translation>
 <translation id="2472882733835903303">Vis privat nøkkel</translation>
 <translation id="4391056902675005799">Skjul privat nøkkel</translation>
-<translation id="7518007103754668253">Advarsel: Aldri røp denne nøkkelen. Alle som har tilgang til din private nøkkel kan stjele midlene som er på kontoen din.</translation>
+<translation id="7518007103754668253">Advarsel: Du må aldri oppgi denne nøkkelen. Alle med denne private nøkkelen kan stjele alle aktiva på kontoen din.</translation>
 <translation id="1133619932669546254">Aktiver <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKSJONSTYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ingen data</translation>
@@ -745,6 +747,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="3211051910418903298">Fyll på mobildataen din sjeldnere</translation>
 <translation id="1092355580602106002">Færre annonser = mindre data på hver side du laster inn. Bruk Brave for all nettsurfingen din.</translation>
 <translation id="623962032102267945">Brave = mindre mobildata på hver side</translation>
+<translation id="4355217341028673744">• Bedre personvern</translation>
+<translation id="3679020972083025535">• Ingen plagsomme annonser</translation>
 <translation id="8047527352810290817">Rediger «gas»</translation>
 <translation id="7358989216567322955">Maks. prioritetsavgift</translation>
 <translation id="9091334651803050473">Selv om det ikke garanteres, er det sannsynlig at minere prioriterer transaksjonen din hvis du betaler en høyere avgift.</translation>
@@ -757,4 +761,19 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1011713837432053857">Grense for bensinmengde</translation>
 <translation id="1254969878422524947">Tipsgrense per «gas» (Gwei)</translation>
 <translation id="7373308452149471621">Prisgrense per «gas» (Gwei)</translation>
+<translation id="5891811606602061966">Kunne ikke importere kontoen – prøv på nytt.</translation>
+<translation id="7033470144757208254">Brave bruker 0x som en DEX-aggregator.</translation>
+<translation id="5061574358754621254">Prisdata levert av CoinGecko</translation>
+<translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
+<translation id="8574289650879708853">Legg til egendefinert ressurs</translation>
+<translation id="7791543448312431591">Legg til</translation>
+<translation id="6600400596821238377">Token-navn</translation>
+<translation id="4432966365400169165">Token-kontaktadresse</translation>
+<translation id="4092152169181928870">Token-symbol</translation>
+<translation id="4351811224047421378">Presisjonsdesimaler</translation>
+<translation id="8614026298974065517">Fjern spesialtilpasset aktivum</translation>
+<translation id="4378941981362528553">Vil du fjerne <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)-tokenet?</translation>
+<translation id="8971278306757462297">Mottaksadressen er din egen adresse</translation>
+<translation id="749944179568745958">Ikke en gyldig ETH-adresse</translation>
+<translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
 </translationbundle>

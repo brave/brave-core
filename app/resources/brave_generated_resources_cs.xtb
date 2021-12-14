@@ -55,6 +55,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="6821903322090655051">Odměny Brave jsou vypnuté</translation>
+<translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="3849957491997306859">Automatické rozpoznání</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="4176463684765177261">Zakázáno</translation>
@@ -428,6 +429,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2653659639078652383">Odeslat</translation>
 <translation id="2556708692502648323">Sítě peněženek</translation>
 <translation id="1330032157352961756">ID nového řetězce</translation>
+<translation id="3423620355610881890">Kladné desetinné číslo</translation>
 <translation id="726121047592132939">Název nového řetězce</translation>
 <translation id="1034112277864078119">Zadejte název řetězce</translation>
 <translation id="4672314527143443556">Název měny řetězce</translation>
@@ -441,6 +443,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3047726704186619366">URL adresy ikon</translation>
 <translation id="2487558607408469181">Blokování URL adres průzkumníka</translation>
 <translation id="6301398959353668507">Toto pole nesmí být prázdné.</translation>
+<translation id="7504462451153306677">Nesprávný formát, ID řetězce je kladné číslo</translation>
 <translation id="8325036459845654666">Tato síť již byla přidána.</translation>
 <translation id="650071759190249039">Interní chyba, nelze přidat síť.</translation>
 <translation id="868529041590572443">Vyplňte všechny informace o domácí měně</translation>

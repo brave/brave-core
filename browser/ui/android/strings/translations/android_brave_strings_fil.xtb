@@ -31,7 +31,7 @@
 <translation id="2218918398178303658">DNS sa HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6252490671914511928">Mga nangungunang kuwento ngayong araw sa ganap na pribadong feed, para lang sa iyo.</translation>
-<translation id="7266075701303521777">Ang Brave News ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device.</translation>
+<translation id="7266075701303521777">Ang Balita sa Brave ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device.</translation>
 <translation id="4541978218358617681">Ad</translation>
 <translation id="1765217911817124376">I-on ang Brave News</translation>
 <translation id="1654539412343893324">Matuto pa tungkol sa iyong data</translation>
@@ -527,27 +527,27 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6146966915297143881">patuloy na mag-log in</translation>
 <translation id="1483493594462132177">Ipadala</translation>
 <translation id="538450413584738399">Pagpalitin</translation>
-<translation id="8825032646286791700">DeFi at Secure na Storage ng Crypto</translation>
-<translation id="5460364286096798286">Mag-store ng crypto. Mag-trade ng mga asset. Tingnan ang Mga Presyo at ang performance ng portfolio. Mamuhunan, Humiram, at magpahiram sa pamamagitan ng DeFi.</translation>
-<translation id="1748009926009835882">Mag-set Up ng Crypto</translation>
+<translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
+<translation id="8339846196588658366">Mag-store ng crypto at i-track ang performance ng portfolio. Iyon na ang lahat para sa pribadong browser ng Brave.</translation>
+<translation id="4472575034687746823">Magsimula</translation>
 <translation id="2759836790106646094">I-back up ang iyong wallet ngayon!</translation>
-<translation id="5156354224138379811">Sa susunod na hakbang, makakakita ka ng 12 salita na magbibigay-daan sa iyo na ma-recover ang iyong crypto wallet.</translation>
+<translation id="1078873179929044999">Sa susunod na hakbang makakakita ka ng 12 salitang parirala sa pag-recover, na pwede mong gamitin para i-recover ang iyong mga pangunahing account sa cryptocurrency. Itago ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account kung sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
-<translation id="5024543173656851695">Nauunawaan ko na kung mawala ko ang aking mga salita para sa pag-recover, hindi ko maa-access ang aking crypto wallet.</translation>
+<translation id="1904000155026201268">Nauunawaan ko na kung mawala ko ang aking mga salita para sa pag-recover, hindi ko maa-access ang aking crypto wallet.</translation>
 <translation id="3933122286596948824">Ang iyong parirala sa pag-recover</translation>
-<translation id="6146351434671268516">Isulat o kopyahin ang mga salitang ito sa wastong pagkakasunod-sunod at i-save ang mga ito sa ligtas na lugar.</translation>
-<translation id="7408247683131762445">BABALA: Huwag na huwag ihahayag ang iyong parirala sa pag-back up. Magagawa ng sinumang taong alam ang pariralang ito na kunin habambuhay ang iyong pondo.</translation>
-<translation id="939275786514736244">Na-back up ko na ang aking parirala sa ligtas na lugar</translation>
+<translation id="5077747669435508720">Isulat o kopyahin ang mga salitang ito sa mismong pagkakaayos na ipinapakita sa ibaba, at itago ang mga ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
+<translation id="2708402071160162126">BABALA: Huwag kailanman ibahagi ang iyong parirala sa pag-recover. Pwedeng kunin at hindi na ibalik pa ng sinumang mayroon ng pariralang ito ang iyong mga asset.</translation>
+<translation id="111912712268284159">Nai-back up ko na ang aking parirala sa ligtas na lugar.</translation>
 <translation id="6896758677409633944">Kopyahin</translation>
-<translation id="2604744480284798833">I-back up ang iyong wallet ngayon para protektahan ang iyong portfolio ng cryptocurrency sa pagkawala ng access.</translation>
-<translation id="8289942708804097960">Bumili ng crypto sa pamamagitan ng Apple Pay, credit o debit card.</translation>
+<translation id="375882617301124395">I-back up ang iyong wallet ng cryptocurrency</translation>
+<translation id="8289942708804097960">Bumili ng crypto sa pamamagitan ng credit o debit card.</translation>
 <translation id="841880029259839903">Magpadala ng crypto o maglipat mula sa isang account papunta sa isa pang account.</translation>
 <translation id="8982246458261383692">Magpapalit ng mga crypto na asset sa pamamagitan ng Brave DEX aggregator.</translation>
 <translation id="1783600039044302171">I-secure ang iyong crypto sa pamamagitan ng password</translation>
 <translation id="3726490322412361740">Ilagay ang Password</translation>
-<translation id="4450951602553063001">Ilagay ulit ang password</translation>
-<translation id="1783870616707290226">Dapat ay may 7 o higit pang character ang password</translation>
-<translation id="7383102760859258982">Hindi tumugma ang na-type ulit na password</translation>
+<translation id="3038243139480464605">I-verify ang password</translation>
+<translation id="3717685683157254329">Ang mga password ay dapat mayroong hindi bababa sa 7 character, at naglalaman ng kahit isang titik, isang numero, at isang espesyal na character.</translation>
+<translation id="7396672979287122068">Hindi tumugma ang na-verify na password</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -556,24 +556,25 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">LAHAT</translation>
 <translation id="5071303414930953888">Account <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Magdagdag ng Account</translation>
-<translation id="2632612428525029752">I-update ang Account</translation>
+<translation id="7665369617277396874">Magdagdag ng account</translation>
+<translation id="3448492834076427715">I-update ang account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">I-enable ang pag-unlock gamit ang fingerprint?</translation>
 <translation id="5493402808936397665">I-enable ang biometrics para mabilis na ma-unlock ang iyong wallet nang hindi inilalagay ang iyong password.</translation>
-<translation id="1544192797660353713">Wallet</translation>
+<translation id="8030647312184163932">Pag-unlock gamit ang fingerprint</translation>
+<translation id="4090490645603511157">Gamitin ang biometrics para mabilis na ma-unlock ang iyong wallet nang hindi inilalagay ang iyong password.</translation>
+<translation id="5379398699598690674">Wallet (beta)</translation>
 <translation id="6901810042765869341">I-enable ang iyong parirala sa pag-recover para ma-restore ang iyong Brave Wallet crypto account.</translation>
-<translation id="1970161551843843564">I-restore ang Crypto Account</translation>
+<translation id="9120654436199628567">I-restore ang crypto account</translation>
 <translation id="4811736040444856406">Ipakita ang parirala sa pag-recover</translation>
 <translation id="283071225285270357">Ilagay ang iyong parirala sa pag-recover</translation>
 <translation id="2339124864228588937">I-verify ang parirala sa pag-recover</translation>
-<translation id="2718669004132381989">I-tap ang mga salita para ilagay ang mga ito sa tabi ng isa't isa sa tamang pagkakasunod-sunod.</translation>
+<translation id="3747079125031086337">Piliin ang mga salita sa iyong parirala sa pag-recover sa tamang pagkakaayos ng mga ito.</translation>
 <translation id="6518133107902771759">I-verify</translation>
 <translation id="3157931365184549694">Ipanumbalik</translation>
 <translation id="9111102763498581341">I-unlock</translation>
 <translation id="6657585470893396449">Password</translation>
-<translation id="1569452037668432756">Ilagay ang iyong password para ma-unlock</translation>
-<translation id="3717685683157254329">Dapat ay hindi bababa sa 7 character ang password at naglalaman dapat ito ng kahit isang numero at isang espesyal na character man lang</translation>
+<translation id="5168349973342709369">Ilagay ang password para i-unlock ang wallet</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
 <translation id="5760476995887363522">Hindi tugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
@@ -584,7 +585,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Patungong (estimate)</translation>
 <translation id="6998989275928107238">Para sa</translation>
-<translation id="6664416064035847539">address o url</translation>
+<translation id="2589431635772931954">Address o URL</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="3535654229833214438">Mga transaksyon</translation>
@@ -614,11 +615,12 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2490428413101944234">Subukan ang faucet</translation>
 <translation id="2581671693710952401">Kumuha ng Ether</translation>
 <translation id="8165484222652118977">Kunin ang Ether mula sa faucet para sa <ph name="NETWORK"/> Test Network</translation>
-<translation id="7420359180991315365">Magpatuloy na Mag-wire</translation>
+<translation id="7420359180991315365">Magpatuloy sa Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="3784455785234192852">Lock</translation>
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
-<translation id="414639769490080648">Ilang minuto ang gusto mong lumipas bago awtomatikong mag-lock ang iyong brave wallet?</translation>
+<translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="4993345308607970390">I-reset ang Brave Wallet</translation>
 <translation id="6369495274982305511">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuto} other {# minuto}}</translation>
@@ -722,7 +724,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="5932938770824268122">Private Key</translation>
 <translation id="2472882733835903303">Ipakita ang Pribadong key</translation>
 <translation id="4391056902675005799">Itago ang Pribadong key</translation>
-<translation id="7518007103754668253">Babala: Huwag kailanman ihayag ang key na ito. Mananakaw ng kahit sinong mayroon ng pribadong key ang anumang asset sa iyong account.</translation>
+<translation id="7518007103754668253">Babala: Huwag na huwag ihayag ang key na ito. Mananakaw ng kahit sinong mayroon ng pribadong key na ito ang anumang asset sa iyong account.</translation>
 <translation id="1133619932669546254">I-activate ang <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">URI NG FUNCTION: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Walang data</translation>
@@ -746,6 +748,8 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="3211051910418903298">Dagdagan ang iyong mobile data nang mas madalang</translation>
 <translation id="1092355580602106002">Mas kaunting ad = mas kaunting data sa bawat page na nilo-load mo. Gamitin ang Brave para sa lahat ng iyong pag-browse ng web.</translation>
 <translation id="623962032102267945">Brave = mas kaunting mobile data sa bawat page</translation>
+<translation id="4355217341028673744">• Mas magandang privacy</translation>
+<translation id="3679020972083025535">• Walang nakakainis na ad</translation>
 <translation id="8047527352810290817">I-edit ang gas</translation>
 <translation id="7358989216567322955">Maximum na Bayarin sa Pagbibigay-priyoridad</translation>
 <translation id="9091334651803050473">Bagama't hindi garantisado, malamang na bibigyang-priyoridad ng mga miner ang iyong transaksyon kung magbabayad ka ng mas mataas na bayarin.</translation>
@@ -758,4 +762,19 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1011713837432053857">Limitasyon sa dami ng gas</translation>
 <translation id="1254969878422524947">Limit ng per-gas na tip (Gwei)</translation>
 <translation id="7373308452149471621">Limit ng per-gas na presyo (Gwei)</translation>
+<translation id="5891811606602061966">Hindi na-import ang account, pakisubukan ulit.</translation>
+<translation id="7033470144757208254">Gumagamit ang Brave ng 0x bilang DEX aggregator.</translation>
+<translation id="5061574358754621254">Data ng presyo na pinapagana ng CoinGecko</translation>
+<translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
+<translation id="8574289650879708853">Magdagdag ng custom na asset</translation>
+<translation id="7791543448312431591">Idagdag</translation>
+<translation id="6600400596821238377">Pangalan ng token</translation>
+<translation id="4432966365400169165">Address ng kontrata ng token</translation>
+<translation id="4092152169181928870">Simbolo ng token</translation>
+<translation id="4351811224047421378">Mga decimal ng katumpakan</translation>
+<translation id="8614026298974065517">Alisin ang custom na asset</translation>
+<translation id="4378941981362528553">Gusto mo bang alisin ang token na <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Ang address ng tatanggap ay ang iyong sariling address</translation>
+<translation id="749944179568745958">Hindi valid na ETH address</translation>
+<translation id="3506416339268164412">Ang address ng tatanggap ay contract address ng token</translation>
 </translationbundle>

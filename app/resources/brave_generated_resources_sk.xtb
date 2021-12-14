@@ -55,6 +55,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
 <translation id="6821903322090655051">Odmeny Brave sú vypnuté</translation>
+<translation id="413570371620795359">Otvorením panelu Odmeny zapnite panel a začnite</translation>
 <translation id="3849957491997306859">Automaticky zistené</translation>
 <translation id="8798099450830957504">Predvolené</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
@@ -103,6 +104,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7895302206188277628">Prepojený obsah</translation>
 <translation id="3654831858282189202">Zverejniť pomocou kľúča IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importovať vybraný text do IPFS</translation>
 <translation id="6925604404524625582">Importovať a kopírovať odkaz do výpisu IPFS</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
@@ -427,6 +429,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2653659639078652383">Odoslať</translation>
 <translation id="2556708692502648323">Siete peňaženiek</translation>
 <translation id="1330032157352961756">ID nového reťazca</translation>
+<translation id="3423620355610881890">Kladné desiatkové číslo</translation>
 <translation id="726121047592132939">Názov nového reťazca</translation>
 <translation id="1034112277864078119">Zadajte názov reťazca</translation>
 <translation id="4672314527143443556">Názov meny reťazca</translation>
@@ -440,6 +443,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3047726704186619366">Adresy URL ikon</translation>
 <translation id="2487558607408469181">Adresy URL blokového prieskumníka</translation>
 <translation id="6301398959353668507">Pole nesmie byť prázdne.</translation>
+<translation id="7504462451153306677">Neplatný formát, Id reťazca je kladné číslo</translation>
 <translation id="8325036459845654666">Táto sieť je už pridaná.</translation>
 <translation id="650071759190249039">Interná chyba, nepodarilo sa pridať sieť.</translation>
 <translation id="868529041590572443">Vyplňte všetky informácie o natívnej mene</translation>

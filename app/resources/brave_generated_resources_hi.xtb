@@ -89,6 +89,7 @@ Binance
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
+<translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
 <translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -462,6 +463,7 @@ Binance
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="2556708692502648323">वॉलेट नेटवर्क</translation>
 <translation id="1330032157352961756">नई चेन की आईडी</translation>
+<translation id="3423620355610881890">एक धनात्मक दशमलव नंबर</translation>
 <translation id="726121047592132939">चेन का नया नाम</translation>
 <translation id="1034112277864078119">चेन का नाम डालें</translation>
 <translation id="4672314527143443556">चेन की करेंसी का नाम</translation>
@@ -475,6 +477,7 @@ Binance
 <translation id="3047726704186619366">आइकन के URL</translation>
 <translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
 <translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
+<translation id="7504462451153306677">अमान्य फ़ॉर्मैट, सीरीज़ आईडी एक पॉज़िटिव नंबर है</translation>
 <translation id="8325036459845654666">यह नेटवर्क पहले ही जोड़ा जा चुका है.</translation>
 <translation id="650071759190249039">आंतरिक गड़बड़ी, नेटवर्क नहीं जोड़ा जा सका.</translation>
 <translation id="868529041590572443">मूल करेंसी के बारे में सभी जानकारी भरें</translation>

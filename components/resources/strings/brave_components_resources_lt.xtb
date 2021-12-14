@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="3656941797339037856">Susiekite „Rewards“ su „Gemini“!</translation>
-<translation id="3066983737886188034">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY nuo turimų BAT. Patvirtinkite ir susiekite savo „Brave Rewards“ piniginę su „Gemini“ dabar!</translation>
+<translation id="2383784987664887340">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY nuo turimų BAT. Patvirtinkite ir susiekite savo „Brave Rewards“ piniginę su „Gemini“ dabar!</translation>
+<translation id="2237374144728570574">* „Gemini“ uždirbamas APY 2021 m. rugsėjo 15 d. duomenimis</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x adresas arba URL</translation>
 <translation id="2860280209982026951">„Brave“ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> naudoja kaip DEX rinktuvą.</translation>
 <translation id="151946611346774041">0x apdoros eterio adreso ir IP adreso informaciją, kad įvykdytų operaciją (įskaitant pasiūlymų gavimą). 0x šiuos duomenis naudos TIK operacijų apdorojimo tikslais.</translation>
+<translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
 <translation id="1420318137760245955">Sveiki, tai naujoji „Brave“ piniginė</translation>
 <translation id="8303434745767477417">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite su „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atjungtas</translation>
 <translation id="5317781812114905957">Instrukcijos</translation>
 <translation id="1178198982208000092">Prijunkite savo <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Aparatinei piniginei reikalingas patvirtinimas. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Aparatinės įrangos piniginei reikia, kad <ph name="DEVICE_NAME"/> būtų atverta „Ethereum“ programėlė</translation>
 <translation id="8687869982094542529">išsiųsta</translation>
 <translation id="5013754027092416509">gauta</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON duomenų nesitikima</translation>
 <translation id="3282936527763045737">Slaptažodis neteisingas</translation>
 <translation id="1119447706177454957">Vidinė klaida</translation>
+<translation id="3327639091470204775">Nepavyksta prisijungti prie „Trezor“ tilto</translation>
 <translation id="6672377693827764095">Vidinė klaida, nepavyko įkelti sąskaitų</translation>
 <translation id="8933250418452564886">Aparatinės įrangos operacijos rasti nepavyko, bandykite dar kartą</translation>
 <translation id="5999974802900788338">Iš aparatinio įrenginio gauta klaida, tikriausiai turite patvirtinti operaciją savo įrenginyje</translation>

@@ -55,6 +55,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
 <translation id="6821903322090655051">Brave nagrade su onemogućene</translation>
+<translation id="413570371620795359">Za aktiviranje i započinjanje otvorite tablu za nagrade</translation>
 <translation id="3849957491997306859">Automatsko otkrivanje</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
@@ -103,6 +104,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="3654831858282189202">Objaviti sa IPNS ključem</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Uvoz odabranog teksta u IPFS</translation>
 <translation id="6925604404524625582">Uvesti i kopirati link na IPFS snimak</translation>
 <translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
 <translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
@@ -225,6 +227,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave novčanik automatski zaključa</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti DNS-a putem HTTPS-a i Ethereum-a.</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Postavite vaše IPNS ključeve</translation>
 <translation id="951216659045543447">Potpišite sadržaj odgovarajućim privatnim ključem i objavite ga na IPNS</translation>
@@ -259,6 +262,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Adresa IPFS javnog mrežnog prolaza</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima privatnosti IPFS lokalnog čvora i mrežnog prolaza.</translation>
 <translation id="8425213833346101688">Промени</translation>
 <translation id="557281710253742286">Postavite IPFS mrežni prolaz</translation>
 <translation id="8571837315037233299">Adresa mrežnog prolaza</translation>
@@ -425,6 +429,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2653659639078652383">Пошаљи</translation>
 <translation id="2556708692502648323">Mreže novčanika</translation>
 <translation id="1330032157352961756">ID novog lanca</translation>
+<translation id="3423620355610881890">Pozitivan decimalan broj</translation>
 <translation id="726121047592132939">Naziv novog lanca</translation>
 <translation id="1034112277864078119">Uneti naziv lanca</translation>
 <translation id="4672314527143443556">Naziv valute lanca</translation>
@@ -438,6 +443,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="3047726704186619366">URL ikonice</translation>
 <translation id="2487558607408469181">URL blok istraživača</translation>
 <translation id="6301398959353668507">Ovo polje ne može biti prazno</translation>
+<translation id="7504462451153306677">Neispravan format, id lanca je pozitivan broj</translation>
 <translation id="8325036459845654666">Ova mreža je već dodata.</translation>
 <translation id="650071759190249039">Interna greška, nije moguće dodati mrežu.</translation>
 <translation id="868529041590572443">Unesite sve informacije o domaćoj valuti</translation>

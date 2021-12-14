@@ -526,27 +526,27 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6146966915297143881">kontynuuj logowanie</translation>
 <translation id="1483493594462132177">Wyślij</translation>
 <translation id="538450413584738399">Wymiana</translation>
-<translation id="8825032646286791700">DeFi &amp; Bezpieczne przechowywanie kryptowalut</translation>
-<translation id="5460364286096798286">Przechowuj kryptowaluty w zatrzymaniu. Handluj aktywami. Zobacz ceny i wydajność portfela. Inwestuj, pożyczaj i udzielaj pożyczek za pomocą DeFi.</translation>
-<translation id="1748009926009835882">Skonfiguruj kryptowalutę</translation>
+<translation id="1420318137760245955">Witamy w nowym portfelu Brave</translation>
+<translation id="8339846196588658366">Przechowuj kryptowaluty w swojej pieczy i śledź wyniki portfela. Wszystko z poziomu prywatnej przeglądarki Brave.</translation>
+<translation id="4472575034687746823">Podstawowe</translation>
 <translation id="2759836790106646094">Zrób teraz kopię zapasową swojego portfela!</translation>
-<translation id="5156354224138379811">W następnym kroku zobaczysz 12 wyrazów, które pozwolą Ci odzyskać portfel kryptowalut.</translation>
+<translation id="1078873179929044999">W kolejnym kroku zostanie wyświetlone 12-wyrazowe wyrażenie odzyskiwania, które możesz wykorzystać do odzyskania głównych kont kryptowalutowych. Zapisz je w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione albo zechcesz zmienić portfele.</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
-<translation id="5024543173656851695">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
+<translation id="1904000155026201268">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
 <translation id="3933122286596948824">Twoje wyrażenie odzyskiwania</translation>
-<translation id="6146351434671268516">Zapisz lub skopiuj te słowa w odpowiedniej kolejności i zapisz je gdzieś w bezpiecznym miejscu.</translation>
-<translation id="7408247683131762445">OSTRZEŻENIE: Nigdy nie ujawniaj swojego wyrażenia odzyskiwania. Każdy, kto zna to wyrażenie, może zabrać Twoje środki na zawsze.</translation>
-<translation id="939275786514736244">Zrobiłem/-łam kopię zapasową mojego wyrażenia w bezpiecznym miejscu</translation>
+<translation id="5077747669435508720">Zapisz lub skopiuj te słowa w dokładnie takiej kolejności, jak pokazano poniżej i przechowaj w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione lub zechcesz zmienić portfele.</translation>
+<translation id="2708402071160162126">UWAGA: Nigdy nie ujawniaj swojego wyrażenia odzyskiwania. Każdy, kto zna to wyrażenie, może zabrać Twoje aktywa na zawsze.</translation>
+<translation id="111912712268284159">Zapisałem(-am) kopię zapasową mojego wyrażenia w bezpiecznym miejscu.</translation>
 <translation id="6896758677409633944">Kopiuj</translation>
-<translation id="2604744480284798833">Utwórz kopię zapasową portfela, aby chronić swoje kryptoaktywa przed utratą dostępu.</translation>
-<translation id="8289942708804097960">Kupuj kryptowaluty za pomocą Apple Pay, karty kredytowej lub debetowej.</translation>
+<translation id="375882617301124395">Utwórz kopię zapasową portfela kryptowalutowego</translation>
+<translation id="8289942708804097960">Kupuj kryptowaluty za pomocą karty kredytowej lub debetowej.</translation>
 <translation id="841880029259839903">Przesyłaj kryptowaluty lub dokonuj przelewów z jednego konta na drugie.</translation>
 <translation id="8982246458261383692">Wymieniaj aktywa kryptowalutowe za pomocą agregatora Brave DEX.</translation>
 <translation id="1783600039044302171">Zabezpiecz swoją kryptowalutę hasłem</translation>
 <translation id="3726490322412361740">Wprowadź hasło</translation>
-<translation id="4450951602553063001">Ponownie wprowadź hasło</translation>
-<translation id="1783870616707290226">Hasło musi składać się z co najmniej 7 znaków</translation>
-<translation id="7383102760859258982">Ponownie wpisane hasło nie zgadza się</translation>
+<translation id="3038243139480464605">Zweryfikuj hasło</translation>
+<translation id="3717685683157254329">Hasło musi składać się z co najmniej 7 znaków, w tym co najmniej jednej litery, cyfry i jednego znaku specjalnego.</translation>
+<translation id="7396672979287122068">Zweryfikowane hasło nie zgadza się</translation>
 <translation id="3188963375823360044">1 godz.</translation>
 <translation id="8163269366661594721">1 dzień</translation>
 <translation id="7640956400175663828">1 tydzień</translation>
@@ -555,24 +555,25 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6977728312178289892">1 rok</translation>
 <translation id="6895566650974550243">WSZYSTKO</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Dodaj konto</translation>
-<translation id="2632612428525029752">Zaktualizuj konto</translation>
+<translation id="7665369617277396874">Dodaj konto</translation>
+<translation id="3448492834076427715">Zaktualizuj konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Włączyć odblokowywanie odciskiem palca?</translation>
 <translation id="5493402808936397665">Włącz biometrię, aby szybko odblokować portfel bez wpisywania hasła.</translation>
-<translation id="1544192797660353713">Portfel</translation>
+<translation id="8030647312184163932">Odblokowanie funkcji odcisku palca</translation>
+<translation id="4090490645603511157">Użyj funkcji biometrycznej, aby szybko odblokować portfel bez wpisywania hasła.</translation>
+<translation id="5379398699598690674">Portfel (beta)</translation>
 <translation id="6901810042765869341">Wprowadź wyrażenie odzyskiwania, aby przywrócić swoje konto kryptowalutowe Brave Wallet.</translation>
-<translation id="1970161551843843564">Przywróć konto kryptowalutowe</translation>
+<translation id="9120654436199628567">Przywróć konto kryptowalutowe</translation>
 <translation id="4811736040444856406">Pokaż wyrażenie odzyskiwania</translation>
 <translation id="283071225285270357">Wprowadź swoje wyrażenie odzyskiwania</translation>
 <translation id="2339124864228588937">Zweryfikuj wyrażenie odzyskiwania</translation>
-<translation id="2718669004132381989">Dotykaj wyrazy, aby umieścić je obok siebie w odpowiedniej kolejności.</translation>
+<translation id="3747079125031086337">Wprowadź słowa Twojego wyrażenia odzyskiwania w prawidłowej kolejności.</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="9111102763498581341">Odblokuj</translation>
 <translation id="6657585470893396449">Hasło</translation>
-<translation id="1569452037668432756">Wprowadź swoje hasło, aby odblokować</translation>
-<translation id="3717685683157254329">Hasło musi składać się z co najmniej 7 znaków, w tym co najmniej jednej cyfry i jednego znaku specjalnego</translation>
+<translation id="5168349973342709369">Wprowadź hasło, aby odblokować portfel</translation>
 <translation id="1144810021918451336">Nie chroni przed niebezpiecznymi witrynami internetowymi, pobieranymi plikami ani rozszerzeniami.</translation>
 <translation id="5760476995887363522">Wyrażenia się nie zgadzają. Spróbuj ponownie.</translation>
 <translation id="2360588547830602174">Odzyskiwanie konta nie powiodło się. Spróbuj ponownie.</translation>
@@ -583,7 +584,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Do (szacunkowo)</translation>
 <translation id="6998989275928107238">Do</translation>
-<translation id="6664416064035847539">adres lub url</translation>
+<translation id="2589431635772931954">Adres lub URL</translation>
 <translation id="632241521608275119">Tolerancja opóźnienia</translation>
 <translation id="1987317783729300807">Konta</translation>
 <translation id="3535654229833214438">Transakcje</translation>
@@ -613,11 +614,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2490428413101944234">Kranik testowy</translation>
 <translation id="2581671693710952401">Zdobądź Eter</translation>
 <translation id="8165484222652118977">Zdobądź Eth z kranu dla <ph name="NETWORK"/>sieci testowej.</translation>
-<translation id="7420359180991315365">Przejdź do Wire</translation>
+<translation id="7420359180991315365">Przejdź do Wyre</translation>
 <translation id="8488282162676695335">Portfel Brave</translation>
+<translation id="3784455785234192852">Zablokuj</translation>
 <translation id="5040262127954254034">Prywatność</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
-<translation id="414639769490080648">Ile minut opóźnienia do automatycznego zablokowania portfela Brave zastosować?</translation>
+<translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="4993345308607970390">Resetuj portfel Brave Wallet</translation>
 <translation id="6369495274982305511">Czy na pewno chcesz zresetować portfel? Jeśli nie utworzono kopii zapasowej portfela, zresetowanie spowoduje utratę wszystkich danych konta (w tym wszelkich skojarzonych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuta} other {# min}}</translation>
@@ -721,7 +723,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5932938770824268122">Klucz prywatny</translation>
 <translation id="2472882733835903303">Pokaż klucz prywatny</translation>
 <translation id="4391056902675005799">Ukryj klucz prywatny</translation>
-<translation id="7518007103754668253">Uwaga: nie ujawniaj nikomu tego klucza. Każda osoba posiadająca Twój prywatny klucz może użyć środków znajdujących się na Twoim koncie.</translation>
+<translation id="7518007103754668253">Uwaga: nie ujawniaj nikomu tego klucza. Każda osoba posiadająca Twój prywatny klucz może ukraść środki znajdujące się na Twoim koncie.</translation>
 <translation id="1133619932669546254">Aktywuj <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TYP FUNKCJI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Brak danych</translation>
@@ -745,6 +747,8 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="3211051910418903298">Rzadziej doładowuj pakiet danych Internetu mobilnego</translation>
 <translation id="1092355580602106002">Mniej reklam = mniejsze użycie danych na każdej ładowanej stronie. Korzystaj z Brave do przeglądania wszystkich stron internetowych.</translation>
 <translation id="623962032102267945">Brave = mniejsze użycie danych na każdej stronie</translation>
+<translation id="4355217341028673744">• Lepsza ochrona prywatności</translation>
+<translation id="3679020972083025535">• Brak irytujących reklam</translation>
 <translation id="8047527352810290817">Edytuj gaz</translation>
 <translation id="7358989216567322955">Opłata za maksymalny priorytet</translation>
 <translation id="9091334651803050473">Nie jest to gwarantowane, ale jeśli zaoferujesz wyższą stawkę, górnicy najprawdopodobniej wybiorą Twoją transakcję w pierwszej kolejności.</translation>
@@ -757,4 +761,19 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1011713837432053857">Limit kwoty gazu</translation>
 <translation id="1254969878422524947">Limit napiwka na gaz (Gwei)</translation>
 <translation id="7373308452149471621">Limit ceny na gaz (Gwei)</translation>
+<translation id="5891811606602061966">Nie udało się zaimportować konta. Spróbuj ponownie.</translation>
+<translation id="7033470144757208254">Brave używa 0x jako agregatora DEX.</translation>
+<translation id="5061574358754621254">Dane dotyczące cen wspierane przez CoinGecko</translation>
+<translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
+<translation id="8574289650879708853">Dodaj spersonalizowane aktywo</translation>
+<translation id="7791543448312431591">Dodaj</translation>
+<translation id="6600400596821238377">Nazwa tokena</translation>
+<translation id="4432966365400169165">Adres kontraktu tokena</translation>
+<translation id="4092152169181928870">Symbol tokena</translation>
+<translation id="4351811224047421378">Dokładność liczb po przecinku</translation>
+<translation id="8614026298974065517">Usuń niestandardowe środki</translation>
+<translation id="4378941981362528553">Czy chcesz usunąć token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">Adres docelowy to Twój własny adres.</translation>
+<translation id="749944179568745958">Nieprawidłowy adres ETH</translation>
+<translation id="3506416339268164412">Adres docelowy to adres kontraktu tokena</translation>
 </translationbundle>

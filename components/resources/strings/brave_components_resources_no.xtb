@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>
-<translation id="3066983737886188034">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
+<translation id="2383784987664887340">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY pr. Sept 15, 2021</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x-adresse eller nettadresse</translation>
 <translation id="2860280209982026951">Brave bruker <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som DEX-aggregator.</translation>
 <translation id="151946611346774041">0x behandler Ethereum-adressen og IP-adressen for å fullføre en transaksjon (inkludert å hente priser). 0x bruker KUN disse dataene for å behandle transaksjoner.</translation>
+<translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
 <translation id="8303434745767477417">Ha et inventar av kryptoressurser. Hold øye med hvordan porteføljen din gjør det, og ha interaksjon med web 3 DApps. Handle, invester, lån og lån ut med DeFi – alt dette rett i den private Brave-nettleseren. Ingen utvidelser eller nedlastinger kreves.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> frakoblet</translation>
 <translation id="5317781812114905957">Instruksjoner</translation>
 <translation id="1178198982208000092">Koble til din <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Maskinvarelommeboken krever bekreftelse på enheten. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Maskinvarelommeboken krever at Ethereum-appen åpnes på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">mottatt</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-data forventes ikke</translation>
 <translation id="3282936527763045737">Passordet er feil</translation>
 <translation id="1119447706177454957">Intern feil</translation>
+<translation id="3327639091470204775">Kunne ikke koble til Trezor-broen</translation>
 <translation id="6672377693827764095">Intern feil, kan ikke hente kontoer</translation>
 <translation id="8933250418452564886">Fant ikke maskinvaretransaksjonen. Prøv på nytt.</translation>
 <translation id="5999974802900788338">Mottaksfeil fra maskinvareenhet. Sannsynligvis må du bekrefte transaksjonen på enheten din.</translation>

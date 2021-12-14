@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
 <translation id="3656941797339037856">Rewards ን ከ ጄሚኒ ጋር ያያይዙ!</translation>
-<translation id="3066983737886188034">Gemini በቀላሉ እንዲገበያዩ፣ እንዲያከማቹ እና በBATዎ ላይ  3.49% APY እንዲያገኙ ያስችልዎታል። ያረጋግጡ እና የBrave ሽልማቶች ዋሌትዎን ከGemini  ጋር አሁን ያገናኙ!</translation>
+<translation id="2383784987664887340">Gemini በቀላሉ እንዲገበያዩ፣ እንዲያከማቹ እና በBATዎ ላይ  3.49% APY እንዲያገኙ ያስችልዎታል። ያረጋግጡ እና የBrave ሽልማቶች ዋሌትዎን ከGemini  ጋር አሁን ያገናኙ!</translation>
+<translation id="2237374144728570574">*Gemini Earn ከሴፕቴምበር 15, 2021 ጀምሮ APYን ያገኛል</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
 <translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
 <translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x ኣድራሻ ወይም url</translation>
 <translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ን የሚጠቀመው እንደ DEX ሰብሳቢ ነው።</translation>
 <translation id="151946611346774041">ግብይቱን ለማሟላት (ዋጋዎችን ማግኘትን ጨምሮ) 0x የEthereum አድራሻ እና የIP አድራሻ ሂደት ያደርጋል። 0x ይህንን ውሂብ የሚተቀመው ግብይቶችን ለማስኬድ ዓላማ ብቻ ነው</translation>
+<translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="1420318137760245955">ወደ አዲሱ Brave ዋሌት እንኳን በደህና መጡ</translation>
 <translation id="8303434745767477417">በእርስዎ ጥበቃ ውስጥ የ crypto ንብረቶችን ይያዙ። የፖርትፎሊዮ አፈፃፀምን ይከታተሉ እና ከድር 3 DApps ጋር ይገናኙ። ከ DeFi ጋር ይገበያዩ ፣ ኢንቨስት ያድርጉ ፣ ያበድሩ እና ያበድሩ። ደህና ከ Brave የግላዊነት አሳሽ። ምንም ቅጥያዎች ፣ ማውረድ አያስፈልግም።</translation>
@@ -1047,6 +1049,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ተቋርጧል</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
 <translation id="1178198982208000092">የእርስዎን <ph name="DEVICE_NAME"/>ያገናኙ</translation>
+<translation id="4358411489835404360">የሃርድዌር የኪስ ቦርሳ በመሳሪያው ላይ ማረጋገጫ ይጠይቃል።
+<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">የሃርድዌር ቦርሳ የEthereum መተግበሪያ በ <ph name="DEVICE_NAME"/> እንዲከፈት ይፈልጋል</translation>
 <translation id="8687869982094542529">ተልኳል</translation>
 <translation id="5013754027092416509">ደርሷል</translation>
@@ -1106,6 +1110,7 @@
 <translation id="4287068151777838754">የ JSON ውሂብ ይጠበቃል</translation>
 <translation id="3282936527763045737">የይለፍ ቃሉ ትክክል አይደለም</translation>
 <translation id="1119447706177454957">የውስጥ ስህተት</translation>
+<translation id="3327639091470204775">ከትሬዞር ድልድይ ጋር ማያያዝ አልተቻለም</translation>
 <translation id="6672377693827764095">የውስጥ ስህተት፣ መለያዎች ማግኘት አልተቻለም።</translation>
 <translation id="8933250418452564886">የሃርድዌር ግብይት ማግኘት አልተቻለም፣ እባክዎ እንደገና ይሞክሩ</translation>
 <translation id="5999974802900788338">ከሃርድዌር መሳሪያ የመጣ ስህተት፣ ምናልባት በመሳሪያዎ ላይ ያለውን ግብይት ማረጋገጥ ይኖርቦታል</translation>

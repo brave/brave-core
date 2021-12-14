@@ -55,6 +55,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="6821903322090655051">Brave Rewards sind deaktiviert</translation>
+<translation id="413570371620795359">Öffnen Sie das Prämienfenster, um es zu aktivieren und zu beginnen</translation>
 <translation id="3849957491997306859">Automatisch erkannt</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
@@ -428,6 +429,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2653659639078652383">Senden</translation>
 <translation id="2556708692502648323">Wallet-Netzwerk</translation>
 <translation id="1330032157352961756">Die ID der neuen Kette</translation>
+<translation id="3423620355610881890">Eine positive Dezimalzahl</translation>
 <translation id="726121047592132939">Der Name der neuen Kette</translation>
 <translation id="1034112277864078119">Kettennamen eingeben</translation>
 <translation id="4672314527143443556">Währungsname der Kette</translation>
@@ -441,6 +443,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3047726704186619366">Symbol-URLs</translation>
 <translation id="2487558607408469181">Explorer-URLs blockieren</translation>
 <translation id="6301398959353668507">Dieses Feld kann nicht leer bleiben.</translation>
+<translation id="7504462451153306677">Ungültiges Format, die Ketten-ID ist eine positive Zahl</translation>
 <translation id="8325036459845654666">Dieses Netzwerk wurde bereits hinzugefügt.</translation>
 <translation id="650071759190249039">Interner Fehler, Netzwerk kann nicht hinzugefügt werden</translation>
 <translation id="868529041590572443">Geben Sie alle Informationen über die native Währung ein</translation>

@@ -516,27 +516,27 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6146966915297143881">continúa para iniciar sesión</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Intercambio</translation>
-<translation id="8825032646286791700">Finanzas descentralizadas y almacenamiento seguro de criptomonedas</translation>
-<translation id="5460364286096798286">Conserva criptomonedas bajo tu custodia. Intercambia activos. Consulta precios y el rendimiento de carteras. Invierte, pide prestado y presta con finanzas descentralizadas.</translation>
-<translation id="1748009926009835882">Configurar criptomonedas</translation>
+<translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
+<translation id="8339846196588658366">Conserve criptoactivos bajo su custodia y consulte el rendimiento de carteras. Todo desde el navegador de Brave para proteger su privacidad.</translation>
+<translation id="4472575034687746823">Comenzar</translation>
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
-<translation id="5156354224138379811">En el siguiente paso, verá 12 palabras que le permitirán recuperar su billetera de criptomonedas.</translation>
+<translation id="1078873179929044999">En el siguiente paso, verá una frase de recuperación de 12 palabras que puede usar para recuperar sus cuentas de criptoactivos principales. Guárdela en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
 <translation id="2359808026110333948">Continuar</translation>
-<translation id="5024543173656851695">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis palabras de recuperación.</translation>
+<translation id="1904000155026201268">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis frase de recuperación.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
-<translation id="6146351434671268516">Escribe o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
-<translation id="7408247683131762445">ADVERTENCIA: Nunca reveles tu frase de copia de seguridad. Cualquier persona que tenga acceso a esta frase puede llevarse tus fondos permanentemente.</translation>
-<translation id="939275786514736244">He guardado mi copia en un lugar seguro</translation>
+<translation id="5077747669435508720">Escriba o copie estas palabras en el orden exacto que se muestra a continuación y guárdelas en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
+<translation id="2708402071160162126">ADVERTENCIA: Nunca comparta la frase de recuperación. Cualquier persona que tenga esta frase puede llevarse sus activos de forma permanente.</translation>
+<translation id="111912712268284159">He guardado la frase en un lugar seguro.</translation>
 <translation id="6896758677409633944">Copiar</translation>
-<translation id="2604744480284798833">Haga una copia de seguridad de su billetera ahora para evitar perder el acceso a su cartera de criptomonedas.</translation>
-<translation id="8289942708804097960">Compra criptomonedas con Apple Pay, tarjeta de crédito o tarjeta de débito.</translation>
+<translation id="375882617301124395">Haga una copia de seguridad de su billetera</translation>
+<translation id="8289942708804097960">Comprar criptomonedas con tarjeta de débito o crédito.</translation>
 <translation id="841880029259839903">Envía criptomonedas o transfiere de una cuenta a otra.</translation>
 <translation id="8982246458261383692">Intercambia activos de criptomonedas con el agregador DEX de Brave.</translation>
 <translation id="1783600039044302171">Protege tus criptomonedas con una contraseña</translation>
 <translation id="3726490322412361740">Introduce la contraseña</translation>
-<translation id="4450951602553063001">Vuelve a introducir la contraseña</translation>
-<translation id="1783870616707290226">La contraseña debe tener 7 caracteres o más</translation>
-<translation id="7383102760859258982">La contraseña reescrita no coincide</translation>
+<translation id="3038243139480464605">Verificar contraseña</translation>
+<translation id="3717685683157254329">Las contraseñas deben tener un mínimo de 7 caracteres y deben contener al menos una letra, un número y un carácter especial.</translation>
+<translation id="7396672979287122068">La contraseña verificada no coincide.</translation>
 <translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1 D</translation>
 <translation id="7640956400175663828">1 S</translation>
@@ -545,24 +545,25 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6977728312178289892">1 A</translation>
 <translation id="6895566650974550243">TODO</translation>
 <translation id="5071303414930953888">Cuenta <ph name="ACCOUNT_NUMBER"/></translation>
-<translation id="2267753748892043616">Agregar cuenta</translation>
-<translation id="2632612428525029752">Actualizar cuenta</translation>
+<translation id="7665369617277396874">Agregar cuenta</translation>
+<translation id="3448492834076427715">Actualizar cuenta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
 <translation id="5493402808936397665">Habilita los datos biométricos para desbloquear rápidamente tu billetera sin introducir la contraseña.</translation>
-<translation id="1544192797660353713">Billetera</translation>
+<translation id="8030647312184163932">Desbloquear mediante huella digital</translation>
+<translation id="4090490645603511157">Use datos biométricos para desbloquear rápidamente su billetera sin ingresar la contraseña.</translation>
+<translation id="5379398699598690674">Billetera (versión beta)</translation>
 <translation id="6901810042765869341">Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu billetera de Brave.</translation>
-<translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
+<translation id="9120654436199628567">Restaurar cuenta de criptomonedas</translation>
 <translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
 <translation id="283071225285270357">Introduce tu frase de recuperación</translation>
 <translation id="2339124864228588937">Verificar la frase de recuperación</translation>
-<translation id="2718669004132381989">Toque las palabras para colocarlas una al lado de la otra en el orden correcto.</translation>
+<translation id="3747079125031086337">Seleccione las palabras de su frase de recuperación en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="6657585470893396449">Contraseña</translation>
-<translation id="1569452037668432756">Introduce tu contraseña para desbloquear</translation>
-<translation id="3717685683157254329">La contraseña debe tener al menos 7 caracteres, un número y un carácter especial</translation>
+<translation id="5168349973342709369">Introduzca la contraseña para desbloquear la billetera</translation>
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
 <translation id="5760476995887363522">Las frases no coinciden. Inténtelo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
@@ -573,7 +574,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Para (estimación)</translation>
 <translation id="6998989275928107238">A</translation>
-<translation id="6664416064035847539">dirección o URL</translation>
+<translation id="2589431635772931954">Dirección o URL</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="3535654229833214438">Transacciones</translation>
@@ -603,11 +604,12 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2490428413101944234">Probar grifo</translation>
 <translation id="2581671693710952401">Obtener Ethers</translation>
 <translation id="8165484222652118977">Obtener ETH desde una llave para la red de prueba <ph name="NETWORK"/></translation>
-<translation id="7420359180991315365">Continuar a Wire</translation>
+<translation id="7420359180991315365">Continuar a Wyre</translation>
 <translation id="8488282162676695335">Billetera de Brave</translation>
+<translation id="3784455785234192852">Bloqueo</translation>
 <translation id="5040262127954254034">Privacidad</translation>
 <translation id="8239147115686034860">Bloquear automáticamente la billetera Brave</translation>
-<translation id="414639769490080648">¿Cuántos minutos deseas que transcurran antes de bloquear de manera automática la billetera de Brave?</translation>
+<translation id="414639769490080648">La cantidad de minutos que debe esperar hasta que la billetera Brave se bloquee automáticamente</translation>
 <translation id="4993345308607970390">Restablecer billetera de Brave</translation>
 <translation id="6369495274982305511">¿Confirmas que deseas restablecer tu billetera? Si no hiciste una copia de seguridad de tu billetera, perderás todos los datos de la cuenta al reestablecerla (incluidos los fondos asociados a esta). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuto} other {# minutos}}</translation>
@@ -716,7 +718,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="2199215899212542417">TIPO DE FUNCIÓN: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No hay datos</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> envió <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (USD <ph name="FIAT_VALUE"/>) el <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprobada el <ph name="ASSET"/> - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprobada el <ph name="ASSET"/><ph name="DATE"/></translation>
 <translation id="7400134344541309180">Aprobada sin límites <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378">Intercambio de<ph name="ACCOUNT_NAME"/> el <ph name="DATE"/></translation>
 <translation id="2833661570529295305">Sin autorización</translation>
@@ -735,6 +737,8 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="3211051910418903298">Recargue los datos móviles con menor frecuencia</translation>
 <translation id="1092355580602106002">Menos anuncios = menos datos en las páginas que cargue. Use Brave para navegar por Internet.</translation>
 <translation id="623962032102267945">Brave = menos uso de datos móviles en cada página</translation>
+<translation id="4355217341028673744">• Más privacidad</translation>
+<translation id="3679020972083025535">• Sin anuncios molestos</translation>
 <translation id="8047527352810290817">Editar gas</translation>
 <translation id="7358989216567322955">Tarifa de prioridad máxima</translation>
 <translation id="9091334651803050473">Si bien no es una garantía, es probable que los mineros prioricen la transacción de usted si usted paga una comisión más alta.</translation>
@@ -747,4 +751,19 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1011713837432053857">Límite de cantidad de gas</translation>
 <translation id="1254969878422524947">Límite de propina por gas (Gwei)</translation>
 <translation id="7373308452149471621">Límite de precio por gas (Gwei)</translation>
+<translation id="5891811606602061966">No se pudo importar la cuenta. Inténtelo de nuevo.</translation>
+<translation id="7033470144757208254">Brave utiliza 0x como agregador DEX.</translation>
+<translation id="5061574358754621254">Datos sobre precios con la tecnología de CoinGecko</translation>
+<translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
+<translation id="8574289650879708853">Agregar activo personalizado</translation>
+<translation id="7791543448312431591">Agregar</translation>
+<translation id="6600400596821238377">Nombre del token</translation>
+<translation id="4432966365400169165">Dirección de contrato del token</translation>
+<translation id="4092152169181928870">Símbolo del token</translation>
+<translation id="4351811224047421378">Decimales de precisión</translation>
+<translation id="8614026298974065517">Eliminar activo personalizado</translation>
+<translation id="4378941981362528553">Desea eliminar el token (<ph name="TOKEN_NAME"/><ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">La dirección de recepción es tu propia dirección</translation>
+<translation id="749944179568745958">No es una dirección de ETH válida</translation>
+<translation id="3506416339268164412">La dirección de recepción es la dirección de contrato del token</translation>
 </translationbundle>

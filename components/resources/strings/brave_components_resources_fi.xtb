@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
 <translation id="3656941797339037856">Linkitä Rewards Geminiin!</translation>
-<translation id="3066983737886188034">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave-palkintolompakkosi Geminiin nyt!</translation>
+<translation id="2383784987664887340">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave-palkintolompakkosi Geminiin nyt!</translation>
+<translation id="2237374144728570574">* Gemini Earn -tilin vuotuinen prosentuaalinen tuotto 15.09.2021 alkaen</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
 <translation id="6915065518766963119">* Vaatii Uphold-vahvistuksen.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x-osoite tai -url</translation>
 <translation id="2860280209982026951">Brave käyttää <ph name="LINK_BEFORE"/>0x:ää<ph name="LINK_AFTER"/> DEX-aggregaattorina.</translation>
 <translation id="151946611346774041">0x käsittelee Ethereum-osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien hintatarjousten saaminen). 0x käyttää näitä tietoja VAIN tapahtumien käsittelyyn.</translation>
+<translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
 <translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/>-laitetta ei ole enää liitetty</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
 <translation id="1178198982208000092">Liitä <ph name="DEVICE_NAME"/>-laitteesi</translation>
+<translation id="4358411489835404360">Laitelompakko vaatii vahvistuksen laitteella. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Laitteistolompakko vaatii Ethereum-sovelluksen avaamisen laitteella <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">lähetetty</translation>
 <translation id="5013754027092416509">vastaanotettu</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-tietoja ei odoteta</translation>
 <translation id="3282936527763045737">Salasana on virheellinen</translation>
 <translation id="1119447706177454957">Sisäinen virhe</translation>
+<translation id="3327639091470204775">Trezor-siltaan ei saatu yhteyttä</translation>
 <translation id="6672377693827764095">Sisäinen virhe, tilejä ei voitu noutaa</translation>
 <translation id="8933250418452564886">Laitteistotapahtumaa ei löydy, yritä uudelleen</translation>
 <translation id="5999974802900788338">Vastaanotettu virhe laitteistolaitteelta, sinun on luultavasti vahvistettava tapahtuma laitteellasi</translation>

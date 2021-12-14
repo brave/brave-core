@@ -592,7 +592,8 @@
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="3656941797339037856">रिवॉर्ड को Gemini से लिंक करें!</translation>
-<translation id="3066983737886188034">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
+<translation id="2383784987664887340">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
+<translation id="2237374144728570574">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
@@ -877,6 +878,7 @@
 <translation id="8093033115658137576">0x से शुरू होने वाला पता या यूआरएल (url)</translation>
 <translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>का उपयोग DEX एग्रीगेटर के तौर पर  करता है.</translation>
 <translation id="151946611346774041">0x लेनदेन को पूरा करने के लिए एथेरियम पते और IP पते को प्रोसेस करेगा (उद्धरण प्राप्त करने सहित). 0x केवल इस डेटा का उपयोग लेनदेन को प्रोसेस करने के लिए करेगा.</translation>
+<translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="1420318137760245955">नए Brave Wallet में आपका स्वागत है</translation>
 <translation id="8303434745767477417">क्रिप्टो असेट को अपने पास सुरक्षित रखें. पोर्टफ़ोलियो प्रदर्शन को ट्रैक करें, और वेब 3 DApps के साथ सहभागिता करें. DeFi के साथ ट्रेड करें, निवेश करें, उधार लें और उधार दें. Brave गोपनीयता ब्राउज़र से ठीक है. कोई एक्सटेंशन नहीं, कोई डाउनलोड की आवश्यकता नहीं है.</translation>
@@ -1048,6 +1050,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> डिसकनेक्ट हो गया है</translation>
 <translation id="5317781812114905957">निर्देश</translation>
 <translation id="1178198982208000092">अपना <ph name="DEVICE_NAME"/> कनेक्ट करें</translation>
+<translation id="4358411489835404360">हार्डवेयर वॉलेट को डिवाइस पर कन्फ़र्मेशन की ज़रुरत होती है.<ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">हार्डवेयर वॉलेट को <ph name="DEVICE_NAME"/> एथेरियम ऐप खोलना ज़रूरी है</translation>
 <translation id="8687869982094542529">भेजे गए</translation>
 <translation id="5013754027092416509">मिला</translation>
@@ -1107,6 +1110,7 @@
 <translation id="4287068151777838754">JSON डेटा की उम्मीद नहीं है</translation>
 <translation id="3282936527763045737">पासवर्ड सही नहीं है</translation>
 <translation id="1119447706177454957">आंतरिक गड़बड़ी</translation>
+<translation id="3327639091470204775">Trezor ब्रिज से नहीं कनेक्ट हो पाया</translation>
 <translation id="6672377693827764095">आंतरिक गड़बड़ी, अकाउंट की जानकारी नहीं निकाली जा सकी</translation>
 <translation id="8933250418452564886">हार्डवेयर लेनदेन खोजने में असमर्थ, कृपया दोबारा कोशिश करें</translation>
 <translation id="5999974802900788338">हार्डवेयर डिवाइस से प्राप्त एरर, शायद आपको अपने डिवाइस पर लेनदेन की पुष्टि करने की आवश्यकता है</translation>

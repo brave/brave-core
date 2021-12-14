@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
 <translation id="9200453331904391567">Brave Jutalmak kapcsolat megszakítása</translation>
 <translation id="3656941797339037856">Kapcsolja össze a Rewards-ot a Geminivel!</translation>
-<translation id="3066983737886188034">A Geminivel könnyedén kereskedhet a BAT-jával, tárolhatja azt és kereshet 3,49% APY-t vele. Erősítse meg és kapcsolja össze Brave jutalmak pénztárcáját a Geminivel most!</translation>
+<translation id="2383784987664887340">A Geminivel könnyedén kereskedhet a BAT-jával, tárolhatja azt és kereshet 3,49% APY-t vele. Erősítse meg és kapcsolja össze Brave jutalmak pénztárcáját a Geminivel most!</translation>
+<translation id="2237374144728570574">* Gemini Earn APY 2021. szept. 15-től</translation>
 <translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
 <translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
 <translation id="6915065518766963119">* Uphold-ellenőrzést igényel.</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x  cím vagy URL</translation>
 <translation id="2860280209982026951">A Brave a következőt használja DEX aggregátorként: <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
 <translation id="151946611346774041">A 0x feldolgozza az Ethereum-címet és az IP-címet a tranzakciók teljesítéséhez (beleértve az árajánlatok lehívását). A 0x KIZÁRÓLAG a tranzakciók feldolgozása céljából használja ezeket az adatokat.</translation>
+<translation id="4626407663177532837">Az árajánlat tartalmazza a Brave 0,875% -os díját.</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
 <translation id="8303434745767477417">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba web 3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="1178198982208000092">Csatlakoztassa a következőt: <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">A hardware pénztárcához visszaigazolás szükséges az eszközön. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">A hardware pénztárcához a következőn kell megnyitni az Ethereum alkalmazást: <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">elküldött</translation>
 <translation id="5013754027092416509">beérkezett</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON-adatok nem várhatók</translation>
 <translation id="3282936527763045737">A jelszó helytelen</translation>
 <translation id="1119447706177454957">Belső hiba</translation>
+<translation id="3327639091470204775">Nem sikerült csatlakozni a Trezor hídhoz</translation>
 <translation id="6672377693827764095">Belső hiba, sikertelen volt a fiókok lehívása</translation>
 <translation id="8933250418452564886">Nem található hardware-tranzakció, próbálja újra</translation>
 <translation id="5999974802900788338">A hardware eszköz hibát jelez, előfordulhat, hogy a tranzakciót az eszközén kell megerősítenie</translation>

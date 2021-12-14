@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Terminer la vérification du portefeuille</translation>
 <translation id="9200453331904391567">Déconnexion des primes Brave</translation>
 <translation id="3656941797339037856">Associez Rewards à Gemini !</translation>
-<translation id="3066983737886188034">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY sur votre BAT. Vérifiez votre portefeuille de récompenses Brave et associez-le à Gemini dès maintenant !</translation>
+<translation id="2383784987664887340">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY sur votre BAT. Vérifiez votre portefeuille de récompenses Brave et associez-le à Gemini dès maintenant !</translation>
+<translation id="2237374144728570574">* APY Gemini Earn au 15 septembre 2021</translation>
 <translation id="7404779623219601861">Échangez des BAT contre des cartes cadeaux</translation>
 <translation id="6215565499749144110">Avec le réseau TAP, vous pouvez échanger vos BAT contre des cartes cadeaux de grandes marques.</translation>
 <translation id="6915065518766963119">* Nécessite une vérification Uphold.</translation>
@@ -828,9 +829,9 @@
 <translation id="8809307000287364168">Les données de transaction 'maxPriorityFeePerGas' ne sont pas valides</translation>
 <translation id="7381733147588397055">Impossible de convertir les données de la transaction</translation>
 <translation id="3829038878925630240">Les données de transaction 'from' doivent être indiquées</translation>
-<translation id="4732386285392573809">Impossible d'obtenir le prix du gaz pour la transaction</translation>
+<translation id="4732386285392573809">Impossible d'obtenir les frais Gas pour la transaction</translation>
 <translation id="4232775951515678071">Impossible d'obtenir le type pour la transaction</translation>
-<translation id="2080935885647755539">Impossible d'obtenir le coût du gaz pour la transaction EIP-1559</translation>
+<translation id="2080935885647755539">Impossible d'obtenir les frais Gas pour la transaction EIP-1559</translation>
 <translation id="4843814354611030845">L'utilisateur a rejeté la transaction</translation>
 <translation id="1462494615260983714">Erreur lors du traitement de la transaction</translation>
 <translation id="4886059598718763020">« <ph name="VALUE"/> » n'est pas autorisé à signer le message</translation>
@@ -871,11 +872,12 @@
 <translation id="538450413584738399">Échanger</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> non prise en charge</translation>
 <translation id="1191686659164947414">La transaction peut être exécutable</translation>
-<translation id="632241521608275119">Tolérance de retard</translation>
+<translation id="632241521608275119">Tolérance au glissement</translation>
 <translation id="4500473291496079954">Expire dans</translation>
 <translation id="8093033115658137576">adresse ou url 0x</translation>
 <translation id="2860280209982026951">Brave utilise <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> comme agrégateur DEX.</translation>
 <translation id="151946611346774041">0x traitera l'adresse Ethereum et l'adresse IP pour effectuer une transaction (y compris pour obtenir des devis). 0x utilisera ces données UNIQUEMENT dans le but de traiter les transactions.</translation>
+<translation id="4626407663177532837">L'estimation inclut des frais de 0,875 % facturés par Brave.</translation>
 <translation id="6518133107902771759">Valider</translation>
 <translation id="1420318137760245955">Bienvenue dans le nouveau portefeuille Brave</translation>
 <translation id="8303434745767477417">Conservez les actifs cryptos que vous détenez. Suivez les performances de votre portefeuille et interagissez avec des DApps web3. Négociez, investissez, empruntez et prêtez avec FiDé. Tout cela directement depuis le navigateur privé Brave. Aucune extension ni aucun téléchargement requis.</translation>
@@ -1014,9 +1016,9 @@
 <translation id="1060221736464994328">Autoriser ce site à changer de réseau ?</translation>
 <translation id="2478788592457735063">Vous allez basculer sur un réseau déjà ajouté.</translation>
 <translation id="8756686998207163764">Changer de réseau</translation>
-<translation id="3948067511324628726">Frais du gaz</translation>
+<translation id="3948067511324628726">Frais Gas</translation>
 <translation id="7163997622278957886">Offre</translation>
-<translation id="1074360622426001342">Montant + gaz</translation>
+<translation id="1074360622426001342">Montant + Gas</translation>
 <translation id="7084089311475827950">Aucune donnée.</translation>
 <translation id="5821668936183240062">suivant</translation>
 <translation id="793994607260936590">première</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> déconnecté</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="1178198982208000092">Connecter votre <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Le portefeuille physique nécessite une confirmation sur l'appareil. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Le portefeuille physique nécessite que l'application Ethereum soit ouverte sur <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">envoyé</translation>
 <translation id="5013754027092416509">reçu</translation>
@@ -1065,15 +1068,15 @@
 <translation id="2331676293859649642">Confirmé</translation>
 <translation id="1165039591588034296">Erreur</translation>
 <translation id="8941851657764077659">Frais de priorité max.</translation>
-<translation id="8047527352810290817">Modifier le gaz</translation>
+<translation id="8047527352810290817">Modifier le Gas</translation>
 <translation id="9091334651803050473">Bien que cela ne soit pas garanti, les mineurs donneront probablement la priorité à votre transaction si vous payez des frais plus élevés.</translation>
 <translation id="2941112035454246133">Faible</translation>
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="7304030187361489308">Élevé</translation>
-<translation id="3275974034681834347">Quantité max. de gaz</translation>
-<translation id="6388054724320152261">Prix par gaz (Gwei)</translation>
-<translation id="1254969878422524947">Limite de contribution par gaz (Gwei)</translation>
-<translation id="7373308452149471621">Limite de prix par gaz (Gwei)</translation>
+<translation id="3275974034681834347">Limite de Gas</translation>
+<translation id="6388054724320152261">Prix par Gas (Gwei)</translation>
+<translation id="1254969878422524947">Limite de contribution par Gas (Gwei)</translation>
+<translation id="7373308452149471621">Limite de prix par Gas (Gwei)</translation>
 <translation id="5956400126884970816">Frais max.</translation>
 <translation id="2445079431396622762">Frais maximums</translation>
 <translation id="6152793706702141594">Frais de base actuels</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">Données JSON non attendues</translation>
 <translation id="3282936527763045737">Mot de passe incorrect</translation>
 <translation id="1119447706177454957">Erreur interne</translation>
+<translation id="3327639091470204775">Impossible de se connecter au pont Trezor</translation>
 <translation id="6672377693827764095">Erreur interne, impossible de récupérer les comptes</translation>
 <translation id="8933250418452564886">La transaction matérielle est introuvable, veuillez réessayer</translation>
 <translation id="5999974802900788338">L'appareil physique a renvoyé une erreur. Vous devez probablement confirmer la transaction sur votre appareil</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Impossible de signer le message, veuillez réessayer</translation>
 <translation id="8273603707418703324">Impossible de signer le message : le trousseau demandé est inconnu. Veuillez réessayer</translation>
 <translation id="5265455943786954050">Une commande Trezor est déjà en cours</translation>
-<translation id="7017116822583380542">Trezor Bridge n'est pas prêt</translation>
+<translation id="7017116822583380542">Le pont Trezor n'est pas prêt</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="3745016858329272300">Infos générales</translation>
 <translation id="4045404575593562245">Événements de contrôle Tor</translation>

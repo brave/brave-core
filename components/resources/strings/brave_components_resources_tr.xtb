@@ -591,7 +591,8 @@
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
-<translation id="3066983737886188034">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
+<translation id="2383784987664887340">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
+<translation id="2237374144728570574">* 15 Eylül 2021 itibarıyla Gemini Earn APY</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
@@ -876,6 +877,7 @@
 <translation id="8093033115658137576">0x adresi veya url'si</translation>
 <translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x'i<ph name="LINK_AFTER"/> bir DEX toplayıcısı olarak kullanır.</translation>
 <translation id="151946611346774041">0x, bir işlemi yerine getirmek için (teklif alma da dahil) Ethereum adresini ve IP adresini işleyecektir. 0x bu veriyi SADECE işlemleri gerçekleştirme amacıyla kullanacaktır.</translation>
+<translation id="4626407663177532837">Teklif %0,875 Brave ücretini de içerir.</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
 <translation id="8303434745767477417">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve web 3 DApps ile etkileşime geçin. DeFi sayesinde alım-satım yapın, yatırım yapın, ödünç alın ve ödünç verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
@@ -1047,6 +1049,7 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> cihazını bağla</translation>
+<translation id="4358411489835404360">Donanım cüzdanı cihaz üzerinden doğrulama gerektiriyor. <ph name="DEVICE_NAME"/></translation>
 <translation id="3087887714936696603">Donanım cüzdanı, Ethereum uygulamasının <ph name="DEVICE_NAME"/> üzerinde açılmasını gerektirir</translation>
 <translation id="8687869982094542529">gönderildi</translation>
 <translation id="5013754027092416509">alındı</translation>
@@ -1106,6 +1109,7 @@
 <translation id="4287068151777838754">JSON verisi beklenmiyor</translation>
 <translation id="3282936527763045737">Parola doğru değil</translation>
 <translation id="1119447706177454957">İç hata</translation>
+<translation id="3327639091470204775">Trezor köprüsüne bağlanılamıyor</translation>
 <translation id="6672377693827764095">İç hata, Hesaplar getirilemiyor</translation>
 <translation id="8933250418452564886">Donanım işlemi bulunamadı, lütfen tekrar deneyin</translation>
 <translation id="5999974802900788338">Donanım cihazından hata alındı, işlemi cihazınızdan onaylamanız gerekiyor olabilir</translation>
@@ -1113,7 +1117,7 @@
 <translation id="971552837551838642">Mesaj imzalanırken hata oluştu, lütfen tekrar deneyin</translation>
 <translation id="8273603707418703324">Mesaj imzalanırken hata oluştu, bilinmeyen anahtarlık istendi, lütfen tekrar deneyin</translation>
 <translation id="5265455943786954050">Trezor komutu zaten devam ediyor</translation>
-<translation id="7017116822583380542">Trezor bridge hazır değil</translation>
+<translation id="7017116822583380542">Trezor köprüsü hazır değil</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
