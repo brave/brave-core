@@ -109,6 +109,7 @@ class AssetDetailStore: ObservableObject {
         }
       assetRatioController.priceHistory(
         token.symbol,
+        vsAsset: "usd",
         timeframe: timeframe
       ) { [weak self] success, history in
         guard let self = self else { return }
