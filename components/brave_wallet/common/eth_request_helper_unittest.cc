@@ -316,8 +316,71 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, nullptr));
   EXPECT_FALSE(
       ParsePersonalSignParams("{\"params\":[{}]}", &address, &message));
+  EXPECT_FALSE(ParsePersonalSignParams("{\"params\":[\"123\",123]}", &address,
+                                       &message));
+}
+
+TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0x68656c6c6f20776f726c64",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0x68656c6c6f20776f726c64",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c",
+          "12345",
+          null,
+          123
+        ]
+      })");
+  const std::string json_with_message_string(
+      R"({
+        "params": [
+          "hello world",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c"
+        ]
+      })");
+  std::string message;
+  std::string signature;
+  EXPECT_TRUE(ParsePersonalEcRecoverParams(json, &message, &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+
+  signature.clear();
+  message.clear();
+  EXPECT_TRUE(
+      ParsePersonalEcRecoverParams(json_extra_entry, &message, &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+
+  signature.clear();
+  message.clear();
+  EXPECT_TRUE(ParsePersonalEcRecoverParams(json_with_message_string, &message,
+                                           &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+
+  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, &message, nullptr));
+  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, nullptr, &signature));
+  EXPECT_FALSE(ParsePersonalEcRecoverParams(json, nullptr, nullptr));
   EXPECT_FALSE(
-      ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
+      ParsePersonalEcRecoverParams("{\"params\":[{}]}", &message, &signature));
+  EXPECT_FALSE(ParsePersonalEcRecoverParams("{\"params\":[\"123\",123]}",
+                                            &message, &signature));
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
