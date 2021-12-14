@@ -94,13 +94,13 @@ function BackupWallet (props: Props) {
   }
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isRecoverPhraseCopied) {
+    if (isRecoverPhraseCopied) {
+      const timer = setTimeout(() => {
         setIsRecoverPhraseCopied(false)
-      }
-    }, recoverPhraseCopiedTimeout)
-
-    return () => clearTimeout(timer)
+      }, recoverPhraseCopiedTimeout)
+      return () => clearTimeout(timer)
+    }
+    return () => {}
   }, [isRecoverPhraseCopied])
 
   return (
