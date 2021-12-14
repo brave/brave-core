@@ -60,8 +60,6 @@ public class BraveWalletProvider implements BraveRewardsObserver {
         rewardsNativeProxy.AddObserver(this);
         String path = uri.getPath();
         String query = uri.getQuery();
-        Log.e("BraveRewards", "BraveWalletProvider : path : " + path);
-        Log.e("BraveRewards", "BraveWalletProvider : query : " + query);
 
         if (TextUtils.isEmpty(path) || TextUtils.isEmpty(query)) {
             rewardsNativeProxy.RemoveObserver(this);
@@ -76,9 +74,6 @@ public class BraveWalletProvider implements BraveRewardsObserver {
         path = String.format(Locale.US, "/%s/%s", rewardsNativeProxy.getExternalWalletType(), path);
         query = String.format(Locale.US, "?%s", query);
 
-        Log.e("BraveRewards", "BraveWalletProvider : path : " + path);
-        Log.e("BraveRewards", "BraveWalletProvider : query : " + query);
-
         rewardsNativeProxy.ProcessRewardsPageUrl(path, query);
     }
 
@@ -91,7 +86,6 @@ public class BraveWalletProvider implements BraveRewardsObserver {
         }
 
         String redirectUrl = parseJsonArgs(jsonArgs);
-        Log.e("BraveRewards", "BraveWalletProvider : " + redirectUrl);
         if (BraveRewardsNativeWorker.LEDGER_OK == errorCode
                 && TextUtils.equals(action, ACTION_VALUE)) {
             // wallet is verified: redirect to chrome://rewards for now
@@ -130,7 +124,6 @@ public class BraveWalletProvider implements BraveRewardsObserver {
     private void showErrorMessageBox(int errorCode) {
         String message = "";
         String messageTitle = "";
-        Log.e("BraveRewards", "Error code : " + errorCode);
         Context context = ContextUtils.getApplicationContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 BraveRewardsHelper.getChromeTabbedActivity(), R.style.Theme_Chromium_AlertDialog);
