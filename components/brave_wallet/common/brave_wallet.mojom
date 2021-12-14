@@ -357,11 +357,9 @@ interface KeyringController {
   ImportAccount(string accountName, string privateKey)
     => (bool success, string address);
 
-  [EnableIf=filecoin_enabled]
   ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)
     => (bool success, string address);
 
-  [EnableIf=filecoin_enabled]
   ImportFilecoinBLSAccount(string accountName, string privateKey, string publicKey, string network)
     => (bool success, string address);
 

@@ -1,6 +1,5 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 static_library("browser") {
@@ -54,6 +53,8 @@ static_library("browser") {
     "eth_tx_controller.h",
     "eth_tx_state_manager.cc",
     "eth_tx_state_manager.h",
+    "filecoin_keyring.cc",
+    "filecoin_keyring.h",
     "hd_key.cc",
     "hd_key.h",
     "hd_keyring.cc",
@@ -75,12 +76,6 @@ static_library("browser") {
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]
-  if (filecoin_enabled) {
-    sources += [
-      "filecoin_keyring.cc",
-      "filecoin_keyring.h",
-    ]
-  }
   deps = [
     "//base",
     "//brave/components/api_request_helper",

@@ -236,6 +236,11 @@ constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
 
+constexpr char kBraveWalletFilecoinName[] =
+    "Enable Brave Wallet Filecoin support";
+constexpr char kBraveWalletFilecoinDescription[] =
+    "Filecoin support for native Brave Wallet";
+
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
     "Brave News is completely private and includes anonymized ads matched on "
@@ -337,7 +342,12 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kNativeBraveWalletName,                              \
      flag_descriptions::kNativeBraveWalletDescription,                       \
      kOsDesktop | flags_ui::kOsAndroid,                                      \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},
+     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)}, \
+    {"brave-wallet-filecoin",                                                \
+     flag_descriptions::kBraveWalletFilecoinName,                            \
+     flag_descriptions::kBraveWalletFilecoinDescription,                     \
+     kOsDesktop | flags_ui::kOsAndroid,                                      \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \

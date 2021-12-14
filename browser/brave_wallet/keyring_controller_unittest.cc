@@ -11,11 +11,13 @@
 #include "base/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -25,10 +27,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(FILECOIN_ENABLED)
-#include "brave/components/brave_wallet/browser/filecoin_keyring.h"
-#endif
 
 namespace brave_wallet {
 
@@ -177,7 +175,7 @@ class KeyringControllerUnitTest : public testing::Test {
     run_loop.Run();
     return success;
   }
-#if BUILDFLAG(FILECOIN_ENABLED)
+
   static absl::optional<std::string> ImportFilecoinSECP256K1Account(
       KeyringController* controller,
       const std::string& account_name,
@@ -195,7 +193,7 @@ class KeyringControllerUnitTest : public testing::Test {
             }));
     return account;
   }
-#endif
+
   static absl::optional<std::string> ImportAccount(
       KeyringController* controller,
       const std::string& name,
@@ -2332,8 +2330,11 @@ TEST_F(KeyringControllerUnitTest, UnknownKeyring) {
   EXPECT_TRUE(callback_called);
 }
 
-#if BUILDFLAG(FILECOIN_ENABLED)
 TEST_F(KeyringControllerUnitTest, ImportedFilecoinAccounts) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
+
   KeyringController controller(GetPrefs());
 
   TestKeyringControllerObserver observer;
@@ -2538,6 +2539,5 @@ TEST_F(KeyringControllerUnitTest, ImportedFilecoinAccounts) {
       base::HexStringToBytes(imported_accounts[0].private_key, &private_key0));
   EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key0));
 }
-#endif
 
 }  // namespace brave_wallet

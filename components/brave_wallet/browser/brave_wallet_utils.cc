@@ -237,7 +237,10 @@ bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kNativeBraveWalletFeature);
 }
-
+bool IsFilecoinEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
+}
 const std::vector<brave_wallet::mojom::EthereumChain>
 GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::EthereumChain> result;
