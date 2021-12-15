@@ -8,30 +8,35 @@
 
 #include <string>
 
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
+
 namespace base {
 class Time;
 }  // namespace base
 
 namespace ads {
 
+class AdType;
 class ConfirmationType;
 struct AdEventInfo;
 struct CreativeAdInfo;
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const ConfirmationType confirmation_type,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
                          const base::Time& created_at);
-
-AdEventInfo BuildAdEvent(const ConfirmationType confirmation_type);
-
 AdEventInfo BuildAdEvent(const std::string& uuid,
                          const std::string& creative_set_id,
-                         const ConfirmationType confirmation_type);
-
+                         const ConfirmationType& confirmation_type);
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
-                         const ConfirmationType confirmation_type);
+                         const ConfirmationType& confirmation_type);
 
 void FireAdEvent(const AdEventInfo& ad_event);
+void FireAdEvents(const AdEventInfo& ad_event, const int count);
+
+int GetAdEventCount(const AdType& ad_type,
+                    const ConfirmationType& confirmation_type,
+                    const AdEventList& ad_events);
 
 }  // namespace ads
 

@@ -7,11 +7,11 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -90,12 +90,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
 
     InitializeAds();
 
-    RecordUserActivityEvents();
-  }
-
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+    ForceUserActivityFrequencyCapPermission();
   }
 
   CreativeAdNotificationInfo BuildCreativeAdNotification1() {

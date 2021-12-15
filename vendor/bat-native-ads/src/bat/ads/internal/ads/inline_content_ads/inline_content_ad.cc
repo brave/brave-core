@@ -59,7 +59,7 @@ void InlineContentAd::FireEvent(
           return;
         }
 
-        const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad, uuid);
+        const InlineContentAdInfo& ad = BuildInlineContentAd(creative_ad, uuid);
 
         FireEvent(ad, uuid, creative_instance_id, event_type);
       });

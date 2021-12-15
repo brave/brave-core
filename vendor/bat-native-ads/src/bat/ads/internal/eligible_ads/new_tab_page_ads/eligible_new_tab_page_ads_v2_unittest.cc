@@ -28,11 +28,6 @@ class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
 
   ~BatAdsEligibleNewTabPageAdsV2Test() override = default;
 
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
   void Save(const CreativeNewTabPageAdList& creative_ads) {
     database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });

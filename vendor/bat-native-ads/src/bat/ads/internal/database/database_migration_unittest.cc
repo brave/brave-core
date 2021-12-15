@@ -7,6 +7,8 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/bundle/creative_ad_unittest_util.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
@@ -39,7 +41,9 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
 
 TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
-  const AdEventInfo& ad_event = BuildAdEvent(ConfirmationType::kViewed);
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {
