@@ -519,4 +519,4 @@ export enum WalletRoutes {
   CryptoPage = '/crypto/:category/:id?'
 }
 
-export const WalletOrigin = 'chrome://wallet/'
+export const WalletOrigin = 'chrome://wallet'

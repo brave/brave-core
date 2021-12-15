@@ -109,7 +109,7 @@ export const CaratDownIcon = styled(CaratCircleODownIcon)`
 `
 
 export const OvalButton = styled(WalletButton)`
-  display: flex;;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -120,6 +120,9 @@ export const OvalButton = styled(WalletButton)`
   border: 1px solid rgba(255,255,255,0.5);
   fontSize: 14px;
   color: ${(p) => p.theme.palette.white};
+  &:disabled {
+    cursor: default;
+  }
 `
 
 export const OvalButtonText = styled.span`
