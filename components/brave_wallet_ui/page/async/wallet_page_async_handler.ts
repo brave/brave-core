@@ -35,17 +35,25 @@ import { Store } from '../../common/async/types'
 import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 import { GetTokenParam } from '../../utils/api-utils'
 
-function switchEndianness (hexString: string) {
+function encodeKeyToHex (key: string): string {
+  return Buffer.from(key, 'base64').toString('hex')
+}
+
+function switchEndianness (hexString: string): string | false {
   const regex = hexString.match(/.{2}/g)
   if (!regex) {
-    throw new Error(`Could not switch endianness of hex string: ${hexString}`)
+    return false
   }
   return regex.reverse().join('')
 }
 
 function extractPublicKeyForBLS (privateKey: string): string {
   // https://github.com/brave/brave-browser/issues/20024
-  return Buffer.from(bls.getPublicKey(switchEndianness(privateKey))).toString('hex')
+  const reversedKey = switchEndianness(privateKey)
+  if (!reversedKey) {
+    return ''
+  }
+  return Buffer.from(bls.getPublicKey(reversedKey)).toString('hex')
 }
 
 const handler = new AsyncActionHandler()
@@ -125,9 +133,9 @@ handler.on(WalletPageActions.importAccount.getType(), async (store: Store, paylo
 })
 
 handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
+  const { keyringController } = getWalletPageApiProxy()
   const result = (payload.protocol === FilecoinAddressProtocol.SECP256K1)
-    ? await keyringController.importFilecoinSECP256K1Account(payload.accountName, Buffer.from(payload.privateKey, 'base64').toString('hex'), payload.network)
+    ? await keyringController.importFilecoinSECP256K1Account(payload.accountName, encodeKeyToHex(payload.privateKey), payload.network)
     : await keyringController.importFilecoinBLSAccount(payload.accountName, payload.privateKey, extractPublicKeyForBLS(payload.privateKey), payload.network)
 
   if (result.success) {

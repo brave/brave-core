@@ -681,7 +681,6 @@ void KeyringController::ImportFilecoinSECP256K1Account(
   }
   std::vector<uint8_t> private_key;
   if (!base::HexStringToBytes(private_key_hex, &private_key)) {
-    LOG(ERROR) << private_key_hex << " result size: " << private_key.size();
     std::move(callback).Run(false, "");
     return;
   }
@@ -713,13 +712,11 @@ void KeyringController::ImportFilecoinBLSAccount(
   }
   std::vector<uint8_t> private_key;
   if (!base::HexStringToBytes(private_key_hex, &private_key)) {
-    LOG(ERROR) << private_key_hex << " result size: " << private_key.size();
     std::move(callback).Run(false, "");
     return;
   }
   std::vector<uint8_t> public_key;
   if (!base::HexStringToBytes(public_key_hex, &public_key)) {
-    LOG(ERROR) << public_key_hex << " result size: " << public_key.size();
     std::move(callback).Run(false, "");
     return;
   }
