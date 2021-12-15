@@ -15,4 +15,16 @@ std::string ContentBrowserClient::GetEffectiveUserAgent(
   return std::string();
 }
 
+bool ContentBrowserClient::AllowWorkerFingerprinting(
+    const GURL& url,
+    BrowserContext* browser_context) {
+  return true;
+}
+
+uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
+    const GURL& url,
+    BrowserContext* browser_context) {
+  return 1 /* OFF */;
+}
+
 }  // namespace content

@@ -27,6 +27,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -46,19 +47,22 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     browser_content_client_.reset(new BraveContentBrowserClient());
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
+    https_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    content::SetupCrossSiteRedirector(https_server_.get());
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    embedded_test_server()->RegisterRequestMonitor(base::BindRepeating(
+    https_server_->ServeFilesFromDirectory(test_data_dir);
+    https_server_->RegisterRequestMonitor(base::BindRepeating(
         &BraveNavigatorUserAgentFarblingBrowserTest::MonitorHTTPRequest,
         base::Unretained(this)));
     user_agents_.clear();
 
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(https_server_->Start());
   }
 
   void TearDown() override {
@@ -66,9 +70,26 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
     user_agents_.push_back(request.headers.at("user-agent"));
   }
+
+  net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
   std::string last_requested_http_user_agent() {
     if (user_agents_.empty())
@@ -83,19 +104,19 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server()->GetURL(domain, "/"));
   }
 
   void BlockFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::BLOCK,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server()->GetURL(domain, "/"));
   }
 
   void SetFingerprintingDefault(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server()->GetURL(domain, "/"));
   }
 
   content::WebContents* contents() {
@@ -108,6 +129,8 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
   std::vector<std::string> user_agents_;
@@ -119,8 +142,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::u16string expected_title(u"pass");
   std::string domain_b = "b.com";
   std::string domain_z = "z.com";
-  GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
-  GURL url_z = embedded_test_server()->GetURL(domain_z, "/simple.html");
+  GURL url_b = https_server()->GetURL(domain_b, "/simple.html");
+  GURL url_z = https_server()->GetURL(domain_z, "/simple.html");
   // get real navigator.userAgent
   std::string unfarbled_ua = embedder_support::GetUserAgent();
   // Farbling level: off
@@ -171,24 +194,34 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 
   // test that iframes also inherit the farbled user agent
   // (farbling level is still maximum)
-  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
-      domain_b, "/navigator/ua-local-iframe.html"));
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html"));
   TitleWatcher watcher1(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
-  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
-      domain_b, "/navigator/ua-remote-iframe.html"));
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-remote-iframe.html"));
   TitleWatcher watcher2(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 
-  // test that workers also inherit the farbled user agent
+  // test that web workers also inherit the farbled user agent
   // (farbling level is still maximum)
-  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
-      domain_b, "/navigator/workers-useragent.html"));
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/workers-useragent.html"));
   // HTTP User-Agent header we just sent in that request should be the same as
   // the unfarbled user agent
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   TitleWatcher watcher3(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
+
+  // test that service workers also inherit the farbled user agent
+  // (farbling level is still maximum)
+  NavigateToURLUntilLoadStop(https_server()->GetURL(
+      domain_b, "/navigator/service-workers-useragent.html"));
+  // HTTP User-Agent header we just sent in that request should be the same as
+  // the unfarbled user agent
+  EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
+  TitleWatcher watcher4(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher4.WaitAndGetTitle());
 
   // Farbling level: off
   // verify that user agent is reset properly after having been farbled
