@@ -1106,7 +1106,7 @@ public class BraveRewardsPanel
             }
         } else if (errorCode == BraveRewardsNativeWorker.LEDGER_ERROR) { // No Internet connection
             String args[] = {};
-            Log.e(TAG, "LEDGER_ERROR");
+            Log.e(TAG, "Failed to fetch rewards parameters from server");
             showNotification(
                     REWARDS_NOTIFICATION_NO_INTERNET_ID, REWARDS_NOTIFICATION_NO_INTERNET, 0, args);
         }
@@ -1155,19 +1155,19 @@ public class BraveRewardsPanel
         SharedPreferences.Editor editor = sharedPref.edit();
         int rightDrawable = 0;
         int leftDrawable = 0;
-        int text = 0;
+        int textId = 0;
         String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
 
         switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
                 rightDrawable = R.drawable.disclosure;
-                text = R.string.brave_ui_wallet_button_unverified;
+                textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 Log.e(TAG, "BraveRewardsExternalWallet.NOT_CONNECTED");
                 break;
             case BraveRewardsExternalWallet.CONNECTED:
                 rightDrawable = R.drawable.verified_disclosure;
-                text = R.string.brave_ui_wallet_button_unverified;
+                textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.PENDING:
@@ -1175,7 +1175,7 @@ public class BraveRewardsPanel
                 editor.apply();
 
                 rightDrawable = R.drawable.verified_disclosure;
-                text = R.string.brave_ui_wallet_button_unverified;
+                textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.VERIFIED:
@@ -1186,7 +1186,7 @@ public class BraveRewardsPanel
                         ? R.drawable.uphold_white
                         : R.drawable.ic_logo_bitflyer;
                 rightDrawable = R.drawable.verified_disclosure;
-                text = R.string.brave_ui_wallet_button_verified;
+                textId = R.string.brave_ui_wallet_button_verified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(
                         leftDrawable, 0, rightDrawable, 0);
                 btnVerifyWallet.setBackgroundColor(Color.TRANSPARENT);
@@ -1201,7 +1201,7 @@ public class BraveRewardsPanel
                 leftDrawable = walletType.equals(BraveWalletProvider.UPHOLD)
                         ? R.drawable.uphold_white
                         : R.drawable.ic_logo_bitflyer;
-                text = R.string.brave_ui_wallet_button_disconnected;
+                textId = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
                 btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),
@@ -1249,7 +1249,8 @@ public class BraveRewardsPanel
                         } else {
                             if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
                                 BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                                        BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_PROVIDER_URL);
+                                        BraveActivity
+                                                .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
                                 dismiss();
                             } else {
                                 int requestCode =
@@ -1601,7 +1602,6 @@ public class BraveRewardsPanel
                 } else {
                     int[] location = new int[2];
                     view.getLocationOnScreen(location);
-                    int x = location[0];
                     int y = location[1];
                     loginPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, 0, y);
                 }

@@ -35,7 +35,7 @@ public class BraveWalletProvider implements BraveRewardsObserver {
     public static final String REDIRECT_URL_KEY = "redirect_url";
 
     public static final String UPHOLD_REDIRECT_URL = "rewards://uphold";
-    public static final String UPHOLD_SUPPORT_URL = "http://uphold.com/en/brave/support";
+    public static final String BRAVE_SUPPORT_URL = "https://community.brave.com";
     public static final String UPHOLD_ORIGIN_URL = "http://uphold.com";
 
     public static final String BITFLYER_REDIRECT_URL = "rewards://bitflyer";
@@ -112,6 +112,7 @@ public class BraveWalletProvider implements BraveRewardsObserver {
                 redirect_url = jsonObj.getString(REDIRECT_URL_KEY);
             }
         } catch (JSONException e) {
+            Log.e("BraveRewards", e.getMessage());
         }
         return redirect_url;
     }
