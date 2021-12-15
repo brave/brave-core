@@ -254,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Mock turning rewards off.
   prefs->SetBoolean("brave.brave_ads.enabled", false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
-                                       RewardsEnabledDuration::kLonger, 1);
+                                       RewardsEnabledDuration::kQuarters, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest,

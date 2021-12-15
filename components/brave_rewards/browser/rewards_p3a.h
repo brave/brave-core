@@ -80,8 +80,8 @@ enum class RewardsEnabledDuration {
   kDays,
   kWeeks,
   kMonths,
-  kLonger,
-  kMaxValue = kLonger,
+  kQuarters,
+  kMaxValue = kQuarters,
 };
 
 void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled);

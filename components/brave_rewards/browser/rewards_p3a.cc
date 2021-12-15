@@ -181,7 +181,7 @@ double CalcWalletBalance(base::flat_map<std::string, double> wallets,
 }
 
 void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
-  auto enabled_timestamp = prefs->GetTime(prefs::kEnabledTimestamp);
+  base::Time enabled_timestamp = prefs->GetTime(prefs::kEnabledTimestamp);
   auto value = RewardsEnabledDuration::kNever;
 
   if (enabled_timestamp.is_null()) {
@@ -205,10 +205,10 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       // Set the threshold at three units so each bin represents the
       // nominal value as an order-of-magnitude: more than three days
       // is a week, more than three weeks is a month, and so on.
-      constexpr auto threshold = 3;
-      constexpr auto days_per_week = 7;
-      constexpr auto days_per_month = 30.44;  // average length
-      auto duration = base::Time::Now() - enabled_timestamp;
+      constexpr int threshold = 3;
+      constexpr int days_per_week = 7;
+      constexpr double days_per_month = 30.44;  // average length
+      base::TimeDelta duration = base::Time::Now() - enabled_timestamp;
       DLOG(INFO) << "Rewards disabled after " << duration;
       if (duration < base::Hours(threshold)) {
         value = RewardsEnabledDuration::kHours;
@@ -219,7 +219,7 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       } else if (duration < base::Days(threshold * days_per_month)) {
         value = RewardsEnabledDuration::kMonths;
       } else {
-        value = RewardsEnabledDuration::kLonger;
+        value = RewardsEnabledDuration::kQuarters;
       }
       // Null the timestamp so we're ready for a fresh measurement.
       prefs->SetTime(prefs::kEnabledTimestamp, base::Time());
