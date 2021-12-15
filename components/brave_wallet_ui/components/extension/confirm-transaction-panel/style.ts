@@ -95,7 +95,7 @@ export const TransactionFiatAmountBig = styled.span`
 export const MessageBox = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: flex-start;
-  justify-content: ${(p) => p.isDetails || p.isApprove ? 'flex-start' : 'space-evenly'};
+  justify-content: 'flex-start';
   flex-direction: column;
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
