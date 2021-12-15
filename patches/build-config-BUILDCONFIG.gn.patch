@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 034999175e30316e488404aa5392f38792d8bdde..e10c8b859e46bc802e24ce83e830e86b0f35d2c2 100644
+index 034999175e30316e488404aa5392f38792d8bdde..b0bf5ba9d1c0b4c92827f2fb7f4719f59d4ac4f1 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -323,6 +323,7 @@ is_posix = !is_win && !is_fuchsia
@@ -10,3 +10,92 @@ index 034999175e30316e488404aa5392f38792d8bdde..e10c8b859e46bc802e24ce83e830e86b
    "//build/config:feature_flags",
    "//build/config/compiler:afdo",
    "//build/config/compiler:afdo_optimize_size",
+@@ -544,6 +545,88 @@ foreach(_target_type,
+               [ "$root_out_dir/lib${_output_name}${_shlib_extension}" ]
+         }
+       }
++
++      _brave_gni_dir = "//brave/chromium_src/" + rebase_path(".", "//")
++      _brave_target_gni_file = _brave_gni_dir + "/BUILD.${_target_name}.gni"
++      if (exec_script("//brave/build/file_exists.py",
++                      [ rebase_path(_brave_target_gni_file) ],
++                      "string") == "True") {
++        print("Applying gn statements from: ${_brave_target_gni_file}")
++        import(_brave_target_gni_file)
++
++        if (!defined(sources)) { sources = [] }
++        if (defined(brave_add_sources)) { sources += rebase_path(brave_add_sources, ".", _brave_gni_dir) }
++        if (defined(brave_remove_sources)) { sources -= brave_remove_sources }
++
++        if (!defined(deps)) { deps = [] }
++        if (defined(brave_add_deps)) { deps += brave_add_deps }
++        if (defined(brave_remove_deps)) { deps -= brave_remove_deps }
++
++        if (!defined(public_deps)) { public_deps = [] }
++        if (defined(brave_add_public_deps)) { public_deps += brave_add_public_deps }
++        if (defined(brave_remove_public_deps)) { public_deps -= brave_remove_public_deps }
++
++        if (!defined(configs)) { configs = [] }
++        if (defined(brave_add_configs)) { configs += brave_add_configs }
++        if (defined(brave_remove_configs)) { configs -= brave_remove_configs }
++
++        if (!defined(visibility)) { visibility = [] }
++        if (defined(brave_add_visibility)) { visibility += brave_add_visibility }
++
++        if (!defined(friend)) { friend = [] }
++        if (defined(brave_add_visibility)) { friend += brave_add_friend }
++
++        if (!defined(allow_circular_includes_from)) { allow_circular_includes_from = [] }
++        if (defined(brave_add_allow_circular_includes_from)) { allow_circular_includes_from += brave_add_allow_circular_includes_from }
++      }
++    }
++  }
++}
++
++foreach(_target_type,
++        [
++          "source_set",
++          "static_library",
++        ]) {
++  template(_target_type) {
++    _target_name = target_name
++    target(_target_type, _target_name) {
++      forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
++      forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
++
++      _brave_gni_dir = "//brave/chromium_src/" + rebase_path(".", "//")
++      _brave_target_gni_file = _brave_gni_dir + "/BUILD.${_target_name}.gni"
++      if (exec_script("//brave/build/file_exists.py",
++                      [ rebase_path(_brave_target_gni_file) ],
++                      "string") == "True") {
++        print("Applying gn statements from: ${_brave_target_gni_file}")
++        import(_brave_target_gni_file)
++
++        if (!defined(sources)) { sources = [] }
++        if (defined(brave_add_sources)) { sources += rebase_path(brave_add_sources, ".", _brave_gni_dir) }
++        if (defined(brave_remove_sources)) { sources -= brave_remove_sources }
++
++        if (!defined(deps)) { deps = [] }
++        if (defined(brave_add_deps)) { deps += brave_add_deps }
++        if (defined(brave_remove_deps)) { deps -= brave_remove_deps }
++
++        if (!defined(public_deps)) { public_deps = [] }
++        if (defined(brave_add_public_deps)) { public_deps += brave_add_public_deps }
++        if (defined(brave_remove_public_deps)) { public_deps -= brave_remove_public_deps }
++
++        if (!defined(configs)) { configs = [] }
++        if (defined(brave_add_configs)) { configs += brave_add_configs }
++        if (defined(brave_remove_configs)) { configs -= brave_remove_configs }
++
++        if (!defined(visibility)) { visibility = [] }
++        if (defined(brave_add_visibility)) { visibility += brave_add_visibility }
++
++        if (!defined(friend)) { friend = [] }
++        if (defined(brave_add_visibility)) { friend += brave_add_friend }
++
++        if (!defined(allow_circular_includes_from)) { allow_circular_includes_from = [] }
++        if (defined(brave_add_allow_circular_includes_from)) { allow_circular_includes_from += brave_add_allow_circular_includes_from }
++      }
+     }
+   }
+ }
