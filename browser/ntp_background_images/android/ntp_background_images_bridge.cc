@@ -185,9 +185,9 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
 
 void NTPBackgroundImagesBridge::GetTopSites(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
-  std::vector<ntp_background_images::TopSite> top_sites = view_counter_service_
-      ? view_counter_service_->GetTopSitesVectorData()
-      : std::vector<ntp_background_images::TopSite>{};
+  std::vector<ntp_background_images::TopSite> top_sites =
+      view_counter_service_ ? view_counter_service_->GetTopSitesData()
+                            : std::vector<ntp_background_images::TopSite>{};
 
   for (const auto& top_site : top_sites) {
     Java_NTPBackgroundImagesBridge_loadTopSitesData(

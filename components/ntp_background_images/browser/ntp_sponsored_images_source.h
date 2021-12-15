@@ -43,18 +43,12 @@ class NTPSponsoredImagesSource : public content::URLDataSource {
   std::string GetMimeType(const std::string& path) override;
   bool AllowCaching() override;
 
+  base::FilePath GetLocalFilePathFor(const std::string& path);
   void GetImageFile(const base::FilePath& image_file_path,
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback,
                       absl::optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
-  bool IsLogoPath(const std::string& path) const;
-  bool IsDefaultLogoPath(const std::string& path) const;
-  int GetLogoIndexFromPath(const std::string& path) const;
-  bool IsWallpaperPath(const std::string& path) const;
-  int GetWallpaperIndexFromPath(const std::string& path) const;
-  bool IsTopSiteFaviconPath(const std::string& path) const;
-  base::FilePath GetTopSiteFaviconFilePath(const std::string& path) const;
 
   NTPBackgroundImagesService* service_;  // not owned
   base::WeakPtrFactory<NTPSponsoredImagesSource> weak_factory_;

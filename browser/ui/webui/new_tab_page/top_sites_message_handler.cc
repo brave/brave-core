@@ -94,7 +94,7 @@ void TopSitesMessageHandler::OnURLsAvailable(
   // Super Referral feature only present in regular tabs (not private tabs)
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
   if (service) {
-    for (auto& top_site : service->GetTopSitesVectorForWebUI()) {
+    for (auto& top_site : service->GetTopSitesData()) {
       base::Value tile_value(base::Value::Type::DICTIONARY);
       if (top_site.name.empty()) {
         tile_value.SetStringKey("title", top_site.destination_url);
@@ -165,7 +165,7 @@ int TopSitesMessageHandler::GetCustomLinksNum() const {
   // In NTP SR mode, SR tiles are also shown in tiles.
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
   if (service) {
-    custom_links_num += service->GetTopSitesVectorForWebUI().size();
+    custom_links_num += service->GetTopSitesData().size();
   }
 
   return custom_links_num;

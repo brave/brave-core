@@ -510,7 +510,6 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
       local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                        initial_sr_component_info_);
     }
-    CacheTopSitesFaviconList();
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
   } else {
@@ -543,20 +542,6 @@ void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
     observer.OnSuperReferralEnded();
 }
 
-void NTPBackgroundImagesService::CacheTopSitesFaviconList() {
-  if (!sr_images_data_->IsValid())
-    return;
-
-  base::Value list(base::Value::Type::LIST);
-
-  for (const auto& top_site : sr_images_data_->top_sites) {
-    const std::string file_path = sr_installed_dir_.Append(
-        top_site.image_file.BaseName()).AsUTF8Unsafe();
-    list.Append(file_path);
-    top_site_favicon_list_.push_back(file_path);
-  }
-}
-
 bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
     const base::Value& component_info) const {
   if (!component_info.is_dict())
@@ -570,11 +555,6 @@ bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
     return false;
 
   return true;
-}
-
-std::vector<std::string>
-NTPBackgroundImagesService::GetTopSitesFaviconList() const {
-  return top_site_favicon_list_;
 }
 
 void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {

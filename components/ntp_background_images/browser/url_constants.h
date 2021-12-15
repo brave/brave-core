@@ -10,11 +10,10 @@ namespace ntp_background_images {
 
 constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
 constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
-constexpr char kDefaultLogoFileName[] = "logo.png";
-constexpr char kLogoFileNamePrefix[] = "logo-";
-constexpr char kWallpaperPathPrefix[] = "wallpaper-";
 constexpr char kSuperReferralPath[] = "super-referral/";
 constexpr char kSponsoredImagesPath[] = "sponsored-images/";
+
+constexpr char kCampaignsKey[] = "campaigns";
 
 constexpr char kPublicKey[] = "publicKey";
 constexpr char kComponentIDKey[] = "componentID";
