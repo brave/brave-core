@@ -377,7 +377,10 @@ extension KeyringStore: BraveWalletKeyringControllerObserver {
   }
   
   public func locked() {
-    updateKeyringInfo()
+    // Put this in the background since biometrics prompt will block the main queue
+    DispatchQueue.main.async { [self] in
+      self.updateKeyringInfo()
+    }
   }
   
   public func unlocked() {
