@@ -1,20 +1,12 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index 4089d015480fea0755af2ebad29faf372ea3ddef..95e3d592263f3882562b5d66788a3a2cd95cad7c 100644
+index 4089d015480fea0755af2ebad29faf372ea3ddef..c9ab838310db7ea85f3546e6f31f4818ca836f42 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
-@@ -188,6 +188,7 @@ component("core") {
+@@ -358,6 +358,7 @@ component("core") {
+       "Carbon.framework",
+     ]
+   }
++  visibility += brave_blink_renderer_core_visibility public_deps += brave_blink_renderer_core_public_deps sources += brave_blink_renderer_core_sources deps += brave_blink_renderer_core_deps
+ }
  
-   visibility = []  # Allow re-assignment of list.
-   visibility = [ "//third_party/blink/*" ]
-+  visibility += brave_blink_renderer_core_visibility
- 
-   sources = [
-     "core_initializer.cc",
-@@ -300,6 +301,7 @@ component("core") {
-     "//v8",
-   ]
- 
-+  public_deps += brave_blink_renderer_core_public_deps
-   deps = [
-     ":generated_settings_macros",
-     "//build:chromeos_buildflags",
+ # Certain sources should be compiled with heavy optimization enabled.
