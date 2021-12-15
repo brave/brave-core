@@ -166,11 +166,11 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Disconnected",
+    "message": "Logged out",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Disconnect from $provider$",
+    "message": "Log out from $provider$",
     "description": "",
     "placeholders": {
       "provider": {
