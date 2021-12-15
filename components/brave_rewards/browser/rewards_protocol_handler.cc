@@ -69,7 +69,7 @@ void LoadRewardsURL(
   const std::string bitflyer_staging_host = bitflyer_staging_url.host();
   const std::string gemini_staging_host = gemini_oauth_staging_url.host();
   const char* kAllowedDomains[] = {
-      "dummy.com",                    // bitFlyer production
+      "bitflyer.com",                 // bitFlyer production
       bitflyer_staging_host.c_str(),  // bitFlyer staging
       "gemini.com",                   // Gemini production
       gemini_staging_host.c_str(),    // Gemini staging
