@@ -20,6 +20,7 @@ export interface Props {
   toAddressOrUrl: string
   toAddress: string
   addressError: string
+  addressWarning: string
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeSendView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -34,6 +35,7 @@ function Send (props: Props) {
     toAddressOrUrl,
     toAddress,
     addressError,
+    addressWarning,
     onInputChange,
     onSelectPresetAmount,
     onSubmit,
@@ -74,6 +76,7 @@ function Send (props: Props) {
         onInputChange={onInputChange}
         toAddressOrUrl={toAddressOrUrl}
         addressError={addressError}
+        addressWarning={addressWarning}
         toAddress={toAddress}
         inputName='address'
         onPaste={onPasteFromClipboard}

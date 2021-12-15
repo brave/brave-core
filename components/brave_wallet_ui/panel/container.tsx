@@ -61,6 +61,7 @@ import { GetNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
+  getChecksumEthAddress,
   getERC20Allowance
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
@@ -182,10 +183,12 @@ function Container (props: Props) {
     toAddressOrUrl,
     toAddress,
     addressError,
+    addressWarning,
     selectedSendAsset
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
+    getChecksumEthAddress,
     sendAssetOptions,
     selectedAccount,
     props.walletActions.sendERC20Transfer,
@@ -766,6 +769,7 @@ function Container (props: Props) {
                 selectedAssetAmount={sendAmount}
                 selectedAssetBalance={sendAssetBalance}
                 addressError={addressError}
+                addressWarning={addressWarning}
                 toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
               />

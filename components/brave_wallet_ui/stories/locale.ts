@@ -391,6 +391,8 @@ provideStrings({
   braveWalletNotDomain: 'Domain is not registered',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
+  braveWalletAddressMissingChecksumInfoWarning: 'Missing checksum information',
+  braveWalletNotValidChecksumAddressError: 'Invalid checksum information',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',

@@ -388,6 +388,10 @@ export interface GetIsStrongPassswordReturnInfo {
   result: boolean
 }
 
+export interface GetChecksumEthAddressReturnInfo {
+  checksumAddress: string
+}
+
 export interface RecoveryObject {
   value: string
   id: number

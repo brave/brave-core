@@ -75,6 +75,11 @@ export const getBalance = (address: string): Promise<string> => {
   })
 }
 
+export async function getChecksumEthAddress (value: string) {
+  const { keyringController } = getAPIProxy()
+  return (await keyringController.getChecksumEthAddress(value))
+}
+
 export async function isStrongPassword (value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringController.isStrongPassword(value)).result

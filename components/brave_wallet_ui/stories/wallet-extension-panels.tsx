@@ -566,6 +566,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onSelectPresetAmount={onSelectPresetAmount}
                         onSubmit={onSubmitSend}
                         addressError=''
+                        addressWarning=''
                         selectedAsset={selectedAsset}
                         selectedAssetAmount={fromAmount}
                         selectedAssetBalance={selectedAccount.balance.toString()}
