@@ -48,6 +48,7 @@ import {
 } from './style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
+import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 
 export interface Props {
   selectedNetwork: EthereumChain
@@ -293,7 +294,18 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionIntentLocale}
             </DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
-            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
+
+            <TransactionTimestampTooltip
+              text={
+                <TransactionFeeTooltipBody>
+                  {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
+                </TransactionFeeTooltipBody>
+              }
+            >
+              <DetailTextDarkBold>
+                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+              </DetailTextDarkBold>
+            </TransactionTimestampTooltip>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>
