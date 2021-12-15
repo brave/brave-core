@@ -184,9 +184,15 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
   // Brave variations
-  std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
+  const std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
                                  kVariationsServerURL.c_str());
+  // Insecure fall-back for variations
+  const std::string kVariationsInsecureServerURL =
+      BRAVE_VARIATIONS_INSECURE_SERVER_URL;
+  command_line.AppendSwitchASCII(
+      variations::switches::kVariationsInsecureServerURL,
+      kVariationsInsecureServerURL.c_str());
 
   // Runtime-enabled features. To override Chromium features default state
   // please see: brave/chromium_src/base/feature_override.h
