@@ -10,13 +10,10 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-class RetentionPreferencesDebugMenuViewController: TableViewController {    
-    private var browserViewController: BrowserViewController?
-
+class RetentionPreferencesDebugMenuViewController: TableViewController {
+    
     init() {
         super.init(style: .insetGrouped)
-        
-        browserViewController = self.currentScene?.browserViewController
     }
     
     @available(*, unavailable)
@@ -30,10 +27,9 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         title = "Retention Preferences"
         
         dataSource.sections = [
+            startOnboardingSection,
             debugFlags,
-            retentionPreferenceFlags,
-            browserLocalFlags
-        ]
+            retentionPreferenceFlags        ]
     }
     
     private func presentDebugFlagAlert() {
@@ -47,6 +43,28 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
     }
     
     // MARK: - Sections
+    
+    private lazy var startOnboardingSection: Static.Section = {
+        var section = Static.Section(
+            rows: [
+                .init(text: "Start Onboarding", selection: { [unowned self] in
+                    let onboardingController = WelcomeViewController(profile: nil,
+                                                                     rewards: nil)
+                    onboardingController.modalPresentationStyle = .fullScreen
+                    onboardingController.onAdsWebsiteSelected = { [weak self] url in
+                        self?.dismiss(animated: true)
+                    }
+                    onboardingController.onSkipSelected = { [weak self] in
+                        self?.dismiss(animated: true)
+                    }
+                    
+                    present(onboardingController, animated: false)
+                }, cellClass: MultilineButtonCell.self)
+            ]
+        )
+        
+        return section
+    }()
     
     private lazy var debugFlags: Section = {
         var shields = Section(
@@ -154,32 +172,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
                     cellReuseId: "DefaultBrowserCalloutCell")
                 ],
                 footer: .title("These are the preferences that stored in preferences for determining the If certain elements are shown to user.")
-        )
-        return shields
-    }()
-        
-    private lazy var browserLocalFlags: Section = {
-        var shields = Section(
-            header: .title("Local Browser Flags"),
-            rows: [
-                .boolRow(
-                    title: "Benchmark Notification Presented",
-                    detailText: "Flag tracking If a product notification is presented in the actual launch session. This flag is used in order to not to try to present another one over existing popover.",
-                    toggleValue: browserViewController?.benchmarkNotificationPresented ?? false,
-                    valueChange: { [unowned self] status in
-                        self.browserViewController?.benchmarkNotificationPresented = status
-                    },
-                    cellReuseId: "BenchmarkNotificationCell"),
-                .boolRow(
-                    title: "Onboarding or Callout Presented",
-                    detailText: "Flag tracking If a full screen callout or onboarding is presented in order to not to try to present another callout  over existing one",
-                    toggleValue: browserViewController?.isOnboardingOrFullScreenCalloutPresented ?? false,
-                    valueChange: { [unowned self] status in
-                        self.browserViewController?.isOnboardingOrFullScreenCalloutPresented = status
-                    },
-                    cellReuseId: "OnboardingCalloutPresentedCell"),
-            ],
-            footer: .title("These are flags locally stored in browser controller determines certain situations where an onboarding element, a callout or an education pop-up will appear.")
         )
         return shields
     }()
