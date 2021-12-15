@@ -11,8 +11,9 @@
 #include "brave/components/brave_today/common/switches.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "url/gurl.h"
 
-namespace brave_today {
+namespace brave_news {
 
 std::string GetHostname() {
   std::string from_switch =
@@ -32,9 +33,22 @@ std::string GetRegionUrlPart() {
   // TODO(petemill): Have a remotely-updatable list of supported language
   // variations.
   if (language_code == "ja") {
-    return "ja";
+    return "ja.";
   }
   return "";
 }
 
-}  // namespace brave_today
+GURL GetFeedUrl() {
+  GURL feed_url("https://" + GetHostname() + "/brave-today/feed." +
+                GetRegionUrlPart() + "json");
+
+  return feed_url;
+}
+
+GURL GetSourcesUrl() {
+  GURL sources_url("https://" + GetHostname() + "/sources." +
+                   GetRegionUrlPart() + "json");
+  return sources_url;
+}
+
+}  // namespace brave_news

@@ -8,11 +8,14 @@
 
 #include <string>
 
-namespace brave_today {
+class GURL;
+namespace brave_news {
 
 std::string GetHostname();
 std::string GetRegionUrlPart();
+GURL GetFeedUrl();
+GURL GetSourcesUrl();
 
-}  // namespace brave_today
+}  // namespace brave_news
 
 #endif  // BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_URLS_H_

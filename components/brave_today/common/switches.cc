@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_today/common/switches.h"
 
-namespace brave_today {
+namespace brave_news {
 namespace switches {
 
 const char kBraveTodayHost[] = "brave-today-host";
 
 }  // namespace switches
-}  // namespace brave_today
+}  // namespace brave_news

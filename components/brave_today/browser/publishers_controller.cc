@@ -75,8 +75,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
   if (is_update_in_progress_) {
     return;
   }
-  GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
-                   brave_today::GetRegionUrlPart() + "json");
+
   auto onRequest = base::BindOnce(
       [](PublishersController* controller, const int status,
          const std::string& body,
@@ -118,7 +117,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
       },
       base::Unretained(this));
-  api_request_helper_->Request("GET", sources_url, "", "", true,
+  api_request_helper_->Request("GET", GetSourcesUrl(), "", "", true,
                                std::move(onRequest),
                                brave::private_cdn_headers);
 }

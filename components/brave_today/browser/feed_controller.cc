@@ -28,12 +28,6 @@ namespace {
 
 const char kEtagHeaderKey[] = "etag";
 
-GURL GetFeedUrl() {
-  GURL feed_url("https://" + brave_today::GetHostname() + "/brave-today/feed." +
-                brave_today::GetRegionUrlPart() + "json");
-  return feed_url;
-}
-
 }  // namespace
 
 FeedController::FeedController(
