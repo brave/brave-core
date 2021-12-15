@@ -36,7 +36,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     ~RedeemUnblindedPaymentTokensUrlRequestBuilder() = default;
 
-// PUT /v2/confirmation/payment/{payment_id}
+// PUT /v3/confirmation/payment/{payment_id}
 
 mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
@@ -53,7 +53,7 @@ mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v2/confirmation/payment/%s",
+  return base::StringPrintf("%s/v3/confirmation/payment/%s",
                             confirmations::server::GetHost().c_str(),
                             wallet_.id.c_str());
 }

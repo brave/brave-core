@@ -65,14 +65,14 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
   URLEndpoints GetValidUrlRequestEndPoints() {
     return {
         {// Request signed tokens
-         R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+         R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
          {{net::HTTP_CREATED, R"(
               {
                 "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
               }
             )"}}},
         {// Get signed tokens
-         R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+         R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
          {{net::HTTP_OK, R"(
               {
                 "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -178,14 +178,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
               {
                 "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
               }
             )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_UNAUTHORIZED, R"(
               {
                 "captcha_id": "captcha-id"
@@ -329,14 +329,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_INTERNAL_SERVER_ERROR, ""}, {net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -434,7 +434,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
 TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   // Arrange
   const URLEndpoints& endpoints = {
-      {R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, ""}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
@@ -473,7 +473,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
@@ -485,7 +485,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_INTERNAL_SERVER_ERROR, ""}, {net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -584,14 +584,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, "invalid_json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
@@ -629,14 +629,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -730,14 +730,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, R"(
             {
               "signedTokens": [
@@ -831,14 +831,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -881,14 +881,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   // Arrange
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
@@ -1053,14 +1053,14 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
 
   const URLEndpoints& endpoints = {
       {// Request signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
             {
               "nonce": "abcb67a5-0a73-43ec-bbf9-51288ba76bb7"
             }
           )"}}},
       {// Get signed tokens
-       R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=abcb67a5-0a73-43ec-bbf9-51288ba76bb7)",
+       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=abcb67a5-0a73-43ec-bbf9-51288ba76bb7)",
        {{net::HTTP_OK, R"(
             {
               "batchProof": "WQ3ijykF8smhAs+boORkMqgBN0gtn5Bd9bm47rAWtA60kJZtR/JfCSmTsMGjO110pDkaklRrnjYj5CrEH9DbDA==",
