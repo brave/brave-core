@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsAdapterFeedCard;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
+import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -299,6 +300,7 @@ public class BraveNewTabPageLayout
             mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
 
             mFeedHash = "";
+            InitBraveNewsController();
 
             mIsFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
             mExistingNewsFeedObject = BraveActivity.getBraveActivity().getNewsItemsFeedCards();
@@ -813,7 +815,6 @@ public class BraveNewTabPageLayout
     }
 
     private void refreshFeed() {
-        mNewsItemsFeedCard.clear();
         mAdapterFeedCard =
                 new BraveNewsAdapterFeedCard(mActivity, mNewsItemsFeedCard, mBraveNewsController);
         mRecyclerView.setAdapter(mAdapterFeedCard);
@@ -827,7 +828,6 @@ public class BraveNewTabPageLayout
             return;
         }
         getFeed();
-        mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
         mRecyclerView.scrollToPosition(0);
     }
 
@@ -865,7 +865,9 @@ public class BraveNewTabPageLayout
 
         mRecyclerView.setVisibility(View.GONE);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        // Used to prevent a recyclerView layout bug
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false));
         mAdapterFeedCard =
                 new BraveNewsAdapterFeedCard(mActivity, mNewsItemsFeedCard, mBraveNewsController);
         mRecyclerView.setAdapter(mAdapterFeedCard);
@@ -920,13 +922,11 @@ public class BraveNewTabPageLayout
                 if (mBraveNewsController != null) {
                     mBraveNewsController.onInteractionSessionStarted();
                 }
-            }
-
-            else {
+            } else {
                 if (mActivity == null) {
                     mActivity = BraveActivity.getBraveActivity();
                 }
-                setFeed();
+                processFeed();
 
                 if (mRecyclerView != null) {
                     mRecyclerView.post(new Runnable() {
@@ -984,9 +984,6 @@ public class BraveNewTabPageLayout
                                 }
                                 if (mSettingsBar.getAlpha() >= 1) {
                                     mSettingsBarIsClickable = true;
-                                    LinearLayout.LayoutParams imageCreditLayoutParams =
-                                            (LinearLayout.LayoutParams)
-                                                    mImageCreditLayout.getLayoutParams();
                                 } else {
                                     mSettingsBarIsClickable = false;
                                 }
@@ -1023,6 +1020,15 @@ public class BraveNewTabPageLayout
                                             mParentScrollView.getViewTreeObserver()
                                                     .removeOnGlobalLayoutListener(listener);
                                         }
+                                    }
+                                });
+
+                                // to make sure that tap on the settings bar doesn't go through and
+                                // trigger the article view
+                                mSettingsBar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        return;
                                     }
                                 });
                             }
@@ -1141,9 +1147,11 @@ public class BraveNewTabPageLayout
                         //@TODO alex optimize feed availability check
                         mBraveNewsController.isFeedUpdateAvailable(
                                 mFeedHash, isNewsFeedAvailable -> {
-                                    if (isNewsFeedAvailable) {
-                                        if (mNewContentButton != null) {
+                                    if (mNewContentButton != null) {
+                                        if (isNewsFeedAvailable) {
                                             mNewContentButton.setVisibility(View.VISIBLE);
+                                        } else {
+                                            mNewContentButton.setVisibility(View.INVISIBLE);
                                         }
                                     }
                                 });
@@ -1269,7 +1277,7 @@ public class BraveNewTabPageLayout
         return viewVisibleHeightPercentage;
     }
 
-    private void setFeed() {
+    private void processFeed() {
         mFeedSpinner.setVisibility(View.GONE);
         if (mOptinLayout != null) {
             mOptinLayout.setVisibility(View.GONE);
@@ -1283,27 +1291,12 @@ public class BraveNewTabPageLayout
         }
 
         try {
-            mParentScrollView.scrollTo(0, 0);
-        } catch (Exception e) {
-            Log.e("bn", "Exception processfeed e:" + e);
-        }
-
-        isScrolled = true;
-    }
-
-    private void processFeed() {
-        mFeedSpinner.setVisibility(View.GONE);
-        if (mOptinLayout != null) {
-            mOptinLayout.setVisibility(View.GONE);
-        }
-
-        mContainer.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-
-        mAdapterFeedCard.notifyItemRangeInserted(0, mNewsItemsFeedCard.size());
-
-        try {
-            mParentScrollView.scrollTo(0, 0);
+            mParentScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                }
+            });
         } catch (Exception e) {
             Log.e("bn", "Exception processfeed e:" + e);
         }
