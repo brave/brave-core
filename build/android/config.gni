@@ -6,7 +6,10 @@ declare_args() {
   brave_android_manifest_includes = []
 }
 
-brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
+brave_android_manifest_includes = [
+  "//brave/android/java/AndroidManifest.xml",
+  "//brave/android/java/AndroidManifest_intent_filters.xml",
+]
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:java",
