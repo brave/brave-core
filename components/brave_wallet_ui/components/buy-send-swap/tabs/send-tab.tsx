@@ -33,6 +33,7 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   networkList: EthereumChain[]
   onAddNetwork: () => void
+  onAddAsset: () => void
 }
 
 function SendTab (props: Props) {
@@ -56,7 +57,8 @@ function SendTab (props: Props) {
     onSetSendAmount,
     onSetToAddressOrUrl,
     onSelectPresetAmount,
-    onAddNetwork
+    onAddNetwork,
+    onAddAsset
   } = props
   const [sendView, setSendView] = React.useState<BuySendSwapViewTypes>('send')
 
@@ -132,6 +134,7 @@ function SendTab (props: Props) {
           onSelectedAsset={onSelectedAsset}
           selectedView={sendView}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onAddAsset}
         />
       }
     </>

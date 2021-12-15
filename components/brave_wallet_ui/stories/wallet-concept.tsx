@@ -256,6 +256,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [importWalletError, setImportWalletError] = React.useState<ImportWalletError>({ hasError: false })
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [customTolerance, setCustomTolerance] = React.useState('')
+  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -634,10 +635,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     console.log(accounts)
   }
 
-  const fetchFullTokenList = () => {
-    // Doesnt fetch anything in storybook
-  }
-
   const onViewPrivateKey = () => {
     // Doesnt do anything in storybook
   }
@@ -677,6 +674,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onAddNetwork = () => {
     alert('Will redirect to Wallet Network Settings')
+  }
+
+  const onShowVisibleAssetsModal = (value: boolean) => {
+    setShowVisibleAssetsModal(value)
   }
 
   return (
@@ -760,7 +761,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               showAddModal={showAddModal}
                               onToggleAddModal={onToggleAddModal}
                               onUpdateAccountName={onUpdateAccountName}
-                              fetchFullTokenList={fetchFullTokenList}
                               selectedNetwork={selectedNetwork}
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
@@ -778,6 +778,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onRemoveUserAsset={onRemoveUserAsset}
                               transactionSpotPrices={[]}
                               userVisibleTokensInfo={[]}
+                              onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+                              showVisibleAssetsModal={showVisibleAssetsModal}
                             />
                           )}
                         </>
@@ -849,6 +851,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSwapQuoteRefresh={onSwapQuoteRefresh}
             onSelectSendAsset={onSelectTransactAsset}
             onAddNetwork={onAddNetwork}
+            onAddAsset={onShowVisibleAssetsModal}
           />
         </WalletWidgetStandIn>
       }

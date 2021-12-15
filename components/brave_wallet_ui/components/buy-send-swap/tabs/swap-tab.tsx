@@ -51,6 +51,7 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onQuoteRefresh: () => void
   onAddNetwork: () => void
+  onAddAsset: () => void
 }
 
 function SwapTab (props: Props) {
@@ -88,7 +89,8 @@ function SwapTab (props: Props) {
     onSetToAmount,
     onSelectPresetAmount,
     onQuoteRefresh,
-    onAddNetwork
+    onAddNetwork,
+    onAddAsset
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
@@ -189,6 +191,7 @@ function SwapTab (props: Props) {
           onSelectedAsset={onSelectAsset}
           selectedView={swapView}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onAddAsset}
         />
       }
     </>

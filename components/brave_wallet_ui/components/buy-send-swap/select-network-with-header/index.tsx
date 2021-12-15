@@ -24,8 +24,9 @@ function SelectNetworkWithHeader (props: Props) {
     <SelectWrapper>
       <Header
         title={getLocale('braveWalletSelectNetwork')}
-        onBack={onBack} hasAddButton={hasAddButton}
-        onAddAccount={onAddNetwork}/>
+        onBack={onBack}
+        hasAddButton={hasAddButton}
+        onClickAdd={onAddNetwork} />
       <SelectScrollContainer>
         <SelectNetwork
           selectedNetwork={selectedNetwork}

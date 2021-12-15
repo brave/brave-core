@@ -118,6 +118,7 @@ function Container (props: Props) {
   const [inputValue, setInputValue] = React.useState<string>('')
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
+  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const {
     tokenOptions,
@@ -463,6 +464,18 @@ function Container (props: Props) {
     props.walletActions.expandWalletNetworks()
   }
 
+  const onShowVisibleAssetsModal = (showModal: boolean) => {
+    if (showModal) {
+      if (tokenOptions.length === 0) {
+        fetchFullTokenList()
+      }
+      history.push(`${WalletRoutes.AddAssetModal}`)
+    } else {
+      history.push(`${WalletRoutes.Portfolio}`)
+    }
+    setShowVisibleAssetsModal(showModal)
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
@@ -489,6 +502,7 @@ function Container (props: Props) {
       walletLocation !== WalletRoutes.Backup &&
       walletLocation !== WalletRoutes.Accounts &&
       walletLocation !== WalletRoutes.AddAccountModal &&
+      walletLocation !== WalletRoutes.AddAssetModal &&
       acceptedAccountRoutes.length !== 0 &&
       !acceptedAccountRoutes.includes(walletLocation) &&
       walletLocation !== WalletRoutes.Portfolio &&
@@ -598,7 +612,6 @@ function Container (props: Props) {
                 showAddModal={showAddModal}
                 onHideAddModal={onHideAddModal}
                 onUpdateAccountName={onUpdateAccountName}
-                fetchFullTokenList={fetchFullTokenList}
                 selectedNetwork={selectedNetwork}
                 onSelectNetwork={onSelectNetwork}
                 isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
@@ -624,6 +637,8 @@ function Container (props: Props) {
                 onRetryTransaction={onRetryTransaction}
                 onSpeedupTransaction={onSpeedupTransaction}
                 onCancelTransaction={onCancelTransaction}
+                onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+                showVisibleAssetsModal={showVisibleAssetsModal}
               />
             }
           </Route>
@@ -685,6 +700,7 @@ function Container (props: Props) {
             onSwapQuoteRefresh={onSwapQuoteRefresh}
             onSelectSendAsset={onSelectSendAsset}
             onAddNetwork={onAddNetwork}
+            onAddAsset={onShowVisibleAssetsModal}
           />
         </WalletWidgetStandIn>
       }

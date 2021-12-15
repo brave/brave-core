@@ -74,6 +74,7 @@ export interface Props {
   onSwapQuoteRefresh: () => void
   onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onAddNetwork: () => void
+  onAddAsset: (value: boolean) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -130,7 +131,8 @@ function BuySendSwap (props: Props) {
     onSelectTab,
     onSwapQuoteRefresh,
     onSelectSendAsset,
-    onAddNetwork
+    onAddNetwork,
+    onAddAsset
   } = props
 
   // Switched this to useLayoutEffect to fix bad setState call error
@@ -155,6 +157,10 @@ function BuySendSwap (props: Props) {
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     onSelectTab(tab)
+  }
+
+  const onClickAddAsset = () => {
+    onAddAsset(true)
   }
 
   return (
@@ -201,6 +207,7 @@ function BuySendSwap (props: Props) {
           assetOptions={swapAssetOptions}
           onQuoteRefresh={onSwapQuoteRefresh}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
       {selectedTab === 'send' &&
@@ -225,6 +232,7 @@ function BuySendSwap (props: Props) {
           showHeader={true}
           assetOptions={sendAssetOptions}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
       {selectedTab === 'buy' &&
@@ -242,6 +250,7 @@ function BuySendSwap (props: Props) {
           showHeader={true}
           assetOptions={buyAssetOptions}
           onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
     </Layout>

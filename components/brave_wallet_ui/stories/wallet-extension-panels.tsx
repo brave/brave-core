@@ -478,6 +478,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log('Will redirect user to network settings')
   }
 
+  const onAddAsset = () => {
+    alert('Will redirect to brave://wallet/crypto/portfolio/add-asset')
+  }
+
   const connectedAccounts = accounts.slice(0, 2)
 
   return (
@@ -511,6 +515,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     assets={AccountAssetOptions}
                     onSelectAsset={onSelectAsset}
                     onBack={onHideSelectAsset}
+                    onAddAsset={onAddAsset}
                   />
                 </SelectContainer>
               }

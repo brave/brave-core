@@ -19,7 +19,8 @@ import {
   WalletPanelState,
   PanelState,
   WalletState,
-  HardwareInfo
+  HardwareInfo,
+  WalletRoutes
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -386,8 +387,9 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
     }
   }
   const payload: SignMessageHardwareProcessedPayload =
-    signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
-                   : { success: signed.success, id: messageData.id, error: signed.error }
+    signed.success
+      ? { success: signed.success, id: messageData.id, signature: signed.payload }
+      : { success: signed.success, id: messageData.id, error: signed.error }
   store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -452,7 +454,7 @@ handler.on(PanelActions.openWalletApps.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.Restore}` }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -460,7 +462,15 @@ handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandWalletAccounts.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet/crypto/accounts/add-account' }, () => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.AddAccountModal}` }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+})
+
+handler.on(PanelActions.expandWalletAddAsset.getType(), async (store) => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.AddAssetModal}` }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }

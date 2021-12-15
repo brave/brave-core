@@ -513,6 +513,7 @@ export enum WalletRoutes {
   PortfolioSub = '/crypto/portfolio/:id?',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
+  AddAssetModal = '/crypto/portfolio/add-asset',
   AccountsSub = '/crypto/accounts/:id?',
   Backup = '/crypto/backup-wallet',
   CryptoPage = '/crypto/:category/:id?'

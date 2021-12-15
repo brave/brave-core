@@ -469,6 +469,10 @@ function Container (props: Props) {
     props.walletPanelActions.expandWalletAccounts()
   }
 
+  const onAddAsset = () => {
+    props.walletPanelActions.expandWalletAddAsset()
+  }
+
   const onAddSuggestedToken = () => {
     if (!suggestedToken) {
       return
@@ -656,6 +660,7 @@ function Container (props: Props) {
             assets={assets}
             onSelectAsset={onSelectAsset}
             onBack={onHideSelectAsset}
+            onAddAsset={onAddAsset}
           />
         </SelectContainer>
       </PanelWrapper>
