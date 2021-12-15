@@ -315,11 +315,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
         Anonymized P3A info helps Brave estimate overall usage, and ensure we’re improving popular features.
       </message>
-      <message name="IDS_SEND_CRASH_REPORTS_TITLE" desc="Title for checkbox of send crash reports automatically.">
-        Automatically send crash reports
+      <message name="IDS_SEND_CRASH_REPORTS_TITLE" desc="Title for for checkbox enable/disable sending diagnostic reports (crashes, hangs).">
+        Automatically send diagnostic reports
       </message>
-      <message name="IDS_SEND_CRASH_REPORTS_SUMMARY" desc="Summary for checkbox of send crash reports automatically.">
-        Crash reports help Brave improve product stability for all users.
+      <message name="IDS_SEND_CRASH_REPORTS_SUMMARY" desc="Summary for checkbox enable/disable sending diagnostic reports (crashes, hangs).">
+        Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freeze.
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Est. Data\nSaved
