@@ -302,10 +302,8 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
         case 'Primary':
         case 'Secondary':
         case 'Ledger':
-          keyringSupportsEIP1559 = true
-          break
         case 'Trezor':
-          keyringSupportsEIP1559 = false
+          keyringSupportsEIP1559 = true
           break
         default:
           keyringSupportsEIP1559 = false

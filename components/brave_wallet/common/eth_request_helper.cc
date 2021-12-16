@@ -163,9 +163,10 @@ bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
                                        account->address, address);
                                  });
 
-  // Only ledger hardware keyring supports EIP-1559 at the moment.
+  // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
   if (account_it != account_infos.end() && (*account_it)->hardware &&
-      (*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor) {
+      ((*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor &&
+       (*account_it)->hardware->vendor != mojom::kTrezorHardwareVendor)) {
     keyring_supports_eip1559 = false;
   }
 
