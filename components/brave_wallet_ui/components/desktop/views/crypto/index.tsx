@@ -85,6 +85,8 @@ export interface Props {
   onCancelTransaction: (transaction: TransactionInfo) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
   showVisibleAssetsModal: boolean
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress?: ERCToken
 }
 
 const CryptoView = (props: Props) => {
@@ -142,7 +144,9 @@ const CryptoView = (props: Props) => {
     isMetaMaskInstalled,
     onRetryTransaction,
     onCancelTransaction,
-    onSpeedupTransaction
+    onSpeedupTransaction,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -302,6 +306,8 @@ const CryptoView = (props: Props) => {
           onRetryTransaction={onRetryTransaction}
           onSpeedupTransaction={onSpeedupTransaction}
           onCancelTransaction={onCancelTransaction}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
         />
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>

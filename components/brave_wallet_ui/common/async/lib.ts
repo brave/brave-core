@@ -13,7 +13,8 @@ import {
   EthereumChain,
   ERCToken,
   WalletAccountType,
-  AccountInfo
+  AccountInfo,
+  GetERCTokenInfoReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -93,6 +94,11 @@ export async function findENSAddress (address: string) {
 export async function findUnstoppableDomainAddress (address: string) {
   const apiProxy = getAPIProxy()
   return apiProxy.ethJsonRpcController.unstoppableDomainsGetEthAddr(address)
+}
+
+export async function getERCTokenInfo (contractAddress: string): Promise<GetERCTokenInfoReturnInfo> {
+  const apiProxy = getAPIProxy()
+  return (await apiProxy.assetRatioController.getTokenInfo(contractAddress))
 }
 
 export async function findHardwareAccountInfo (address: string): Promise<AccountInfo | false> {

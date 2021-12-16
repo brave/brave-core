@@ -40,6 +40,8 @@ export interface Props {
   fullAssetList: ERCToken[]
   userVisibleTokensInfo: ERCToken[]
   selectedNetwork: EthereumChain
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress?: ERCToken
 }
 
 const EditVisibleAssetsModal = (props: Props) => {
@@ -51,7 +53,9 @@ const EditVisibleAssetsModal = (props: Props) => {
     onClose,
     onAddUserAsset,
     onRemoveUserAsset,
-    onSetUserAssetVisible
+    onSetUserAssetVisible,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
   } = props
 
   const [filteredTokenList, setFilteredTokenList] = React.useState<ERCToken[]>([])
@@ -64,7 +68,6 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
-  const [foundToken, setFoundToken] = React.useState<ERCToken>()
   const [hasError, setHasError] = React.useState<boolean>(false)
 
   const handleTokenNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,15 +165,15 @@ const EditVisibleAssetsModal = (props: Props) => {
   }, [tokenList])
 
   const onClickAddCustomToken = () => {
-    if (foundToken) {
-      if (foundToken.isErc721) {
-        let token = foundToken
+    if (foundTokenInfoByContractAddress) {
+      if (foundTokenInfoByContractAddress.isErc721) {
+        let token = foundTokenInfoByContractAddress
         token.tokenId = tokenID ? toHex(tokenID) : ''
         setIsLoading(true)
         onAddUserAsset(token)
         return
       }
-      onAddUserAsset(foundToken)
+      onAddUserAsset(foundTokenInfoByContractAddress)
     } else {
       const newToken: ERCToken = {
         contractAddress: tokenContractAddress,
@@ -243,27 +246,32 @@ const EditVisibleAssetsModal = (props: Props) => {
     onRemoveUserAsset(token)
   }
 
-  const isDisabled = React.useMemo(() => {
-    const token = fullAssetList.find((token) => token.contractAddress.toLowerCase() === tokenContractAddress.toLowerCase())
-    if (token) {
-      setFoundToken(token)
-      setTokenName(token.name)
-      setTokenSymbol(token.symbol)
-      setTokenDecimals(token.decimals.toString())
-      return true
-    } else {
-      setFoundToken(undefined)
-      return false
-    }
-  }, [tokenContractAddress, fullAssetList])
+  const isDecimalDisabled = React.useMemo((): boolean => {
+    return foundTokenInfoByContractAddress?.isErc721 ?? tokenID !== ''
+  }, [foundTokenInfoByContractAddress, tokenID])
 
-  React.useMemo(() => {
-    if (foundToken?.isErc721) {
+  React.useEffect(() => {
+    if (tokenContractAddress === '') {
+      setTokenName('')
+      setTokenSymbol('')
+      setTokenDecimals('')
+      setTokenID('')
+      return
+    }
+    onFindTokenInfoByContractAddress(tokenContractAddress)
+    if (foundTokenInfoByContractAddress) {
+      setTokenName(foundTokenInfoByContractAddress.name)
+      setTokenSymbol(foundTokenInfoByContractAddress.symbol)
+      setTokenDecimals(foundTokenInfoByContractAddress.decimals.toString())
+    }
+    if (foundTokenInfoByContractAddress?.isErc721) {
       if (tokenID === '') {
         setShowTokenIDRequired(true)
       }
+    } else {
+      setShowTokenIDRequired(false)
     }
-  }, [foundToken, tokenID])
+  }, [foundTokenInfoByContractAddress, tokenID, tokenContractAddress])
 
   const buttonDisabled = React.useMemo((): boolean => {
     return tokenName === '' ||
@@ -292,7 +300,6 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <Input
                   value={tokenName}
                   onChange={handleTokenNameChanged}
-                  disabled={isDisabled}
                 />
                 <InputLabel>{getLocale('braveWalletWatchListTokenAddress')}</InputLabel>
                 <Input
@@ -303,13 +310,12 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <Input
                   value={tokenSymbol}
                   onChange={handleTokenSymbolChanged}
-                  disabled={isDisabled}
                 />
                 <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
                 <Input
                   value={tokenDecimals}
                   onChange={handleTokenDecimalsChanged}
-                  disabled={isDisabled || tokenID !== ''}
+                  disabled={isDecimalDisabled}
                   type='number'
                 />
                 <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
@@ -344,8 +350,8 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <SearchBar
                   value={searchValue}
                   placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
-                      action={filterWatchlist}
-                      autoFocus={true}
+                  action={filterWatchlist}
+                  autoFocus={true}
                 />
                 {!searchValue.toLowerCase().startsWith('0x') &&
                   <TopRow>
