@@ -310,6 +310,7 @@ void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
