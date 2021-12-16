@@ -65,10 +65,12 @@ class EphemeralSessionStorageNamespace
                                                 LocalDOMWindow* window);
 
   StorageNamespace* session_storage() { return session_storage_.Get(); }
+  StorageNamespace* local_storage() { return local_storage_.Get(); }
   void Trace(Visitor* visitor) const override;
 
  private:
   Member<StorageNamespace> session_storage_;
+  Member<StorageNamespace> local_storage_;
 };
 
 const char EphemeralSessionStorageNamespace::kSupplementName[] =
@@ -80,10 +82,12 @@ EphemeralSessionStorageNamespace::EphemeralSessionStorageNamespace(
     : Supplement(nullptr),
       session_storage_(
           MakeGarbageCollected<StorageNamespace>(controller,
-                                                 session_storage_id)) {}
+                                                 session_storage_id)),
+      local_storage_(MakeGarbageCollected<StorageNamespace>(controller)) {}
 
 void EphemeralSessionStorageNamespace::Trace(Visitor* visitor) const {
   visitor->Trace(session_storage_);
+  visitor->Trace(local_storage_);
   Supplement<Page>::Trace(visitor);
 }
 
@@ -180,12 +184,29 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
 
 StorageArea* BraveDOMWindowStorage::localStorage(
     ExceptionState& exception_state) {
+  if (ephemeral_local_storage_)
+    return ephemeral_local_storage_;
+
   LocalDOMWindow* window = GetSupplementable();
   const SecurityOrigin* ephemeral_storage_origin =
       GetEphemeralStorageOrigin(window);
-  if (ephemeral_storage_origin &&
-      window->GetEphemeralStorageOrigin() != ephemeral_storage_origin) {
-    window->SetEphemeralStorageOrigin(ephemeral_storage_origin);
+  if (ephemeral_storage_origin) {
+    if (window->GetEphemeralStorageOrigin() != ephemeral_storage_origin) {
+      window->SetEphemeralStorageOrigin(ephemeral_storage_origin);
+    }
+
+    Page* page = window->GetFrame()->GetDocument()->GetPage();
+    EphemeralSessionStorageNamespace* ephemeral_namespace =
+        EphemeralSessionStorageNamespace::From(page, window);
+    if (!ephemeral_namespace)
+      return nullptr;
+
+    auto storage_area =
+        ephemeral_namespace->local_storage()->GetCachedArea(window);
+    ephemeral_local_storage_ =
+        StorageArea::Create(window, std::move(storage_area),
+                            StorageArea::StorageType::kLocalStorage);
+    return ephemeral_local_storage_;
   }
 
   return DOMWindowStorage::From(*window).localStorage(exception_state);
