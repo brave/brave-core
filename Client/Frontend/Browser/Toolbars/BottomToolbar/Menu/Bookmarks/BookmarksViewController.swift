@@ -98,14 +98,11 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     private let importExportUtility = BraveCoreImportExportUtility()
     private var documentInteractionController: UIDocumentInteractionController?
     
-    // TODO: Uncomment once we restore search bar, see #4599
-    /*
     private var searchBookmarksTimer: Timer?
     private var isBookmarksBeingSearched = false
     private let bookmarksSearchController = UISearchController(searchResultsController: nil)
     private var bookmarksSearchQuery = ""
     private lazy var noSearchResultOverlayView = createNoSearchResultOverlayView()
-    */
 
     // MARK: Lifecycle
     
@@ -167,8 +164,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     // MARK: Layout - Theme
     
     private func applyTheme() {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         bookmarksSearchController.do {
             $0.searchBar.autocapitalizationType = .none
             $0.searchResultsUpdater = self
@@ -177,14 +172,10 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             $0.delegate = self
             $0.hidesNavigationBarDuringPresentation = true
         }
-        */
         
         navigationItem.do {
-            // TODO: Uncomment once we restore search bar, see #4599
-            /*
             $0.searchController = bookmarksSearchController
             $0.hidesSearchBarWhenScrolling = false
-            */
             $0.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
         }
         
@@ -270,8 +261,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         return overlayView
     }
     
-    // TODO: Uncomment once we restore search bar, see #4599
-    /*
     private func updateEmptyPanelState() {
         if isBookmarksBeingSearched, bookmarkManager.fetchedSearchObjectsCount == 0 {
             showEmptyPanelState()
@@ -289,7 +278,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             }
         }
     }
-    */
     
     // MARK: Actions
     
@@ -374,12 +362,9 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
     
     private func performBookmarkFetch() {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         if isBookmarksBeingSearched {
             return
         }
-        */
         
         do {
             // Recreate the frc if it was previously removed
@@ -394,8 +379,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         }
     }
     
-    // TODO: Uncomment once we restore search bar, see #4599
-    /*
     private func refreshBookmarkSearchResult(with query: String = "") {
         guard isBookmarksBeingSearched else {
             return
@@ -418,17 +401,13 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             completion()
         }
     }
-    */
     
     private func fetchBookmarkItem(at indexPath: IndexPath) -> Bookmarkv2? {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         if isBookmarksBeingSearched {
             return bookmarkManager.searchObject(at: indexPath)
         } else {
-        */
             return bookmarksFRC?.object(at: indexPath)
-        //}
+        }
     }
     
     //MARK: Internal
@@ -470,12 +449,9 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     fileprivate func configureCell(_ cell: BookmarkTableViewCell, atIndexPath indexPath: IndexPath) {
         var fetchedBookmarkItem: Bookmarkv2?
         
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         if isBookmarksBeingSearched {
             fetchedBookmarkItem = bookmarkManager.searchObject(at: indexPath)
         } else {
-        */
             // Make sure Bookmark at index path exists,
             // `frc.object(at:)` crashes otherwise, doesn't fail safely with nil
             if let objectsCount = bookmarksFRC?.fetchedObjectsCount, indexPath.row >= objectsCount {
@@ -484,7 +460,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             }
             
             fetchedBookmarkItem = bookmarksFRC?.object(at: indexPath)
-        //}
+        }
         
         guard let item = fetchedBookmarkItem else { return }
         cell.tag = item.objectID
@@ -636,12 +612,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         isBookmarksBeingSearched ? bookmarkManager.fetchedSearchObjectsCount : bookmarksFRC?.fetchedObjectsCount ?? 0
-        */
-        
-        bookmarksFRC?.fetchedObjectsCount ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -657,16 +628,13 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         var fetchedBookmarkItem: Bookmarkv2?
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
+        
         if isBookmarksBeingSearched {
             return true
         } else {
-        */
             fetchedBookmarkItem = bookmarksFRC?.object(at: indexPath)
             return fetchedBookmarkItem?.canBeDeleted ?? false
-
-        //}
+        }
     }
 }
 
@@ -725,12 +693,7 @@ extension BookmarksViewController {
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         !isBookmarksBeingSearched
-        */
-        
-        true
     }
     
     private func showEditBookmarkController(bookmark: Bookmarkv2) {
@@ -800,13 +763,10 @@ extension BookmarksViewController: BookmarksV2FetchResultsDelegate {
     }
     
     func controllerDidReloadContents(_ controller: BookmarksV2FetchResultsController) {
-        // TODO: Uncomment once we restore search bar, see #4599
-        /*
         if isBookmarksBeingSearched {
             refreshBookmarkSearchResult(with: bookmarksSearchQuery)
             return
         }
-        */
         
         // We're in some sort of invalid state in sync..
         // Somehow this folder was deleted but the user is currently viewing it..
@@ -909,8 +869,6 @@ extension BookmarksViewController {
 
 }
 
-// TODO: Uncomment once we restore search bar, see #4599
-/*
 // MARK: UISearchResultUpdating
 
 extension BookmarksViewController: UISearchResultsUpdating {
@@ -961,4 +919,3 @@ extension BookmarksViewController: UISearchControllerDelegate {
         navigationController?.setToolbarHidden(false, animated: true)
     }
 }
-*/
