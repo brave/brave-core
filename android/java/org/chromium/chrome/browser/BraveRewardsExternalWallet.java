@@ -17,7 +17,7 @@ import org.chromium.chrome.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class BraveRewardsExternalWallet {
+public class BraveRewardsExternalWallet {
     //fields
     public static final String ACCOUNT_URL = "account_url";
     public static final String ADD_URL = "add_url";
@@ -95,7 +95,7 @@ class BraveRewardsExternalWallet {
         return mLoginUrl;
     }
 
-    BraveRewardsExternalWallet (String json_external_wallet) throws JSONException {
+    public BraveRewardsExternalWallet(String json_external_wallet) throws JSONException {
         fromJson (json_external_wallet);
     }
 

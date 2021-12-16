@@ -46,10 +46,12 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     private final int FADE_OUT_DURATION = 500;
     private final float LANDSCAPE_HEADER_WEIGHT = 2.0f;
     public static final String TAB_ID_EXTRA = "currentTabId";
+    public static final String IS_MONTHLY_CONTRIBUTION = "is_monthly_contribution";
     public static final String TIP_AMOUNT_EXTRA="tipAmount";
     public static final String TIP_MONTHLY_EXTRA="tipMonthly";
 
     private int currentTabId_ = -1;
+    private boolean mIsMonthlyContribution;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private final int PUBLISHER_ICON_SIDE_LEN= 70; //dp
     private final int TOUCH_PADDING_MONTHLY= 32; //dp
@@ -121,6 +123,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         }
 
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
+        mIsMonthlyContribution =
+                IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
@@ -138,7 +142,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         double balance = .0;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null){
-            balance = rewards_balance.mTotal;
+            balance = rewards_balance.getTotal();
         }
 
         DecimalFormat df = new DecimalFormat("#.###");
@@ -160,6 +164,11 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         //set tip button onClick
         CheckBox monthly = (CheckBox) findViewById(R.id.make_monthly_checkbox);
+        if (mIsMonthlyContribution) {
+            monthly.setChecked(true);
+            TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
+            send_btn.setText(getResources().getString(R.string.brave_ui_do_monthly));
+        }
         View.OnClickListener send_tip_clicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +176,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewards_balance != null){
-                    balance = rewards_balance.mTotal;
+                    balance = rewards_balance.getTotal();
                 }
                 int amount = 0;
                 for (ToggleButton tb : radio_tip_amount){
@@ -185,6 +194,11 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                     }
                 }
                 boolean enough_funds = ((balance - amount) >= 0);
+
+                if (mIsMonthlyContribution) {
+                    mBraveRewardsNativeWorker.SetAutoContributionAmount(amount);
+                    finish();
+                }
 
                 //proceed to tipping
                 if (true == enough_funds) {
@@ -474,7 +488,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewardsBalance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewardsBalance != null) {
-                    balance = rewardsBalance.mTotal;
+                    balance = rewardsBalance.getTotal();
                 }
                 DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);

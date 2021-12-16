@@ -47,6 +47,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
 
+    base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(
+        JNIEnv* env);
+
+    void GetAdsAccountStatement(JNIEnv* env);
+
     double GetWalletRate(JNIEnv* env);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
@@ -120,6 +125,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void SetAutoContributionAmount(JNIEnv* env, jdouble value);
 
+    void GetAutoContributionAmount(JNIEnv* env);
+
     void GetExternalWallet(JNIEnv* env);
 
     void DisconnectWallet(JNIEnv* env);
@@ -142,6 +149,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetAutoContributeProperties(
         ledger::type::AutoContributePropertiesPtr properties);
 
+    void OnGetAutoContributionAmount(double auto_contribution_amount);
+
     void OnGetPendingContributionsTotal(double amount);
 
     void OnPanelPublisherInfo(
@@ -158,6 +167,17 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetRewardsParameters(
         brave_rewards::RewardsService* rewards_service,
         ledger::type::RewardsParametersPtr parameters);
+
+    void OnUnblindedTokensReady(
+        brave_rewards::RewardsService* rewards_service) override;
+
+    void OnReconcileComplete(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::type::Result result,
+        const std::string& contribution_id,
+        const double amount,
+        const ledger::type::RewardsType type,
+        const ledger::type::ContributionProcessor processor) override;
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -222,6 +242,12 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         ledger::type::BalancePtr balance);
 
     void OnStartProcess();
+
+    void OnGetAdsAccountStatement(bool success,
+                                  double next_payment_date,
+                                  int ads_received_this_month,
+                                  double earnings_this_month,
+                                  double earnings_last_month);
 
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;

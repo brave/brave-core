@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.externalnav;
 
 import android.annotation.SuppressLint;
 
-import org.chromium.chrome.browser.BraveUphold;
+import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
@@ -15,7 +15,7 @@ import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.url.GURL;
 
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
-    private BraveUphold mBraveUphold;
+    private BraveWalletProvider mBraveWalletProvider;
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);
@@ -23,21 +23,28 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
-        if (isUpholdOverride(params)) {
-            CompleteUpholdVerification(params);
+        if (isWalletProviderOverride(params)) {
+            completeWalletProviderVerification(params);
             return OverrideUrlLoadingResult.forClobberingTab();
         }
         return super.shouldOverrideUrlLoading(params);
     }
 
-    private boolean isUpholdOverride(ExternalNavigationParams params) {
-        if (!params.getUrl().getSpec().startsWith(BraveUphold.UPHOLD_REDIRECT_URL)) return false;
-        return true;
+    private boolean isWalletProviderOverride(ExternalNavigationParams params) {
+        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.UPHOLD_REDIRECT_URL)) {
+            return true;
+        }
+
+        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.BITFLYER_REDIRECT_URL)) {
+            return true;
+        }
+
+        return false;
     }
 
-    private void CompleteUpholdVerification(ExternalNavigationParams params) {
-        mBraveUphold = new BraveUphold();
-        mBraveUphold.CompleteUpholdVerification(params, this);
+    private void completeWalletProviderVerification(ExternalNavigationParams params) {
+        mBraveWalletProvider = new BraveWalletProvider();
+        mBraveWalletProvider.completeWalletProviderVerification(params, this);
     }
 
     @SuppressLint("VisibleForTests")

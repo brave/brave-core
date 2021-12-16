@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 public class BraveRewardsBalance {
     public static final String WALLET_ANONYMOUS = "anonymous";
-    public static final String WALLET_UPHOLD = "uphold";
     public static final String WALLET_BLINDED = "blinded";
 
     /**
@@ -25,7 +24,7 @@ public class BraveRewardsBalance {
     public static final String JSON_TOTAL = "total";
     public static final String JSON_WALLETS = "wallets";
 
-    double mTotal;
+    private double mTotal;
     Map <String, Double> mWallets;
 
     BraveRewardsBalance (String json_balance) throws JSONException {

@@ -171,4 +171,14 @@
 
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
+
+    <color name="rewards_settings_seperator_color">#E6E8F5</color>
+    <color name="settings_section_text_light_color">#868E96</color>
+    <color name="settings_section_text_color">#212529</color>
+    <color name="rewards_secondary_layout_text_color">#495057</color>
+    <color name="rewards_settings_button_color">#4C54D2</color>
+    <color name="rewards_refresh_button_color">#4E56CD</color>
+    <color name="rewards_foreground_color">#80000000</color>
+    <color name="rewards_panel_card_bg_color">#FAFCFF</color>
+    <color name="rewards_divider_color">#E9E9F4</color>
 </resources>

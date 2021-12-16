@@ -549,7 +549,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Brave News
       </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
-        <ph name="VALUE">%1$s<ex>0.0</ex></ph>
+        <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
       </message>
       <message name="IDS_BRAVE_UI_USD_TEXT" desc="Text for USD value">
         USD
@@ -561,10 +561,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Settings
       </message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="A message that a particular publisher is verified">
-        Brave Verified Publisher
+        Verified Creator
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER" desc="A message that a particular publisher is not verified">
-        Not yet verified
+        Unverified Creator
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
         This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
@@ -972,14 +972,23 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_HEADER1">
         But if you verify, you can...
       </message>
-      <message name="IDS_VERIFY_WALLET_BENEFITS1">
+      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS1">
         Withdraw BAT that you earn from viewing privacy-respecting ads
       </message>
-      <message name="IDS_VERIFY_WALLET_BENEFITS2">
+      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS2">
         Purchase additional BAT with credit cards and other sources
       </message>
-      <message name="IDS_VERIFY_WALLET_BENEFITS3">
+      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS3">
         Withdraw BAT that you may have previously added to your Brave Rewards wallet
+      </message>
+      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS1">
+        Withdraw BAT that you earn from viewing privacy-respecting ads
+      </message>
+      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS2">
+        Purchase additional BAT with credit cards and other sources
+      </message>
+      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS3">
+         Withdraw BAT that you may have previously added to your Brave Rewards wallet
       </message>
       <message name="IDS_VERIFY_WALLET_BTN_TXT">
         Verify Wallet
@@ -987,14 +996,17 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
         Our wallet service is provided by
       </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD">
+      <message name="IDS_UPHOLD">
         Uphold
       </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_NOTE1">
+      <message name="IDS_BITFLYER">
+        Bitflyer
+      </message>
+      <message name="IDS_VERIFY_WALLET_PROVIDER_NOTE1">
         Uphold may require you to verify your identity based on services requested.
       </message>
       <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
-        Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.
+        Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
       <message name="IDS_USER_WALLET_COMPLETE_VERIFICATION">
         Complete wallet verification
@@ -1002,8 +1014,8 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_ACTIVITY_NAME">
         User Wallet
       </message>
-      <message name="IDS_USER_WALLET_GOTO_UPHOLD">
-        Go to your Uphold account
+      <message name="IDS_USER_WALLET_GOTO_PROVIDER">
+        Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
       </message>
       <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
         Disconnect from Brave Rewards
@@ -2711,6 +2723,69 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
       The receiving address is a token's contract address
+    </message>
+    <message name="IDS_ADD_FUNDS" desc="Brave rewards panel text">
+      Add funds
+    </message>
+    <message name="IDS_REWARDS_SUMMARY" desc="Brave rewards panel text">
+      Rewards summary
+    </message>
+    <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Brave rewards panel text">
+      Total Grants Claimed
+    </message>
+    <message name="IDS_REWARDS_FROM_ADS" desc="Brave rewards panel text">
+      Rewards from Ads
+    </message>
+    <message name="IDS_AUTO_CONTRIBUTE" desc="Brave rewards panel text">
+      Auto-Contribute
+    </message>
+    <message name="IDS_ONE_TIME_TIP" desc="Brave rewards panel text">
+      One-Time Tip
+    </message>
+    <message name="IDS_MONTHLY_TIPS" desc="Brave rewards panel text">
+      Monthly Tips
+    </message>
+    <message name="IDS_MY_WALLET" desc="Brave rewards panel text">
+      My wallet
+    </message>
+    <message name="IDS_YOUR_BALANCE" desc="Brave rewards panel text">
+      Your Balance
+    </message>
+    <message name="IDS_ESTIMATED_EARNINGS" desc="Brave rewards panel text">
+      Estimated earnings
+    </message>
+    <message name="IDS_TIP" desc="Brave rewards panel text">
+      Tip
+    </message>
+    <message name="IDS_SEND_TIP" desc="Brave rewards panel text">
+      Send Tip
+    </message>
+    <message name="IDS_INCLUDE_AUTO_CONTRIBUTE" desc="Brave rewards panel text">
+      Include in Auto-Contribute
+    </message>
+    <message name="IDS_SET" desc="Brave rewards panel text">
+      Set
+    </message>
+    <message name="IDS_ATTENTION" desc="Brave rewards panel text">
+      Attention
+    </message>
+    <message name="IDS_UNVERIFIED_CREATOR" desc="Brave rewards panel text">
+      Unverified Creator
+    </message>
+    <message name="IDS_REFRESH_STATUS" desc="Brave rewards panel text">
+      Refresh Status
+    </message>
+    <message name="IDS_MONTHLY_CONTRIBUTION" desc="Brave rewards panel text">
+      Monthly contribution
+    </message>
+    <message name="IDS_BAT_TEXT" desc="Brave rewards panel text">
+      BAT
+    </message>
+    <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
+      ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
+    </message>
+    <message name="IDS_BRAVE_REWARDS_BAT_VALUE_TEXT" desc="BAT value text">
+      <ph name="VALUE">%1$s<ex>0</ex></ph> BAT
     </message>
     </messages>
   </release>

@@ -4,24 +4,68 @@
 
 import { Reducer } from 'redux'
 
+import { getCurrentBalanceReport } from '../utils'
+
 // Constant
 import { types } from '../constants/rewards_types'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
+  if (!state) {
+    return
+  }
+
   switch (action.type) {
     case types.GET_REWARDS_PARAMETERS:
       chrome.send('brave_rewards.getRewardsParameters')
       break
     case types.ON_REWARDS_PARAMETERS: {
       state = { ...state }
+      state.parameters = action.payload.properties
+      break
+    }
+    case types.RECOVER_WALLET: {
+      let key = action.payload.key
+      key = key.trim()
+
+      if (!key || key.length === 0) {
+        let ui = state.ui
+        ui.walletRecoveryStatus = 0
+
+        state = {
+          ...state,
+          ui
+        }
+
+        break
+      }
+
+      chrome.send('brave_rewards.recoverWallet', [key])
+      break
+    }
+    case types.ON_EXTERNAL_WALLET_PROVIDER_LIST: {
+      if (!action.payload.list) {
+        break
+      }
+
+      state = { ...state }
+      state.externalWalletProviderList = action.payload.list
+      break
+    }
+    case types.ON_RECOVER_WALLET_DATA: {
+      state = { ...state }
+      const result = action.payload.result
       let ui = state.ui
 
       // TODO NZ check why enum can't be used inside Rewards namespace
-      if (action.payload.properties.status === 1) {
-        ui.walletServerProblem = true
-      } else {
-        state.parameters = action.payload.properties
-        ui.walletServerProblem = false
+      ui.walletRecoveryStatus = result
+      if (result === 0) {
+        chrome.send('brave_rewards.fetchPromotions')
+        chrome.send('brave_rewards.fetchBalance')
+        chrome.send('brave_rewards.getPaymentId')
+        getCurrentBalanceReport()
+        ui.modalBackup = false
+        ui.emptyWallet = false
+        state.recoveryKey = ''
       }
 
       state = {
@@ -96,11 +140,118 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
       } else if (status === 1) { // on ledger::type::Result::LEDGER_ERROR
         ui.walletServerProblem = true
+      } else if (status === 24) { // on ledger::type::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet')
+        state.balance.total = action.payload.balance.total || 0
       }
 
       state = {
         ...state,
         ui
+      }
+      break
+    }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards.getExternalWallet')
+      break
+    }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+
+      if (action.payload.result === 24) { // type::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet')
+        break
+      }
+
+      if (action.payload.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
+        state.ui.modalRedirect = 'upholdBATNotAllowedModal'
+        break
+      }
+
+      if (action.payload.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
+        state.ui.modalRedirect = 'deviceLimitReachedModal'
+        break
+      }
+
+      if (action.payload.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+        state.ui.modalRedirect = 'mismatchedProviderAccountsModal'
+        break
+      }
+
+      if (action.payload.result === 38) { // type::Result::UPHOLD_BLOCKED_USER
+        state.ui.modalRedirect = 'upholdBlockedUserModal'
+        break
+      }
+
+      if (action.payload.result === 39) { // type::Result::UPHOLD_PENDING_USER
+        state.ui.modalRedirect = 'upholdPendingUserModal'
+        break
+      }
+
+      if (action.payload.result === 40) { // type::Result::UPHOLD_RESTRICTED_USER
+        state.ui.modalRedirect = 'upholdRestrictedUserModal'
+        break
+      }
+
+      if (action.payload.result === 0) { // type::Result::LEDGER_OK
+        chrome.send('brave_rewards.fetchBalance')
+      }
+
+      state.externalWallet = action.payload.wallet
+      break
+    }
+    case types.GET_MONTHLY_REPORT: {
+      let month = action.payload.month
+      let year = action.payload.year
+      if (month == null) {
+        month = new Date().getMonth() + 1
+      }
+
+      if (year == null) {
+        year = new Date().getFullYear()
+      }
+
+      chrome.send('brave_rewards.getMonthlyReport', [month, year])
+      break
+    }
+    case types.ON_MONTHLY_REPORT: {
+      state = { ...state }
+      state.monthlyReport = {
+        month: action.payload.month,
+        year: action.payload.year
+      }
+
+      if (!action.payload.report) {
+        break
+      }
+
+      state.monthlyReport = Object.assign(state.monthlyReport, action.payload.report)
+      break
+    }
+    case types.GET_MONTHLY_REPORT_IDS: {
+      chrome.send('brave_rewards.getMonthlyReportIds')
+      break
+    }
+    case types.ON_MONTHLY_REPORT_IDS: {
+      state = { ...state }
+      state.monthlyReportIds = action.payload
+      break
+    }
+    case types.GET_WALLET_PASSPHRASE: {
+      chrome.send('brave_rewards.getWalletPassphrase')
+      break
+    }
+    case types.ON_WALLET_PASSPHRASE: {
+      const value = action.payload.passphrase
+      if (value && value.length > 0) {
+        state = { ...state }
+        let ui = state.ui
+        state.recoveryKey = value
+
+        state = {
+          ...state,
+          ui
+        }
       }
       break
     }

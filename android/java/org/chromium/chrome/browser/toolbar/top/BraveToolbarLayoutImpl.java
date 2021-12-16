@@ -86,6 +86,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
@@ -151,7 +152,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private BraveRewardsPanelPopup mRewardsPopup;
+    private BraveRewardsPanel mRewardsPopup;
     private BraveTalkOptInPopup mBraveTalkOptInPopup;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
@@ -402,7 +403,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     showBraveRewardsOnboardingModal();
                     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                    BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 }
             }
 
@@ -769,6 +769,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             public void onClick(View v) {
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 dialog.dismiss();
             }
         }));
@@ -871,7 +872,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanelPopup(v);
+            mRewardsPopup = new BraveRewardsPanel(v);
             mRewardsPopup.showLikePopDownMenu();
             if (mBraveRewardsNotificationsCount.isShown()) {
                 SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();

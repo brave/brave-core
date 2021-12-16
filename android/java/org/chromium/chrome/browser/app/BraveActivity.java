@@ -170,6 +170,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
     public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
+    public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
+            "brave://rewards/#verify";
     public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =

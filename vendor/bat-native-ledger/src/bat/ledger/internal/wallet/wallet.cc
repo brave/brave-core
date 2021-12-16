@@ -88,7 +88,7 @@ void Wallet::ExternalWalletAuthorization(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  ledger_->wallet()->CreateWalletIfNecessary(
+  CreateWalletIfNecessary(
       [this, wallet_type, args, callback](const type::Result result) {
         if (result != type::Result::WALLET_CREATED) {
           BLOG(0, "Wallet couldn't be created");
