@@ -58,6 +58,7 @@ export interface Props {
   selectedAsset?: AccountAssetOptionType
   selectedAssetInputAmount?: string
   addressError?: string
+  addressWarning?: string
   toAddressOrUrl?: string
   toAddress?: string
   inputName?: string
@@ -87,6 +88,7 @@ function SwapInputComponent (props: Props) {
     selectedAssetInputAmount,
     inputName,
     addressError,
+    addressWarning,
     toAddressOrUrl,
     toAddress,
     orderType,
@@ -348,6 +350,11 @@ function SwapInputComponent (props: Props) {
       {componentType === 'toAddress' && addressError &&
         <WarningText>{addressError}</WarningText>
       }
+
+      {componentType === 'toAddress' && addressWarning &&
+        <WarningText>{addressWarning}</WarningText>
+      }
+
       {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
         <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
       }

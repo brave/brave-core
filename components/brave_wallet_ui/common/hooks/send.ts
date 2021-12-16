@@ -12,7 +12,8 @@ import {
   ER20TransferParams,
   SendTransactionParams,
   ERC721TransferFromParams,
-  ERCToken
+  ERCToken,
+  GetChecksumEthAddressReturnInfo
 } from '../../constants/types'
 import { isValidAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
@@ -21,6 +22,7 @@ import { toWeiHex } from '../../utils/format-balances'
 export default function useSend (
   findENSAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
   findUnstoppableDomainAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
+  getChecksumEthAddress: (address: string) => Promise<GetChecksumEthAddressReturnInfo>,
   sendAssetOptions: AccountAssetOptionType[],
   selectedAccount: WalletAccountType,
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
@@ -32,6 +34,7 @@ export default function useSend (
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [addressError, setAddressError] = React.useState('')
+  const [addressWarning, setAddressWarning] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
 
   React.useEffect(() => {
@@ -77,6 +80,7 @@ export default function useSend (
       findENSAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
         if (value.success) {
           setAddressError('')
+          setAddressWarning('')
           setToAddress(value.address)
           return
         }
@@ -91,6 +95,7 @@ export default function useSend (
       findUnstoppableDomainAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
         if (value.success) {
           setAddressError('')
+          setAddressWarning('')
           setToAddress(value.address)
           return
         }
@@ -102,6 +107,7 @@ export default function useSend (
     // If value is the same as the selectedAccounts Wallet Address
     if (valueToLowerCase === selectedAccount?.address?.toLowerCase()) {
       setToAddress(toAddressOrUrl)
+      setAddressWarning('')
       setAddressError(getLocale('braveWalletSameAddressError'))
       return
     }
@@ -109,6 +115,7 @@ export default function useSend (
     // If value is a Tokens Contract Address
     if (fullTokenList.some(token => token.contractAddress.toLowerCase() === valueToLowerCase)) {
       setToAddress(toAddressOrUrl)
+      setAddressWarning('')
       setAddressError(getLocale('braveWalletContractAddressError'))
       return
     }
@@ -116,20 +123,43 @@ export default function useSend (
     // If value starts with 0x, will check if it's a valid address
     if (valueToLowerCase.startsWith('0x')) {
       setToAddress(toAddressOrUrl)
-      isValidAddress(toAddressOrUrl, 20)
-        ? setAddressError('')
-        : setAddressError(getLocale('braveWalletNotValidEthAddress'))
+      if (!isValidAddress(toAddressOrUrl, 20)) {
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletNotValidEthAddress'))
+        return
+      }
+
+      getChecksumEthAddress(toAddressOrUrl).then((value: GetChecksumEthAddressReturnInfo) => {
+        const { checksumAddress } = value
+        if (checksumAddress === toAddressOrUrl) {
+          setAddressWarning('')
+          setAddressError('')
+          return
+        }
+
+        if ([toAddressOrUrl.toLowerCase(), toAddressOrUrl.toUpperCase()].includes(toAddressOrUrl)) {
+          setAddressError('')
+          setAddressWarning(getLocale('braveWalletAddressMissingChecksumInfoWarning'))
+          return
+        }
+
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletNotValidChecksumAddressError'))
+      }).catch(e => console.log(e))
+
       return
     }
 
     // Resets State
     if (toAddressOrUrl === '') {
       setAddressError('')
+      setAddressWarning('')
       setToAddress('')
       return
     }
 
     // Fallback error state
+    setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
   }, [toAddressOrUrl, selectedAccount])
 
@@ -168,6 +198,7 @@ export default function useSend (
     toAddress,
     sendAmount,
     addressError,
+    addressWarning,
     selectedSendAsset
   }
 }

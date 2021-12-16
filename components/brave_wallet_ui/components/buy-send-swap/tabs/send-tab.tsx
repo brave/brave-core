@@ -24,6 +24,7 @@ export interface Props {
   toAddress: string
   showHeader?: boolean
   addressError: string
+  addressWarning: string
   onSubmit: () => void
   onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
@@ -50,6 +51,7 @@ function SendTab (props: Props) {
     showHeader,
     assetOptions,
     addressError,
+    addressWarning,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
@@ -115,6 +117,7 @@ function SendTab (props: Props) {
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
             addressError={addressError}
+            addressWarning={addressWarning}
             onChangeSendView={onChangeSendView}
             onInputChange={onInputChange}
             onSelectPresetAmount={onSelectPresetAmount}

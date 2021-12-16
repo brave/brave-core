@@ -44,6 +44,7 @@ export interface Props {
   toAddressOrUrl: string
   toAddress: string
   addressError: string
+  addressWarning: string
   buyAssetOptions: AccountAssetOptionType[]
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
@@ -95,6 +96,7 @@ function BuySendSwap (props: Props) {
     fromAmount,
     toAmount,
     addressError,
+    addressWarning,
     selectedSendAsset,
     sendAssetBalance,
     fromAssetBalance,
@@ -213,6 +215,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'send' &&
         <Send
           addressError={addressError}
+          addressWarning={addressWarning}
           accounts={accounts}
           networkList={networkList}
           selectedAssetAmount={sendAmount}

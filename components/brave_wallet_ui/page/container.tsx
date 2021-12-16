@@ -52,6 +52,7 @@ import {
   findENSAddress,
   findUnstoppableDomainAddress,
   getBalance,
+  getChecksumEthAddress,
   getERC20Allowance,
   onConnectHardwareWallet,
   isStrongPassword
@@ -172,10 +173,12 @@ function Container (props: Props) {
     toAddressOrUrl,
     toAddress,
     addressError,
+    addressWarning,
     selectedSendAsset
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
+    getChecksumEthAddress,
     sendAssetOptions,
     selectedAccount,
     props.walletActions.sendERC20Transfer,
@@ -662,6 +665,7 @@ function Container (props: Props) {
             fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
             addressError={addressError}
+            addressWarning={addressWarning}
             toAssetBalance={toAssetBalance}
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
