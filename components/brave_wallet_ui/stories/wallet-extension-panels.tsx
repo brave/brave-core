@@ -646,12 +646,18 @@ export const _ConnectHardwareWallet = () => {
     // Doesn't do anything in storybook
   }
 
+  const onClickInstructions = () => {
+    // Open support link in new tab
+    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
+  }
+
   return (
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
         onCancel={onCancel}
         retryCallable={onConfirmTransaction}
+        onClickInstructions={onClickInstructions}
       />
     </StyledExtensionWrapper>
   )
