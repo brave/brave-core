@@ -1059,6 +1059,7 @@
 		CA7C5CAD2731928F003366F7 /* WelcomeViewSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAC2731928F003366F7 /* WelcomeViewSearchView.swift */; };
 		CA7C5CAF2731D022003366F7 /* PrivacyEverywhereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C5CAE2731D022003366F7 /* PrivacyEverywhereView.swift */; };
 		CA84F896274F428B00B1388E /* SyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA84F895274F428B00B1388E /* SyncTests.swift */; };
+		CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CA8D5C0E26D7CD8A009BF13D /* PlaylistDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */; };
 		CA8D5C1026D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */; };
 		CA8D5C1226D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */; };
@@ -1540,6 +1541,13 @@
 			remoteGlobalIDString = 5DE7688320B3456C00FF5533;
 			remoteInfo = BraveShared;
 		};
+		CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0391B1271E1023000EB13C;
+			remoteInfo = BraveWidgetsExtension;
+		};
 		E63CD1B11B31B66400A63AFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -1634,6 +1642,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */,
 				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
 			);
@@ -7184,6 +7193,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CA8B4AE4276A830F002120F7 /* PBXTargetDependency */,
 				288A2D9C1AB8B3260023ABC3 /* PBXTargetDependency */,
 				2FCAE2301ABB51F800877008 /* PBXTargetDependency */,
 				5D1DC52720AC9AFB00905E5A /* PBXTargetDependency */,
@@ -9052,6 +9062,11 @@
 			isa = PBXTargetDependency;
 			target = 5DE7688320B3456C00FF5533 /* BraveShared */;
 			targetProxy = 5DE7689720B3456E00FF5533 /* PBXContainerItemProxy */;
+		};
+		CA8B4AE4276A830F002120F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA0391B1271E1023000EB13C /* BraveWidgetsExtension */;
+			targetProxy = CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */;
 		};
 		E6F965141B2F1CF20034B023 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

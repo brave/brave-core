@@ -471,16 +471,13 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             }
         }
         
-        // MARK: Widgets Disabled due to Crash on iOS 14 Favourites - Brandon T.
-        // See: https://github.com/brave/brave-ios/issues/4582
-        // See: https://github.com/brave/brave-ios/pull/4692
         // Setup Widgets FRC
-//        widgetBookmarksFRC = Favorite.frc()
-//        widgetBookmarksFRC?.fetchRequest.fetchLimit = 16
-//        widgetBookmarksFRC?.delegate = self
-//        try? widgetBookmarksFRC?.performFetch()
-//
-//        updateWidgetFavoritesData()
+        widgetBookmarksFRC = Favorite.frc()
+        widgetBookmarksFRC?.fetchRequest.fetchLimit = 16
+        widgetBookmarksFRC?.delegate = self
+        try? widgetBookmarksFRC?.performFetch()
+
+        updateWidgetFavoritesData()
     }
     
     private func setupAdsNotificationHandler() {
