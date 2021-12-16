@@ -143,7 +143,7 @@ public class BraveWalletProvider implements BraveRewardsObserver {
                 .setPositiveButton(R.string.ok,
                         (DialogInterface dialog, int which) -> {
                             mBraveExternalNavigationHandler.clobberCurrentTabWithFallbackUrl(
-                                    UPHOLD_SUPPORT_URL, mExternalNavigationParams);
+                                    BRAVE_SUPPORT_URL, mExternalNavigationParams);
                         })
                 .setOnDismissListener((DialogInterface dialog) -> { releaseDependencies(); });
 

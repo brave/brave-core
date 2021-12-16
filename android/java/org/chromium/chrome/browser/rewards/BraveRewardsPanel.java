@@ -1213,7 +1213,7 @@ public class BraveRewardsPanel
         }
 
         btnVerifyWallet.setVisibility(View.VISIBLE);
-        btnVerifyWallet.setText(mPopupView.getResources().getString(text));
+        btnVerifyWallet.setText(mPopupView.getResources().getString(textId));
         Log.e(TAG, "before onClick");
         setVerifyWalletButtonClickEvent(btnVerifyWallet, status);
 
