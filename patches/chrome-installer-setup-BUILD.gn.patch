@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index f3964983b8a917184453fffcb5a8537f29f11eea..7f25d8d587985fe9eb6d962fa150bb187d455620 100644
+index f3964983b8a917184453fffcb5a8537f29f11eea..bc0410c8fd2d39abc7cff326277f764d1e928813 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
 @@ -128,6 +128,7 @@ if (is_win) {
