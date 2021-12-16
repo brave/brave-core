@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import * as bls from 'noble-bls12-381'
+import * as bls from '@noble/bls12-381'
 import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
