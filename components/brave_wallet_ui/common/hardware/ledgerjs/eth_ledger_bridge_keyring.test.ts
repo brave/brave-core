@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../../constants/types'
 import LedgerBridgeKeyring from './eth_ledger_bridge_keyring'
 import { SignatureVRS } from '../../hardware_operations'
 import { LedgerDerivationPaths } from '../types'
@@ -78,7 +78,7 @@ test('Extracting accounts from legacy device', () => {
 
 test('Check ledger bridge type', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  return expect(ledgerHardwareKeyring.type()).toStrictEqual(LEDGER_HARDWARE_VENDOR)
+  return expect(ledgerHardwareKeyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
 })
 
 test('Check locks for device', () => {

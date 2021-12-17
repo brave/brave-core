@@ -7,17 +7,17 @@ import * as React from 'react'
 
 import {
   AccountAssetOptionType,
-  ERCToken,
+  BraveWallet,
   WalletAccountType
 } from '../../constants/types'
 import { ETH } from '../../options/asset-options'
 
 export default function useAssets (
   selectedAccount: WalletAccountType,
-  fullTokenList: ERCToken[],
-  userVisibleTokensInfo: ERCToken[]
+  fullTokenList: BraveWallet.ERCToken[],
+  userVisibleTokensInfo: BraveWallet.ERCToken[]
 ) {
-  const tokenOptions: ERCToken[] = React.useMemo(
+  const tokenOptions: BraveWallet.ERCToken[] = React.useMemo(
     () =>
       fullTokenList.map((token) => ({
         ...token,
@@ -26,7 +26,7 @@ export default function useAssets (
     [fullTokenList]
   )
 
-  const userVisibleTokenOptions: ERCToken[] = React.useMemo(
+  const userVisibleTokenOptions: BraveWallet.ERCToken[] = React.useMemo(
     () =>
       userVisibleTokensInfo.map((token) => ({
         ...token,

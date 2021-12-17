@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WalletApiProxy, * as BraveWallet from '../common/wallet_api_proxy'
+import WalletApiProxy from '../common/wallet_api_proxy'
+import { BraveWallet } from '../constants/types'
 
 class WalletPanelApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()

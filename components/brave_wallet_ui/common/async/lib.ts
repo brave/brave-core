@@ -9,9 +9,7 @@ import {
 import { formatBalance } from '../../utils/format-balances'
 import {
   AccountTransactions,
-  AssetPriceTimeframe,
-  EthereumChain,
-  ERCToken,
+  BraveWallet,
   WalletAccountType,
   AccountInfo,
   GetERCTokenInfoReturnInfo
@@ -115,7 +113,7 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
   return false
 }
 
-export function refreshBalances (currentNetwork: EthereumChain) {
+export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { wallet: { accounts } } = getState()
@@ -125,7 +123,7 @@ export function refreshBalances (currentNetwork: EthereumChain) {
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
     // Selected Network's Native Asset
-    const nativeAsset: ERCToken = {
+    const nativeAsset: BraveWallet.ERCToken = {
       contractAddress: '',
       decimals: currentNetwork.decimals,
       isErc20: false,
@@ -137,7 +135,7 @@ export function refreshBalances (currentNetwork: EthereumChain) {
       tokenId: ''
     }
 
-    const visibleTokens: ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
+    const visibleTokens: BraveWallet.ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
@@ -228,7 +226,7 @@ export function refreshPrices () {
   }
 }
 
-export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceTimeframe) {
+export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { assetRatioController } = apiProxy

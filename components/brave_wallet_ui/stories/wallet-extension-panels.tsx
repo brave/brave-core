@@ -22,15 +22,12 @@ import {
   SelectAccount
 } from '../components/buy-send-swap'
 import {
+  BraveWallet,
   WalletAccountType,
   PanelTypes,
-  AppItem,
   AppsListType,
   AccountAssetOptionType,
-  BuySendSwapViewTypes,
-  EthereumChain,
-  TransactionInfo,
-  TransactionType
+  BuySendSwapViewTypes
 } from '../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -100,7 +97,7 @@ const mockDefaultCurrencies = {
 }
 
 export const _ConfirmTransaction = () => {
-  const transactionInfo: TransactionInfo = {
+  const transactionInfo: BraveWallet.TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     id: '465a4d6646-kjlwf665',
     txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
@@ -121,7 +118,7 @@ export const _ConfirmTransaction = () => {
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
     txParams: ['address', 'ammount'],
-    txType: TransactionType.ERC20Transfer,
+    txType: BraveWallet.TransactionType.ERC20Transfer,
     createdTime: { microseconds: BigInt(0) },
     submittedTime: { microseconds: BigInt(0) },
     confirmedTime: { microseconds: BigInt(0) }
@@ -330,12 +327,12 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>(
     accounts[0]
   )
-  const [favoriteApps, setFavoriteApps] = React.useState<AppItem[]>([
+  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
+  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.EthereumChain>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -364,7 +361,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setSelectedPanel('main')
   }
 
-  const onSelectNetwork = (network: EthereumChain) => () => {
+  const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     setSelectedNetwork(network)
     setSelectedPanel('main')
   }
@@ -413,11 +410,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will expand to view more!')
   }
 
-  const addToFavorites = (app: AppItem) => {
+  const addToFavorites = (app: BraveWallet.AppItem) => {
     const newList = [...favoriteApps, app]
     setFavoriteApps(newList)
   }
-  const removeFromFavorites = (app: AppItem) => {
+  const removeFromFavorites = (app: BraveWallet.AppItem) => {
     const newList = favoriteApps.filter(
       (fav) => fav.name !== app.name
     )

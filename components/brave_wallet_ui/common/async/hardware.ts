@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   SignHardwareTransactionType,
   SignHardwareMessageOperationResult,
@@ -17,6 +16,7 @@ import { getHardwareKeyring, getLedgerHardwareKeyring, getTrezorHardwareKeyring,
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
+import { BraveWallet } from '../../constants/types'
 
 export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
   if (code === 'TransportOpenUserCancelled') {

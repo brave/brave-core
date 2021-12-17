@@ -8,7 +8,7 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
-  ExternalWalletType,
+  BraveWallet,
   UpdateAccountNamePayloadType,
   WalletState
 } from '../../constants/types'
@@ -164,10 +164,10 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   const braveWalletService = getWalletPageApiProxy().braveWalletService
   const cwResult =
     await braveWalletService.isExternalWalletInitialized(
-      ExternalWalletType.CryptoWallets)
+      BraveWallet.ExternalWalletType.CryptoWallets)
   const mmResult =
     await braveWalletService.isExternalWalletInitialized(
-      ExternalWalletType.MetaMask)
+      BraveWallet.ExternalWalletType.MetaMask)
   store.dispatch(WalletPageActions.setCryptoWalletsInstalled(cwResult.initialized))
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.initialized))
 })
@@ -177,7 +177,7 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
   const keyringController = getWalletPageApiProxy().keyringController
   const result =
     await braveWalletService.importFromExternalWallet(
-      ExternalWalletType.CryptoWallets, payload.password, payload.newPassword)
+      BraveWallet.ExternalWalletType.CryptoWallets, payload.password, payload.newPassword)
   if (result.success) {
     keyringController.notifyWalletBackupComplete()
   }
@@ -192,7 +192,7 @@ handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, 
   const keyringController = getWalletPageApiProxy().keyringController
   const result =
     await braveWalletService.importFromExternalWallet(
-      ExternalWalletType.MetaMask, payload.password, payload.newPassword)
+      BraveWallet.ExternalWalletType.MetaMask, payload.password, payload.newPassword)
   if (result.success) {
     keyringController.notifyWalletBackupComplete()
   }

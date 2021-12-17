@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 // Options
-import { ERCToken, DefaultCurrencies } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
 import { hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
@@ -24,7 +24,7 @@ export interface Props {
   action?: () => void
   assetBalance: string
   fiatBalance: string
-  token: ERCToken
+  token: BraveWallet.ERCToken
   defaultCurrencies: DefaultCurrencies
 }
 

@@ -3,22 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as React from 'react'
 import {
-  GetERCTokenInfoReturnInfo,
-  ERCToken,
-  EthereumChain
+  BraveWallet,
+  GetERCTokenInfoReturnInfo
 } from '../../constants/types'
 
 export default function useTokenInfo (
   getERCTokenInfo: (address: string) => Promise<GetERCTokenInfoReturnInfo>,
-  visibleTokens: ERCToken[],
-  fullTokenList: ERCToken[],
-  selectedNetwork: EthereumChain
+  visibleTokens: BraveWallet.ERCToken[],
+  fullTokenList: BraveWallet.ERCToken[],
+  selectedNetwork: BraveWallet.EthereumChain
 ) {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
-  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<ERCToken | undefined>()
+  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.ERCToken | undefined>()
 
   // Instead of having this be a useCallback hook here we are using useEffect to
   // handle the asynchronous getERCTokenInfo fallback method.

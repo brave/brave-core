@@ -6,12 +6,7 @@
 import * as React from 'react'
 
 import {
-  AssetPrice,
-  EthereumChain,
-  ERCToken,
-  TransactionInfo,
-  TransactionStatus,
-  TransactionType,
+  BraveWallet,
   WalletAccountType
 } from '../../constants/types'
 import {
@@ -41,7 +36,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
   createdTime: TimeDelta
-  status: TransactionStatus
+  status: BraveWallet.TransactionStatus
   sender: string
   senderLabel: string
   recipient: string
@@ -55,7 +50,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   insufficientFundsError: boolean
   contractAddressError?: string
   sameAddressError?: string
-  erc721ERCToken?: ERCToken
+  erc721ERCToken?: BraveWallet.ERCToken
   erc721TokenId?: string
   isSwap?: boolean
 
@@ -64,8 +59,8 @@ interface ParsedTransaction extends ParsedTransactionFees {
   approvalTargetLabel?: string
 }
 
-export function useTransactionFeesParser (selectedNetwork: EthereumChain, networkSpotPrice: string) {
-  return React.useCallback((transactionInfo: TransactionInfo): ParsedTransactionFees => {
+export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumChain, networkSpotPrice: string) {
+  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
     const { txData } = transactionInfo
     const { baseData: { gasLimit, gasPrice }, maxFeePerGas, maxPriorityFeePerGas } = txData
 
@@ -87,11 +82,11 @@ export function useTransactionFeesParser (selectedNetwork: EthereumChain, networ
 }
 
 export function useTransactionParser (
-  selectedNetwork: EthereumChain,
+  selectedNetwork: BraveWallet.EthereumChain,
   accounts: WalletAccountType[],
-  spotPrices: AssetPrice[],
-  visibleTokens: ERCToken[],
-  fullTokenList?: ERCToken[]
+  spotPrices: BraveWallet.AssetPrice[],
+  visibleTokens: BraveWallet.ERCToken[],
+  fullTokenList?: BraveWallet.ERCToken[]
 ) {
   const findSpotPrice = usePricing(spotPrices)
   const getAddressLabel = useAddressLabels(accounts)
@@ -145,7 +140,7 @@ export function useTransactionParser (
       : undefined
   }
 
-  return React.useCallback((transactionInfo: TransactionInfo) => {
+  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
     const { txArgs, txData, fromAddress, txType } = transactionInfo
     const { baseData } = txData
     const { value, to } = baseData
@@ -158,7 +153,7 @@ export function useTransactionParser (
 
     switch (true) {
       // transfer(address recipient, uint256 amount) → bool
-      case txType === TransactionType.ERC20Transfer: {
+      case txType === BraveWallet.TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
         const token = findToken(to)
         const price = findSpotPrice(token?.symbol ?? '')
@@ -196,10 +191,10 @@ export function useTransactionParser (
       }
 
       // transferFrom(address owner, address to, uint256 tokenId)
-      case txType === TransactionType.ERC721TransferFrom:
+      case txType === BraveWallet.TransactionType.ERC721TransferFrom:
 
       // safeTransferFrom(address owner, address to, uint256 tokenId)
-      case txType === TransactionType.ERC721SafeTransferFrom: {
+      case txType === BraveWallet.TransactionType.ERC721SafeTransferFrom: {
         // The owner of the ERC721 must not be confused with the
         // caller (fromAddress).
         const [owner, toAddress, tokenID] = txArgs
@@ -235,7 +230,7 @@ export function useTransactionParser (
       }
 
       // approve(address spender, uint256 amount) → bool
-      case txType === TransactionType.ERC20Approve: {
+      case txType === BraveWallet.TransactionType.ERC20Approve: {
         const [address, amount] = txArgs
         const token = findToken(to)
         const feeDetails = parseTransactionFees(transactionInfo)
@@ -270,8 +265,8 @@ export function useTransactionParser (
 
       // FIXME: swap needs a real parser to figure out the From and To details.
       case to.toLowerCase() === SwapExchangeProxy:
-      case txType === TransactionType.ETHSend:
-      case txType === TransactionType.Other:
+      case txType === BraveWallet.TransactionType.ETHSend:
+      case txType === BraveWallet.TransactionType.Other:
       default: {
         const networkPrice = findSpotPrice(selectedNetwork.symbol)
         const sendAmount = formatBalance(value, selectedNetwork.decimals)

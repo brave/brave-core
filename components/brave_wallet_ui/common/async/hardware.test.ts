@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
-import { TransactionInfo, LEDGER_HARDWARE_VENDOR, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
+  BraveWallet,
   GetNonceForHardwareTransactionReturnInfo,
   GetTransactionMessageToSignReturnInfo,
   ProcessHardwareSignatureReturnInfo
@@ -13,7 +13,7 @@ import {
 import {
   signTrezorTransaction,
   signLedgerTransaction
-} from '../../common/async/hardware'
+} from './hardware'
 import WalletApiProxy from '../../common/wallet_api_proxy'
 import { getLocale } from '../../../common/locale'
 import { Success, Unsuccessful } from 'trezor-connect'
@@ -30,10 +30,10 @@ window.crypto = {
   }
 }
 
-const getMockedLedgerKeyring = (expectedPath: string, expectedData: string | TransactionInfo, signed?: SignHardwareTransactionOperationResult) => {
+const getMockedLedgerKeyring = (expectedPath: string, expectedData: string | BraveWallet.TransactionInfo, signed?: SignHardwareTransactionOperationResult) => {
   return {
     type: (): HardwareVendor => {
-      return LEDGER_HARDWARE_VENDOR
+      return BraveWallet.LEDGER_HARDWARE_VENDOR
     },
     signTransaction: async (path: string, data: string): Promise<SignHardwareTransactionOperationResult> => {
       expect(path).toStrictEqual(expectedPath)
@@ -57,10 +57,10 @@ const getMockedLedgerKeyring = (expectedPath: string, expectedData: string | Tra
   }
 }
 
-const getMockedTrezorKeyring = (expectedDevicePath: string, expectedData: string | TransactionInfo, signed?: Success<EthereumSignedTx> | Unsuccessful) => {
+const getMockedTrezorKeyring = (expectedDevicePath: string, expectedData: string | BraveWallet.TransactionInfo, signed?: Success<EthereumSignedTx> | Unsuccessful) => {
   return {
     type: (): HardwareVendor => {
-      return TREZOR_HARDWARE_VENDOR
+      return BraveWallet.TREZOR_HARDWARE_VENDOR
     },
     signTransaction: async (path: string, data: string): Promise<Success<EthereumSignedTx> | Unsuccessful | undefined> => {
       expect(path).toStrictEqual(expectedDevicePath)

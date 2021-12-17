@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { UserAccountType, BuySendSwapViewTypes, EthereumChain } from '../../../constants/types'
+import { UserAccountType, BuySendSwapViewTypes, BraveWallet } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
@@ -23,7 +23,7 @@ import {
 
 export interface Props {
   selectedAccount: UserAccountType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 

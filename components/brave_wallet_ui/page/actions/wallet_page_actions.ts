@@ -21,7 +21,11 @@ import {
   ImportFromExternalWalletPayloadType,
   ImportWalletErrorPayloadType
 } from '../constants/action_types'
-import { SwapResponse, SwapErrorResponse, ERCToken, UpdateAccountNamePayloadType } from '../../constants/types'
+import {
+  BraveWallet,
+  SwapErrorResponse,
+  UpdateAccountNamePayloadType
+} from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
@@ -45,7 +49,7 @@ export const setImportAccountError = createAction<boolean>('setImportAccountErro
 export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
-export const updateSelectedAsset = createAction<ERCToken>('updateSelectedAsset')
+export const updateSelectedAsset = createAction<BraveWallet.ERCToken>('updateSelectedAsset')
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')
@@ -56,6 +60,6 @@ export const setCryptoWalletsInstalled = createAction<boolean>('setCryptoWallets
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
-export const setPageSwapQuote = createAction<SwapResponse>('setPageSwapQuote')
+export const setPageSwapQuote = createAction<BraveWallet.SwapResponse>('setPageSwapQuote')
 export const setPageSwapError = createAction<SwapErrorResponse | undefined>('setPageSwapError')
 export const fetchPageSwapQuote = createAction<SwapParamsPayloadType>('fetchPageSwapQuote')

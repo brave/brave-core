@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppItem } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -15,7 +15,7 @@ import {
 } from './style'
 
 export interface Props {
-  appInfo: AppItem
+  appInfo: BraveWallet.AppItem
   isStared: boolean
   toggleFavorite: () => void
 }

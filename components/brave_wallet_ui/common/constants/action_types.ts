@@ -4,9 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  DefaultWallet,
-  TransactionInfo,
-  ERCToken,
+  BraveWallet,
   AccountAssetOptionType,
   SlippagePresetObjectType,
   WalletAccountType
@@ -26,29 +24,29 @@ export type IsEip1559Changed = {
 }
 
 export type NewUnapprovedTxAdded = {
-  txInfo: TransactionInfo
+  txInfo: BraveWallet.TransactionInfo
 }
 
 export type UnapprovedTxUpdated = {
-  txInfo: TransactionInfo
+  txInfo: BraveWallet.TransactionInfo
 }
 
 export type TransactionStatusChanged = {
-  txInfo: TransactionInfo
+  txInfo: BraveWallet.TransactionInfo
 }
 
 export type AddUserAssetPayloadType = {
-  token: ERCToken
+  token: BraveWallet.ERCToken
   chainId: string
 }
 
 export type RemoveUserAssetPayloadType = {
-  token: ERCToken
+  token: BraveWallet.ERCToken
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  token: ERCToken
+  token: BraveWallet.ERCToken
   chainId: string
   isVisible: boolean
 }
@@ -83,7 +81,7 @@ export type UpdateUnapprovedTransactionSpendAllowanceType = {
 }
 
 export type DefaultWalletChanged = {
-  defaultWallet: DefaultWallet
+  defaultWallet: BraveWallet.DefaultWallet
 }
 
 export type DefaultBaseCurrencyChanged = {

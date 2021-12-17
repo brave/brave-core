@@ -13,13 +13,13 @@ import {
   NavOutline
 } from './style'
 
-import { PanelTypes, EthereumChain } from '../../../constants/types'
+import { BraveWallet, PanelTypes } from '../../../constants/types'
 
 export interface Props {
   onNavigate: (path: PanelTypes) => void
   isSwapDisabled: boolean
   isBuyDisabled: boolean
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 function ConnectedBottomNav (props: Props) {

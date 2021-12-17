@@ -40,8 +40,8 @@ import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import {
-  AppItem,
   AppsListType,
+  BraveWallet,
   WalletState,
   PanelState,
   PanelTypes,
@@ -49,7 +49,6 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain,
   ToOrFromType,
   WalletOrigin
 } from '../constants/types'
@@ -321,7 +320,7 @@ function Container (props: Props) {
   const onSetup = () => {
     props.walletPanelActions.setupWallet()
   }
-  const addToFavorites = (app: AppItem) => {
+  const addToFavorites = (app: BraveWallet.AppItem) => {
     props.walletActions.addFavoriteApp(app)
   }
 
@@ -337,7 +336,7 @@ function Container (props: Props) {
     props.walletPanelActions.openWalletApps()
   }
 
-  const removeFromFavorites = (app: AppItem) => {
+  const removeFromFavorites = (app: BraveWallet.AppItem) => {
     props.walletActions.removeFavoriteApp(app)
   }
 
@@ -350,7 +349,7 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
-  const onSelectNetwork = (network: EthereumChain) => () => {
+  const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     props.walletActions.selectNetwork(network)
     props.walletPanelActions.navigateTo('main')
   }

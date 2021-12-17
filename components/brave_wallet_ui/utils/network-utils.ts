@@ -1,6 +1,6 @@
-import { EthereumChain } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 
-export const GetNetworkInfo = (chainId: string, list: EthereumChain[]) => {
+export const GetNetworkInfo = (chainId: string, list: BraveWallet.EthereumChain[]) => {
   for (let it of list) {
     if (it.chainId === chainId) {
       return it

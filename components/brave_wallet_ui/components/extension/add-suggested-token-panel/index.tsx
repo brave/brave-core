@@ -1,9 +1,6 @@
 import * as React from 'react'
 
-import {
-  ERCToken,
-  EthereumChain
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 import {
   StyledWrapper,
@@ -25,8 +22,8 @@ import { reduceAddress } from '../../../utils/reduce-address'
 export interface Props {
   onCancel: () => void
   onAddToken: () => void
-  selectedNetwork: EthereumChain
-  token?: ERCToken
+  selectedNetwork: BraveWallet.EthereumChain
+  token?: BraveWallet.ERCToken
 }
 
 function AddSuggestedTokenPanel (props: Props) {

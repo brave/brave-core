@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 
-import { AssetPrice } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 
-export default function usePricing (spotPrices: AssetPrice[]) {
+export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
   return React.useCallback((symbol: string) => {
     return spotPrices.find(
       (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase()

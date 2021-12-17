@@ -2,14 +2,14 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { TransactionInfo, TransactionType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { CodeSnippet, CodeSnippetText, DetailRow, DetailText, TransactionText } from './style'
 
 export interface Props {
-  transactionInfo: TransactionInfo
+  transactionInfo: BraveWallet.TransactionInfo
 }
 
-const txKeys = Object.keys(TransactionType)
+const txKeys = Object.keys(BraveWallet.TransactionType)
 
 const TransactionDetailBox = (props: Props) => {
   const { transactionInfo } = props
@@ -36,7 +36,7 @@ const TransactionDetailBox = (props: Props) => {
             <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
             <DetailText>{txKeys[txType]}</DetailText>
           </DetailRow>
-          {txType !== TransactionType.Other && txParams.map((param, i) =>
+          {txType !== BraveWallet.TransactionType.Other && txParams.map((param, i) =>
             <CodeSnippet key={i}>
               <code>
                 <CodeSnippetText>{param}: {txArgs[i]}</CodeSnippetText>
@@ -44,7 +44,7 @@ const TransactionDetailBox = (props: Props) => {
             </CodeSnippet>
           )}
 
-          {txType === TransactionType.Other && (
+          {txType === BraveWallet.TransactionType.Other && (
             <CodeSnippet>
               <code>
                 <CodeSnippetText>

@@ -1,4 +1,4 @@
-import { AccountAssetOptionType, ERCToken } from '../constants/types'
+import { AccountAssetOptionType, BraveWallet } from '../constants/types'
 import {
   ALGOIconUrl,
   BATIconUrl,
@@ -59,7 +59,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
 ]
 
 // Use only with storybook as dummy data.
-export const NewAssetOptions: ERCToken[] = [
+export const NewAssetOptions: BraveWallet.ERCToken[] = [
   {
     contractAddress: '1',
     name: 'Ethereum',

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, EthereumChain } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
 import { SignMessagePayload } from '../../../panel/constants/action_types'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
@@ -34,7 +34,7 @@ import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   signMessageData: SignMessagePayload[]
   onSign: () => void
   onCancel: () => void
