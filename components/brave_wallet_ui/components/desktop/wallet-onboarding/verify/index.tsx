@@ -41,11 +41,16 @@ function OnboardingVerify (props: Props) {
     return sortedPhrase.length !== recoveryPhrase.length
   }, [sortedPhrase, recoveryPhrase])
 
+  const numberOfWordRows = React.useMemo((): number => {
+    const numberOfWordColumns = 4
+    return Math.ceil(recoveryPhrase.length / numberOfWordColumns)
+  }, [recoveryPhrase])
+
   return (
     <StyledWrapper>
       <Title>{getLocale('braveWalletVerifyRecoveryTitle')}</Title>
       <Description>{getLocale('braveWalletVerifyRecoveryDescription')}</Description>
-      <SelectedPhraseContainer error={hasVerifyError}>
+      <SelectedPhraseContainer error={hasVerifyError} numberOfRows={numberOfWordRows}>
         {sortedPhrase.map((word, index) =>
           <SelectedBubble
             key={word.id}

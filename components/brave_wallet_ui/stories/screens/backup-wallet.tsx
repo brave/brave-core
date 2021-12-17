@@ -115,6 +115,7 @@ function BackupWallet (props: Props) {
           onCancel={onCancel}
           isBackupTermsAccepted={backupTerms}
           isOnboarding={isOnboarding}
+          recoveryPhraseLength={recoveryPhrase.length}
         />
       }
       {backupStep === 1 &&

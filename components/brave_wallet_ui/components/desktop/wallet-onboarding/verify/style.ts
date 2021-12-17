@@ -4,7 +4,10 @@ import { WalletButton } from '../../../shared/style'
 interface StyleProps {
   isSelected: boolean
   error: boolean
+  numberOfRows: number
 }
+
+const selectedBubbleHeight = 34
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -47,7 +50,7 @@ export const SelectedPhraseContainer = styled.div<Partial<StyleProps>>`
   flex-direction: row;
   flex-wrap: wrap;
   width: 466px;
-  min-height: 112px;
+  min-height: ${(p) => p.numberOfRows ? `${(p.numberOfRows * selectedBubbleHeight) + 10}px` : '112px'};
   margin-bottom: 40px;
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
   box-sizing: border-box;
