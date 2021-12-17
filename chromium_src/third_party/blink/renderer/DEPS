@@ -1,4 +1,5 @@
 include_rules = [
+  "+../gen/third_party/blink/renderer/bindings/modules/v8",
   "+../gen/third_party/blink/renderer/core/origin_trials",
   "+mojo/public/cpp/bindings",
   "+services/network/public/mojom",
