@@ -275,6 +275,9 @@ are declared in tools/grit/grit_rule.gni.
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <!-- Access Code Cast specific strings -->
+      <part file="access_code_cast_strings.grdp" />
+
       <!-- Bookmarks specific strings -->
       <part file="bookmarks_strings.grdp" />
 
@@ -3010,7 +3013,7 @@ are declared in tools/grit/grit_rule.gni.
           UID
         </message>
         <message translateable="false" name="IDS_CERT_OID_PKCS9_EMAIL_ADDRESS" desc="">
-          E
+          emailAddress
         </message>
         <message translateable="false" name="IDS_CERT_OID_BUSINESS_CATEGORY" desc="">
           businessCategory
@@ -4480,7 +4483,10 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
             Pinned by your administrator
           </message>
-          <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage extensions' text in the context menu for when right-clicking on extension icons (sentence case).">
+          <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (sentence case).">
+            Manage extension
+          </message>
+          <message name="IDS_MANAGE_EXTENSIONS" desc="The text of the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (sentence case).">
             Manage extensions
           </message>
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (sentence case).">
@@ -4533,7 +4539,10 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
             Pinned by your Administrator
           </message>
-          <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage Extensions' text in the context menu for when right-clicking on extension icons (title case).">
+          <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (title case).">
+            Manage Extension
+          </message>
+          <message name="IDS_MANAGE_EXTENSIONS" desc="The text for the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (title case).">
             Manage Extensions
           </message>
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (title case).">
@@ -4957,6 +4966,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_CHECKING_LABEL" desc="Checking label">
         Checking for status...
       </message>
+
+      <if expr="chromeos">
+        <message name="IDS_COMPONENTS_OS_TEXT1_LABEL" desc="Begin label text on the os://components page from BraveOS which directs a user to a dialog showing Brave browser specific components - enclosing url link.">
+          Looking for browser components? Visit
+        </message>
+        <message name="IDS_COMPONENTS_OS_TEXT2_LABEL" desc="End label text on the os://components page from BraveOS which directs a user to a dialog showing Brave browser specific components - enclosing url link.">
+          .
+        </message>
+        <message name="IDS_COMPONENTS_OS_LINK" translateable="false" desc="Label for a button on the os://components page from BraveOS that will call a new window which allows to change Brave browser components.">
+          chrome://components
+        </message>
+      </if>
+      <if expr="lacros">
+        <message name="IDS_COMPONENTS_OS_TEXT1_LABEL" desc="Begin label text on the chrome://components page from BraveOS which directs a user to a dialog showing OS specific components - enclosing url link.">
+          Looking for system components? Visit
+        </message>
+        <message name="IDS_COMPONENTS_OS_TEXT2_LABEL" desc="End label text on the chrome://components page from BraveOS which directs a user to a dialog showing OS specific components - enclosing url link.">
+          .
+        </message>
+        <message name="IDS_COMPONENTS_OS_LINK" translateable="false" desc="Label for button on the chrome://components page from BraveOS that will call a new window which allows to change system components.">
+          os://components
+        </message>
+      </if>
+
       <message name="IDS_COMPONENTS_SVC_STATUS_NEW" desc="Service Status">
         New
       </message>
@@ -5346,6 +5379,29 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_ABOUT_BROWSER_SWITCH_PROTOCOL_ERROR" desc="Specific error message when we failed to open the alternative browser, because the URL is not one of http://, https:// or file://">
           Only http, https and file protocols are supported for browser redirects.
+        </message>
+      </if>
+
+      <if expr="chromeos">
+        <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the os://about page from BraveOS which directs a user to a dialog showing Brave browser specific about page - enclosing url link.">
+          Looking for the browser about page? Visit
+        </message>
+        <message name="IDS_ABOUT_OS_TEXT2_LABEL" desc="End label text on the os://about page from BraveOS which directs a user to a dialog showing Brave browser specific about page - enclosing url link.">
+          .
+        </message>
+        <message name="IDS_ABOUT_OS_LINK" translateable="false" desc="Label for button on the os://about page from BraveOS which shows the user the link to the Brave browser specific about page.">
+          chrome://about
+        </message>
+      </if>
+      <if expr="lacros">
+        <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the chrome://about page from BraveOS which directs a user to a dialog showing system specific about page - enclosing url link.">
+          Looking for the system about page? Visit
+        </message>
+        <message name="IDS_ABOUT_OS_TEXT2_LABEL" desc="End label text on the chrome://about page from BraveOS which directs a user to a dialog showing system specific about page - enclosing url link.">
+          .
+        </message>
+        <message name="IDS_ABOUT_OS_LINK" translateable="false" desc="Label for button on the chrome://about page from BraveOS which shows the user the link to the system specific about page.">
+          os://about
         </message>
       </if>
 
@@ -6432,6 +6488,40 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Turn on
       </message>
 
+      <!-- Tailored Security Prompt for Consented Desktop users -->
+      <message name="IDS_TAILORED_SECURITY_DISPLAY_SOURCE" desc="The name of the source showing the notification">
+        Safe Browsing
+      </message>
+      <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_DESCRIPTION" desc="The text of the notification asking if the user wants to enable Enhanced Safe Browsing">
+        With Enhanced Safe Browsing, you’ll get Brave’s strongest security
+      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_ACCEPT" desc="The text on the 'accept' button asking if the user wants to enable Enhanced Safe Browsing">
+          Turn On
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_ACCEPT" desc="The text on the 'accept' button asking if the user wants to enable Enhanced Safe Browsing">
+          Turn on
+        </message>
+      </if>
+      <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TITLE" desc="The title of the notification telling the user that Enhanced Safe Browsing was disabled">
+        Enhanced Safe Browsing is off
+      </message>
+      <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_DESCRIPTION" desc="The text of the notification telling the user that Enhanced Safe Browsing was disabled">
+        You’re getting standard protection
+      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TURN_ON" desc="The text on the 'turn on' button asking if the user wants to re-enable Enhanced Safe Browsing">
+          Turn Back On
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TURN_ON" desc="The text on the 'turn on' button asking if the user wants to re-enable Enhanced Safe Browsing">
+          Turn back on
+        </message>
+      </if>
+
       <!-- Password Manager -->
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
@@ -7209,7 +7299,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Side Search -->
       <if expr="enable_side_search">
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The accessible name for the side search toolbar button">
+        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOL" desc="The accessible name for the side search tool.">
+          Side Search
+        </message>
+        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The accessible name for the side search toolbar button.">
           Toggle side search
         </message>
         <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The accessible name for the side search toolbar button when side search is activated.">
@@ -7218,17 +7311,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The accessible name for the side search toolbar button when side search is not activated.">
           Toggle side search. Side search not activated.
         </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_CLOSE_BUTTON" desc="The accessible name for the side search header close button">
+        <message name="IDS_ACCNAME_SIDE_SEARCH_CLOSE_BUTTON" desc="The accessible name for the side search header close button.">
           Close side search
+        </message>
+        <message name="IDS_ACCNAME_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The accessible name for the side search header feedback button.">
+          Submit Feedback
         </message>
         <message name="IDS_SIDE_SEARCH_PROMO" desc="Promo UI shown next to the side search button to encourage its use.">
           See more search results in side panel
         </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The tooltip for the side search toolbar button">
+        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The tooltip for the side search toolbar button.">
           Toggle side search
         </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_CLOSE_BUTTON" desc="The tooltip for the side search header close button">
+        <message name="IDS_TOOLTIP_SIDE_SEARCH_CLOSE_BUTTON" desc="The tooltip for the side search header close button.">
           Close side search
+        </message>
+        <message name="IDS_TOOLTIP_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The tooltip for the side search header feedback button.">
+          Submit Feedback
         </message>
       </if>
 
@@ -7394,32 +7493,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing your screen.
       </message>
-      <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
-        <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing your screen with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
-      </message>
       <message name="IDS_MEDIA_SCREEN_CAPTURE_WITH_AUDIO_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing your screen and audio.
-      </message>
-      <message name="IDS_MEDIA_SCREEN_CAPTURE_WITH_AUDIO_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
-        <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing your screen and audio with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
       <message name="IDS_MEDIA_WINDOW_CAPTURE_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a window.
       </message>
-      <message name="IDS_MEDIA_WINDOW_CAPTURE_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
-        <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a window with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
-      </message>
       <message name="IDS_MEDIA_TAB_CAPTURE_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a Brave tab.
       </message>
-      <message name="IDS_MEDIA_TAB_CAPTURE_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
-        <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a Brave tab with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
-      </message>
       <message name="IDS_MEDIA_TAB_CAPTURE_WITH_AUDIO_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a Brave tab and audio.
-      </message>
-      <message name="IDS_MEDIA_TAB_CAPTURE_WITH_AUDIO_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
-        <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a Brave tab and audio with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_HIDE" desc="Text shown on a link that hides the notification that the screen is being captured.">
         Hide
@@ -8471,7 +8555,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Dice Web Signin Interception Bubble-->
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos and not is_android and not lacros">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
           Ok
         </message>
@@ -8496,11 +8580,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
           This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
-          Work
-        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC_V2" desc="Description for the profile switch interception bubble">
           <ph name="NAME">$2<ex>Bob</ex></ph>'s profile is linked to <ph name="EMAIL">$1<ex>bob@gmail.com</ex></ph>
+        </message>
+      </if>
+
+      <if expr="not chromeos and not is_android">
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
+          Work
         </message>
       </if>
 
@@ -8984,7 +9071,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_TRANSLATE_BUBBLE_TRANSLATED_TITLE" desc="Title text for the translate bubble label when the page has been translated from one language to another">
           Translated
         </message>
-        <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE_TITLE" desc="Title text for the translate bubble label when the page could not be translated.">
+        <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE_TITLE" desc="Title text for the translate bubble label when the page could not be translated. This is also announced to the screenreader.">
           This page could not be translated
         </message>
         <message name="IDS_TRANSLATE_BUBBLE_SOURCE_LANG_COMBOBOX_ACCNAME" desc="Accessible name for the source language selection combobox.">
@@ -8992,6 +9079,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_TRANSLATE_BUBBLE_TARGET_LANG_COMBOBOX_ACCNAME" desc="Accessible name for the target language selection combobox.">
           Choose the language to translate the page to
+        </message>
+        <message name="IDS_TRANSLATE_BUBBLE_TRANSLATION_COMPLETE_ANNOUNCEMENT" desc="Text announced to the user via the screenreader when translation has finished.">
+            Translation to <ph name="language">$1<ex>French</ex></ph> complete
         </message>
         <if expr="not use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="Text to show for the translate bubble button to jump to the advanced panel.">
@@ -11164,6 +11254,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLEV2_2ND_FACTOR_DESCRIPTION" desc="The contents of a dialog shown when the user tries to sign-in using a phone as a security key, or tries to register their phone as a security key for a future sign-in. A security key is traditionally a small USB device that is touched to confirm a sign-in (e.g. a gNubby) and, in this context, the phone is replacing the need for a separate device. The placeholder for the notification title will be replaced with the string that will appear in the notification on the phone. These messages are 4300134428943426639 and 581442427601260656.">
         <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, tap the “<ph name="NOTIFICATIONTITLE"><ex>Verify with this phone</ex>$2</ph>” notification and follow the steps.
       </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
+        Add a new phone
+      </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
         Unlock your phone and confirm it's you
@@ -11525,11 +11618,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Tailored security Android message for consented primary accounts -->
-    <message name="IDS_TAILORED_SECURITY_CONSENTED_MESSAGE_TITLE" desc="Title shown in the Android message when the account tailored security setting changes for a consented primary account">
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_MESSAGE_TITLE" desc="Title shown in the Android message when the account tailored security setting changes for a consented primary account">
       Enhanced Safe Browsing is on
     </message>
-    <message name="IDS_TAILORED_SECURITY_CONSENTED_MESSAGE_DESCRIPTION" desc="Description shown in the Android message when the account tailored security setting changes for a consented primary account">
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_MESSAGE_DESCRIPTION" desc="Description shown in the Android message when the account tailored security setting changes for a consented primary account">
       You’re on Brave’s strongest security
+    </message>
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_MESSAGE_TITLE" desc="Title shown in the Android message when the account tailored security setting changes for a consented primary account">
+      Enhanced Safe Browsing is off
+    </message>
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_MESSAGE_DESCRIPTION" desc="Description shown in the Android message when the account tailored security setting changes for a consented primary account">
+      You’re getting standard protection
     </message>
     <message name="IDS_TAILORED_SECURITY_CONSENTED_MESSAGE_OK_BUTTON" desc="The text on the ok button in the Android message when the account tailored security setting changes for a consented primary account">
       OK
