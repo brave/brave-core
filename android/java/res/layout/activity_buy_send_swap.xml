@@ -506,35 +506,125 @@
             android:paddingEnd="14dp"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_filled_bg_radius_12"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/slipping_expires_value_text"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/tolerance_textsection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/slipping_tolerance"
-                android:textColor="@color/wallet_secondary_text_color"
-                android:textSize="14sp"/>
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/slippage_tolerance_spinner"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/slipping_expires_value_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/slipping_tolerance"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/slippage_tolerance_dropdown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/crypto_wallet_tolerance_05"
+                    android:textSize="14sp"
+                    android:textColor="@color/wallet_text_color"
+                    android:maxLines="1"
+                    android:gravity="center_vertical"
+                    app:drawableRightCompat="@drawable/ic_arrow_drop_down_white"
+                    android:drawablePadding="8dp"
+                    app:drawableTint="@color/wallet_text_color" />
+            
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tolerance_subsection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="10sp"
-                android:textColor="@color/wallet_text_color"
-                android:layout_gravity="center_vertical"
-                android:prompt="@string/crypto_wallet_tolerance_05"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                tools:ignore="SmallSp" />
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:visibility="gone" >
 
+                <RadioGroup
+                    android:id="@+id/slippage_tolerance_radiogroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/slippage_per_05_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:checked="true"
+                        android:button="@null"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/crypto_wallet_tolerance_05" />
+
+                    <RadioButton
+                        android:id="@+id/slippage_per_1_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/crypto_wallet_tolerance_1" />
+
+                    <RadioButton
+                        android:id="@+id/slippage_per_2_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:text="@string/crypto_wallet_tolerance_2" />
+
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/slippage_value_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:textColor="@color/wallet_text_color"
+                    android:hint="@string/crypto_wallet_tolerance_percentage_hint"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

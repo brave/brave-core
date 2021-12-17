@@ -2517,14 +2517,14 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CRYPTO_WALLET_TOLERANCE_1" desc="Slippage tolerance %" translateable="false">
       1%
     </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_15" desc="Slippage tolerance %" translateable="false">
-      1.5%
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_2" desc="Slippage tolerance %" translateable="false">
+      2%
     </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_3" desc="Slippage tolerance %" translateable="false">
-      3%
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_PERCENTAGE_HINT" desc="Slippage tolerance %" translateable="false">
+      %
     </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_6" desc="Slippage tolerance %" translateable="false">
-      6%
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_PERCENTAGE" desc="Slippage tolerance %" translateable="false">
+      <ph name="PERCENT">%1$s<ex>1</ex></ph>%%
     </message>
     <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_BALANCE" desc="Error on crypto wallets">
       Insufficient balance
