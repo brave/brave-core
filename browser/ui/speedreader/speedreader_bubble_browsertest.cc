@@ -60,7 +60,7 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
   speedreader_bubble_ = true;
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
-  NavigateToNewTab();
+  EXPECT_TRUE(NavigateToNewTab());
   const GURL active_url = ActiveWebContents()->GetLastCommittedURL();
   EXPECT_FALSE(active_url.host().empty());
   ShowAndVerifyUi();
