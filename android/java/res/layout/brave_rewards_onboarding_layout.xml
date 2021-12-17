@@ -12,7 +12,7 @@
     android:layout_margin="4dp"
     android:gravity="center"
     android:visibility="gone"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="12dp">
@@ -64,10 +64,10 @@
                     android:clickable="true"
                     android:drawableEnd="@drawable/ic_chevron_right"
                     android:drawablePadding="4dp"
-                    android:drawableTint="@color/brave_rewards_modal_theme_color"
+                    android:drawableTint="@color/rewards_panel_action_color"
                     android:focusable="true"
                     android:text="@string/lets_take_a_quick_tour"
-                    android:textColor="@color/brave_rewards_modal_theme_color" />
+                    android:textColor="@color/rewards_panel_action_color" />
 
                 <android.widget.Button
                     android:id="@+id/btn_skip"
@@ -78,7 +78,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/skip"
-                    android:textColor="@color/brave_stats_title_color" />
+                    android:textColor="@color/rewards_panel_secondary_text_color" />
 
               </LinearLayout>
 
@@ -98,10 +98,10 @@
                     android:clickable="true"
                     android:drawableStart="@drawable/ic_chevron_left"
                     android:drawablePadding="4dp"
-                    android:drawableTint="@color/settings_section_text_light_color"
+                    android:drawableTint="@color/rewards_panel_secondary_text_color"
                     android:focusable="true"
                     android:text="@string/go_back"
-                    android:textColor="@color/settings_section_text_light_color" />
+                    android:textColor="@color/rewards_panel_secondary_text_color" />
 
                 <View
                   android:layout_width="0dp"
@@ -117,10 +117,10 @@
                     android:clickable="true"
                     android:drawableEnd="@drawable/ic_chevron_right"
                     android:drawablePadding="4dp"
-                    android:drawableTint="@color/brave_rewards_modal_theme_color"
+                    android:drawableTint="@color/rewards_panel_action_color"
                     android:focusable="true"
                     android:text="@string/next"
-                    android:textColor="@color/brave_rewards_modal_theme_color" />
+                    android:textColor="@color/rewards_panel_action_color" />
 
               </LinearLayout>
 
@@ -134,7 +134,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
                 android:layout_gravity="end|top"
-                android:tint="@color/brave_rewards_modal_close_button_color"
                 android:src="@drawable/btn_close"/>
 
     </FrameLayout>

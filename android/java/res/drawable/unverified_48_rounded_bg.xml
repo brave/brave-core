@@ -6,5 +6,5 @@
     <!--border color and border width-->
     <stroke
         android:width="1dp"
-        android:color="#DADCE8" />
+        android:color="@color/rewards_panel_verified_button_border" />
 </shape>

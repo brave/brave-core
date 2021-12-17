@@ -8,10 +8,11 @@
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="8dp"
     android:layout_gravity="bottom"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     android:visibility="gone"
     app:contentPadding="8dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="10dp">
+    app:cardElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@color/settings_section_text_color"
+            android:textColor="@color/rewards_panel_text_color"
             android:drawablePadding="4dp"
             android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal" />
@@ -62,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/rewards_secondary_layout_text_color"
+            android:textColor="@color/rewards_panel_secondary_text_color"
             android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal" />
 

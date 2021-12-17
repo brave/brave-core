@@ -85,6 +85,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -344,15 +345,15 @@ public class BraveRewardsPanel
 
     private void showSummarySection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mRewardsSummaryDetailLayout.setVisibility(View.VISIBLE);
@@ -361,15 +362,15 @@ public class BraveRewardsPanel
 
     private void showTipSection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
         mRewardsSummaryDetailLayout.setVisibility(View.GONE);
         mRewardsTipLayout.setVisibility(View.VISIBLE);
@@ -600,7 +601,7 @@ public class BraveRewardsPanel
         if (mNotificationLayout != null) {
             Log.e(TAG, "mNotificationLayout visible");
             mNotificationLayout.setVisibility(View.VISIBLE);
-            int foregroundColor = R.color.rewards_foreground_color;
+            int foregroundColor = R.color.rewards_panel_foreground_color;
             mRewardsMainLayout.setForeground(
                     new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
             enableControls(false, mRewardsMainLayout);
@@ -772,7 +773,7 @@ public class BraveRewardsPanel
         braveRewardsOnboardingModalView = root.findViewById(R.id.brave_rewards_onboarding_modal_id);
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
-        int foregroundColor = R.color.rewards_foreground_color;
+        int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
         enableControls(false, mRewardsMainLayout);
@@ -871,7 +872,7 @@ public class BraveRewardsPanel
     }
 
     private void showBraveRewardsOnboarding(View root, boolean shouldShowMoreOption) {
-        int foregroundColor = R.color.rewards_foreground_color;
+        int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
         enableControls(false, mRewardsMainLayout);
@@ -1006,41 +1007,44 @@ public class BraveRewardsPanel
                 double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate();
                 usdValue = String.format(Locale.getDefault(), "%.2f USD", usdValueDouble);
             }
+            String batTextColor = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                    ? "#FFFFFF"
+                    : "#212529";
 
             switch (i) {
                 case BALANCE_REPORT_GRANTS:
                     tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#C12D7C>" + value + "</font><font color=#" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_EARNING_FROM_ADS:
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#C12D7C>" + value + "</font><font color=#" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_AUTO_CONTRIBUTE:
                     tv = mPopupView.findViewById(R.id.auto_contribute_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.auto_contribute_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_ONE_TIME_DONATION:
                     tv = mPopupView.findViewById(R.id.one_time_tip_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.one_time_tip_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_RECURRING_DONATION:
                     tv = mPopupView.findViewById(R.id.monthly_tips_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.monthly_tips_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
             }
@@ -1160,7 +1164,7 @@ public class BraveRewardsPanel
 
         switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
-                rightDrawable = R.drawable.disclosure;
+                rightDrawable = R.drawable.ic_verify_wallet_arrow;
                 textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 Log.e(TAG, "BraveRewardsExternalWallet.NOT_CONNECTED");
@@ -1505,7 +1509,7 @@ public class BraveRewardsPanel
 
     private void showUpholdLoginPopupWindow(final View view) {
         PopupWindow loginPopupWindow = new PopupWindow(mActivity);
-        int foregroundColor = R.color.rewards_foreground_color;
+        int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
         enableControls(false, mRewardsMainLayout);
@@ -1637,7 +1641,9 @@ public class BraveRewardsPanel
     private void enableControls(boolean enable, ViewGroup vg) {
         for (int i = 0; i < vg.getChildCount(); i++) {
             View child = vg.getChildAt(i);
-            child.setEnabled(enable);
+            if (child.getId() != R.id.tip_btn) {
+                child.setEnabled(enable);
+            }
             if (child instanceof ViewGroup) {
                 enableControls(enable, (ViewGroup) child);
             }

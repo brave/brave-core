@@ -10,7 +10,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:gravity="center"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     android:visibility="gone"
     app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
@@ -21,7 +21,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content">
 
-	    <androidx.core.widget.NestedScrollView
+	<androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fadeScrollbars="false"
@@ -43,7 +43,7 @@
 	            android:text="@string/earn_tokens_and_give_back"
 	            android:textSize="20sp"
 	            android:textStyle="bold"
-	            android:textColor="@android:color/black"/>
+	            android:textColor="@color/rewards_panel_text_color"/>
 
 	        <TextView
 	            android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
 	            android:gravity="center"
 	            android:text="@string/brave_rewards_modal_text"
 	            android:textSize="14sp"
-	            android:textColor="@color/brave_rewards_modal_text_color"/>
+	            android:textColor="@color/rewards_panel_secondary_text_color"/>
 
 	        <TextView
 	        	android:id="@+id/take_quick_tour_button"
@@ -64,7 +64,7 @@
 	            android:text="@string/take_quick_tour"
 	            android:textSize="14sp"
 	            android:textStyle="bold"
-	            android:textColor="@color/brave_rewards_modal_theme_color"/>
+	            android:textColor="@color/rewards_panel_action_color"/>
 
 	        <android.widget.Button
 	            android:id="@+id/btn_brave_rewards"
@@ -82,19 +82,6 @@
 	            style="?android:attr/borderlessButtonStyle"/>
 
 	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="32dp"
-	            android:layout_gravity="center_horizontal"
-	            android:gravity="center"
-	            app:drawableStartCompat="@drawable/ic_wallet_add"
-	            android:text="@string/brave_rewards_local_panel_add_funds"
-	            android:textSize="14sp"
-	            android:textStyle="bold"
-	            android:visibility="gone"
-	            android:textColor="@color/brave_rewards_modal_theme_color"/>
-
-	        <TextView
 	        	android:id="@+id/brave_rewards_onboarding_modal_tos_pp_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -104,7 +91,7 @@
 	            android:text="@string/brave_rewards_tos_text"
 	            android:textSize="12sp"
 	            android:textStyle="bold"
-	            android:textColor="@color/brave_rewards_tos_color"/>
+	            android:textColor="@color/rewards_panel_text_color"/>
 
 	    </LinearLayout>
 
@@ -116,7 +103,6 @@
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"
 	        android:layout_gravity="end|top"
-	        android:tint="@color/brave_rewards_modal_close_button_color"
 	        android:padding="16dp"
 	        android:src="@drawable/btn_close"/>
 

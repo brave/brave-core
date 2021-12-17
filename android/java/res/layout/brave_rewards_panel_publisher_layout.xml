@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -42,7 +43,7 @@
             android:gravity="start"
             android:maxLines="1"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/settings_section_text_color"
+            android:textColor="@color/rewards_panel_text_color"
             android:textSize="20sp" />
 
         <TextView
@@ -60,7 +61,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:background="@drawable/unverified_48_rounded_bg"
-            android:textColor="@color/settings_section_text_color"
+            android:textColor="@color/rewards_panel_text_color"
             android:textSize="12sp"
             app:drawableStartCompat="@drawable/ic_unverified_state" />
 
@@ -80,7 +81,7 @@
                 android:focusable="true"
                 android:fontFamily="sans-serif"
                 android:text="@string/refresh_status"
-                android:textColor="@color/rewards_refresh_button_color"
+                android:textColor="@color/rewards_panel_refresh_button_color"
                 android:layout_marginEnd="4dp"
                 android:textSize="14sp" />
 

@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
     android:layout_marginBottom="8dp"
-    app:contentPadding="8dp"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardCornerRadius="16dp"
-    app:cardElevation="10dp">
+    app:cardElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/attention"
-                android:textColor="@color/settings_section_text_color"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -43,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textColor="@color/settings_section_text_color"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -51,7 +50,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rewards_settings_seperator_color" />
+            android:background="@color/rewards_divider_color" />
 
         <LinearLayout
             android:id="@+id/auto_contribution_layout"
@@ -68,13 +67,14 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/include_auto_contribute"
-                android:textColor="@color/settings_section_text_light_color"
+                android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/auto_contribution_switch"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:theme="@style/BraveRewardsSwitchTheme" />
 
         </LinearLayout>
 
@@ -93,7 +93,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/monthly_contribution"
-                android:textColor="@color/settings_section_text_light_color"
+                android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/set"
-                android:textColor="#4C54D2"
+                android:textColor="@color/rewards_panel_action_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -111,13 +111,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/rewards_settings_seperator_color" />
+            android:background="@color/rewards_divider_color" />
 
         <TextView
             android:id="@+id/btn_send_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/blue_48_rounded_bg"
             android:clickable="true"
             android:focusable="true"
