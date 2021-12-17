@@ -44,13 +44,13 @@
                android:paddingStart="15dip"
                android:paddingEnd="15dip" />
 
-           <Button android:id="@+id/brave_sync_btn_scan_chain_code"
+           <android.widget.Button android:id="@+id/brave_sync_btn_scan_chain_code"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="@string/brave_sync_scan_chain_code"
                style="@style/BraveSyncButton" />
 
-           <Button android:id="@+id/brave_sync_btn_start_new_chain"
+           <android.widget.Button android:id="@+id/brave_sync_btn_start_new_chain"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="@string/brave_sync_start_new_chain"
@@ -117,7 +117,7 @@
                android:paddingStart="15dip"
                android:paddingEnd="15dip" />
 
-           <Button android:id="@+id/brave_sync_btn_enter_code_words"
+           <android.widget.Button android:id="@+id/brave_sync_btn_enter_code_words"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="@string/enter_code_words_sync"
@@ -255,14 +255,14 @@
 
             <include layout="@layout/menu_separator"/>
 
-            <Button android:id="@+id/brave_sync_confirm_code_words"
+            <android.widget.Button android:id="@+id/brave_sync_confirm_code_words"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_confirm_code_words_text"
                 style="@style/BraveSyncButton"
                 android:layout_marginTop="15dip" />
 
-            <Button android:id="@+id/brave_sync_btn_use_camera"
+            <android.widget.Button android:id="@+id/brave_sync_btn_use_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_use_camera_text"

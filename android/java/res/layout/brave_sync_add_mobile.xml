@@ -28,14 +28,14 @@
             android:paddingEnd="15dip"
             android:paddingBottom="15dip" >
 
-            <Button android:id="@+id/brave_sync_qr_code_on_btn"
+            <android.widget.Button android:id="@+id/brave_sync_qr_code_on_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_qr_code"
                 style="@style/BraveSyncToggleOnButtonLeft" />
 
-            <Button android:id="@+id/brave_sync_code_words_off_btn"
+            <android.widget.Button android:id="@+id/brave_sync_code_words_off_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
@@ -84,7 +84,7 @@
 
         </LinearLayout>
 
-        <Button android:id="@+id/brave_sync_btn_done"
+        <android.widget.Button android:id="@+id/brave_sync_btn_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_btn_done"
