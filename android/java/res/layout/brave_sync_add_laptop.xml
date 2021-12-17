@@ -28,14 +28,14 @@
             android:paddingStart="15dip"
             android:paddingEnd="15dip" >
 
-            <Button android:id="@+id/brave_sync_qr_code_off_btn"
+            <android.widget.Button android:id="@+id/brave_sync_qr_code_off_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_qr_code"
                 style="@style/BraveSyncToggleOffButtonLeft" />
 
-            <Button android:id="@+id/brave_sync_code_words_on_btn"
+            <android.widget.Button android:id="@+id/brave_sync_code_words_on_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
@@ -82,7 +82,7 @@
 
         </FrameLayout>
 
-        <Button android:id="@+id/brave_sync_copy_button"
+        <android.widget.Button android:id="@+id/brave_sync_copy_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_copy_button_text"
@@ -90,7 +90,7 @@
             android:background="@android:color/transparent"
             android:textColor="@color/brave_theme_color" />
 
-        <Button android:id="@+id/brave_sync_btn_add_laptop_done"
+        <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_btn_done"
