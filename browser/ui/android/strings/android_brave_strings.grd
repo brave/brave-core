@@ -1831,7 +1831,7 @@ Are you sure you want to do this?
         You don't have enough BAT.
       </message>
       <message name="IDS_NEED_TO_HAVE_MINIMUM_BAT" desc="Uphold login need to have minimum balance text">
-        You need to have minimum 15 BAT to create a verified Uphold wallet. Please try again later.
+        You need to have minimum 2 BAT to create a verified Uphold wallet. Please try again later.
       </message>
       <message name="IDS_VERIFIED_ACCOUNT_UPHOLD" desc="Uphold login need to have minimum balance text">
         If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN">%1$s</ph>.
