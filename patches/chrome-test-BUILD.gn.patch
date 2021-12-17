@@ -1,12 +1,12 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 34879952fe93edb2e4adfbf008eca87464055cd0..1f47ad8b3a584793b15bf547cc7e13baabe436ad 100644
+index 2137d23327c34fb9e7cbb50bc330ab7a884577d1..0a4fec267dff84a49ae15cfebfea709332eea828 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -308,6 +308,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
- 
+
 +  import("//brave/chromium_src/chrome/test/sources.gni") deps += brave_chromium_src_chrome_test_test_support_deps sources += brave_chromium_src_chrome_test_test_support_sources
    data_deps = []
- 
+
    if (is_chromeos_lacros && also_build_ash_chrome) {
