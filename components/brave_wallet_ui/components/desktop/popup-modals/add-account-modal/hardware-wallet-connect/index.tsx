@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
-import { TREZOR_HARDWARE_VENDOR, LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../../../../constants/types'
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -33,7 +33,7 @@ export interface Props {
 const derivationBatch = 4
 
 export default function (props: Props) {
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(LEDGER_HARDWARE_VENDOR)
+  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<HardwareWalletAccount[]>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
@@ -104,19 +104,19 @@ export default function (props: Props) {
   }
 
   const onSelectLedger = () => {
-    if (selectedHardwareWallet !== LEDGER_HARDWARE_VENDOR) {
+    if (selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR) {
       setConnectionError(undefined)
     }
 
-    selectVendor(LEDGER_HARDWARE_VENDOR)
+    selectVendor(BraveWallet.LEDGER_HARDWARE_VENDOR)
   }
 
   const onSelectTrezor = () => {
-    if (selectedHardwareWallet !== TREZOR_HARDWARE_VENDOR) {
+    if (selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR) {
       setConnectionError(undefined)
     }
 
-    selectVendor(TREZOR_HARDWARE_VENDOR)
+    selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
   }
 
   const onSubmit = () => {
@@ -150,15 +150,15 @@ export default function (props: Props) {
       <HardwareButtonRow>
         <HardwareButton
           onClick={onSelectLedger}
-          isSelected={selectedHardwareWallet === LEDGER_HARDWARE_VENDOR}
-          disabled={isConnecting && selectedHardwareWallet !== LEDGER_HARDWARE_VENDOR}
+          isSelected={selectedHardwareWallet === BraveWallet.LEDGER_HARDWARE_VENDOR}
+          disabled={isConnecting && selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR}
         >
           <LedgerIcon />
         </HardwareButton>
         <HardwareButton
           onClick={onSelectTrezor}
-          isSelected={selectedHardwareWallet === TREZOR_HARDWARE_VENDOR}
-          disabled={isConnecting && selectedHardwareWallet !== TREZOR_HARDWARE_VENDOR}
+          isSelected={selectedHardwareWallet === BraveWallet.TREZOR_HARDWARE_VENDOR}
+          disabled={isConnecting && selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR}
         >
           <TrezorIcon />
         </HardwareButton>

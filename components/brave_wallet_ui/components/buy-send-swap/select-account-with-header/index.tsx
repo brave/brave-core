@@ -7,7 +7,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   SelectWrapper,
   SelectScrollSearchContainer
-} from '../../buy-send-swap/shared-styles'
+} from '../shared-styles'
 
 export interface Props {
   accounts: UserAccountType[]

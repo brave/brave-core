@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ERCToken } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { IconWrapper, PlaceholderText } from './style'
 import { stripERC20TokenImageURL, isRemoteImageURL } from '../../../utils/string-utils'
 import { background } from 'ethereum-blockies'
@@ -12,7 +12,7 @@ interface Config {
 }
 
 interface Props {
-  selectedAsset?: ERCToken
+  selectedAsset?: BraveWallet.ERCToken
 }
 
 function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {

@@ -7,7 +7,7 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  EthereumChain,
+  BraveWallet,
   BuySupportedChains,
   SwapSupportedChains,
   SwapValidationErrorType,
@@ -22,13 +22,13 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
   selectedSendAsset: AccountAssetOptionType
   sendAssetBalance: string
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
@@ -57,7 +57,7 @@ export interface Props {
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void

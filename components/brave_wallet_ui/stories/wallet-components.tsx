@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
 import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
-import { NavTypes, TopTabNavTypes, AssetPriceTimeframe } from '../constants/types'
+import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
@@ -64,9 +64,9 @@ _DesktopTopTabNav.story = {
 }
 
 export const _LineChartControls = () => {
-  const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
+  const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
 
-  const changeTimline = (path: AssetPriceTimeframe) => {
+  const changeTimline = (path: BraveWallet.AssetPriceTimeframe) => {
     setSelectedTimeline(path)
   }
   return (

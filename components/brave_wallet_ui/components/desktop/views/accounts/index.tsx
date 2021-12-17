@@ -5,10 +5,7 @@ import {
   AccountSettingsNavTypes,
   UpdateAccountNamePayloadType,
   AccountTransactions,
-  EthereumChain,
-  ERCToken,
-  AssetPrice,
-  TransactionInfo,
+  BraveWallet,
   DefaultCurrencies
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
@@ -61,9 +58,9 @@ export interface Props {
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   privateKey: string
-  selectedNetwork: EthereumChain
-  userVisibleTokensInfo: ERCToken[]
-  transactionSpotPrices: AssetPrice[]
+  selectedNetwork: BraveWallet.EthereumChain
+  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   defaultCurrencies: DefaultCurrencies
   onViewPrivateKey: (address: string, isDefault: boolean) => void
@@ -74,11 +71,11 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (token: ERCToken) => void
+  onSelectAsset: (token: BraveWallet.ERCToken) => void
   goBack: () => void
-  onRetryTransaction: (transaction: TransactionInfo) => void
-  onSpeedupTransaction: (transaction: TransactionInfo) => void
-  onCancelTransaction: (transaction: TransactionInfo) => void
+  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
 function Accounts (props: Props) {

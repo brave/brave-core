@@ -7,12 +7,12 @@ import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
 import {
   AccountAssetOptionType,
+  BraveWallet,
   GetEthAddrReturnInfo,
   WalletAccountType,
   ER20TransferParams,
   SendTransactionParams,
   ERC721TransferFromParams,
-  ERCToken,
   GetChecksumEthAddressReturnInfo
 } from '../../constants/types'
 import { isValidAddress } from '../../utils/address-utils'
@@ -28,7 +28,7 @@ export default function useSend (
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
-  fullTokenList: ERCToken[]
+  fullTokenList: BraveWallet.ERCToken[]
 ) {
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')

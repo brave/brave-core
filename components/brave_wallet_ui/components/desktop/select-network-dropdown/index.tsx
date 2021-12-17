@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { SelectNetwork, Tooltip } from '../../shared'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 // Styled Components
@@ -12,9 +12,9 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectNetwork: (network: EthereumChain) => () => void
-  networkList: EthereumChain[]
-  selectedNetwork: EthereumChain
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
+  networkList: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
   showNetworkDropDown: boolean
   onClick: () => void
 }

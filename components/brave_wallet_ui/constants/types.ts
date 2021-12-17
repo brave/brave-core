@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
+import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-// Provide access to all the generated types.
-export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
+// Re-export BraveWallet for use in other modules, to avoid hard-coding the
+// path of generated mojom files.
+export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 export interface WalletAccountType {

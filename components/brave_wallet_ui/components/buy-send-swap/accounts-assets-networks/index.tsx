@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {
   AccountAssetOptionType,
+  BraveWallet,
   BuySendSwapViewTypes,
-  UserAccountType,
-  EthereumChain
+  UserAccountType
 } from '../../../constants/types'
 
 import {
@@ -20,12 +20,12 @@ import {
 export interface Props {
   selectedView: BuySendSwapViewTypes
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   assetOptions: AccountAssetOptionType[]
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   onAddAsset: () => void
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: EthereumChain) => () => void
+  onClickSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
   onSelectedAsset: (account: AccountAssetOptionType) => () => void
   goBack: () => void
   onAddNetwork: () => void

@@ -9,16 +9,14 @@ import BigNumber from 'bignumber.js'
 
 import {
   AccountAssetOptionType,
-  EthereumChain,
+  BraveWallet,
   ExpirationPresetObjectType,
   OrderTypes,
   SlippagePresetObjectType,
   SwapErrorResponse,
   SwapValidationErrorType,
-  SwapResponse,
   ToOrFromType,
   WalletAccountType,
-  ROPSTEN_CHAIN_ID,
   ApproveERC20Params
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
@@ -33,16 +31,16 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 
 export default function useSwap (
   selectedAccount: WalletAccountType,
-  selectedNetwork: EthereumChain,
+  selectedNetwork: BraveWallet.EthereumChain,
   assetOptions: AccountAssetOptionType[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
-  quote?: SwapResponse,
+  quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {
   const swapAssetOptions = React.useMemo(() => {
-    if (selectedNetwork.chainId === ROPSTEN_CHAIN_ID) {
+    if (selectedNetwork.chainId === BraveWallet.ROPSTEN_CHAIN_ID) {
       return RopstenSwapAssetOptions
     }
 

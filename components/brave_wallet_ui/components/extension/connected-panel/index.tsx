@@ -38,7 +38,7 @@ import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import {
   WalletAccountType,
   PanelTypes,
-  EthereumChain,
+  BraveWallet,
   BuySupportedChains,
   SwapSupportedChains,
   WalletOrigin,
@@ -49,7 +49,7 @@ import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   isConnected: boolean
   activeOrigin: string
   defaultCurrencies: DefaultCurrencies

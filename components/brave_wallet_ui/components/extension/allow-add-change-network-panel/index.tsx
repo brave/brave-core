@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { NavButton, PanelTab } from '..'
 
@@ -27,7 +27,7 @@ export type tabs = 'network' | 'details'
 
 export interface Props {
   siteOrigin: string
-  networkPayload: EthereumChain
+  networkPayload: BraveWallet.EthereumChain
   panelType: 'add' | 'change'
   onCancel: () => void
   onApproveAddNetwork: () => void

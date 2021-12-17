@@ -7,7 +7,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
-import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -26,16 +25,13 @@ import {
   OnboardingRestore
 } from '../components/desktop'
 import {
-  // NavTypes,
+  BraveWallet,
   WalletState,
   PageState,
   WalletPageState,
-  AssetPriceTimeframe,
   AccountAssetOptionType,
   WalletAccountType,
-  ERCToken,
   UpdateAccountNamePayloadType,
-  EthereumChain,
   WalletRoutes,
   BuySendSwapTypes
 } from '../constants/types'
@@ -223,7 +219,7 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: EthereumChain) => {
+  const onSelectNetwork = (network: BraveWallet.EthereumChain) => {
     props.walletActions.selectNetwork(network)
   }
 
@@ -286,7 +282,7 @@ function Container (props: Props) {
   }, [mnemonic])
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = (asset: ERCToken): number | string => {
+  const fullAssetBalance = (asset: BraveWallet.ERCToken): number | string => {
     const amounts = accounts.map((account) => {
       let balance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -302,7 +298,7 @@ function Container (props: Props) {
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const fullAssetFiatBalance = (asset: ERCToken): number | string => {
+  const fullAssetFiatBalance = (asset: BraveWallet.ERCToken): number | string => {
     const amounts = accounts.map((account) => {
       let fiatBalance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -326,7 +322,7 @@ function Container (props: Props) {
     }))
   }, [userVisibleTokenOptions, accounts])
 
-  const onSelectAsset = (asset: ERCToken) => {
+  const onSelectAsset = (asset: BraveWallet.ERCToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
 
@@ -345,7 +341,7 @@ function Container (props: Props) {
     return grandTotal !== undefined ? formatWithCommasAndDecimals(grandTotal?.toString()) : ''
   }, [userAssetList])
 
-  const onChangeTimeline = (timeline: AssetPriceTimeframe) => {
+  const onChangeTimeline = (timeline: BraveWallet.AssetPriceTimeframe) => {
     if (selectedAsset) {
       props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
     } else {
@@ -442,11 +438,11 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (token: ERCToken, isVisible: boolean) => {
+  const onSetUserAssetVisible = (token: BraveWallet.ERCToken, isVisible: boolean) => {
     props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
-  const onAddUserAsset = (token: ERCToken) => {
+  const onAddUserAsset = (token: BraveWallet.ERCToken) => {
     props.walletActions.addUserAsset({
       token: {
         ...token,
@@ -456,7 +452,7 @@ function Container (props: Props) {
     })
   }
 
-  const onRemoveUserAsset = (token: ERCToken) => {
+  const onRemoveUserAsset = (token: BraveWallet.ERCToken) => {
     props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 
@@ -464,15 +460,15 @@ function Container (props: Props) {
     props.walletPageActions.openWalletSettings()
   }
 
-  const onRetryTransaction = (transaction: TransactionInfo) => {
+  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
     props.walletActions.retryTransaction(transaction)
   }
 
-  const onSpeedupTransaction = (transaction: TransactionInfo) => {
+  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
     props.walletActions.speedupTransaction(transaction)
   }
 
-  const onCancelTransaction = (transaction: TransactionInfo) => {
+  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
     props.walletActions.cancelTransaction(transaction)
   }
 

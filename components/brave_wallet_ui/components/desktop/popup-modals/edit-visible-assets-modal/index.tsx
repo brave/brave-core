@@ -1,9 +1,5 @@
 import * as React from 'react'
-import {
-  ERCToken,
-  EthereumChain,
-  MAINNET_CHAIN_ID
-} from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 import {
   PopupModal,
   AssetWatchlistItem
@@ -33,15 +29,15 @@ import {
 
 export interface Props {
   onClose: () => void
-  onAddUserAsset: (token: ERCToken) => void
-  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: ERCToken) => void
+  onAddUserAsset: (token: BraveWallet.ERCToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: BraveWallet.ERCToken) => void
   addUserAssetError: boolean
-  fullAssetList: ERCToken[]
-  userVisibleTokensInfo: ERCToken[]
-  selectedNetwork: EthereumChain
+  fullAssetList: BraveWallet.ERCToken[]
+  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  selectedNetwork: BraveWallet.EthereumChain
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: ERCToken
+  foundTokenInfoByContractAddress?: BraveWallet.ERCToken
 }
 
 const EditVisibleAssetsModal = (props: Props) => {
@@ -58,7 +54,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     foundTokenInfoByContractAddress
   } = props
 
-  const [filteredTokenList, setFilteredTokenList] = React.useState<ERCToken[]>([])
+  const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.ERCToken[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
@@ -123,7 +119,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
     const fullList = visibleContracts.includes('') ? fullAssetList : [nativeAsset, ...fullAssetList]
     const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
-    return selectedNetwork.chainId !== MAINNET_CHAIN_ID
+    return selectedNetwork.chainId !== BraveWallet.MAINNET_CHAIN_ID
       ? visibleContracts.includes('')
         ? userVisibleTokensInfo
         : [...userVisibleTokensInfo, nativeAsset]
@@ -175,7 +171,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       }
       onAddUserAsset(foundTokenInfoByContractAddress)
     } else {
-      const newToken: ERCToken = {
+      const newToken: BraveWallet.ERCToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
         isErc20: !tokenID,
@@ -191,15 +187,15 @@ const EditVisibleAssetsModal = (props: Props) => {
     setIsLoading(true)
   }
 
-  const isUserToken = (token: ERCToken) => {
+  const isUserToken = (token: BraveWallet.ERCToken) => {
     return userVisibleTokensInfo.map(e => e.contractAddress.toLowerCase()).includes(token.contractAddress.toLowerCase())
   }
 
-  const isAssetSelected = (token: ERCToken): boolean => {
+  const isAssetSelected = (token: BraveWallet.ERCToken): boolean => {
     return (isUserToken(token) && token.visible) ?? false
   }
 
-  const isCustomToken = React.useCallback((token: ERCToken): boolean => {
+  const isCustomToken = React.useCallback((token: BraveWallet.ERCToken): boolean => {
     const assetListContracts = fullAssetList.map((token) => token.contractAddress)
     if (token.isErc20 || token.isErc721) {
       return !assetListContracts.includes(token.contractAddress)
@@ -208,7 +204,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [fullAssetList])
 
-  const onCheckWatchlistItem = (key: string, selected: boolean, token: ERCToken, isCustom: boolean) => {
+  const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.ERCToken, isCustom: boolean) => {
     if (isUserToken(token)) {
       if (isCustom) {
         selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
@@ -241,7 +237,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     toggleShowAddCustomToken()
   }
 
-  const onRemoveAsset = (token: ERCToken) => {
+  const onRemoveAsset = (token: BraveWallet.ERCToken) => {
     setIsLoading(true)
     onRemoveUserAsset(token)
   }

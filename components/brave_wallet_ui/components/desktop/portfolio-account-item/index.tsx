@@ -8,7 +8,7 @@ import {
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
-import { EthereumChain, DefaultCurrencies } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
 import { TransactionPopup } from '../'
 // Styled Components
 import {
@@ -33,7 +33,7 @@ export interface Props {
   fiatBalance: string
   assetBalance: string
   assetTicker: string
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   name: string
 }
 

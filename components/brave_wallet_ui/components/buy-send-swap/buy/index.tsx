@@ -1,10 +1,9 @@
 import * as React from 'react'
 import {
   AccountAssetOptionType,
+  BraveWallet,
   BuySendSwapViewTypes,
-  EthereumChain,
   ToOrFromType,
-  MAINNET_CHAIN_ID,
   DefaultCurrencies
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
@@ -20,9 +19,9 @@ import {
 
 export interface Props {
   selectedAsset: AccountAssetOptionType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   buyAmount: string
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   defaultCurrencies: DefaultCurrencies
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
@@ -51,7 +50,7 @@ function Buy (props: Props) {
 
   return (
     <StyledWrapper>
-      {selectedNetwork.chainId === MAINNET_CHAIN_ID ? (
+      {selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID ? (
         <SwapInputComponent
           defaultCurrencies={defaultCurrencies}
           componentType='buyAmount'
@@ -71,7 +70,7 @@ function Buy (props: Props) {
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={selectedNetwork.chainId === MAINNET_CHAIN_ID ? getLocale('braveWalletBuyWyreButton') : getLocale('braveWalletBuyFaucetButton')}
+        text={selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID ? getLocale('braveWalletBuyWyreButton') : getLocale('braveWalletBuyFaucetButton')}
         onSubmit={onSubmit}
       />
     </StyledWrapper>

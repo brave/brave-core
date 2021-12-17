@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChartTimelineObjectType, AssetPriceTimeframe } from '../../../constants/types'
+import { BraveWallet, ChartTimelineObjectType } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -10,12 +10,12 @@ import {
 
 export interface Props {
   timelineOptions: ChartTimelineObjectType[]
-  selectedTimeline: AssetPriceTimeframe
-  onSubmit: (id: AssetPriceTimeframe) => void
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
+  onSubmit: (id: BraveWallet.AssetPriceTimeframe) => void
 }
 
 export default class ChartControlBar extends React.PureComponent<Props, {}> {
-  onTimeSelect = (id: AssetPriceTimeframe) => () => {
+  onTimeSelect = (id: BraveWallet.AssetPriceTimeframe) => () => {
     this.props.onSubmit(id)
   }
 

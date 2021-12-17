@@ -3,12 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletActions from '../common/actions/wallet_actions'
-import { Store } from '../common/async/types'
+import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
-// Provide access to all the generated types.
-export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../constants/types'
 
 export default class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()

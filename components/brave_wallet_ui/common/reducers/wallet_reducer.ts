@@ -7,20 +7,13 @@ import { createReducer } from 'redux-act'
 import {
   AccountInfo,
   AccountTransactions,
-  AssetPriceTimeframe,
-  DefaultWallet,
-  EthereumChain,
-  GasEstimation1559,
+  BraveWallet,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   GetNativeAssetBalancesPriceReturnInfo,
   GetPriceHistoryReturnInfo,
-  MAINNET_CHAIN_ID,
   PortfolioTokenHistoryAndInfo,
-  ERCToken,
-  TransactionInfo,
-  TransactionStatus,
   WalletAccountType,
   WalletState,
   WalletInfoBase,
@@ -49,7 +42,7 @@ const defaultState: WalletState = {
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
-    chainId: MAINNET_CHAIN_ID,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
@@ -58,7 +51,7 @@ const defaultState: WalletState = {
     symbolName: 'Ethereum',
     decimals: 18,
     isEip1559: true
-  } as EthereumChain,
+  } as BraveWallet.EthereumChain,
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},
@@ -68,11 +61,11 @@ const defaultState: WalletState = {
   portfolioPriceHistory: [],
   selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
-  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
+  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: DefaultWallet.BraveWalletPreferExtension,
+  defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: '',
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -135,7 +128,7 @@ reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccount
   }
 })
 
-reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
+reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.EthereumChain) => {
   return {
     ...state,
     isFetchingPortfolioPriceHistory: true,
@@ -143,7 +136,7 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: ERCToken[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: BraveWallet.ERCToken[]) => {
   return {
     ...state,
     userVisibleTokensInfo: payload
@@ -182,7 +175,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userTokens: ERCToken[] = state.userVisibleTokensInfo
+  const userTokens: BraveWallet.ERCToken[] = state.userVisibleTokensInfo
   const userVisibleTokensInfo = userTokens.map((token) => {
     return {
       ...token,
@@ -268,7 +261,7 @@ reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: Por
   }
 })
 
-reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPriceTimeframe) => {
+reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: BraveWallet.AssetPriceTimeframe) => {
   return {
     ...state,
     isFetchingPortfolioPriceHistory: true,
@@ -296,7 +289,7 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
   const newState = { ...state }
 
   const index = state.pendingTransactions.findIndex(
-    (tx: TransactionInfo) => tx.id === payload.txInfo.id)
+    (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id)
   if (index !== -1) {
     newState.pendingTransactions[index] = payload.txInfo
   }
@@ -310,8 +303,8 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
 
 reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload: TransactionStatusChanged) => {
   const newPendingTransactions = state.pendingTransactions
-    .filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
-    .concat(payload.txInfo.txStatus === TransactionStatus.Unapproved ? [payload.txInfo] : [])
+    .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
+    .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
@@ -340,7 +333,7 @@ reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload:
 reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions) => {
   const { selectedAccount } = state
   const newPendingTransactions = selectedAccount
-    ? payload[selectedAccount.address].filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved) : []
+    ? payload[selectedAccount.address].filter((tx: BraveWallet.TransactionInfo) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved) : []
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
@@ -359,7 +352,7 @@ reducer.on(WalletActions.addUserAssetError, (state: any, payload: boolean) => {
   }
 })
 
-reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: DefaultWallet) => {
+reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: BraveWallet.DefaultWallet) => {
   return {
     ...state,
     defaultWallet: payload
@@ -378,7 +371,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
     network => network.chainId === payload.chainId
   ) || state.selectedNetwork
 
-  const updatedNetwork: EthereumChain = {
+  const updatedNetwork: BraveWallet.EthereumChain = {
     ...selectedNetwork,
     isEip1559: payload.isEip1559
   }
@@ -392,7 +385,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
   }
 })
 
-reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation1559) => {
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: BraveWallet.GasEstimation1559) => {
   return {
     ...state,
     gasEstimates: payload
@@ -408,7 +401,7 @@ reducer.on(WalletActions.setSitePermissions, (state: any, payload: SitePermissio
 
 reducer.on(WalletActions.queueNextTransaction, (state: any) => {
   const pendingTransactions = state.pendingTransactions
-  const index = pendingTransactions.findIndex((tx: TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
+  const index = pendingTransactions.findIndex((tx: BraveWallet.TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
   let newPendingTransaction = pendingTransactions[index]
   if (pendingTransactions.length === index) {
     newPendingTransaction = pendingTransactions[0]

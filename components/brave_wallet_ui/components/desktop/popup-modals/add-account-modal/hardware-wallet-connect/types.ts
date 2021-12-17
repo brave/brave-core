@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths } from '../../../../../common/hardware/types'
-import { LEDGER_HARDWARE_VENDOR, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../../../../constants/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export const HardwareWalletDerivationPathLocaleMapping = {
@@ -14,8 +14,8 @@ export const HardwareWalletDerivationPathLocaleMapping = {
 }
 
 export const HardwareWalletDerivationPathsMapping = {
-  [LEDGER_HARDWARE_VENDOR]: LedgerDerivationPaths,
-  [TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
+  [BraveWallet.LEDGER_HARDWARE_VENDOR]: LedgerDerivationPaths,
+  [BraveWallet.TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
 }
 
 export interface HardwareWalletConnectOpts {

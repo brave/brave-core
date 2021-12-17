@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
 import { getLocale } from '../../../../common/locale'
@@ -10,10 +10,10 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  networks: EthereumChain[]
-  selectedNetwork: EthereumChain
+  networks: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
   hasAddButton?: boolean
-  onSelectNetwork: (network: EthereumChain) => () => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
   onBack: () => void
   onAddNetwork?: () => void
 }

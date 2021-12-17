@@ -1,11 +1,11 @@
 import * as React from 'react'
 import SelectNetworkItem from '../select-network-item'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 export interface Props {
-  networks: EthereumChain[]
-  selectedNetwork: EthereumChain
-  onSelectNetwork: (network: EthereumChain) => () => void
+  networks: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
 }
 
 function SelectNetwork (props: Props) {

@@ -4,10 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  GetPriceHistoryReturnObjectInfo,
-  ERCToken,
-  AssetPrice,
-  AssetPriceTimeframe
+  BraveWallet,
+  GetPriceHistoryReturnObjectInfo
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -61,15 +59,15 @@ export type PrivateKeyAvailablePayloadType = {
 }
 
 export type UpdateSelectedAssetType = {
-  asset: ERCToken
-  timeFrame: AssetPriceTimeframe
+  asset: BraveWallet.ERCToken
+  timeFrame: BraveWallet.AssetPriceTimeframe
 }
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  defaultFiatPrice: AssetPrice | undefined
-  defaultCryptoPrice: AssetPrice | undefined
-  timeFrame: AssetPriceTimeframe
+  defaultFiatPrice?: BraveWallet.AssetPrice
+  defaultCryptoPrice?: BraveWallet.AssetPrice
+  timeFrame: BraveWallet.AssetPriceTimeframe
 }
 
 export type ImportFromExternalWalletPayloadType = {

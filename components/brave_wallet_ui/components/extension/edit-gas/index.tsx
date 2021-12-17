@@ -2,7 +2,7 @@ import * as React from 'react'
 import BigNumber from 'bignumber.js'
 
 import { getLocale } from '../../../../common/locale'
-import { TransactionInfo, EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 import { NavButton, Panel } from '../'
 import {
@@ -44,8 +44,8 @@ export enum MaxPriorityPanels {
 export interface Props {
   onCancel: () => void
   networkSpotPrice: string
-  transactionInfo: TransactionInfo
-  selectedNetwork: EthereumChain
+  transactionInfo: BraveWallet.TransactionInfo
+  selectedNetwork: BraveWallet.EthereumChain
   baseFeePerGas: string
   suggestedMaxPriorityFeeChoices: string[]
   suggestedSliderStep: string

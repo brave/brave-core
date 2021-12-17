@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { WalletAccountType, EthereumChain, Url } from '../../constants/types'
+import { BraveWallet, Url, WalletAccountType } from '../../constants/types'
 
 export type AccountPayloadType = {
   selectedAccounts: WalletAccountType[]
@@ -21,7 +21,7 @@ export type EthereumChainRequestPayload = {
 }
 
 export type EthereumChainPayload = {
-  chain: EthereumChain
+  chain: BraveWallet.EthereumChain
 }
 
 export type SignMessagePayload = {

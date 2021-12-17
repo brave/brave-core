@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { TransactionStatus } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { MoreVertRIcon, ArrowRightIcon } from 'brave-ui/components/icons'
 import CoinsIconSVG from '../../../assets/svg-icons/coins-icon.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
-  status: TransactionStatus
+  status: BraveWallet.TransactionStatus
 }
 
 export const StyledWrapper = styled.div`

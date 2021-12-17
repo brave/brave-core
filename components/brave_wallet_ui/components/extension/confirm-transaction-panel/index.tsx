@@ -2,13 +2,8 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 import {
+  BraveWallet,
   WalletAccountType,
-  EthereumChain,
-  TransactionInfo,
-  TransactionType,
-  AssetPrice,
-  ERCToken,
-  GasEstimation1559,
   DefaultCurrencies
 } from '../../../constants/types'
 import {
@@ -77,12 +72,12 @@ export type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
   siteURL: string
   accounts: WalletAccountType[]
-  visibleTokens: ERCToken[]
-  fullTokenList: ERCToken[]
-  transactionInfo: TransactionInfo
-  selectedNetwork: EthereumChain
-  transactionSpotPrices: AssetPrice[]
-  gasEstimates?: GasEstimation1559
+  visibleTokens: BraveWallet.ERCToken[]
+  fullTokenList: BraveWallet.ERCToken[]
+  transactionInfo: BraveWallet.TransactionInfo
+  selectedNetwork: BraveWallet.EthereumChain
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+  gasEstimates?: BraveWallet.GasEstimation1559
   transactionsQueueLength: number
   transactionQueueNumber: number
   defaultCurrencies: DefaultCurrencies
@@ -161,7 +156,7 @@ function ConfirmTransactionPanel (props: Props) {
   )
 
   React.useEffect(() => {
-    if (transactionInfo.txType !== TransactionType.ERC20Approve) {
+    if (transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve) {
       return
     }
 
@@ -264,7 +259,7 @@ function ConfirmTransactionPanel (props: Props) {
     <StyledWrapper>
       <TopRow>
         <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
-        {transactionInfo.txType === TransactionType.ERC20Approve &&
+        {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
           <AddressAndOrb>
             <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
             <AccountCircle orb={toOrb} />
@@ -284,7 +279,7 @@ function ConfirmTransactionPanel (props: Props) {
           </QueueStepRow>
         }
       </TopRow>
-      {transactionInfo.txType === TransactionType.ERC20Approve ? (
+      {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve ? (
         <>
           <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
           <URLText>{siteURL}</URLText>
@@ -304,19 +299,19 @@ function ConfirmTransactionPanel (props: Props) {
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
-          {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-            transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
+          {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+            transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
             <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721ERCToken} />
           }
           <TransactionAmmountBig>
-            {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-              transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
+            {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+              transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
               ? transactionDetails.erc721ERCToken?.name + ' ' + transactionDetails.erc721TokenId
               : formatWithCommasAndDecimals(transactionDetails.value) + ' ' + transactionDetails.symbol
             }
           </TransactionAmmountBig>
-          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
-            transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
+          {transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
+            transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
             <TransactionFiatAmountBig>{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</TransactionFiatAmountBig>
           }
         </>
@@ -333,10 +328,10 @@ function ConfirmTransactionPanel (props: Props) {
           text='Details'
         />
       </TabRow>
-      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === TransactionType.ERC20Approve}>
+      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve}>
         {selectedTab === 'transaction' ? (
           <>
-            {transactionInfo.txType === TransactionType.ERC20Approve &&
+            {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
               <>
                 <TopColumn>
                   <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
@@ -369,7 +364,7 @@ function ConfirmTransactionPanel (props: Props) {
                 </SectionRow>
               </>
             }
-            {transactionInfo.txType !== TransactionType.ERC20Approve &&
+            {transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve &&
               <>
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
@@ -385,8 +380,8 @@ function ConfirmTransactionPanel (props: Props) {
                   <SingleRow>
                     <TransactionTitle>{getLocale('braveWalletConfirmTransactionTotal')}</TransactionTitle>
                     <GrandTotalText>
-                      {(transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
-                        transactionInfo.txType !== TransactionType.ERC721TransferFrom)
+                      {(transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
+                        transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom)
                         ? formatWithCommasAndDecimals(transactionDetails.value)
                         : transactionDetails.value
                       } {transactionDetails.symbol} + {transactionDetails.gasFee} {selectedNetwork.symbol}</GrandTotalText>

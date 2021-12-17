@@ -1,8 +1,8 @@
-import { EthereumChain } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import {
   ETHIconUrl
 } from '../../assets/asset-icons'
-export const mockNetworks: EthereumChain[] = [
+export const mockNetworks: BraveWallet.EthereumChain[] = [
   {
     chainId: '0x1',
     chainName: 'Ethereum Main Net',

@@ -2,20 +2,13 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import {
-  AddSuggestTokenRequest,
-  TransactionInfo,
-  SignMessageRequest,
-  SwitchChainRequest,
-  TransactionStatus,
-  TREZOR_HARDWARE_VENDOR,
-  LEDGER_HARDWARE_VENDOR
-} from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
+  BraveWallet,
   WalletPanelState,
   PanelState,
   WalletState,
@@ -202,7 +195,7 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: TransactionInfo) => {
+handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (found && found.hardware) {
     const info: HardwareInfo = found.hardware
@@ -213,7 +206,7 @@ handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Sto
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
+handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (!found || !found.hardware) {
     return
@@ -221,7 +214,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   const hardwareAccount: HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
-  if (hardwareAccount.vendor === LEDGER_HARDWARE_VENDOR) {
+  if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       await store.dispatch(PanelActions.navigateToMain())
@@ -246,7 +239,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       console.log(error)
       await store.dispatch(PanelActions.navigateToMain())
     }
-  } else if (hardwareAccount.vendor === TREZOR_HARDWARE_VENDOR) {
+  } else if (hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR) {
     const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
@@ -321,7 +314,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: SwitchChainRequest) => {
+handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: BraveWallet.SwitchChainRequest) => {
   // We need to get current network list first because switch chain doesn't
   // require permission connect first.
   await refreshWalletInfo(store)
@@ -360,7 +353,7 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: BraveWallet.SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -379,7 +372,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.message)
   if (!signed.success && signed.code) {
-    const deviceError = (info.vendor === TREZOR_HARDWARE_VENDOR)
+    const deviceError = (info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR)
       ? dialogErrorFromTrezorErrorCode(signed.code) : dialogErrorFromLedgerErrorCode(signed.code)
     if (deviceError !== 'transactionRejected') {
       await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
@@ -407,7 +400,7 @@ handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, pa
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.addSuggestToken.getType(), async (store: Store, payload: AddSuggestTokenRequest[]) => {
+handler.on(PanelActions.addSuggestToken.getType(), async (store: Store, payload: BraveWallet.AddSuggestTokenRequest[]) => {
   store.dispatch(PanelActions.navigateTo('addSuggestedToken'))
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
@@ -489,7 +482,7 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
   const state = getPanelState(store)
   const walletState = getWalletState(store)
   if (
-    [TransactionStatus.Submitted, TransactionStatus.Rejected, TransactionStatus.Approved]
+    [BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Rejected, BraveWallet.TransactionStatus.Approved]
       .includes(payload.txInfo.txStatus)
   ) {
     if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {

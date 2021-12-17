@@ -3,7 +3,7 @@ import {
   UserAccountType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  EthereumChain,
+  BraveWallet,
   DefaultCurrencies
 } from '../../../constants/types'
 import {
@@ -14,15 +14,15 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
-  selectedNetwork: EthereumChain
+  networkList: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
   defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: AccountAssetOptionType) => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
   onAddNetwork: () => void
@@ -53,7 +53,7 @@ function BuyTab (props: Props) {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 
-import { TransactionType } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import {
   getMockedTransactionInfo,
   mockAccount,
@@ -14,8 +14,8 @@ import { useTransactionParser } from './transaction-parser'
 describe('useTransactionParser hook', () => {
   describe('check for sameAddressError', () => {
     describe.each([
-      ['ERC20Transfer', TransactionType.ERC20Transfer, 'recipient'],
-      ['ERC20Approve', TransactionType.ERC20Approve, 'approval target']
+      ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer, 'recipient'],
+      ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve, 'approval target']
     ])('%s', (_, txType, toLabel) => {
       it(`should be defined when sender and ${toLabel} are same`, () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
@@ -51,8 +51,8 @@ describe('useTransactionParser hook', () => {
     })
 
     describe.each([
-      ['ERC721TransferFrom', TransactionType.ERC721TransferFrom],
-      ['ERC721SafeTransferFrom', TransactionType.ERC721SafeTransferFrom]
+      ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be undefined when sender and recipient are same', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
@@ -105,9 +105,9 @@ describe('useTransactionParser hook', () => {
 
     describe.each([
       // ETHSend can have same sender and recipient in case of cancel transactions
-      ['ETHSend', TransactionType.ETHSend],
-      ['Other', TransactionType.Other],
-      ['0x Swap', TransactionType.Other]
+      ['ETHSend', BraveWallet.TransactionType.ETHSend],
+      ['Other', BraveWallet.TransactionType.Other],
+      ['0x Swap', BraveWallet.TransactionType.Other]
     ])('%s', (name, txType) => {
       it('should always be undefined', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
@@ -135,10 +135,10 @@ describe('useTransactionParser hook', () => {
 
   describe('check for contractAddressError', () => {
     describe.each([
-      ['ERC20Approve', TransactionType.ERC20Approve],
-      ['ETHSend', TransactionType.ETHSend],
-      ['Other', TransactionType.Other],
-      ['0x Swap', TransactionType.Other]
+      ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
+      ['ETHSend', BraveWallet.TransactionType.ETHSend],
+      ['Other', BraveWallet.TransactionType.Other],
+      ['0x Swap', BraveWallet.TransactionType.Other]
     ])('%s', (name, txType) => {
       it('should always be undefined', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
@@ -149,7 +149,7 @@ describe('useTransactionParser hook', () => {
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
-          txArgs: txType === TransactionType.ETHSend ? [] : ['mockArg1', 'mockArg2'],
+          txArgs: txType === BraveWallet.TransactionType.ETHSend ? [] : ['mockArg1', 'mockArg2'],
           txType,
           txData: {
             ...mockTransactionInfo.txData,
@@ -165,9 +165,9 @@ describe('useTransactionParser hook', () => {
     })
 
     describe.each([
-      ['ERC20Transfer', TransactionType.ERC20Transfer],
-      ['ERC721TransferFrom', TransactionType.ERC721TransferFrom],
-      ['ERC721SafeTransferFrom', TransactionType.ERC721SafeTransferFrom]
+      ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer],
+      ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be defined when recipient is a known contract address', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
@@ -178,7 +178,7 @@ describe('useTransactionParser hook', () => {
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
-          txArgs: txType === TransactionType.ERC20Transfer
+          txArgs: txType === BraveWallet.TransactionType.ERC20Transfer
             ? ['0xdeadbeef', 'mockAmount']
             : ['mockOwner', '0xdeadbeef', 'mockTokenID'],
           txType
@@ -196,7 +196,7 @@ describe('useTransactionParser hook', () => {
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
-          txArgs: txType === TransactionType.ERC20Transfer
+          txArgs: txType === BraveWallet.TransactionType.ERC20Transfer
             ? ['0xbadcafe', 'mockAmount']
             : ['mockOwner', '0xbadcafe', 'mockTokenID'],
           txType
@@ -209,12 +209,12 @@ describe('useTransactionParser hook', () => {
 
   describe('check for insufficientFundsError', () => {
     describe.each([
-      ['ERC20Transfer', TransactionType.ERC20Transfer],
-      ['ERC20Approve', TransactionType.ERC20Approve],
-      ['ERC721TransferFrom', TransactionType.ERC721TransferFrom],
-      ['ERC721SafeTransferFrom', TransactionType.ERC721SafeTransferFrom],
-      ['ETHSend', TransactionType.ETHSend],
-      ['Other', TransactionType.Other]
+      ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer],
+      ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
+      ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom],
+      ['ETHSend', BraveWallet.TransactionType.ETHSend],
+      ['Other', BraveWallet.TransactionType.Other]
     ])('%s', (_, txType) => {
       it('should be true when funds are insufficient for gas', () => {
         /**
@@ -245,7 +245,7 @@ describe('useTransactionParser hook', () => {
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
           fromAddress: '0xdeadbeef',
-          txArgs: [TransactionType.ERC20Approve, TransactionType.ERC20Transfer].includes(txType)
+          txArgs: [BraveWallet.TransactionType.ERC20Approve, BraveWallet.TransactionType.ERC20Transfer].includes(txType)
             ? ['mockRecipient', '0x0']
             : ['mockOwner', 'mockRecipient', 'mockTokenID'],
           txType,
@@ -253,7 +253,7 @@ describe('useTransactionParser hook', () => {
             ...mockTransactionInfo.txData,
             baseData: {
               ...mockTransactionInfo.txData.baseData,
-              to: txType === TransactionType.ERC20Transfer
+              to: txType === BraveWallet.TransactionType.ERC20Transfer
                 ? mockERC20Token.contractAddress
                 : mockTransactionInfo.txData.baseData.to,
               value: '0x0', // 0 ETH
@@ -290,7 +290,7 @@ describe('useTransactionParser hook', () => {
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
           fromAddress: '0xdeadbeef',
-          txArgs: [TransactionType.ERC20Approve, TransactionType.ERC20Transfer].includes(txType)
+          txArgs: [BraveWallet.TransactionType.ERC20Approve, BraveWallet.TransactionType.ERC20Transfer].includes(txType)
             ? ['mockRecipient', '0x0']
             : ['mockOwner', 'mockRecipient', 'mockTokenID'],
           txType,
@@ -310,8 +310,8 @@ describe('useTransactionParser hook', () => {
     })
 
     describe.each([
-      ['ETHSend', TransactionType.ETHSend],
-      ['Other', TransactionType.Other]
+      ['ETHSend', BraveWallet.TransactionType.ETHSend],
+      ['Other', BraveWallet.TransactionType.Other]
     ])('%s', (_, txType) => {
       it('should be true when funds are insufficient for send amount', () => {
         /**
@@ -433,7 +433,7 @@ describe('useTransactionParser hook', () => {
             'mockRecipient',
             '0xde0b6b3a7640000' // 1 DOG
           ],
-          txType: TransactionType.ERC20Transfer,
+          txType: BraveWallet.TransactionType.ERC20Transfer,
           txData: {
             ...mockTransactionInfo.txData,
             baseData: {
@@ -485,7 +485,7 @@ describe('useTransactionParser hook', () => {
             'mockRecipient',
             '0xde0b6b3a7640000' // 1 DOG
           ],
-          txType: TransactionType.ERC20Transfer,
+          txType: BraveWallet.TransactionType.ERC20Transfer,
           txData: {
             ...mockTransactionInfo.txData,
             baseData: {
@@ -504,10 +504,10 @@ describe('useTransactionParser hook', () => {
   })
   describe('check for token symbol', () => {
     describe.each([
-      ['ERC20Approve', TransactionType.ERC20Approve],
-      ['ERC20Transfer', TransactionType.ERC20Transfer],
-      ['ERC721TransferFrom', TransactionType.ERC721TransferFrom],
-      ['ERC721SafeTransferFrom', TransactionType.ERC721SafeTransferFrom]
+      ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
+      ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer],
+      ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be empty', () => {
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
