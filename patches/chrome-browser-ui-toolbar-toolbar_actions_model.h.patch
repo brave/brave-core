@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index 9c3d2c5ccc71ecd46f2a619fc0632e3d48841a9c..c21f172689af9ff83bee16e105a2caef414c4839 100644
+index 49a9265f34c75a09a389c95649d81e50fb2751e6..b2ffd37cb075f363c5403e4c4f886eae5831f840 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
 @@ -28,6 +28,7 @@ class Browser;
@@ -18,7 +18,7 @@ index 9c3d2c5ccc71ecd46f2a619fc0632e3d48841a9c..c21f172689af9ff83bee16e105a2caef
    using ActionId = std::string;
  
    ToolbarActionsModel(Profile* profile,
-@@ -166,7 +168,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+@@ -169,7 +171,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
    void RemovePref(const ActionId& action_id);
  
    // Returns true if the given |extension| should be added to the toolbar.
