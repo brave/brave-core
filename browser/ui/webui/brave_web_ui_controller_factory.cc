@@ -30,10 +30,12 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_settings_ui.h"
-#include "brave/browser/ui/webui/brave_welcome_ui.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
@@ -116,6 +118,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveSettingsUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
+  } else if (host == kShieldsPanelHost) {
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveShieldsPanelV2)) {
+      return new ShieldsPanelUI(web_ui);
+    }
 #endif  // !defined(OS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -132,6 +139,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kWebcompatReporterHost ||
+#if !defined(OS_ANDROID)
+      (url.host_piece() == kShieldsPanelHost &&
+       base::FeatureList::IsEnabled(
+           brave_shields::features::kBraveShieldsPanelV2)) ||
+#endif
 #if BUILDFLAG(ENABLE_IPFS)
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||

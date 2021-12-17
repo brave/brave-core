@@ -35,3 +35,5 @@ const char kBraveSyncSetupPath[] = "braveSync/setup";
 const char kTorInternalsHost[] = "tor-internals";
 const char kUntrustedTrezorHost[] = "trezor-bridge";
 const char kUntrustedTrezorURL[] = "chrome-untrusted://trezor-bridge/";
+const char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
+const char kShieldsPanelHost[] = "brave-shields.top-chrome";

@@ -175,9 +175,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #endif
@@ -464,6 +466,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV2)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        brave_shields_panel::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+  }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   if (brave_vpn::IsBraveVPNEnabled()) {
