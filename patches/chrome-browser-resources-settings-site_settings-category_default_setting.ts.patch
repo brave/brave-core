@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.ts b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
-index f98c8445e9f3b01f45089d1e2855fa4f3beb9268..e44d51d0a1d19bfcb50afe28912cb4f8fff0f2f2 100644
+index 4460039c38a65d4997c32f9587268af5205c9712..ba57d4915a2363b6e50a87a7f2948520115ddeea 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
-@@ -175,6 +175,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
+@@ -174,6 +174,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
       */
      switch (this.category) {
        case ContentSettingsTypes.ADS:
@@ -10,7 +10,7 @@ index f98c8445e9f3b01f45089d1e2855fa4f3beb9268..e44d51d0a1d19bfcb50afe28912cb4f8
        case ContentSettingsTypes.BACKGROUND_SYNC:
        case ContentSettingsTypes.IMAGES:
        case ContentSettingsTypes.JAVASCRIPT:
-@@ -208,6 +209,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
+@@ -207,6 +208,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
        case ContentSettingsTypes.USB_DEVICES:
        case ContentSettingsTypes.VR:
        case ContentSettingsTypes.WINDOW_PLACEMENT:
