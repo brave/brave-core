@@ -48,6 +48,7 @@ WebContents* AddRestoredTab(
     base::TimeTicks last_active_time,
     content::SessionStorageNamespace* session_storage_namespace,
     const sessions::SerializedUserAgentOverride& user_agent_override,
+    const std::map<std::string, std::string>& extra_data,
     bool from_session_restore) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   MaybeLoadWebtorrent(
@@ -59,7 +60,7 @@ WebContents* AddRestoredTab(
   return AddRestoredTab_ChromiumImpl(
       browser, navigations, tab_index, selected_navigation, extension_app_id,
       group, select, pin, last_active_time, session_storage_namespace,
-      user_agent_override, from_session_restore);
+      user_agent_override, extra_data, from_session_restore);
 }
 
 }  // namespace chrome
