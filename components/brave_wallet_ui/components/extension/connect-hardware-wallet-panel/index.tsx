@@ -20,6 +20,7 @@ export interface Props {
   walletName: string
   hardwareWalletCode?: HardwareWalletResponseCodeType
   retryCallable: () => void
+  onClickInstructions: () => void
 }
 
 function ConnectHardwareWalletPanel (props: Props) {
@@ -27,7 +28,8 @@ function ConnectHardwareWalletPanel (props: Props) {
     onCancel,
     walletName,
     hardwareWalletCode,
-    retryCallable
+    retryCallable,
+    onClickInstructions
   } = props
 
   const isConnected = hardwareWalletCode !== undefined && hardwareWalletCode !== 'deviceNotConnected'
@@ -43,10 +45,6 @@ function ConnectHardwareWalletPanel (props: Props) {
 
     return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
   }, [hardwareWalletCode])
-
-  const onClickInstructions = () => {
-    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
-  }
 
   useInterval(retryCallable, 3000)
 
