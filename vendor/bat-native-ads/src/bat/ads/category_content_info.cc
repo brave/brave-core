@@ -30,7 +30,7 @@ base::DictionaryValue CategoryContentInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
   dictionary.SetKey("category", base::Value(category));
-  dictionary.SetKey("opt_action",
+  dictionary.SetKey("optAction",
                     base::Value(static_cast<int>(opt_action_type)));
 
   return dictionary;
@@ -48,7 +48,7 @@ bool CategoryContentInfo::FromValue(const base::Value& value) {
   }
 
   const absl::optional<int> opt_action_type_optional =
-      dictionary->FindIntKey("opt_action");
+      dictionary->FindIntKey("optAction");
   if (opt_action_type_optional) {
     opt_action_type = static_cast<CategoryContentOptActionType>(
         opt_action_type_optional.value());
