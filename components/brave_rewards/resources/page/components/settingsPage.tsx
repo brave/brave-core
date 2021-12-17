@@ -489,7 +489,7 @@ class SettingsPage extends React.Component<Props, State> {
           </Column>
           <Column size={1} customStyle={{ flexDirection: 'column' }}>
             {this.getPromotionsClaims()}
-            <PageWallet />
+            <PageWallet showManageWalletButton={true} />
             {this.renderPromos()}
           </Column>
         </Grid>
