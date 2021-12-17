@@ -134,7 +134,7 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  this.chromePgoPhase = getNPMConfig(['chrome_pgo_phase']) || 0
+  this.chromePgoPhase = getNPMConfig(['chrome_pgo_phase']) ? parseInt(getNPMConfig(['chrome_pgo_phase'])) : 0
   // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
@@ -285,7 +285,7 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
-    chrome_pgo_phase: this.isOfficialBuild() ? this.chromePgoPhase : 0,
+    chrome_pgo_phase: !this.isComponentBuild() ? this.chromePgoPhase : 0,
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
