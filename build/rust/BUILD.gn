@@ -36,14 +36,12 @@ if (is_mac) {
       lib_output_path,
     ]
 
-    outputs = [
-      unexport_list_path
-    ]
+    outputs = [ unexport_list_path ]
 
     args = [
       "--bin_path=" + mac_bin_path,
       "--input=" + rebase_path(lib_output_path, root_build_dir),
-      "--output=" + rebase_path(unexport_list_path, root_build_dir)
+      "--output=" + rebase_path(unexport_list_path, root_build_dir),
     ]
 
     deps = [ ":rust_lib" ]

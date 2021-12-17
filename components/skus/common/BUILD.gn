@@ -5,15 +5,11 @@ static_library("common") {
     "features.cc",
     "features.h",
   ]
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 }
 
 mojom("mojom") {
-  sources = [
-    "skus_sdk.mojom",
-  ]
+  sources = [ "skus_sdk.mojom" ]
 
   deps = [ "//mojo/public/mojom/base" ]
 }

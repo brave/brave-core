@@ -20,8 +20,7 @@
 namespace {
 
 void OnScheduleWakeup(
-    rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   done(std::move(ctx));
 }
@@ -85,29 +84,26 @@ void shim_set(skus::SkusSdkContext& ctx,
                        static_cast<std::string>(value));
 }
 
-::rust::String shim_get(skus::SkusSdkContext& ctx,
-                        rust::cxxbridge1::Str key) {
+::rust::String shim_get(skus::SkusSdkContext& ctx, rust::cxxbridge1::Str key) {
   return ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)));
 }
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
-    rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   VLOG(1) << "shim_scheduleWakeup " << delay_ms;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
-      base::TimeDelta::FromMilliseconds(delay_ms));
+      base::Milliseconds(delay_ms));
 }
 
 std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
     const skus::SkusSdkContext& ctx,
     const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-             skus::HttpResponse)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+                              skus::HttpResponse)> done,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx) {
   auto fetcher = ctx.CreateFetcher();
   fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
@@ -121,8 +117,8 @@ SkusSdkContextImpl::SkusSdkContextImpl(
 
 SkusSdkContextImpl::~SkusSdkContextImpl() {}
 
-std::unique_ptr<skus::SkusSdkFetcher>
-SkusSdkContextImpl::CreateFetcher() const {
+std::unique_ptr<skus::SkusSdkFetcher> SkusSdkContextImpl::CreateFetcher()
+    const {
   return std::make_unique<SkusSdkFetcherImpl>(url_loader_factory_);
 }
 

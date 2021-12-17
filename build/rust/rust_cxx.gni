@@ -62,9 +62,7 @@ template("rust_cxx") {
     output_cc = "{{source_gen_dir}}/{{source_file_part}}.cc"
 
     script = "//brave/build/rust/run_cxxbridge.py"
-    inputs = [
-      script,
-    ]
+    inputs = [ script ]
     outputs = [
       output_h,
       output_cc,

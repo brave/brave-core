@@ -6,7 +6,7 @@
 group("rust_lib") {
   visibility = [ "//brave/build/rust:*" ]
   deps = [
-    "lib:rust_lib",
     "cxx:rust_lib",
+    "lib:rust_lib",
   ]
 }

@@ -476,7 +476,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
   map->Add<skus::mojom::SdkController>(
-        base::BindRepeating(&MaybeBindSkusSdkImpl));
+      base::BindRepeating(&MaybeBindSkusSdkImpl));
 
 #if !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<

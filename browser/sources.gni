@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/build/rust/config.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
@@ -33,6 +32,7 @@ import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
+import("//brave/build/rust/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
@@ -354,15 +354,16 @@ brave_chrome_browser_public_deps = [
 if (is_mac) {
   brave_chrome_framework_public_deps = [
     "//brave:framework_bundle_data",
+
     # TODO(bridiver) - this doesn't have to be a public dep
-    "//brave/build/rust:generate_unexport_list"
+    "//brave/build/rust:generate_unexport_list",
   ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_contents = [ "Frameworks" ]
   brave_chrome_framework_ldflags = [
     # prevent export of all rust symbols
     "-Wl,-unexported_symbols_list," +
-      rebase_path(unexport_list_path, root_build_dir)
+        rebase_path(unexport_list_path, root_build_dir),
   ]
   if (!is_component_build && !use_lld) {
     brave_chrome_framework_ldflags += [

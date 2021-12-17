@@ -26,9 +26,7 @@ template("rust_ffi") {
     libs = [ lib_output_path ]
 
     if (is_mac) {
-      frameworks = [
-        "Security.framework",
-      ]
+      frameworks = [ "Security.framework" ]
 
       if (defined(invoker.frameworks)) {
         frameworks += invoker.frameworks
@@ -51,7 +49,8 @@ template("rust_ffi") {
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [ "//build/config/compiler:no_chromium_code" ]
 
-    forward_variables_from(invoker, "*",
+    forward_variables_from(invoker,
+                           "*",
                            [
                              "deps",
                              "frameworks",
@@ -95,9 +94,7 @@ template("cargo_build") {
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
-    inputs = [
-      "//brave/script/cargo.py",
-    ]
+    inputs = [ "//brave/script/cargo.py" ]
 
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
@@ -108,7 +105,12 @@ template("cargo_build") {
       _rustflags += invoker.rustflags
     }
 
-    forward_variables_from(invoker, "*", [ "rustflags", "inputs" ])
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "rustflags",
+                             "inputs",
+                           ])
 
     outputs = [ output ]
 

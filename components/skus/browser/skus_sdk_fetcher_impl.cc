@@ -29,9 +29,8 @@ SkusSdkFetcherImpl::~SkusSdkFetcherImpl() {}
 
 void SkusSdkFetcherImpl::BeginFetch(
     const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-             skus::HttpResponse)> callback,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+                              skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(static_cast<std::string>(req.url));
@@ -79,9 +78,8 @@ SkusSdkFetcherImpl::GetNetworkTrafficAnnotationTag() {
 }
 
 void SkusSdkFetcherImpl::OnFetchComplete(
-    rust::cxxbridge1::Fn<
-        void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-             skus::HttpResponse)> callback,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+                              skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
     std::unique_ptr<std::string> response_body) {
   if (!response_body) {

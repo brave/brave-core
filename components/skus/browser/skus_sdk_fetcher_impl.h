@@ -40,12 +40,11 @@ class SkusSdkFetcherImpl : public SkusSdkFetcher {
 
   const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag();
 
-  void OnFetchComplete(
-      rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-               skus::HttpResponse)> callback,
-      rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
-      std::unique_ptr<std::string> response_body);
+  void OnFetchComplete(rust::cxxbridge1::Fn<void(
+                           rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+                           skus::HttpResponse)> callback,
+                       rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
+                       std::unique_ptr<std::string> response_body);
 };
 
 }  // namespace skus

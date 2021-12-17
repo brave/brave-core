@@ -27,11 +27,10 @@ namespace brave_rewards {
 class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit BraveSkusRenderFrameObserver(content::RenderFrame* render_frame,
-                                          int32_t world_id);
-  BraveSkusRenderFrameObserver(const BraveSkusRenderFrameObserver&) =
+                                        int32_t world_id);
+  BraveSkusRenderFrameObserver(const BraveSkusRenderFrameObserver&) = delete;
+  BraveSkusRenderFrameObserver& operator=(const BraveSkusRenderFrameObserver&) =
       delete;
-  BraveSkusRenderFrameObserver& operator=(
-      const BraveSkusRenderFrameObserver&) = delete;
   ~BraveSkusRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.

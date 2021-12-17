@@ -8,7 +8,7 @@ rust_ffi("adblock_rust_ffi") {
   sources = [
     "src/lib.h",
     "src/wrapper.cc",
-    "src/wrapper.h"
+    "src/wrapper.h",
   ]
 }
 

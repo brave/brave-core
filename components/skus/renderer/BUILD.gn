@@ -5,10 +5,10 @@
 
 source_set("renderer") {
   sources = [
-    "brave_skus_js_handler.h",
     "brave_skus_js_handler.cc",
-    "brave_skus_render_frame_observer.h",
+    "brave_skus_js_handler.h",
     "brave_skus_render_frame_observer.cc",
+    "brave_skus_render_frame_observer.h",
   ]
 
   deps = [

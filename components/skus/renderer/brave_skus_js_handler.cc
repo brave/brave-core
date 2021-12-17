@@ -80,7 +80,8 @@ void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
            .ToLocal(&skus_value) ||
       !skus_value->IsObject()) {
     skus_obj = v8::Object::New(isolate);
-    chrome_obj->Set(context, gin::StringToSymbol(isolate, "braveSkus"), skus_obj)
+    chrome_obj
+        ->Set(context, gin::StringToSymbol(isolate, "braveSkus"), skus_obj)
         .Check();
   } else {
     skus_obj = skus_value->ToObject(context).ToLocalChecked();

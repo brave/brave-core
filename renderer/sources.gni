@@ -19,6 +19,6 @@ brave_chrome_renderer_public_deps = [
   "//brave/components/skus/renderer",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
-  "//third_party/blink/public/common",
   "//third_party/blink/public:blink",
+  "//third_party/blink/public/common",
 ]
