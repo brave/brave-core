@@ -28,13 +28,14 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     NEARBY_SHARE = 8,
     BRAVE_ADS = 9,
     NOTIFICATIONS_MUTED = 10,
-    MAX = NOTIFICATIONS_MUTED,
+    TAILORED_SECURITY_CONSENTED = 11,
+    MAX = TAILORED_SECURITY_CONSENTED,
   };
 
   // Make sure we know if the original enum gets changed.
   NotificationHandler() {
     DCHECK(static_cast<int>(NotificationHandler_ChromiumImpl::Type::MAX) + 1 ==
-           static_cast<int>(Type::NOTIFICATIONS_MUTED));
+           static_cast<int>(Type::TAILORED_SECURITY_CONSENTED));
   }
 };
 
