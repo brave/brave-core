@@ -9,6 +9,7 @@
 #include <string>
 
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 
 class HostContentSettingsMap;
 
@@ -21,8 +22,12 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void SetUp() override;
   void PreRunTestOnMainThread() override;
   void SetUpCommandLine(base::CommandLine* command_line) override;
+  void SetUpInProcessBrowserTestFixture() override;
+  void TearDownInProcessBrowserTestFixture() override;
 
  protected:
+  content::ContentMockCertVerifier mock_cert_verifier_;
+
   HostContentSettingsMap* content_settings();
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
                                       const std::string& resources = "",

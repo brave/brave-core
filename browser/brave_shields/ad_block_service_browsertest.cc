@@ -86,14 +86,23 @@ net::EmbeddedTestServer* https_server() {
 }
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
-  // HTTPS server only serves a valid cert for localhost, so this is needed
-  // to load pages from other hosts without an error.
-  command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   ExtensionBrowserTest::SetUpCommandLine(command_line);
+  mock_cert_verifier_.SetUpCommandLine(command_line);
+}
+
+void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
+  ExtensionBrowserTest::SetUpInProcessBrowserTestFixture();
+  mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+}
+
+void AdBlockServiceTest::TearDownInProcessBrowserTestFixture() {
+  ExtensionBrowserTest::TearDownInProcessBrowserTestFixture();
+  mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
+  mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
 }
 

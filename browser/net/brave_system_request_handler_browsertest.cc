@@ -10,6 +10,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/simple_url_loader_test_helper.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -38,8 +39,18 @@ class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
   ~SystemNetworkContextManagerBrowsertest() override {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    // This is needed to load pages from "domain.com" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory() const {
@@ -47,6 +58,7 @@ class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
@@ -75,6 +87,7 @@ class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
   }
 
   bool service_key_present_ = false;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory_ = nullptr;
 };
