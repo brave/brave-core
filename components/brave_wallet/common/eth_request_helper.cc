@@ -303,6 +303,35 @@ bool ParsePersonalSignParams(const std::string& json,
   return true;
 }
 
+bool ParsePersonalEcRecoverParams(const std::string& json,
+                                  std::string* message,
+                                  std::string* signature) {
+  if (!message || !signature)
+    return false;
+
+  // personal_ecRecover allows extra params
+  auto list = GetParamsList(json);
+  if (!list || list->size() < 2)
+    return false;
+
+  const std::string* message_str = (*list)[0].GetIfString();
+  const std::string* signature_str = (*list)[1].GetIfString();
+  if (!message_str || !signature_str)
+    return false;
+
+  if (IsValidHexString(*message_str)) {
+    *message = *message_str;
+  } else {
+    *message = ToHex(*message_str);
+  }
+
+  if (!IsValidHexString(*signature_str))
+    return false;
+
+  *signature = *signature_str;
+  return true;
+}
+
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,
                                  std::string* message_out,

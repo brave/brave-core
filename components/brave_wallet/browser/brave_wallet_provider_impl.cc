@@ -370,6 +370,45 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
                      std::move(message_bytes), std::move(callback), false));
 }
 
+void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
+                                             const std::string& signature,
+                                             RecoverAddressCallback callback) {
+  // 65 * 2 hex chars per byte + 2 chars for  0x
+  if (signature.length() != 132) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  std::vector<uint8_t> message_bytes;
+  if (!base::HexStringToBytes(message.substr(2), &message_bytes)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  std::vector<uint8_t> signature_bytes;
+  if (!base::HexStringToBytes(signature.substr(2), &signature_bytes)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  std::string address;
+  if (!keyring_controller_->RecoverAddressByDefaultKeyring(
+          message_bytes, signature_bytes, &address)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
+}
+
 void BraveWalletProviderImpl::SignTypedMessage(
     const std::string& address,
     const std::string& message,

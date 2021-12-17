@@ -37,6 +37,9 @@ bool ParseEthSignParams(const std::string& json,
 bool ParsePersonalSignParams(const std::string& json,
                              std::string* address,
                              std::string* message);
+bool ParsePersonalEcRecoverParams(const std::string& json,
+                                  std::string* message,
+                                  std::string* signature);
 
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,

@@ -170,15 +170,16 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       const std::string& tx_meta_id,
       mojom::ProviderError error,
       const std::string& error_message);
-  void OnSignMessage(base::Value id,
-                     v8::Global<v8::Context> global_context,
-                     std::unique_ptr<v8::Global<v8::Function>> global_callback,
-                     v8::Global<v8::Promise::Resolver> promise_resolver,
-                     v8::Isolate* isolate,
-                     bool force_json_response,
-                     const std::string& signature,
-                     mojom::ProviderError error,
-                     const std::string& error_message);
+  void OnSignRecoverMessage(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> global_callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      const std::string& signature,
+      mojom::ProviderError error,
+      const std::string& error_message);
   void SendResponse(base::Value id,
                     v8::Global<v8::Context> global_context,
                     std::unique_ptr<v8::Global<v8::Function>> callback,

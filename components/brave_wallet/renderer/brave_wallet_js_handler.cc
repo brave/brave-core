@@ -336,7 +336,7 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
                error == mojom::ProviderError::kSuccess);
 }
 
-void BraveWalletJSHandler::OnSignMessage(
+void BraveWalletJSHandler::OnSignRecoverMessage(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
@@ -732,7 +732,21 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
 
     brave_wallet_provider_->SignMessage(
         address, message,
-        base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  } else if (method == kPersonalEcRecover) {
+    std::string message;
+    std::string signature;
+    if (!ParsePersonalEcRecoverParams(normalized_json_request, &message,
+                                      &signature)) {
+      return false;
+    }
+    brave_wallet_provider_->RecoverAddress(
+        message, signature,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,
@@ -755,7 +769,7 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     }
     brave_wallet_provider_->SignTypedMessage(
         address, message, base::HexEncode(message_to_sign), std::move(domain),
-        base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,

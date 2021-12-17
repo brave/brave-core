@@ -58,6 +58,13 @@ class HDKeyring {
                                            const std::vector<uint8_t>& message,
                                            uint256_t chain_id,
                                            bool is_eip712);
+  // Obtains the address that signed the message
+  // message: The keccak256 hash of the message (33 bytes = 04 prefix + 32
+  // bytes)
+  // signature: The 64 byte signature + v parameter (0 chain id assumed)
+  bool RecoverAddress(const std::vector<uint8_t>& message,
+                      const std::vector<uint8_t>& signature,
+                      std::string* address);
 
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
