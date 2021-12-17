@@ -33,7 +33,7 @@ UrlStorageChecker::~UrlStorageChecker() = default;
 void UrlStorageChecker::StartCheck() {
   storage_partition_->GetCookieManagerForBrowserProcess()->GetCookieList(
       url_, net::CookieOptions::MakeAllInclusive(),
-      net::CookiePartitionKeychain::ContainsAll(),
+      net::CookiePartitionKeyCollection::ContainsAll(),
       base::BindOnce(&UrlStorageChecker::OnGetCookieList, this));
 }
 
