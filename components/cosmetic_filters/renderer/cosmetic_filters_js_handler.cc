@@ -379,8 +379,8 @@ void CosmeticFiltersJSHandler::ApplyRules() {
     return;
 
   // Working on css rules, we do that on a main frame only
-  bool generichide = false;
-  resources_dict_->GetBoolean("generichide", &generichide);
+  bool generichide =
+      resources_dict_->FindBoolKey("generichide").value_or(false);
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
       generichide ? "true" : "false");
