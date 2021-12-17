@@ -11,6 +11,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -21,7 +22,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "net/base/features.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -539,6 +540,19 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isMediaRouterEnabled",
                           media_router::MediaRouterEnabled(profile));
+
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    const webui::LocalizedString kSessionOnlyToEphemeralStrings[] = {
+        {"cookiePageSessionOnlyExceptions",
+         IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS},
+        {"siteSettingsSessionOnly",
+         IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE},
+        {"siteSettingsActionSessionOnly",
+         IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE},
+    };
+    html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
+  }
 }
 
 }  // namespace settings

@@ -6,7 +6,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -32,63 +31,18 @@ class EphemeralStorage1pBrowserTest : public EphemeralStorageBrowserTest {
   }
   ~EphemeralStorage1pBrowserTest() override {}
 
-  void SetCookieSetting(const GURL& url, ContentSetting content_setting) {
-    auto* host_content_settings_map =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    host_content_settings_map->SetContentSettingCustomScope(
-        ContentSettingsPattern::FromString(
-            base::StrCat({"[*.]", url.host_piece(), ":*"})),
-        ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
-        content_setting);
-  }
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
-  // Helper to load easy-to-use Indexed DB API.
-  void LoadIndexedDbHelper(RenderFrameHost* host) {
-    const char kLoadIndexMinScript[] =
-        "new Promise((resolve) => {"
-        "  const script = document.createElement('script');"
-        "  script.onload = () => {"
-        "    resolve(true);"
-        "  };"
-        "  script.onerror = () => {"
-        "    resolve(false);"
-        "  };"
-        "  script.src = '/ephemeral-storage/static/js/libs/index-min.js';"
-        "  document.body.appendChild(script);"
-        "});";
-
-    ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
+class EphemeralStorage1pDisabledBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  EphemeralStorage1pDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        net::features::kBraveFirstPartyEphemeralStorage);
   }
-
-  bool SetIDBValue(RenderFrameHost* host) {
-    LoadIndexedDbHelper(host);
-    content::EvalJsResult eval_js_result = content::EvalJs(
-        host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
-    return eval_js_result.error.empty();
-  }
-
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
-  network::mojom::CookieManager* CookieManager() {
-    return browser()
-        ->profile()
-        ->GetDefaultStoragePartition()
-        ->GetCookieManagerForBrowserProcess();
-  }
-
-  std::vector<net::CanonicalCookie> GetAllCookies() {
-    base::RunLoop run_loop;
-    std::vector<net::CanonicalCookie> cookies_out;
-    CookieManager()->GetAllCookies(base::BindLambdaForTesting(
-        [&](const std::vector<net::CanonicalCookie>& cookies) {
-          cookies_out = cookies;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return cookies_out;
-  }
+  ~EphemeralStorage1pDisabledBrowserTest() override {}
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -508,4 +462,97 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ("name=acom_simple", site_a_tab_values.main_frame.cookies);
   EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_1.cookies);
   EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_2.cookies);
+}
+
+// By default SESSION_ONLY setting means that data for a website should be
+// deleted after a restart, but this also implicitly change how a website
+// behaves in 3p context: when the setting is explicit, Chromium removes 3p
+// restrictions which effectively allows the website store any data persistently
+// in 3p context. We change Chromium behaviour for this option to keep blocking
+// a website in 3p context when a global "block_third_party" option is enabled.
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
+                       SessionOnlyModeUsesEphemeralStorage) {
+  SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  // We set a value in the page where all the frames are first-party.
+  SetValuesInFrames(first_party_tab, "a.com", "from=a.com");
+
+  {
+    ValuesFromFrames first_party_values = GetValuesFromFrames(first_party_tab);
+    EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_1.local_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_2.local_storage);
+
+    EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_1.session_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_2.session_storage);
+
+    EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
+    EXPECT_EQ("from=a.com", first_party_values.iframe_1.cookies);
+    EXPECT_EQ("from=a.com", first_party_values.iframe_2.cookies);
+  }
+
+  // After keepalive b.com values should be cleared.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  WaitForCleanupAfterKeepAlive();
+  first_party_tab = WebContents::FromRenderFrameHost(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  {
+    ValuesFromFrames first_party_values = GetValuesFromFrames(first_party_tab);
+    EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_1.local_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_2.local_storage);
+
+    EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
+
+    EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
+    EXPECT_EQ("", first_party_values.iframe_1.cookies);
+    EXPECT_EQ("", first_party_values.iframe_2.cookies);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
+                       SessionOnlyModeUsesEphemeralStorageForNetworkCookies) {
+  SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  // Navigate to a.com which includes b.com.
+  WebContents* site_a_tab_network_cookies =
+      LoadURLInNewTab(a_site_ephemeral_storage_with_network_cookies_url_);
+  http_request_monitor_.Clear();
+
+  // Cookies should be stored in persistent storage for the main frame only.
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  // Navigate to other website and ensure no a.com/b.com cookies are sent (they
+  // are third-party and ephemeral inside c.com).
+  ASSERT_TRUE(content::NavigateToURL(site_a_tab_network_cookies,
+                                     c_site_ephemeral_storage_url_));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom_simple"));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+  WaitForCleanupAfterKeepAlive();
+  http_request_monitor_.Clear();
+
+  // a.com cookies should be intact.
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  // Navigate to a.com again and expect a.com cookies are sent with headers.
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom_simple"));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+
+  // Make sure cookies are also accessible via JS.
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ("name=acom_simple", site_a_tab_values.main_frame.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_2.cookies);
 }

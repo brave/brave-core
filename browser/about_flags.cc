@@ -59,6 +59,7 @@ using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
+using brave_shields::features::kBraveDomainBlock1PES;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using brave_shields::features::kCosmeticFilteringSyncLoad;
 
@@ -129,6 +130,15 @@ constexpr char kBraveDomainBlockName[] = "Enable domain blocking";
 constexpr char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";
 
+constexpr char kBraveDomainBlock1PESName[] =
+    "Enable domain blocking using First Party Ephemeral Storage";
+constexpr char kBraveDomainBlock1PESDescription[] =
+    "When visiting a blocked domain, Brave will try to enable Ephemeral "
+    "Storage for a first party context, meaning neither cookies nor "
+    "localStorage data will be persisted after a website is closed. Ephemeral "
+    "Storage will be auto-enabled only if no data was previously stored for a "
+    "website";
+
 constexpr char kBraveDebounceName[] = "Enable debouncing";
 constexpr char kBraveDebounceDescription[] =
     "Enable support for skipping top-level redirect tracking URLs";
@@ -191,9 +201,9 @@ constexpr char kBraveEphemeralStorageKeepAliveDescription[] =
     "tabs for that origin are closed";
 
 constexpr char kBraveFirstPartyEphemeralStorageName[] =
-    "First Party Ephemeral Storage";
+    "Enable First Party Ephemeral Storage";
 constexpr char kBraveFirstPartyEphemeralStorageDescription[] =
-    "Enable support for first party ephemeral storage using SESSION ONLY "
+    "Enable support for First Party Ephemeral Storage using SESSION_ONLY "
     "cookie setting";
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
@@ -415,6 +425,10 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kBraveDomainBlockName,                              \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(kBraveDomainBlock)},                                \
+    {"brave-domain-block-1pes",                                             \
+     flag_descriptions::kBraveDomainBlock1PESName,                          \
+     flag_descriptions::kBraveDomainBlock1PESDescription, kOsAll,           \
+     FEATURE_VALUE_TYPE(kBraveDomainBlock1PES)},                            \
     {"brave-debounce",                                                      \
         flag_descriptions::kBraveDebounceName,                              \
         flag_descriptions::kBraveDebounceDescription, kOsAll,               \

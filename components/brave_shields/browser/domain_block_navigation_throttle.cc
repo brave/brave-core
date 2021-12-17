@@ -15,11 +15,11 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -62,26 +62,32 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale) {
   if (!ad_block_service || !ad_block_custom_filters_service)
     return nullptr;
   if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
     return nullptr;
+  // Don't block subframes.
+  if (!navigation_handle->IsInMainFrame())
+    return nullptr;
   return std::make_unique<DomainBlockNavigationThrottle>(
       navigation_handle, ad_block_service, ad_block_custom_filters_service,
-      content_settings, locale);
+      ephemeral_storage_service, content_settings, locale);
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ad_block_service_(ad_block_service),
       ad_block_custom_filters_service_(ad_block_custom_filters_service),
+      ephemeral_storage_service_(ephemeral_storage_service),
       content_settings_(content_settings),
       locale_(locale) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -98,15 +104,14 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   if (!ad_block_service_->IsInitialized())
     return content::NavigationThrottle::PROCEED;
 
-  // Don't block subframes
   content::NavigationHandle* handle = navigation_handle();
-  if (!handle->IsInMainFrame())
-    return content::NavigationThrottle::PROCEED;
-
+  DCHECK(handle->IsInMainFrame());
   GURL request_url = handle->GetURL();
 
+  domain_blocking_type_ =
+      brave_shields::GetDomainBlockingType(content_settings_, request_url);
   // Maybe don't block based on Brave Shields settings
-  if (!brave_shields::ShouldDoDomainBlocking(content_settings_, request_url))
+  if (domain_blocking_type_ == DomainBlockingType::kNone)
     return content::NavigationThrottle::PROCEED;
 
   // If user has just chosen to proceed on our interstitial, don't show
@@ -150,12 +155,24 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     bool should_block_domain) {
-  if (should_block_domain) {
-    ShowInterstitial();
-  } else {
+  if (!should_block_domain) {
     // Navigation was deferred while we called the ad block service on a task
     // runner, but now we know that we want to allow navigation to continue.
     Resume();
+    return;
+  }
+
+  switch (domain_blocking_type_) {
+    case DomainBlockingType::kNone:
+      NOTREACHED();
+      Resume();
+      break;
+    case DomainBlockingType::k1PES:
+      Enable1PESAndResume();
+      break;
+    case DomainBlockingType::kAggressive:
+      ShowInterstitial();
+      break;
   }
 }
 
@@ -170,8 +187,8 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   // The controller client implements the actual logic to "go back" or "proceed"
   // from the interstitial.
   auto controller_client = std::make_unique<DomainBlockControllerClient>(
-      web_contents, request_url, ad_block_custom_filters_service_, pref_service,
-      locale_);
+      web_contents, request_url, ad_block_custom_filters_service_,
+      ephemeral_storage_service_, pref_service, locale_);
 
   // This handles populating the HTML template of the interstitial page with
   // localized strings and other information we only know at runtime,
@@ -194,6 +211,14 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
       blocked_page_content));
+}
+
+void DomainBlockNavigationThrottle::Enable1PESAndResume() {
+  DCHECK(ephemeral_storage_service_);
+  ephemeral_storage_service_->Enable1PESForUrlIfPossible(
+      navigation_handle()->GetURL(),
+      base::BindOnce(&DomainBlockNavigationThrottle::Resume,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 const char* DomainBlockNavigationThrottle::GetNameForLogging() {

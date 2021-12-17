@@ -20,6 +20,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -243,22 +244,38 @@ bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
   return true;
 }
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url) {
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url) {
   // Don't block if feature is disabled
   if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
-    return false;
+    return DomainBlockingType::kNone;
 
   // Don't block if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
   if (!brave_shields::GetBraveShieldsEnabled(map, url))
-    return false;
+    return DomainBlockingType::kNone;
 
-  // Don't block unless ad blocking is "aggressive"
-  if (brave_shields::GetCosmeticFilteringControlType(map, url) !=
-      ControlType::BLOCK)
-    return false;
+  // Don't block if ad blocking is off.
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
+    return DomainBlockingType::kNone;
 
-  return true;
+  const ControlType cosmetic_control_type =
+      brave_shields::GetCosmeticFilteringControlType(map, url);
+  // Block if ad blocking is "aggressive".
+  if (cosmetic_control_type == ControlType::BLOCK) {
+    return DomainBlockingType::kAggressive;
+  }
+
+  // Block using 1PES if ad blocking is "standard".
+  if (cosmetic_control_type == BLOCK_THIRD_PARTY &&
+      base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveDomainBlock1PES)) {
+    return DomainBlockingType::k1PES;
+  }
+
+  return DomainBlockingType::kNone;
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,

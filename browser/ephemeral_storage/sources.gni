@@ -1,10 +1,13 @@
 brave_browser_ephemeral_storage_sources = [
+  "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.cc",
+  "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.cc",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h",
 ]
 
 brave_browser_ephemeral_storage_deps = [
   "//base",
+  "//brave/components/ephemeral_storage",
   "//chrome/browser/profiles",
   "//chrome/browser/ui",
   "//components/content_settings/core/browser",
