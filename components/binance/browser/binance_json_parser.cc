@@ -373,10 +373,12 @@ bool BinanceJSONParser::RevokeTokenFromJSON(
     return false;
   }
 
-  if (!response_dict->GetBoolean("success", success_status)) {
+  absl::optional<bool> success_optional =
+      response_dict->FindBoolPath("success");
+  if (!success_optional.has_value())
     return false;
-  }
 
+  *success_status = success_optional.value();
   return true;
 }
 

@@ -87,7 +87,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     const base::Value* regional_filter_dict =
         regional_filters_dict_with_cookielist.FindDictKey(uuid);
     if (regional_filter_dict) {
-      enabled = regional_filter_dict->FindBoolKey("enabled").value_or(false);
+      enabled = regional_filter_dict->FindBoolPath("enabled").value_or(false);
     }
     if (enabled) {
       auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
@@ -339,7 +339,7 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
         !cookie_list_touched) {
       enabled = true;
     } else if (regional_filter_dict) {
-      regional_filter_dict->GetBoolean("enabled", &enabled);
+      enabled = regional_filter_dict->FindBoolPath("enabled").value_or(false);
     }
     dict->SetBoolean("enabled", enabled);
 
