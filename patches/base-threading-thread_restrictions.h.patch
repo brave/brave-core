@@ -1,11 +1,11 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index 0b572372308a44409fc5e58d92644e644da8ce6f..f3c8a9ecdcd3c40e279a2ad7e45208c408e5d91d 100644
+index e8abd8e93c264827330db9e1b396db9ff9cbad9c..7e4901b41ded53944b81fb857fc915ce37aef680 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -531,6 +531,7 @@ class BASE_EXPORT ScopedDisallowBaseSyncPrimitives {
- };
+@@ -538,6 +538,7 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
+   ScopedAllowBaseSyncPrimitives& operator=(
+       const ScopedAllowBaseSyncPrimitives&) = delete;
  
- class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
 +  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
   private:
    // This can only be instantiated by friends. Use
