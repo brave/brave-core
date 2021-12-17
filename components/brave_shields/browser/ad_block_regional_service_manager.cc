@@ -27,7 +27,7 @@
 using adblock::FilterList;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 
-constexpr char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
+const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 
 namespace brave_shields {
 
@@ -63,6 +63,9 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     EnableFilterList(it->uuid, true);
   }
 
+  const bool cookie_list_touched =
+      local_state->GetBoolean(prefs::kAdBlockCookieListSettingTouched);
+
   // Start all regional services associated with enabled filter lists
   base::AutoLock lock(regional_services_lock_);
   const base::DictionaryValue* regional_filters_dict =
@@ -73,11 +76,14 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     bool enabled = false;
     const base::DictionaryValue* regional_filter_dict = nullptr;
     regional_filters_dict->GetDictionary(uuid, &regional_filter_dict);
-    if (regional_filter_dict)
+    if (uuid == kCookieListUuid &&
+        base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
+        !cookie_list_touched) {
+      enabled = true;
+    } else if (regional_filter_dict) {
       regional_filter_dict->GetBoolean("enabled", &enabled);
-    if (enabled ||
-        (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
-         uuid == kCookieListUuid)) {
+    }
+    if (enabled) {
       auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
           regional_catalog_, uuid);
       if (catalog_entry != regional_catalog_.end()) {
@@ -107,6 +113,10 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   auto regional_filter_dict = std::make_unique<base::DictionaryValue>();
   regional_filter_dict->SetBoolean("enabled", enabled);
   regional_filters_dict->Set(uuid, std::move(regional_filter_dict));
+
+  if (uuid == kCookieListUuid) {
+    local_state->SetBoolean(prefs::kAdBlockCookieListSettingTouched, true);
+  }
 }
 
 bool AdBlockRegionalServiceManager::IsInitialized() const {
@@ -298,14 +308,11 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
   const base::DictionaryValue* regional_filters_dict =
       local_state->GetDictionary(prefs::kAdBlockRegionalFilters);
 
+  const bool cookie_list_touched =
+      local_state->GetBoolean(prefs::kAdBlockCookieListSettingTouched);
+
   auto list_value = std::make_unique<base::ListValue>();
   for (const auto& region_list : regional_catalog_) {
-    // Don't present the cookie list to the UI if it's force-enabled by feature
-    // flag.
-    if (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
-        region_list.uuid == kCookieListUuid) {
-      continue;
-    }
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
     auto dict = std::make_unique<base::DictionaryValue>();
@@ -321,8 +328,13 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
     const base::DictionaryValue* regional_filter_dict = nullptr;
     regional_filters_dict->GetDictionary(region_list.uuid,
                                          &regional_filter_dict);
-    if (regional_filter_dict)
+    if (region_list.uuid == kCookieListUuid &&
+        base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
+        !cookie_list_touched) {
+      enabled = true;
+    } else if (regional_filter_dict) {
       regional_filter_dict->GetBoolean("enabled", &enabled);
+    }
     dict->SetBoolean("enabled", enabled);
 
     list_value->Append(std::move(dict));

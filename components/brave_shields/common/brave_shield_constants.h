@@ -40,6 +40,8 @@ const char kObsoleteFingerprinting[] = "fingerprinting";
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FPL("list_text.txt");
 
+const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
+
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShields", IDS_BRAVE_SHIELDS},
     {"braveShieldsEnable", IDS_BRAVE_SHIELDS_ENABLE},
