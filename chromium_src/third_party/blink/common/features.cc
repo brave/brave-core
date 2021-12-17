@@ -45,7 +45,7 @@ const base::Feature kPartitionBlinkMemoryCache{
 
 // Enable WebSockets connection pool limit per eTLD+1 for each renderer.
 const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
-                                            base::FEATURE_DISABLED_BY_DEFAULT};
+                                            base::FEATURE_ENABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace blink

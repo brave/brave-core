@@ -288,6 +288,10 @@ constexpr char kNavigatorConnectionAttributeDescription[] =
     "can use this information to fingerprint your browser, or to infer when "
     "you are traveling or at home.";
 
+constexpr char kRestrictWebSocketsPoolName[] = "Restrict WebSockets pool";
+constexpr char kRestrictWebSocketsPoolDescription[] =
+    "Limits simultaneous active WebSockets connections per eTLD+1";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -520,6 +524,10 @@ constexpr char kNavigatorConnectionAttributeDescription[] =
       flag_descriptions::kNavigatorConnectionAttributeName,                 \
       flag_descriptions::kNavigatorConnectionAttributeDescription, kOsAll,  \
       FEATURE_VALUE_TYPE(blink::features::kNavigatorConnectionAttribute)},  \
+    {"restrict-websockets-pool",                                            \
+      flag_descriptions::kRestrictWebSocketsPoolName,                       \
+      flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
+      FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
     {"tab-audio-icon-interactive",                                          \
       flag_descriptions::kTabAudioIconInteractiveName,                      \
       flag_descriptions::kTabAudioIconInteractiveDescription,               \
