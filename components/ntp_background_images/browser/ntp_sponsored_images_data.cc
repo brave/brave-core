@@ -159,16 +159,17 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 
   auto* campaigns_value = json_value->FindListKey(kCampaignsKey);
   if (campaigns_value) {
-    ParseCampaignsList(campaigns_value->Clone(), installed_dir);
+    ParseCampaignsList(*campaigns_value, installed_dir);
   } else {
     // Get a global campaign directly if the campaign list doesn't exist.
-    const auto campaign =
-        GetCampaignFromValue(json_value->Clone(), installed_dir);
+    const auto campaign = GetCampaignFromValue(*json_value, installed_dir);
     if (campaign.IsValid())
       campaigns.push_back(campaign);
   }
 
-  ParseSRProperties(json_value->Clone(), installed_dir);
+  ParseSRProperties(*json_value, installed_dir);
+
+  PrintCampaignsParsingResult();
 }
 
 NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
@@ -178,19 +179,18 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 void NTPSponsoredImagesData::ParseCampaignsList(
-    base::Value campaigns_value,
+    const base::Value& campaigns_value,
     const base::FilePath& installed_dir) {
   DCHECK(campaigns_value.is_list());
   for (const auto& campaign_value : campaigns_value.GetList()) {
-    const auto campaign =
-        GetCampaignFromValue(campaign_value.Clone(), installed_dir);
+    const auto campaign = GetCampaignFromValue(campaign_value, installed_dir);
     if (campaign.IsValid())
       campaigns.push_back(campaign);
   }
 }
 
 Campaign NTPSponsoredImagesData::GetCampaignFromValue(
-    base::Value value,
+    const base::Value& value,
     const base::FilePath& installed_dir) {
   DCHECK(value.is_dict());
 
@@ -241,7 +241,7 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
 }
 
 void NTPSponsoredImagesData::ParseSRProperties(
-    base::Value value,
+    const base::Value& value,
     const base::FilePath& installed_dir) {
   if (theme_name.empty()) {
     DVLOG(2) << __func__ << ": Don't have NTP SR properties";
@@ -322,6 +322,21 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t campaign_index,
   logo_data.SetStringKey(kDestinationURLKey, logo.destination_url);
   data.SetKey(kLogoKey, std::move(logo_data));
   return data;
+}
+
+void NTPSponsoredImagesData::PrintCampaignsParsingResult() const {
+  VLOG(2) << __func__ << ": This is "
+          << (IsSuperReferral() ? " NTP SR Data" : " NTP SI Data");
+
+  for (size_t i = 0; i < campaigns.size(); ++i) {
+    const auto& backgrounds = campaigns[i].backgrounds;
+    for (size_t j = 0; j < backgrounds.size(); ++j) {
+      const auto& background = backgrounds[j];
+      VLOG(2) << __func__ << ": background(" << j << " - "
+              << background.logo.company_name
+              << ") - id: " << background.creative_instance_id;
+    }
+  }
 }
 
 }  // namespace ntp_background_images

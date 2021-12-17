@@ -77,10 +77,6 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
 
   ResetModel();
-  // if (auto* data = GetCurrentBrandedWallpaperData())
-  //   model_.set_total_branded_image_count(data->campaigns[0].backgrounds.size());
-  // if (auto* data = GetCurrentWallpaperData())
-  //   model_.set_total_image_count(data->backgrounds.size());
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(ads::prefs::kEnabled,
