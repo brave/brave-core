@@ -55,8 +55,15 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
   ShowAndVerifyUi();
 }
 
+#if defined(OS_MAC)
+// Disable this test for intermittent crashes.
+// See https://github.com/brave/brave-browser/issues/20082
+IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
+                       DISABLED_InvokeUi_speedreader_mode_bubble_basic) {
+#else
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_speedreader_mode_bubble_basic) {
+#endif
   speedreader_bubble_ = true;
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
