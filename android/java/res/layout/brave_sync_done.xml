@@ -105,13 +105,13 @@
             </TableRow>
         </TableLayout>
 
-        <Button android:id="@+id/brave_sync_btn_add_device"
+        <android.widget.Button android:id="@+id/brave_sync_btn_add_device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_add_device_text"
             style="@style/BraveSyncButton" />
 
-        <Button android:id="@+id/brave_sync_btn_show_categories"
+        <android.widget.Button android:id="@+id/brave_sync_btn_show_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_categories_text"

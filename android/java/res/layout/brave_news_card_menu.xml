@@ -21,7 +21,7 @@
         android:layout_height="1dp"
         android:background="@color/news_time_color" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/share_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:paddingTop="30dp"
         android:paddingEnd="50dp" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/new_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:layout_height="1dp"
         android:background="@color/news_time_color" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/new_private_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         android:layout_height="1dp"
         android:background="@color/news_time_color" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/disable_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
