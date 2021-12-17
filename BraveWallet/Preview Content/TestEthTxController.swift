@@ -41,9 +41,11 @@ class TestEthTxController: BraveWalletEthTxController {
   }
   
   func addUnapprovedTransaction(_ txData: BraveWallet.TxData, from: String, completion: @escaping (Bool, String, String) -> Void) {
+    completion(true, "txMetaId", "")
   }
   
   func addUnapproved1559Transaction(_ txData: BraveWallet.TxData1559, from: String, completion: @escaping (Bool, String, String) -> Void) {
+    completion(true, "txMetaId", "")
   }
   
   func approveTransaction(_ txMetaId: String, completion: @escaping (Bool) -> Void) {
@@ -56,9 +58,11 @@ class TestEthTxController: BraveWalletEthTxController {
   }
   
   func makeErc20TransferData(_ toAddress: String, amount: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+    completion(true, .init())
   }
   
   func makeErc20ApproveData(_ spenderAddress: String, amount: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+    completion(true, .init())
   }
   
   func allTransactionInfo(_ from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {

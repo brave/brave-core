@@ -33,7 +33,8 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   }
   
   func balance(_ address: String, completion: @escaping (Bool, String) -> Void) {
-    completion(true, "10")
+    // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
+    completion(true, "0x13e25e19dc20ba7")
   }
   
   func erc20TokenBalance(_ contract: String, address: String, completion: @escaping (Bool, String) -> Void) {
@@ -120,7 +121,7 @@ extension BraveWallet.EthereumChain {
     symbol: "ETH",
     symbolName: "Ethereum",
     decimals: 18,
-    isEip1559: false
+    isEip1559: true
   )
   static let rinkeby: BraveWallet.EthereumChain = .init(
     chainId: BraveWallet.RinkebyChainId,
