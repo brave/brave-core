@@ -256,6 +256,13 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
+  
+  #if DEBUG
+  func setUpTest() {
+    currentAccountAddress = "test-current-account-address"
+    sendAddress = "test-send-address"
+  }
+  #endif
 }
 
 extension SendTokenStore: BraveWalletKeyringControllerObserver {

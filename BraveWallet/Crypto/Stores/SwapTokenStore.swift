@@ -588,6 +588,16 @@ public class SwapTokenStore: ObservableObject {
       }
     }
   }
+  
+  #if DEBUG
+  func setUpTest() {
+    accountInfo = .init()
+    selectedFromToken = .eth
+    selectedToToken = .eth
+    sellAmount = "0.01"
+    selectedFromTokenBalance = 0.02
+  }
+  #endif
 }
 
 extension SwapTokenStore: BraveWalletKeyringControllerObserver {
