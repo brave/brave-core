@@ -31,6 +31,7 @@ def main():
     transpile_web_uis(args.production, webpack_gen_dir, root_gen_dir,
                       args.entry,
                       depfile_path, grd_path,
+                      args.webpack_alias,
                       args.public_asset_path)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0])
 
@@ -51,6 +52,7 @@ def parse_args():
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
+    parser.add_argument('--webpack_alias', nargs='?')
     args = parser.parse_args()
     # validate args
     if (args.output_path is None or
@@ -68,10 +70,9 @@ def clean_target_dir(target_dir):
     except Exception as e:
         raise Exception("Error removing previous webpack target dir", e)
 
-
 def transpile_web_uis(production, target_gen_dir, root_gen_dir,
                       entry_points, depfile_path, depfile_sourcename,
-                      public_asset_path=None, env=None):
+                      webpack_alias, public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -84,6 +85,8 @@ def transpile_web_uis(production, target_gen_dir, root_gen_dir,
 
     if public_asset_path is not None:
         args.append("--output-public-path=" + public_asset_path)
+
+    args.append("--webpack_alias=" + webpack_alias)
 
     # entrypoints
     for entry in entry_points:
