@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -111,6 +112,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
     private boolean mInitialLayoutInflationComplete;
+
+    private TextView mSlippageToleranceText;
+    private int radioSlippageToleranceCheckedId = 0;
 
     public enum ActivityType {
         BUY(0),
@@ -240,6 +244,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
 
+        mSlippageToleranceText = findViewById(R.id.slippage_tolerance_dropdown);
+
         onInitialLayoutInflationComplete();
 
         adjustControls();
@@ -327,9 +333,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             if (mActivityType == ActivityType.SWAP) {
                 updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), false);
             }
-        } else if (parent.getId() == R.id.slippage_tolerance_spinner
-                && mActivityType == ActivityType.SWAP) {
-            getSendSwapQuota(true, false);
         }
     }
 
@@ -361,12 +364,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
             }
         }
-        Spinner slippageToleranceSpinner = findViewById(R.id.slippage_tolerance_spinner);
-        String percent =
-                slippageToleranceSpinner
-                        .getItemAtPosition(slippageToleranceSpinner.getSelectedItemPosition())
-                        .toString();
-        percent = percent.replace("%", "");
+        String percent = mSlippageToleranceText.getText().toString().replace("%", "");
 
         SwapParams swapParams = new SwapParams();
         swapParams.takerAddress = from;
@@ -701,6 +699,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         TextView toEstimateText = findViewById(R.id.to_estimate_text);
         TextView assetFromDropDown = findViewById(R.id.from_asset_text);
         RadioGroup radioPerPercent = findViewById(R.id.per_percent_radiogroup);
+        RadioGroup radioSlippageTolerance = findViewById(R.id.slippage_tolerance_radiogroup);
+        EditText slippageValueText = findViewById(R.id.slippage_value_text);
         ImageView arrowDown = findViewById(R.id.arrow_down);
         radioPerPercent.clearCheck();
         if (mActivityType == ActivityType.BUY) {
@@ -820,13 +820,77 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
             enableDisableSwapButton();
-            Spinner spinner = findViewById(R.id.slippage_tolerance_spinner);
-            spinner.setOnItemSelectedListener(this);
-            // Creating adapter for a slippage tolerance spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, Utils.getSlippageToleranceList(this));
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(dataAdapter);
+            mSlippageToleranceText.setOnClickListener(v -> {
+                LinearLayout toleranceSubSection = findViewById(R.id.tolerance_subsection);
+                int visibility = toleranceSubSection.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    toleranceSubSection.setVisibility(View.GONE);
+                    // Disable all buttons and fields
+                    findViewById(R.id.slippage_per_05_radiobutton).setEnabled(false);
+                    findViewById(R.id.slippage_per_1_radiobutton).setEnabled(false);
+                    findViewById(R.id.slippage_per_2_radiobutton).setEnabled(false);
+                    findViewById(R.id.slippage_value_text).setEnabled(false);
+                } else {
+                    toleranceSubSection.setVisibility(View.VISIBLE);
+                    // Enable all buttons and fields
+                    findViewById(R.id.slippage_per_05_radiobutton).setEnabled(true);
+                    findViewById(R.id.slippage_per_1_radiobutton).setEnabled(true);
+                    findViewById(R.id.slippage_per_2_radiobutton).setEnabled(true);
+                    findViewById(R.id.slippage_value_text).setEnabled(true);
+                }
+            });
+            radioSlippageTolerance.setOnCheckedChangeListener(
+                    new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            if (checkedId == -1) {
+                                radioSlippageToleranceCheckedId = checkedId;
+                                return;
+                            }
+                            double percent = 0d;
+                            if (checkedId == R.id.slippage_per_05_radiobutton) {
+                                percent = 0.5d;
+                            } else if (checkedId == R.id.slippage_per_1_radiobutton) {
+                                percent = 1d;
+                            } else if (checkedId == R.id.slippage_per_2_radiobutton) {
+                                percent = 2d;
+                            }
+
+                            if (!(radioSlippageToleranceCheckedId == 0
+                                        || radioSlippageToleranceCheckedId == checkedId)) {
+                                updateSlippagePercentage(percent);
+                            }
+                            if (radioSlippageToleranceCheckedId == -1) {
+                                slippageValueText.setText("");
+                            }
+                            radioSlippageToleranceCheckedId = checkedId;
+                        }
+                    });
+            slippageValueText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {}
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String inputPercent = s.toString().trim();
+                    Double percent = 0d;
+                    boolean hasError = false;
+                    try {
+                        percent = Double.parseDouble(inputPercent);
+                        if (percent >= 100) hasError = true;
+                    } catch (NumberFormatException ex) {
+                        hasError = true;
+                    }
+
+                    if (!hasError && inputPercent.length() > 0) {
+                        updateSlippagePercentage(percent);
+                        radioSlippageTolerance.clearCheck();
+                    }
+                }
+            });
             ImageView refreshPrice = findViewById(R.id.refresh_price);
             refreshPrice.setOnClickListener(v -> { getSendSwapQuota(true, false); });
             EditText fromValueText = findViewById(R.id.from_value_text);
@@ -943,6 +1007,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             mCameraSourcePreview.stop();
             RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
             relativeLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateSlippagePercentage(double percent) {
+        SpannableString slippageToleranceSpannableText = new SpannableString(
+                getString(R.string.crypto_wallet_tolerance_percentage, String.valueOf(percent)));
+        mSlippageToleranceText.setText(slippageToleranceSpannableText);
+
+        if (mActivityType == ActivityType.SWAP) {
+            getSendSwapQuota(true, false);
         }
     }
 

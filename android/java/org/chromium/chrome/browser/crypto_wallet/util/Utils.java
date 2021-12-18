@@ -242,17 +242,6 @@ public class Utils {
         return categories.toArray(new String[0]);
     }
 
-    public static List<String> getSlippageToleranceList(Activity activity) {
-        List<String> categories = new ArrayList<String>();
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_05).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_1).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_15).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_3).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_6).toString());
-
-        return categories;
-    }
-
     public static CharSequence getNetworkText(Activity activity, String chain_id) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
         switch (chain_id) {
