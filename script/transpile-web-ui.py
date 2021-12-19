@@ -55,8 +55,7 @@ def parse_args():
     parser.add_argument('--webpack_alias', nargs='?')
     args = parser.parse_args()
     # validate args
-    if (args.output_path is None or
-        len(args.output_path) != 1 or
+    if (args.output_path is None or len(args.output_path) != 1 or
             len(args.output_path[0]) == 0):
         raise Exception(" output_path argument was not specified correctly")
     # args are valid
@@ -70,6 +69,7 @@ def clean_target_dir(target_dir):
     except Exception as e:
         raise Exception("Error removing previous webpack target dir", e)
 
+#pylint: disable-msg=too-many-arguments
 def transpile_web_uis(production, target_gen_dir, root_gen_dir,
                       entry_points, depfile_path, depfile_sourcename,
                       webpack_alias, public_asset_path=None, env=None):
