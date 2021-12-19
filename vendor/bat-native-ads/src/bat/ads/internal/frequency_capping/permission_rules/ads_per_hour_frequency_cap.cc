@@ -42,7 +42,7 @@ std::string AdsPerHourFrequencyCap::GetLastMessage() const {
 bool AdsPerHourFrequencyCap::DoesRespectCap(
     const std::deque<base::Time>& history) {
   const base::TimeDelta time_constraint =
-      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
+      base::Seconds(base::Time::kSecondsPerHour);
 
   const int cap = settings::GetAdsPerHour();
   if (cap == 0) {

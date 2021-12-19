@@ -165,7 +165,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
 
   // The minimum publisher duration when testing is 1 second (and the
   // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(2100));
+  base::PlatformThread::Sleep(base::Milliseconds(2100));
 
   // Load rewards page
   rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);

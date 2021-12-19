@@ -77,25 +77,25 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [&](const network::ResourceRequest& request) { request_sent = true; }));
   EXPECT_FALSE(tracker.IsRunning());
-  tracker.Start(base::TimeDelta::FromSeconds(5));
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(1));
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(1));
   EXPECT_TRUE(tracker.IsRunning());
   EXPECT_FALSE(request_sent);
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(4));
+  task_environment_.FastForwardBy(base::Seconds(4));
   EXPECT_TRUE(request_sent);
 
   // interval will be changed
-  tracker.Start(base::TimeDelta::FromSeconds(30));
+  tracker.Start(base::Seconds(30));
   request_sent = false;
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_FALSE(request_sent);
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(25));
+  task_environment_.FastForwardBy(base::Seconds(25));
   EXPECT_TRUE(request_sent);
 
   request_sent = false;
   tracker.Stop();
   EXPECT_FALSE(tracker.IsRunning());
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(40));
+  task_environment_.FastForwardBy(base::Seconds(40));
   EXPECT_FALSE(request_sent);
 }
 
@@ -111,8 +111,8 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   TrackerObserver observer;
   tracker.AddObserver(&observer);
 
-  tracker.Start(base::TimeDelta::FromSeconds(5));
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(observer.block_num_, uint256_t(1));
   EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(1));
   EXPECT_EQ(observer.latest_block_fired_, 1u);
@@ -120,8 +120,8 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(1));
 
   response_block_num_ = 3;
-  tracker.Start(base::TimeDelta::FromSeconds(5));
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(observer.block_num_, uint256_t(3));
   EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
   EXPECT_EQ(observer.latest_block_fired_, 2u);
@@ -129,7 +129,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
 
   // Still response_block_num_ 3
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(observer.block_num_, uint256_t(3));
   EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
   EXPECT_EQ(observer.latest_block_fired_, 3u);
@@ -169,8 +169,8 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
   TrackerObserver observer;
   tracker.AddObserver(&observer);
 
-  tracker.Start(base::TimeDelta::FromSeconds(5));
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(observer.latest_block_fired_, 0u);
   EXPECT_EQ(observer.block_num_, uint256_t(0));
   EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));

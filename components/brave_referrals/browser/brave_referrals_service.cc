@@ -233,7 +233,7 @@ void BraveReferralsService::Start() {
   finalization_checks_timer_ = std::make_unique<base::RepeatingTimer>();
   finalization_checks_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(
+      base::Seconds(
           brave_base::random::Geometric(kFinalizationChecksFrequency)),
       this, &BraveReferralsService::OnFinalizationChecksTimerFired);
   DCHECK(finalization_checks_timer_->IsRunning());
@@ -298,11 +298,10 @@ void BraveReferralsService::OnReferralInitLoadComplete(
                << ", payload: " << safe_response_body
                << ", url: " << referral_init_loader_->GetFinalURL().spec();
     initialization_timer_ = std::make_unique<base::OneShotTimer>();
-    initialization_timer_->Start(
-        FROM_HERE,
-        base::TimeDelta::FromSeconds(
-            brave_base::random::Geometric(kReportInitializationFrequency)),
-        this, &BraveReferralsService::InitReferral);
+    initialization_timer_->Start(FROM_HERE,
+                                 base::Seconds(brave_base::random::Geometric(
+                                     kReportInitializationFrequency)),
+                                 this, &BraveReferralsService::InitReferral);
     DCHECK(initialization_timer_->IsRunning());
     return;
   }
@@ -475,7 +474,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
     base::StringToUint64(check_time_str, &check_time);
 
   base::Time now = base::Time::Now();
-  if (now - first_run_timestamp_ < base::TimeDelta::FromSeconds(check_time))
+  if (now - first_run_timestamp_ < base::Seconds(check_time))
     return;
 
   // Only check for referral finalization 30 times, with a 24-hour
@@ -489,7 +488,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
     return;
   }
 
-  if (now - timestamp < base::TimeDelta::FromHours(24))
+  if (now - timestamp < base::Hours(24))
     return;
 
   pref_service_->SetTime(kReferralAttemptTimestamp, now);
@@ -509,7 +508,7 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
     base::StringToUint64(delete_time_str, &delete_time);
 
   base::Time now = base::Time::Now();
-  if (now - first_run_timestamp_ >= base::TimeDelta::FromSeconds(delete_time))
+  if (now - first_run_timestamp_ >= base::Seconds(delete_time))
     pref_service_->ClearPref(kReferralPromoCode);
 }
 

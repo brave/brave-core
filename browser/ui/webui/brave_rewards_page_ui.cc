@@ -1260,8 +1260,7 @@ void RewardsDOMHandler::GetAdsHistory(base::Value::ConstListView args) {
   const base::Time to_time = base::Time::Now();
   const uint64_t to_timestamp = to_time.ToDoubleT();
 
-  const base::Time from_time =
-      to_time - base::TimeDelta::FromDays(kDaysOfAdsHistory - 1);
+  const base::Time from_time = to_time - base::Days(kDaysOfAdsHistory - 1);
   const base::Time from_time_local_midnight = from_time.LocalMidnight();
   const uint64_t from_timestamp = from_time_local_midnight.ToDoubleT();
 

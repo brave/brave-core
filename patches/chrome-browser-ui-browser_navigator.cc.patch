@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index ca5ad72b0707ea77d762e2a2179717fec1cdb883..558e5e41c40f1f020be0a01b7afa4fd9c6601a85 100644
+index fe7825b8253d3e06e11c353218e73ed9d9d52df6..fba620aa56667bd7576b6013755ec666b6009739 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -485,6 +485,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
@@ -15,6 +15,6 @@ index ca5ad72b0707ea77d762e2a2179717fec1cdb883..558e5e41c40f1f020be0a01b7afa4fd9
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();
 +  if (!IsHostAllowedInIncognitoBraveImpl(host)) return false;
-   if (scheme == chrome::kChromeSearchScheme) {
-     return host != chrome::kChromeUIThumbnailHost &&
-            host != chrome::kChromeUIThumbnailHost2;
+   if (scheme != content::kChromeUIScheme)
+     return true;
+ 

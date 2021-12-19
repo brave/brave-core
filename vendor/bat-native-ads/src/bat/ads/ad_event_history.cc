@@ -51,7 +51,7 @@ void AdEventHistory::Record(const std::string& ad_type,
 
   iter->second.push_back(timestamp);
 
-  const base::TimeDelta time_delta = base::TimeDelta::FromDays(1);
+  const base::TimeDelta time_delta = base::Days(1);
   PurgeHistoryOlderThan(&iter->second, time_delta);
 }
 

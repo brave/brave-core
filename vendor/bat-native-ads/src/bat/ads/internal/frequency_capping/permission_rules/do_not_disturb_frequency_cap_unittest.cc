@@ -33,8 +33,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
   // Act
   {
     // Verify 5:59 AM
-    AdvanceClock(base::TimeDelta::FromHours(5) +
-                 base::TimeDelta::FromMinutes(59));
+    AdvanceClock(base::Hours(5) + base::Minutes(59));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -44,7 +43,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 6:00 AM
-    AdvanceClock(base::TimeDelta::FromMinutes(1));
+    AdvanceClock(base::Minutes(1));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -54,8 +53,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 8:59 PM
-    AdvanceClock(base::TimeDelta::FromHours(14) +
-                 base::TimeDelta::FromMinutes(59));
+    AdvanceClock(base::Hours(14) + base::Minutes(59));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -65,7 +63,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 9:00 PM
-    AdvanceClock(base::TimeDelta::FromMinutes(1));
+    AdvanceClock(base::Minutes(1));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -82,13 +80,12 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
 
   // Act
   {
     // Verify 5:59 AM
-    AdvanceClock(base::TimeDelta::FromHours(5) +
-                 base::TimeDelta::FromMinutes(59));
+    AdvanceClock(base::Hours(5) + base::Minutes(59));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -98,7 +95,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 6:00 AM
-    AdvanceClock(base::TimeDelta::FromMinutes(1));
+    AdvanceClock(base::Minutes(1));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -108,8 +105,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 8:59 PM
-    AdvanceClock(base::TimeDelta::FromHours(14) +
-                 base::TimeDelta::FromMinutes(59));
+    AdvanceClock(base::Hours(14) + base::Minutes(59));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -119,7 +115,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
 
   {
     // Verify 9:00 PM
-    AdvanceClock(base::TimeDelta::FromMinutes(1));
+    AdvanceClock(base::Minutes(1));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -135,7 +131,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForIOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
 
   // Act
   {
@@ -149,7 +145,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForIOS) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::TimeDelta::FromHours(12));
+    AdvanceClock(base::Hours(12));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -165,7 +161,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForMacOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
 
   // Act
   {
@@ -179,7 +175,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForMacOS) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::TimeDelta::FromHours(12));
+    AdvanceClock(base::Hours(12));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -195,7 +191,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForWindows) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
 
   // Act
   {
@@ -209,7 +205,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForWindows) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::TimeDelta::FromHours(12));
+    AdvanceClock(base::Hours(12));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;
@@ -225,7 +221,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForLinux) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
 
   // Act
   {
@@ -239,7 +235,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForLinux) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::TimeDelta::FromHours(12));
+    AdvanceClock(base::Hours(12));
 
     // Assert
     DoNotDisturbFrequencyCap frequency_cap;

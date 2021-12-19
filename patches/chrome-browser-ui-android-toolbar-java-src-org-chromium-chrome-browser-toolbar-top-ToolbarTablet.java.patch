@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index 870b3189bde4e8fde2a3bb4a311d1003c2dc3f4e..20f7de1abe14cf4fee72a3becf234ac9539de6ee 100644
+index f20471c5984c66c32331c15032c8e892624f2968..6cd87a9e922f37133434a6e65eebac343e869bcf 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 @@ -328,10 +328,12 @@ public class ToolbarTablet extends ToolbarLayout

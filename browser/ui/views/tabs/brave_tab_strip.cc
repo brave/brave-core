@@ -16,20 +16,6 @@
 
 BraveTabStrip::~BraveTabStrip() = default;
 
-bool BraveTabStrip::ShouldHideCloseButtonForTab(Tab* tab) const {
-  bool should_hide = TabStrip::ShouldHideCloseButtonForTab(tab);
-
-  // If upstream logic want to hide, follow it.
-  if (should_hide)
-    return should_hide;
-
-  if (tab->IsActive())
-    return false;
-
-  // Only shows close button on tab when mouse is hovered on tab.
-  return !tab->mouse_hovered();
-}
-
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
   Profile* profile = controller()->GetProfile();
   if (!brave::IsRegularProfile(profile)) {

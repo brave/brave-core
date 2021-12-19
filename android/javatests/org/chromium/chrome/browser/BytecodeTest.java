@@ -262,8 +262,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "onOrientationChange", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "updateButtonStatus", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "updateBookmarkButtonStatus", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "updateReloadState", false, null));
@@ -434,8 +432,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
-                StatusBarColorController.class, AppMenuDelegate.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
+                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
                 OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
@@ -501,7 +499,7 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
                 Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class));
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -538,10 +536,14 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/ntp/NewTabPage", "mBrowserControlsStateProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mNewTabPageLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mFeedSurfaceProvider"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mToolbarSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));

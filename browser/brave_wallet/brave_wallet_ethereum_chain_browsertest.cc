@@ -26,6 +26,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -135,8 +136,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
                   ->IsShowingBubble());
   GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x38", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(true,
-                                                               url.GetOrigin());
+  url::Origin url_origin = url::Origin::Create(url);
+  GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(
+      true, url_origin.GetURL());
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
@@ -254,8 +256,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   // Add Ethereum chain but don't switch
   GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
+  url::Origin urlB_origin = url::Origin::Create(urlB);
   GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(
-      false, urlB.GetOrigin());
+      false, urlB_origin.GetURL());
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
@@ -306,8 +309,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   // Add Ethereum chain and switch
   GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
+  url::Origin urlB_origin = url::Origin::Create(urlB);
   GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(
-      true, urlB.GetOrigin());
+      true, urlB_origin.GetURL());
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);

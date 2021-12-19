@@ -70,7 +70,7 @@ TEST_F(BatAdsInlineContentAdsPerHourFrequencyCapTest,
   const int count = features::GetMaximumInlineContentAdsPerHour();
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Act
   InlineContentAdsPerHourFrequencyCap frequency_cap;
@@ -86,7 +86,7 @@ TEST_F(BatAdsInlineContentAdsPerHourFrequencyCapTest,
   const int count = features::GetMaximumInlineContentAdsPerHour();
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(59));
+  FastForwardClockBy(base::Minutes(59));
 
   // Act
   InlineContentAdsPerHourFrequencyCap frequency_cap;

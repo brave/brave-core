@@ -31,7 +31,6 @@
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/link.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/grid_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -49,31 +48,35 @@ void ShowFirstRunDialog(Profile* profile) {
 }
 
 void ShowFirstRunDialogViews(Profile* profile) {
-  FirstRunDialog::Show(profile);
+  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+  FirstRunDialog::Show(
+      base::BindRepeating(&platform_util::OpenExternal,
+                          base::Unretained(profile),
+                          GURL(chrome::kLearnMoreReportingURL)),
+      run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 }  // namespace first_run
 
 // static
-void FirstRunDialog::Show(Profile* profile) {
-  FirstRunDialog* dialog = new FirstRunDialog(profile);
+void FirstRunDialog::Show(base::RepeatingClosure learn_more_callback,
+                          base::RepeatingClosure quit_runloop) {
+  FirstRunDialog* dialog = new FirstRunDialog(std::move(learn_more_callback),
+                                              std::move(quit_runloop));
   views::DialogDelegate::CreateDialogWidget(dialog, NULL, NULL)->Show();
-
-  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  dialog->quit_runloop_ = run_loop.QuitClosure();
-  run_loop.Run();
 }
 
-FirstRunDialog::FirstRunDialog(Profile* profile) {
+FirstRunDialog::FirstRunDialog(base::RepeatingClosure learn_more_callback,
+                               base::RepeatingClosure quit_runloop)
+    : quit_runloop_(quit_runloop) {
   ALLOW_UNUSED_LOCAL(report_crashes_);
 
   SetTitle(l10n_util::GetStringUTF16(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE));
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetExtraView(
       std::make_unique<views::Link>(l10n_util::GetStringUTF16(IDS_LEARN_MORE)))
-      ->SetCallback(base::BindRepeating(&platform_util::OpenExternal,
-                                        base::Unretained(profile),
-                                        GURL(chrome::kLearnMoreReportingURL)));
+      ->SetCallback(std::move(learn_more_callback));
 
   constexpr int kChildSpacing = 16;
   constexpr int kPadding = 24;

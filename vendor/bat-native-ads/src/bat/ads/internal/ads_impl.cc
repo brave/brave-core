@@ -223,8 +223,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
 
   MaybeUpdateIdleTimeThreshold();
 
-  BLOG(1, "Browser state changed to unidle after "
-              << base::TimeDelta::FromSeconds(idle_time));
+  BLOG(1, "Browser state changed to unidle after " << base::Seconds(idle_time));
 
   MaybeUpdateCatalog();
 

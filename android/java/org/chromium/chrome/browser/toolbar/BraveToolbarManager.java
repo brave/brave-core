@@ -145,7 +145,7 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
-            Supplier<Boolean> isInOverviewModeSupplier,
+            Supplier<Boolean> isInOverviewModeSupplier, boolean shouldShowOverviewPageOnStart,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
@@ -168,12 +168,12 @@ public class BraveToolbarManager extends ToolbarManager {
                 layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
                 tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
                 intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
-                isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
-                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
-                bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
-                overviewModeBehaviorSupplier, snackbarManager, jankTracker,
-                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                initializeWithIncognitoColors);
+                isInOverviewModeSupplier, shouldShowOverviewPageOnStart, modalDialogManagerSupplier,
+                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
+                startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
+                tabContentManager, tabCreatorManager, overviewModeBehaviorSupplier, snackbarManager,
+                jankTracker, merchantTrustSignalsCoordinatorSupplier,
+                tabReparentingControllerSupplier, initializeWithIncognitoColors);
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
@@ -297,21 +297,6 @@ public class BraveToolbarManager extends ToolbarManager {
         }
     }
 
-    protected void updateButtonStatus() {
-        Tab currentTab = mLocationBarModel.getTab();
-        boolean tabCrashed = currentTab != null && SadTab.isShowing(currentTab);
-
-        mToolbar.updateButtonVisibility();
-        mToolbar.updateBackButtonVisibility(currentTab != null && currentTab.canGoBack());
-        mToolbar.updateForwardButtonVisibility(currentTab != null && currentTab.canGoForward());
-        updateReloadState(tabCrashed);
-        updateBookmarkButtonStatus();
-
-        if (mToolbar.getMenuButtonWrapper() != null && !isBottomToolbarVisible()) {
-            mToolbar.getMenuButtonWrapper().setVisibility(View.VISIBLE);
-        }
-    }
-
     protected void updateBookmarkButtonStatus() {
         Tab currentTab = mLocationBarModel.getTab();
         BookmarkBridge bridge = mBookmarkBridgeSupplier.get();
@@ -343,10 +328,6 @@ public class BraveToolbarManager extends ToolbarManager {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .setBottomToolbarVisible(visible);
         }
-    }
-
-    public boolean isBottomToolbarVisible() {
-        return mIsBottomToolbarVisible;
     }
 
     private void updateBottomToolbarVisibility() {

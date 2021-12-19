@@ -152,7 +152,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     if (country_id == country_codes::CountryStringToCountryID("JP")) {
       base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
-          base::TimeDelta::FromSeconds(3));
+          base::Seconds(3));
     }
   }
   source->AddString("countryString", CountryIDToCountryString(country_id));

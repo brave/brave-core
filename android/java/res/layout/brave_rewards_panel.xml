@@ -207,7 +207,7 @@
                             android:orientation="vertical"
                             android:visibility="gone"/>
 
-                        <Button
+                        <android.widget.Button
                             android:id="@+id/send_a_tip"
                             android:layout_height="50dp"
                             android:layout_width="fill_parent"
@@ -227,7 +227,7 @@
 
                     </GridLayout>
 
-                    <Button
+                    <android.widget.Button
                         android:id="@+id/rewards_summary"
                         android:layout_height="50dp"
                         android:layout_width="fill_parent"

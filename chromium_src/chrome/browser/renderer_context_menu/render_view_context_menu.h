@@ -29,7 +29,9 @@ class BraveRenderViewContextMenu;
 // Declare our own subclass with overridden methods.
 class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  public:
-  BraveRenderViewContextMenu(content::RenderFrameHost* render_frame_host,
+  // Non-const reference passed in the parent class upstream
+  // NOLINTNEXTLINE(runtime/references)
+  BraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
                              const content::ContextMenuParams& params);
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;

@@ -6,7 +6,7 @@
 #include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_views.h"
 
 BraveRenderViewContextMenuViews::BraveRenderViewContextMenuViews(
-    content::RenderFrameHost* render_frame_host,
+    content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
     : RenderViewContextMenuViews(render_frame_host, params) {}
 
@@ -14,7 +14,7 @@ BraveRenderViewContextMenuViews::~BraveRenderViewContextMenuViews() = default;
 
 // static
 RenderViewContextMenuViews* BraveRenderViewContextMenuViews::Create(
-    content::RenderFrameHost* render_frame_host,
+    content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params) {
   return new BraveRenderViewContextMenuViews(render_frame_host, params);
 }

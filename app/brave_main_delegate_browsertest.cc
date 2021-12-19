@@ -15,6 +15,7 @@
 #include "components/language/core/common/language_experiments.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
@@ -37,6 +38,7 @@
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/translate/core/common/translate_util.h"
 #endif
 
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
@@ -84,6 +86,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
 #if !defined(OS_ANDROID)
     &apps::kAppDiscoveryRemoteUrlSearch,
+    &translate::kTFLiteLanguageDetectionEnabled,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
@@ -98,7 +101,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kNavigatorPluginsFixed,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
-    &blink::features::kReportAllJavaScriptFrameworks,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &blink::features::kWebSQLInThirdPartyContextEnabled,
@@ -117,6 +119,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kFirstPartySets,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
+    &optimization_guide::features::kOptimizationHints,
+    &optimization_guide::features::kRemoteOptimizationGuideFetching,
+    &optimization_guide::features::
+        kRemoteOptimizationGuideFetchingAnonymousDataConsent,
     &reading_list::switches::kReadLater,
   };
 
@@ -127,12 +133,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
     &blink::features::kPrefetchPrivacyChanges,
-    &password_manager::features::kPasswordImport,
     &blink::features::kReducedReferrerGranularity,
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
-    &net::features::kLegacyTLSEnforced,
+    &password_manager::features::kPasswordImport,
     &security_state::features::kSafetyTipUI,
   };
 

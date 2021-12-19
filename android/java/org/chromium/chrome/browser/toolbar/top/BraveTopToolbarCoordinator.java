@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.toolbar.ButtonData;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
@@ -36,6 +37,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private TabSwitcherModeTTCoordinatorPhone mTabSwitcherModeCoordinatorPhone;
     private OptionalBrowsingModeButtonController mOptionalButtonController;
     private ToolbarLayout mBraveToolbarLayout;
+    private MenuButtonCoordinator mBraveMenuButtonCoordinator;
+    private boolean mIsBottomToolbarVisible;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
             ToolbarLayout toolbarLayout, ToolbarDataProvider toolbarDataProvider,
@@ -59,7 +62,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
             boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
-            boolean initializeWithIncognitoColors) {
+            boolean initializeWithIncognitoColors, boolean shouldHideToolbarLayoutOnStart) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
@@ -71,9 +74,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
-                partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors);
+                partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
+                shouldHideToolbarLayoutOnStart);
 
         mBraveToolbarLayout = toolbarLayout;
+        mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
@@ -87,6 +92,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     }
 
     public void onBottomToolbarVisibilityChanged(boolean isVisible) {
+        mIsBottomToolbarVisible = isVisible;
         if (mBraveToolbarLayout instanceof BraveToolbarLayout) {
             ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
                     .onBottomToolbarVisibilityChanged(isVisible);
@@ -100,5 +106,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     public boolean isToolbarPhone() {
         return mBraveToolbarLayout instanceof ToolbarPhone;
+    }
+
+    @Override
+    public MenuButton getMenuButtonWrapper() {
+        // We consider that there is no top toolbar menu button, if bottom toolbar is visible.
+        return mIsBottomToolbarVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
     }
 }

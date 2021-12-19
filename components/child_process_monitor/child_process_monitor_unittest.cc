@@ -29,7 +29,7 @@ void WaitForChildTermination(base::ProcessHandle handle) {
   base::TerminationStatus status = base::TERMINATION_STATUS_STILL_RUNNING;
   do {
     status = base::GetTerminationStatus(handle, &exit_code);
-    base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(30));
+    base::PlatformThread::Sleep(base::Milliseconds(30));
   } while (status == base::TERMINATION_STATUS_STILL_RUNNING);
 }
 }  // namespace

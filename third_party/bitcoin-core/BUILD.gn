@@ -2,7 +2,10 @@ config("warnings") {
   cflags = []
 
   if (is_clang) {
-    cflags += [ "-Wno-unused-function" ]
+    cflags += [
+      "-Wno-bitwise-instead-of-logical",
+      "-Wno-unused-function",
+    ]
   }
 }
 

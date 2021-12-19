@@ -77,7 +77,7 @@ void GeminiTransfer::StartTransactionStatusTimer(
 
   size_t new_attempts = attempts + 1;
   size_t mins = 3 * new_attempts;
-  base::TimeDelta delay = base::TimeDelta::FromMinutes(mins);
+  base::TimeDelta delay = base::Minutes(mins);
   BLOG(1, "Will fetch transaction status after " << mins << " minutes");
   retry_timer_[id].Start(
       FROM_HERE, delay,

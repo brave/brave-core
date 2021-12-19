@@ -54,8 +54,7 @@ constexpr const char* kPrivateIPRegexps[] = {
 void WaitForTimeout(int timeout) {
   base::RunLoop run_loop;
   base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromMilliseconds(timeout));
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(timeout));
   run_loop.Run();
 }
 

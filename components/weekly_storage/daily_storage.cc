@@ -55,7 +55,7 @@ void DailyStorage::FilterToDay() {
     return;
   }
   // Remove all values that aren't within the last 24 hours
-  base::Time min = clock_->Now() - base::TimeDelta::FromDays(1);
+  base::Time min = clock_->Now() - base::Days(1);
   daily_values_.remove_if([min](DailyValue val) { return (val.time <= min); });
 }
 
@@ -65,7 +65,7 @@ void DailyStorage::Load() {
   if (!list) {
     return;
   }
-  base::Time min = clock_->Now() - base::TimeDelta::FromDays(1);
+  base::Time min = clock_->Now() - base::Days(1);
   for (const auto& it : list->GetList()) {
     const base::Value* day = it.FindKey("day");
     const base::Value* value = it.FindKey("value");

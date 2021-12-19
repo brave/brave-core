@@ -234,12 +234,12 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistory) {
       expected_price_history_response;
 
   auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::TimeDelta::FromMilliseconds(1622733088498);
+  asset_time_price->date = base::Milliseconds(1622733088498);
   asset_time_price->price = "0.8201346624954003";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
   asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::TimeDelta::FromMilliseconds(1622737203757);
+  asset_time_price->date = base::Milliseconds(1622737203757);
   asset_time_price->price = "0.8096978545029869";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
