@@ -93,18 +93,19 @@ struct NTPSponsoredImagesData {
 
   bool IsValid() const;
 
-  void ParseCampaignsList(base::Value campaigns_value,
+  void ParseCampaignsList(const base::Value& campaigns_value,
                           const base::FilePath& installed_dir);
 
   // Parse common properties for SI & SR.
-  Campaign GetCampaignFromValue(base::Value value,
+  Campaign GetCampaignFromValue(const base::Value& value,
                                 const base::FilePath& installed_dir);
-  void ParseSRProperties(base::Value value,
+  void ParseSRProperties(const base::Value& value,
                          const base::FilePath& installed_dir);
 
   base::Value GetBackgroundAt(size_t campaign_index, size_t background_index);
 
   bool IsSuperReferral() const;
+  void PrintCampaignsParsingResult() const;
 
   std::string url_prefix;
 
