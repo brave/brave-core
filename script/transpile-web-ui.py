@@ -27,7 +27,6 @@ def main():
         webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
 
     depfile_path = os.path.abspath(args.depfile_path[0])
-
     transpile_web_uis(args.production, webpack_gen_dir, root_gen_dir,
                       args.entry,
                       depfile_path, grd_path,
@@ -52,7 +51,11 @@ def parse_args():
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
-    parser.add_argument('--webpack_alias', nargs='?')
+    parser.add_argument('--webpack_alias',
+                        action='append',
+                        help='Webpack alias',
+                        required=True)
+
     args = parser.parse_args()
     # validate args
     if (args.output_path is None or len(args.output_path) != 1 or
@@ -69,10 +72,9 @@ def clean_target_dir(target_dir):
     except Exception as e:
         raise Exception("Error removing previous webpack target dir", e)
 
-#pylint: disable-msg=too-many-arguments
 def transpile_web_uis(production, target_gen_dir, root_gen_dir,
                       entry_points, depfile_path, depfile_sourcename,
-                      webpack_alias, public_asset_path=None, env=None):
+                      webpack_aliases, public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -86,7 +88,9 @@ def transpile_web_uis(production, target_gen_dir, root_gen_dir,
     if public_asset_path is not None:
         args.append("--output-public-path=" + public_asset_path)
 
-    args.append("--webpack_alias=" + webpack_alias)
+    # web pack aliases
+    for alias in webpack_aliases:
+        args.append("--webpack_alias=" + alias)
 
     # entrypoints
     for entry in entry_points:
