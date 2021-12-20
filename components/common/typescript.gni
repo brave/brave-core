@@ -80,7 +80,6 @@ brave_common_web_compile_inputs = [
 #     where the extra_relative_path ends.
 #   webpack_aliases
 #     Support for web pack aliases that directly passed to webpack config.
-#     `chromeapp` alias is used by default if not specified
 template("transpile_web_ui") {
   action(target_name) {
     script = "//brave/script/transpile-web-ui.py"
@@ -144,10 +143,6 @@ template("transpile_web_ui") {
       foreach(alias, invoker.webpack_aliases) {
         args += [ "--webpack_alias=" + alias ]
       }
-    } else {
-      # For explanation of "chromeapp", see:
-      # https://github.com/brave/brave-browser/issues/5587
-      args += [ "--webpack_alias=chromeapp" ]
     }
 
     # support multiple entry points and named bundle JS filename

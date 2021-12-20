@@ -6,6 +6,7 @@ transpile_web_ui("generate_brave_webtorrent") {
     ["brave_webtorrent_background", rebase_path("background.ts")]
   ]
 
+  webpack_aliases = [ "chromeapp" ]
   resource_name = "brave_webtorrent"
 
   # Must match the relative path from the static GRD to the manifest.json

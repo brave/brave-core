@@ -60,7 +60,8 @@ def parse_args():
     parser.add_argument('--webpack_alias',
                         action='append',
                         help='Webpack alias',
-                        required=True)
+                        required=False,
+                        default=[])
 
     args = parser.parse_args()
     # validate args
