@@ -328,7 +328,7 @@ class SettingsPage extends React.Component<Props, State> {
     return (
       <Page>
         {this.getPromotionsClaims()}
-        <PageWallet />
+        <PageWallet showManageWalletButton={false} />
         {this.getRedirectModal()}
         {this.renderSettings()}
       </Page>
