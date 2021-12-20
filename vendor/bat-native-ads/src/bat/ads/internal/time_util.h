@@ -6,9 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_UTIL_H_
 
-namespace base {
-class Time;
-}  // namespace base
+#include "base/time/time.h"
 
 namespace ads {
 
@@ -23,6 +21,15 @@ base::Time GetTimeAtBeginningOfLastMonth();
 base::Time GetTimeAtEndOfLastMonth();
 base::Time GetTimeAtBeginningOfThisMonth();
 base::Time GetTimeAtEndOfThisMonth();
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+base::Time GetLocalMidnight(const base::Time& time,
+                            const base::Time::Exploded& exploded);
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+void SetFromLocalExplodedFailedForTesting(bool set_failed);
 
 }  // namespace ads
 

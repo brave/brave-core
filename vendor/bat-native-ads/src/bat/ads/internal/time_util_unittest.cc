@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/time_util.h"
 
+#include <string>
+
+#include "base/environment.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
@@ -14,14 +17,65 @@
 
 namespace ads {
 
-class BatAdsTimeUtilTest : public UnitTestBase {
- protected:
-  BatAdsTimeUtilTest() = default;
+#if defined(OS_LINUX)
 
-  ~BatAdsTimeUtilTest() override = default;
+class ScopedLibcTZ {
+ public:
+  explicit ScopedLibcTZ(const std::string& timezone) {
+    auto env = base::Environment::Create();
+    std::string old_timezone_value;
+    if (env->GetVar(kTZ, &old_timezone_value)) {
+      old_timezone_ = old_timezone_value;
+    }
+    if (!env->SetVar(kTZ, timezone)) {
+      success_ = false;
+    }
+    tzset();
+  }
+
+  ~ScopedLibcTZ() {
+    auto env = base::Environment::Create();
+    if (old_timezone_.has_value()) {
+      CHECK(env->SetVar(kTZ, old_timezone_.value()));
+    } else {
+      CHECK(env->UnSetVar(kTZ));
+    }
+  }
+
+  ScopedLibcTZ(const ScopedLibcTZ& other) = delete;
+  ScopedLibcTZ& operator=(const ScopedLibcTZ& other) = delete;
+
+  bool is_success() const { return success_; }
+
+ private:
+  static constexpr char kTZ[] = "TZ";
+
+  bool success_ = true;
+  absl::optional<std::string> old_timezone_;
 };
 
-TEST_F(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
+constexpr char ScopedLibcTZ::kTZ[];
+
+#endif  // defined(OS_LINUX)
+
+class BatAdsTimeUtilTest : public UnitTestBase,
+                           public testing::WithParamInterface<bool> {
+ protected:
+  BatAdsTimeUtilTest() = default;
+  ~BatAdsTimeUtilTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+    SetFromLocalExplodedFailedForTesting(GetParam());
+  }
+
+  void TearDown() override {
+    UnitTestBase::TearDown();
+    SetFromLocalExplodedFailedForTesting(false);
+  }
+};
+
+TEST_P(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56", /* is_local */ true);
@@ -34,7 +88,7 @@ TEST_F(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
   EXPECT_EQ(expected_minutes, minutes);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonth) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -50,7 +104,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonthOnCusp) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonthOnCusp) {
   // Arrange
   const base::Time& time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
@@ -66,7 +120,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfPreviousMonthOnCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonth) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -82,7 +136,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonthOnTheCusp) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonthOnTheCusp) {
   // Arrange
   const base::Time& time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
@@ -98,7 +152,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfPreviousMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfMonth) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -114,7 +168,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToBeginningOfMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfMonth) {
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -130,7 +184,7 @@ TEST_F(BatAdsTimeUtilTest, AdjustTimeToEndOfMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonth) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -146,7 +200,7 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonthOnTheCusp) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonthOnTheCusp) {
   // Arrange
   const base::Time& time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
@@ -162,7 +216,7 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfLastMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonth) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -178,7 +232,7 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonthOnTheCusp) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonthOnTheCusp) {
   // Arrange
   const base::Time& time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
@@ -194,7 +248,7 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfLastMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfThisMonth) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtBeginningOfThisMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -210,7 +264,7 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtBeginningOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfThisMonth) {
+TEST_P(BatAdsTimeUtilTest, GetTimeAtEndOfThisMonth) {
   // Arrange
   const base::Time& time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
@@ -225,5 +279,51 @@ TEST_F(BatAdsTimeUtilTest, GetTimeAtEndOfThisMonth) {
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
+
+#if defined(OS_LINUX)
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingStarted) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  // Arrange
+  const base::Time& time =
+      TimeFromString("October 3 2021 9:34:56.789", /* is_local */ true);
+  AdvanceClock(time);
+
+  // Act
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  EXPECT_TRUE(exploded.HasValidValues());
+
+  base::Time adjusted_time = GetLocalMidnight(time, exploded);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("October 3 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingEnded) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  // Arrange
+  const base::Time& time =
+      TimeFromString("April 4 2021 9:34:56.789", /* is_local */ true);
+  AdvanceClock(time);
+
+  // Act
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  EXPECT_TRUE(exploded.HasValidValues());
+
+  base::Time adjusted_time = GetLocalMidnight(time, exploded);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("April 4 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+#endif  // defined(OS_LINUX)
+
+INSTANTIATE_TEST_SUITE_P(, BatAdsTimeUtilTest, ::testing::Bool());
 
 }  // namespace ads
