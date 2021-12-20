@@ -62,8 +62,9 @@ void EthNonceTracker::GetNextNonce(const EthAddress& from,
 
 void EthNonceTracker::OnGetNetworkNonce(EthAddress from,
                                         GetNextNonceCallback callback,
-                                        bool status,
-                                        uint256_t network_nonce) {
+                                        uint256_t network_nonce,
+                                        mojom::ProviderError error,
+                                        const std::string& error_message) {
   if (!nonce_lock_.Try()) {
     std::move(callback).Run(false, network_nonce);
     return;

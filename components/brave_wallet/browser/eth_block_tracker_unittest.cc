@@ -20,6 +20,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -141,10 +142,12 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   // Explicity check latest block won't trigger observer nor update current
   // block
   bool callback_called = false;
-  tracker.CheckForLatestBlock(
-      base::BindLambdaForTesting([&](bool status, uint256_t block_num) {
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
         callback_called = true;
-        EXPECT_TRUE(status);
+        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+        EXPECT_TRUE(error_message.empty());
         EXPECT_EQ(block_num, uint256_t(4));
       }));
   task_environment_.RunUntilIdle();
@@ -177,10 +180,13 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
 
   bool callback_called = false;
-  tracker.CheckForLatestBlock(
-      base::BindLambdaForTesting([&](bool status, uint256_t block_num) {
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
         callback_called = true;
-        EXPECT_FALSE(status);
+        EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
         EXPECT_EQ(block_num, uint256_t(0));
       }));
   task_environment_.RunUntilIdle();

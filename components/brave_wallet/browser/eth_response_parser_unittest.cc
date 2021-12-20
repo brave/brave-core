@@ -335,7 +335,7 @@ TEST(EthResponseParserUnitTest, ParseErrorResult) {
     EXPECT_EQ(error, mojom::ProviderError::kParsingError);
     EXPECT_EQ(error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-  };
+  }
 }
 
 }  // namespace brave_wallet

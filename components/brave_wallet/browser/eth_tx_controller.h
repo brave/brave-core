@@ -148,8 +148,9 @@ class EthTxController : public KeyedService,
                           ApproveTransactionCallback callback);
   void OnPublishTransaction(std::string tx_meta_id,
                             ApproveTransactionCallback callback,
-                            bool status,
-                            const std::string& tx_hash);
+                            const std::string& tx_hash,
+                            mojom::ProviderError error,
+                            const std::string& error_message);
   void OnGetGasPrice(const std::string& from,
                      const std::string& to,
                      const std::string& value,
@@ -157,14 +158,16 @@ class EthTxController : public KeyedService,
                      const std::string& gas_limit,
                      std::unique_ptr<EthTransaction> tx,
                      AddUnapprovedTransactionCallback callback,
-                     bool success,
-                     const std::string& result);
+                     const std::string& result,
+                     mojom::ProviderError error,
+                     const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
-      bool success,
-      const std::string& result);
+      const std::string& result,
+      mojom::ProviderError error,
+      const std::string& error_message);
   void OnGetGasOracle(const std::string& from,
                       const std::string& to,
                       const std::string& value,
@@ -181,8 +184,9 @@ class EthTxController : public KeyedService,
       const std::string& gas_limit,
       std::unique_ptr<EthTransaction> tx,
       SpeedupOrCancelTransactionCallback callback,
-      bool success,
-      const std::string& result);
+      const std::string& result,
+      mojom::ProviderError error,
+      const std::string& error_message);
   void ContinueSpeedupOrCancel1559Transaction(
       const std::string& from,
       const std::string& gas_limit,
@@ -195,8 +199,9 @@ class EthTxController : public KeyedService,
       const std::string& to,
       uint256_t token_id,
       MakeERC721TransferFromDataCallback callback,
-      bool success,
-      bool is_safe_transfer_from_supported);
+      bool is_safe_transfer_from_supported,
+      mojom::ProviderError error,
+      const std::string& error_message);
 
   // KeyringControllerObserver:
   void KeyringCreated() override;

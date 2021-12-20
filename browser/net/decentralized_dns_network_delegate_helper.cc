@@ -71,9 +71,10 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    bool success,
-    const std::string& content_hash) {
-  if (!success) {
+    const std::string& content_hash,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != brave_wallet::mojom::ProviderError::kSuccess) {
     if (!next_callback.is_null())
       next_callback.Run();
     return;
@@ -91,9 +92,10 @@ void OnBeforeURLRequest_EnsRedirectWork(
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    bool success,
-    const std::vector<std::string>& values) {
-  if (!success ||
+    const std::vector<std::string>& values,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != brave_wallet::mojom::ProviderError::kSuccess ||
       values.size() != static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1) {
     if (!next_callback.is_null())
       next_callback.Run();
