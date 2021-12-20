@@ -90,6 +90,10 @@ public class KeyringStore: ObservableObject {
       controller.setSelectedAccount(selectedAccount.address) { _ in }
     }
   }
+  /// For showing wallet in the main Settings only when default keyring is created
+  public var isDefaultKeyringCreated: Bool {
+    return keyring.isDefaultKeyringCreated
+  }
   
   private let controller: BraveWalletKeyringController
   private var cancellable: AnyCancellable?

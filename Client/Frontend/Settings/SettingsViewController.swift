@@ -249,7 +249,7 @@ class SettingsViewController: TableViewController {
             }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
         )
         
-        if #available(iOS 14.0, *), let keyringStore = walletKeyringStore {
+        if #available(iOS 14.0, *), let keyringStore = walletKeyringStore, keyringStore.isDefaultKeyringCreated {
             section.rows.append(
                 Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
                     let vc = UIHostingController(rootView: WalletSettingsView(keyringStore: keyringStore))
