@@ -87,6 +87,9 @@ class TabbedPageViewController: UIViewController {
     tabsBar.selectedTabAtIndexPath = { [unowned self] indexPath in
       moveToPage(at: indexPath)
     }
+    tabsBar.boundsWidthChanged = { [unowned self] in
+      updateTabsBarSelectionIndicator(pageIndex: currentIndex ?? 0)
+    }
     
     tabsBar.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
@@ -343,12 +346,20 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       // When we add back more items to the pages list, switch this back to estimated and remove
       // item size setting within `layoutSubviews`
       flowLayout.itemSize = CGSize(width: 44, height: tabBarHeight)
-//      flowLayout.estimatedItemSize = CGSize(width: 44, height: tabBarHeight)
       return flowLayout
     }()
   )
   
   var selectedTabAtIndexPath: ((IndexPath) -> Void)?
+  var boundsWidthChanged: (() -> Void)?
+  
+  override var bounds: CGRect {
+    didSet {
+      if oldValue.width != bounds.width {
+        boundsWidthChanged?()
+      }
+    }
+  }
   
   override func layoutSubviews() {
     super.layoutSubviews()
