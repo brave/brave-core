@@ -263,8 +263,10 @@ void BraveActionsContainer::UpdateActionState(const std::string& id) {
 void BraveActionsContainer::AddActionViewForShields() {
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
-    shields_action_btn_ = AddChildViewAt(
-        std::make_unique<BraveShieldsActionView>(browser_->profile()), 1);
+    shields_action_btn_ =
+        AddChildViewAt(std::make_unique<BraveShieldsActionView>(
+                           browser_->profile(), browser_->tab_strip_model()),
+                       1);
     shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
     shields_action_btn_->Init();
   }
