@@ -11,7 +11,8 @@ import {
   SelectWrapper,
   LoadingWrapper,
   LoadIcon,
-  AddressBalanceWrapper
+  AddressBalanceWrapper,
+  NoSearchResultText
 } from './style'
 import {
   HardwareWalletDerivationPathLocaleMapping,
@@ -48,7 +49,7 @@ export default function (props: Props) {
     onAddAccounts,
     getBalance
   } = props
-  const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[] | undefined>()
+  const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[]>([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
 
   React.useMemo(() => {
@@ -107,25 +108,40 @@ export default function (props: Props) {
       </DisclaimerWrapper>
       <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
-        {filteredAccountList?.length === 0 ? (
-          <LoadingWrapper>
-            <LoadIcon size='big' />
-          </LoadingWrapper>
-        ) : (
-          <>
-            {filteredAccountList?.map((account) => {
-              return (
-                <AccountListItem
-                  key={account.derivationPath}
-                  account={account}
-                  selected={selectedDerivationPaths.includes(account.derivationPath)}
-                  onSelect={onSelectAccountCheckbox(account)}
-                  getBalance={getBalance}
-                />
-              )
-            })}
-          </>
-        )}
+        {
+          accounts.length === 0 && (
+            <LoadingWrapper>
+              <LoadIcon size='big'/>
+            </LoadingWrapper>
+          )
+        }
+
+        {
+          accounts.length > 0 && filteredAccountList?.length === 0 && (
+            <NoSearchResultText>
+              {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+            </NoSearchResultText>
+          )
+        }
+
+        {
+          accounts.length > 0 && filteredAccountList.length > 0 && (
+            <>
+              {filteredAccountList?.map((account) => {
+                return (
+                  <AccountListItem
+                    key={account.derivationPath}
+                    account={account}
+                    selected={selectedDerivationPaths.includes(account.derivationPath)}
+                    onSelect={onSelectAccountCheckbox(account)}
+                    getBalance={getBalance}
+                  />
+                )
+              })}
+            </>
+          )
+        }
+
       </HardwareWalletAccountsList>
       <ButtonsContainer>
         <NavButton
@@ -133,9 +149,14 @@ export default function (props: Props) {
           text={isLoadingMore ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
             : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
           buttonType='primary'
-          disabled={isLoadingMore}
+          disabled={isLoadingMore || accounts.length === 0}
         />
-        <NavButton onSubmit={onAddAccounts} text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')} buttonType='primary' />
+        <NavButton
+          onSubmit={onAddAccounts}
+          text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')}
+          buttonType='primary'
+          disabled={accounts.length === 0}
+        />
       </ButtonsContainer>
     </>
   )

@@ -210,3 +210,15 @@ export const LoadIcon = styled(LoaderIcon) <Partial<StyleProps>>`
   width: ${(p) => p.size === 'small' ? '25px' : '70px'};
   opacity: .4;
 `
+
+export const NoSearchResultText = styled.div`
+  font-family: Poppins;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  width: 100%;
+  margin-top: 16px;
+
+  /* Light Theme/Text/text02 */
+  color: ${(p) => p.theme.color.text02};
+`

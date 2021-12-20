@@ -41,6 +41,7 @@ export default function (props: Props) {
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
     LedgerDerivationPaths.LedgerLive
   )
+  const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
 
   const getErrorMessage = (error: any) => {
     if (error.statusCode && error.statusCode === 27404) { // Unknown Error
@@ -58,7 +59,7 @@ export default function (props: Props) {
     return { error: error.message, userHint: '' }
   }
 
-  const onSelectedDerivationScheme = (scheme: HardwareDerivationScheme) => {
+  const onChangeDerivationScheme = (scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)
     setAccounts([])
     props.onConnectHardwareWallet({
@@ -70,22 +71,10 @@ export default function (props: Props) {
       setAccounts(result)
     }).catch((error) => {
       setConnectionError(getErrorMessage(error))
-    })
-  }
-  const onConnectHardwareWallet = (hardware: HardwareVendor) => {
-    setIsConnecting(true)
-    props.onConnectHardwareWallet({
-      hardware,
-      startIndex: accounts.length,
-      stopIndex: accounts.length + derivationBatch,
-      scheme: selectedDerivationScheme
-    }).then((result) => {
-      setAccounts([...accounts, ...result])
-      setIsConnecting(false)
-    }).catch((error) => {
-      setConnectionError(getErrorMessage(error))
-      setIsConnecting(false)
-    })
+      setShowAccountsList(false)
+    }).finally(
+      () => setIsConnecting(false)
+    )
   }
 
   const onAddAccounts = () => {
@@ -121,14 +110,24 @@ export default function (props: Props) {
 
   const onSubmit = () => {
     setConnectionError(undefined)
-    onConnectHardwareWallet(selectedHardwareWallet)
+    setIsConnecting(true)
+    props.onConnectHardwareWallet({
+      hardware: selectedHardwareWallet,
+      startIndex: accounts.length,
+      stopIndex: accounts.length + derivationBatch,
+      scheme: selectedDerivationScheme
+    }).then((result) => {
+      setAccounts([...accounts, ...result])
+      setShowAccountsList(true)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error))
+      setShowAccountsList(false)
+    }).finally(
+      () => setIsConnecting(false)
+    )
   }
 
-  if (connectionError) {
-    console.error(connectionError)
-  }
-
-  if (accounts.length > 0) {
+  if (showAccountsList) {
     return (
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
@@ -137,7 +136,7 @@ export default function (props: Props) {
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}
         selectedDerivationScheme={selectedDerivationScheme}
-        setSelectedDerivationScheme={onSelectedDerivationScheme}
+        setSelectedDerivationScheme={onChangeDerivationScheme}
         onAddAccounts={onAddAccounts}
         getBalance={getBalance}
       />
