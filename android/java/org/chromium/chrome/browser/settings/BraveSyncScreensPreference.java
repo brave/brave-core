@@ -977,11 +977,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             case 4:
                 // kExpired
                 return getResources().getString(R.string.brave_sync_code_expired);
+            case 5:
+                // kValidForTooLong
+                return getResources().getString(R.string.brave_sync_code_valid_for_too_long);
             default:
                 // These three different types of errors have the same message
                 // kNotWellFormed
                 // kVersionNotRecognized
-                // kValidForTooLong
                 return getResources().getString(R.string.brave_sync_wrong_qrcode_error);
         }
     }
