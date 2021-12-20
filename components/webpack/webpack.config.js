@@ -13,7 +13,7 @@ const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json'
 
 module.exports = async function (env, argv) {
   // Webpack config object
-  let resolve = {
+  const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: pathMap
   }
