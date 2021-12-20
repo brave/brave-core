@@ -56,11 +56,14 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
+    content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
     ws_server_ = std::make_unique<net::SpawnedTestServer>(
         net::SpawnedTestServer::TYPE_WS, net::GetWebSocketTestDataDirectory());
     ASSERT_TRUE(ws_server_->Start());
+
+    ws_url_ = ws_server_->GetURL("a.com", "echo-with-no-extension");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -86,10 +89,30 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
+  content::RenderFrameHost* GetNthChildFrameWithHost(
+      content::RenderFrameHost* main,
+      base::StringPiece host,
+      size_t n = 0) {
+    size_t child_idx = 0;
+    while (true) {
+      auto* child_rfh = content::ChildFrameAt(main, child_idx++);
+      if (!child_rfh) {
+        return nullptr;
+      }
+      if (child_rfh->GetLastCommittedOrigin().host() == host) {
+        if (!n)
+          return child_rfh;
+        --n;
+      }
+    }
+  }
+
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<net::SpawnedTestServer> ws_server_;
+
+  GURL ws_url_;
 };
 
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest, PoolIsLimitedByDefault) {
@@ -98,8 +121,8 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest, PoolIsLimitedByDefault) {
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
-  const std::string& ws_open_script = content::JsReplace(
-      kWsOpenScript, ws_server_->GetURL("a.com", "echo-with-no-extension"));
+  const std::string& ws_open_script =
+      content::JsReplace(kWsOpenScript, ws_url_);
   for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
     EXPECT_EQ("open", content::EvalJs(GetWebContents(), ws_open_script));
   }
@@ -127,20 +150,113 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest, PoolIsLimitedByDefault) {
 }
 
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
+                       PoolIsKeyedByTopFrameOrigin) {
+  const GURL a_com_url(
+      https_server_.GetURL("a.com", "/ephemeral_storage.html"));
+  const GURL b_com_url(
+      https_server_.GetURL("b.com", "/ephemeral_storage.html"));
+
+  // Open a.com with nested b.com.
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  auto* b_com0_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
+
+  // Test WebSockets limit in nested b.com.
+  const std::string& ws_open_script =
+      content::JsReplace(kWsOpenScript, ws_url_);
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(b_com0_in_a_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(b_com0_in_a_com_rfh, ws_open_script));
+
+  // Expect the limit is also active in another nested b.com.
+  auto* b_com1_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com", 1);
+  EXPECT_EQ("error", content::EvalJs(b_com1_in_a_com_rfh, ws_open_script));
+
+  // Expect the limit is NOT active in the first-party a.com frame, bc the pool
+  // is located in the a.com renderer process.
+  auto* a_com_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "a.com");
+  EXPECT_EQ("open", content::EvalJs(a_com_in_a_com_rfh, ws_open_script));
+
+  // Open b.com with a nested a.com.
+  auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  auto* a_com_in_b_com_rfh = GetNthChildFrameWithHost(b_com_rfh, "a.com");
+
+  // Test WebSockets limit in nested a.com.
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(a_com_in_b_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(a_com_in_b_com_rfh, ws_open_script));
+
+  // Expect the limit is STILL NOT active in the first-party a.com frame.
+  EXPECT_EQ("open", content::EvalJs(a_com_in_a_com_rfh, ws_open_script));
+}
+
+IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
+                       SandboxedFramesAreLimited) {
+  const GURL a_com_url(
+      https_server_.GetURL("a.com", "/csp_sandboxed_frame.html"));
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_TRUE(a_com_rfh->GetLastCommittedOrigin().opaque());
+
+  const std::string& ws_open_script =
+      content::JsReplace(kWsOpenScript, ws_url_);
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(a_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(a_com_rfh, ws_open_script));
+
+  auto* c_com_in_a_com_rfh = content::ChildFrameAt(a_com_rfh, 0);
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(c_com_in_a_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(c_com_in_a_com_rfh, ws_open_script));
+
+  const GURL b_com_url(
+      https_server_.GetURL("b.com", "/csp_sandboxed_frame.html"));
+  auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_TRUE(b_com_rfh->GetLastCommittedOrigin().opaque());
+
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(b_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(b_com_rfh, ws_open_script));
+
+  auto* c_com_in_b_com_rfh = content::ChildFrameAt(b_com_rfh, 0);
+  for (int i = 0; i < kWebSocketsPoolLimit; ++i) {
+    EXPECT_EQ("open", content::EvalJs(c_com_in_b_com_rfh, ws_open_script));
+  }
+  EXPECT_EQ("error", content::EvalJs(c_com_in_b_com_rfh, ws_open_script));
+}
+
+IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
                        PoolIsNotLimitedWithDisabledShields) {
-  const GURL url(https_server_.GetURL("a.com", "/simple.html"));
+  const GURL url(https_server_.GetURL("a.com", "/ephemeral_storage.html"));
   // Disable shields.
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
 
-  EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  const std::string& ws_open_script = content::JsReplace(
-      kWsOpenScript, ws_server_->GetURL("a.com", "echo-with-no-extension"));
+  const std::string& ws_open_script =
+      content::JsReplace(kWsOpenScript, ws_url_);
   // No limits should be active.
   for (int i = 0; i < kWebSocketsPoolLimit + 5; ++i) {
-    EXPECT_EQ("open", content::EvalJs(GetWebContents(), ws_open_script));
+    EXPECT_EQ("open", content::EvalJs(a_com_rfh, ws_open_script));
+  }
+
+  // No limits should be active in 3p frame.
+  auto* b_com_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
+  for (int i = 0; i < kWebSocketsPoolLimit + 5; ++i) {
+    EXPECT_EQ("open", content::EvalJs(b_com_in_a_com_rfh, ws_open_script));
   }
 }
 
@@ -163,8 +279,8 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitDisabledBrowserTest,
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
-  const std::string& ws_open_script = content::JsReplace(
-      kWsOpenScript, ws_server_->GetURL("a.com", "echo-with-no-extension"));
+  const std::string& ws_open_script =
+      content::JsReplace(kWsOpenScript, ws_url_);
   // No limits should be active.
   for (int i = 0; i < kWebSocketsPoolLimit + 5; ++i) {
     EXPECT_EQ("open", content::EvalJs(GetWebContents(), ws_open_script));

@@ -17,7 +17,7 @@
 
 namespace blink {
 
-class SecurityOrigin;
+class ExecutionContext;
 
 class CORE_EXPORT ResourcePoolLimiter {
  public:
@@ -43,7 +43,7 @@ class CORE_EXPORT ResourcePoolLimiter {
   ResourcePoolLimiter& operator=(const ResourcePoolLimiter&) = delete;
 
   std::unique_ptr<ResourceInUseTracker> IssueResourceInUseTracker(
-      const SecurityOrigin* security_origin,
+      ExecutionContext* context,
       ResourceType resource_type);
 
  private:

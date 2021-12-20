@@ -6,6 +6,8 @@
 #include "brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h"
 
 #include "base/notreached.h"
+#include "third_party/blink/renderer/core/execution_context/security_context.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -15,6 +17,24 @@ namespace blink {
 using ResourceType = ResourcePoolLimiter::ResourceType;
 
 namespace {
+
+const SecurityOrigin* GetTopFrameOrContextSecurityOrigin(
+    ExecutionContext* context) {
+  DCHECK(context);
+  if (auto* window = DynamicTo<LocalDOMWindow>(context)) {
+    auto* frame = window->GetFrame();
+    if (!frame)
+      frame = window->GetDisconnectedFrame();
+    if (frame) {
+      if (auto* top_frame_security_context =
+              frame->Top()->GetSecurityContext()) {
+        return top_frame_security_context->GetSecurityOrigin()
+            ->GetOriginOrPrecursorOriginIfOpaque();
+      }
+    }
+  }
+  return context->GetSecurityOrigin()->GetOriginOrPrecursorOriginIfOpaque();
+}
 
 String GetResourceIdInUse(const SecurityOrigin* origin,
                           ResourceType resource_type) {
@@ -60,11 +80,11 @@ ResourcePoolLimiter::ResourcePoolLimiter() = default;
 ResourcePoolLimiter::~ResourcePoolLimiter() = default;
 
 std::unique_ptr<ResourcePoolLimiter::ResourceInUseTracker>
-ResourcePoolLimiter::IssueResourceInUseTracker(
-    const SecurityOrigin* security_origin,
-    ResourceType resource_type) {
-  DCHECK(security_origin);
-  String resource_id = GetResourceIdInUse(security_origin, resource_type);
+ResourcePoolLimiter::IssueResourceInUseTracker(ExecutionContext* context,
+                                               ResourceType resource_type) {
+  DCHECK(context);
+  String resource_id = GetResourceIdInUse(
+      GetTopFrameOrContextSecurityOrigin(context), resource_type);
 
   MutexLocker locker(resources_in_use_lock_);
   // `insert` doesn't change the value if it already exists.
