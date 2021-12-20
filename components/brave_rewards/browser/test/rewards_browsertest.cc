@@ -179,17 +179,17 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
       https_server_.get(),
       "3zsistemi.si");
 
-  content::WebContents* site_banner =
+  base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner(
           rewards_browsertest_util::TipAction::OneTime);
-  auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
-      site_banner);
+  auto tip_options =
+      rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
   ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 50 }));
 
   site_banner = context_helper_->OpenSiteBanner(
       rewards_browsertest_util::TipAction::SetMonthly);
-  tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
-      site_banner);
+  tip_options =
+      rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
   ASSERT_EQ(tip_options, std::vector<double>({ 1, 10, 100 }));
 }
 
@@ -201,11 +201,11 @@ IN_PROC_BROWSER_TEST_F(
       https_server_.get(),
       "laurenwags.github.io");
 
-  content::WebContents* site_banner =
+  base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner(
           rewards_browsertest_util::TipAction::OneTime);
-  const auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
-      site_banner);
+  const auto tip_options =
+      rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
@@ -262,12 +262,13 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
       "3zsistemi.si");
 
   // Open the Rewards popup
-  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup_contents =
+      context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   const std::string score =
       rewards_browsertest_util::WaitForElementThenGetContent(
-          popup_contents, "[data-test-id=attention-score-text]");
+          popup_contents.get(), "[data-test-id=attention-score-text]");
   EXPECT_NE(score.find("100%"), std::string::npos);
 }
 

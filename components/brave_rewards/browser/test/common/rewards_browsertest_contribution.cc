@@ -96,7 +96,7 @@ void RewardsBrowserTestContribution::TipPublisher(
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  content::WebContents* site_banner_contents =
+  base::WeakPtr<content::WebContents> site_banner_contents =
       context_helper_->OpenSiteBanner(tip_action);
   ASSERT_TRUE(site_banner_contents);
 
@@ -105,10 +105,10 @@ void RewardsBrowserTestContribution::TipPublisher(
   if (custom_amount > 0) {
     amount = custom_amount;
     rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents, "[data-test-id=custom-tip-button]");
+        site_banner_contents.get(), "[data-test-id=custom-tip-button]");
 
     rewards_browsertest_util::WaitForElementToAppear(
-        site_banner_contents, "[data-test-id=custom-amount-input]");
+        site_banner_contents.get(), "[data-test-id=custom-amount-input]");
 
     constexpr char set_input_script[] = R"(
         const input = document.querySelector(
@@ -117,30 +117,29 @@ void RewardsBrowserTestContribution::TipPublisher(
         input.blur();
     )";
 
-    ASSERT_TRUE(ExecJs(site_banner_contents,
+    ASSERT_TRUE(ExecJs(site_banner_contents.get(),
                        content::JsReplace(set_input_script, amount),
                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                        content::ISOLATED_WORLD_ID_CONTENT_END));
 
     rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents, "[data-test-id=form-submit-button]");
+        site_banner_contents.get(), "[data-test-id=form-submit-button]");
   } else {
     amount = rewards_browsertest_util::GetSiteBannerTipOptions(
-        site_banner_contents)[selection];
+        site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = base::StringPrintf(
         "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
         selection);
 
-    rewards_browsertest_util::WaitForElementThenClick(site_banner_contents,
-                                                      amount_selector);
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents.get(), amount_selector);
   }
 
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents,
-      "[data-test-id=form-submit-button]");
+      site_banner_contents.get(), "[data-test-id=form-submit-button]");
 
   // Signal that direct tip was made and update wallet with new
   // balance
@@ -151,7 +150,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   }
 
   // Wait for thank you banner to load
-  ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
+  ASSERT_TRUE(WaitForLoadStop(site_banner_contents.get()));
 
   if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
     WaitForRecurringTipToBeSaved();
@@ -187,12 +186,9 @@ void RewardsBrowserTestContribution::TipPublisher(
   // Make sure that thank you banner shows correct publisher data
   {
     rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
-        "Thanks for the support!");
+        site_banner_contents.get(), "body", "Thanks for the support!");
     rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
+        site_banner_contents.get(), "body",
         base::StringPrintf("%.3f BAT", amount));
   }
 

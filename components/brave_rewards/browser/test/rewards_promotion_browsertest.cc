@@ -96,9 +96,12 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 
   double ClaimPromotion(bool use_panel, const bool should_finish = true) {
     // Use the appropriate WebContents
-    content::WebContents* contents = use_panel
-        ? context_helper_->OpenRewardsPopup()
-        : browser()->tab_strip_model()->GetActiveWebContents();
+    base::WeakPtr<content::WebContents> contents =
+        use_panel ? context_helper_->OpenRewardsPopup()
+                  : browser()
+                        ->tab_strip_model()
+                        ->GetActiveWebContents()
+                        ->GetWeakPtr();
 
     // Wait for promotion to initialize
     promotion_->WaitForPromotionInitialization();
@@ -106,19 +109,18 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
       rewards_browsertest_util::WaitForElementThenClick(
-          contents, "[data-test-id=notification-action-button");
+          contents.get(), "[data-test-id=notification-action-button");
     } else {
       rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "[data-test-id='claimGrant']");
+          contents.get(), "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
     rewards_browsertest_util::WaitForElementToAppear(
-        contents, "[data-test-id=grant-captcha-object]");
+        contents.get(), "[data-test-id=grant-captcha-object]");
 
     rewards_browsertest_util::DragAndDrop(
-        contents, "[data-test-id=grant-captcha-object]",
+        contents.get(), "[data-test-id=grant-captcha-object]",
         "[data-test-id=grant-captcha-target]");
 
     if (!should_finish) {
@@ -143,21 +145,16 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     const std::string selector = use_panel
         ? "[id='root']"
         : "[data-test-id='newTokenGrant']";
-    rewards_browsertest_util::WaitForElementToContain(
-        contents,
-        selector,
-        "Free Token Grant");
-    rewards_browsertest_util::WaitForElementToContain(
-        contents,
-        selector,
-        "30.000 BAT");
+    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
+                                                      "Free Token Grant");
+    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
+                                                      "30.000 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "#"
-          "grant-completed-ok");
+      rewards_browsertest_util::WaitForElementThenClick(contents.get(),
+                                                        "#"
+                                                        "grant-completed-ok");
     }
 
     return 30;
@@ -210,13 +207,12 @@ IN_PROC_BROWSER_TEST_F(
   response_->SetPromotionEmptyKey(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
 
-  content::WebContents* popup = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup =
+      context_helper_->OpenRewardsPopup();
 
   promotion_->WaitForPromotionInitialization();
   rewards_browsertest_util::WaitForElementToAppear(
-      popup,
-      "[data-test-id=notification-close]",
-      false);
+      popup.get(), "[data-test-id=notification-close]", false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
