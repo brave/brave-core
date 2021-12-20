@@ -27,6 +27,7 @@
         android:clickable="true"
         android:focusable="true"
         android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"
         app:drawableStartCompat="@drawable/ic_plus"/>
 
     <LinearLayout

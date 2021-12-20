@@ -93,6 +93,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.math.RoundingMode;
@@ -116,8 +117,6 @@ public class BraveRewardsPanel
     private static final String TWITCH_TYPE = "twitch#";
 
     private static final String PREF_VERIFY_WALLET_ENABLE = "verify_wallet_enable";
-
-    private static final int WALLET_BALANCE_LIMIT = 15;
 
     // Balance report codes
     private static final int BALANCE_REPORT_GRANTS = 0;
@@ -581,9 +580,9 @@ public class BraveRewardsPanel
             case REWARDS_NOTIFICATION_NO_INTERNET:
                 title = "";
                 notificationIcon = R.drawable.icon_error_notification;
-                description = "<b>"
+                description = "\n"
                         + mPopupView.getResources().getString(R.string.brave_rewards_local_uh_oh)
-                        + "</b> "
+                        + "\n"
                         + mPopupView.getResources().getString(
                                 R.string.brave_rewards_local_server_not_responding);
                 actionNotificationButton.setVisibility(View.GONE);
@@ -591,11 +590,13 @@ public class BraveRewardsPanel
             case REWARDS_PROMOTION_CLAIM_ERROR:
                 title = "";
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                description = "<b>"
+                description = "\n"
                         + mPopupView.getResources().getString(
                                 R.string.brave_rewards_local_general_grant_error_title)
-                        + "</b>";
+                        + "\n";
                 notificationIcon = R.drawable.coin_stack;
+                mWalletBalanceLayout.setAlpha(1.0f);
+                mWalletBalanceProgress.setVisibility(View.GONE);
                 break;
             default:
                 Log.e(TAG, "This notification type is either invalid or not handled yet: " + type);
@@ -1244,41 +1245,24 @@ public class BraveRewardsPanel
                     case BraveRewardsExternalWallet.CONNECTED:
                     case BraveRewardsExternalWallet.PENDING:
                     case BraveRewardsExternalWallet.VERIFIED:
-                        if (walletBalance < WALLET_BALANCE_LIMIT
-                                && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
-                                && !isVerifyWalletEnabled()) {
-                            showUpholdLoginPopupWindow(btnVerifyWallet);
+                        if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
+                            TabUtils.openUrlInNewTab(false,
+                                    BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                            dismiss();
                         } else {
-                            if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
-                                BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                                        BraveActivity
-                                                .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
-                                dismiss();
-                            } else {
-                                int requestCode =
-                                        (status == BraveRewardsExternalWallet.NOT_CONNECTED)
-                                        ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                                        : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                                Intent intent = BuildVerifyWalletActivityIntent(status);
-                                if (intent != null) {
-                                    mActivity.startActivityForResult(intent, requestCode);
-                                }
+                            int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
+                                    ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                                    : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                            Intent intent = BuildVerifyWalletActivityIntent(status);
+                            if (intent != null) {
+                                mActivity.startActivityForResult(intent, requestCode);
                             }
                         }
                         break;
                     case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                     case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                        if (walletBalance < WALLET_BALANCE_LIMIT
-                                && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
-                                && !isVerifyWalletEnabled()) {
-                            showUpholdLoginPopupWindow(btnVerifyWallet);
-                        } else {
-                            if (!TextUtils.isEmpty(mExternalWallet.getVerifyUrl())) {
-                                dismiss();
-                                mBraveActivity.openNewOrSelectExistingTab(
-                                        mExternalWallet.getLoginUrl());
-                            }
-                        }
+                        TabUtils.openUrlInNewTab(false,
+                                BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
                         break;
                     default:
                         Log.e(TAG, "Unexpected external wallet status");
@@ -1503,112 +1487,6 @@ public class BraveRewardsPanel
     private boolean isVerifyWalletEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(PREF_VERIFY_WALLET_ENABLE, false);
-    }
-
-    private void showUpholdLoginPopupWindow(final View view) {
-        PopupWindow loginPopupWindow = new PopupWindow(mActivity);
-        int foregroundColor = R.color.rewards_panel_foreground_color;
-        mRewardsMainLayout.setForeground(
-                new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
-        enableControls(false, mRewardsMainLayout);
-
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, mPopupView);
-
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
-        if (isTablet) {
-            ViewGroup.LayoutParams params = loginPopupView.getLayoutParams();
-            params.width = dpToPx(mActivity, 320);
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            loginPopupView.setLayoutParams(params);
-        }
-
-        TextView loginActionButton = loginPopupView.findViewById(R.id.login_action_button);
-
-        String verifiedAccountUpholdText =
-                String.format(mActivity.getResources().getString(R.string.verified_account_uphold),
-                        mActivity.getResources().getString(R.string.continue_to_login));
-        int countinueToLoginIndex = verifiedAccountUpholdText.indexOf(
-                mActivity.getResources().getString(R.string.continue_to_login));
-        assert countinueToLoginIndex != 0;
-        Spanned verifiedAccountUpholdTextSpanned =
-                BraveRewardsHelper.spannedFromHtmlString(verifiedAccountUpholdText);
-        SpannableString verifiedAccountUpholdTextSS =
-                new SpannableString(verifiedAccountUpholdTextSpanned.toString());
-
-        ClickableSpan verifiedAccountUpholdClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                dismiss();
-                loginPopupWindow.dismiss();
-                mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getLoginUrl());
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        verifiedAccountUpholdTextSS.setSpan(verifiedAccountUpholdClickableSpan,
-                countinueToLoginIndex,
-                countinueToLoginIndex
-                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        verifiedAccountUpholdTextSS.setSpan(
-                new ForegroundColorSpan(
-                        mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)),
-                countinueToLoginIndex,
-                countinueToLoginIndex
-                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        loginActionButton.setMovementMethod(LinkMovementMethod.getInstance());
-        loginActionButton.setText(verifiedAccountUpholdTextSS);
-
-        mPopupView.measure(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        int popupWidth = mPopupView.getMeasuredWidth();
-        loginPopupWindow.setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            loginPopupWindow.setElevation(20);
-        }
-
-        loginPopupWindow.setTouchable(true);
-        loginPopupWindow.setFocusable(true);
-        loginPopupWindow.setOutsideTouchable(true);
-        loginPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    loginPopupWindow.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (SysUtils.isLowEndDevice()) {
-                    loginPopupWindow.setAnimationStyle(0);
-                }
-
-                if (android.os.Build.VERSION.SDK_INT
-                        < android.os.Build.VERSION_CODES.N) { // Before 7.0
-                    loginPopupWindow.showAsDropDown(view, 0, 0);
-                } else {
-                    int[] location = new int[2];
-                    view.getLocationOnScreen(location);
-                    int y = location[1];
-                    loginPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, 0, y);
-                }
-            }
-        });
     }
 
     private Intent BuildVerifyWalletActivityIntent(@WalletStatus final int status) {
