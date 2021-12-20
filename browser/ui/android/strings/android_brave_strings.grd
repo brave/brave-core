@@ -2728,7 +2728,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add funds
     </message>
     <message name="IDS_REWARDS_SUMMARY" desc="Brave rewards panel text">
-      Rewards summary
+      Rewards Summary
     </message>
     <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Brave rewards panel text">
       Total Grants Claimed
@@ -2780,9 +2780,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BAT_TEXT" desc="Brave rewards panel text">
       BAT
-    </message>
-    <message name="IDS_HISTORY" desc="Brave rewards panel text">
-      History
     </message>
     <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
       ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD

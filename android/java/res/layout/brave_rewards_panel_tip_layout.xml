@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardCornerRadius="16dp"
-    app:cardElevation="5dp">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,6 +34,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/attention"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -42,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -67,6 +69,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/include_auto_contribute"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 
@@ -92,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/poppins_regular"
                 android:text="@string/monthly_contribution"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
@@ -102,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/set"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/rewards_panel_action_color"
                 android:textSize="16sp" />
 
@@ -124,6 +129,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_horizontal"
             android:padding="16dp"
+            android:fontFamily="@font/poppins_regular"
             android:text="@string/send_tip"
             android:textColor="@android:color/white" />
 

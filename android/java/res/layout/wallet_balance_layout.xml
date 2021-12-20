@@ -32,6 +32,7 @@
                 android:text="@string/my_wallet"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular"
                 app:drawableEndCompat="@drawable/ic_uphold" />
 
             <ImageView
@@ -57,6 +58,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"
             app:drawableEndCompat="@drawable/disclosure" />
 
     </FrameLayout>
@@ -86,6 +88,7 @@
                     android:alpha="0.65"
                     android:text="@string/your_balance"
                     android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -99,6 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
                         android:textSize="24sp" />
 
                     <TextView
@@ -107,6 +111,7 @@
                         android:alpha="0.65"
                         android:text="@string/bat_text"
                         android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -117,6 +122,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.65"
                     android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -148,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp" />
 
                 <TextView
@@ -156,6 +163,7 @@
                     android:alpha="0.65"
                     android:text="@string/estimated_earnings"
                     android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -169,6 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
                         android:textSize="24sp" />
 
                     <TextView
@@ -177,6 +186,7 @@
                         android:alpha="0.65"
                         android:text="@string/bat_text"
                         android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -187,6 +197,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.65"
                     android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp" />
 
             </LinearLayout>

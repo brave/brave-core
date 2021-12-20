@@ -12,6 +12,7 @@
     android:layout_margin="4dp"
     android:gravity="center"
     android:visibility="gone"
+    android:layout_gravity="center_horizontal"
     app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
@@ -66,6 +67,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/rewards_panel_action_color"
                     android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="@string/lets_take_a_quick_tour"
                     android:textColor="@color/rewards_panel_action_color" />
 
@@ -78,6 +80,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/skip"
+                    android:fontFamily="@font/poppins_regular"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
 
               </LinearLayout>
@@ -100,6 +103,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/rewards_panel_secondary_text_color"
                     android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="@string/go_back"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
 
@@ -119,6 +123,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/rewards_panel_action_color"
                     android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="@string/next"
                     android:textColor="@color/rewards_panel_action_color" />
 

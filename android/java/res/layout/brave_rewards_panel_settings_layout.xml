@@ -9,7 +9,7 @@
     android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardCornerRadius="16dp"
-    app:cardElevation="5dp">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tip"
                 android:textAllCaps="false"
-                android:textColor="@color/settings_section_text_light_color"
+                android:fontFamily="@font/poppins_regular"
                 android:textSize="16sp"/>
 
         </LinearLayout>
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/summary"
                 android:textAllCaps="false"
-                android:textColor="@color/settings_section_text_light_color"
+                android:fontFamily="@font/poppins_regular"
                 android:textSize="16sp"/>
 
         </LinearLayout>

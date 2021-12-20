@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -199,7 +200,6 @@ public class BraveRewardsPanel
         mCurrentTabId = -1;
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -262,6 +262,14 @@ public class BraveRewardsPanel
         LayoutInflater inflater = (LayoutInflater) mAnchorView.getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
+
+        mPopupWindow.setWidth((int) (isTablet ? (width * 0.6) : (width * 0.9)));
 
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
 
@@ -848,7 +856,7 @@ public class BraveRewardsPanel
                 showBraveRewardsOnboarding(root, false);
             }
         }));
-        Button btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -857,16 +865,6 @@ public class BraveRewardsPanel
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(root, true);
-            }
-        }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                braveRewardsOnboardingModalView.setVisibility(View.GONE);
-                mRewardsMainLayout.setForeground(null);
-                enableControls(true, mRewardsMainLayout);
             }
         }));
     }
@@ -1015,35 +1013,35 @@ public class BraveRewardsPanel
                 case BALANCE_REPORT_GRANTS:
                     tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#" + batTextColor
+                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
                             + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_EARNING_FROM_ADS:
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#" + batTextColor
+                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
                             + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_AUTO_CONTRIBUTE:
                     tv = mPopupView.findViewById(R.id.auto_contribute_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.auto_contribute_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
                             + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_ONE_TIME_DONATION:
                     tv = mPopupView.findViewById(R.id.one_time_tip_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.one_time_tip_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
                             + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_RECURRING_DONATION:
                     tv = mPopupView.findViewById(R.id.monthly_tips_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.monthly_tips_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#" + batTextColor
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
                             + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
