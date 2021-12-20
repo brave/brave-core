@@ -8,6 +8,8 @@
 #include <memory>
 #include <string>
 
+#include "base/feature_list.h"
+#include "brave/common/brave_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -125,6 +127,12 @@ bool BraveAlertIndicator::OnMouseDragged(const ui::MouseEvent& event) {
 }
 
 bool BraveAlertIndicator::IsTabAudioToggleable() const {
+  // The alert indicator being interactive can be disabled entirely
+  if (!base::FeatureList::IsEnabled(features::kTabAudioIconInteractive)) {
+    return false;
+  }
+
+  // Pinned tabs are too small to select if alert indicator is a button
   if (parent_tab_->controller()->IsTabPinned(parent_tab_))
     return false;
 
