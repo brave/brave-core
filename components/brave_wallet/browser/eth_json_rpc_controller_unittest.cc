@@ -310,12 +310,36 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         }));
   }
 
-  void SetErrorInterceptor() {
+  void SetInvalidJsonInterceptor() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "Answer is 42");
+        }));
+  }
+
+  void SetHTTPRequestTimeoutInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), "",
                                           net::HTTP_REQUEST_TIMEOUT);
+        }));
+  }
+
+  void SetLimitExceededJsonErrorResponse() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(),
+                                          R"({
+            "jsonrpc":"2.0",
+            "id":1,
+            "error": {
+              "code":-32005,
+              "message": "Request exceeds defined limit"
+            }
+          })");
         }));
   }
 
@@ -496,12 +520,32 @@ TEST_F(EthJsonRpcControllerUnitTest, EnsResolverGetContentHash) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->EnsResolverGetContentHash(
       mojom::kMainnetChainId, "brantly.eth",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->EnsResolverGetContentHash(
+      mojom::kMainnetChainId, "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->EnsResolverGetContentHash(
+      mojom::kMainnetChainId, "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -739,7 +783,7 @@ TEST_F(EthJsonRpcControllerUnitTest, Request) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->Request(request, true,
                            base::BindOnce(&OnRequestResponse, &callback_called,
                                           false /* success */, ""));
@@ -759,12 +803,32 @@ TEST_F(EthJsonRpcControllerUnitTest, GetBalance) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -788,13 +852,35 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetERC20TokenBalance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetERC20TokenBalance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -830,7 +916,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenAllowance) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetERC20TokenAllowance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
@@ -838,6 +924,30 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenAllowance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetERC20TokenAllowance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetERC20TokenAllowance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -910,7 +1020,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
       mojom::kMainnetChainId, "brave.crypto" /* domain */,
       {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
@@ -918,6 +1028,32 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
       base::BindOnce(&OnStringsResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                     std::vector<std::string>()));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
+      mojom::kMainnetChainId, "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(&OnStringsResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                     std::vector<std::string>()));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
+      mojom::kMainnetChainId, "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(&OnStringsResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit",
                      std::vector<std::string>()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -994,10 +1130,26 @@ TEST_F(EthJsonRpcControllerUnitTest, GetIsEip1559) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetIsEip1559(base::BindOnce(
       &OnBoolResponse, &callback_called, mojom::ProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetIsEip1559(base::BindOnce(
+      &OnBoolResponse, &callback_called, mojom::ProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetIsEip1559(base::BindOnce(
+      &OnBoolResponse, &callback_called, mojom::ProviderError::kLimitExceeded,
+      "Request exceeds defined limit", false));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -1043,7 +1195,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
 
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(mojom::kLocalhostChainId, false);
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   SetNetwork(mojom::kLocalhostChainId);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
@@ -1099,7 +1251,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
 
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(chain2.chain_id, false);
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   SetNetwork(chain2.chain_id);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
@@ -1185,12 +1337,30 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC721OwnerOf) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -1265,13 +1435,33 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC721Balance) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
       "0x983110309620d911731ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620d911731ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620d911731ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -1318,13 +1508,34 @@ TEST_F(EthJsonRpcControllerUnitTest, GetSupportsInterface) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetErrorInterceptor();
+  SetHTTPRequestTimeoutInterceptor();
   rpc_controller_->GetSupportsInterface(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
       base::BindOnce(&OnBoolResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                      false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                     false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", false));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
