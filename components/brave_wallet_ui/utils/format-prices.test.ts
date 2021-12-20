@@ -14,6 +14,11 @@ describe('Check Formating with Commas and Decimals', () => {
     const value = '0'
     expect(formatWithCommasAndDecimals(value)).toEqual('0.00')
   })
+
+  test('Value is Unlimited should return Unlimited', () => {
+    const value = 'Unlimited'
+    expect(formatWithCommasAndDecimals(value)).toEqual('Unlimited')
+  })
 })
 
 describe('Check Formating with Commas and Decimals for Fiat', () => {

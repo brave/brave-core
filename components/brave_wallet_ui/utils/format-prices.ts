@@ -13,6 +13,11 @@ export const formatWithCommasAndDecimals = (value: string) => {
     return ''
   }
 
+  // We some times return Unlimited as a value
+  if (isNaN(Number(value))) {
+    return value
+  }
+
   const valueToNumber = Number(value)
 
   if (valueToNumber === 0) {

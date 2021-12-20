@@ -403,5 +403,22 @@ provideStrings({
 
   // Add Suggested Token Panel
   braveWalletAddSuggestedTokenTitle: 'Add suggested token',
-  braveWalletAddSuggestedTokenDescription: 'Would you like to import this token?'
+  braveWalletAddSuggestedTokenDescription: 'Would you like to import this token?',
+
+  // Transaction Detail Panel
+  braveWalletRecentTransactions: 'Recent transactions',
+  braveWalletTransactionDetails: 'Transaction details',
+  braveWalletTransactionDetailDate: 'Date',
+  braveWalletTransactionDetailSpeedUp: 'Speedup',
+  braveWalletTransactionDetailHash: 'Transaction hash',
+  braveWalletTransactionDetailNetwork: 'Network',
+  braveWalletTransactionDetailStatus: 'Status',
+
+  // Transactions Status
+  braveWalletTransactionStatusUnapproved: 'Unapproved',
+  braveWalletTransactionStatusApproved: 'Approved',
+  braveWalletTransactionStatusRejected: 'Rejected',
+  braveWalletTransactionStatusSubmitted: 'Submitted',
+  braveWalletTransactionStatusConfirmed: 'Confirmed',
+  braveWalletTransactionStatusError: 'Error'
 })

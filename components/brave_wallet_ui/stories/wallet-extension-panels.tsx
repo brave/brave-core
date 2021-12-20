@@ -11,7 +11,9 @@ import {
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
   SitePermissions,
-  AddSuggestedTokenPanel
+  AddSuggestedTokenPanel,
+  TransactionsPanel,
+  TransactionDetailPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -48,6 +50,7 @@ import { mockNetworks } from './mock-data/mock-networks'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import { PanelTitles } from '../options/panel-titles'
 import './locale'
+import { transactionDummyData } from './wallet-concept'
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
@@ -319,6 +322,21 @@ _ConnectWithSite.story = {
 }
 
 export const _ConnectedPanel = (args: { locked: boolean }) => {
+  const transactionDummyAccounts: WalletAccountType[] = [
+    {
+      id: '1',
+      name: 'Account 1',
+      address: '1',
+      balance: '0.31178',
+      asset: 'eth',
+      fiatBalance: '0',
+      accountType: 'Primary',
+      tokens: []
+    }
+  ]
+  const transactionList = {
+    [transactionDummyAccounts[0].address]: [...transactionDummyData[1]].concat(...transactionDummyData[2])
+  }
   const { locked } = args
   const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
@@ -339,6 +357,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [toAddress, setToAddress] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
+  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -359,6 +378,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
 
   const onBack = () => {
     setSelectedPanel('main')
+  }
+
+  const onBackToTransactions = () => {
+    navigateTo('transactions')
   }
 
   const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
@@ -479,7 +502,28 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will redirect to brave://wallet/crypto/portfolio/add-asset')
   }
 
+  const onClickRetryTransaction = () => {
+    // Does nothing in storybook
+    alert('Will retry transaction')
+  }
+
+  const onClickCancelTransaction = () => {
+    // Does nothing in storybook
+    alert('Will cancel transaction')
+  }
+
+  const onClickSpeedupTransaction = () => {
+    // Does nothing in storybook
+    alert('Will speedup transaction')
+  }
+
   const connectedAccounts = accounts.slice(0, 2)
+
+  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    navigateTo('transactionDetails')
+    setSelectedTransaction(transaction)
+    console.log(selectedTransaction)
+  }
 
   return (
     <StyledExtensionWrapper>
@@ -539,8 +583,24 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                   />
                 </SelectContainer>
               }
-              {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' &&
-                <Panel
+              {selectedPanel === 'transactionDetails' && selectedTransaction &&
+                <SelectContainer>
+                  <TransactionDetailPanel
+                    transaction={selectedTransaction}
+                    onBack={onBackToTransactions}
+                    onCancelTransaction={onClickCancelTransaction}
+                    onRetryTransaction={onClickRetryTransaction}
+                    onSpeedupTransaction={onClickSpeedupTransaction}
+                    accounts={accounts}
+                    defaultCurrencies={mockDefaultCurrencies}
+                    selectedNetwork={mockNetworks[0]}
+                    visibleTokens={NewAssetOptions}
+                    transactionSpotPrices={[]}
+                  />
+                </SelectContainer>
+              }
+              {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' && selectedPanel !== 'transactionDetails' &&
+                < Panel
                   navAction={navigateTo}
                   title={panelTitle}
                   useSearch={selectedPanel === 'apps'}
@@ -595,14 +655,28 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onAddAccount={onAddAccount}
                       />
                     }
+                    {selectedPanel === 'transactions' &&
+                      <TransactionsPanel
+                        accounts={transactionDummyAccounts}
+                        defaultCurrencies={mockDefaultCurrencies}
+                        onSelectTransaction={onSelectTransaction}
+                        selectedNetwork={mockNetworks[0]}
+                        selectedAccount={transactionDummyAccounts[0]}
+                        visibleTokens={NewAssetOptions}
+                        transactionSpotPrices={[]}
+                        transactions={transactionList}
+
+                      />
+                    }
                   </ScrollContainer>
                 </Panel>
               }
             </>
           )}
         </>
-      )}
-    </StyledExtensionWrapper>
+      )
+      }
+    </StyledExtensionWrapper >
   )
 }
 

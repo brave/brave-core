@@ -1,12 +1,10 @@
 import styled from 'styled-components'
-import { BraveWallet } from '../../../constants/types'
 import { MoreVertRIcon, ArrowRightIcon } from 'brave-ui/components/icons'
 import CoinsIconSVG from '../../../assets/svg-icons/coins-icon.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
-  status: BraveWallet.TransactionStatus
 }
 
 export const StyledWrapper = styled.div`
@@ -153,22 +151,6 @@ export const StatusRow = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-`
-
-export const StatusBubble = styled.div<Partial<StyleProps>>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  opacity: ${(p) => p.status === 3 || p.status === 1 || p.status === 0 ? 0.4 : 1};
-  background-color: ${(p) => p.status === 4 || p.status === 1
-    ? '#2AC194'
-    : p.status === 2 || p.status === 5 ? '#EE6374'
-      : p.status === 0 ? p.theme.color.interactive08 : p.theme.color.warningIcon
-  };
-  margin-right: 6px;
 `
 
 export const CoinsButton = styled(WalletButton)`

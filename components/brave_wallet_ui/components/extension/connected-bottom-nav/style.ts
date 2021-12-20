@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import UnCheckStar from '../../../assets/svg-icons/star-unchecked.svg'
+import LightningBolt from '../../../assets/svg-icons/lightning-bolt-icon.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
@@ -58,10 +58,22 @@ export const NavButtonText = styled.span<StyleProps>`
   opacity: ${(p) => p.disabled ? '0.6' : '1'};
 `
 
-export const AppsIcon = styled.div`
+export const TransactionsButton = styled(WalletButton) <StyleProps>`
+  display: flex;
+  height: 100%;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+`
+
+export const LightningBoltIcon = styled.div`
   width: 18px;
   height: 18px;
   background-color: ${(p) => p.theme.palette.white};
-  -webkit-mask-image: url(${UnCheckStar});
-  mask-image: url(${UnCheckStar});
+  -webkit-mask-image: url(${LightningBolt});
+  mask-image: url(${LightningBolt});
 `

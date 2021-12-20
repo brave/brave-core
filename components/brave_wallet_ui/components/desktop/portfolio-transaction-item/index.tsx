@@ -33,7 +33,6 @@ import {
   FromCircle,
   MoreButton,
   MoreIcon,
-  StatusBubble,
   StatusRow,
   StyledWrapper,
   ToCircle,
@@ -41,6 +40,7 @@ import {
   TransactionFeeTooltipBody,
   TransactionFeeTooltipTitle
 } from './style'
+import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
