@@ -89,6 +89,7 @@ import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -1248,9 +1249,10 @@ public class BraveRewardsPanel
                             showUpholdLoginPopupWindow(btnVerifyWallet);
                         } else {
                             if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
-                                BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
+                                mActivity.getTabCreator(false).launchUrl(
                                         BraveActivity
-                                                .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                                                .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL,
+                                        TabLaunchType.FROM_CHROME_UI);
                                 dismiss();
                             } else {
                                 int requestCode =
