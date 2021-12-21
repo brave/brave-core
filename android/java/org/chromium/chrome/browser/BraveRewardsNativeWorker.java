@@ -417,13 +417,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void ProcessRewardsPageUrl(String path, String query) {
-        synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().processRewardsPageUrl(
-                    mNativeBraveRewardsNativeWorker, path, query);
-        }
-    }
-
     public void RecoverWallet(String passPhrase) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().recoverWallet(
@@ -632,15 +625,6 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnProcessRewardsPageUrl(int error_code, String wallet_type,
-            String action, String json_args) {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnProcessRewardsPageUrl(error_code, wallet_type,
-                    action, json_args);
-        }
-    }
-
-    @CalledByNative
     public void OnClaimPromotion(int error_code) {
         grantClaimInProcess = false;
         for (BraveRewardsObserver observer : mObservers) {
@@ -711,7 +695,6 @@ public class BraveRewardsNativeWorker {
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
-        void processRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
         void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);

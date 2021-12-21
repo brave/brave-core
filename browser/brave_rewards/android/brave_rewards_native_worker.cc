@@ -733,34 +733,6 @@ void BraveRewardsNativeWorker::OnDisconnectWallet(
         base::android::ConvertUTF8ToJavaString(env, wallet_type));
 }
 
-void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& path,
-        const base::android::JavaParamRef<jstring>& query) {
-  if (brave_rewards_service_) {
-    std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
-    std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
-    brave_rewards_service_->ProcessRewardsPageUrl(
-        cpath, cquery,
-        base::BindOnce(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveRewardsNativeWorker::OnProcessRewardsPageUrl(
-    const ledger::type::Result result,
-    const std::string& wallet_type,
-    const std::string& action,
-    const base::flat_map<std::string, std::string>& args) {
-  std::string json_args = StdStrStrMapToJsonString(args);
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnProcessRewardsPageUrl(env,
-        weak_java_brave_rewards_native_worker_.get(env),
-        static_cast<int>(result),
-        base::android::ConvertUTF8ToJavaString(env, wallet_type),
-        base::android::ConvertUTF8ToJavaString(env, action),
-        base::android::ConvertUTF8ToJavaString(env, json_args));
-}
-
 std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
     const base::flat_map<std::string, std::string>& args) {
     std::string json_args;
