@@ -746,7 +746,7 @@ public class BraveRewardsPanel
         mPopupWindow.showAsDropDown(mAnchorView, 0, 0);
 
         checkForRewardsOnboarding();
-        mBraveRewardsNativeWorker.getInstance().StartProcess();
+        BraveRewardsNativeWorker.getInstance().StartProcess();
     }
 
     private void checkForRewardsOnboarding() {

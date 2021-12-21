@@ -1855,6 +1855,7 @@ public class BraveNewTabPageLayout
                 BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
     }
 
+    @Override
     public void onCryptoWidgetBottomSheetDialogDismiss() {
         startTimer();
     }

@@ -114,7 +114,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private boolean mInitialLayoutInflationComplete;
 
     private TextView mSlippageToleranceText;
-    private int radioSlippageToleranceCheckedId = 0;
+    private int radioSlippageToleranceCheckedId;
 
     public enum ActivityType {
         BUY(0),
