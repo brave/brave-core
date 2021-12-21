@@ -23,9 +23,7 @@ module.exports = async function (env, argv) {
     resolve: {
       extensions: ['.js', '.tsx', '.ts', '.json'],
       alias: pathMap,
-      // For explanation of "chromeapp", see:
-      // https://github.com/brave/brave-browser/issues/5587
-      aliasFields: ['chromeapp', 'browser']
+      aliasFields: [argv.webpack_alias]
     },
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.

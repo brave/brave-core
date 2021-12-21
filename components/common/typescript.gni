@@ -137,6 +137,14 @@ template("transpile_web_ui") {
       "--depfile_path=" + rebase_path(depfile),
     ]
 
+    if (defined(invoker.webpack_alias)) {
+      args += [ "--webpack_alias=" + invoker.webpack_alias ]
+    } else {
+      # For explanation of "chromeapp", see:
+      # https://github.com/brave/brave-browser/issues/5587
+      args += [ "--webpack_alias=chromeapp" ]
+    }
+
     # support multiple entry points and named bundle JS filename
     foreach(entry_point, invoker.entry_points) {
       args += [ "--entry=" + entry_point[0] + "=" + entry_point[1] ]
