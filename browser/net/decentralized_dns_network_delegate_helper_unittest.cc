@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
@@ -117,13 +118,14 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
   // No redirect for failed requests.
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(ResponseCallback(),
-                                                    brave_request_info, false,
-                                                    std::vector<std::string>());
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      ResponseCallback(), brave_request_info, std::vector<std::string>(),
+      brave_wallet::mojom::ProviderError::kInternalError, "todo");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, true, std::vector<std::string>());
+      ResponseCallback(), brave_request_info, std::vector<std::string>(),
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // Has both IPFS URI & fallback URL.
@@ -136,27 +138,31 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       "https://fallback2.test.com",  // ipfs.redirect_domain.value
   };
   OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, true, result);
+      ResponseCallback(), brave_request_info, result,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",
             brave_request_info->new_url_spec);
 
   // Has legacy IPFS URI & fallback URL
   result[static_cast<int>(RecordKeys::DWEB_IPFS_HASH)] = "";
   OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, true, result);
+      ResponseCallback(), brave_request_info, result,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
             brave_request_info->new_url_spec);
 
   // Has both fallback URL
   result[static_cast<int>(RecordKeys::IPFS_HTML_VALUE)] = "";
   OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, true, result);
+      ResponseCallback(), brave_request_info, result,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ("https://fallback1.test.com/", brave_request_info->new_url_spec);
 
   // Has legacy URL
   result[static_cast<int>(RecordKeys::BROWSER_REDIRECT_URL)] = "";
   OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, true, result);
+      ResponseCallback(), brave_request_info, result,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ("https://fallback2.test.com/", brave_request_info->new_url_spec);
 }
 
@@ -165,12 +171,14 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
   // No redirect for failed requests.
-  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     false, "");
+  OnBeforeURLRequest_EnsRedirectWork(
+      ResponseCallback(), brave_request_info, "",
+      brave_wallet::mojom::ProviderError::kInternalError, "todo");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
-  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, "");
+  OnBeforeURLRequest_EnsRedirectWork(
+      ResponseCallback(), brave_request_info, "",
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // No redirect for invalid content hash.
@@ -183,8 +191,9 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   std::string content_hash;
   EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
                                          &content_hash));
-  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, content_hash);
+  OnBeforeURLRequest_EnsRedirectWork(
+      ResponseCallback(), brave_request_info, content_hash,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // Redirect for valid content hash.
@@ -197,8 +206,9 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   content_hash = "";
   EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
                                          &content_hash));
-  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, content_hash);
+  OnBeforeURLRequest_EnsRedirectWork(
+      ResponseCallback(), brave_request_info, content_hash,
+      brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(
       brave_request_info->new_url_spec,
       "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");

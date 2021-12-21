@@ -20,6 +20,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -141,10 +142,12 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   // Explicity check latest block won't trigger observer nor update current
   // block
   bool callback_called = false;
-  tracker.CheckForLatestBlock(
-      base::BindLambdaForTesting([&](bool status, uint256_t block_num) {
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
         callback_called = true;
-        EXPECT_TRUE(status);
+        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+        EXPECT_TRUE(error_message.empty());
         EXPECT_EQ(block_num, uint256_t(4));
       }));
   task_environment_.RunUntilIdle();
@@ -156,13 +159,13 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
 }
 
-TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
+TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
   EthBlockTracker tracker(rpc_controller_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
-        url_loader_factory_.AddResponse(
-            request.url.spec(), "{code: 3, message: 'Error', data: []}");
+        url_loader_factory_.AddResponse(request.url.spec(),
+                                        "One ring to rule them all");
       }));
 
   response_block_num_ = 3;
@@ -177,10 +180,87 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
 
   bool callback_called = false;
-  tracker.CheckForLatestBlock(
-      base::BindLambdaForTesting([&](bool status, uint256_t block_num) {
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
         callback_called = true;
-        EXPECT_FALSE(status);
+        EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+        EXPECT_EQ(block_num, uint256_t(0));
+      }));
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
+  EthBlockTracker tracker(rpc_controller_.get());
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(request.url.spec(),
+                                        R"({
+            "jsonrpc":"2.0",
+            "id":1,
+            "error": {
+              "code":-32005,
+              "message": "Request exceeds defined limit"
+            }
+          })");
+      }));
+
+  response_block_num_ = 3;
+  TrackerObserver observer;
+  tracker.AddObserver(&observer);
+
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
+  EXPECT_EQ(observer.latest_block_fired_, 0u);
+  EXPECT_EQ(observer.block_num_, uint256_t(0));
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
+
+  bool callback_called = false;
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
+        callback_called = true;
+        EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
+        EXPECT_EQ(error_message, "Request exceeds defined limit");
+        EXPECT_EQ(block_num, uint256_t(0));
+      }));
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
+  EthBlockTracker tracker(rpc_controller_.get());
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(request.url.spec(), "",
+                                        net::HTTP_REQUEST_TIMEOUT);
+      }));
+
+  response_block_num_ = 3;
+  TrackerObserver observer;
+  tracker.AddObserver(&observer);
+
+  tracker.Start(base::Seconds(5));
+  task_environment_.FastForwardBy(base::Seconds(5));
+  EXPECT_EQ(observer.latest_block_fired_, 0u);
+  EXPECT_EQ(observer.block_num_, uint256_t(0));
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
+
+  bool callback_called = false;
+  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
+      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
+          const std::string& error_message) {
+        callback_called = true;
+        EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
         EXPECT_EQ(block_num, uint256_t(0));
       }));
   task_environment_.RunUntilIdle();

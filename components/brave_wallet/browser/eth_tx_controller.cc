@@ -190,7 +190,8 @@ void EthTxController::AddUnapprovedTransaction(
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
-                                     std::move(callback), true, gas_limit);
+                                     std::move(callback), gas_limit,
+                                     mojom::ProviderError::kSuccess, "");
   }
 }
 
@@ -201,10 +202,12 @@ void EthTxController::OnGetGasPrice(const std::string& from,
                                     const std::string& gas_limit,
                                     std::unique_ptr<EthTransaction> tx,
                                     AddUnapprovedTransactionCallback callback,
-                                    bool success,
-                                    const std::string& result) {
+                                    const std::string& result,
+                                    mojom::ProviderError error,
+                                    const std::string& error_message) {
   uint256_t gas_price;
-  if (!success || !HexValueToUint256(result, &gas_price)) {
+  if (error != mojom::ProviderError::kSuccess ||
+      !HexValueToUint256(result, &gas_price)) {
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(
@@ -221,7 +224,8 @@ void EthTxController::OnGetGasPrice(const std::string& from,
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
-                                     true, gas_limit);
+                                     gas_limit, mojom::ProviderError::kSuccess,
+                                     "");
   }
 }
 
@@ -229,10 +233,12 @@ void EthTxController::ContinueAddUnapprovedTransaction(
     const std::string& from,
     std::unique_ptr<EthTransaction> tx,
     AddUnapprovedTransactionCallback callback,
-    bool success,
-    const std::string& result) {
+    const std::string& result,
+    mojom::ProviderError error,
+    const std::string& error_message) {
   uint256_t gas_limit;
-  if (!success || !HexValueToUint256(result, &gas_limit)) {
+  if (error != mojom::ProviderError::kSuccess ||
+      !HexValueToUint256(result, &gas_limit)) {
     gas_limit = 0;
     mojom::TransactionType tx_type;
     if (GetTransactionInfoFromData(ToHex(tx->data()), &tx_type, nullptr,
@@ -309,7 +315,8 @@ void EthTxController::AddUnapproved1559Transaction(
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
-                                     std::move(callback), true, gas_limit);
+                                     std::move(callback), gas_limit,
+                                     mojom::ProviderError::kSuccess, "");
   }
 }
 
@@ -344,7 +351,8 @@ void EthTxController::OnGetGasOracle(
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
-                                     true, gas_limit);
+                                     gas_limit, mojom::ProviderError::kSuccess,
+                                     "");
   }
 }
 
@@ -519,8 +527,9 @@ void EthTxController::PublishTransaction(const std::string& tx_meta_id,
 
 void EthTxController::OnPublishTransaction(std::string tx_meta_id,
                                            ApproveTransactionCallback callback,
-                                           bool status,
-                                           const std::string& tx_hash) {
+                                           const std::string& tx_hash,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =
       tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
@@ -529,7 +538,7 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
     return;
   }
 
-  if (status) {
+  if (error == mojom::ProviderError::kSuccess) {
     meta->status = mojom::TransactionStatus::Submitted;
     meta->submitted_time = base::Time::Now();
     meta->tx_hash = tx_hash;
@@ -539,7 +548,7 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
 
   tx_state_manager_->AddOrUpdateTx(*meta);
 
-  if (status) {
+  if (error == mojom::ProviderError::kSuccess) {
     UpdatePendingTransactions();
   }
   std::move(callback).Run(true);
@@ -639,8 +648,9 @@ void EthTxController::ContinueMakeERC721TransferFromData(
     const std::string& to,
     uint256_t token_id,
     MakeERC721TransferFromDataCallback callback,
-    bool success,
-    bool is_safe_transfer_from_supported) {
+    bool is_safe_transfer_from_supported,
+    mojom::ProviderError error,
+    const std::string& error_message) {
   std::string data;
   if (!erc721::TransferFromOrSafeTransferFrom(is_safe_transfer_from_supported,
                                               from, to, token_id, &data)) {
@@ -913,10 +923,12 @@ void EthTxController::ContinueSpeedupOrCancelTransaction(
     const std::string& gas_limit,
     std::unique_ptr<EthTransaction> tx,
     SpeedupOrCancelTransactionCallback callback,
-    bool success,
-    const std::string& result) {
+    const std::string& result,
+    mojom::ProviderError error,
+    const std::string& error_message) {
   uint256_t latest_estimate_gas_price;
-  if (!success || !HexValueToUint256(result, &latest_estimate_gas_price)) {
+  if (error != mojom::ProviderError::kSuccess ||
+      !HexValueToUint256(result, &latest_estimate_gas_price)) {
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(
@@ -941,7 +953,8 @@ void EthTxController::ContinueSpeedupOrCancelTransaction(
   tx->set_gas_price(std::max(latest_estimate_gas_price, increased_gas_price));
 
   ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
-                                   true, gas_limit);
+                                   gas_limit, mojom::ProviderError::kSuccess,
+                                   "");
 }
 
 void EthTxController::ContinueSpeedupOrCancel1559Transaction(
@@ -985,7 +998,8 @@ void EthTxController::ContinueSpeedupOrCancel1559Transaction(
                increased_max_priority_fee_per_gas));
 
   ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
-                                   true, gas_limit);
+                                   gas_limit, mojom::ProviderError::kSuccess,
+                                   "");
 }
 
 void EthTxController::RetryTransaction(const std::string& tx_meta_id,
@@ -1008,8 +1022,9 @@ void EthTxController::RetryTransaction(const std::string& tx_meta_id,
   }
 
   ContinueAddUnapprovedTransaction(meta->from.ToChecksumAddress(),
-                                   std::move(tx), std::move(callback), true,
-                                   Uint256ValueToHex(meta->tx->gas_limit()));
+                                   std::move(tx), std::move(callback),
+                                   Uint256ValueToHex(meta->tx->gas_limit()),
+                                   mojom::ProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

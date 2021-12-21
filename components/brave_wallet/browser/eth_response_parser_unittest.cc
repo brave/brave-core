@@ -9,7 +9,9 @@
 
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -280,6 +282,60 @@ TEST(EthResponseParserUnitTest, ParseBoolResult) {
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
   EXPECT_FALSE(ParseBoolResult(json, &value));
+}
+
+TEST(EthResponseParserUnitTest, ParseErrorResult) {
+  mojom::ProviderError error;
+  std::string error_message;
+  std::string json =
+      R"({
+         "jsonrpc": "2.0",
+         "id": 1,
+         "error": {
+           "code": -32000,
+           "message": "transaction underpriced"
+         }
+       })";
+
+  // kInvalidInput = -32000
+  ParseErrorResult(json, &error, &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidInput);
+  EXPECT_EQ(error_message, "transaction underpriced");
+
+  // No message should still work
+  json =
+      R"({
+       "jsonrpc": "2.0",
+       "id": 1,
+       "error": {
+         "code": -32000
+       }
+     })";
+  ParseErrorResult(json, &error, &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidInput);
+  EXPECT_TRUE(error_message.empty());
+
+  std::vector<std::string> errors{
+      R"({
+         "jsonrpc": "2.0",
+         "id": 1,
+         "error": {
+           "message": "transaction underpriced"
+         }
+       })",
+      R"({"jsonrpc": "2.0", "id": 1, "result": "0"})",
+      R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
+      R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
+      R"({"jsonrpc": "2.0", "id": 1, "error": {}})",
+      "some string",
+  };
+
+  for (const std::string& json : errors) {
+    ParseErrorResult(json, &error, &error_message);
+    EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 }  // namespace brave_wallet

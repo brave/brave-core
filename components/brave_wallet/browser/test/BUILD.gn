@@ -42,6 +42,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/ipfs",
+    "//brave/components/resources:strings_grit",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
