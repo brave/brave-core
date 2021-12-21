@@ -25,6 +25,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
       ButtonState state,
       const gfx::Image& profile_identity_image) const override;
   std::u16string GetAvatarTooltipText() const override;
+  int GetWindowCount() const;
 
   DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
 };

@@ -65,13 +65,17 @@ void BraveAvatarToolbarButton::SetHighlight(
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
+
+    if (GetWindowCount() > 1) {
+      revised_highlight_text =
+          l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
+                                     base::NumberToString16(GetWindowCount()));
+    }
   } else if (browser_->profile()->IsIncognitoProfile()) {
     // We only want the icon and count for Incognito profiles.
     revised_highlight_text = std::u16string();
-    const int incognito_window_count = delegate_->GetWindowCount();
-
-    if (incognito_window_count > 1) {
-      revised_highlight_text = base::NumberToString16(incognito_window_count);
+    if (GetWindowCount() > 1) {
+      revised_highlight_text = base::NumberToString16(GetWindowCount());
     }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
@@ -81,6 +85,10 @@ void BraveAvatarToolbarButton::SetHighlight(
   }
 
   AvatarToolbarButton::SetHighlight(revised_highlight_text, highlight_color);
+}
+
+int BraveAvatarToolbarButton::GetWindowCount() const {
+  return delegate_->GetWindowCount();
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
