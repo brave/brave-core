@@ -289,11 +289,7 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingStarted) {
   AdvanceClock(time);
 
   // Act
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  EXPECT_TRUE(exploded.HasValidValues());
-
-  base::Time adjusted_time = GetLocalMidnight(time, exploded);
+  base::Time adjusted_time = GetLocalMidnight(time);
 
   // Assert
   const base::Time& expected_adjusted_time =
@@ -310,15 +306,47 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingEnded) {
   AdvanceClock(time);
 
   // Act
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  EXPECT_TRUE(exploded.HasValidValues());
-
-  base::Time adjusted_time = GetLocalMidnight(time, exploded);
+  base::Time adjusted_time = GetLocalMidnight(time);
 
   // Assert
   const base::Time& expected_adjusted_time =
       TimeFromString("April 4 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfMonthWithDaylightSavingEnded) {
+  ScopedLibcTZ scoped_libc_tz{"US/Pacific"};
+  // Arrange
+  const base::Time& time =
+      TimeFromString("November 18 2021 12:34:56.789", /* is_local */ true);
+  AdvanceClock(time);
+
+  // Act
+  const base::Time& adjusted_time = AdjustTimeToBeginningOfMonth(time);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("November 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfMonthWithDaylightSavingStarted) {
+  ScopedLibcTZ scoped_libc_tz{"US/Pacific"};
+  // Arrange
+  const base::Time& time =
+      TimeFromString("March 20 2021 12:34:56.789", /* is_local */ true);
+  AdvanceClock(time);
+
+  // Act
+  const base::Time& adjusted_time = AdjustTimeToBeginningOfMonth(time);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }

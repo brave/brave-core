@@ -22,8 +22,8 @@ base::Time CalculateBeginningOfMonth(const base::Time& time) {
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
 
-  base::Time adjusted_time =
-      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1), exploded);
+  const base::Time adjusted_time =
+      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1));
   return adjusted_time;
 }
 
@@ -35,7 +35,7 @@ base::Time CalculateEndOfPreviousMonth(const base::Time& time) {
   DCHECK(exploded.HasValidValues());
 
   base::Time adjusted_time =
-      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1), exploded);
+      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1));
   adjusted_time -= base::Milliseconds(1);
   return adjusted_time;
 }
@@ -57,7 +57,7 @@ base::Time CalculateEndOfMonth(const base::Time& time) {
   const base::Time next_month_first_day =
       time + base::Days(GetLastDayOfMonth(exploded.year, exploded.month) -
                         exploded.day_of_month + 1);
-  base::Time adjusted_time = GetLocalMidnight(next_month_first_day, exploded);
+  base::Time adjusted_time = GetLocalMidnight(next_month_first_day);
   adjusted_time -= base::Milliseconds(1);
 
   return adjusted_time;
@@ -67,8 +67,11 @@ base::Time CalculateEndOfMonth(const base::Time& time) {
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time GetLocalMidnight(const base::Time& time,
-                            const base::Time::Exploded& exploded) {
+base::Time GetLocalMidnight(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  DCHECK(exploded.HasValidValues());
+
   base::Time midnight =
       time - base::Hours(exploded.hour) - base::Minutes(exploded.minute) -
       base::Seconds(exploded.second) - base::Milliseconds(exploded.millisecond);
