@@ -21,12 +21,8 @@ public interface BraveRewardsObserver {
   default public void OnRecurringDonationUpdated() {};
   default public void OnResetTheWholeState(boolean success) {};
   default public void OnGrantFinish(int result) {};
-  default public void OnGetExternalWallet(int error_code,
-          String external_wallet) {};
-  default public void OnDisconnectWallet(int error_code,
-          String external_wallet) {};
-  default public void OnProcessRewardsPageUrl(int error_code,
-          String wallet_type, String action, String json_args ) {};
+  default public void OnGetExternalWallet(int error_code, String external_wallet){};
+  default public void OnDisconnectWallet(int error_code, String external_wallet){};
   default public void OnClaimPromotion(int error_code) {};
   default public void onUnblindedTokensReady() {}
   default public void onReconcileComplete(int resultCode, int rewardsType, double amount) {}

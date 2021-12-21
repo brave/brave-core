@@ -131,10 +131,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void DisconnectWallet(JNIEnv* env);
 
-    void ProcessRewardsPageUrl(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& path,
-        const base::android::JavaParamRef<jstring>& query);
-
     void RecoverWallet(JNIEnv* env,
                        const base::android::JavaParamRef<jstring>& pass_phrase);
 
@@ -214,12 +210,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
       brave_rewards::RewardsService* rewards_service,
       const ledger::type::Result result,
       const std::string& wallet_type) override;
-
-    void OnProcessRewardsPageUrl(
-        const ledger::type::Result result,
-        const std::string& wallet_type,
-        const std::string& action,
-        const base::flat_map<std::string, std::string>& args);
 
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
