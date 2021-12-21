@@ -53,7 +53,7 @@
             android:textSize="14sp"
             android:textColor="@android:color/black"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/brave_talk_opt_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

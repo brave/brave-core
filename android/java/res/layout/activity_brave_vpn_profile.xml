@@ -73,7 +73,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/onboarding_text_color"/>
 
-                <Button
+                <android.widget.Button
                     android:id="@+id/btn_install_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:textSize="16sp"
                     style="?android:attr/borderlessButtonStyle"/>
 
-                <Button
+                <android.widget.Button
                     android:id="@+id/btn_contact_supoort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
