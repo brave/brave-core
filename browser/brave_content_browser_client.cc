@@ -37,6 +37,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
@@ -190,6 +191,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
+#include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -501,6 +504,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           brave_shields::features::kBraveShieldsPanelV2)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(
+          brave_federated::features::kFederatedLearning)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        federated_internals::mojom::PageHandlerFactory, FederatedInternalsUI>(
+        map);
   }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)

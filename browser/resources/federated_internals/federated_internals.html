@@ -1,0 +1,36 @@
+<!doctype html>
+<html dir="$i18n{textdirection}" lang="$i18n{language}">
+<head>
+  <meta charset="utf-8">
+  <title>Federated Learning Internals</title>
+  <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+  <link rel="stylesheet" href="federated_internals.css">
+
+  <script src="federated_internals.js" type="module"></script>
+</head>
+
+<body i18n-values=".style.fontFamily:fontfamily;.style.fontSize:fontsize">
+  <h1 i18n-content="helloWorldTitle"></h1>
+
+  <div>
+    <label for="stores">Choose a data store:</label>
+    <select name="stores" id="stores" form="storeform">
+        <option value="ad-timing">Ad Notification Timing</option>
+    </select>
+    <button id="data-store-logs-dump">Dump</button>
+
+    <p id="service-message"></p>
+    <table id="ad-timing-tab">
+      <caption hidden="true">Local ad timing logs</caption>
+      <thead>
+        <tr id="ad-timing-headers">
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </div>
+
+</body>
+</html> 
