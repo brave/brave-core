@@ -239,9 +239,10 @@ void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
 }
 
 void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
-                                           bool success,
-                                           bool is_eip1559) {
-  if (!success)
+                                           bool is_eip1559,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
     return;
 
   bool changed = false;
@@ -331,16 +332,21 @@ void EthJsonRpcController::OnGetBlockNumber(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, 0);
+    std::move(callback).Run(
+        0, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint256_t block_number;
   if (!ParseEthGetBlockNumber(body, &block_number)) {
-    std::move(callback).Run(false, 0);
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, block_number);
+  std::move(callback).Run(block_number, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetBalance(
@@ -359,16 +365,21 @@ void EthJsonRpcController::OnGetBalance(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string balance;
   if (!ParseEthGetBalance(body, &balance)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, balance);
+  std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetTransactionCount(const std::string& address,
@@ -386,16 +397,21 @@ void EthJsonRpcController::OnGetTransactionCount(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, 0);
+    std::move(callback).Run(
+        0, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint256_t count;
   if (!ParseEthGetTransactionCount(body, &count)) {
-    std::move(callback).Run(false, 0);
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, count);
+  std::move(callback).Run(count, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetTransactionReceipt(
@@ -415,15 +431,20 @@ void EthJsonRpcController::OnGetTransactionReceipt(
     const base::flat_map<std::string, std::string>& headers) {
   TransactionReceipt receipt;
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, receipt);
+    std::move(callback).Run(
+        receipt, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   if (!ParseEthGetTransactionReceipt(body, &receipt)) {
-    std::move(callback).Run(false, receipt);
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(receipt, error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, receipt);
+  std::move(callback).Run(receipt, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
@@ -441,16 +462,21 @@ void EthJsonRpcController::OnSendRawTransaction(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string tx_hash;
   if (!ParseEthSendRawTransaction(body, &tx_hash)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, tx_hash);
+  std::move(callback).Run(tx_hash, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetERC20TokenBalance(
@@ -459,7 +485,9 @@ void EthJsonRpcController::GetERC20TokenBalance(
     EthJsonRpcController::GetERC20TokenBalanceCallback callback) {
   std::string data;
   if (!erc20::BalanceOf(address, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -476,15 +504,20 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string result;
   if (!ParseEthCall(body, &result)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
-  std::move(callback).Run(true, result);
+  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetERC20TokenAllowance(
@@ -494,7 +527,9 @@ void EthJsonRpcController::GetERC20TokenAllowance(
     EthJsonRpcController::GetERC20TokenAllowanceCallback callback) {
   std::string data;
   if (!erc20::Allowance(owner_address, spender_address, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -511,15 +546,20 @@ void EthJsonRpcController::OnGetERC20TokenAllowance(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string result;
   if (!ParseEthCall(body, &result)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
-  std::move(callback).Run(true, result);
+  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::EnsRegistryGetResolver(
@@ -528,19 +568,25 @@ void EthJsonRpcController::EnsRegistryGetResolver(
     StringResultCallback callback) {
   const std::string contract_address = GetEnsRegistryContractAddress(chain_id);
   if (contract_address.empty()) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   std::string data;
   if (!ens::Resolver(domain, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   GURL network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid()) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -558,18 +604,23 @@ void EthJsonRpcController::OnEnsRegistryGetResolver(
     const base::flat_map<std::string, std::string>& headers) {
   DCHECK(callback);
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string resolver_address;
   if (!ParseAddressResult(body, &resolver_address) ||
       resolver_address.empty()) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, resolver_address);
+  std::move(callback).Run(resolver_address, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::EnsResolverGetContentHash(
@@ -586,22 +637,27 @@ void EthJsonRpcController::ContinueEnsResolverGetContentHash(
     const std::string& chain_id,
     const std::string& domain,
     StringResultCallback callback,
-    bool success,
-    const std::string& resolver_address) {
-  if (!success || resolver_address.empty()) {
-    std::move(callback).Run(false, "");
+    const std::string& resolver_address,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   std::string data;
   if (!ens::ContentHash(domain, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   GURL network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid()) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -619,24 +675,31 @@ void EthJsonRpcController::OnEnsResolverGetContentHash(
     const base::flat_map<std::string, std::string>& headers) {
   DCHECK(callback);
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string content_hash;
   if (!ParseEnsResolverContentHash(body, &content_hash) ||
       content_hash.empty()) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, content_hash);
+  std::move(callback).Run(content_hash, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
                                          EnsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -649,16 +712,19 @@ void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
 void EthJsonRpcController::ContinueEnsGetEthAddr(
     const std::string& domain,
     StringResultCallback callback,
-    bool success,
-    const std::string& resolver_address) {
-  if (!success || resolver_address.empty()) {
-    std::move(callback).Run(false, "");
+    const std::string& resolver_address,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   std::string data;
   if (!ens::Addr(domain, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -676,17 +742,22 @@ void EthJsonRpcController::OnEnsGetEthAddr(
     const base::flat_map<std::string, std::string>& headers) {
   DCHECK(callback);
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string address;
   if (!ParseAddressResult(body, &address) || address.empty()) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, address);
+  std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
@@ -697,19 +768,25 @@ void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
   const std::string contract_address =
       GetUnstoppableDomainsProxyReaderContractAddress(chain_id);
   if (contract_address.empty()) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   std::string data;
   if (!unstoppable_domains::GetMany(keys, domain, &data)) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   GURL network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid()) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -726,37 +803,48 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    std::move(callback).Run(
+        std::vector<std::string>(), mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::vector<std::string> values;
   if (!ParseUnstoppableDomainsProxyReaderGetMany(body, &values)) {
-    std::move(callback).Run(false, std::vector<std::string>());
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(std::vector<std::string>(), error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, values);
+  std::move(callback).Run(values, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
     const std::string& domain,
     UnstoppableDomainsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   const std::string contract_address =
       GetUnstoppableDomainsProxyReaderContractAddress(chain_id_);
   if (contract_address.empty()) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   std::string data;
   if (!unstoppable_domains::Get(kCryptoEthAddressKey, domain, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -773,18 +861,23 @@ void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string address;
   if (!ParseUnstoppableDomainsProxyReaderGet(body, &address) ||
       address.empty()) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, address);
+  std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
 GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
@@ -820,17 +913,22 @@ void EthJsonRpcController::OnGetEstimateGas(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string result;
   if (!ParseEthEstimateGas(body, &result)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, result);
+  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetGasPrice(GetGasPriceCallback callback) {
@@ -846,17 +944,22 @@ void EthJsonRpcController::OnGetGasPrice(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string result;
   if (!ParseEthGasPrice(body, &result)) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, result);
+  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetIsEip1559(GetIsEip1559Callback callback) {
@@ -873,18 +976,24 @@ void EthJsonRpcController::OnGetIsEip1559(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, false);
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   base::Value result;
   if (!ParseResult(body, &result) || !result.is_dict()) {
-    std::move(callback).Run(false, false);
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(false, error, error_message);
     return;
   }
 
   const std::string* base_fee = result.FindStringKey("baseFeePerGas");
-  std::move(callback).Run(true, base_fee && !base_fee->empty());
+  std::move(callback).Run(base_fee && !base_fee->empty(),
+                          mojom::ProviderError::kSuccess, "");
 }
 
 bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
@@ -895,15 +1004,26 @@ bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
 void EthJsonRpcController::GetERC721OwnerOf(const std::string& contract,
                                             const std::string& token_id,
                                             GetERC721OwnerOfCallback callback) {
+  if (!EthAddress::IsValidAddress(contract)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   std::string data;
   if (!erc721::OwnerOf(token_id_uint, &data)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -920,17 +1040,22 @@ void EthJsonRpcController::OnGetERC721OwnerOf(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string address;
   if (!ParseAddressResult(body, &address) || address.empty()) {
-    std::move(callback).Run(false, "");
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, address);
+  std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetERC721TokenBalance(
@@ -940,7 +1065,9 @@ void EthJsonRpcController::GetERC721TokenBalance(
     GetERC721TokenBalanceCallback callback) {
   const auto eth_account_address = EthAddress::FromHex(account_address);
   if (eth_account_address.IsEmpty()) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
@@ -954,24 +1081,35 @@ void EthJsonRpcController::GetERC721TokenBalance(
 void EthJsonRpcController::ContinueGetERC721TokenBalance(
     const std::string& account_address,
     GetERC721TokenBalanceCallback callback,
-    bool success,
-    const std::string& owner_address) {
-  if (!success || owner_address.empty()) {
-    std::move(callback).Run(false, "");
+    const std::string& owner_address,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess || owner_address.empty()) {
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   bool is_owner = owner_address == account_address;
-  std::move(callback).Run(true, is_owner ? "0x1" : "0x0");
+  std::move(callback).Run(is_owner ? "0x1" : "0x0",
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetSupportsInterface(
     const std::string& contract_address,
     const std::string& interface_id,
     GetSupportsInterfaceCallback callback) {
+  if (!EthAddress::IsValidAddress(contract_address)) {
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   std::string data;
   if (!erc165::SupportsInterface(interface_id, &data)) {
-    std::move(callback).Run(false, false);
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   }
 
   auto internal_callback =
@@ -987,17 +1125,22 @@ void EthJsonRpcController::OnGetSupportsInterface(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, false);
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   bool is_supported = false;
   if (!ParseBoolResult(body, &is_supported)) {
-    std::move(callback).Run(false, false);
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(false, error, error_message);
     return;
   }
 
-  std::move(callback).Run(true, is_supported);
+  std::move(callback).Run(is_supported, mojom::ProviderError::kSuccess, "");
 }
 
 void EthJsonRpcController::GetPendingSwitchChainRequests(
