@@ -30,5 +30,8 @@ export const recoveryPhrase = [
   'parent',
   'stop',
   'bowl',
-  'exercise'
+  'exercise',
+  'order',
+  'glasses',
+  'sound'
 ]

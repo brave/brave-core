@@ -18,16 +18,17 @@ export interface Props {
   isOnboarding: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
   onCancel: () => void
+  recoveryPhraseLength: number
 }
 
 function OnboardingRecovery (props: Props) {
-  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel } = props
+  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel, recoveryPhraseLength } = props
 
   return (
     <StyledWrapper>
       <PageIcon />
       <Title>{getLocale('braveWalletBackupIntroTitle')}</Title>
-      <Description>{getLocale('braveWalletBackupIntroDescription')}</Description>
+      <Description>{getLocale('braveWalletBackupIntroDescription').replace('$1', recoveryPhraseLength.toString())}</Description>
       <TermsRow>
         <Checkbox value={{ backupTerms: isBackupTermsAccepted }} onChange={onSubmitTerms}>
           <div data-key='backupTerms'>{getLocale('braveWalletBackupIntroTerms')}</div>
