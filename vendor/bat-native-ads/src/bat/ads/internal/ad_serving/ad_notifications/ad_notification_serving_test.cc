@@ -14,10 +14,10 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -97,11 +97,6 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
     InitializeAds();
   }
 
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
   void ServeAd() {
     ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
     resource::AntiTargeting anti_targeting_resource;
@@ -121,7 +116,7 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
 
 TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeAdNotificationList creative_ads;
   CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
@@ -140,7 +135,7 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
 
 TEST_F(BatAdsAdNotificationServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
@@ -152,7 +147,7 @@ TEST_F(BatAdsAdNotificationServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 
 TEST_F(BatAdsAdNotificationServingTest, DoNotServeInvalidAd) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
@@ -180,7 +175,7 @@ TEST_F(BatAdsAdNotificationServingTest,
 
 TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeAdNotificationList creative_ads;
   const CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();

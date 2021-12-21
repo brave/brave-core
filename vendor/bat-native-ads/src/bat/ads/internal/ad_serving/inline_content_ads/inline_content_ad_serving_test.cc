@@ -10,6 +10,7 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -81,11 +82,6 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     InitializeAds();
   }
 
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
   void Save(const CreativeInlineContentAdList& creative_ads) {
     database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
@@ -101,7 +97,7 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
@@ -126,7 +122,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();

@@ -28,11 +28,6 @@ class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
 
   ~BatAdsEligibleInlineContentAdsV1Test() override = default;
 
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
   void Save(const CreativeInlineContentAdList& creative_ads) {
     database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });

@@ -240,9 +240,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   // Validate public key
   if (!PublicKeyExistsForIssuerType(IssuerType::kConfirmations,
                                     *public_key_base64)) {
-    BLOG(0, "Response public key " << *public_key_base64
-                                   << " does not match any"
-                                   << " confirmations public key");
+    BLOG(0, "Response public key "
+                << *public_key_base64
+                << " does not exist in confirmations issuer public keys");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
   }

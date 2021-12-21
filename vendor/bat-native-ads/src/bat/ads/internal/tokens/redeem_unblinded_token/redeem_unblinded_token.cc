@@ -223,8 +223,8 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
   if (!PublicKeyExistsForIssuerType(IssuerType::kPayments,
                                     *public_key_base64)) {
-    BLOG(0, "Response public key " << *public_key_base64 << " does not match"
-                                   << "any payments public key");
+    BLOG(0, "Response public key " << *public_key_base64 << " does not exist "
+                                   << "in payments issuer public keys");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }

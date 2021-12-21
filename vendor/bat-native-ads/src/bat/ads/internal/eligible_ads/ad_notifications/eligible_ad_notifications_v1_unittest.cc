@@ -28,11 +28,6 @@ class BatAdsEligibleAdNotificationsV1Test : public UnitTestBase {
 
   ~BatAdsEligibleAdNotificationsV1Test() override = default;
 
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
   void Save(const CreativeAdNotificationList& creative_ads) {
     database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });

@@ -7,11 +7,31 @@
 
 #include "bat/ads/internal/bundle/creative_ad_unittest_util.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
+#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace ads {
 
+void SaveCreativeAds(const CreativeInlineContentAdList& creative_ads) {
+  database::table::CreativeInlineContentAds database_table;
+  database_table.Save(creative_ads,
+                      [](const bool success) { ASSERT_TRUE(success); });
+}
+
+CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count) {
+  CreativeInlineContentAdList creative_ads;
+
+  for (int i = 0; i < count; i++) {
+    const CreativeInlineContentAdInfo& creative_ad =
+        BuildCreativeInlineContentAd();
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
 CreativeInlineContentAdInfo BuildCreativeInlineContentAd() {
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
   CreativeInlineContentAdInfo creative_inline_content_ad(creative_ad);
 
   creative_inline_content_ad.title = "Test Ad Title";
