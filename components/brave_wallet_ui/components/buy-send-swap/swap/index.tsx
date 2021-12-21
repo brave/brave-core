@@ -26,9 +26,11 @@ import {
   SwapDisclaimerRow,
   AlertIcon,
   SwapFeesNoticeRow,
-  SwapFeesNoticeText
+  SwapFeesNoticeText,
+  ResetRow
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
+import { ResetButton } from '../shared-styles'
 
 export interface Props {
   toAsset: BraveWallet.BlockchainToken
@@ -133,6 +135,11 @@ function Swap (props: Props) {
     })
   }
 
+  const onReset = () => {
+    onInputChange('', 'from')
+    onInputChange('', 'to')
+  }
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -180,6 +187,14 @@ function Swap (props: Props) {
         customSlippageTolerance={customSlippageTolerance}
         onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
+
+      <ResetRow>
+        <ResetButton
+          onClick={onReset}
+          >
+            {getLocale('braveWalletReset')}
+        </ResetButton>
+      </ResetRow>
 
       <SwapFeesNoticeRow>
         <SwapFeesNoticeText>

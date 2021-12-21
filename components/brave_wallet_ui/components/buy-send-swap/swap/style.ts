@@ -105,3 +105,12 @@ export const SwapFeesNoticeText = styled.div`
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
 `
+
+export const ResetRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+
+`

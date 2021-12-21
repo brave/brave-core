@@ -7,7 +7,7 @@ import {
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
-import { ErrorText } from '../shared-styles'
+import { ButtonRow, ErrorText, ResetButton } from '../shared-styles'
 // Styled Components
 import {
   StyledWrapper
@@ -51,6 +51,11 @@ function Send (props: Props) {
     onInputChange(address, 'address')
   }
 
+  const onReset = () => {
+    onInputChange('', 'from')
+    onInputChange('', 'address')
+  }
+
   const insuficientFundsError = React.useMemo((): boolean => {
     if (parseFloat(selectedAssetAmount) === 0) {
       return false
@@ -84,17 +89,25 @@ function Send (props: Props) {
       {insuficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
-      <NavButton
-        disabled={addressError !== '' ||
-          toAddressOrUrl === '' ||
-          parseFloat(selectedAssetAmount) === 0 ||
-          selectedAssetAmount === '' ||
-          insuficientFundsError
-        }
-        buttonType='primary'
-        text={getLocale('braveWalletSend')}
-        onSubmit={onSubmit}
-      />
+      <ButtonRow>
+        <NavButton
+          disabled={addressError !== '' ||
+            toAddressOrUrl === '' ||
+            parseFloat(selectedAssetAmount) === 0 ||
+            selectedAssetAmount === '' ||
+            insuficientFundsError
+          }
+          buttonType='primary'
+          text={getLocale('braveWalletSend')}
+          onSubmit={onSubmit}
+        />
+
+        <ResetButton
+          onClick={onReset}
+        >
+          {getLocale('braveWalletReset')}
+        </ResetButton>
+      </ButtonRow>
     </StyledWrapper>
   )
 }
