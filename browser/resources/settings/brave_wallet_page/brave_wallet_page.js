@@ -154,6 +154,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase'))
       return
     this.browserProxy_.resetWallet()
+    window.alert(this.i18n('walletResetConfirmed'))
   }
 }
 

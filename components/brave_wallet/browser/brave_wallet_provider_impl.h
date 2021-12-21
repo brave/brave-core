@@ -202,6 +202,7 @@ class BraveWalletProviderImpl final
   // KeyringControllerObserver
   void KeyringCreated() override {}
   void KeyringRestored() override {}
+  void KeyringReset() override {}
   void Locked() override;
   void Unlocked() override;
   void BackedUp() override {}
