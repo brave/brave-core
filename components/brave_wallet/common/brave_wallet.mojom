@@ -23,29 +23,18 @@ interface EventsListener {
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
 // https://eips.ethereum.org/EIPS/eip-1474#error-codes
 enum ProviderError {
-  kSuccess = 0,                  // No error
-  kUserRejectedRequest = 4001,   // User rejected the request
-  kUnauthorized = 4100,          // The requested account and/or method has not
-                                 // been authorized by the user
-  kUnsupportedMethod = 4200,     // The requested method is not supported by this
-                                 // Ethereum provider
-  kDisconnected = 4900,          // The provider is disconnected from all chains
-  kChainDisconnected = 4901,     // The provider is disconnected from the
-                                 // specified chain
-  kUnknownChain = 4902,          // The provider doesn't know this chain
-
-  kParsingError = -32700,        //Parse error - Invalid JSON
-  kInvalidRequest = -32600,      // JSON is not a valid request object
-  kMethodNotFound = -32601,      // Method does not exist
-  kInvalidParams = -32602,       // Invalid method parameters
-  kInternalError = -32603,       // Internal JSON RPC error
-  kInvalidInput = -32000,        // Missing or invalid parameters
-  kResourceNotFound = -32001,    // Requested resource not found
-  kResourceUnavailable = -32002, // Requested resource not available
-  kTransactionRejected = -32003, // Transaction creation failed
-  kMethodNotSupported = -32004,  // Method is not implemented
-  kLimitExceeded = -32005,       // Request exceeds defined limit
-  kVersionNotSupported = -32006, // Version of JSON-RPC protocol is not supported
+  kSuccess = 0,                 // No error
+  kUserRejectedRequest = 4001,  // User rejected the request
+  kUnauthorized = 4100,         // The requested account and/or method has not
+                                // been authorized by the user
+  kUnsupportedMethod = 4200,    // The requested method is not supported by this
+                                // Ethereum provider
+  kDisconnected = 4900,         // The provider is disconnected from all chains
+  kChainDisconnected = 4901,    // The provider is disconnected from the
+                                // specified chain
+  kUnknownChain = 4902,         // The provider doesn't know this chain
+  kInvalidParams = -32602,      // Invalid method parameters
+  kInternalError = -32603,      // Internal JSON-RPC error
 
   kUnknown = -1                 // Unknown error
 };
@@ -556,21 +545,21 @@ interface EthJsonRpcController {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address) => (bool success, string balance);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
-                       string address) => (string balance, ProviderError error, string error_message);
+                       string address) => (bool success, string balance);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
-                         string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
+                         string owner_address, string spender_address) => (bool success, string allowance);
 
   // ENS lookups
-  EnsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+  EnsGetEthAddr(string domain) => (bool success, string address);
 
   // Unstoppable Domains lookups
-  UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+  UnstoppableDomainsGetEthAddr(string domain) => (bool success, string address);
 
   // Used for making requests to the currently selected EVM compatible node
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
@@ -582,12 +571,12 @@ interface EthJsonRpcController {
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, string token_id) => (string owner_address, ProviderError error, string error_message);
+  GetERC721OwnerOf(string contract, string token_id) => (bool success, string owner_address);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
-  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (string balance, ProviderError error, string error_message);
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (bool success, string balance);
 };
 
 enum TransactionStatus {

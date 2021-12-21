@@ -42,16 +42,12 @@ void EthBlockTracker::RemoveObserver(EthBlockTracker::Observer* observer) {
 }
 
 void EthBlockTracker::CheckForLatestBlock(
-    base::OnceCallback<void(uint256_t block_num,
-                            mojom::ProviderError error,
-                            const std::string& error_message)> callback) {
+    base::OnceCallback<void(bool status, uint256_t block_num)> callback) {
   SendGetBlockNumber(std::move(callback));
 }
 
 void EthBlockTracker::SendGetBlockNumber(
-    base::OnceCallback<void(uint256_t block_num,
-                            mojom::ProviderError error,
-                            const std::string& error_message)> callback) {
+    base::OnceCallback<void(bool status, uint256_t block_num)> callback) {
   rpc_controller_->GetBlockNumber(std::move(callback));
 }
 
@@ -60,10 +56,8 @@ void EthBlockTracker::GetBlockNumber() {
       &EthBlockTracker::OnGetBlockNumber, weak_factory_.GetWeakPtr()));
 }
 
-void EthBlockTracker::OnGetBlockNumber(uint256_t block_num,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-  if (error == mojom::ProviderError::kSuccess) {
+void EthBlockTracker::OnGetBlockNumber(bool status, uint256_t block_num) {
+  if (status) {
     if (current_block_ != block_num) {
       current_block_ = block_num;
       for (auto& observer : observers_)
