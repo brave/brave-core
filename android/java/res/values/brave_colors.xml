@@ -48,7 +48,6 @@
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
-    <color name="brave_rewards_theme_color">#392DD1</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->
@@ -172,13 +171,20 @@
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
 
-    <color name="rewards_settings_seperator_color">#E6E8F5</color>
-    <color name="settings_section_text_light_color">#868E96</color>
-    <color name="settings_section_text_color">#212529</color>
-    <color name="rewards_secondary_layout_text_color">#495057</color>
     <color name="rewards_settings_button_color">#4C54D2</color>
-    <color name="rewards_refresh_button_color">#4E56CD</color>
-    <color name="rewards_foreground_color">#80000000</color>
-    <color name="rewards_panel_card_bg_color">#FAFCFF</color>
+
+
+    <color name="rewards_panel_bg_color">#FAFCFF</color>
+    <color name="rewards_panel_text_color">#212529</color>
+    <color name="rewards_panel_secondary_text_color">#868E96</color>
+    <color name="rewards_panel_card_bg_color">#FFFFFF</color>
+    <color name="rewards_panel_action_color">#4C54D2</color>
+    <color name="rewards_panel_refresh_button_color">#4C54D2</color>
+    <color name="rewards_panel_verified_button_border">#E9E9F4</color>
+    <color name="rewards_panel_summary_title_bg">#66FFFFFF</color>
+    <color name="rewards_panel_summary_bg">#FFFFFF</color>
+    <color name="rewards_panel_summary_divider_color">#E9E9F4</color>
+
+    <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
 </resources>

@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -85,12 +86,14 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.math.RoundingMode;
@@ -114,8 +117,6 @@ public class BraveRewardsPanel
     private static final String TWITCH_TYPE = "twitch#";
 
     private static final String PREF_VERIFY_WALLET_ENABLE = "verify_wallet_enable";
-
-    private static final int WALLET_BALANCE_LIMIT = 15;
 
     // Balance report codes
     private static final int BALANCE_REPORT_GRANTS = 0;
@@ -198,7 +199,6 @@ public class BraveRewardsPanel
         mCurrentTabId = -1;
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -261,6 +261,11 @@ public class BraveRewardsPanel
         LayoutInflater inflater = (LayoutInflater) mAnchorView.getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
+
+        int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
+
+        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.9)));
 
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
 
@@ -344,15 +349,15 @@ public class BraveRewardsPanel
 
     private void showSummarySection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mRewardsSummaryDetailLayout.setVisibility(View.VISIBLE);
@@ -361,15 +366,15 @@ public class BraveRewardsPanel
 
     private void showTipSection() {
         mTextTip.setTextColor(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color));
         mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_settings_button_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextColor(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color));
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color));
         mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.settings_section_text_light_color),
+                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
                 PorterDuff.Mode.SRC_IN));
         mRewardsSummaryDetailLayout.setVisibility(View.GONE);
         mRewardsTipLayout.setVisibility(View.VISIBLE);
@@ -467,7 +472,7 @@ public class BraveRewardsPanel
                                 mPopupView.getResources().getString(R.string.ok));
                         title = mPopupView.getResources().getString(
                                 R.string.brave_ui_rewards_contribute);
-                        notificationIcon = R.drawable.contribute_icon;
+                        notificationIcon = R.drawable.ic_hearts_rewards;
 
                         double value = 0;
                         String valueString = "";
@@ -489,19 +494,19 @@ public class BraveRewardsPanel
                         break;
                     case AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS:
                         title = "";
-                        notificationIcon = R.drawable.icon_warning_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_no_funds);
                         break;
                     case AUTO_CONTRIBUTE_TIPPING_ERROR:
                         title = "";
-                        notificationIcon = R.drawable.icon_error_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_tip_error);
                         break;
                     default:
                         title = "";
-                        notificationIcon = R.drawable.icon_error_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_contr_error);
                 }
@@ -514,10 +519,7 @@ public class BraveRewardsPanel
                 actionNotificationButton.setText(
                         mPopupView.getResources().getString(R.string.brave_ui_claim));
 
-                int grantIconId = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
-                        ? R.drawable.ic_money_bag_coins
-                        : R.drawable.notification_icon;
-                notificationIcon = grantIconId;
+                notificationIcon = R.drawable.ic_money_bag_coins;
 
                 title = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
                         ? mPopupView.getResources().getString(R.string.brave_ui_new_token_grant)
@@ -532,7 +534,7 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 title = mPopupView.getResources().getString(
                         R.string.brave_ui_insufficient_funds_msg);
                 description = mPopupView.getResources().getString(
@@ -540,7 +542,7 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 title = mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_msg);
                 description =
                         mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_desc);
@@ -550,7 +552,7 @@ public class BraveRewardsPanel
                 title = mPopupView.getResources().getString(R.string.brave_ui_contribution_tips);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_tips_processed_notification);
-                notificationIcon = R.drawable.contribute_icon;
+                notificationIcon = R.drawable.ic_hearts_rewards;
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
                 actionNotificationButton.setText(
@@ -558,7 +560,7 @@ public class BraveRewardsPanel
                 title = mPopupView.getResources().getString(
                         R.string.brave_ui_brave_ads_launch_title);
                 description = "";
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER:
                 String pubName = args[0];
@@ -567,14 +569,14 @@ public class BraveRewardsPanel
                         R.string.brave_ui_pending_contribution_title);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_verified_publisher_notification, pubName);
-                notificationIcon = R.drawable.contribute_icon;
+                notificationIcon = R.drawable.ic_hearts_rewards;
                 break;
             case REWARDS_NOTIFICATION_NO_INTERNET:
                 title = "";
-                notificationIcon = R.drawable.icon_error_notification;
-                description = "<b>"
+                notificationIcon = R.drawable.ic_error_notification;
+                description = "\n"
                         + mPopupView.getResources().getString(R.string.brave_rewards_local_uh_oh)
-                        + "</b> "
+                        + "\n"
                         + mPopupView.getResources().getString(
                                 R.string.brave_rewards_local_server_not_responding);
                 actionNotificationButton.setVisibility(View.GONE);
@@ -582,11 +584,13 @@ public class BraveRewardsPanel
             case REWARDS_PROMOTION_CLAIM_ERROR:
                 title = "";
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                description = "<b>"
+                description = "\n"
                         + mPopupView.getResources().getString(
                                 R.string.brave_rewards_local_general_grant_error_title)
-                        + "</b>";
+                        + "\n";
                 notificationIcon = R.drawable.coin_stack;
+                mWalletBalanceLayout.setAlpha(1.0f);
+                mWalletBalanceProgress.setVisibility(View.GONE);
                 break;
             default:
                 Log.e(TAG, "This notification type is either invalid or not handled yet: " + type);
@@ -600,7 +604,7 @@ public class BraveRewardsPanel
         if (mNotificationLayout != null) {
             Log.e(TAG, "mNotificationLayout visible");
             mNotificationLayout.setVisibility(View.VISIBLE);
-            int foregroundColor = R.color.rewards_foreground_color;
+            int foregroundColor = R.color.rewards_panel_foreground_color;
             mRewardsMainLayout.setForeground(
                     new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
             enableControls(false, mRewardsMainLayout);
@@ -772,7 +776,7 @@ public class BraveRewardsPanel
         braveRewardsOnboardingModalView = root.findViewById(R.id.brave_rewards_onboarding_modal_id);
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
-        int foregroundColor = R.color.rewards_foreground_color;
+        int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
         enableControls(false, mRewardsMainLayout);
@@ -847,7 +851,7 @@ public class BraveRewardsPanel
                 showBraveRewardsOnboarding(root, false);
             }
         }));
-        Button btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards = root.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -858,20 +862,10 @@ public class BraveRewardsPanel
                 showBraveRewardsOnboarding(root, true);
             }
         }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                braveRewardsOnboardingModalView.setVisibility(View.GONE);
-                mRewardsMainLayout.setForeground(null);
-                enableControls(true, mRewardsMainLayout);
-            }
-        }));
     }
 
     private void showBraveRewardsOnboarding(View root, boolean shouldShowMoreOption) {
-        int foregroundColor = R.color.rewards_foreground_color;
+        int foregroundColor = R.color.rewards_panel_foreground_color;
         mRewardsMainLayout.setForeground(
                 new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
         enableControls(false, mRewardsMainLayout);
@@ -1006,41 +1000,44 @@ public class BraveRewardsPanel
                 double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate();
                 usdValue = String.format(Locale.getDefault(), "%.2f USD", usdValueDouble);
             }
+            String batTextColor = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                    ? "#FFFFFF"
+                    : "#212529";
 
             switch (i) {
                 case BALANCE_REPORT_GRANTS:
                     tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_EARNING_FROM_ADS:
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_AUTO_CONTRIBUTE:
                     tv = mPopupView.findViewById(R.id.auto_contribute_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.auto_contribute_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_ONE_TIME_DONATION:
                     tv = mPopupView.findViewById(R.id.one_time_tip_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.one_time_tip_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
                 case BALANCE_REPORT_RECURRING_DONATION:
                     tv = mPopupView.findViewById(R.id.monthly_tips_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.monthly_tips_usd_text);
-                    text = "<font color=#4C54D2>" + value + "</font><font color=#000000> " + batText
-                            + "</font>";
+                    text = "<font color=#4C54D2>" + value + "</font><font color=" + batTextColor
+                            + "> " + batText + "</font>";
                     textUSD = usdValue;
                     break;
             }
@@ -1160,7 +1157,7 @@ public class BraveRewardsPanel
 
         switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
-                rightDrawable = R.drawable.disclosure;
+                rightDrawable = R.drawable.ic_verify_wallet_arrow;
                 textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 Log.e(TAG, "BraveRewardsExternalWallet.NOT_CONNECTED");
@@ -1242,41 +1239,24 @@ public class BraveRewardsPanel
                     case BraveRewardsExternalWallet.CONNECTED:
                     case BraveRewardsExternalWallet.PENDING:
                     case BraveRewardsExternalWallet.VERIFIED:
-                        if (walletBalance < WALLET_BALANCE_LIMIT
-                                && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
-                                && !isVerifyWalletEnabled()) {
-                            showUpholdLoginPopupWindow(btnVerifyWallet);
+                        if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
+                            TabUtils.openUrlInNewTab(false,
+                                    BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                            dismiss();
                         } else {
-                            if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
-                                BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                                        BraveActivity
-                                                .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
-                                dismiss();
-                            } else {
-                                int requestCode =
-                                        (status == BraveRewardsExternalWallet.NOT_CONNECTED)
-                                        ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                                        : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                                Intent intent = BuildVerifyWalletActivityIntent(status);
-                                if (intent != null) {
-                                    mActivity.startActivityForResult(intent, requestCode);
-                                }
+                            int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
+                                    ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                                    : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                            Intent intent = BuildVerifyWalletActivityIntent(status);
+                            if (intent != null) {
+                                mActivity.startActivityForResult(intent, requestCode);
                             }
                         }
                         break;
                     case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                     case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                        if (walletBalance < WALLET_BALANCE_LIMIT
-                                && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
-                                && !isVerifyWalletEnabled()) {
-                            showUpholdLoginPopupWindow(btnVerifyWallet);
-                        } else {
-                            if (!TextUtils.isEmpty(mExternalWallet.getVerifyUrl())) {
-                                dismiss();
-                                mBraveActivity.openNewOrSelectExistingTab(
-                                        mExternalWallet.getLoginUrl());
-                            }
-                        }
+                        TabUtils.openUrlInNewTab(false,
+                                BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
                         break;
                     default:
                         Log.e(TAG, "Unexpected external wallet status");
@@ -1503,112 +1483,6 @@ public class BraveRewardsPanel
         return sharedPreferences.getBoolean(PREF_VERIFY_WALLET_ENABLE, false);
     }
 
-    private void showUpholdLoginPopupWindow(final View view) {
-        PopupWindow loginPopupWindow = new PopupWindow(mActivity);
-        int foregroundColor = R.color.rewards_foreground_color;
-        mRewardsMainLayout.setForeground(
-                new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
-        enableControls(false, mRewardsMainLayout);
-
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, mPopupView);
-
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
-        if (isTablet) {
-            ViewGroup.LayoutParams params = loginPopupView.getLayoutParams();
-            params.width = dpToPx(mActivity, 320);
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            loginPopupView.setLayoutParams(params);
-        }
-
-        TextView loginActionButton = loginPopupView.findViewById(R.id.login_action_button);
-
-        String verifiedAccountUpholdText =
-                String.format(mActivity.getResources().getString(R.string.verified_account_uphold),
-                        mActivity.getResources().getString(R.string.continue_to_login));
-        int countinueToLoginIndex = verifiedAccountUpholdText.indexOf(
-                mActivity.getResources().getString(R.string.continue_to_login));
-        assert countinueToLoginIndex != 0;
-        Spanned verifiedAccountUpholdTextSpanned =
-                BraveRewardsHelper.spannedFromHtmlString(verifiedAccountUpholdText);
-        SpannableString verifiedAccountUpholdTextSS =
-                new SpannableString(verifiedAccountUpholdTextSpanned.toString());
-
-        ClickableSpan verifiedAccountUpholdClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                dismiss();
-                loginPopupWindow.dismiss();
-                mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getLoginUrl());
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        verifiedAccountUpholdTextSS.setSpan(verifiedAccountUpholdClickableSpan,
-                countinueToLoginIndex,
-                countinueToLoginIndex
-                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        verifiedAccountUpholdTextSS.setSpan(
-                new ForegroundColorSpan(
-                        mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)),
-                countinueToLoginIndex,
-                countinueToLoginIndex
-                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        loginActionButton.setMovementMethod(LinkMovementMethod.getInstance());
-        loginActionButton.setText(verifiedAccountUpholdTextSS);
-
-        mPopupView.measure(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        int popupWidth = mPopupView.getMeasuredWidth();
-        loginPopupWindow.setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            loginPopupWindow.setElevation(20);
-        }
-
-        loginPopupWindow.setTouchable(true);
-        loginPopupWindow.setFocusable(true);
-        loginPopupWindow.setOutsideTouchable(true);
-        loginPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    loginPopupWindow.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (SysUtils.isLowEndDevice()) {
-                    loginPopupWindow.setAnimationStyle(0);
-                }
-
-                if (android.os.Build.VERSION.SDK_INT
-                        < android.os.Build.VERSION_CODES.N) { // Before 7.0
-                    loginPopupWindow.showAsDropDown(view, 0, 0);
-                } else {
-                    int[] location = new int[2];
-                    view.getLocationOnScreen(location);
-                    int y = location[1];
-                    loginPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, 0, y);
-                }
-            }
-        });
-    }
-
     private Intent BuildVerifyWalletActivityIntent(@WalletStatus final int status) {
         Class clazz = null;
         switch (status) {
@@ -1637,7 +1511,9 @@ public class BraveRewardsPanel
     private void enableControls(boolean enable, ViewGroup vg) {
         for (int i = 0; i < vg.getChildCount(); i++) {
             View child = vg.getChildAt(i);
-            child.setEnabled(enable);
+            if (child.getId() != R.id.tip_btn) {
+                child.setEnabled(enable);
+            }
             if (child instanceof ViewGroup) {
                 enableControls(enable, (ViewGroup) child);
             }

@@ -22,7 +22,7 @@
         android:layout_marginTop="24dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/brave_rewards_modal_title_color"/>
+        android:textColor="@color/rewards_panel_text_color"/>
 
       <TextView
         android:id="@+id/text_view"
@@ -31,7 +31,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="14sp"
-        android:textColor="@color/brave_rewards_modal_text_color"/>
+        android:textColor="@color/rewards_panel_secondary_text_color"/>
 
       <FrameLayout
         android:layout_width="match_parent"

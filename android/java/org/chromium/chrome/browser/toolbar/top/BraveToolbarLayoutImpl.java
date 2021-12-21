@@ -762,22 +762,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 dialog.dismiss();
             }
         }));
-        Button btnBraveRewards =
-                braveRewardsOnboardingModalView.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards =
+                braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
-                dialog.dismiss();
-            }
-        }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 dialog.dismiss();
             }
         }));

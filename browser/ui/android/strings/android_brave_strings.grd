@@ -2728,7 +2728,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add funds
     </message>
     <message name="IDS_REWARDS_SUMMARY" desc="Brave rewards panel text">
-      Rewards summary
+      Rewards Summary
     </message>
     <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Brave rewards panel text">
       Total Grants Claimed
