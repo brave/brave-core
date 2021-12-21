@@ -679,8 +679,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
-            // position bellow the control_container element (nevigation bar) with 25dp compensation
-            inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - 5, 0, 0);
+            // position bellow the control_container element (nevigation bar) with
+            // getToolbarShadowHeight compensation
+            inflatedLayoutParams.setMargins(
+                    0, controlContainer.getBottom() - getToolbarShadowHeight(), 0, 0);
             newContentButtonLayoutParams.setMargins(0, 400, 0, 0);
             newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             newContentButtonLayout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1190,6 +1192,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
         return mBrowserControlsManagerSupplier;
+    }
+
+    public int getToolbarShadowHeight() {
+        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        assert toolbarShadow != null;
+        if (toolbarShadow != null) {
+            return toolbarShadow.getHeight();
+        }
+        return 0;
     }
 
     public int getToolbarBottom() {

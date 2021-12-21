@@ -258,8 +258,14 @@ public class CardBuilderFeedCard {
                                 adLayoutUp.setLayoutParams(adLayoutParams);
                                 rowTop.addView(adLayoutUp);
 
-                                adImageParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
-                                adImageParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+                                adImageParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
+                                adImageParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
+
+                                LinearLayout.LayoutParams adImageLinearParams =
+                                        (LinearLayout.LayoutParams) adLayoutUp.getLayoutParams();
+                                adImageLinearParams.weight = 1.0f;
+                                adImage.setLayoutParams(adImageLinearParams);
+
                                 setDisplayAdImage(adImage, adData.image, 1);
                                 adLayoutUp.addView(adImage);
                                 adLayoutUp.addView(adLogo);
@@ -267,6 +273,7 @@ public class CardBuilderFeedCard {
                                 adLogoParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
                                 adLogoParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
                                 adLogoParams.topMargin = 30;
+                                adLogoParams.rightMargin = 0;
                                 adLogoParams.gravity = Gravity.END;
                                 adLogo.setGravity(Gravity.END);
                                 adLogo.setCompoundDrawablesWithIntrinsicBounds(
@@ -274,8 +281,8 @@ public class CardBuilderFeedCard {
                                 adLogo.setText(R.string.brave_news_ad);
                                 adLogo.setTextColor(R.color.brave_theme_color);
                                 GradientDrawable gd = new GradientDrawable();
-                                gd.setColor(mActivity.getResources().getColor(
-                                        android.R.color.transparent));
+                                gd.setColor(
+                                        mActivity.getResources().getColor(R.color.news_time_color));
                                 gd.setCornerRadius(15);
                                 gd.setStroke(1, R.color.brave_theme_color);
                                 adLogo.setBackground(gd);
@@ -286,7 +293,6 @@ public class CardBuilderFeedCard {
                                 rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
                                 rowTableParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
                                 row1.setLayoutParams(rowTableParams);
-                                // row2.setPadding(30, 0, 30, 0);
                                 rowTableParams.bottomMargin = 3 * MARGIN_VERTICAL;
                                 row2.setLayoutParams(rowTableParams);
                                 tableLayoutTopNews.addView(row1);
@@ -296,16 +302,18 @@ public class CardBuilderFeedCard {
                                 row2.addView(adDesc);
                                 row2.addView(adButton);
 
-                                adItemsParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                                adItemsParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                                adItemsParams = new TableRow.LayoutParams(
+                                        TableRow.LayoutParams.MATCH_PARENT,
+                                        TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
                                 adTitle.setTextSize(17);
                                 adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
                                 adTitle.setTypeface(null, Typeface.BOLD);
-                                adTitle.setMaxLines(5);
+                                adTitle.setMaxLines(3);
                                 adTitle.setTextColor(
                                         mActivity.getResources().getColor(R.color.news_text_color));
                                 adTitle.setEllipsize(TextUtils.TruncateAt.END);
                                 adTitle.setLayoutParams(adItemsParams);
+                                adTitle.setText(adData.title);
 
                                 adItemsParams = new TableRow.LayoutParams(
                                         TableRow.LayoutParams.WRAP_CONTENT,
@@ -315,7 +323,6 @@ public class CardBuilderFeedCard {
                                 adItemsParams.weight = 1;
                                 adItemsParams.width = 0;
                                 adDesc.setLayoutParams(adItemsParams);
-                                adTitle.setText(adData.title);
 
                                 adDesc.setTextColor(
                                         mActivity.getResources().getColor(R.color.news_time_color));
@@ -637,7 +644,7 @@ public class CardBuilderFeedCard {
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "crashinvestigation exception:" + e.getMessage());
+            Log.e(TAG, "cardfeedbuilder crashinvestigation exception:" + e.getMessage());
         }
 
         return mLinearLayout;
@@ -1068,10 +1075,10 @@ public class CardBuilderFeedCard {
                     layoutRowPhotos.addView(layoutSingleCard);
 
                     imageRowParams.width = 0;
-                    imageRowParams.height = 350;
+                    imageRowParams.height = 330;
 
                     imageRowParams.weight = 1;
-                    imageRowParams.setMargins(0, 0, 0, 0);
+                    imageRowParams.setMargins(0, 0, 0, 40);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     setImage(image, "paired", index);
@@ -1277,6 +1284,7 @@ public class CardBuilderFeedCard {
                 Glide.with(mActivity)
                         .asBitmap()
                         .load(decodedByte)
+                        .fitCenter()
                         .priority(Priority.IMMEDIATE)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(new CustomTarget<Bitmap>() {
