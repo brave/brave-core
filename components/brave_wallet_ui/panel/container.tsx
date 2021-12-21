@@ -16,7 +16,9 @@ import {
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
   SitePermissions,
-  AddSuggestedTokenPanel
+  AddSuggestedTokenPanel,
+  TransactionsPanel,
+  TransactionDetailPanel
 } from '../components/extension'
 import {
   Send,
@@ -104,7 +106,8 @@ function Container (props: Props) {
     connectedAccounts,
     activeOrigin,
     pendingTransactions,
-    defaultCurrencies
+    defaultCurrencies,
+    transactions
   } = props.wallet
 
   const {
@@ -126,6 +129,7 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
+  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>()
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
 
@@ -503,6 +507,27 @@ function Container (props: Props) {
     })
   }
 
+  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    setSelectedTransaction(transaction)
+    props.walletPanelActions.navigateTo('transactionDetails')
+  }
+
+  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.retryTransaction(transaction)
+  }
+
+  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.speedupTransaction(transaction)
+  }
+
+  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.cancelTransaction(transaction)
+  }
+
+  const onGoBackToTransactions = () => {
+    props.walletPanelActions.navigateTo('transactions')
+  }
+
   const isConnectedToSite = React.useMemo((): boolean => {
     if (activeOrigin === WalletOrigin) {
       return true
@@ -855,6 +880,54 @@ function Container (props: Props) {
                 onChangeSwapView={onChangeSwapView}
               />
             </SendWrapper>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'transactionDetails' && selectedTransaction) {
+    return (
+      <PanelWrapper isLonger={false}>
+        <SelectContainer>
+          <TransactionDetailPanel
+            onCancelTransaction={onCancelTransaction}
+            onRetryTransaction={onRetryTransaction}
+            onSpeedupTransaction={onSpeedupTransaction}
+            onBack={onGoBackToTransactions}
+            accounts={accounts}
+            defaultCurrencies={defaultCurrencies}
+            selectedNetwork={selectedNetwork}
+            transaction={selectedTransaction}
+            transactionSpotPrices={transactionSpotPrices}
+            visibleTokens={userVisibleTokenOptions}
+          />
+        </SelectContainer>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'transactions') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <ScrollContainer>
+              <TransactionsPanel
+                accounts={accounts}
+                defaultCurrencies={defaultCurrencies}
+                onSelectTransaction={onSelectTransaction}
+                selectedNetwork={selectedNetwork}
+                selectedAccount={selectedAccount}
+                visibleTokens={userVisibleTokenOptions}
+                transactionSpotPrices={transactionSpotPrices}
+                transactions={transactions}
+              />
+            </ScrollContainer>
           </Panel>
         </StyledExtensionWrapper>
       </PanelWrapper>

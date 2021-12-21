@@ -102,6 +102,8 @@ export type PanelTypes =
   | 'showUnlock'
   | 'sitePermissions'
   | 'addSuggestedToken'
+  | 'transactions'
+  | 'transactionDetails'
 
 export type NavTypes =
   | 'crypto'

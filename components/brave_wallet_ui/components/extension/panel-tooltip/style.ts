@@ -15,7 +15,7 @@ export const Tip = styled.div<StyleProps>`
   position: absolute;
   border-radius: 4px;
   left: 50%;
-  transform: ${(p) => p.position === 'right' ? 'translateX(calc(-50% + 30px))' : 'translateX(calc(-50% - 30px))'} translateY(25%);
+  transform: ${(p) => p.position === 'right' ? 'translateX(calc(-50% + 40px))' : 'translateX(calc(-50% - 40px))'} translateY(25%);
   padding: 6px;
   color: ${(p) => p.theme.palette.white};
   background: ${(p) => p.theme.palette.black};

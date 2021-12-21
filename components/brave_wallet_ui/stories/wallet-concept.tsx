@@ -55,7 +55,7 @@ export default {
   }
 }
 
-const transactionDummyData: AccountTransactions = {
+export const transactionDummyData: AccountTransactions = {
   [mockUserAccounts[0].id]: [
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',

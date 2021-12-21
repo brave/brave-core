@@ -95,3 +95,28 @@ export const TabRow = styled.div`
   width: 255px;
   margin-bottom: 10px;
 `
+
+export const DetailTextDarkBold = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text02};
+`
+
+export const DetailTextLight = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text03};
+`
+
+export const DetailTextDark = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text02};
+`
