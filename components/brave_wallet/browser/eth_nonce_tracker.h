@@ -11,7 +11,6 @@
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/lock.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
@@ -37,9 +36,8 @@ class EthNonceTracker {
  private:
   void OnGetNetworkNonce(EthAddress from,
                          GetNextNonceCallback callback,
-                         uint256_t result,
-                         mojom::ProviderError error,
-                         const std::string& error_message);
+                         bool status,
+                         uint256_t result);
 
   EthTxStateManager* tx_state_manager_;
   EthJsonRpcController* rpc_controller_;

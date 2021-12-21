@@ -56,14 +56,10 @@ class EthJsonRpcController : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
 
   using StringResultCallback =
-      base::OnceCallback<void(const std::string& result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool success, const std::string& result)>;
 
   using GetBlockNumberCallback =
-      base::OnceCallback<void(uint256_t result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, uint256_t result)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
 
   void Request(const std::string& json_payload,
@@ -74,23 +70,17 @@ class EthJsonRpcController : public KeyedService,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
-      base::OnceCallback<void(uint256_t result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, uint256_t result)>;
   void GetTransactionCount(const std::string& address,
                            GetTxCountCallback callback);
 
   using GetTxReceiptCallback =
-      base::OnceCallback<void(TransactionReceipt result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, TransactionReceipt result)>;
   void GetTransactionReceipt(const std::string& tx_hash,
                              GetTxReceiptCallback callback);
 
   using SendRawTxCallback =
-      base::OnceCallback<void(const std::string& tx_hash,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, const std::string& tx_hash)>;
   void SendRawTransaction(const std::string& signed_tx,
                           SendRawTxCallback callback);
 
@@ -103,9 +93,8 @@ class EthJsonRpcController : public KeyedService,
                               GetERC20TokenAllowanceCallback callback) override;
 
   using UnstoppableDomainsProxyReaderGetManyCallback =
-      base::OnceCallback<void(const std::vector<std::string>& values,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool success,
+                              const std::vector<std::string>& values)>;
   // Call getMany function of ProxyReader contract from Unstoppable Domains.
   void UnstoppableDomainsProxyReaderGetMany(
       const std::string& chain_id,
@@ -158,9 +147,7 @@ class EthJsonRpcController : public KeyedService,
   GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
 
   using GetEstimateGasCallback =
-      base::OnceCallback<void(const std::string& result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, const std::string& result)>;
   void GetEstimateGas(const std::string& from_address,
                       const std::string& to_address,
                       const std::string& gas,
@@ -170,15 +157,11 @@ class EthJsonRpcController : public KeyedService,
                       GetEstimateGasCallback callback);
 
   using GetGasPriceCallback =
-      base::OnceCallback<void(const std::string& result,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool status, const std::string& result)>;
   void GetGasPrice(GetGasPriceCallback callback);
 
   using GetIsEip1559Callback =
-      base::OnceCallback<void(bool is_eip1559,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool success, bool is_eip1559)>;
   void GetIsEip1559(GetIsEip1559Callback callback);
 
   void GetERC721OwnerOf(const std::string& contract,
@@ -191,9 +174,7 @@ class EthJsonRpcController : public KeyedService,
                              GetERC721TokenBalanceCallback callback) override;
 
   using GetSupportsInterfaceCallback =
-      base::OnceCallback<void(bool is_supported,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
+      base::OnceCallback<void(bool success, bool is_supported)>;
   void GetSupportsInterface(const std::string& contract_address,
                             const std::string& interface_id,
                             GetSupportsInterfaceCallback callback);
@@ -276,9 +257,8 @@ class EthJsonRpcController : public KeyedService,
   void ContinueEnsResolverGetContentHash(const std::string& chain_id,
                                          const std::string& domain,
                                          StringResultCallback callback,
-                                         const std::string& resolver_address,
-                                         mojom::ProviderError error,
-                                         const std::string& error_message);
+                                         bool success,
+                                         const std::string& resolver_address);
 
   void OnEnsResolverGetContentHash(
       StringResultCallback callback,
@@ -288,9 +268,8 @@ class EthJsonRpcController : public KeyedService,
 
   void ContinueEnsGetEthAddr(const std::string& domain,
                              StringResultCallback callback,
-                             const std::string& resolver_address,
-                             mojom::ProviderError error,
-                             const std::string& error_message);
+                             bool success,
+                             const std::string& resolver_address);
 
   void OnEnsGetEthAddr(StringResultCallback callback,
                        int status,
@@ -315,9 +294,8 @@ class EthJsonRpcController : public KeyedService,
 
   void MaybeUpdateIsEip1559(const std::string& chain_id);
   void UpdateIsEip1559(const std::string& chain_id,
-                       bool is_eip1559,
-                       mojom::ProviderError error,
-                       const std::string& error_message);
+                       bool success,
+                       bool is_eip1559);
 
   void RequestInternal(const std::string& json_payload,
                        bool auto_retry_on_network_change,
@@ -335,9 +313,8 @@ class EthJsonRpcController : public KeyedService,
 
   void ContinueGetERC721TokenBalance(const std::string& account_address,
                                      GetERC721TokenBalanceCallback callback,
-                                     const std::string& owner_address,
-                                     mojom::ProviderError error,
-                                     const std::string& error_message);
+                                     bool success,
+                                     const std::string& owner_address);
 
   void OnGetSupportsInterface(
       GetSupportsInterfaceCallback callback,
