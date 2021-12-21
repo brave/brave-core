@@ -763,7 +763,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }));
         TextView btnBraveRewards =
-                braveRewardsOnboardingModalView.findViewById(R.id.btn_brave_rewards);
+                braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

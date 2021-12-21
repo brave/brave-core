@@ -66,7 +66,7 @@
 	            android:textColor="@color/rewards_panel_action_color"/>
 
 	        <TextView
-	            android:id="@+id/btn_brave_rewards"
+	            android:id="@+id/start_using_brave_rewards_text"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"

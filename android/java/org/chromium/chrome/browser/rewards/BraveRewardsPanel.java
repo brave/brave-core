@@ -262,13 +262,10 @@ public class BraveRewardsPanel
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
+        int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
 
-        mPopupWindow.setWidth((int) (isTablet ? (width * 0.6) : (width * 0.9)));
+        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.9)));
 
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
 
@@ -475,7 +472,7 @@ public class BraveRewardsPanel
                                 mPopupView.getResources().getString(R.string.ok));
                         title = mPopupView.getResources().getString(
                                 R.string.brave_ui_rewards_contribute);
-                        notificationIcon = R.drawable.contribute_icon;
+                        notificationIcon = R.drawable.ic_hearts_rewards;
 
                         double value = 0;
                         String valueString = "";
@@ -497,19 +494,19 @@ public class BraveRewardsPanel
                         break;
                     case AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS:
                         title = "";
-                        notificationIcon = R.drawable.icon_warning_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_no_funds);
                         break;
                     case AUTO_CONTRIBUTE_TIPPING_ERROR:
                         title = "";
-                        notificationIcon = R.drawable.icon_error_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_tip_error);
                         break;
                     default:
                         title = "";
-                        notificationIcon = R.drawable.icon_error_notification;
+                        notificationIcon = R.drawable.ic_error_notification;
                         description = mPopupView.getResources().getString(
                                 R.string.brave_ui_notification_desc_contr_error);
                 }
@@ -522,10 +519,7 @@ public class BraveRewardsPanel
                 actionNotificationButton.setText(
                         mPopupView.getResources().getString(R.string.brave_ui_claim));
 
-                int grantIconId = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
-                        ? R.drawable.ic_money_bag_coins
-                        : R.drawable.notification_icon;
-                notificationIcon = grantIconId;
+                notificationIcon = R.drawable.ic_money_bag_coins;
 
                 title = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
                         ? mPopupView.getResources().getString(R.string.brave_ui_new_token_grant)
@@ -540,7 +534,7 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 title = mPopupView.getResources().getString(
                         R.string.brave_ui_insufficient_funds_msg);
                 description = mPopupView.getResources().getString(
@@ -548,7 +542,7 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 title = mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_msg);
                 description =
                         mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_desc);
@@ -558,7 +552,7 @@ public class BraveRewardsPanel
                 title = mPopupView.getResources().getString(R.string.brave_ui_contribution_tips);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_tips_processed_notification);
-                notificationIcon = R.drawable.contribute_icon;
+                notificationIcon = R.drawable.ic_hearts_rewards;
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
                 actionNotificationButton.setText(
@@ -566,7 +560,7 @@ public class BraveRewardsPanel
                 title = mPopupView.getResources().getString(
                         R.string.brave_ui_brave_ads_launch_title);
                 description = "";
-                notificationIcon = R.drawable.notification_icon;
+                notificationIcon = R.drawable.ic_info_rewards;
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER:
                 String pubName = args[0];
@@ -575,11 +569,11 @@ public class BraveRewardsPanel
                         R.string.brave_ui_pending_contribution_title);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_verified_publisher_notification, pubName);
-                notificationIcon = R.drawable.contribute_icon;
+                notificationIcon = R.drawable.ic_hearts_rewards;
                 break;
             case REWARDS_NOTIFICATION_NO_INTERNET:
                 title = "";
-                notificationIcon = R.drawable.icon_error_notification;
+                notificationIcon = R.drawable.ic_error_notification;
                 description = "\n"
                         + mPopupView.getResources().getString(R.string.brave_rewards_local_uh_oh)
                         + "\n"
@@ -857,7 +851,7 @@ public class BraveRewardsPanel
                 showBraveRewardsOnboarding(root, false);
             }
         }));
-        TextView btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards = root.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

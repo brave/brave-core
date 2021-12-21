@@ -634,7 +634,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 showBraveRewardsOnboarding(root, false);
             }
         }));
-        TextView btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards = root.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
