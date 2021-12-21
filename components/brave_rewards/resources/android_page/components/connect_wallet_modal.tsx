@@ -15,7 +15,7 @@ import * as style from './connect_wallet_modal.style'
 
 export function getMinimumBalance (provider: string) {
   switch (provider) {
-    case 'uphold': return 15
+    case 'uphold': return 2
     default: return 0
   }
 }
