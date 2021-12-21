@@ -911,8 +911,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         if (mFinalWarningDialog != null) {
             mFinalWarningDialog.dismiss();
-            synchronized (mQrInProcessingLock) {
-                mQrInProcessing = false;
+            synchronized (mQrInProcessingOrFinalizedLock) {
+                mQrInProcessingOrFinalized = false;
             }
         }
     }
@@ -986,19 +986,20 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private final Object mQrInProcessingLock = new Object();
-    private boolean mQrInProcessing;
+    private final Object mQrInProcessingOrFinalizedLock = new Object();
+    private boolean mQrInProcessingOrFinalized;
 
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
-            synchronized (mQrInProcessingLock) {
+            synchronized (mQrInProcessingOrFinalizedLock) {
                 // If camera looks on the QR image and final security warning is shown,
-                // we could arrive here again and show 2nd alert while the 1st is not yet closed
-                if (mQrInProcessing) {
+                // we could arrive here again and show 2nd alert while the 1st is not yet closed;
+                // Also when QR is scanned, verified and accepted, we don't anything more
+                if (mQrInProcessingOrFinalized) {
                     return;
                 }
-                mQrInProcessing = true;
+                mQrInProcessingOrFinalized = true;
             }
 
             final String jsonQr = barcode.displayValue;
@@ -1009,9 +1010,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     showEndDialog(validationError, new Runnable() {
                         @Override
                         public void run() {
-                            synchronized (mQrInProcessingLock) {
-                                assert mQrInProcessing;
-                                mQrInProcessing = false;
+                            synchronized (mQrInProcessingOrFinalizedLock) {
+                                assert mQrInProcessingOrFinalized;
+                                mQrInProcessingOrFinalized = false;
                             }
                         }
                     });
@@ -1036,21 +1037,26 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         new Runnable() {
                             @Override
                             public void run() {
-                                synchronized (mQrInProcessingLock) {
-                                    assert mQrInProcessing;
-                                    mQrInProcessing = false;
-                                    // We have the confirmation from user
-                                    // seedHexReceived will call setAppropriateView
-                                    seedHexReceived(seedHex);
+                                synchronized (mQrInProcessingOrFinalizedLock) {
+                                    assert mQrInProcessingOrFinalized;
+                                    // Supposed to set here mQrInProcessingOrFinalized
+                                    // to true, because we validated and accepted the QR code
+                                    // and don't need the new QR codes to be detected.
+                                    // To allow new QR scans, at setJoinExistingChainLayout
+                                    // the flag mQrInProcessingOrFinalized will be reset.
                                 }
+
+                                // We have the confirmation from user
+                                // seedHexReceived will call setAppropriateView
+                                seedHexReceived(seedHex);
                             }
                         },
                         new Runnable() {
                             @Override
                             public void run() {
-                                synchronized (mQrInProcessingLock) {
-                                    assert mQrInProcessing;
-                                    mQrInProcessing = false;
+                                synchronized (mQrInProcessingOrFinalizedLock) {
+                                    assert mQrInProcessingOrFinalized;
+                                    mQrInProcessingOrFinalized = false;
                                 }
                             }
                         });
@@ -1175,6 +1181,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           adjustWidth(mScrollViewSyncChainCode, false);
           mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
       }
+
+      synchronized (mQrInProcessingOrFinalizedLock) {
+          mQrInProcessingOrFinalized = false;
+      }
+
       if (null != mCameraSourcePreview) {
           int rc = ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
           if (rc == PackageManager.PERMISSION_GRANTED) {
