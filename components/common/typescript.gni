@@ -143,6 +143,10 @@ template("transpile_web_ui") {
       foreach(alias, invoker.webpack_aliases) {
         args += [ "--webpack_alias=" + alias ]
       }
+    } else {
+      # For explanation of "chromeapp", see:
+      # https://github.com/brave/brave-browser/issues/5587
+      args += [ "--webpack_alias=chromeapp" ]
     }
 
     # support multiple entry points and named bundle JS filename

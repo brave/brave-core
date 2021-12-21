@@ -28,14 +28,14 @@ def main():
 
     depfile_path = os.path.abspath(args.depfile_path[0])
     transpile_options = dict(
-      production=args.production,
-      target_gen_dir=webpack_gen_dir,
-      root_gen_dir=root_gen_dir,
-      entry_points=args.entry,
-      depfile_path=depfile_path,
-      depfile_sourcename=grd_path,
-      webpack_aliases=args.webpack_alias,
-      public_asset_path=args.public_asset_path
+        production=args.production,
+        target_gen_dir=webpack_gen_dir,
+        root_gen_dir=root_gen_dir,
+        entry_points=args.entry,
+        depfile_path=depfile_path,
+        depfile_sourcename=grd_path,
+        webpack_aliases=args.webpack_alias,
+        public_asset_path=args.public_asset_path
     )
     transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0])
