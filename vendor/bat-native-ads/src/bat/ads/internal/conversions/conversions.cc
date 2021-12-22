@@ -327,10 +327,11 @@ void Conversions::Convert(
 ConversionList Conversions::FilterConversions(
     const std::vector<std::string>& redirect_chain,
     const ConversionList& conversions) {
-  ConversionList filtered_conversions = conversions;
+  ConversionList filtered_conversions;
 
-  const auto iter = std::remove_if(
-      filtered_conversions.begin(), filtered_conversions.end(),
+  std::copy_if(
+      conversions.cbegin(), conversions.cend(),
+      std::back_inserter(filtered_conversions),
       [&redirect_chain](const ConversionInfo& conversion) {
         const auto iter = std::find_if(
             redirect_chain.begin(), redirect_chain.end(),
@@ -338,14 +339,12 @@ ConversionList Conversions::FilterConversions(
               return DoesUrlMatchPattern(url, conversion.url_pattern);
             });
 
-        if (iter != redirect_chain.end()) {
+        if (iter == redirect_chain.end()) {
           return false;
         }
 
         return true;
       });
-
-  filtered_conversions.erase(iter, filtered_conversions.end());
 
   return filtered_conversions;
 }
