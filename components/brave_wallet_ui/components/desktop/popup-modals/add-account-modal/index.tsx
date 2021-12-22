@@ -1,6 +1,10 @@
 import * as React from 'react'
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { AddAccountNavTypes, WalletAccountType } from '../../../../constants/types'
+
+import {
+  BraveWallet,
+  AddAccountNavTypes,
+  WalletAccountType
+} from '../../../../constants/types'
 import { AddAccountNavOptions } from '../../../../options/add-account-nav-options'
 import { Select } from 'brave-ui/components'
 import { PopupModal, TopTabNav } from '../..'
@@ -20,16 +24,16 @@ import {
 
 import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
-import { FilecoinNetwork, HardwareWalletAccount } from '../../../../common/hardware/types'
+import { FilecoinNetwork } from '../../../../common/hardware/types'
 
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
-  onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: FilecoinAddressProtocol) => void
+  onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
-  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onSetImportError: (hasError: boolean) => void
   onRouteBackToAccounts: () => void
@@ -95,7 +99,7 @@ const AddAccountModal = (props: Props) => {
   // should be enabled in //brave/components/brave_wallet/common/buildflags/buildflags.gni as well
   // example: onImportFilecoinKey(accountName, privateKey, FILECOIN_TESTNET, FilecoinAddressProtocol.BLS)
   // @ts-expect-error
-  const onImportFilecoinKey = (accountName: string, privateKey: string, network: FilecoinNetwork, protocol: FilecoinAddressProtocol) => {
+  const onImportFilecoinKey = (accountName: string, privateKey: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => {
     onImportFilecoinAccount(accountName, privateKey, network, protocol)
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */

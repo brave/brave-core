@@ -18,16 +18,16 @@ import {
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping
 } from './types'
+import { BraveWallet, WalletAccountType } from '../../../../../constants/types'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 interface Props {
   hardwareWallet: string
-  accounts: HardwareWalletAccount[]
+  accounts: BraveWallet.HardwareWalletAccount[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void
@@ -49,7 +49,7 @@ export default function (props: Props) {
     onAddAccounts,
     getBalance
   } = props
-  const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[]>([])
+  const [filteredAccountList, setFilteredAccountList] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
 
   React.useMemo(() => {
@@ -59,7 +59,7 @@ export default function (props: Props) {
 
   const derivationPathsEnum = HardwareWalletDerivationPathsMapping[hardwareWallet]
 
-  const onSelectAccountCheckbox = (account: HardwareWalletAccount) => () => {
+  const onSelectAccountCheckbox = (account: BraveWallet.HardwareWalletAccount) => () => {
     const { derivationPath } = account
     const isSelected = selectedDerivationPaths.includes(derivationPath)
     const updatedPaths = isSelected
@@ -163,7 +163,7 @@ export default function (props: Props) {
 }
 
 interface AccountListItemProps {
-  account: HardwareWalletAccount
+  account: BraveWallet.HardwareWalletAccount
   onSelect: () => void
   selected: boolean
   getBalance: (address: string) => Promise<string>

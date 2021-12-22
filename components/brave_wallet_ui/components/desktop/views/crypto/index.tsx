@@ -19,7 +19,6 @@ import { PortfolioView, AccountsView } from '../'
 import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -34,8 +33,8 @@ export interface Props {
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportFilecoinAccount: (accountName: string, key: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
-  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onShowAddModal: () => void

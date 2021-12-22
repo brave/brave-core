@@ -1,5 +1,6 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
-import { HardwareWalletAccount, HardwareWalletResponseCodeType } from './hardware/types'
+import { HardwareWalletResponseCodeType } from './hardware/types'
+import { BraveWallet } from '../constants/types'
 
 export interface SignHardwareTransactionType {
   success: boolean
@@ -26,5 +27,5 @@ export type SignHardwareMessageOperationResult = HardwareOperationResult & {
 }
 
 export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
-  payload?: HardwareWalletAccount[]
+  payload?: BraveWallet.HardwareWalletAccount[]
 }

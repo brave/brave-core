@@ -1,9 +1,9 @@
-import { FILECOIN_TESTNET, FILECOIN_MAINNET } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
-import { HardwareVendor } from '../api/hardware_keyrings'
+import { BraveWallet } from '../../constants/types'
 
-const FilecoinNetworkTypes = [FILECOIN_TESTNET, FILECOIN_MAINNET] as const
+const FilecoinNetworkTypes = [
+  BraveWallet.FILECOIN_TESTNET, BraveWallet.FILECOIN_MAINNET
+] as const
 export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
 
 export type HardwareWalletResponseCodeType =
@@ -39,18 +39,8 @@ export type SignHardwareMessageOperationResult = HardwareOperationResult & {
 
 export interface TrezorBridgeAccountsPayload {
   success: boolean
-  accounts: HardwareWalletAccount[]
+  accounts: BraveWallet.HardwareWalletAccount[]
   error?: string
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export interface HardwareWalletAccount {
-  address: string
-  derivationPath: string
-  name: string
-  hardwareVendor: HardwareVendor
-  deviceId: string
 }
 
 export enum LedgerDerivationPaths {

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { WalletWidgetStandIn } from './style'
 import {
   // SideNav,
@@ -46,7 +45,6 @@ import {
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
-import { HardwareWalletAccount } from '../common/hardware/types'
 import { isStrongPassword } from '../utils/password-utils'
 export default {
   title: 'Wallet/Desktop',
@@ -477,7 +475,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const onImportAccount = (name: string, key: string) => {
     // doesnt do anything in storybook
   }
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: FilecoinAddressProtocol) => {
+  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => {
     // doesnt do anything in storybook
   }
 
@@ -607,7 +605,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will Remove Account')
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
     return new Promise((resolve) => {
@@ -633,7 +631,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }
   }
 
-  const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {
+  const onAddHardwareAccounts = (accounts: BraveWallet.HardwareWalletAccount[]) => {
     console.log(accounts)
   }
 
