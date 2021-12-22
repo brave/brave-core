@@ -1,0 +1,23 @@
+header = """
+/* filcrypto Header */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+"""
+trailer = """
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+"""
+
+include_guard = "filcrypto_H"
+include_version = true
+language = "C"
+
+[parse]
+parse_deps = true
+include = ["ffi-toolkit"]
+
+[enum]
+prefix_with_name = true

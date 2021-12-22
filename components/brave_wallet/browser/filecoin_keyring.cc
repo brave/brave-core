@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/rust/ffi/filecoin_ffi.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "components/base32/base32.h"
@@ -36,6 +37,25 @@ std::vector<uint8_t> BlakeHash(const std::vector<uint8_t>& payload,
   return result;
 }
 
+template <typename T, typename D>
+auto wrap(T* ptr, D deleter) {
+  return std::unique_ptr<T, D>(ptr, deleter);
+}
+
+std::vector<uint8_t> BLSPublicKeyFromPrivateKey(
+    const std::vector<uint8_t>& private_key) {
+  std::vector<uint8_t> result;
+  auto response{wrap(fil_private_key_public_key(private_key.data()),
+                     fil_destroy_private_key_public_key_response)};
+  if (response == nullptr) {
+    return result;
+  }
+
+  std::copy(std::begin(response->public_key.inner),
+            std::end(response->public_key.inner), std::begin(result));
+  return result;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -54,7 +74,8 @@ std::string FilecoinKeyring::ImportFilecoinBLSAccount(
   if (private_key.empty() || public_key.empty()) {
     return std::string();
   }
-
+  auto public_key1 = BLSPublicKeyFromPrivateKey(private_key);
+  DLOG(INFO) << "public_key:" << public_key1.size();
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key)
     return std::string();

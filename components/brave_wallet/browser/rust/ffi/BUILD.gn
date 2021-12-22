@@ -1,0 +1,43 @@
+# Copyright 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/cargo.gni")
+
+# Generate FFI header from Rust source
+cargo_cbindgen("filecoin_ffi_header") {
+  visibility = [ ":*" ]
+  config = "cbindgen.toml"
+  output = "${target_gen_dir}/filecoin_ffi.h"
+
+  sources = [
+    "Cargo.toml",
+    "cbindgen.toml",
+    "src/bls/api.rs",
+  ]
+}
+
+rust_ffi("ffi") {
+  shared_library_define = "FILECOIN_SHARED_LIBRARY"
+  implementation_define = "FILECOIN_IMPLEMENTATION"
+
+  sources = [
+    "filecoin.cc",
+    "filecoin.h",
+  ]
+
+  deps = [
+    ":filecoin_ffi_header",
+    "//base",
+  ]
+}
+
+rust_crate("rust_lib") {
+  inputs = [
+    # Underlying library code
+    "build.rs",
+    "Cargo.toml",
+    "src/bls/api.rs",
+  ]
+}

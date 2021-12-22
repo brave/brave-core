@@ -1,0 +1,34 @@
+[
+  {
+    "rustc_target_feature": "+adx",
+    "check_cpu_for_feature": "adx"
+  },
+  {
+    "rustc_target_feature": "+sha",
+    "check_cpu_for_feature": "sha_ni"
+  },
+  {
+    "rustc_target_feature": "+sha2",
+    "check_cpu_for_feature": "sha2"
+  },
+  {
+    "rustc_target_feature": "+sse2",
+    "check_cpu_for_feature": "sse2"
+  },
+  {
+    "rustc_target_feature": "+avx2",
+    "check_cpu_for_feature": "avx2"
+  },
+  {
+    "rustc_target_feature": "+avx",
+    "check_cpu_for_feature": "avx"
+  },
+  {
+    "rustc_target_feature": "+sse4.2",
+    "check_cpu_for_feature": "sse4_2"
+  },
+  {
+    "rustc_target_feature": "+sse4.1",
+    "check_cpu_for_feature": "sse4_1"
+  }
+]

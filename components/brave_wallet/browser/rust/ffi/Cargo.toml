@@ -1,0 +1,67 @@
+[package]
+name = "filcrypto"
+description = "FFI Interface to Filecoin Proofs"
+version = "0.7.5"
+authors = [
+  "nemo <nemo@protocol.ai>",
+  "dignifiedquire <me@dignifiedquire.com>",
+  "laser <l@s3r.com>"
+]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/filecoin-project/filecoin-ffi"
+readme = "README.md"
+edition = "2018"
+publish = false
+
+[lib]
+crate-type = ["rlib", "staticlib"]
+
+[dependencies]
+bls-signatures = { version = "0.11.0", default-features = false, features = ["blst"] }
+blstrs = "0.4"
+byteorder = "1.2"
+drop_struct_macro_derive = "0.5.0"
+ff = { version = "0.3.1", package = "fff" }
+ffi-toolkit = "0.5.0"
+filepath = "0.1.1"
+group = "0.11"
+libc = "0.2.58"
+log = "0.4.7"
+fil_logger = "0.1.0"
+rand = "0.8"
+rand_chacha = "0.3.1"
+rayon = "1.2.1"
+anyhow = "1.0.23"
+bellperson = { version = "0.18", default-features = false }
+serde_json = "1.0.46"
+memmap = "0.7"
+rust-gpu-tools = { version = "0.5", default-features = false }
+storage-proofs-porep = { version = "~10.1.0", default-features = false }
+fr32 = { version = "~3.1.0", default-features = false }
+
+# FIXME: update before merging
+[dependencies.filecoin-proofs-api]
+package = "filecoin-proofs-api"
+#version = "10.1"
+git = "https://github.com/filecoin-project/rust-filecoin-proofs-api"
+default-features = false
+
+[build-dependencies]
+cbindgen = "= 0.14.0"
+
+[dev-dependencies]
+tempfile = "3.0.8"
+
+[features]
+default = ["opencl", "multicore-sdr" ]
+blst-portable = ["bls-signatures/blst-portable", "blstrs/portable"]
+opencl = ["filecoin-proofs-api/opencl", "bellperson/opencl", "storage-proofs-porep/opencl", "rust-gpu-tools/opencl"]
+cuda = ["filecoin-proofs-api/cuda", "bellperson/cuda", "storage-proofs-porep/cuda", "rust-gpu-tools/cuda"]
+multicore-sdr = ["storage-proofs-porep/multicore-sdr"]
+
+# FIXME: remove before merging
+# Patched in
+[patch.crates-io]
+storage-proofs-porep = { git = "https://github.com/filecoin-project/rust-fil-proofs", default-features = false }
+filecoin-proofs = { git = "https://github.com/filecoin-project/rust-fil-proofs", default-features = false }
+sha2raw = { git = "https://github.com/filecoin-project/rust-fil-proofs", default-features = false }
