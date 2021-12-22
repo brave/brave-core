@@ -77,9 +77,28 @@ export default function (props: Props) {
     )
   }
 
+  const getDefaultAccountName = (account: BraveWallet.HardwareWalletAccount) => {
+    const index = accounts.findIndex(e => e.address === account.address)
+
+    let schemeString
+    switch (selectedDerivationScheme) {
+      case LedgerDerivationPaths.Legacy:
+        schemeString = ' (Legacy)'
+        break
+      default:
+        schemeString = ''
+    }
+
+    return index === 0
+      ? `${account.hardwareVendor}${schemeString}`
+      : `${account.hardwareVendor} ${index}${schemeString}`
+  }
+
   const onAddAccounts = () => {
     const selectedAccounts = accounts.filter(o => selectedDerivationPaths.includes(o.derivationPath))
-    props.onAddHardwareAccounts(selectedAccounts)
+    const renamedSelectedAccounts = selectedAccounts
+      .map(account => ({ ...account, name: getDefaultAccountName(account) }))
+    props.onAddHardwareAccounts(renamedSelectedAccounts)
   }
 
   const getBalance = (address: string) => {
