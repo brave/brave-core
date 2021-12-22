@@ -171,11 +171,15 @@ OBJC_EXPORT
               NSDate* _Nullable nextPaymentDate))completion
     NS_SWIFT_NAME(detailsForCurrentCycle(_:));
 
-/// Toggle that the user liked the given ad and more like it should be shown
-- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId;
+/// Toggle that the user liked the given ad and advertiser and more like it
+/// should be shown
+- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
+               advertiserId:(NSString*)advertiserId;
 
-/// Toggle that the user disliked the given ad and it shouldn't be shown again
-- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId;
+/// Toggle that the user disliked the given ad and advertiser and it shouldn't
+/// be shown again
+- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
+                 advertiserId:(NSString*)advertiserId;
 
 #pragma mark -
 
