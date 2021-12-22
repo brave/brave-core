@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.h"
-#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
@@ -57,8 +56,8 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
 
 }  // namespace
 
-#define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE                                 \
-  if (canvas() && !AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
+#define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE                              \
+  if (!brave::AllowFingerprinting(ExecutionContext::From(script_state))) \
     return ScriptValue::CreateNull(script_state->GetIsolate());
 
 #define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER                \

@@ -95,6 +95,14 @@ BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
   return value;
 }
 
+bool AllowFingerprinting(ExecutionContext* context) {
+  blink::WebContentSettingsClient* settings =
+      GetContentSettingsClientFor(context);
+  if (settings)
+    return settings->AllowFingerprinting(true);
+  return true;
+}
+
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;

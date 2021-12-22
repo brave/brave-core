@@ -31,6 +31,7 @@ CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
 CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          BraveFarblingLevel default_value);
+CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
