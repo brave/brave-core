@@ -142,28 +142,28 @@ std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
 
 AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
                                         const ConversionInfo& conversion) {
-  AdEventList filtered_ad_events = ad_events;
+  AdEventList filtered_ad_events;
 
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
+  std::copy_if(
+      ad_events.cbegin(), ad_events.cend(),
+      std::back_inserter(filtered_ad_events),
       [&conversion](const AdEventInfo& ad_event) {
         if (ad_event.creative_set_id != conversion.creative_set_id) {
-          return true;
+          return false;
         }
 
         if (!DoesConfirmationTypeMatchConversionType(ad_event.confirmation_type,
                                                      conversion.type)) {
-          return true;
+          return false;
         }
 
         if (HasObservationWindowForAdEventExpired(conversion.observation_window,
                                                   ad_event)) {
-          return true;
+          return false;
         }
 
-        return false;
+        return true;
       });
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
   return filtered_ad_events;
 }
