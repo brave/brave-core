@@ -28,6 +28,7 @@ import { DisclaimerText } from '../style'
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
+  preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void
@@ -40,6 +41,7 @@ interface Props {
 export default function (props: Props) {
   const {
     accounts,
+    preAddedHardwareWalletAccounts,
     hardwareWallet,
     selectedDerivationScheme,
     setSelectedDerivationScheme,
@@ -88,6 +90,10 @@ export default function (props: Props) {
     onLoadMore()
   }
 
+  const isPreAddedAccount = React.useCallback((account: BraveWallet.HardwareWalletAccount) => {
+    return preAddedHardwareWalletAccounts.some(e => e.address === account.address)
+  }, [preAddedHardwareWalletAccounts])
+
   return (
     <>
       <SelectWrapper>
@@ -132,7 +138,11 @@ export default function (props: Props) {
                   <AccountListItem
                     key={account.derivationPath}
                     account={account}
-                    selected={selectedDerivationPaths.includes(account.derivationPath)}
+                    selected={
+                      selectedDerivationPaths.includes(account.derivationPath) ||
+                      isPreAddedAccount(account)
+                    }
+                    disabled={isPreAddedAccount(account)}
                     onSelect={onSelectAccountCheckbox(account)}
                     getBalance={getBalance}
                   />
@@ -166,11 +176,12 @@ interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount
   onSelect: () => void
   selected: boolean
+  disabled: boolean
   getBalance: (address: string) => Promise<string>
 }
 
 function AccountListItem (props: AccountListItemProps) {
-  const { account, onSelect, selected, getBalance } = props
+  const { account, onSelect, selected, disabled, getBalance } = props
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
@@ -190,7 +201,11 @@ function AccountListItem (props: AccountListItemProps) {
           <div>{reduceAddress(account.address)}</div>
         </AddressBalanceWrapper>
         <AddressBalanceWrapper>{balance}</AddressBalanceWrapper>
-        <Checkbox value={{ selected }} onChange={onSelect}>
+        <Checkbox
+          value={{ selected }}
+          onChange={onSelect}
+          disabled={disabled}
+        >
           <div data-key='selected' />
         </Checkbox>
       </HardwareWalletAccountListItemColumn>

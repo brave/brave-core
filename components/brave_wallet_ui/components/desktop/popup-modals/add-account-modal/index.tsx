@@ -257,7 +257,16 @@ const AddAccountModal = (props: Props) => {
             />
           </>
         }
-        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} getBalance={getBalance} />}
+        {tab === 'hardware' &&
+          <HardwareWalletConnect
+            onConnectHardwareWallet={onConnectHardwareWallet}
+            onAddHardwareAccounts={onAddHardwareAccounts}
+            getBalance={getBalance}
+            preAddedHardwareWalletAccounts={
+              accounts.filter(account => ['Ledger', 'Trezor'].includes(account.accountType))
+            }
+          />
+        }
       </StyledWrapper>
     </PopupModal>
   )

@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
-import { BraveWallet } from '../../../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../../../constants/types'
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -28,6 +28,7 @@ export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
+  preAddedHardwareWalletAccounts: WalletAccountType[]
 }
 
 const derivationBatch = 4
@@ -151,6 +152,7 @@ export default function (props: Props) {
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
         accounts={accounts}
+        preAddedHardwareWalletAccounts={props.preAddedHardwareWalletAccounts}
         onLoadMore={onSubmit}
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}
