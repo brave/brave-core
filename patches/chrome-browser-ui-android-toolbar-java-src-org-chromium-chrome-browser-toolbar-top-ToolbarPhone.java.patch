@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 1e7a5d49490b23273e388d5dce2f525877873272..d468e6f96c3c94e33c029d0c02e8d128e3cf8562 100644
+index 1e7a5d49490b23273e388d5dce2f525877873272..d2e97e3820c35201485ffc0b47d8761c100471ad 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -408,6 +408,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -18,17 +18,23 @@ index 1e7a5d49490b23273e388d5dce2f525877873272..d468e6f96c3c94e33c029d0c02e8d128
      }
  
      @Override
-@@ -699,7 +701,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -699,6 +701,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
--        if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
-+      if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
-+      if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
++        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
+         if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
- 
-@@ -2117,6 +2120,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -970,6 +973,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+      * New Tab Page.
+      */
+     private void updateLocationBarLayoutForExpansionAnimation() {
++        if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
+         TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
+         FrameLayout.LayoutParams locationBarLayoutParams =
+                 mLocationBar.getPhoneCoordinator().getFrameLayoutParams();
+@@ -2117,6 +2121,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
