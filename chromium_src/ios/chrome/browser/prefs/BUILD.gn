@@ -4,5 +4,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 group("prefs") {
-  deps = [ "//brave/components/brave_sync:prefs" ]
+  deps = [
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_wallet/browser",
+  ]
 }
