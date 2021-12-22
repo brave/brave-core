@@ -13,6 +13,14 @@ const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json'
 
 module.exports = async function (env, argv) {
   // Webpack config object
+  const resolve = {
+    extensions: ['.js', '.tsx', '.ts', '.json'],
+    alias: pathMap
+  }
+
+  if (argv.webpack_alias) {
+    resolve.aliasFields = Array.isArray(argv.webpack_alias) ? argv.webpack_alias : [ argv.webpack_alias ]
+  }
   return {
     devtool: argv.mode === 'development' ? '#inline-source-map' : false,
     output: {
@@ -20,11 +28,7 @@ module.exports = async function (env, argv) {
       filename: '[name].bundle.js',
       chunkFilename: '[id].chunk.js'
     },
-    resolve: {
-      extensions: ['.js', '.tsx', '.ts', '.json'],
-      alias: pathMap,
-      aliasFields: [argv.webpack_alias]
-    },
+    resolve: resolve,
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE

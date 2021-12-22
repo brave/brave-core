@@ -14,7 +14,7 @@ transpile_web_ui("trezor_bridge_ui") {
         "trezor",
         rebase_path("trezor.ts"),
       ] ]
-  webpack_alias = "browser"
+  webpack_aliases = [ "browser" ]
   resource_name = "trezor_bridge"
 }
 

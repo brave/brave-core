@@ -2,10 +2,19 @@ import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("generate_brave_webtorrent") {
   entry_points = [
-    ["brave_webtorrent", rebase_path("brave_webtorrent.tsx")],
-    ["brave_webtorrent_background", rebase_path("background.ts")]
+    [
+      "brave_webtorrent",
+      rebase_path("brave_webtorrent.tsx"),
+    ],
+    [
+      "brave_webtorrent_background",
+      rebase_path("background.ts"),
+    ],
   ]
 
+  # For explanation of "chromeapp", see:
+  # https://github.com/brave/brave-browser/issues/5587
+  webpack_aliases = [ "chromeapp" ]
   resource_name = "brave_webtorrent"
 
   # Must match the relative path from the static GRD to the manifest.json

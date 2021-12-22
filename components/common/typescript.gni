@@ -78,7 +78,8 @@ brave_common_web_compile_inputs = [
 #     that will need to be involved in the public_asset_path.
 #     For extensions, this is the relative path from where the manifest is to
 #     where the extra_relative_path ends.
-#
+#   webpack_aliases
+#     Support for web pack aliases that directly passed to webpack config.
 template("transpile_web_ui") {
   action(target_name) {
     script = "//brave/script/transpile-web-ui.py"
@@ -137,8 +138,11 @@ template("transpile_web_ui") {
       "--depfile_path=" + rebase_path(depfile),
     ]
 
-    if (defined(invoker.webpack_alias)) {
-      args += [ "--webpack_alias=" + invoker.webpack_alias ]
+    if (defined(invoker.webpack_aliases)) {
+      # support multiple web pack aliases
+      foreach(alias, invoker.webpack_aliases) {
+        args += [ "--webpack_alias=" + alias ]
+      }
     } else {
       # For explanation of "chromeapp", see:
       # https://github.com/brave/brave-browser/issues/5587

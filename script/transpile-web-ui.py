@@ -27,12 +27,17 @@ def main():
         webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
 
     depfile_path = os.path.abspath(args.depfile_path[0])
-
-    transpile_web_uis(args.production, webpack_gen_dir, root_gen_dir,
-                      args.entry,
-                      depfile_path, grd_path,
-                      args.webpack_alias,
-                      args.public_asset_path)
+    transpile_options = dict(
+        production=args.production,
+        target_gen_dir=webpack_gen_dir,
+        root_gen_dir=root_gen_dir,
+        entry_points=args.entry,
+        depfile_path=depfile_path,
+        depfile_sourcename=grd_path,
+        webpack_aliases=args.webpack_alias,
+        public_asset_path=args.public_asset_path
+    )
+    transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0])
 
 
@@ -52,7 +57,12 @@ def parse_args():
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
-    parser.add_argument('--webpack_alias', nargs='?')
+    parser.add_argument('--webpack_alias',
+                        action='append',
+                        help='Webpack alias',
+                        required=False,
+                        default=[])
+
     args = parser.parse_args()
     # validate args
     if (args.output_path is None or len(args.output_path) != 1 or
@@ -69,32 +79,30 @@ def clean_target_dir(target_dir):
     except Exception as e:
         raise Exception("Error removing previous webpack target dir", e)
 
-#pylint: disable-msg=too-many-arguments
-def transpile_web_uis(production, target_gen_dir, root_gen_dir,
-                      entry_points, depfile_path, depfile_sourcename,
-                      webpack_alias, public_asset_path=None, env=None):
-    if env is None:
-        env = os.environ.copy()
+def transpile_web_uis(options):
+    env = os.environ.copy()
 
     args = [NPM, 'run', 'web-ui', '--']
 
-    if production:
+    if options['production']:
         args.append("--mode=production")
     else:
         args.append("--mode=development")
 
-    if public_asset_path is not None:
-        args.append("--output-public-path=" + public_asset_path)
+    if options['public_asset_path'] is not None:
+        args.append("--output-public-path=" + options['public_asset_path'])
 
-    args.append("--webpack_alias=" + webpack_alias)
+    # web pack aliases
+    for alias in options['webpack_aliases']:
+        args.append("--webpack_alias=" + alias)
 
     # entrypoints
-    for entry in entry_points:
+    for entry in options['entry_points']:
         args.append(entry)
-    env["ROOT_GEN_DIR"] = root_gen_dir
-    env["TARGET_GEN_DIR"] = target_gen_dir
-    env["DEPFILE_PATH"] = depfile_path
-    env["DEPFILE_SOURCE_NAME"] = depfile_sourcename
+    env["ROOT_GEN_DIR"] = options['root_gen_dir']
+    env["TARGET_GEN_DIR"] = options['target_gen_dir']
+    env["DEPFILE_PATH"] = options['depfile_path']
+    env["DEPFILE_SOURCE_NAME"] = options['depfile_sourcename']
 
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):
