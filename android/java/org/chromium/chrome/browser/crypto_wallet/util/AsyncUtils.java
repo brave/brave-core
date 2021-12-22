@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
+
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
@@ -14,6 +16,8 @@ import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
+    private final static String TAG = "AsyncUtils";
+
     // Helper to track multiple wallet controllers responses
     public static class MultiResponseHandler {
         private Runnable mWhenAllCompletedRunnable;
@@ -69,8 +73,9 @@ public class AsyncUtils {
     }
 
     public static class GetBalanceResponseBaseContext extends SingleResponseBaseContext {
-        public Boolean success;
         public String balance;
+        public Integer error;
+        public String errorMessage;
         public ErcToken userAsset;
         public String accountAddress;
 
@@ -78,9 +83,10 @@ public class AsyncUtils {
             super(responseCompleteCallback);
         }
 
-        public void callBase(Boolean success, String balance) {
-            this.success = success;
+        public void callBase(String balance, Integer error, String errorMessage) {
             this.balance = balance;
+            this.error = error;
+            this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
         }
     }
@@ -92,8 +98,9 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
+        public void call(String balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
+            super.callBase(balance, error, errorMessage);
         }
     }
 
@@ -104,8 +111,9 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
+        public void call(String balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getBalance", error, errorMessage);
+            super.callBase(balance, error, errorMessage);
         }
     }
 

@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -50,6 +51,7 @@ import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -1162,5 +1164,12 @@ public class Utils {
         walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
         rvTransactions.setAdapter(walletCoinAdapter);
         rvTransactions.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    public static void warnWhenError(
+            String tag, String apiName, Integer error, String errorMessage) {
+        if (error != ProviderError.SUCCESS) {
+            Log.d(tag, apiName + ": " + error + " - " + errorMessage);
+        }
     }
 }
