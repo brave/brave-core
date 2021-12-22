@@ -193,7 +193,7 @@ void Conversions::MaybeConvert(
     return;
   }
 
-  const std::string url = redirect_chain.back();
+  const std::string& url = redirect_chain.back();
   if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "URL is not supported for conversions");
     return;
@@ -273,7 +273,7 @@ void Conversions::CheckRedirectChain(
 
       // Check for conversions
       for (const auto& conversion : filtered_conversions) {
-        const AdEventList filtered_ad_events =
+        const AdEventList& filtered_ad_events =
             FilterAdEventsForConversion(ad_events, conversion);
 
         for (const auto& ad_event : filtered_ad_events) {
@@ -307,13 +307,13 @@ void Conversions::CheckRedirectChain(
 void Conversions::Convert(
     const AdEventInfo& ad_event,
     const VerifiableConversionInfo& verifiable_conversion) {
-  const std::string campaign_id = ad_event.campaign_id;
-  const std::string creative_set_id = ad_event.creative_set_id;
-  const std::string creative_instance_id = ad_event.creative_instance_id;
-  const std::string advertiser_id = ad_event.advertiser_id;
+  const std::string& campaign_id = ad_event.campaign_id;
+  const std::string& creative_set_id = ad_event.creative_set_id;
+  const std::string& creative_instance_id = ad_event.creative_instance_id;
+  const std::string& advertiser_id = ad_event.advertiser_id;
 
-  const base::Time time = base::Time::Now();
-  const std::string friendly_date_and_time = LongFriendlyDateAndTime(time);
+  const base::Time& time = base::Time::Now();
+  const std::string& friendly_date_and_time = LongFriendlyDateAndTime(time);
 
   BLOG(1, "Conversion for campaign id "
               << campaign_id << ", creative set id " << creative_set_id
@@ -419,12 +419,12 @@ bool Conversions::RemoveItemFromQueue(
 
 void Conversions::ProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  const std::string campaign_id = conversion_queue_item.campaign_id;
-  const std::string creative_set_id = conversion_queue_item.creative_set_id;
-  const std::string creative_instance_id =
+  const std::string& campaign_id = conversion_queue_item.campaign_id;
+  const std::string& creative_set_id = conversion_queue_item.creative_set_id;
+  const std::string& creative_instance_id =
       conversion_queue_item.creative_instance_id;
-  const std::string advertiser_id = conversion_queue_item.advertiser_id;
-  const std::string friendly_date_and_time =
+  const std::string& advertiser_id = conversion_queue_item.advertiser_id;
+  const std::string& friendly_date_and_time =
       LongFriendlyDateAndTime(conversion_queue_item.confirm_at);
 
   if (!conversion_queue_item.IsValid()) {
@@ -488,12 +488,12 @@ void Conversions::StartTimer(
       delay,
       base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)));
 
-  const std::string campaign_id = conversion_queue_item.campaign_id;
-  const std::string creative_set_id = conversion_queue_item.creative_set_id;
-  const std::string creative_instance_id =
+  const std::string& campaign_id = conversion_queue_item.campaign_id;
+  const std::string& creative_set_id = conversion_queue_item.creative_set_id;
+  const std::string& creative_instance_id =
       conversion_queue_item.creative_instance_id;
-  const std::string advertiser_id = conversion_queue_item.advertiser_id;
-  const std::string friendly_date_and_time = FriendlyDateAndTime(time);
+  const std::string& advertiser_id = conversion_queue_item.advertiser_id;
+  const std::string& friendly_date_and_time = FriendlyDateAndTime(time);
 
   BLOG(1, "Convert campaign id "
               << campaign_id << ", creative set id " << creative_set_id
