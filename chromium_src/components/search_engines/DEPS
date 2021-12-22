@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/search_engines",
   "+components/country_codes",
 ]
 
