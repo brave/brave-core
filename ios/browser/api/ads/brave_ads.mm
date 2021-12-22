@@ -681,21 +681,27 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   });
 }
 
-- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId {
+- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
+               advertiserId:(NSString*)advertiserId {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads::AdContentInfo info;
   info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  info.type = ads::AdType::kAdNotification;
   ads->ToggleAdThumbUp(info.ToJson());
 }
 
-- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId {
+- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
+                 advertiserId:(NSString*)advertiserId {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads::AdContentInfo info;
   info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  info.type = ads::AdType::kAdNotification;
   ads->ToggleAdThumbDown(info.ToJson());
 }
 
