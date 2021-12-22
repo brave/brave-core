@@ -1375,7 +1375,9 @@ public class BraveRewardsPanel
             }
         }));
         if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED) {
+                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
             verifiedText =
                     mPopupView.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(

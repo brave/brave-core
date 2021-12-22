@@ -110,7 +110,7 @@
                             android:textColor="#686978"
                             android:textSize="14sp"
                             android:padding="10dp"
-                            android:text="@string/brave_ui_site_banner_notice_text"/>
+                            android:text="@string/brave_ui_site_banner_unverified_notice_text"/>
                     </LinearLayout>
 
 
