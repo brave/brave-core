@@ -169,14 +169,14 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest,
-       SaveConversionWithMatchingCreativeSetIdAndTypeAndUrlPattern) {
+       SaveConversionWithMatchingCreativeSetIdAndType) {
   // Arrange
   ConversionList conversions;
 
   ConversionInfo info_1;
   info_1.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.type = "postview";
-  info_1.url_pattern = "https://www.brave.com/*";
+  info_1.url_pattern = "https://www.brave.com/1";
   info_1.observation_window = 3;
   info_1.expire_at = CalculateExpireAtTime(info_1.observation_window);
   conversions.push_back(info_1);
@@ -187,7 +187,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   ConversionInfo info_2;  // Should supersede info_1
   info_2.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_2.type = "postview";
-  info_2.url_pattern = "https://www.brave.com/*";
+  info_2.url_pattern = "https://www.brave.com/2";
   info_2.observation_window = 30;
   info_2.expire_at = CalculateExpireAtTime(info_2.observation_window);
   conversions.push_back(info_2);
