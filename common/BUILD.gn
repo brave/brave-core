@@ -39,8 +39,8 @@ source_set("network_constants") {
   visibility = brave_common_visibility_targets +
                # These are layering violation and need to be fixed
                [
-                 "//brave/components/content_settings/core/browser",
                  "//brave/components/sync/driver:unit_tests",
+                 "//components/content_settings/core/browser",
                  "//components/sync/driver",
                ]
 
@@ -55,10 +55,10 @@ source_set("pref_names") {
                # These are layering violation and need to be fixed
                [
                  "//brave/components/brave_shields/browser",
-                 "//brave/components/content_settings/core/browser",
                  "//brave/components/p3a",
                  "//brave/components/binance/browser",
                  "//brave/ios/app",
+                 "//components/content_settings/core/browser",
                  "//components/omnibox/browser",
                ]
 
