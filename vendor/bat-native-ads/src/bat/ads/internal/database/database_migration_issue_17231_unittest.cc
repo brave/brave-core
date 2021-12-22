@@ -73,13 +73,11 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
                            const ConversionList& conversions) {
     ASSERT_TRUE(success);
 
-    const std::vector<std::string> creative_set_ids = {
+    const std::vector<std::string>& creative_set_ids = {
         "88ef5a12-6436-4be6-955d-b181407d58c5",
         "f797c614-b55e-41dd-8bcc-46e4c450f6a2",
         "7f35ca64-e162-4912-9641-649bdd6c0e5e",
-        "a82d4920-a487-4a9e-bd9b-1bf27b1db5b5",
         "4a67b1ea-8822-4a1f-97d9-27ae99a863fd",
-        "33a26f73-e778-4ccb-8eb8-a05c88b35d58",
         "1d07b56b-c019-4402-aeb1-f823fe68cb34",
         "94f81f29-2b2d-40c3-bd1d-2c2bccf3a528",
         "bfd4de55-92c1-4a29-98bb-e9462597d3de",
@@ -264,48 +262,45 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "d440792f-c93d-4790-846a-3522635f00d2",
         "682b5e9a-0dfd-4e88-a013-74e7e967ddab"};
 
-    const std::vector<std::string> types = {
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postclick",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postclick",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview", "postview", "postview", "postview",
-        "postview", "postview", "postview"};
+    const std::vector<std::string>& types = {
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postclick", "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postclick", "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview", "postview", "postview", "postview",  "postview", "postview",
+        "postview"};
 
-    const std::vector<std::string> url_patterns = {
+    const std::vector<std::string>& url_patterns = {
         "https://saltlending.com/waitlist-thankyou/*",
         "https://ambercrypto.com/",
         "https://ambercrypto.com/",
-        "https://www.undergroundcellar.com/wine-deals/rare-red-ft-harlan/"
-        "checkout/thanks/*",
         "https://www.redbubble.com/check-out/thanks?*",
-        "https://kusama.network/thankyou/",
         "https://emiswap.com/#/pool",
         "https://play.upland.me/verify?token=*",
         "https://ambercrypto.com/",
@@ -498,57 +493,57 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "https://marsgenesis.com/?ref=brave*",
         "https://www.skiff.org/accept*"};
 
-    const std::vector<int> observation_windows = {
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 7,  30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 7,  30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        30, 30, 30, 30, 30, 30, 30, 30, 30};
+    const std::vector<int>& observation_windows = {
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        7,  30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 7,  30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 
-    const std::vector<double> expiry_timestamps = {
-        1627631040, 1627585140, 1627585140, 1633572000, 1627668000, 1628270400,
-        1627790340, 1627619580, 1627577940, 1627577940, 1627577940, 1627577940,
-        1627577940, 1627577940, 1627658160, 1627658160, 1627658160, 1627658160,
+    const std::vector<double>& expiry_timestamps = {
+        1627631040, 1627585140, 1627585140, 1627668000, 1627790340, 1627619580,
+        1627577940, 1627577940, 1627577940, 1627577940, 1627577940, 1627577940,
         1627658160, 1627658160, 1627658160, 1627658160, 1627658160, 1627658160,
         1627658160, 1627658160, 1627658160, 1627658160, 1627658160, 1627658160,
-        1627658160, 1627657680, 1627657680, 1627657680, 1627657680, 1627657680,
+        1627658160, 1627658160, 1627658160, 1627658160, 1627658160, 1627657680,
         1627657680, 1627657680, 1627657680, 1627657680, 1627657680, 1627657680,
-        1627657680, 1629124800, 1627668000, 1627660380, 1627668000, 1628998500,
-        1627612200, 1627831680, 1627657800, 1627612440, 1628461860, 1627657680,
+        1627657680, 1627657680, 1627657680, 1627657680, 1627657680, 1629124800,
+        1627668000, 1627660380, 1627668000, 1628998500, 1627612200, 1627831680,
+        1627657800, 1627612440, 1628461860, 1627657680, 1627657680, 1627657680,
         1627657680, 1627657680, 1627657680, 1627657680, 1627657680, 1627657680,
-        1627657680, 1627657680, 1627657680, 1627657680, 1627657680, 1627657560,
-        1627790340, 1627659180, 1627660620, 1627660620, 1627660620, 1627657620,
-        1627657620, 1627660980, 1627660980, 1627660980, 1627660980, 1627660980,
-        1627660980, 1627668000, 1630319100, 1628230800, 1630335900, 1630335900,
-        1630335900, 1630337340, 1631419080, 1628402340, 1630337640, 1630337640,
+        1627657680, 1627657680, 1627657680, 1627657560, 1627790340, 1627659180,
+        1627660620, 1627660620, 1627660620, 1627657620, 1627657620, 1627660980,
+        1627660980, 1627660980, 1627660980, 1627660980, 1627660980, 1627668000,
+        1630319100, 1628230800, 1630335900, 1630335900, 1630335900, 1630337340,
+        1631419080, 1628402340, 1630337640, 1630337640, 1630337640, 1630337640,
         1630337640, 1630337640, 1630337640, 1630337640, 1630337640, 1630337640,
-        1630337640, 1630337640, 1630337640, 1630337640, 1630337820, 1630260000,
-        1630338480, 1630302780, 1630337700, 1630309620, 1630309620, 1630309620,
+        1630337640, 1630337640, 1630337820, 1630260000, 1630338480, 1630302780,
+        1630337700, 1630309620, 1630309620, 1630309620, 1630309620, 1630309620,
         1630309620, 1630309620, 1630309620, 1630309620, 1630309620, 1630309620,
-        1630309620, 1630309620, 1630309620, 1630337400, 1630336560, 1631893020,
-        1630339140, 1630339140, 1630306740, 1630306740, 1628953380, 1629691140,
-        1635585180, 1629682560, 1628999940, 1629124800, 1638115140, 1633572000,
-        1630293240, 1628827020, 1628956740, 1629691200, 1628402340, 1632196740,
-        1630076940, 1633017600, 1633024800, 1630338420, 1632477600, 1631692740,
-        1630339200, 1630337700, 1630337700, 1630509480, 1631419140, 1630389540,
+        1630309620, 1630337400, 1630336560, 1631893020, 1630339140, 1630339140,
+        1630306740, 1630306740, 1628953380, 1629691140, 1635585180, 1629682560,
+        1628999940, 1629124800, 1638115140, 1633572000, 1630293240, 1628827020,
+        1628956740, 1629691200, 1628402340, 1632196740, 1630076940, 1633017600,
+        1633024800, 1630338420, 1632477600, 1631692740, 1630339200, 1630337700,
+        1630337700, 1630509480, 1631419140, 1630389540, 1630337640, 1630337640,
         1630337640, 1630337640, 1630337640, 1630337640, 1630337640, 1630337640,
-        1630337640, 1630337640, 1630337640, 1630337640, 1630337640, 1634202240,
-        1632901560, 1630335900, 1630337280, 1630337280, 1630337280, 1630337280,
-        1630337280, 1630337280, 1630337280, 1630337280, 1630337280, 1630211760,
-        1631589240, 1635577860, 1631724120, 1631724120, 1630393140, 1632926520,
-        1632999600, 1631635140, 1631635140, 1631635140, 1631635140, 1631635140,
-        1630336740, 1633015560, 1632283140};
+        1630337640, 1630337640, 1630337640, 1634202240, 1632901560, 1630335900,
+        1630337280, 1630337280, 1630337280, 1630337280, 1630337280, 1630337280,
+        1630337280, 1630337280, 1630337280, 1630211760, 1631589240, 1635577860,
+        1631724120, 1631724120, 1630393140, 1632926520, 1632999600, 1631635140,
+        1631635140, 1631635140, 1631635140, 1631635140, 1630336740, 1633015560,
+        1632283140};
 
     ConversionList expected_conversions;
 
-    ASSERT_EQ(189UL, conversions.size());
-    for (int i = 0; i < 189; i++) {
+    ASSERT_EQ(187UL, conversions.size());
+    for (int i = 0; i < 187; i++) {
       ConversionInfo expected_conversion;
       expected_conversion.creative_set_id = creative_set_ids.at(i);
       expected_conversion.type = types.at(i);
