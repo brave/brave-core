@@ -3,38 +3,33 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/skus/browser/skus_sdk_fetcher_impl.h"
+#include "brave/components/skus/browser/skus_url_loader_impl.h"
 
 #include <utility>
 #include <vector>
 
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "net/base/load_flags.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
-
-namespace {
-
-// Maximum accepted size of response from SKU SDK server. 1MB.
-const int kMaxResponseSize = 1024 * 1024;
-
-}  // namespace
 
 namespace skus {
 
-SkusSdkFetcherImpl::SkusSdkFetcherImpl(
+SkusUrlLoaderImpl::SkusUrlLoaderImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory) {}
 
-SkusSdkFetcherImpl::~SkusSdkFetcherImpl() {}
+SkusUrlLoaderImpl::~SkusUrlLoaderImpl() {}
 
-void SkusSdkFetcherImpl::BeginFetch(
+void SkusUrlLoaderImpl::BeginFetch(
     const skus::HttpRequest& req,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(static_cast<std::string>(req.url));
-  resource_request->method = static_cast<std::string>(req.method).c_str();
+  resource_request->method = static_cast<std::string>(req.method);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   // No cache read, always download from the network.
   resource_request->load_flags =
@@ -45,19 +40,18 @@ void SkusSdkFetcherImpl::BeginFetch(
         static_cast<std::string>(req.headers[i]));
   }
 
-  sku_sdk_loader_ = network::SimpleURLLoader::Create(
+  simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), GetNetworkTrafficAnnotationTag());
 
-  sku_sdk_loader_->DownloadToString(
+  simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&SkusSdkFetcherImpl::OnFetchComplete,
+      base::BindOnce(&SkusUrlLoaderImpl::OnFetchComplete,
                      base::Unretained(this), std::move(callback),
-                     std::move(ctx)),
-      kMaxResponseSize);
+                     std::move(ctx)));
 }
 
 const net::NetworkTrafficAnnotationTag&
-SkusSdkFetcherImpl::GetNetworkTrafficAnnotationTag() {
+SkusUrlLoaderImpl::GetNetworkTrafficAnnotationTag() {
   static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
       net::DefineNetworkTrafficAnnotation("sku_sdk_execute_request", R"(
       semantics {
@@ -77,28 +71,32 @@ SkusSdkFetcherImpl::GetNetworkTrafficAnnotationTag() {
   return network_traffic_annotation_tag;
 }
 
-void SkusSdkFetcherImpl::OnFetchComplete(
+void SkusUrlLoaderImpl::OnFetchComplete(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
     std::unique_ptr<std::string> response_body) {
-  if (!response_body) {
-    std::vector<uint8_t> body_bytes;
-    skus::HttpResponse resp = {
-        skus::SkusResult::RequestFailed,
-        500,
-        {},
-        body_bytes,
-    };
-    callback(std::move(ctx), resp);
-    return;
+  uint16_t error_code = simple_url_loader_->NetError();
+  uint16_t response_code = net::HTTP_BAD_REQUEST;
+  if (simple_url_loader_->ResponseInfo() &&
+      simple_url_loader_->ResponseInfo()->headers) {
+    response_code =
+        simple_url_loader_->ResponseInfo()->headers->response_code();
   }
 
-  std::vector<uint8_t> body_bytes(response_body->begin(), response_body->end());
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+
+  std::vector<uint8_t> body_bytes;
+  if (response_body) {
+    const uint8_t* begin =
+        reinterpret_cast<const uint8_t*>(response_body->data());
+    const uint8_t* end = begin + response_body->size();
+    body_bytes.assign(begin, end);
+  }
 
   skus::HttpResponse resp = {
-      skus::SkusResult::Ok,
-      200,
+      success ? skus::SkusResult::Ok : skus::SkusResult::RequestFailed,
+      response_code,
       {},
       body_bytes,
   };

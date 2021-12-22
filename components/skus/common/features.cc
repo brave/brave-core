@@ -10,8 +10,8 @@
 namespace skus {
 namespace features {
 
-const base::Feature kSdkFeature{"SdkFeature",
-                                base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kSkusFeature{"SkusFeature",
+                                 base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace skus

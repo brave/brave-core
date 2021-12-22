@@ -28,7 +28,7 @@ class Value;
 }  // namespace base
 
 namespace skus {
-class SdkController;
+class SkusService;
 }  // namespace skus
 
 class PrefService;
@@ -44,7 +44,7 @@ class BraveVpnServiceDesktop
   BraveVpnServiceDesktop(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
-      skus::SdkController* sdk_controller);
+      skus::SkusService* skus_service);
   ~BraveVpnServiceDesktop() override;
 
   BraveVpnServiceDesktop(const BraveVpnServiceDesktop&) = delete;
@@ -146,7 +146,7 @@ class BraveVpnServiceDesktop
   PrefService* prefs_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   std::string skus_credential_;
-  skus::SdkController* sdk_controller_ = nullptr;
+  skus::SkusService* skus_service_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   brave_vpn::mojom::Region selected_region_;

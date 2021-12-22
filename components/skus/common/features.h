@@ -13,7 +13,7 @@ struct Feature;
 namespace skus {
 namespace features {
 
-extern const base::Feature kSdkFeature;
+extern const base::Feature kSkusFeature;
 
 }  // namespace features
 }  // namespace skus

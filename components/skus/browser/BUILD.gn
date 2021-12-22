@@ -3,19 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
-
-import("//build/config/features.gni")
-
 static_library("browser") {
   sources = [
     "pref_names.h",
-    "sdk_controller.cc",
-    "sdk_controller.h",
-    "skus_sdk_context_impl.cc",
-    "skus_sdk_context_impl.h",
-    "skus_sdk_fetcher_impl.cc",
-    "skus_sdk_fetcher_impl.h",
+    "skus_context_impl.cc",
+    "skus_context_impl.h",
+    "skus_service.cc",
+    "skus_service.h",
+    "skus_url_loader_impl.cc",
+    "skus_url_loader_impl.h",
     "skus_utils.cc",
     "skus_utils.h",
     "switches.h",

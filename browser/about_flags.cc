@@ -186,8 +186,8 @@ constexpr char kBraveSyncDescription[] =
 constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
 constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
 
-constexpr char kBraveSkuSdkName[] = "Enable experimental SKU SDK";
-constexpr char kBraveSkuSdkDescription[] = "Experimental SKU SDK support";
+constexpr char kBraveSkusSdkName[] = "Enable experimental SKU SDK";
+constexpr char kBraveSkusSdkDescription[] = "Experimental SKU SDK support";
 
 constexpr char kBraveShieldsV2Name[] = "Enable Brave Shields v2";
 constexpr char kBraveShieldsV2Description[] =
@@ -316,11 +316,11 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
 #endif
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                  \
-    {"sku-sdk",                                        \
-     flag_descriptions::kBraveSkuSdkName,              \
-     flag_descriptions::kBraveSkuSdkDescription,       \
+    {"skus-sdk",                                       \
+     flag_descriptions::kBraveSkusSdkName,             \
+     flag_descriptions::kBraveSkusSdkDescription,      \
      kOsMac | kOsWin,                                  \
-     FEATURE_VALUE_TYPE(skus::features::kSdkFeature)},
+     FEATURE_VALUE_TYPE(skus::features::kSkusFeature)},
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #define SIDEBAR_FEATURE_ENTRIES                     \

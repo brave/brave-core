@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"
@@ -57,9 +58,9 @@ class RefreshOrderCallbackState {
   base::OnceCallback<void(const std::string&)> cb;
 };
 
-class SkusSdkFetcher {
+class SkusUrlLoader {
  public:
-  virtual ~SkusSdkFetcher() = default;
+  virtual ~SkusUrlLoader() = default;
   virtual void BeginFetch(
       const skus::HttpRequest& req,
       rust::cxxbridge1::Fn<
@@ -68,10 +69,10 @@ class SkusSdkFetcher {
       rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) = 0;
 };
 
-class SkusSdkContext {
+class SkusContext {
  public:
-  virtual ~SkusSdkContext() = default;
-  virtual std::unique_ptr<skus::SkusSdkFetcher> CreateFetcher() const = 0;
+  virtual ~SkusContext() = default;
+  virtual std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const = 0;
   virtual std::string GetValueFromStore(std::string key) const = 0;
   virtual void PurgeStore() const = 0;
   virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
@@ -98,19 +99,19 @@ void shim_logMessage(rust::cxxbridge1::Str file,
                      TracingLevel level,
                      rust::cxxbridge1::Str message);
 
-void shim_purge(skus::SkusSdkContext& ctx);
-void shim_set(skus::SkusSdkContext& ctx,
+void shim_purge(skus::SkusContext& ctx);
+void shim_set(skus::SkusContext& ctx,
               rust::cxxbridge1::Str key,
               rust::cxxbridge1::Str value);
-::rust::String shim_get(skus::SkusSdkContext& ctx, rust::cxxbridge1::Str key);
+::rust::String shim_get(skus::SkusContext& ctx, rust::cxxbridge1::Str key);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx);
 
-std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
-    const skus::SkusSdkContext& ctx,
+std::unique_ptr<SkusUrlLoader> shim_executeRequest(
+    const skus::SkusContext& ctx,
     const skus::HttpRequest& req,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> done,

@@ -13,7 +13,7 @@
 #include "content/public/browser/storage_partition.h"
 
 #if defined(OS_WIN) || defined(OS_MAC)
-#include "brave/browser/skus/sdk_controller_factory.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
@@ -52,7 +52,7 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
 #if defined(OS_WIN) || defined(OS_MAC)
-  DependsOn(skus::SdkControllerFactory::GetInstance());
+  DependsOn(skus::SkusServiceFactory::GetInstance());
 #endif
 }
 
@@ -67,7 +67,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 #if defined(OS_WIN) || defined(OS_MAC)
   return new BraveVpnServiceDesktop(
       shared_url_loader_factory, user_prefs::UserPrefs::Get(context),
-      skus::SdkControllerFactory::GetControllerForContext(context));
+      skus::SkusServiceFactory::GetForContextPrivate(context));
 #endif
 
 #if defined(OS_ANDROID)

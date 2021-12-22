@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/skus/browser/sdk_controller.h"
+#include "brave/components/skus/browser/skus_service.h"
 
 #include <utility>
 
@@ -13,7 +13,7 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
-#include "brave/components/skus/browser/skus_sdk_context_impl.h"
+#include "brave/components/skus/browser/skus_context_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -81,53 +81,52 @@ void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
 
 namespace skus {
 
-SdkController::SdkController(
+SkusService::SkusService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : context_(std::make_unique<skus::SkusSdkContextImpl>(prefs,
-                                                          url_loader_factory)),
+    : context_(
+          std::make_unique<skus::SkusContextImpl>(prefs, url_loader_factory)),
       sdk_(initialize_sdk(std::move(context_), skus::GetEnvironment())),
-      prefs_(prefs),
-      weak_factory_(this) {}
+      prefs_(prefs) {}
 
-SdkController::~SdkController() {}
+SkusService::~SkusService() {}
 
-mojo::PendingRemote<mojom::SdkController> SdkController::MakeRemote() {
-  mojo::PendingRemote<mojom::SdkController> remote;
+mojo::PendingRemote<mojom::SkusService> SkusService::MakeRemote() {
+  mojo::PendingRemote<mojom::SkusService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void SdkController::Bind(mojo::PendingReceiver<mojom::SdkController> receiver) {
+void SkusService::Bind(mojo::PendingReceiver<mojom::SkusService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void SdkController::RefreshOrder(
+void SkusService::RefreshOrder(
     const std::string& order_id,
-    mojom::SdkController::RefreshOrderCallback callback) {
+    mojom::SkusService::RefreshOrderCallback callback) {
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
 
-  sdk_->refresh_order(OnRefreshOrder, std::move(cbs), order_id.c_str());
+  sdk_->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
 }
 
-void SdkController::FetchOrderCredentials(
+void SkusService::FetchOrderCredentials(
     const std::string& order_id,
-    mojom::SdkController::FetchOrderCredentialsCallback callback) {
+    mojom::SkusService::FetchOrderCredentialsCallback callback) {
   std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
       new skus::FetchOrderCredentialsCallbackState);
   cbs->cb = std::move(callback);
   cbs->order_id = order_id;
 
   sdk_->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
-                                order_id.c_str());
+                                order_id);
 }
 
-void SdkController::PrepareCredentialsPresentation(
+void SkusService::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
-    mojom::SdkController::PrepareCredentialsPresentationCallback callback) {
+    mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
   std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs(
       new skus::PrepareCredentialsPresentationCallbackState);
   cbs->cb = std::move(callback);
@@ -138,9 +137,9 @@ void SdkController::PrepareCredentialsPresentation(
                                          std::move(cbs), domain, path);
 }
 
-void SdkController::CredentialSummary(
+void SkusService::CredentialSummary(
     const std::string& domain,
-    mojom::SdkController::CredentialSummaryCallback callback) {
+    mojom::SkusService::CredentialSummaryCallback callback) {
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
   cbs->cb = std::move(callback);

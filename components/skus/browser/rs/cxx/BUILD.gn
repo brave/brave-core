@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
 import("//brave/build/rust/rust_cxx.gni")
 
 rust_crate("rust_lib") {
@@ -26,7 +25,7 @@ rust_cxx("cxx") {
 
 source_set("shim") {
   visibility = [ ":*" ]
-  sources = [ "shim.h" ]
+  sources = [ "src/shim.h" ]
 
   deps = [
     "//base",

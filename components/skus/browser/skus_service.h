@@ -3,14 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_SERVICE_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SERVICE_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SERVICE_H_
 
 #include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/skus/browser/skus_sdk_context_impl.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/third_party/rust/cxx/include/cxx.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -27,6 +26,7 @@ class SharedURLLoaderFactory;
 namespace skus {
 
 struct CppSDK;
+class SkusContextImpl;
 
 // This is only intended to be used on account.brave.com and the dev / staging
 // counterparts. The accounts website will use this if present which allows a
@@ -57,44 +57,44 @@ struct CppSDK;
 //
 // For more information, please see:
 // https://github.com/brave-intl/br-rs/tree/skus
-class SdkController : public KeyedService, public mojom::SdkController {
+class SkusService : public KeyedService, public mojom::SkusService {
  public:
-  explicit SdkController(
+  explicit SkusService(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SdkController() override;
+  ~SkusService() override;
 
-  SdkController(const SdkController&) = delete;
-  SdkController& operator=(SdkController&) = delete;
+  SkusService(const SkusService&) = delete;
+  SkusService& operator=(SkusService&) = delete;
 
-  mojo::PendingRemote<mojom::SdkController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::SdkController> receiver);
+  mojo::PendingRemote<mojom::SkusService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::SkusService> receiver);
 
-  // mojom::SdkController
+  // mojom::SkusService
   void RefreshOrder(
       const std::string& order_id,
-      skus::mojom::SdkController::RefreshOrderCallback callback) override;
+      skus::mojom::SkusService::RefreshOrderCallback callback) override;
   void FetchOrderCredentials(
       const std::string& order_id,
-      skus::mojom::SdkController::FetchOrderCredentialsCallback callback)
+      skus::mojom::SkusService::FetchOrderCredentialsCallback callback)
       override;
   void PrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& path,
-      skus::mojom::SdkController::PrepareCredentialsPresentationCallback
-          callback) override;
+      skus::mojom::SkusService::PrepareCredentialsPresentationCallback callback)
+      override;
   void CredentialSummary(
       const std::string& domain,
-      skus::mojom::SdkController::CredentialSummaryCallback callback) override;
+      skus::mojom::SkusService::CredentialSummaryCallback callback) override;
 
  private:
-  std::unique_ptr<skus::SkusSdkContextImpl> context_;
+  std::unique_ptr<skus::SkusContextImpl> context_;
   ::rust::Box<skus::CppSDK> sdk_;
   PrefService* prefs_;
-  mojo::ReceiverSet<mojom::SdkController> receivers_;
-  base::WeakPtrFactory<SdkController> weak_factory_;
+  mojo::ReceiverSet<mojom::SkusService> receivers_;
+  base::WeakPtrFactory<SkusService> weak_factory_{this};
 };
 
 }  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SERVICE_H_

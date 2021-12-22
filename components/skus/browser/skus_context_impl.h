@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_CONTEXT_IMPL_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_CONTEXT_IMPL_H_
 
 #include <memory>
 #include <string>
@@ -19,29 +19,29 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace skus {
-class SkusSdkFetcher;
+class SkusUrlLoader;
 }  // namespace skus
 
 namespace skus {
 
 // Context object used with the SKU SDK to provide 1) key/value pair storage
-// and 2) the fetcher used for contacting the SKU SDK endpoint via HTTPS.
+// and 2) the url loader used for contacting the SKU SDK endpoint via HTTPS.
 //
 // In the .cc, there are implementations for global methods originally defined
 // in `rs/cxx/src/shim.h`. These implementations are called from
 // Rust and will pass this context object along, so that the results can be
 // persisted.
-class SkusSdkContextImpl : public SkusSdkContext {
+class SkusContextImpl : public SkusContext {
  public:
-  SkusSdkContextImpl(const SkusSdkContextImpl&) = delete;
-  SkusSdkContextImpl& operator=(const SkusSdkContextImpl&) = delete;
+  SkusContextImpl(const SkusContextImpl&) = delete;
+  SkusContextImpl& operator=(const SkusContextImpl&) = delete;
 
-  explicit SkusSdkContextImpl(
+  explicit SkusContextImpl(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SkusSdkContextImpl() override;
+  ~SkusContextImpl() override;
 
-  std::unique_ptr<skus::SkusSdkFetcher> CreateFetcher() const override;
+  std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
   std::string GetValueFromStore(std::string key) const override;
   void PurgeStore() const override;
   void UpdateStoreValue(std::string key, std::string value) const override;
@@ -56,4 +56,4 @@ class SkusSdkContextImpl : public SkusSdkContext {
 
 }  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_CONTEXT_IMPL_H_

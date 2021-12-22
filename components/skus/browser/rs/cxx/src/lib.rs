@@ -19,7 +19,7 @@ use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
 pub struct NativeClientContext {
     environment: skus::Environment,
-    ctx: UniquePtr<ffi::SkusSdkContext>,
+    ctx: UniquePtr<ffi::SkusContext>,
 }
 
 #[derive(Clone)]
@@ -122,7 +122,7 @@ mod ffi {
         type WakeupContext;
 
         type CppSDK;
-        fn initialize_sdk(ctx: UniquePtr<SkusSdkContext>, env: String) -> Box<CppSDK>;
+        fn initialize_sdk(ctx: UniquePtr<SkusContext>, env: String) -> Box<CppSDK>;
         fn shutdown(self: &CppSDK);
         fn refresh_order(
             self: &CppSDK,
@@ -154,17 +154,17 @@ mod ffi {
     unsafe extern "C++" {
         include!("brave/components/skus/browser/rs/cxx/src/shim.h");
 
-        type SkusSdkContext;
-        type SkusSdkFetcher;
+        type SkusContext;
+        type SkusUrlLoader;
 
         fn shim_logMessage(file: &str, line: u32, level: TracingLevel, message: &str);
 
         fn shim_executeRequest(
-            ctx: &SkusSdkContext,
+            ctx: &SkusContext,
             req: &HttpRequest,
             done: fn(Box<HttpRoundtripContext>, resp: HttpResponse),
             rt_ctx: Box<HttpRoundtripContext>,
-        ) -> UniquePtr<SkusSdkFetcher>;
+        ) -> UniquePtr<SkusUrlLoader>;
 
         fn shim_scheduleWakeup(
             delay_ms: u64,
@@ -172,9 +172,9 @@ mod ffi {
             ctx: Box<WakeupContext>,
         );
 
-        fn shim_purge(ctx: Pin<&mut SkusSdkContext>);
-        fn shim_set(ctx: Pin<&mut SkusSdkContext>, key: &str, value: &str);
-        fn shim_get(ctx: Pin<&mut SkusSdkContext>, key: &str) -> String;
+        fn shim_purge(ctx: Pin<&mut SkusContext>);
+        fn shim_set(ctx: Pin<&mut SkusContext>, key: &str, value: &str);
+        fn shim_get(ctx: Pin<&mut SkusContext>, key: &str) -> String;
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -191,7 +191,7 @@ pub struct CppSDK {
     sdk: Rc<skus::sdk::SDK<NativeClient>>,
 }
 
-fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSDK> {
+fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
     tracing_subscriber::fmt()
         .event_format(log::CppFormatter::new())
         .with_max_level(tracing::Level::TRACE)

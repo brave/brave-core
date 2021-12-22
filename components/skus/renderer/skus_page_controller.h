@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SKUS_RENDERER_BRAVE_SKUS_JS_HANDLER_H_
-#define BRAVE_COMPONENTS_SKUS_RENDERER_BRAVE_SKUS_JS_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_PAGE_CONTROLLER_H_
+#define BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_PAGE_CONTROLLER_H_
 
 #include <memory>
 #include <string>
@@ -17,10 +17,10 @@
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
-namespace brave_rewards {
+namespace skus {
 
 // If present, this will inject a few methods (used by SKU SDK)
-// into window.brave.*
+// into window.chrome.braveSkus.*
 //
 // This is only intended to be used on account.brave.com and the dev / staging
 // counterparts. The accounts website will use this if present which allows a
@@ -31,12 +31,15 @@ namespace brave_rewards {
 // will be able to purchase VPN from account.brave.com and the browser can
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
-class BraveSkusJSHandler {
+//
+// TODO(bsclifton): trying to cleanup the gin.
+// Looking at chrome/renderer/net/net_error_page_controller.h as an example
+class SkusPageController {
  public:
-  explicit BraveSkusJSHandler(content::RenderFrame* render_frame);
-  BraveSkusJSHandler(const BraveSkusJSHandler&) = delete;
-  BraveSkusJSHandler& operator=(const BraveSkusJSHandler&) = delete;
-  ~BraveSkusJSHandler();
+  explicit SkusPageController(content::RenderFrame* render_frame);
+  SkusPageController(const SkusPageController&) = delete;
+  SkusPageController& operator=(const SkusPageController&) = delete;
+  ~SkusPageController();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   void ResetRemote(content::RenderFrame* render_frame);
@@ -87,9 +90,9 @@ class BraveSkusJSHandler {
                            const std::string& response);
 
   content::RenderFrame* render_frame_;
-  mojo::Remote<skus::mojom::SdkController> sdk_controller_;
+  mojo::Remote<skus::mojom::SkusService> skus_service_;
 };
 
-}  // namespace brave_rewards
+}  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_SKUS_RENDERER_BRAVE_SKUS_JS_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_PAGE_CONTROLLER_H_

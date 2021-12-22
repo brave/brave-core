@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_URL_LOADER_IMPL_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_URL_LOADER_IMPL_H_
 
 #include <memory>
 #include <string>
@@ -21,11 +21,11 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 
-class SkusSdkFetcherImpl : public SkusSdkFetcher {
+class SkusUrlLoaderImpl : public SkusUrlLoader {
  public:
-  explicit SkusSdkFetcherImpl(
+  explicit SkusUrlLoaderImpl(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SkusSdkFetcherImpl() override;
+  ~SkusUrlLoaderImpl() override;
 
   void BeginFetch(
       const skus::HttpRequest& req,
@@ -36,7 +36,7 @@ class SkusSdkFetcherImpl : public SkusSdkFetcher {
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> sku_sdk_loader_;
+  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
 
   const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag();
 
@@ -49,4 +49,4 @@ class SkusSdkFetcherImpl : public SkusSdkFetcher {
 
 }  // namespace skus
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_URL_LOADER_IMPL_H_

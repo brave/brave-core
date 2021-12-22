@@ -5,7 +5,7 @@
 
 module skus.mojom;
 
-interface SdkController {
+interface SkusService {
   RefreshOrder(string order_id) => (string response);
   FetchOrderCredentials(string order_id) => (string response);
   PrepareCredentialsPresentation(string domain, string path) => (string response);

@@ -3,12 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//build/config/features.gni")
-
 source_set("skus") {
   sources = [
-    "//brave/browser/skus/sdk_controller_factory.cc",
-    "//brave/browser/skus/sdk_controller_factory.h",
+    "//brave/browser/skus/skus_service_factory.cc",
+    "//brave/browser/skus/skus_service_factory.h",
   ]
 
   deps = [

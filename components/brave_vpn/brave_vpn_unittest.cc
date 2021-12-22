@@ -23,9 +23,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 class BraveVPNServiceTest : public testing::Test {
- private:
-  std::unique_ptr<SkusSdkService> skus_service_;
-
  public:
   BraveVPNServiceTest() {
     scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
@@ -203,6 +200,9 @@ class BraveVPNServiceTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
   std::unique_ptr<BraveVpnServiceDesktop> service_;
+
+ private:
+  std::unique_ptr<SkusSdkService> skus_service_;
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {

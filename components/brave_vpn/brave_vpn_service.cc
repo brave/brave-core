@@ -57,7 +57,8 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
           json, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << __func__
+            << "Invalid response, could not parse JSON, JSON is: " << json;
     return "";
   }
 
@@ -197,8 +198,8 @@ void BraveVpnService::OnGetSubscriberCredential(
   if (success) {
     subscriber_credential = GetSubscriberCredentialFromJson(body);
   } else {
-    LOG(ERROR) << "Response from API was not HTTP 200 (Received " << status
-               << ")";
+    VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
+            << status << ")";
   }
   std::move(callback).Run(subscriber_credential, success);
 }
