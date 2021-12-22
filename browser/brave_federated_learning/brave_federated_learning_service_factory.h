@@ -25,8 +25,8 @@ class BraveFederatedLearningServiceFactory
   BraveFederatedLearningServiceFactory& operator=(
       const BraveFederatedLearningServiceFactory&) = delete;
 
-  static BraveFederatedLearningService* GetForBrowserContext(
-      content::BrowserContext* context);
+  static federated_learning::BraveFederatedLearningService*
+  GetForBrowserContext(content::BrowserContext* context);
   static BraveFederatedLearningServiceFactory* GetInstance();
 
  private:

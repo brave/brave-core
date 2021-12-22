@@ -45,6 +45,8 @@ class SimpleURLLoader;
 
 namespace brave {
 
+namespace federated_learning {
+
 class BraveOperationalPatterns final {
  public:
   BraveOperationalPatterns(
@@ -86,6 +88,8 @@ class BraveOperationalPatterns final {
   int last_checked_slot_ = 0;
   std::string collection_id_;
 };
+
+}  // namespace federated_learning
 
 }  // namespace brave
 

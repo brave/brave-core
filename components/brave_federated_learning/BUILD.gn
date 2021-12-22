@@ -1,11 +1,19 @@
 static_library("brave_federated_learning") {
   sources = [
+    "brave_federated_data_service.cc",
+    "brave_federated_data_service.h",
+    "brave_federated_learning_features.cc",
+    "brave_federated_learning_features.h",
     "brave_federated_learning_service.cc",
     "brave_federated_learning_service.h",
     "brave_operational_patterns.cc",
     "brave_operational_patterns.h",
     "brave_operational_patterns_features.cc",
     "brave_operational_patterns_features.h",
+    "data_stores/ad_notification_timing_data_store.cc",
+    "data_stores/ad_notification_timing_data_store.h",
+    "data_stores/data_store.cc",
+    "data_stores/data_store.h",
   ]
 
   deps = [
@@ -17,5 +25,6 @@ static_library("brave_federated_learning") {
     "//components/prefs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//sql",
   ]
 }

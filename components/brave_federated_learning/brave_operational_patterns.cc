@@ -59,6 +59,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // anonymous namespace
 
+namespace federated_learning {
+
 BraveOperationalPatterns::BraveOperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -196,5 +198,7 @@ void BraveOperationalPatterns::MaybeResetCollectionId() {
     SavePrefs();
   }
 }
+
+}  // namespace federated_learning
 
 }  // namespace brave

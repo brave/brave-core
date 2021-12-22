@@ -21,10 +21,10 @@
 namespace brave {
 
 // static
-BraveFederatedLearningService*
+federated_learning::BraveFederatedLearningService*
 BraveFederatedLearningServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
-  return static_cast<BraveFederatedLearningService*>(
+  return static_cast<federated_learning::BraveFederatedLearningService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
@@ -45,16 +45,19 @@ KeyedService* BraveFederatedLearningServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  std::unique_ptr<BraveFederatedLearningService>
-      brave_federated_learning_service(new BraveFederatedLearningService(
-          user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
-          url_loader_factory));
+  std::unique_ptr<federated_learning::BraveFederatedLearningService>
+      brave_federated_learning_service(
+          new federated_learning::BraveFederatedLearningService(
+              user_prefs::UserPrefs::Get(context),
+              g_browser_process->local_state(), context->GetPath(),
+              url_loader_factory));
   return brave_federated_learning_service.release();
 }
 
 void BraveFederatedLearningServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  BraveFederatedLearningService::RegisterProfilePrefs(registry);
+  federated_learning::BraveFederatedLearningService::RegisterProfilePrefs(
+      registry);
 }
 
 bool BraveFederatedLearningServiceFactory::ServiceIsCreatedWithBrowserContext()
