@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -46,6 +47,24 @@ bool HasObservationWindowForAdEventExpired(const int observation_window,
   const base::Time time = base::Time::Now() - base::Days(observation_window);
 
   if (time < ad_event.created_at) {
+    return false;
+  }
+
+  return true;
+}
+
+bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
+  if (ad_event.type == AdType::kInlineContentAd) {
+    if (ad_event.confirmation_type == ConfirmationType::kViewed) {
+      // Do not convert views for inline content ads
+      return false;
+    }
+
+    return true;
+  }
+
+  if (!ShouldRewardUser()) {
+    // Do not convert if the user has not joined rewards for all other ad types
     return false;
   }
 
@@ -149,6 +168,10 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
       std::back_inserter(filtered_ad_events),
       [&conversion](const AdEventInfo& ad_event) {
         if (ad_event.creative_set_id != conversion.creative_set_id) {
+          return false;
+        }
+
+        if (!ShouldConvertAdEvent(ad_event)) {
           return false;
         }
 

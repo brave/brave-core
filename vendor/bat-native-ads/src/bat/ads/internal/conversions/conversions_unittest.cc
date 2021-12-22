@@ -8,7 +8,11 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/bundle/creative_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
@@ -84,23 +88,60 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
       });
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedAd) {
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedAdNotificationWhenAdsAreDisabled) {
   // Arrange
-  ConversionList conversions;
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-
   SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertViewedAdNotificationWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
@@ -116,32 +157,505 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAd) {
         ASSERT_TRUE(success);
 
         EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
 
+        const AdEventInfo& ad_event = ad_events.front();
         EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
       });
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedAd) {
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedAdNotificationWhenAdsAreDisabled) {
   // Arrange
-  ConversionList conversions;
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertClickedAdNotificationWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kAdNotification, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedNewTabPageAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                             ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                             ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedNewTabPageAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kNewTabPageAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kNewTabPageAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedPromotedContentAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedPromotedContentAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       ConvertClickedPromotedContentAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 =
+      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
+                   ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedInlineContentAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedInlineContentAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*/baz";
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-
   SaveConversions(conversions);
-
-  const AdEventInfo& ad_event_1 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
-  FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
-  FireAdEvent(ad_event_2);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
@@ -157,8 +671,50 @@ TEST_F(BatAdsConversionsTest, ConvertClickedAd) {
         ASSERT_TRUE(success);
 
         EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
 
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*/baz";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
         EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
       });
 }

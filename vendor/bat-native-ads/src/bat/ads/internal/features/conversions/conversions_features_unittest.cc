@@ -37,7 +37,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
   // Assert
   const std::string& expected_pattern =
       "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
-  EXPECT_EQ(expected_pattern, features::GetGetDefaultConversionIdPattern());
+  EXPECT_EQ(expected_pattern, features::GetDefaultConversionIdPattern());
 }
 
 }  // namespace ads
