@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/app",
   "+brave/browser",
+  "+brave/build/android/jni_headers",
   "+brave/common",
   "+brave/grit",
   "+brave/services/network/public",
