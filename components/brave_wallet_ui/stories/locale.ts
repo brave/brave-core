@@ -375,6 +375,7 @@ provideStrings({
   braveWalletEditGasGwei: 'Gwei',
   braveWalletEditGasSetCustom: 'Set custom',
   braveWalletEditGasSetSuggested: 'Set suggested',
+  braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
 
   // Edit permissions
   braveWalletEditPermissionsTitle: 'Edit permissions',

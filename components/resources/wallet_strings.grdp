@@ -312,6 +312,7 @@
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_GWEI" desc="Edit gas panel gwei label">Gwei</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM" desc="Edit gas panel set custom button">Set custom</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED" desc="Edit gas panel set suggested button">Set suggested</message>
+  <message name="IDS_BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING" desc="Edit gas panel zero gas price warning">Transaction may not be propagated in the network.</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_TITLE" desc="Edit allowance panel title">Edit permissions</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION" desc="Edit allowance panel description">Spend limit permission allows <ph name="SITE_ORIGIN"><ex>uniswap</ex>$1</ph> to withdraw and spend up to the following amount:</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_BUTTON" desc="Edit allowance panel button">Edit permissions</message>
