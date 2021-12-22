@@ -363,8 +363,11 @@ extension SyncSettingsTableViewController {
                     // `Preferences.Chromium.syncEnabled.value = false`
                     // But I don't have a TRUE way to tell if the current device
                     // was removed from the sync chain because `OnSelfDeviceInfoDeleted` has no callback.
-                    // So instead, we call `reset_sync` which won't hurt.
-                    syncAPI.leaveSyncGroup()
+                    // So instead, we call `removeAllObservers` which won't hurt.
+                    // Calling `syncAPI.leaveSyncGroup() aka reset_sync` as of 1.34.x will crash the application.
+                    
+                    syncAPI.removeAllObservers()
+                    Preferences.Chromium.syncEnabled.value = false
                     self.navigationController?.popToRootViewController(animated: true)
                 } else {
                     self.tableView.reloadData()
