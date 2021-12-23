@@ -441,21 +441,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SEARCH_ENGINE_SETTINGS" desc="Title for Search Engine settings. [CHAR_LIMIT=32]">
         Search engine
       </message>
-      <message name="IDS_SEARCH_ENGINE_LOCATION_AND_NOTIFICATIONS_ALLOWED" desc="The text of a link displayed when location and notifications permissions for a particular search engine are allowed.">
-        Location and notifications are allowed
-      </message>
-      <message name="IDS_SEARCH_ENGINE_LOCATION_ALLOWED" desc="The text of a link displayed when the location permission for a particular search engine is allowed.">
-        Location is allowed
-      </message>
-      <message name="IDS_SEARCH_ENGINE_NOTIFICATIONS_ALLOWED" desc="The text of a link displayed when the notifications permission for a particular search engine is allowed.">
-        Notifications are allowed
-      </message>
-      <message name="IDS_SEARCH_ENGINE_NOTIFICATIONS_ALLOWED_SYSTEM_LOCATION_DISABLED" desc="The text of a link displayed when the location and notifications permissions for a particular search engine are allowed but system location location is turned off. Contains a link to the settings menu to change it.">
-        Notifications are allowed. Location is off for this device.
-      </message>
-      <message name="IDS_SEARCH_ENGINE_SYSTEM_LOCATION_DISABLED" desc="The text of a link displayed when the user has granted geolocation to a particular search engine but system location is turned off. Contains a link to the settings menu to change it.">
-        Location is off; turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
 
       <message name="IDS_SEARCH_ENGINE_RECENTLY_VISITED" desc="Header for the list of recently visited search engines.">
         Recently visited
@@ -598,13 +583,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PASSWORDS_CHECK_DESCRIPTION" desc="Text explaining the benefits of checking the passwords, to be displayed under the Check Passwords button title.">
         Keep your passwords safe from data breaches and other security issues
       </message>
-      <!-- TODO(crbug.com/1202088): Remove "translateable=false" once definitive string is available, and update description. -->
-      <message translateable="false" name="IDS_ANDROID_TRUSTED_VAULT_OPT_IN_LABEL" desc="Title for the settings button to opt in to trusted vault encryption">
-        Trusted vault
+      <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_LABEL" desc="Title for the on-device encryption banner in password settings.">
+        On-device encryption
       </message>
-      <!-- TODO(crbug.com/1202088): Remove "translateable=false" once definitive string is available, and update description. -->
-      <message translateable="false" name="IDS_ANDROID_TRUSTED_VAULT_OPT_IN_SUB_LABEL" desc="Sub-label for the settings button to opt in to trusted vault encryption">
-        Opt in to trusted vault
+      <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OFFER_OPT_IN" desc="Sub-label for the on-device encryption banner when the user is offered to opt in.">
+        Encrypt passwords on your device before they‘re saved to Brave Password Manager
+      </message>
+      <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OPTED_IN" desc="Sub-label for the on-device encryption banner when the user is already opted in.">
+        Your password are encrypted on your device before they’re saved to Brave Password Manager
       </message>
       <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR_LIMIT=32]">
         Never saved
@@ -762,14 +748,6 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_OPTIONS_HOMEPAGE_CHROME_HOMEPAGE" desc="The option that allows user to set Brave's new tab page as the homepage.">
         Brave’s homepage
-      </message>
-
-      <!-- Enhanced Protection Promo card -->
-      <message name="IDS_ENHANCED_PROTECTION_PROMO_TITLE" desc="The title displayed on homepage promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
-        Get Brave’s strongest security
-      </message>
-      <message name="IDS_ENHANCED_PROTECTION_PROMO_DESCRIPTION" desc="The description displayed on enhanced protection promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
-        Enhanced protection does more to block phishing and malware
       </message>
 
       <!-- Notifications preferences -->
@@ -2323,9 +2301,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTEXTMENU_COPY_IMAGE" desc="Context sensitive menu item for copying the selected image to the system clipboard. [CHAR_LIMIT=30]">
         Copy image
-      </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
-        Search with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
         Search image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
@@ -4456,9 +4431,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_START_DINO_GAME" desc="Content description for the Dino button on the Quick Action Search Widget.">
         Start Dino Game
       </message>
-      <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_ICON" desc="Content description for the for the icon on the Quick Action Search Widget">
-        Quick Action Search Widget Icon
-      </message>
       <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
         Private is not available on this device
       </message>
@@ -4843,6 +4815,62 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_CABLEV2_BLE_ENABLE_TITLE" desc="The title of a screen that'll appear on a phone when we need to enable Bluetooth on the device. This screen will appear for a couple of seconds to give context, then a prompt will appear to allow the user to confirm that they wish to enable Bluetooth. Bluetooth is a radio technology commonly found in phones.">
         Turning on Bluetooth…
+      </message>
+
+      <message name="IDS_CABLEV2_PAASK_TITLE" desc="The title of an entry in settings for controlling how a phone can be used as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
+        Phone as a security key
+      </message>
+
+      <message name="IDS_CABLEV2_PAASK_BODY" desc="The subheading of an entry in settings for controlling how a phone can be used as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key. 'Devices' here means phones, laptops, and desktops that the user uses Brave on.">
+        Control which devices can sign in by using this device as a security key.
+      </message>
+
+      <message name="IDS_CABLEV2_YOUR_DEVICES" desc="A section title on a screen discussing the different devices that can use a phone as a security key. 'Devices' here means phones, laptops, and desktops that the user uses Brave on.">
+        Your devices
+      </message>
+
+      <message name="IDS_CABLEV2_YOUR_DEVICES_BODY" desc="Text that appears under the title 'Your devices'. 'Devices' here means phones, laptops, and desktops that the user uses Brave on. Users can sign into a Brave account in Brave on these devices and this message explains that such devices can use this phone as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
+        When you’re signed into the same Brave sync chain, other devices can use this phone as a security key.
+      </message>
+
+      <message name="IDS_CABLEV2_LINKED_DEVICES" desc="A section title on a screen discussing the different devices that can use a phone as a security key. The section above this discusses how devices (e.g. phones, laptops, and desktops) on which Brave is signed into the same Brave account can automatically use this phone as a security key. This section is about devices that the user has scanned QR codes from in order to allow them to use this phone as a security key. The word 'linked' here was chosen to be distinct from 'paired' as in 'Bluetooth pairing'. This technology does use Bluetooth, but we did not want to overload the term 'pairing'. However, the word 'pairing' does have the correct meaning.">
+        Linked devices
+      </message>
+
+      <message name="IDS_CABLEV2_LINKED_DEVICES_BODY" desc="Text that appears under the title 'Linked devices'. This section is about devices that the user has scanned QR codes from in order to allow them to use this phone as a security key. The word 'link' here was chosen to be distinct from 'pair' as in 'Bluetooth pairing'. This technology does use Bluetooth, but we did not want to overload the term 'pairing'. However, the word 'pair' does have the correct meaning. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
+        When you link another device with a QR code, it can use this phone as a security key. If you remove it, you’ll have to scan a QR code to link it again.
+      </message>
+
+      <message name="IDS_CABLEV2_UNLINK_BUTTON" desc="The text on a button that, when pressed, revokes the access of all devices that could previously use this phone as a security key. The work 'linked' should match up with the translation of message IDS_CABLEV2_LINKED_DEVICES.">
+        Remove all linked devices
+      </message>
+
+      <message name="IDS_CABLEV2_UNLINK_CONFIRMATION" desc="The text in a toast that appears after clicking a button labeled 'Remove all linked devices' (IDS_CABLEV2_UNLINK_BUTTON). A 'toast' is a bubble that appears, briefly, near the bottom of the screen. (Unfortunately I was unable to capture it in the screenshot.)">
+        Removed
+      </message>
+
+      <message name="IDS_CABLEV2_QR_TITLE" desc="The title on a screen that confirms that the user wants to connect to a computer that displayed a QR code.">
+        Connect with QR Code?
+      </message>
+
+      <message name="IDS_CABLEV2_QR_BODY_PHONE" desc="The body text on a screen that confirms that the user wants to connect to a computer that displayed a QR code. This message is specific to phones and won't appear on tablets.">
+        You can use this phone to sign in on the computer that’s displaying this QR code.
+      </message>
+
+      <message name="IDS_CABLEV2_QR_BODY_TABLET" desc="The body text on a screen that confirms that the user wants to connect to a computer that displayed a QR code. This message is specific to tablets and won't appear on phones.">
+        You can use this tablet to sign in on the computer that’s displaying this QR code.
+      </message>
+
+      <message name="IDS_CABLEV2_QR_REMEMBER" desc="The label of a checkbox that appears on a screen confirming that the user wants to connect to a computer from which they just scanned a QR code. If the computer is 'remembered' then it'll be able to connect to the phone automatically in the future. The 'computer' is a laptop, desktop, or (eventually) another phone or tablet.">
+        Remember this computer
+      </message>
+
+      <message name="IDS_CABLEV2_QR_ALLOW" desc="The label of a button that the user presses to confirm that they want to connect to a computer from which they just scanned a QR code.">
+        Allow
+      </message>
+
+      <message name="IDS_CABLEV2_QR_DONT_ALLOW" desc="The label of a button that the user can press to decline to connect to a computer from which they just scanned a QR code.">
+        Don’t allow
       </message>
 
       <!-- QR Code -->
@@ -5366,6 +5394,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_AUTO_DARK_MESSAGE_BUTTON" desc="The label for the button to enter theme settings.">
         Open settings
       </message>
+      <message name="IDS_AUTO_DARK_MESSAGE_OPT_IN_BUTTON" desc="The label for the button to enable the auto dark feature.">
+        Turn on
+      </message>
       <message name="IDS_AUTO_DARK_DIALOG_TITLE" desc="Title of dialog that asks the user to give feedback on auto dark theming.">
         Share feedback on dark theme for sites?
       </message>
@@ -5402,7 +5433,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
       </message>
       <message name="IDS_MANAGEMENT_LEARN_MORE" desc="The learn more link on chrome://management page that provides more information about managed devices.">
-        <ph name="BEGIN_LINK">&lt;a href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
+        <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn More<ph name="END_LINK">&lt;/LINK&gt;</ph>
       </message>
     </messages>
   </release>

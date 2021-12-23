@@ -41,7 +41,7 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
       <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
     </if>
-    <if expr="chromeos or lacros">
+    <if expr="chromeos_ash or chromeos_lacros">
       <output filename="generated_resources_is.pak" type="data_package" lang="is" />
     </if>
     <output filename="generated_resources_am.pak" type="data_package" lang="am" />
@@ -299,7 +299,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Brave-OS-specific strings -->
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <part file="chromeos_shared_strings.grdp" />
       </if>
       <if expr="chromeos">
@@ -1379,7 +1379,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- App menu -->
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_TOGGLE_REQUEST_TABLET_SITE" desc="The toggle to request mobile version site on a touch dev.">
           Request mobile site
         </message>
@@ -1711,7 +1711,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_STATUS_STARTING" desc="When starting a download, let the user know we're starting the download.">
         Starting...
       </message>
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_TITLE" desc="The title of a download notification: the current download status is in progress.">
                  Downloading <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
         </message>
@@ -1890,19 +1890,19 @@ are declared in tools/grit/grit_rule.gni.
         This file is encrypted. Ask its owner to decrypt.
       </message>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_PROMPT_BLOCKED_MIXED_DOWNLOAD_TITLE" desc="In the download notification, a title of the message shown on a download blocked for being insecure.">
           Insecure download blocked
         </message>
       </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_PROMPT_BLOCKED_MALICIOUS_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown for blocked download">
           Dangerous download blocked
         </message>
       </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_PROMPT_SEND_TO_SAFEBROWSING_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown indicating that the file may be malicious and Safe Browsing recommends sending the file to Brave">
           Scan file before opening?
         </message>
@@ -4139,6 +4139,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_SOCKET_SPECIFIC_HOSTS" desc="Permission string for access to multiple specific devices on the local network or internet.">
           Exchange data with the devices named: <ph name="HOSTNAMES">$1<ex>foo.example.com bar.example.com</ex></ph>
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_SPEECH_RECOGNITION" desc="Permission string for speech recognition.">
+          Access your microphone and analyze your speech
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_START_PAGE_SETTING_OVERRIDE" desc="Permission string for start page override.">
           Change your start page to: <ph name="START_PAGE">$1<ex>start.page.com/start.html</ex></ph>
         </message>
@@ -4837,6 +4840,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_TITLE" desc="Title of the site access tab in the Extensions Menu">
         Permissions
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_HAS_ACCESS_SECTION_TITLE" desc="Header for section of extensions that can access the current site's data. $1 is replaced with the current site.">
+        Allowed to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_REQUESTS_ACCESS_SECTION_TITLE" desc="Header for section of extensions that request access to the current site's data. $1 is replaced with the current site.">
+        Requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_TITLE" desc="Title of the installed extensions tab in the Extensions Menu">
         Installed
@@ -6109,6 +6118,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCDESCRIPTION_FORWARD" desc="Help text that explains to keyboard users how to interact with the forward button, similar to the tooltip presented to mouse users.">
         Press to go forward, context menu to see history
       </message>
+      <message name="IDS_TOOLTIP_DOWNLOAD_ICON" desc="The tooltip for download toolbar button icon">
+          Downloads
+      </message>
       <message name="IDS_TOOLTIP_HOME" desc="The tooltip for the home button">
         Open the home page
       </message>
@@ -6282,6 +6294,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
         Search tabs
       </message>
+      <message name="IDS_ACCNAME_TAB_SCROLL_LEADING" desc="The accessible name for the TabStrip leading scroll button.">
+        Scroll towards the first tab
+      </message>
+      <message name="IDS_ACCNAME_TAB_SCROLL_TRAILING" desc="The accessible name for the TabStrip trailing scroll button.">
+        Scroll towards the last tab
+      </message>
 
       <!-- Clipboard permission -->
       <message name="IDS_ALLOWED_CLIPBOARD_TITLE" desc="Title of the info bubble shown when a site has been allowed access to read the contents of the system clipboard.">
@@ -6389,6 +6407,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
           Remind Me Later
         </message>
+        <message name="IDS_PROMO_SHOW_TUTORIAL_BUTTON" desc="Text shown on a promo bubble button for the user to initiate a tutorial after being asked if they want to learn more.">
+          Show Me How
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
@@ -6396,6 +6417,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
           Remind me later
+        </message>
+        <message name="IDS_PROMO_SHOW_TUTORIAL_BUTTON" desc="Text shown on a promo bubble button for the user to initiate a tutorial after being asked if they want to learn more.">
+          Show me how
         </message>
       </if>
       <message name="IDS_SHARED_HIGHLIGHTING_PROMO" desc="The title of in-product-help message encouraging users to interact with the highlight">
@@ -7183,7 +7207,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
-        <if expr="chromeos or lacros">
+        <if expr="chromeos_ash or chromeos_lacros">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
           </message>
@@ -7370,6 +7394,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_RECENTLY_CLOSED_TAB_GROUP" desc="Singular form of a11y message announced after user selects a recently closed tab group.">
         Recently Closed Tab Group
+      </message>
+      <message name="IDS_TAB_SEARCH_MEDIA_TABS" desc="The label on the tab search list section corresponding to tabs that access audio or video.">
+        Audio &amp; Video
       </message>
       <message name="IDS_TAB_SEARCH_OPEN_TABS" desc="The label on the tab search list section corresponding to open tabs.">
         Open Tabs
@@ -7594,7 +7621,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Send feedback
       </message>
       <!-- Killed Tab Strings -->
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_KILLED_TAB_BY_OOM_MESSAGE" desc="The message displayed on the killed tab page when the page was killed by an out of memory error.">
           Either Brave ran out of memory or the process for the webpage was terminated for some other reason.  To continue, reload or go to another page.
         </message>
@@ -8109,6 +8136,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COLLECTED_COOKIES_INFOBAR_BUTTON" desc="The string used in the infobar button allowing the user to reload the page directly from the infobar.">
         Reload
+      </message>
+      <message name="IDS_COLLECTED_COOKIES_PARTITIONED_COOKIE" desc="The string used to identify cookies which have been partitioned based on the current site, and so are not available for use on different sites.">
+        Partitioned
       </message>
 
       <!-- Accessiblility strings for Infobars in Views -->
@@ -9857,6 +9887,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
+      <message name="IDS_A11Y_OMNIBOX_CHIP_HINT" desc="A navigational hint given to screenreader users, informing them that a setting which was just announced is accessible via the address bar.">
+        Change this setting in the address bar.
+      </message>
+
       <!-- Protected media identifier permission infobar -->
       <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
         View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave sync chain</ex></ph>
@@ -10250,6 +10284,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
           Pinned by administrator
+        </message>
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
+          Reorder by
+        </message>
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
+          Name
+        </message>
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
+          Color
         </message>
         <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
           Uninstall

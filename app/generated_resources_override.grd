@@ -97,7 +97,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win or is_macosx or is_linux">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="chromeos">
         <part file="os_settings_strings_override.grdp" />
@@ -225,7 +225,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_posix and not is_macosx">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="not use_titlecase">
@@ -246,19 +246,19 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_android">
         </if>
       <if expr="not is_android">
         </if>
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="use_titlecase">
@@ -637,7 +637,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_macosx">
         </if>
       <if expr="not use_titlecase">
-        <if expr="chromeos or lacros">
+        <if expr="chromeos_ash or chromeos_lacros">
           </if>
       </if>
       <if expr="use_titlecase">
@@ -673,7 +673,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_win">
         </if>
