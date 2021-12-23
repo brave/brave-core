@@ -198,7 +198,7 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     return;
   }
 
-  const base::DictionaryValue* user_assets_dict =
+  const base::Value* user_assets_dict =
       prefs_->GetDictionary(kBraveWalletUserAssets);
   if (!user_assets_dict) {
     std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
@@ -364,7 +364,7 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
   if (network_id.empty())
     return nullptr;
 
-  const base::DictionaryValue* user_assets_dict =
+  const base::Value* user_assets_dict =
       prefs_->GetDictionary(kBraveWalletUserAssets);
   if (!user_assets_dict)
     return nullptr;

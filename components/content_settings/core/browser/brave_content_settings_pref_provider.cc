@@ -204,8 +204,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   BravePrefProvider::CopyPluginSettingsForMigration(prefs_);
 
-  const base::DictionaryValue* plugins_dictionary = prefs_->GetDictionary(
-      "brave.migrate.content_settings.exceptions.plugins");
+  const base::DictionaryValue* plugins_dictionary =
+      &base::Value::AsDictionaryValue(*prefs_->GetDictionary(
+          "brave.migrate.content_settings.exceptions.plugins"));
   if (!plugins_dictionary)
     return;
 

@@ -244,8 +244,7 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
     const std::string& id) {
-  const base::DictionaryValue* dict =
-      prefs_->GetDictionary(kBraveWalletTransactions);
+  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   if (!dict)
     return nullptr;
   const base::Value* value =
@@ -271,8 +270,7 @@ EthTxStateManager::GetTransactionsByStatus(
     absl::optional<mojom::TransactionStatus> status,
     absl::optional<EthAddress> from) {
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
-  const base::DictionaryValue* dict =
-      prefs_->GetDictionary(kBraveWalletTransactions);
+  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   const base::Value* network_dict =
       dict->FindKey(GetNetworkId(prefs_, chain_id_));
   if (!network_dict)

@@ -330,8 +330,7 @@ const base::Value* KeyringService::GetPrefForKeyring(PrefService* prefs,
                                                      const std::string& key,
                                                      const std::string& id) {
   DCHECK(prefs);
-  const base::DictionaryValue* keyrings_pref =
-      prefs->GetDictionary(kBraveWalletKeyrings);
+  const base::Value* keyrings_pref = prefs->GetDictionary(kBraveWalletKeyrings);
   if (!keyrings_pref)
     return nullptr;
   const base::Value* keyring_dict = keyrings_pref->FindKey(id);
@@ -347,7 +346,7 @@ base::Value* KeyringService::GetPrefForKeyringUpdate(PrefService* prefs,
                                                      const std::string& id) {
   DCHECK(prefs);
   DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
-  base::DictionaryValue* keyrings_pref = update.Get();
+  base::Value* keyrings_pref = update.Get();
   if (!keyrings_pref)
     return nullptr;
   base::Value* keyring_dict = keyrings_pref->FindKey(id);
@@ -368,7 +367,7 @@ void KeyringService::SetPrefForKeyring(PrefService* prefs,
                                        const std::string& id) {
   DCHECK(prefs);
   DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
-  base::DictionaryValue* keyrings_pref = update.Get();
+  base::Value* keyrings_pref = update.Get();
 
   if (!keyrings_pref->FindKey(id)) {
     keyrings_pref->SetKey(id, base::Value(base::Value::Type::DICTIONARY));
@@ -1213,7 +1212,7 @@ base::Value* KeyringService::GetPrefForHardwareKeyringUpdate(
     PrefService* prefs) {
   DCHECK(prefs);
   DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
-  base::DictionaryValue* keyrings_pref = update.Get();
+  base::Value* keyrings_pref = update.Get();
   if (!keyrings_pref)
     return nullptr;
   base::Value* keyring_dict = keyrings_pref->FindKey(kHardwareKeyrings);
