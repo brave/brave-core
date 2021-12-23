@@ -2,9 +2,8 @@
 <!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
 <grit-part>
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
-      Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.
-    </message>
+    </if>
+  <if expr="not chromeos">
     </if>
   <if expr="chromeos">
     </if>
@@ -12,7 +11,7 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     </if>
 
   <if expr="not chromeos and not lacros">

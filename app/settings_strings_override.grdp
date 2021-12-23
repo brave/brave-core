@@ -2,6 +2,14 @@
 <!-- Settings-specific strings (included from generated_resources.grd). -->
 <grit-part>
   <if expr="not chromeos">
+    <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY" desc="The body of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
+      {COUNT, plural,
+      =1 {Your Private window won't open after you relaunch}
+      other {Your {COUNT} Private windows won't reopen after you relaunch}}
+    </message>
+  </if>
+
+  <if expr="not chromeos">
     </if>
   <if expr="_google_chrome">
     </if>
@@ -22,13 +30,13 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     </if>
   <if expr="not chromeos and not lacros">
     </if>
   <if expr="is_linux and not chromeos and not lacros">
     </if>
-  <if expr="not is_linux or chromeos or lacros or is_fuchsia">
+  <if expr="not is_linux or chromeos_ash or chromeos_lacros or is_fuchsia">
     </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
@@ -57,7 +65,7 @@
   <if expr="chromeos">
     </if>
 
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     </if>
 
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy review, for blocking third party cookies in private.">

@@ -516,12 +516,6 @@
   <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Get emoji suggestions based on what you're typing
   </message>
-  <message name="IDS_SETTINGS_SUGGESTIONS_PREDICTIVE_WRITING_TITLE" desc="The label for predictive writing suggestions (when a user types a word, some text might be suggested for the user to insert after) section.">
-    Predictive writing
-  </message>
-  <message name="IDS_SETTINGS_SUGGESTIONS_PREDICTIVE_WRITING_DESCRIPTION" desc="The description for predictive writing suggestions (when a user types a word, some text might be suggested for the user to insert after) section.">
-    Show inline writing suggestions that appear as you type
-  </message>
 
   <!-- Input Method Options Section -->
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_BASIC" desc="The label for the section in input method options page containing basic options.">
@@ -535,6 +529,9 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_VIRTUAL_KEYBOARD" desc="The label for the section in input method options page containing the virtual keyboard options.">
     On-screen keyboard
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_SUGGESTIONS" desc="The label for the section in input method options page containing suggestion options.">
+    Suggestions
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_DOUBLE_SPACE_PERIOD" desc="The label for the input method option to enable double-space to type period (when an user types two consecutive space, it outputs a period).">
     Double-space to type period
@@ -553,6 +550,9 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_AUTO_CORRECTION" desc="The label for the input method option to enable auto correction.">
     Auto-correction
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PREDICTIVE_WRITING" desc="The label for the input method option to enable predictive writing.">
+    Predictive writing
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_XKB_LAYOUT" desc="The label for the input method option to let the users choose their keyboard layout.">
     Keyboard layout
@@ -1578,15 +1578,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_CHILD_DESCRIPTION" desc="List description for additional account List in Account Manager Settings page for Child users.">
     <ph name="USER_EMAIL">$1<ex>user@example.com</ex></ph> is supervised by Family Link. You can add school accounts to access school resources with parental supervision.
   </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PRIMARY_ACCOUNT_TOOLTIP" desc="Tooltip for the primary account in accounts list in Settings describing how to sign out.">
-    To sign out of the primary account on this device, click the time on your screen. In the menu that appears, click "Sign out".
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_MANAGED_BY_ONE_PARENT_TOOLTIP" desc="Tooltip for the primary account in accounts list in Settings showing that this user is managed by parent's account.">
-    Account managed by <ph name="PARENT_EMAIL">$1<ex>user@example.com</ex></ph>. To sign out of the primary account on this device, click the time on your screen. In the menu that appears, click "Sign out".
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_MANAGED_BY_TWO_PARENTS_TOOLTIP" desc="Tooltip for the primary account in accounts list in Settings showing that this user is managed by two parents' accounts.">
-    Account managed by <ph name="FIRST_PARENT_EMAIL">$1<ex>first@example.com</ex></ph> and <ph name="SECOND_PARENT_EMAIL">$2<ex>second@example.com</ex></ph>. To sign out of the primary account on this device, click the time on your screen. In the menu that appears, click "Sign out".
-  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
     Remove this account
   </message>
@@ -1626,9 +1617,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MORE_ACTIONS_TOOLTIP" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped.">
     More actions, <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_MANAGED_ACCOUNT" desc="Management status label for managed accounts. This will be e.g. 'Managed by google.com' for Enterprise accounts and 'Managed by Family Link' for child accounts.">
-    Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
-  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS" desc="Management status label for managed accounts.">
     This account is managed by <ph name="BEGIN_LINK">&lt;a target="_blank"&gt;</ph><ph name="DOMAIN">$1<ex>google.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
@@ -1640,9 +1628,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_SCHOOL_ACCOUNT" desc="Indicates this account is the school account, when the primary account is a child account.">
     School Account
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
-    Primary account
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_TITLE" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of that dialog.">
     Remove this account?
@@ -2053,6 +2038,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_FORGET" desc="Bluetooth device details page: button label for button that forgets the Bluetooth device when clicked.">
     Forget
   </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_FORGET_A11Y_LABEL" desc="Bluetooth device details page: Accessibility label for button that forgets the Bluetooth device when clicked.">
+   Forget <ph name="DEVICE_NAME">$1<ex>Beats</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_HID_MESSAGE_CONNECTED" desc="Bluetooth device details page: Message displayed for devices that are currently connected that will disconnect automatically when turned off or not used.">
+    Device will disconnect automatically when it's turned off or isn't being used
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_HID_MESSAGE_DISCONNECTED" desc="Bluetooth device details page: Message displayed for devices that are currently disconnected that will connect automatically when turned on and used.">
+    Device will connect automatically when it's turned on and is being used
+  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_NAME" desc="Bluetooth device details page: label informing user the text below is the device name.">
     Device name
   </message>
@@ -2325,11 +2319,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MOUSE_AND_TOUCHPAD_TITLE" desc="In Device Settings, the title of the mouse and touchpad settings subpage (when the user has both types of devices).">
     Mouse and touchpad
   </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FEEDBACK_LABEL" desc="In Device Settings, the text next to the toggle for enabling touchpad haptic feedback.">
-    Enable haptic feedback. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FEEDBACK_TITLE" desc="In Device Settings, the text next to the toggle for enabling touchpad haptic feedback.">
+    Haptic feedback
   </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY_LABEL" translateable="false" desc="In Device Settings, the text next to the slider for setting the touchpad haptic click sensitivity.">
-    Click feedback
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FEEDBACK_SECONDARY_TEXT" desc="In Device Settings, the text next to the toggle for enabling touchpad haptic feedback.">
+    Receive vibration confirmation for actions like split screen and switching desks.
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY_LABEL" desc="In Device Settings, the text next to the slider for setting the touchpad haptic click sensitivity.">
+    Click strength
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_LIGHT_CLICK_LABEL" desc="In Device Settings, the text under the left (less sensitive) side of the slider for the touchpad haptic click sensitivity.">
     Light
@@ -2851,6 +2848,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REFRESHING_PROFILE_LIST" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that the list of eSIM profiles is being refreshed and notifying the user why mobile settings are temporarily disabled.">
     Refreshing profile list. This may take a few minutes.
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_RESETTING_ESIM" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that the eSIM is being reset and notifying the user why mobile settings are temporarily disabled.">
+    Your administrator is resetting your eSIM. This may take a few minutes.
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_ERROR_MESSAGE" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: Error message shown when remove fails">
     Profile could not be removed. Please try again or contact your carrier for technical support.
   </message>
@@ -3128,6 +3128,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting. This feature populates most recent photos from a connected Android phone to Chrome OS devices.">
     View photos from your phone's camera roll on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting when the feature is disabled due to missing file access permissions.">
+    View photos from your phone's camera roll on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
     View notifications from your chat apps on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
@@ -3325,7 +3328,7 @@ Press an assigned switch or key to remove assignment.
     Set up PIN
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOCK" desc="Text on the profiles page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
-    Screen lock
+    Lock screen
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the profiles page which opens up the security and sign-in section.">
     Security and sign-in
@@ -4196,13 +4199,10 @@ Press an assigned switch or key to remove assignment.
     Snooping protection
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Sub-label elaborating on the meaning of snooping protection." translateable="false">
-    Notify you or temporary dim your screen when someone is snooping from behind
+    When someone else looks at your screen, show the Privacy 'eye' icon on the bottom right of your screen
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="The radio button option in the smart privacy section requesting an eye icon when a snooper is detected." translateable="false">
-    Show me an eye icon in the status area
-  </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="The radio button option in the smart privacy section requesting screen dim when a snooper is detected." translateable="false">
-    Temporary dim screen
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_NOTIFICATIONS" desc="Text for the name of the toggle in the smart privacy section requesting notification hiding when a snooper is detected." translateable="false">
+    Hide notification content when someone else is detected
   </message>
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
     <ph name="DEVICE_OS">$1<ex>CloudReady 2.0</ex></ph> hardware support and stability
