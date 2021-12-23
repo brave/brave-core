@@ -10,10 +10,10 @@
 #include <string>
 
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
-#include "brave/third_party/rust/cxx/include/cxx.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/rust/cxx/v1/crate/include/cxx.h"
 
 namespace skus {
 

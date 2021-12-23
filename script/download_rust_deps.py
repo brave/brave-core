@@ -128,8 +128,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Download rust deps')
 
     parser.add_argument('--platform')
-    # This is kind of hacky, we should have a separate script to install tools
-    parser.add_argument('--cxx_version')
 
     args = parser.parse_args()
     return args
@@ -181,6 +179,15 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
+    cxx_path = os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1')
+
+    with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
+        _VERSION_PREFIX = "Version: "
+        for line in readme_file:
+            if not line.startswith(_VERSION_PREFIX):
+                continue
+            cxx_version = line[len(_VERSION_PREFIX):].strip()
+
     tools = [
         {
             "name": "cbindgen",
@@ -188,7 +195,7 @@ def main():
         },
         {
             "name": "cxxbridge-cmd",
-            "version": args.cxx_version,
+            "version": cxx_version,
         },
         {
             "name": "cargo-audit",

@@ -58,8 +58,8 @@ config("cxx_cppconfig") {
 # on the C++ side.
 source_set("cxx_cppdeps") {
   sources = [
-    "//brave/third_party/rust/cxx/include/cxx.h",
-    "//brave/third_party/rust/cxx/src/cxx.cc",
+    "//third_party/rust/cxx/v1/crate/include/cxx.h",
+    "//third_party/rust/cxx/v1/crate/src/cxx.cc",
   ]
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [ "//build/config/compiler:no_chromium_code" ]

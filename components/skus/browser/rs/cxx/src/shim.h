@@ -12,7 +12,7 @@
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"
-#include "brave/third_party/rust/cxx/include/cxx.h"
+#include "third_party/rust/cxx/v1/crate/include/cxx.h"
 
 class PrefService;
 

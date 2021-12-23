@@ -6,7 +6,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cxx = "1.0"
+cxx = { path = "../../../../../../third_party/rust/cxx/v1/crate"}
 async-trait = { version = "0.1", git = "https://github.com/dtolnay/async-trait" }
 futures-preview = { version = "0.3.0-alpha.17" }
 libc = { version = "0.2" }
