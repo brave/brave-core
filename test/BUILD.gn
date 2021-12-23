@@ -177,6 +177,7 @@ test("brave_unit_tests") {
     "//brave/browser/widevine:unittest",
     "//brave/chromium_src/chrome/browser/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
+    "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
     "//brave/common:network_constants",
     "//brave/common:pref_names",
