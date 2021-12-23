@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Susunod</translation>
 <translation id="7954950242989581218">Mag-browse nang ligtas at maayos</translation>
 <translation id="2188651882929633653">Bina-block ng Brave Shields ang mga nakakatakot na bagay na sumusubok na i-track ka sa web — kabilang ang karamihan sa mga ad. Itakda ang Shields sa “down” kung mukhang hindi gumagana ang isang site. Gumagamit ang Brave ng <ph name="BEGIN_LINK_P3A"/>ganap na pribadong analytics ng produkto<ph name="END_LINK_P3A"/> upang matantya ang kabuuang paggamit ng mga partikular na feature. Puwede mo itong i-off sa <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Mga Ad</translation>
-<translation id="6769094341455418696">Makakuha ng [[currency]] sa pamamagitan ng panonood ng Brave Ads. Ang ipinapakitang mga ad ay batay sa iyong mga interes, gaya ng natukoy sa iyong gawi sa pag-browse. Walang lalabas na personal na data o history sa pag-browse sa iyong browser kailanman.</translation>
+<translation id="4851215387785619212">Mga Pribadong Ad ng Brave</translation>
+<translation id="3114984266384096064">Kumita ng [[currency]] sa pamamagitan ng panonood ng Ads ng Brave Private. Ang ipinapakitang mga ad ay nakabatay sa iyong mga interes, gaya ng natukoy sa iyong gawi sa pag-browse. Walang lalabas na personal na data o history sa pag-browse sa iyong browser kailanman.</translation>
 <translation id="6112368337882254910">Awtomatikong Mag-ambag</translation>
 <translation id="3742599705619405136">Isang awtomatikong paraan para suportahan ang mga publisher at creator ng content. Mag-set ng buwanang pagbabayad at mag-browse gaya ng karaniwan. Awtomatikong matatanggap ng mga Brave Verified na site na binibisita mo ang iyong mga kontribusyon, batay sa iyong atensyong sinukat ng Brave.</translation>
 <translation id="3325399124634342726">Kasalukuyang kita ngayong buwan (tinatantya)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Ipinapakita namin ang huling [[numberOfLines]] (na) linya ng log. Kung gusto mo ang buong log, puwede mo itong i-download sa itaas.</translation>
 <translation id="7168491065836975228">Rewards internals</translation>
 <translation id="758790787422117549">Persona ID</translation>
+<translation id="1919345977826869612">Mga Ad</translation>
 <translation id="3671566813999349838">Halaga</translation>
 <translation id="751223241692981112">Na-claim noong</translation>
 <translation id="3913089081619091801">Claim ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="3656941797339037856">I-link ang Rewards sa Gemini!</translation>
-<translation id="2383784987664887340">Nagbibigay-daan sa iyo ang Gemini na madaling mag-trade, mag-store, at kumita ng 3.49% APY sa iyong BAT. I-verify at i-link ang iyong Brave Rewards wallet gamit ang Gemini ngayon!</translation>
-<translation id="2237374144728570574">* APY sa Gemini Earn hanggang Sept 15, 2021</translation>
+<translation id="3066983737886188034">Nagbibigay-daan sa iyo ang Gemini na madaling mag-trade, mag-store, at kumita ng interes sa iyong BAT. I-verify at i-link ang iyong wallet ng Rewards ng Brave gamit ang Gemini ngayon!</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Pumunta sa aking <ph name="PROVIDER"/> account</translation>
 <translation id="2389181429986654814">Pumunta sa <ph name="PROVIDER"/> para makumpleto ang pag-verify.</translation>
 <translation id="7793632266654336758">Pakikumpleto ang pag-verify sa pagkakakilanlan para magsimulang makatanggap ng mga reward.</translation>
+<translation id="2394961582378297792">Na-log out</translation>
+<translation id="5511950864417840431">Mag-log out sa <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Mga Tinatantyang Kita</translation>
 <translation id="7577100371127227294">Mga Buwanang Tip</translation>
 <translation id="5894023780213944778">Wallet Ko</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Ginagamit ng Brave ang <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> bilang DEX aggregator.</translation>
 <translation id="151946611346774041">Ipoproseso ng 0x ang Ethereum address at IP address para magawa ang isang transaksyon (kasama na ang pagkuha ng mga quote). Gagamitin LANG ng 0x ang data na ito para sa mga layunin ng pagpoproseso ng mga transaksyon.</translation>
 <translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
+<translation id="2704606927547763573">Kinopya</translation>
 <translation id="6518133107902771759">I-verify</translation>
 <translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
 <translation id="8303434745767477417">Alagaan ang iyong mga asset ng cryptocurrency. I-track ang performance ng portfolio, at makipag-ugnayan sa mga web 3 DApp. Mag-trade, mag-invest, humiram, at magpahiram gamit ang DeFi. Iyon na ang lahat para sa pribadong browser ng Brave. Walang mga extension, walang kinakailangang pag-download.</translation>
 <translation id="6972754398087986839">Magsimula</translation>
 <translation id="375882617301124395">I-back up ang iyong wallet ng cryptocurrency</translation>
-<translation id="1078873179929044999">Sa susunod na hakbang makakakita ka ng 12 salitang parirala sa pag-recover, na pwede mong gamitin para i-recover ang iyong mga pangunahing account sa cryptocurrency. Itago ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account kung sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
+<translation id="180032279811483155">Sa susunod na hakbang makakakita ka ng 12 salitang parirala sa pag-recover, na pwede mong gamitin para i-recover ang iyong mga pangunahing account sa cryptocurrency. Itago ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account kung sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
 <translation id="5024543173656851695">Nauunawaan ko na kung mawala ko ang aking mga salita para sa pag-recover, hindi ko maa-access ang aking crypto wallet.</translation>
 <translation id="3933122286596948824">Ang iyong parirala sa pag-recover</translation>
 <translation id="5077747669435508720">Isulat o kopyahin ang mga salitang ito sa mismong pagkakaayos na ipinapakita sa ibaba, at itago ang mga ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Subukang palitan ang HD path (sa itaas) kung hindi mo makita ang account na hinahanap mo.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Walang nakitang resulta.</translation>
 <translation id="5149944858285555235">Hindi alam na error, pakikonekta ulit sa iyong hardware wallet at subukan ulit.</translation>
 <translation id="4522570452068850558">Mga Detalye</translation>
 <translation id="9220525904950070496">Alisin ang account</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">mga transaksyon</translation>
 <translation id="523862956770478816">Mga pahintulot ng site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> account ang konektado</translation>
+<translation id="4305817255990598646">Lumipat</translation>
+<translation id="3890989020011724401">Bagong account</translation>
 <translation id="4460220693591349571">URI NG FUNCTION</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Hindi nakarehistro ang domain na <ph name="DOMAIN_NAME"/></translation>
 <translation id="8971278306757462297">Ang address ng tatanggap ay ang iyong sariling address</translation>
 <translation id="3506416339268164412">Ang address ng tatanggap ay contract address ng token</translation>
+<translation id="5517732667776806421">Kulang ng impormasyon ng checksum</translation>
+<translation id="4006711930669471508">Invalid na impormasyon ng checksum</translation>
 <translation id="862585889767884824">sa</translation>
 <translation id="9106265941552476098">Tanggihan ang <ph name="TRANSACTION_LENGTH"/> transaksyon</translation>
 <translation id="1118876217803190221">Hindi sapat ang balanse</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Internal na error</translation>
 <translation id="3327639091470204775">Hindi makakonekta sa Trezor bridge</translation>
 <translation id="6672377693827764095">Internal na error, hindi makuha ang mga account</translation>
+<translation id="6889920539620318793">Itakda bilang aktibo</translation>
 <translation id="8933250418452564886">Hindi mahanap ang transaksyon ng hardware, pakisubukan ulit</translation>
 <translation id="5999974802900788338">Nakatanggap ng error mula sa hardware device, posibleng kailangan mong kumpirmahin ang transaksyon sa iyong device</translation>
 <translation id="8523768065044261559">Error sa pagpoproseso sa transaksyon, pakisubukan ulit</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Error na mensahe sa pag-sign, humiling ng hindi alam na keyring, pakisubukan ulit</translation>
 <translation id="5265455943786954050">Kasalukuyang isinasagawa ang Trezor command</translation>
 <translation id="7017116822583380542">Hindi handa ang bridge ng Trezor</translation>
+<translation id="3378339846292573874">Magdagdag ng iminumungkahing token</translation>
+<translation id="2322227405137827074">Gusto mo bang i-import ang token na ito?</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">URI ng Proxy ng Tor</translation>
 <translation id="1671503397662036257">Status ng Koneksyon ng Tor</translation>
 <translation id="6024292492796847324">Pag-usad ng Pagsisimula ng Tor</translation>
+<translation id="8458987127502506209">I-enable ang Shields ng Brave</translation>
+<translation id="640898327002833127"><ph name="LINK_BEFORE"/>NAKA-ENABLE<ph name="LINK_AFTER"/> ang Shields ng Brave</translation>
+<translation id="8676609116485287125">Kung mukhang sira ang site na ito, subukang i-disable ang Shield. Tandaan: posibleng mabawasan nito ang mga proteksyon sa privacy ng Brave.</translation>
+<translation id="8377155647357436161">Na-block ang mga tracker, ad, at higit pa <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Mga Advanced na Kontrol</translation>
+<translation id="1299672573512347813">Naaapektuhan ng mga setting na ito ang compatibility ng web sa site na ito.</translation>
+<translation id="9204041448536398473">Mga pangkalahatang setting ng Shield</translation>
+<translation id="7637771346619326580">Baguhin ang mga pangkalahatang default ng Shield</translation>
+<translation id="3520486481604057261">I-customize ang Mga Listahan ng Adblock</translation>
+<translation id="3146531623184244174">Na-upgrade sa HTTPS ang mga koneksyon</translation>
+<translation id="131231380815754440">I-enable ang HTTPS</translation>
+<translation id="7461425058443653485">Mga Script na Na-block</translation>
+<translation id="3246600097575692802">I-enable ang Mga Script na Na-block</translation>
+<translation id="3603525299146223354">Mga tracker at ad</translation>
+<translation id="1146309636943354181">Mga tracker at ad na na-block (karaniwan)</translation>
+<translation id="5973258875089964805">Mga tracker at ad na na-block (agresibo)</translation>
+<translation id="5544888475837817215">Payagan ang lahat ng tracker at ad</translation>
+<translation id="6203697265754637264">Na-block ang cross-site cookies</translation>
+<translation id="4627427111733173920">Naka-block ang cookies</translation>
+<translation id="7855168553463825937">Na-block ang lahat ng cookie</translation>
+<translation id="8366221601425141146">Na-block ang pag-fingerprint</translation>
+<translation id="5582686930349810484">Naka-block ang fingerprinting (standard)</translation>
+<translation id="6696441392507885865">Na-block ang paggamit ng fingerprint (mahigpit, posibleng masira ang mga site)</translation>
+<translation id="5882733945883311404">Payagan ang lahat ng Paggamit ng Fingerprint</translation>
 <translation id="1742469581923031760">Kumokonekta</translation>
 <translation id="1287487756047817908">Dinidiskonekta</translation>
 <translation id="2325196879156848326">Hindi Nakakonekta</translation>

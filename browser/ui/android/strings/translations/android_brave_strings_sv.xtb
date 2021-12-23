@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave News visar annonser som är helt privata och anonymt matchade med din enhet.</translation>
 <translation id="4541978218358617681">Reklam</translation>
 <translation id="1765217911817124376">Aktivera Brave News</translation>
+<translation id="6527303717912515753">Dela</translation>
 <translation id="1654539412343893324">Mer information om dina data</translation>
 <translation id="2989805286512600854">Öppna i ny flik</translation>
 <translation id="3709782636417497984">Öppna i ny privat flik</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Din plånbok</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sätt in pengar</translation>
 <translation id="8428213095426709021">Inställningar</translation>
-<translation id="8772672608371898774">Braveverifierad utgivare</translation>
-<translation id="1397683270551078781">Ännu inte verifierad</translation>
+<translation id="6020176662032623904">Verifierad skapare</translation>
+<translation id="2369994359029526515">Overifierad skapare</translation>
 <translation id="880893465294676334">Den här verifierade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Brave-användare. 
          Den dricks du skickar kommer att finnas kvar i din plånbok till dess de slutför denna process.</translation>
 <translation id="8918760045046434238">Skicka dricks...</translation>
@@ -279,11 +280,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="9096003370755878766">Ta ut BAT som du tidigare kan ha lagt till i din Brave Rewards-plånbok</translation>
 <translation id="1554282356558968486">Vår plånbokstjänst tillhandahålls av</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold kan kräva att du verifierar din identitet baserat på begärda tjänster.</translation>
-<translation id="723054503945711909">Brave Software Inc. bearbetar inte, lagrar eller får tillgång till några av de personuppgifter som du tillhandahåller Uphold när du skapar ett konto hos dem.</translation>
+<translation id="3200197118442451932">Brave Software Inc. behandlar inte, lagrar eller får tillgång till någon av den personliga information som du lämnar till <ph name="WALLET_PROVIDER"/> när du skapar ett konto hos dem.</translation>
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="2193391216824305230">Användarplånbok</translation>
-<translation id="6585020831163574892">Gå till ditt Uphold-konto</translation>
+<translation id="1665118090708049096">Gå till mitt <ph name="WALLET_PROVIDER"/>-konto</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
 <translation id="6239274080752256452">Ta ut tillgångar</translation>
 <translation id="8874184842967597500">Inte ansluten</translation>
@@ -292,10 +294,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5358719431303818601">Frånkopplad ej verifierad</translation>
 <translation id="4241449868720191203">Frånkopplad verifierad</translation>
 <translation id="3248185426436836442">Väntande</translation>
-<translation id="8108013093558639183">BAT stöds för närvarande inte i din region baserat på platsen där ditt konto öppnades. Kolla tillgängligheten igen senare.</translation>
-<translation id="4190454391025419535">Regionen stöds ej</translation>
-<translation id="6830703472632069884">Det gick inte att verifiera din plånbok, försök igen senare.</translation>
-<translation id="3512533646933434345">Fel med plånboksverifiering</translation>
 <translation id="2260513517001048012">OBS: Denna av Brave verifierade skapare har ännu inte konfigurerat sitt konto för att ta emot bidrag från Brave-användare. Din webbläsare betalar när det är möjligt, om det inte har gått mer än 90 dagar.</translation>
 <translation id="4488355059795908907">Denna av Brave verifierade skapare har ännu inte konfigurerat sitt konto för att ta emot bidrag från Brave-användare. Pengar du ger kommer att vara kvar i din plånbok tills skaparen slutför denna process.</translation>
 <translation id="2495032782748793764">Ordinarie för Brave</translation>
@@ -426,16 +424,45 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1972589975368876259">Redigera Stack</translation>
 <translation id="2490330380242414851">Ta bort widget</translation>
 <translation id="8446884382197647889">Läs mer</translation>
+<translation id="7384441892795736634">Ladda om data</translation>
+<translation id="4804818685124855865">Koppla från</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
+<translation id="5110244215256675209">Köp kryptovaluta</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
 <translation id="2882813124794301799">Widgetstapling</translation>
 <translation id="13296465911709339">Din text har kopierats till urklipp.</translation>
 <translation id="2735834606413553397">Den offentliga adressen har kopierats till urklipp.</translation>
+<translation id="7144878232160441200">Försök igen</translation>
 <translation id="2977461003134694205">Sekretessstatistik</translation>
 <translation id="4643117005422448078">Toppsajter</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Spårande &amp; annonser blockerade, sparad bandbredd och uppskattningar för tidsbesparing.</translation>
 <translation id="74417429503469271">Öppna toppwebbplatser du besöker ofta.</translation>
+<translation id="2956070106555335453">Sammanfattning</translation>
+<translation id="1366855498335432549">Sätt in</translation>
+<translation id="1301340234286078471">Omvandla</translation>
 <translation id="223536150967420869">Köp</translation>
+<translation id="1714829281959608206">Koppla till Binance för att se kontobalansen där och handla med kryptovaluta.</translation>
+<translation id="4584930231524505442">Jag vill omvandla ...</translation>
+<translation id="5749014321384313843">Jag vill spendera ...</translation>
 <translation id="8688672835843460752">Tillgänglig</translation>
+<translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
+<translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kan inte ansluta</translation>
+<translation id="7742417737698031726">Avgift</translation>
+<translation id="2122225204180056042">Du erhåller</translation>
+<translation id="6432284126416751397">Bekräfta omvandling</translation>
 <translation id="5137723827757859599">Det finns inget här ännu på toppwebbplatserna.</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Tjäna tokens och ge tillbaka</translation>
 <translation id="244362569344671266">Tjäna tokens genom att visa Brave privata annonser och stöd innehållsskapare automatiskt.</translation>
 <translation id="631124996535890460">Genom att fortsätta godkänner du <ph name="TERMS_OF_SERVICE"/> och <ph name="PRIVACY_POLICY"/>.</translation>
@@ -479,6 +506,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3415016869273103668">Du kan nu starta ett kostnadsfritt samtal</translation>
 <translation id="7073631403665023390">Klicka eller tryck någonstans på skärmen för att fortsätt‏a Brave Talk.</translation>
 <translation id="626339649633171286">Vill du lära dig mer om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
 <translation id="7889432931837317731">Öppna automatiskt när det är möjligt</translation>
 <translation id="8967385052772844086">Se hela sekretessrapporten</translation>
 <translation id="6864343534748973390">Populäraste</translation>
@@ -522,7 +551,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3171931580569169744">Aktivera flikgrupper</translation>
 <translation id="5587305863196367357">Genom att verifiera plånboken kan du hantera dina pengar enkelt och sätta in och ta ut pengar</translation>
 <translation id="5760671211380791582">Du har inte tillräckligt med BAT.</translation>
-<translation id="6960458596933484861">Du måste ha minst 15 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
+<translation id="442469478596827903">Du måste ha minst 2 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
 <translation id="4389085954549744469">Om du redan har ett verifierat Uphold-konto kan du <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">fortsätta till inloggning</translation>
 <translation id="1483493594462132177">Skicka</translation>
@@ -777,4 +806,19 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
 <translation id="749944179568745958">Inte en giltig ETH-adress</translation>
 <translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
+<translation id="1543259266592091784">Fyll på pengar</translation>
+<translation id="3494964159182650590">Sammanfattning av Belöningar</translation>
+<translation id="7470079236088529568">Totalt bidrag begärda</translation>
+<translation id="590733288489975971">Belöningar från Ads</translation>
+<translation id="207268487070188114">Engångsdricks</translation>
+<translation id="64394831139134288">Min plånbok</translation>
+<translation id="8494748383523030337">Ditt saldo</translation>
+<translation id="7091980679045978090">Beräknade intäkter</translation>
+<translation id="1346059596910821859">Dricks</translation>
+<translation id="1549705559752367917">Skicka dricks</translation>
+<translation id="6727102863431372879">Ange</translation>
+<translation id="381822214767083050">Månatligt bidrag</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

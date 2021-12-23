@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Від'єднано",
+    "message": "Вихід виконано",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Від'єднатись від Винагород Brave",
-    "description": ""
+    "message": "Вийти з облікового запису $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Розрахункова сума надходжень",

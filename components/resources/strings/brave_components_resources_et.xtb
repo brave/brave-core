@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Edasi</translation>
 <translation id="7954950242989581218">Sirvige ohutult</translation>
 <translation id="2188651882929633653">Brave’i kaitse blokeerib kahtlased asjad, mis üritavad sind veebis jälgida, sh suurema osa reklaamidest. Lülita kaitse “välja”, kui tundub, et veebisait ei tööta. Brave kasutab <ph name="BEGIN_LINK_P3A"/>täiesti privaatset tooteanalüüsi<ph name="END_LINK_P3A"/>, et prognoosida teatud funktsioonide üldist kasutamist. Saad selle <ph name="BEGIN_LINK_P3A_SETTINGS"/>seadetes<ph name="END_LINK_P3A_SETTINGS"/> välja lülitada.</translation>
-<translation id="1919345977826869612">Reklaamid</translation>
-<translation id="6769094341455418696">Teenige valuutat [[currency]] Brave Adsi vaatamisega. Kuvatavad reklaamid põhinevad teie huvidel, mis on järeldatud teie sirvimiskäitumisest. Isikuandmed ega sirvimisajalugu ei lähe kunagi teie brauserist välja.</translation>
+<translation id="4851215387785619212">Brave'i privaatsed reklaamid</translation>
+<translation id="3114984266384096064">Brave'i privaatsete reklaamide vaatamisega saate teenida valuutat [[currency]]. Kuvatavad reklaamid põhinevad teie huvidel, mis on järeldatud teie sirvimiskäitumise alusel. Isikuandmed ega sirvimisajalugu ei lähe kunagi teie brauserist välja.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
 <translation id="3742599705619405136">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad Brave’i kinnitatud veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
 <translation id="3325399124634342726">Selle kuu tulu (hinnanguliselt)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Kuvame logi viimased [[numberOfLines]] rida. Kui soovite kogu logi, saate selle ülalt alla laadida.</translation>
 <translation id="7168491065836975228">Rewards sisu</translation>
 <translation id="758790787422117549">Isiku ID</translation>
+<translation id="1919345977826869612">Reklaamid</translation>
 <translation id="3671566813999349838">Summa</translation>
 <translation id="751223241692981112">Taotletud</translation>
 <translation id="3913089081619091801">Taotleja ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="3656941797339037856">Siduge Rewards Geminiga!</translation>
-<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
-<translation id="2237374144728570574">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. september 2021</translation>
+<translation id="3066983737886188034">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest intressi. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Ava minu <ph name="PROVIDER"/> konto</translation>
 <translation id="2389181429986654814">Kinnitamise lõpuleviimiseks avage <ph name="PROVIDER"/></translation>
 <translation id="7793632266654336758">Palun kinnitage oma identiteet, et hakata preemiaid saama.</translation>
+<translation id="2394961582378297792">Välja loginud</translation>
+<translation id="5511950864417840431">Logi välja <ph name="PROVIDER"/>'ist</translation>
 <translation id="3600355176618429948">Hinnanguline tulu</translation>
 <translation id="7577100371127227294">Igakuised preemiad</translation>
 <translation id="5894023780213944778">Minu rahakott</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave'is on DEX-i agregaatorina kasutusel <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
 <translation id="151946611346774041">0x töötleb Ethereumi aadressi ja IP-aadressi, et sooritada tehing (sealhulgas saada hinnapakkumisi). 0x kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
 <translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
+<translation id="2704606927547763573">Kopeeritud</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
 <translation id="8303434745767477417">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>
 <translation id="6972754398087986839">Alustamine</translation>
 <translation id="375882617301124395">Varundage oma krüptorahakott</translation>
-<translation id="1078873179929044999">Järgmises etapis näete 12-sõnalist taastefraasi, mille abil saate taastada oma põhikrüptokontod. Hoidke seda turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
+<translation id="180032279811483155">Järgmises etapis näete 12-sõnalist taastefraasi, mille abil saate taastada oma põhikrüptokontod. Hoidke seda turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
 <translation id="5024543173656851695">Mõistan, et kui ma kaotan oma taastamise sõnad, ei pääse ma oma krüptorahakotile ligi.</translation>
 <translation id="3933122286596948824">Teie taastamise lause</translation>
 <translation id="5077747669435508720">Kirjutage need sõnad üles või kopeerige täpselt alltoodud järjekorras ning hoidke neid turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Kui te ei leia otsitavat kontot, proovige vahetada HD-teed (ülal).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Pärand (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Tulemusi ei leitud.</translation>
 <translation id="5149944858285555235">Tundmatu tõrge. Taasühendage riistvararahakott ja proovige uuesti.</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="9220525904950070496">Konto eemaldamine</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">tehingud</translation>
 <translation id="523862956770478816">Veebisaidi õigused</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> kontot on ühendatud</translation>
+<translation id="4305817255990598646">Vaheta</translation>
+<translation id="3890989020011724401">Uus konto</translation>
 <translation id="4460220693591349571">FUNKTSIOONI TÜÜP</translation>
 <translation id="838933475572692615">KUUETEISTKÜMNENDANDMED</translation>
 <translation id="2240831799756994975">BAIDID</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domeen <ph name="DOMAIN_NAME"/> pole registreeritud</translation>
 <translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
 <translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
+<translation id="5517732667776806421">Kontrollsumma teave puudub</translation>
+<translation id="4006711930669471508">Vigane kontrollsumma teave</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Lükka tagasi <ph name="TRANSACTION_LENGTH"/> tehingut.</translation>
 <translation id="1118876217803190221">Ebapiisav saldo</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Sisetõrge</translation>
 <translation id="3327639091470204775">Trezori sillaga ei õnnestunud ühendust luua</translation>
 <translation id="6672377693827764095">Sisetõrge, kontode toomine ei õnnestu</translation>
+<translation id="6889920539620318793">Määra aktiivseks</translation>
 <translation id="8933250418452564886">Riistvaratehingut ei õnnestunud leida, proovige uuesti</translation>
 <translation id="5999974802900788338">Riistvaraseadmest saadi tõrge, arvatavasti peate oma seadmes tehingu kinnitama</translation>
 <translation id="8523768065044261559">Tõrge tehingu töötlemisel, proovige uuesti</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Tõrge sõnumi allkirjastamisel, nõuti tundmatut võtmerõngast. Proovige uuesti</translation>
 <translation id="5265455943786954050">Trezori käsk on juba täitmisel</translation>
 <translation id="7017116822583380542">Trezori sild ei ole valmis</translation>
+<translation id="3378339846292573874">Soovitatud tokeni lisamine</translation>
+<translation id="2322227405137827074">Kas soovite selle tokeni importida?</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tori puhverserveri URI</translation>
 <translation id="1671503397662036257">Tori ühenduse olek</translation>
 <translation id="6024292492796847324">Tori lähtestamise edenemine</translation>
+<translation id="8458987127502506209">Luba Brave'i kaitsed</translation>
+<translation id="640898327002833127">Brave'i kaitsed <ph name="LINK_BEFORE"/>PEAL<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Kui tundub, et sait on ei toimi, proovige kaitsed maha võtta. Märkus: see võib vähendada Brave'i privaatsuse kaitset.</translation>
+<translation id="8377155647357436161">Blokeeritakse jälgijad, reklaamid ja muu <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Täiustatud kontroll</translation>
+<translation id="1299672573512347813">Need seaded mõjutavad selle veebisaidi ühilduvust.</translation>
+<translation id="9204041448536398473">Globaalse kaitse seaded</translation>
+<translation id="7637771346619326580">Muuda globaalse kaitse vaikeseadeid</translation>
+<translation id="3520486481604057261">Kohanda Adblocki loendeid</translation>
+<translation id="3146531623184244174">Ühendused täiendatud HTTPS-ile</translation>
+<translation id="131231380815754440">Luba HTTPS</translation>
+<translation id="7461425058443653485">Blokeeritud skriptid</translation>
+<translation id="3246600097575692802">Luba blokeeritud skriptid</translation>
+<translation id="3603525299146223354">Jälgijad ja reklaamid</translation>
+<translation id="1146309636943354181">Jälgijad ja reklaamid blokeeritud (tavaline)</translation>
+<translation id="5973258875089964805">Jälgijad ja reklaamid blokeeritud (põhjalik)</translation>
+<translation id="5544888475837817215">Luba kõik jälgijad ja reklaamid</translation>
+<translation id="6203697265754637264">Saitidevahelised küpsised on blokeeritud</translation>
+<translation id="4627427111733173920">Küpsised blokeeritud</translation>
+<translation id="7855168553463825937">Kõik küpsised blokeeritud</translation>
+<translation id="8366221601425141146">Seadmetuvastus blokeeritud</translation>
+<translation id="5582686930349810484">Seadmetuvastus blokeeritud (standardne)</translation>
+<translation id="6696441392507885865">Seadmetuvastus blokeeritud (range, veebisaidid ei pruugi toimida)</translation>
+<translation id="5882733945883311404">Luba kogu seadmetuvastus</translation>
 <translation id="1742469581923031760">Ühendamine…</translation>
 <translation id="1287487756047817908">Ühenduse katkestamine…</translation>
 <translation id="2325196879156848326">Ühenduse loomine nurjus</translation>

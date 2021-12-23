@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Next</translation>
 <translation id="7954950242989581218">Browse safe and sound</translation>
 <translation id="2188651882929633653">Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to “down” if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A"/>completely private product analytics<ph name="END_LINK_P3A"/> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Ads</translation>
-<translation id="6769094341455418696">Earn [[currency]] by viewing Brave Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</translation>
+<translation id="4851215387785619212">Brave private ads</translation>
+<translation id="3114984266384096064">Earn [[currency]] by viewing Brave Private Ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</translation>
 <translation id="3325399124634342726">Current earnings this month (estimated)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</translation>
 <translation id="7168491065836975228">Rewards internals</translation>
 <translation id="758790787422117549">Persona ID</translation>
+<translation id="1919345977826869612">Ads</translation>
 <translation id="3671566813999349838">Amount</translation>
 <translation id="751223241692981112">Claimed at</translation>
 <translation id="3913089081619091801">Claim ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
 <translation id="3656941797339037856">Link Rewards to Gemini!</translation>
-<translation id="2383784987664887340">Gemini lets you easily trade, store and earn 3.49% APY on your BAT. Verify and link your Brave Rewards wallet with Gemini now!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY as of 15 Sept 2021</translation>
+<translation id="3066983737886188034">Gemini lets you easily trade, store and earn interest on your BAT. Verify and link your Brave Rewards wallet with Gemini now!</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6915065518766963119">* Requires Uphold verification.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Go to my <ph name="PROVIDER"/> account</translation>
 <translation id="2389181429986654814">Go to <ph name="PROVIDER"/> to complete verification</translation>
 <translation id="7793632266654336758">Please complete identity verification in order to start receiving rewards.</translation>
+<translation id="2394961582378297792">Logged out</translation>
+<translation id="5511950864417840431">Log out from <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Estimated earnings</translation>
 <translation id="7577100371127227294">Monthly Tips</translation>
 <translation id="5894023780213944778">My Wallet</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave uses <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
 <translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
+<translation id="2704606927547763573">Copied</translation>
 <translation id="6518133107902771759">Verify</translation>
 <translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
 <translation id="8303434745767477417">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
-<translation id="1078873179929044999">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
+<translation id="180032279811483155">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
 <translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
 <translation id="3933122286596948824">Your recovery phrase</translation>
 <translation id="5077747669435508720">Write down or copy these words in the exact order shown below and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of a forgotten password, lost or stolen device, or if you want to switch wallets.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Try switching HD path (above) if you cannot find the account you are looking for.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">No results found.</translation>
 <translation id="5149944858285555235">Unknown error, please reconnect your hardware wallet and try again.</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transactions</translation>
 <translation id="523862956770478816">Site permissions</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> accounts connected</translation>
+<translation id="4305817255990598646">Switch</translation>
+<translation id="3890989020011724401">New account</translation>
 <translation id="4460220693591349571">FUNCTION TYPE</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domain <ph name="DOMAIN_NAME"/> is not registered</translation>
 <translation id="8971278306757462297">The receiving address is your own address</translation>
 <translation id="3506416339268164412">The receiving address is a token's contract address</translation>
+<translation id="5517732667776806421">Missing checksum information</translation>
+<translation id="4006711930669471508">Invalid checksum information</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Reject <ph name="TRANSACTION_LENGTH"/> transactions</translation>
 <translation id="1118876217803190221">Insufficient balance</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Internal error</translation>
 <translation id="3327639091470204775">Unable to connect to the Trezor bridge</translation>
 <translation id="6672377693827764095">Internal error, unable to fetch accounts</translation>
+<translation id="6889920539620318793">Set as active</translation>
 <translation id="8933250418452564886">Unable to find hardware transaction, please try again</translation>
 <translation id="5999974802900788338">Received error from hardware device, probably you need to confirm the transaction on your device</translation>
 <translation id="8523768065044261559">Error processing the transaction, please try again</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Error signing message, unknown keyring requested, please try again</translation>
 <translation id="5265455943786954050">Trezor command is already in progress</translation>
 <translation id="7017116822583380542">Trezor bridge is not ready</translation>
+<translation id="3378339846292573874">Add suggested token</translation>
+<translation id="2322227405137827074">Would you like to import this token?</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Tor connection status</translation>
 <translation id="6024292492796847324">Tor initialization progress</translation>
+<translation id="8458987127502506209">Enable Brave Shields</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>UP<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">If this site seems broken, try Shields down. Note: this may reduce Brave privacy protections.</translation>
+<translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Advanced Controls</translation>
+<translation id="1299672573512347813">These settings affect web compatibility on this site.</translation>
+<translation id="9204041448536398473">Global Shield settings</translation>
+<translation id="7637771346619326580">Change global Shield defaults</translation>
+<translation id="3520486481604057261">Customise Adblock lists</translation>
+<translation id="3146531623184244174">Connections upgraded to HTTPS</translation>
+<translation id="131231380815754440">Enable HTTPS</translation>
+<translation id="7461425058443653485">Scripts Blocked</translation>
+<translation id="3246600097575692802">Enable scripts blocked</translation>
+<translation id="3603525299146223354">Trackers &amp; ads</translation>
+<translation id="1146309636943354181">Trackers &amp; ads blocked (standard)</translation>
+<translation id="5973258875089964805">Trackers &amp; ads blocked (aggressive)</translation>
+<translation id="5544888475837817215">Allow all trackers and ads</translation>
+<translation id="6203697265754637264">Cross-site cookies blocked</translation>
+<translation id="4627427111733173920">Cookies blocked</translation>
+<translation id="7855168553463825937">All cookies blocked</translation>
+<translation id="8366221601425141146">Fingerprinting blocked</translation>
+<translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
+<translation id="6696441392507885865">Fingerprinting blocked (strict, sites may break)</translation>
+<translation id="5882733945883311404">Allow all Fingerprinting</translation>
 <translation id="1742469581923031760">Connecting…</translation>
 <translation id="1287487756047817908">Disconnecting…</translation>
 <translation id="2325196879156848326">Connection failed</translation>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "डिसकनेक्ट करें",
+    "message": "लॉग आउट हुआ",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave Rewards से डिसकनेक्ट करें",
-    "description": ""
+    "message": "$provider$ से लॉगआउट करें",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "अनुमानित कमाई",

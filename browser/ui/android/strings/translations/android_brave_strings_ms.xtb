@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama sepenuhnya yang dipadankan pada peranti anda.</translation>
 <translation id="4541978218358617681">Iklan</translation>
 <translation id="1765217911817124376">Hidupkan Berita Brave</translation>
+<translation id="6527303717912515753">Kongsi</translation>
 <translation id="1654539412343893324">Ketahui lebih lanjut tentang data anda</translation>
 <translation id="2989805286512600854">Buka dalam Tab Baharu</translation>
 <translation id="3709782636417497984">Buka dalam Tab Peribadi Baharu</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Dompet anda</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Berita Brave</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
 <translation id="8428213095426709021">Tetapan</translation>
-<translation id="8772672608371898774">Penerbit Brave yang Disahkan</translation>
-<translation id="1397683270551078781">Masih belum disahkan</translation>
+<translation id="6020176662032623904">Pencipta Disahkan</translation>
+<translation id="2369994359029526515">Pencipta Tidak Disahkan</translation>
 <translation id="880893465294676334">Pencipta Disahkan Brave ini belum mengkonfigurasi akaunnya untuk menerima sumbangan daripada Pengguna Brave.
         Sebarang tip yang anda hantar akan kekal di dalam dompet anda sehingga mereka menyelesaikan proses ini.</translation>
 <translation id="8918760045046434238">Hantar tip...</translation>
@@ -278,11 +279,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="9096003370755878766">Keluarkan BAT yang anda mungkin telah tambah ke dalam dompet Ganjaran Brave anda sebelum ini</translation>
 <translation id="1554282356558968486">Perkhidmatan dompet kami disediakan oleh</translation>
 <translation id="6569877533335686968">Dukung</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan anda untuk mengesahkan identiti anda berdasarkan perkhidmatan yang diminta.</translation>
-<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses sebarang maklumat peribadi yang anda berikan kepada Uphold apabila anda mencipta akaun dengan mereka.</translation>
+<translation id="3200197118442451932">Brave Software Inc. tidak memproses, menyimpan, atau mengakses apa-apa maklumat peribadi yang anda berikan kepada  <ph name="WALLET_PROVIDER"/> apabila anda membuka akaun dengan mereka.</translation>
 <translation id="3699674790322420653">Lengkapkan pengesahan dompet</translation>
 <translation id="2193391216824305230">Dompet Pengguna</translation>
-<translation id="6585020831163574892">Pergi ke akaun Uphold anda</translation>
+<translation id="1665118090708049096">Pergi ke akaun <ph name="WALLET_PROVIDER"/> saya</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
 <translation id="6239274080752256452">Keluarkan Dana</translation>
 <translation id="8874184842967597500">Tidak bersambung</translation>
@@ -291,10 +293,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5358719431303818601">Dinyahsambung tidak ditentusah</translation>
 <translation id="4241449868720191203">Nyahsambungan ditentusahkan</translation>
 <translation id="3248185426436836442">Menunggu</translation>
-<translation id="8108013093558639183">BAT tidak disokong di kawasan anda berdasarkan lokasi akaun anda dibuka. Semak semula kemudian untuk ketersediaan.</translation>
-<translation id="4190454391025419535">Kawasan tidak disokong</translation>
-<translation id="6830703472632069884">Terdapat masalah dalam menentusahkan dompet anda, sila cuba lagi kemudian.</translation>
-<translation id="3512533646933434345">Ralat penentusahan dompet</translation>
 <translation id="2260513517001048012">PEMBERITAHUAN: Pencipta Ditentusahkan Brave ini masih belum mengkonfigurasi akaun mereka untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus menyumbang sehingga mereka menentusahkan, atau sehingga 90 hari telah berlalu.</translation>
 <translation id="4488355059795908907">Pencipta Ditentusahkan Brave ini masih belum mengkonfigurasikan akaun mereka untuk menerima sumbangan daripada pengguna Brave. Sebarang tips yang anda hantar akan kekal dalam dompet anda sehingga mereka melengkapkan proses ini.</translation>
 <translation id="2495032782748793764">Lalai Brave</translation>
@@ -425,16 +423,45 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1972589975368876259">Sunting Stack</translation>
 <translation id="2490330380242414851">Buang Widget</translation>
 <translation id="8446884382197647889">Ketahui Lebih Lanjut</translation>
+<translation id="7384441892795736634">Segar Semula Data</translation>
+<translation id="4804818685124855865">Putuskan sambungan</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/>Alamat Deposit</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo Deposit</translation>
+<translation id="5110244215256675209">Beli Kripto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Beli <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/><ph name="COIN_NAME"/>Tersedia</translation>
+<translation id="6755546361496900700">Pralihat Penukaran</translation>
 <translation id="2882813124794301799">Widget Stack</translation>
 <translation id="13296465911709339">Teks anda telah disalin ke papan klip.</translation>
 <translation id="2735834606413553397">Alamat awam telah disalin ke papan keratan.</translation>
+<translation id="7144878232160441200">Cuba Semula</translation>
 <translation id="2977461003134694205">Stat Privasi</translation>
 <translation id="4643117005422448078">Laman Popular</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Penjejak &amp; Sekatan Iklan, Penjimatan Jalur Lebar, and Anggaran Penjimatan Masa.</translation>
 <translation id="74417429503469271">Buka laman top yang kerap anda lawati.</translation>
+<translation id="2956070106555335453">Ringkasan</translation>
+<translation id="1366855498335432549">Deposit</translation>
+<translation id="1301340234286078471">Tukar</translation>
 <translation id="223536150967420869">Beli</translation>
+<translation id="1714829281959608206">Dayakan sambungan Binance untuk melihat baki akaun Binance serta mendagangkan kripto.</translation>
+<translation id="4584930231524505442">Saya mahu menukar...</translation>
+<translation id="5749014321384313843">Saya mahu belanjakan...</translation>
 <translation id="8688672835843460752">Tersedia</translation>
+<translation id="2480674848181564169">Baki tidak mencukup untuk penukaran</translation>
+<translation id="2215334405220411393">Jumlah minima untuk ditukar adalah : <ph name="COIN_BALANCE"/><ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Gagal untuk menghubungkan</translation>
+<translation id="7742417737698031726">Fi</translation>
+<translation id="2122225204180056042">Anda akan menerima</translation>
+<translation id="6432284126416751397">Sahkan Penukaran</translation>
 <translation id="5137723827757859599">Masih tiada apa-apa lagi di laman top ini.</translation>
+<translation id="3891414008432200754">Harga</translation>
+<translation id="3733576242118819803">Sahkan (<ph name="REMAINING_TIME"/>)</translation>
+<translation id="1627064138060308910">Penukaran Gagal. Sila cuba lagi.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Dapatkan Token &amp; Beri Balik</translation>
 <translation id="244362569344671266">Dapatkan token dengan melihat Iklan Peribadi Brave dan sokong pencipta kandungan secara automatik.</translation>
 <translation id="631124996535890460">Dengan meneruskan, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>.</translation>
@@ -478,6 +505,8 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
 <translation id="7073631403665023390">Klik atau ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
 <translation id="626339649633171286">Mahu mengetahui lebih lanjut mengenai Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Anda telah menukar <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> kepada <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Sila periksa sambuangan rangkaian anda.</translation>
 <translation id="7889432931837317731">Buka secara automatik bila mungkin</translation>
 <translation id="8967385052772844086">Lihat Laporan Privasi penuh</translation>
 <translation id="6864343534748973390">Paling popular</translation>
@@ -521,7 +550,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3171931580569169744">Dayakan Kumpulan Tab</translation>
 <translation id="5587305863196367357">Menentusahkan dompet membolehkan anda menguruskan dana anda dengan mudah, menambah.&amp; mengeluarkan.</translation>
 <translation id="5760671211380791582">Anda tidak mempunyai BAT yang mencukupi.</translation>
-<translation id="6960458596933484861">Anda perlu mempunyai minimum 15 BAT untuk mencipta dompet Uphold yang ditentusahkan. Sila cuba lagi kemudian.</translation>
+<translation id="442469478596827903">Anda perlu mempunyai minimum 2 BAT untuk mencipta dompet Uphold yang ditentusahkan. Sila cuba lagi kemudian.</translation>
 <translation id="4389085954549744469">Jika anda sudah mempunyai akaun Uphold yang ditentusahkan, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">teruskan ke log masuk</translation>
 <translation id="1483493594462132177">Hantar</translation>
@@ -776,4 +805,19 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
 <translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
 <translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
+<translation id="1543259266592091784">Tambah dana</translation>
+<translation id="3494964159182650590">Ringkasan ganjaran</translation>
+<translation id="7470079236088529568">Jumlah Pemberian Dituntut</translation>
+<translation id="590733288489975971">Ganjaran dari Iklan</translation>
+<translation id="207268487070188114">Petua Satu Kali</translation>
+<translation id="64394831139134288">Dompet saya</translation>
+<translation id="8494748383523030337">Baki Anda</translation>
+<translation id="7091980679045978090">Anggaran pendapatan</translation>
+<translation id="1346059596910821859">Tip</translation>
+<translation id="1549705559752367917">Hantar Petua</translation>
+<translation id="6727102863431372879">Tetapkan</translation>
+<translation id="381822214767083050">Sumbangan bulanan</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

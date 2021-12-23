@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="7954950242989581218">Blader veilig en wel</translation>
 <translation id="2188651882929633653">Brave Shields blokkeert alle enge zaken die u op internet proberen te volgen, — inclusief de meeste reclames. Schakel Shields “uit” als een site niet lijkt te werken. Brave gebruikt een <ph name="BEGIN_LINK_P3A"/>volledig privé productanalyse<ph name="END_LINK_P3A"/> om het totale gebruik van bepaalde functie te schatten. U kunt dit uitschakelen in de <ph name="BEGIN_LINK_P3A_SETTINGS"/>Instellingen<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Advertenties</translation>
-<translation id="6769094341455418696">Verdien [[currency]] door advertenties van Brave te bekijken. De gepresenteerde advertenties zijn gebaseerd op jouw interesses, afgeleid uit je browsegedrag. Persoonlijke gegevens en de browsergeschiedenis verlaten nooit je browser.</translation>
+<translation id="4851215387785619212">Brave-privéadvertenties</translation>
+<translation id="3114984266384096064">Verdien [[currency]] door advertenties van Brave te bekijken. De gepresenteerde advertenties zijn gebaseerd op uw interesses, afgeleid uit uw browsegedrag. Persoonlijke gegevens en de browsergeschiedenis worden nooit gedeeld buiten de browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">Een automatische manier om uitgevers en makers van inhoud te ondersteunen. Stel een maandelijkse betaling in en browse zoals je normaal doet. De door Brave geverifieerde sites die je bezoekt ontvangen je bijdragen automatisch, op basis van jouw aandacht zoals gemeten door Brave.</translation>
 <translation id="3325399124634342726">Huidige verdiensten deze maand (geschat)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">We tonen de laatste [[numberOfLines]] regels van het logbestand. Als je het volledige logbestand wilt bekijken, kun je het hierboven downloaden.</translation>
 <translation id="7168491065836975228">Interne beloning</translation>
 <translation id="758790787422117549">Persoonlijk ID</translation>
+<translation id="1919345977826869612">Advertenties</translation>
 <translation id="3671566813999349838">Bedrag</translation>
 <translation id="751223241692981112">Geclaimd op</translation>
 <translation id="3913089081619091801">Claim ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="3656941797339037856">Koppel beloningen aan Gemini!</translation>
-<translation id="2383784987664887340">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Verifieer je Brave Rewards-wallet en koppel hem nu aan Gemini!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY vanaf 15 september 2021</translation>
+<translation id="3066983737886188034">Met Gemini kunt u gemakkelijk handelen, winst maken en rente verdienen op uw BAT. Verifieer uw Brave Beloningen-wallet en koppel hem nu aan Gemini!</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
 <translation id="2389181429986654814">Ga naar <ph name="PROVIDER"/> om de verificatie af te ronden</translation>
 <translation id="7793632266654336758">Voltooi de identiteitverificatie om te kunnen beginnen beloningen te ontvangen.</translation>
+<translation id="2394961582378297792">Uitgelogd</translation>
+<translation id="5511950864417840431">Log uit bij <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Geschatte verdiensten</translation>
 <translation id="7577100371127227294">Maandelijkse Fooien</translation>
 <translation id="5894023780213944778">Mijn wallet</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave gebruikt <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-aggregator.</translation>
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
+<translation id="2704606927547763573">Gekopieerd</translation>
 <translation id="6518133107902771759">Verifieer</translation>
 <translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
 <translation id="8303434745767477417">Houd cryptoassets in je eigen bezit. Volg portfolioprestaties en communiceer met web 3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
 <translation id="6972754398087986839">Aan de slag</translation>
 <translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
-<translation id="1078873179929044999">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
+<translation id="180032279811483155">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
 <translation id="5024543173656851695">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
 <translation id="3933122286596948824">Jouw herstelwoorden</translation>
 <translation id="5077747669435508720">Noteer deze woorden of kopieer ze in de exacte volgorde zoals hieronder weergegeven en bewaar ze op een veilige plek. Je herstelzin is de enige manier om weer toegang te krijgen tot je account als je je wachtwoord bent vergeten, je apparaat is gestolen of verloren of wanneer je van wallet wilt wisselen.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Probeer over te schakelen naar een ander HD-pad (hierboven) als je het account waar je naar op zoekt bent niet kunt vinden.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Geen resultaten gevonden.</translation>
 <translation id="5149944858285555235">Onbekende fout; maak opnieuw verbinding met je hardwarewallet en probeer het opnieuw.</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transacties</translation>
 <translation id="523862956770478816">Toestemmingen site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> accounts gekoppeld</translation>
+<translation id="4305817255990598646">Schakel over</translation>
+<translation id="3890989020011724401">Nieuw account</translation>
 <translation id="4460220693591349571">FUNCTIETYPE</translation>
 <translation id="838933475572692615">HEX-GEGEVENS</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domein <ph name="DOMAIN_NAME"/> is niet geregistreerd</translation>
 <translation id="8971278306757462297">Het ontvangende adres is je eigen adres</translation>
 <translation id="3506416339268164412">Het ontvangende adres is een contractadres van een token</translation>
+<translation id="5517732667776806421">Checksum-gegevens ontbreken</translation>
+<translation id="4006711930669471508">Ongeldige checksum-gegevens</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> transacties weigeren</translation>
 <translation id="1118876217803190221">Onvoldoende saldo</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Interne fout</translation>
 <translation id="3327639091470204775">Kan geen verbinding maken met de Trezor-brug</translation>
 <translation id="6672377693827764095">Interne fout, accounts kunnen niet worden opgehaald</translation>
+<translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="8933250418452564886">Kan hardwaretransactie niet vinden, probeer het opnieuw</translation>
 <translation id="5999974802900788338">Foutmelding ontvangen van hardware; mogelijk moet je de transactie op je apparaat bevestigen</translation>
 <translation id="8523768065044261559">Fout bij verwerken van transactie, probeer het opnieuw</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Fout bij ondertekenen bericht; onbekende keyring aangevraagd, probeer het opnieuw</translation>
 <translation id="5265455943786954050">Trezor-opdracht is al in uitvoering</translation>
 <translation id="7017116822583380542">Trezor-brug is niet gereed</translation>
+<translation id="3378339846292573874">Voorgestelde token toevoegen</translation>
+<translation id="2322227405137827074">Wilt u deze token importeren?</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor Proxy-URI</translation>
 <translation id="1671503397662036257">Tor-verbindingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
+<translation id="8458987127502506209">Brave Schilden inschakelen</translation>
+<translation id="640898327002833127">Brave Schilden <ph name="LINK_BEFORE"/>ACTIVEREN<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Als deze website niet lijkt te werken, probeer Schilden dan te deactiveren. Let op: dit kan ervoor zorgen dat de privacybescherming van Brave minder goed werkt.</translation>
+<translation id="8377155647357436161">Trackers, advertenties en meer hebben <ph name="LINK_BEFORE"/> geblokkeerd. Meer informatie over<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Geavanceerde instellingen</translation>
+<translation id="1299672573512347813">Deze instellingen kunnen de webcompatibiliteit op deze website beïnvloeden.</translation>
+<translation id="9204041448536398473">Algemene Schilden-instellingen</translation>
+<translation id="7637771346619326580">Algemene standaard Schilden-instellingen wijzigen</translation>
+<translation id="3520486481604057261">Adblock-lijsten aanpassen</translation>
+<translation id="3146531623184244174">Verbindingen geüpgraded naar HTTPS</translation>
+<translation id="131231380815754440">HTTPS inschakelen</translation>
+<translation id="7461425058443653485">Scripts geblokkeerd</translation>
+<translation id="3246600097575692802">Geblokkeerde scripts inschakelen</translation>
+<translation id="3603525299146223354">Trackers en advertenties</translation>
+<translation id="1146309636943354181">Trackers &amp; advertenties geblokkeerd (standaard)</translation>
+<translation id="5973258875089964805">Trackers &amp; advertenties geblokkeerd (agressief)</translation>
+<translation id="5544888475837817215">Alle trackers en advertenties toestaan</translation>
+<translation id="6203697265754637264">Cross-site cookies geblokkeerd</translation>
+<translation id="4627427111733173920">Cookies zijn geblokkeerd.</translation>
+<translation id="7855168553463825937">Alle cookies zijn geblokkeerd</translation>
+<translation id="8366221601425141146">Fingerprinting geblokkeerd</translation>
+<translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
+<translation id="6696441392507885865">Vingerafdruk geblokkeerd (strikt, kan ervoor zorgen dat websites niet werken)</translation>
+<translation id="5882733945883311404">Alle vingerafdrukken toestaan</translation>
 <translation id="1742469581923031760">Verbinden…</translation>
 <translation id="1287487756047817908">Verbinding verbreken…</translation>
 <translation id="2325196879156848326">Verbinden mislukt</translation>

@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Successivo</translation>
 <translation id="7954950242989581218">Naviga sano e salvo</translation>
 <translation id="2188651882929633653">Gli Scusi Brave bloccano le cose inquietante che provano a tracciarti attraverso il web — inclusa la maggior parte delle pubblicità. Imposta Scudi per “down” se un sito non ’t sembra funzionare. Brave usa <ph name="BEGIN_LINK_P3A"/>analisi prodotto completamente privata<ph name="END_LINK_P3A"/> per stimare l'uso globale di alcune caratteristiche. Puoi spegnerlo in <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Annunci pubblicitari</translation>
-<translation id="6769094341455418696">Guadagna [[currency]] con Brave Ads. Gli annunci pubblicitari che vedi si basano sugli interessi che mostri con il comportamento di navigazione. I tuoi dati personali e la cronologia di navigazione non lasceranno mai il browser.</translation>
+<translation id="4851215387785619212">Annunci privati Brave</translation>
+<translation id="3114984266384096064">Guadagna [[currency]] con gli annunci privati di Brave. Gli annunci pubblicitari che vedi si basano sugli interessi che mostri durante la navigazione. I tuoi dati personali e la cronologia di navigazione non lasceranno mai il browser.</translation>
 <translation id="6112368337882254910">Auto-contributo</translation>
 <translation id="3742599705619405136">Un metodo autentico per supportare editori e creatori di contenuti. Imposta un pagamento mensile e naviga liberamente. I siti Verificati Brave che visiti riceveranno i tuoi contributi automaticamente. Basato sulla frequenza di visita misurata da Brave.</translation>
 <translation id="3325399124634342726">Guadagni attuali in questo mese (stima)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Mostriamo le ultime [[numberOfLines]] righe del log. Se ti interessa il log intero, puoi scaricarlo da qua sopra.</translation>
 <translation id="7168491065836975228">Impostazioni interne ricompense</translation>
 <translation id="758790787422117549">ID Utente Pubblico</translation>
+<translation id="1919345977826869612">Annunci</translation>
 <translation id="3671566813999349838">Importo</translation>
 <translation id="751223241692981112">Rivendicato a</translation>
 <translation id="3913089081619091801">ID attestazione</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
 <translation id="3656941797339037856">Collega Rewards a Gemini!</translation>
-<translation id="2383784987664887340">Con Gemini puoi scambiare, archiviare e guadagnare facilmente il 3,49% di rendimento percentuale annuo (APY) sui tuoi BAT. Verifica e collega subito il tuo portafoglio Brave Rewards a Gemini!</translation>
-<translation id="2237374144728570574">* Gemini guadagna APY a partire dal 15 settembre 2021</translation>
+<translation id="3066983737886188034">Con Gemini puoi cambiare senza problemi i tuoi BAT, tenerli depositati e ricavarci degli interessi. Verifica il portafoglio delle Ricompense Brave e collegalo subito a Gemini!</translation>
 <translation id="7404779623219601861">Riscatta BAT per Carte Regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puoi riscattare i tuoi BAT per carte regalo di marchi popolari.</translation>
 <translation id="6915065518766963119">* Richiede verifica Uphold</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Vai al mio account <ph name="PROVIDER"/></translation>
 <translation id="2389181429986654814">Passa a <ph name="PROVIDER"/> per completare la verifica</translation>
 <translation id="7793632266654336758">Completa la verifica dell’identità per iniziare a ricevere dei premi.</translation>
+<translation id="2394961582378297792">Disconnessione effettuata</translation>
+<translation id="5511950864417840431">Esci da <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Guadagni stimati</translation>
 <translation id="7577100371127227294">Donazioni mensili</translation>
 <translation id="5894023780213944778">Il mio portafoglio</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave usa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> come aggregatore DEX.</translation>
 <translation id="151946611346774041">0x utilizzerà l’indirizzo Ethereum e l’indirizzo IP per completare le transazioni (richieste di quotazioni incluse). 0x userà questi dati SOLO per gestire le transazioni.</translation>
 <translation id="4626407663177532837">La quotazione include una commissione dello 0,875% per Brave.</translation>
+<translation id="2704606927547763573">Copiata</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
 <translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
 <translation id="6972754398087986839">Inizia</translation>
 <translation id="375882617301124395">Esegui il backup al tuo portafoglio di criptovalute</translation>
-<translation id="1078873179929044999">Nel prossimo passaggio vedrai la frase di recupero di 12 parole che puoi utilizzare per recuperare i tuoi account di criptovalute principali. Salvala in un posto sicuro. La frase di recupero è l'unico modo per recuperare l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
+<translation id="180032279811483155">Nel prossimo passaggio vedrai la frase di recupero di 12 parole che puoi utilizzare per recuperare i tuoi account di criptovalute principali. Salvala in un posto sicuro. La frase di recupero è l'unico modo per recuperare l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
 <translation id="5024543173656851695">Comprendo che se perdo le parole di recupero non sarò in grado di accedere al portafoglio cripto.</translation>
 <translation id="3933122286596948824">La tua frase di recupero</translation>
 <translation id="5077747669435508720">Annota o copia queste parole nell'ordine esatto mostrato di seguito e salvale in un posto sicuro. La tua frase di recupero è l'unico modo per riottenere l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Se non riesci a trovare l'account che stai cercando, prova a cambiare percorso HD (qui sopra).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Nessun risultato.</translation>
 <translation id="5149944858285555235">Errore sconosciuto. Ricollega il tuo portafoglio hardware e riprova.</translation>
 <translation id="4522570452068850558">Dettagli</translation>
 <translation id="9220525904950070496">Rimuovi account</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transazioni</translation>
 <translation id="523862956770478816">Autorizzazioni del sito</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> account collegati</translation>
+<translation id="4305817255990598646">Cambia</translation>
+<translation id="3890989020011724401">Nuovo account</translation>
 <translation id="4460220693591349571">TIPO DI FUNZIONE</translation>
 <translation id="838933475572692615">Dati esadecimali</translation>
 <translation id="2240831799756994975">BYTE</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Il dominio <ph name="DOMAIN_NAME"/> non è registrato</translation>
 <translation id="8971278306757462297">L’indirizzo di destinazione è il tuo stesso indirizzo</translation>
 <translation id="3506416339268164412">L’indirizzo di destinazione è l’indirizzo di contratto di un token</translation>
+<translation id="5517732667776806421">Checksum assente</translation>
+<translation id="4006711930669471508">Checksum non valido</translation>
 <translation id="862585889767884824">di</translation>
 <translation id="9106265941552476098">Rifiuta <ph name="TRANSACTION_LENGTH"/> transazioni</translation>
 <translation id="1118876217803190221">Saldo insufficiente</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Errore interno</translation>
 <translation id="3327639091470204775">Impossibile collegarsi al bridge di Trezor</translation>
 <translation id="6672377693827764095">Errore interno, impossibile recuperare gli account</translation>
+<translation id="6889920539620318793">Imposta come attiva</translation>
 <translation id="8933250418452564886">Impossibile trovare la transazione dell’hardware, riprova</translation>
 <translation id="5999974802900788338">Errore ricevuto dall’hardware, probabilmente devi confermare la transazione sul tuo dispositivo</translation>
 <translation id="8523768065044261559">Errore nella gestione della transazione, riprova</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Errore nella firma del messaggio; è richiesto un portachiavi sconosciuto, riprova</translation>
 <translation id="5265455943786954050">Il comando Trezor è già in corso</translation>
 <translation id="7017116822583380542">Il bridge Trezor non è pronto</translation>
+<translation id="3378339846292573874">Aggiungi il token suggerito</translation>
+<translation id="2322227405137827074">Vuoi importare questo token?</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Informazioni generali</translation>
 <translation id="4045404575593562245">Eventi di controllo di Tor</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stato della connessione Tor</translation>
 <translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
+<translation id="8458987127502506209">Abilita Protezioni Brave</translation>
+<translation id="640898327002833127">Protezioni Brave <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Se il sito sembra non funzionare, prova a disattivare le Protezioni. N.B.: questo potrebbe indebolire la tutela della privacy offerta da Brave.</translation>
+<translation id="8377155647357436161">I tracker, gli annunci pubblicitari e altri sistemi sono bloccati <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Controlli Avanzati</translation>
+<translation id="1299672573512347813">Queste impostazioni influiscono sulla compatibilità con il web per questo sito.</translation>
+<translation id="9204041448536398473">Impostazioni di protezione globale</translation>
+<translation id="7637771346619326580">Cambia le impostazioni predefinite per la protezione globale</translation>
+<translation id="3520486481604057261">Personalizza le liste Adblock</translation>
+<translation id="3146531623184244174">Connessioni aggiornate a HTTPS</translation>
+<translation id="131231380815754440">Abilita HTTPS</translation>
+<translation id="7461425058443653485">Script bloccati</translation>
+<translation id="3246600097575692802">Abilita gli script bloccati</translation>
+<translation id="3603525299146223354">Tracker e annunci pubblicitari</translation>
+<translation id="1146309636943354181">Indicatori &amp; annunci bloccati (standard)</translation>
+<translation id="5973258875089964805">Indicatori &amp; annunci bloccati (aggressivo)</translation>
+<translation id="5544888475837817215">Consenti tutti i tracker e gli annunci pubblicitari</translation>
+<translation id="6203697265754637264">Cookie cross-site bloccati</translation>
+<translation id="4627427111733173920">Cookie bloccati</translation>
+<translation id="7855168553463825937">Tutti i cookie bloccati</translation>
+<translation id="8366221601425141146">Riconoscimento impronta bloccato</translation>
+<translation id="5582686930349810484">Fingerprinting bloccato (standard)</translation>
+<translation id="6696441392507885865">Fingerprinting bloccato (impostazione rigida, alcuni siti potrebbero non funzionare)</translation>
+<translation id="5882733945883311404">Consenti tutti i tipi di fingerprinting</translation>
 <translation id="1742469581923031760">Connessione in corso…</translation>
 <translation id="1287487756047817908">Disconnessione in corso…</translation>
 <translation id="2325196879156848326">Connessione non riuscita</translation>

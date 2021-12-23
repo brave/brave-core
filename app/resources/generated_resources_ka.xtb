@@ -6,7 +6,6 @@
 <translation id="1003088604756913841">ბმულის გახსნა <ph name="APP"/>-ის ახალ ფანჯარაში</translation>
 <translation id="100323615638474026">USB მოწყობილობა (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1004218526896219317">საიტებზე წვდომა</translation>
-<translation id="100524763483954942">პარამეტრებზე დაბრუნება</translation>
 <translation id="1005274289863221750">გამოიყენეთ მიკროფონი და კამერა</translation>
 <translation id="1005333234656240382">გსურთ ADB გამართვის ჩართვა?</translation>
 <translation id="1006873397406093306">ამ გაფართოებას შეუძლია საიტებზე თქვენი მონაცემების წაკითხვა და შეცვლა. თქვენ შეგიძლიათ გააკონტროლოთ, თუ რომელ საიტებზე ექნება მას წვდომა.</translation>
@@ -25,6 +24,7 @@
 <translation id="1017280919048282932">&amp;ლექსიკონში დამატება</translation>
 <translation id="1018656279737460067">გაუქმდა</translation>
 <translation id="6221946066118097974">ნაჩვენებია პაროლები თქვენი <ph name="BEGIN_LINK"/>Brave ანგარიშიდან<ph name="END_LINK"/></translation>
+<translation id="1024304340821219537">თქვენ მიერ ვებსაიტებთან გაზიარებული კონტენტი</translation>
 <translation id="1026655690966755180">პორტის დამატება</translation>
 <translation id="1026822031284433028">სურათის ჩატვირთვა</translation>
 <translation id="1029317248976101138">მასშტაბი</translation>
@@ -32,6 +32,7 @@
 <translation id="1032605640136438169">გთხოვთ, გადახედოთ ახალ პირობებს</translation>
 <translation id="103279545524624934">Android აპების გასაშვებად, გამოათავისუფლეთ მეხსიერება დისკზე.</translation>
 <translation id="1033780634303702874">წვდომა თქვენს სერიულ მოწყობილობებზე</translation>
+<translation id="1034484273907870301">ჩანართების მინიატურული ზოლი ტაბლეტის რეჟიმისთვის</translation>
 <translation id="1036348656032585052">გამორთვა</translation>
 <translation id="1036511912703768636">წვდომა ამ რომელიმე USB მოწყობილობაზე</translation>
 <translation id="1036982837258183574">სრულეკრანიანი რეჟიმიდან გამოსასვლელად, დააჭირეთ კლავიშზე |<ph name="ACCELERATOR"/>|</translation>
@@ -89,7 +90,9 @@
 <translation id="1087965115100412394">საიტებისთვის MIDI მოწყობილობებთან დაკავშირების აკრძალვა</translation>
 <translation id="4057708625267533477">Brave-ის მიერ მიმდინარეობს საზიანო პროგრამული უზრუნველყოფის ამოშლა თქვენი კომპიუტერიდან...</translation>
 <translation id="1088659085457112967">წამკითხველის რეჟიმში შესვლა</translation>
+<translation id="1089606299949659462">გადახედვა დასრულდა!</translation>
 <translation id="1090126737595388931">არცერთი ფონური აპი გაშვებული არ არის</translation>
+<translation id="1090541560108055381">დაწყვილებამდე ორივე მოწყობილობას ერთი და იგივე კოდი უნდა ჰქონდეს</translation>
 <translation id="1091767800771861448">გამოსატოვებლად დააჭირეთ ESCAPE-ს (მხოლოდ არაოფიციალური აწყობა).</translation>
 <translation id="1093457606523402488">ხილული ქსელები:</translation>
 <translation id="1094607894174825014">„<ph name="DEVICE_NAME"/>“-ზე წაკითხვის ან ჩაწერის ოპერაცია არასწორი წანაცვლების მეშვეობით იყო მოთხოვნილი.</translation>
@@ -114,12 +117,12 @@
 <translation id="1116639326869298217">თქვენი ვინაობის დადასტურება ვერ მოხერხდა</translation>
 <translation id="1116694919640316211">ინფო</translation>
 <translation id="1116779635164066733">ეს პარამეტრი იძულებითაა გააქტიურებული „<ph name="NAME"/>“ გაფართოების მიერ.</translation>
-<translation id="1118549423835582252"><ph name="MANAGER"/> გირჩევთ, განაახლოთ ეს <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="1118738876271697201">სისტემამ ვერ დაადგინა მოწყობილობის მოდელი ან სერიული ნომერი.</translation>
 <translation id="1119447706177454957">შიდა შეცდომა</translation>
 <translation id="1122068467107743258">სამსახური</translation>
 <translation id="1122198203221319518">&amp;ხელსაწყოები</translation>
 <translation id="1122242684574577509">ავტორიზაცია ვერ მოხერხდა. დააწკაპუნეთ თქვენ მიერ გამოყენებული Wi-Fi ქსელის (<ph name="NETWORK_ID"/>) შესვლის გვერდზე გადასასვლელად.</translation>
+<translation id="1122913801042512795">თქვენი ანგარიშის სისტემაში შესვლის მონაცემები მოძველებულია. გამოდით სისტემიდან და ცადეთ ხელახლა.</translation>
 <translation id="1122960773616686544">სანიშნის სახელი</translation>
 <translation id="1124772482545689468">მომხმარებელი</translation>
 <translation id="1125550662859510761">როგორც ჩანს, გარჩევადობა არის <ph name="WIDTH"/> x <ph name="HEIGHT"/> (საკუთარი)</translation>
@@ -135,6 +138,7 @@
 <translation id="1137589305610962734">დროებითი მონაცემები</translation>
 <translation id="1137673463384776352">ბმულის <ph name="APP"/>-ში გახსნა</translation>
 <translation id="1138686548582345331">{MUTED_NOTIFICATIONS_COUNT,plural, =1{ახალი შეტყობინება}other{# ახალი შეტყობინება}}</translation>
+<translation id="1139138655591555207">ამ დამხმარე ბუშტის ფოკუსში მოსაქცევად დააჭირეთ |<ph name="ACCELERATOR"/>|-ს.</translation>
 <translation id="1139343347646843679">Linux-ის კონფიგურაციისას შეცდომა მოხდა. გთხოვთ, დაუკავშირდეთ თქვენს ადმინისტრატორს.</translation>
 <translation id="1139923033416533844">მეხსიერების გამოყენება</translation>
 <translation id="1140351953533677694">წვდომა თქვენს Bluetooth და სერიულ მოწყობილობებზე</translation>
@@ -217,7 +221,6 @@
 <translation id="1218015446623563536">Linux-ის წაშლა</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>ამ მოწყობილობის მიახლოებითი მდებარეობის დასადგენად Brave-ის მდებარეობის სერვისები იყენებს ისეთ წყაროებს, როგორიცაა Wi-Fi, მობილური ქსელები და სენსორები.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>მდებარეობის გამორთვა შესაძლებელია ამ მოწყობილობაზე მდებარეობის მთავარი პარამეტრის გამორთვით. ასევე შეგიძლიათ გამორთოთ Wi-Fi კავშირის, მობილური ქსელებისა და სენსორების გამოყენება მდებარეობის დასადგენად.<ph name="END_PARAGRAPH2"/></translation>
-<translation id="1703988271738455429"><ph name="LANGUAGE"/> მეტყველების ფაილები ვერ ჩამოიტვირთა. ჩამოტვირთვას მოგვიანებთ შევეცდებით. ამჟამად მეტყველება ეგზავნება Brave-ს დასამუშავებლად.</translation>
 <translation id="122082903575839559">სერტიფიკატის ხელმოწერის ალგორითმი</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 RSA დაშიფვრით</translation>
 <translation id="1221825588892235038">მხოლოდ არჩეული</translation>
@@ -305,6 +308,7 @@
 <translation id="1313660246522271310">თქვენ გამოხვალთ ყველა საიტიდან, მათ შორის, გახსნილ ჩანართებზეც</translation>
 <translation id="2903798981239218332">თქვენი სანიშნეები, ისტორია და სხვა პარამეტრები დასინქრონდება Brave ანგარიშთან.</translation>
 <translation id="1316136264406804862">მიმდინარეობს ძიება…</translation>
+<translation id="1316248800168909509"><ph name="DEVICE"/>-თან დაკავშირება ვერ მოხერხდა. ცადეთ ხელახლა.</translation>
 <translation id="1316495628809031177">სინქრონიზაცია შეჩერებულია</translation>
 <translation id="1317637799698924700">თქვენი სამაგრი იმუშავებს USB Type-C-თან თავსებად რეჟიმში.</translation>
 <translation id="1319983966058170660">ქვეგვერდის <ph name="SUBPAGE_TITLE"/> ღილაკი „უკან“</translation>
@@ -321,6 +325,7 @@
 <translation id="133535873114485416">შეყვანის სასურველი მეთოდი</translation>
 <translation id="1335929031622236846">თქვენი მოწყობილობის რეგისტრაცია</translation>
 <translation id="1336902454946927954">თქვენი უსაფრთხოების გასაღები ჩაკეტილია, რადგან თითის ანაბეჭდის ამოცნობა ვერ მოხერხდა. განსაბლოკად შეიყვანეთ PIN-კოდი.</translation>
+<translation id="1338631221631423366">მიმდინარეობს დაწყვილება...</translation>
 <translation id="1338802252451106843"><ph name="ORIGIN"/> ითხოვს ამ აპლიკაციის გახსნას.</translation>
 <translation id="1338950911836659113">წაშლა…</translation>
 <translation id="1068826216368845969">იქონიეთ წვდომა ასისტენტზე „Ok Brave“-ის წარმოთქმით. ბატარეის დაზოგვის მიზნით, აირჩიეთ „ჩართული (რეკომენდებული)”. ასისტენტი რეაგირებას მოახდენს მხოლოდ მაშინ, როცა მოწყობილობა მიერთებულია ელკვების წყაროსთან ან იტენება.</translation>
@@ -357,6 +362,7 @@
 <translation id="1378613616312864539">ამ პარამეტრს აკონტროლებს <ph name="NAME"/></translation>
 <translation id="1378848228640136848">{NUM_COMPROMISED,plural, =0{გატეხილი პაროლები არ არის}=1{1 გატეხილი პაროლი}other{{NUM_COMPROMISED} გატეხილი პაროლი}}</translation>
 <translation id="1380028686461971526">ქსელთან ავტომატურად დაკავშირება</translation>
+<translation id="3390076845266164299"><ph name="LANGUAGE"/> მეტყველება დასამუშავებლად გაეგზავნება Brave-ს</translation>
 <translation id="1383597849754832576">მეტყველების ფაილების ჩამოტვირთვა ვერ მოხერხდა. ცადეთ მოგვიანებით.</translation>
 <translation id="1383861834909034572">გახსნა დასრულებისთანავე</translation>
 <translation id="1383876407941801731">ძიება</translation>
@@ -366,6 +372,7 @@
 <translation id="1388728792929436380">განახლებების დასრულების შემდეგ <ph name="DEVICE_TYPE"/> გადაიტვირთება.</translation>
 <translation id="139013308650923562">დაშვებულია თქვენს მოწყობილობაზე დაინსტალირებული შრიფტების გამოყენება</translation>
 <translation id="1390548061267426325">ჩვეულებრივი ჩანართის სახით გახსნა</translation>
+<translation id="1390907927270446471">მომხმარებელს (<ph name="PROFILE_USERNAME"/>) არ აქვს <ph name="PRINTER_NAME"/>-ის მეშვეობით ამობეჭდვის უფლება. მიმართეთ თქვენს ადმინისტრატორს.</translation>
 <translation id="1393283411312835250">მზე და ღრუბლები</translation>
 <translation id="1395730723686586365">განახლების პროგრამა გაშვებულია</translation>
 <translation id="1396139853388185343">პრინტერის დაყენებისას შეცდომა წარმოიქმნა</translation>
@@ -526,6 +533,7 @@
 <translation id="1549275686094429035">ARC ჩართულია</translation>
 <translation id="1549788673239553762"><ph name="APP_NAME"/>-ს <ph name="VOLUME_NAME"/>-ზე წვდომა სურს. მას თქვენი ფაილების შეცვლა ან წაშლა შეუძლია.</translation>
 <translation id="1552301827267621511">გაფართოებამ „<ph name="EXTENSION_NAME"/>“ შეცვალა ძიების პროვაიდერი <ph name="SEARCH_PROVIDER_DOMAIN"/>-ით</translation>
+<translation id="1552522962296937598">Smart display lock and detect if others peeking from behind</translation>
 <translation id="1553538517812678578">შეუზღუდავo</translation>
 <translation id="1555130319947370107">ლურჯი</translation>
 <translation id="1556537182262721003">გაფართოების დირექტორიის გადატანა პროფილში ვერ მოხერხდა.</translation>
@@ -612,7 +620,6 @@
 <translation id="1628948239858170093">გსურთ ფაილის სკანირება გახსნამდე?</translation>
 <translation id="1629314197035607094">პაროლის მოქმედების ვადა ამოიწურა</translation>
 <translation id="1947639598318989608">გსურთ, Brave-მა პერსონალურად გიპოვოთ თქვენს კალათებთან დაკავშირებული ფასდაკლებები?</translation>
-<translation id="1630300831289687074">თქვენი Bravebook-ის გამოყენებას მალე შეძლებთ.</translation>
 <translation id="163072119192489970">მონაცემთა გაგზავნის/მიღების დასრულება დაშვებულია</translation>
 <translation id="1630768113285622200">გადატვირთვა და გაგრძელება</translation>
 <translation id="6854627044485328437">თქვენს Brave ანგარიშში შენახული პაროლი</translation>
@@ -705,7 +712,6 @@
 <translation id="1722460139690167654">თქვენი <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> იმართება<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/>-ის მიერ</translation>
 <translation id="1723824996674794290">&amp;ახალი ფანჯარა</translation>
 <translation id="1725562816265788801">ჩანართებში გადაადგილება</translation>
-<translation id="1727662110063605623">Parallels Desktop-თან ან Linux-თან <ph name="USB_DEVICE_NAME"/> რომ დააკავშიროთ, გახსენით პარამეტრები</translation>
 <translation id="1729533290416704613">იგი ასევე აკონტროლებს, თუ რომელი გვერდი გამოჩნდება Omnibox-ში ძიების დროს.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>აპების ამოსაშლელად გადადით აქ: პარამეტრები &gt; Google Play Store &gt; Android პარამეტრების მართვა &gt; აპები ან აპლიკაციების მენეჯერი. შემდეგ შეეხეთ აპს, რომლის დეინსტალაციაც გსურთ (აპის საპოვნელად შეიძლება დაგჭირდეთ მარჯვნივ ან მარცხნივ გადაფურცვლა). ბოლოს კი შეეხეთ დეინსტალაციას ან გათიშვას.<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">მოთხოვნის გაგზავნა…</translation>
@@ -763,7 +769,6 @@
 <translation id="1780273119488802839">მიმდინარეობს სანიშნეების იმპორტირება...</translation>
 <translation id="659039914757960684">ახლოს მყოფ ადამიანებთან ფაილების მიმოცვლისთვის დააყენეთ მახლობლად გაზიარება</translation>
 <translation id="1781291988450150470">ამჟამინდელი PIN-კოდი</translation>
-<translation id="1781398670452016618"><ph name="DOMAIN"/> საჭიროებს Wi-Fi ქსელთან დაკავშირებას განახლების ჩამოსატვირთად.</translation>
 <translation id="1781502536226964113">ახალი ჩანართის გვერდის გახსნა</translation>
 <translation id="1781771911845953849">ანგარიშები და სინქრონიზაცია</translation>
 <translation id="1781979858217752599">ფანჯრის აუდიოს გაზიარება</translation>
@@ -790,6 +795,7 @@
 <translation id="1805888043020974594">ბეჭდვის სერვერი</translation>
 <translation id="1805967612549112634">დაადასტურეთ PIN-კოდი</translation>
 <translation id="1806335016774576568">სხვა გახსნილ აპზე გადართვა</translation>
+<translation id="1807246157184219062">ნათელი</translation>
 <translation id="6576770568655035135">ამ Bravebook-იდან წაიშლება Google Play-ს მეშვეობით ჩამოტვირთული აპები.
     <ph name="LINE_BREAKS1"/>
     გარდა ამისა, შეიძლება წაიშალოს თქვენ მიერ შეძენილი კონტენტი, როგორიცაა ფილმები, სატელევიზიო შოუები, მუსიკა, წიგნები ან აპს-შიდა შენაძენები.
@@ -979,6 +985,7 @@
 <translation id="2002109485265116295">რეალური დროის</translation>
 <translation id="200217416291116199">რეკომენდებულია ფაილების სარეზერვო ასლების შექმნა, რომ არაფერი დაგეკარგოთ, თუ ვერსიის განახლება ვერ მოხერხდება. ვერსიის განახლების დაწყების შემთხვევაში Linux გამოირთვება. გაგრძელებამდე შეინახეთ გახსნილი ფაილები.</translation>
 <translation id="2003130567827682533">„<ph name="NAME"/>“-ის მონაცემთა გადაცემის გასააქტიურებლად, პირველ რიგში, დაუკავშირდით Wi-Fi ქსელს</translation>
+<translation id="2004697686368036666">ფუნქციებმა, შესაძლოა, არ იმუშაოს ზოგიერთ საიტზე</translation>
 <translation id="2005199804247617997">სხვა პროფილები</translation>
 <translation id="2006638907958895361">ბმულის <ph name="APP"/>-ში გახსნა</translation>
 <translation id="2007404777272201486">მოხსენება პრობლემის შესახებ…</translation>
@@ -1059,6 +1066,7 @@
 <translation id="2090165459409185032">თქვენი ანგარიშის ინფორმაციის აღსადგენად, ეწვიეთ: google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">ავტომატურად უკავშირდება, როცა სისტემაში შედიხართ</translation>
 <translation id="2090876986345970080">სისტემის უსაფრთხოების პარამეტრები</translation>
+<translation id="2092038932007199943">Notify you or temporary dim your screen when someone is snooping from behind</translation>
 <translation id="2096715839409389970">მესამე მხარის ქუქი-ჩანაწერების გასუფთავება</translation>
 <translation id="2098805196501063469">დარჩენილი პაროლების შემოწმება</translation>
 <translation id="2099172618127234427">თქვენ საშუალებას აძლევთ Chrome OS -ს გამართვოს თვისებები, რომელიც შეიქმნა sshd daemon და რთავს ჩატვირთვას USB დრაივიდან.</translation>
@@ -1121,7 +1129,6 @@
 <translation id="2152882202543497059"><ph name="NUMBER"/> ფოტო</translation>
 <translation id="2154484045852737596">ბარათის რედაქტირება</translation>
 <translation id="2154502158735983655">Chrome OS მოწყობილობის ინფორმაციისა და მოწყობილობის მონაცემების წაკითხვა.</translation>
-<translation id="2154710561487035718">URL-ის კოპირება</translation>
 <translation id="2155772377859296191">როგორც ჩანს, გარჩევადობა არის <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="2156294658807918600">სერვისის დამმუშავებელი: <ph name="SCRIPT_URL"/></translation>
 <translation id="2156557113115192526">აღარ მკითხოთ ამ აპში ფაილის შემდეგი ფორმატის გახსნისას:
@@ -1175,6 +1182,7 @@
 <translation id="9014750448058570312">გასაგრძელებლად Brave საჭიროებს ნებართვას</translation>
 <translation id="2202898655984161076">პრინტერების ჩამოთვლისას პრობლემა წარმოიქმნა. შესაძლოა, ზოგიერთი პრინტერი წარმატებით ვერ დარეგისტრირდა <ph name="CLOUD_PRINT_NAME"/>-ში.</translation>
 <translation id="2203088913459920044">სახელი შეიძლება შეიცავდეს ასოებს, ციფრებსა და საგანგებო სიმბოლოებს</translation>
+<translation id="220321590587754225">დაკავშირება ვერ მოხერხდა. ცადეთ ხელახლა.</translation>
 <translation id="2204034823255629767">თქვენს მიერ ნებისმიერი აკრეფილი ტექსტის წაკითხვა და შეცვლა</translation>
 <translation id="220858061631308971">გთხოვთ შეიყვანეთ ეს PIN კოდი „<ph name="DEVICE_NAME"/>“-ზე:</translation>
 <translation id="2210462644007531147">ინსტალაცია ვერ შესრულდა</translation>
@@ -1288,7 +1296,6 @@
 <translation id="2312219318583366810">გვერდის URL</translation>
 <translation id="2314165183524574721">ხილვადობის პარამეტრად ამჟამად მითითებულია დამალული</translation>
 <translation id="2314774579020744484">გვერდების თარგმნისას გამოყენებული ენა</translation>
-<translation id="2315414688463285945">Linux ფაილების კონფიგურაციისას მოხდა შეცდომა. გთხოვთ, ცადოთ ხელახლა.</translation>
 <translation id="2315587498123194634">ბმულის გაგზავნა <ph name="DEVICE_NAME"/>-ზე</translation>
 <translation id="2316129865977710310">არა, გმადლობთ</translation>
 <translation id="2317842250900878657"><ph name="PROGRESS_PERCENT"/>% შესრულდა</translation>
@@ -1380,7 +1387,6 @@
 <translation id="2410079346590497630">ანაწყობის დეტალები</translation>
 <translation id="2410754283952462441">აირჩიეთ ანგარიში</translation>
 <translation id="241082044617551207">უცნობი დანამატი</translation>
-<translation id="2412593942846481727">ხელმისაწვდომია განახლება</translation>
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2416435988630956212">კლავიატურის ფუნქციური კლავიშები</translation>
 <translation id="2419131370336513030">დაინსტალირებული აპების ნახვა</translation>
@@ -1406,6 +1412,7 @@
 <translation id="244231003699905658">მისამართი არასწორია. გთხოვთ, გადაამოწმოთ მისამართი და ხელახლა ცადოთ.</translation>
 <translation id="2442916515643169563">ტექსტის ჩრდილი</translation>
 <translation id="2443487764245141020">ვებსაიტებს ასევე შეიძლება დასჭირდეთ თქვენი მოწყობილობის ამოცნობა შესაბამისი იდენტიფიკატორის მეშვეობით</translation>
+<translation id="244475495405467108">ჩანართების დახურვა მარცხნივ</translation>
 <translation id="2445081178310039857">საჭიროა გაფართოების ძირეული დირექტორია.</translation>
 <translation id="2445484935443597917">ახალი პროფილის შექმნა</translation>
 <translation id="244641233057214044">თქვენს ძიებასთან დაკავშირებული</translation>
@@ -1419,6 +1426,7 @@
 <translation id="2453860139492968684">დასრულება</translation>
 <translation id="2454247629720664989">საკვანძო სიტყვა</translation>
 <translation id="2454264884354864965">კამერა გამორთულია</translation>
+<translation id="2454524890947537054">გსურთ ვებმოთხოვნის დაკმაყოფილება?</translation>
 <translation id="245650153866130664">ბილეთის ავტომატურად გასაახლებლად მონიშნეთ „პაროლის დამახსოვრება“. თქვენი პაროლი მხოლოდ თქვენს მოწყობილობაზე შეინახება.</translation>
 <translation id="2457246892030921239"><ph name="APP_NAME"/>-ს სურს, დააკოპიროს ფაილები <ph name="VOLUME_NAME"/>-დან.</translation>
 <translation id="2457842160081795172">ამჟამად <ph name="CHANNEL_NAME"/> არხზე</translation>
@@ -1427,7 +1435,6 @@
 <translation id="2459703812219683497">აღმოჩენილია აქტივაციის კოდი</translation>
 <translation id="2462724976360937186">სერტიფიკაციის ცენტრის გასაღების ID</translation>
 <translation id="2462752602710430187"><ph name="PRINTER_NAME"/> დამატებულია</translation>
-<translation id="2465237718053447668"><ph name="DOMAIN"/> საჭიროებს Wi-Fi ქსელთან დაკავშირებას განახლების ჩამოსატვირთად. სურვილისამებრ, ჩამოტვირთვა შეგიძლიათ ლიმიტირებული კავშირით (შეიძლება დაკავშირებული იყოს ხარჯებთან).</translation>
 <translation id="2467755475704469005">მოწყობილობა აღმოჩენილი არ არის. <ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">სენსორული პანელით გადაადგილების აჩქარება</translation>
 <translation id="2468205691404969808">იყენებს ქუქი-ჩანაწერებს თქვენთვის სასურველი პარამეტრების დასამახსოვრებლად, მაშინაც კი, როცა ამ გვერდებს არ სტუმრობთ</translation>
@@ -1458,6 +1465,7 @@
 <translation id="2489686758589235262">კიდევ 2 გადამრთველის მიკუთვნება</translation>
 <translation id="2489829450872380594">შემდეგში ეს <ph name="DEVICE_TYPE"/> განიბლოკება ახალი ტელეფონის მეშვეობით. Smart Lock-ის გამორთვა შესაძლებელია პარამეტრებიდან.</translation>
 <translation id="2489918096470125693">&amp;საქაღალდის დამატება...</translation>
+<translation id="2489931062851778802">შეიყვანეთ ეს გასაღებები მოწყობილობაზე: <ph name="DEVICE_NAME"/></translation>
 <translation id="2490481887078769936">„<ph name="FILE_NAME"/>“ ამოიშალა სიიდან</translation>
 <translation id="249113932447298600">უკაცრავად, მოწყობილობა <ph name="DEVICE_LABEL"/> ამჟამად არაა მხარდაჭერილი.</translation>
 <translation id="2492461744635776704">მზადდება სერტიფიკატის ხელმოწერის მოთხოვნა</translation>
@@ -1818,6 +1826,7 @@
 <translation id="2861301611394761800">სისტემის განახლება დასრულებულია. გთხოვთ გადატვირთეთ სისტემა.</translation>
 <translation id="2861941300086904918">ადგილობრივი კლიენტის უსაფრთხოების მენეჯერი</translation>
 <translation id="2862815659905780618">Linux-ის შემუშავების გარემოს ამოშლა</translation>
+<translation id="2864272167277395865">აირჩიეთ მოწყობილობა</translation>
 <translation id="2864601841139725659">თქვენი პროფილის სურათის დაყენება</translation>
 <translation id="2865919525181940183">ეკრანზე ამჟამად გაშვებული პროგრამების ანაბეჭდი</translation>
 <translation id="286674810810214575">მიმდინარეობს ელკვების წყაროების შემოწმება…</translation>
@@ -2104,6 +2113,7 @@
 <translation id="3154351730702813399">მოწყობილობის ადმინისტრატორს თქვენ მიერ ვების დათვალიერების მონიტორინგი შეუძლია.</translation>
 <translation id="3154429428035006212">ოფლაინში ერთ თვეზე მეტი</translation>
 <translation id="3157387275655328056">საკითხავ სიაში დამატება</translation>
+<translation id="8000244240371532481">როცა ინკოგნიტო რეჟიმში არ ხართ, საიტებს შეუძლია გამოიყენოს ქუქი-ჩანაწერები სხვადასხვა საიტზე თქვენი დათვალიერების აქტივობის სანახავად, მაგალითად, რეკლამის პერსონალიზების მიზნით</translation>
 <translation id="3157931365184549694">აღდგენა</translation>
 <translation id="3158033540161634471">თითის ანაბეჭდის დაყენება</translation>
 <translation id="3158770568048368350">ამან შეიძლება გამოიწვიოს თქვენი მობილური ქსელის კავშირის წამიერი გაწყვეტა</translation>
@@ -2119,6 +2129,7 @@
 <translation id="3165390001037658081">ზოგიერთი ოპერატორი შეიძლება ბლოკავდეს ამ ფუნქციას.</translation>
 <translation id="316652501498554287">G Suite for Education ანგარიშები</translation>
 <translation id="3170072451822350649">შეგიძლიათ ასევე გამოტოვოთ შესვლის ეტაპი და <ph name="LINK_START"/>დაათვალიეროთ სტუმრის სტატუსით<ph name="LINK_END"/>.</translation>
+<translation id="31774765611822736">ახალი ჩანართი მარცხნივ</translation>
 <translation id="3177909033752230686">გვერდის ენა:</translation>
 <translation id="3179982752812949580">ტექსტის შრიფტი</translation>
 <translation id="3201899458094819285">Safe Browsing (თქვენ და თქვენს მოწყობილობებს გიცავთ სახიფათო საიტებისგან)</translation>
@@ -2163,7 +2174,6 @@
 <translation id="3239373508713281971"><ph name="APP_NAME"/>-ისთვის დაყენებული დროის ლიმიტი გაუქმდა</translation>
 <translation id="3241680850019875542">აირჩიეთ გაფართოების ძირითადი დირექტორია შეფუთვისთვის. გაფართოების განსაახლებლად, აირჩიეთ პირადი გასაღების ფაილი ხელახლა გამოსაყენებლად.</translation>
 <translation id="3244294424315804309">ხმის დადუმების გაგრძელება</translation>
-<translation id="3246107497225150582">{0,plural, =1{განაახლეთ მოწყობილობა დღის განმავლობაში}other{განაახლეთ მოწყობილობა # დღის განმავლობაში}}</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> — ქსელის შეცდომა</translation>
 <translation id="3248902735035392926">უსაფრთხოება მნიშვნელოვანია. დაუთმეთ დრო <ph name="BEGIN_LINK"/>გამოყენებული გაფართოებების<ph name="END_LINK"/> შემოწმებას.</translation>
 <translation id="3251714896659475029">მიეცით საშუალება <ph name="SUPERVISED_USER_NAME"/>-ს, Brave ასისტენტზე წვდომისთვის გამოიყენოს „Ok Brave“</translation>
@@ -2209,11 +2219,13 @@
 <translation id="3288047731229977326">დეველოპერის რეჟიმში გაშვებულმა გაფართოებებმა შეიძლება დააზიანოს თქვენი კომპიუტერი. თუ თქვენ არ ხართ დეველოპერი, უსაფრთხოების შენარჩუნებისათვის თქვენ უნდა გამორთოთ დეველოპერულ რეჟიმში გაშვებული გაფართოებები.</translation>
 <translation id="3289668031376215426">ავტომატური გამთავრულება</translation>
 <translation id="3289856944988573801">განახლებების შესამოწმებლად გამოიყენეთ Ethernet ან Wi-Fi.</translation>
+<translation id="3290249595466894471">ახალი საფრთხეების აღმოჩენის ხელშეწყობის მიზნით, გაიგზავნება გვერდების, ჩამოტვირთვების, გაფართოებათა აქტივობისა და სისტემის ინფორმაციის მცირე ნიმუშებიც</translation>
 <translation id="3291436823898732747">ვების გაუმჯობესებული დათვალიერება: მაგალითად, Omnibox-ში ტექსტის აკრეფის დაწყებამდე შემოთავაზებებს იხილავთ</translation>
 <translation id="3293644607209440645">ამ გვერდის გაგზავნა</translation>
 <translation id="32939749466444286">Linux კონტეინერის გაშვება ვერ მოხერხდა. გთხოვთ, ცადოთ ხელახლა.</translation>
 <translation id="3294437725009624529">სტუმარი</translation>
 <translation id="3294686910656423119">გამოყენების მონაცემები და ავარიულად გათიშვის ანგარიშები</translation>
+<translation id="4288017268387803622">Brave აპებში თქვენი დაცვის მიზნით, ეს მონაცემები დროებით მიებმება თქვენს Brave ანგარიშს, როცა სისტემაში შესული ხართ</translation>
 <translation id="329838636886466101">აღდგენა</translation>
 <translation id="3298789223962368867">შეყვანილია არასწორი URL.</translation>
 <translation id="32991397311664836">მოწყობილობები:</translation>
@@ -2228,7 +2240,6 @@
 <translation id="3305661444342691068">PDF-ის გახსნა წინასწარ ხედში</translation>
 <translation id="3308116878371095290">ამ გვერდზე აიკრძალა ქუქი-ფაილების დაყენება.</translation>
 <translation id="3308134619352333507">დამალვის ღილაკი</translation>
-<translation id="863285194606682292">თქვენ მიერ მონახულებული საიტები შეძლებს თქვენი ინფორმაციის დამახსოვრებას, სანამ Brave-ს არ დახურავთ</translation>
 <translation id="3308852433423051161">იტვირთება Brave ასისტენტი...</translation>
 <translation id="3309330461362844500">სერტიფიკატის პროფილის ID</translation>
 <translation id="3311445899360743395">ამ მოწყობილობიდან შეიძლება ამოიშალოს ამ აპთან დაკავშირებული მონაცემები.</translation>
@@ -2273,6 +2284,7 @@
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/>-ის მიერ თქვენთან ზიარდება <ph name="ATTACHMENTS"/>.}other{<ph name="DEVICE_NAME"/>-ის მიერ თქვენთან ზიარდება <ph name="ATTACHMENTS"/>.}}</translation>
 <translation id="3364986687961713424">თქვენი ადმინისტრატორისგან: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">გამოიყენეთ Ctrl ან Alt</translation>
+<translation id="3367057768351048705">საიტებს შეუძლიათ ქუქი-ჩანაწერების გამოყენება თქვენ მიერ მათი საიტის დათვალიერების აქტივობის სანახავად</translation>
 <translation id="3368922792935385530">დაკავშირებული</translation>
 <translation id="3369067987974711168">ამ პორტთან დაკავშირებული სხვა მოქმედებების ჩვენება</translation>
 <translation id="3369624026883419694">ჰოსტის გადაწყვეტა…</translation>
@@ -2326,13 +2338,13 @@
 <translation id="3420501302812554910">უსაფრთხოების შიდა გასაღები საჭიროებს გადაყენებას</translation>
 <translation id="3421387094817716717">ეკლიპტიკური მრუდის საჯარო გასაღები</translation>
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>შენიშვნა:<ph name="END_BOLD"/> თქვენს პერსონალურ შედეგებზე ან ასისტენტზე წვდომა, შესაძლოა, მოახერხოს ნებისმიერმა, ვისაც თქვენი მსგავსი ხმა ან მისი ჩანაწერი ექნება.</translation>
+<translation id="3421726884497337397">აირჩიეთ, რა შემთხვევაში დაბლოკოთ მესამე მხარის ქუქი-ჩანაწერები</translation>
 <translation id="3422291238483866753">შეკითხვა საიტის მიერ თქვენი გარემოს 3-განზომილებიანი რუკის შექმნის ან კამერის პოზიციისთვის თვალის მიდევნების მოთხოვნისას (რეკომენდებული)</translation>
 <translation id="3423463006624419153">თქვენს „<ph name="PHONE_NAME_1"/>“-სა და „<ph name="PHONE_NAME_2"/>“-ზე:</translation>
 <translation id="3423858849633684918">გთხოვთ ხელახლა გაუშვით <ph name="PRODUCT_NAME"/></translation>
 <translation id="3424969259347320884">აღწერეთ, რას აკეთებდით, როცა ჩანართი ავარიულად გაითიშა</translation>
 <translation id="3427092606871434483">დაშვება (ნაგულისხმევი)</translation>
 <translation id="3428419049384081277">თქვენ შესული ხართ.</translation>
-<translation id="5265419033369521352">უზრუნველყოფს თქვენს უსაფრთხოებას Brave-ში და Brave-ის სხვა აპებში, როცა სისტემაში შესული ხართ</translation>
 <translation id="3429086384982427336">პროტოკოლების ბმულები არასოდეს დამუშავდება ქვემოთ ჩამოთვლილი აპების მიერ.</translation>
 <translation id="3429160811076349561">საცდელი ფუნქციები გამორთულია</translation>
 <translation id="3429271624041785769">ვებკონტენტის ენები</translation>
@@ -2362,11 +2374,13 @@
 <translation id="344630545793878684">წაიკითხეთ თქვენი მონაცემები რამდენიმე ვებსაიტზე</translation>
 <translation id="3446650212859500694">ეს ფაილი შეიცავს სენსიტიურ კონტენტს</translation>
 <translation id="3446827946208017735">ერთი სივრციდან შეამოწმეთ კონფიდენციალურობის ყველაზე მნიშვნელოვანი პარამეტრები</translation>
+<translation id="3447644283769633681">დაბლოკეთ მესამე მხარის ყველა ქუქი-ჩანაწერი</translation>
 <translation id="3448086340637592206">Brave-ისა და Chrome OS-ის დამატებითი პირობები</translation>
 <translation id="3448492834076427715">ანგარიშის განახლება</translation>
 <translation id="3449393517661170867">ახალი ფანჯრის გახსნა ჩანართებიან რეჟიმში</translation>
 <translation id="3449839693241009168">დააჭირეთ ღილაკს <ph name="SEARCH_KEY"/>, <ph name="EXTENSION_NAME"/>-ში ბრძანებების გასაგზავნად</translation>
 <translation id="3450157232394774192">უქმი მდგომარეობის შემთხვევების პროცენტული მაჩვენებელი</translation>
+<translation id="3450180775417907283"><ph name="MANAGER"/> საჭიროებს Wi-Fi ქსელთან დაკავშირებას განახლების ჩამოსატვირთად.</translation>
 <translation id="3451753556629288767">დაშვებულია კონკრეტული ტიპის ფაილების გახსნა</translation>
 <translation id="3452999110156026232">მშობლის წვდომა</translation>
 <translation id="3453612417627951340">საჭიროებს ავტორიზაციას</translation>
@@ -2550,7 +2564,6 @@
 <translation id="3647998456578545569">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> მიღებულია <ph name="DEVICE_NAME"/>-დან}other{<ph name="ATTACHMENTS"/> მიღებულია <ph name="DEVICE_NAME"/>-დან}}</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> აღმოჩენილია</translation>
 <translation id="3649138363871392317">ფოტო გადაღებულია</translation>
-<translation id="3649505501900178324">განახლება დაგვიანებულია</translation>
 <translation id="3650753875413052677">შეცდომა რეგისტრაციისას</translation>
 <translation id="3650845953328929506">ჟურნალის ატვირთვა მოლოდინის რეჟიმშია.</translation>
 <translation id="3650952250015018111">„<ph name="APP_NAME"/>“ შეძლებს წვდომას შემდეგზე:</translation>
@@ -2633,7 +2646,6 @@
 <translation id="3732078975418297900">შეცდომა ხაზზე <ph name="ERROR_LINE"/></translation>
 <translation id="3732530910372558017">PIN-კოდის სიგრძე უნდა იყოს მაქსიმუმ 63 სიმბოლო</translation>
 <translation id="565625983765378675">Brave ასისტენტთან დაკავშირებული ინფორმაცია</translation>
-<translation id="3733127536501031542">SSL სერვერი დაყენებით</translation>
 <translation id="3733296813637058299">ეს აპები დაინსტალირდება თქვენთვის. თქვენი <ph name="DEVICE_TYPE"/>-ისთვის სხვა აპების პოვნა შეგიძლიათ Play Store-ში.</translation>
 <translation id="3735740477244556633">დალაგება</translation>
 <translation id="3738632186060045350"><ph name="DEVICE_TYPE"/>-ზე არსებული მონაცემები წაიშლება 24 საათში</translation>
@@ -2723,11 +2735,12 @@
 <translation id="3819800052061700452">&amp;მთელ ეკრანზე</translation>
 <translation id="3820638253182943944">{MUTED_NOTIFICATIONS_COUNT,plural, =1{ჩვენება}other{ყველას ჩვენება}}</translation>
 <translation id="3820749202859700794">SECG ეკლიპტიკური მრუდი secp521r1 (ასევე ცნობილი, როგორც NIST P-521)</translation>
+<translation id="3821074617718452587">ტელეფონის ცენტრის შეტყობინებები</translation>
 <translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{გაფართოება დადასტურდა}other{# გაფართოება დადასტურდა}}</translation>
 <translation id="3823310065043511710">Linux-ის გამოსაყენებლად რეკომენდებულია მინიმუმ <ph name="INSTALL_SIZE"/>.</translation>
 <translation id="3824621460022590830">მოწყობილობის რეგისტრაციის ჟეტონი არასწორია. დაუკავშირდით მოწყობილობის მფლობელს ან ადმინისტრატორს. შეცდომის კოდი: <ph name="ERROR_CODE"/>.</translation>
 <translation id="3826071569074535339">მოძრაობის სენსორების გამოყენება დაშვებულია</translation>
-<translation id="7808602060780466265">თქვენმა ადმინისტრატორმა გათიშა სხვა Brave ანგარიშების დამატების შესაძლებლობა</translation>
+<translation id="3826440694796503677">თქვენმა ადმინისტრატორმა გათიშა სხვა Brave ანგარიშების დამატების შესაძლებლობა</translation>
 <translation id="3827774300009121996">&amp;სრული ეკრანი</translation>
 <translation id="3828029223314399057">სანიშნეების ძიება</translation>
 <translation id="3829765597456725595">ფაილების გაზიარება SMB პროტოკოლით</translation>
@@ -2736,7 +2749,6 @@
 <translation id="383161972796689579">ამ მოწყობილობის მესაკუთრემ გათიშა ახალ წევრების დამატება</translation>
 <translation id="3834728400518755610">მიკროფონის პარამეტრის ცვლილება საჭიროებს Linux-ის გამორთვას. გასაგრძელებლად გამორთეთ Linux.</translation>
 <translation id="3834775135533257713">აპლიკაცია „<ph name="TO_INSTALL_APP_NAME"/>“ ვერ დაემატა, რადგან „<ph name="INSTALLED_APP_NAME"/>“ მასთან კონფლიქტშია.</translation>
-<translation id="3835522725882634757">უი! სერვერი აგზავნის მონაცემებს, რომლებსაც <ph name="PRODUCT_NAME"/> ვერ აღიქვამს. <ph name="BEGIN_LINK"/>გამოგვიგზავნეთ მოხსენება შეცდომის შესახებ<ph name="END_LINK"/> და ჩაამატეთ <ph name="BEGIN2_LINK"/>დაუმუშავებელი ელემენტების სია<ph name="END2_LINK"/>.</translation>
 <translation id="383669374481694771">ეს არის ზოგადი ინფორმაცია ამ მოწყობილობისა და მისი გამოყენების შესახებ (მაგ. ბატარეის დონე, სისტემისა და აპების აქტივობა თუ შეცდომები). აღნიშნული მონაცემები ხელს შეუწყობს Android-ის გაუმჯობესებას, ხოლო შეჯამებული ინფორმაციის ნაწილი ასევე სასარგებლო იქნება Brave-ის აპებისა და პარტნიორებისთვის, მაგალითად, Android-ის დეველოპერებისთვის, რომლებიც შეძლებენ საკუთარი აპებისა და პროდუქტების დახვეწას.</translation>
 <translation id="3838085852053358637">გაფართოება ვერ ჩაიტვირთა</translation>
 <translation id="3838486795898716504">მეტი <ph name="PAGE_TITLE"/></translation>
@@ -2931,6 +2943,7 @@
 <translation id="4021279097213088397">–</translation>
 <translation id="402184264550408568">(TCP)</translation>
 <translation id="4021909830315618592">ანაწყობის დეტალების კოპირება</translation>
+<translation id="4021941025609472374">ჩანართების დახურვა მარცხნივ</translation>
 <translation id="4022426551683927403">ლექსიკონში &amp;დამატება</translation>
 <translation id="4023146161712577481">მოწყობილობის კონფიგურაციის განსაზღვრა.</translation>
 <translation id="4025039777635956441">არჩეული საიტის დადუმება</translation>
@@ -2974,7 +2987,6 @@
 <translation id="4068776064906523561">შენახული თითის ანაბეჭდები</translation>
 <translation id="407173827865827707">დაწკაპუნებისას</translation>
 <translation id="5493571544288146030">პაროლი შეინახება თქვენს Brave ანგარიშში (<ph name="ACCOUNT"/>). მისი დამახსოვრება არ მოგიწევთ.</translation>
-<translation id="4074900173531346617">ელფოსტის ხელმოწერის სერტიფიკატი</translation>
 <translation id="407520071244661467">მასშტაბირება</translation>
 <translation id="407543464472585404"><ph name="NAME"/>-ის პროფილი მიბმულია <ph name="EMAIL"/>-თან</translation>
 <translation id="4075639477629295004"><ph name="FILE_NAME"/> ვერ ტრანსლირდება.</translation>
@@ -3018,9 +3030,11 @@
 <translation id="4110490973560452005">ჩამოტვირთვა დასრულდა: <ph name="FILE_NAME"/>. ჩამოტვირთვების ზოლის არეზე გადასასვლელად დააჭირეთ კლავიშთა კომბინაციას: Shift+F6.</translation>
 <translation id="4110686435123617899">აირჩიეთ ალბომი <ph name="TITLE"/> <ph name="DESC"/></translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (ხაზგარეშე)</translation>
+<translation id="4112809168763360620">Smart privacy protections</translation>
 <translation id="4115002065223188701">ქსელი დიაპაზონს მიღმაა</translation>
 <translation id="4115378294792113321">მაგენტა</translation>
 <translation id="4117637339509843559">მუქი რეჟიმი</translation>
+<translation id="4117714603282104018">სენსორული პანელის შეხებადი რეაქცია</translation>
 <translation id="4118579674665737931">გთხოვთ, გადატვირთოთ მოწყობილობა და ხელახლა ცადოთ.</translation>
 <translation id="9006702004768325338">გაიხსენეთ თქვენი მოგონებები Brave Photos-იდან, როცა სისტემაში შესული იქნებით.</translation>
 <translation id="4120388883569225797">უსაფრთხოების ამ გასაღების გადაყენება ვერ მოხერხდა</translation>
@@ -3065,6 +3079,7 @@
 <translation id="4175137578744761569">ღია მეწამული და თეთრი</translation>
 <translation id="4175737294868205930">მუდმივი მეხსიერება</translation>
 <translation id="4176463684765177261">გამორთული</translation>
+<translation id="417971315778328003">გასაგრძელებლად დააყენეთ PIN-კოდი ან პაროლი</translation>
 <translation id="4180788401304023883">წავშალოთ CA სერტიფიკატი „<ph name="CERTIFICATE_NAME"/>“?</translation>
 <translation id="4181602000363099176">20x</translation>
 <translation id="4181841719683918333">ენები</translation>
@@ -3098,6 +3113,7 @@
 <translation id="4231095370974836764">დააინსტალირეთ აპები და თამაშები Google Play-დან თქვენს <ph name="DEVICE_TYPE"/>-ზე. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">Kerberos-ის კონფიგურაცია</translation>
 <translation id="4235965441080806197">შესვლის გაუქმება</translation>
+<translation id="4238175133949127631">Temporary dim screen</translation>
 <translation id="4241182343707213132">ორგანიზაციის აპების განახლებისთვის საჭიროა გადატვირთვა</translation>
 <translation id="4242145785130247982">კლიენტთა რამდენიმე სერტიფიკატის გამოყენება მხარდაუჭერელია</translation>
 <translation id="4242533952199664413">პარამეტრების გახსნა</translation>
@@ -3151,7 +3167,6 @@
 <translation id="428715201724021596">მიმდინარეობს პროფილთან დაკავშირება. ამას შეიძლება რამდენიმე წუთი დასჭირდეს.</translation>
 <translation id="4287157641315808225">დიახ, გააქტიურდეს BraveVox</translation>
 <translation id="4287502603002637393">{MUTED_NOTIFICATIONS_COUNT,plural, =1{ჩვენება}other{ყველას ჩვენება}}</translation>
-<translation id="4289372044984810120">აქ შეგიძლიათ მართოთ თქვენი ანგარიშები. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
 <translation id="4289540628985791613">მიმოხილვა</translation>
 <translation id="4289732974614035569">აირჩიეთ PIN-კოდი</translation>
 <translation id="4290791284969893584">გვერდის დახურვის შემდეგ, თქვენ მიერ დაყენებული ამოცანები, შესაძლოა, არ დასრულდეს</translation>
@@ -3206,7 +3221,6 @@
 <translation id="4358313196493694334">დაწკაპუნების მდებარეობის სტაბილიზაცია</translation>
 <translation id="4359408040881008151">ინსტალაცია შესრულდა გაფართოებაზე დაყრდნობით.</translation>
 <translation id="4359717112757026264">ქალაქური პეიზაჟი</translation>
-<translation id="4360237979279036412"><ph name="MANAGER"/> ითხოვს, განაახლოთ ეს <ph name="DEVICE_TYPE"/> ბოლო ვადამდე.</translation>
 <translation id="4361142739114356624">ამ კლიენტის სერტიფიკატს აკლია პირადი გასაღები, ან ის არასწორია</translation>
 <translation id="4361745360460842907">გახსენით როგორც ჩანართი</translation>
 <translation id="4363771538994847871">ტრანსლირებისთვის სამიზნე მოწყობილობა ვერ მოიძებნა. დახმარება გჭირდებათ?</translation>
@@ -3215,6 +3229,7 @@
 <translation id="4364830672918311045">შეტყობინებების ჩვენება</translation>
 <translation id="4366138410738374926">ბეჭდვა დაიწყო</translation>
 <translation id="4369121877634339065">ძიებისთვის ჩავლებით გადაიტანეთ ნებისმიერ სურათზე</translation>
+<translation id="4369215744064167350">ვებსაიტის მოთხოვნა დაკმაყოფილდა</translation>
 <translation id="4370975561335139969">თქვენ მიერ შეყვანილი ელფოსტა და პაროლი არ ემთხვევა</translation>
 <translation id="4373966964907728675">დესკტოპის ტრანსლირება</translation>
 <translation id="4374831787438678295">Linux ინსტალატორი</translation>
@@ -3227,7 +3242,6 @@
 <translation id="4378556263712303865">მოწყობილობის მოთხოვნა</translation>
 <translation id="4379281552162875326">გსურთ „<ph name="APP_NAME"/>“-ის დეინსტალაცია?</translation>
 <translation id="4380648069038809855">მოხდა სრულეკრანიან რეჟიმში შესვლა</translation>
-<translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/> და კიდევ 1 სხვა ანგარიში}other{<ph name="EMAIL"/> და კიდევ <ph name="EXTRA_ACCOUNTS"/> სხვა ანგარიში}}</translation>
 <translation id="4384312707950789900">სასურველებში დამატება</translation>
 <translation id="4384652540891215547">გაფართოების გააქტიურება</translation>
 <translation id="4384886290276344300">კლავიატურის პარამეტრების შეცვლა</translation>
@@ -3732,7 +3746,6 @@
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         <ph name="BEGIN_LINK"/>აქ შეგიძლიათ<ph name="END_LINK"/> შეიტყოთ, რა მონაცემებს აგროვებს Google Drive და რატომ.</translation>
-<translation id="49226369361073053">{0,plural, =0{განაახლეთ მოწყობილობა ახლავე}=1{განაახლეთ მოწყობილობა 1 წამის განმავლობაში}other{განაახლეთ მოწყობილობა # წამის განმავლობაში}}</translation>
 <translation id="492299503953721473">Android-ის აპების ამოშლა</translation>
 <translation id="492363500327720082">მიმდინარეობს <ph name="APP_NAME"/>-ის დეინსტალაცია...</translation>
 <translation id="4924002401726507608">გამოხმაურება</translation>
@@ -3837,6 +3850,7 @@
 <translation id="5040823038948176460">კონტენტის დამატებითი პარამეტრები</translation>
 <translation id="5043440033854483429">სახელი შეიძლება შეიცავდეს ასოებს, ციფრებსა და დეფისებს (-), ხოლო მისი სიგრძე უნდა იყოს 1-დან 15 სიმბოლოს ჩათვლით.</translation>
 <translation id="5043913660911154449">ან მიუთითეთ პრინტერის PPD. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
+<translation id="5044527779574548527">აღარ გამოჩნდეს ეს ნაბიჯი</translation>
 <translation id="5045550434625856497">არასწორი პაროლი</translation>
 <translation id="504561833207953641">მიმდინარეობს ბრაუზერის არსებულ სესიაში გახსნა.</translation>
 <translation id="5047421709274785093">საიტებისთვის მოძრაობისა და განათების სენსორების გამოყენების აკრძალვა</translation>
@@ -3847,7 +3861,7 @@
 <translation id="8364458882768727272">მოიძიეთ სურათი Brave Lens-ით</translation>
 <translation id="5056950756634735043">მიმდინარეობს კონტეინერთან დაკავშირება</translation>
 <translation id="5057110919553308744">გაფართოებაზე დაწკაპუნებისას</translation>
-<translation id="1203953622051744249">მართეთ თქვენი სისტემაში შესული ანგარიშები. მინიჭებული ნებართვების მიხედვით, Brave-სა და Google Play-ში არსებულმა ვებსაიტებმა, აპებმა თუ გაფართოებებმა შეიძლება გამოიყენოს აღნიშნული ანგარიშები სერვისებით სარგებლობის პროცესის თქვენზე მოსარგებად. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
+<translation id="505776528429481161">მარტივად დაუკავშირდით და დააყენეთ ახლომდებარე მოწყობილობები</translation>
 <translation id="5059241099014281248">შესვლის შეზღუდვა</translation>
 <translation id="5059526285558225588">აირჩიეთ, რა გაზიარდეს</translation>
 <translation id="5060332552815861872">შესანახად ხელმისაწვდომია 1 პრინტერი.</translation>
@@ -3904,6 +3918,7 @@
 <translation id="5117139026559873716">თქვენი ტელეფონი აღარ იქნება დაკავშირებული <ph name="DEVICE_TYPE"/>-თან და ისინი ერთმანეთს ავტომატურად აღარ დაუკავშირდება.</translation>
 <translation id="5117930984404104619">გააკონტროლეთ გაფართოებების მოქმედება გახსნილი URLs-ის ჩათვლით</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
+<translation id="5120886753782992638">დააწკაპუნეთ აქ, <ph name="APPROVED_URL"/> რომ მოინახულოთ</translation>
 <translation id="5121052518313988218">თქვენს Linux-ის კონტეინერში არსებული ოპერაციული სისტემა მხარდაჭერილი აღარ არის. ის აღარ მიიღებს უსაფრთხოების განახლებებსა და შეცდომების აღმოფხვრებს, ხოლო ფუნქციებმა, რომლებიც ამჟამად მუშაობს, შესაძლოა, მოულოდნელად შეწყვიტოს ფუნქციონირება. Linux-ის გამოყენების გასაგრძელებლად გადადით ახალ ვერსიაზე.</translation>
 <translation id="5121130586824819730">თქვენს ხისტი დისკი სავსეა. გთხოვთ, შეინახოთ სხვა ადგილას ან გაანთავისუფლოთ ადგილი ხისტ დისკზე.</translation>
 <translation id="5123433949759960244">კალათბურთის ბურთი</translation>
@@ -4012,6 +4027,7 @@
 <translation id="523505283826916779">მარტივი წვდომის პარამეტრები</translation>
 <translation id="5235750401727657667">თქვენთვის ხილული გვერდის ჩანაცვლება ახალი ჩანართის გახსნისას</translation>
 <translation id="6465706586789214771">თქვენს ყველა მოწყობილობაზე ისინი მარტივად რომ გამოიყენოთ, შეგიძლიათ მათი თქვენს Brave ანგარიშში გადატანა</translation>
+<translation id="523862956770478816">საიტების ნებართვები</translation>
 <translation id="5242724311594467048">ჩავრთოთ "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="5243522832766285132">გთხოვთ, სცადოთ რამდენიმე წუთში</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/>-თან სინქრონიზაცია</translation>
@@ -4039,6 +4055,7 @@
 <translation id="5265562206369321422">ერთ კვირაზე მეტი ყოფნა კავშირგარეშე</translation>
 <translation id="5265797726250773323">შეცდომა ინსტალაციისას</translation>
 <translation id="5266113311903163739">სერთიფიკატის ავტორიზაციის იმპორტის შეეცდომა</translation>
+<translation id="526622169288322445">სხვა ქმედებები „<ph name="ADDRESS_SUMMARY"/>“-სთვის</translation>
 <translation id="5269977353971873915">ბეჭვდის შეცდომა</translation>
 <translation id="5275352920323889391">ძაღლი</translation>
 <translation id="527605982717517565">ყოველთვის დაუშვით JavaScript <ph name="HOST"/>-ზე</translation>
@@ -4219,6 +4236,7 @@
 <translation id="5472627187093107397">პაროლების შენახვა ამ საიტისთვის</translation>
 <translation id="5473075389972733037">IBM</translation>
 <translation id="5473156705047072749">{NUM_CHARACTERS,plural, =1{PIN-კოდი უნდა შეიცავდეს მინიმუმ 1 სიმბოლოს}other{PIN-კოდი უნდა შეიცავდეს მინიმუმ # სიმბოლოს}}</translation>
+<translation id="5474859849784484111"><ph name="MANAGER"/> საჭიროებს Wi-Fi ქსელთან დაკავშირებას განახლების ჩამოსატვირთად. სურვილისამებრ, ჩამოტვირთვა შეგიძლიათ ლიმიტირებული კავშირით (შეიძლება დაკავშირებული იყოს ხარჯებთან).</translation>
 <translation id="5481273127572794904">რამდენიმე ფაილის ავტომატურად ჩამოტვირთვა დაუშვებელია</translation>
 <translation id="5481941284378890518">ახლომახლო პრინტერების დამატება</translation>
 <translation id="5483785310822538350">ფაილებსა და მოწყობილობებზე წვდომის გაუქმება</translation>
@@ -4275,7 +4293,6 @@
 <translation id="5517304475148761050">ეს აპი საჭიროებს წვდომას Play Store-ზე</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> — <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5518219166343146486">შეკითხვა, როცა საიტს სურს გაცვლის ბუფერში კოპირებული ტექსტისა და სურათების ნახვა</translation>
-<translation id="5518584115117143805">ელფოსტის დაშიფვრის სერტიფიკატი</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5521078259930077036">არის ეს ის საწყისი გვერდი, რომელსაც მოელოდით?</translation>
 <translation id="5522156646677899028">ეს გაფართოება შეიცავს უსაფრთხოების სერიოზულ ხარვეზს.</translation>
@@ -4310,6 +4327,7 @@
 <translation id="5554489410841842733">ეს ხატულა ხილვადი გახდება, როდესაც გაფართოება შეძლებს მოქმედებას მიმდინარე გვერდზე.</translation>
 <translation id="5554720593229208774">ელფოსტის სერთიფიცირების ცენტრი</translation>
 <translation id="5555363196923735206">კამერის ამობრუნება</translation>
+<translation id="5555525474779371165">აირჩიეთ სასურველი Safe Browsing-ის დაცვის დონე</translation>
 <translation id="5556459405103347317">ხელახლა ჩატვირთვა</translation>
 <translation id="5558125320634132440">ეს საიტი დაბლოკილია, ვინაიდან ის შეიძლება შეიცავდეს ზრდასრულებისთვის განკუთვნილ კონტენტს</translation>
 <translation id="5558129378926964177">მასშტაბის &amp;გადიდება</translation>
@@ -4608,6 +4626,7 @@
 <translation id="5901494423252125310">პრინტერის კარი ღიაა</translation>
 <translation id="5901630391730855834">ყვითელი</translation>
 <translation id="5904614460720589786"><ph name="APP_NAME"/>-ის დაყენება ვერ მოხერხდა კონფიგურაციის პრობლემის გამო. გთხოვთ, დაუკავშირდეთ ადმინისტრატორს. შეცდომის კოდი: <ph name="ERROR_CODE"/>.</translation>
+<translation id="8426966365763005150">This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.</translation>
 <translation id="5906655207909574370">განახლება თითქმის მზად არის! დასასრულებლად, გადატვირთეთ თქვენი მოწყობილობა.</translation>
 <translation id="5906732635754427568">ამ აპთან დაკავშირებული მონაცემები ამ მოწყობილობიდან ამოიშლება.</translation>
 <translation id="5908474332780919512">აპის გაშვება სისტემაში შესვლისას</translation>
@@ -4633,6 +4652,7 @@
 <translation id="539658326146969381">PDF-ფაილების ჩამოტვირთვა, Brave-ში მათი ავტომატურად გახსნის ნაცვლად</translation>
 <translation id="592919310198008711">გაფართოებაზე დაწკაპუნებისას</translation>
 <translation id="5932124097031739492">Linux გადაყვანილია ახალ ვერსიაზე.</translation>
+<translation id="5932209916647644605"><ph name="MANAGER"/> საჭიროებს <ph name="DEVICE_TYPE"/>-ის დაუყოვნებლივ განახლებას.</translation>
 <translation id="5932224571077948991">საიტზე ნაჩვენებია მომაბეზრებელი ან შეცდომაში შემყვანი რეკლამა</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/>-ის USB მოწყობილობა</translation>
 <translation id="5932441198730183141">ამ Brave Meet აპარატურული მოწყობილობის რეგისტრაციისთვის არასაკმარისი ლიცენზიები გაქვთ. მათ შესაძენად დაუკავშირდით გაყიდვების სამსახურს. თუ ფიქრობთ, რომ ეს შეცდომაა, მიმართეთ მხარდაჭერის გუნდს.</translation>
@@ -4677,7 +4697,6 @@
 <translation id="597235323114979258">დანიშნულების სხვა ადგილების ნახვა</translation>
 <translation id="5972666587303800813">ფიქტიური სერვისი</translation>
 <translation id="5972708806901999743">თავში გადატანა</translation>
-<translation id="5972801171078377748">აღარ გამოჩნდეს</translation>
 <translation id="5972826969634861500"><ph name="PRODUCT_NAME"/>-ის გაშვება</translation>
 <translation id="5973041996755340290">„<ph name="CLIENT_NAME"/>“-მა დაიწყო შეცდომების გამართვა ამ ბრაუზერში</translation>
 <translation id="5973605538625120605">შეცვალეთ PIN-კოდი</translation>
@@ -4690,7 +4709,6 @@
 <translation id="5976609451147284762">ეს ვარიანტი ვრცელდება Bravebook-ებზე, რომლებზეც გამოიყენება მობილური ინტერნეტის პაკეტი ან მობილური ქსელის მოდემი, ასევე, პორტატიულ უსადენო ქსელთან ტეტერინგის დროს</translation>
 <translation id="5979421442488174909">თ&amp;არგმნა ენაზე: <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">გვერდების სანიშნეებში დასამატებლად დააწკაპუნეთ ვარსკვლავზე მისამართთა ზოლში</translation>
-<translation id="5983831175889857946">გადახედვა დასრულდა!</translation>
 <translation id="5984222099446776634">ახლახანს მონახულებული</translation>
 <translation id="5985458664595100876">URL-ის ფორმატი არასწორია. მხარდაჭერილი ფორმატებია: \\server\share და smb://server/share.</translation>
 <translation id="598810097218913399">მიმაგრების მოხსნა</translation>
@@ -4704,6 +4722,7 @@
 <translation id="4448813628683709282">პაროლი წაიშალა თქვენი Brave ანგარიშიდან</translation>
 <translation id="6002458620803359783">სასურველი ხმები</translation>
 <translation id="6003143259071779217">eSIM ფიჭური ქსელის ამოშლა</translation>
+<translation id="6003479444341796444">სათაურის ზოლი უკვე ხილულია</translation>
 <translation id="6003582434972667631">თემა დაყენებულია თქვენი ორგანიზაციის მიერ</translation>
 <translation id="6006484371116297560">კლასიკური</translation>
 <translation id="6007240208646052708">ხმოვანი ძიება თქვენს ენაზე მიუწვდომელია.</translation>
@@ -4759,6 +4778,7 @@
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>შენიშვნა:<ph name="END_BOLD"/> <ph name="SUPERVISED_USER_NAME"/>-ის პერსონალურ შედეგებზე წვდომა, შესაძლოა, მოახერხოს ნებისმიერმა, ვისაც მსგავსი ხმა ან მისი ჩანაწერი ექნება. ბატარეის დაზოგვის მიზნით, <ph name="SUPERVISED_USER_NAME"/>-ის ასისტენტის პარამეტრებიდან შეგიძლიათ აირჩიოთ, რომ „Ok Brave“-მა იმუშაოს მხოლოდ მაშინ, როცა ეს მოწყობილობა მიერთებულია ელკვების წყაროსთან.</translation>
 <translation id="6064217302520318294">ეკრანის დაბლოკვა</translation>
 <translation id="6065289257230303064">სერტიფიკატის სუბიექტის დირექტორიის ატრიბუტები</translation>
+<translation id="6065691521254183160">ამ დამხმარე ბუშტსა და მის სამიზნე ელემენტს შორის ფოკუსირების გადასართველად დააჭირეთ |<ph name="ACCELERATOR"/>|-ს.</translation>
 <translation id="6066794465984119824">სურათის ჰეში დაუყენებელია</translation>
 <translation id="6069464830445383022">შედით Bravebook-ში თქვენი Brave ანგარიშით</translation>
 <translation id="6069671174561668781">ფონის დაყენება</translation>
@@ -4784,6 +4804,7 @@
 <translation id="6085886413119427067">განსაზღვრავს დაცული კავშირით ვებსაიტებთან დაკავშირების ხერხს</translation>
 <translation id="6086004606538989567">ანგარიშს, რომელიც დაადასტურეთ, არ აქვს ამ მოწყობილობაზე წვდომის უფლება.</translation>
 <translation id="6086846494333236931">დაინსტალირებულია თქვენი ადმინისტრატორის მიერ</translation>
+<translation id="6086898065659145625">Smart Lock ავტომატურად შეგიყვანთ სისტემაში, როცა ტელეფონი ახლოს გექნებათ.</translation>
 <translation id="6087960857463881712">არაჩვეულებრივი სახე</translation>
 <translation id="608912389580139775">ეს გვერდი საკითხავ სიას რომ დაამატოთ, დააწკაპუნეთ სანიშნეს ხატულაზე</translation>
 <translation id="6091761513005122595">გაზიარება მიერთებულია წარმატებით.</translation>
@@ -4870,6 +4891,7 @@
 <translation id="6184099524311454384">მოიძიეთ ჩანართებში</translation>
 <translation id="6185132558746749656">მოწყობილობის მდებარეობა</translation>
 <translation id="6186394437969115158">როგორც წესი, საიტების მიერ რეკლამის ჩვენება ხდება იმიტომ, რომ ისინი კონტენტსა თუ სერვისებს უფასოდ გთავაზობენ. მიუხედავად ამისა, ზოგიერთ საიტზე არსებული რეკლამა მომაბეზრებელი ან შეცდომაში შემყვანია.</translation>
+<translation id="6190953336330058278">ტელეფონის ცენტრის აპები</translation>
 <translation id="6195005504600220730">გაეცანით ინფორმაციას თქვენი ბრაუზერის, ოპერაციული სისტემისა და მოწყობილობის შესახებ</translation>
 <translation id="6195693561221576702">ამ მოწყობილობის ხაზგარეშე დემო-რეჟიმში დაყენება ვერ მოხერხდება.</translation>
 <translation id="6196640612572343990">მესამე მხარის ქუქი-ჩანაწერების დაბლოკვა</translation>
@@ -4907,7 +4929,6 @@
 <translation id="6232017090690406397">ბატარეა</translation>
 <translation id="6232116551750539448"><ph name="NAME"/>-თან კავშირი გაწყდა</translation>
 <translation id="6233154960150021497">კლავიატურის ნაცვლად ნაგულისხმევად ხმის გამოყენება</translation>
-<translation id="5016134351637283420"><ph name="LANGUAGE"/> მეტყველება დასამუშავებლად გაეგზავნება Brave-ს.</translation>
 <translation id="7946072537360476411">Brave-ის მომსახურების პირობები შეიცვლება 31 მარტს</translation>
 <translation id="6234474535228214774">ინსტალაცია მოლოდინის რეჟიმშია</translation>
 <translation id="6235208551686043831">მოწყობილობის კამერა ჩაირთო. მოათავსეთ თქვენი eSIM-ის QR კოდი კამერის წინ.</translation>
@@ -4944,6 +4965,7 @@
 <translation id="6263284346895336537">არ არის კრიტიკული</translation>
 <translation id="6264365405983206840">ყ&amp;ველას არჩევა</translation>
 <translation id="6265687851677020761">პორტის ამოშლა</translation>
+<translation id="6266532094411434237">მიმდინარეობს <ph name="DEVICE"/>-თან დაკავშირება</translation>
 <translation id="6267166720438879315">თქვენი ვინაობის ავთენტიფიკაციისათვის, აირჩიეთ სერთიფიკატი <ph name="HOST_NAME"/></translation>
 <translation id="6268252012308737255">გახსნა <ph name="APP"/>-ით</translation>
 <translation id="6270391203985052864">საიტებს შეუძლიათ შეტყობინებების გამოგზავნის თხოვნა</translation>
@@ -5010,7 +5032,6 @@
 <translation id="5267531627648004734">Brave-იდან წაშლა</translation>
 <translation id="6326855256003666642">აქტიურად შენარჩუნებათა რაოდენობა</translation>
 <translation id="6327785803543103246">ვებ პროქსი-სერვერის ავტომატური აღმოჩენა</translation>
-<translation id="6328378651911184878"><ph name="MANAGER"/> ითხოვს, დაუყოვნებლივ განაახლოთ ეს <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6331191339300272798">ავტომატური მუქი თემა</translation>
 <translation id="6331566915566907158">Brave OS-ის ფუნქციებისა და წარმადობის გაუმჯობესების ხელშეწყობა</translation>
 <translation id="6331818708794917058">საიტებს შეუძლია MIDI-მოწყობილობებთან დაკავშირების თხოვნა</translation>
@@ -5076,7 +5097,6 @@
 <translation id="6410328738210026208">არხის შეცვლა და განახლება</translation>
 <translation id="6410390304316730527">Safe Browsing დაგიცავთ თავდამსხმელებისგან, რომლებმაც შეიძლება მოტყუებით ჩაგადენინონ ისეთი სახიფათო ქმედება, როგორიცაა პროგრამული უზრუნველყოფის ინსტალაცია ან თქვენი პერსონალური ინფორმაციის (მაგალითად, პაროლების, ტელეფონის ნომრების ან საკრედიტო ბარათების მონაცემების) გამჟღავნება. გამორთვის შემთხვევაში გამოიჩინეთ სიფრთხილე უცნობი საიტების დათვალიერებისას.</translation>
 <translation id="6410668567036790476">საძიებო სისტემის დამატება</translation>
-<translation id="7810992039564280750">შეამოწმებს URL-ების თანხვედრას Brave-ში შენახულ არაუსაფრთხო საიტების სიასთან. საიტის მიერ პაროლის მოპარვის მცდელობის ან თქვენ მიერ საზიანო ფაილის ჩამოტვირთვის შემთხვევაში Brave-ის მიერ Safe Browsing-ს გაეგზავნება URL-ები და შესაბამისი გვერდის კონტენტის გარკვეული ნაწილი.</translation>
 <translation id="641469293210305670">განახლებებისა და აპების ინსტალაცია</translation>
 <translation id="6414878884710400018">სისტემის პარამეტრების გახსნა</translation>
 <translation id="6414888972213066896">ამ საიტზე წვდომის მოთხოვნა გაეგზავნა თქვენს მშობელს</translation>
@@ -5087,6 +5107,7 @@
 <translation id="6418160186546245112"><ph name="IDS_SHORT_PRODUCT_NAME"/>-ის წინა დაინსტალირებული ვერსიის დაბრუნება</translation>
 <translation id="6418481728190846787">ყველა პროგრამისთვის წვდომის სამუდამოდ გაუქმება</translation>
 <translation id="6418511932144861495">კრიტიკული განახლების ინსტალაცია</translation>
+<translation id="641899100123938294">მოძებნეთ ახალი მოწყობილობები</translation>
 <translation id="6419524191360800346">ხელმისაწვდომია Debian 11-ის (Bullseye) განახლება</translation>
 <translation id="6419546358665792306">გახსნილის ჩატვირთვა</translation>
 <translation id="6419843101460769608">საიტებისთვის Bluetooth მოწყობილობებზე წვდომის აკრძალვა</translation>
@@ -5246,6 +5267,7 @@
 <translation id="659005207229852190">უსაფრთხოების შემოწმება შესრულდა.</translation>
 <translation id="6590458744723262880">საქაღალდის გადარქმევა</translation>
 <translation id="6592267180249644460">WebRTC ჟურნალი გადაღებულია <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
+<translation id="659230975550262204">Show me an eye icon in the status area</translation>
 <translation id="6592808042417736307">თქვენი თითის ანაბეჭდი აღბეჭდილია</translation>
 <translation id="6593881952206664229">საავტორო უფლებებით დაცული მედიაფაილები, შესაძლოა, არ დაიკრას</translation>
 <translation id="6594011207075825276">მიმდინარეობს სერიული მოწყობილობების პოვნა…</translation>
@@ -5276,6 +5298,7 @@
 <translation id="6619801788773578757">kiosk აპლიკაციის დამატება</translation>
 <translation id="6619990499523117484">დაადასტურეთ თქვენი PIN-კოდი</translation>
 <translation id="6622980291894852883">გააგრძელეთ გამოსახულებების დაბლოკვა</translation>
+<translation id="6624036901798307345">ტაბლეტის რეჟიმში ხელსაწყოთა ზოლზე ჩანართების მთვლელის ღილაკზე შეხებისას გაიხსნება ჩანართების ახალი ზოლი, რომელზეც ნაჩვენები იქნება თითოეული ჩანართის მინიატურული ვერსია.</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/> შეიცავს სენსიტიურ ან სახიფათო კონტენტს. სთხოვეთ მის მფლობელს აღნიშნულის გამოსწორება.</translation>
 <translation id="6624687053722465643">ტკბილეულობა</translation>
 <translation id="6628328486509726751">ატვირთულია <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5284,6 +5307,7 @@
 <translation id="6635674640674343739">ქსელთან კავშირი ვერ დამყარდა. შეამოწმეთ ქსელთან კავშირი და ხელახლა ცადეთ.</translation>
 <translation id="6635944431854494329">ამ ფუნქციის მართვა მფლობელს შეუძლია აქ: პარამეტრები &gt; გაფართოებული &gt; დიაგნოსტიკური და გამოყენების შესახებ მონაცემების Brave-ისთვის ავტომატურად გაგზავნა.</translation>
 <translation id="6635956300022133031">ტექსტის გახმოვანების ხმების არჩევა და მორგება</translation>
+<translation id="6636623428211296678">გაეცანით სხვა ვარიანტებს ქვემოთ, ან დაასრულეთ ახლავე</translation>
 <translation id="6639554308659482635">SQLite მეხსიერება</translation>
 <translation id="6640268266988685324">ჩანართის გახსნა</translation>
 <translation id="6642720633335369752">აპების ყველა გახსნილი ფანჯრის სანახავად გადაფურცლეთ ქვემოდან ზემოთ და არ აუშვათ თითი.</translation>
@@ -5294,7 +5318,6 @@
 <translation id="6644846457769259194">მიმდინარეობს თქვენი მოწყობილობის განახლება (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="6645437135153136856">არჩეული Google Cloud Print მოწყობილობა აღარ არის მხარდაჭერილი. <ph name="BR"/> ცადეთ პრინტერის დაყენება თქვენი კომპიუტერის სიტემის პარამეტრებიდან.</translation>
 <translation id="6647228709620733774">Netscape სერტიფიკაციის ნებართვის გაუქმების URL მისამართი</translation>
-<translation id="6647838571840953560">მიმდინარე არხი: <ph name="CHANNEL_NAME"/></translation>
 <translation id="6648911618876616409">კრიტიკული განახლება მზად არის ინსტალაციისთვის. დასაწყებად შედით სისტემაში.</translation>
 <translation id="6649018507441623493">ერთი წამით...</translation>
 <translation id="3733807065376082271"><ph name="WEBSITE"/>-ის პაროლი შენახულია როგორც ამ მოწყობილობაზე, ისე თქვენს Brave ანგარიშში. რომლის წაშლა გსურთ?</translation>
@@ -5386,7 +5409,6 @@
 <translation id="6748465660675848252">შეგიძლიათ გააგრძელოთ, მაგრამ მოხდება მხოლოდ თქვენი სინქრონიზებული მონაცემებისა და პარამეტრების აღდგენა. მთელი ლოკალური მონაცემები დაიკარგება.</translation>
 <translation id="6750757184909117990">მობილური კავშირის გათიშვა</translation>
 <translation id="6750946710563435348">მომხმარებლის სხვა სახელის გამოყენება</translation>
-<translation id="6757101664402245801">URL დაკოპირდა</translation>
 <translation id="6758056191028427665">შეგვატყობინეთ, როგორ ვმუშაობთ.</translation>
 <translation id="6759193508432371551">ქარხნული პარამეტრების დაბრუნება</translation>
 <translation id="676158322851696513">„<ph name="EXTENSION_NAME"/>“</translation>
@@ -5400,6 +5422,7 @@
 <translation id="6775163072363532304">აქ გამოჩნდება ხელმისაწვდომი მოწყობილობები.</translation>
 <translation id="6777817260680419853">გადამისამართება დაიბლოკა</translation>
 <translation id="6778737459546443941">თქვენს მშობელს ის ჯერ არ დაუდასტურებია</translation>
+<translation id="6779092717724412415">ამის მსგავსი გამოყოფის შესაქმნელად, აირჩიეთ ნებისმიერი ტექსტი და დააწკაპუნეთ მარჯვენა ღილაკზე</translation>
 <translation id="6779447100905857289">თქვენი კალათები</translation>
 <translation id="677965093459947883">ძალიან პატარა</translation>
 <translation id="6781005693196527806">საძიებო სისტემების &amp;მართვა...</translation>
@@ -5445,6 +5468,7 @@
 <translation id="6810613314571580006">ავტორიზაციის შენახული მონაცემების მეშვეობით, ვებსაიტებში შესვლა ავტომატურად მოხდება. ამ ფუნქციის გათიშვის შემთხვევაში, ვებსაიტში შესვლის ყოველი მცდელობისას დადასტურება მოგიწევთ.</translation>
 <translation id="6810768462515084623">როგორც ჩანს, თქვენი პაროლის მოქმედების ვადა ამოიწურა. გთხოვთ, განაახლოთ ის თქვენს სხვა მოწყობილობაზე, ხოლო შემდეგ ხელახლა ცადოთ.</translation>
 <translation id="6811034713472274749">გვერდი მზად არის სანახავად</translation>
+<translation id="6811151703183939603">მყარი</translation>
 <translation id="6811332638216701903">DHCP ჰოსტის სახელი</translation>
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> არ შეიძლება გაიშვას, როგორც ძირეული.</translation>
 <translation id="6812841287760418429">ცვლილებების შენახვა</translation>
@@ -5480,7 +5504,6 @@
 <translation id="6843264316370513305">ქსელის გამართვა</translation>
 <translation id="6843423766595476978">Ok Brave მზად არის</translation>
 <translation id="6845038076637626672">გახსენით მაქსიმალური</translation>
-<translation id="4991384657077828949">Brave-ის უსაფრთხოების გაუმჯობესების ხელშეწყობა</translation>
 <translation id="6846178040388691741">„<ph name="EXTENSION_NAME"/>“ ითხოვს <ph name="FILE_NAME"/>-ის დაბეჭდვას <ph name="PRINTER_NAME"/>-ით.</translation>
 <translation id="6847125920277401289">გასაგრძელებლად გაათავისუფლეთ მეხსიერება</translation>
 <translation id="6848388270925200958">ამჟამად თქვენ გაქვთ რამდენიმე ბარათი, რომელთა გამოყენებაც შეგიძლიათ მხოლოდ ამ მოწყობილობაზე</translation>
@@ -5544,6 +5567,7 @@
 <translation id="6914783257214138813">თქვენს პაროლებს დაინახავს ნებისმიერი, ვისაც ექნება წვდომა ექსპორტირებულ ფაილზე.</translation>
 <translation id="6916590542764765824">პროგრამული გაფართოებები</translation>
 <translation id="6919868320029503575">სუსტი პაროლები</translation>
+<translation id="4194845302979409023">გსურთ, რომ Brave-ის ამ პროფილისთვის ასევე ჩართოთ გაძლიერებული Safe Browsing?</translation>
 <translation id="6920989436227028121">ჩანართის სახით გახსნა</translation>
 <translation id="6921104647315081813">აქტივობის გასუფთავება</translation>
 <translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> ვერ გაიხსნა</translation>
@@ -5578,6 +5602,7 @@
 <translation id="6955893174999506273">კიდევ 1 გადამრთველის მიკუთვნება</translation>
 <translation id="6957044667612803194">უსაფრთხოების ამ გასაღების მიერ მხარდაუჭერელია PIN-კოდები</translation>
 <translation id="6960507406838246615">საჭიროა Linux-ის განახლება</translation>
+<translation id="8979541182892637256"><ph name="LANGUAGE"/> მეტყველების ფაილები ვერ ჩამოიტვირთა. ჩამოტვირთვას მოგვიანებით შევეცდებით. ჩამოტვირთვის დასრულებამდე მეტყველება გაეგზავნება Brave-ს დასამუშავებლად.</translation>
 <translation id="696103774840402661">ამ <ph name="DEVICE_TYPE"/>-ზე შენახული ყველა მომხმარებლის ყველა ფაილი და ადგილობრივი მონაცემი სამუდამოდ წაიშალა.</translation>
 <translation id="6964390816189577014">გმირი</translation>
 <translation id="6964760285928603117">ჯგუფიდან ამოშლა</translation>
@@ -5627,6 +5652,7 @@
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> დაკავშირებულია, თუმცა საჭიროებს კონფიგურაციას</translation>
 <translation id="7000347579424117903">დაურთეთ Ctrl, Alt ან Search</translation>
 <translation id="7001036685275644873">მიმდინარეობს Linux აპებისა და ფაილების სარეზერვო კოპირება</translation>
+<translation id="7001066449188684145"><ph name="PRINTER_NAME"/>-ით სარგებლობისთვის საჭიროა იდენტიფიკაცია. მიმართეთ თქვენს ადმინისტრატორს.</translation>
 <translation id="7002055706763150362">ფუნქციის „Smart Lock Bravebook-ისთვის“ დასაყენებლად, Brave უნდა დარწმუნდეს, რომ ეს ნამდვილად თქვენ ხართ — დასაწყებად, აკრიფეთ პაროლი.</translation>
 <translation id="7003339318920871147">ვებ მონაცემთა ბაზები</translation>
 <translation id="7003454175711353260">{COUNT,plural, =1{{COUNT} ფაილი}other{{COUNT} ფაილი}}</translation>
@@ -5660,6 +5686,7 @@
 <translation id="1448315815373449655">{COUNT,plural, =0{ყველას &amp;ინკოგნიტო ფანჯარაში გახსნა}=1{&amp;ინკოგნიტო ფანჯარაში გახსნა}other{{COUNT}-ვეს &amp;ინკოგნიტო ფანჯარაში გახსნა}}</translation>
 <translation id="7029307918966275733">Crostini არ არის დაინსტალირებული. გთხოვთ, დააინსტალიროთ Crostini, რათა იხილოთ კრედიტები.</translation>
 <translation id="7029809446516969842">პაროლები</translation>
+<translation id="7030304022046916278">URL-ები შესამოწმებლად გაეგზავნება Safe Browsing-ს</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> — დაკავშირებულია თანმიმდევრული პორტი</translation>
 <translation id="7034692021407794547">პირველ რიგში, ბილინგის მართვის პრივილეგიების მქონე ადმინისტრატორი უნდა დაეთანხმოს Brave Meet აპარატურის მომსახურების პირობებს, რომლებიც მოცემულია ადმინისტრატორის კონსოლის „Brave Meet აპარატურის“ სექციაში.</translation>
 <translation id="7036706669646341689">Linux-ისთვის რეკომენდებულია მინიმუმ <ph name="DISK_SIZE"/>. მეხსიერების გათავისუფლება შეგიძლიათ მოწყობილობიდან ფაილების წაშლით.</translation>
@@ -5681,6 +5708,7 @@
 <translation id="7053983685419859001">დაბლოკვა</translation>
 <translation id="7055152154916055070">გადამისამართება დაიბლოკა:</translation>
 <translation id="7055451306017383754">გაზიარების გაუქმება ვერ მოხერხდა, ვინაიდან ამ საქაღალდეს ერთ-ერთი აპლიკაცია იყენებს. ამ საქაღალდის გაზიარება გაუქმდება Parallels Desktop-ის მომდევნო გათიშვისას.</translation>
+<translation id="7056011684066172642">Screen locks automatically if you walk off, and won't turn off if you're in front of it</translation>
 <translation id="1860933807472918250">{0,plural, =1{ინკოგნიტო}other{# გახსნილი ინკოგნიტო ფანჯარა}}</translation>
 <translation id="7056526158851679338">მოწყობილობების შ&amp;ემოწმება</translation>
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{უსაფრთხოების შემოწმება შესრულდა 1 წუთის წინ}other{უსაფრთხოების შემოწმება შესრულდა {NUM_MINS} წუთის წინ}}</translation>
@@ -5754,7 +5782,6 @@
 <translation id="7133578150266914903">ადმინისტრატორი ამ მოწყობილობას ძველ ვერსიაზე აბრუნებს (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7134098520442464001">დააპატარავეთ ტექსტი</translation>
 <translation id="7135729336746831607">გსურთ Bluetooth-ის ჩართვა?</translation>
-<translation id="7136639886842764730"><ph name="DOMAIN"/> საჭიროებს <ph name="DEVICE_TYPE"/>-ის დაუყოვნებლივ განახლებას.</translation>
 <translation id="7136694880210472378">აქციეთ ნაგულისხმევად</translation>
 <translation id="7136993520339022828">წარმოიქმნა შეცდომა. ცადეთ ხელახლა სხვა სურათების არჩევით.</translation>
 <translation id="7138515695467025690">გამორთული / ავტომატურად ჩაირთვება მზის ჩასვლისას</translation>
@@ -5764,7 +5791,6 @@
 <translation id="7144878232160441200">გაიმეორეთ</translation>
 <translation id="7149839598364933473">გარდაქმენით ეს მოწყობილობა <ph name="DEVICE_OS"/> მოწყობილობად.</translation>
 <translation id="7149893636342594995">ბოლო 24 საათი</translation>
-<translation id="7152478047064750137">ეს გაფართოება არ საჭიროებს სპეციალურ ნებართვებს</translation>
 <translation id="7154130902455071009">საწყისი გვერდის შეცვლა ამით: <ph name="START_PAGE"/></translation>
 <translation id="7155171745945906037">არსებული ფოტო კამერიდან ან ფაილიდან</translation>
 <translation id="7163202347044721291">მიმდინარეობს გააქტიურების კოდის დადასტურება…</translation>
@@ -5839,7 +5865,6 @@
 <translation id="7243784282103630670">Linux-ის ვერსიის განახლებისას შეცდომა მოხდა. კონტეინერის აღდგენა მოხდება სარეზერვო ასლის მეშვეობით.</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (საუკეთესო)</translation>
 <translation id="7246230585855757313">ხელახლა მიაერთეთ უსაფრთხოების გასაღები და ცადეთ ხელახლა</translation>
-<translation id="7249777306773517303">ამ მოწყობილობას მართავს <ph name="DOMAIN"/>, რომელიც ყოველ ჯერზე მოითხოვს თქვენი მხრიდან სისტემაში შესვლას.</translation>
 <translation id="7250616558727237648">მოწყობილობა, რომელთანაც აზიარებთ, არ რეაგირებს. ცადეთ ხელახლა.</translation>
 <translation id="725109152065019550">ბოდიში, თქვენმა ადმინისტრატორმა გამორთო გარე შენახვა თქვენს ანგარიშზე.</translation>
 <translation id="7251346854160851420">ნაგულისხმევი ფონი</translation>
@@ -5962,7 +5987,6 @@
 <translation id="7371490947952970241">მდებარეობის გამორთვა შესაძლებელია ამ მოწყობილობაზე მდებარეობის მთავარი პარამეტრის გამორთვით. გარდა ამისა, შეგიძლიათ გამორთოთ Wi-Fi კავშირის, მობილური ქსელებისა და სენსორების გამოყენება მდებარეობის დასადგენად.</translation>
 <translation id="7371917887111892735">ჩანართები შევიწროვდება ჩამაგრებული ჩანართის სიგანეზე</translation>
 <translation id="7374376573160927383">USB-მოწყობილობების მართვა</translation>
-<translation id="7375235221357833624">{0,plural, =1{განაახლეთ მოწყობილობა 1 საათის განმავლობაში}other{განაახლეთ მოწყობილობა # საათის განმავლობაში}}</translation>
 <translation id="7376543451826039186">ვების უფრო სწრაფად დათვალიერება: მაგალითად, კონკრეტული მომდევნო კონტენტი პროაქტიურად ჩაიტვირთება ამჟამინდელი გვერდის საფუძველზე</translation>
 <translation id="7376553024552204454">მოძრაობისას მაუსის კურსორის გამოყოფა</translation>
 <translation id="737728204345822099">შესაძლოა, თქვენს უსაფრთხოების გასაღებზე ჩაიწეროს ამ საიტზე ვიზიტი.</translation>
@@ -6094,7 +6118,6 @@
 <translation id="7506242536428928412">უსაფრთხოების ახალი გასაღების გამოსაყენებლად დააყენეთ ახალი PIN-კოდი</translation>
 <translation id="7506541170099744506">თქვენი <ph name="DEVICE_TYPE"/> წარმატებით დარეგისტრირდა კორპორატიული მართვისთვის.</translation>
 <translation id="7507207699631365376">ამ პროვაიდერის <ph name="BEGIN_LINK"/>კონფიდენციალურობის დებულების<ph name="END_LINK"/> ნახვა</translation>
-<translation id="7507930499305566459">სტატუსის მოპასუხის სერტიფიკატი</translation>
 <translation id="7509097596023256288">მიმდინარეობს მართვის დაყენება</translation>
 <translation id="7509246181739783082">დაადასტურეთ ვინაობა</translation>
 <translation id="7509539379068593709">აპის დეინსტალაცია</translation>
@@ -6104,7 +6127,6 @@
 <translation id="7514417110442087199">მიმაგრება</translation>
 <translation id="751523031290522286"><ph name="APP_NAME"/> დაბლოკილია ადმინისტრატორის მიერ. ამ აპის გამოსაყენებლად დაგჭირდებათ ადმინისტრატორის ნებართვა.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> დაპაუზებულია</translation>
-<translation id="7517063221058203587">{0,plural, =1{განაახლეთ მოწყობილობა 1 წუთის განმავლობაში}other{განაახლეთ მოწყობილობა # წუთის განმავლობაში}}</translation>
 <translation id="7522255036471229694">წარმოთქვით „Ok Brave“</translation>
 <translation id="7523585675576642403">პროფილის გადარქმევა</translation>
 <translation id="7525067979554623046">შექმნა</translation>
@@ -6206,8 +6228,10 @@
 <translation id="7622966771025050155">აღბეჭდილ ჩანართზე გადართვა</translation>
 <translation id="7624337243375417909">Caps Lock გამორთულია</translation>
 <translation id="7625568159987162309">ნებართვებისა და საიტების მასშტაბით შენახული მონაცემების ნახვა</translation>
+<translation id="7625823789272218216">ახალი ჩანართი მარცხნივ</translation>
 <translation id="7628201176665550262">განახლების სიხშირე</translation>
 <translation id="7629827748548208700">ჩანართი: <ph name="TAB_NAME"/></translation>
+<translation id="7630426712700473382">ამ მოწყობილობას მართავს <ph name="MANAGER"/>, რომელიც ყოველ ჯერზე მოითხოვს თქვენგან სისტემაში შესვლას.</translation>
 <translation id="7631014249255418691">Linux აპებისა და ფაილების სარეზერვო კოპირება წარმატებით დასრულდა</translation>
 <translation id="7631205654593498032">მოწყობილობების ერთმანეთთან დაკავშირებით თანახმა ხართ, რომ <ph name="DEVICE_TYPE"/>-ს შეეძლება:</translation>
 <translation id="7631887513477658702">&amp;ყოველთვის გახსენით ამ ტიპის ფაილები</translation>
@@ -6236,6 +6260,7 @@
 <translation id="7650582458329409456">{COUNT,plural, =1{დაყენებულია 1 თითის ანაბეჭდი}other{დაყენებულია {COUNT} თითის ანაბეჭდი}}</translation>
 <translation id="7650677314924139716">მონაცემთა გადაცემისთვის ამჟამად არჩეული გაქვთ „მხოლოდ Wi-Fi“</translation>
 <translation id="7650920359639954963">გააქტიურებული არ არის: <ph name="REASON"/></translation>
+<translation id="7651784568388208829">აქტივობის გაგრძელება ტელეფონის ცენტრში</translation>
 <translation id="765293928828334535">ამ ვებსაიტიდან აპების, გაფართოებებისა და მომხმარებლების სკრიპტების დამატება ვერ მოხერხდება</translation>
 <translation id="7652954539215530680">შექმენით PIN-კოდი</translation>
 <translation id="7654941827281939388">ეს ანგარიში უკვე გამოიყენება ამ კომპიუტერში.</translation>
@@ -6390,6 +6415,7 @@
 <translation id="7797246427375693110">ჩართული / ავტომატურად გამოირთვება <ph name="TIME"/>-ზე</translation>
 <translation id="7797571222998226653">გამორთული</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/> დაბლოკილია ავტომატურად</translation>
+<translation id="7799220949286681310">Smart screen lock</translation>
 <translation id="7799299114731150374">ფონი წარმატებით დაყენდა</translation>
 <translation id="7799817062559422778">ღია რეჟიმი</translation>
 <translation id="7800159967992492578">გვერდითი ძიების გადართვა. გვერდითი ძიება გააქტიურებულია.</translation>
@@ -6494,6 +6520,7 @@
 <translation id="7887864092952184874">Bluetooth მაუსი დაწყვილებულია</translation>
 <translation id="7889371445710865055">შეცვალეთ კარნახის ენა</translation>
 <translation id="7890147169288018054">ქსელის ინფორმაციის (მაგ. IP ან MAC მისამართის) ნახვა</translation>
+<translation id="7892384782944609022">დაწყვილება ვერ მოხერხდა. აირჩიეთ მოწყობილობა ხელახლა საცდელად.</translation>
 <translation id="7893008570150657497">წვდომა ფოტოებზე, მუსიკაზე და სხვა მედიაზე თქვენი კომპიუტერიდან</translation>
 <translation id="7893153962594818789">ამ <ph name="DEVICE_TYPE"/>-ზე გამორთულია Bluetooth. შეიყვანეთ თქვენი პაროლი და ჩართეთ Bluetooth.</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (ნაგულისხმევი)</translation>
@@ -6537,6 +6564,7 @@
 <translation id="7933518760693751884">გვერდი მოგვიანებით წასაკითხად შესანახავად დააწკაპუნეთ სანიშნეს ხატულაზე</translation>
 <translation id="7933634003144813719">გაზიარებული საქაღალდეების მართვა</translation>
 <translation id="793531125873261495">ვირტუალური მოწყობილობის ჩამოტვირთვა ვერ ხერხდება. გთხოვთ, ცადოთ ხელახლა.</translation>
+<translation id="7935451262452051102">შესრულდა <ph name="PERCENT"/>%</translation>
 <translation id="7938594894617528435">ამჟამად ოფლაინშია</translation>
 <translation id="7939062555109487992">გაფართოებული ვარიანტები</translation>
 <translation id="7939412583708276221">მაინც შენახვა</translation>
@@ -6548,6 +6576,7 @@
 <translation id="7946586320617670168">წყარო უნდა იყოს დაცული</translation>
 <translation id="794676567536738329">დაადასტურეთ ნებართვები</translation>
 <translation id="7947962633355574091">ვიდეოს მისამართის კ&amp;ოპირება</translation>
+<translation id="7948407723851303488"><ph name="DOMAIN_NAME"/>-ის ყველა გვერდი</translation>
 <translation id="1618464105329025698">Brave Pay გადახდის მეთოდების დასამატებლად ან სამართავად გადადით თქვენს <ph name="BEGIN_LINK"/>Brave ანგარიშზე<ph name="END_LINK"/></translation>
 <translation id="7952708427581814389">საიტებს შეუძლია თქვენს გაცვლის ბუფერში არსებული ტექსტისა და სურათების ნახვის თხოვნა</translation>
 <translation id="795282463722894016">აღდგენა დასრულდა</translation>
@@ -6668,6 +6697,7 @@
 <translation id="8062844841289846053">{COUNT,plural, =1{ქაღალდის 1 ფურცელი}other{ქაღალდის {COUNT} ფურცელი}}</translation>
 <translation id="8063235345342641131">ნაგულისხმევი მწვანე ავატარი</translation>
 <translation id="8063535366119089408">ფაილის ნახვა</translation>
+<translation id="4608113456606545718">დაიცავით თქვენს ტელეფონზე არსებული მონაცემები ამ Bravebook-ის ძილის რეჟიმიდან გამოსვლის შემდეგ.</translation>
 <translation id="8064279191081105977">ჯგუფი „<ph name="GROUP_NAME"/>“ — <ph name="GROUP_CONTENTS"/> — <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">დაკავშირების დიალოგური ფანჯარა</translation>
 <translation id="8068253693380742035">შეეხეთ შესასვლელად</translation>
@@ -6727,6 +6757,7 @@
 <translation id="811994229154425014">წერტილის აკრეფა ორმაგი შორისით</translation>
 <translation id="8120505434908124087">eSIM პროფილის დაინსტალირება</translation>
 <translation id="812260729110117038">რეკლამის განმთავსებლები და გამომცემლები რეკლამის ეფექტურობის განსაზღვრას შეძლებენ იმგვარად, რომ სხვადასხვა საიტზე თვალი არ გადევნონ.</translation>
+<translation id="81231173274944570">შეხებადი რეაქციის ჩართვა. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
 <translation id="81238879832906896">ყვითელი და თეთრი ყვავილი</translation>
 <translation id="8124313775439841391">იმართება ONC</translation>
 <translation id="813082847718468539">საიტის ინფორმაციის ნახვა</translation>
@@ -6815,7 +6846,6 @@
 <translation id="8213449224684199188">გაშვებულია ფოტო რეჟიმი</translation>
 <translation id="8214489666383623925">ფაილის გახსნა…</translation>
 <translation id="8215129063232901118">ისარგებლეთ თქვენი ტელეფონის შესაძლებლობებით თქვენი <ph name="DEVICE_TYPE"/>-დან</translation>
-<translation id="8216351761227087153">ყურება</translation>
 <translation id="8217399928341212914">გააგრძელეთ რამოდენიმე ფაილის ავტომატური ჩამოტვირთვის დაბლოკვა</translation>
 <translation id="8221491193165283816">როგორც წესი, თქვენ ბლოკავთ შეტყობინებებს. ამ საიტისგან შეტყობინებების მისაღებად დააწკაპუნეთ აქ.</translation>
 <translation id="822347941086490485">მიმდინარეობს HID მოწყობილობების პოვნა…</translation>
@@ -6842,6 +6872,7 @@
 <translation id="8244514732452879619">ძილის დრო ახლოვდება</translation>
 <translation id="8246776524656196770">დაიცავით თქვენი უსაფრთხოები გასაღები PIN-კოდის (პერსონალური საიდენტიფიკაციო ნომრის) მეშვეობით</translation>
 <translation id="8248050856337841185">ჩ&amp;ასმა</translation>
+<translation id="3105590366897772437">Brave მინიშნება</translation>
 <translation id="8249048954461686687">OEM საქაღალდე</translation>
 <translation id="8249615410597138718">გააგზავნეთ თქვენს მოწყობილობებზე</translation>
 <translation id="8249672078237421304">გვერდების თარგმნის შემოთავაზება, თუ მათი ენა ბრაუზერში გამოყენებულისგან განსხვავდება</translation>
@@ -6915,7 +6946,6 @@
 <translation id="8324784016256120271">საიტები გამოიყენებს ქუქი-ჩანაწერებს სხვადასხვა საიტის თქვენ მიერ დათვალიერების აქტივობის სანახავად, მაგალითად, რეკლამის პერსონალიზების მიზნით</translation>
 <translation id="8325413836429495820">თქვენი გაცვლის ბუფერის ნახვა დაუშვებელია</translation>
 <translation id="8326478304147373412">PKCS #7, სერთიფიკატის ჯაჭვი</translation>
-<translation id="8327039559959785305">Linux ფაილების მიერთება ვერ მოხერხდა. გთხოვთ, ცადოთ ხელახლა.</translation>
 <translation id="8327676037044516220">ნებართვებისა და კონტენტის პარამეტრები</translation>
 <translation id="833256022891467078">Crostini-ს გაზიარებული საქაღალდეები</translation>
 <translation id="8335587457941836791">მოხსენით თაროდან</translation>
@@ -7025,6 +7055,7 @@
 <translation id="8460932807646981183">საძიებო სისტემებისა და Site Search-ის მართვა</translation>
 <translation id="84613761564611563">მოთხოვნილია ქსელის კონფიგურაციის UI. გთხოვთ, მოითმინოთ…</translation>
 <translation id="8461914792118322307">პროქსი</translation>
+<translation id="8463001014623882202">ავტორიზაცია ვერ მოხერხდა</translation>
 <translation id="8463215747450521436">შესაძლოა, კონტროლის ქვეშ მყოფი მომხმარებელი წაშლილი ან გამორთული იქნა მმართველის მიერ. თუ გსურთ გააგრძელოთ შესვლა ამ მომხმარებლის სახელით, დაუკავშირდით მმართველს.</translation>
 <translation id="846374874681391779">ჩამოტვირთვების ზოლი</translation>
 <translation id="8463955938112983119"><ph name="PLUGIN_NAME"/> გათიშულია.</translation>
@@ -7309,9 +7340,11 @@
 <translation id="8763927697961133303">USB მოწყობილობა</translation>
 <translation id="5108988215075699143">Brave Photos ალბომი</translation>
 <translation id="4570609078116869893">Brave-ის ავტომატურად განახლება ყველა მომხმარებლისთვის</translation>
+<translation id="8767765348545497220">დამხმარე ბუშტის დახურვა</translation>
 <translation id="8770406935328356739">გაფართოების ძირეული დირექტორია</translation>
 <translation id="8771300903067484968">საწყისი გვერდის ფონი გადაყენებულია ნაგულისხმევ ფონზე.</translation>
 <translation id="8773302562181397928"><ph name="PRINTER_NAME"/>-ის შენახვა</translation>
+<translation id="8773350724590665675">Snooping protection</translation>
 <translation id="8774379074441005279">დაადასტურეთ აღდგენა</translation>
 <translation id="8774934320277480003">ზედა მინდორი</translation>
 <translation id="8775144690796719618">URL არასწორია</translation>
@@ -7322,7 +7355,6 @@
 <translation id="8778328560035799409">ამჟამად მიკუთვნებული გადამრთველები გასუფთავდება</translation>
 <translation id="1732768497619250086">სურათების აღწერილობების მიღება Brave-ისგან</translation>
 <translation id="8780443667474968681">ხმოვანი ძიება გამოირთო.</translation>
-<translation id="878069093594050299">ეს სერთიფიკატი უკვე შემოწმებულია შემდეგი მოხმარებისთვის:</translation>
 <translation id="8781834595282316166">ახალი ჩანართი ჯგუფში</translation>
 <translation id="8782565991310229362">კიოსკის განაცხადის გაშვება გაუქმდა.</translation>
 <translation id="8783834180813871000">აკრიფეთ Bluetooth-დაწყვილების კოდი და დააჭირეთ Return-ს ან Enter-ს.</translation>
@@ -7428,6 +7460,7 @@
 <translation id="8879284080359814990">&amp;ჩანართის სახით ჩვენება</translation>
 <translation id="8879921471468674457">სისტემაში შესვლის ინფორმაციის დამახსოვრება</translation>
 <translation id="8880054210564666174">კონტაქტების სია ვერ ჩამოიტვირთა. შეამოწმეთ კავშირი ქსელთან, ან <ph name="LINK_BEGIN"/>ცადეთ ხელახლა<ph name="LINK_END"/>.</translation>
+<translation id="8880344290593529089">Linux-ს ან Parallels Desktop-ს <ph name="USB_DEVICE_NAME"/> რომ დააკავშიროთ, გახსენით პარამეტრები</translation>
 <translation id="8881020143150461183">გთხოვთ, ცადოთ ხელახლა. ტექნიკური მხარდაჭერის მისაღებად დაუკავშირდით <ph name="CARRIER_NAME"/>-ს.</translation>
 <translation id="8883273463630735858">სენსორული პანელის აჩქარების ჩართვა</translation>
 <translation id="8884570509232205463">თქვენი მოწყობილობა ახლა ჩაიკეტება <ph name="UNLOCK_TIME"/>-ზე.</translation>
@@ -7463,6 +7496,7 @@
 <translation id="8918637186205009138"><ph name="GIVEN_NAME"/>-ის <ph name="DEVICE_TYPE"/></translation>
 <translation id="8922624386829239660">ეკრანის გადაადგილება, როცა მაუსი ეკრანის კიდეებს ეხება</translation>
 <translation id="8923880975836399332">მუქი ფირუზისფერი</translation>
+<translation id="8925124370124776087">სათაურის ზოლი უკვე დამალულია</translation>
 <translation id="8925458182817574960">&amp;პარამეტრები</translation>
 <translation id="8926389886865778422">აღარ მკითხო</translation>
 <translation id="892706138619340876">ზოგიერთი პარამეტრი გადაყენებულია</translation>
@@ -7585,7 +7619,6 @@
 <translation id="9040661932550800571">გსურთ <ph name="ORIGIN"/>-ის პაროლის განახლება?</translation>
 <translation id="9041692268811217999">თქვენს მოწყობილობაზე არსებულ ადგილობრივ ფაილებზე წვდომა გათიშულია თქვენი ადმინისტრატორის მიერ</translation>
 <translation id="904224458472510106">ამ ოპერაციას ვერ გააუქმებთ</translation>
-<translation id="9042893549633094279">კონფიდენციალურობა და უსაფრთხოება</translation>
 <translation id="904451693890288097">გთხოვთ შეიყვანოთ ძირითადი გასაღები „<ph name="DEVICE_NAME"/>“-თვის:</translation>
 <translation id="9044646465488564462">ვერ დაუკავშირდა ქსელს: <ph name="DETAILS"/></translation>
 <translation id="9045160989383249058">თქვენმა საკითხავმა სიამ გადაინაცვლა ახალ გვერდით პანელზე. ცადეთ ის აქ.</translation>
@@ -7598,6 +7631,7 @@
 <translation id="9053893665344928494">ჩემი არჩევანის დამახსოვრება</translation>
 <translation id="9055636786322918818">RC4 დაშიფვრის იძულებით გააქტიურება. ამ ვარიანტის გამოყენება ზრდის საფრთხის წინაშე რისკს, ვინაიდან RC4 შიფრატორები დაუცველია.</translation>
 <translation id="9056810968620647706">შედეგები ვერ მოიძებნა.</translation>
+<translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/> ითხოვს შემდეგ კონტენტზე წვდომას:</translation>
 <translation id="9057354806206861646">განახლების განრიგი</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">შეცდომა ხაზებში <ph name="ERROR_LINE_START"/>-<ph name="ERROR_LINE_END"/></translation>
@@ -7790,6 +7824,7 @@
 <translation id="964439421054175458">{NUM_APLLICATIONS,plural, =1{აპლიკაცია}other{აპლიკაციები}}</translation>
 <translation id="964790508619473209">ეკრანის მოწყობა</translation>
 <translation id="965211523698323809">გაგზავნეთ და მიიღეთ ტექსტური შეტყობინებები თქვენს <ph name="DEVICE_TYPE"/>-ზე. <ph name="LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
+<translation id="8302628777674731869">Brave Cast-ის შესახებ შეტყობინება</translation>
 <translation id="967398046773905967">საიტებისთვის HID მოწყობილობებზე წვდომის აკრძალვა</translation>
 <translation id="967624055006145463">შენახული მონაცემები</translation>
 <translation id="96774243435178359">მართული პრინტერები</translation>
@@ -7858,7 +7893,6 @@
 <translation id="5828545842856466741">მომხმარებლის დამატება…</translation>
 <translation id="2254158488150713536">გასაგრძელებლად დაწკაპუნებით აირჩიეთ „კარგი“, ხოლო შემდეგ — „მომხმარებლის დამატება“, რათა შექმნათ ახალი პროფილი თქვენი ელფოსტის მისამართისთვის.</translation>
 <translation id="1725743343613175327">გასაგრძელებლად დაწკაპუნებით აირჩიეთ „კარგი“, ხოლო შემდეგ — „მომხმარებლის დამატება“, რათა შექმნათ ახალი პროფილი თქვენი <ph name="DOMAIN"/> ელფოსტის მისამართისთვის.</translation>
-<translation id="1278825116220478166">ადამიანები</translation>
 <translation id="3707212204259470604">სხვა ადამიანების მართვა</translation>
 <translation id="5832813618714645810">ხალხი</translation>
 <translation id="5840822070878669614">Brave Web Store-ის გახსნა</translation>

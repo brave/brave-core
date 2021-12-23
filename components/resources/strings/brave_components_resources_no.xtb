@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Neste</translation>
 <translation id="7954950242989581218">Surf på en trygg og fornuftig måte</translation>
 <translation id="2188651882929633653">Brave Shields blokkerer de lumske greiene som prøver å spore  deg på tvers av nettet – inkludert de fleste annonser. Sett Shields til «nede» hvis det er nettsteder som ikke ser ut til å fungere. Brave bruker <ph name="BEGIN_LINK_P3A"/>helt privat produktdiagnostikk<ph name="END_LINK_P3A"/> til å beregne den totale bruken av visse funksjoner. Du kan slå av dette i <ph name="BEGIN_LINK_P3A_SETTINGS"/>Innstillinger<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Reklamer</translation>
-<translation id="6769094341455418696">Tjen [[currency]] ved å se Brave-annonser. Annonser som presenteres er basert på interessene dine, som utledet av nettleseratferden din. Personlige data og nettleserloggen vil ikke forlate nettleseren din.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Tjen [[currency]] ved å se private Brave-annonser. Annonser som vises er basert på interessene dine, basert på hvordan du bruker nettleseren. Personlige data og nettleserlogg blir ikke sendt fra nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidra</translation>
 <translation id="3742599705619405136">En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling, og surf som normalt. De Brave-verifiserte nettstedene du besøker, mottar bidragene dine automatisk, basert på oppmerksomheten som måles av Brave.</translation>
 <translation id="3325399124634342726">Nåværende inntekt denne måneden (anslått)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Vi viser siste {{numberOfLines}} linjer av loggen. Hvis du vil se hele loggen, kan du laste den ned over.</translation>
 <translation id="7168491065836975228">Interne belønninger</translation>
 <translation id="758790787422117549">Person-ID</translation>
+<translation id="1919345977826869612">Annonser</translation>
 <translation id="3671566813999349838">Sum</translation>
 <translation id="751223241692981112">Gjort krav på</translation>
 <translation id="3913089081619091801">Gjør krav på ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>
-<translation id="2383784987664887340">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY pr. Sept 15, 2021</translation>
+<translation id="3066983737886188034">Med Gemini kan du enkelt handle med, lagre og tjene renter på BAT-ene dine. Verifiser og tilknytt Brave Rewards-lommeboken til Gemini nå!</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Gå til <ph name="PROVIDER"/>-kontoen min</translation>
 <translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for å fullføre bekreftelsen</translation>
 <translation id="7793632266654336758">Fullfør identitietsbekreftelsen for å begynne å motta belønninger.</translation>
+<translation id="2394961582378297792">Logget ut</translation>
+<translation id="5511950864417840431">Logg ut fra <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ansl. inntjening</translation>
 <translation id="7577100371127227294">Månedlige tips</translation>
 <translation id="5894023780213944778">Min lommebok</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave bruker <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som DEX-aggregator.</translation>
 <translation id="151946611346774041">0x behandler Ethereum-adressen og IP-adressen for å fullføre en transaksjon (inkludert å hente priser). 0x bruker KUN disse dataene for å behandle transaksjoner.</translation>
 <translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
+<translation id="2704606927547763573">Kopiert</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
 <translation id="8303434745767477417">Ha et inventar av kryptoressurser. Hold øye med hvordan porteføljen din gjør det, og ha interaksjon med web 3 DApps. Handle, invester, lån og lån ut med DeFi – alt dette rett i den private Brave-nettleseren. Ingen utvidelser eller nedlastinger kreves.</translation>
 <translation id="6972754398087986839">Kom i gang</translation>
 <translation id="375882617301124395">Lag en sikkerhetskopi av kryptolommeboken din</translation>
-<translation id="1078873179929044999">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
+<translation id="180032279811483155">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
 <translation id="5024543173656851695">Jeg forstår at hvis jeg mister ordene for gjenoppretting, mister jeg også tilgangen til kryptolommeboken min.</translation>
 <translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
 <translation id="5077747669435508720">Skriv ned eller kopier disse ordene i den nøyaktige rekkefølgen vist nedenfor, og lagre informasjonen på et trygt sted. Sikkerhetsfrasen din er den eneste måten du kan gjenopprette kontotilgangen på hvis du glemmer passordet, enheten din går tapt eller du vil bytte lommebøker.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Prøv å bytte HD-bane (over) hvis du ikke finner kontoen du leter etter.</translation>
 <translation id="2844691569989101734">Ledger – Live</translation>
 <translation id="7265732100380987017">Utrangerte (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Ingen resultater funnet.</translation>
 <translation id="5149944858285555235">Ukjent feil. Koble til maskinvarelommeboken din og prøv på nytt.</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="9220525904950070496">Fjern konto</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transaksjoner</translation>
 <translation id="523862956770478816">Nettstedstillatelser</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> kontoer koblet til</translation>
+<translation id="4305817255990598646">Bytt</translation>
+<translation id="3890989020011724401">Ny konto</translation>
 <translation id="4460220693591349571">FUNKSJONSTYPE</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domenet <ph name="DOMAIN_NAME"/> er ikke registrert</translation>
 <translation id="8971278306757462297">Mottaksadressen er din egen adresse</translation>
 <translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
+<translation id="5517732667776806421">Manglende informasjon om sum</translation>
+<translation id="4006711930669471508">Ugyldig informasjon om sum</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvis <ph name="TRANSACTION_LENGTH"/> transaksjoner</translation>
 <translation id="1118876217803190221">Utilstrekkelig saldo.</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Intern feil</translation>
 <translation id="3327639091470204775">Kunne ikke koble til Trezor-broen</translation>
 <translation id="6672377693827764095">Intern feil, kan ikke hente kontoer</translation>
+<translation id="6889920539620318793">Sett som aktiv</translation>
 <translation id="8933250418452564886">Fant ikke maskinvaretransaksjonen. Prøv på nytt.</translation>
 <translation id="5999974802900788338">Mottaksfeil fra maskinvareenhet. Sannsynligvis må du bekrefte transaksjonen på enheten din.</translation>
 <translation id="8523768065044261559">Feil under behandling av transaksjonen. Prøv på nytt.</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Feil under signering av melding. Ukjent nøkkelring forespurt. Prøv på nytt.</translation>
 <translation id="5265455943786954050">Trezor-kommandoen er allerede aktiv</translation>
 <translation id="7017116822583380542">Trezor-broen er ikke klar</translation>
+<translation id="3378339846292573874">Legg til foreslåtte token</translation>
+<translation id="2322227405137827074">Ønsker du å legge til dette tokenet?</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
 <translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
+<translation id="8458987127502506209">Aktiver Brave Shields</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>OPP<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Hvis denne siden virker ødelagt, kan du prøve med Sheilds nede. Merk: Dette kan redusere personvernbeskyttelsen på Brave.</translation>
+<translation id="8377155647357436161">Sporinger, reklamer og annet blokkert <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Avanserte kontroller</translation>
+<translation id="1299672573512347813">Disse innstillingene påvirker nettkompatibiliteten på denne siden.</translation>
+<translation id="9204041448536398473">Globale Shield-innstillinger</translation>
+<translation id="7637771346619326580">Endre globale Shield-standarder</translation>
+<translation id="3520486481604057261">Tilpass Adblock-lister</translation>
+<translation id="3146531623184244174">Tilkoblinger oppgradert til HTTPS</translation>
+<translation id="131231380815754440">Aktiver HTTPS</translation>
+<translation id="7461425058443653485">Blokkerte skript</translation>
+<translation id="3246600097575692802">Aktiver blokkerte skript</translation>
+<translation id="3603525299146223354">Sporinger &amp; annonser</translation>
+<translation id="1146309636943354181">Sporing &amp; annonser blokkert (standard)</translation>
+<translation id="5973258875089964805">Sporing &amp; annonser blokkert (aggressivt)</translation>
+<translation id="5544888475837817215">Tillat alle sporinger og annonser</translation>
+<translation id="6203697265754637264">Tredjeparts informasjonskapsler blokkert</translation>
+<translation id="4627427111733173920">Informasjonskapler er blokkert</translation>
+<translation id="7855168553463825937">Alle informasjonskapsler blokkert</translation>
+<translation id="8366221601425141146">Fingerprinting blokkert</translation>
+<translation id="5582686930349810484">Fingerskrift blokkert (standard)</translation>
+<translation id="6696441392507885865">Fingerskrift blokkert (streng, sider kan slutte å fungere)</translation>
+<translation id="5882733945883311404">Tillat all bruk av fingeravtrykk</translation>
 <translation id="1742469581923031760">Kobler til…</translation>
 <translation id="1287487756047817908">Kobler fra…</translation>
 <translation id="2325196879156848326">Tilkoblingen mislyktes</translation>

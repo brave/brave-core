@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Bağlantı kesildi",
+    "message": "Oturum kapatıldı",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave Ödüllerden Ayrıl",
-    "description": ""
+    "message": "$provider$ oturumunu kapat",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Tahmini Kazanç",

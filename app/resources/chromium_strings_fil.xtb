@@ -15,7 +15,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="7419046106786626209">Hindi ma-sync ng Chrome OS ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
 <translation id="5147525139567260139">Magbahagi ng tab ng Brave</translation>
 <translation id="1530633922026945685">Kailangan ng Brave ng access sa iyong camera para gumawa ng 3D na mapa ng kapaligiran mo</translation>
-<translation id="4828904843379324771">Kapag isinara mo ang Brave, awtomatiko nitong kini-clear ang cookies at data ng site sa mga page na binisita mo</translation>
 <translation id="5616153642055197778">May available na bago at mas ligtas na bersyon ng Brave.</translation>
 <translation id="6797402139308059782">Hayaang tumakbo ang Brave sa background</translation>
 <translation id="5875673934455379806">Muling i-install ang Brave</translation>
@@ -30,6 +29,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="8745514854244955877">Brave - Pag-sign in sa Network - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Kung nagpapahiram ka ng computer, ang mga kaibigan at kapamilya ay maaaring mag-browse nang hiwalay at i-set up ang Brave sa paraang gusto nila.</translation>
 <translation id="5997267581285668459">Opsyonal: Tumulong na pahusayin ang mga feature at performance ng Chrome OS sa pamamagitan ng awtomatikong pagpapadala sa Brave ng data ng diagnostic at paggamit.</translation>
+<translation id="7810992039564280750">Sinusuri ang mga URL sa pamamagitan ng listahan ng mga hindi ligtas na site na naka-store sa Brave. Kung susubukan ng site na nakawin ang iyong password, o kapag nag-download ka ng mapaminsalang file, posible ring magpadala ang Brave sa Ligtas na Pag-browse ng mga URL, kabilang ang ilang content ng page.</translation>
 <translation id="9095263438435683933">Para magpadala ng numero sa iyong Android phone mula rito, mag-sign in sa Brave sa parehong device.</translation>
 <translation id="3813272600615358652">Binago ng extension na ito ang ipinapakitang page kapag sinimulan mo ang Chronium.</translation>
 <translation id="2576129394594491151">Binago ng extension na "<ph name="EXTENSION_NAME"/>" ang ipinapakitang page kapag sinimulan mo ang Brave.</translation>
@@ -50,9 +50,11 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2799223571221894425">Ilunsad Muli</translation>
 <translation id="3783547330001921298">Gagawa ito ng bagong profile sa Brave para sa <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Alisin sa Brave...</translation>
+<translation id="5265419033369521352">Pinapanatili kang ligtas sa Brave at puwedeng gamitin para paigtingin ang iyong seguridad sa iba pang Brave app kapag naka-sign in ka</translation>
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">Tungkol sa &amp;Brave</translation>
 <translation id="8208853227947884571">Napapanahon ang Brave</translation>
+<translation id="5122472867956731189">Kung susubukan ng site na nakawin ang iyong password, o kapag nag-download ka ng mapaminsalang file, posible ring magpadala ang Brave sa Ligtas na Pag-browse ng mga URL, kabilang ang ilang content ng page</translation>
 <translation id="2953892977076487219">Sinusubukan ng Brave na i-edit ang mga password.</translation>
 <translation id="8755404239607088219">Hindi masuri ng Brave ang iyong mga password. Subukan ulit sa ibang pagkakataon.</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
@@ -125,7 +127,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="1786715389543715322">Ina-update ang Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Pagayan ang pag-sign in sa Brave</translation>
 <translation id="5536657158619734169">May available na isang bagong bersyon ng Brave.</translation>
-<translation id="5874882355102994015">Hindi maipapakita ng Brave ang preview ng pag-print kapag nawawala ang built-in na PDF viewer.</translation>
 <translation id="239760341987199724">Itakda ang Brave bilang iyong default na browser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">Hindi mabuksan ng Chrome OS ang page na ito.</translation>
@@ -159,6 +160,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="8320964054148936490">May mas bagong bersyon ng Brave na ang computer na ito. Kung hindi gumagana ang software, mangyaring i-uninstall ang Brave at subukang muli.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Muli nang ilulunsad ang Brave ngayon}=1{Muli nang ilulunsad ang Brave sa loob ng 1 segundo}one{Muli nang ilulunsad ang Brave sa loob ng # segundo}other{Muli nang ilulunsad ang Brave sa loob ng # na segundo}}</translation>
 <translation id="5980269616827212166">Kailangan ng Brave ng pahintulot sa access sa storage para makapag-download ng mga file</translation>
+<translation id="7651600795135059130">Sinusuri ang mga URL sa pamamagitan ng listahan ng mga hindi ligtas na site na naka-store sa Brave</translation>
 <translation id="5019879183386042809">Gawing default na browser ang Brave</translation>
 <translation id="428541510811554120">Hindi matingnan ng Brave kung may mga update. Subukang tingnan ang iyong koneksyon sa internet.</translation>
 <translation id="7445061995866044926">Mag-sign out sa Brave?</translation>
@@ -185,7 +187,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="1489465648257900784">Hindi maaaring gamitin ang iyong profile dahil mula ito sa isang mas bagong bersyon ng Brave.
 
 Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktoryo ng profile o gumamit ng mas bagong bersyon ng Brave.</translation>
-<translation id="5450493308072741203">I-update ang &amp;Brave</translation>
 <translation id="6666624454809779082">Naka-install na ang Brave para sa lahat ng user sa iyong computer.</translation>
 <translation id="5360050006043219962">Para ma-access ang iyong mga bagay sa Brave sa lahat ng device mo, mag-sign in, at pagkatapos ay i-on ang pag-sync.</translation>
 <translation id="8291513491595858997">Na-off ng iyong magulang ang "Mga pahintulot para sa mga site, app, at extension" para sa Brave. Hindi pinapayagan ang pag-enable sa <ph name="EXTENSION_TYPE_PARAMETER"/> na ito.</translation>
@@ -200,12 +201,12 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="3335606533094650083">Kailangan ng Brave ng pahintulot na i-access ang iyong mikropono para sa site na ito</translation>
 <translation id="1705567146636171298">I-update ang Brave</translation>
 <translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave.</translation>
-<translation id="151916274998710826">I-customize ang ilan sa pinakamahalagang opsyon sa privacy ng Brave</translation>
+<translation id="151916274998710826">I-customize ang ilan sa pinakamahahalagang opsyon sa privacy ng Brave</translation>
 <translation id="1008530050039597147">Kailangan ng Brave ng pahintulot sa camera para sa site na ito</translation>
 <translation id="1197672524850678392">Hindi mailunsad ang Brave. Subukang muli.</translation>
 <translation id="3405035915691517126">Hindi masuri ng Brave ang iyong mga password. Subukan ulit pagkalipas ng 24 na oras.</translation>
+<translation id="5101812148953915496">Naaalala ng mga site na binibisita mo ang iyong impormasyon hanggang sa isara mo ang Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
-<translation id="61852838583753520">I-update ang &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Ina-update ang Brave</translation>
 <translation id="3403365884036456766">Sira o di-wasto ang file ng iyong mga kagustuhan.
 
@@ -258,6 +259,8 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="6283840329609797763">Nabigo ang pag-install dahil sa hindi natukoy na error. Mangyaring i-download muli ang Brave.</translation>
 <translation id="2433912322225810055">Kinokontrol din nito kung anong pahina ang ipinapakita kapag sinimulan mo ang Brave o naghanap mula sa Omnibox.</translation>
 <translation id="4100716194836114130">Ito ang iyong Brave</translation>
+<translation id="6208136456999964972">Kapag isinara mo ang lahat ng window ng Brave, awtomatikong maki-clear ang cookies at data ng site</translation>
+<translation id="6371875426681214174"><ph name="BEGIN_BOLD"/>Masa-sign out ka sa karamihan ng mga site<ph name="END_BOLD"/> kapag isinara mo ang Brave. Kung naka-off ang pag-sync, <ph name="BEGIN_BOLD"/>masa-sign out ka sa mga serbisyo ng Brave at Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Kailangan ng Brave ng pahintulot na i-access ang iyong camera at mikropono para sa site na ito</translation>
 <translation id="7408085963519505752">Mga tuntunin ng Chrome OS</translation>
 <translation id="2262856633481902138">Hindi mai-sync ng Brave ang iyong data dahil hindi napapanahon ang mga detalye sa pag-sign in ng iyong account.</translation>

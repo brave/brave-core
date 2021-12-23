@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="7954950242989581218">Naviguer en toute sécurité</translation>
 <translation id="2188651882929633653">Brave Shields bloque les éléments effrayants qui tentent de vous suivre sur le web — y compris la plupart des publicités. Réglez Shields sur “bas” si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A"/>des analyses produit entièrement privées<ph name="END_LINK_P3A"/> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cela dans <ph name="BEGIN_LINK_P3A_SETTINGS"/>Paramètres<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Publicités</translation>
-<translation id="6769094341455418696">Gagnez des [[currency]] en regardant des annonces Brave Ads. Les annonces sont présentées en fonction de vos centres d'intérêt, tels qu'ils sont déduits de votre comportement de navigation. Vos données personnelles ou votre historique de navigation ne quittent jamais votre navigateur.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Gagnez des [[currency]] en regardant des annonces privées Brave. Les annonces sont présentées en fonction de vos centres d'intérêt, tels qu'ils sont déduits de votre comportement de navigation. Vos données personnelles ou votre historique de navigation ne quittent jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Contribuer automatiquement</translation>
 <translation id="3742599705619405136">Un moyen automatique de soutenir les éditeurs et les créateurs de contenu. Définissez un paiement mensuel et naviguez normalement. Les sites vérifiés par Brave que vous visiterez recevront vos contributions automatiquement, en fonction de votre attention, telle que mesurée par Brave.</translation>
 <translation id="3325399124634342726">Revenu actuel ce mois-ci (estimation)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Nous affichons les [[numberOfLines]] dernières lignes du journal. Si vous souhaitez consulter le journal complet, vous pouvez le télécharger ci-dessus.</translation>
 <translation id="7168491065836975228">Récompense les internes</translation>
 <translation id="758790787422117549">Identification de la personnalité</translation>
+<translation id="1919345977826869612">Annonces</translation>
 <translation id="3671566813999349838">Montant</translation>
 <translation id="751223241692981112">Réclamé à</translation>
 <translation id="3913089081619091801">Identifiant de la demande</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Vérification complète du portefeuille</translation>
 <translation id="9200453331904391567">Se déconnecter des Récompenses de Brave</translation>
 <translation id="3656941797339037856">Associez Rewards à Gemini !</translation>
-<translation id="2383784987664887340">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY sur votre BAT. Vérifiez votre portefeuille de récompenses Brave et associez-le à Gemini dès maintenant!</translation>
-<translation id="2237374144728570574">* APY Gemini Earn au 15 septembre 2021</translation>
+<translation id="3066983737886188034">Gemini vous permet non seulement d'échanger et de stocker votre BAT, mais également de percevoir des intérêts dessus, et ce en toute simplicité. Vérifiez votre portefeuille de récompenses Brave et associez-le à Gemini dès maintenant!</translation>
 <translation id="7404779623219601861">Échange de BAT contre des cartes-cadeaux</translation>
 <translation id="6215565499749144110">Avec le TAP réseau, vous pouvez échanger votre BAT contre des cartes-cadeaux de marques connues.</translation>
 <translation id="6915065518766963119">* Nécessite une vérification de conformité.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Accéder à mon compte <ph name="PROVIDER"/></translation>
 <translation id="2389181429986654814">Accédez à <ph name="PROVIDER"/> pour terminer la vérification</translation>
 <translation id="7793632266654336758">Veuillez terminer la vérification d'identité afin de commencer à recevoir des récompenses.</translation>
+<translation id="2394961582378297792">Déconnecté</translation>
+<translation id="5511950864417840431">Se déconnecter de <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Revenus estimés</translation>
 <translation id="7577100371127227294">Pourboires mensuels</translation>
 <translation id="5894023780213944778">Mon portefeuille</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave utilise <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> comme agrégateur DEX.</translation>
 <translation id="151946611346774041">0x traitera l'adresse Ethereum et l'adresse IP pour effectuer une transaction (y compris pour obtenir des devis). 0x utilisera ces données UNIQUEMENT dans le but de traiter les transactions.</translation>
 <translation id="4626407663177532837">L'estimation inclut des frais de 0,875 % facturés par Brave.</translation>
+<translation id="2704606927547763573">Copié</translation>
 <translation id="6518133107902771759">Vérifier</translation>
 <translation id="1420318137760245955">Bienvenue dans le nouveau portefeuille Brave</translation>
 <translation id="8303434745767477417">Conservez les actifs cryptos que vous détenez. Suivez la performance de votre portefeuille et interagissez avec des DApps web3. Négociez, investissez, empruntez et prêtez avec FiDé. Tout cela directement depuis le navigateur privé Brave. Aucune extension ni aucun téléchargement requis.</translation>
 <translation id="6972754398087986839">Démarrer</translation>
 <translation id="375882617301124395">Sauvegarder votre portefeuille crypto</translation>
-<translation id="1078873179929044999">À l'étape suivante, vous verrez une phrase de récupération de 12 mots, que vous pouvez utiliser pour récupérer vos comptes cryptos principaux. Conservez-la en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
+<translation id="180032279811483155">À l'étape suivante, vous verrez une phrase de récupération de 12 mots, que vous pouvez utiliser pour récupérer vos comptes cryptos principaux. Conservez-la en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
 <translation id="5024543173656851695">Je comprends que si je perds ma phrase de récupération, je ne pourrai plus accéder à mon portefeuille crypto.</translation>
 <translation id="3933122286596948824">Votre phrase de récupération</translation>
 <translation id="5077747669435508720">Notez ou copiez ces mots dans l'ordre exact indiqué ci-dessous, et conservez-les en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Essayez de changer de chemin HD (ci-dessus) si vous ne parvenez pas à trouver le compte que vous recherchez.</translation>
 <translation id="2844691569989101734">Ledger en direct</translation>
 <translation id="7265732100380987017">Hérités (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Aucun  résultat n'a été trouvé.</translation>
 <translation id="5149944858285555235">Erreur inconnue, veuillez reconnecter votre portefeuille physique et réessayer.</translation>
 <translation id="4522570452068850558">Détails</translation>
 <translation id="9220525904950070496">Supprimer le compte</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transactions</translation>
 <translation id="523862956770478816">Autorisations de site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> comptes connectés</translation>
+<translation id="4305817255990598646">Changer</translation>
+<translation id="3890989020011724401">Nouveau compte</translation>
 <translation id="4460220693591349571">TYPE DE FONCTION</translation>
 <translation id="838933475572692615">DONNÉES HEX</translation>
 <translation id="2240831799756994975">OCTETS</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Le domaine <ph name="DOMAIN_NAME"/> n'est pas enregistré</translation>
 <translation id="8971278306757462297">L'adresse de réception est votre propre adresse</translation>
 <translation id="3506416339268164412">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
+<translation id="5517732667776806421">Renseignements relatifs à la somme de contrôle manquants</translation>
+<translation id="4006711930669471508">Renseignements relatifs à la somme de contrôle non valides</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Rejeter les transactions <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Solde insuffisant</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Erreur interne</translation>
 <translation id="3327639091470204775">Impossible de se connecter au pont Trezor</translation>
 <translation id="6672377693827764095">Erreur interne, impossible de récupérer les comptes</translation>
+<translation id="6889920539620318793">Définir comme actif</translation>
 <translation id="8933250418452564886">La transaction matérielle est introuvable, veuillez réessayer</translation>
 <translation id="5999974802900788338">L'appareil physique a renvoyé une erreur. Vous devez probablement confirmer la transaction sur votre appareil</translation>
 <translation id="8523768065044261559">Erreur lors du traitement de la transaction, veuillez réessayer</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Impossible de signer le message : le trousseau demandé est inconnu. Veuillez réessayer</translation>
 <translation id="5265455943786954050">Une commande Trezor est déjà en cours</translation>
 <translation id="7017116822583380542">Le pont Trezor n'est pas prêt</translation>
+<translation id="3378339846292573874">Ajouter le jeton suggéré</translation>
+<translation id="2322227405137827074">Voulez-vous importer ce jeton?</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="3745016858329272300">Informations générales</translation>
 <translation id="4045404575593562245">Événements relatifs au contrôle de Tor</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">URL du proxy Tor</translation>
 <translation id="1671503397662036257">État de la connexion à Tor</translation>
 <translation id="6024292492796847324">Progrès de l'initialisation de Tor</translation>
+<translation id="8458987127502506209">Activer les boucliers Brave</translation>
+<translation id="640898327002833127">Boucliers Brave <ph name="LINK_BEFORE"/>ACTIVÉS<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Si ce site ne fonctionne pas correctement, essayez de désactiver les boucliers. Remarque : cette action risque de limiter les protections de confidentialité de Brave.</translation>
+<translation id="8377155647357436161">Traqueurs, annonces et autres contenus bloqués <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Contrôles avancés</translation>
+<translation id="1299672573512347813">Ces paramètres affectent la compatibilité web sur ce site.</translation>
+<translation id="9204041448536398473">Paramètres globaux des boucliers</translation>
+<translation id="7637771346619326580">Modifier les paramètres par défaut globaux des boucliers</translation>
+<translation id="3520486481604057261">Personnaliser les listes Adblock</translation>
+<translation id="3146531623184244174">Connexions mises à niveau vers HTTPS</translation>
+<translation id="131231380815754440">Activer HTTPS</translation>
+<translation id="7461425058443653485">Scripts bloqués</translation>
+<translation id="3246600097575692802">Développer la liste des scripts bloqués</translation>
+<translation id="3603525299146223354">Traqueurs &amp; annonces</translation>
+<translation id="1146309636943354181">Traqueurs et annonces bloqués (standard)</translation>
+<translation id="5973258875089964805">Traqueurs et annonces bloqués (agressif)</translation>
+<translation id="5544888475837817215">Autoriser tous les traqueurs et toutes les annonces</translation>
+<translation id="6203697265754637264">Témoins inter-site bloqués</translation>
+<translation id="4627427111733173920">Cookies bloqués</translation>
+<translation id="7855168553463825937">Tous les témoins autorisés</translation>
+<translation id="8366221601425141146">Empreintes digitales bloquées</translation>
+<translation id="5582686930349810484">Prise des empreintes digitales bloquée (standard)</translation>
+<translation id="6696441392507885865">Création d'une empreinte numérique bloquée (strict, peut casser les sites)</translation>
+<translation id="5882733945883311404">Autoriser tous les scripts de création d'une empreinte numérique</translation>
 <translation id="1742469581923031760">Connexion en cours…</translation>
 <translation id="1287487756047817908">Déconnexion en cours…</translation>
 <translation id="2325196879156848326">Échec de la connexion</translation>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
+    "message": "ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
-    "description": ""
+    "message": "$provider$ ನಿಂದ ಲಾಗ್ ಔಟ್ ಮಾಡಿ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "ಅಂದಾಜು ಮಾಡಲಾದ ಗಳಿಕೆಗಳು",

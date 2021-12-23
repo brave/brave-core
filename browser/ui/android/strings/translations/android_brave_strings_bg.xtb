@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave новини поддържа напълно поверителни и анонимни реклами, подбрани на вашето устройство.</translation>
 <translation id="4541978218358617681">Реклама</translation>
 <translation id="1765217911817124376">Включете Brave новини</translation>
+<translation id="6527303717912515753">Споделяне</translation>
 <translation id="1654539412343893324">Научете повече за своите данни</translation>
 <translation id="2989805286512600854">Отваряне в нов раздел</translation>
 <translation id="3709782636417497984">Отваряне в нов поверителен раздел</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Вашето портмоне</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave новини</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">Щатски долари</translation>
 <translation id="1165667598801520610">Добавяне на средства</translation>
 <translation id="8428213095426709021">Настройки</translation>
-<translation id="8772672608371898774">Brave проверен издател</translation>
-<translation id="1397683270551078781">Все още не е потвърдено</translation>
+<translation id="6020176662032623904">Потвърден създател</translation>
+<translation id="2369994359029526515">Непотвърден създател</translation>
 <translation id="880893465294676334">Този проверен създател на Brave все още не е конфигурирал акаунта си да получава приноси от потребители на Brave.
         Всички бакшиши, които изпратите, ще останат в портфейла ви до края на този процес.</translation>
 <translation id="8918760045046434238">Изпратете бакшиш...</translation>
@@ -278,11 +279,12 @@
 <translation id="9096003370755878766">Изтеглете BAT, които може да сте добавили преди това в портфейла си Brave Rewards</translation>
 <translation id="1554282356558968486">Нашите услуги за портфейл се осигуряват от</translation>
 <translation id="6569877533335686968">Одобрявам</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold може да изисква да потвърдите самоличността си въз основа на поисканите услуги.</translation>
-<translation id="723054503945711909">Brave Software Inc. не обработва, не съхранява и няма достъп до никои от личните данни, които предоставяте на Uphold, когато създавате акаунт при тях.</translation>
+<translation id="3200197118442451932">Brave Software Inc. не обработва, съхранява или осъществява достъп до лична информация, която предоставяте на <ph name="WALLET_PROVIDER"/>, когато създадете акаунт там.</translation>
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="2193391216824305230">Потребителски портфейл</translation>
-<translation id="6585020831163574892">Към вашия акаунт в Uphold</translation>
+<translation id="1665118090708049096">Към моя акаунт в <ph name="WALLET_PROVIDER"/></translation>
 <translation id="9200453331904391567">Прекатяване на връзката с Brave Rewards</translation>
 <translation id="6239274080752256452">Изтегляне на средства</translation>
 <translation id="8874184842967597500">Няма връзка</translation>
@@ -291,10 +293,6 @@
 <translation id="5358719431303818601">Прекъсната връзка, не е потвърден</translation>
 <translation id="4241449868720191203">Прекъсната връзка, потвърден</translation>
 <translation id="3248185426436836442">Предстоящо</translation>
-<translation id="8108013093558639183">В момента BAT не се поддържа във вашия регион въз основа на местоположението, на което е регистриран акаунтът ви. Проверете отново по-късно за наличност.</translation>
-<translation id="4190454391025419535">Регионът не се поддържа</translation>
-<translation id="6830703472632069884">При потвърждаването на портфейла ви възникна проблем, опитайте отново по-късно.</translation>
-<translation id="3512533646933434345">Грешка в потвърждаването на портфейла</translation>
 <translation id="2260513517001048012">ЗАБЕЛЕЖКА: Този проверен създател на Brave все още не е конфигурирал акаунта си, за да получава принос от потребители на Brave. Вашият браузър ще продължава с опита за принос, докато не потвърди или не изминат 90 дни.</translation>
 <translation id="4488355059795908907">Този проверен създател на Brave все още не е конфигурирал акаунта си, за да получава приноси от потребители на Brave. Всички финансови приноси, които изпращате, ще останат в портфейла ви, докато не завърши този процес.</translation>
 <translation id="2495032782748793764">Brave по подразбиране</translation>
@@ -425,16 +423,45 @@
 <translation id="1972589975368876259">Редактиране на групата</translation>
 <translation id="2490330380242414851">Премахване на изпълнимия модул</translation>
 <translation id="8446884382197647889">Научете повече</translation>
+<translation id="7384441892795736634">Обновяване на данните</translation>
+<translation id="4804818685124855865">Прекъсване на връзката</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес за депозиране</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Депозитна бележка</translation>
+<translation id="5110244215256675209">Купете криптовалути</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Купете <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Налично <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Преглед на конвертирането</translation>
 <translation id="2882813124794301799">Стек с изпълним модул</translation>
 <translation id="13296465911709339">Текстът ви е копиран в клипборда.</translation>
 <translation id="2735834606413553397">Публичният адрес е копиран в клипборда.</translation>
+<translation id="7144878232160441200">Повторен опит</translation>
 <translation id="2977461003134694205">Статистика за поверителност</translation>
 <translation id="4643117005422448078">Т</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Блокиране на тракери &amp;amp реклами, прогнозна спестена честотна лента и спестено време.</translation>
 <translation id="74417429503469271">Отваряйте топ сайтовете, които посещавате често.</translation>
+<translation id="2956070106555335453">Резюме</translation>
+<translation id="1366855498335432549">Депозиране</translation>
+<translation id="1301340234286078471">Конвертиер</translation>
 <translation id="223536150967420869">Купете</translation>
+<translation id="1714829281959608206">Разрешете връзка с Binance, за да видите салдото по сметката в Binance и да търгувате с криптовалути.</translation>
+<translation id="4584930231524505442">Искам да конвертирам...</translation>
+<translation id="5749014321384313843">Искам да похарча...</translation>
 <translation id="8688672835843460752">Наличен</translation>
+<translation id="2480674848181564169">Недостатъчно салдо за конвертиране</translation>
+<translation id="2215334405220411393">Минималната сума за конвертиране е : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Не може да осъществи връзка</translation>
+<translation id="7742417737698031726">Такса</translation>
+<translation id="2122225204180056042">Ще получите</translation>
+<translation id="6432284126416751397">Потвърди конвертирането</translation>
 <translation id="5137723827757859599">Тук все още няма нищо в топ сайтовете.</translation>
+<translation id="3891414008432200754">Цена</translation>
+<translation id="3733576242118819803">Потвърдете (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Конвертирането не беше успешно. Опитайте отново.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Печелете токени и върнете обратно</translation>
 <translation id="244362569344671266">Печелете токени, като гледате частни реклами с Brave и автоматично подкрепяте създателите на съдържание.</translation>
 <translation id="631124996535890460">Продължавайки, вие приемате <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
@@ -478,6 +505,8 @@
 <translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
 <translation id="7073631403665023390">Щракнете или натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
 <translation id="626339649633171286">Искате ли да научите повече за Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Превърнахте <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Проверете вашата мрежова връзка.</translation>
 <translation id="7889432931837317731">Автоматично отваряне, когато е възможно</translation>
 <translation id="8967385052772844086">Вижте пълния доклад за поверителност</translation>
 <translation id="6864343534748973390">Най-популярен</translation>
@@ -521,7 +550,7 @@
 <translation id="3171931580569169744">Разреши групи раздели</translation>
 <translation id="5587305863196367357">Потвърждаването на портфейла ви позволява да управлявате лесно средствата си, да добавяте към тях и &amp; да теглите</translation>
 <translation id="5760671211380791582">Нямате достатъчно BAT.</translation>
-<translation id="6960458596933484861">Необходимо е да имате поне 15 BAT, за да създадете потвърден портфейл в Uphold. Опитайте по-късно.</translation>
+<translation id="442469478596827903">Трябва да имате минимум 2 BAT, за да създадете потвърден портфейл в Uphold. Опитайте отново по-късно.</translation>
 <translation id="4389085954549744469">Ако вече имате потвърден акаунт в Uphold,  <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">продължете, за да влезете</translation>
 <translation id="1483493594462132177">Изпращане</translation>
@@ -776,4 +805,19 @@
 <translation id="8971278306757462297">Адресът на получаване е вашият собствен адрес</translation>
 <translation id="749944179568745958">ETH адресът не е валиден</translation>
 <translation id="3506416339268164412">Адресът на получаване е адресът на договора на токена</translation>
+<translation id="1543259266592091784">Добави средства</translation>
+<translation id="3494964159182650590">Резюме на наградите</translation>
+<translation id="7470079236088529568">Общо поискани безвъзмездни средства</translation>
+<translation id="590733288489975971">Награди от реклами</translation>
+<translation id="207268487070188114">Еднократно дарение</translation>
+<translation id="64394831139134288">Моят портфейл</translation>
+<translation id="8494748383523030337">Вашият баланс</translation>
+<translation id="7091980679045978090">Приблизителни печалби</translation>
+<translation id="1346059596910821859">Бакшиш</translation>
+<translation id="1549705559752367917">Изпрати бакшиш</translation>
+<translation id="6727102863431372879">Настройване</translation>
+<translation id="381822214767083050">Месечен принос</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

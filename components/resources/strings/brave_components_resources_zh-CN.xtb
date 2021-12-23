@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">下一步</translation>
 <translation id="7954950242989581218">Browse 安然无恙</translation>
 <translation id="2188651882929633653">Brave Shields 拦截了尝试在 Web 上—跟踪您的大部分恶意内容（包括许多广告）。如果某个站点无法正常运行，请将“设置为关闭”。Brave 使用 <ph name="BEGIN_LINK_P3A"/>completely private product analytics<ph name="END_LINK_P3A"/> 来估算特定功能的整体使用情况。您可以在 <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>中将其关闭。</translation>
-<translation id="1919345977826869612">广告</translation>
-<translation id="6769094341455418696">通过观看 Brave Ads 来赚取 [[currency]]。展示的广告是基于您的兴趣（根据你的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
+<translation id="4851215387785619212">Brave 专属广告</translation>
+<translation id="3114984266384096064">通过观看 Brave 专属广告来赚取 [[currency]]。展示的广告是基于您的兴趣（根据您的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="3742599705619405136">这是一种自动支持发布者和内容创建者的方式。设置每月付款并正常地进行浏览。您访问的、经 Brave 验证的网站会根据 Brave 测量出的您的关注度自动收到您的捐款。</translation>
 <translation id="3325399124634342726">本月当前收益（预估）</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">我们会向你展示日志的最后 [[numberOfLines]] 行。如果您想要完整的日志，您可以在上方下载。</translation>
 <translation id="7168491065836975228">内部奖励</translation>
 <translation id="758790787422117549">角色ID</translation>
+<translation id="1919345977826869612">广告</translation>
 <translation id="3671566813999349838">数量</translation>
 <translation id="751223241692981112">宣布地点</translation>
 <translation id="3913089081619091801">宣称 ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
-<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
-<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日赚取 APY</translation>
+<translation id="3066983737886188034">Gemini 可以让您轻松交易、存储，并赚取您的 BAT 利息。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">前往我的 <ph name="PROVIDER"/> 帐户</translation>
 <translation id="2389181429986654814">转到 <ph name="PROVIDER"/> 完成验证</translation>
 <translation id="7793632266654336758">请完成身份验证以开始接收奖励。</translation>
+<translation id="2394961582378297792">已退出登录</translation>
+<translation id="5511950864417840431">从 <ph name="PROVIDER"/> 退出登录</translation>
 <translation id="3600355176618429948">预估收益</translation>
 <translation id="7577100371127227294">每月赏金</translation>
 <translation id="5894023780213944778">我的钱包</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 作为 DEX 聚合器。</translation>
 <translation id="151946611346774041">0x 将处理以太坊地址和 IP 地址以完成交易（包括获取报价）。0x 只会将这些数据用于处理交易的目的。</translation>
 <translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
+<translation id="2704606927547763573">已复制</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="1420318137760245955">欢迎来到新的 Brave 钱包</translation>
 <translation id="8303434745767477417">保管加密资产。跟踪投资组合表现，并与 web 3 DApps 交互。使用 DeFi 交易、投资、借贷和贷款。所有操作都可以在 Brave 无痕浏览器中完成。无需扩展程序，不需要下载。</translation>
 <translation id="6972754398087986839">开始使用</translation>
 <translation id="375882617301124395">备份加密钱包</translation>
-<translation id="1078873179929044999">接下来，您将看到一个 12 个单词的恢复短语，可以将其用于恢复主加密账户。确保其安全。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复帐户访问的唯一方法。</translation>
+<translation id="180032279811483155">接下来，您将看到一个 12 个单词的恢复短语，可以将其用于恢复主加密账户。确保其安全。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复帐户访问的唯一方法。</translation>
 <translation id="5024543173656851695">我理解一旦我丢失我的恢复语句，我将无法访问我的加密钱包。</translation>
 <translation id="3933122286596948824">您的恢复密语</translation>
 <translation id="5077747669435508720">按照下面所示的顺序写下或复制这些单词，并将它们保存在安全的地方。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复账户访问的唯一方法。</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">如果找不到查找的帐户，试着切换 HD 路径（上方）。</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">旧式 (MEW/MyCrypto）</translation>
+<translation id="4549853322523631092">未找到结果。</translation>
 <translation id="5149944858285555235">未知错误，请重新连接硬件钱包并重试。</translation>
 <translation id="4522570452068850558">详细信息</translation>
 <translation id="9220525904950070496">移除帐号</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">交易</translation>
 <translation id="523862956770478816">站点权限</translation>
 <translation id="1575262454612599115">连接了 <ph name="NUMBER_OF_ACCOUNTS"/> 个账户</translation>
+<translation id="4305817255990598646">切换</translation>
+<translation id="3890989020011724401">新账户</translation>
 <translation id="4460220693591349571">功能类型</translation>
 <translation id="838933475572692615">HEX 数据</translation>
 <translation id="2240831799756994975">字节</translation>
@@ -1091,6 +1097,8 @@
 <translation id="6825399159373612149">域名 <ph name="DOMAIN_NAME"/> 未注册</translation>
 <translation id="8971278306757462297">接收地址是您自己的地址</translation>
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
+<translation id="5517732667776806421">缺少校验和信息</translation>
+<translation id="4006711930669471508">校验和信息无效</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">拒绝 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
 <translation id="1118876217803190221">余额不足</translation>
@@ -1112,6 +1120,7 @@
 <translation id="1119447706177454957">内部错误</translation>
 <translation id="3327639091470204775">无法连接至 Trezor 桥</translation>
 <translation id="6672377693827764095">内部错误，无法获取账户</translation>
+<translation id="6889920539620318793">设为活动</translation>
 <translation id="8933250418452564886">找不到硬件交易，请重试</translation>
 <translation id="5999974802900788338">从您的硬件设备收到错误，可能您需要在设备上确认交易</translation>
 <translation id="8523768065044261559">处理交易出错，请重试</translation>
@@ -1119,6 +1128,8 @@
 <translation id="8273603707418703324">签署消息出错，请求了未知的 keyring，请重试</translation>
 <translation id="5265455943786954050">Trezor 命令已在进行中</translation>
 <translation id="7017116822583380542">Trezor 网桥未就绪</translation>
+<translation id="3378339846292573874">添加建议的代币</translation>
+<translation id="2322227405137827074">要导入此代币吗？</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1127,6 +1138,30 @@
 <translation id="6951743416068151209">Tor 代理 URI</translation>
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
+<translation id="8458987127502506209">启用 Brave 盾牌</translation>
+<translation id="640898327002833127">Brave 盾牌 <ph name="LINK_BEFORE"/>开启<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">如果这个网站无法正常工作，试试关闭 Brave 盾牌。注意：这可能会削弱 Brave 的隐私保护。</translation>
+<translation id="8377155647357436161">拦截了跟踪器、广告和其他 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">高级控制</translation>
+<translation id="1299672573512347813">这些设置会影响网站的兼容性。</translation>
+<translation id="9204041448536398473">盾牌全局设置</translation>
+<translation id="7637771346619326580">更改全局默认值</translation>
+<translation id="3520486481604057261">自定义广告拦截列表</translation>
+<translation id="3146531623184244174">连接已升级至 HTTPS</translation>
+<translation id="131231380815754440">启用 HTTPS</translation>
+<translation id="7461425058443653485">脚本已拦截</translation>
+<translation id="3246600097575692802">允许拦截的脚本</translation>
+<translation id="3603525299146223354">跟踪器和广告</translation>
+<translation id="1146309636943354181">跟踪程序和广告被阻止（标准）</translation>
+<translation id="5973258875089964805">跟踪器和广告被阻止（攻击性）</translation>
+<translation id="5544888475837817215">允许所有跟踪器和广告</translation>
+<translation id="6203697265754637264">跨站点 Cookie 已拦截</translation>
+<translation id="4627427111733173920">已拦截 Cookies</translation>
+<translation id="7855168553463825937">已拦截所有 cookie</translation>
+<translation id="8366221601425141146">指纹被屏蔽</translation>
+<translation id="5582686930349810484">已拦截指纹识别（标准）</translation>
+<translation id="6696441392507885865">已拦截指纹识别 （严格，可能破坏网站）</translation>
+<translation id="5882733945883311404">允许所有指纹识别</translation>
 <translation id="1742469581923031760">正在连接...</translation>
 <translation id="1287487756047817908">正在断开连接...</translation>
 <translation id="2325196879156848326">连接失败</translation>

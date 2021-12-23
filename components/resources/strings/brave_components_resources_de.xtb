@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Weiter</translation>
 <translation id="7954950242989581218">Sicheres Surfen</translation>
 <translation id="2188651882929633653">Brave Shields blockiert das gruselige Zeug, das versucht, Sie im Web zu verfolgen – einschließlich der meisten Anzeigen. Stellen Sie Shields auf „aus“, falls eine Seite nicht zu funktionieren scheint. Brave nutzt <ph name="BEGIN_LINK_P3A"/>eine komplett private Produktanalyse<ph name="END_LINK_P3A"/>, um die Gesamtnutzung bestimmter Funktionen zu ermitteln. Sie können dies in den <ph name="BEGIN_LINK_P3A_SETTINGS"/>Einstellungen<ph name="END_LINK_P3A_SETTINGS"/> ändern.</translation>
-<translation id="1919345977826869612">Werbung</translation>
-<translation id="6769094341455418696">Verdienen Sie [[currency]], indem Sie sich Brave Ads ansehen. Die Werbung, die Ihnen angezeigt wird, basiert auf Ihren Interessen, die aus Ihrem Surfverhalten abgeleitet werden. Weder personenbezogene Daten noch Ihr Browserverlauf verlassen jemals Ihren Browser.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Verdienen Sie [[currency]], indem Sie sich Brave Privat-Ads ansehen. Die Werbung, die Ihnen angezeigt wird, basiert auf Ihren Interessen, die aus Ihrem Surfverhalten abgeleitet werden. Weder personenbezogene Daten noch Ihr Browserverlauf verlassen jemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="3742599705619405136">Dies ist eine Möglichkeit, wie Sie Herausgeber und Urheber automatisch unterstützen können. Wählen Sie eine monatlichen Zahlbetrag und surfen Sie normal im Internet. Webseiten mit "Brave"-Zertifikat, die Sie besuchen, erhalten automatisch einen bestimmten Betrag. Dieser ist abhängig von Ihrer Aufmerksamkeit, die Brave misst.</translation>
 <translation id="3325399124634342726">Aktuelle Verdienste diesen Monat (geschätzt)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Wir zeigen die letzten [[numberOfLines]] Zeilen des Protokolls. Wenn Sie das gesamte Protokoll sehen möchten, können Sie es oben herunterladen.</translation>
 <translation id="7168491065836975228">Rewards-Interna</translation>
 <translation id="758790787422117549">Persona-ID</translation>
+<translation id="1919345977826869612">Werbung</translation>
 <translation id="3671566813999349838">Betrag</translation>
 <translation id="751223241692981112">Eingefordert bei</translation>
 <translation id="3913089081619091801">Einforderungs-ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="3656941797339037856">Verknüpfen Sie Belohnungen mit Gemini!</translation>
-<translation id="2383784987664887340">Mit Gemini können Sie ganz einfach handeln, speichern und 3,49 % APY auf Ihre BAT verdienen. Verifizieren und verknüpfen Sie jetzt Ihre Brave-Prämien-Wallet mit Gemini!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY ab dem 15. September 2021</translation>
+<translation id="3066983737886188034">Mit Gemini können Sie ganz einfach handeln, speichern und Zinsen auf Ihre BAT verdienen. Verifizieren und verknüpfen Sie jetzt Ihre Brave-Prämien-Wallet mit Gemini!</translation>
 <translation id="7404779623219601861">BAT gegen Geschenkgutscheine eintauschen</translation>
 <translation id="6215565499749144110">Mithilfe des TAP Network können Sie Ihre BAT gegen Geschenkgutscheine beliebter Marken eintauschen.</translation>
 <translation id="6915065518766963119">* Erfordert Uphold-Verifizierung.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Wechseln zu meinem <ph name="PROVIDER"/> Konto</translation>
 <translation id="2389181429986654814">Zu <ph name="PROVIDER"/> gehen, um die Verifizierung abzuschließen</translation>
 <translation id="7793632266654336758">Bitte schließen Sie die Identitätsverifizierung ab, um Belohnungen zu sammeln.</translation>
+<translation id="2394961582378297792">Abgemeldet</translation>
+<translation id="5511950864417840431">Von <ph name="PROVIDER"/> abmelden</translation>
 <translation id="3600355176618429948">Geschätzter Verdienst</translation>
 <translation id="7577100371127227294">Monatliche Spenden</translation>
 <translation id="5894023780213944778">Meine Wallet</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave verwendet <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-Aggregator.</translation>
 <translation id="151946611346774041">0x verarbeitet die Ethereum-Adresse und die IP-Adresse, um eine Transaktion auszuführen (einschließlich des Abrufens von Angeboten). 0x wird diese Daten NUR zur Abwicklung von Transaktionen verwenden.</translation>
 <translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
+<translation id="2704606927547763573">Kopiert</translation>
 <translation id="6518133107902771759">Überprüfen</translation>
 <translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
 <translation id="8303434745767477417">Halten Sie Krypto-Assets in Ihrer Verwahrung. Verfolgen Sie die Portfolioleistung und interagieren Sie mit Web-3-DApps. Handeln, investieren, leihen und verleihen Sie mit DeFi. Alles direkt über den Brave-Datenschutzbrowser. Keine Erweiterungen, kein Download erforderlich.</translation>
 <translation id="6972754398087986839">Erste Schritte</translation>
 <translation id="375882617301124395">Sichern Sie Ihre Krypto-Wallet</translation>
-<translation id="1078873179929044999">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
+<translation id="180032279811483155">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
 <translation id="5024543173656851695">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet habe, wenn ich meine Wörter zur Wiederherstellung verliere.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
 <translation id="5077747669435508720">Schreiben oder kopieren Sie diese Wörter in der genauen Reihenfolge, die unten gezeigt wird, und bewahren Sie sie an einem sicheren Ort auf. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff wiederzuerlangen, wenn Sie Ihr Passwort vergessen, Ihr Gerät verloren oder gestohlen haben oder Ihre Wallet wechseln möchten.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Versuchen Sie, den HD-Pfad (oben) zu wechseln, wenn Sie das gesuchte Konto nicht finden können.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Veraltet (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Keine Suchergebnisse gefunden.</translation>
 <translation id="5149944858285555235">Unbekannter Fehler, bitte verbinden Sie Ihre Hardware Wallet erneut und versuchen Sie es erneut.</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="9220525904950070496">Konto entfernen</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">Transaktionen</translation>
 <translation id="523862956770478816">Site-Berechtigungen</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> Konten verbunden</translation>
+<translation id="4305817255990598646">Wechseln</translation>
+<translation id="3890989020011724401">Neues Konto</translation>
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domäne <ph name="DOMAIN_NAME"/> ist nicht registriert</translation>
 <translation id="8971278306757462297">Die Empfangsadresse ist Ihre eigene Adresse</translation>
 <translation id="3506416339268164412">Die Empfangsadresse ist die Vertragsadresse eines Tokens</translation>
+<translation id="5517732667776806421">Fehlende Prüfsummeninformationen</translation>
+<translation id="4006711930669471508">Ungültige Prüfsummeninformationen</translation>
 <translation id="862585889767884824">von</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> Transaktionen ablehnen</translation>
 <translation id="1118876217803190221">Guthaben reicht nicht aus.</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Interner Fehler</translation>
 <translation id="3327639091470204775">Keine Verbindung zur Trezor-Brücke möglich</translation>
 <translation id="6672377693827764095">Interner Fehler, Konten können nicht abgerufen werden</translation>
+<translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="8933250418452564886">Hardwaretransaktion kann nicht gefunden werden. Bitte versuchen Sie es erneut</translation>
 <translation id="5999974802900788338">Fehler vom Hardwaregerät erhalten, wahrscheinlich müssen Sie die Transaktion auf Ihrem Gerät bestätigen</translation>
 <translation id="8523768065044261559">Fehler beim Verarbeiten der Transaktion, bitte versuchen Sie es erneut</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Fehler beim Signieren der Nachricht, unbekannter Schlüsselbund angefordert, bitte versuchen Sie es erneut</translation>
 <translation id="5265455943786954050">Trezor-Befehl ist bereits in Bearbeitung</translation>
 <translation id="7017116822583380542">Trezor-Brücke ist nicht fertig</translation>
+<translation id="3378339846292573874">Vorgeschlagenes Token hinzufügen</translation>
+<translation id="2322227405137827074">Möchten Sie dieses Token importieren?</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor Proxy URL</translation>
 <translation id="1671503397662036257">Tor Verbindungsstatus</translation>
 <translation id="6024292492796847324">Tor Initialisierung Fortschritt</translation>
+<translation id="8458987127502506209">Brave Shields aktivieren</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>AKTIVIERT<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Wenn diese Site nicht funktionsfähig zu sein scheint, versuchen Sie Shields zu deaktivieren. Hinweis: Dies kann den Datenschutz von Brave beeinträchtigen.</translation>
+<translation id="8377155647357436161">Tracker, Werbung und mehr blockiert <ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Erweiterte Steuerelemente</translation>
+<translation id="1299672573512347813">Diese Einstellungen wirken sich auf die Webkompatibilität auf dieser Site aus.</translation>
+<translation id="9204041448536398473">Globale Shield-Einstellungen</translation>
+<translation id="7637771346619326580">Globale Shield-Einstellungen ändern</translation>
+<translation id="3520486481604057261">Adblock-Listen anpassen</translation>
+<translation id="3146531623184244174">Verbindungen auf HTTPS aktualisiert</translation>
+<translation id="131231380815754440">HTTPS aktivieren</translation>
+<translation id="7461425058443653485">Script blockiert</translation>
+<translation id="3246600097575692802">Blockierte Skripte aktivieren</translation>
+<translation id="3603525299146223354">Tracker &amp; Anzeigen</translation>
+<translation id="1146309636943354181">Tracker &amp; Werbung blockiert (Standard)</translation>
+<translation id="5973258875089964805">Tracker &amp; Werbung blockiert (aggressiv)</translation>
+<translation id="5544888475837817215">Alle Tracker und Anzeigen zulassen</translation>
+<translation id="6203697265754637264">Websiteübergreifende Cookies deaktiviert</translation>
+<translation id="4627427111733173920">Cookies blockiert</translation>
+<translation id="7855168553463825937">Alle Cookies blockiert</translation>
+<translation id="8366221601425141146">Fingerprinting blockiert</translation>
+<translation id="5582686930349810484">Fingerabdruck blockiert (Standard)</translation>
+<translation id="6696441392507885865">Fingerabdrücke blockiert (streng, Websites können fehlerhaft laden)</translation>
+<translation id="5882733945883311404">Alle Fingerabdrücke zulassen</translation>
 <translation id="1742469581923031760">Wird verbunden…</translation>
 <translation id="1287487756047817908">Verbindung wird getrennt…</translation>
 <translation id="2325196879156848326">Verbindung fehlgeschlagen</translation>

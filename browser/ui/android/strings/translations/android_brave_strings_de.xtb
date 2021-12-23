@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave-Nachrichten werden werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihrem Gerät abgeglichen werden.</translation>
 <translation id="4541978218358617681">Werbung</translation>
 <translation id="1765217911817124376">Brave News aktivieren</translation>
+<translation id="6527303717912515753">Teilen</translation>
 <translation id="1654539412343893324">Mehr über Ihre Daten erfahren</translation>
 <translation id="2989805286512600854">In neuem Tab öffnen</translation>
 <translation id="3709782636417497984">In neuem privatem Tab öffnen</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Ihre Wallet</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Konto aufladen</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
-<translation id="8772672608371898774">Brave Verifizierter Herausgeber</translation>
-<translation id="1397683270551078781">Noch nicht verifiziert</translation>
+<translation id="6020176662032623904">Verifizierter Urheber</translation>
+<translation id="2369994359029526515">Unverifizierter Urheber</translation>
 <translation id="880893465294676334">Dieser verifizierte Content-Creator hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann.
         Wenn Sie Trinkgeld geben, bleibt dieses in Ihrer Wallet, bis der Content-Creator diesen Vorgang abgeschlossen hat.</translation>
 <translation id="8918760045046434238">Spenden Sie ...</translation>
@@ -276,11 +277,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="9096003370755878766">Heben Sie die BAT ab, die Sie unter Umständen zu Ihrer Brave Rewards-Wallet hinzugefügt haben.</translation>
 <translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
 <translation id="6569877533335686968">Aufrechterhalten</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
-<translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
+<translation id="3200197118442451932">Brave Software Inc. verarbeitet, speichert oder greift auf keine der persönlichen Informationen zu, die Sie <ph name="WALLET_PROVIDER"/> zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="2193391216824305230">Benutzer-Wallet</translation>
-<translation id="6585020831163574892">Zum Uphold-Konto gehen</translation>
+<translation id="1665118090708049096">Zu meinem <ph name="WALLET_PROVIDER"/>-Konto wechseln</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="6239274080752256452">Geld abheben</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
@@ -289,10 +291,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5358719431303818601">Trennung nicht verifiziert</translation>
 <translation id="4241449868720191203">Trennung verifiziert</translation>
 <translation id="3248185426436836442">Ausstehend</translation>
-<translation id="8108013093558639183">BAT wird in Ihrer Region, basierend auf dem Standort, an dem Ihr Konto eröffnet wird, momentan nicht unterstützt. Prüfen Sie die Verfügbarkeit später.</translation>
-<translation id="4190454391025419535">Region nicht unterstützt</translation>
-<translation id="6830703472632069884">Es gab ein Problem bei der Verifizierung Ihres Wallets, bitte versuchen Sie es später erneut.</translation>
-<translation id="3512533646933434345">Walletverifizierungsfehler</translation>
 <translation id="2260513517001048012">HINWEIS: Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Ihr Browser wird versuchen, bis zur Verifizierung beizutragen oder bis 90 Tage vergangen sind.</translation>
 <translation id="4488355059795908907">Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alles Geld, das sie senden, bleibt in Ihrem Wallet, bis er diesen Prozess abschließt.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
@@ -423,16 +421,45 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1972589975368876259">Stapel Bearbeiten</translation>
 <translation id="2490330380242414851">Widget entfernen</translation>
 <translation id="8446884382197647889">Mehr...</translation>
+<translation id="7384441892795736634">Daten aktualisieren</translation>
+<translation id="4804818685124855865">Trennen</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Anzahlungsadresse</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo-Anzahlung</translation>
+<translation id="5110244215256675209">Kryptowährung kaufen</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> kaufen</translation>
+<translation id="558614325644656740">Verfügbar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Umtauschvorschau</translation>
 <translation id="2882813124794301799">Widget Stapel</translation>
 <translation id="13296465911709339">Ihr Text wurde in die Zwischenablage kopiert.</translation>
 <translation id="2735834606413553397">Öffentliche Adresse wurde in die Zwischenablage kopiert.</translation>
+<translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="2977461003134694205">Statistiken zur Privatsphäre</translation>
 <translation id="4643117005422448078">Führende Websites</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Tracker &amp; Ads blockiert, gesparte Bandwidth und geschätzte gesparte Zeit.</translation>
 <translation id="74417429503469271">Öffnen Sie Top-Seiten, die Sie regelmäßig besuchen.</translation>
+<translation id="2956070106555335453">Zusammenfassung</translation>
+<translation id="1366855498335432549">Einzahlung</translation>
+<translation id="1301340234286078471">Umtauschen</translation>
 <translation id="223536150967420869">Kaufen</translation>
+<translation id="1714829281959608206">Aktivieren Sie die Binance-Verbindung, um den Binance-Kontostand einzusehen und Kryptowährung zu handeln.</translation>
+<translation id="4584930231524505442">Ich möchte umtauschen ...</translation>
+<translation id="5749014321384313843">Ich möchte ausgeben ...</translation>
 <translation id="8688672835843460752">Verfügbar</translation>
+<translation id="2480674848181564169">Nicht genügend Guthaben für Konversion</translation>
+<translation id="2215334405220411393">Mindestmenge für die Umwandlung ist: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Verbindung nicht möglich</translation>
+<translation id="7742417737698031726">Gebühr</translation>
+<translation id="2122225204180056042">Sie erhalten</translation>
+<translation id="6432284126416751397">Umtausch bestätigen</translation>
 <translation id="5137723827757859599">Es gibt zurzeit noch nichts auf den Top-Seiten.</translation>
+<translation id="3891414008432200754">Preis</translation>
+<translation id="3733576242118819803">Bestätigen (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konversion fehlgeschlagen. Bitte erneut versuchen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Verdienen Sie Token &amp; förden Sie andere</translation>
 <translation id="244362569344671266">Verdienen Sie Token, indem Sie private Werbeanzeigen von Brave ansehen und automatisch Inhaltsersteller unterstützen.</translation>
 <translation id="631124996535890460">Durch Fortfahren stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
@@ -476,6 +503,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3415016869273103668">Sie können jetzt einen kostenlosen Anruf starten</translation>
 <translation id="7073631403665023390">Klicken oder tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
 <translation id="626339649633171286">Möchten Sie mehr über Brave-Prämien erfahren? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Sie haben <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> in <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> konvertiert!</translation>
+<translation id="392587271502873865">Bitte prüfen Sie Ihre Netzwerkverbindung.</translation>
 <translation id="7889432931837317731">Wenn möglich automatisch öffnen</translation>
 <translation id="8967385052772844086">Vollen Datenschutzbericht sehen</translation>
 <translation id="6864343534748973390">Beliebteste</translation>
@@ -519,7 +548,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3171931580569169744">Tabgruppen aktivieren</translation>
 <translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
 <translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
-<translation id="6960458596933484861">Sie brauchen mindestens 15 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
+<translation id="442469478596827903">Sie brauchen mindestens 2 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
 <translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">melden Sie sich an</translation>
 <translation id="1483493594462132177">Senden</translation>
@@ -774,4 +803,19 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="8971278306757462297">Die Empfangsadresse ist Ihre eigene Adresse</translation>
 <translation id="749944179568745958">Keine gültige ETH-Adresse</translation>
 <translation id="3506416339268164412">Die Empfangsadresse ist die Vertragsadresse eines Tokens</translation>
+<translation id="1543259266592091784">Konto aufladen</translation>
+<translation id="3494964159182650590">Belohnungsübersicht</translation>
+<translation id="7470079236088529568">Insgesamt ausgezahlte Einkünfte</translation>
+<translation id="590733288489975971">Belohnungen aus Ads</translation>
+<translation id="207268487070188114">Einmaliges Trinkgeld</translation>
+<translation id="64394831139134288">Meine Wallet</translation>
+<translation id="8494748383523030337">Ihr Kontostand</translation>
+<translation id="7091980679045978090">Geschätzter Verdienst</translation>
+<translation id="1346059596910821859">Spenden</translation>
+<translation id="1549705559752367917">Trinkgeld senden</translation>
+<translation id="6727102863431372879">Festlegen</translation>
+<translation id="381822214767083050">Monatlicher Beitrag</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

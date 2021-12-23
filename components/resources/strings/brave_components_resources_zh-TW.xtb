@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">繼續</translation>
 <translation id="7954950242989581218">安全瀏覽</translation>
 <translation id="2188651882929633653">Brave Shields 封鎖整個網路上嘗試追蹤您的可怕事物—包括大部分的廣告。如果網站似乎無法正常運作，請將 Shields 設為「關閉」。Brave 使用<ph name="BEGIN_LINK_P3A"/>完全隱密產品分析<ph name="END_LINK_P3A"/>估計特定功能的整體使用情況。您可以在<ph name="BEGIN_LINK_P3A_SETTINGS"/>設定<ph name="END_LINK_P3A_SETTINGS"/>中關閉此功能。</translation>
-<translation id="1919345977826869612">廣告</translation>
-<translation id="6769094341455418696">透過觀看 Brave Ads 來賺取 [[currency]]。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
+<translation id="4851215387785619212">Brave 私密廣告</translation>
+<translation id="3114984266384096064">透過觀看 Brave 私密廣告來賺取 [[currency]]。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="3742599705619405136">一種自動資助發行者和內容創作者的方式。設定每月付款並正常瀏覽。您造訪的 Brave 驗證網站會根據 Brave 測量到您的注意度自動收到您的捐助。</translation>
 <translation id="3325399124634342726">本月當前收入（估計）</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">我們會顯示記錄檔中最新的 [[numberOfLines]] 行。如需取得完整記錄，可從上方下載。</translation>
 <translation id="7168491065836975228">內部獎勵</translation>
 <translation id="758790787422117549">個人 ID</translation>
+<translation id="1919345977826869612">廣告</translation>
 <translation id="3671566813999349838">數量</translation>
 <translation id="751223241692981112">領取於</translation>
 <translation id="3913089081619091801">領取 ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">完成電子錢包驗證</translation>
 <translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
 <translation id="3656941797339037856">將 Rewards 連結至 Gemini！</translation>
-<translation id="2383784987664887340">Gemini 可讓您輕鬆交易、儲存與賺取 3.49% APY 的 BAT。立即驗證並連結 Brave 獎勵錢包與 Gemini！</translation>
-<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日起賺取 APY</translation>
+<translation id="3066983737886188034">Gemini 可讓您輕鬆交易、儲存與賺取 BAT 的利息。立即驗證並連結 Brave 獎勵錢包與 Gemini！</translation>
 <translation id="7404779623219601861">使用 BAT 兌換禮物卡</translation>
 <translation id="6215565499749144110">使用 TAP 網路，您可以使用您的 BAT 來兌換熱門名牌禮物卡。</translation>
 <translation id="6915065518766963119">* 需要 Uphold 驗證。</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">到我的<ph name="PROVIDER"/>帳戶</translation>
 <translation id="2389181429986654814">前往 <ph name="PROVIDER"/> 以完成驗證</translation>
 <translation id="7793632266654336758">請完成身分驗證以開始接受獎勵。</translation>
+<translation id="2394961582378297792">已登出</translation>
+<translation id="5511950864417840431">登出 <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">預估收益</translation>
 <translation id="7577100371127227294">每月小費</translation>
 <translation id="5894023780213944778">我的錢包</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 做為 DEX 彙總工具。</translation>
 <translation id="151946611346774041">0x 將會處理 Ethereum 位址和 IP 位址以履行交易 (包括取得報價)。0x 只會將此資料用於處理交易的用途。</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
+<translation id="2704606927547763573">已複製</translation>
 <translation id="6518133107902771759">驗證</translation>
 <translation id="1420318137760245955">歡迎使用新 Brave 錢包</translation>
 <translation id="8303434745767477417">保管加密資產。追蹤投資組合表現，並與 web 3 DApps 互動。使用 DeFi 交易、投資、借貸和貸款。所有這一切皆可在 Brave 私密瀏覽器中完成。無需延伸組件，無需下載。</translation>
 <translation id="6972754398087986839">開始使用</translation>
 <translation id="375882617301124395">備份您的加密錢包</translation>
-<translation id="1078873179929044999">下一步您將看到一個 12 字的還原片語，可用於還原您的主加密帳戶。請妥善保管。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
+<translation id="180032279811483155">下一步您將看到一個 12 字的還原片語，可用於還原您的主加密帳戶。請妥善保管。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
 <translation id="5024543173656851695">我明白，如果我遺失了我的備援單字，我將無法存取我的加密錢包。</translation>
 <translation id="3933122286596948824">您的備援短語</translation>
 <translation id="5077747669435508720">嚴格按照下面所示的順序寫下或複製這些單詞，並妥善保管它們。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">如果找不到您想要的帳戶，請嘗試切換硬碟路徑（上方）</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">舊式 (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">未找到結果。</translation>
 <translation id="5149944858285555235">不明錯誤，請重新連線硬體錢包，然後再試一次。</translation>
 <translation id="4522570452068850558">詳情</translation>
 <translation id="9220525904950070496">移除帳戶</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">交易紀錄</translation>
 <translation id="523862956770478816">網站權限</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> 個帳戶已連線</translation>
+<translation id="4305817255990598646">切換</translation>
+<translation id="3890989020011724401">新帳戶</translation>
 <translation id="4460220693591349571">功能類型</translation>
 <translation id="838933475572692615">十六進位資料</translation>
 <translation id="2240831799756994975">位元組</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">網域 <ph name="DOMAIN_NAME"/> 未註冊</translation>
 <translation id="8971278306757462297">收件地址是您自己的地址</translation>
 <translation id="3506416339268164412">收件地址是代幣的聯絡地址</translation>
+<translation id="5517732667776806421">缺少檢查總和資訊</translation>
+<translation id="4006711930669471508">無效的檢查總和資訊</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">拒絕 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
 <translation id="1118876217803190221">餘額不足</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">內部錯誤</translation>
 <translation id="3327639091470204775">無法連線 Trezor Bridge</translation>
 <translation id="6672377693827764095">內部錯誤，無法提取帳戶</translation>
+<translation id="6889920539620318793">設定為啟用</translation>
 <translation id="8933250418452564886">無法找到硬體交易，請再試一次</translation>
 <translation id="5999974802900788338">收到來自硬體裝置的錯誤，您可能需要在裝置上確認交易</translation>
 <translation id="8523768065044261559">處理交易有誤，請再試一次</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">簽署訊息有誤，請求了未知的 Keyring，請再試一次</translation>
 <translation id="5265455943786954050">Trezor 命令已在進行中</translation>
 <translation id="7017116822583380542">Trezor 橋接未準備就緒</translation>
+<translation id="3378339846292573874">加入建議的代幣</translation>
+<translation id="2322227405137827074">要匯入此代幣嗎？</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor 代理伺服器 URI</translation>
 <translation id="1671503397662036257">Tor 連線狀態</translation>
 <translation id="6024292492796847324">Tor 初始化進度</translation>
+<translation id="8458987127502506209">啟用 Brave 防護</translation>
+<translation id="640898327002833127">Brave 防護 <ph name="LINK_BEFORE"/>開啟<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">如果此網站似乎損壞，請嘗試關閉防護。注意：這可能降低 Brave 隱私保護。</translation>
+<translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">進階控管</translation>
+<translation id="1299672573512347813">這些設定會影響此網站的網路相容性。</translation>
+<translation id="9204041448536398473">全域防護設定</translation>
+<translation id="7637771346619326580">變更全域防護預設值</translation>
+<translation id="3520486481604057261">自訂廣告封鎖清單</translation>
+<translation id="3146531623184244174">條已升級到 HTTPS 的連線</translation>
+<translation id="131231380815754440">啟用 HTTPS</translation>
+<translation id="7461425058443653485">封鎖指令稿</translation>
+<translation id="3246600097575692802">允許封鎖的指令檔</translation>
+<translation id="3603525299146223354">追蹤程式與廣告</translation>
+<translation id="1146309636943354181">追蹤器與廣告封鎖（標準）</translation>
+<translation id="5973258875089964805">追蹤器與廣告封鎖（積極）</translation>
+<translation id="5544888475837817215">允許所有追蹤程式與廣告</translation>
+<translation id="6203697265754637264">已封鎖跨站 cookies</translation>
+<translation id="4627427111733173920">被封鎖的 cookies</translation>
+<translation id="7855168553463825937">已封鎖所有 cookie</translation>
+<translation id="8366221601425141146">採集指紋封鎖了</translation>
+<translation id="5582686930349810484">封鎖指紋（標準）</translation>
+<translation id="6696441392507885865">已封鎖指紋（嚴格，可能會破壞網站）</translation>
+<translation id="5882733945883311404">允許所有指紋</translation>
 <translation id="1742469581923031760">連線中…</translation>
 <translation id="1287487756047817908">正在中斷連線…</translation>
 <translation id="2325196879156848326">連線失敗</translation>

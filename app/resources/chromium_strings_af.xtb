@@ -15,7 +15,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="7419046106786626209">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
 <translation id="5147525139567260139">Deel 'n Brave-oortjie</translation>
 <translation id="1530633922026945685">Brave moet toestemming hê om toegang te kry tot jou kamera om 'n 3D-kaart van jou omgewing te skep</translation>
-<translation id="4828904843379324771">Wanneer jy Brave toemaak, word die webkoekies en werfdata van die bladsye wat jy besoek het, outomaties uitgevee</translation>
 <translation id="5616153642055197778">Daar is 'n nuwe, veiliger weergawe van Brave beskikbaar.</translation>
 <translation id="6797402139308059782">Laat Brave in die agtergrond loop</translation>
 <translation id="5875673934455379806">Herinstalleer Brave</translation>
@@ -30,6 +29,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8745514854244955877">Brave – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">As jy 'n rekenaar deel, kan vriende en familie apart blaai en Brave opstel net soos hulle dit wil hê.</translation>
 <translation id="5997267581285668459">Opsioneel: Help om Brave-bedryfstelselkenmerke en -werkverrigting beter te maak deur outomaties diagnostiese en gebruiksdata na Brave toe te stuur.</translation>
+<translation id="7810992039564280750">Vergelyk URL'e met 'n lys onveilige werwe wat in Brave geberg is. As 'n werf probeer om jou wagwoord te steel, of wanneer jy 'n skadelike lêer aflaai, sal Brave dalk ook URL'e, insluitend stukkies bladsyinhoud, na Veiligblaai toe stuur.</translation>
 <translation id="9095263438435683933">Meld op albei toestelle by Brave aan om 'n nommer van hier af na jou Android-foon te stuur.</translation>
 <translation id="3813272600615358652">Hierdie uitbreiding het verander watter bladsy gewys word wanneer jy Brave begin.</translation>
 <translation id="2576129394594491151">Die uitbreiding "<ph name="EXTENSION_NAME"/>" het verander watter bladsy gewys word wanneer jy Brave begin.</translation>
@@ -50,9 +50,11 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2799223571221894425">Begin weer</translation>
 <translation id="3783547330001921298">Dit sal 'n nuwe Brave-profiel vir <ph name="USER_EMAIL_ADDRESS"/> skep</translation>
 <translation id="777113543093865885">Verwyder uit Brave …</translation>
+<translation id="5265419033369521352">Hou jou veilig op Brave en kan gebruik word om jou sekuriteit in ander Brave-programme te verbeter wanneer jy aangemeld is</translation>
 <translation id="2885378588091291677">Taakbestuurder</translation>
 <translation id="2176825726964012531">Meer oor Brave</translation>
 <translation id="8208853227947884571">Brave is op datum</translation>
+<translation id="5122472867956731189">As 'n werf probeer om jou wagwoord te steel, of wanneer jy 'n skadelike lêer aflaai, sal Brave dalk ook URL'e, insluitend stukkies bladsyinhoud, na Veiligblaai toe stuur</translation>
 <translation id="2953892977076487219">Brave probeer tans wagwoorde wysig.</translation>
 <translation id="8755404239607088219">Brave kan nie jou wagwoorde nagaan nie. Probeer later weer.</translation>
 <translation id="8880183781256147665">Voeg tans by Brave …</translation>
@@ -125,7 +127,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1786715389543715322">Dateer Brave tans op (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Laat Brave-aanmelding toe</translation>
 <translation id="5536657158619734169">Daar is 'n nuwe weergawe van Brave beskikbaar.</translation>
-<translation id="5874882355102994015">Brave kan nie die drukvoorskou wys wanneer die ingeboude PDF-bekyker ontbreek nie.</translation>
 <translation id="239760341987199724">Stel Brave as jou verstekblaaier</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="707769633889902835">Chrome OS kan nie hierdie bladsy oopmaak nie.</translation>
@@ -159,6 +160,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8320964054148936490">Hierdie rekenaar het reeds 'n meer onlangse weergawe van Brave. As die sagteware nie werk nie, deïnstalleer Brave en probeer weer.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave sal nou herbegin}=1{Brave sal oor 1 sekonde herbegin}other{Brave sal oor # sekondes herbegin}}</translation>
 <translation id="5980269616827212166">Brave het bergingtoegangtoestemming nodig om lêers af te laai</translation>
+<translation id="7651600795135059130">Vergelyk URL'e met 'n lys onveilige werwe wat in Brave geberg word</translation>
 <translation id="5019879183386042809">Maak Brave die verstekblaaier</translation>
 <translation id="428541510811554120">Brave kan nie nagaan of daar opdaterings is nie. Probeer om jou internetverbinding na te gaan.</translation>
 <translation id="7445061995866044926">Meld by Brave af?</translation>
@@ -185,7 +187,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1489465648257900784">Jou profiel kan nie gebruik word nie want dit is van 'n nuwer weergawe van Brave af.
 
 Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielgids of gebruik 'n nuwer weergawe van Brave.</translation>
-<translation id="5450493308072741203">Dateer Brave op</translation>
 <translation id="6666624454809779082">Brave is reeds vir alle gebruikers op jou rekenaar geïnstalleer.</translation>
 <translation id="5360050006043219962">Meld aan en skakel dan sinkronisering aan om op al jou toestelle toegang tot jou Brave-goed te kry.</translation>
 <translation id="8291513491595858997">Jou ouer het "Toestemmings vir werwe, programme en uitbreidings" vir Brave afgeskakel. Hierdie <ph name="EXTENSION_TYPE_PARAMETER"/> mag nie geaktiveer word nie.</translation>
@@ -204,8 +205,8 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
 <translation id="1008530050039597147">Brave het kameratoestemming vir hierdie werf nodig</translation>
 <translation id="1197672524850678392">Kon nie Brave begin nie. Probeer weer.</translation>
 <translation id="3405035915691517126">Brave kan nie jou wagwoorde nagaan nie. Probeer weer ná 24 uur.</translation>
+<translation id="5101812148953915496">Werwe wat jy besoek, onthou jou inligting totdat jy Brave toemaak</translation>
 <translation id="5516268345616100622">Taakbestuurder – Brave</translation>
-<translation id="61852838583753520">Dateer Brave-bedryfstelsel op</translation>
 <translation id="1864557848095568223">Dateer tans Brave op</translation>
 <translation id="3403365884036456766">Jou voorkeurelêer is korrup of ongeldig.
 
@@ -258,6 +259,8 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="6283840329609797763">Kon weens 'n ongespesifiseerde fout nie installeer nie. Laai Brave asseblief weer af.</translation>
 <translation id="2433912322225810055">Dit beheer ook watter bladsy gewys word wanneer jy Brave begin of vanuit die omnikassie soek.</translation>
 <translation id="4100716194836114130">Dit is jou Brave</translation>
+<translation id="6208136456999964972">Webkoekies en werfdata word outomaties uitgevee wanneer jy alle Brave-vensters toemaak</translation>
+<translation id="6371875426681214174">Jy sal <ph name="BEGIN_BOLD"/>by die meeste werwe afgemeld word<ph name="END_BOLD"/> wanneer jy Brave toemaak. As sinkronisering af is, sal jy ook <ph name="BEGIN_BOLD"/>by Brave-dienste en Brave afgemeld word<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave het toestemming nodig om toegang te kry tot jou kamera en mikrofoon vir hierdie werf</translation>
 <translation id="7408085963519505752">Brave-bedryfstel se bepalings</translation>
 <translation id="2262856633481902138">Brave kon nie jou data sinkroniseer nie, want jou rekening se aanmeldbesonderhede is verouderd.</translation>

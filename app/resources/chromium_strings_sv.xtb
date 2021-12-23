@@ -15,7 +15,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="7419046106786626209">Det gick inte att synkronisera data med Brave eftersom synkronisering inte är tillgängligt för domänen.</translation>
 <translation id="5147525139567260139">Dela en flik i Brave</translation>
 <translation id="1530633922026945685">Du behöver ge Brave behörighet att använda kameran om du vill skapa en 3D-karta över dina omgivningar</translation>
-<translation id="4828904843379324771">När du stänger Brave raderas cookies och webbplatsdata från sidor du besökt automatiskt</translation>
 <translation id="5616153642055197778">Det finns en ny, ännu säkrare version av Brave.</translation>
 <translation id="6797402139308059782">Låt Brave köras i bakgrunden</translation>
 <translation id="5875673934455379806">Installera om Brave</translation>
@@ -30,6 +29,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8745514854244955877">Brave – nätverksinloggning – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Om du delar en dator med vänner och familj kan de konfigurera Brave precis som de vill och surfa separat.</translation>
 <translation id="5997267581285668459">Valfritt: Skicka diagnostik- och användningsdata automatiskt till Brave och hjälp oss att förbättra funktioner och prestanda i Chrome OS.</translation>
+<translation id="7810992039564280750">Kontrollera webbadresser mot en lista över osäkra webbplatser i Brave. Om du utsätts för försök att kapa ditt lösenord på en webbplats eller om du laddar ned en skadlig fil kan webbadresserna skickas från Brave till Säker webbsökning tillsammans med delar av sidinnehållet.</translation>
 <translation id="9095263438435683933">Logga in på Brave på båda enheterna om du vill skicka ett nummer från Android-telefonen.</translation>
 <translation id="3813272600615358652">Det här tillägget har ändrat vilken sida som visas när du startar Brave.</translation>
 <translation id="2576129394594491151">Tillägget <ph name="EXTENSION_NAME"/> har ändrat vilken sida som visas när du startar Brave.</translation>
@@ -50,9 +50,11 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="2799223571221894425">Starta om</translation>
 <translation id="3783547330001921298">En ny Brave-profil skapas för <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Ta bort från Brave …</translation>
+<translation id="5265419033369521352">Skyddar dig i Brave och kan användas för förbättrad säkerhet i andra Brave-appar där du är inloggad.</translation>
 <translation id="2885378588091291677">Aktivitetshanteraren</translation>
 <translation id="2176825726964012531">Om &amp;Brave</translation>
 <translation id="8208853227947884571">Brave är uppdaterat</translation>
+<translation id="5122472867956731189">Om du utsätts för försök att kapa ditt lösenord på en webbplats eller om du laddar ned en skadlig fil kan webbadresserna skickas från Brave till Säker webbsökning tillsammans med delar av sidinnehållet</translation>
 <translation id="2953892977076487219">Lösenorden i Brave redigeras.</translation>
 <translation id="8755404239607088219">Brave kan inte kontrollera dina lösenord. Försök igen senare.</translation>
 <translation id="8880183781256147665">Lägger till i Brave ...</translation>
@@ -125,7 +127,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="1786715389543715322">Brave uppdateras (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Tillåt inloggning i Brave</translation>
 <translation id="5536657158619734169">Det finns en ny version av Brave.</translation>
-<translation id="5874882355102994015">Brave kan inte visa förhandsgranskning av en utskrift när det inbyggda PDF-visningsprogrammet saknas.</translation>
 <translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="707769633889902835">Det går inte att öppna den här sidan i Chrome OS.</translation>
@@ -159,6 +160,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8320964054148936490">Det finns redan en nyare version av Brave på den här datorn. Avinstallera Brave och försök igen om programvaran inte fungerar.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave startas om nu}=1{Om en sekund startas Brave om}other{Om # sekunder startas Brave om}}</translation>
 <translation id="5980269616827212166">Du behöver ge Brave åtkomst till lagringsutrymmet om det ska gå att ladda ned filer</translation>
+<translation id="7651600795135059130">Kontrollera webbadresser mot en lista över osäkra webbplatser i Brave</translation>
 <translation id="5019879183386042809">Använd Brave som standardwebbläsare</translation>
 <translation id="428541510811554120">Brave kan inte söka efter uppdateringar. Testa att kontrollera internetanslutningen.</translation>
 <translation id="7445061995866044926">Vill du logga ut från Brave?</translation>
@@ -185,7 +187,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="1489465648257900784">Din profil kan inte användas eftersom den kommer från en nyare version av Brave.
 
 Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog eller använd en nyare version av Brave.</translation>
-<translation id="5450493308072741203">Uppdatera &amp;Brave</translation>
 <translation id="6666624454809779082">Brave har redan installerats för alla användare på datorn.</translation>
 <translation id="5360050006043219962">Logga in och aktivera synkronisering om du vill få tillgång till dina saker i Brave på olika enheter.</translation>
 <translation id="8291513491595858997">Din förälder har inaktiverat Behörigheter för webbplatser, appar och tillägg för Brave. Det är inte tillåtet att aktivera denna <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -204,8 +205,8 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="1008530050039597147">Du behöver ge Brave kamerabehörighet för den här webbplatsen</translation>
 <translation id="1197672524850678392">Det gick inte att starta Brave. Försök igen.</translation>
 <translation id="3405035915691517126">Brave kan inte kontrollera dina lösenord. Försök igen om ett dygn.</translation>
+<translation id="5101812148953915496">Webbplatser du besöker kommer ihåg dina uppgifter tills du stänger Brave</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
-<translation id="61852838583753520">Uppdatera &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>
 <translation id="3403365884036456766">Inställningsfilen är skadad eller ogiltig.
 
@@ -258,6 +259,8 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="6283840329609797763">Installationen misslyckades på grund av ett okänt fel. Ladda ned Brave igen.</translation>
 <translation id="2433912322225810055">Det styr också vilken sida som visas när du startar Brave eller söker i adressfältet.</translation>
 <translation id="4100716194836114130">Det här är Brave</translation>
+<translation id="6208136456999964972">När du stänger alla öppna fönster i Brave rensas cookies och webbplatsdata automatiskt</translation>
+<translation id="6371875426681214174">Du <ph name="BEGIN_BOLD"/>loggas ut från de flesta webbplatser<ph name="END_BOLD"/> när du stänger Brave. Om synkronisering har inaktiverats <ph name="BEGIN_BOLD"/>loggas du även ut från Braves tjänster och Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Du behöver ge Brave behörighet att använda kameran och mikrofonen på webbplatsen</translation>
 <translation id="7408085963519505752">Villkor för Chrome OS</translation>
 <translation id="2262856633481902138">Brave kunde inte synkronisera data eftersom inloggningsuppgifterna för kontot är inaktuella.</translation>

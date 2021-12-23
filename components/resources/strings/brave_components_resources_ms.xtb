@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Seterusnya</translation>
 <translation id="7954950242989581218">Belayar dengan selamat</translation>
 <translation id="2188651882929633653">Perisai Brave menyekat benda-benda mencurigakan yang cuba menjejak anda di web — termasuklah kebanyakan iklan. Tetapkan Perisai ke “bawah” jika laman web tidak berfungsi. Brave menggunakan <ph name="BEGIN_LINK_P3A"/>analitik produk yang sulit sepenuhnya<ph name="END_LINK_P3A"/> untuk menganggarkan penggunaan keseluruhan bagi ciri-ciri tertentu. Anda boleh mematikannya melalui <ph name="BEGIN_LINK_P3A_SETTINGS"/>Tetapan<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Iklan</translation>
-<translation id="6769094341455418696">Dapatkan [[currency]] dengan menonton Brave Ads. Iklan yang dipaparkan adalah berdasarkan minat anda, serta berdasarkan tingkah laku pelayaran anda. Tiada data peribadi atau sejarah pelayaran akan meninggalkan pelayar anda.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Dapatkan [[currency]] dengan menonton Iklan Brave Ads. Iklan yang dipaparkan adalah berdasarkan minat anda, serta berdasarkan tingkah laku pelayaran anda. Tiada data peribadi atau sejarah pelayaran akan meninggalkan pelayar anda.</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
 <translation id="3742599705619405136">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan pembayaran bulanan dan layari seperti biasa. Laman web yang Disahkan Brave akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
 <translation id="3325399124634342726">Pendapatan semasa bulan ini (dianggarkan)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Kami menunjukkan [[numberOfLines]] baris terakhir dalam log. Sekiranya anda mahukan seluruh log, anda boleh memuat turunnya di atas.</translation>
 <translation id="7168491065836975228">Dalaman ganjaran</translation>
 <translation id="758790787422117549">ID Persona</translation>
+<translation id="1919345977826869612">Iklan</translation>
 <translation id="3671566813999349838">Jumlah</translation>
 <translation id="751223241692981112">Dituntut pada</translation>
 <translation id="3913089081619091801">Tuntut ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Lengkapkan pengesahan dompet</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
 <translation id="3656941797339037856">Pautkan Ganjaran ke Gemini!</translation>
-<translation id="2383784987664887340">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY dengan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
-<translation id="2237374144728570574">* APY Gemini Earn setakat 15 September 2021</translation>
+<translation id="3066983737886188034">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh faedah degan mudah pada BAT anda. Sahkan dan pautkan dompet Ganjaran Brave anda dengan Gemini sekarang!</translation>
 <translation id="7404779623219601861">Menebus BAT untuk Kad Hadiah</translation>
 <translation id="6215565499749144110">Dengan Rangkaian TAP, anda boleh menebus BAT anda untuk kad hadiah jenama terkenal.</translation>
 <translation id="6915065518766963119">* Memerlukan Pengesahan Jaminan.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Pergi ke akaun <ph name="PROVIDER"/> saya</translation>
 <translation id="2389181429986654814">Pergi ke <ph name="PROVIDER"/> untuk melengkapkan pengesahan</translation>
 <translation id="7793632266654336758">Sila lengkapkan pengesahan identiti untuk mula menerima ganjaran.</translation>
+<translation id="2394961582378297792">Dilog keluar</translation>
+<translation id="5511950864417840431">Log keluar daripada <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Pendapatan Anggaran</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
 <translation id="5894023780213944778">Dompet Saya</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
+<translation id="2704606927547763573">Disalin</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
 <translation id="8303434745767477417">Tahan aset kripto dalam jagaan anda. Jejak prestasi portfolio, dan berinteraksi dengan aplikasi nyahpusat web 3. Dagangkan, labur, pinjam, dan beri pinjam dengan DeFi. Semuanya daripada pelayar privasi Brave. Tiada sambungan dan muat turut diperlukan.</translation>
 <translation id="6972754398087986839">Bermula</translation>
 <translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
-<translation id="1078873179929044999">Pada langkah seterusnya, anda’ akan melihat frasa pemulihan 12 perkataan yang boleh digunakan untuk mendapatkan akaun kripto utama anda semula. Simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses sekiranya anda terlupa kata laluan, peranti anda hilang atau dicuri, atau anda ingin beralih dompet.</translation>
+<translation id="180032279811483155">Pada langkah seterusnya, anda’ akan melihat frasa pemulihan 12 perkataan yang boleh digunakan untuk mendapatkan akaun kripto utama anda semula. Simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses sekiranya anda terlupa kata laluan, peranti anda hilang atau dicuri, atau anda ingin beralih dompet.</translation>
 <translation id="5024543173656851695">Saya faham bahawa jika saya kehilangan perkataan pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
 <translation id="3933122286596948824">Frasa pemulihan anda</translation>
 <translation id="5077747669435508720">Tulis atau salin perkataan ini mengikut urutan yang sebenar yang ditunjukkan di bawah, dan simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses akaun sekiranya anda terlupa kata laluan, kehilangan peranti atau dicuri, atau anda mahu menukar dompet.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">Cuba tukar laluan HD (di atas) jika anda tidak dapat mencari akaun yang sedang anda cari.</translation>
 <translation id="2844691569989101734">Lejar secara langsung</translation>
 <translation id="7265732100380987017">Legasi (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Tiada hasil ditemui.</translation>
 <translation id="5149944858285555235">Ralat tidak diketahui, sila sambungkan semula dompet perkakasan anda dan cuba lagi.</translation>
 <translation id="4522570452068850558">Butiran</translation>
 <translation id="9220525904950070496">Alih keluar akaun</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">transaksi</translation>
 <translation id="523862956770478816">Kebenaran laman web</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> akaun disambungkan</translation>
+<translation id="4305817255990598646">Tukar</translation>
+<translation id="3890989020011724401">Akaun baharu</translation>
 <translation id="4460220693591349571">JENIS FUNGSI</translation>
 <translation id="838933475572692615">DATA HEX</translation>
 <translation id="2240831799756994975">BAIT</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">Domain <ph name="DOMAIN_NAME"/> tidak didaftarkan</translation>
 <translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
 <translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
+<translation id="5517732667776806421">Tiada maklumat hasil tambah semak</translation>
+<translation id="4006711930669471508">Maklumat hasil tambah semak tidak sah</translation>
 <translation id="862585889767884824">daripada</translation>
 <translation id="9106265941552476098">Tolak <ph name="TRANSACTION_LENGTH"/> transaksi</translation>
 <translation id="1118876217803190221">Baki tidak mencukupi</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">Ralat dalaman</translation>
 <translation id="3327639091470204775">Tidak dapat menyambung ke jambatan Trezor</translation>
 <translation id="6672377693827764095">Ralat dalaman, Gagal untuk mendapatkan akaun</translation>
+<translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="8933250418452564886">Tidak dapat mencari transaksi perkakasan, sila cuba lagi</translation>
 <translation id="5999974802900788338">Menerima ralat dari peranti perkakasan, mungkin anda perlu mengesahkan transaksi pada peranti anda</translation>
 <translation id="8523768065044261559">Ralat memproses transaksi, sila cuba lagi</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">Ralat menandatangani mesej, cincin kekunci yang tidak diketahui diminta, sila cuba lagi</translation>
 <translation id="5265455943786954050">Arahan Trezor sedang dijalankan</translation>
 <translation id="7017116822583380542">Jambatan Trezor belum sedia</translation>
+<translation id="3378339846292573874">Tambah token yang disyorkan</translation>
+<translation id="2322227405137827074">Adakah anda ingin mengimport token ini?</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Sambungan Tor</translation>
 <translation id="6024292492796847324">Kemajuan Permulaan Tor</translation>
+<translation id="8458987127502506209">Aktifkan Brave Shields</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>HINGGA<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Jika laman ini seperti rosak, cuba turunkan Perisai. Nota: ini mungkin mengurangkan perlindungan privasi Brave.</translation>
+<translation id="8377155647357436161">Penjejak, iklan dan lagi sekatan<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Kawalan Lanjutan</translation>
+<translation id="1299672573512347813">Tetapan ini menjejaskan keserasian web pada laman ini.</translation>
+<translation id="9204041448536398473">Tetapan Perisai Global</translation>
+<translation id="7637771346619326580">Tukar Perisai global lalai</translation>
+<translation id="3520486481604057261">Sesuaikan Senarai Adblock</translation>
+<translation id="3146531623184244174">Sambungan dipertingkatkan kepada HTTPS</translation>
+<translation id="131231380815754440">Aktifkan HTTPS</translation>
+<translation id="7461425058443653485">Skrip telah Disekat</translation>
+<translation id="3246600097575692802">Aktifkan Skrip telah Disekat</translation>
+<translation id="3603525299146223354">Penjejak &amp; iklan</translation>
+<translation id="1146309636943354181">Penjejak &amp; iklan disekat (standard)</translation>
+<translation id="5973258875089964805">Iklan &amp; penjejak disekat (agresif)</translation>
+<translation id="5544888475837817215">Benarkan semua penjejak dan iklan</translation>
+<translation id="6203697265754637264">Kuki merentas laman disekat</translation>
+<translation id="4627427111733173920">Kuki dihalang</translation>
+<translation id="7855168553463825937">Semua kuki disekat</translation>
+<translation id="8366221601425141146">Pengecapan jari disekat</translation>
+<translation id="5582686930349810484">Pengecapan jari disekat (standard)</translation>
+<translation id="6696441392507885865">Pengecapan jari disekat (ketat, boleh menjejaskan laman)</translation>
+<translation id="5882733945883311404">Benarkan semua Pengecapan jari</translation>
 <translation id="1742469581923031760">Menyambung…</translation>
 <translation id="1287487756047817908">Memutuskan sambungan…</translation>
 <translation id="2325196879156848326">Sambungan Gagal</translation>

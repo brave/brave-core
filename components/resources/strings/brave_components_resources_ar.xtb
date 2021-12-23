@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">التالي</translation>
 <translation id="7954950242989581218">قم بتصفح آمن وسليم</translation>
 <translation id="2188651882929633653">تمنع Brave Shields الأشياء المخيفة التي تحاول تعقبك عبر الويب — بما في ذلك معظم الإعلانات. اضبط الدروع على “ وضع الإيقاف” إذا كان هناك موقع لا يبدو’ أنه يعمل جيداً. يستخدم Brave <ph name="BEGIN_LINK_P3A"/>تحليلات منتج خاصة تماماً <ph name="END_LINK_P3A"/>لتقدير الاستخدام العام لبعض الميزات. يمكنك إيقاف هذا في<ph name="BEGIN_LINK_P3A_SETTINGS"/>الإعدادات<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">إعلانات</translation>
-<translation id="6769094341455418696">اكسب [[currency]] عبر مشاهدة إعلانات Brave. تستند الإعلانات المعروضة إلى اهتماماتك كما يُستدل من سلوك تصفحك. لا يتم الكشف عن أية بيانات شخصية أو سجلات تصفح أبدًا خارج نطاق متصفحك.</translation>
+<translation id="4851215387785619212">الإعلانات الخاصة المتعلقة بــ Brave</translation>
+<translation id="3114984266384096064">اكسب [[currency]] عبر مشاهدة إعلانات Brave الخاصة. تستند الإعلانات المعروضة إلى اهتماماتك كما يُستدل من سلوك تصفحك. لا يتم الكشف عن أية بيانات شخصية أو سجلات تصفح أبدًا خارج نطاق متصفحك.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="3742599705619405136">طريقة تلقائية لدعم الناشرين ومنشئي المحتوى. قم بتعيين دفعة شهرية وتصفح بشكل طبيعي. ستتلقى المواقع المتحقَق منها من Brave التي تزورها مساهماتك تلقائيًا، بناءً على انتباهك كما يتم قياسه بواسطة Brave.</translation>
 <translation id="3325399124634342726">الأرباح الحالية هذا الشهر (أرقام تقديرية)</translation>
@@ -317,6 +317,7 @@
 <translation id="5323604113525002127">نعرض آخر عدد [[numberOfLines]] من سطور السجل. إذا كنت تريد السجل بالكامل، يمكنك تنزيله أعلاه.</translation>
 <translation id="7168491065836975228">المكافآت الداخلية</translation>
 <translation id="758790787422117549">معرف الشخصية</translation>
+<translation id="1919345977826869612">الإعلانات</translation>
 <translation id="3671566813999349838">المبلغ</translation>
 <translation id="751223241692981112">تم الاستلام في</translation>
 <translation id="3913089081619091801">استلام الهوية</translation>
@@ -592,8 +593,7 @@
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="3656941797339037856">ربط Rewards بـ Gemini!</translation>
-<translation id="2383784987664887340">تتيح لك Gemini إمكانية التداول والتخزين وكسب 3.49% من العائد المئوي السنوي على أفضل التقنيات المتاحة لديك. تحقق من محفظة Brave Rewards وربطها بـ Gemini الآن!</translation>
-<translation id="2237374144728570574">تربح Gemini  العائد المئوي السنوي اعتبارًا من 15 أغسطس 2021.</translation>
+<translation id="3066983737886188034">تتيح لك Gemini إمكانية التداول والتخزين وكسب فوائد على عملات BAT الخاصة بك. تحقق من محفظة Brave Rewards واربطها بـ Gemini الآن!</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
@@ -779,6 +779,8 @@
 <translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
 <translation id="2389181429986654814">انتقل إلى <ph name="PROVIDER"/> لإكمال التحقق</translation>
 <translation id="7793632266654336758">نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.</translation>
+<translation id="2394961582378297792">تم تسجيل الخروج</translation>
+<translation id="5511950864417840431">تسجيل الخروج من <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">المكاسب المُقدَّرة</translation>
 <translation id="7577100371127227294">المكافآت الشهرية</translation>
 <translation id="5894023780213944778">محفظتي</translation>
@@ -879,12 +881,13 @@
 <translation id="2860280209982026951">تستخدم Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>كمجمع بيانات DEX</translation>
 <translation id="151946611346774041">سيجري 0x معالجة عنوان الإيثيريوم وعنوان الـ IP لتنفيذ المعاملة (بما في ذلك الحصول على عروض الأسعار). سيستخدم 0x هذه البيانات لأغراض معالجة المعاملات فقط.</translation>
 <translation id="4626407663177532837">يشمل عرض الأسعار 0.875٪ كرسوم خاصة بـ Brave.</translation>
+<translation id="2704606927547763573">تم النسخ</translation>
 <translation id="6518133107902771759">تحقق</translation>
 <translation id="1420318137760245955">مرحبًا بك في Brave Wallet الجديد</translation>
 <translation id="8303434745767477417">احتفظ بأصول التشفير. تتبع أداء الحافظة، وتفاعل مع 3 DApps على الويب. تداول واستثمر واقترض وأقرض مع DeFi. استمتع بكامل الحقوق من متصفح الخصوصية Brave. لا يوجد هناك ملحقات ولا يتطلب الأمر تنزيل أي ملف.</translation>
 <translation id="6972754398087986839">البدء</translation>
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
-<translation id="1078873179929044999">في الخطوة التالية، سترى ’ عبارة استرداد مكونة من 12 كلمة، والتي يمكنك استخدامها لاستعادة حسابات التشفير الأساسية الخاصة بك. احفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاسترداد الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ..</translation>
+<translation id="180032279811483155">في الخطوة التالية، سترى ’ عبارة استرداد مكونة من 12 كلمة، والتي يمكنك استخدامها لاستعادة حسابات التشفير الأساسية الخاصة بك. احفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاسترداد الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ..</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
 <translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
 <translation id="5077747669435508720">اكتب هذه الكلمات أو انسخها بالترتيب الدقيق الموضح أدناه، واحفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ.</translation>
@@ -946,6 +949,7 @@
 <translation id="6151024411349343484">حاول تبديل مسار HD (أعلاه) إذا لم تتمكن من العثور على الحساب الذي تبحث عنه.</translation>
 <translation id="2844691569989101734">دفتر الأستاذ العام المباشر</translation>
 <translation id="7265732100380987017">قديم (MEW / MyCrypto)</translation>
+<translation id="4549853322523631092">لم يتم العثور على نتائج.</translation>
 <translation id="5149944858285555235">خطأ غير معروف، يرجى إعادة توصيل محفظة جهازك والمحاولة مرة أخرى.</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
 <translation id="9220525904950070496">إزالة الحساب</translation>
@@ -1026,6 +1030,8 @@
 <translation id="4709524402122994378">المعاملات</translation>
 <translation id="523862956770478816">أذونات الموقع</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حسابات متصلة</translation>
+<translation id="4305817255990598646">تبديل</translation>
+<translation id="3890989020011724401">حساب جديد</translation>
 <translation id="4460220693591349571">نوع الوظيفة</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1091,6 +1097,8 @@
 <translation id="6825399159373612149">النطاق <ph name="DOMAIN_NAME"/> غير مسجل</translation>
 <translation id="8971278306757462297">عنوان الاستلام هو العنوان الخاص بك</translation>
 <translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
+<translation id="5517732667776806421">معلومات مجموع اختياري مفقودة</translation>
+<translation id="4006711930669471508">معلومات مجموع اختياري غير صحيحة</translation>
 <translation id="862585889767884824">من</translation>
 <translation id="9106265941552476098">رفض معاملات <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">رصيد غير كافٍ</translation>
@@ -1112,6 +1120,7 @@
 <translation id="1119447706177454957">خطأ داخلي</translation>
 <translation id="3327639091470204775">يتعذر الاتصال بجسر Trezor</translation>
 <translation id="6672377693827764095">خطأ داخلي، تعذر جلب الحسابات</translation>
+<translation id="6889920539620318793">تعيين كنشط</translation>
 <translation id="8933250418452564886">تعذر العثور على معاملات الجهاز، يرجى المحاولة مرة أخرى</translation>
 <translation id="5999974802900788338">تم استلام خطأ من الجهاز، ربما تحتاج لتأكيد المعاملة على جهازك</translation>
 <translation id="8523768065044261559">حدث خطأ أثناء معالجة المعاملة، يرجى المحاولة مرة أخرى</translation>
@@ -1119,6 +1128,8 @@
 <translation id="8273603707418703324">رسالة خطأ في التسجيل، تم طلب رموز وصول غير معروفة، يرجى المحاولة مجددًا</translation>
 <translation id="5265455943786954050">أمر Trezor قيد التقدم بالفعل</translation>
 <translation id="7017116822583380542">تطبيق Trezor bridge غير جاهز</translation>
+<translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
+<translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1127,6 +1138,30 @@
 <translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
 <translation id="1671503397662036257">حالة اتصال تور</translation>
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
+<translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
+<translation id="640898327002833127">دروع حماية  Brave<ph name="LINK_BEFORE"/>حتى <ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">إن كان من الواضح تعطل الموقع، فجرب تعطيل دروع الحماية (Shields dow). انتبه: قد يقلل ذلك من حماية الخصوصية لـ Brave.</translation>
+<translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">الضوابط المتقدمة</translation>
+<translation id="1299672573512347813">تؤثر هذه الإعدادات على توافق الويب لهذا الموقع.</translation>
+<translation id="9204041448536398473">إعدادات دروع الحماية العالمية</translation>
+<translation id="7637771346619326580">تغيير القيم الافتراضية لدروع الحماية العالمية</translation>
+<translation id="3520486481604057261">تخصيص قوائم مانع الإعلانات (Adblock)</translation>
+<translation id="3146531623184244174">تم تحديث الاتصالات إلى بروتوكول HTTPS المحمي</translation>
+<translation id="131231380815754440">تمكين HTTPS</translation>
+<translation id="7461425058443653485">تم حظر النصوص</translation>
+<translation id="3246600097575692802">تمكين البرامج النصية المحظورة</translation>
+<translation id="3603525299146223354">أدوات التتبع &amp; الإعلانات</translation>
+<translation id="1146309636943354181">المتتبعات والإعلانات محجوبة (قياسي)</translation>
+<translation id="5973258875089964805">المتتبعات والإعلانات محجوبة (شديد)</translation>
+<translation id="5544888475837817215">السماح بجميع أدوات التتبع والإعلانات</translation>
+<translation id="6203697265754637264">تم حظر ملفات تعريف الارتباط عبر المواقع</translation>
+<translation id="4627427111733173920">تم حجب ملفات تعريف الارتباط</translation>
+<translation id="7855168553463825937">تم حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="8366221601425141146">تم حظر البصمات</translation>
+<translation id="5582686930349810484">حظر بصمات الأصابع (قياسي)</translation>
+<translation id="6696441392507885865">حظر بصمات الأصابع (دقيق، قد تتعطل المواقع)</translation>
+<translation id="5882733945883311404">السماح لجميع بصمات الأصابع</translation>
 <translation id="1742469581923031760">الاتصال بــ…</translation>
 <translation id="1287487756047817908">عدم الاتصال بــ …</translation>
 <translation id="2325196879156848326">فشل الاتصال</translation>

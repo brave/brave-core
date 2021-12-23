@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">다음</translation>
 <translation id="7954950242989581218">안전하게 검색하세요</translation>
 <translation id="2188651882929633653">Brave Shields는 웹상에서 사용자를 추적하고 하는 것들과 대부분의 광고를 차단합니다. 사이트가 작동하지 않는 것 같으면 Shield를 "down"으로 설정하세요. Brave는 <ph name="BEGIN_LINK_P3A"/>완전 비공개 제품 분석<ph name="END_LINK_P3A"/>을 사용하여 특정 기능의 전체 사용량을 추정합니다. <ph name="BEGIN_LINK_P3A_SETTINGS"/>설정<ph name="END_LINK_P3A_SETTINGS"/>에서 이 기능을 사용 중지할 수 있습니다.</translation>
-<translation id="1919345977826869612">광고</translation>
-<translation id="6769094341455418696">Brave Ads를 보면 [[currency]]가 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Brave Private Ads를 보면 [[currency]]가 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="3742599705619405136">발행자 및 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 월별 지불 금액을 설정하고 평소와 같이 탐색하세요. Brave가 측정하는 귀하의 관심에 기반하여, 방문하시는 Brave 인증 사이트가 자동으로 귀하의 기부금을 받게 됩니다.</translation>
 <translation id="3325399124634342726">이번 달 수익 현황(예상)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">로그의 마지막 {{numberOfLines} 줄을 보여 줍니다. 전체 로그를 원하면 위에서 다운로드할 수 있습니다.</translation>
 <translation id="7168491065836975228">리워드 내부</translation>
 <translation id="758790787422117549">페르소나 ID</translation>
+<translation id="1919345977826869612">광고</translation>
 <translation id="3671566813999349838">총액</translation>
 <translation id="751223241692981112">클레임됨</translation>
 <translation id="3913089081619091801">클레임 ID</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="3656941797339037856">Rewards를 Gemini에 연결하세요!</translation>
-<translation id="2383784987664887340">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
-<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini는 거래와 보관이 쉽고 BAT에 이자 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">내 <ph name="PROVIDER"/> 계정으로 가기</translation>
 <translation id="2389181429986654814"><ph name="PROVIDER"/>로 이동하여 확인 완료하기</translation>
 <translation id="7793632266654336758">리워드를 받기 시작하려면 신원 확인을 완료하세요.</translation>
+<translation id="2394961582378297792">로그아웃됨</translation>
+<translation id="5511950864417840431"><ph name="PROVIDER"/>에서 로그아웃</translation>
 <translation id="3600355176618429948">예상 수익</translation>
 <translation id="7577100371127227294">월간 팁</translation>
 <translation id="5894023780213944778">내 월렛</translation>
@@ -878,12 +880,13 @@
 <translation id="2860280209982026951">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>를 사용합니다.</translation>
 <translation id="151946611346774041">0x는 이더리움 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). 0x는 거래 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
+<translation id="2704606927547763573">복사됨</translation>
 <translation id="6518133107902771759">확인</translation>
 <translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
 <translation id="8303434745767477417">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, web 3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
 <translation id="6972754398087986839">시작하기</translation>
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
-<translation id="1078873179929044999">다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
+<translation id="180032279811483155">다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="5024543173656851695">복구 단어를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
 <translation id="3933122286596948824">복구 문구</translation>
 <translation id="5077747669435508720">이들 단어를 표시되는 정확한 순서대로 잘 적어두거나 복사해두었다가 안전한 곳에 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
@@ -945,6 +948,7 @@
 <translation id="6151024411349343484">찾고자 하는 계정을 찾을 수 없으면 HD 경로(위)를 전환해보세요.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">레거시(MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">결과가 없습니다.</translation>
 <translation id="5149944858285555235">알 수 없는 오류. 하드웨어 월렛을 재연결하고 다시 시도하세요.</translation>
 <translation id="4522570452068850558">세부 정보</translation>
 <translation id="9220525904950070496">계정 제거</translation>
@@ -1025,6 +1029,8 @@
 <translation id="4709524402122994378">트랜잭션</translation>
 <translation id="523862956770478816">사이트 권한</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>개의 계정 연결됨</translation>
+<translation id="4305817255990598646">전환</translation>
+<translation id="3890989020011724401">새 계정</translation>
 <translation id="4460220693591349571">기능 유형</translation>
 <translation id="838933475572692615">헥스 데이터</translation>
 <translation id="2240831799756994975">바이트</translation>
@@ -1090,6 +1096,8 @@
 <translation id="6825399159373612149">도메인 <ph name="DOMAIN_NAME"/> 등록되지 않음</translation>
 <translation id="8971278306757462297">수신 주소가 귀하의 주소입니다.</translation>
 <translation id="3506416339268164412">수신 주소가 토큰의 컨트랙트 주소입니다.</translation>
+<translation id="5517732667776806421">체크섬 정보 누락</translation>
+<translation id="4006711930669471508">유효하지 않은 체크섬 정보</translation>
 <translation id="862585889767884824">~의</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> 트랜잭션 거부</translation>
 <translation id="1118876217803190221">잔액 부족</translation>
@@ -1111,6 +1119,7 @@
 <translation id="1119447706177454957">내부 오류</translation>
 <translation id="3327639091470204775">Trezor 브리지에 연결할 수 없음</translation>
 <translation id="6672377693827764095">내부 오류. 계정을 가져올 수 없습니다.</translation>
+<translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="8933250418452564886">하드웨어 트랜잭션을 찾을 수 없습니다. 다시 시도하세요.</translation>
 <translation id="5999974802900788338">하드웨어 기기에서 오류가 수신되었습니다. 기기에서 트랜잭션을 확인해야 할 수 있습니다.</translation>
 <translation id="8523768065044261559">트랜잭션 처리 중 오류. 다시 시도하세요.</translation>
@@ -1118,6 +1127,8 @@
 <translation id="8273603707418703324">메시지 서명 중 오류. 알 수 없는 키링이 요청되었습니다. 다시 시도하세요.</translation>
 <translation id="5265455943786954050">Trezor 명령 이미 진행 중</translation>
 <translation id="7017116822583380542">Trezor 브리지가 준비되지 않음</translation>
+<translation id="3378339846292573874">추천 토큰 추가</translation>
+<translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1126,6 +1137,30 @@
 <translation id="6951743416068151209">Tor 프록시 URI</translation>
 <translation id="1671503397662036257">Tor 연결 상태</translation>
 <translation id="6024292492796847324">토르 초기화 진행률</translation>
+<translation id="8458987127502506209">Brave Shields 활성화</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">사이트가 깨진 것 같습니다. Shields를 비활성화해 보세요. 참고: 이렇게 하면 Brave 프라이버시 보호 성능이 줄어들 수 있습니다.</translation>
+<translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">고급 설정</translation>
+<translation id="1299672573512347813">이들 설정은 사이트 웹 호환성에 영향을 줄 수 있습니다.</translation>
+<translation id="9204041448536398473">전역 Shield 설정</translation>
+<translation id="7637771346619326580">전역 Shield 기본값 변경</translation>
+<translation id="3520486481604057261">Adblock 목록 사용자 지정</translation>
+<translation id="3146531623184244174">HTTPS로 연결 업그레이됨</translation>
+<translation id="131231380815754440">HTTPS 활성화</translation>
+<translation id="7461425058443653485">차단된 스크립트</translation>
+<translation id="3246600097575692802">차단된 스크립트 활성화</translation>
+<translation id="3603525299146223354">트래커 및 광고</translation>
+<translation id="1146309636943354181">트래커 &amp; 광고 차단(표준)</translation>
+<translation id="5973258875089964805">트래커 &amp; 광고가 차단됨(공격적)</translation>
+<translation id="5544888475837817215">모든 트래커 및 광고 허용</translation>
+<translation id="6203697265754637264">사이트 간 쿠키가 차단됨</translation>
+<translation id="4627427111733173920">쿠키 차단됨</translation>
+<translation id="7855168553463825937">모든 쿠키 차단됨</translation>
+<translation id="8366221601425141146">지문 인식 차단됨</translation>
+<translation id="5582686930349810484">지문 채취 차단됨(표준)</translation>
+<translation id="6696441392507885865">핑거프린팅 차단됨(엄격, 사이트가 깨져 보일 수 있음)</translation>
+<translation id="5882733945883311404">모든 핑거프린팅 허용</translation>
 <translation id="1742469581923031760">연결 중…</translation>
 <translation id="1287487756047817908">연결 해제 중…</translation>
 <translation id="2325196879156848326">연결 실패</translation>
