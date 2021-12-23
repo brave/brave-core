@@ -610,7 +610,7 @@ class DnsTransactionTestBase : public testing::Test {
                                       base::StringPrintf("doh_test_%zu", i)) +
                                   "{?dns}");
       config_.dns_over_https_servers.push_back(
-          DnsOverHttpsServerConfig(server_template, use_post));
+          *DnsOverHttpsServerConfig::FromString(server_template));
     }
     ConfigureFactory();
 
@@ -781,13 +781,13 @@ class DnsTransactionTestBase : public testing::Test {
       if (server_found)
         break;
       std::string url_base =
-          GetURLFromTemplateWithoutParameters(server.server_template);
-      if (server.use_post && request->method() == "POST") {
+          GetURLFromTemplateWithoutParameters(server.server_template());
+      if (server.use_post() && request->method() == "POST") {
         if (url_base == request->url().spec()) {
           server_found = true;
           socket_factory_->remote_endpoints_.emplace_back(server);
         }
-      } else if (!server.use_post && request->method() == "GET") {
+      } else if (!server.use_post() && request->method() == "GET") {
         std::string prefix = url_base + "?dns=";
         auto mispair = std::mismatch(prefix.begin(), prefix.end(),
                                      request->url().spec().begin());
@@ -960,19 +960,22 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     config_.dns_over_https_servers.push_back(
-        {decentralized_dns::kUnstoppableDomainsDoHResolver, true});
+        *DnsOverHttpsServerConfig::FromString(
+            decentralized_dns::kUnstoppableDomainsDoHResolver));
 
     url = GURL(decentralized_dns::kENSDoHResolver);
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     config_.dns_over_https_servers.push_back(
-        {decentralized_dns::kENSDoHResolver, true});
+        *DnsOverHttpsServerConfig::FromString(
+            decentralized_dns::kENSDoHResolver));
 
     if (user_doh_server) {
       url = GURL("https://test.com/dns-query");
       filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                      std::make_unique<DohJobInterceptor>(this));
-      config_.dns_over_https_servers.push_back({url.spec(), true});
+      config_.dns_over_https_servers.push_back(
+          *DnsOverHttpsServerConfig::FromString(url.spec()));
     }
 
     ConfigureFactory();

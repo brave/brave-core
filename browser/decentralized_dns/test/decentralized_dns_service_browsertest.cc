@@ -65,14 +65,17 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
       static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
   std::vector<net::DnsOverHttpsServerConfig> expected_doh_servers = {
-      {kUnstoppableDomainsDoHResolver, true}};
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver)};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set custom DoH provider should still keep the resolver for UD.
   local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kUnstoppableDomainsDoHResolver, true},
-                          {"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set secure mode to off should return empty DoH servers.
@@ -93,9 +96,11 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
   local_state()->SetInteger(
       kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kENSDoHResolver, true},
-                          {kUnstoppableDomainsDoHResolver, true},
-                          {"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString(kENSDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set resolve method to disabled should keep user's DoH setting.
@@ -104,7 +109,8 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::DISABLED));
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 }
 
@@ -123,30 +129,36 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
       static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
   std::vector<net::DnsOverHttpsServerConfig> expected_doh_servers = {
-      {kUnstoppableDomainsDoHResolver, true}};
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver)};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set custom DoH provider should still keep the resolver for UD.
   local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kUnstoppableDomainsDoHResolver, true},
-                          {"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set resolve method of ENS to DoH should update the config.
   local_state()->SetInteger(
       kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kENSDoHResolver, true},
-                          {kUnstoppableDomainsDoHResolver, true},
-                          {"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString(kENSDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString(
+          kUnstoppableDomainsDoHResolver),
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Should hide unstoppable domains resolver if
   // force_check_parental_controls_for_automatic_mode is true, used for hiding
   // the special resolver in settings.
   config = GetSecureDnsConfiguration(true);
-  expected_doh_servers = {{"https://test.com", true}};
+  expected_doh_servers = {
+      *net::DnsOverHttpsServerConfig::FromString("https://test.com")};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 }
 
