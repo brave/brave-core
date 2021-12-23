@@ -10,11 +10,15 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
 bool ParseResult(const std::string& json, base::Value* result);
+void ParseErrorResult(const std::string& json,
+                      mojom::ProviderError* error,
+                      std::string* error_message);
 bool ParseBoolResult(const std::string& json, bool* value);
 bool ParseAddressResult(const std::string& json, std::string* address);
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num);

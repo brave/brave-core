@@ -16,6 +16,7 @@ import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -192,8 +193,9 @@ public class PortfolioHelper {
                         int decimals =
                                 (context.userAsset.decimals != 0) ? context.userAsset.decimals : 18;
 
-                        Double thisBalanceCryptoPart =
-                                context.success ? fromHexWei(context.balance, decimals) : 0.0d;
+                        Double thisBalanceCryptoPart = (context.error == ProviderError.SUCCESS)
+                                ? fromHexWei(context.balance, decimals)
+                                : 0.0d;
 
                         Double thisBalanceFiatPart = usdPerThisToken * thisBalanceCryptoPart;
 

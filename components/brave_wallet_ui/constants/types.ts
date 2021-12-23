@@ -320,20 +320,14 @@ export interface GetAllTokensReturnInfo {
   tokens: BraveWallet.ERCToken[]
 }
 
-export interface GetBalanceReturnInfo {
-  success: boolean
-  balance: string
-}
+export type GetBalanceReturnInfo = BraveWallet.EthJsonRpcController_GetBalance_ResponseParams
 
 export interface GetNativeAssetBalancesPriceReturnInfo {
   fiatPrice: string
   balances: GetBalanceReturnInfo[]
 }
 
-export interface GetERCTokenBalanceReturnInfo {
-  success: boolean
-  balance: string
-}
+export type GetERCTokenBalanceReturnInfo = BraveWallet.EthJsonRpcController_GetERC20TokenBalance_ResponseParams
 
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
   balances: GetERCTokenBalanceReturnInfo[][]
@@ -383,22 +377,15 @@ export type AccountTransactions = {
   [accountId: string]: BraveWallet.TransactionInfo[]
 }
 
-export interface GetEthAddrReturnInfo {
-  success: boolean
-  address: string
-}
+export type GetEthAddrReturnInfo = BraveWallet.EthJsonRpcController_EnsGetEthAddr_ResponseParams
 
 export interface GetERCTokenInfoReturnInfo {
   token: BraveWallet.ERCToken | null
 }
 
-export interface GetIsStrongPassswordReturnInfo {
-  result: boolean
-}
+export type GetIsStrongPassswordReturnInfo = BraveWallet.KeyringController_IsStrongPassword_ResponseParams
 
-export interface GetChecksumEthAddressReturnInfo {
-  checksumAddress: string
-}
+export type GetChecksumEthAddressReturnInfo = BraveWallet.KeyringController_GetChecksumEthAddress_ResponseParams
 
 export interface RecoveryObject {
   value: string

@@ -13,6 +13,7 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.ProviderError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class SingleTokenBalanceHelper {
                         final int decimalsNormalized = (decimals != 0) ? decimals : 18;
 
                         for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
-                            Double cryptoBalance = context.success
+                            Double cryptoBalance = (context.error == ProviderError.SUCCESS)
                                     ? fromHexWei(context.balance, decimalsNormalized)
                                     : 0.0d;
                             mPerAcountCryptoBalance.put(context.accountAddress, cryptoBalance);

@@ -36,9 +36,17 @@ class EthPendingTxTracker {
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(std::string id, bool status, TransactionReceipt receipt);
-  void OnGetNetworkNonce(std::string address, bool status, uint256_t result);
-  void OnSendRawTransaction(bool status, const std::string& tx_hash);
+  void OnGetTxReceipt(std::string id,
+                      TransactionReceipt receipt,
+                      mojom::ProviderError error,
+                      const std::string& error_message);
+  void OnGetNetworkNonce(std::string address,
+                         uint256_t result,
+                         mojom::ProviderError error,
+                         const std::string& error_message);
+  void OnSendRawTransaction(const std::string& tx_hash,
+                            mojom::ProviderError error,
+                            const std::string& error_message);
 
   bool IsNonceTaken(const EthTxStateManager::TxMeta&);
   bool ShouldTxDropped(const EthTxStateManager::TxMeta&);

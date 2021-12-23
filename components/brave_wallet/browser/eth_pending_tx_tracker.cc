@@ -66,9 +66,10 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
 }
 
 void EthPendingTxTracker::OnGetTxReceipt(std::string id,
-                                         bool status,
-                                         TransactionReceipt receipt) {
-  if (!status)
+                                         TransactionReceipt receipt,
+                                         mojom::ProviderError error,
+                                         const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
     return;
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
   if (!nonce_lock->Try())
@@ -93,15 +94,18 @@ void EthPendingTxTracker::OnGetTxReceipt(std::string id,
 }
 
 void EthPendingTxTracker::OnGetNetworkNonce(std::string address,
-                                            bool status,
-                                            uint256_t result) {
-  if (!status)
+                                            uint256_t result,
+                                            mojom::ProviderError error,
+                                            const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
     return;
   network_nonce_map_[address] = result;
 }
 
-void EthPendingTxTracker::OnSendRawTransaction(bool status,
-                                               const std::string& tx_hash) {}
+void EthPendingTxTracker::OnSendRawTransaction(
+    const std::string& tx_hash,
+    mojom::ProviderError error,
+    const std::string& error_message) {}
 
 bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(

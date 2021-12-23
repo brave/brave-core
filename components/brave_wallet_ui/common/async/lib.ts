@@ -38,7 +38,7 @@ export const getERC20Allowance = (
       spenderAddress
     )
 
-    if (result.success) {
+    if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(result.allowance)
     } else {
       reject()
@@ -66,7 +66,7 @@ export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const controller = getAPIProxy().ethJsonRpcController
     const result = await controller.getBalance(address)
-    if (result.success) {
+    if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(formatBalance(result.balance, 18))
     } else {
       reject()
@@ -176,7 +176,8 @@ export function refreshPrices () {
     const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
     const getBalanceReturnInfos = accounts.map((account) => {
       const balanceInfo = {
-        success: true,
+        error: BraveWallet.ProviderError.kSuccess,
+        errorMessage: '',
         balance: account.balance
       }
       return balanceInfo
@@ -210,7 +211,8 @@ export function refreshPrices () {
     const getERCTokenBalanceReturnInfos = accounts.map((account) => {
       return account.tokens.map((token) => {
         const balanceInfo = {
-          success: true,
+          error: BraveWallet.ProviderError.kSuccess,
+          errorMessage: '',
           balance: token.assetBalance
         }
         return balanceInfo

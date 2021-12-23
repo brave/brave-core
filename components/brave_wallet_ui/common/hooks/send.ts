@@ -78,7 +78,7 @@ export default function useSend (
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedENSExtensions, valueToLowerCase)) {
       findENSAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
-        if (value.success) {
+        if (value.error === BraveWallet.ProviderError.kSuccess) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)
@@ -93,7 +93,7 @@ export default function useSend (
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
       findUnstoppableDomainAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
-        if (value.success) {
+        if (value.error === BraveWallet.ProviderError.kSuccess) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)

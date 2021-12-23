@@ -161,7 +161,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
   let accounts: WalletAccountType[] = [...state.accounts]
 
   accounts.forEach((account, index) => {
-    if (payload.balances[index].success) {
+    if (payload.balances[index].error === BraveWallet.ProviderError.kSuccess) {
       accounts[index].balance = payload.balances[index].balance
       accounts[index].fiatBalance = payload.fiatPrice !== ''
         ? formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.fiatPrice).toString()
@@ -199,10 +199,10 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
       if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
         assetBalance = account.balance
         fiatBalance = account.fiatBalance
-      } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
+      } else if (info.error === BraveWallet.ProviderError.kSuccess && userVisibleTokensInfo[tokenIndex].isErc721) {
         assetBalance = info.balance
         fiatBalance = '' // TODO: support estimated market value.
-      } else if (info.success) {
+      } else if (info.error === BraveWallet.ProviderError.kSuccess) {
         const tokenPrice = findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol)
         assetBalance = info.balance
         fiatBalance = tokenPrice !== ''

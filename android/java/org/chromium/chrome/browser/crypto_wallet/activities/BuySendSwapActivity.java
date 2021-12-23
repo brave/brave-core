@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -56,6 +58,7 @@ import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.SwapController;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
@@ -516,8 +519,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assert mEthJsonRpcController != null;
         mEthJsonRpcController.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                (success, balance) -> {
-                    if (success) {
+                (balance, error, errorMessage) -> {
+                    warnWhenError(TAG, "getBalance", error, errorMessage);
+                    if (error == ProviderError.SUCCESS) {
                         double currentBalance = Utils.fromHexWei(balance, 18);
                         if (mCurrentErcToken == null
                                 || mCurrentErcToken.contractAddress.isEmpty()) {
@@ -568,8 +572,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         String ownerAddress =
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
         mEthJsonRpcController.getErc20TokenAllowance(
-                contract, ownerAddress, spenderAddress, (success, allowance) -> {
-                    if (!success
+                contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
+                    warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
+                    if (error != ProviderError.SUCCESS
                             || amountToSend
                                     <= Utils.fromHexWei(allowance, mCurrentErcToken.decimals)) {
                         return;
@@ -591,16 +596,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             ercToken = mCurrentSwapToErcToken;
         }
         if (ercToken == null || ercToken.contractAddress.isEmpty()) {
-            mEthJsonRpcController.getBalance(address, (success, balance) -> {
-                if (!success) {
+            mEthJsonRpcController.getBalance(address, (balance, error, errorMessage) -> {
+                warnWhenError(TAG, "getBalance", error, errorMessage);
+                if (error != ProviderError.SUCCESS) {
                     return;
                 }
                 populateBalance(balance, from);
             });
         } else {
             mEthJsonRpcController.getErc20TokenBalance(
-                    ercToken.contractAddress, address, (success, balance) -> {
-                        if (!success) {
+                    ercToken.contractAddress, address, (balance, error, errorMessage) -> {
+                        warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
+                        if (error != ProviderError.SUCCESS) {
                             return;
                         }
                         populateBalance(balance, from);
