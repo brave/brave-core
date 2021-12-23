@@ -46,7 +46,9 @@ void ReloadIfActive(content::WebContents* web_contents) {
 }  // namespace
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents), brave_drm_receivers_(contents, this) {
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<BraveDrmTabHelper>(*contents),
+      brave_drm_receivers_(contents, this) {
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
@@ -71,8 +73,10 @@ void BraveDrmTabHelper::BindBraveDRM(
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
+  content::WebContents& web_contents =
+      const_cast<content::WebContents&>(GetWebContents());
   PrefService* prefs =
-      static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
+      static_cast<Profile*>(web_contents.GetBrowserContext())->GetPrefs();
   if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
     return false;
   }
@@ -95,7 +99,7 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
-    RequestWidevinePermission(web_contents(), false /* for_restart */);
+    RequestWidevinePermission(&GetWebContents(), false /* for_restart */);
   }
 }
 
@@ -107,12 +111,12 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // restarting on linux. This restart permission request is only shown if
     // this tab asks widevine explicitely.
     if (is_widevine_requested_)
-      RequestWidevinePermission(web_contents(), true /* for_restart*/);
+      RequestWidevinePermission(&GetWebContents(), true /* for_restart*/);
 #else
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.
     if (is_widevine_requested_)
-      ReloadIfActive(web_contents());
+      ReloadIfActive(&GetWebContents());
 #endif
     // Stop observing component update event.
     observer_.Reset();

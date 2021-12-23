@@ -58,18 +58,20 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents) {}
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<BackgroundVideoPlaybackTabHelper>(
+          *contents) {}
 
 BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {}
 
 void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   // Filter only YT domain here
-  if (!IsYouTubeDomain(web_contents()->GetLastCommittedURL())) {
+  if (!IsYouTubeDomain(GetWebContents().GetLastCommittedURL())) {
     return;
   }
-  if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
-    web_contents()->GetMainFrame()->ExecuteJavaScript(
+  if (IsBackgroundVideoPlaybackEnabled(&GetWebContents())) {
+    GetWebContents().GetMainFrame()->ExecuteJavaScript(
         k_youtube_background_playback_script, base::NullCallback());
   }
 }

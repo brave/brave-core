@@ -33,17 +33,18 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {}
 
 bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  Profile* profile = Profile::FromBrowserContext(
+      const_cast<content::WebContents&>(GetWebContents()).GetBrowserContext());
   DCHECK(profile);
   return SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {
-  return IsEnabledForSite(web_contents()->GetLastCommittedURL());
+  return IsEnabledForSite(GetWebContents().GetLastCommittedURL());
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
@@ -51,7 +52,7 @@ bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
     return false;
 
   Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      Profile::FromBrowserContext(GetWebContents().GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
   return speedreader::IsEnabledForSite(content_rules, url);
 }
@@ -60,19 +61,19 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
   if (!IsSpeedreaderEnabled())
     return;
 
-  if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
+  if (auto* entry = GetWebContents().GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
   }
 
   Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      Profile::FromBrowserContext(GetWebContents().GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
   bool enabled = speedreader::IsEnabledForSite(
-      content_rules, web_contents()->GetLastCommittedURL());
+      content_rules, GetWebContents().GetLastCommittedURL());
   if (enabled != on) {
     speedreader::SetEnabledForSite(content_rules,
-                                   web_contents()->GetLastCommittedURL(), on);
-    web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
+                                   GetWebContents().GetLastCommittedURL(), on);
+    GetWebContents().GetController().Reload(content::ReloadType::NORMAL, false);
   }
 }
 
@@ -80,13 +81,13 @@ void SpeedreaderTabHelper::SingleShotSpeedreader() {
   single_shot_next_request_ = true;
 
   // Refresh the page so it runs through the speedreader throttle
-  auto* contents = web_contents();
+  auto* contents = &GetWebContents();
   if (contents)
     contents->GetController().Reload(content::ReloadType::NORMAL, false);
 
   // Determine if bubble should be shown automatically
   Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      Profile::FromBrowserContext(GetWebContents().GetBrowserContext());
   DCHECK(profile);
   auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
   if (speedreader_service->ShouldPromptUserToEnable()) {
@@ -102,7 +103,7 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
     return false;
   }
   Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      Profile::FromBrowserContext(GetWebContents().GetBrowserContext());
   DCHECK(profile);
   auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
 
@@ -178,7 +179,7 @@ SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
-  auto* contents = web_contents();
+  auto* contents = &GetWebContents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
   browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
@@ -193,7 +194,7 @@ void SpeedreaderTabHelper::ShowReaderModeBubble() {
 }
 
 void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
-  auto* contents = web_contents();
+  auto* contents = &GetWebContents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
   speedreader_bubble_ =
@@ -224,7 +225,7 @@ void SpeedreaderTabHelper::OnDistillComplete() {
 }
 
 void SpeedreaderTabHelper::DidStopLoading() {
-  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  auto* entry = GetWebContents().GetController().GetLastCommittedEntry();
   if (entry) {
     SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
   }

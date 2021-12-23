@@ -75,7 +75,8 @@ class BraveTLDEphemeralLifetimeDelegate
 // design document at:
 // https://github.com/brave/brave-browser/wiki/Ephemeral-Storage-Design
 EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
+    : WebContentsObserver(web_contents),
+      content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.
@@ -102,7 +103,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
-      net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
+      net::URLToEphemeralStorageDomain(GetWebContents().GetLastCommittedURL());
   if (new_domain == previous_domain)
     return;
 
@@ -125,7 +126,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   if (new_url.is_empty())
     return;
 
-  auto* browser_context = web_contents()->GetBrowserContext();
+  auto* browser_context = GetWebContents().GetBrowserContext();
   auto site_instance =
       content::SiteInstance::CreateForURL(browser_context, new_url);
   auto* partition = browser_context->GetStoragePartition(site_instance.get());
@@ -159,10 +160,10 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   session_storage_namespace_.reset();
 
   std::string session_partition_id = StringToSessionStorageId(
-      content::GetSessionStorageNamespaceId(web_contents()),
+      content::GetSessionStorageNamespaceId(&GetWebContents()),
       kSessionStorageSuffix);
 
-  auto* rfh = web_contents()->GetOpener();
+  auto* rfh = GetWebContents().GetOpener();
   session_storage_namespace_ = content::CreateSessionStorageNamespace(
       partition, session_partition_id,
       // clone the namespace if there is an opener

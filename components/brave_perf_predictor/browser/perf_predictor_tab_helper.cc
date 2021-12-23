@@ -25,6 +25,7 @@ namespace brave_perf_predictor {
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<PerfPredictorTabHelper>(*web_contents),
       bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
           NamedThirdPartyRegistryFactory::GetForBrowserContext(
               web_contents->GetBrowserContext()))) {
@@ -68,30 +69,27 @@ void PerfPredictorTabHelper::DispatchBlockedEvent(
 }
 
 void PerfPredictorTabHelper::RecordSavings() {
-  if (web_contents()) {
-    const uint64_t savings =
-        static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
-    bandwidth_predictor_->Reset();
-    VLOG(3) << "Saving computed bw saving = " << savings;
-    if (savings > 0) {
-      // BrowserContenxt can be null in tests
-      auto* browser_context = web_contents()->GetBrowserContext();
-      if (!browser_context)
-        return;
+  const uint64_t savings =
+      static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
+  bandwidth_predictor_->Reset();
+  VLOG(3) << "Saving computed bw saving = " << savings;
+  if (savings > 0) {
+    // BrowserContenxt can be null in tests
+    auto* browser_context = GetWebContents().GetBrowserContext();
+    if (!browser_context)
+      return;
 
-      PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
-      if (prefs)
-        prefs->SetUint64(
-            prefs::kBandwidthSavedBytes,
-            prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
+    PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
+    if (prefs)
+      prefs->SetUint64(prefs::kBandwidthSavedBytes,
+                       prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
 
-      if (bandwidth_tracker_)
-        bandwidth_tracker_->RecordSavings(savings);
+    if (bandwidth_tracker_)
+      bandwidth_tracker_->RecordSavings(savings);
 #if defined(OS_ANDROID)
-        chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
-          savings);
+    chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
+        savings);
 #endif
-    }
   }
 }
 
@@ -125,7 +123,7 @@ void PerfPredictorTabHelper::ResourceLoadComplete(
     const content::GlobalRequestID& request_id,
     const blink::mojom::ResourceLoadInfo& resource_load_info) {
   if (render_frame_host)
-    bandwidth_predictor_->OnResourceLoadComplete(web_contents()->GetURL(),
+    bandwidth_predictor_->OnResourceLoadComplete(GetWebContents().GetURL(),
                                                  resource_load_info);
 }
 

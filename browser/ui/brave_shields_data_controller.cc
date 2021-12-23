@@ -21,7 +21,8 @@ BraveShieldsDataController::~BraveShieldsDataController() = default;
 
 BraveShieldsDataController::BraveShieldsDataController(
     content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<BraveShieldsDataController>(*web_contents) {}
 
 void BraveShieldsDataController::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -32,7 +33,7 @@ void BraveShieldsDataController::DidFinishNavigation(
 }
 
 void BraveShieldsDataController::ReloadWebContents() {
-  web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  GetWebContents().GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
 void BraveShieldsDataController::ClearAllResourcesList() {
@@ -95,17 +96,17 @@ std::vector<GURL> BraveShieldsDataController::GetFingerprintsList() {
 
 bool BraveShieldsDataController::GetBraveShieldsEnabled() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
   return brave_shields::GetBraveShieldsEnabled(map, GetCurrentSiteURL());
 }
 
 GURL BraveShieldsDataController::GetCurrentSiteURL() {
-  return web_contents()->GetLastCommittedURL();
+  return GetWebContents().GetLastCommittedURL();
 }
 
 AdBlockMode BraveShieldsDataController::GetAdBlockMode() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type_ad =
       brave_shields::GetAdControlType(map, GetCurrentSiteURL());
@@ -126,7 +127,7 @@ AdBlockMode BraveShieldsDataController::GetAdBlockMode() {
 
 FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type =
       brave_shields::GetFingerprintingControlType(map, GetCurrentSiteURL());
@@ -142,7 +143,7 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
 
 CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type =
       brave_shields::GetCookieControlType(map, GetCurrentSiteURL());
@@ -158,13 +159,13 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
 
 bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
   return brave_shields::GetHTTPSEverywhereEnabled(map, GetCurrentSiteURL());
 }
 
 bool BraveShieldsDataController::GetNoScriptEnabled() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
   ControlType control_type =
       brave_shields::GetNoScriptControlType(map, GetCurrentSiteURL());
 
@@ -177,7 +178,7 @@ bool BraveShieldsDataController::GetNoScriptEnabled() {
 
 void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type_ad;
   ControlType control_type_cosmetic;
@@ -206,7 +207,7 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
 
 void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type;
 
@@ -226,7 +227,7 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
 
 void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type;
 
@@ -246,7 +247,7 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
 
 void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   ControlType control_type;
 
@@ -264,7 +265,7 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 
 void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
-      web_contents()->GetBrowserContext());
+      GetWebContents().GetBrowserContext());
 
   brave_shields::SetHTTPSEverywhereEnabled(map, is_enabled, GetCurrentSiteURL(),
                                            g_browser_process->local_state());

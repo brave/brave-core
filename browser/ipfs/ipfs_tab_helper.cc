@@ -66,7 +66,8 @@ IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      IpfsImportController(web_contents) {
+      IpfsImportController(web_contents),
+      content::WebContentsUserData<IPFSTabHelper>(*web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   auto* storage_partition =
       web_contents->GetBrowserContext()->GetDefaultStoragePartition();
@@ -99,7 +100,7 @@ void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
                                   WindowOpenDisposition::CURRENT_TAB,
                                   ui::PAGE_TRANSITION_LINK, false);
     params.should_replace_current_entry = true;
-    web_contents()->OpenURL(params);
+    GetWebContents().OpenURL(params);
     return;
   }
   UpdateLocationBar();
@@ -107,7 +108,7 @@ void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
 
 void IPFSTabHelper::HostResolvedCallback(const std::string& host,
                                          const std::string& dnslink) {
-  GURL current = web_contents()->GetURL();
+  GURL current = GetWebContents().GetURL();
   if (current.host() != host || !current.SchemeIsHTTPOrHTTPS())
     return;
   if (dnslink.empty())
@@ -120,15 +121,15 @@ void IPFSTabHelper::HostResolvedCallback(const std::string& host,
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
-  if (web_contents()->GetDelegate())
-    web_contents()->GetDelegate()->NavigationStateChanged(
-        web_contents(), content::INVALIDATE_TYPE_URL);
+  if (GetWebContents().GetDelegate())
+    GetWebContents().GetDelegate()->NavigationStateChanged(
+        &GetWebContents(), content::INVALIDATE_TYPE_URL);
 }
 
 GURL IPFSTabHelper::GetCurrentPageURL() const {
   if (current_page_url_for_testing_.is_valid())
     return current_page_url_for_testing_;
-  return web_contents()->GetVisibleURL();
+  return const_cast<content::WebContents&>(GetWebContents()).GetVisibleURL();
 }
 
 GURL IPFSTabHelper::GetIPFSResolvedURL() const {
@@ -142,7 +143,7 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
 }
 
 void IPFSTabHelper::ResolveIPFSLink() {
-  GURL current = web_contents()->GetURL();
+  GURL current = GetWebContents().GetURL();
   if (!current.SchemeIsHTTPOrHTTPS())
     return;
 
@@ -151,8 +152,8 @@ void IPFSTabHelper::ResolveIPFSLink() {
   auto resolved_callback = base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
                                           weak_ptr_factory_.GetWeakPtr());
   const auto& key =
-      web_contents()->GetMainFrame()
-          ? web_contents()->GetMainFrame()->GetNetworkIsolationKey()
+      GetWebContents().GetMainFrame()
+          ? GetWebContents().GetMainFrame()->GetNetworkIsolationKey()
           : net::NetworkIsolationKey();
   resolver_->Resolve(host_port_pair, key, net::DnsQueryType::TXT,
                      std::move(resolved_callback));
