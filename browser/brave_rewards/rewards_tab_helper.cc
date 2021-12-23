@@ -34,6 +34,7 @@ namespace brave_rewards {
 
 RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<RewardsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid())
     return;

@@ -46,7 +46,9 @@ void ReloadIfActive(content::WebContents* web_contents) {
 }  // namespace
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents), brave_drm_receivers_(contents, this) {
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<BraveDrmTabHelper>(*contents),
+      brave_drm_receivers_(contents, this) {
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))

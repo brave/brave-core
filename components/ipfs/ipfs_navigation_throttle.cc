@@ -45,20 +45,20 @@ class IPFSWebContentsLifetimeHelper
     : public content::WebContentsUserData<IPFSWebContentsLifetimeHelper> {
  public:
   explicit IPFSWebContentsLifetimeHelper(content::WebContents* web_contents)
-      : web_contents_(web_contents) {}
+      : content::WebContentsUserData<IPFSWebContentsLifetimeHelper>(
+            *web_contents) {}
 
   base::WeakPtr<IPFSWebContentsLifetimeHelper> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }
 
   void NavigateTo(const content::OpenURLParams& url_params) {
-    web_contents_->OpenURL(url_params);
+    GetWebContents().OpenURL(url_params);
   }
 
  private:
   friend class content::WebContentsUserData<IPFSWebContentsLifetimeHelper>;
 
-  content::WebContents* const web_contents_;
   base::WeakPtrFactory<IPFSWebContentsLifetimeHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

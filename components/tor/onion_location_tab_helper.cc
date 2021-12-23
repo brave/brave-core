@@ -20,7 +20,8 @@ void OnionLocationTabHelper::SetOnionLocation(
 }
 
 OnionLocationTabHelper::OnionLocationTabHelper(
-    content::WebContents* web_contents) {}
+    content::WebContents* web_contents)
+    : content::WebContentsUserData<OnionLocationTabHelper>(*web_contents) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(OnionLocationTabHelper);
 
