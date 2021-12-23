@@ -1,4 +1,8 @@
 export const localeStrings = {
+  rewardsPaymentCheckStatus: 'Check status',
+  rewardsPaymentCompleted: 'Congrats! Your $1 $2 rewards have arrived!',
+  rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
+  rewardsPaymentProcessing: 'Your $1 $2 rewards are on the way. Keep an eye out!',
   walletAccountLink: 'Go to your $1 account',
   walletAddFunds: 'Add Funds',
   walletAutoContribute: 'Auto-Contribute',
@@ -13,7 +17,6 @@ export const localeStrings = {
   walletOneTimeTips: 'One-Time Tips',
   walletPending: 'Pending',
   walletPendingContributions: 'Pending contributions',
-  walletPendingRewardsText: '$1 arriving in $2',
   walletRewardsFromAds: 'Rewards from Ads',
   walletRewardsSummary: 'Rewards Summary',
   walletSeeAll: 'See all',

@@ -16,7 +16,7 @@ import { AsyncButton } from './async_button'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
-import { getDaysUntilRewardsPayment } from '../../lib/pending_rewards'
+import { PaymentStatusView, shouldRenderPendingRewards } from '../payment_status_view'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -85,6 +85,7 @@ interface Props {
   nextPaymentDate: number
   earningsThisMonth: number
   earningsLastMonth: number
+  earningsReceived: boolean
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
   onEnableRewards: () => void
@@ -149,9 +150,9 @@ export function RewardsCard (props: Props) {
       return renderGrantOverlay()
     }
 
-    const pendingDays = props.earningsLastMonth > 0
-      ? getDaysUntilRewardsPayment(props.nextPaymentDate)
-      : ''
+    const showPending = shouldRenderPendingRewards(
+      props.earningsLastMonth,
+      props.nextPaymentDate)
 
     return (
       <style.balance>
@@ -171,29 +172,19 @@ export function RewardsCard (props: Props) {
             />
           </style.balanceExchangeAmount>
           {
-            props.rewardsBalance > 0 && !pendingDays &&
+            props.rewardsBalance > 0 && !showPending &&
               <style.balanceExchangeNote>
                 {getString('rewardsExchangeValueNote')}
               </style.balanceExchangeNote>
           }
         </style.balanceExchange>
-        {
-          pendingDays &&
-            <style.pendingRewards>
-              {
-                formatMessage(getString('rewardsPendingPayoutMessage'), [
-                  <span key='amount'>
-                    <strong>+</strong>
-                    <TokenAmount
-                      amount={props.earningsLastMonth}
-                      minimumFractionDigits={1}
-                    />
-                  </span>,
-                  pendingDays
-                ])
-              }
-            </style.pendingRewards>
-        }
+        <style.pendingRewards>
+          <PaymentStatusView
+            earningsLastMonth={props.earningsLastMonth}
+            earningsReceived={props.earningsReceived}
+            nextPaymentDate={props.nextPaymentDate}
+          />
+        </style.pendingRewards>
       </style.balance>
     )
   }

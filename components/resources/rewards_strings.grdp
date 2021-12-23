@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
+    Check status
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="">
+    Congrats! Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards have arrived!
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
+    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="">
+    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards are on the way. Keep an eye out!
+  </message>
+
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
@@ -41,9 +54,6 @@
   </message>
   <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
     Pending contributions
-  </message>
-  <message name="IDS_REWARDS_WALLET_PENDING_REWARDS_TEXT" desc="">
-    <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> payout begins processing in <ph name="DAYS">$2<ex>4 days</ex></ph>
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads

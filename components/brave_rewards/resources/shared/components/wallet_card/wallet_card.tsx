@@ -130,7 +130,8 @@ export function WalletCard (props: Props) {
             </style.summaryBox>
           : <style.pendingBox>
               <PendingRewardsView
-                amount={props.earningsLastMonth}
+                earningsLastMonth={props.earningsLastMonth}
+                earningsReceived={props.summaryData.adEarnings > 0}
                 nextPaymentDate={props.nextPaymentDate}
               />
             </style.pendingBox>

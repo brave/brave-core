@@ -148,6 +148,7 @@ declare namespace NewTab {
     rewardsEnabled: boolean
     adsSupported?: boolean
     balance: RewardsBalance
+    report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
     enabledAds: boolean
