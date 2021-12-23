@@ -468,13 +468,16 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // We also create the same exception for firebase apps, since they
   // are tightly bound to google, and require google auth to work.
   // See: #5075, #9852, #10367
-  if (prefs_->GetBoolean(kGoogleLoginControlType)) {
-    const auto google_auth_rule = Rule(
-        ContentSettingsPattern::FromString(kGoogleAuthPattern),
-        ContentSettingsPattern::Wildcard(),
-        base::Value::FromUniquePtrValue(
-                         ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-                     base::Time(), SessionModel::Durable);
+  //
+  // PS: kGoogleLoginControlType preference might not be registered for tests.
+  if (prefs_->FindPreference(kGoogleLoginControlType) &&
+      prefs_->GetBoolean(kGoogleLoginControlType)) {
+    const auto google_auth_rule =
+        Rule(ContentSettingsPattern::FromString(kGoogleAuthPattern),
+             ContentSettingsPattern::Wildcard(),
+             base::Value::FromUniquePtrValue(
+                 ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+             base::Time(), SessionModel::Durable);
     rules.emplace_back(CloneRule(google_auth_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
