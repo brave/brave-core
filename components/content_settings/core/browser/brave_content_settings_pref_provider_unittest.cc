@@ -453,8 +453,9 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
     const base::DictionaryValue* brave_shields_dict =
-        pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
-            GetShieldsContentTypeName(content_type)));
+        &base::Value::AsDictionaryValue(
+            *pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
+                GetShieldsContentTypeName(content_type))));
     EXPECT_NE(brave_shields_dict, nullptr);
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
@@ -514,7 +515,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // New Shields-specific content settings types should have been created due to
   // the migration, but all should be empty since only invalid data was fed.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const base::DictionaryValue* brave_shields_dict =
+    const base::Value* brave_shields_dict =
         pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
             GetShieldsContentTypeName(content_type)));
     EXPECT_NE(brave_shields_dict, nullptr);

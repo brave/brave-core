@@ -44,9 +44,8 @@ bool ParseCombinedPublisherList(const std::string& json,
   return true;
 }
 
-void ParseDirectPublisherList(
-    const base::DictionaryValue* direct_feeds_pref_value,
-    std::vector<mojom::PublisherPtr>* publishers) {
+void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
+                              std::vector<mojom::PublisherPtr>* publishers) {
   for (auto const kv : direct_feeds_pref_value->DictItems()) {
     if (!kv.second.is_dict()) {
       // Handle unknown value type

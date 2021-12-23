@@ -75,7 +75,7 @@ void WeeklyEventStorage::FilterToWeek() {
 
 void WeeklyEventStorage::Load() {
   DCHECK(events_.empty());
-  const base::ListValue* list = prefs_->GetList(pref_name_);
+  const base::Value* list = prefs_->GetList(pref_name_);
   if (!list) {
     return;
   }

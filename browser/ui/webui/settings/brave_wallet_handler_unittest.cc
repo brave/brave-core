@@ -194,7 +194,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
     EXPECT_EQ(result[0], chain1.Clone());
   }
 
-  const base::DictionaryValue* assets_pref =
+  const base::Value* assets_pref =
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x999");
   ASSERT_TRUE(list->is_list());
