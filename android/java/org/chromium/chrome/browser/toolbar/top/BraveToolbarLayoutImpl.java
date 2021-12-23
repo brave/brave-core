@@ -77,6 +77,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPage;
+import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopup;
 import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopupListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -1315,5 +1316,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
         super.onDraw(canvas);
+    }
+
+    @Override
+    public boolean isLocationBarValid(LocationBarCoordinator locationBar) {
+        return locationBar != null && locationBar.getPhoneCoordinator() != null
+                && locationBar.getPhoneCoordinator().getViewForDrawing() != null;
     }
 }
