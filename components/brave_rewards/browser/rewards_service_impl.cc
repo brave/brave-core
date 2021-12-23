@@ -780,7 +780,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
   base::flat_map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    parts[it.GetKey()] = it.GetUnescapedValue();
+    parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
 
   ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
@@ -2931,7 +2931,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
 
   const auto url = GURL("brave:/" + path + query);
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    query_map[it.GetKey()] = it.GetUnescapedValue();
+    query_map[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
 
   if (action == "authorization") {
