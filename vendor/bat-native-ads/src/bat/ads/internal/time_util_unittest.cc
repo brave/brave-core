@@ -281,72 +281,454 @@ TEST_P(BatAdsTimeUtilTest, GetTimeAtEndOfThisMonth) {
 }
 
 #if defined(OS_LINUX)
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingStarted) {
-  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPaicficTimezone) {
+  ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
-  const base::Time& time =
-      TimeFromString("October 3 2021 9:34:56.789", /* is_local */ true);
-  AdvanceClock(time);
+  const base::Time& daylight_saving_started_day =
+      TimeFromString("March 14 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_day =
+      TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  base::Time adjusted_time = GetLocalMidnight(time);
+  const base::Time& adjusted_daylight_saving_started_day =
+      GetLocalMidnight(daylight_saving_started_day);
+  const base::Time& adjusted_daylight_saving_ended_day =
+      GetLocalMidnight(daylight_saving_ended_day);
 
   // Assert
-  const base::Time& expected_adjusted_time =
-      TimeFromString("October 3 2021 0:0:0.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_started_day =
+      TimeFromString("March 14 2021 0:0:0.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_day =
+      TimeFromString("November 7 2021 0:0:0.000", /* is_local */ true);
 
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_daylight_saving_started_day,
+            adjusted_daylight_saving_started_day);
+  EXPECT_EQ(expected_daylight_saving_ended_day,
+            adjusted_daylight_saving_ended_day);
 }
 
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightWithDaylightSavingEnded) {
-  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
-  const base::Time& time =
-      TimeFromString("April 4 2021 9:34:56.789", /* is_local */ true);
-  AdvanceClock(time);
+  const base::Time& daylight_saving_started_day =
+      TimeFromString("March 28 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_day =
+      TimeFromString("October 31 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  base::Time adjusted_time = GetLocalMidnight(time);
+  const base::Time& adjusted_daylight_saving_started_day =
+      GetLocalMidnight(daylight_saving_started_day);
+  const base::Time& adjusted_daylight_saving_ended_day =
+      GetLocalMidnight(daylight_saving_ended_day);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time& expected_daylight_saving_started_day =
+      TimeFromString("March 28 2021 0:0:0.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_day =
+      TimeFromString("October 31 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_day,
+            adjusted_daylight_saving_started_day);
+  EXPECT_EQ(expected_daylight_saving_ended_day,
+            adjusted_daylight_saving_ended_day);
+}
+
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  // Arrange
+  const base::Time& daylight_saving_started_day =
+      TimeFromString("October 3 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_day =
+      TimeFromString("April 4 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_day =
+      GetLocalMidnight(daylight_saving_started_day);
+  const base::Time& adjusted_daylight_saving_ended_day =
+      GetLocalMidnight(daylight_saving_ended_day);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_day =
+      TimeFromString("October 3 2021 0:0:0.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_day =
       TimeFromString("April 4 2021 0:0:0.000", /* is_local */ true);
 
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_daylight_saving_started_day,
+            adjusted_daylight_saving_started_day);
+  EXPECT_EQ(expected_daylight_saving_ended_day,
+            adjusted_daylight_saving_ended_day);
 }
 
-TEST_P(BatAdsTimeUtilTest,
-       AdjustTimeToBeginningOfMonthWithDaylightSavingEnded) {
-  ScopedLibcTZ scoped_libc_tz{"US/Pacific"};
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
+  ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
   const base::Time& time =
-      TimeFromString("November 18 2021 12:34:56.789", /* is_local */ true);
-  AdvanceClock(time);
+      TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_time = AdjustTimeToBeginningOfMonth(time);
+  const base::Time& adjusted_time = GetLocalMidnight(time);
 
   // Assert
   const base::Time& expected_adjusted_time =
+      TimeFromString("November 7 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfMonthForUSPacificTimezone) {
+  ScopedLibcTZ scoped_libc_tz("US/Pacific");
+  // Arrange
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("March 20 2021 00:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("March 20 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("November 18 2021 00:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("November 18 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
       TimeFromString("November 1 2021 00:00:00.000", /* is_local */ true);
 
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
 }
 
 TEST_P(BatAdsTimeUtilTest,
-       AdjustTimeToBeginningOfMonthWithDaylightSavingStarted) {
-  ScopedLibcTZ scoped_libc_tz{"US/Pacific"};
+       AdjustTimeToBeginningOfMonthForEuropeLondonTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Europe/London");
+  // Arrange
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("March 30 2021 00:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("March 30 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("October 31 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("October 31 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfMonthForAustraliaSydneyTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  // Arrange
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("October 3 2021 00:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("October 3 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("April 4 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("April 4 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToBeginningOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("April 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfMonthForNoDSTTimezone) {
+  ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
   const base::Time& time =
-      TimeFromString("March 20 2021 12:34:56.789", /* is_local */ true);
-  AdvanceClock(time);
+      TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
   const base::Time& adjusted_time = AdjustTimeToBeginningOfMonth(time);
 
   // Assert
   const base::Time& expected_adjusted_time =
+      TimeFromString("November 1 2021 0:0:0.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfMonthForUSPacificTimezone) {
+  ScopedLibcTZ scoped_libc_tz("US/Pacific");
+  // Arrange
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("March 3 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("March 20 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("November 3 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("November 20 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("March 31 2021 23:59:59.999", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("November 30 2021 23:59:59.999", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfMonthForEuropeLondonTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Europe/London");
+  // Arrange
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("March 3 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("March 29 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("October 3 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("October 31 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("March 31 2021 23:59:59.999", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("October 31 2021 23:59:59.999", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfMonthForAustraliaSydneyTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  const base::Time& daylight_saving_started_time1 =
+      TimeFromString("October 1 2021 00:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_started_time2 =
+      TimeFromString("October 1 2021 23:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time1 =
+      TimeFromString("April 1 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time2 =
+      TimeFromString("April 1 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time1);
+  const base::Time& adjusted_daylight_saving_started_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_started_time2);
+  const base::Time& adjusted_daylight_saving_ended_time1 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time1);
+  const base::Time& adjusted_daylight_saving_ended_time2 =
+      AdjustTimeToEndOfMonth(daylight_saving_ended_time2);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("October 31 2021 23:59:59.999", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("April 30 2021 23:59:59.999", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time1);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time2);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToEndOfMonthForNoDSTTimezone) {
+  ScopedLibcTZ scoped_libc_tz("America/Cayman");
+  // Arrange
+  const base::Time& time =
+      TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_time = AdjustTimeToEndOfMonth(time);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("November 30 2021 23:59:59.999", /* is_local */ true);
+
+  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfLastMonthForUSPacificTimezone) {
+  ScopedLibcTZ scoped_libc_tz("US/Pacific");
+  // Arrange
+  const base::Time& daylight_saving_started_time =
+      TimeFromString("April 5 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time =
+      TimeFromString("December 20 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
+  const base::Time& adjusted_daylight_saving_ended_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("November 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfLastMonthForEuropeLondonTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Europe/London");
+  // Arrange
+  const base::Time& daylight_saving_started_time =
+      TimeFromString("April 5 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time =
+      TimeFromString("November 20 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
+  const base::Time& adjusted_daylight_saving_ended_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time);
+}
+
+TEST_P(BatAdsTimeUtilTest,
+       AdjustTimeToBeginningOfLastMonthForAustraliaSydneyTimezone) {
+  ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
+  // Arrange
+  const base::Time& daylight_saving_started_time =
+      TimeFromString("November 5 2021 12:34:56.789", /* is_local */ true);
+  const base::Time& daylight_saving_ended_time =
+      TimeFromString("May 20 2021 12:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_daylight_saving_started_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
+  const base::Time& adjusted_daylight_saving_ended_time =
+      AdjustTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
+
+  // Assert
+  const base::Time& expected_daylight_saving_started_time =
+      TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
+  const base::Time& expected_daylight_saving_ended_time =
+      TimeFromString("April 1 2021 00:00:00.000", /* is_local */ true);
+
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time);
+  EXPECT_EQ(expected_daylight_saving_ended_time,
+            adjusted_daylight_saving_ended_time);
+}
+
+TEST_P(BatAdsTimeUtilTest, AdjustTimeToBeginningOfLastMonthForNoDSTTimezone) {
+  ScopedLibcTZ scoped_libc_tz("America/Cayman");
+  // Arrange
+  const base::Time& time =
+      TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
+
+  // Act
+  const base::Time& adjusted_time = AdjustTimeToBeginningOfPreviousMonth(time);
+
+  // Assert
+  const base::Time& expected_adjusted_time =
+      TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
