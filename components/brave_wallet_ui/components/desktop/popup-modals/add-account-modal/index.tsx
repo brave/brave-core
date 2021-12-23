@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { AddAccountNavTypes, WalletAccountType } from '../../../../constants/types'
 import { AddAccountNavOptions } from '../../../../options/add-account-nav-options'
 import { Select } from 'brave-ui/components'
@@ -19,12 +20,13 @@ import {
 
 import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
+import { FilecoinNetwork, HardwareWalletAccount } from '../../../../common/hardware/types'
 
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
+  onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
@@ -44,6 +46,7 @@ const AddAccountModal = (props: Props) => {
     onClose,
     onCreateAccount,
     onImportAccount,
+    onImportFilecoinAccount,
     onConnectHardwareWallet,
     onAddHardwareAccounts,
     getBalance,
@@ -86,6 +89,16 @@ const AddAccountModal = (props: Props) => {
     setPassword(event.target.value)
     onSetImportError(false)
   }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  // TODO(spylogsster): Uncomment for importing filecoin accounts
+  // should be enabled in //brave/components/brave_wallet/common/buildflags/buildflags.gni as well
+  // example: onImportFilecoinKey(accountName, privateKey, FILECOIN_TESTNET, FilecoinAddressProtocol.BLS)
+  // @ts-expect-error
+  const onImportFilecoinKey = (accountName: string, privateKey: string, network: FilecoinNetwork, protocol: FilecoinAddressProtocol) => {
+    onImportFilecoinAccount(accountName, privateKey, network, protocol)
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const onSubmit = () => {
     if (tab === 'create') {
@@ -193,8 +206,8 @@ const AddAccountModal = (props: Props) => {
               <Input
                 placeholder={getLocale('braveWalletImportAccountPlaceholder')}
                 onChange={handlePrivateKeyChanged}
-              type='password'
-              autoFocus={true}
+                type='password'
+                autoFocus={true}
               />
             ) : (
               <>
@@ -225,8 +238,8 @@ const AddAccountModal = (props: Props) => {
               value={accountName}
               placeholder={getLocale('braveWalletAddAccountPlaceholder')}
               onKeyDown={handleKeyDown}
-            onChange={handleAccountNameChanged}
-            autoFocus={true}
+              onChange={handleAccountNameChanged}
+              autoFocus={true}
             />
             <NavButton
               onSubmit={onSubmit}

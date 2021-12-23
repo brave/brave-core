@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -30,10 +31,10 @@ class OneShotTimer;
 
 namespace brave_wallet {
 
-class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
 class BraveWalletProviderImplUnitTest;
+class FilecoinKeyring;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
@@ -120,6 +121,17 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                              const std::string& password,
                              const std::string& json,
                              ImportAccountCallback callback) override;
+  void ImportFilecoinSECP256K1Account(
+      const std::string& account_name,
+      const std::string& private_key,
+      const std::string& network,
+      ImportFilecoinSECP256K1AccountCallback callback) override;
+  void ImportFilecoinBLSAccount(
+      const std::string& account_name,
+      const std::string& private_key,
+      const std::string& public_key,
+      const std::string& network,
+      ImportFilecoinBLSAccountCallback callback) override;
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
   void RemoveHardwareAccount(const std::string& address) override;
@@ -131,6 +143,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
+  void GetKeyringInfo(const std::string& keyring_id,
+                      GetKeyringInfoCallback callback) override;
   void Reset() override;
   void SetDefaultKeyringHardwareAccountName(
       const std::string& address,
@@ -145,7 +159,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
       const std::string& name,
       SetDefaultKeyringImportedAccountNameCallback callback) override;
 
-  bool IsDefaultKeyringCreated();
+  bool IsKeyringCreated(const std::string& keyring_id);
   bool IsHardwareAccount(const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
@@ -226,25 +240,40 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetSelectedAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, UnknownKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedFilecoinAccounts);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
   void OnAutoLockFired();
+  HDKeyring* GetKeyringForAddress(const std::string& address);
+  HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
+  std::string GetKeyringId(HDKeyring::Type type) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
-
+  std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
+                                                const std::string& keyring_id);
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(
       const std::string& account_name,
       const std::vector<uint8_t>& private_key);
-
+  absl::optional<std::string> ImportSECP256K1AccountForFilecoinKeyring(
+      const std::string& account_name,
+      const std::vector<uint8_t>& private_key,
+      const std::string& network);
+  absl::optional<std::string> ImportBLSAccountForFilecoinKeyring(
+      const std::string& account_name,
+      const std::vector<uint8_t>& private_key,
+      const std::vector<uint8_t>& public_key,
+      const std::string& network);
+  bool IsFilecoinAccount(const std::string& account) const;
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       const std::string& id);
   bool UpdateNameForHardwareAccountSync(const std::string& address,
                                         const std::string& name);
-  const std::string GetMnemonicForDefaultKeyringImpl();
+  const std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
   bool GetPrefInBytesForKeyring(const std::string& key,
                                 std::vector<uint8_t>* bytes,
@@ -255,18 +284,22 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
-  bool CreateDefaultKeyringInternal(const std::string& mnemonic,
-                                    bool is_legacy_brave_wallet);
+  bool CreateKeyringInternal(const std::string& keyring_id,
+                             const std::string& mnemonic,
+                             bool is_legacy_brave_wallet);
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success
-  HDKeyring* CreateDefaultKeyring(const std::string& password);
+  HDKeyring* CreateKeyring(const std::string& keyring_id,
+                           const std::string& password);
   // Restore default keyring from backup seed phrase
-  HDKeyring* RestoreDefaultKeyring(const std::string& mnemonic,
-                                   const std::string& password,
-                                   bool is_legacy_brave_wallet);
+  HDKeyring* RestoreKeyring(const std::string& keyring_id,
+                            const std::string& mnemonic,
+                            const std::string& password,
+                            bool is_legacy_brave_wallet);
   // It's used to reconstruct same default keyring between browser relaunch
-  HDKeyring* ResumeDefaultKeyring(const std::string& password);
+  HDKeyring* ResumeKeyring(const std::string& keyring_id,
+                           const std::string& password);
 
   void NotifyAccountsChanged();
   void StopAutoLockTimer();
@@ -278,7 +311,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   std::unique_ptr<HDKeyring> default_keyring_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-
+  std::unique_ptr<FilecoinKeyring> filecoin_keyring_;
   // TODO(darkdh): For other keyrings support
   // std::vector<std::unique_ptr<HDKeyring>> keyrings_;
 

@@ -23,7 +23,7 @@ class EthTransaction;
 
 class HDKeyring {
  public:
-  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin };
+  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin };
 
   HDKeyring();
   virtual ~HDKeyring();
@@ -70,6 +70,8 @@ class HDKeyring {
 
  protected:
   std::string GetAddressInternal(const HDKey* hd_key) const;
+  bool AddImportedAddress(const std::string& address,
+                          std::unique_ptr<HDKey> hd_key);
 
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;

@@ -53,6 +53,8 @@ static_library("browser") {
     "eth_tx_controller.h",
     "eth_tx_state_manager.cc",
     "eth_tx_state_manager.h",
+    "filecoin_keyring.cc",
+    "filecoin_keyring.h",
     "hd_key.cc",
     "hd_key.h",
     "hd_keyring.cc",
@@ -74,7 +76,6 @@ static_library("browser") {
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]
-
   deps = [
     "//base",
     "//brave/components/api_request_helper",
@@ -85,9 +86,11 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
+    "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/base32",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",

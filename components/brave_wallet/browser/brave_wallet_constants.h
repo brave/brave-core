@@ -570,6 +570,9 @@ constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 
+extern const char kDefaultKeyringId[];
+extern const char kFilecoinKeyringId[];
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

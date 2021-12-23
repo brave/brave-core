@@ -350,6 +350,7 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.1.9",
     "@types/webtorrent": "^0.109.0",
+    "@noble/bls12-381": "1.0.1",
     "array-move": "^2.2.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",

@@ -222,6 +222,14 @@ struct SwapResponse {
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
+const string kFilecoinTestnet = "t";
+const string kFilecoinMainnet = "f";
+
+enum FilecoinAddressProtocol {
+  SECP256K1 = 1, // Represents the address SECP256K1 protocol
+  BLS = 3 // Represents the address BLS protocol
+};
+
 struct HardwareWalletAccount {
   string address;
   string derivation_path;
@@ -360,6 +368,12 @@ interface KeyringController {
   ImportAccount(string accountName, string privateKey)
     => (bool success, string address);
 
+  ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)
+    => (bool success, string address);
+
+  ImportFilecoinBLSAccount(string accountName, string privateKey, string publicKey, string network)
+    => (bool success, string address);
+
   // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
@@ -379,7 +393,8 @@ interface KeyringController {
 
   // Obtains the keyring information
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
-
+  // Obtains the keyring information
+  GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
   // Resets the keyring and all preferences
   Reset();
 

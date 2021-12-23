@@ -14,7 +14,10 @@ static_library("argon2") {
   configs += [ ":warnings" ]
   public_configs = [ ":external_config" ]
 
-  visibility = [ "//brave/browser/brave_wallet:external_wallets_importer" ]
+  visibility = [
+    "//brave/browser/brave_wallet:external_wallets_importer",
+    "//brave/components/brave_wallet/browser",
+  ]
 
   defines = [ "ARGON2_NO_THREADS" ]
 

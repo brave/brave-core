@@ -24,6 +24,7 @@ class GURL;
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
+bool IsFilecoinEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
