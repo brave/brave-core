@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -34,6 +35,7 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
+class NTPCustomBackgroundImagesService;
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 struct TopSite;
@@ -42,6 +44,7 @@ class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
+                     NTPCustomBackgroundImagesService* custom_service,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
@@ -144,6 +147,9 @@ class ViewCounterService : public KeyedService,
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
+
+  // Can be null if custom background is not supported.
+  NTPCustomBackgroundImagesService* custom_bi_service_ = nullptr;
 
   // If P3A is enabled, these will track number of tabs created
   // and the ratio of those which are branded images.

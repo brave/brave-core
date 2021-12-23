@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+
 brave_browser_ntp_background_images_sources = [
   "//brave/browser/ntp_background_images/view_counter_service_factory.cc",
   "//brave/browser/ntp_background_images/view_counter_service_factory.h",
@@ -16,6 +18,7 @@ brave_browser_ntp_background_images_deps = [
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_stats/browser",
   "//brave/components/ntp_background_images/browser",
+  "//brave/components/ntp_background_images/buildflags",
   "//brave/components/ntp_background_images/common",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
@@ -25,6 +28,11 @@ brave_browser_ntp_background_images_deps = [
   "//components/prefs",
   "//content/public/browser",
 ]
+
+if (enable_custom_background) {
+  brave_browser_ntp_background_images_deps +=
+      [ "//brave/browser/ntp_background_images:ntp_custom_background_images" ]
+}
 
 if (is_android) {
   brave_browser_ntp_background_images_sources += [

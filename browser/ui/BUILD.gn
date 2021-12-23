@@ -5,6 +5,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -110,6 +111,8 @@ source_set("ui") {
       "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
       "webui/new_tab_page/brave_new_tab_message_handler.h",
+      "webui/new_tab_page/brave_new_tab_page_handler.cc",
+      "webui/new_tab_page/brave_new_tab_page_handler.h",
       "webui/new_tab_page/brave_new_tab_ui.cc",
       "webui/new_tab_page/brave_new_tab_ui.h",
       "webui/new_tab_page/brave_new_tab_ui_utils.cc",
@@ -412,6 +415,7 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
+      "//brave/browser/ui/webui/new_tab_page:mojo_binding",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
@@ -511,6 +515,10 @@ source_set("ui") {
       "//extensions/common:common_constants",
       "//ui/base/dragdrop:types",
     ]
+  }
+
+  if (enable_custom_background) {
+    deps += [ "//brave/components/ntp_background_images/browser" ]
   }
 
   if (enable_brave_vpn && !is_android) {

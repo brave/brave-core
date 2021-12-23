@@ -1,3 +1,10 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+
 static_library("browser") {
   sources = [
     "features.cc",
@@ -50,4 +57,11 @@ static_library("browser") {
     "//ui/gfx/geometry",
     "//url",
   ]
+
+  if (enable_custom_background) {
+    sources += [
+      "ntp_custom_background_images_service.cc",
+      "ntp_custom_background_images_service.h",
+    ]
+  }
 }

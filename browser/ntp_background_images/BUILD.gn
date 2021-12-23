@@ -1,0 +1,26 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+
+assert(enable_custom_background)
+
+source_set("ntp_custom_background_images") {
+  sources = [
+    "ntp_custom_background_images_service_delegate.cc",
+    "ntp_custom_background_images_service_delegate.h",
+    "ntp_custom_background_images_service_factory.cc",
+    "ntp_custom_background_images_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/profiles:util",
+    "//brave/components/ntp_background_images/browser",
+    "//chrome/common:constants",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+  ]
+}
