@@ -91,6 +91,7 @@
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/weak_document_ptr.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
 #include "extensions/buildflags/buildflags.h"
@@ -527,11 +528,17 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const absl::optional<url::Origin>& initiating_origin,
+    content::RenderFrameHost* initiator_document,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
+    auto weak_initiator_document =
+        initiator_document ? initiator_document->GetWeakDocumentPtr()
+                           : content::WeakDocumentPtr();
+
     webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, initiating_origin);
+                                     has_user_gesture, initiating_origin,
+                                     std::move(weak_initiator_document));
     return true;
   }
 #endif
@@ -569,7 +576,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
       is_main_frame, sandbox_flags, page_transition, has_user_gesture,
-      initiating_origin, out_factory);
+      initiating_origin, initiator_document, out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
