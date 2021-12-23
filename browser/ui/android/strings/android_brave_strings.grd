@@ -2715,43 +2715,43 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
       The receiving address is a token's contract address
     </message>
-    <message name="IDS_ADD_FUNDS" desc="Brave rewards panel text">
+    <message name="IDS_ADD_FUNDS" desc="Text for `Add funds` button in Brave rewards panel">
       Add funds
     </message>
-    <message name="IDS_REWARDS_SUMMARY" desc="Brave rewards panel text">
+    <message name="IDS_REWARDS_SUMMARY" desc="Text for `Rewards Summary` button in Brave rewards panel">
       Rewards Summary
     </message>
-    <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Brave rewards panel text">
+    <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Title text for `Total Grants Claimed` section in Brave rewards panel">
       Total Grants Claimed
     </message>
-    <message name="IDS_REWARDS_FROM_ADS" desc="Brave rewards panel text">
+    <message name="IDS_REWARDS_FROM_ADS" desc="Title text for `Rewards from Ads` section in Brave rewards panel">
       Rewards from Ads
     </message>
-    <message name="IDS_AUTO_CONTRIBUTE" desc="Brave rewards panel text">
+    <message name="IDS_AUTO_CONTRIBUTE" desc="Title text for `Auto-Contribute` section in Brave rewards panel">
       Auto-Contribute
     </message>
-    <message name="IDS_ONE_TIME_TIP" desc="Brave rewards panel text">
+    <message name="IDS_ONE_TIME_TIP" desc="Title text for `One-Time Tip` section in Brave rewards panel">
       One-Time Tip
     </message>
-    <message name="IDS_MONTHLY_TIPS" desc="Brave rewards panel text">
+    <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
       Monthly Tips
     </message>
-    <message name="IDS_MY_WALLET" desc="Brave rewards panel text">
+    <message name="IDS_MY_WALLET" desc="Text for `My wallet` button in Brave rewards panel">
       My wallet
     </message>
-    <message name="IDS_YOUR_BALANCE" desc="Brave rewards panel text">
+    <message name="IDS_YOUR_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
       Your Balance
     </message>
-    <message name="IDS_ESTIMATED_EARNINGS" desc="Brave rewards panel text">
+    <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
       Estimated earnings
     </message>
-    <message name="IDS_TIP" desc="Brave rewards panel text">
+    <message name="IDS_TIP" desc="Text for `Tip` button in Brave rewards panel">
       Tip
     </message>
-    <message name="IDS_SEND_TIP" desc="Brave rewards panel text">
+    <message name="IDS_SEND_TIP" desc="Text for `Send Tip` button in Brave rewards panel">
       Send Tip
     </message>
-    <message name="IDS_INCLUDE_AUTO_CONTRIBUTE" desc="Brave rewards panel text">
+    <message name="IDS_INCLUDE_AUTO_CONTRIBUTE" desc="Title text for `Include in Auto-Contribute` switch in Brave rewards panel">
       Include in Auto-Contribute
     </message>
     <message name="IDS_SET" desc="Brave rewards panel text">
@@ -2763,13 +2763,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UNVERIFIED_CREATOR" desc="Brave rewards panel text">
       Unverified Creator
     </message>
-    <message name="IDS_REFRESH_STATUS" desc="Brave rewards panel text">
+    <message name="IDS_REFRESH_STATUS" desc="Text for `Refresh Status` button in Brave rewards panel">
       Refresh Status
     </message>
-    <message name="IDS_MONTHLY_CONTRIBUTION" desc="Brave rewards panel text">
+    <message name="IDS_MONTHLY_CONTRIBUTION" desc="Title text for `Monthly contribution` section in Brave rewards panel">
       Monthly contribution
     </message>
-    <message name="IDS_BAT_TEXT" desc="Brave rewards panel text">
+    <message name="IDS_BAT_TEXT" desc="Brave rewards panel text" translateable="false">
       BAT
     </message>
     <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
