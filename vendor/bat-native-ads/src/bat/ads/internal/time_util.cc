@@ -17,25 +17,57 @@ bool g_from_local_exploded_failed = false;
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+base::Time CorrectLocalMidnightForDaylightSaving(const base::Time& midnight,
+                                                 int expected_day_of_month) {
+  // Check for errors due to daylight saving time change.
+  base::Time::Exploded midnight_exploded;
+  midnight.LocalExplode(&midnight_exploded);
+  DCHECK(midnight_exploded.HasValidValues());
+
+  base::Time corrected_midnight = midnight;
+  if (midnight_exploded.hour != 0) {
+    if (midnight_exploded.day_of_month == expected_day_of_month) {
+      corrected_midnight -= base::Hours(1);
+    } else {
+      corrected_midnight += base::Hours(1);
+    }
+  }
+  return corrected_midnight;
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 base::Time CalculateBeginningOfMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
 
-  const base::Time adjusted_time =
-      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1));
-  return adjusted_time;
+  const base::Time midnight = GetLocalMidnight(time);
+  const base::Time shifted_midnight =
+      midnight - base::Days(exploded.day_of_month - 1);
+  return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
+                                               /*expected_day_of_month*/ 1);
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+base::Time CalculateBeginningOfNextMonth(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  DCHECK(exploded.HasValidValues());
+
+  const base::Time midnight = GetLocalMidnight(time);
+  const base::Time shifted_midnight =
+      midnight + base::Days(GetLastDayOfMonth(exploded.year, exploded.month) -
+                            exploded.day_of_month + 1);
+  return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
+                                               /*expected_day_of_month*/ 1);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 base::Time CalculateEndOfPreviousMonth(const base::Time& time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  DCHECK(exploded.HasValidValues());
-
-  base::Time adjusted_time =
-      GetLocalMidnight(time - base::Days(exploded.day_of_month - 1));
+  base::Time adjusted_time = CalculateBeginningOfMonth(time);
   adjusted_time -= base::Milliseconds(1);
   return adjusted_time;
 }
@@ -43,23 +75,15 @@ base::Time CalculateEndOfPreviousMonth(const base::Time& time) {
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 base::Time CalculateBeginningOfPreviousMonth(const base::Time& time) {
-  base::Time end_prev_month = CalculateEndOfPreviousMonth(time);
-  return CalculateBeginningOfMonth(end_prev_month);
+  const base::Time end_previous_month = CalculateEndOfPreviousMonth(time);
+  return CalculateBeginningOfMonth(end_previous_month);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 base::Time CalculateEndOfMonth(const base::Time& time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  DCHECK(exploded.HasValidValues());
-
-  const base::Time next_month_first_day =
-      time + base::Days(GetLastDayOfMonth(exploded.year, exploded.month) -
-                        exploded.day_of_month + 1);
-  base::Time adjusted_time = GetLocalMidnight(next_month_first_day);
+  base::Time adjusted_time = CalculateBeginningOfNextMonth(time);
   adjusted_time -= base::Milliseconds(1);
-
   return adjusted_time;
 }
 
@@ -72,24 +96,11 @@ base::Time GetLocalMidnight(const base::Time& time) {
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
 
-  base::Time midnight =
+  const base::Time midnight =
       time - base::Hours(exploded.hour) - base::Minutes(exploded.minute) -
       base::Seconds(exploded.second) - base::Milliseconds(exploded.millisecond);
 
-  // Check for errors due to daylight saving time change.
-  base::Time::Exploded midnight_exploded;
-  midnight.LocalExplode(&midnight_exploded);
-  DCHECK(midnight_exploded.HasValidValues());
-
-  if (midnight_exploded.hour != 0) {
-    if (midnight_exploded.day_of_month == exploded.day_of_month) {
-      midnight -= base::Hours(1);
-    } else {
-      midnight += base::Hours(1);
-    }
-  }
-
-  return midnight;
+  return CorrectLocalMidnightForDaylightSaving(midnight, exploded.day_of_month);
 }
 
 int GetLocalTimeAsMinutes(const base::Time& time) {
