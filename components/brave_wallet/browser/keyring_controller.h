@@ -252,7 +252,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   std::string GetKeyringId(HDKeyring::Type type) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
   std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
-                                                const std::string& keyringId);
+                                                const std::string& keyring_id);
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(
       const std::string& account_name,

@@ -839,9 +839,9 @@ void KeyringController::ImportAccountFromJson(const std::string& account_name,
 
 std::vector<uint8_t> KeyringController::GetPrivateKeyFromKeyring(
     const std::string& address,
-    const std::string& keyringId) {
+    const std::string& keyring_id) {
   for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(prefs_, keyringId)) {
+       GetImportedAccountsForKeyring(prefs_, keyring_id)) {
     if (imported_account_info.account_address == address) {
       std::string private_key_decoded;
       if (!base::Base64Decode(imported_account_info.encrypted_private_key,
@@ -849,7 +849,7 @@ std::vector<uint8_t> KeyringController::GetPrivateKeyFromKeyring(
         continue;
       std::vector<uint8_t> private_key;
       if (!encryptor_->Decrypt(ToSpan(private_key_decoded),
-                               GetOrCreateNonceForKeyring(keyringId),
+                               GetOrCreateNonceForKeyring(keyring_id),
                                &private_key)) {
         continue;
       }

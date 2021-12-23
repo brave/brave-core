@@ -190,7 +190,9 @@ class KeyringControllerUnitTest : public testing::Test {
               if (success) {
                 account = address;
               }
+              run_loop.Quit();
             }));
+    run_loop.Run();
     return account;
   }
 
@@ -207,7 +209,9 @@ class KeyringControllerUnitTest : public testing::Test {
               if (success) {
                 account = address;
               }
+              run_loop.Quit();
             }));
+    run_loop.Run();
     return account;
   }
 
