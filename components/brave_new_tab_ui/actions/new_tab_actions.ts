@@ -12,6 +12,7 @@ import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 import { TorTabData } from '../api/torTabData'
 import { InitialData } from '../api/initialData'
+import { CustomBackground } from '../api/background'
 
 export const statsUpdated = (stats: Stats) =>
   action(types.NEW_TAB_STATS_UPDATED, {
@@ -53,3 +54,6 @@ export const topSitesStateUpdated = (newShowTopSites: boolean, newCustomLinksEna
   action(types.TOP_SITES_STATE_UPDATED, { newShowTopSites, newCustomLinksEnabled, customLinksNum })
 
 export const customizeClicked = () => action(types.CUSTOMIZE_CLICKED, {})
+
+export const customBackgroundUpdated = (customBackground: CustomBackground) =>
+  action(types.CUSTOM_BACKGROUND_UPDATED, { customBackground })

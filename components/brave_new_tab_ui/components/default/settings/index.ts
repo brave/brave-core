@@ -562,3 +562,61 @@ export const StyledTopSitesCustomizationOptionDesc = styled('div')<{}>`
   line-height: 17px;
   text-align: left;
 `
+
+export const StyledCustomBackgroundSettings = styled('div')<{}>`
+  --option-gap: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  gap: var(--option-gap)
+`
+
+export const StyledCustomBackgroundOption = styled('button')<{}>`
+  width: calc(50% - var(--option-gap) / 2);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  cursor: pointer;
+  border: unset;
+  outline: unset;
+  background: inherit;
+  gap: 8px;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
+`
+
+export const StyledUploadIconContainer = styled('div')<{}>`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 47px 40px 43px 40px;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid #E9E9F4;
+  border-radius: 10.8718px;
+`
+
+export const StyledCustomBackgroundOptionImage = styled('img')<{}>`
+  width: 100%;
+  height: 160px;
+  border-radius: 10.8718px;
+`
+
+export const StyledUploadLabel = styled('div')<{}>`
+font-style: normal;
+font-weight: 400;
+font-size: 11px;
+line-height: 17px;
+`
+
+export const StyledCustomBackgroundOptionLabel = styled('div')<{}>`
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+`

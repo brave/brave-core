@@ -23,6 +23,10 @@ NTPCustomBackgroundImagesServiceDelegate::
     ~NTPCustomBackgroundImagesServiceDelegate() = default;
 
 bool NTPCustomBackgroundImagesServiceDelegate::IsCustomBackgroundEnabled() {
+  auto* service = NtpCustomBackgroundServiceFactory::GetForProfile(profile_);
+  if (service->IsCustomBackgroundDisabledByPolicy())
+    return false;
+
   return profile_->GetPrefs()->GetBoolean(
       prefs::kNtpCustomBackgroundLocalToDevice);
 }

@@ -5,6 +5,12 @@
 
 module brave_new_tab_page.mojom;
 
+import "url/mojom/url.mojom";
+
+struct CustomBackground {
+  url.mojom.Url url;
+};
+
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PageHandlerFactory {
   // The WebUI page's |BrowserProxy| singleton calls this method when the page
@@ -16,11 +22,11 @@ interface PageHandlerFactory {
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   // Choose custom background from local file system.
-  ChooseLocalCustomBackground() => (bool success);
+  ChooseLocalCustomBackground();
   UseBraveBackground();
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
-  OnBackgroundUpdated();
+  OnBackgroundUpdated(CustomBackground custom_background);
 };

@@ -52,8 +52,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       NtpCustomBackgroundServiceFactory::GetForProfile(profile);
 
   source->AddBoolean(
-      "customBackgroundDisabledByPolicy",
-      ntp_custom_background_service->IsCustomBackgroundDisabledByPolicy());
+      "featureCustomBackgroundEnabled",
+      !ntp_custom_background_service->IsCustomBackgroundDisabledByPolicy());
   // Let frontend know about feature flags
   source->AddBoolean(
       "featureFlagBraveNewsEnabled",

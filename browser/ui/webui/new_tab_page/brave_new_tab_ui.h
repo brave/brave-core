@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

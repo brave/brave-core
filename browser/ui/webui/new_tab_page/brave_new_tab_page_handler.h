@@ -7,9 +7,11 @@
 #define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_PAGE_HANDLER_H_
 
 #include "base/scoped_observation.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_observer.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 
 namespace content {
@@ -37,8 +39,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
 
  private:
   // brave_new_tab_page::mojom::PageHandler overrides:
-  void ChooseLocalCustomBackground(
-      ChooseLocalCustomBackgroundCallback callback) override;
+  void ChooseLocalCustomBackground() override;
   void UseBraveBackground() override;
 
   // NtpCustomBackgroundServiceObserver overrides:
@@ -51,7 +52,11 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;
 
-  ChooseLocalCustomBackgroundCallback choose_local_custom_background_callback_;
+  bool IsCustomBackgroundEnabled() const;
+  GURL GetCustomBackgroundImageURL() const;
+
+  mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
+  mojo::Remote<brave_new_tab_page::mojom::Page> page_;
   Profile* profile_ = nullptr;
   NtpCustomBackgroundService* ntp_custom_background_service_ = nullptr;
   content::WebContents* web_contents_ = nullptr;

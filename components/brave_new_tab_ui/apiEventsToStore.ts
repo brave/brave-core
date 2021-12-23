@@ -9,6 +9,7 @@ import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
+import getNTPBrowserAPI, { CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
 async function updatePreferences (prefData: NewTab.Preferences) {
@@ -38,6 +39,10 @@ async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoCh
   getActions().topSitesStateUpdated(topSites.visible, topSites.custom_links_enabled, topSites.custom_links_num)
 }
 
+async function onCustomBackgroundUpdated (customBackground: CustomBackground) {
+  getActions().customBackgroundUpdated(customBackground)
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
 export function wireApiEventsToStore () {
@@ -56,6 +61,7 @@ export function wireApiEventsToStore () {
     preferencesAPI.addChangeListener(onRewardsToggled)
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
     torTabDataAPI.addChangeListener(updateTorTabData)
+    getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)

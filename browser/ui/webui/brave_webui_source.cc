@@ -133,9 +133,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
             IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE },
         { "customize", IDS_BRAVE_NEW_TAB_CUSTOMIZE },
         { "showBackgroundImage", IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE },
-        { "braveBackgroundImageOptionTitle", IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE },
-        { "customBackgroundImageOptionTitle", IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_TITLE },
-        { "customBackgroundImageOptionUploadLabel", IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_UPLOAD_LABEL },
+        { "braveBackgroundImageOptionTitle", IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE },  // NOLINT
+        { "customBackgroundImageOptionTitle", IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_TITLE },  // NOLINT
+        { "customBackgroundImageOptionUploadLabel", IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_UPLOAD_LABEL },  // NOLINT
         { "showBraveStats", IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS },
         { "showClock", IDS_BRAVE_NEW_TAB_SHOW_CLOCK },
         { "clockFormat", IDS_BRAVE_NEW_TAB_CLOCK_FORMAT },

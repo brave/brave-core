@@ -47,6 +47,7 @@ export interface Props {
   textDirection: string
   showSettingsMenu: boolean
   featureFlagBraveNewsEnabled: boolean
+  featureCustomBackgroundEnabled: boolean
   onClose: () => void
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
@@ -64,6 +65,7 @@ export interface Props {
   toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
+  useCustomBackgroundImage: (useCustom: boolean) => void
   showBackgroundImage: boolean
   showStats: boolean
   showToday: boolean
@@ -179,6 +181,10 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.toggleShowBackgroundImage()
   }
 
+  useCustomBackgroundImage = (useCustom: boolean) => {
+    this.props.useCustomBackgroundImage(useCustom)
+  }
+
   setActiveTab (activeTab: TabType) {
     this.setState({ activeTab })
   }
@@ -257,6 +263,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowBraveTalk,
       toggleBrandedWallpaperOptIn,
       showBackgroundImage,
+      featureCustomBackgroundEnabled,
       showStats,
       showClock,
       clockFormat,
@@ -338,8 +345,10 @@ export default class Settings extends React.PureComponent<Props, State> {
                   <BackgroundImageSettings
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+                    useCustomBackgroundImage={this.useCustomBackgroundImage}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
+                    featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
                   />
                 ) : null
               }
