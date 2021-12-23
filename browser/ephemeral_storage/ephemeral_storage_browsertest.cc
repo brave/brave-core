@@ -182,6 +182,10 @@ void EphemeralStorageBrowserTest::SetUpCommandLine(
     base::CommandLine* command_line) {
   InProcessBrowserTest::SetUpCommandLine(command_line);
   mock_cert_verifier_.SetUpCommandLine(command_line);
+  // Backgrounded renderer processes run at a lower priority, causing the
+  // JS events to slow down. Disable backgrounding so that the tests work
+  // properly.
+  command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
 }
 
 void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {
@@ -328,11 +332,11 @@ void EphemeralStorageBrowserTest::SendBroadcastMessage(
     RenderFrameHost* frame,
     base::StringPiece message) {
   EXPECT_TRUE(content::ExecJs(
-      frame, base::StringPrintf("(async () => {"
-                                "  self.bc.postMessage('%s');"
+      frame, content::JsReplace("(async () => {"
+                                "  self.bc.postMessage($1);"
                                 "  await new Promise(r => setTimeout(r, 200));"
                                 "})();",
-                                message.data())));
+                                message)));
 }
 
 void EphemeralStorageBrowserTest::ClearBroadcastMessage(
@@ -341,8 +345,16 @@ void EphemeralStorageBrowserTest::ClearBroadcastMessage(
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetBroadcastMessage(
-    RenderFrameHost* frame) {
-  return content::EvalJs(frame, "self.bc_message");
+    RenderFrameHost* frame,
+    bool wait_for_non_empty) {
+  return content::EvalJs(
+      frame, content::JsReplace("(async () => {"
+                                "  while ($1 && self.bc_message == '') {"
+                                "    await new Promise(r => setTimeout(r, 10));"
+                                "  }"
+                                "  return self.bc_message;"
+                                "})();",
+                                wait_for_non_empty));
 }
 
 void EphemeralStorageBrowserTest::SetCookieSetting(
@@ -968,7 +980,12 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
     // Expect broadcast message is received in these frames.
     for (auto* rfh : test_case.expect_received) {
-      EXPECT_EQ(kTestMessage, GetBroadcastMessage(rfh));
+      SCOPED_TRACE(testing::Message()
+                   << "WebContents URL: "
+                   << content::WebContents::FromRenderFrameHost(rfh)
+                          ->GetLastCommittedURL()
+                   << " RFH URL: " << rfh->GetLastCommittedURL());
+      EXPECT_EQ(kTestMessage, GetBroadcastMessage(rfh, true));
       processed_rfhs.insert(rfh);
     }
 
@@ -979,7 +996,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        << "WebContents URL: "
                        << wc_frames.first->GetLastCommittedURL()
                        << " RFH URL: " << rfh->GetLastCommittedURL());
-          EXPECT_NE(kTestMessage, GetBroadcastMessage(rfh));
+          EXPECT_NE(kTestMessage, GetBroadcastMessage(rfh, false));
         }
         ClearBroadcastMessage(rfh);
       }
