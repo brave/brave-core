@@ -31,6 +31,13 @@ class BraveDepsBuilder(DepsBuilder):
                               root_src_relative_dir,
                               'Src rule for ' + root_src_relative_dir)
 
+      # Add `+../gen/...` rule.
+      root_src_relative_dir = '../gen/' + posixpath.relpath(
+          root_src_dir_path_norm, NormalizePath(self.base_directory))
+      directory_rules.AddRule('+' + root_src_relative_dir,
+                              root_src_relative_dir,
+                              'Gen rule for ' + root_src_relative_dir)
+
     return directory_rules, excluded_subdirs
 
 
