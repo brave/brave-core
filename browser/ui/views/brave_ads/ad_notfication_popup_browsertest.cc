@@ -15,9 +15,11 @@
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/gfx/native_widget_types.h"
 #include "ui/views/widget/widget.h"
 
 // npm run test -- brave_browser_tests --filter=AdNotificationPopupBrowserTest.*
@@ -57,7 +59,11 @@ IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   std::string notification_id = "notification_id";
   AdNotification notification(notification_id, u"test", u"test", {});
-  AdNotificationPopupHandler::Show(browser()->profile(), notification);
+  gfx::NativeWindow browser_native_window =
+      browser()->window()->GetNativeWindow();
+  EXPECT_TRUE(browser_native_window);
+  AdNotificationPopupHandler::Show(browser()->profile(), notification,
+                                   browser_native_window);
   AdNotificationPopup* popup =
       AdNotificationPopupCollection::Get(notification_id);
   ASSERT_TRUE(popup);

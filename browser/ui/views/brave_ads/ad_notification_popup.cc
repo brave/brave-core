@@ -97,14 +97,16 @@ void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
 
 }  // namespace
 
-AdNotificationPopup::AdNotificationPopup(Profile* profile,
-                                         const AdNotification& ad_notification)
+AdNotificationPopup::AdNotificationPopup(
+    Profile* profile,
+    const AdNotification& ad_notification,
+    gfx::NativeWindow browser_native_window)
     : profile_(profile),
       ad_notification_(ad_notification),
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
   DCHECK(profile_);
 
-  CreatePopup();
+  CreatePopup(browser_native_window);
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
 
@@ -254,7 +256,7 @@ void AdNotificationPopup::ClosePopup() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdNotificationPopup::CreatePopup() {
+void AdNotificationPopup::CreatePopup(gfx::NativeWindow browser_native_window) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets()));
 
@@ -271,7 +273,7 @@ void AdNotificationPopup::CreatePopup() {
   container_view->SetPosition(point);
   container_view->SetSize(ad_notification_view_->size());
 
-  CreateWidgetView();
+  CreateWidgetView(browser_native_window);
 }
 
 gfx::Point AdNotificationPopup::GetDefaultOriginForSize(const gfx::Size& size) {
@@ -369,14 +371,15 @@ gfx::Insets AdNotificationPopup::GetShadowMargin() const {
   return gfx::ShadowValue::GetMargin(shadow_details.values);
 }
 
-void AdNotificationPopup::CreateWidgetView() {
+void AdNotificationPopup::CreateWidgetView(
+    gfx::NativeWindow browser_native_window) {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
   AdNotificationPopupWidget* widget = new AdNotificationPopupWidget();
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 
-  widget->InitWidget(this, CalculateBounds());
+  widget->InitWidget(this, CalculateBounds(), browser_native_window);
 
   if (!g_disable_fade_in_animation_for_testing) {
     widget->SetOpacity(0.0);

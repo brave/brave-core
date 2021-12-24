@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_AD_NOTIFICATION_POPUP_WIDGET_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_AD_NOTIFICATION_POPUP_WIDGET_H_
 
+#include "ui/gfx/native_widget_types.h"
 #include "ui/views/widget/widget.h"
 
 namespace gfx {
@@ -28,10 +29,9 @@ class AdNotificationPopupWidget : public views::Widget {
  public:
   AdNotificationPopupWidget();
 
-  void InitWidget(views::WidgetDelegate* delegate, const gfx::Rect& bounds);
-
-  // views::Widget
-  const ui::NativeTheme* GetNativeTheme() const override;
+  void InitWidget(views::WidgetDelegate* delegate,
+                  const gfx::Rect& bounds,
+                  gfx::NativeWindow browser_native_window);
 };
 
 }  // namespace brave_ads
