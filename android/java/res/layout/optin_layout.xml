@@ -19,7 +19,8 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
         tools:ignore="ContentDescription"
         app:srcCompat="@drawable/sparkling_newsreader" />
 
@@ -70,12 +71,13 @@
             android:id="@+id/optin_button_text"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:paddingHorizontal="40dp"
+            android:paddingHorizontal="20dp"
             android:textAlignment="center"
             android:text="@string/brave_news_optin_button"
             android:textColor="@color/news_text_color"
             android:layout_gravity="center"
             android:textAllCaps="false"
+            android:lines="1"
             android:textSize="14sp"
             android:textStyle="normal"
             android:gravity="center" />

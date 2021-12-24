@@ -163,6 +163,8 @@ public class BraveNewTabPageLayout
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
+    private static final String BRAVE_LEARN_MORE_URL =
+            "https://brave.com/privacy/browser/#brave-today";
     private static final int ITEMS_PER_PAGE = 18;
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
 
@@ -944,6 +946,16 @@ public class BraveNewTabPageLayout
                             }
                         }
                     });
+                    try {
+                        mParentScrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.e("bn", "Exception processfeed e:" + e);
+                    }
                 }
             }
         } else {
@@ -959,12 +971,6 @@ public class BraveNewTabPageLayout
                     public void onScrollChanged() {
                         try {
                             int scrollY = mParentScrollView.getScrollY();
-                            if (mRecyclerView.getLayoutManager().findViewByPosition(0) != null) {
-                                if (isScrolled) {
-                                    correctPosition(false);
-                                }
-                            }
-                            isScrolled = false;
 
                             float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
                             if (value >= 1) {
@@ -1055,6 +1061,17 @@ public class BraveNewTabPageLayout
                                             mIsShowNewsOn = true;
                                         }
                                         refreshFeed();
+                                        try {
+                                            mParentScrollView.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mParentScrollView.fullScroll(
+                                                            ScrollView.FOCUS_UP);
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            Log.e("bn", "Exception fullScroll e:" + e);
+                                        }
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
                                         mNewContentButton.setClickable(true);
@@ -1231,7 +1248,7 @@ public class BraveNewTabPageLayout
                 @Override
                 public void onClick(View v) {
                     Intent browserIntent =
-                            new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.brave.com"));
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(BRAVE_LEARN_MORE_URL));
                     browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mActivity.startActivity(browserIntent);
                 }
@@ -1256,6 +1273,7 @@ public class BraveNewTabPageLayout
                     }
 
                     getFeed();
+                    mParentScrollView.scrollTo(0, 0);
                 }
             });
         }
@@ -1290,18 +1308,7 @@ public class BraveNewTabPageLayout
             mAdapterFeedCard.notifyItemRangeInserted(0, mNewsItemsFeedCard.size());
         }
 
-        try {
-            mParentScrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
-                }
-            });
-        } catch (Exception e) {
-            Log.e("bn", "Exception processfeed e:" + e);
-        }
-
-        isScrolled = true;
+        isScrolled = false;
     }
 
     @Override
