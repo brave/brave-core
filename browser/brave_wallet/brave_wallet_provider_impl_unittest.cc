@@ -592,7 +592,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
 
