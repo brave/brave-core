@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
-
+#include "base/metrics/field_trial_params.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "chrome/browser/browser_process.h"
@@ -26,12 +25,6 @@
 
 namespace {
 
-base::test::ScopedFeatureList::FeatureAndParams settings_probability_one{
-    features::kHappinessTrackingSurveysForDesktopSettings,
-    {{"probability", "1.000"},
-     {"survey", kHatsSurveyTriggerSettings},
-     {"en_site_id", "test_site_id"}}};
-
 class ScopedSetMetricsConsent {
  public:
   // Enables or disables metrics consent based off of |consent|.
@@ -52,13 +45,14 @@ class ScopedSetMetricsConsent {
   const bool consent_;
 };
 
+}  // namespace
+
 class HatsServiceBrowserTestBase : public InProcessBrowserTest {
  protected:
-  explicit HatsServiceBrowserTestBase(
-      std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-          enabled_features)
-      : enabled_features_(enabled_features) {
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features_, {});
+  HatsServiceBrowserTestBase(const base::Feature& feature,
+                             const base::FieldTrialParams& feature_parameters) {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(feature,
+                                                            feature_parameters);
   }
 
   HatsServiceBrowserTestBase() = default;
@@ -85,11 +79,7 @@ class HatsServiceBrowserTestBase : public InProcessBrowserTest {
 
  private:
   absl::optional<ScopedSetMetricsConsent> scoped_metrics_consent_;
-
   base::test::ScopedFeatureList scoped_feature_list_;
-
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features_;
 };
 
 class HatsServiceProbabilityOne : public HatsServiceBrowserTestBase {
@@ -100,7 +90,11 @@ class HatsServiceProbabilityOne : public HatsServiceBrowserTestBase {
 
  protected:
   HatsServiceProbabilityOne()
-      : HatsServiceBrowserTestBase({settings_probability_one}) {}
+      : HatsServiceBrowserTestBase(
+            features::kHappinessTrackingSurveysForDesktopSettings,
+            {{"probability", "1.000"},
+             {"survey", kHatsSurveyTriggerSettings},
+             {"en_site_id", "test_site_id"}}) {}
 
   ~HatsServiceProbabilityOne() override = default;
 
@@ -116,8 +110,6 @@ class HatsServiceProbabilityOne : public HatsServiceBrowserTestBase {
     GetHatsService()->SetSurveyMetadataForTesting({});
   }
 };
-
-}  // namespace
 
 IN_PROC_BROWSER_TEST_F(HatsServiceBrowserTestBase, BubbleNotShownOnDefault) {
   GetHatsService()->LaunchSurvey(kHatsSurveyTriggerSettings);
