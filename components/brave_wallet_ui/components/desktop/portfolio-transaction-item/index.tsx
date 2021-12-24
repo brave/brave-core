@@ -14,7 +14,7 @@ import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/date
 import { formatFiatAmountWithCommasAndDecimals } from '../../../utils/format-prices'
 
 // Hooks
-import { useTransactionParser } from '../../../common/hooks'
+import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 
 // Styled Components
@@ -103,15 +103,7 @@ const PortfolioTransactionItem = (props: Props) => {
     }
   }
 
-  const onClickViewOnBlockExplorer = () => {
-    const explorerURL = selectedNetwork.blockExplorerUrls[0]
-    if (explorerURL && transaction.txHash) {
-      const url = `${explorerURL}/tx/${transaction.txHash}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const onClickRetryTransaction = () => {
     onRetryTransaction(transaction)
@@ -141,13 +133,7 @@ const PortfolioTransactionItem = (props: Props) => {
       return
     }
 
-    const explorerUrl = selectedNetwork.blockExplorerUrls[0]
-    if (explorerUrl) {
-      const url = `${explorerUrl}/address/${address}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
+    onClickViewOnBlockExplorer('address', address)
   }
 
   const findToken = React.useCallback((symbol: string) => {
@@ -347,7 +333,7 @@ const PortfolioTransactionItem = (props: Props) => {
           <TransactionPopup>
             {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed] &&
               <TransactionPopupItem
-                onClick={onClickViewOnBlockExplorer}
+                onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
                 text={getLocale('braveWalletTransactionExplorer')}
               />
             }
