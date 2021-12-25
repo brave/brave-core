@@ -163,6 +163,8 @@ public class BraveNewTabPageLayout
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
+    private static final String BRAVE_NEWS_OPTIN_LEARN_MORE_URL =
+            "https://brave.com/privacy/browser/#brave-news";
     private static final int ITEMS_PER_PAGE = 18;
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
 
@@ -1230,8 +1232,8 @@ public class BraveNewTabPageLayout
             mOptinLearnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent =
-                            new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.brave.com"));
+                    Intent browserIntent = new Intent(
+                            Intent.ACTION_VIEW, Uri.parse(BRAVE_NEWS_OPTIN_LEARN_MORE_URL));
                     browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mActivity.startActivity(browserIntent);
                 }
