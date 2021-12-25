@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
-import { BraveWallet } from '../../../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../../../constants/types'
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -21,13 +21,14 @@ import {
 // Custom types
 import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import HardwareWalletAccountsList from './accounts-list'
-import { HardwareDerivationScheme, HardwareWalletAccount, LedgerDerivationPaths } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export interface Props {
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
-  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
+  preAddedHardwareWalletAccounts: WalletAccountType[]
 }
 
 const derivationBatch = 4
@@ -35,7 +36,7 @@ const derivationBatch = 4
 export default function (props: Props) {
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
-  const [accounts, setAccounts] = React.useState<HardwareWalletAccount[]>([])
+  const [accounts, setAccounts] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
@@ -77,9 +78,28 @@ export default function (props: Props) {
     )
   }
 
+  const getDefaultAccountName = (account: BraveWallet.HardwareWalletAccount) => {
+    const index = accounts.findIndex(e => e.address === account.address)
+
+    let schemeString
+    switch (selectedDerivationScheme) {
+      case LedgerDerivationPaths.Legacy:
+        schemeString = ' (Legacy)'
+        break
+      default:
+        schemeString = ''
+    }
+
+    return index === 0
+      ? `${account.hardwareVendor}${schemeString}`
+      : `${account.hardwareVendor} ${index}${schemeString}`
+  }
+
   const onAddAccounts = () => {
     const selectedAccounts = accounts.filter(o => selectedDerivationPaths.includes(o.derivationPath))
-    props.onAddHardwareAccounts(selectedAccounts)
+    const renamedSelectedAccounts = selectedAccounts
+      .map(account => ({ ...account, name: getDefaultAccountName(account) }))
+    props.onAddHardwareAccounts(renamedSelectedAccounts)
   }
 
   const getBalance = (address: string) => {
@@ -132,6 +152,7 @@ export default function (props: Props) {
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
         accounts={accounts}
+        preAddedHardwareWalletAccounts={props.preAddedHardwareWalletAccounts}
         onLoadMore={onSubmit}
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}

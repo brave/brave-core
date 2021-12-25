@@ -65,7 +65,6 @@ import {
   useTokenInfo
 } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
-import { HardwareWalletAccount } from '../common/hardware/types'
 
 type Props = {
   wallet: WalletState
@@ -381,7 +380,7 @@ function Container (props: Props) {
     }
   }
 
-  const onAddHardwareAccounts = (selected: HardwareWalletAccount[]) => {
+  const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
     props.walletPageActions.addHardwareAccounts(selected)
   }
 
