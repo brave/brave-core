@@ -15,6 +15,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -33,6 +34,10 @@
 #if defined(OS_ANDROID)
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
+#endif
+
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -69,6 +74,13 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV2)) {
+#if !defined(OS_ANDROID)
+    brave_shields::BraveShieldsDataController::CreateForWebContents(
+        web_contents);
+#endif
+  }
 
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);

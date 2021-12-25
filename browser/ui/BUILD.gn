@@ -73,6 +73,8 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_shields_data_controller.cc",
+      "brave_shields_data_controller.h",
       "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",

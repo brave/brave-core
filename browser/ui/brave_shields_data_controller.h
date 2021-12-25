@@ -1,0 +1,62 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
+#define BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
+
+#include <set>
+#include <string>
+
+#include "base/observer_list.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/browser/web_contents_user_data.h"
+
+using content::NavigationEntry;
+
+namespace brave_shields {
+
+// Per-tab class to manage Shields panel data
+class BraveShieldsDataController
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<BraveShieldsDataController> {
+ public:
+  BraveShieldsDataController(const BraveShieldsDataController&) = delete;
+  BraveShieldsDataController& operator=(const BraveShieldsDataController&) =
+      delete;
+  ~BraveShieldsDataController() override;
+
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnResourcesCountChange(const int count) = 0;
+  };
+
+  void HandleItemBlocked(const std::string& block_type,
+                         const std::string& subresource);
+  void ClearAllResourcesList();
+  int GetTotalBlockedCount();
+  bool GetIsBraveShieldsEnabled();
+
+  void AddObserver(Observer* obs);
+  void RemoveObserver(Observer* obs);
+  bool HasObserver(Observer* observer);
+
+ private:
+  friend class content::WebContentsUserData<BraveShieldsDataController>;
+
+  explicit BraveShieldsDataController(content::WebContents* web_contents);
+
+  base::ObserverList<Observer> observer_list_;
+  std::set<GURL> resource_list_blocked_ads_;
+  std::set<GURL> resource_list_http_redirects_;
+  std::set<GURL> resource_list_blocked_js_;
+  std::set<GURL> resource_list_blocked_fingerprints_;
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+};
+
+}  // namespace brave_shields
+
+#endif  // BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
