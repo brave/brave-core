@@ -1047,18 +1047,6 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_STATUS_PENDING">
         Pending
       </message>
-      <message name="IDS_BAT_NOT_ALLOWED_IN_REGION">
-        BAT is not currently supported in your region based on the location your account is opened. Check back later for availability.
-      </message>
-      <message name="IDS_BAT_NOT_ALLOWED_IN_REGION_TITLE">
-        Region not supported
-      </message>
-      <message name="IDS_WALLET_VERIFICATION_GENERIC_ERROR">
-        There was a problem verifying your wallet, please try again later.
-      </message>
-      <message name="IDS_WALLET_VERIFICATION_GENERIC_ERROR_TITLE">
-        Wallet verification error
-      </message>
       <message name="IDS_BRAVE_UI_PANEL_CONNECTED_TEXT" desc="A message on tipping page when a creator is not verified yet">
         This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.
       </message>
