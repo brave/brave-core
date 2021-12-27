@@ -510,7 +510,9 @@ public class BraveRewardsNativeWorker {
     public void OnPublisherInfo(int tabId) {
         @PublisherStatus int pubStatus = GetPublisherStatus(tabId);
         boolean verified = (pubStatus == BraveRewardsPublisher.CONNECTED
-                                   || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED)
+                                   || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                                   || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                                   || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED)
                 ? true
                 : false;
         NotifyPublisherObservers(verified);
