@@ -39,7 +39,6 @@ import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { getLocale } from '../../common/locale'
 import {
   HardwareWalletConnectOpts
@@ -509,10 +508,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    const url = BuyAssetUrl(mockNetworks[0].chainId, asset, selectedAccount, buyAmount)
-    if (url) {
-      window.open(url, '_blank')
-    }
+    alert(`Buy ${asset.asset.symbol} asset`)
   }
 
   const onSwapQuoteRefresh = () => {

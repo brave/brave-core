@@ -57,7 +57,7 @@ import {
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
+import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
@@ -216,14 +216,15 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
-    if (url) {
-      chrome.tabs.create({ url: url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-        }
+    GetBuyOrFaucetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
       })
-    }
+      .catch(e => console.error(e))
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {

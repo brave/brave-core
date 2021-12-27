@@ -38,7 +38,6 @@ import {
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -364,10 +363,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(mockNetworks[0].chainId, selectedWyreAsset, selectedAccount, buyAmount)
-    if (url) {
-      window.open(url, '_blank')
-    }
+    alert(`Buy ${selectedWyreAsset.asset.symbol} asset`)
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
