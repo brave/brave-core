@@ -1776,20 +1776,17 @@ Are you sure you want to do this?
       <message name="IDS_VALUE_1_BAT" desc="value for 1 BAT">
         1 BAT
       </message>
+      <message name="IDS_VALUE_2_BAT" desc="value for 5 BAT">
+        2 BAT
+      </message>
+      <message name="IDS_VALUE_3_BAT" desc="value for 10 BAT">
+        3 BAT
+      </message>
       <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
         5 BAT
       </message>
       <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
         10 BAT
-      </message>
-      <message name="IDS_VALUE_15_BAT" desc="value for 15 BAT">
-        15 BAT
-      </message>
-      <message name="IDS_VALUE_25_BAT" desc="value for 25 BAT">
-        25 BAT
-      </message>
-      <message name="IDS_VALUE_50_BAT" desc="value for 50 BAT">
-        50 BAT
       </message>
       <message name="IDS_VALUE_0_BAT" desc="value for 0 BAT">
         0.00 BAT
