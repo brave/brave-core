@@ -31,45 +31,56 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  for (const auto& advertiser : document["filtered_advertisers"].GetArray()) {
-    if (!advertiser.HasMember("id") || !advertiser["id"].IsString()) {
-      continue;
-    }
+  if (document.HasMember("filtered_advertisers")) {
+    for (const auto& advertiser : document["filtered_advertisers"].GetArray()) {
+      const auto iterator = advertiser.FindMember("id");
+      if (iterator == advertiser.MemberEnd() || !iterator->value.IsString()) {
+        continue;
+      }
 
-    FilteredAdvertiserInfo filtered_advertiser;
-    filtered_advertiser.id = advertiser["id"].GetString();
-    filtered_advertisers.push_back(filtered_advertiser);
+      FilteredAdvertiserInfo filtered_advertiser;
+      filtered_advertiser.id = iterator->value.GetString();
+      filtered_advertisers.push_back(filtered_advertiser);
+    }
   }
 
-  for (const auto& category : document["filtered_categories"].GetArray()) {
-    if (!category.HasMember("name") || !category["name"].IsString()) {
-      continue;
-    }
+  if (document.HasMember("filtered_categories")) {
+    for (const auto& category : document["filtered_categories"].GetArray()) {
+      const auto iterator = category.FindMember("name");
+      if (iterator == category.MemberEnd() || !iterator->value.IsString()) {
+        continue;
+      }
 
-    FilteredCategoryInfo filtered_category;
-    filtered_category.name = category["name"].GetString();
-    filtered_categories.push_back(filtered_category);
+      FilteredCategoryInfo filtered_category;
+      filtered_category.name = iterator->value.GetString();
+      filtered_categories.push_back(filtered_category);
+    }
   }
 
-  for (const auto& ad : document["saved_ads"].GetArray()) {
-    if (!ad.HasMember("creative_instance_id") ||
-        !ad["creative_instance_id"].IsString()) {
-      continue;
-    }
+  if (document.HasMember("saved_ads")) {
+    for (const auto& ad : document["saved_ads"].GetArray()) {
+      const auto iterator = ad.FindMember("creative_instance_id");
+      if (iterator == ad.MemberEnd() || !iterator->value.IsString()) {
+        continue;
+      }
 
-    SavedAdInfo saved_ad;
-    saved_ad.creative_instance_id = ad["creative_instance_id"].GetString();
-    saved_ads.push_back(saved_ad);
+      SavedAdInfo saved_ad;
+      saved_ad.creative_instance_id = iterator->value.GetString();
+      saved_ads.push_back(saved_ad);
+    }
   }
 
-  for (const auto& ad : document["flagged_ads"].GetArray()) {
-    if (!ad.HasMember("creative_set_id") || !ad["creative_set_id"].IsString()) {
-      continue;
-    }
+  if (document.HasMember("flagged_ads")) {
+    for (const auto& ad : document["flagged_ads"].GetArray()) {
+      const auto iterator = ad.FindMember("creative_set_id");
+      if (iterator == ad.MemberEnd() || !iterator->value.IsString()) {
+        continue;
+      }
 
-    FlaggedAdInfo flagged_ad;
-    flagged_ad.creative_set_id = ad["creative_set_id"].GetString();
-    flagged_ads.push_back(flagged_ad);
+      FlaggedAdInfo flagged_ad;
+      flagged_ad.creative_set_id = iterator->value.GetString();
+      flagged_ads.push_back(flagged_ad);
+    }
   }
 
   return true;
