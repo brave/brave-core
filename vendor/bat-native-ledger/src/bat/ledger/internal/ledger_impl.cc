@@ -137,7 +137,7 @@ void LedgerImpl::StartServices() {
   promotion()->Initialize();
   api()->Initialize();
   recovery_->Check();
-  backup_restore()->Start();
+  backup_restore()->StartBackUpVGSpendStatus();
 }
 
 void LedgerImpl::Initialize(bool execute_create_script,

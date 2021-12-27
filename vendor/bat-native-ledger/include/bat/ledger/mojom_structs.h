@@ -184,6 +184,12 @@ using UrlRequestPtr = mojom::UrlRequestPtr;
 using UrlResponse = mojom::UrlResponse;
 using UrlResponsePtr = mojom::UrlResponsePtr;
 
+using VirtualGrantBodyTokenInfo = mojom::VirtualGrantBodyTokenInfo;
+using VirtualGrantBodyTokenInfoPtr = mojom::VirtualGrantBodyTokenInfoPtr;
+
+using VirtualGrantBody = mojom::VirtualGrantBody;
+using VirtualGrantBodyPtr = mojom::VirtualGrantBodyPtr;
+
 using VirtualGrant = mojom::VirtualGrant;
 using VirtualGrantPtr = mojom::VirtualGrantPtr;
 using VirtualGrants =

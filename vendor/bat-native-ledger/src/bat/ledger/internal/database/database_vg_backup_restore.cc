@@ -32,6 +32,102 @@ DatabaseVGBackupRestore::DatabaseVGBackupRestore(LedgerImpl* ledger)
 
 DatabaseVGBackupRestore::~DatabaseVGBackupRestore() = default;
 
+void DatabaseVGBackupRestore::BackUpVGBodyForTrigger(
+    type::CredsBatchType trigger_type,
+    const std::string& trigger_id,
+    BackUpVGBodyForTriggerCallback callback) const {
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
+  command->command = R"(
+    SELECT   cb.creds_id,
+             cb.trigger_type,
+             cb.creds,
+             cb.blinded_creds,
+             cb.signed_creds,
+             cb.public_key,
+             cb.batch_proof,
+             cb.status,
+             ut.token_id,
+             ut.token_value,
+             ut.value,
+             ut.expires_at
+    FROM     creds_batch AS cb
+    JOIN     unblinded_tokens AS ut
+    ON       ut.creds_id = cb.creds_id
+    WHERE    cb.trigger_type = ? AND cb.trigger_id = ?
+    ORDER BY ut.token_id
+  )";
+
+  BindInt(command.get(), 0, static_cast<int>(trigger_type));
+  BindString(command.get(), 1, trigger_id);
+
+  command->record_bindings = {
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // creds_id
+      type::DBCommand::RecordBindingType::INT_TYPE,     // trigger_type
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // blinded_creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // signed_creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // public_key
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // batch_proof
+      type::DBCommand::RecordBindingType::INT_TYPE,     // status
+      type::DBCommand::RecordBindingType::INT64_TYPE,   // token_id
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // token_value
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
+      type::DBCommand::RecordBindingType::INT64_TYPE};  // expires_at
+
+  auto transaction = type::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseVGBackupRestore::OnBackUpVGBodyForTrigger,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void DatabaseVGBackupRestore::OnBackUpVGBodyForTrigger(
+    BackUpVGBodyForTriggerCallback callback,
+    type::DBCommandResponsePtr response) const {
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "BackUpVGBodyForTrigger failed: bad response!");
+    return std::move(callback).Run({});
+  }
+
+  const auto& records = response->result->get_records();
+  if (records.empty()) {
+    BLOG(0, "BackUpVGBodyForTrigger failed: empty result set!");
+    return std::move(callback).Run({});
+  }
+
+  auto* record_pointer = records[0].get();
+
+  auto vg_body = type::VirtualGrantBody::New();
+  vg_body->creds_id = GetStringColumn(record_pointer, 0);
+  vg_body->trigger_type =
+      static_cast<type::CredsBatchType>(GetIntColumn(record_pointer, 1));
+  vg_body->creds = GetStringColumn(record_pointer, 2);
+  vg_body->blinded_creds = GetStringColumn(record_pointer, 3);
+  vg_body->signed_creds = GetStringColumn(record_pointer, 4);
+  vg_body->public_key = GetStringColumn(record_pointer, 5);
+  vg_body->batch_proof = GetStringColumn(record_pointer, 6);
+  vg_body->status =
+      static_cast<type::CredsBatchStatus>(GetIntColumn(record_pointer, 7));
+
+  for (const auto& record : records) {
+    record_pointer = record.get();
+
+    auto token = type::VirtualGrantBodyTokenInfo::New();
+    token->token_id = GetInt64Column(record_pointer, 8);
+    token->token_value = GetStringColumn(record_pointer, 9);
+    token->value = GetDoubleColumn(record_pointer, 10);
+    token->expires_at = GetInt64Column(record_pointer, 11);
+
+    vg_body->tokens.emplace_back(std::move(token));
+  }
+
+  std::move(callback).Run(std::move(vg_body));
+}
+
 void DatabaseVGBackupRestore::BackUpVirtualGrants(
     BackUpVirtualGrantsCallback callback) const {
   auto command = type::DBCommand::New();

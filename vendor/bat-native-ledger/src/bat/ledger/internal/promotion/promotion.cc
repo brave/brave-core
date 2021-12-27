@@ -450,6 +450,9 @@ void Promotion::OnComplete(
         ConvertPromotionTypeToReportType(promotion->type),
         promotion->approximate_value,
         [](const type::Result){});
+
+    ledger_->backup_restore()->BackUpVGBodyForTrigger(
+        type::CredsBatchType::PROMOTION, promotion->id);
   }
 
   callback(result, std::move(promotion));

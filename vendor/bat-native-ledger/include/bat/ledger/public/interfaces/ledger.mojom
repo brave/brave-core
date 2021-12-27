@@ -564,6 +564,31 @@ struct BraveWallet {
   array<uint8> recovery_seed;
 };
 
+struct VirtualGrantBodyTokenInfo {
+  uint64 token_id;
+  string token_value;
+  double value;
+  uint64 expires_at;
+};
+
+struct VirtualGrantBody {
+  string creds_id;
+  CredsBatchType trigger_type;
+  string creds;
+  string blinded_creds;
+  string signed_creds;
+  string public_key;
+  string batch_proof;
+  CredsBatchStatus status;
+  array<VirtualGrantBodyTokenInfo> tokens;
+};
+
+struct VirtualGrantSpendStatus {
+  uint64 token_id;
+  uint64 redeemed_at;
+  RewardsType redeem_type;
+};
+
 struct VirtualGrant {
   string creds_id;
   CredsBatchType trigger_type;

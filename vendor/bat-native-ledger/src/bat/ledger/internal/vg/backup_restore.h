@@ -20,30 +20,39 @@ class BackupRestore {
 
   ~BackupRestore();
 
-  void Start();
+  void StartBackUpVGSpendStatus();
+
+  void BackUpVGBodyForTrigger(type::CredsBatchType trigger_type,
+                              const std::string& trigger_id);
 
   void Restore(const std::string& vg_bodies,
                const std::string& vg_spend_statuses,
                ledger::RestoreVirtualGrantsCallback callback) const;
 
  private:
-  void OnRestore(ledger::RestoreVirtualGrantsCallback callback,
-                 type::Result result) const;
+  void BackUpVGSpendStatus();
 
-  void BackUp();
-
-  void OnBackup(type::Result result, type::VirtualGrants&& vgs) const;
+  void OnBackUpVGSpendStatus(type::Result result,
+                             type::VirtualGrants&& vgs) const;
 
   std::string GetVirtualGrantBodies(const type::VirtualGrants& vgs) const;
 
   std::string GetVirtualGrantSpendStatuses(
       const type::VirtualGrants& vgs) const;
 
+  void OnBackUpVGBodyForTrigger(type::VirtualGrantBodyPtr&& body_ptr);
+
+  std::string GetVirtualGrantBody(
+      const type::VirtualGrantBodyPtr& body_ptr) const;
+
   bool ParseVirtualGrantBodies(const std::string& json,
                                type::VirtualGrants& vgs) const;
 
   bool ParseVirtualGrantSpendStatuses(const std::string& json,
                                       type::VirtualGrants& vgs) const;
+
+  void OnRestore(ledger::RestoreVirtualGrantsCallback callback,
+                 type::Result result) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   // base::RepeatingTimer timer_;

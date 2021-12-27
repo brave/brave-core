@@ -18,37 +18,18 @@ BackupRestore::BackupRestore(LedgerImpl* ledger) : ledger_(ledger) {}
 
 BackupRestore::~BackupRestore() = default;
 
-void BackupRestore::Start() {
-  timer_.Start(FROM_HERE, base::Seconds(30), this, &BackupRestore::BackUp);
+void BackupRestore::StartBackUpVGSpendStatus() {
+  timer_.Start(FROM_HERE, base::Seconds(30), this,
+               &BackupRestore::BackUpVGSpendStatus);
 }
 
-void BackupRestore::Restore(
-    const std::string& vg_bodies,
-    const std::string& vg_spend_statuses,
-    ledger::RestoreVirtualGrantsCallback callback) const {
-  type::VirtualGrants vgs{};
-  if (ParseVirtualGrantBodies(vg_bodies, vgs) &&
-      ParseVirtualGrantSpendStatuses(vg_spend_statuses, vgs)) {
-    ledger_->database()->RestoreVirtualGrants(
-        std::move(vgs),
-        base::BindOnce(&BackupRestore::OnRestore, base::Unretained(this),
-                       std::move(callback)));
-  }
+void BackupRestore::BackUpVGSpendStatus() {
+  ledger_->database()->BackUpVirtualGrants(base::BindOnce(
+      &BackupRestore::OnBackUpVGSpendStatus, base::Unretained(this)));
 }
 
-void BackupRestore::OnRestore(ledger::RestoreVirtualGrantsCallback callback,
-                              type::Result result) const {
-  BLOG(1, "BackupRestore::Restore(): " << result);
-  std::move(callback).Run(result);
-}
-
-void BackupRestore::BackUp() {
-  ledger_->database()->BackUpVirtualGrants(
-      base::BindOnce(&BackupRestore::OnBackup, base::Unretained(this)));
-}
-
-void BackupRestore::OnBackup(type::Result result,
-                             type::VirtualGrants&& vgs) const {
+void BackupRestore::OnBackUpVGSpendStatus(type::Result result,
+                                          type::VirtualGrants&& vgs) const {
   BLOG(1, "BackupRestore::BackUp(): " << result);
   if (result == type::Result::LEDGER_OK) {
     BLOG(1, GetVirtualGrantBodies(vgs));
@@ -127,6 +108,70 @@ std::string BackupRestore::GetVirtualGrantSpendStatuses(
   base::JSONWriter::Write(root, &vg_spend_statuses);
 
   return vg_spend_statuses;
+}
+
+void BackupRestore::BackUpVGBodyForTrigger(type::CredsBatchType trigger_type,
+                                           const std::string& trigger_id) {
+  ledger_->database()->BackUpVGBodyForTrigger(
+      trigger_type, trigger_id,
+      base::BindOnce(&BackupRestore::OnBackUpVGBodyForTrigger,
+                     base::Unretained(this)));
+}
+
+void BackupRestore::OnBackUpVGBodyForTrigger(
+    type::VirtualGrantBodyPtr&& body_ptr) {
+  if (body_ptr) {
+    BLOG(1, GetVirtualGrantBody(body_ptr));
+  }
+}
+
+std::string BackupRestore::GetVirtualGrantBody(
+    const type::VirtualGrantBodyPtr& body_ptr) const {
+  DCHECK(body_ptr);
+
+  base::Value vg_body{base::Value::Type::DICTIONARY};
+  vg_body.SetStringKey("creds_id", body_ptr->creds_id);
+  vg_body.SetIntKey("trigger_type", static_cast<int>(body_ptr->trigger_type));
+  vg_body.SetStringKey("creds", body_ptr->creds);
+  vg_body.SetStringKey("blinded_creds", body_ptr->blinded_creds);
+  vg_body.SetStringKey("signed_creds", body_ptr->signed_creds);
+  vg_body.SetStringKey("public_key", body_ptr->public_key);
+  vg_body.SetStringKey("batch_proof", body_ptr->batch_proof);
+  vg_body.SetIntKey("status", static_cast<int>(body_ptr->status));
+
+  base::Value tokens{base::Value::Type::LIST};
+  for (const auto& token_ptr : body_ptr->tokens) {
+    base::Value token{base::Value::Type::DICTIONARY};
+    token.SetIntKey("token_id", token_ptr->token_id);
+    token.SetStringKey("token_value", token_ptr->token_value);
+    token.SetDoubleKey("value", token_ptr->value);
+    token.SetIntKey("expires_at", token_ptr->expires_at);
+    tokens.Append(std::move(token));
+  }
+  vg_body.SetKey("tokens", std::move(tokens));
+
+  base::Value root{base::Value::Type::DICTIONARY};
+  root.SetKey("vg_body", std::move(vg_body));
+  root.SetIntKey("backed_up_at", util::GetCurrentTimeStamp());
+
+  std::string result{};
+  base::JSONWriter::Write(root, &result);
+
+  return result;
+}
+
+void BackupRestore::Restore(
+    const std::string& vg_bodies,
+    const std::string& vg_spend_statuses,
+    ledger::RestoreVirtualGrantsCallback callback) const {
+  type::VirtualGrants vgs{};
+  if (ParseVirtualGrantBodies(vg_bodies, vgs) &&
+      ParseVirtualGrantSpendStatuses(vg_spend_statuses, vgs)) {
+    ledger_->database()->RestoreVirtualGrants(
+        std::move(vgs),
+        base::BindOnce(&BackupRestore::OnRestore, base::Unretained(this),
+                       std::move(callback)));
+  }
 }
 
 bool BackupRestore::ParseVirtualGrantBodies(const std::string& json,
@@ -256,6 +301,12 @@ bool BackupRestore::ParseVirtualGrantSpendStatuses(
   }
 
   return true;
+}
+
+void BackupRestore::OnRestore(ledger::RestoreVirtualGrantsCallback callback,
+                              type::Result result) const {
+  BLOG(1, "BackupRestore::Restore(): " << result);
+  std::move(callback).Run(result);
 }
 
 }  // namespace vg
