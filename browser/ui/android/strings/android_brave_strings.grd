@@ -2763,9 +2763,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UNVERIFIED_CREATOR" desc="Brave rewards panel text">
       Unverified Creator
     </message>
-    <message name="IDS_REFRESH_STATUS" desc="Text for `Refresh Status` button in Brave rewards panel">
-      Refresh Status
-    </message>
     <message name="IDS_MONTHLY_CONTRIBUTION" desc="Title text for `Monthly contribution` section in Brave rewards panel">
       Monthly contribution
     </message>

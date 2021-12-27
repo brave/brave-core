@@ -179,7 +179,6 @@
     <color name="rewards_panel_secondary_text_color">#868E96</color>
     <color name="rewards_panel_card_bg_color">#FFFFFF</color>
     <color name="rewards_panel_action_color">#4C54D2</color>
-    <color name="rewards_panel_refresh_button_color">#4C54D2</color>
     <color name="rewards_panel_verified_button_border">#E9E9F4</color>
     <color name="rewards_panel_summary_title_bg">#66FFFFFF</color>
     <color name="rewards_panel_summary_bg">#FFFFFF</color>

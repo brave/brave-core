@@ -1359,7 +1359,7 @@ public class BraveRewardsPanel
         String verifiedText = "";
         TextView publisherVerified = mPopupView.findViewById(R.id.publisher_verified);
         publisherVerified.setAlpha(1f);
-        TextView refreshPublisher = mPopupView.findViewById(R.id.refresh_publisher);
+        ImageView refreshPublisher = mPopupView.findViewById(R.id.refresh_publisher);
         refreshPublisher.setAlpha(1f);
         refreshPublisher.setEnabled(true);
         View refreshStatusProgress = mPopupView.findViewById(R.id.progress_refresh_status);

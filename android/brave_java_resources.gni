@@ -662,6 +662,7 @@ brave_java_resources = [
   "java/res/drawable/ic_qr_code_18.xml",
   "java/res/drawable/ic_rate.xml",
   "java/res/drawable/ic_refresh.xml",
+  "java/res/drawable/ic_refresh_20.xml",
   "java/res/drawable/ic_rewards.xml",
   "java/res/drawable/ic_rocket.xml",
   "java/res/drawable/ic_safe.xml",
