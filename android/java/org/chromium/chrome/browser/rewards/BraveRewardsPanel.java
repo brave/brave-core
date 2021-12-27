@@ -1005,13 +1005,6 @@ public class BraveRewardsPanel
                     : "#212529";
 
             switch (i) {
-                case BALANCE_REPORT_GRANTS:
-                    tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
-                    tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
-                            + "> " + batText + "</font>";
-                    textUSD = usdValue;
-                    break;
                 case BALANCE_REPORT_EARNING_FROM_ADS:
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
@@ -1042,8 +1035,12 @@ public class BraveRewardsPanel
                     break;
             }
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(text);
-            tv.setText(toInsert);
-            tvUSD.setText(textUSD);
+            if (tv != null) {
+                tv.setText(toInsert);
+            }
+            if (tvUSD != null) {
+                tvUSD.setText(textUSD);
+            }
             if (mBraveRewardsNativeWorker != null) {
                 String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
                 mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
