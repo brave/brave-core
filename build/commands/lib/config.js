@@ -200,7 +200,9 @@ Config.prototype.isBraveReleaseBuild = function () {
     return npm_brave_relese_build === '1'
   }
 
-  return this.isOfficialBuild() && !this.isDevChannel()
+  // TODO: Replace it to `this.isOfficialBuild() && !this.isDevChannel()`
+  // when channel will be fixed for PRs builds.
+  return false
 }
 
 Config.prototype.isComponentBuild = function () {
@@ -326,7 +328,7 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (!this.usePGO()) {
+  if (args.is_official_build && !this.usePGO()) {
     args.chrome_pgo_phase = 0
   }
 
