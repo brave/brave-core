@@ -22,6 +22,7 @@ const char kFieldTrialParameterDefaultConversionIdPattern[] =
     "conversions_default_conversion_id_pattern";
 const char kDefaultDefaultConversionIdPattern[] =
     "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
+
 }  // namespace
 
 const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
@@ -35,10 +36,10 @@ int GetConversionsResourceVersion() {
       kFeature, kFieldTrialParameterResourceVersion, kDefaultResourceVersion);
 }
 
-std::string GetGetDefaultConversionIdPattern() {
+std::string GetDefaultConversionIdPattern() {
   return GetFieldTrialParamByFeatureAsString(
       kFeature, kFieldTrialParameterDefaultConversionIdPattern,
-      kDefaultDefaultConversionIdPattern);
+      kDefaultConversionIdPattern);
 }
 
 }  // namespace features

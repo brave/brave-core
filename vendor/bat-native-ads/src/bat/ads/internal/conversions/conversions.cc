@@ -92,8 +92,7 @@ std::string ExtractConversionIdFromText(
     const std::string& conversion_url_pattern,
     const ConversionIdPatternMap& conversion_id_patterns) {
   std::string conversion_id;
-  std::string conversion_id_pattern =
-      features::GetGetDefaultConversionIdPattern();
+  std::string conversion_id_pattern = features::GetDefaultConversionIdPattern();
   std::string text = html;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);
