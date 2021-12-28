@@ -117,6 +117,11 @@ export async function getBuyAssetUrl (address: string, symbol: string, amount: s
   return (await ercTokenRegistry.getBuyUrl(address, symbol, amount)).url
 }
 
+export async function getBuyAssets () {
+  const { ercTokenRegistry } = getAPIProxy()
+  return (await ercTokenRegistry.getBuyTokens()).tokens
+}
+
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()

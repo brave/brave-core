@@ -42,7 +42,6 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 
 import {
   findENSAddress,
@@ -52,7 +51,8 @@ import {
   getERC20Allowance,
   onConnectHardwareWallet,
   isStrongPassword,
-  getERCTokenInfo
+  getERCTokenInfo,
+  getBuyAssets
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
@@ -128,8 +128,14 @@ function Container (props: Props) {
     tokenOptions,
     assetOptions,
     userVisibleTokenOptions,
-    sendAssetOptions
-  } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
+    sendAssetOptions,
+    buyAssetOptions
+  } = useAssets(
+    selectedAccount,
+    props.wallet.fullTokenList,
+    props.wallet.userVisibleTokensInfo,
+    getBuyAssets
+  )
 
   const {
     onFindTokenInfoByContractAddress,
@@ -686,7 +692,7 @@ function Container (props: Props) {
             swapValidationError={swapValidationError}
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
-            buyAssetOptions={WyreAccountAssetOptions}
+            buyAssetOptions={buyAssetOptions}
             selectedSendAsset={selectedSendAsset}
             sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}

@@ -29,7 +29,6 @@ import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -849,7 +848,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectPresetFromAmount={onSelectPresetFromAmount}
             onSelectPresetSendAmount={onSelectPresetSendAmount}
             onSelectTab={setSelectedWidgetTab}
-            buyAssetOptions={WyreAccountAssetOptions}
+            buyAssetOptions={AccountAssetOptions}
             sendAssetOptions={AccountAssetOptions}
             swapAssetOptions={AccountAssetOptions}
             networkList={mockNetworks}
