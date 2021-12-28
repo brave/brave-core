@@ -955,8 +955,17 @@ public class BraveRewardsPanel
                             == braveRewardsOnboardingPagerAdapter.getCount() - 1) {
                         if (braveRewardsOnboardingView != null) {
                             braveRewardsOnboardingView.setVisibility(View.GONE);
-                            mRewardsMainLayout.setForeground(null);
-                            enableControls(true, mRewardsMainLayout);
+
+                            if (mPopupView != null
+                                    && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                            Profile.getLastUsedRegularProfile())) {
+                                showBraveRewardsOnboardingModal(mPopupView);
+                            } else {
+                                mRewardsMainLayout.setForeground(null);
+                                enableControls(true, mRewardsMainLayout);
+                            }
                         }
                     } else {
                         braveRewardsViewPager.setCurrentItem(
