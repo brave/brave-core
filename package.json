@@ -270,7 +270,6 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@dump247/storybook-state": "1.6.1",
-    "@glif/filecoin-wallet-provider": "2.0.0-alpha.9",
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-knobs": "6.3.1",
     "@storybook/addons": "6.3.12",
@@ -345,6 +344,7 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
+    "@glif/filecoin-wallet-provider": "2.0.0-alpha.9",
     "@ledgerhq/hw-app-eth": "6.15.0",
     "@ledgerhq/hw-transport-webhid": "6.11.2",
     "@types/jszip": "^3.1.6",
