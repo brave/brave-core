@@ -51,6 +51,7 @@ include_rules = [
   "+../../../../../../chrome/browser/sharing/click_to_call",
   "+../../../../../../chrome/browser/ui/bookmarks",
   "+../../../../../../chrome/browser/ui/cocoa",
+  "+../../../../../../chrome/browser/ui/color",
   "+../../../../../../chrome/browser/ui/content_settings",
   "+../../../../../../chrome/browser/ui/dialogs",
   "+../../../../../../chrome/browser/ui/extensions",
