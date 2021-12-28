@@ -43,7 +43,7 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
       true, false, "Comp", 18, true, ""},
      {"0xD533a949740bb3306d119CC777fa900bA034cd52", "Curve", "curve.png", true,
       false, "CRV", 18, true, ""},
-     {"0xc00e94Cb662C3520282E6f5717214004A7f26888", "Gemini Dollar", "gusd.png",
+     {"0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd", "Gemini Dollar", "gusd.png",
       true, false, "GUSD", 2, true, ""},
      {"0x514910771AF9Ca656af840dff83E8264EcF986CA", "Chainlink",
       "chainlink.png", true, false, "LINK", 18, true, ""},
