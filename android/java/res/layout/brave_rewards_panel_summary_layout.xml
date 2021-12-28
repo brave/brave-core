@@ -85,54 +85,6 @@
                 android:fontFamily="@font/poppins_regular"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/total_grants_claimed"
-                android:textColor="@color/rewards_panel_text_color"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/total_grants_claimed_bat_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/total_grants_claimed_usd_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@color/rewards_panel_secondary_text_color"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/rewards_panel_summary_divider_color" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_regular"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:text="@string/rewards_from_ads"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="14sp" />
