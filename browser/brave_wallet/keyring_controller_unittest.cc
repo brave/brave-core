@@ -60,6 +60,7 @@ class TestKeyringControllerObserver
   // TODO(bbondy): We should be testing all of these observer events
   void KeyringCreated() override {}
   void KeyringRestored() override {}
+  void KeyringReset() override { keyringResetFired_ = true; }
   void Locked() override {}
   void Unlocked() override {}
   void BackedUp() override {}
@@ -73,6 +74,7 @@ class TestKeyringControllerObserver
   bool AutoLockMinutesChangedFired() { return autoLockMinutesChangedFired_; }
   bool SelectedAccountChangedFired() { return selectedAccountChangedFired_; }
   bool AccountsChangedFired() { return accountsChangedFired_; }
+  bool KeyringResetFired() { return keyringResetFired_; }
 
   mojo::PendingRemote<brave_wallet::mojom::KeyringControllerObserver>
   GetReceiver() {
@@ -83,12 +85,14 @@ class TestKeyringControllerObserver
     autoLockMinutesChangedFired_ = false;
     selectedAccountChangedFired_ = false;
     accountsChangedFired_ = false;
+    keyringResetFired_ = false;
   }
 
  private:
   bool autoLockMinutesChangedFired_ = false;
   bool selectedAccountChangedFired_ = false;
   bool accountsChangedFired_ = false;
+  bool keyringResetFired_ = false;
   mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
       observer_receiver_{this};
 };
@@ -850,6 +854,9 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
 TEST_F(KeyringControllerUnitTest, Reset) {
   KeyringController controller(GetPrefs());
   HDKeyring* keyring = controller.CreateKeyring(kDefaultKeyringId, "brave");
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   keyring->AddAccounts();
   // Trigger account number saving
   controller.Lock();
@@ -861,17 +868,18 @@ TEST_F(KeyringControllerUnitTest, Reset) {
   GetPrefs()->Set(kBraveWalletCustomNetworks, base::ListValue());
   GetPrefs()->SetString(kBraveWalletCurrentChainId,
                         brave_wallet::mojom::kMainnetChainId);
-  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCurrentChainId));
+  EXPECT_TRUE(controller.IsKeyringCreated(kDefaultKeyringId));
   controller.Reset();
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletKeyrings));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletCurrentChainId));
   EXPECT_EQ(controller.default_keyring_, nullptr);
   EXPECT_EQ(controller.encryptor_, nullptr);
+  EXPECT_FALSE(controller.IsKeyringCreated(kDefaultKeyringId));
+  // Keyring observer fire
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.KeyringResetFired());
 }
 
 TEST_F(KeyringControllerUnitTest, BackupComplete) {

@@ -103,16 +103,28 @@ void RegisterProfilePrefsForMigration(
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
 }
 
-void ClearProfilePrefs(PrefService* prefs) {
+void ClearEthJsonRpcControllerProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletCustomNetworks);
   prefs->ClearPref(kBraveWalletCurrentChainId);
-  prefs->ClearPref(kBraveWalletTransactions);
-  prefs->ClearPref(kBraveWalletUserAssets);
+  prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+}
+
+void ClearKeyringControllerProfilePrefs(PrefService* prefs) {
+  DCHECK(prefs);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
   prefs->ClearPref(kBraveWalletSelectedAccount);
-  prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+}
+
+void ClearEthTxControllerProfilePrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  prefs->ClearPref(kBraveWalletTransactions);
+}
+
+void ClearBraveWalletServicePrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
 }

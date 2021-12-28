@@ -63,6 +63,7 @@ export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('cha
 export const isEip1559Changed = createAction<IsEip1559Changed>('isEip1559Changed')
 export const keyringCreated = createAction('keyringCreated')
 export const keyringRestored = createAction('keyringRestored')
+export const keyringReset = createAction('keyringReset')
 export const locked = createAction('locked')
 export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
