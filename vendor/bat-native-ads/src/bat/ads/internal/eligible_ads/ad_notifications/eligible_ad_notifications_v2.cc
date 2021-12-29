@@ -70,16 +70,15 @@ void EligibleAdsV2::GetEligibleAds(
       return;
     }
 
-    const CreativeAdNotificationList eligible_creative_ads =
+    const CreativeAdNotificationList& eligible_creative_ads =
         FilterCreativeAds(creative_ads, ad_events, browsing_history);
-
     if (eligible_creative_ads.empty()) {
       BLOG(1, "No eligible ads");
       callback(/* had_opportunity */ true, {});
       return;
     }
 
-    const CreativeAdNotificationInfo creative_ad =
+    const CreativeAdNotificationInfo& creative_ad =
         ChooseAd(user_model, ad_events, eligible_creative_ads);
 
     callback(/* had_opportunity */ true, {creative_ad});

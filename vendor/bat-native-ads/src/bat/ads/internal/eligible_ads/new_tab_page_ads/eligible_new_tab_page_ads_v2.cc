@@ -72,7 +72,6 @@ void EligibleAdsV2::GetEligibleAds(
 
     const CreativeNewTabPageAdList& eligible_creative_ads =
         FilterCreativeAds(creative_ads, ad_events, browsing_history);
-
     if (eligible_creative_ads.empty()) {
       BLOG(1, "No eligible ads");
       callback(/* had_opportunity */ true, {});
