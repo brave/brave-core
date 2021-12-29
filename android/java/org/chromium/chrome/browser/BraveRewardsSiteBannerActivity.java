@@ -25,7 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import org.json.JSONException;
+
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -292,9 +295,9 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         tv.setText(part1);
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        @PublisherStatus int pubStatus =
-                mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
-        setPublisherNoteText(pubStatus);
+        mBraveRewardsNativeWorker.GetExternalWallet();
+        @PublisherStatus
+        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
 
         if (pubStatus == BraveRewardsPublisher.CONNECTED
                 || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
@@ -338,22 +341,43 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         });
     }
 
+    @Override
+    public void OnGetExternalWallet(int errorCode, String externalWallet) {
+        int walletStatus = BraveRewardsExternalWallet.NOT_CONNECTED;
+        if (!TextUtils.isEmpty(externalWallet)) {
+            try {
+                BraveRewardsExternalWallet mExternalWallet =
+                        new BraveRewardsExternalWallet(externalWallet);
+                walletStatus = mExternalWallet.getStatus();
+            } catch (JSONException e) {
+                Log.e("BraveRewards", e.getMessage());
+            }
+        }
+        @PublisherStatus
+        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
+        setPublisherNoteText(pubStatus, walletStatus);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    private void setPublisherNoteText(@PublisherStatus int pubStatus) {
+    private void setPublisherNoteText(@PublisherStatus int pubStatus, int walletStatus) {
         String notePart1 = "";
         String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
-        if (walletType.equals("")) {
+        if (walletStatus == BraveRewardsExternalWallet.NOT_CONNECTED) {
             if (pubStatus == BraveRewardsPublisher.CONNECTED
                     || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                     || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
                     || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
+                Log.e("BraveRewards", "User is unverified and publisher is verified");
+            } else {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
+                Log.e("BraveRewards", "User is unverified and publisher is unverified");
             }
         } else {
             if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
+                Log.e("BraveRewards", "User is verified and publisher is unverified");
             } else if (pubStatus == BraveRewardsPublisher.CONNECTED
                     || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                             && !walletType.equals(BraveWalletProvider.UPHOLD))
@@ -363,6 +387,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                             && !walletType.equals(BraveWalletProvider.GEMINI))) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_different_verified_notice_text);
+                Log.e("BraveRewards",
+                        "User is verified and publisher is verified but not with the same provider");
             }
         }
 
