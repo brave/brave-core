@@ -77,11 +77,8 @@ class Client final {
       const std::string& segment);
 
   bool ToggleSavedAd(const AdContentInfo& ad_content);
-  bool GetSavedAdForCreativeInstanceId(const std::string& creative_instance_id);
 
   bool ToggleFlaggedAd(const AdContentInfo& ad_content);
-  bool GetFlaggedAdForCreativeInstanceId(
-      const std::string& creative_instance_id);
 
   void UpdateSeenAd(const AdInfo& ad);
   const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
