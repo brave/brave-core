@@ -11,13 +11,16 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
+
+namespace brave_ads {
+class AdsService;
+}  // namespace brave_ads
 
 namespace content {
 class WebUIDataSource;
@@ -151,4 +154,3 @@ class ViewCounterService : public KeyedService,
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
-
