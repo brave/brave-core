@@ -98,6 +98,10 @@ class EthTxController : public KeyedService,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& data,
       SetDataForUnapprovedTransactionCallback callback) override;
+  void SetNonceForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::string& nonce,
+      SetNonceForUnapprovedTransactionCallback) override;
   void GetNonceForHardwareTransaction(
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback) override;
