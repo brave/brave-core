@@ -8,6 +8,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap_unittest_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 
 namespace ads {
 namespace promoted_content_ads {
@@ -17,6 +18,7 @@ void ForcePermissionRules() {
   ForceCatalogFrequencyCapPermission();
   ForceIssuersFrequencyCapPermission();
   ForceUnblindedTokensFrequencyCapPermission();
+  ForceUserActivityFrequencyCapPermission();
 }
 
 }  // namespace frequency_capping

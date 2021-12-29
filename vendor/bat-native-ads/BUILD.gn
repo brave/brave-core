@@ -313,6 +313,8 @@ source_set("ads") {
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h",
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.cc",
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.h",
+    "src/bat/ads/internal/ads/permission_rules_base.cc",
+    "src/bat/ads/internal/ads/permission_rules_base.h",
     "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.cc",
     "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h",
     "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_builder.cc",
