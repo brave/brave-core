@@ -10,12 +10,13 @@ import {
   BraveWallet,
   WalletAccountType
 } from '../../constants/types'
-import { ETH } from '../../options/asset-options'
+import { BAT, ETH } from '../../options/asset-options'
 
 export default function useAssets (
   selectedAccount: WalletAccountType,
   fullTokenList: BraveWallet.ERCToken[],
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  userVisibleTokensInfo: BraveWallet.ERCToken[],
+  getBuyAssets: () => Promise<BraveWallet.ERCToken[]>
 ) {
   const tokenOptions: BraveWallet.ERCToken[] = React.useMemo(
     () =>
@@ -68,10 +69,26 @@ export default function useAssets (
     ]
   }, [tokenOptions, sendAssetOptions])
 
+  const [buyAssetOptions, setBuyAssetOptions] = React.useState<AccountAssetOptionType[]>([BAT, ETH])
+
+  React.useEffect(() => {
+    getBuyAssets().then(tokens => {
+      setBuyAssetOptions(tokens.map(token => ({
+        asset: {
+          ...token,
+          logo: `chrome://erc-token-images/${token.logo}`
+        },
+        assetBalance: '0',
+        fiatBalance: '0'
+      }) as AccountAssetOptionType))
+    }).catch(e => console.error(e))
+  }, [])
+
   return {
     tokenOptions,
     assetOptions,
     userVisibleTokenOptions,
-    sendAssetOptions
+    sendAssetOptions,
+    buyAssetOptions
   }
 }

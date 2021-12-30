@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -47,51 +48,55 @@
             android:textColor="@color/rewards_panel_text_color"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/publisher_verified"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:layout_marginBottom="4dp"
-            android:drawablePadding="8dp"
-            android:gravity="start"
-            android:text="@string/unverified_creator"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="4dp"
-            android:fontFamily="@font/poppins_regular"
-            android:paddingBottom="4dp"
-            android:background="@drawable/unverified_48_rounded_bg"
-            android:textColor="@color/rewards_panel_text_color"
-            android:textSize="12sp"
-            app:drawableStartCompat="@drawable/ic_unverified_state" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/refresh_publisher"
+                android:id="@+id/publisher_verified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
+                android:drawablePadding="8dp"
+                android:gravity="start"
+                android:text="@string/unverified_creator"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/refresh_status"
-                android:textColor="@color/rewards_panel_refresh_button_color"
-                android:layout_marginEnd="4dp"
-                android:textSize="14sp" />
+                android:paddingBottom="4dp"
+                android:background="@drawable/unverified_48_rounded_bg"
+                android:textColor="@color/rewards_panel_text_color"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_unverified_state" />
 
-            <ProgressBar
-                android:id="@+id/progress_refresh_status"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center"
-                android:visibility="gone" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/refresh_publisher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_refresh_20"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_refresh_status"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

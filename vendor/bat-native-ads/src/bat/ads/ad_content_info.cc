@@ -79,9 +79,9 @@ bool AdContentInfo::FromValue(const base::Value& value) {
     return false;
   }
 
-  const absl::optional<int> ad_type = dictionary->FindIntKey("adType");
-  if (ad_type && ad_type.has_value()) {
-    type = AdType(static_cast<AdType::Value>(ad_type.value()));
+  const absl::optional<int> type_optional = dictionary->FindIntKey("adType");
+  if (type_optional) {
+    type = AdType(static_cast<AdType::Value>(type_optional.value()));
   }
 
   const std::string* uuid_value = dictionary->FindStringKey("uuid");
@@ -134,11 +134,11 @@ bool AdContentInfo::FromValue(const base::Value& value) {
     brand_url = *brand_url_value;
   }
 
-  const absl::optional<int> like_action_type_value =
+  const absl::optional<int> like_action_type_optional =
       dictionary->FindIntKey("likeAction");
-  if (like_action_type_value && like_action_type_value.has_value()) {
+  if (like_action_type_optional) {
     like_action_type =
-        static_cast<AdContentLikeActionType>(like_action_type_value.value());
+        static_cast<AdContentLikeActionType>(like_action_type_optional.value());
   }
 
   const std::string* confirmation_type_value =
@@ -147,15 +147,16 @@ bool AdContentInfo::FromValue(const base::Value& value) {
     confirmation_type = ConfirmationType(*confirmation_type_value);
   }
 
-  const absl::optional<int> is_saved_value = dictionary->FindIntKey("savedAd");
-  if (is_saved_value && is_saved_value.has_value()) {
-    is_saved = static_cast<bool>(is_saved_value.value());
+  const absl::optional<bool> is_saved_optional =
+      dictionary->FindBoolKey("savedAd");
+  if (is_saved_optional) {
+    is_saved = is_saved_optional.value();
   }
 
-  const absl::optional<int> is_flagged_value =
-      dictionary->FindIntKey("flaggedAd");
-  if (is_flagged_value && is_flagged_value.has_value()) {
-    is_flagged = static_cast<bool>(is_flagged_value.value());
+  const absl::optional<bool> is_flagged_optional =
+      dictionary->FindBoolKey("flaggedAd");
+  if (is_flagged_optional) {
+    is_flagged = is_flagged_optional.value();
   }
 
   return true;

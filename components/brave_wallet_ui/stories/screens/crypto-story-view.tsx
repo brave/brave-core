@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
@@ -28,7 +27,6 @@ import { PortfolioView, AccountsView } from '../../components/desktop/views'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { HardwareWalletAccount } from './../../common/hardware/types'
 
 export interface Props {
   defaultCurrencies: DefaultCurrencies
@@ -67,10 +65,10 @@ export interface Props {
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   getBalance: (address: string) => Promise<string>
-  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onImportAccount: (accountName: string, privateKey: string) => void
-  onImportFilecoinAccount: (accountName: string, privateKey: string, network: string, protocol: FilecoinAddressProtocol) => void
+  onImportFilecoinAccount: (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onCreateAccount: (name: string) => void
   onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void

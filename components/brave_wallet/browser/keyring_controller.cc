@@ -1243,7 +1243,11 @@ void KeyringController::Reset() {
   encryptor_.reset();
   default_keyring_.reset();
 
-  ClearProfilePrefs(prefs_);
+  ClearKeyringControllerProfilePrefs(prefs_);
+
+  for (const auto& observer : observers_) {
+    observer->KeyringReset();
+  }
 }
 
 void KeyringController::StopAutoLockTimer() {

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { WalletWidgetStandIn } from './style'
 import {
   // SideNav,
@@ -30,7 +29,6 @@ import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -40,13 +38,11 @@ import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { getLocale } from '../../common/locale'
 import {
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
-import { HardwareWalletAccount } from '../common/hardware/types'
 import { isStrongPassword } from '../utils/password-utils'
 export default {
   title: 'Wallet/Desktop',
@@ -477,7 +473,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const onImportAccount = (name: string, key: string) => {
     // doesnt do anything in storybook
   }
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: FilecoinAddressProtocol) => {
+  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => {
     // doesnt do anything in storybook
   }
 
@@ -511,10 +507,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    const url = BuyAssetUrl(mockNetworks[0].chainId, asset, selectedAccount, buyAmount)
-    if (url) {
-      window.open(url, '_blank')
-    }
+    alert(`Buy ${asset.asset.symbol} asset`)
   }
 
   const onSwapQuoteRefresh = () => {
@@ -607,7 +600,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will Remove Account')
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
     return new Promise((resolve) => {
@@ -633,7 +626,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }
   }
 
-  const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {
+  const onAddHardwareAccounts = (accounts: BraveWallet.HardwareWalletAccount[]) => {
     console.log(accounts)
   }
 
@@ -855,7 +848,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectPresetFromAmount={onSelectPresetFromAmount}
             onSelectPresetSendAmount={onSelectPresetSendAmount}
             onSelectTab={setSelectedWidgetTab}
-            buyAssetOptions={WyreAccountAssetOptions}
+            buyAssetOptions={AccountAssetOptions}
             sendAssetOptions={AccountAssetOptions}
             swapAssetOptions={AccountAssetOptions}
             networkList={mockNetworks}

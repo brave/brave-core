@@ -500,8 +500,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_FIRST_TIP_TEXT" desc="string from Thank you screen">
         Your first monthly tip will be sent on:
       </message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
+      <message name="IDS_BRAVE_UI_SITE_BANNER_UNVERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
         NOTE: This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
+      </message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
+        NOTE: This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_WELCOME" desc="Tipping page title">
         Welcome!
@@ -1043,9 +1046,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_USER_WALLET_STATUS_PENDING">
         Pending
-      </message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_CONNECTED_TEXT" desc="Text shown for connected publishers that are not fully verified on site banner">
-        NOTE: This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_UI_PANEL_CONNECTED_TEXT" desc="A message on tipping page when a creator is not verified yet">
         This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.
@@ -1776,20 +1776,17 @@ Are you sure you want to do this?
       <message name="IDS_VALUE_1_BAT" desc="value for 1 BAT">
         1 BAT
       </message>
+      <message name="IDS_VALUE_2_BAT" desc="value for 5 BAT">
+        2 BAT
+      </message>
+      <message name="IDS_VALUE_3_BAT" desc="value for 10 BAT">
+        3 BAT
+      </message>
       <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
         5 BAT
       </message>
       <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
         10 BAT
-      </message>
-      <message name="IDS_VALUE_15_BAT" desc="value for 15 BAT">
-        15 BAT
-      </message>
-      <message name="IDS_VALUE_25_BAT" desc="value for 25 BAT">
-        25 BAT
-      </message>
-      <message name="IDS_VALUE_50_BAT" desc="value for 50 BAT">
-        50 BAT
       </message>
       <message name="IDS_VALUE_0_BAT" desc="value for 0 BAT">
         0.00 BAT
@@ -2721,9 +2718,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_REWARDS_SUMMARY" desc="Text for `Rewards Summary` button in Brave rewards panel">
       Rewards Summary
     </message>
-    <message name="IDS_TOTAL_GRANTS_CLAIMED" desc="Title text for `Total Grants Claimed` section in Brave rewards panel">
-      Total Grants Claimed
-    </message>
     <message name="IDS_REWARDS_FROM_ADS" desc="Title text for `Rewards from Ads` section in Brave rewards panel">
       Rewards from Ads
     </message>
@@ -2762,9 +2756,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_UNVERIFIED_CREATOR" desc="Brave rewards panel text">
       Unverified Creator
-    </message>
-    <message name="IDS_REFRESH_STATUS" desc="Text for `Refresh Status` button in Brave rewards panel">
-      Refresh Status
     </message>
     <message name="IDS_MONTHLY_CONTRIBUTION" desc="Title text for `Monthly contribution` section in Brave rewards panel">
       Monthly contribution

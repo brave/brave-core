@@ -185,6 +185,10 @@ constexpr char kBraveSyncDescription[] =
 constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
 constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
 
+constexpr char kBraveShieldsV2Name[] = "Enable Brave Shields v2";
+constexpr char kBraveShieldsV2Description[] =
+    "Major UX/UI overhaul of Brave Shields";
+
 constexpr char kBraveDecentralizedDnsName[] = "Enable decentralized DNS";
 constexpr char kBraveDecentralizedDnsDescription[] =
     "Enable decentralized DNS support, such as Unstoppable Domains and "
@@ -270,11 +274,19 @@ constexpr char kTabAudioIconInteractiveDescription[] =
     "Enable the Tab audio indicator to also be a button which can mute and "
     "unmute the Tab.";
 
-// A blink feature.
+// Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
 constexpr char kFileSystemAccessAPIDescription[] =
     "Enables the File System Access API, giving websites access to the file "
     "system";
+
+constexpr char kNavigatorConnectionAttributeName[] =
+    "Enable navigator.connection attribute";
+constexpr char kNavigatorConnectionAttributeDescription[] =
+    "Enables the navigator.connection API. Enabling this API will allow sites "
+    "to learn information about your network and internet connection. Trackers "
+    "can use this information to fingerprint your browser, or to infer when "
+    "you are traveling or at home.";
 
 }  // namespace
 
@@ -390,6 +402,17 @@ constexpr char kFileSystemAccessAPIDescription[] =
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
+#if !defined(OS_ANDROID)
+#define BRAVE_SHIELDS_V2_FEATURE_ENTRIES                            \
+    {"brave-shields-v2",                                            \
+     flag_descriptions::kBraveShieldsV2Name,                        \
+     flag_descriptions::kBraveShieldsV2Description,                 \
+     kOsDesktop,                                                    \
+     FEATURE_VALUE_TYPE(brave_shields::features::kBraveShieldsPanelV2)},
+#else
+#define BRAVE_SHIELDS_V2_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
@@ -493,6 +516,10 @@ constexpr char kFileSystemAccessAPIDescription[] =
       flag_descriptions::kFileSystemAccessAPIName,                          \
       flag_descriptions::kFileSystemAccessAPIDescription, kOsDesktop,       \
       FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI)},           \
+    {"navigator-connection-attribute",                                      \
+      flag_descriptions::kNavigatorConnectionAttributeName,                 \
+      flag_descriptions::kNavigatorConnectionAttributeDescription, kOsAll,  \
+      FEATURE_VALUE_TYPE(blink::features::kNavigatorConnectionAttribute)},  \
     {"tab-audio-icon-interactive",                                          \
       flag_descriptions::kTabAudioIconInteractiveName,                      \
       flag_descriptions::kTabAudioIconInteractiveDescription,               \
@@ -507,4 +534,5 @@ constexpr char kFileSystemAccessAPIDescription[] =
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     SIDEBAR_FEATURE_ENTRIES                                                 \
     SPEEDREADER_FEATURE_ENTRIES                                             \
+    BRAVE_SHIELDS_V2_FEATURE_ENTRIES                                        \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES

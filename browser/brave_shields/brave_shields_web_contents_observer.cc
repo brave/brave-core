@@ -9,11 +9,13 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
@@ -39,6 +41,10 @@
 
 using extensions::Event;
 using extensions::EventRouter;
+#endif
+
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #endif
 
 using content::RenderFrameHost;
@@ -212,6 +218,15 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     event_router->BroadcastEvent(std::move(event));
   }
 #endif
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV2)) {
+#if !defined(OS_ANDROID)
+    if (!web_contents)
+      return;
+    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+        ->HandleItemBlocked(block_type, subresource);
+#endif
+  }
 }
 #endif
 
@@ -251,6 +266,14 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       // into reloads i.e see NavigationControllerImpl::NavigateWithoutEntry),
       // we only reset the counter for blocked URLs, not the one for scripts.
       blocked_url_paths_.clear();
+    }
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveShieldsPanelV2)) {
+#if !defined(OS_ANDROID)
+      brave_shields::BraveShieldsDataController::FromWebContents(
+          navigation_handle->GetWebContents())
+          ->ClearAllResourcesList();
+#endif
     }
   }
 

@@ -575,27 +575,6 @@ TEST_F(EthJsonRpcControllerUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
-  std::vector<base::Value> values;
-  brave_wallet::mojom::EthereumChain chain(
-      "0x1", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
-  auto chain_ptr = chain.Clone();
-  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr));
-  UpdateCustomNetworks(prefs(), &values);
-
-  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  GetAllCustomChains(prefs(), &custom_chains);
-  ASSERT_FALSE(custom_chains.empty());
-  custom_chains.clear();
-  ASSERT_TRUE(custom_chains.empty());
-
-  KeyringController controller(prefs());
-  controller.Reset();
-  GetAllCustomChains(prefs(), &custom_chains);
-  ASSERT_TRUE(custom_chains.empty());
-}
-
 TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
@@ -1538,6 +1517,46 @@ TEST_F(EthJsonRpcControllerUnitTest, GetSupportsInterface) {
                      "Request exceeds defined limit", false));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, Reset) {
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain(
+      "0x1", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+  auto chain_ptr = chain.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr));
+  UpdateCustomNetworks(prefs(), &values);
+
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_FALSE(custom_chains.empty());
+  custom_chains.clear();
+  ASSERT_TRUE(custom_chains.empty());
+  SetNetwork(mojom::kLocalhostChainId);
+  prefs()->SetBoolean(kSupportEip1559OnLocalhostChain, true);
+  EXPECT_TRUE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  EXPECT_EQ(prefs()->GetString(kBraveWalletCurrentChainId),
+            mojom::kLocalhostChainId);
+  // This isn't valid data for these maps but we are just checking to make sure
+  // it gets cleared
+  rpc_controller_->add_chain_pending_requests_["1"] =
+      EthJsonRpcController::EthereumChainRequest();
+  rpc_controller_->switch_chain_requests_[GURL()] = "";
+  rpc_controller_->switch_chain_callbacks_[GURL()] = base::BindLambdaForTesting(
+      [&](mojom::ProviderError error, const std::string& error_message) {});
+
+  rpc_controller_->Reset();
+
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_TRUE(custom_chains.empty());
+  EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  EXPECT_EQ(prefs()->GetString(kBraveWalletCurrentChainId),
+            mojom::kMainnetChainId);
+  EXPECT_FALSE(prefs()->HasPrefPath(kSupportEip1559OnLocalhostChain));
+  EXPECT_TRUE(rpc_controller_->add_chain_pending_requests_.empty());
+  EXPECT_TRUE(rpc_controller_->switch_chain_requests_.empty());
+  EXPECT_TRUE(rpc_controller_->switch_chain_callbacks_.empty());
 }
 
 }  // namespace brave_wallet

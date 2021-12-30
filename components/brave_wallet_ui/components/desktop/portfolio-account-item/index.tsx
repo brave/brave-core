@@ -1,11 +1,17 @@
 import * as React from 'react'
+import { create } from 'ethereum-blockies'
+
+// Hooks
+import { useExplorer } from '../../../common/hooks'
+
+// Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
 } from '../../../utils/format-prices'
-import { create } from 'ethereum-blockies'
+
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
 import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
@@ -56,15 +62,7 @@ const PortfolioAccountItem = (props: Props) => {
     return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [address])
 
-  const onClickViewOnBlockExplorer = () => {
-    const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    if (exporerURL && address) {
-      const url = `${exporerURL}/address/${address}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const onShowTransactionPopup = () => {
     setShowAccountPopup(true)
@@ -98,7 +96,7 @@ const PortfolioAccountItem = (props: Props) => {
         {showAccountPopup &&
           <TransactionPopup>
             <TransactionPopupItem
-              onClick={onClickViewOnBlockExplorer}
+              onClick={onClickViewOnBlockExplorer('address', address)}
               text={getLocale('braveWalletTransactionExplorer')}
             />
           </TransactionPopup>

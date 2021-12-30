@@ -36,9 +36,7 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -351,7 +349,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.EthereumChain>(mockNetworks[0])
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
@@ -364,10 +362,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(mockNetworks[0].chainId, selectedWyreAsset, selectedAccount, buyAmount)
-    if (url) {
-      window.open(url, '_blank')
-    }
+    alert(`Buy ${selectedWyreAsset.asset.symbol} asset`)
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {

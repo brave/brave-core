@@ -131,6 +131,20 @@ function Accounts (props: Props) {
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
   const [editTab, setEditTab] = React.useState<AccountSettingsNavTypes>('details')
 
+  const sortAccountsByName = React.useCallback((accounts: WalletAccountType[]) => {
+    return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
+      if (a.name < b.name) {
+        return -1
+      }
+
+      if (a.name > b.name) {
+        return 1
+      }
+
+      return 0
+    })
+  }, [])
+
   const onCopyToClipboard = async () => {
     if (selectedAccount) {
       await copyToClipboard(selectedAccount.address)
@@ -220,7 +234,7 @@ function Accounts (props: Props) {
           </SecondaryListContainer>
           {Object.keys(trezorAccounts).map(key =>
             <SecondaryListContainer key={key} isHardwareWallet={true}>
-              {trezorAccounts[key].map((account: WalletAccountType) =>
+              {sortAccountsByName(trezorAccounts[key]).map((account: WalletAccountType) =>
                 <AccountListItem
                   key={account.id}
                   isHardwareWallet={true}
@@ -233,7 +247,7 @@ function Accounts (props: Props) {
           )}
           {Object.keys(ledgerAccounts).map(key =>
             <SecondaryListContainer key={key} isHardwareWallet={true}>
-              {ledgerAccounts[key].map((account: WalletAccountType) =>
+              {sortAccountsByName(ledgerAccounts[key]).map((account: WalletAccountType) =>
                 <AccountListItem
                   key={account.id}
                   isHardwareWallet={true}

@@ -22,7 +22,6 @@ import { Dispatch, State } from './types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { HardwareWalletAccount } from '../hardware/types'
 import { GetAccountsHardwareOperationResult } from '../hardware_operations'
 
 export const getERC20Allowance = (
@@ -46,7 +45,7 @@ export const getERC20Allowance = (
   })
 }
 
-export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
     const keyring = getHardwareKeyring(opts.hardware)
     if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
@@ -111,6 +110,16 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
     }
   }
   return false
+}
+
+export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
+  const { ercTokenRegistry } = getAPIProxy()
+  return (await ercTokenRegistry.getBuyUrl(address, symbol, amount)).url
+}
+
+export async function getBuyAssets () {
+  const { ercTokenRegistry } = getAPIProxy()
+  return (await ercTokenRegistry.getBuyTokens()).tokens
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {

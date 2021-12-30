@@ -56,12 +56,12 @@ import {
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
+import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
+  getBuyAssets,
   getChecksumEthAddress,
   getERC20Allowance
 } from '../common/async/lib'
@@ -128,7 +128,6 @@ function Container (props: Props) {
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>()
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -136,8 +135,16 @@ function Container (props: Props) {
   const {
     assetOptions,
     userVisibleTokenOptions,
-    sendAssetOptions
-  } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
+    sendAssetOptions,
+    buyAssetOptions
+  } = useAssets(
+    selectedAccount,
+    props.wallet.fullTokenList,
+    props.wallet.userVisibleTokensInfo,
+    getBuyAssets
+  )
+
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(buyAssetOptions[0])
 
   const {
     exchangeRate,
@@ -216,14 +223,15 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
-    if (url) {
-      chrome.tabs.create({ url: url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-        }
+    GetBuyOrFaucetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
       })
-    }
+      .catch(e => console.error(e))
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
@@ -685,7 +693,7 @@ function Container (props: Props) {
   if (showSelectAsset) {
     let assets: AccountAssetOptionType[]
     if (selectedPanel === 'buy') {
-      assets = WyreAccountAssetOptions
+      assets = buyAssetOptions
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
     } else { // swap

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
-import { useTransactionParser } from '../../../common/hooks'
+
+// Hooks
+import { useExplorer, useTransactionParser } from '../../../common/hooks'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -84,15 +86,7 @@ const TransactionDetailPanel = (props: Props) => {
     return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [transactionDetails.recipient])
 
-  const onClickViewOnBlockExplorer = () => {
-    const explorerURL = selectedNetwork.blockExplorerUrls[0]
-    if (explorerURL && transaction?.txHash) {
-      const url = `${explorerURL}/tx/${transaction.txHash}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const onClickRetryTransaction = () => {
     if (transaction) {
@@ -179,7 +173,7 @@ const TransactionDetailPanel = (props: Props) => {
           <DetailTitle>
             {getLocale('braveWalletTransactionDetailHash')}
           </DetailTitle>
-          <DetailButton onClick={onClickViewOnBlockExplorer}>
+          <DetailButton onClick={onClickViewOnBlockExplorer('tx', transaction?.txHash)}>
             {reduceAddress(transaction.txHash)}
           </DetailButton>
         </DetailRow>

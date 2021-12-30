@@ -11,6 +11,7 @@
 #include "base/environment.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
@@ -1207,6 +1208,21 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
   switch_chain_requests_[origin] = chain_id;
   switch_chain_callbacks_[origin] = std::move(callback);
   return true;
+}
+
+void EthJsonRpcController::Reset() {
+  ClearEthJsonRpcControllerProfilePrefs(prefs_);
+  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
+
+  add_chain_pending_requests_.clear();
+  switch_chain_requests_.clear();
+  // Reject pending suggest token requests when network changed.
+  for (auto& callback : switch_chain_callbacks_) {
+    std::move(callback.second)
+        .Run(mojom::ProviderError::kUserRejectedRequest,
+             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  }
+  switch_chain_callbacks_.clear();
 }
 
 }  // namespace brave_wallet

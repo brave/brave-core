@@ -1525,4 +1525,40 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
                                       mojom::kRopstenChainId));
 }
 
+TEST_F(BraveWalletServiceUnitTest, Reset) {
+  SetDefaultBaseCurrency("CAD");
+  SetDefaultBaseCryptocurrency("ETH");
+  mojom::ERCTokenPtr token1 = GetToken1();
+  bool callback_called;
+  bool success;
+  AddUserAsset(token1.Clone(), "0x1", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
+  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string message = "0xAB";
+  auto request1 = mojom::SignMessageRequest::New(
+      1, address, std::string(message.begin(), message.end()));
+  service_->AddSignMessageRequest(
+      std::move(request1),
+      base::BindLambdaForTesting(
+          [](bool, const std::string&, const std::string&) {}));
+  mojom::ERCTokenPtr custom_token =
+      mojom::ERCToken::New("0x6b175474e89094C44Da98b954eEdeAC495271d1e",
+                           "COLOR", "", true, false, "COLOR", 18, true, "");
+  AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
+
+  service_->Reset();
+
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
+  EXPECT_TRUE(service_->sign_message_requests_.empty());
+  EXPECT_TRUE(service_->sign_message_callbacks_.empty());
+  EXPECT_TRUE(service_->add_suggest_token_callbacks_.empty());
+  EXPECT_TRUE(service_->add_suggest_token_requests_.empty());
+}
+
 }  // namespace brave_wallet

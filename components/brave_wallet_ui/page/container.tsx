@@ -40,9 +40,8 @@ import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
+import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 
 import {
   findENSAddress,
@@ -52,7 +51,8 @@ import {
   getERC20Allowance,
   onConnectHardwareWallet,
   isStrongPassword,
-  getERCTokenInfo
+  getERCTokenInfo,
+  getBuyAssets
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
@@ -65,7 +65,6 @@ import {
   useTokenInfo
 } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
-import { HardwareWalletAccount } from '../common/hardware/types'
 
 type Props = {
   wallet: WalletState
@@ -129,8 +128,14 @@ function Container (props: Props) {
     tokenOptions,
     assetOptions,
     userVisibleTokenOptions,
-    sendAssetOptions
-  } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
+    sendAssetOptions,
+    buyAssetOptions
+  } = useAssets(
+    selectedAccount,
+    props.wallet.fullTokenList,
+    props.wallet.userVisibleTokensInfo,
+    getBuyAssets
+  )
 
   const {
     onFindTokenInfoByContractAddress,
@@ -375,13 +380,12 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
-    if (url) {
-      window.open(url, '_blank')
-    }
+    GetBuyOrFaucetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
+      .then(url => window.open(url, '_blank'))
+      .catch(e => console.error(e))
   }
 
-  const onAddHardwareAccounts = (selected: HardwareWalletAccount[]) => {
+  const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
     props.walletPageActions.addHardwareAccounts(selected)
   }
 
@@ -688,7 +692,7 @@ function Container (props: Props) {
             swapValidationError={swapValidationError}
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
-            buyAssetOptions={WyreAccountAssetOptions}
+            buyAssetOptions={buyAssetOptions}
             selectedSendAsset={selectedSendAsset}
             sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}

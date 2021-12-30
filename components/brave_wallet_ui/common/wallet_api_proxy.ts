@@ -42,6 +42,9 @@ export default class WalletApiProxy {
       keyringRestored: function () {
         store.dispatch(WalletActions.keyringRestored())
       },
+      keyringReset: function () {
+        store.dispatch(WalletActions.keyringReset())
+      },
       locked: function () {
         store.dispatch(WalletActions.locked())
       },

@@ -139,7 +139,6 @@
     <color name="white_alpha_50">#80FFFFFF</color>
     <color name="binance_divider_color">#C0C0C0</color>
 
-    <color name="brave_rewards_modal_title_color">#212529</color>
     <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
     <color name="brave_rewards_modal_close_button_color">#5E5F6C</color>
@@ -179,7 +178,6 @@
     <color name="rewards_panel_secondary_text_color">#868E96</color>
     <color name="rewards_panel_card_bg_color">#FFFFFF</color>
     <color name="rewards_panel_action_color">#4C54D2</color>
-    <color name="rewards_panel_refresh_button_color">#4C54D2</color>
     <color name="rewards_panel_verified_button_border">#E9E9F4</color>
     <color name="rewards_panel_summary_title_bg">#66FFFFFF</color>
     <color name="rewards_panel_summary_bg">#FFFFFF</color>

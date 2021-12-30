@@ -955,8 +955,17 @@ public class BraveRewardsPanel
                             == braveRewardsOnboardingPagerAdapter.getCount() - 1) {
                         if (braveRewardsOnboardingView != null) {
                             braveRewardsOnboardingView.setVisibility(View.GONE);
-                            mRewardsMainLayout.setForeground(null);
-                            enableControls(true, mRewardsMainLayout);
+
+                            if (mPopupView != null
+                                    && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                            Profile.getLastUsedRegularProfile())) {
+                                showBraveRewardsOnboardingModal(mPopupView);
+                            } else {
+                                mRewardsMainLayout.setForeground(null);
+                                enableControls(true, mRewardsMainLayout);
+                            }
                         }
                     } else {
                         braveRewardsViewPager.setCurrentItem(
@@ -1005,13 +1014,6 @@ public class BraveRewardsPanel
                     : "#212529";
 
             switch (i) {
-                case BALANCE_REPORT_GRANTS:
-                    tv = mPopupView.findViewById(R.id.total_grants_claimed_bat_text);
-                    tvUSD = mPopupView.findViewById(R.id.total_grants_claimed_usd_text);
-                    text = "<font color=#C12D7C>" + value + "</font><font color=" + batTextColor
-                            + "> " + batText + "</font>";
-                    textUSD = usdValue;
-                    break;
                 case BALANCE_REPORT_EARNING_FROM_ADS:
                     tv = mPopupView.findViewById(R.id.rewards_from_ads_bat_text);
                     tvUSD = mPopupView.findViewById(R.id.rewards_from_ads_usd_text);
@@ -1042,8 +1044,12 @@ public class BraveRewardsPanel
                     break;
             }
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(text);
-            tv.setText(toInsert);
-            tvUSD.setText(textUSD);
+            if (tv != null) {
+                tv.setText(toInsert);
+            }
+            if (tvUSD != null) {
+                tvUSD.setText(textUSD);
+            }
             if (mBraveRewardsNativeWorker != null) {
                 String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
                 mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
@@ -1359,7 +1365,7 @@ public class BraveRewardsPanel
         String verifiedText = "";
         TextView publisherVerified = mPopupView.findViewById(R.id.publisher_verified);
         publisherVerified.setAlpha(1f);
-        TextView refreshPublisher = mPopupView.findViewById(R.id.refresh_publisher);
+        ImageView refreshPublisher = mPopupView.findViewById(R.id.refresh_publisher);
         refreshPublisher.setAlpha(1f);
         refreshPublisher.setEnabled(true);
         View refreshStatusProgress = mPopupView.findViewById(R.id.progress_refresh_status);
@@ -1375,7 +1381,9 @@ public class BraveRewardsPanel
             }
         }));
         if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED) {
+                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
             verifiedText =
                     mPopupView.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(

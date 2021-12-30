@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/prefs/testing_pref_service.h"
@@ -256,6 +257,8 @@ class EthTxControllerUnitTest : public testing::Test {
   }
 
   EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
+
+  PrefService* GetPrefs() { return &prefs_; }
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -1791,6 +1794,29 @@ TEST_F(EthTxControllerUnitTest, MakeERC721TransferFromDataTxType) {
       base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
                      mojom::TransactionType::Other));
   run_loop->Run();
+}
+
+TEST_F(EthTxControllerUnitTest, Reset) {
+  eth_tx_controller()->known_no_pending_tx = true;
+  eth_tx_controller()->eth_block_tracker_->Start(base::Seconds(10));
+  EXPECT_TRUE(eth_tx_controller()->eth_block_tracker_->IsRunning());
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  meta.from = EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
+  meta.status = mojom::TransactionStatus::Unapproved;
+  auto tx_data = mojom::TxData::New(
+      "0x1", "0x1", "0x0974", "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+      "0x016345785d8a0000", std::vector<uint8_t>());
+  auto tx = EthTransaction::FromTxData(tx_data, false);
+  meta.tx = std::make_unique<EthTransaction>(*tx);
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
+
+  eth_tx_controller()->Reset();
+
+  EXPECT_FALSE(eth_tx_controller()->known_no_pending_tx);
+  EXPECT_FALSE(eth_tx_controller()->eth_block_tracker_->IsRunning());
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
 }
 
 }  //  namespace brave_wallet

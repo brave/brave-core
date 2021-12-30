@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import * as bls from '@noble/bls12-381'
-import { FilecoinAddressProtocol } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
 import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
@@ -32,7 +32,6 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 import { GetTokenParam } from '../../utils/api-utils'
 
 function encodeKeyToHex (key: string): string {
@@ -134,7 +133,7 @@ handler.on(WalletPageActions.importAccount.getType(), async (store: Store, paylo
 
 handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
   const { keyringController } = getWalletPageApiProxy()
-  const result = (payload.protocol === FilecoinAddressProtocol.SECP256K1)
+  const result = (payload.protocol === BraveWallet.FilecoinAddressProtocol.SECP256K1)
     ? await keyringController.importFilecoinSECP256K1Account(payload.accountName, encodeKeyToHex(payload.privateKey), payload.network)
     : await keyringController.importFilecoinBLSAccount(payload.accountName, payload.privateKey, extractPublicKeyForBLS(payload.privateKey), payload.network)
 
@@ -185,7 +184,7 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, p
   return result.success
 })
 
-handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: HardwareWalletAccount[]) => {
+handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
   const keyringController = getWalletPageApiProxy().keyringController
   keyringController.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))

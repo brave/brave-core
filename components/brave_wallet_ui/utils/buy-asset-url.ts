@@ -4,21 +4,30 @@ import {
   UserAccountType
 } from '../constants/types'
 
-const wyreID = 'AC_MGNVBGHPA9T'
+import { getBuyAssetUrl } from '../common/async/lib'
 
-export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
-  switch (networkChainId) {
-    case BraveWallet.MAINNET_CHAIN_ID:
-      return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
-    case BraveWallet.ROPSTEN_CHAIN_ID:
-      return 'https://faucet.ropsten.be/'
-    case BraveWallet.KOVAN_CHAIN_ID:
-      return 'https://github.com/kovan-testnet/faucet'
-    case BraveWallet.RINKEBY_CHAIN_ID:
-      return 'https://www.rinkeby.io/'
-    case BraveWallet.GOERLI_CHAIN_ID:
-      return 'https://goerli-faucet.slock.it/'
-    default:
-      return ''
-  }
+export function GetBuyOrFaucetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    switch (networkChainId) {
+      case BraveWallet.MAINNET_CHAIN_ID:
+        getBuyAssetUrl(account.address, asset.asset.symbol, buyAmount)
+          .then(resolve)
+          .catch(reject)
+        break
+      case BraveWallet.ROPSTEN_CHAIN_ID:
+        resolve('https://faucet.ropsten.be/')
+        break
+      case BraveWallet.KOVAN_CHAIN_ID:
+        resolve('https://github.com/kovan-testnet/faucet')
+        break
+      case BraveWallet.RINKEBY_CHAIN_ID:
+        resolve('https://www.rinkeby.io/#faucet')
+        break
+      case BraveWallet.GOERLI_CHAIN_ID:
+        resolve('https://goerli-faucet.slock.it/')
+        break
+      default:
+        reject()
+    }
+  })
 }

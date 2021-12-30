@@ -19,7 +19,6 @@ struct SavedAdInfo final {
   bool FromJson(const std::string& json);
 
   std::string creative_instance_id;
-  std::string creative_set_id;
 };
 
 }  // namespace ads

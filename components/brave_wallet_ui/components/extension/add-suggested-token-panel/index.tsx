@@ -17,7 +17,12 @@ import {
 import { withPlaceholderIcon, Tooltip } from '../../shared'
 import { NavButton } from '..'
 import { getLocale } from '../../../../common/locale'
+
+// Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+
+// Hooks
+import { useExplorer } from '../../../common/hooks'
 
 export interface Props {
   onCancel: () => void
@@ -38,19 +43,7 @@ function AddSuggestedTokenPanel (props: Props) {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
   }, [])
 
-  const onClickViewOnBlockExplorer = () => {
-    const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    if (exporerURL && token?.contractAddress) {
-      const url = `${exporerURL}/token/${token?.contractAddress ?? ''}`
-      chrome.tabs.create({ url: url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-        }
-      })
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   return (
     <StyledWrapper>
@@ -65,7 +58,11 @@ function AddSuggestedTokenPanel (props: Props) {
         <Tooltip
           text={getLocale('braveWalletTransactionExplorer')}
         >
-          <ContractAddress onClick={onClickViewOnBlockExplorer}>{reduceAddress(token?.contractAddress ?? '')}</ContractAddress>
+          <ContractAddress
+            onClick={onClickViewOnBlockExplorer('token', token?.contractAddress)}
+          >
+            {reduceAddress(token?.contractAddress ?? '')}
+          </ContractAddress>
         </Tooltip>
       </TopWrapper>
       <ButtonWrapper>

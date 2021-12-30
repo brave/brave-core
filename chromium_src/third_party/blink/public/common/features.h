@@ -12,6 +12,7 @@ namespace blink {
 namespace features {
 
 BLINK_COMMON_EXPORT extern const base::Feature kFileSystemAccessAPI;
+BLINK_COMMON_EXPORT extern const base::Feature kNavigatorConnectionAttribute;
 BLINK_COMMON_EXPORT extern const base::Feature kPartitionBlinkMemoryCache;
 
 }  // namespace features

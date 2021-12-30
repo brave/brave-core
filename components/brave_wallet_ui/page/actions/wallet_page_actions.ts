@@ -28,7 +28,6 @@ import {
   UpdateAccountNamePayloadType
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
@@ -55,7 +54,7 @@ export const updateSelectedAsset = createAction<BraveWallet.ERCToken>('updateSel
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')
-export const addHardwareAccounts = createAction<HardwareWalletAccount[]>('addHardwareAccounts')
+export const addHardwareAccounts = createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts')
 export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount')
 export const checkWalletsToImport = createAction('checkWalletsToImport')
 export const setCryptoWalletsInstalled = createAction<boolean>('setCryptoWalletsInstalled')

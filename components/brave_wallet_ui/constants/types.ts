@@ -519,3 +519,8 @@ export enum WalletRoutes {
 }
 
 export const WalletOrigin = 'chrome://wallet'
+
+export type BlockExplorerUrlTypes =
+  | 'tx'
+  | 'address'
+  | 'token'
