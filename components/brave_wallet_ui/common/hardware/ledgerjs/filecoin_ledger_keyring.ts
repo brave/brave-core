@@ -8,7 +8,7 @@ import {
   LedgerProvider, TransportWrapper
 } from '@glif/filecoin-wallet-provider'
 import { CoinType } from '@glif/filecoin-address'
-import { FilecoinKeyring } from '../hardwareKeyring'
+import { FilecoinKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins, getCoinName } from '../../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,

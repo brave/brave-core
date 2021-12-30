@@ -21,7 +21,7 @@ import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware_operations'
-import { LedgerKeyring } from '../hardware/interfaces'
+import { LedgerKeyring, TrezorKeyring } from '../hardware/interfaces'
 
 export const getERC20Allowance = (
   contractAddress: string,

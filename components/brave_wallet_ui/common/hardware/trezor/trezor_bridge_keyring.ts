@@ -30,7 +30,7 @@ import {
   SignHardwareTransactionOperationResult
 } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
-import { TrezorKeyring } from '../hardwareKeyring'
+import { TrezorKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins } from '../../api/hardware_keyrings'
 import { TrezorDerivationPaths } from '../types'
 

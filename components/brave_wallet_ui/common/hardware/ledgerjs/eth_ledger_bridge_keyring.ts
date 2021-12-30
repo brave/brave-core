@@ -16,7 +16,7 @@ import {
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
 } from '../../hardware_operations'
-import { LedgerKeyring } from '../hardwareKeyring'
+import { LedgerKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins } from '../../api/hardware_keyrings'
 import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
