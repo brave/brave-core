@@ -12,6 +12,7 @@ export const PageWalletWrapper = styled.div`
   width: 373px;
 
   @media screen and (max-width: 700px) {
+    width: auto;
     margin-bottom: 10px;
   }
 `
