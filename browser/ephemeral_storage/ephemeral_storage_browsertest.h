@@ -88,7 +88,8 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   void SendBroadcastMessage(content::RenderFrameHost* frame,
                             base::StringPiece message);
   void ClearBroadcastMessage(content::RenderFrameHost* frame);
-  content::EvalJsResult GetBroadcastMessage(content::RenderFrameHost* frame);
+  content::EvalJsResult GetBroadcastMessage(content::RenderFrameHost* frame,
+                                            bool wait_for_non_empty);
 
  protected:
   void SetUpHttpsServer();
