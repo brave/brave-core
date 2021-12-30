@@ -176,22 +176,6 @@ Config.prototype.isOfficialBuild = function () {
   return this.buildConfig === 'Release'
 }
 
-Config.prototype.isStableChannel = function () {
-  return this.channel === '' || this.channel === 'release'
-}
-
-Config.prototype.isBetaChannel = function () {
-  return this.channel === 'beta'
-}
-
-Config.prototype.isNightlyChannel = function () {
-  return this.channel === 'nightly'
-}
-
-Config.prototype.isDevChannel = function () {
-  return this.channel === 'dev' || this.channel === 'development'
-}
-
 Config.prototype.isBraveReleaseBuild = function () {
   const npm_brave_relese_build = getNPMConfig(['is_brave_release_build'])
   if (npm_brave_relese_build !== undefined) {
@@ -200,9 +184,7 @@ Config.prototype.isBraveReleaseBuild = function () {
     return npm_brave_relese_build === '1'
   }
 
-  // TODO: Replace it to `this.isOfficialBuild() && !this.isDevChannel()`
-  // when channel will be fixed for PRs builds.
-  return false
+  return this.isOfficialBuild()
 }
 
 Config.prototype.isComponentBuild = function () {
@@ -393,15 +375,15 @@ Config.prototype.buildArgs = function () {
     if (!this.isOfficialBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
-    } else if (this.isStableChannel()) {
+    } else if (this.channel === '') {
       args.android_channel = 'stable'
       args.chrome_public_manifest_package = 'com.brave.browser'
-    } else if (this.isBetaChannel()) {
+    } else if (this.channel === 'beta') {
       args.chrome_public_manifest_package = 'com.brave.browser_beta'
       args.exclude_unwind_tables = false
-    } else if (this.isDevChannel()) {
+    } else if (this.channel === 'dev') {
       args.chrome_public_manifest_package = 'com.brave.browser_dev'
-    } else if (this.isNightlyChannel()) {
+    } else if (this.channel === 'nightly') {
       args.android_channel = 'canary'
       args.chrome_public_manifest_package = 'com.brave.browser_nightly'
       args.exclude_unwind_tables = false
