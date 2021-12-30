@@ -11,15 +11,20 @@ import {
   WalletAccountType
 } from '../../constants/types'
 import { BAT, ETH } from '../../options/asset-options'
-import { formatBalance } from '../../utils/format-balances'
+
+// Hooks
+import usePricing from './pricing'
 
 export default function useAssets (
   accounts: WalletAccountType[],
   selectedAccount: WalletAccountType,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[],
+  spotPrices: BraveWallet.AssetPrice[],
   getBuyAssets: () => Promise<BraveWallet.BlockchainToken[]>
 ) {
+  const { computeFiatAmount } = usePricing(spotPrices)
+
   const tokenOptions: BraveWallet.BlockchainToken[] = React.useMemo(
     () =>
       fullTokenList.map((token) => ({
@@ -43,8 +48,7 @@ export default function useAssets (
       userVisibleTokenOptions
         .map((token) => ({
           asset: token,
-          assetBalance: '0',
-          fiatBalance: '0'
+          assetBalance: '0'
         })),
     [userVisibleTokenOptions]
   )
@@ -53,8 +57,7 @@ export default function useAssets (
     const assets = tokenOptions
       .map((token) => ({
         asset: token,
-        assetBalance: '0',
-        fiatBalance: '0'
+        assetBalance: '0'
       }))
 
     return [
@@ -80,25 +83,25 @@ export default function useAssets (
           ...token,
           logo: `chrome://erc-token-images/${token.logo}`
         },
-        assetBalance: '0',
-        fiatBalance: '0'
+        assetBalance: '0'
       }) as AccountAssetOptionType))
     }).catch(e => console.error(e))
   }, [])
 
   const panelUserAssetList = React.useMemo((): AccountAssetOptionType[] => {
     // selectedAccount.tokens can be undefined
-    if (selectedAccount?.tokens) {
-      const formatedList = selectedAccount?.tokens?.map((asset) => ({
-        asset: asset.asset,
-        assetBalance: formatBalance(asset.assetBalance, asset.asset.decimals),
-        fiatBalance: asset.fiatBalance
-      })).sort(function (a, b) { return Number(b.fiatBalance) - Number(a.fiatBalance) }) // Sorting by Fiat Value
-
-      // Do not show an asset unless the selectedAccount has a balance
-      return formatedList.filter((token) => parseFloat(token.assetBalance) !== 0)
+    if (!selectedAccount?.tokens) {
+      return []
     }
-    return []
+
+    const formattedList = selectedAccount?.tokens?.sort(function (a, b) {
+      const bFiatBalance = computeFiatAmount(b.assetBalance, b.asset.symbol, b.asset.decimals)
+      const aFiatBalance = computeFiatAmount(a.assetBalance, a.asset.symbol, a.asset.decimals)
+      return Number(bFiatBalance) - Number(aFiatBalance)
+    }) // Sorting by Fiat Value
+
+    // Do not show an asset unless the selectedAccount has a balance
+    return formattedList.filter((token) => parseFloat(token.assetBalance) !== 0)
     // Using accounts as a dependency here to trigger balance changes
   }, [selectedAccount, accounts])
 

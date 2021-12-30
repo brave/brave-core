@@ -18,12 +18,11 @@ import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
 } from '../../../../utils/format-prices'
-import { formatBalance } from '../../../../utils/format-balances'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
-// import { ETH } from '../../../../options/asset-options'
 
 // Components
 import { SearchBar, BackButton, withPlaceholderIcon } from '../../../shared'
@@ -39,7 +38,7 @@ import {
 } from '../../'
 
 // Hooks
-import { useTransactionParser } from '../../../../common/hooks'
+import { useBalance, usePricing, useTransactionParser } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -155,6 +154,8 @@ const Portfolio = (props: Props) => {
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
+  const getAccountBalance = useBalance(selectedNetwork)
+
   const toggleShowNetworkDropdown = () => {
     setShowNetworkDropdown(!showNetworkDropdown)
   }
@@ -233,16 +234,6 @@ const Portfolio = (props: Props) => {
     onShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
-  const getFiatBalance = (account: WalletAccountType, asset: BraveWallet.BlockchainToken) => {
-    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-    return (found) ? found.fiatBalance : ''
-  }
-
-  const getAssetBalance = (account: WalletAccountType, asset: BraveWallet.BlockchainToken) => {
-    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-    return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : ''
-  }
-
   const priceHistory = React.useMemo(() => {
     if (parseFloat(portfolioBalance) === 0) {
       return []
@@ -274,8 +265,20 @@ const Portfolio = (props: Props) => {
 
   const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
 
-  const formatedFullAssetBalance = fullAssetBalances?.assetBalance
-    ? '(' + formatTokenAmountWithCommasAndDecimals(fullAssetBalances?.assetBalance ?? '', selectedAsset?.symbol ?? '') + ')'
+  const formattedFullAssetBalance = fullAssetBalances?.assetBalance
+    ? '(' + formatTokenAmountWithCommasAndDecimals(
+        formatBalance(fullAssetBalances?.assetBalance ?? '', selectedAsset?.decimals ?? 18),
+        selectedAsset?.symbol ?? ''
+      ) + ')'
+    : ''
+
+  const { computeFiatAmount } = usePricing(transactionSpotPrices)
+  const fullAssetFiatBalance = fullAssetBalances?.assetBalance
+    ? computeFiatAmount(
+      fullAssetBalances.assetBalance,
+      fullAssetBalances.asset.symbol,
+      fullAssetBalances.asset.decimals
+    )
     : ''
 
   return (
@@ -334,18 +337,19 @@ const Portfolio = (props: Props) => {
         <>
           <DividerRow>
             <DividerText>{getLocale('braveWalletAccounts')}</DividerText>
-            <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '', defaultCurrencies.fiat)} {formatedFullAssetBalance}</AssetBalanceDisplay>
+            <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetFiatBalance, defaultCurrencies.fiat)} {formattedFullAssetBalance}</AssetBalanceDisplay>
           </DividerRow>
           <SubDivider />
           {accounts.map((account) =>
             <PortfolioAccountItem
+              spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
               key={account.address}
               assetTicker={selectedAsset.symbol}
+              assetDecimals={selectedAsset.decimals}
               name={account.name}
               address={account.address}
-              fiatBalance={getFiatBalance(account, selectedAsset)}
-              assetBalance={getAssetBalance(account, selectedAsset)}
+              assetBalance={getAccountBalance(account, selectedAsset)}
               selectedNetwork={selectedNetwork}
             />
           )}
@@ -392,11 +396,11 @@ const Portfolio = (props: Props) => {
           <SearchBar placeholder={getLocale('braveWalletSearchText')} action={filterAssets} />
           {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
             <PortfolioAssetItem
+              spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
               action={selectAsset(item.asset)}
               key={item.asset.contractAddress}
               assetBalance={item.assetBalance}
-              fiatBalance={item.fiatBalance}
               token={item.asset}
             />
           )}
@@ -407,11 +411,11 @@ const Portfolio = (props: Props) => {
               <SubDivider />
               {erc271Tokens.map((item) =>
                 <PortfolioAssetItem
+                  spotPrices={transactionSpotPrices}
                   defaultCurrencies={defaultCurrencies}
                   action={selectAsset(item.asset)}
                   key={item.asset.contractAddress}
                   assetBalance={item.assetBalance}
-                  fiatBalance={item.fiatBalance}
                   token={item.asset}
                 />
               )}

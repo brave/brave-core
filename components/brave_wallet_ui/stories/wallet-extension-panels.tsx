@@ -66,7 +66,6 @@ const accounts: WalletAccountType[] = [
     address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     balance: '0.31178',
     asset: 'eth',
-    fiatBalance: '0',
     accountType: 'Primary',
     tokens: []
   },
@@ -76,7 +75,6 @@ const accounts: WalletAccountType[] = [
     address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
     balance: '0.31178',
     asset: 'eth',
-    fiatBalance: '0',
     accountType: 'Primary',
     tokens: []
   },
@@ -86,7 +84,6 @@ const accounts: WalletAccountType[] = [
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     balance: '0.31178',
     asset: 'eth',
-    fiatBalance: '0',
     accountType: 'Primary',
     tokens: []
   }
@@ -136,7 +133,7 @@ export const _ConfirmTransaction = () => {
   const onRejectAllTransactions = () => {
     alert('Rejected All Transaction')
   }
-  const onQueueNextTransction = () => {
+  const onQueueNextTransaction = () => {
     alert('Will queue next transaction in line')
   }
 
@@ -177,7 +174,7 @@ export const _ConfirmTransaction = () => {
         defaultCurrencies={mockDefaultCurrencies}
         siteURL='https://app.uniswap.org'
         selectedNetwork={mockNetworks[0]}
-        onQueueNextTransction={onQueueNextTransction}
+        onQueueNextTransaction={onQueueNextTransaction}
         onRejectAllTransactions={onRejectAllTransactions}
         transactionQueueNumber={0}
         transactionsQueueLength={0}
@@ -327,7 +324,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       address: '1',
       balance: '0.31178',
       asset: 'eth',
-      fiatBalance: '0',
       accountType: 'Primary',
       tokens: []
     }
@@ -534,6 +530,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         <>
           {selectedPanel === 'main' ? (
             <ConnectedPanel
+              spotPrices={[]}
               defaultCurrencies={mockDefaultCurrencies}
               selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}

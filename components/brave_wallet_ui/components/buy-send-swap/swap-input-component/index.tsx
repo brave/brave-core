@@ -16,7 +16,7 @@ import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { withPlaceholderIcon } from '../../shared'
-import { hexToNumber } from '../../../utils/format-balances'
+import { formatBalance, hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -218,8 +218,10 @@ function SwapInputComponent (props: Props) {
     return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 4, marginRight: 8 })
   }, [])
 
-  const formatedAssetBalance = selectedAssetBalance
-    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')
+  const formattedAssetBalance = selectedAssetBalance
+    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(
+        formatBalance(selectedAssetBalance, selectedAsset?.asset.decimals ?? 18)
+      )
     : ''
 
   return (
@@ -236,7 +238,7 @@ function SwapInputComponent (props: Props) {
             */}
 
               {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-                <FromBalanceText>{formatedAssetBalance}</FromBalanceText>
+                <FromBalanceText>{formattedAssetBalance}</FromBalanceText>
               }
               {componentType === 'toAddress' &&
                 <PasteButton onClick={onPaste}>

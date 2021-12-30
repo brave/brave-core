@@ -6,11 +6,24 @@
 import * as React from 'react'
 
 import { BraveWallet } from '../../constants/types'
+import { formatFiatBalance } from '../../utils/format-balances'
 
 export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
-  return React.useCallback((symbol: string) => {
+  const findAssetPrice = React.useCallback((symbol: string) => {
     return spotPrices.find(
       (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase()
-    )?.price ?? '0'
+    )?.price ?? ''
   }, [spotPrices])
+
+  const computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number) => {
+    const price = findAssetPrice(symbol)
+
+    if (!price || !value) {
+      return ''
+    }
+
+    return formatFiatBalance(value, decimals, price)
+  }, [findAssetPrice])
+
+  return { computeFiatAmount, findAssetPrice }
 }

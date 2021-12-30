@@ -232,11 +232,10 @@ describe('useTransactionParser hook', () => {
             ...mockAccount,
             tokens: [{
               asset: mockERC20Token,
-              assetBalance: '0x0', // 0 DOG
-              fiatBalance: '0'
+              assetBalance: '0' // 0 DOG
             }],
             address: '0xdeadbeef',
-            balance: '0x38d7ea4c68000' // 0.001 ETH
+            balance: '1000000000000000' // 0.001 ETH
           }],
           mockAssetPrices, [], []
         ))
@@ -281,7 +280,7 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '0xde0b6b3a7640000' // 1 ETH
+            balance: '1000000000000000000' // 1 ETH
           }],
           mockAssetPrices, [], []
         ))
@@ -330,7 +329,7 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '0x38d7ea4c68000' // 0.001 ETH
+            balance: '1000000000000000' // 0.001 ETH
           }],
           mockAssetPrices, [], []
         ))
@@ -371,7 +370,7 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '0xdebe79c2e6ee000' // 1.00315 ETH
+            balance: '1003150000000000000' // 1.00315 ETH
           }],
           mockAssetPrices, [], []
         ))
@@ -416,11 +415,10 @@ describe('useTransactionParser hook', () => {
             ...mockAccount,
             tokens: [{
               asset: mockERC20Token,
-              assetBalance: '0x38d7ea4c68000', // 0.001 DOG
-              fiatBalance: '0'
+              assetBalance: '1000000000000000' // 0.001 DOG
             }],
             address: '0xdeadbeef',
-            balance: '0xb30e8870ae000' // 0.00315 ETH
+            balance: '3150000000000000' // 0.00315 ETH
           }],
           mockAssetPrices, [], []
         ))
@@ -468,13 +466,14 @@ describe('useTransactionParser hook', () => {
             ...mockAccount,
             tokens: [{
               asset: mockERC20Token,
-              assetBalance: '0xde0b6b3a7640000', // 1 DOG
-              fiatBalance: '0'
+              assetBalance: '1000000000000000000' // 1 DOG
             }],
             address: '0xdeadbeef',
-            balance: '0xb30e8870ae000' // 0.00315 ETH
+            balance: '3150000000000000' // 0.00315 ETH
           }],
-          mockAssetPrices, [], []
+          mockAssetPrices,
+          [],
+          [mockERC20Token]
         ))
 
         const mockTransactionInfo = getMockedTransactionInfo()

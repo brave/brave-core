@@ -5,28 +5,30 @@
 
 import * as React from 'react'
 
-import { AccountAssetOptionType, WalletAccountType } from '../../constants/types'
-import { formatBalance } from '../../utils/format-balances'
+import { BraveWallet, WalletAccountType } from '../../constants/types'
 
-export default function useBalance (selectedAccount: WalletAccountType) {
-  return React.useCallback((asset: AccountAssetOptionType) => {
-    let assetBalance = ''
-    let fiatBalance = ''
-
-    if (!selectedAccount || !selectedAccount.tokens) {
-      return { assetBalance, fiatBalance }
+export default function useBalance (network: BraveWallet.EthereumChain) {
+  return React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
+    if (!account) {
+      return ''
     }
 
-    const token = selectedAccount.tokens.find(
-      (token) => token.asset.symbol === asset?.asset.symbol
+    // Return native asset balance
+    if (!token || token.symbol.toLowerCase() === network.symbol.toLowerCase()) {
+      return account.balance
+    }
+
+    if (!account.tokens) {
+      return ''
+    }
+
+    const loadedToken = account.tokens.find(
+      (each) => each.asset.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()
     )
-    if (!token) {
-      return { assetBalance, fiatBalance }
+    if (!loadedToken) {
+      return ''
     }
 
-    return {
-      assetBalance: formatBalance(token.assetBalance, token.asset.decimals),
-      fiatBalance: token.fiatBalance
-    }
-  }, [selectedAccount])
+    return loadedToken.assetBalance
+  }, [network])
 }

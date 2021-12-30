@@ -9,7 +9,10 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate } from '../../../utils/datetime-utils'
-import { formatFiatAmountWithCommasAndDecimals, formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 
 import { getLocale } from '../../../../common/locale'
 import {
@@ -121,7 +124,7 @@ const TransactionDetailPanel = (props: Props) => {
       transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
       return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
-    return formatWithCommasAndDecimals(transactionDetails.value) + ' ' + transactionDetails.symbol
+    return formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)
   }, [transactionDetails, transaction])
 
   const transactionFiatValue = React.useMemo((): string => {

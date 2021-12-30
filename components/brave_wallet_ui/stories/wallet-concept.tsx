@@ -350,14 +350,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     return account.assets.find((a) => a.symbol === selectedAsset?.symbol)
   }
 
-  // This calculates the fiat value of a single accounts asset balance
-  const singleAccountFiatBalance = (account: RPCResponseType) => {
-    const asset = assetInfo(account)
-    const data = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)
-    const value = data ? asset ? Number(asset.balance) * Number(data.usd) : 0 : 0
-    return formatWithCommasAndDecimals(value.toString())
-  }
-
   // This returns the balance of a single accounts asset
   const singleAccountBalance = (account: RPCResponseType) => {
     const balance = assetInfo(account)?.balance
@@ -382,7 +374,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         name: name,
         address: wallet.address,
         balance: singleAccountBalance(wallet),
-        fiatBalance: singleAccountFiatBalance(wallet),
         asset: selectedAsset ? selectedAsset.symbol : '',
         accountType: 'Primary',
         tokens: []
@@ -418,8 +409,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     return newList.map((asset) => {
       return {
         asset: asset,
-        assetBalance: scrapedFullAssetBalance(asset).toString(),
-        fiatBalance: scrapedFullAssetFiatBalance(asset).toString()
+        assetBalance: scrapedFullAssetBalance(asset).toString()
       }
     })
   }, [mockUserWalletPreferences.viewableAssets])

@@ -20,8 +20,7 @@ export const ETH: AccountAssetOptionType = {
     visible: true,
     tokenId: ''
   },
-  assetBalance: '0',
-  fiatBalance: '0'
+  assetBalance: '0'
 }
 
 export const BAT: AccountAssetOptionType = {
@@ -36,8 +35,7 @@ export const BAT: AccountAssetOptionType = {
     visible: false,
     tokenId: ''
   },
-  assetBalance: '0',
-  fiatBalance: '0'
+  assetBalance: '0'
 }
 
 export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
@@ -54,8 +52,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -69,8 +66,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   }
 ]
 
@@ -159,8 +155,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -174,8 +169,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -189,8 +183,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -204,8 +197,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -219,7 +211,6 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   }
 ]

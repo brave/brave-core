@@ -12,7 +12,10 @@ import {
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
-import { formatFiatAmountWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -191,7 +194,7 @@ const TransactionsListItem = (props: Props) => {
       <DetailRow>
         <BalanceColumn>
           <DetailTextDark>{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</DetailTextDark>
-          <DetailTextLight>{transactionDetails.nativeCurrencyTotal} {selectedNetwork.symbol}</DetailTextLight>
+          <DetailTextLight>{formatTokenAmountWithCommasAndDecimals(transactionDetails.nativeCurrencyTotal, selectedNetwork.symbol)}</DetailTextLight>
           <StatusRow>
             <StatusBubble status={transactionDetails.status} />
             <DetailTextDarkBold>

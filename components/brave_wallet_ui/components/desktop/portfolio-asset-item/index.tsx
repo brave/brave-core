@@ -2,7 +2,13 @@ import * as React from 'react'
 
 // Options
 import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
-import { hexToNumber } from '../../../utils/format-balances'
+
+// Utils
+import { formatBalance, hexToNumber } from '../../../utils/format-balances'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
 
 // Styled Components
 import {
@@ -14,16 +20,15 @@ import {
   NameAndIcon,
   AssetIcon
 } from './style'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
 import { withPlaceholderIcon } from '../../shared'
 
-export interface Props {
+// Hooks
+import { usePricing } from '../../../common/hooks'
+
+interface Props {
+  spotPrices: BraveWallet.AssetPrice[]
   action?: () => void
   assetBalance: string
-  fiatBalance: string
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
   isPanel?: boolean
@@ -31,8 +36,8 @@ export interface Props {
 
 const PortfolioAssetItem = (props: Props) => {
   const {
+    spotPrices,
     assetBalance,
-    fiatBalance,
     action,
     token,
     defaultCurrencies,
@@ -43,12 +48,19 @@ const PortfolioAssetItem = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [])
 
-  const formatedAssetBalance = token.isErc721 ? assetBalance : formatTokenAmountWithCommasAndDecimals(assetBalance, token.symbol)
+  const formattedAssetBalance = token.isErc721
+    ? formatBalance(assetBalance, token.decimals)
+    : formatTokenAmountWithCommasAndDecimals(formatBalance(assetBalance, token.decimals), token.symbol)
+
+  const { computeFiatAmount } = usePricing(spotPrices)
+  const fiatBalance = React.useMemo(() => {
+    return computeFiatAmount(assetBalance, token.symbol, token.decimals)
+  }, [computeFiatAmount, assetBalance, token])
 
   return (
     <>
       {token.visible &&
-        // Selecting a erc721 token is temp disabled until UI is ready for viewing NFT's
+        // Selecting an erc721 token is temp disabled until UI is ready for viewing NFT's
         <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <AssetIconWithPlaceholder selectedAsset={token} />
@@ -58,7 +70,7 @@ const PortfolioAssetItem = (props: Props) => {
             {!token.isErc721 &&
               <FiatBalanceText isPanel={isPanel}>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
             }
-            <AssetBalanceText isPanel={isPanel}>{formatedAssetBalance}</AssetBalanceText>
+            <AssetBalanceText isPanel={isPanel}>{formattedAssetBalance}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }
