@@ -16,18 +16,14 @@ import {
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
 } from '../../hardware_operations'
-import { LedgerKeyring } from '../interfaces'
+import { LedgerEthereumKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins } from '../../api/hardware_keyrings'
 import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
   TransportLocked = 'TransportLocked'
 }
-export default class LedgerBridgeKeyring extends LedgerKeyring {
-  constructor () {
-    super()
-  }
-
+export default class LedgerBridgeKeyring implements LedgerEthereumKeyring {
   private app?: Eth
   private deviceId: string
 

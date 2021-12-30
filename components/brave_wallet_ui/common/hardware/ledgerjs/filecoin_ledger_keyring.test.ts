@@ -7,6 +7,7 @@ import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common
 import FilecoinLedgerKeyring, { extractPublicKeyForBLS } from './filecoin_ledger_keyring'
 import { CoinType } from '@glif/filecoin-address'
 import { LedgerProvider } from '@glif/filecoin-wallet-provider'
+import { HardwareCoins } from '../../api/hardware_keyrings'
 
 class MockApp {
   async getAccounts (from: number, to: number, coinType?: CoinType): Promise<string[]> {
@@ -39,7 +40,7 @@ test('Extracting accounts from device', () => {
     .resolves.toStrictEqual({
       payload: [{
         address: '0',
-        coin: 'f',
+        coin: HardwareCoins.FILECOIN,
         derivationPath: '0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',

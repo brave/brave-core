@@ -1958,9 +1958,9 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   new_accounts.push_back(
       mojom::HardwareWalletAccount::New(hardware_account, "m/44'/60'/1'/0/0",
                                         "name 1", "Ledger", "device1", "coin"));
-  AddHardwareAccount(&controller, std::move(new_accounts));
-  EXPECT_TRUE(SetSelectedAccount(&controller, &observer, hardware_account));
-  EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));
+  AddHardwareAccount(&service, std::move(new_accounts));
+  EXPECT_TRUE(SetSelectedAccount(&service, &observer, hardware_account));
+  EXPECT_EQ(hardware_account, GetSelectedAccount(&service));
 
   // Removing a hardware account resets to no selected account
   observer.Reset();

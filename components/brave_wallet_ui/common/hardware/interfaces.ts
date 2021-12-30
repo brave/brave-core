@@ -20,12 +20,12 @@ export abstract class TrezorKeyring extends HardwareKeyring {
   abstract signPersonalMessage (path: string, message: string): Promise<SignHardwareMessageOperationResult>
 }
 
-export abstract class LedgerKeyring extends HardwareKeyring {
+export abstract class LedgerEthereumKeyring extends HardwareKeyring {
   abstract getAccounts (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult>
   abstract signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult>
   abstract signTransaction (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult>
 }
 
-export abstract class FilecoinKeyring extends HardwareKeyring {
+export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
   abstract getAccounts (from: number, to: number, coinType?: CoinType): Promise<GetAccountsHardwareOperationResult>
 }

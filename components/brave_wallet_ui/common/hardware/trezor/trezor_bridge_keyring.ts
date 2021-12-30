@@ -34,7 +34,7 @@ import { TrezorKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins } from '../../api/hardware_keyrings'
 import { TrezorDerivationPaths } from '../types'
 
-export default class TrezorBridgeKeyring extends TrezorKeyring {
+export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
   protected deviceId: string
 

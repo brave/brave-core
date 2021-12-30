@@ -8,7 +8,7 @@ import {
   LedgerProvider, TransportWrapper
 } from '@glif/filecoin-wallet-provider'
 import { CoinType } from '@glif/filecoin-address'
-import { FilecoinKeyring } from '../interfaces'
+import { LedgerFilecoinKeyring } from '../interfaces'
 import { HardwareVendor, HardwareCoins, getCoinName } from '../../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
@@ -38,11 +38,7 @@ export function encodeKeyToHex (key: string): string {
   return Buffer.from(key, 'base64').toString('hex')
 }
 
-export default class FilecoinLedgerKeyring extends FilecoinKeyring {
-  constructor () {
-    super()
-  }
-
+export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   private deviceId: string
   private provider?: LedgerProvider
 
