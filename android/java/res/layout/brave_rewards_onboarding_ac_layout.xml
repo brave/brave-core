@@ -9,6 +9,7 @@
       android:orientation="vertical"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:gravity="center_vertical"
       android:layout_marginStart="16dp"
       android:layout_marginEnd="16dp" >
 
@@ -142,26 +143,32 @@
 
             </RadioGroup>
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:text="@string/how_much_support"
-        android:textColor="@color/rewards_panel_secondary_text_color"/>
+    <LinearLayout
+        android:id="@+id/auto_contribute_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/from_your_ads_earnings"
-        android:textColor="@color/rewards_panel_text_color"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="@string/how_much_support"
+            android:textColor="@color/brave_rewards_modal_text_color"/>
 
-      <RadioGroup
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/from_your_ads_earnings"
+            android:textColor="@color/brave_rewards_tos_color"/>
+
+        <RadioGroup
             android:id="@+id/contribute_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -231,6 +238,8 @@
                 android:paddingBottom="8dp"
                 android:text="@string/value_5_bat" />
 
-            </RadioGroup>
+        </RadioGroup>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -22,45 +22,13 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.profiles.Profile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
-
-    private static final int FEWER_OPTIONS = 7;
-    private static final int MORE_OPTIONS = 8;
     private boolean shouldShowMoreOptions;
-
-    private static final List<String> mHeaders = Arrays.asList(
-                ContextUtils.getApplicationContext().getResources().getString(R.string.welcome_to_brave_rewards),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.where_do_ads_show_up),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.when_do_you_receive_rewards),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.giving_back_made_effortless),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.say_thank_you_with_tips),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.what_can_you_do_with_tokens),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.you_are_done),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.you_are_done)
-            );
-    private static final List<String> mTexts = Arrays.asList(
-                ContextUtils.getApplicationContext().getResources().getString(R.string.welcome_to_brave_rewards_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.where_do_ads_show_up_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.when_do_you_receive_rewards_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.giving_back_made_effortless_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.say_thank_you_with_tips_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.what_can_you_do_with_tokens_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.you_are_done_text),
-                ContextUtils.getApplicationContext().getResources().getString(R.string.you_are_done_text)
-            );
-    private static final List<Integer> mImages = Arrays.asList(
-                R.drawable.ic_onboarding_graphic_bat_ecosystem,
-                R.drawable.ic_onboarding_graphic_android_brave_ads,
-                R.drawable.ic_onboarding_graphic_bat_schedule,
-                R.drawable.ic_onboarding_graphic_auto_contribute,
-                R.drawable.ic_onboarding_graphic_tipping,
-                R.drawable.ic_onboarding_graphic_cashback,
-                R.drawable.ic_onboarding_graphic_completed,
-                R.drawable.ic_onboarding_graphic_completed
-            );
 
     public void setOnboardingType(boolean shouldShowMoreOptions) {
         this.shouldShowMoreOptions = shouldShowMoreOptions;
@@ -69,8 +37,8 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         View view;
-        if (shouldShowMoreOptions
-            && position == (MORE_OPTIONS-2)) {
+        Context context = ContextUtils.getApplicationContext();
+        if (shouldShowMoreOptions && position == (getImages().size() - 2)) {
             view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
             RadioGroup hourRadioGroup = view.findViewById(R.id.hour_radio_group);
             int adsPerHour = BraveRewardsNativeWorker.getInstance().GetAdsPerHour();
@@ -137,14 +105,18 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(contribute);
                 }
             });
+            String countryCode = Locale.getDefault().getCountry();
+            if (countryCode.equals("JP")) {
+                view.findViewById(R.id.auto_contribute_layout).setVisibility(View.GONE);
+            }
         } else {
             view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
             TextView titleView = view.findViewById(R.id.title_view);
-            titleView.setText(mHeaders.get(position));
+            titleView.setText(getTitles(context).get(position));
             TextView textView = view.findViewById(R.id.text_view);
-            textView.setText(mTexts.get(position));
+            textView.setText(getTexts(context).get(position));
             AppCompatImageView imageView = view.findViewById(R.id.image_view);
-            imageView.setImageResource(mImages.get(position));
+            imageView.setImageResource(getImages().get(position));
         }
         collection.addView(view);
         return view;
@@ -157,11 +129,59 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return shouldShowMoreOptions ? MORE_OPTIONS : FEWER_OPTIONS;
+        return shouldShowMoreOptions ? getImages().size() : getImages().size() - 1;
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    private List<String> getTitles(Context context) {
+        List<String> headers = new ArrayList();
+        headers.add(context.getResources().getString(R.string.welcome_to_brave_rewards));
+        headers.add(context.getResources().getString(R.string.where_do_ads_show_up));
+        headers.add(context.getResources().getString(R.string.when_do_you_receive_rewards));
+        String countryCode = Locale.getDefault().getCountry();
+        if (!countryCode.equals("JP")) {
+            headers.add(context.getResources().getString(R.string.giving_back_made_effortless));
+        }
+        headers.add(context.getResources().getString(R.string.say_thank_you_with_tips));
+        headers.add(context.getResources().getString(R.string.what_can_you_do_with_tokens));
+        headers.add(context.getResources().getString(R.string.you_are_done));
+        headers.add(context.getResources().getString(R.string.you_are_done));
+        return headers;
+    }
+
+    private List<String> getTexts(Context context) {
+        List<String> texts = new ArrayList();
+        texts.add(context.getResources().getString(R.string.welcome_to_brave_rewards_text));
+        texts.add(context.getResources().getString(R.string.where_do_ads_show_up_text));
+        texts.add(context.getResources().getString(R.string.when_do_you_receive_rewards_text));
+        String countryCode = Locale.getDefault().getCountry();
+        if (!countryCode.equals("JP")) {
+            texts.add(context.getResources().getString(R.string.giving_back_made_effortless_text));
+        }
+        texts.add(context.getResources().getString(R.string.say_thank_you_with_tips_text));
+        texts.add(context.getResources().getString(R.string.what_can_you_do_with_tokens_text));
+        texts.add(context.getResources().getString(R.string.you_are_done_text));
+        texts.add(context.getResources().getString(R.string.you_are_done_text));
+        return texts;
+    }
+
+    private List<Integer> getImages() {
+        List<Integer> images = new ArrayList();
+        images.add(R.drawable.ic_onboarding_graphic_bat_ecosystem);
+        images.add(R.drawable.ic_onboarding_graphic_android_brave_ads);
+        images.add(R.drawable.ic_onboarding_graphic_bat_schedule);
+        String countryCode = Locale.getDefault().getCountry();
+        if (!countryCode.equals("JP")) {
+            images.add(R.drawable.ic_onboarding_graphic_auto_contribute);
+        }
+        images.add(R.drawable.ic_onboarding_graphic_tipping);
+        images.add(R.drawable.ic_onboarding_graphic_cashback);
+        images.add(R.drawable.ic_onboarding_graphic_completed);
+        images.add(R.drawable.ic_onboarding_graphic_completed);
+        return images;
     }
 }
