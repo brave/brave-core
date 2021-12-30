@@ -325,7 +325,9 @@ void EphemeralStorageBrowserTest::CreateBroadcastChannel(
       frame,
       "self.bc = new BroadcastChannel('channel');"
       "self.bc_message = '';"
-      "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
+      "self.bc.onmessage = (m) => { self.bc_message = m.data; };"
+      "if (self.bc.name != 'channel')"
+      "  throw new Error('channel name invalid');"));
 }
 
 void EphemeralStorageBrowserTest::SendBroadcastMessage(
