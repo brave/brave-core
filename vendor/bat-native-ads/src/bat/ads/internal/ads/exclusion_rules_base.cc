@@ -118,12 +118,12 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
     return false;
   }
 
-  const std::string last_message = exclusion_rule->GetLastMessage();
+  const std::string& last_message = exclusion_rule->GetLastMessage();
   if (!last_message.empty()) {
     BLOG(2, last_message);
   }
 
-  const std::string uuid = exclusion_rule->GetUuid(creative_ad);
+  const std::string& uuid = exclusion_rule->GetUuid(creative_ad);
   AddToCache(uuid);
 
   return true;
@@ -143,6 +143,10 @@ bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
   }
 
   if (uuids_.find(creative_ad.creative_instance_id) != uuids_.end()) {
+    return true;
+  }
+
+  if (uuids_.find(creative_ad.segment) != uuids_.end()) {
     return true;
   }
 
