@@ -228,15 +228,6 @@ Config.prototype.enableCDMHostVerification = function () {
   return enable
 }
 
-Config.prototype.usePGO = function () {
-  // Disable PGO for non-public builds (i.e. local or PR's builds).
-  if (!this.isBraveReleaseBuild())
-    return false
-
-  // Enable PGO only for public nightly builds.
-  return this.isNightlyChannel()
-}
-
 Config.prototype.isAsan = function () {
   if (this.is_asan) {
     return true
@@ -328,7 +319,7 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (args.is_official_build && !this.usePGO()) {
+  if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
   }
 
