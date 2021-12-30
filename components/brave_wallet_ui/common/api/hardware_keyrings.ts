@@ -7,13 +7,13 @@ import { assert } from 'chrome://resources/js/assert.m.js'
 import { BraveWallet } from '../../constants/types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
-import { FilecoinKeyring, LedgerKeyring } from '../hardware/hardwareKeyring'
+import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
 export enum HardwareCoins {
-  FILECOIN = 'f',
-  ETH = 'e'
+  FILECOIN = 'fil',
+  ETH = 'eth'
 }
 
 export function getCoinName (coin: HardwareCoins) {
@@ -43,7 +43,7 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
   return keyringService
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = HardwareCoins.ETH): LedgerKeyring | TrezorBridgeKeyring | FilecoinKeyring {
+export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = HardwareCoins.ETH): HWInterfaces.LedgerKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.FilecoinKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const ledgerKeyring = getLedgerHardwareKeyring(coin)
     assert(type === ledgerKeyring.type())
@@ -55,7 +55,7 @@ export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = 
   return trezorKeyring
 }
 
-export function getLedgerHardwareKeyring (coin: HardwareCoins): LedgerKeyring | FilecoinKeyring {
+export function getLedgerHardwareKeyring (coin: HardwareCoins): HWInterfaces.LedgerKeyring | HWInterfaces.FilecoinKeyring {
   if (coin === HardwareCoins.ETH) {
     if (!ethereumHardwareKeyring) {
       ethereumHardwareKeyring = new LedgerBridgeKeyring()
