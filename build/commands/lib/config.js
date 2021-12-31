@@ -184,7 +184,7 @@ Config.prototype.isBraveReleaseBuild = function () {
     return npm_brave_relese_build === '1'
   }
 
-  return this.isOfficialBuild()
+  return this.isOfficialBuild() && this.channel !== 'development'
 }
 
 Config.prototype.isComponentBuild = function () {
