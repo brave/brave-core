@@ -15,11 +15,14 @@
 
 namespace brave_wallet {
 
-void ResetWallet(content::BrowserContext* context) {
+void ResetTransactionInfo(content::BrowserContext* context) {
   auto* eth_tx_controller =
       brave_wallet::EthTxControllerFactory::GetControllerForContext(context);
   eth_tx_controller->Reset();
+}
 
+void ResetWallet(content::BrowserContext* context) {
+  ResetTransactionInfo(context);
   auto* rpc_controller =
       brave_wallet::RpcControllerFactory::GetControllerForContext(context);
   rpc_controller->Reset();

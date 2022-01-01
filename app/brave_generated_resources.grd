@@ -995,13 +995,25 @@ Are you sure you want to do this?
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
-        Reset Wallet
+        Reset Brave Wallet
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO" desc="Reset wallet transactions">
+        Clear wallet transaction and nonce information
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
+        Clearing transactions may be useful for developers or when clearing state on a local server
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
         Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
       </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
+        Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+      </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
         Your wallet was reset.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
+        Your wallet transaction information was reset.
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
         Yes

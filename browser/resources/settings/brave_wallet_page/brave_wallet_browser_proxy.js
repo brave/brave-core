@@ -18,6 +18,7 @@ export class BraveWalletBrowserProxy {
    removeEthereumChain (chainId) {}
    addEthereumChain (value) {}
    setActiveNetwork (chainId) {}
+   resetTransactionInfo () {}
 }
 
 /**
@@ -27,6 +28,10 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   resetWallet () {
     chrome.send('resetWallet', [])
+  }
+  /** @override */
+  resetTransactionInfo() {
+    chrome.send('resetTransactionInfo', [])
   }
   /** @override */
   setBraveWalletEnabled (value) {
