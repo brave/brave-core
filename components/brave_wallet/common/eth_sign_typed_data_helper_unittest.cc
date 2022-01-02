@@ -387,6 +387,25 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         "0000000000000000000000000000000000000000000000000000000000010000");
   }
 
+  {
+    // Encode string values for uint types
+    auto encoded_field = helper->EncodeField("uint8", base::Value("255"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "00000000000000000000000000000000000000000000000000000000000000ff");
+    encoded_field = helper->EncodeField("uint32", base::Value("4096"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000001000");
+    encoded_field = helper->EncodeField("uint256", base::Value("65536"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000010000");
+  }
+
   // uint8 - uint256
   EXPECT_FALSE(helper->EncodeField("intA", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("int1", base::Value(1)));
@@ -409,6 +428,25 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("int256", base::Value(65536));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000010000");
+  }
+
+  {
+    // Encode string values for int types
+    auto encoded_field = helper->EncodeField("int8", base::Value("127"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "000000000000000000000000000000000000000000000000000000000000007f");
+    encoded_field = helper->EncodeField("int32", base::Value("4096"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000001000");
+    encoded_field = helper->EncodeField("int256", base::Value("65536"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
