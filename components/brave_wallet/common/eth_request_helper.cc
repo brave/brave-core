@@ -296,6 +296,8 @@ bool ParsePersonalSignParams(const std::string& json,
   *address = *address_str;
   if (IsValidHexString(*message_str)) {
     *message = *message_str;
+  } else if (IsValidHexString("0x" + *message_str)) {
+    *message = "0x" + *message_str;
   } else {
     *message = ToHex(*message_str);
   }
