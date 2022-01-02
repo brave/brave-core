@@ -277,6 +277,13 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
           "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
         ]
       })");
+  const std::string json_missing_0x_prefix(
+      R"({
+        "params": [
+          "deadbeef",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
   const std::string json_extra_entry(
       R"({
         "params": [
@@ -297,6 +304,11 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   std::string address;
   std::string message;
   EXPECT_TRUE(ParsePersonalSignParams(json, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeef");
+
+  EXPECT_TRUE(
+      ParsePersonalSignParams(json_missing_0x_prefix, &address, &message));
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(message, "0xdeadbeef");
 
