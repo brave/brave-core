@@ -1015,6 +1015,11 @@ are declared in tools/grit/grit_rule.gni.
       </if>
     <if expr="is_cfm">
       </if>
+
+    <if expr="use_titlecase">
+      </if>
+    <if expr="not use_titlecase">
+      </if>
   </messages>
 </release>
 </grit>
