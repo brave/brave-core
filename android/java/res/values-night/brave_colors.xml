@@ -10,7 +10,7 @@
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_100">#5B2A23</color>
     <color name="baseline_primary_200">#F35333</color>
-    <color name="default_text_color_on_accent1">@color/default_text_color_on_accent1_light</color>
+    <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark">@color/toolbar_background_primary</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
