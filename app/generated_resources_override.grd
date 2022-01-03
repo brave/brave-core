@@ -649,10 +649,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
 
-      <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-        Automatically send crash reports to Brave
-      </message>
-
       <if expr="is_macosx">
         </if>
 

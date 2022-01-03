@@ -7474,7 +7474,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- First-run dialog -->
       <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-        Automatically send crash reports to Brave
+        Automatically send usage statistics and crash reports to Brave
       </message>
 
       <!-- Mac First-run dialog messages -->
