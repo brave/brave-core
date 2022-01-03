@@ -398,7 +398,7 @@ public class CardBuilderFeedCard {
                     tableParamsTopNews.weight = 1;
                     tableParamsTopNews.height = TableLayout.LayoutParams.WRAP_CONTENT;
 
-                    row1.setPadding(50, 0, 50, 0);
+                    row1.setPadding(50, 0, 20, 0);
 
                     mLinearLayout.addView(tableLayoutTopNews);
                     tableLayoutTopNews.addView(rowTop);
@@ -707,7 +707,6 @@ public class CardBuilderFeedCard {
 
                     setImage(image, "paired", index);
                     imageParams.height = 230;
-                    image.setBackground(roundedBackground());
 
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     image.setLayoutParams(imageParams);
@@ -758,7 +757,7 @@ public class CardBuilderFeedCard {
                     layout.addView(publisher);
 
                     imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    imageParams.height = 600;
+                    imageParams.height = (int) (mDeviceWidth * 0.6);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     image.setLayoutParams(imageParams);
 
@@ -826,7 +825,7 @@ public class CardBuilderFeedCard {
                     layout.addView(desc);
                     layout.addView(promotedLogoLayout);
 
-                    imageParams.height = 400;
+                    imageParams.height = (int) (mDeviceWidth * 0.6);
 
                     imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
                     image.setLayoutParams(imageParams);
@@ -926,7 +925,7 @@ public class CardBuilderFeedCard {
 
                     imageParams.height = height;
                     image.setLayoutParams(imageParams);
-                    setImage(image, "paired", index);
+                    setImage(image, "image", index);
 
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageParams.bottomMargin = MARGIN_VERTICAL;
@@ -1075,10 +1074,10 @@ public class CardBuilderFeedCard {
                     layoutRowPhotos.addView(layoutSingleCard);
 
                     imageRowParams.width = 0;
-                    imageRowParams.height = 330;
+                    imageRowParams.height = 300;
 
                     imageRowParams.weight = 1;
-                    imageRowParams.setMargins(0, 0, 0, 40);
+                    imageRowParams.setMargins(0, 20, 0, 40);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     setImage(image, "paired", index);
@@ -1328,19 +1327,19 @@ public class CardBuilderFeedCard {
                 if (imageData != null) {
                     Bitmap decodedByte =
                             BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                    GranularRoundedCorners radius = new GranularRoundedCorners(15, 15, 15, 15);
                     if (!type.equals("paired")) {
+                        radius = new GranularRoundedCorners(30, 30, 0, 0);
+                    }
                         RequestOptions requestOptions = new RequestOptions();
-                        requestOptions = requestOptions.centerInside().override(0, 800).transform(
-                                new CenterCrop(), new GranularRoundedCorners(30, 30, 0, 0));
+                        requestOptions =
+                                requestOptions.centerInside().transform(new CenterCrop(), radius);
                         Glide.with(mActivity)
                                 .asBitmap()
                                 .load(decodedByte)
                                 .centerCrop()
                                 .apply(requestOptions)
                                 .into(imageView);
-                    } else {
-                        imageView.setImageBitmap(decodedByte);
-                    }
                 }
             });
         }
