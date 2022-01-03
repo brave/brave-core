@@ -70,18 +70,24 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   base::AutoLock lock(regional_services_lock_);
   const base::DictionaryValue* regional_filters_dict =
       local_state->GetDictionary(prefs::kAdBlockRegionalFilters);
-  for (base::DictionaryValue::Iterator it(*regional_filters_dict);
-       !it.IsAtEnd(); it.Advance()) {
-    const std::string uuid = it.key();
+
+  base::Value regional_filters_dict_with_cookielist =
+      base::Value(regional_filters_dict->Clone());
+  if (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
+      !cookie_list_touched) {
+    auto cookie_list_entry = base::Value(base::Value::Type::DICTIONARY);
+    cookie_list_entry.SetBoolKey("enabled", true);
+    regional_filters_dict_with_cookielist.SetKey(kCookieListUuid,
+                                                 std::move(cookie_list_entry));
+  }
+
+  for (const auto kv : regional_filters_dict_with_cookielist.DictItems()) {
+    const std::string uuid = kv.first;
     bool enabled = false;
-    const base::DictionaryValue* regional_filter_dict = nullptr;
-    regional_filters_dict->GetDictionary(uuid, &regional_filter_dict);
-    if (uuid == kCookieListUuid &&
-        base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
-        !cookie_list_touched) {
-      enabled = true;
-    } else if (regional_filter_dict) {
-      regional_filter_dict->GetBoolean("enabled", &enabled);
+    const base::Value* regional_filter_dict =
+        regional_filters_dict_with_cookielist.FindDictKey(uuid);
+    if (regional_filter_dict) {
+      enabled = regional_filter_dict->FindBoolKey("enabled").value_or(false);
     }
     if (enabled) {
       auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
