@@ -676,6 +676,7 @@ interface EthTxController {
   SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
   SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
   SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
+  SetNonceForUnapprovedTransaction(string tx_meta_id, string nonce) => (bool success);
 
   // Used for creating transaction data
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);

@@ -107,6 +107,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "resetWallet",
       base::BindRepeating(&BraveDefaultExtensionsHandler::ResetWallet,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "resetTransactionInfo",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::ResetTransactionInfo,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "setWebTorrentEnabled",
@@ -207,6 +211,11 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
 void BraveDefaultExtensionsHandler::ResetWallet(
     base::Value::ConstListView args) {
   brave_wallet::ResetWallet(profile_);
+}
+
+void BraveDefaultExtensionsHandler::ResetTransactionInfo(
+    base::Value::ConstListView args) {
+  brave_wallet::ResetTransactionInfo(profile_);
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(

@@ -17,6 +17,9 @@
       cursor: pointer;
       color: red;
     }
+    .reset-transaction-info {
+      cursor: pointer;
+    }
     settings-dropdown-menu.wide-drop-down {
       --md-select-width: 225px;
     }    
@@ -91,6 +94,12 @@
   </template>
 </settings-animated-pages>
 <template is="dom-if" if="[[!isNetworkEditor_]]">
+  <div class="settings-box " on-click="onResetTransactionInfo_">
+    <div class="flex cr-padded-text reset-transaction-info">
+      <div>$i18n{resetTransactionInfo}</div>
+      <div class="secondary">$i18n{resetTransactionInfoDesc}</div>
+    </div>
+  </div>
   <div class="settings-box " on-click="onResetWallet_">
     <div class="flex cr-padded-text reset-wallet">
       <div>$i18n{resetWallet}</div>

@@ -68,6 +68,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        const std::string& error,
                        extensions::webstore_install::Result result);
   void ResetWallet(base::Value::ConstListView args);
+  void ResetTransactionInfo(base::Value::ConstListView args);
   void OnRestartNeededChanged();
   bool IsRestartNeeded();
 

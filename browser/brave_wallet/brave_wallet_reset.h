@@ -14,6 +14,7 @@ class BrowserContext;
 
 namespace brave_wallet {
 
+void ResetTransactionInfo(content::BrowserContext* context);
 void ResetWallet(content::BrowserContext* context);
 
 }  // namespace brave_wallet

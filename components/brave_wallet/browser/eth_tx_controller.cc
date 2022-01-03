@@ -821,6 +821,29 @@ void EthTxController::SetDataForUnapprovedTransaction(
   std::move(callback).Run(true);
 }
 
+void EthTxController::SetNonceForUnapprovedTransaction(
+    const std::string& tx_meta_id,
+    const std::string& nonce,
+    SetNonceForUnapprovedTransactionCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> tx_meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  uint256_t nonce_uint;
+  if (!HexValueToUint256(nonce, &nonce_uint)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  tx_meta->tx->set_nonce(nonce_uint);
+  tx_state_manager_->AddOrUpdateTx(*tx_meta);
+  NotifyUnapprovedTxUpdated(tx_meta.get());
+  std::move(callback).Run(true);
+}
+
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(
     const std::string& tx_meta_id) {
   return tx_state_manager_->GetTx(tx_meta_id);
