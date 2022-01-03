@@ -235,6 +235,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_LEDGER_LIVE_DERIVATION_PATH},
     {"braveWalletLedgerLegacyDerivationPath",
      IDS_BRAVE_WALLET_LEDGER_LEGACY_DERIVATION_PATH},
+    {"braveWalletConnectHardwareSearchNothingFound",
+     IDS_BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND},
     {"braveWalletUnknownInternalError",
      IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR},
     {"braveWalletAccountSettingsDetails",

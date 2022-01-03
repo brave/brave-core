@@ -188,6 +188,7 @@ provideStrings({
   braveWalletLedgerLiveDerivationPath: 'Ledger Live',
   braveWalletLedgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
   braveWalletUnknownInternalError: 'Unknown error, please reconnect your hardware wallet and try again.',
+  braveWalletConnectHardwareSearchNothingFound: 'No results found.',
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',
