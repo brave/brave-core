@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
     private Button mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
     private TextView mUnlockWalletTitle;
+    private ImageView mBiometricUnlockWalletImage;
 
     private KeyringController getKeyringController() {
         Activity activity = getActivity();
@@ -60,6 +62,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         mUnlockButton = view.findViewById(R.id.btn_unlock);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
         mUnlockWalletTitle = view.findViewById(R.id.unlock_wallet_title);
+        mBiometricUnlockWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
 
         mUnlockButton.setOnClickListener(v -> {
             if (TextUtils.isEmpty(mUnlockWalletPassword.getText())) {
@@ -90,6 +93,13 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 onNextPage.gotoRestorePage();
             }
         });
+
+        mBiometricUnlockWalletImage.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                createBiometricPrompt();
+            }
+        });
+
         if (onNextPage != null && onNextPage.showBiometricPrompt()) {
             checkOnBiometric();
         } else if (onNextPage != null) {
@@ -149,8 +159,10 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
 
+                        if (!TextUtils.isEmpty(errString)) {
+                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                        }
                         // Even though we have an error, we still let to proceed
-                        Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
                         showPasswordRelatedControls();
                     }
                 };
@@ -178,5 +190,9 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         mUnlockButton.setVisibility(View.VISIBLE);
         mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
         mUnlockWalletTitle.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                && KeystoreHelper.shouldUseBiometricOnUnlock()) {
+            mBiometricUnlockWalletImage.setVisibility(View.VISIBLE);
+        }
     }
 }

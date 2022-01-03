@@ -47,26 +47,46 @@
             android:visibility="gone"
             android:textSize="18sp"/>
 
-        <EditText
-            android:id="@+id/unlock_wallet_password"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_wallet_edittext"
-            android:hint="@string/password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:paddingEnd="18dp"
-            android:paddingStart="18dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textCursorDrawable="@null"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_text_color"
-            android:visibility="gone"
-            android:textColorHint="@color/wallet_edittext_outline_color" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/unlock_wallet_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_wallet_edittext"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:paddingStart="18dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/wallet_text_color"
+                android:textColorHint="@color/wallet_edittext_outline_color"
+                android:textCursorDrawable="@null"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_biometric_unlock_wallet"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/accessibility_biometric_unlock"
+                android:padding="6dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_fingerprint"
+                app:tint="@color/brave_action_color" />
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_unlock"
