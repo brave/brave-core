@@ -468,6 +468,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEditGasGwei", IDS_BRAVE_WALLET_EDIT_GAS_GWEI},
     {"braveWalletEditGasSetCustom", IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM},
     {"braveWalletEditGasSetSuggested", IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED},
+    {"braveWalletEditGasZeroGasPriceWarning",
+     IDS_BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING},
     {"braveWalletEditPermissionsTitle",
      IDS_BRAVE_WALLET_EDIT_PERMISSIONS_TITLE},
     {"braveWalletEditPermissionsDescription",
