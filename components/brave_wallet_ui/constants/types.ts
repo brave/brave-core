@@ -334,6 +334,11 @@ export interface GetERC20TokenBalanceAndPriceReturnInfo {
   prices: GetPriceReturnInfo
 }
 
+export interface GetFlattenedAccountBalancesReturnInfo {
+  token: BraveWallet.ERCToken
+  balance: number
+}
+
 export interface PortfolioTokenHistoryAndInfo {
   history: GetPriceHistoryReturnObjectInfo
   token: AccountAssetOptionType
