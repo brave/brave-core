@@ -1,0 +1,15 @@
+diff --git a/components/sync/protocol/nigori_specifics.proto b/components/sync/protocol/nigori_specifics.proto
+index 8d076e4c232c0d4986dd8ab28dfbf580cd7cfb6c..35966d759db7b609fe1fd1c47aa7112c3a993ab3 100644
+--- a/components/sync/protocol/nigori_specifics.proto
++++ b/components/sync/protocol/nigori_specifics.proto
+@@ -221,4 +221,10 @@ message NigoriSpecifics {
+ 
+   // Boolean corresponding to whether workspace desk should be encrypted.
+   optional bool encrypt_workspace_desk = 51;
++
++  // Boolean corresponding to whether VG bodies should be encrypted.
++  optional bool encrypt_vg_bodies = 52;
++
++  // Boolean corresponding to whether VG spend statuses should be encrypted.
++  optional bool encrypt_vg_spend_statuses = 53;
+ }
