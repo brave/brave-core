@@ -30,6 +30,7 @@ import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
+import { GetTokenParam } from '../../utils/api-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -85,10 +86,11 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
   const walletState = getWalletState(store)
   const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
   const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
+  const selectedNetwork = walletState.selectedNetwork
   if (payload.asset) {
-    const selectedAssetSymbol = payload.asset.symbol.toLowerCase()
-    const defaultPrices = await assetPriceController.getPrice([selectedAssetSymbol], [defaultFiat, defaultCrypto], payload.timeFrame)
-    const priceHistory = await assetPriceController.getPriceHistory(selectedAssetSymbol, defaultFiat, payload.timeFrame)
+    const selectedAsset = payload.asset
+    const defaultPrices = await assetPriceController.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
+    const priceHistory = await assetPriceController.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
