@@ -297,8 +297,7 @@ public class BraveNewTabPageLayout
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 
             mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
-            mIsShowOptin =
-                    sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+            mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
             mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
 
             mFeedHash = "";
@@ -888,12 +887,12 @@ public class BraveNewTabPageLayout
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 
         mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
-        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
         mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
 
-        if (!mIsNewsOn || (!mIsNewsOn && mIsShowOptin)) {
+        if ((!mIsNewsOn && mIsShowOptin)) {
             mOptinLayout.setVisibility(View.VISIBLE);
-        } else if (mIsShowNewsOn) {
+        } else if (mIsShowNewsOn && mIsNewsOn) {
             if (mOptinLayout != null) {
                 mOptinLayout.setVisibility(View.GONE);
             }
@@ -1061,16 +1060,8 @@ public class BraveNewTabPageLayout
                                             mIsShowNewsOn = true;
                                         }
                                         refreshFeed();
-                                        try {
-                                            mParentScrollView.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mParentScrollView.fullScroll(
-                                                            ScrollView.FOCUS_UP);
-                                                }
-                                            });
-                                        } catch (Exception e) {
-                                            Log.e("bn", "Exception fullScroll e:" + e);
+                                        if (mParentScrollView != null) {
+                                            mParentScrollView.scrollTo(0, 0);
                                         }
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
@@ -1241,6 +1232,7 @@ public class BraveNewTabPageLayout
                     correctPosition(false);
                     mParentScrollView.scrollTo(0, 0);
                     mImageCreditLayout.setAlpha(1.0f);
+                    mOptinLayout.setVisibility(View.GONE);
                 }
             });
 
@@ -1273,7 +1265,6 @@ public class BraveNewTabPageLayout
                     }
 
                     getFeed();
-                    mParentScrollView.scrollTo(0, 0);
                 }
             });
         }
@@ -1309,6 +1300,9 @@ public class BraveNewTabPageLayout
         }
 
         isScrolled = false;
+        if (mParentScrollView != null) {
+            mParentScrollView.scrollTo(0, 0);
+        }
     }
 
     @Override
