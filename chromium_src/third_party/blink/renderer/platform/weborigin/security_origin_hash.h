@@ -6,17 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
 
-#define safe_to_compare_to_empty_or_deleted                               \
-  unused = false;                                                         \
-  static const base::UnguessableToken& GetNonceForEphemeralStorageKeying( \
-      const SecurityOrigin* origin) {                                     \
-    CHECK(origin->IsOpaque());                                            \
-    return *origin->GetNonceForSerialization();                           \
-  }                                                                       \
-  static const base::UnguessableToken& GetNonceForEphemeralStorageKeying( \
-      const scoped_refptr<const SecurityOrigin>& origin) {                \
-    return GetNonceForEphemeralStorageKeying(origin.get());               \
-  }                                                                       \
+#define safe_to_compare_to_empty_or_deleted                              \
+  unused = false;                                                        \
+  static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
+      const SecurityOrigin* origin) {                                    \
+    CHECK(origin->IsOpaque());                                           \
+    return *origin->GetNonceForSerialization();                          \
+  }                                                                      \
+  static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
+      const scoped_refptr<const SecurityOrigin>& origin) {               \
+    return GetNonceForEphemeralStorageKeying(origin.get());              \
+  }                                                                      \
   static const bool safe_to_compare_to_empty_or_deleted
 
 #include "../../../../../../../third_party/blink/renderer/platform/weborigin/security_origin_hash.h"
