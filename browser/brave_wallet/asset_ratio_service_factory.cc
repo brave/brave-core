@@ -31,7 +31,7 @@ AssetRatioServiceFactory::GetForContext(content::BrowserContext* context) {
 }
 
 // static
-AssetRatioService* AssetRatioServiceFactory::GetControllerForContext(
+AssetRatioService* AssetRatioServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;

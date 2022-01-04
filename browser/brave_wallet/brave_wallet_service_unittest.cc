@@ -140,7 +140,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     profile_ = builder.Build();
     histogram_tester_.reset(new base::HistogramTester);
     keyring_service_ =
-        KeyringServiceFactory::GetControllerForContext(profile_.get());
+        KeyringServiceFactory::GetServiceForContext(profile_.get());
     service_.reset(new BraveWalletService(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         GetPrefs()));

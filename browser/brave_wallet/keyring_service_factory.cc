@@ -30,7 +30,7 @@ mojo::PendingRemote<mojom::KeyringService> KeyringServiceFactory::GetForContext(
 }
 
 // static
-KeyringService* KeyringServiceFactory::GetControllerForContext(
+KeyringService* KeyringServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;

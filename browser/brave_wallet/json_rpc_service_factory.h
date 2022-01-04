@@ -21,8 +21,7 @@ class JsonRpcServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::JsonRpcService> GetForContext(
       content::BrowserContext* context);
-  static JsonRpcService* GetControllerForContext(
-      content::BrowserContext* context);
+  static JsonRpcService* GetServiceForContext(content::BrowserContext* context);
   static JsonRpcServiceFactory* GetInstance();
 
  private:

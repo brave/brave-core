@@ -57,7 +57,7 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new BraveWalletService(
       BraveWalletServiceDelegate::Create(context),
-      KeyringServiceFactory::GetControllerForContext(context),
+      KeyringServiceFactory::GetServiceForContext(context),
       user_prefs::UserPrefs::Get(context));
 }
 

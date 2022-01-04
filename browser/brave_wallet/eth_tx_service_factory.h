@@ -21,8 +21,7 @@ class EthTxServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::EthTxService> GetForContext(
       content::BrowserContext* context);
-  static EthTxService* GetControllerForContext(
-      content::BrowserContext* context);
+  static EthTxService* GetServiceForContext(content::BrowserContext* context);
   static EthTxServiceFactory* GetInstance();
 
  private:

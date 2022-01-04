@@ -158,7 +158,7 @@ void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
   auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
   auto result = json_rpc_service
                     ? json_rpc_service->SetNetwork(args[1].GetString())

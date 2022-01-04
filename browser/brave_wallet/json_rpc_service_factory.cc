@@ -34,7 +34,7 @@ mojo::PendingRemote<mojom::JsonRpcService> JsonRpcServiceFactory::GetForContext(
 }
 
 // static
-JsonRpcService* JsonRpcServiceFactory::GetControllerForContext(
+JsonRpcService* JsonRpcServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;

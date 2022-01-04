@@ -21,7 +21,7 @@ class AssetRatioServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::AssetRatioService> GetForContext(
       content::BrowserContext* context);
-  static AssetRatioService* GetControllerForContext(
+  static AssetRatioService* GetServiceForContext(
       content::BrowserContext* context);
   static AssetRatioServiceFactory* GetInstance();
 

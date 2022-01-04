@@ -154,18 +154,18 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         content::TestWebContents::Create(browser_context(), nullptr);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     json_rpc_service_ =
-        JsonRpcServiceFactory::GetControllerForContext(browser_context());
+        JsonRpcServiceFactory::GetServiceForContext(browser_context());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     SetNetwork("0x1");
     keyring_service_ =
-        KeyringServiceFactory::GetControllerForContext(browser_context());
+        KeyringServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_ =
-        AssetRatioServiceFactory::GetControllerForContext(browser_context());
+        AssetRatioServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     eth_tx_service_ =
-        EthTxServiceFactory::GetControllerForContext(browser_context());
+        EthTxServiceFactory::GetServiceForContext(browser_context());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());

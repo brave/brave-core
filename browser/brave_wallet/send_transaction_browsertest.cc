@@ -137,11 +137,11 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
     keyring_service_ =
-        KeyringServiceFactory::GetControllerForContext(browser()->profile());
+        KeyringServiceFactory::GetServiceForContext(browser()->profile());
     eth_tx_service_ =
-        EthTxServiceFactory::GetControllerForContext(browser()->profile());
+        EthTxServiceFactory::GetServiceForContext(browser()->profile());
     json_rpc_service_ =
-        JsonRpcServiceFactory::GetControllerForContext(browser()->profile());
+        JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
 
     eth_tx_service_->AddObserver(observer()->GetReceiver());
 

@@ -98,9 +98,8 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
       web_contents_(web_contents),
       host_id_(render_frame_host->GetGlobalId()),
       weak_ptr_factory_(this) {
-  keyring_service_ =
-      brave_wallet::KeyringServiceFactory::GetControllerForContext(
-          web_contents->GetBrowserContext());
+  keyring_service_ = brave_wallet::KeyringServiceFactory::GetServiceForContext(
+      web_contents->GetBrowserContext());
   DCHECK(keyring_service_);
 }
 

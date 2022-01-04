@@ -248,7 +248,7 @@ void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
   auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
 
   if (!json_rpc_service)
@@ -260,7 +260,7 @@ void MaybeBindBraveWalletProvider(
     return;
 
   auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetControllerForContext(
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
   if (!keyring_service)
     return;

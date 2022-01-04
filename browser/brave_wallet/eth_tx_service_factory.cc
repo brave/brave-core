@@ -41,7 +41,7 @@ mojo::PendingRemote<mojom::EthTxService> EthTxServiceFactory::GetForContext(
 }
 
 // static
-EthTxService* EthTxServiceFactory::GetControllerForContext(
+EthTxService* EthTxServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
@@ -64,9 +64,9 @@ EthTxServiceFactory::~EthTxServiceFactory() {}
 KeyedService* EthTxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return brave_wallet::BuildEthTxService(
-             JsonRpcServiceFactory::GetControllerForContext(context),
-             KeyringServiceFactory::GetControllerForContext(context),
-             AssetRatioServiceFactory::GetControllerForContext(context),
+             JsonRpcServiceFactory::GetServiceForContext(context),
+             KeyringServiceFactory::GetServiceForContext(context),
+             AssetRatioServiceFactory::GetServiceForContext(context),
              user_prefs::UserPrefs::Get(context))
       .release();
 }

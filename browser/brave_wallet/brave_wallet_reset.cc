@@ -17,14 +17,14 @@ namespace brave_wallet {
 
 void ResetTransactionInfo(content::BrowserContext* context) {
   auto* eth_tx_service =
-      brave_wallet::EthTxServiceFactory::GetControllerForContext(context);
+      brave_wallet::EthTxServiceFactory::GetServiceForContext(context);
   eth_tx_service->Reset();
 }
 
 void ResetWallet(content::BrowserContext* context) {
   ResetTransactionInfo(context);
   auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(context);
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(context);
   json_rpc_service->Reset();
 
   auto* brave_wallet_service =
@@ -32,7 +32,7 @@ void ResetWallet(content::BrowserContext* context) {
   brave_wallet_service->Reset();
 
   auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetControllerForContext(context);
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(context);
   keyring_service->Reset();
 }
 

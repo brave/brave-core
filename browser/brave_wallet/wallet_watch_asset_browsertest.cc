@@ -57,7 +57,7 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
     keyring_service_ =
-        KeyringServiceFactory::GetControllerForContext(browser()->profile());
+        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {

@@ -37,7 +37,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   }
 
   auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           ctx->browser_context);
   if (!json_rpc_service)
     return net::OK;

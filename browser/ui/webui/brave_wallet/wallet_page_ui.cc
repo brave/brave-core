@@ -97,25 +97,25 @@ void WalletPageUI::CreatePageHandler(
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 
   auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(profile);
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(profile);
   if (json_rpc_service) {
     json_rpc_service->Bind(std::move(json_rpc_service_receiver));
   }
 
   auto* swap_service =
-      brave_wallet::SwapServiceFactory::GetControllerForContext(profile);
+      brave_wallet::SwapServiceFactory::GetServiceForContext(profile);
   if (swap_service) {
     swap_service->Bind(std::move(swap_service_receiver));
   }
 
   auto* asset_ratio_service =
-      brave_wallet::AssetRatioServiceFactory::GetControllerForContext(profile);
+      brave_wallet::AssetRatioServiceFactory::GetServiceForContext(profile);
   if (asset_ratio_service) {
     asset_ratio_service->Bind(std::move(asset_ratio_service_receiver));
   }
 
   auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetControllerForContext(profile);
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
   if (keyring_service) {
     keyring_service->Bind(std::move(keyring_service_receiver));
   }
@@ -126,7 +126,7 @@ void WalletPageUI::CreatePageHandler(
   }
 
   auto* eth_tx_service =
-      brave_wallet::EthTxServiceFactory::GetControllerForContext(profile);
+      brave_wallet::EthTxServiceFactory::GetServiceForContext(profile);
   if (eth_tx_service) {
     eth_tx_service->Bind(std::move(eth_tx_service_receiver));
   }

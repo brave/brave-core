@@ -21,8 +21,7 @@ class KeyringServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::KeyringService> GetForContext(
       content::BrowserContext* context);
-  static KeyringService* GetControllerForContext(
-      content::BrowserContext* context);
+  static KeyringService* GetServiceForContext(content::BrowserContext* context);
   static KeyringServiceFactory* GetInstance();
 
  private:

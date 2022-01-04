@@ -32,7 +32,7 @@ mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForContext(
 }
 
 // static
-SwapService* SwapServiceFactory::GetControllerForContext(
+SwapService* SwapServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
@@ -56,9 +56,8 @@ KeyedService* SwapServiceFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
-  return new SwapService(
-      shared_url_loader_factory,
-      JsonRpcServiceFactory::GetControllerForContext(context));
+  return new SwapService(shared_url_loader_factory,
+                         JsonRpcServiceFactory::GetServiceForContext(context));
 }
 
 content::BrowserContext* SwapServiceFactory::GetBrowserContextToUse(

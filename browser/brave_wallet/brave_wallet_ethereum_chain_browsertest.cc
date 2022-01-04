@@ -112,7 +112,7 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
     return brave_wallet::JsonRpcServiceFactory::GetInstance()
-        ->GetControllerForContext(browser()->profile());
+        ->GetServiceForContext(browser()->profile());
   }
 
  private:
