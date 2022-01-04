@@ -403,12 +403,12 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traqueurs et de publicités ont été bloqués dans les 3 derniers jours.</translation>
 <translation id="2053891538879944400">Vous avez économisé <ph name="DATA"/> <ph name="DATA_TEXT"/> de données avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les Rapports de confidentialité pour voir combien de données vous avez sauvegardées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
-<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
 <translation id="1390943217516275883">Autorise Brave à afficher vos statistiques de confidentialité</translation>
@@ -821,4 +821,14 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Éditeur vérifié de Brave</translation>
+<translation id="1397683270551078781">Pas encore vérifié</translation>
+<translation id="723054503945711909">Brave Software Inc. ne traite pas, ne stocke pas et n'accède à aucun des renseignements personnels que vous transmettez à Uphold lorsque vous créez un compte chez eux.</translation>
+<translation id="6585020831163574892">Accédez à votre compte Uphold</translation>
+<translation id="8108013093558639183">BAT n'est pas actuellement pris en charge dans votre région en fonction de l'endroit où votre compte est ouvert. Revenez plus tard pour vérifier la disponibilité.</translation>
+<translation id="4190454391025419535">Région non prise en charge</translation>
+<translation id="6830703472632069884">Il y a eu un problème de vérification de votre portefeuille, veuillez réessayer plus tard.</translation>
+<translation id="3512533646933434345">Erreur de vérification du portefeuille</translation>
+<translation id="6960458596933484861">Vous devez avoir au moins 15 BAT pour créer un portefeuille Uphold vérifié. Veuillez réessayer ultérieurement.</translation>
 </translationbundle>

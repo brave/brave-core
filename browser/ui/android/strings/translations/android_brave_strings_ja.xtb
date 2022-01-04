@@ -401,12 +401,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
@@ -819,4 +819,14 @@
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Brave認証済みパブリッシャー</translation>
+<translation id="1397683270551078781">認証が完了していません</translation>
+<translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
+<translation id="6585020831163574892">Upholdアカウントを開く</translation>
+<translation id="8108013093558639183">アカウントが開かれている場所に基づくと、現在BATはお住まいの地域でサポートされていません。 しばらくしてから利用状況を確認してください。</translation>
+<translation id="4190454391025419535">サポートされていない地域です</translation>
+<translation id="6830703472632069884">お客様のウォレットの確認中に問題が発生しました。あとで再度実行してください。</translation>
+<translation id="3512533646933434345">ウォレットの認証エラー</translation>
+<translation id="6960458596933484861">認証済みのUpholdウォレットを作成するには、15 BAT以上必要です。後ほどもう一度お試しください。</translation>
 </translationbundle>

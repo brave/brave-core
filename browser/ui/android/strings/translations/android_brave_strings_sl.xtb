@@ -402,12 +402,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.🔋</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.🔥</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.💨💨</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="1390943217516275883">Storitvi Brave omogoča prikaz vaših statistik zasebnosti</translation>
@@ -820,4 +820,14 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Preverjena oseba Brave, ki objavlja vsebino</translation>
+<translation id="1397683270551078781">Ni še preverjeno</translation>
+<translation id="723054503945711909">Družba Brave Software Inc. ne obdeluje, hrani ali dostopa do nobenih osebnih podatkov, ki jih posredujete prek platforme Uphold, ko z njimi vzpostavite račun.</translation>
+<translation id="6585020831163574892">Podjite v vaš račun Uphold</translation>
+<translation id="8108013093558639183">Žetoni BAT trenutno niso podprti v vaši regiji, ki je določena na podlagi lokacije odpiranja računa. Razpoložljivost znova preverite pozneje.</translation>
+<translation id="4190454391025419535">Regija ni podprta</translation>
+<translation id="6830703472632069884">Pri preverjanju veljavnosti denarnice je prišlo do težave, poskusite znova.</translation>
+<translation id="3512533646933434345">Napaka pri preverjanju veljavnosti denarnice</translation>
+<translation id="6960458596933484861">Za ustvarjanje preverjene denarnice Uphold morate imeti najmanj 15 BAT. Prosim poskusite kasneje.</translation>
 </translationbundle>

@@ -402,12 +402,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7427567994475794038">Hidupkan Laporan Privasi untuk melihat berapa iklan &amp; penjejak yang telah disekat dalam 3 jam yang terdekat ini.</translation>
 <translation id="2053891538879944400">Anda telah menjimatkan <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan pelayar Brave.</translation>
 <translation id="8640064498452534195">Hidupkan Laporan Privasi untuk melihat berapa banyak data yang anda telah jimat.</translation>
-<translation id="2252497442547961651">Pelayar Brave menggunakan kurang 40% bateri secara purata.&#128267;</translation>
+<translation id="2252497442547961651">Pelayar Brave menggunakan kurang 40% bateri secara purata.🔋</translation>
 <translation id="1945330434665345785">Anda telah menyekat <ph name="COUNT"/> iklan &amp; penjejak dengna pelayar Brave minggu lalu.</translation>
 <translation id="2883868922264431515">Peroleh token dengan melihat iklan yang menghormati privasi dan sokong laman-laman web kegemaran anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah menyekat 250 penjejak &amp; iklan dengan pelayar Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah jimat 10MB dengan pelayar Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah jimat 10 Minit masa pemuatan dengan pelayar Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah menyekat 250 penjejak &amp; iklan dengan pelayar Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah jimat 10MB dengan pelayar Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah jimat 10 Minit masa pemuatan dengan pelayar Brave.💨💨</translation>
 <translation id="7408493389591475748">Mula berlayar untuk melihat laporan privasi</translation>
 <translation id="9080777565335515917">Tetapkan Brave sebagai pelayar lalai anda untuk pelayaran peribadi dan selamat.</translation>
 <translation id="1390943217516275883">Membolehkan Brave menunjukkan statistik privasi anda</translation>
@@ -820,4 +820,14 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Penerbit Brave yang Disahkan</translation>
+<translation id="1397683270551078781">Masih belum disahkan</translation>
+<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses sebarang maklumat peribadi yang anda berikan kepada Uphold apabila anda mencipta akaun dengan mereka.</translation>
+<translation id="6585020831163574892">Pergi ke akaun Uphold anda</translation>
+<translation id="8108013093558639183">BAT tidak disokong di kawasan anda berdasarkan lokasi akaun anda dibuka. Semak semula kemudian untuk ketersediaan.</translation>
+<translation id="4190454391025419535">Kawasan tidak disokong</translation>
+<translation id="6830703472632069884">Terdapat masalah dalam menentusahkan dompet anda, sila cuba lagi kemudian.</translation>
+<translation id="3512533646933434345">Ralat penentusahan dompet</translation>
+<translation id="6960458596933484861">Anda perlu mempunyai minimum 15 BAT untuk mencipta dompet Uphold yang ditentusahkan. Sila cuba lagi kemudian.</translation>
 </translationbundle>
