@@ -1,0 +1,13 @@
+diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
+index 35d34105a048357b46e085eaf034858ea622864f..08b4e3780f54309193ead85361bb75c9e7822582 100644
+--- a/base/trace_event/memory_infra_background_allowlist.cc
++++ b/base/trace_event/memory_infra_background_allowlist.cc
+@@ -289,6 +289,8 @@ const char* const kAllocatorDumpNameAllowlist[] = {
+     "sync/0x?/model_type/TYPED_URL",
+     "sync/0x?/model_type/USER_CONSENT",
+     "sync/0x?/model_type/USER_EVENT",
++    "sync/0x?/model_type/VG_BODY",
++    "sync/0x?/model_type/VG_SPEND_STATUS",
+     "sync/0x?/model_type/WALLET_METADATA",
+     "sync/0x?/model_type/WEB_APP",
+     "sync/0x?/model_type/WIFI_CONFIGURATION",
