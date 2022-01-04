@@ -11,6 +11,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -22,37 +23,43 @@ public class Validations {
     public static class SendToAccountAddress {
         private HashSet<String> mKnownContractAddresses;
         private static int VALID_ACCOUNT_ADDRESS_BYTE_LENGTH = 20;
+        private boolean mIsKnowContracts;
 
         public SendToAccountAddress() {}
 
-        public void validate(String chainId, ErcTokenRegistry ercTokenRegistry,
-                BraveWalletService braveWalletService, String senderAccountAddress,
-                String receiverAccountAddress, Callbacks.Callback1<String> callback) {
+        public void validate(String chainId, KeyringController keyringController,
+                ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
+                String senderAccountAddress, String receiverAccountAddress,
+                Callbacks.Callback2<String, Boolean> callback) {
             // Steps to validate:
             // 1. Valid hex string
             //      0x <20 bytes | 40 chars>
             // 2. Not equal to ours address
             // 3. Not one of token's contract addresses
+            // 4. Has valid checksum
 
             String senderAccountAddressLower =
                     senderAccountAddress.toLowerCase(Locale.getDefault());
 
             String receiverAccountAddressLower =
                     receiverAccountAddress.toLowerCase(Locale.getDefault());
+            String receiverAccountAddressUpper =
+                    Utils.maybeHexStrToUpperCase(receiverAccountAddress);
 
             Resources resources = ContextUtils.getApplicationContext().getResources();
 
             byte[] bytesReceiverAccountAddress = Utils.hexStrToNumberArray(receiverAccountAddress);
             if (bytesReceiverAccountAddress.length != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
-                callback.call(resources.getString(R.string.wallet_not_valid_eth_address));
+                callback.call(resources.getString(R.string.wallet_not_valid_eth_address), true);
                 return;
             }
 
             if (senderAccountAddressLower.equals(receiverAccountAddressLower)) {
-                callback.call(resources.getString(R.string.wallet_same_address_error));
+                callback.call(resources.getString(R.string.wallet_same_address_error), true);
                 return;
             }
 
+            mIsKnowContracts = false;
             if (mKnownContractAddresses == null) {
                 assert braveWalletService != null;
                 assert ercTokenRegistry != null;
@@ -67,15 +74,31 @@ public class Validations {
             } else {
                 checkForKnowContracts(receiverAccountAddressLower, callback, resources);
             }
+            if (mIsKnowContracts) return;
+
+            keyringController.getChecksumEthAddress(receiverAccountAddress, checksum_address -> {
+                if (receiverAccountAddress.equals(checksum_address)) {
+                    callback.call("", false);
+                } else if (receiverAccountAddressLower.equals(receiverAccountAddress)
+                        || receiverAccountAddressUpper.equals(receiverAccountAddress)) {
+                    callback.call(
+                            resources.getString(R.string.address_missing_checksum_warning), false);
+                } else {
+                    callback.call(
+                            resources.getString(R.string.address_not_valid_checksum_error), true);
+                }
+            });
         }
 
         private void checkForKnowContracts(String receiverAccountAddressLower,
-                Callbacks.Callback1<String> callback, Resources resources) {
+                Callbacks.Callback2<String, Boolean> callback, Resources resources) {
             assert mKnownContractAddresses != null;
             if (mKnownContractAddresses.contains(receiverAccountAddressLower)) {
-                callback.call(resources.getString(R.string.wallet_contract_address_error));
+                callback.call(resources.getString(R.string.wallet_contract_address_error), true);
+                mIsKnowContracts = true;
             } else {
-                callback.call("");
+                callback.call("", false);
+                mIsKnowContracts = false;
             }
         }
 

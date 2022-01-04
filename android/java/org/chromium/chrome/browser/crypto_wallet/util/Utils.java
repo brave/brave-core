@@ -525,6 +525,25 @@ public class Utils {
         return res;
     }
 
+    public static String maybeHexStrToUpperCase(String value) {
+        if (value == null) {
+            return "";
+        }
+        String prefix = "0x";
+        boolean hasPrefix = false;
+        if (value.startsWith(prefix)) {
+            hasPrefix = true;
+            value = value.substring(2);
+        }
+
+        value = value.toUpperCase(Locale.getDefault());
+
+        if (hasPrefix)
+            return prefix + value;
+        else
+            return value;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();

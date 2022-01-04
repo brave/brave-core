@@ -928,8 +928,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             if (mActivityType == ActivityType.SEND) {
                 EditText toSendValueText = findViewById(R.id.to_send_value_text);
                 String to = toSendValueText.getText().toString();
+                TextView sendToValidation = findViewById(R.id.to_send_error_text);
                 if (to.isEmpty()) {
-                    // TODO(sergz): some address validation
                     return;
                 }
                 if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
@@ -1221,10 +1221,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
 
-            mValidator.validate(mCurrentChainId, getErcTokenRegistry(), getBraveWalletService(),
-
-                    fromAccountAddress, s.toString(), (String validationResult) -> {
-                        setSendToValidationResult(validationResult, true);
+            mValidator.validate(mCurrentChainId, getKeyringController(), getErcTokenRegistry(),
+                    getBraveWalletService(), fromAccountAddress, s.toString(),
+                    (String validationResult, Boolean disableButton) -> {
+                        setSendToValidationResult(validationResult, disableButton);
                     });
         }
 

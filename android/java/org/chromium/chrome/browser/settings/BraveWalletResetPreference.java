@@ -69,11 +69,6 @@ public class BraveWalletResetPreference
         return true;
     }
 
-    @Override
-    public void onDetached() {
-        super.onDetached();
-    }
-
     private void showBraveWalletResetDialog() {
         LayoutInflater inflater =
                 (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
