@@ -9,26 +9,26 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/network_connection_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 
 namespace ads {
 namespace ad_notifications {
 namespace frequency_capping {
 
-PermissionRules::PermissionRules() = default;
+PermissionRules::PermissionRules() : PermissionRulesBase() {}
 
 PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
+  if (!PermissionRulesBase::HasPermission()) {
+    return false;
+  }
+
   AllowNotificationsFrequencyCap allow_notifications_frequency_cap;
   if (!ShouldAllow(&allow_notifications_frequency_cap)) {
     return false;
@@ -51,34 +51,6 @@ bool PermissionRules::HasPermission() const {
 
   DoNotDisturbFrequencyCap do_not_disturb_frequency_cap;
   if (!ShouldAllow(&do_not_disturb_frequency_cap)) {
-    return false;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
-  // permission rules base class
-  CatalogFrequencyCap catalog_frequency_cap;
-  if (!ShouldAllow(&catalog_frequency_cap)) {
-    return false;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
-  // permission rules base class
-  IssuersFrequencyCap issuers_frequency_cap;
-  if (!ShouldAllow(&issuers_frequency_cap)) {
-    return false;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
-  // permission rules base class
-  UnblindedTokensFrequencyCap unblinded_tokens_frequency_cap;
-  if (!ShouldAllow(&unblinded_tokens_frequency_cap)) {
-    return false;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Move to
-  // permission rules base class
-  UserActivityFrequencyCap user_activity_frequency_cap;
-  if (!ShouldAllow(&user_activity_frequency_cap)) {
     return false;
   }
 

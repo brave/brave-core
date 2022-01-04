@@ -6,14 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_NOTIFICATIONS_AD_NOTIFICATION_PERMISSION_RULES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_NOTIFICATIONS_AD_NOTIFICATION_PERMISSION_RULES_H_
 
+#include "bat/ads/internal/ads/permission_rules_base.h"
+
 namespace ads {
 namespace ad_notifications {
 namespace frequency_capping {
 
-class PermissionRules final {
+class PermissionRules final : public PermissionRulesBase {
  public:
   PermissionRules();
-  ~PermissionRules();
+  ~PermissionRules() override;
 
   bool HasPermission() const;
 
