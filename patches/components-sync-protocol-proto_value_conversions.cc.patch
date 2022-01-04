@@ -1,0 +1,21 @@
+diff --git a/components/sync/protocol/proto_value_conversions.cc b/components/sync/protocol/proto_value_conversions.cc
+index d823a1c0b2c83ec4debca45d081382fec68ca129..19cd4c922f4aebf130eb8796b4333ec700d5d4e0 100644
+--- a/components/sync/protocol/proto_value_conversions.cc
++++ b/components/sync/protocol/proto_value_conversions.cc
+@@ -13,6 +13,7 @@
+ #include "base/memory/raw_ptr.h"
+ #include "base/strings/string_number_conversions.h"
+ #include "base/values.h"
++#include "brave/components/sync/protocol/vg_specifics.pb.h"
+ #include "components/sync/base/unique_position.h"
+ #include "components/sync/protocol/app_list_specifics.pb.h"
+ #include "components/sync/protocol/app_setting_specifics.pb.h"
+@@ -338,6 +339,8 @@ IMPLEMENT_PROTO_TO_VALUE(TypedUrlSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(UrlDirective)
+ IMPLEMENT_PROTO_TO_VALUE(UserConsentSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(UserEventSpecifics)
++IMPLEMENT_PROTO_TO_VALUE(VgBodySpecifics)
++IMPLEMENT_PROTO_TO_VALUE(VgSpendStatusSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(WalletCreditCardCloudTokenData)
+ IMPLEMENT_PROTO_TO_VALUE(WalletMaskedCreditCard)
+ IMPLEMENT_PROTO_TO_VALUE(WalletMetadataSpecifics)

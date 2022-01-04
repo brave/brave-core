@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.html b/chrome/browser/resources/settings/people_page/sync_controls.html
+index 3ed9c2c280c5fb7fd58fa9968e03a100d7c48f30..f8808354b6c2c58d4fdda012c806f26aa740947d 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.html
++++ b/chrome/browser/resources/settings/people_page/sync_controls.html
+@@ -142,6 +142,28 @@
+         </cr-toggle>
+       </div>
+ 
++      <div class="list-item" hidden="[[!syncPrefs.vgBodiesRegistered]]">
++        <div id="vgBodiesCheckboxLabel">
++          $i18n{vgBodiesCheckboxLabel}
++        </div>
++        <cr-toggle checked="{{syncPrefs.vgBodiesSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[syncPrefs.syncAllDataTypes]]"
++            aria-labelledby="vgBodiesCheckboxLabel">
++        </cr-toggle>
++      </div>
++
++      <div class="list-item" hidden="[[!syncPrefs.vgSpendStatusesRegistered]]">
++        <div id="vgSpendStatusesCheckboxLabel">
++          $i18n{vgSpendStatusesCheckboxLabel}
++        </div>
++        <cr-toggle checked="{{syncPrefs.vgSpendStatusesSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[syncPrefs.syncAllDataTypes]]"
++            aria-labelledby="vgSpendStatusesCheckboxLabel">
++        </cr-toggle>
++      </div>
++
+       <div class="list-item" hidden="[[!syncPrefs.autofillRegistered]]">
+         <div id="autofillCheckboxLabel">
+           $i18n{autofillCheckboxLabel}
