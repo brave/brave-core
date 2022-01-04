@@ -11,7 +11,7 @@ export const TourPromoWrapper = styled('div')<{}>`
 export const PageWalletWrapper = styled.div`
   width: 373px;
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 800px) {
     width: auto;
     margin-bottom: 10px;
   }
