@@ -51,17 +51,17 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
-import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.ProviderError;
-import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -70,8 +70,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
@@ -401,11 +401,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         success, response, error_response, calculatePerSellAsset, sendTx, from);
             });
         } else {
-            mSwapService.getTransactionPayload(
-                    swapParams, (success, response, error_response) -> {
-                        workWithSwapQuota(success, response, error_response, calculatePerSellAsset,
-                                sendTx, from);
-                    });
+            mSwapService.getTransactionPayload(swapParams, (success, response, error_response) -> {
+                workWithSwapQuota(
+                        success, response, error_response, calculatePerSellAsset, sendTx, from);
+            });
         }
     }
 
@@ -1533,8 +1532,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             return;
         }
 
-        mAssetRatioService =
-                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitKeyringService() {
@@ -1559,8 +1557,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             return;
         }
 
-        mJsonRpcService =
-                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void InitEthTxService() {

@@ -27,16 +27,16 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
-import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
@@ -226,9 +226,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             keyringService.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioService,
-                            mEthTxService, null, null, mAssetSymbol, mContractAddress,
-                            mAssetDecimals, findViewById(R.id.rv_transactions), this, this, null);
+                    Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
+                            null, null, mAssetSymbol, mContractAddress, mAssetDecimals,
+                            findViewById(R.id.rv_transactions), this, this, null);
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(
@@ -320,8 +320,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             return;
         }
 
-        mAssetRatioService =
-                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitEthTxService() {
@@ -337,8 +336,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             return;
         }
 
-        mJsonRpcService =
-                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     @Override

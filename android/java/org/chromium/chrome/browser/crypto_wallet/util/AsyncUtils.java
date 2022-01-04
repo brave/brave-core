@@ -11,8 +11,8 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
@@ -104,8 +104,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements JsonRpcService.GetBalanceResponse {
+    public static class GetBalanceResponseContext
+            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalanceResponse {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -152,8 +152,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
-            implements AssetRatioService.GetPriceHistoryResponse {
+    public static class GetPriceHistoryResponseContext
+            extends SingleResponseBaseContext implements AssetRatioService.GetPriceHistoryResponse {
         public Boolean success;
         public AssetTimePrice[] timePrices;
         public ErcToken userAsset;

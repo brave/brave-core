@@ -8,8 +8,8 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
@@ -22,8 +22,7 @@
 @implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* service =
-      brave_wallet::AssetRatioServiceFactory::GetForBrowserState(
-          browserState);
+      brave_wallet::AssetRatioServiceFactory::GetForBrowserState(browserState);
   if (!service) {
     return nil;
   }
@@ -35,13 +34,11 @@
 @implementation BraveWalletJsonRpcServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* service =
-      brave_wallet::JsonRpcServiceFactory::GetForBrowserState(
-          browserState);
+      brave_wallet::JsonRpcServiceFactory::GetForBrowserState(browserState);
   if (!service) {
     return nil;
   }
-  return [[BraveWalletJsonRpcServiceImpl alloc]
-      initWithJsonRpcService:service];
+  return [[BraveWalletJsonRpcServiceImpl alloc] initWithJsonRpcService:service];
 }
 @end
 
@@ -52,8 +49,7 @@
   if (!service) {
     return nil;
   }
-  return [[BraveWalletEthTxServiceImpl alloc]
-      initWithEthTxService:service];
+  return [[BraveWalletEthTxServiceImpl alloc] initWithEthTxService:service];
 }
 @end
 
@@ -64,8 +60,7 @@
   if (!service) {
     return nil;
   }
-  return [[BraveWalletKeyringServiceImpl alloc]
-      initWithKeyringService:service];
+  return [[BraveWalletKeyringServiceImpl alloc] initWithKeyringService:service];
 }
 @end
 
@@ -88,7 +83,6 @@
   if (!service) {
     return nil;
   }
-  return
-      [[BraveWalletSwapServiceImpl alloc] initWithSwapService:service];
+  return [[BraveWalletSwapServiceImpl alloc] initWithSwapService:service];
 }
 @end

@@ -29,8 +29,7 @@ class JsonRpcServiceFactory : public BrowserStateKeyedServiceFactory {
   static mojom::JsonRpcService* GetForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static JsonRpcService* GetServiceForState(
-      ChromeBrowserState* browser_state);
+  static JsonRpcService* GetServiceForState(ChromeBrowserState* browser_state);
 
   static JsonRpcServiceFactory* GetInstance();
 

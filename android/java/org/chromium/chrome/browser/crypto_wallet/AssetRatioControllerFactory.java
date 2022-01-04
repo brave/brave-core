@@ -32,13 +32,10 @@ public class AssetRatioServiceFactory {
 
     private AssetRatioServiceFactory() {}
 
-    public AssetRatioService getAssetRatioService(
-            ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle =
-                AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService();
+    public AssetRatioService getAssetRatioService(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        AssetRatioService assetRatioService =
-                AssetRatioService.MANAGER.attachProxy(handle, 0);
+        AssetRatioService assetRatioService = AssetRatioService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) assetRatioService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 

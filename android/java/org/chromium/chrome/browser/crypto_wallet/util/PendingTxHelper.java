@@ -27,8 +27,8 @@ public class PendingTxHelper {
     private String mFilterByContractAddress;
     private String mRopstenContractAddress;
 
-    public PendingTxHelper(EthTxService ethTxService, AccountInfo[] accountInfos,
-            boolean returnAll, String filterByContractAddress) {
+    public PendingTxHelper(EthTxService ethTxService, AccountInfo[] accountInfos, boolean returnAll,
+            String filterByContractAddress) {
         assert ethTxService != null;
         mEthTxService = ethTxService;
         mAccountInfos = accountInfos;

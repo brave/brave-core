@@ -23,17 +23,17 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
-import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -135,8 +135,8 @@ public class AccountDetailActivity extends AsyncInitializationActivity
 
     private void setUpAssetList(String chainId) {
         AccountInfo[] accountInfos = new AccountInfo[] {getThisAccountInfo()};
-        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                getAssetRatioService(), mJsonRpcService, accountInfos);
+        PortfolioHelper portfolioHelper = new PortfolioHelper(
+                getBraveWalletService(), getAssetRatioService(), mJsonRpcService, accountInfos);
         portfolioHelper.setChainId(chainId);
         portfolioHelper.calculateBalances(() -> {
             RecyclerView rvAssets = findViewById(R.id.rv_assets);
@@ -190,8 +190,8 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                 if (accountInfo.address.equals(mAddress) && accountInfo.name.equals(mName)) {
                     AccountInfo[] accountInfos = new AccountInfo[1];
                     accountInfos[0] = accountInfo;
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioService,
-                            mEthTxService, mErcTokenRegistry, mBraveWalletService, null, null, 0,
+                    Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
+                            mErcTokenRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId);
                     break;
                 }
@@ -337,8 +337,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
             return;
         }
 
-        mJsonRpcService =
-                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void InitAssetRatioService() {
@@ -346,8 +345,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
             return;
         }
 
-        mAssetRatioService =
-                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitBraveWalletService() {

@@ -32,13 +32,10 @@ public class JsonRpcServiceFactory {
 
     private JsonRpcServiceFactory() {}
 
-    public JsonRpcService getJsonRpcService(
-            ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle =
-                JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService();
+    public JsonRpcService getJsonRpcService(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        JsonRpcService jsonRpcService =
-                JsonRpcService.MANAGER.attachProxy(handle, 0);
+        JsonRpcService jsonRpcService = JsonRpcService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) jsonRpcService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 

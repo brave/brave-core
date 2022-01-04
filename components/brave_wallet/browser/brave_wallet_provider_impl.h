@@ -38,14 +38,13 @@ class BraveWalletProviderImpl final
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
-  BraveWalletProviderImpl(
-      HostContentSettingsMap* host_content_settings_map,
-      JsonRpcService* json_rpc_service,
-      mojo::PendingRemote<mojom::EthTxService> tx_service,
-      KeyringService* keyring_service,
-      BraveWalletService* brave_wallet_service,
-      std::unique_ptr<BraveWalletProviderDelegate> delegate,
-      PrefService* prefs);
+  BraveWalletProviderImpl(HostContentSettingsMap* host_content_settings_map,
+                          JsonRpcService* json_rpc_service,
+                          mojo::PendingRemote<mojom::EthTxService> tx_service,
+                          KeyringService* keyring_service,
+                          BraveWalletService* brave_wallet_service,
+                          std::unique_ptr<BraveWalletProviderDelegate> delegate,
+                          PrefService* prefs);
   ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,

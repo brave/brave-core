@@ -48,9 +48,9 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -919,44 +919,41 @@ public class Utils {
         assert assetRatioService != null;
         String[] assets = {"eth"};
         String[] toCurr = {"usd"};
-        assetRatioService.getPrice(
-                assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                    String tempPrice = "0";
-                    if (values.length != 0) {
-                        tempPrice = values[0].price;
-                    }
-                    if ((assetSymbol == null && assetDecimals == 0)
-                            || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+            String tempPrice = "0";
+            if (values.length != 0) {
+                tempPrice = values[0].price;
+            }
+            if ((assetSymbol == null && assetDecimals == 0)
+                    || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+                try {
+                    fetchTransactions(accountInfos, Double.valueOf(tempPrice),
+                            Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
+                            contractAddress, rvTransactions, callback, context, assetSymbol,
+                            assetDecimals, chainId, assetRatioService, braveWalletService);
+                } catch (NumberFormatException exc) {
+                }
+
+                return;
+            }
+            final String ethPrice = tempPrice;
+            assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
+            toCurr[0] = "usd";
+            assetRatioService.getPrice(
+                    assets, toCurr, AssetPriceTimeframe.LIVE, (successAsset, valuesAsset) -> {
+                        String tempPriceAsset = "0";
+                        if (valuesAsset.length != 0) {
+                            tempPriceAsset = valuesAsset[0].price;
+                        }
                         try {
-                            fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                                    Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
+                            fetchTransactions(accountInfos, Double.valueOf(ethPrice),
+                                    Double.valueOf(tempPriceAsset), ethTxService, ercTokenRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioService,
-                                    braveWalletService);
+                                    assetDecimals, chainId, assetRatioService, braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
-
-                        return;
-                    }
-                    final String ethPrice = tempPrice;
-                    assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
-                    toCurr[0] = "usd";
-                    assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
-                            (successAsset, valuesAsset) -> {
-                                String tempPriceAsset = "0";
-                                if (valuesAsset.length != 0) {
-                                    tempPriceAsset = valuesAsset[0].price;
-                                }
-                                try {
-                                    fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                            Double.valueOf(tempPriceAsset), ethTxService,
-                                            ercTokenRegistry, contractAddress, rvTransactions,
-                                            callback, context, assetSymbol, assetDecimals, chainId,
-                                            assetRatioService, braveWalletService);
-                                } catch (NumberFormatException exc) {
-                                }
-                            });
-                });
+                    });
+        });
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,

@@ -35,8 +35,8 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
@@ -184,14 +184,13 @@ public class PortfolioFragment extends Fragment
         String item = parent.getItemAtPosition(position).toString();
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService != null) {
-            jsonRpcService.setNetwork(
-                    Utils.getNetworkConst(getActivity(), item), (success) -> {
-                        if (!success) {
-                            Log.e(TAG, "Could not set network");
-                            return;
-                        }
-                        updatePortfolioGetPendingTx(true);
-                    });
+            jsonRpcService.setNetwork(Utils.getNetworkConst(getActivity(), item), (success) -> {
+                if (!success) {
+                    Log.e(TAG, "Could not set network");
+                    return;
+                }
+                updatePortfolioGetPendingTx(true);
+            });
         }
     }
 

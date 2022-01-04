@@ -36,8 +36,8 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -45,8 +45,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
@@ -249,8 +249,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
             return;
         }
 
-        mJsonRpcService =
-                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void InitAssetRatioService() {
@@ -258,8 +257,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
             return;
         }
 
-        mAssetRatioService =
-                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitBraveWalletService() {

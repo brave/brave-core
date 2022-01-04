@@ -16,10 +16,10 @@ source_set("brave_wallet") {
     "erc_token_images_source.h",
     "eth_tx_service_factory.cc",
     "eth_tx_service_factory.h",
-    "keyring_service_factory.cc",
-    "keyring_service_factory.h",
     "json_rpc_service_factory.cc",
     "json_rpc_service_factory.h",
+    "keyring_service_factory.cc",
+    "keyring_service_factory.h",
     "swap_service_factory.cc",
     "swap_service_factory.h",
   ]
