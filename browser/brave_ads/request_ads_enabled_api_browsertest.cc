@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
@@ -66,7 +65,6 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
 
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -105,8 +103,8 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   content::WebContents* OpenRequestAdsEnabledPopup(

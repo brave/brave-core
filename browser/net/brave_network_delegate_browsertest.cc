@@ -18,7 +18,6 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -148,8 +147,8 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void DefaultBlockAllCookies() {

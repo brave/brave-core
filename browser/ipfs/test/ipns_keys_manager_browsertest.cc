@@ -16,7 +16,6 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/base/net_errors.h"
@@ -46,7 +45,6 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
     test_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    test_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->GetIpnsKeysManager()->SetServerEndpointForTest(
@@ -72,8 +70,8 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleKeysRequests(

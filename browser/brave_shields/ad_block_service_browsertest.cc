@@ -36,7 +36,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
@@ -96,8 +95,8 @@ void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
 }
 
 void AdBlockServiceTest::TearDownInProcessBrowserTestFixture() {
-  ExtensionBrowserTest::TearDownInProcessBrowserTestFixture();
   mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  ExtensionBrowserTest::TearDownInProcessBrowserTestFixture();
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
@@ -159,7 +158,6 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
   https_server_.reset(new net::EmbeddedTestServer(
       net::test_server::EmbeddedTestServer::TYPE_HTTPS));
   content::SetupCrossSiteRedirector(https_server());
-  https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
   https_server_->ServeFilesFromDirectory(test_data_dir);
 }
 

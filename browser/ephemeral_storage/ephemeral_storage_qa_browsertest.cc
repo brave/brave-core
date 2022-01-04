@@ -17,7 +17,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -162,8 +161,8 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void SetUp() override {

@@ -8,7 +8,6 @@
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/simple_url_loader_test_helper.h"
@@ -49,8 +48,8 @@ class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory() const {

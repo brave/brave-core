@@ -24,7 +24,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_language_list.h"
 #include "components/translate/core/browser/translate_manager.h"
@@ -94,7 +93,6 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -133,8 +131,8 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
