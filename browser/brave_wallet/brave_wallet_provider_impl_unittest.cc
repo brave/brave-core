@@ -20,7 +20,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -29,7 +29,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
-#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -164,15 +164,15 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         AssetRatioServiceFactory::GetControllerForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    eth_tx_controller_ =
-        EthTxControllerFactory::GetControllerForContext(browser_context());
+    eth_tx_service_ =
+        EthTxServiceFactory::GetControllerForContext(browser_context());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
 
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         host_content_settings_map(), eth_json_rpc_controller(),
-        eth_tx_controller()->MakeRemote(), keyring_controller(),
+        eth_tx_service()->MakeRemote(), keyring_controller(),
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
@@ -289,7 +289,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   ~BraveWalletProviderImplUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
-  EthTxController* eth_tx_controller() { return eth_tx_controller_; }
+  EthTxService* eth_tx_service() { return eth_tx_service_; }
   EthJsonRpcController* eth_json_rpc_controller() {
     return eth_json_rpc_controller_;
   }
@@ -501,7 +501,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
-    eth_tx_controller()->GetAllTransactionInfo(
+    eth_tx_service()->GetAllTransactionInfo(
         from(), base::BindLambdaForTesting(
                     [&](std::vector<mojom::TransactionInfoPtr> v) {
                       transaction_infos = std::move(v);
@@ -514,7 +514,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   bool ApproveTransaction(const std::string& tx_meta_id) {
     bool success;
     base::RunLoop run_loop;
-    eth_tx_controller()->ApproveTransaction(
+    eth_tx_service()->ApproveTransaction(
         tx_meta_id, base::BindLambdaForTesting([&](bool v) {
           success = v;
           run_loop.Quit();
@@ -594,7 +594,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
  private:
   KeyringController* keyring_controller_;
   content::TestWebContentsFactory factory_;
-  EthTxController* eth_tx_controller_;
+  EthTxService* eth_tx_service_;
   AssetRatioService* asset_ratio_service_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
@@ -635,7 +635,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(
       host_content_settings_map(), eth_json_rpc_controller(),
-      eth_tx_controller()->MakeRemote(), keyring_controller(),
+      eth_tx_service()->MakeRemote(), keyring_controller(),
       brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
@@ -737,7 +737,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
   // We don't need to check every error type since that is checked by
-  // eth_tx_controller_unittest but make sure an error type is handled
+  // eth_tx_service_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
   CreateWallet();
@@ -878,7 +878,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
   // We don't need to check every error type since that is checked by
-  // eth_tx_controller_unittest but make sure an error type is handled
+  // eth_tx_service_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
   CreateWallet();

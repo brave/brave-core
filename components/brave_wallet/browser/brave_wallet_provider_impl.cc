@@ -32,7 +32,7 @@ namespace brave_wallet {
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
     EthJsonRpcController* rpc_controller,
-    mojo::PendingRemote<mojom::EthTxController> tx_controller,
+    mojo::PendingRemote<mojom::EthTxService> tx_service,
     KeyringController* keyring_controller,
     BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
@@ -48,11 +48,11 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
   rpc_controller_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
-  DCHECK(tx_controller);
-  tx_controller_.Bind(std::move(tx_controller));
-  tx_controller_.set_disconnect_handler(base::BindOnce(
+  DCHECK(tx_service);
+  tx_service_.Bind(std::move(tx_service));
+  tx_service_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
-  tx_controller_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
+  tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 
   keyring_controller_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -236,7 +236,7 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
     return;
   }
 
-  tx_controller_->AddUnapprovedTransaction(
+  tx_service_->AddUnapprovedTransaction(
       std::move(tx_data), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
@@ -318,7 +318,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
     return;
   }
 
-  tx_controller_->AddUnapproved1559Transaction(
+  tx_service_->AddUnapproved1559Transaction(
       std::move(tx_data), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
@@ -668,7 +668,7 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 }
 
 void BraveWalletProviderImpl::OnConnectionError() {
-  tx_controller_.reset();
+  tx_service_.reset();
   rpc_observer_receiver_.reset();
   tx_observer_receiver_.reset();
   keyring_observer_receiver_.reset();

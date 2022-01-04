@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
 
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/factory/eth_tx_controller_factory_helper.h"
+#include "brave/components/brave_wallet/factory/eth_tx_service_factory_helper.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
@@ -21,29 +21,29 @@
 namespace brave_wallet {
 
 // static
-mojom::EthTxController* EthTxControllerFactory::GetForBrowserState(
+mojom::EthTxService* EthTxServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<EthTxController*>(
+  return static_cast<EthTxService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-EthTxControllerFactory* EthTxControllerFactory::GetInstance() {
-  return base::Singleton<EthTxControllerFactory>::get();
+EthTxServiceFactory* EthTxServiceFactory::GetInstance() {
+  return base::Singleton<EthTxServiceFactory>::get();
 }
 
-EthTxControllerFactory::EthTxControllerFactory()
+EthTxServiceFactory::EthTxServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "EthTxController",
+          "EthTxService",
           BrowserStateDependencyManager::GetInstance()) {
   DependsOn(EthJsonRpcControllerFactory::GetInstance());
   DependsOn(KeyringControllerFactory::GetInstance());
   DependsOn(AssetRatioServiceFactory::GetInstance());
 }
 
-EthTxControllerFactory::~EthTxControllerFactory() = default;
+EthTxServiceFactory::~EthTxServiceFactory() = default;
 
-std::unique_ptr<KeyedService> EthTxControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> EthTxServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* rpc_controller =
@@ -52,16 +52,16 @@ std::unique_ptr<KeyedService> EthTxControllerFactory::BuildServiceInstanceFor(
       KeyringControllerFactory::GetControllerForBrowserState(browser_state);
   auto* asset_ratio_service =
       AssetRatioServiceFactory::GetControllerForBrowserState(browser_state);
-  return brave_wallet::BuildEthTxController(rpc_controller, keyring_controller,
-                                            asset_ratio_service,
-                                            browser_state->GetPrefs());
+  return brave_wallet::BuildEthTxService(rpc_controller, keyring_controller,
+                                         asset_ratio_service,
+                                         browser_state->GetPrefs());
 }
 
-bool EthTxControllerFactory::ServiceIsNULLWhileTesting() const {
+bool EthTxServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-web::BrowserState* EthTxControllerFactory::GetBrowserStateToUse(
+web::BrowserState* EthTxServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);
 }

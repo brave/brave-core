@@ -92,7 +92,7 @@ const getMockedProxyControllers = (
         return '0x123'
       }
     },
-    ethTxController: {
+    ethTxService: {
       getNonceForHardwareTransaction: (id: string): GetNonceForHardwareTransactionReturnInfo | undefined => {
         expect(id).toStrictEqual(expectedId)
         return nonce

@@ -186,7 +186,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthJsonRpcControllerFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthTxControllerFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthTxServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",

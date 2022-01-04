@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -15,30 +15,30 @@
 
 namespace brave_wallet {
 
-class EthTxController;
+class EthTxService;
 
-class EthTxControllerFactory : public BrowserContextKeyedServiceFactory {
+class EthTxServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::EthTxController> GetForContext(
+  static mojo::PendingRemote<mojom::EthTxService> GetForContext(
       content::BrowserContext* context);
-  static EthTxController* GetControllerForContext(
+  static EthTxService* GetControllerForContext(
       content::BrowserContext* context);
-  static EthTxControllerFactory* GetInstance();
+  static EthTxServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<EthTxControllerFactory>;
+  friend struct base::DefaultSingletonTraits<EthTxServiceFactory>;
 
-  EthTxControllerFactory();
-  ~EthTxControllerFactory() override;
+  EthTxServiceFactory();
+  ~EthTxServiceFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
 
-  DISALLOW_COPY_AND_ASSIGN(EthTxControllerFactory);
+  DISALLOW_COPY_AND_ASSIGN(EthTxServiceFactory);
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_

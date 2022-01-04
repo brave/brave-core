@@ -243,7 +243,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, UnknownKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedFilecoinAccounts);
   friend class BraveWalletProviderImplUnitTest;
-  friend class EthTxControllerUnitTest;
+  friend class EthTxServiceUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
   void OnAutoLockFired();

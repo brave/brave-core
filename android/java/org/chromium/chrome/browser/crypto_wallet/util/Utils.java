@@ -49,7 +49,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -911,7 +911,7 @@ public class Utils {
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
-            AssetRatioService assetRatioService, EthTxController ethTxController,
+            AssetRatioService assetRatioService, EthTxService ethTxService,
             ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
@@ -929,7 +929,7 @@ public class Utils {
                             || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
                         try {
                             fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                                    Double.valueOf(tempPrice), ethTxController, ercTokenRegistry,
+                                    Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
                                     assetDecimals, chainId, assetRatioService,
                                     braveWalletService);
@@ -949,7 +949,7 @@ public class Utils {
                                 }
                                 try {
                                     fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                            Double.valueOf(tempPriceAsset), ethTxController,
+                                            Double.valueOf(tempPriceAsset), ethTxService,
                                             ercTokenRegistry, contractAddress, rvTransactions,
                                             callback, context, assetSymbol, assetDecimals, chainId,
                                             assetRatioService, braveWalletService);
@@ -960,13 +960,13 @@ public class Utils {
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, EthTxController ethTxController, ErcTokenRegistry ercTokenRegistry,
+            double assetPrice, EthTxService ethTxService, ErcTokenRegistry ercTokenRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
-        assert ethTxController != null;
+        assert ethTxService != null;
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(ethTxController, accountInfos, true, contractAddress);
+                new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
             if (assetSymbol != null && assetDecimals != 0) {

@@ -35,7 +35,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -93,12 +93,12 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         return null;
     }
 
-    private EthTxController getEthTxController() {
+    private EthTxService getEthTxService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthTxController();
+            return ((BuySendSwapActivity) activity).getEthTxService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxController();
+            return ((BraveWalletActivity) activity).getEthTxService();
         }
 
         return null;
@@ -285,11 +285,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private void rejectTransaction(boolean dismiss) {
-        EthTxController ethTxController = getEthTxController();
-        if (ethTxController == null) {
+        EthTxService ethTxService = getEthTxService();
+        if (ethTxService == null) {
             return;
         }
-        ethTxController.rejectTransaction(mTxInfo.id, success -> {
+        ethTxService.rejectTransaction(mTxInfo.id, success -> {
             assert success;
             if (!success || !dismiss) {
                 return;
@@ -300,11 +300,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private void approveTransaction() {
-        EthTxController ethTxController = getEthTxController();
-        if (ethTxController == null) {
+        EthTxService ethTxService = getEthTxService();
+        if (ethTxService == null) {
             return;
         }
-        ethTxController.approveTransaction(mTxInfo.id, success -> {
+        ethTxService.approveTransaction(mTxInfo.id, success -> {
             assert success;
             if (!success) {
                 return;

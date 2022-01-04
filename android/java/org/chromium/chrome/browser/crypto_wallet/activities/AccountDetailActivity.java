@@ -24,7 +24,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -33,7 +33,7 @@ import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -62,7 +62,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     private Handler mHandler;
 
     private ErcTokenRegistry mErcTokenRegistry;
-    private EthTxController mEthTxController;
+    private EthTxService mEthTxService;
     private EthJsonRpcController mEthJsonRpcController;
     private AssetRatioService mAssetRatioService;
     private BraveWalletService mBraveWalletService;
@@ -75,7 +75,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mEthJsonRpcController.close();
         mBraveWalletService.close();
         mKeyringController.close();
-        mEthTxController.close();
+        mEthTxService.close();
         mErcTokenRegistry.close();
     }
 
@@ -191,7 +191,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = new AccountInfo[1];
                     accountInfos[0] = accountInfo;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService,
-                            mEthTxController, mErcTokenRegistry, mBraveWalletService, null, null, 0,
+                            mEthTxService, mErcTokenRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId);
                     break;
                 }
@@ -219,7 +219,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         InitAssetRatioService();
         InitBraveWalletService();
         InitKeyringController();
-        InitEthTxController();
+        InitEthTxService();
         InitErcTokenRegistry();
 
         assert mEthJsonRpcController != null;
@@ -291,20 +291,20 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mAssetRatioService.close();
         mBraveWalletService.close();
         mKeyringController.close();
-        mEthTxController.close();
+        mEthTxService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController = null;
         mAssetRatioService = null;
         mBraveWalletService = null;
         mKeyringController = null;
-        mEthTxController = null;
+        mEthTxService = null;
         mErcTokenRegistry = null;
         InitEthJsonRpcController();
         InitAssetRatioService();
         InitBraveWalletService();
         InitKeyringController();
         InitErcTokenRegistry();
-        InitEthTxController();
+        InitEthTxService();
     }
 
     private void InitErcTokenRegistry() {
@@ -315,12 +315,12 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
-    private void InitEthTxController() {
-        if (mEthTxController != null) {
+    private void InitEthTxService() {
+        if (mEthTxService != null) {
             return;
         }
 
-        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
+        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
     }
 
     private void InitKeyringController() {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,19 +21,19 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class EthTxControllerFactory : public BrowserStateKeyedServiceFactory {
+class EthTxServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::EthTxController* GetForBrowserState(
+  static mojom::EthTxService* GetForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static EthTxControllerFactory* GetInstance();
+  static EthTxServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<EthTxControllerFactory>;
+  friend struct base::DefaultSingletonTraits<EthTxServiceFactory>;
 
-  EthTxControllerFactory();
-  ~EthTxControllerFactory() override;
+  EthTxServiceFactory();
+  ~EthTxServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -43,10 +43,10 @@ class EthTxControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  EthTxControllerFactory(const EthTxControllerFactory&) = delete;
-  EthTxControllerFactory& operator=(const EthTxControllerFactory&) = delete;
+  EthTxServiceFactory(const EthTxServiceFactory&) = delete;
+  EthTxServiceFactory& operator=(const EthTxServiceFactory&) = delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_TX_SERVICE_FACTORY_H_

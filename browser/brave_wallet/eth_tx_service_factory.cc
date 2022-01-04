@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 
 #include <memory>
 #include <utility>
@@ -13,8 +13,8 @@
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
-#include "brave/components/brave_wallet/factory/eth_tx_controller_factory_helper.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
+#include "brave/components/brave_wallet/factory/eth_tx_service_factory_helper.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -24,46 +24,46 @@
 namespace brave_wallet {
 
 // static
-EthTxControllerFactory* EthTxControllerFactory::GetInstance() {
-  return base::Singleton<EthTxControllerFactory>::get();
+EthTxServiceFactory* EthTxServiceFactory::GetInstance() {
+  return base::Singleton<EthTxServiceFactory>::get();
 }
 
 // static
-mojo::PendingRemote<mojom::EthTxController>
-EthTxControllerFactory::GetForContext(content::BrowserContext* context) {
+mojo::PendingRemote<mojom::EthTxService> EthTxServiceFactory::GetForContext(
+    content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
-    return mojo::PendingRemote<mojom::EthTxController>();
+    return mojo::PendingRemote<mojom::EthTxService>();
   }
 
-  return static_cast<EthTxController*>(
+  return static_cast<EthTxService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
 // static
-EthTxController* EthTxControllerFactory::GetControllerForContext(
+EthTxService* EthTxServiceFactory::GetControllerForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
   }
-  return static_cast<EthTxController*>(
+  return static_cast<EthTxService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-EthTxControllerFactory::EthTxControllerFactory()
+EthTxServiceFactory::EthTxServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "EthTxController",
+          "EthTxService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_wallet::RpcControllerFactory::GetInstance());
   DependsOn(brave_wallet::KeyringControllerFactory::GetInstance());
   DependsOn(brave_wallet::AssetRatioServiceFactory::GetInstance());
 }
 
-EthTxControllerFactory::~EthTxControllerFactory() {}
+EthTxServiceFactory::~EthTxServiceFactory() {}
 
-KeyedService* EthTxControllerFactory::BuildServiceInstanceFor(
+KeyedService* EthTxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return brave_wallet::BuildEthTxController(
+  return brave_wallet::BuildEthTxService(
              RpcControllerFactory::GetControllerForContext(context),
              KeyringControllerFactory::GetControllerForContext(context),
              AssetRatioServiceFactory::GetControllerForContext(context),
@@ -71,7 +71,7 @@ KeyedService* EthTxControllerFactory::BuildServiceInstanceFor(
       .release();
 }
 
-content::BrowserContext* EthTxControllerFactory::GetBrowserContextToUse(
+content::BrowserContext* EthTxServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

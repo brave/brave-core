@@ -24,7 +24,7 @@ const store = createStore(
 
 getWalletPanelApiProxy().addEthJsonRpcControllerObserver(store)
 getWalletPanelApiProxy().addKeyringControllerObserver(store)
-getWalletPanelApiProxy().addEthTxControllerObserverObserver(store)
+getWalletPanelApiProxy().addEthTxServiceObserver(store)
 getWalletPanelApiProxy().addBraveWalletServiceObserver(store)
 
 export default store

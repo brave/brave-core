@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_CONTROLLER_FACTORY_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_CONTROLLER_FACTORY_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_SERVICE_FACTORY_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_SERVICE_FACTORY_HELPER_H_
 
 #include <memory>
 
@@ -14,10 +14,10 @@ namespace brave_wallet {
 
 class AssetRatioService;
 class EthJsonRpcController;
-class EthTxController;
+class EthTxService;
 class KeyringController;
 
-std::unique_ptr<EthTxController> BuildEthTxController(
+std::unique_ptr<EthTxService> BuildEthTxService(
     EthJsonRpcController* rpc_controller,
     KeyringController* keyring_controller,
     AssetRatioService* asset_ratio_service,
@@ -25,4 +25,4 @@ std::unique_ptr<EthTxController> BuildEthTxController(
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_CONTROLLER_FACTORY_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_FACTORY_ETH_TX_SERVICE_FACTORY_HELPER_H_

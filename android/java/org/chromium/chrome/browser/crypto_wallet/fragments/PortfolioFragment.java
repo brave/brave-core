@@ -36,7 +36,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
@@ -85,10 +85,10 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
-    private EthTxController getEthTxController() {
+    private EthTxService getEthTxService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxController();
+            return ((BraveWalletActivity) activity).getEthTxService();
         }
 
         return null;
@@ -456,7 +456,7 @@ public class PortfolioFragment extends Fragment
 
     private void getPendingTx(AccountInfo[] accountInfos) {
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(getEthTxController(), accountInfos, false, null);
+                new PendingTxHelper(getEthTxService(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

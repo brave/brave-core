@@ -21,7 +21,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -254,9 +254,9 @@ void MaybeBindBraveWalletProvider(
   if (!rpc_controller)
     return;
 
-  auto tx_controller = brave_wallet::EthTxControllerFactory::GetForContext(
+  auto tx_service = brave_wallet::EthTxServiceFactory::GetForContext(
       frame_host->GetBrowserContext());
-  if (!tx_controller)
+  if (!tx_service)
     return;
 
   auto* keyring_controller =
@@ -277,7 +277,7 @@ void MaybeBindBraveWalletProvider(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          rpc_controller, std::move(tx_controller), keyring_controller,
+          rpc_controller, std::move(tx_service), keyring_controller,
           brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host),

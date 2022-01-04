@@ -121,7 +121,7 @@ interface PanelHandlerFactory {
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringController> keyring_controller,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
-                     pending_receiver<EthTxController> eth_tx_controller,
+                     pending_receiver<EthTxService> eth_tx_service,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -135,7 +135,7 @@ interface PageHandlerFactory {
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringController> keyring_controller,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
-                    pending_receiver<EthTxController> eth_tx_controller,
+                    pending_receiver<EthTxService> eth_tx_service,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
@@ -645,7 +645,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
 };
 
-interface EthTxControllerObserver {
+interface EthTxServiceObserver {
   // Fired when a new unapproved transaction is encountered
   OnNewUnapprovedTx(TransactionInfo tx_info);
 
@@ -659,7 +659,7 @@ interface EthTxControllerObserver {
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
-interface EthTxController {
+interface EthTxService {
   // Used to add a transaction
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
 
@@ -687,8 +687,8 @@ interface EthTxController {
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
 
-  // Adds an observer for EthTxController
-  AddObserver(pending_remote<EthTxControllerObserver> observer);
+  // Adds an observer for EthTxService
+  AddObserver(pending_remote<EthTxServiceObserver> observer);
 
   // Used to speed-up or cancel a transaction
   SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);

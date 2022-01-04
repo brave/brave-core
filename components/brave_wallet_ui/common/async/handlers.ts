@@ -313,9 +313,9 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
   let addResult
   const txData: BraveWallet.TxData = {
     nonce: '',
-    // Estimated by eth_tx_controller if value is '' for legacy transactions
+    // Estimated by eth_tx_service if value is '' for legacy transactions
     gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
-    // Estimated by eth_tx_controller if value is ''
+    // Estimated by eth_tx_service if value is ''
     gasLimit: payload.gas || '',
     to: payload.to,
     value: payload.value,
@@ -326,15 +326,15 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
     const txData1559: BraveWallet.TxData1559 = {
       baseData: txData,
       chainId,
-      // Estimated by eth_tx_controller if value is ''
+      // Estimated by eth_tx_service if value is ''
       maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
-      // Estimated by eth_tx_controller if value is ''
+      // Estimated by eth_tx_service if value is ''
       maxFeePerGas: payload.maxFeePerGas || '',
       gasEstimation: undefined
     }
-    addResult = await apiProxy.ethTxController.addUnapproved1559Transaction(txData1559, payload.from)
+    addResult = await apiProxy.ethTxService.addUnapproved1559Transaction(txData1559, payload.from)
   } else {
-    addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
+    addResult = await apiProxy.ethTxService.addUnapprovedTransaction(txData, payload.from)
   }
 
   if (!addResult.success) {
@@ -351,7 +351,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
 
 handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, payload: ER20TransferParams) => {
   const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxController.makeERC20TransferData(payload.to, payload.value)
+  const { data, success } = await apiProxy.ethTxService.makeERC20TransferData(payload.to, payload.value)
   if (!success) {
     console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
     return
@@ -371,7 +371,7 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, paylo
 
 handler.on(WalletActions.sendERC721TransferFrom.getType(), async (store: Store, payload: ERC721TransferFromParams) => {
   const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxController.makeERC721TransferFromData(payload.from, payload.to, payload.tokenId, payload.contractAddress)
+  const { data, success } = await apiProxy.ethTxService.makeERC721TransferFromData(payload.from, payload.to, payload.tokenId, payload.contractAddress)
   if (!success) {
     console.log('Failed making ERC721 transferFrom data, from: ', payload.from, ', to: ', payload.to, ', tokenId: ', payload.tokenId)
     return
@@ -391,7 +391,7 @@ handler.on(WalletActions.sendERC721TransferFrom.getType(), async (store: Store, 
 
 handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, payload: ApproveERC20Params) => {
   const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxController.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
+  const { data, success } = await apiProxy.ethTxService.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
   if (!success) {
     console.log(
       'Failed making ERC20 approve data, contract: ',
@@ -412,13 +412,13 @@ handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, p
 
 handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const apiProxy = getAPIProxy()
-  await apiProxy.ethTxController.approveTransaction(txInfo.id)
+  await apiProxy.ethTxService.approveTransaction(txInfo.id)
   await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
 })
 
 handler.on(WalletActions.rejectTransaction.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const apiProxy = getAPIProxy()
-  await apiProxy.ethTxController.rejectTransaction(txInfo.id)
+  await apiProxy.ethTxService.rejectTransaction(txInfo.id)
   await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
 })
 
@@ -426,7 +426,7 @@ handler.on(WalletActions.rejectAllTransactions.getType(), async (store) => {
   const state = getWalletState(store)
   const apiProxy = getAPIProxy()
   state.pendingTransactions.forEach(async (transaction) => {
-    await apiProxy.ethTxController.rejectTransaction(transaction.id)
+    await apiProxy.ethTxService.rejectTransaction(transaction.id)
   })
   await refreshWalletInfo(store)
 })
@@ -535,7 +535,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
   const isEIP1559 = payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined
 
   if (isEIP1559) {
-    const result = await apiProxy.ethTxController.setGasFeeAndLimitForUnapprovedTransaction(
+    const result = await apiProxy.ethTxService.setGasFeeAndLimitForUnapprovedTransaction(
       payload.txMetaId,
       payload.maxPriorityFeePerGas || '',
       payload.maxFeePerGas || '',
@@ -554,7 +554,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
   }
 
   if (!isEIP1559 && payload.gasPrice) {
-    const result = await apiProxy.ethTxController.setGasPriceAndLimitForUnapprovedTransaction(
+    const result = await apiProxy.ethTxService.setGasPriceAndLimitForUnapprovedTransaction(
       payload.txMetaId, payload.gasPrice, payload.gasLimit
     )
 
@@ -572,7 +572,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
 handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), async (store: Store, payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
   const apiProxy = getAPIProxy()
 
-  const { data, success } = await apiProxy.ethTxController.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
+  const { data, success } = await apiProxy.ethTxService.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
   if (!success) {
     console.error(
       `Failed making ERC20 approve data, spender: ${payload.spenderAddress}` +
@@ -581,7 +581,7 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), as
     return
   }
 
-  const result = await apiProxy.ethTxController.setDataForUnapprovedTransaction(payload.txMetaId, data)
+  const result = await apiProxy.ethTxService.setDataForUnapprovedTransaction(payload.txMetaId, data)
   if (!result.success) {
     console.error(
       'Failed to update unapproved transaction: ' +
@@ -611,8 +611,8 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
 })
 
 handler.on(WalletActions.retryTransaction.getType(), async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { ethTxController } = getAPIProxy()
-  const result = await ethTxController.retryTransaction(payload.id)
+  const { ethTxService } = getAPIProxy()
+  const result = await ethTxService.retryTransaction(payload.id)
   if (!result.success) {
     console.error(
       'Retry transaction failed: ' +
@@ -626,8 +626,8 @@ handler.on(WalletActions.retryTransaction.getType(), async (store: Store, payloa
 })
 
 handler.on(WalletActions.speedupTransaction.getType(), async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { ethTxController } = getAPIProxy()
-  const result = await ethTxController.speedupOrCancelTransaction(payload.id, false)
+  const { ethTxService } = getAPIProxy()
+  const result = await ethTxService.speedupOrCancelTransaction(payload.id, false)
   if (!result.success) {
     console.error(
       'Speedup transaction failed: ' +
@@ -641,8 +641,8 @@ handler.on(WalletActions.speedupTransaction.getType(), async (store: Store, payl
 })
 
 handler.on(WalletActions.cancelTransaction.getType(), async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { ethTxController } = getAPIProxy()
-  const result = await ethTxController.speedupOrCancelTransaction(payload.id, true)
+  const { ethTxService } = getAPIProxy()
+  const result = await ethTxService.speedupOrCancelTransaction(payload.id, true)
   if (!result.success) {
     console.error(
       'Cancel transaction failed: ' +

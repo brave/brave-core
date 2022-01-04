@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_CONTROLLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -29,32 +29,31 @@ class SequencedTaskRunner;
 
 namespace brave_wallet {
 
-class EthTxControllerUnitTest;
+class EthTxServiceUnitTest;
 
 class AssetRatioService;
 class EthJsonRpcController;
 class KeyringController;
 
-class EthTxController : public KeyedService,
-                        public mojom::EthTxController,
-                        public mojom::KeyringControllerObserver,
-                        public EthBlockTracker::Observer,
-                        public EthTxStateManager::Observer {
+class EthTxService : public KeyedService,
+                     public mojom::EthTxService,
+                     public mojom::KeyringControllerObserver,
+                     public EthBlockTracker::Observer,
+                     public EthTxStateManager::Observer {
  public:
-  explicit EthTxController(
-      EthJsonRpcController* eth_json_rpc_controller,
-      KeyringController* keyring_controller,
-      AssetRatioService* asset_ratio_service,
-      std::unique_ptr<EthTxStateManager> tx_state_manager,
-      std::unique_ptr<EthNonceTracker> nonce_tracker,
-      std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
-      PrefService* prefs);
-  ~EthTxController() override;
-  EthTxController(const EthTxController&) = delete;
-  EthTxController operator=(const EthTxController&) = delete;
+  explicit EthTxService(EthJsonRpcController* eth_json_rpc_controller,
+                        KeyringController* keyring_controller,
+                        AssetRatioService* asset_ratio_service,
+                        std::unique_ptr<EthTxStateManager> tx_state_manager,
+                        std::unique_ptr<EthNonceTracker> nonce_tracker,
+                        std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
+                        PrefService* prefs);
+  ~EthTxService() override;
+  EthTxService(const EthTxService&) = delete;
+  EthTxService operator=(const EthTxService&) = delete;
 
-  mojo::PendingRemote<mojom::EthTxController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::EthTxController> receiver);
+  mojo::PendingRemote<mojom::EthTxService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::EthTxService> receiver);
 
   void AddUnapprovedTransaction(mojom::TxDataPtr tx_data,
                                 const std::string& from,
@@ -121,8 +120,8 @@ class EthTxController : public KeyedService,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
   void AddObserver(
-      ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
-  // Resets things back to the original state of EthTxController
+      ::mojo::PendingRemote<mojom::EthTxServiceObserver> observer) override;
+  // Resets things back to the original state of EthTxService
   // To be used when the Wallet is reset / erased
   void Reset() override;
 
@@ -134,10 +133,10 @@ class EthTxController : public KeyedService,
       const std::string& tx_meta_id);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, TestSubmittedToConfirmed);
-  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, RetryTransaction);
-  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, Reset);
-  friend class EthTxControllerUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(EthTxServiceUnitTest, TestSubmittedToConfirmed);
+  FRIEND_TEST_ALL_PREFIXES(EthTxServiceUnitTest, RetryTransaction);
+  FRIEND_TEST_ALL_PREFIXES(EthTxServiceUnitTest, Reset);
+  friend class EthTxServiceUnitTest;
 
   void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
@@ -240,14 +239,14 @@ class EthTxController : public KeyedService,
   std::unique_ptr<EthBlockTracker> eth_block_tracker_;
   bool known_no_pending_tx = false;
 
-  mojo::RemoteSet<mojom::EthTxControllerObserver> observers_;
-  mojo::ReceiverSet<mojom::EthTxController> receivers_;
+  mojo::RemoteSet<mojom::EthTxServiceObserver> observers_;
+  mojo::ReceiverSet<mojom::EthTxService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
       keyring_observer_receiver_{this};
 
-  base::WeakPtrFactory<EthTxController> weak_factory_;
+  base::WeakPtrFactory<EthTxService> weak_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_SERVICE_H_

@@ -11,7 +11,7 @@
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
@@ -22,7 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
@@ -90,8 +90,8 @@ void WalletPanelUI::CreatePanelHandler(
         keyring_controller_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
         erc_token_registry_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-        eth_tx_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthTxService>
+        eth_tx_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service_receiver) {
   DCHECK(page);
@@ -134,10 +134,10 @@ void WalletPanelUI::CreatePanelHandler(
     erc_token_registry->Bind(std::move(erc_token_registry_receiver));
   }
 
-  auto* eth_tx_controller =
-      brave_wallet::EthTxControllerFactory::GetControllerForContext(profile);
-  if (eth_tx_controller) {
-    eth_tx_controller->Bind(std::move(eth_tx_controller_receiver));
+  auto* eth_tx_service =
+      brave_wallet::EthTxServiceFactory::GetControllerForContext(profile);
+  if (eth_tx_service) {
+    eth_tx_service->Bind(std::move(eth_tx_service_receiver));
   }
 
   auto* brave_wallet_service =

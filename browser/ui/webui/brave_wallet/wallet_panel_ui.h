@@ -54,8 +54,7 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
           keyring_controller,
       mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
           erc_token_registry,
-      mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-          eth_tx_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::EthTxService> eth_tx_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service) override;
 

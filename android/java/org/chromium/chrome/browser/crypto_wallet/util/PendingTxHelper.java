@@ -6,7 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -20,17 +20,17 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class PendingTxHelper {
-    private EthTxController mEthTxController;
+    private EthTxService mEthTxService;
     private AccountInfo[] mAccountInfos;
     private HashMap<String, TransactionInfo[]> mTxInfos;
     private boolean mReturnAll;
     private String mFilterByContractAddress;
     private String mRopstenContractAddress;
 
-    public PendingTxHelper(EthTxController ethTxController, AccountInfo[] accountInfos,
+    public PendingTxHelper(EthTxService ethTxService, AccountInfo[] accountInfos,
             boolean returnAll, String filterByContractAddress) {
-        assert ethTxController != null;
-        mEthTxController = ethTxController;
+        assert ethTxService != null;
+        mEthTxService = ethTxService;
         mAccountInfos = accountInfos;
         mFilterByContractAddress = filterByContractAddress;
         mReturnAll = returnAll;
@@ -56,7 +56,7 @@ public class PendingTxHelper {
 
             allTxContexts.add(allTxContext);
 
-            mEthTxController.getAllTransactionInfo(accountInfo.address, allTxContext);
+            mEthTxService.getAllTransactionInfo(accountInfo.address, allTxContext);
         }
 
         allTxMultiResponse.setWhenAllCompletedAction(() -> {

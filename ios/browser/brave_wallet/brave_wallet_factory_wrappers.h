@@ -11,7 +11,7 @@
 
 @protocol BraveWalletAssetRatioService
 , BraveWalletBraveWalletService, BraveWalletEthJsonRpcController,
-    BraveWalletEthTxController, BraveWalletKeyringController,
+    BraveWalletEthTxService, BraveWalletKeyringController,
     BraveWalletSwapService;
 
 OBJC_EXPORT
@@ -27,9 +27,9 @@ NS_SWIFT_NAME(BraveWallet.EthJsonRpcControllerFactory)
 @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.EthTxControllerFactory)
-@interface BraveWalletEthTxControllerFactory
-    : KeyedServiceFactoryWrapper <id <BraveWalletEthTxController>>
+NS_SWIFT_NAME(BraveWallet.EthTxServiceFactory)
+@interface BraveWalletEthTxServiceFactory
+    : KeyedServiceFactoryWrapper <id <BraveWalletEthTxService>>
 @end
 
 OBJC_EXPORT

@@ -9,7 +9,7 @@
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
@@ -45,15 +45,15 @@
 }
 @end
 
-@implementation BraveWalletEthTxControllerFactory
+@implementation BraveWalletEthTxServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* controller =
-      brave_wallet::EthTxControllerFactory::GetForBrowserState(browserState);
+      brave_wallet::EthTxServiceFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletEthTxControllerImpl alloc]
-      initWithEthTxController:controller];
+  return [[BraveWalletEthTxServiceImpl alloc]
+      initWithEthTxService:controller];
 }
 @end
 
