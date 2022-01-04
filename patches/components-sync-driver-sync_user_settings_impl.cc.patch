@@ -1,0 +1,13 @@
+diff --git a/components/sync/driver/sync_user_settings_impl.cc b/components/sync/driver/sync_user_settings_impl.cc
+index 40af755fba80e1bd6c56ee7eae79b9d0ef37e265..cc309eaaff40c8f02062e9e239caca56f0e8d03a 100644
+--- a/components/sync/driver/sync_user_settings_impl.cc
++++ b/components/sync/driver/sync_user_settings_impl.cc
+@@ -252,7 +252,7 @@ ModelTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+ #endif
+   types.RetainAll(registered_model_types_);
+ 
+-  static_assert(38 == GetNumModelTypes(),
++  static_assert(40 == GetNumModelTypes(),
+                 "If adding a new sync data type, update the list below below if"
+                 " you want to disable the new data type for local sync.");
+   types.PutAll(ControlTypes());
