@@ -47,11 +47,11 @@ std::unique_ptr<KeyedService> EthTxServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* json_rpc_service =
-      JsonRpcServiceFactory::GetControllerForBrowserState(browser_state);
+      JsonRpcServiceFactory::GetServiceForState(browser_state);
   auto* keyring_service =
-      KeyringServiceFactory::GetControllerForBrowserState(browser_state);
+      KeyringServiceFactory::GetServiceForState(browser_state);
   auto* asset_ratio_service =
-      AssetRatioServiceFactory::GetControllerForBrowserState(browser_state);
+      AssetRatioServiceFactory::GetServiceForState(browser_state);
   return brave_wallet::BuildEthTxService(json_rpc_service, keyring_service,
                                          asset_ratio_service,
                                          browser_state->GetPrefs());

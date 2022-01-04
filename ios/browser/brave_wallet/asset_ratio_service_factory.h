@@ -28,7 +28,7 @@ class AssetRatioServiceFactory : public BrowserStateKeyedServiceFactory {
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojom::AssetRatioService* GetForBrowserState(
       ChromeBrowserState* browser_state);
-  static AssetRatioService* GetControllerForBrowserState(
+  static AssetRatioService* GetServiceForState(
       ChromeBrowserState* browser_state);
 
   static AssetRatioServiceFactory* GetInstance();

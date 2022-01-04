@@ -28,7 +28,7 @@ class KeyringServiceFactory : public BrowserStateKeyedServiceFactory {
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojom::KeyringService* GetForBrowserState(
       ChromeBrowserState* browser_state);
-  static KeyringService* GetControllerForBrowserState(
+  static KeyringService* GetServiceForState(
       ChromeBrowserState* browser_state);
 
   static KeyringServiceFactory* GetInstance();

@@ -21,74 +21,74 @@
 
 @implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::AssetRatioServiceFactory::GetForBrowserState(
           browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletAssetRatioServiceImpl alloc]
-      initWithAssetRatioService:controller];
+      initWithAssetRatioService:service];
 }
 @end
 
 @implementation BraveWalletJsonRpcServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::JsonRpcServiceFactory::GetForBrowserState(
           browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletJsonRpcServiceImpl alloc]
-      initWithJsonRpcService:controller];
+      initWithJsonRpcService:service];
 }
 @end
 
 @implementation BraveWalletEthTxServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::EthTxServiceFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletEthTxServiceImpl alloc]
-      initWithEthTxService:controller];
+      initWithEthTxService:service];
 }
 @end
 
 @implementation BraveWalletKeyringServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::KeyringServiceFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletKeyringServiceImpl alloc]
-      initWithKeyringService:controller];
+      initWithKeyringService:service];
 }
 @end
 
 @implementation BraveWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::BraveWalletServiceFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletBraveWalletServiceImpl alloc]
-      initWithBraveWalletService:controller];
+      initWithBraveWalletService:service];
 }
 @end
 
 @implementation BraveWalletSwapServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::SwapServiceFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return
-      [[BraveWalletSwapServiceImpl alloc] initWithSwapService:controller];
+      [[BraveWalletSwapServiceImpl alloc] initWithSwapService:service];
 }
 @end

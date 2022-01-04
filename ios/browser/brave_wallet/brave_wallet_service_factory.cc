@@ -45,11 +45,11 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* keyring_service =
-      KeyringServiceFactory::GetControllerForBrowserState(browser_state);
-  std::unique_ptr<BraveWalletService> controller(
+      KeyringServiceFactory::GetServiceForState(browser_state);
+  std::unique_ptr<BraveWalletService> service(
       new BraveWalletService(std::make_unique<BraveWalletServiceDelegate>(),
                              keyring_service, browser_state->GetPrefs()));
-  return controller;
+  return service;
 }
 
 bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {

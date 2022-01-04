@@ -23,7 +23,7 @@ mojom::JsonRpcService* JsonRpcServiceFactory::GetForBrowserState(
 }
 
 // static
-JsonRpcService* JsonRpcServiceFactory::GetControllerForBrowserState(
+JsonRpcService* JsonRpcServiceFactory::GetServiceForState(
     ChromeBrowserState* browser_state) {
   return static_cast<JsonRpcService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));

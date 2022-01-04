@@ -40,7 +40,7 @@ std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* json_rpc_service =
-      JsonRpcServiceFactory::GetControllerForBrowserState(browser_state);
+      JsonRpcServiceFactory::GetServiceForState(browser_state);
   std::unique_ptr<SwapService> swap_service(new SwapService(
       browser_state->GetSharedURLLoaderFactory(), json_rpc_service));
   return swap_service;

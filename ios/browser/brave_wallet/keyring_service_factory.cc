@@ -23,7 +23,7 @@ mojom::KeyringService* KeyringServiceFactory::GetForBrowserState(
 }
 
 // static
-KeyringService* KeyringServiceFactory::GetControllerForBrowserState(
+KeyringService* KeyringServiceFactory::GetServiceForState(
     ChromeBrowserState* browser_state) {
   return static_cast<KeyringService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
