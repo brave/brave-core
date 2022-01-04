@@ -16,7 +16,7 @@ namespace brave_wallet {
 
 std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
-    const std::string& controller_response,
+    const std::string& service_response,
     bool* reject);
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
     mojom::ProviderError code,

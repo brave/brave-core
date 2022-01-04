@@ -116,7 +116,7 @@ interface PanelHandlerFactory {
   CreatePanelHandler(pending_remote<Page> page,
                      pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
-                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                     pending_receiver<JsonRpcService> json_rpc_service,
                      pending_receiver<SwapService> swap_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringService> keyring_service,
@@ -130,7 +130,7 @@ interface PageHandlerFactory {
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
-                    pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                    pending_receiver<JsonRpcService> json_rpc_service,
                     pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringService> keyring_service,
@@ -487,7 +487,7 @@ interface SwapService {
       (bool success, SwapResponse? response, string? error_response);
 };
 
-interface EthJsonRpcControllerObserver {
+interface JsonRpcServiceObserver {
   // Fired when the selected network changes
   ChainChangedEvent(string chain_id);
 
@@ -551,7 +551,7 @@ struct SwitchChainRequest {
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
-interface EthJsonRpcController {
+interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
@@ -595,8 +595,8 @@ interface EthJsonRpcController {
   // Used for making requests to the currently selected EVM compatible node
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
-  // Adds an observer for the events of EthJsonRpcController
-  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  // Adds an observer for the events of JsonRpcService
+  AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 
   // Sets a custom network for testing
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
@@ -684,7 +684,7 @@ interface EthTxService {
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
 
   // Obtains a list of all transactions from an address.
-  // This returns different data depending on which network is currently selected in EthJsonRpcController
+  // This returns different data depending on which network is currently selected in JsonRpcService
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
 
   // Adds an observer for EthTxService

@@ -19,11 +19,11 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -220,30 +220,30 @@ class EthTxServiceUnitTest : public testing::Test {
 
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    rpc_controller_.reset(
-        new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
+    json_rpc_service_.reset(
+        new JsonRpcService(shared_url_loader_factory_, &prefs_));
     keyring_service_.reset(new KeyringService(&prefs_));
     asset_ratio_service_.reset(
         new AssetRatioService(shared_url_loader_factory_));
 
     auto tx_state_manager =
-        std::make_unique<EthTxStateManager>(&prefs_, rpc_controller_.get());
+        std::make_unique<EthTxStateManager>(&prefs_, json_rpc_service_.get());
     auto nonce_tracker = std::make_unique<EthNonceTracker>(
-        tx_state_manager.get(), rpc_controller_.get());
+        tx_state_manager.get(), json_rpc_service_.get());
     auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
-        tx_state_manager.get(), rpc_controller_.get(), nonce_tracker.get());
+        tx_state_manager.get(), json_rpc_service_.get(), nonce_tracker.get());
 
     eth_tx_service_.reset(new EthTxService(
-        rpc_controller_.get(), keyring_service_.get(),
+        json_rpc_service_.get(), keyring_service_.get(),
         asset_ratio_service_.get(), std::move(tx_state_manager),
         std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
 
     base::RunLoop run_loop;
-    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_TRUE(success);
-                                  run_loop.Quit();
-                                }));
+    json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                  base::BindLambdaForTesting([&](bool success) {
+                                    EXPECT_TRUE(success);
+                                    run_loop.Quit();
+                                  }));
     run_loop.Run();
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
@@ -365,7 +365,7 @@ class EthTxServiceUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
-  std::unique_ptr<EthJsonRpcController> rpc_controller_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<EthTxService> eth_tx_service_;
   std::unique_ptr<AssetRatioService> asset_ratio_service_;

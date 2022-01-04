@@ -8,7 +8,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
@@ -32,16 +32,16 @@
 }
 @end
 
-@implementation BraveWalletEthJsonRpcControllerFactory
+@implementation BraveWalletJsonRpcServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* controller =
-      brave_wallet::EthJsonRpcControllerFactory::GetForBrowserState(
+      brave_wallet::JsonRpcServiceFactory::GetForBrowserState(
           browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletEthJsonRpcControllerImpl alloc]
-      initWithEthJsonRpcController:controller];
+  return [[BraveWalletJsonRpcServiceImpl alloc]
+      initWithJsonRpcService:controller];
 }
 @end
 

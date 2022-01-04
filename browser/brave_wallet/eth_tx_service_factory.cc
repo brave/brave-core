@@ -10,8 +10,8 @@
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/factory/eth_tx_service_factory_helper.h"
@@ -54,7 +54,7 @@ EthTxServiceFactory::EthTxServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "EthTxService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(brave_wallet::RpcControllerFactory::GetInstance());
+  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
   DependsOn(brave_wallet::KeyringServiceFactory::GetInstance());
   DependsOn(brave_wallet::AssetRatioServiceFactory::GetInstance());
 }
@@ -64,7 +64,7 @@ EthTxServiceFactory::~EthTxServiceFactory() {}
 KeyedService* EthTxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return brave_wallet::BuildEthTxService(
-             RpcControllerFactory::GetControllerForContext(context),
+             JsonRpcServiceFactory::GetControllerForContext(context),
              KeyringServiceFactory::GetControllerForContext(context),
              AssetRatioServiceFactory::GetControllerForContext(context),
              user_prefs::UserPrefs::Get(context))

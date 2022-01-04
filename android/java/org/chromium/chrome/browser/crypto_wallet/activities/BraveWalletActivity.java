@@ -36,7 +36,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -45,7 +45,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
@@ -89,7 +89,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private KeyringService mKeyringService;
     private ErcTokenRegistry mErcTokenRegistry;
-    private EthJsonRpcController mEthJsonRpcController;
+    private JsonRpcService mJsonRpcService;
     private EthTxService mEthTxService;
     private AssetRatioService mAssetRatioService;
     private BraveWalletService mBraveWalletService;
@@ -201,19 +201,19 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
         mEthTxService.close();
         mBraveWalletService.close();
 
         mKeyringService = null;
         mErcTokenRegistry = null;
-        mEthJsonRpcController = null;
+        mJsonRpcService = null;
         mEthTxService = null;
         mAssetRatioService = null;
         mBraveWalletService = null;
         InitKeyringService();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
+        InitJsonRpcService();
         InitEthTxService();
         InitAssetRatioService();
         InitBraveWalletService();
@@ -244,13 +244,13 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService =
+                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void InitAssetRatioService() {
@@ -278,8 +278,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         return mErcTokenRegistry;
     }
 
-    public EthJsonRpcController getEthJsonRpcController() {
-        return mEthJsonRpcController;
+    public JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
     public EthTxService getEthTxService() {
@@ -299,7 +299,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         super.finishNativeInitialization();
         InitKeyringService();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
+        InitJsonRpcService();
         InitEthTxService();
         InitAssetRatioService();
         InitBraveWalletService();
@@ -321,7 +321,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
         mEthTxService.close();
         mBraveWalletService.close();
         mModalDialogManager.destroy();

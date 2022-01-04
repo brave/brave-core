@@ -12,8 +12,8 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
@@ -22,8 +22,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
@@ -73,8 +73,8 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
-        eth_json_rpc_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+        json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
@@ -96,10 +96,10 @@ void WalletPageUI::CreatePageHandler(
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 
-  auto* eth_json_rpc_controller =
-      brave_wallet::RpcControllerFactory::GetControllerForContext(profile);
-  if (eth_json_rpc_controller) {
-    eth_json_rpc_controller->Bind(std::move(eth_json_rpc_controller_receiver));
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetControllerForContext(profile);
+  if (json_rpc_service) {
+    json_rpc_service->Bind(std::move(json_rpc_service_receiver));
   }
 
   auto* swap_service =

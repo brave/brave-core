@@ -34,7 +34,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -104,12 +104,12 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         return null;
     }
 
-    private EthJsonRpcController getEthJsonRpcController() {
+    private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthJsonRpcController();
+            return ((BuySendSwapActivity) activity).getJsonRpcService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthJsonRpcController();
+            return ((BraveWalletActivity) activity).getJsonRpcService();
         }
 
         return null;
@@ -173,9 +173,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        assert ethJsonRpcController != null;
-        ethJsonRpcController.getChainId(chainId -> {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(chainId -> {
             TextView networkName = view.findViewById(R.id.network_name);
             networkName.setText(Utils.getNetworkText(getActivity(), chainId).toString());
             TextView txType = view.findViewById(R.id.tx_type);

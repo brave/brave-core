@@ -9,7 +9,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/webui_url_constants.h"

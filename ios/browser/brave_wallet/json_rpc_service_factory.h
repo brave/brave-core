@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_JSON_RPC_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_JSON_RPC_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,24 +21,24 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
-class EthJsonRpcControllerFactory : public BrowserStateKeyedServiceFactory {
+class JsonRpcServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::EthJsonRpcController* GetForBrowserState(
+  static mojom::JsonRpcService* GetForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static EthJsonRpcController* GetControllerForBrowserState(
+  static JsonRpcService* GetControllerForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static EthJsonRpcControllerFactory* GetInstance();
+  static JsonRpcServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<EthJsonRpcControllerFactory>;
+  friend struct base::DefaultSingletonTraits<JsonRpcServiceFactory>;
 
-  EthJsonRpcControllerFactory();
-  ~EthJsonRpcControllerFactory() override;
+  JsonRpcServiceFactory();
+  ~JsonRpcServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -48,11 +48,10 @@ class EthJsonRpcControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  EthJsonRpcControllerFactory(const EthJsonRpcControllerFactory&) = delete;
-  EthJsonRpcControllerFactory& operator=(const EthJsonRpcControllerFactory&) =
-      delete;
+  JsonRpcServiceFactory(const JsonRpcServiceFactory&) = delete;
+  JsonRpcServiceFactory& operator=(const JsonRpcServiceFactory&) = delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ETH_JSON_RPC_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_

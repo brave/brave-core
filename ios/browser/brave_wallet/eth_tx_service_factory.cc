@@ -11,7 +11,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/factory/eth_tx_service_factory_helper.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -36,7 +36,7 @@ EthTxServiceFactory::EthTxServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "EthTxService",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(EthJsonRpcControllerFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
   DependsOn(KeyringServiceFactory::GetInstance());
   DependsOn(AssetRatioServiceFactory::GetInstance());
 }
@@ -46,13 +46,13 @@ EthTxServiceFactory::~EthTxServiceFactory() = default;
 std::unique_ptr<KeyedService> EthTxServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  auto* rpc_controller =
-      EthJsonRpcControllerFactory::GetControllerForBrowserState(browser_state);
+  auto* json_rpc_service =
+      JsonRpcServiceFactory::GetControllerForBrowserState(browser_state);
   auto* keyring_service =
       KeyringServiceFactory::GetControllerForBrowserState(browser_state);
   auto* asset_ratio_service =
       AssetRatioServiceFactory::GetControllerForBrowserState(browser_state);
-  return brave_wallet::BuildEthTxService(rpc_controller, keyring_service,
+  return brave_wallet::BuildEthTxService(json_rpc_service, keyring_service,
                                          asset_ratio_service,
                                          browser_state->GetPrefs());
 }

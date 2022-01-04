@@ -49,7 +49,7 @@ export async function signTrezorTransaction (
   path: string,
   txInfo: BraveWallet.TransactionInfo,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()): Promise<SignHardwareTransactionType> {
-  const chainId = await apiProxy.ethJsonRpcController.getChainId()
+  const chainId = await apiProxy.jsonRpcService.getChainId()
   const nonce = await apiProxy.ethTxService.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }

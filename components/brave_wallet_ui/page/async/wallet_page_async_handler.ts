@@ -269,14 +269,14 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
 // Getting and setting network:
 //
 // import { Network } from '../../constants/types'
-// const ethJsonRpcController = getWalletPageApiProxy().ethJsonRpcController
-// const network = await ethJsonRpcController.getNetwork()
-// await ethJsonRpcController.setNetwork(Network.Rinkeby)
-// const chainId = await ethJsonRpcController.getChainId()
-// const blockTrackerUrl = await ethJsonRpcController.getBlockTrackerUrl()
+// const jsonRpcService = getWalletPageApiProxy().jsonRpcService
+// const network = await jsonRpcService.getNetwork()
+// await jsonRpcService.setNetwork(Network.Rinkeby)
+// const chainId = await jsonRpcService.getChainId()
+// const blockTrackerUrl = await jsonRpcService.getBlockTrackerUrl()
 //
 // Getting ETH and BAT ERC20 balance
-// const balance = await ethJsonRpcController.getBalance(address)
-// const token_balance = await ethJsonRpcController.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
+// const balance = await jsonRpcService.getBalance(address)
+// const token_balance = await jsonRpcService.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
 
 export default handler.middleware

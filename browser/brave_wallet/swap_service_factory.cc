@@ -6,7 +6,7 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -45,7 +45,7 @@ SwapServiceFactory::SwapServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SwapService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(RpcControllerFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
 }
 
 SwapServiceFactory::~SwapServiceFactory() {}
@@ -58,7 +58,7 @@ KeyedService* SwapServiceFactory::BuildServiceInstanceFor(
 
   return new SwapService(
       shared_url_loader_factory,
-      RpcControllerFactory::GetControllerForContext(context));
+      JsonRpcServiceFactory::GetControllerForContext(context));
 }
 
 content::BrowserContext* SwapServiceFactory::GetBrowserContextToUse(

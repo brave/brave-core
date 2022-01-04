@@ -51,7 +51,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -70,7 +70,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
@@ -181,7 +181,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public String mActivateAllowanceTxId;
 
     private ErcTokenRegistry mErcTokenRegistry;
-    private EthJsonRpcController mEthJsonRpcController;
+    private JsonRpcService mJsonRpcService;
     private EthTxService mEthTxService;
     private KeyringService mKeyringService;
     private ActivityType mActivityType;
@@ -209,7 +209,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
         mEthTxService.close();
         mSwapService.close();
         mBraveWalletService.close();
@@ -315,8 +315,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
             }
 
-            if (mEthJsonRpcController != null) {
-                mEthJsonRpcController.setNetwork(chainId, (success) -> {
+            if (mJsonRpcService != null) {
+                mJsonRpcService.setNetwork(chainId, (success) -> {
                     if (!success) {
                         Log.e(TAG, "Could not set network");
                     }
@@ -516,8 +516,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         final double fee = gasLimit * Utils.fromWei(response.gasPrice, 18);
         final double fromValue = valueFrom;
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getBalance(
+        assert mJsonRpcService != null;
+        mJsonRpcService.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
@@ -567,11 +567,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void checkAllowance(String contract, String spenderAddress, double amountToSend) {
-        assert mEthJsonRpcController != null;
+        assert mJsonRpcService != null;
         assert mCurrentErcToken != null;
         String ownerAddress =
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
-        mEthJsonRpcController.getErc20TokenAllowance(
+        mJsonRpcService.getErc20TokenAllowance(
                 contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
                     warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
                     if (error != ProviderError.SUCCESS
@@ -587,8 +587,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void updateBalance(String address, boolean from) {
-        assert mEthJsonRpcController != null;
-        if (mEthJsonRpcController == null) {
+        assert mJsonRpcService != null;
+        if (mJsonRpcService == null) {
             return;
         }
         ErcToken ercToken = mCurrentErcToken;
@@ -596,7 +596,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             ercToken = mCurrentSwapToErcToken;
         }
         if (ercToken == null || ercToken.contractAddress.isEmpty()) {
-            mEthJsonRpcController.getBalance(address, (balance, error, errorMessage) -> {
+            mJsonRpcService.getBalance(address, (balance, error, errorMessage) -> {
                 warnWhenError(TAG, "getBalance", error, errorMessage);
                 if (error != ProviderError.SUCCESS) {
                     return;
@@ -604,7 +604,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 populateBalance(balance, from);
             });
         } else {
-            mEthJsonRpcController.getErc20TokenBalance(
+            mJsonRpcService.getErc20TokenBalance(
                     ercToken.contractAddress, address, (balance, error, errorMessage) -> {
                         warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
                         if (error != ProviderError.SUCCESS) {
@@ -1283,8 +1283,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private void sendTransaction(
             TxData data, String from, String maxPriorityFeePerGas, String maxFeePerGas) {
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getAllNetworks(networks -> {
+        assert mJsonRpcService != null;
+        mJsonRpcService.getAllNetworks(networks -> {
             boolean isEIP1559 = false;
             // We have hardcoded EIP-1559 gas fields.
             if (!maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty()) {
@@ -1479,13 +1479,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
         mEthTxService.close();
         mSwapService.close();
         mBraveWalletService.close();
 
         mErcTokenRegistry = null;
-        mEthJsonRpcController = null;
+        mJsonRpcService = null;
         mEthTxService = null;
         mKeyringService = null;
         mAssetRatioService = null;
@@ -1493,7 +1493,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mBraveWalletService = null;
         InitAssetRatioService();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
+        InitJsonRpcService();
         InitEthTxService();
         InitKeyringService();
         InitSwapService();
@@ -1508,8 +1508,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         return mEthTxService;
     }
 
-    public EthJsonRpcController getEthJsonRpcController() {
-        return mEthJsonRpcController;
+    public JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
     public BraveWalletService getBraveWalletService() {
@@ -1554,13 +1554,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService =
+                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void InitEthTxService() {
@@ -1595,15 +1595,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
+        InitJsonRpcService();
         InitEthTxService();
         InitKeyringService();
         InitAssetRatioService();
         InitSwapService();
         InitBraveWalletService();
 
-        if (mEthJsonRpcController != null) {
-            mEthJsonRpcController.getChainId(chainId -> {
+        if (mJsonRpcService != null) {
+            mJsonRpcService.getChainId(chainId -> {
                 mCurrentChainId = chainId;
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);

@@ -15,7 +15,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -31,7 +31,7 @@ public class PortfolioHelper {
     private static String TAG = "PortfolioHelper";
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
-    private EthJsonRpcController mEthJsonRpcController;
+    private JsonRpcService mJsonRpcService;
     private String mChainId;
     private AccountInfo[] mAccountInfos;
 
@@ -44,14 +44,14 @@ public class PortfolioHelper {
     private int mFiatHistoryTimeframe;
 
     public PortfolioHelper(BraveWalletService braveWalletService,
-            AssetRatioService assetRatioService, EthJsonRpcController ethJsonRpcController,
+            AssetRatioService assetRatioService, JsonRpcService jsonRpcService,
             AccountInfo[] accountInfos) {
         assert braveWalletService != null;
         assert assetRatioService != null;
-        assert ethJsonRpcController != null;
+        assert jsonRpcService != null;
         mBraveWalletService = braveWalletService;
         mAssetRatioService = assetRatioService;
-        mEthJsonRpcController = ethJsonRpcController;
+        mJsonRpcService = jsonRpcService;
         mAccountInfos = accountInfos;
     }
 
@@ -167,7 +167,7 @@ public class PortfolioHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.userAsset = userAsset;
                             contexts.add(context);
-                            mEthJsonRpcController.getBalance(accountInfo.address, context);
+                            mJsonRpcService.getBalance(accountInfo.address, context);
 
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =
@@ -175,7 +175,7 @@ public class PortfolioHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.userAsset = userAsset;
                             contexts.add(context);
-                            mEthJsonRpcController.getErc20TokenBalance(
+                            mJsonRpcService.getErc20TokenBalance(
                                     Utils.getContractAddress(
                                             mChainId, userAsset.symbol, userAsset.contractAddress),
                                     accountInfo.address, context);

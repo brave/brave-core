@@ -32,7 +32,7 @@ namespace brave_wallet {
 class EthTxServiceUnitTest;
 
 class AssetRatioService;
-class EthJsonRpcController;
+class JsonRpcService;
 class KeyringService;
 
 class EthTxService : public KeyedService,
@@ -41,7 +41,7 @@ class EthTxService : public KeyedService,
                      public EthBlockTracker::Observer,
                      public EthTxStateManager::Observer {
  public:
-  explicit EthTxService(EthJsonRpcController* eth_json_rpc_controller,
+  explicit EthTxService(JsonRpcService* json_rpc_service,
                         KeyringService* keyring_service,
                         AssetRatioService* asset_ratio_service,
                         std::unique_ptr<EthTxStateManager> tx_state_manager,
@@ -229,7 +229,7 @@ class EthTxService : public KeyedService,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
-  EthJsonRpcController* rpc_controller_;    // NOT OWNED
+  JsonRpcService* json_rpc_service_;        // NOT OWNED
   KeyringService* keyring_service_;         // NOT OWNED
   AssetRatioService* asset_ratio_service_;  // NOT OWNED
   PrefService* prefs_;                      // NOT OWNED

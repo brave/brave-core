@@ -185,8 +185,8 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appIt
 })
 
 handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: BraveWallet.EthereumChain) => {
-  const ethJsonRpcController = getAPIProxy().ethJsonRpcController
-  await ethJsonRpcController.setNetwork(payload.chainId)
+  const jsonRpcService = getAPIProxy().jsonRpcService
+  await jsonRpcService.setNetwork(payload.chainId)
   await refreshWalletInfo(store)
 })
 
@@ -230,8 +230,8 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
 })
 
 handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
-  const ethJsonRpcController = getAPIProxy().ethJsonRpcController
-  const fullList = await ethJsonRpcController.getAllNetworks()
+  const jsonRpcService = getAPIProxy().jsonRpcService
+  const fullList = await jsonRpcService.getAllNetworks()
   store.dispatch(WalletActions.setAllNetworks(fullList))
 })
 
@@ -308,7 +308,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       isEIP1559 = keyringSupportsEIP1559 && selectedNetwork.isEip1559
   }
 
-  const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
+  const { chainId } = await apiProxy.jsonRpcService.getChainId()
 
   let addResult
   const txData: BraveWallet.TxData = {

@@ -45,8 +45,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
-          eth_json_rpc_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+          json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,

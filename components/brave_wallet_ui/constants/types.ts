@@ -320,14 +320,14 @@ export interface GetAllTokensReturnInfo {
   tokens: BraveWallet.ERCToken[]
 }
 
-export type GetBalanceReturnInfo = BraveWallet.EthJsonRpcController_GetBalance_ResponseParams
+export type GetBalanceReturnInfo = BraveWallet.JsonRpcService_GetBalance_ResponseParams
 
 export interface GetNativeAssetBalancesPriceReturnInfo {
   fiatPrice: string
   balances: GetBalanceReturnInfo[]
 }
 
-export type GetERCTokenBalanceReturnInfo = BraveWallet.EthJsonRpcController_GetERC20TokenBalance_ResponseParams
+export type GetERCTokenBalanceReturnInfo = BraveWallet.JsonRpcService_GetERC20TokenBalance_ResponseParams
 
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
   balances: GetERCTokenBalanceReturnInfo[][]
@@ -382,7 +382,7 @@ export type AccountTransactions = {
   [accountId: string]: BraveWallet.TransactionInfo[]
 }
 
-export type GetEthAddrReturnInfo = BraveWallet.EthJsonRpcController_EnsGetEthAddr_ResponseParams
+export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
 
 export interface GetERCTokenInfoReturnInfo {
   token: BraveWallet.ERCToken | null

@@ -69,8 +69,8 @@ async function hasPendingUnlockRequest () {
 }
 
 async function getPendingChainRequest () {
-  const ethJsonRpcController = getWalletPanelApiProxy().ethJsonRpcController
-  const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
+  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
+  const chains = (await jsonRpcService.getPendingChainRequests()).networks
   if (chains && chains.length) {
     return chains[0]
   }
@@ -78,9 +78,9 @@ async function getPendingChainRequest () {
 }
 
 async function getPendingSwitchChainRequest () {
-  const ethJsonRpcController = getWalletPanelApiProxy().ethJsonRpcController
+  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
   const requests =
-    (await ethJsonRpcController.getPendingSwitchChainRequests()).requests
+    (await jsonRpcService.getPendingSwitchChainRequests()).requests
   if (requests && requests.length) {
     return requests[0]
   }
@@ -304,8 +304,8 @@ handler.on(PanelActions.addEthereumChain.getType(), async (store: Store, payload
 
 handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store: any, payload: EthereumChainRequestPayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const ethJsonRpcController = apiProxy.ethJsonRpcController
-  ethJsonRpcController.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
+  const jsonRpcService = apiProxy.jsonRpcService
+  jsonRpcService.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
   const chain = await getPendingChainRequest()
   if (chain) {
     store.dispatch(PanelActions.addEthereumChain({ chain }))
@@ -325,8 +325,8 @@ handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, requ
 
 handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const ethJsonRpcController = apiProxy.ethJsonRpcController
-  ethJsonRpcController.notifySwitchChainRequestProcessed(payload.approved, payload.origin)
+  const jsonRpcService = apiProxy.jsonRpcService
+  jsonRpcService.notifySwitchChainRequestProcessed(payload.approved, payload.origin)
   const switchChainRequest = await getPendingSwitchChainRequest()
   if (switchChainRequest) {
     store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))

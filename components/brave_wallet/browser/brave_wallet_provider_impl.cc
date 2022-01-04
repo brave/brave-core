@@ -16,8 +16,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -31,7 +31,7 @@ namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
-    EthJsonRpcController* rpc_controller,
+    JsonRpcService* json_rpc_service,
     mojo::PendingRemote<mojom::EthTxService> tx_service,
     KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
@@ -39,13 +39,13 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
     PrefService* prefs)
     : host_content_settings_map_(host_content_settings_map),
       delegate_(std::move(delegate)),
-      rpc_controller_(rpc_controller),
+      json_rpc_service_(json_rpc_service),
       keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
       weak_factory_(this) {
-  DCHECK(rpc_controller);
-  rpc_controller_->AddObserver(
+  DCHECK(json_rpc_service);
+  json_rpc_service_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
   DCHECK(tx_service);
@@ -110,7 +110,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
 
   // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
-    if (rpc_controller_->GetChainId() != chain->chain_id) {
+    if (json_rpc_service_->GetChainId() != chain->chain_id) {
       SwitchEthereumChain(chain->chain_id, std::move(callback));
       return;
     }
@@ -141,7 +141,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
   chain_callbacks_[chain->chain_id] = std::move(callback);
-  rpc_controller_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChain(
       chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&BraveWalletProviderImpl::OnAddEthereumChain,
                      weak_factory_.GetWeakPtr()));
@@ -167,14 +167,14 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
     const std::string& chain_id,
     SwitchEthereumChainCallback callback) {
   // Only show bubble when there is no immediate error
-  if (rpc_controller_->AddSwitchEthereumChainRequest(
+  if (json_rpc_service_->AddSwitchEthereumChainRequest(
           chain_id, delegate_->GetOrigin(), std::move(callback)))
     delegate_->ShowPanel();
 }
 
 void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback) {
-  rpc_controller_->GetNetwork(
+  json_rpc_service_->GetNetwork(
       base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -270,7 +270,7 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
 
   // If the chain id is not known yet, then get it and set it first
   if (tx_data->chain_id == "0x0" || tx_data->chain_id.empty()) {
-    rpc_controller_->GetChainId(base::BindOnce(
+    json_rpc_service_->GetChainId(base::BindOnce(
         &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
         weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
         from));
@@ -429,7 +429,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
   if (chain_id) {
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
-    if (chain_id_hex != rpc_controller_->GetChainId()) {
+    if (chain_id_hex != json_rpc_service_->GetChainId()) {
       std::move(callback).Run(
           "", mojom::ProviderError::kInternalError,
           l10n_util::GetStringFUTF8(
@@ -569,8 +569,8 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
                                       RequestCallback callback) {
-  if (rpc_controller_) {
-    rpc_controller_->Request(json_payload, true, std::move(callback));
+  if (json_rpc_service_) {
+    json_rpc_service_->Request(json_payload, true, std::move(callback));
   }
 }
 
@@ -647,8 +647,8 @@ void BraveWalletProviderImpl::OnUpdateKnownAccounts(
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
-  if (rpc_controller_) {
-    rpc_controller_->GetChainId(std::move(callback));
+  if (json_rpc_service_) {
+    json_rpc_service_->GetChainId(std::move(callback));
   }
 }
 

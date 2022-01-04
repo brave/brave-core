@@ -30,12 +30,12 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
 class SwapService : public KeyedService, public mojom::SwapService {
  public:
   SwapService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-              EthJsonRpcController* eth_json_rpc_controller);
+              JsonRpcService* json_rpc_service);
   ~SwapService() override;
   SwapService(const SwapService&) = delete;
   SwapService& operator=(const SwapService&) = delete;
@@ -75,7 +75,7 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
-  EthJsonRpcController* rpc_controller_;  // NOT OWNED
+  JsonRpcService* json_rpc_service_;  // NOT OWNED
   mojo::ReceiverSet<mojom::SwapService> receivers_;
 
   base::WeakPtrFactory<SwapService> weak_ptr_factory_;

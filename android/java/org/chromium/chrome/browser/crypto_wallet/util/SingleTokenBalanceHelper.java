@@ -12,7 +12,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 
 import java.util.ArrayList;
@@ -22,14 +22,14 @@ import java.util.Locale;
 public class SingleTokenBalanceHelper {
     private static String TAG = "SingleAccountTokenBalance";
     private AssetRatioService mAssetRatioService;
-    private EthJsonRpcController mEthJsonRpcController;
+    private JsonRpcService mJsonRpcService;
     private HashMap<String, Double> mPerAcountFiatBalance;
     private HashMap<String, Double> mPerAcountCryptoBalance;
 
     public SingleTokenBalanceHelper(
-            AssetRatioService assetRatioService, EthJsonRpcController ethJsonRpcController) {
+            AssetRatioService assetRatioService, JsonRpcService jsonRpcService) {
         mAssetRatioService = assetRatioService;
-        mEthJsonRpcController = ethJsonRpcController;
+        mJsonRpcService = jsonRpcService;
     }
 
     public HashMap<String, Double> getPerAccountFiatBalance() {
@@ -77,14 +77,14 @@ public class SingleTokenBalanceHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.accountAddress = accountInfo.address;
                             contexts.add(context);
-                            mEthJsonRpcController.getBalance(accountInfo.address, context);
+                            mJsonRpcService.getBalance(accountInfo.address, context);
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =
                                     new AsyncUtils.GetErc20TokenBalanceResponseContext(
                                             balancesMultiResponse.singleResponseComplete);
                             context.accountAddress = accountInfo.address;
                             contexts.add(context);
-                            mEthJsonRpcController.getErc20TokenBalance(
+                            mJsonRpcService.getErc20TokenBalance(
                                     Utils.getContractAddress(chainId, symbol, contractAddress),
                                     accountInfo.address, context);
                         }

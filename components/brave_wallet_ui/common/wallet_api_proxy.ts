@@ -10,7 +10,7 @@ import { BraveWallet } from '../constants/types'
 
 export default class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
-  ethJsonRpcController = new BraveWallet.EthJsonRpcControllerRemote()
+  jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
   swapService = new BraveWallet.SwapServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
@@ -19,8 +19,8 @@ export default class WalletApiProxy {
   ethTxService = new BraveWallet.EthTxServiceRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 
-  addEthJsonRpcControllerObserver (store: Store) {
-    const ethJsonRpcControllerObserverReceiver = new BraveWallet.EthJsonRpcControllerObserverReceiver({
+  addJsonRpcServiceObserver (store: Store) {
+    const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
       chainChangedEvent: function (chainId) {
         store.dispatch(WalletActions.chainChangedEvent({ chainId }))
       },
@@ -31,7 +31,7 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
       }
     })
-    this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
+    this.jsonRpcService.addObserver(jsonRpcServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
   addKeyringServiceObserver (store: Store) {

@@ -17,12 +17,12 @@
 namespace brave_wallet {
 
 class EthNonceTracker;
-class EthJsonRpcController;
+class JsonRpcService;
 
 class EthPendingTxTracker {
  public:
   EthPendingTxTracker(EthTxStateManager* tx_state_manager,
-                      EthJsonRpcController* rpc_controller,
+                      JsonRpcService* json_rpc_service,
                       EthNonceTracker* nonce_tracker);
   ~EthPendingTxTracker();
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
@@ -60,7 +60,7 @@ class EthPendingTxTracker {
   base::flat_map<std::string, uint8_t> dropped_blocks_counter_;
 
   EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
   EthNonceTracker* nonce_tracker_;
 
   base::WeakPtrFactory<EthPendingTxTracker> weak_factory_;

@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -16,46 +16,44 @@
 namespace brave_wallet {
 
 // static
-mojom::EthJsonRpcController* EthJsonRpcControllerFactory::GetForBrowserState(
+mojom::JsonRpcService* JsonRpcServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<EthJsonRpcController*>(
+  return static_cast<JsonRpcService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-EthJsonRpcController* EthJsonRpcControllerFactory::GetControllerForBrowserState(
+JsonRpcService* JsonRpcServiceFactory::GetControllerForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<EthJsonRpcController*>(
+  return static_cast<JsonRpcService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-EthJsonRpcControllerFactory* EthJsonRpcControllerFactory::GetInstance() {
-  return base::Singleton<EthJsonRpcControllerFactory>::get();
+JsonRpcServiceFactory* JsonRpcServiceFactory::GetInstance() {
+  return base::Singleton<JsonRpcServiceFactory>::get();
 }
 
-EthJsonRpcControllerFactory::EthJsonRpcControllerFactory()
+JsonRpcServiceFactory::JsonRpcServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "EthJsonRpcController",
+          "JsonRpcService",
           BrowserStateDependencyManager::GetInstance()) {}
 
-EthJsonRpcControllerFactory::~EthJsonRpcControllerFactory() = default;
+JsonRpcServiceFactory::~JsonRpcServiceFactory() = default;
 
-std::unique_ptr<KeyedService>
-EthJsonRpcControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> JsonRpcServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller(
-      new EthJsonRpcController(browser_state->GetSharedURLLoaderFactory(),
-                               browser_state->GetPrefs()));
-  return eth_json_rpc_controller;
+  std::unique_ptr<JsonRpcService> json_rpc_service(new JsonRpcService(
+      browser_state->GetSharedURLLoaderFactory(), browser_state->GetPrefs()));
+  return json_rpc_service;
 }
 
-bool EthJsonRpcControllerFactory::ServiceIsNULLWhileTesting() const {
+bool JsonRpcServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-web::BrowserState* EthJsonRpcControllerFactory::GetBrowserStateToUse(
+web::BrowserState* JsonRpcServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);
 }

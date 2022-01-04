@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_JSON_RPC_CONTROLLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_JSON_RPC_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 
 #include <list>
 #include <memory>
@@ -36,13 +36,12 @@ class PrefService;
 
 namespace brave_wallet {
 
-class EthJsonRpcController : public KeyedService,
-                             public mojom::EthJsonRpcController {
+class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
-  EthJsonRpcController(
+  JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs);
-  ~EthJsonRpcController() override;
+  ~JsonRpcService() override;
 
   struct EthereumChainRequest {
     EthereumChainRequest() {}
@@ -52,8 +51,8 @@ class EthJsonRpcController : public KeyedService,
     mojom::EthereumChain request;
   };
 
-  mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
+  mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
   using StringResultCallback =
       base::OnceCallback<void(const std::string& result,
@@ -134,11 +133,9 @@ class EthJsonRpcController : public KeyedService,
                                         bool approved) override;
 
   std::string GetChainId() const;
-  void GetChainId(
-      mojom::EthJsonRpcController::GetChainIdCallback callback) override;
+  void GetChainId(mojom::JsonRpcService::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
-      mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback)
-      override;
+      mojom::JsonRpcService::GetBlockTrackerUrlCallback callback) override;
   void GetPendingChainRequests(
       GetPendingChainRequestsCallback callback) override;
   void GetPendingSwitchChainRequests(
@@ -148,12 +145,12 @@ class EthJsonRpcController : public KeyedService,
   void GetAllNetworks(GetAllNetworksCallback callback) override;
   std::string GetNetworkUrl() const;
   void GetNetworkUrl(
-      mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
+      mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
   void SetCustomNetworkForTesting(const std::string& chain_id,
                                   const GURL& provider_url) override;
 
-  void AddObserver(::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver>
-                       observer) override;
+  void AddObserver(
+      ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
 
   GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
 
@@ -328,8 +325,8 @@ class EthJsonRpcController : public KeyedService,
                        const GURL& network_url,
                        RequestCallback callback);
 
-  FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, IsValidDomain);
-  FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, Reset);
+  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
+  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);
   bool IsValidDomain(const std::string& domain);
 
   void OnGetERC721OwnerOf(
@@ -359,13 +356,13 @@ class EthJsonRpcController : public KeyedService,
   base::flat_map<GURL, std::string> switch_chain_requests_;
   base::flat_map<GURL, SwitchEthereumChainRequestCallback>
       switch_chain_callbacks_;
-  mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
+  mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
-  mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;
+  mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;
-  base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
+  base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_JSON_RPC_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_

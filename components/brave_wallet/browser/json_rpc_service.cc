@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 #include <utility>
 
@@ -40,11 +40,11 @@ constexpr char kDomainPattern[] =
     "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("eth_json_rpc_controller", R"(
+  return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
       semantics {
-        sender: "ETH JSON RPC Controller"
+        sender: "JSON RPC Service"
         description:
-          "This controller is used to communicate with Ethereum nodes "
+          "This service is used to communicate with Ethereum nodes "
           "on behalf of the user interacting with the native Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
@@ -66,7 +66,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 namespace brave_wallet {
 
-EthJsonRpcController::EthJsonRpcController(
+JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
     : api_request_helper_(new api_request_helper::APIRequestHelper(
@@ -77,47 +77,45 @@ EthJsonRpcController::EthJsonRpcController(
   SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
              base::BindOnce([](bool success) {
                if (!success)
-                 LOG(ERROR)
-                     << "Could not set netowrk from EthJsonRpcController()";
+                 LOG(ERROR) << "Could not set netowrk from JsonRpcService()";
              }));
 }
 
-void EthJsonRpcController::SetAPIRequestHelperForTesting(
+void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_.reset(new api_request_helper::APIRequestHelper(
       GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
 
-EthJsonRpcController::~EthJsonRpcController() {}
+JsonRpcService::~JsonRpcService() {}
 
-mojo::PendingRemote<mojom::EthJsonRpcController>
-EthJsonRpcController::MakeRemote() {
-  mojo::PendingRemote<mojom::EthJsonRpcController> remote;
+mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
+  mojo::PendingRemote<mojom::JsonRpcService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void EthJsonRpcController::Bind(
-    mojo::PendingReceiver<mojom::EthJsonRpcController> receiver) {
+void JsonRpcService::Bind(
+    mojo::PendingReceiver<mojom::JsonRpcService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void EthJsonRpcController::AddObserver(
-    ::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver> observer) {
+void JsonRpcService::AddObserver(
+    ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) {
   observers_.Add(std::move(observer));
 }
 
-void EthJsonRpcController::Request(const std::string& json_payload,
-                                   bool auto_retry_on_network_change,
-                                   RequestCallback callback) {
+void JsonRpcService::Request(const std::string& json_payload,
+                             bool auto_retry_on_network_change,
+                             RequestCallback callback) {
   RequestInternal(json_payload, auto_retry_on_network_change, network_url_,
                   std::move(callback));
 }
 
-void EthJsonRpcController::RequestInternal(const std::string& json_payload,
-                                           bool auto_retry_on_network_change,
-                                           const GURL& network_url,
-                                           RequestCallback callback) {
+void JsonRpcService::RequestInternal(const std::string& json_payload,
+                                     bool auto_retry_on_network_change,
+                                     const GURL& network_url,
+                                     RequestCallback callback) {
   DCHECK(network_url.is_valid());
 
   base::flat_map<std::string, std::string> request_headers;
@@ -145,15 +143,14 @@ void EthJsonRpcController::RequestInternal(const std::string& json_payload,
                                std::move(callback), request_headers);
 }
 
-void EthJsonRpcController::FirePendingRequestCompleted(
-    const std::string& chain_id,
-    const std::string& error) {
+void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
+                                                 const std::string& error) {
   for (const auto& observer : observers_) {
     observer->OnAddEthereumChainRequestCompleted(chain_id, error);
   }
 }
 
-bool EthJsonRpcController::HasRequestFromOrigin(const GURL& origin) const {
+bool JsonRpcService::HasRequestFromOrigin(const GURL& origin) const {
   for (const auto& request : add_chain_pending_requests_) {
     if (request.second.origin == origin)
       return true;
@@ -161,7 +158,7 @@ bool EthJsonRpcController::HasRequestFromOrigin(const GURL& origin) const {
   return false;
 }
 
-void EthJsonRpcController::GetPendingChainRequests(
+void JsonRpcService::GetPendingChainRequests(
     GetPendingChainRequestsCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
   for (const auto& request : add_chain_pending_requests_) {
@@ -170,9 +167,9 @@ void EthJsonRpcController::GetPendingChainRequests(
   std::move(callback).Run(std::move(all_chains));
 }
 
-void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
-                                            const GURL& origin,
-                                            AddEthereumChainCallback callback) {
+void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
+                                      const GURL& origin,
+                                      AddEthereumChainCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
@@ -186,7 +183,7 @@ void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
   std::move(callback).Run(chain_id, true);
 }
 
-void EthJsonRpcController::AddEthereumChainRequestCompleted(
+void JsonRpcService::AddEthereumChainRequestCompleted(
     const std::string& chain_id,
     bool approved) {
   if (!add_chain_pending_requests_.contains(chain_id))
@@ -202,7 +199,7 @@ void EthJsonRpcController::AddEthereumChainRequestCompleted(
   add_chain_pending_requests_.erase(chain_id);
 }
 
-bool EthJsonRpcController::SetNetwork(const std::string& chain_id) {
+bool JsonRpcService::SetNetwork(const std::string& chain_id) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid()) {
     return false;
@@ -217,32 +214,32 @@ bool EthJsonRpcController::SetNetwork(const std::string& chain_id) {
   return true;
 }
 
-void EthJsonRpcController::SetNetwork(const std::string& chain_id,
-                                      SetNetworkCallback callback) {
+void JsonRpcService::SetNetwork(const std::string& chain_id,
+                                SetNetworkCallback callback) {
   if (!SetNetwork(chain_id))
     std::move(callback).Run(false);
   else
     std::move(callback).Run(true);
 }
 
-void EthJsonRpcController::GetNetwork(GetNetworkCallback callback) {
+void JsonRpcService::GetNetwork(GetNetworkCallback callback) {
   std::move(callback).Run(GetChain(prefs_, chain_id_));
 }
 
-void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
+void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
   // Only try to update is_eip1559 for localhost or custom chains.
   auto chain = GetKnownChain(prefs_, chain_id);
   if (chain && chain_id != brave_wallet::mojom::kLocalhostChainId)
     return;
 
-  GetIsEip1559(base::BindOnce(&EthJsonRpcController::UpdateIsEip1559,
+  GetIsEip1559(base::BindOnce(&JsonRpcService::UpdateIsEip1559,
                               weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
-                                           bool is_eip1559,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message) {
+void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
+                                     bool is_eip1559,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess)
     return;
 
@@ -277,57 +274,56 @@ void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
   }
 }
 
-void EthJsonRpcController::FireNetworkChanged() {
+void JsonRpcService::FireNetworkChanged() {
   for (const auto& observer : observers_) {
     observer->ChainChangedEvent(GetChainId());
   }
 }
 
-std::string EthJsonRpcController::GetChainId() const {
+std::string JsonRpcService::GetChainId() const {
   return chain_id_;
 }
 
-void EthJsonRpcController::GetChainId(
-    mojom::EthJsonRpcController::GetChainIdCallback callback) {
+void JsonRpcService::GetChainId(
+    mojom::JsonRpcService::GetChainIdCallback callback) {
   std::move(callback).Run(GetChainId());
 }
 
-void EthJsonRpcController::GetBlockTrackerUrl(
-    mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback) {
+void JsonRpcService::GetBlockTrackerUrl(
+    mojom::JsonRpcService::GetBlockTrackerUrlCallback callback) {
   std::move(callback).Run(GetBlockTrackerUrlFromNetwork(GetChainId()).spec());
 }
 
-void EthJsonRpcController::GetAllNetworks(GetAllNetworksCallback callback) {
+void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
   brave_wallet::GetAllChains(prefs_, &all_chains);
   std::move(callback).Run(std::move(all_chains));
 }
 
-std::string EthJsonRpcController::GetNetworkUrl() const {
+std::string JsonRpcService::GetNetworkUrl() const {
   return network_url_.spec();
 }
 
-void EthJsonRpcController::GetNetworkUrl(
-    mojom::EthJsonRpcController::GetNetworkUrlCallback callback) {
+void JsonRpcService::GetNetworkUrl(
+    mojom::JsonRpcService::GetNetworkUrlCallback callback) {
   std::move(callback).Run(GetNetworkUrl());
 }
 
-void EthJsonRpcController::SetCustomNetworkForTesting(
-    const std::string& chain_id,
-    const GURL& network_url) {
+void JsonRpcService::SetCustomNetworkForTesting(const std::string& chain_id,
+                                                const GURL& network_url) {
   chain_id_ = chain_id;
   network_url_ = network_url;
   FireNetworkChanged();
 }
 
-void EthJsonRpcController::GetBlockNumber(GetBlockNumberCallback callback) {
+void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetBlockNumber,
+      base::BindOnce(&JsonRpcService::OnGetBlockNumber,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_blockNumber(), true, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetBlockNumber(
+void JsonRpcService::OnGetBlockNumber(
     GetBlockNumberCallback callback,
     const int status,
     const std::string& body,
@@ -350,17 +346,16 @@ void EthJsonRpcController::OnGetBlockNumber(
   std::move(callback).Run(block_number, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetBalance(
-    const std::string& address,
-    EthJsonRpcController::GetBalanceCallback callback) {
+void JsonRpcService::GetBalance(const std::string& address,
+                                JsonRpcService::GetBalanceCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetBalance,
+      base::BindOnce(&JsonRpcService::OnGetBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_getBalance(address, "latest"), true,
                  std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetBalance(
+void JsonRpcService::OnGetBalance(
     GetBalanceCallback callback,
     const int status,
     const std::string& body,
@@ -383,16 +378,16 @@ void EthJsonRpcController::OnGetBalance(
   std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetTransactionCount(const std::string& address,
-                                               GetTxCountCallback callback) {
+void JsonRpcService::GetTransactionCount(const std::string& address,
+                                         GetTxCountCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetTransactionCount,
+      base::BindOnce(&JsonRpcService::OnGetTransactionCount,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_getTransactionCount(address, "latest"), true,
                  std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetTransactionCount(
+void JsonRpcService::OnGetTransactionCount(
     GetTxCountCallback callback,
     const int status,
     const std::string& body,
@@ -415,17 +410,16 @@ void EthJsonRpcController::OnGetTransactionCount(
   std::move(callback).Run(count, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetTransactionReceipt(
-    const std::string& tx_hash,
-    GetTxReceiptCallback callback) {
+void JsonRpcService::GetTransactionReceipt(const std::string& tx_hash,
+                                           GetTxReceiptCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetTransactionReceipt,
+      base::BindOnce(&JsonRpcService::OnGetTransactionReceipt,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_getTransactionReceipt(tx_hash), true,
                  std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetTransactionReceipt(
+void JsonRpcService::OnGetTransactionReceipt(
     GetTxReceiptCallback callback,
     const int status,
     const std::string& body,
@@ -448,16 +442,16 @@ void EthJsonRpcController::OnGetTransactionReceipt(
   std::move(callback).Run(receipt, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
-                                              SendRawTxCallback callback) {
+void JsonRpcService::SendRawTransaction(const std::string& signed_tx,
+                                        SendRawTxCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnSendRawTransaction,
+      base::BindOnce(&JsonRpcService::OnSendRawTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_sendRawTransaction(signed_tx), true,
                  std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnSendRawTransaction(
+void JsonRpcService::OnSendRawTransaction(
     SendRawTxCallback callback,
     const int status,
     const std::string& body,
@@ -480,10 +474,10 @@ void EthJsonRpcController::OnSendRawTransaction(
   std::move(callback).Run(tx_hash, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetERC20TokenBalance(
+void JsonRpcService::GetERC20TokenBalance(
     const std::string& contract,
     const std::string& address,
-    EthJsonRpcController::GetERC20TokenBalanceCallback callback) {
+    JsonRpcService::GetERC20TokenBalanceCallback callback) {
   std::string data;
   if (!erc20::BalanceOf(address, &data)) {
     std::move(callback).Run(
@@ -493,13 +487,13 @@ void EthJsonRpcController::GetERC20TokenBalance(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
+      base::BindOnce(&JsonRpcService::OnGetERC20TokenBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetERC20TokenBalance(
+void JsonRpcService::OnGetERC20TokenBalance(
     GetERC20TokenBalanceCallback callback,
     const int status,
     const std::string& body,
@@ -521,11 +515,11 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetERC20TokenAllowance(
+void JsonRpcService::GetERC20TokenAllowance(
     const std::string& contract_address,
     const std::string& owner_address,
     const std::string& spender_address,
-    EthJsonRpcController::GetERC20TokenAllowanceCallback callback) {
+    JsonRpcService::GetERC20TokenAllowanceCallback callback) {
   std::string data;
   if (!erc20::Allowance(owner_address, spender_address, &data)) {
     std::move(callback).Run(
@@ -535,13 +529,13 @@ void EthJsonRpcController::GetERC20TokenAllowance(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenAllowance,
+      base::BindOnce(&JsonRpcService::OnGetERC20TokenAllowance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetERC20TokenAllowance(
+void JsonRpcService::OnGetERC20TokenAllowance(
     GetERC20TokenAllowanceCallback callback,
     const int status,
     const std::string& body,
@@ -563,10 +557,9 @@ void EthJsonRpcController::OnGetERC20TokenAllowance(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::EnsRegistryGetResolver(
-    const std::string& chain_id,
-    const std::string& domain,
-    StringResultCallback callback) {
+void JsonRpcService::EnsRegistryGetResolver(const std::string& chain_id,
+                                            const std::string& domain,
+                                            StringResultCallback callback) {
   const std::string contract_address = GetEnsRegistryContractAddress(chain_id);
   if (contract_address.empty()) {
     std::move(callback).Run(
@@ -592,13 +585,13 @@ void EthJsonRpcController::EnsRegistryGetResolver(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnEnsRegistryGetResolver,
+      base::BindOnce(&JsonRpcService::OnEnsRegistryGetResolver,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth_call("", contract_address, "", "", "", data, "latest"),
                   true, network_url, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnEnsRegistryGetResolver(
+void JsonRpcService::OnEnsRegistryGetResolver(
     StringResultCallback callback,
     int status,
     const std::string& body,
@@ -624,17 +617,16 @@ void EthJsonRpcController::OnEnsRegistryGetResolver(
   std::move(callback).Run(resolver_address, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::EnsResolverGetContentHash(
-    const std::string& chain_id,
-    const std::string& domain,
-    StringResultCallback callback) {
+void JsonRpcService::EnsResolverGetContentHash(const std::string& chain_id,
+                                               const std::string& domain,
+                                               StringResultCallback callback) {
   auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::ContinueEnsResolverGetContentHash,
+      &JsonRpcService::ContinueEnsResolverGetContentHash,
       weak_ptr_factory_.GetWeakPtr(), chain_id, domain, std::move(callback));
   EnsRegistryGetResolver(chain_id, domain, std::move(internal_callback));
 }
 
-void EthJsonRpcController::ContinueEnsResolverGetContentHash(
+void JsonRpcService::ContinueEnsResolverGetContentHash(
     const std::string& chain_id,
     const std::string& domain,
     StringResultCallback callback,
@@ -663,13 +655,13 @@ void EthJsonRpcController::ContinueEnsResolverGetContentHash(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnEnsResolverGetContentHash,
+      base::BindOnce(&JsonRpcService::OnEnsResolverGetContentHash,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth_call("", resolver_address, "", "", "", data, "latest"),
                   true, network_url, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnEnsResolverGetContentHash(
+void JsonRpcService::OnEnsResolverGetContentHash(
     StringResultCallback callback,
     int status,
     const std::string& body,
@@ -695,8 +687,8 @@ void EthJsonRpcController::OnEnsResolverGetContentHash(
   std::move(callback).Run(content_hash, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
-                                         EnsGetEthAddrCallback callback) {
+void JsonRpcService::EnsGetEthAddr(const std::string& domain,
+                                   EnsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -705,17 +697,16 @@ void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
   }
 
   auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::ContinueEnsGetEthAddr,
-      weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
+      &JsonRpcService::ContinueEnsGetEthAddr, weak_ptr_factory_.GetWeakPtr(),
+      domain, std::move(callback));
   EnsRegistryGetResolver(chain_id_, domain, std::move(internal_callback));
 }
 
-void EthJsonRpcController::ContinueEnsGetEthAddr(
-    const std::string& domain,
-    StringResultCallback callback,
-    const std::string& resolver_address,
-    mojom::ProviderError error,
-    const std::string& error_message) {
+void JsonRpcService::ContinueEnsGetEthAddr(const std::string& domain,
+                                           StringResultCallback callback,
+                                           const std::string& resolver_address,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
     std::move(callback).Run("", error, error_message);
     return;
@@ -730,13 +721,13 @@ void EthJsonRpcController::ContinueEnsGetEthAddr(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnEnsGetEthAddr,
+      base::BindOnce(&JsonRpcService::OnEnsGetEthAddr,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", resolver_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnEnsGetEthAddr(
+void JsonRpcService::OnEnsGetEthAddr(
     StringResultCallback callback,
     int status,
     const std::string& body,
@@ -761,7 +752,7 @@ void EthJsonRpcController::OnEnsGetEthAddr(
   std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
+void JsonRpcService::UnstoppableDomainsProxyReaderGetMany(
     const std::string& chain_id,
     const std::string& domain,
     const std::vector<std::string>& keys,
@@ -791,14 +782,14 @@ void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
     return;
   }
 
-  auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnUnstoppableDomainsProxyReaderGetMany,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth_call("", contract_address, "", "", "", data, "latest"),
                   true, network_url, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
+void JsonRpcService::OnUnstoppableDomainsProxyReaderGetMany(
     UnstoppableDomainsProxyReaderGetManyCallback callback,
     const int status,
     const std::string& body,
@@ -822,7 +813,7 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
   std::move(callback).Run(values, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
+void JsonRpcService::UnstoppableDomainsGetEthAddr(
     const std::string& domain,
     UnstoppableDomainsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
@@ -850,13 +841,13 @@ void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnUnstoppableDomainsGetEthAddr,
+      base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetEthAddr,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
+void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
     UnstoppableDomainsGetEthAddrCallback callback,
     const int status,
     const std::string& body,
@@ -881,7 +872,7 @@ void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
   std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
-GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
+GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   std::vector<mojom::EthereumChainPtr> networks;
   brave_wallet::GetAllChains(prefs_, &networks);
   for (const auto& network : networks) {
@@ -893,22 +884,22 @@ GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   return GURL();
 }
 
-void EthJsonRpcController::GetEstimateGas(const std::string& from_address,
-                                          const std::string& to_address,
-                                          const std::string& gas,
-                                          const std::string& gas_price,
-                                          const std::string& value,
-                                          const std::string& data,
-                                          GetEstimateGasCallback callback) {
+void JsonRpcService::GetEstimateGas(const std::string& from_address,
+                                    const std::string& to_address,
+                                    const std::string& gas,
+                                    const std::string& gas_price,
+                                    const std::string& value,
+                                    const std::string& data,
+                                    GetEstimateGasCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetEstimateGas,
+      base::BindOnce(&JsonRpcService::OnGetEstimateGas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_estimateGas(from_address, to_address, gas, gas_price,
                                  value, data, "latest"),
                  true, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetEstimateGas(
+void JsonRpcService::OnGetEstimateGas(
     GetEstimateGasCallback callback,
     const int status,
     const std::string& body,
@@ -932,14 +923,14 @@ void EthJsonRpcController::OnGetEstimateGas(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetGasPrice(GetGasPriceCallback callback) {
+void JsonRpcService::GetGasPrice(GetGasPriceCallback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetGasPrice,
+      base::BindOnce(&JsonRpcService::OnGetGasPrice,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_gasPrice(), true, std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetGasPrice(
+void JsonRpcService::OnGetGasPrice(
     GetGasPriceCallback callback,
     const int status,
     const std::string& body,
@@ -963,15 +954,15 @@ void EthJsonRpcController::OnGetGasPrice(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetIsEip1559(GetIsEip1559Callback callback) {
+void JsonRpcService::GetIsEip1559(GetIsEip1559Callback callback) {
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetIsEip1559,
+      base::BindOnce(&JsonRpcService::OnGetIsEip1559,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_getBlockByNumber("latest", false), true,
                  std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetIsEip1559(
+void JsonRpcService::OnGetIsEip1559(
     GetIsEip1559Callback callback,
     const int status,
     const std::string& body,
@@ -997,14 +988,14 @@ void EthJsonRpcController::OnGetIsEip1559(
                           mojom::ProviderError::kSuccess, "");
 }
 
-bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
+bool JsonRpcService::IsValidDomain(const std::string& domain) {
   static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
   return re2::RE2::FullMatch(domain, kDomainPattern);
 }
 
-void EthJsonRpcController::GetERC721OwnerOf(const std::string& contract,
-                                            const std::string& token_id,
-                                            GetERC721OwnerOfCallback callback) {
+void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
+                                      const std::string& token_id,
+                                      GetERC721OwnerOfCallback callback) {
   if (!EthAddress::IsValidAddress(contract)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -1029,13 +1020,13 @@ void EthJsonRpcController::GetERC721OwnerOf(const std::string& contract,
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetERC721OwnerOf,
+      base::BindOnce(&JsonRpcService::OnGetERC721OwnerOf,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetERC721OwnerOf(
+void JsonRpcService::OnGetERC721OwnerOf(
     GetERC721OwnerOfCallback callback,
     const int status,
     const std::string& body,
@@ -1059,7 +1050,7 @@ void EthJsonRpcController::OnGetERC721OwnerOf(
   std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetERC721TokenBalance(
+void JsonRpcService::GetERC721TokenBalance(
     const std::string& contract_address,
     const std::string& token_id,
     const std::string& account_address,
@@ -1073,13 +1064,13 @@ void EthJsonRpcController::GetERC721TokenBalance(
   }
 
   auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::ContinueGetERC721TokenBalance,
+      &JsonRpcService::ContinueGetERC721TokenBalance,
       weak_ptr_factory_.GetWeakPtr(), eth_account_address.ToChecksumAddress(),
       std::move(callback));
   GetERC721OwnerOf(contract_address, token_id, std::move(internal_callback));
 }
 
-void EthJsonRpcController::ContinueGetERC721TokenBalance(
+void JsonRpcService::ContinueGetERC721TokenBalance(
     const std::string& account_address,
     GetERC721TokenBalanceCallback callback,
     const std::string& owner_address,
@@ -1095,7 +1086,7 @@ void EthJsonRpcController::ContinueGetERC721TokenBalance(
                           mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetSupportsInterface(
+void JsonRpcService::GetSupportsInterface(
     const std::string& contract_address,
     const std::string& interface_id,
     GetSupportsInterfaceCallback callback) {
@@ -1114,13 +1105,13 @@ void EthJsonRpcController::GetSupportsInterface(
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetSupportsInterface,
+      base::BindOnce(&JsonRpcService::OnGetSupportsInterface,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnGetSupportsInterface(
+void JsonRpcService::OnGetSupportsInterface(
     GetSupportsInterfaceCallback callback,
     const int status,
     const std::string& body,
@@ -1144,7 +1135,7 @@ void EthJsonRpcController::OnGetSupportsInterface(
   std::move(callback).Run(is_supported, mojom::ProviderError::kSuccess, "");
 }
 
-void EthJsonRpcController::GetPendingSwitchChainRequests(
+void JsonRpcService::GetPendingSwitchChainRequests(
     GetPendingSwitchChainRequestsCallback callback) {
   std::vector<mojom::SwitchChainRequestPtr> requests;
   for (const auto& request : switch_chain_requests_) {
@@ -1154,16 +1145,15 @@ void EthJsonRpcController::GetPendingSwitchChainRequests(
   std::move(callback).Run(std::move(requests));
 }
 
-void EthJsonRpcController::NotifySwitchChainRequestProcessed(
-    bool approved,
-    const GURL& origin) {
+void JsonRpcService::NotifySwitchChainRequestProcessed(bool approved,
+                                                       const GURL& origin) {
   if (!switch_chain_requests_.contains(origin) ||
       !switch_chain_callbacks_.contains(origin)) {
     return;
   }
   if (approved) {
     // We already check chain id validiy in
-    // EthJsonRpcController::AddSwitchEthereumChainRequest so this should always
+    // JsonRpcService::AddSwitchEthereumChainRequest so this should always
     // be successful unless chain id differs or we add more check other than
     // chain id
     CHECK(SetNetwork(switch_chain_requests_[origin]));
@@ -1180,7 +1170,7 @@ void EthJsonRpcController::NotifySwitchChainRequestProcessed(
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
-bool EthJsonRpcController::AddSwitchEthereumChainRequest(
+bool JsonRpcService::AddSwitchEthereumChainRequest(
     const std::string& chain_id,
     const GURL& origin,
     SwitchEthereumChainRequestCallback callback) {
@@ -1210,8 +1200,8 @@ bool EthJsonRpcController::AddSwitchEthereumChainRequest(
   return true;
 }
 
-void EthJsonRpcController::Reset() {
-  ClearEthJsonRpcControllerProfilePrefs(prefs_);
+void JsonRpcService::Reset() {
+  ClearJsonRpcServiceProfilePrefs(prefs_);
   SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
 
   add_chain_pending_requests_.clear();

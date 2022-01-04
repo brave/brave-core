@@ -6,7 +6,7 @@
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 
 #include "brave/components/brave_wallet/browser/swap_service.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -31,7 +31,7 @@ SwapServiceFactory::SwapServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "SwapService",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(EthJsonRpcControllerFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
 }
 
 SwapServiceFactory::~SwapServiceFactory() = default;
@@ -39,10 +39,10 @@ SwapServiceFactory::~SwapServiceFactory() = default;
 std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  auto* rpc_controller =
-      EthJsonRpcControllerFactory::GetControllerForBrowserState(browser_state);
+  auto* json_rpc_service =
+      JsonRpcServiceFactory::GetControllerForBrowserState(browser_state);
   std::unique_ptr<SwapService> swap_service(new SwapService(
-      browser_state->GetSharedURLLoaderFactory(), rpc_controller));
+      browser_state->GetSharedURLLoaderFactory(), json_rpc_service));
   return swap_service;
 }
 

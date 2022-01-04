@@ -30,8 +30,8 @@ export const getERC20Allowance = (
   spenderAddress: string
 ): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const controller = getAPIProxy().ethJsonRpcController
-    const result = await controller.getERC20TokenAllowance(
+    const service = getAPIProxy().jsonRpcService
+    const result = await service.getERC20TokenAllowance(
       contractAddress,
       ownerAddress,
       spenderAddress
@@ -63,8 +63,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const controller = getAPIProxy().ethJsonRpcController
-    const result = await controller.getBalance(address)
+    const service = getAPIProxy().jsonRpcService
+    const result = await service.getBalance(address)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(formatBalance(result.balance, 18))
     } else {
@@ -85,12 +85,12 @@ export async function isStrongPassword (value: string) {
 
 export async function findENSAddress (address: string) {
   const apiProxy = getAPIProxy()
-  return apiProxy.ethJsonRpcController.ensGetEthAddr(address)
+  return apiProxy.jsonRpcService.ensGetEthAddr(address)
 }
 
 export async function findUnstoppableDomainAddress (address: string) {
   const apiProxy = getAPIProxy()
-  return apiProxy.ethJsonRpcController.unstoppableDomainsGetEthAddr(address)
+  return apiProxy.jsonRpcService.unstoppableDomainsGetEthAddr(address)
 }
 
 export async function getERCTokenInfo (contractAddress: string): Promise<GetERCTokenInfoReturnInfo> {
@@ -127,7 +127,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     const apiProxy = getAPIProxy()
     const { wallet: { accounts } } = getState()
 
-    const { braveWalletService, ethJsonRpcController } = apiProxy
+    const { braveWalletService, jsonRpcService } = apiProxy
 
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
@@ -148,7 +148,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const balanceInfo = await ethJsonRpcController.getBalance(account.address)
+      const balanceInfo = await jsonRpcService.getBalance(account.address)
       return balanceInfo
     }))
     const balancesAndPrice = {
@@ -160,9 +160,9 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     const getERCTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
         if (token.isErc721) {
-          return ethJsonRpcController.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
+          return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
         }
-        return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
+        return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))
 
@@ -301,11 +301,11 @@ export function refreshTransactionHistory (address?: string) {
 export function refreshNetworkInfo () {
   return async (dispatch: Dispatch) => {
     const apiProxy = getAPIProxy()
-    const { ethJsonRpcController } = apiProxy
+    const { jsonRpcService } = apiProxy
 
-    const networkList = await ethJsonRpcController.getAllNetworks()
+    const networkList = await jsonRpcService.getAllNetworks()
     dispatch(WalletActions.setAllNetworks(networkList))
-    const chainId = await ethJsonRpcController.getChainId()
+    const chainId = await jsonRpcService.getChainId()
     const currentNetwork = GetNetworkInfo(chainId.chainId, networkList.networks)
     dispatch(WalletActions.setNetwork(currentNetwork))
     return currentNetwork

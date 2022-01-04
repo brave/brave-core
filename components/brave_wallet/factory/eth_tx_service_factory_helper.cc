@@ -15,18 +15,18 @@
 namespace brave_wallet {
 
 std::unique_ptr<EthTxService> BuildEthTxService(
-    EthJsonRpcController* rpc_controller,
+    JsonRpcService* json_rpc_service,
     KeyringService* keyring_service,
     AssetRatioService* asset_ratio_service,
     PrefService* prefs) {
   auto tx_state_manager =
-      std::make_unique<EthTxStateManager>(prefs, rpc_controller);
-  auto eth_nonce_tracker =
-      std::make_unique<EthNonceTracker>(tx_state_manager.get(), rpc_controller);
+      std::make_unique<EthTxStateManager>(prefs, json_rpc_service);
+  auto eth_nonce_tracker = std::make_unique<EthNonceTracker>(
+      tx_state_manager.get(), json_rpc_service);
   auto eth_pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
-      tx_state_manager.get(), rpc_controller, eth_nonce_tracker.get());
+      tx_state_manager.get(), json_rpc_service, eth_nonce_tracker.get());
   return std::make_unique<EthTxService>(
-      rpc_controller, keyring_service, asset_ratio_service,
+      json_rpc_service, keyring_service, asset_ratio_service,
       std::move(tx_state_manager), std::move(eth_nonce_tracker),
       std::move(eth_pending_tx_tracker), prefs);
 }

@@ -8,7 +8,7 @@
 
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/testing_pref_service.h"
@@ -57,10 +57,10 @@ class SwapServiceUnitTest : public testing::Test {
                 &url_loader_factory_)) {
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    rpc_controller_.reset(
-        new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
+    json_rpc_service_.reset(
+        new JsonRpcService(shared_url_loader_factory_, &prefs_));
     swap_service_.reset(
-        new SwapService(shared_url_loader_factory_, rpc_controller_.get()));
+        new SwapService(shared_url_loader_factory_, json_rpc_service_.get()));
   }
 
   ~SwapServiceUnitTest() override = default;
@@ -88,7 +88,7 @@ class SwapServiceUnitTest : public testing::Test {
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<EthJsonRpcController> rpc_controller_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SwapService> swap_service_;
 
  private:

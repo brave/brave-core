@@ -12,14 +12,14 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -140,8 +140,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         KeyringServiceFactory::GetControllerForContext(browser()->profile());
     eth_tx_service_ =
         EthTxServiceFactory::GetControllerForContext(browser()->profile());
-    eth_json_rpc_controller_ =
-        RpcControllerFactory::GetControllerForContext(browser()->profile());
+    json_rpc_service_ =
+        JsonRpcServiceFactory::GetControllerForContext(browser()->profile());
 
     eth_tx_service_->AddObserver(observer()->GetReceiver());
 
@@ -227,7 +227,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void AddEthereumChain(const std::string& chain_id) {
-    eth_json_rpc_controller_->AddEthereumChainRequestCompleted(chain_id, true);
+    json_rpc_service_->AddEthereumChainRequestCompleted(chain_id, true);
   }
 
   void CallEthereumEnable() {
@@ -419,7 +419,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void SetNetworkForTesting(const std::string& chain_id) {
-    eth_json_rpc_controller_->SetCustomNetworkForTesting(
+    json_rpc_service_->SetCustomNetworkForTesting(
         chain_id, https_server_for_rpc()->base_url());
     // Needed so ChainChangedEvent observers run
     base::RunLoop().RunUntilIdle();
@@ -438,7 +438,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
   KeyringService* keyring_service_;
   EthTxService* eth_tx_service_;
-  EthJsonRpcController* eth_json_rpc_controller_;
+  JsonRpcService* json_rpc_service_;
   std::string chain_id_;
 };
 

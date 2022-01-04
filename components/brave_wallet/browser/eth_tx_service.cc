@@ -21,7 +21,7 @@
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -106,23 +106,23 @@ bool EthTxService::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
 }
 
 EthTxService::EthTxService(
-    EthJsonRpcController* rpc_controller,
+    JsonRpcService* json_rpc_service,
     KeyringService* keyring_service,
     AssetRatioService* asset_ratio_service,
     std::unique_ptr<EthTxStateManager> tx_state_manager,
     std::unique_ptr<EthNonceTracker> nonce_tracker,
     std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
     PrefService* prefs)
-    : rpc_controller_(rpc_controller),
+    : json_rpc_service_(json_rpc_service),
       keyring_service_(keyring_service),
       asset_ratio_service_(asset_ratio_service),
       prefs_(prefs),
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
       pending_tx_tracker_(std::move(pending_tx_tracker)),
-      eth_block_tracker_(std::make_unique<EthBlockTracker>(rpc_controller)),
+      eth_block_tracker_(std::make_unique<EthBlockTracker>(json_rpc_service)),
       weak_factory_(this) {
-  DCHECK(rpc_controller_);
+  DCHECK(json_rpc_service_);
   DCHECK(keyring_service_);
   CheckIfBlockTrackerShouldRun();
   eth_block_tracker_->AddObserver(this);
@@ -178,12 +178,12 @@ void EthTxService::AddUnapprovedTransaction(
   const std::string data = tx_data->data.empty() ? "" : ToHex(tx_data->data);
 
   if (!tx_ptr->gas_price()) {
-    rpc_controller_->GetGasPrice(
+    json_rpc_service_->GetGasPrice(
         base::BindOnce(&EthTxService::OnGetGasPrice, weak_factory_.GetWeakPtr(),
                        from, tx_data->to, tx_data->value, data, gas_limit,
                        std::move(tx_ptr), std::move(callback)));
   } else if (!tx_ptr->gas_limit()) {
-    rpc_controller_->GetEstimateGas(
+    json_rpc_service_->GetEstimateGas(
         from, tx_data->to, "" /* gas */, "" /* gas_price */, tx_data->value,
         data,
         base::BindOnce(&EthTxService::ContinueAddUnapprovedTransaction,
@@ -218,7 +218,7 @@ void EthTxService::OnGetGasPrice(const std::string& from,
   tx->set_gas_price(gas_price);
 
   if (!tx->gas_limit()) {
-    rpc_controller_->GetEstimateGas(
+    json_rpc_service_->GetEstimateGas(
         from, to, "" /* gas */, "" /* gas_price */, value, data,
         base::BindOnce(&EthTxService::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from, std::move(tx),
@@ -308,7 +308,7 @@ void EthTxService::AddUnapproved1559Transaction(
         tx_data->base_data->to, tx_data->base_data->value, data, gas_limit,
         std::move(tx_ptr), std::move(callback)));
   } else if (gas_limit.empty()) {
-    rpc_controller_->GetEstimateGas(
+    json_rpc_service_->GetEstimateGas(
         from, tx_data->base_data->to, "" /* gas */, "" /* gas_price */,
         tx_data->base_data->value, data,
         base::BindOnce(&EthTxService::ContinueAddUnapprovedTransaction,
@@ -344,7 +344,7 @@ void EthTxService::OnGetGasOracle(const std::string& from,
   tx->set_max_priority_fee_per_gas(estimation->avg_max_priority_fee_per_gas);
 
   if (gas_limit.empty()) {
-    rpc_controller_->GetEstimateGas(
+    json_rpc_service_->GetEstimateGas(
         from, to, "" /* gas */, "" /* gas_price */, value, data,
         base::BindOnce(&EthTxService::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from, std::move(tx),
@@ -390,7 +390,7 @@ void EthTxService::GetTransactionMessageToSign(
     return;
   }
   uint256_t chain_id = 0;
-  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
+  if (!HexValueToUint256(json_rpc_service_->GetChainId(), &chain_id)) {
     std::move(callback).Run(absl::nullopt);
     return;
   }
@@ -456,7 +456,7 @@ void EthTxService::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   uint256_t chain_id = 0;
-  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
+  if (!HexValueToUint256(json_rpc_service_->GetChainId(), &chain_id)) {
     LOG(ERROR) << "Could not convert chain ID";
     std::move(callback).Run(false);
     return;
@@ -519,7 +519,7 @@ void EthTxService::OnGetNextNonce(
 void EthTxService::PublishTransaction(const std::string& tx_meta_id,
                                       const std::string& signed_transaction,
                                       ApproveTransactionCallback callback) {
-  rpc_controller_->SendRawTransaction(
+  json_rpc_service_->SendRawTransaction(
       signed_transaction, base::BindOnce(&EthTxService::OnPublishTransaction,
                                          weak_factory_.GetWeakPtr(), tx_meta_id,
                                          std::move(callback)));
@@ -635,7 +635,7 @@ void EthTxService::MakeERC721TransferFromData(
   }
 
   // Check if safeTransferFrom is supported first.
-  rpc_controller_->GetSupportsInterface(
+  json_rpc_service_->GetSupportsInterface(
       contract_address, kERC721InterfaceId,
       base::BindOnce(&EthTxService::ContinueMakeERC721TransferFromData,
                      weak_factory_.GetWeakPtr(), from, to, token_id_uint,
@@ -935,7 +935,7 @@ void EthTxService::SpeedupOrCancelTransaction(
       return;
     }
 
-    rpc_controller_->GetGasPrice(base::BindOnce(
+    json_rpc_service_->GetGasPrice(base::BindOnce(
         &EthTxService::ContinueSpeedupOrCancelTransaction,
         weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
         Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),

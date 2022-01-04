@@ -11,14 +11,14 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
     private final static String TAG = "AsyncUtils";
 
-    // Helper to track multiple wallet controllers responses
+    // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
         private Runnable mWhenAllCompletedRunnable;
         private int mTotalElements;
@@ -92,7 +92,7 @@ public class AsyncUtils {
     }
 
     public static class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetErc20TokenBalanceResponse {
+            implements JsonRpcService.GetErc20TokenBalanceResponse {
         public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -105,7 +105,7 @@ public class AsyncUtils {
     }
 
     public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetBalanceResponse {
+            implements JsonRpcService.GetBalanceResponse {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }

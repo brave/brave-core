@@ -35,7 +35,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -76,10 +76,10 @@ public class PortfolioFragment extends Fragment
         return new PortfolioFragment();
     }
 
-    private EthJsonRpcController getEthJsonRpcController() {
+    private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthJsonRpcController();
+            return ((BraveWalletActivity) activity).getJsonRpcService();
         }
 
         return null;
@@ -149,9 +149,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updateNetwork() {
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.getChainId(chain_id -> {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.getChainId(chain_id -> {
                 String chainName = mSpinner.getSelectedItem().toString();
                 String chainId = Utils.getNetworkConst(getActivity(), chainName);
                 if (chainId.equals(chain_id)) {
@@ -182,9 +182,9 @@ public class PortfolioFragment extends Fragment
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.setNetwork(
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.setNetwork(
                     Utils.getNetworkConst(getActivity(), item), (success) -> {
                         if (!success) {
                             Log.e(TAG, "Could not set network");
@@ -380,7 +380,7 @@ public class PortfolioFragment extends Fragment
 
             if (mPortfolioHelper == null) {
                 mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioService(), getEthJsonRpcController(), accountInfos);
+                        getAssetRatioService(), getJsonRpcService(), accountInfos);
             }
 
             String chainName = mSpinner.getSelectedItem().toString();

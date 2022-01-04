@@ -17,11 +17,11 @@
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
 class EthBlockTracker {
  public:
-  explicit EthBlockTracker(EthJsonRpcController* rpc_controller);
+  explicit EthBlockTracker(JsonRpcService* json_rpc_service);
   ~EthBlockTracker();
   EthBlockTracker(const EthBlockTracker&) = delete;
   EthBlockTracker operator=(const EthBlockTracker&) = delete;
@@ -64,7 +64,7 @@ class EthBlockTracker {
 
   base::ObserverList<Observer> observers_;
 
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };

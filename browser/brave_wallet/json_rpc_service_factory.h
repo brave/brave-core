@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_RPC_CONTROLLER_FACTORY_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_RPC_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -15,30 +15,30 @@
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
-class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
+class JsonRpcServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::EthJsonRpcController> GetForContext(
+  static mojo::PendingRemote<mojom::JsonRpcService> GetForContext(
       content::BrowserContext* context);
-  static EthJsonRpcController* GetControllerForContext(
+  static JsonRpcService* GetControllerForContext(
       content::BrowserContext* context);
-  static RpcControllerFactory* GetInstance();
+  static JsonRpcServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<RpcControllerFactory>;
+  friend struct base::DefaultSingletonTraits<JsonRpcServiceFactory>;
 
-  RpcControllerFactory();
-  ~RpcControllerFactory() override;
+  JsonRpcServiceFactory();
+  ~JsonRpcServiceFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
 
-  DISALLOW_COPY_AND_ASSIGN(RpcControllerFactory);
+  DISALLOW_COPY_AND_ASSIGN(JsonRpcServiceFactory);
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_RPC_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_JSON_RPC_SERVICE_FACTORY_H_

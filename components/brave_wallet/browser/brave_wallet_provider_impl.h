@@ -26,12 +26,12 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
 class BraveWalletService;
-class EthJsonRpcController;
+class JsonRpcService;
 class KeyringService;
 
 class BraveWalletProviderImpl final
     : public mojom::BraveWalletProvider,
-      public mojom::EthJsonRpcControllerObserver,
+      public mojom::JsonRpcServiceObserver,
       public mojom::EthTxServiceObserver,
       public brave_wallet::mojom::KeyringServiceObserver,
       public content_settings::Observer {
@@ -40,7 +40,7 @@ class BraveWalletProviderImpl final
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
       HostContentSettingsMap* host_content_settings_map,
-      EthJsonRpcController* rpc_controller,
+      JsonRpcService* json_rpc_service,
       mojo::PendingRemote<mojom::EthTxService> tx_service,
       KeyringService* keyring_service,
       BraveWalletService* brave_wallet_service,
@@ -105,7 +105,7 @@ class BraveWalletProviderImpl final
                            OnAddEthereumChainRequestCompletedSuccess);
   friend class BraveWalletProviderImplUnitTest;
 
-  // mojom::EthJsonRpcControllerObserver
+  // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
@@ -214,7 +214,7 @@ class BraveWalletProviderImpl final
   HostContentSettingsMap* host_content_settings_map_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
   mojo::Remote<mojom::EthTxService> tx_service_;
   KeyringService* keyring_service_;
   BraveWalletService* brave_wallet_service_;
@@ -223,8 +223,7 @@ class BraveWalletProviderImpl final
       add_tx_callbacks_;
   RequestEthereumPermissionsCallback
       pending_request_ethereum_permissions_callback_;
-  mojo::Receiver<mojom::EthJsonRpcControllerObserver> rpc_observer_receiver_{
-      this};
+  mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
   mojo::Receiver<mojom::EthTxServiceObserver> tx_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

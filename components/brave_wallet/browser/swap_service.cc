@@ -9,7 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "net/base/escape.h"
 #include "net/base/load_flags.h"
@@ -90,11 +90,11 @@ GURL SwapService::base_url_for_test_;
 
 SwapService::SwapService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    EthJsonRpcController* rpc_controller)
+    JsonRpcService* json_rpc_service)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      rpc_controller_(rpc_controller),
+      json_rpc_service_(json_rpc_service),
       weak_ptr_factory_(this) {
-  DCHECK(rpc_controller_);
+  DCHECK(json_rpc_service_);
 }
 
 SwapService::~SwapService() {}
@@ -189,7 +189,7 @@ GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
 
 void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                 GetPriceQuoteCallback callback) {
-  if (!IsNetworkSupported(rpc_controller_->GetChainId())) {
+  if (!IsNetworkSupported(json_rpc_service_->GetChainId())) {
     std::move(callback).Run(false, nullptr, "UNSUPPORTED_NETWORK");
     return;
   }
@@ -198,7 +198,7 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_.Request(
       "GET",
-      GetPriceQuoteURL(std::move(swap_params), rpc_controller_->GetChainId()),
+      GetPriceQuoteURL(std::move(swap_params), json_rpc_service_->GetChainId()),
       "", "", true, std::move(internal_callback));
 }
 
@@ -224,7 +224,7 @@ void SwapService::OnGetPriceQuote(
 void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
-  if (!IsNetworkSupported(rpc_controller_->GetChainId())) {
+  if (!IsNetworkSupported(json_rpc_service_->GetChainId())) {
     std::move(callback).Run(false, nullptr, "UNSUPPORTED_NETWORK");
     return;
   }
@@ -234,7 +234,7 @@ void SwapService::GetTransactionPayload(
   api_request_helper_.Request(
       "GET",
       GetTransactionPayloadURL(std::move(swap_params),
-                               rpc_controller_->GetChainId()),
+                               json_rpc_service_->GetChainId()),
       "", "", true, std::move(internal_callback));
 }
 

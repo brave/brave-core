@@ -48,7 +48,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.ProviderError;
@@ -884,13 +884,13 @@ public class Utils {
     }
 
     public static void openTransaction(
-            TransactionInfo txInfo, EthJsonRpcController ethJsonRpcController, Activity activity) {
+            TransactionInfo txInfo, JsonRpcService jsonRpcService, Activity activity) {
         if (txInfo == null || txInfo.txHash == null || txInfo.txHash.isEmpty()) {
             return;
         }
-        assert ethJsonRpcController != null;
-        ethJsonRpcController.getChainId(chainId -> {
-            ethJsonRpcController.getAllNetworks(networks -> {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(chainId -> {
+            jsonRpcService.getAllNetworks(networks -> {
                 for (EthereumChain network : networks) {
                     if (!chainId.equals(network.chainId)) {
                         continue;

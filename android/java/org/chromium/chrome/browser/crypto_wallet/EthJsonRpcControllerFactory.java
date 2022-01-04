@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -17,32 +17,32 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class EthJsonRpcControllerFactory {
+public class JsonRpcServiceFactory {
     private static final Object lock = new Object();
-    private static EthJsonRpcControllerFactory instance;
+    private static JsonRpcServiceFactory instance;
 
-    public static EthJsonRpcControllerFactory getInstance() {
+    public static JsonRpcServiceFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new EthJsonRpcControllerFactory();
+                instance = new JsonRpcServiceFactory();
             }
         }
         return instance;
     }
 
-    private EthJsonRpcControllerFactory() {}
+    private JsonRpcServiceFactory() {}
 
-    public EthJsonRpcController getEthJsonRpcController(
+    public JsonRpcService getJsonRpcService(
             ConnectionErrorHandler connectionErrorHandler) {
         int nativeHandle =
-                EthJsonRpcControllerFactoryJni.get().getInterfaceToEthJsonRpcController();
+                JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        EthJsonRpcController ethJsonRpcController =
-                EthJsonRpcController.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) ethJsonRpcController).getProxyHandler();
+        JsonRpcService jsonRpcService =
+                JsonRpcService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) jsonRpcService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return ethJsonRpcController;
+        return jsonRpcService;
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -51,6 +51,6 @@ public class EthJsonRpcControllerFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToEthJsonRpcController();
+        int getInterfaceToJsonRpcService();
     }
 }

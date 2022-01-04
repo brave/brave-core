@@ -27,7 +27,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -35,7 +35,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
@@ -63,7 +63,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private AssetRatioService mAssetRatioService;
     private KeyringService mKeyringService;
     private EthTxService mEthTxService;
-    private EthJsonRpcController mEthJsonRpcController;
+    private JsonRpcService mJsonRpcService;
     private int checkedTimeframeType;
     private String mAssetSymbol;
     private String mAssetName;
@@ -80,7 +80,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mEthTxService.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
     }
 
     @Override
@@ -232,7 +232,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(
-                                    getAssetRatioService(), getEthJsonRpcController());
+                                    getAssetRatioService(), getJsonRpcService());
                     singleTokenBalanceHelper.getPerAccountBalances(mChainId, mContractAddress,
                             mAssetSymbol, mAssetDecimals, accountInfos, () -> {
                                 List<WalletListItemModel> walletListItemModelList =
@@ -289,7 +289,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         InitAssetRatioService();
         InitKeyringService();
         InitEthTxService();
-        InitEthJsonRpcController();
+        InitJsonRpcService();
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         setUpAccountList();
@@ -300,7 +300,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mKeyringService.close();
         mAssetRatioService.close();
         mEthTxService.close();
-        mEthJsonRpcController.close();
+        mJsonRpcService.close();
 
         mAssetRatioService = null;
         InitAssetRatioService();
@@ -311,8 +311,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mEthTxService = null;
         InitEthTxService();
 
-        mEthJsonRpcController = null;
-        InitEthJsonRpcController();
+        mJsonRpcService = null;
+        InitJsonRpcService();
     }
 
     private void InitAssetRatioService() {
@@ -332,13 +332,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService =
+                JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     @Override
@@ -359,7 +359,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mEthJsonRpcController, this);
+        Utils.openTransaction(txInfo, mJsonRpcService, this);
     }
 
     private void InitKeyringService() {
@@ -379,8 +379,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         return mAssetRatioService;
     }
 
-    private EthJsonRpcController getEthJsonRpcController() {
-        return mEthJsonRpcController;
+    private JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
     @Override
