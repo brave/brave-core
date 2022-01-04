@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Os anúncios exibidos nas Notícias Brave são totalmente privados e anonimizados, encontrando correspondências para seus interesses no seu dispositivo.</translation>
 <translation id="4541978218358617681">Anúncio</translation>
 <translation id="1765217911817124376">Ativar Notícias Brave</translation>
+<translation id="6527303717912515753">Compartilhar</translation>
 <translation id="1654539412343893324">Saiba mais sobre seus dados</translation>
 <translation id="2989805286512600854">Abrir em uma nova guia</translation>
 <translation id="3709782636417497984">Abrir em uma nova guia privada</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Sua carteira</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Notícias Brave</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Adicionar Fundos</translation>
 <translation id="8428213095426709021">Configurações</translation>
-<translation id="8772672608371898774">Autor verificado pelo Brave</translation>
-<translation id="1397683270551078781">Ainda não verificado</translation>
+<translation id="6020176662032623904">Criador verificado</translation>
+<translation id="2369994359029526515">Criador não verificado</translation>
 <translation id="880893465294676334">Este Criador Verificado pelo Brave ainda não configurou a própria conta para receber contribuições de usuários do Brave.
         Qualquer doação que você enviar permanecerá na sua carteira até que ele conclua esse processo.</translation>
 <translation id="8918760045046434238">Doe...</translation>
@@ -276,11 +277,12 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="9096003370755878766">Saque BAT que você tenha adicionado anteriormente à sua carteira Brave Rewards</translation>
 <translation id="1554282356558968486">Nosso serviço de carteira é fornecido por</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
-<translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
+<translation id="3200197118442451932">A Brave Software Inc. não processa, armazena nem acessa nenhuma das informações pessoais que você fornece ao <ph name="WALLET_PROVIDER"/> quando cria uma conta nesse serviço.</translation>
 <translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="2193391216824305230">Carteira do Usuário</translation>
-<translation id="6585020831163574892">Acesse sua conta do Uphold</translation>
+<translation id="1665118090708049096">Ir para a minha conta do <ph name="WALLET_PROVIDER"/></translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="6239274080752256452">Retirar Fundos</translation>
 <translation id="8874184842967597500">Não conectado</translation>
@@ -289,10 +291,6 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="5358719431303818601">Desconectado não verificado</translation>
 <translation id="4241449868720191203">Desconectado verificado</translation>
 <translation id="3248185426436836442">Pendente</translation>
-<translation id="8108013093558639183">O BAT não é suportado atualmente na sua região com ase na localização onde sua conta foi aberta. Verifique a disponibilidade novamente mais tarde.</translation>
-<translation id="4190454391025419535">Região não suportada</translation>
-<translation id="6830703472632069884">Houve um problema ao verificar sua carteira. Tente novamente mais tarde.</translation>
-<translation id="3512533646933434345">Erro de verificação da carteira</translation>
 <translation id="2260513517001048012">OBSERVAÇÃO: este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições dos usuários do Brave. Seu navegador continuará tentando contribuir até que ele seja confirmado ou até 90 dias se passarem.</translation>
 <translation id="4488355059795908907">Este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições dos usuários do Brave. Todas as contribuições que você enviar permanecerão na sua carteira até que ele conclua o processo.</translation>
 <translation id="2495032782748793764">Padrão do Brave</translation>
@@ -423,16 +421,45 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="1972589975368876259">Editar pilha</translation>
 <translation id="2490330380242414851">Remover widget</translation>
 <translation id="8446884382197647889">Saiba mais</translation>
+<translation id="7384441892795736634">Atualizar dados</translation>
+<translation id="4804818685124855865">Desconectar</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Endereço de depósito</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memorando de depósitos</translation>
+<translation id="5110244215256675209">Comprar criptomoeda</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Compre <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Disponível <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Visualizar conversão</translation>
 <translation id="2882813124794301799">Pilha de widget</translation>
 <translation id="13296465911709339">O seu texto foi copiado para a área de transferência.</translation>
 <translation id="2735834606413553397">O endereço público foi copiado para a área de transferência.</translation>
+<translation id="7144878232160441200">Tentar novamente</translation>
 <translation id="2977461003134694205">Estatísticas de privacidade</translation>
 <translation id="4643117005422448078">Principais sites</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Rastreadores e anúncios bloqueados, Banda de conexão poupada e estimativas de tempo economizado.</translation>
 <translation id="74417429503469271">Abrir os seus sites mais visitados frequentemente.</translation>
+<translation id="2956070106555335453">Resumo</translation>
+<translation id="1366855498335432549">Depositar</translation>
+<translation id="1301340234286078471">Converter</translation>
 <translation id="223536150967420869">Comprar</translation>
+<translation id="1714829281959608206">Ative a conexão da Binance para visualizar o saldo da conta da Binance e negociar criptomoedas.</translation>
+<translation id="4584930231524505442">Eu quero converter...</translation>
+<translation id="5749014321384313843">Eu quero gastar...</translation>
 <translation id="8688672835843460752">Disponível</translation>
+<translation id="2480674848181564169">Não há saldo suficiente para a conversão</translation>
+<translation id="2215334405220411393">A quantia mínima a ser convertida é : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Não foi possível conectar</translation>
+<translation id="7742417737698031726">Tarifa</translation>
+<translation id="2122225204180056042">Você receberá</translation>
+<translation id="6432284126416751397">Confirmar conversão</translation>
 <translation id="5137723827757859599">Ainda não há nada nos sites mais acessados.</translation>
+<translation id="3891414008432200754">Preço</translation>
+<translation id="3733576242118819803">Confirmar (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Falha na conversão. Por favor, tente novamente.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Ganhe Tokens e Retribua</translation>
 <translation id="244362569344671266">Ganhe tokens assistindo aos Anúncios Privados do Brave e apoie automaticamente os criadores de conteúdo.</translation>
 <translation id="631124996535890460">Ao prosseguir, você concorda com os <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -476,6 +503,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3415016869273103668">Agora você pode iniciar uma chamada gratuita</translation>
 <translation id="7073631403665023390">Clique ou toque em qualquer parte da tela para ir para o Brave Talk.</translation>
 <translation id="626339649633171286">Quer saber mais sobre as Recompensas do Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Você converteu <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> para <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Por favor, verifique sua conexão de rede.</translation>
 <translation id="7889432931837317731">Abrir automaticamente quando possível</translation>
 <translation id="8967385052772844086">Exibir Relatório de Privacidade integral</translation>
 <translation id="6864343534748973390">Mais popular</translation>
@@ -519,7 +548,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3171931580569169744">Ativar grupos de guias</translation>
 <translation id="5587305863196367357">A verificação da carteira permite que você gerencie (adicione e saque) seus fundos facilmente</translation>
 <translation id="5760671211380791582">Você não tem BATs suficientes.</translation>
-<translation id="6960458596933484861">Você precisa de no mínimo 15 BAT para criar uma carteira verificada do Uphold. Tente novamente mais tarde.</translation>
+<translation id="442469478596827903">Você precisa de no mínimo 2 BATs para criar uma carteira verificada do Uphold. Tente novamente mais tarde.</translation>
 <translation id="4389085954549744469">Se você já tem uma conta verificada do Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continue para o login</translation>
 <translation id="1483493594462132177">Enviar</translation>
@@ -774,4 +803,19 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="8971278306757462297">O endereço de recebimento é o seu próprio endereço</translation>
 <translation id="749944179568745958">Não é um endereço ETH válido</translation>
 <translation id="3506416339268164412">O endereço de recebimento é o endereço de contrato de um token</translation>
+<translation id="1543259266592091784">Adicionar fundos</translation>
+<translation id="3494964159182650590">Resumo de Recompensas</translation>
+<translation id="7470079236088529568">Total de doações reivindicadas</translation>
+<translation id="590733288489975971">Recompensas do Ads</translation>
+<translation id="207268487070188114">Doação única</translation>
+<translation id="64394831139134288">Minha carteira</translation>
+<translation id="8494748383523030337">Seu saldo</translation>
+<translation id="7091980679045978090">Ganhos estimados</translation>
+<translation id="1346059596910821859">Doar</translation>
+<translation id="1549705559752367917">Enviar Gorjeta</translation>
+<translation id="6727102863431372879">Definir</translation>
+<translation id="381822214767083050">Contribuição mensal</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Ühendus katkestatud",
+    "message": "Välja loginud",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Katkesta Brave Rewardsi ühendus",
-    "description": ""
+    "message": "Logi välja $provider$'ist",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Hinnanguline tulu",

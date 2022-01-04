@@ -28,7 +28,6 @@
 <translation id="3958088479270651626">बुकमार्क आणि सेटिंग्ज इंपोर्ट करा</translation>
 <translation id="8275038454117074363">इंपोर्ट</translation>
 <translation id="1201402288615127009">पुढील</translation>
-<translation id="1919345977826869612">जाहिराती</translation>
 <translation id="8446884382197647889">अधिक जाणून घ्या</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -39,6 +38,7 @@
 <translation id="6643016212128521049">साफ करा</translation>
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="7375125077091615385">प्रकार:</translation>
+<translation id="1919345977826869612">जाहिराती</translation>
 <translation id="3970114302595058915">आयडी</translation>
 <translation id="4250680216510889253">नाही</translation>
 <translation id="1426410128494586442">होय</translation>
@@ -79,6 +79,7 @@
 <translation id="1987317783729300807">खाती</translation>
 <translation id="629730747756840877">खाते</translation>
 <translation id="1483493594462132177">पाठवा</translation>
+<translation id="2704606927547763573">कॉपी केले</translation>
 <translation id="6518133107902771759">सत्यापित करा</translation>
 <translation id="6972754398087986839">प्रारंभ करा</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
@@ -98,6 +99,8 @@
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="3380365263193509176">अज्ञात एरर</translation>
+<translation id="7461425058443653485">स्किप्ट ब्लॉक केल्या</translation>
+<translation id="4627427111733173920">कुकीज ब्लॉक केल्या</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="1116694919640316211">बद्दल</translation>
 </translationbundle>

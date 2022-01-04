@@ -25,6 +25,8 @@
 <translation id="1142732900304639782">Nesiūlyti versti šių svetainių</translation>
 <translation id="1145536944570833626">Ištrinti esamus duomenis.</translation>
 <translation id="1146678959555564648">Įgalinti VR</translation>
+<translation id="114825011539563458">Svarbiausi privatumo ir saugos valdikliai vienoje vietoje</translation>
+<translation id="1149401351239820326">Galiojimo laiko pabaigos mėnuo</translation>
 <translation id="1154704303112745282">Puslapis nepasiekiamas neprisijungus: <ph name="VIOLATED_URL"/></translation>
 <translation id="116280672541001035">Naudojama</translation>
 <translation id="1171770572613082465">Žr. populiarias svetaines palietę mygtuką „Populiariausios svetainės“</translation>
@@ -62,7 +64,6 @@
 <translation id="3169981355900570544">„Brave“ funkcijų spartieji klavišai</translation>
 <translation id="1344653310988386453">Įtraukite nuorodą į paryškintą tekstą</translation>
 <translation id="1347468774581902829">Tvarkyti veiklą</translation>
-<translation id="7394874537077301178">Kad padėtų tobulinti programą, „Brave“ siunčia diagnostinius duomenis „Brave“. <ph name="BEGIN_LINK"/>Keisti<ph name="END_LINK"/></translation>
 <translation id="1360432990279830238">Atsijungti ir išjungti sinchronizavimą?</translation>
 <translation id="1373696734384179344">Nepakanka atminties pasirinktam turiniui atsisiųsti.</translation>
 <translation id="1376578503827013741">Apskaičiuojama...</translation>
@@ -89,6 +90,7 @@
 <translation id="1506061864768559482">Paieškos variklis</translation>
 <translation id="1513352483775369820">Žymių ir žiniatinklio istorija</translation>
 <translation id="1513858653616922153">Ištrinti slaptažodį</translation>
+<translation id="1518421282666914498">Emocijos GIF <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Aktyvus šiandien</translation>
 <translation id="1538801903729528855">Dar geriau išnaudokite veiksmų balsu galimybes žiniatinklyje</translation>
 <translation id="8090895580117672212">Jei norite tvarkyti „Brave“ paskyrą, palieskite mygtuką „Tvarkyti“</translation>
@@ -230,6 +232,7 @@ Norėdami ieškoti, palieskite bet kurį žodį. Jei norite patikslinti paiešk�
 <translation id="934250516944040460">Sužinokite apie temas svetainėse neišėję iš puslapio. Naudojant Paiešką palietus, žodis ir jo kontekstas siunčiami „Brave“ paieškai, kuri pateikia apibrėžimų, nuotraukų, paieškos rezultatų ir kitos išsamios informacijos.
 
 Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patikslinti paiešką, pasirinkite daugiau ar mažiau žodžių. Norėdami redaguoti paiešką, atidarykite skydelį, palieskite piktogramą atidarydami programą naujame skirtuke ir atlikite keitimus paieškos laukelyje.</translation>
+<translation id="2451607499823206582">Stebėjimas</translation>
 <translation id="2459390580524506445">Patobulinta paieška balsu</translation>
 <translation id="2461822463642141190">Dabartinė</translation>
 <translation id="247737702124049222">Vaizdų aprašai įjungti</translation>
@@ -248,6 +251,7 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="2527779675047087889">Slėpti iškarpinės turinį</translation>
 <translation id="2532336938189706096">Žiniatinklio rodinys</translation>
 <translation id="2534155362429831547">Ištrinta elementų: <ph name="NUMBER_OF_ITEMS"/></translation>
+<translation id="3377158406585225827">URL, kuriais lankotės, siunčiami „Brave“</translation>
 <translation id="2536728043171574184">Žiūrima neprisijungus naudojama šio puslapio kopija</translation>
 <translation id="2546283357679194313">Slapukai ir svetainės duomenys</translation>
 <translation id="2561519700418191927">Vaizdo įrašų peržiūros</translation>
@@ -286,7 +290,6 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="2781151931089541271">Liko 1 sek.</translation>
 <translation id="2788468313014644040">Grupės numeris</translation>
 <translation id="2800066122460699237">Skirtukas „<ph name="TAB_TITLE"/>“ bus uždarytas</translation>
-<translation id="1379423114029199501">Norėdami gauti naujausią versiją su įdiegta savo kalba, atnaujinkite „Brave“</translation>
 <translation id="2805756323405976993">Taikomosios programos</translation>
 <translation id="2806840421670364300">FLoC</translation>
 <translation id="1592999835727612323">Informacija apie „Brave“ naudojimą, kurios negalima susieti su jumis\n\nAtitinkami retų „Brave“ strigčių duomenys, į kuriuos gali būti įtraukta asmens informacijos\n\nJei įjungsite sinchronizavimą, metrika taip pat gali apimti informaciją apie URL, kuriais lankotės</translation>
@@ -353,7 +356,6 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="3166827708714933426">Skirtukų ir langų spartieji klavišai</translation>
 <translation id="7249949543831830993">„Brave“ čia jau vykdoma.</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3205824638308738187">Beveik baigta!</translation>
 <translation id="3207960819495026254">Pažymėta</translation>
 <translation id="3208584281581115441">Tikrinti dabar</translation>
 <translation id="3211426585530211793">Ištrinta „<ph name="ITEM_TITLE"/>“</translation>
@@ -366,6 +368,7 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="3234978181857588512">Išsaugoti įrenginyje</translation>
 <translation id="3236059992281584593">Liko 1 min.</translation>
 <translation id="3244271242291266297">MM</translation>
+<translation id="7402642357351265733">Jei taip pat bendrinate „Brave“ naudojimo ataskaitas, į tas ataskaitas įtraukiami URL, kuriais lankėtės</translation>
 <translation id="3250563604907490871">Vaizdų aprašai bus atnaujinti, kai prisijungsite prie „Wi-Fi“</translation>
 <translation id="3254409185687681395">Įtraukti šį puslapį į žymes</translation>
 <translation id="3259831549858767975">Sumažinti visą puslapio turinį</translation>
@@ -417,6 +420,7 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="3527085408025491307">Aplankas</translation>
 <translation id="3542235761944717775">Pasiekiama <ph name="KILOBYTES"/> KB</translation>
 <translation id="3549657413697417275">Ieškokite savo istorijoje</translation>
+<translation id="3557272988124495906">Gaukite pranešimus apie sumažintą kainą</translation>
 <translation id="3557336313807607643">Pridėti prie kontaktų</translation>
 <translation id="3563767357928833671">Rodomas iškarpinės turinys</translation>
 <translation id="1908301351964700579">„Brave“ vis dar ruošiama naudoti įjungus VR. Vėliau iš naujo paleiskite „Brave“.</translation>
@@ -445,7 +449,6 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 <translation id="3739899004075612870">Pažymėta naršyklėje „<ph name="PRODUCT_NAME"/>“</translation>
 <translation id="3740525748616366977">Paieška balsu šiame įrenginyje nepasiekiama.</translation>
 <translation id="3749259744154402564">Nepalaikoma</translation>
-<translation id="3771001275138982843">Nepavyko atsisiųsti naujinio</translation>
 <translation id="3771290962915251154">Šis nustatymas išjungtas, nes įjungta tėvų kontrolė</translation>
 <translation id="1138681184697033370">„Brave“ paslaugų teikimo sąlygos</translation>
 <translation id="3773856050682458546">Pagrindiniai duomenys ir informacija apie lankomas svetaines ir naudojamas programas</translation>
@@ -559,15 +562,18 @@ Norėdami ieškoti, palieskite ir palaikykite bet kurį žodį. Jei norite patik
 Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali būti pateikta kitų formų jūsų „Brave“ paskyros naršymo istorija, pvz., paieškos ir veikla kitose „Brave“ paslaugose.</translation>
 <translation id="4532845899244822526">Pasirinkti aplanką</translation>
 <translation id="4538018662093857852">Įjungti supaprastintąjį režimą</translation>
+<translation id="4549903594034243526">chrome_emotion_gif_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="4550003330909367850">Jei norite čia peržiūrėti ar nukopijuoti slaptažodį, nustatykite ekrano užraktą šiame įrenginyje.</translation>
 <translation id="4554077758708533499">Prijungta USB laidu</translation>
 <translation id="4557685098773234337">Kad sparčiau čia patektumėte, šį puslapį pridėkite prie pagrindinio ekrano.</translation>
 <translation id="4558311620361989323">Tinklalapių spartieji klavišai</translation>
 <translation id="4561730552726921821">Registracija sėkminga</translation>
 <translation id="4561979708150884304">Nėra ryšio</translation>
+<translation id="7946749962179973813">„Brave“ teikia gerai apgalvotus numatytuosius nustatymus, tačiau galite juos tinkinti taip, kad dar geriau atitiktų jūsų naršymo įpročius</translation>
 <translation id="4565377596337484307">Slėpti slaptažodį</translation>
 <translation id="4572422548854449519">Prisijungimas prie tvarkomos paskyros</translation>
 <translation id="4576892426230499203">Bandykite naudoti kitą patvirtinimo parinktį</translation>
+<translation id="4578289292431526768">Pirmyn</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{Prieš 1 minutę}one{Prieš # minutę}few{Prieš # minutes}many{Prieš # minutės}other{Prieš # minučių}}</translation>
 <translation id="4587589328781138893">Svetainės</translation>
 <translation id="4594952190837476234">Šis neprisijungus naudojamas puslapis sukurtas <ph name="CREATION_TIME"/>, todėl gali skirtis nuo prisijungus pateiktos versijos.</translation>
@@ -587,12 +593,14 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="4696983787092045100">Siųsti teksto pranešimą savo įrenginiams</translation>
 <translation id="4699172675775169585">Talpykloje esantys vaizdai ir failai</translation>
 <translation id="4714588616299687897">Sutaupykite iki 60 proc. duomenų</translation>
+<translation id="2255101560330785621">Tęsdami sutinkate su <ph name="BEGIN_TOS_LINK"/>paslaugų teikimo sąlygomis<ph name="END_TOS_LINK"/> ir <ph name="BEGIN_PRIVACY_LINK"/>privatumo politika<ph name="END_PRIVACY_LINK"/>.\nKad padėtų tobulinti programą, „Brave“ siunčia naudojimo ir strigčių duomenis sistemai „Brave“. <ph name="BEGIN_UMA_LINK"/>Tvarkyti<ph name="END_UMA_LINK"/></translation>
 <translation id="4719927025381752090">Siūlyti versti</translation>
 <translation id="4720023427747327413">Atidaryti naudojant „<ph name="PRODUCT_NAME"/>“</translation>
 <translation id="4939482511480190003">Padėkite tobulinti „Brave“. <ph name="BEGIN_LINK"/>Dalyvaukite apklausoje<ph name="END_LINK"/></translation>
 <translation id="47217992755561375">Peržiūrėkite populiariausias svetaines</translation>
 <translation id="4732120983431207637">Stack Unwinder</translation>
 <translation id="4738836084190194332">Paskutinį kartą sinchronizuota: <ph name="WHEN"/></translation>
+<translation id="4741753828624614066">Gausite patobulintų pasiūlymų adreso juostoje</translation>
 <translation id="4742970037960872810">Pašalinti paryškinimą</translation>
 <translation id="4749960740855309258">Atidaryti naują skirtuką</translation>
 <translation id="4758061975920522644">Bendrinti tik vaizdą</translation>
@@ -776,7 +784,6 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="583281660410589416">Nežinoma</translation>
 <translation id="5833984609253377421">Bendrinti nuorodą</translation>
 <translation id="4099502324559761073">Jei norite nuskaityti QR kodą, leiskite „Brave“ naudoti jūsų fotoaparatą</translation>
-<translation id="3888648114124182147">Atsisiunčiamas „Brave“ naujinys…</translation>
 <translation id="2225291765389142805">„Brave“ dinozauras</translation>
 <translation id="5853623416121554550">pristabdyta</translation>
 <translation id="3518793343998771868">Statistika ar strigčių ataskaitos „Brave“ nesiunčiamos</translation>
@@ -847,7 +854,6 @@ Privatumo „sandbox“ (smėlio dėžės) bandomosios versijos vis dar intensyv
 <translation id="6232535412751077445">Įgalinus funkciją „Nestebėti“, užklausa bus įtraukta į naršymo srautą. Poveikis priklauso nuo to, ar svetainė atsako į užklausą ir kaip užklausa interpretuojama.
 
 Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos jums skelbimus, nepagrįstus kitomis svetainėmis, kuriose lankėtės. Daugelis svetainių vis tiek rinks ir naudos jūsų naršymo duomenis, kad, pvz., patobulintų saugą, teiktų turinį, skelbimus bei rekomendacijas ir sugeneruotų ataskaitų teikimo statistiką.</translation>
-<translation id="624789221780392884">Naujinys paruoštas</translation>
 <translation id="6264376385120300461">Vis tiek atsisiųsti</translation>
 <translation id="6277522088822131679">Spausdinant puslapį kilo problema. Bandykite dar kartą.</translation>
 <translation id="6278428485366576908">Tema</translation>
@@ -883,7 +889,6 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6411219469806822692">Negalima eiti aukščiau. Pabandykite pradėti toliau aukščiau esančiame puslapyje.</translation>
 <translation id="7810992039564280750">Tikrinami URL pagal nesaugių svetainių sąrašą, saugomą naršyklėje „Brave“. Jei svetainė bando pavogti slaptažodį ar atsisiuntėte žalingą failą, „Brave“ taip pat gali siųsti URL, įskaitant puslapio turinio dalis, Saugaus naršymo funkcijai.</translation>
 <translation id="641643625718530986">Spausdinti…</translation>
-<translation id="6427112570124116297">Žiniatinklio vertimas</translation>
 <translation id="6433501201775827830">Paieškos variklio pasirinkimas</translation>
 <translation id="6434309073475700221">Išmesti</translation>
 <translation id="6437478888915024427">Puslapio informacija</translation>
@@ -905,6 +910,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="708829030563435351">Svetainės, kuriose lankotės naudodami „Brave“, nebus rodomos. Visi svetainių laikmačiai bus ištrinti.</translation>
 <translation id="7723158744459952869">Per ilgai laukta „Brave“ atsako</translation>
 <translation id="6539092367496845964">Įvyko klaida. Vėliau bandykite dar kartą.</translation>
+<translation id="6541042852576515209">Pakeisti dydį ir pasukti</translation>
 <translation id="6541983376925655882">{NUM_HOURS,plural, =1{Tikrinta prieš 1 valandą}one{Tikrinta prieš # valandą}few{Tikrinta prieš # valandas}many{Tikrinta prieš # valandos}other{Tikrinta prieš # valandų}}</translation>
 <translation id="6545017243486555795">Išvalyti visus duomenis</translation>
 <translation id="6546511553472444032">Failas gali būti žalingas</translation>
@@ -980,10 +986,8 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6945221475159498467">Pasirinkti</translation>
 <translation id="6955535239952325894">Šis nustatymas išjungtas tvarkomose naršyklėse</translation>
 <translation id="6963766334940102469">Ištrinti žymes</translation>
-<translation id="6964116075545915250">Redaguoti skaitymo sąrašą</translation>
 <translation id="6979737339423435258">Visas laikotarpis</translation>
 <translation id="6981982820502123353">Pritaikymas neįgaliesiems</translation>
-<translation id="6989267951144302301">Nepavyko atsisiųsti</translation>
 <translation id="6995899638241819463">Įspėti, jei slaptažodžiai buvo atskleisti įvykus duomenų saugos pažeidimui</translation>
 <translation id="7001056293070445572">Šis failas didelis (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7020741890149022655">Pridėti į skaitymo sąrašą<ph name="BEGIN_NEW"/>Nauja<ph name="END_NEW"/></translation>
@@ -1016,7 +1020,6 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="718926126787620637">Žymių aplankų sąrašas, atidarytas per visą ekrano aukštį</translation>
 <translation id="7191430249889272776">Skirtuko lapas atidarytas fone.</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{Laukiama 1 atsisiuntimo}one{Laukiama # atsisiuntimo}few{Laukiama # atsisiuntimų}many{Laukiama # atsisiuntimo}other{Laukiama # atsisiuntimų}}</translation>
-<translation id="3512968675351418494">Jei norite matyti žiniatinklį savo kalba, gaukite naujausią „Brave“ versiją</translation>
 <translation id="7242755609445462077">Stilizuotas paryškinimas: <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Įsitikinkite, kad įrenginyje „<ph name="TARGET_DEVICE_NAME"/>“ įjungtas sinchronizavimas sistemoje „Brave“</translation>
 <translation id="7252076891734325316">Padėkite telefoną šalia kompiuterio</translation>
@@ -1055,6 +1058,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="7444811645081526538">Daugiau kategorijų</translation>
 <translation id="3699067418237091329">Būsite atjungti nuo daugelio svetainių. Nebūsite atjungti nuo „Brave“ paskyros.</translation>
 <translation id="7454641608352164238">Nepakanka vietos</translation>
+<translation id="7468819939926272717">Pasirinkti emociją</translation>
 <translation id="7474822150871987353">Sužinokite apie temas svetainėse neišėję iš puslapio. Pasirinkite bent vieną žodį puslapyje, kurio norite ieškoti.</translation>
 <translation id="7475192538862203634">Jei tai rodoma dažnai, peržiūrėkite šiuos <ph name="BEGIN_LINK"/>pasiūlymus<ph name="END_LINK"/>.</translation>
 <translation id="7475688122056506577">SD kortelė nerasta. Gali trūkti kai kurių failų.</translation>
@@ -1137,6 +1141,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="7879130110979560610">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{Turite <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> neskaitytą puslapį}one{Turite <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> neskaitytą puslapį}few{Turite <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> neskaitytus puslapius}many{Turite <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> neskaityto puslapio}other{Turite <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> neskaitytų puslapių}}</translation>
 <translation id="7882131421121961860">Nerasta istorijos</translation>
 <translation id="6143689084714664628">Paleista naršyklėje „Brave“</translation>
+<translation id="7887334752153342268">Dubliuoti</translation>
 <translation id="5570166585033664196">Kaip naudoti „Brave“</translation>
 <translation id="7903184275147100332">Tai gali šiek tiek užtrukti</translation>
 <translation id="7919123827536834358">Automatiškai versti šias kalbas</translation>
@@ -1156,6 +1161,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="7975379999046275268">Peržiūrėti puslapį <ph name="BEGIN_NEW"/>Naujas<ph name="END_NEW"/></translation>
 <translation id="7981313251711023384">Iš anksto įkelti puslapius, kad naršymo ir paieškos procesai vyktų greičiau</translation>
 <translation id="7986497153528221272">Jei norite peržiūrėti slaptažodžius, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
+<translation id="799576009106109668">Naršysite greičiau, nes turinys įkeliamas proaktyviai remiantis tinklalapiu, kuriame šiuo metu lankotės</translation>
 <translation id="7998918019931843664">Iš naujo atidarykite uždarytą skirtuko lapą</translation>
 <translation id="8004582292198964060">Naršyklė</translation>
 <translation id="3325020657155065477">Taip pat išvalyti jūsų „Brave“ duomenis iš šio įrenginio</translation>
@@ -1169,6 +1175,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="8040831032425909005">Sparčiųjų veiksmų ir paieškos valdiklio piktograma</translation>
 <translation id="804335162455518893">SD kortelė nerasta</translation>
 <translation id="8051695050440594747">Galima <ph name="MEGABYTES"/> MB</translation>
+<translation id="8058655154417507695">Galiojimo laiko pabaigos metai</translation>
 <translation id="2317945146070194624">Atidaryti naujame „Brave“ skirtuke</translation>
 <translation id="8063895661287329888">Nepavyko pridėti žymės.</translation>
 <translation id="806745655614357130">Duomenis laikyti atskirai</translation>
@@ -1178,6 +1185,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="8084114998886531721">Išsaugotas slaptažodis</translation>
 <translation id="1718138320251931534">Valdykite „Brave“ paskyros duomenis</translation>
 <translation id="808747664143081553">Prisijungta prie įrenginio</translation>
+<translation id="3249150807062904185">Tęsdami sutinkate su <ph name="BEGIN_TOS_LINK"/>paslaugų teikimo sąlygomis<ph name="END_TOS_LINK"/>.\nKad padėtų tobulinti programą, „Brave“ siunčia naudojimo ir strigčių duomenis sistemai „Brave“. <ph name="BEGIN_UMA_LINK"/>Tvarkyti<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Jei norite pasiekti žymes visuose įrenginiuose, įjunkite sinchronizavimą</translation>
 <translation id="2919733817273403520">Padėti tobulinti „Brave“ funkcijas ir našumą</translation>
@@ -1199,10 +1207,12 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="8218052821161047641">Spartus puslapis</translation>
 <translation id="8218622182176210845">Paskyros tvarkymas</translation>
 <translation id="8223642481677794647">Sklaidos kanalo kortelės meniu</translation>
+<translation id="8242868071038398515">Būsite informuoti, jei kurioje nors svetainėje sumažės kaina</translation>
 <translation id="8250920743982581267">Dokumentai</translation>
 <translation id="5138664332909611586">Šis puslapis naudoja per daug atminties, todėl „Brave“ pašalino šiek tiek turinio.</translation>
 <translation id="8260126382462817229">Bandykite prisijungti dar kartą</translation>
 <translation id="8261506727792406068">Ištrinti</translation>
+<translation id="82619448491672958">Žr. kitus skirtukus</translation>
 <translation id="8266862848225348053">Atsisiuntimo vieta</translation>
 <translation id="8274165955039650276">Peržiūrėti atsisiuntimus</translation>
 <translation id="8281886186245836920">Praleisti</translation>
@@ -1211,12 +1221,12 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="829672787777123339">Prisijungiama prie įrenginio…</translation>
 <translation id="8310344678080805313">Įprasti skirtukai</translation>
 <translation id="831192587911042850">Dabartinė svetainė pridedama prie stebimų svetainių sąrašo.</translation>
-<translation id="6195417478702700398">Kad būtų teikiamos geriausios naršymo funkcijos, atidarykite ir atnaujinkite „Brave“</translation>
 <translation id="834313815369870491">Niekada neversti svetainių</translation>
 <translation id="8349013245300336738">Rūšiuoti pagal naudojamų duomenų kiekį</translation>
 <translation id="8354977102499939946">Sparčiai ieškokite balsu. Jei norite redaguoti šį spartųjį klavišą, eikite į skiltį „Nustatymai“.</translation>
 <translation id="835847953965672673">Atkurta atsisiuntimų: <ph name="NUMBER_OF_DOWNLOADS"/></translation>
 <translation id="8364299278605033898">Žr. populiarias svetaines</translation>
+<translation id="8368001212524806591">Stebėti kainą</translation>
 <translation id="8387617938027387193">Jūsų tapatybės patvirtinimas</translation>
 <translation id="8393700583063109961">Siųsti pranešimą</translation>
 <translation id="8410695015584479363">Stebėti kainas</translation>
@@ -1256,6 +1266,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="854522910157234410">Atidaryti šį puslapį</translation>
 <translation id="8555836665334561807">Naudojant „Wi-Fi“</translation>
 <translation id="8559990750235505898">Siūlyti versti puslapius į kitas kalbas</translation>
+<translation id="8560560256644480257">Kuriamas GIF: <ph name="PERCENT"/> %%</translation>
 <translation id="8560602726703398413">Suraskite savo skaitymo sąrašą skiltyje „Žymės“</translation>
 <translation id="8562452229998620586">Čia bus rodomi išsaugoti slaptažodžiai.</translation>
 <translation id="856481929701340285">Užkl. svet. kompiuteriui</translation>
@@ -1395,6 +1406,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="7667871022963214473">Jei savo įrenginyje norite išvalyti privataus naršymo istoriją, užverkite visus inkognito skirtukus.</translation>
 <translation id="4526803704855831732">Inkognito skirtukai</translation>
 <translation id="5248610748197335423">Užverti visus inkognito skirtukus</translation>
+<translation id="4660964651149493586">Atblokuoti inkognito veikseną</translation>
 <translation id="4167670741834902166">Naujas inkognito skirtukas</translation>
 <translation id="8120164982795455341">Naujas inkognito skirtukas</translation>
 <translation id="6464648082977038075">Užverti inkognito skirtukus</translation>

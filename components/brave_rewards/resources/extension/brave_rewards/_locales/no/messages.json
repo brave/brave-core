@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Koblet fra",
+    "message": "Logget ut",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Koble fra Brave Rewards",
-    "description": ""
+    "message": "Logg ut fra $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Ansl. inntjening",

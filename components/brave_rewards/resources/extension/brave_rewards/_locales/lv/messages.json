@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Atvienots",
+    "message": "Izrakstījies",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Atspējot Brave balvas",
-    "description": ""
+    "message": "Izrakstīties no $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Aptuvenā peļņa",

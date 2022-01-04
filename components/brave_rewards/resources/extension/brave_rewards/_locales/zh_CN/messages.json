@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "已断开连接",
+    "message": "已退出登录",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "与 Brave 奖励断开连接",
-    "description": ""
+    "message": "从 $provider$ 退出登录",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "预估收益",

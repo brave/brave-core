@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Tin tức Brave được hỗ trợ bởi quảng cáo với quảng cáo hoàn toàn riêng tư và được ẩn danh hóa khớp với thiết bị của bạn.</translation>
 <translation id="4541978218358617681">Quảng cáo</translation>
 <translation id="1765217911817124376">Bật Tin tức Brave</translation>
+<translation id="6527303717912515753">Chia sẻ</translation>
 <translation id="1654539412343893324">Tìm hiểu thêm về dữ liệu của bạn</translation>
 <translation id="2989805286512600854">Mở trong tab mới</translation>
 <translation id="3709782636417497984">Mở trong tab riêng tư mới</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Tin tức Brave</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
-<translation id="8772672608371898774">Nhà sản xuất Chứng thực bởi Brave</translation>
-<translation id="1397683270551078781">Vẫn chưa được xác minh</translation>
+<translation id="6020176662032623904">Người tạo nội dung đã được xác minh</translation>
+<translation id="2369994359029526515">Người tạo nội dung chưa được xác minh</translation>
 <translation id="880893465294676334">Nhà sáng tạo Brave đã xác thực này chưa cấu hình tài khoản của họ để nhận các khoản đóng góp từ Người dùng Brave.
         Mọi khoản tiền boa mà bạn gửi sẽ vẫn ở trong ví của bạn cho đến khi họ hoàn tất quá trình này.</translation>
 <translation id="8918760045046434238">Gửi tip...</translation>
@@ -277,11 +278,12 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
 <translation id="1554282356558968486">Dịch vụ ví của chúng tôi được cung cấp bởi</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
-<translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
+<translation id="3200197118442451932">Brave Software Inc. không xử lý, lưu trữ hoặc truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho <ph name="WALLET_PROVIDER"/> khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="2193391216824305230">Ví Người dùng</translation>
-<translation id="6585020831163574892">Đi đến tài khoản Uphold của bạn</translation>
+<translation id="1665118090708049096">Đi đến tài khoản <ph name="WALLET_PROVIDER"/> của tôi</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="6239274080752256452">Rút Tiền</translation>
 <translation id="8874184842967597500">Chưa kết nối</translation>
@@ -290,10 +292,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5358719431303818601">Đã ngắt kết nối chưa được xác minh</translation>
 <translation id="4241449868720191203">Đã ngắt kết nối đã xác minh</translation>
 <translation id="3248185426436836442">Đang chờ xử lý</translation>
-<translation id="8108013093558639183">BAT hiện không được hỗ trợ trong khu vực của bạn dựa trên vị trí mà tài khoản của bạn được mở. Hãy kiểm tra lại sau.</translation>
-<translation id="4190454391025419535">Khu vực không được hỗ trợ</translation>
-<translation id="6830703472632069884">Đã xảy ra vấn đề khi xác minh ví của bạn, xin vui lòng thử lại sau.</translation>
-<translation id="3512533646933434345">Lỗi xác thực ví</translation>
 <translation id="2260513517001048012">LƯU Ý: Người sáng tạo Đã xác minh của Brave này chưa định cấu hình tài khoản của họ để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
 <translation id="4488355059795908907">Người sáng tạo Đã xác minh của Brave này chưa định cấu hình tài khoản của họ để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ hoàn thành quá trình này.</translation>
 <translation id="2495032782748793764">Mặc định của Brave</translation>
@@ -424,16 +422,45 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1972589975368876259">Chỉnh sửa Ngăn xếp</translation>
 <translation id="2490330380242414851">Xóa Tiện ích</translation>
 <translation id="8446884382197647889">Tìm hiểu thêm</translation>
+<translation id="7384441892795736634">Làm mới Dữ liệu</translation>
+<translation id="4804818685124855865">Ngắt kết nối</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Địa chỉ Gửi tiền</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Ghi chú Gửi tiền</translation>
+<translation id="5110244215256675209">Mua Tiền điện tử</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Mua <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Có sẵn <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Xem trước Quy đổi</translation>
 <translation id="2882813124794301799">Ngăn xếp Tiện ích</translation>
 <translation id="13296465911709339">Đã sao chép văn bản của bạn vào khay nhớ tạm.</translation>
 <translation id="2735834606413553397">Địa chỉ công cộng đã được sao chép vào khay nhớ tạm.</translation>
+<translation id="7144878232160441200">Thử lại</translation>
 <translation id="2977461003134694205">Thống kê Quyền riêng tư</translation>
 <translation id="4643117005422448078">Các trang Hàng đầu</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Trình theo dõi &amp; Quảng cáo Đã chặn, Băng thông Đã lưu và Thời gian Tiết kiệm Ước tính.</translation>
 <translation id="74417429503469271">Mở các trang hàng đầu bạn thường truy cập.</translation>
+<translation id="2956070106555335453">Tóm tắt</translation>
+<translation id="1366855498335432549">Ký quỹ</translation>
+<translation id="1301340234286078471">Quy đổi</translation>
 <translation id="223536150967420869">Mua</translation>
+<translation id="1714829281959608206">Bật kết nối Binance để xem số dư tài khoản Binance và kinh doanh tiền điện tử.</translation>
+<translation id="4584930231524505442">Tôi muốn quy đổi...</translation>
+<translation id="5749014321384313843">Tôi muốn chi tiêu...</translation>
 <translation id="8688672835843460752">Khả dụng</translation>
+<translation id="2480674848181564169">Không đủ số dư để chuyển đổi</translation>
+<translation id="2215334405220411393">Số lượng tối thiểu để chuyển đổi là : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Không thể kết nối</translation>
+<translation id="7742417737698031726">Phí</translation>
+<translation id="2122225204180056042">Bạn sẽ nhận được</translation>
+<translation id="6432284126416751397">Xác nhận Quy đổi</translation>
 <translation id="5137723827757859599">Chưa có gì ở các trang hàng đầu.</translation>
+<translation id="3891414008432200754">Giá</translation>
+<translation id="3733576242118819803">Xác nhận (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Chuyển đổi Không thành công. Xin vui lòng thử lại.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Kiếm Token &amp; Tặng Lại</translation>
 <translation id="244362569344671266">Kiếm token bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung.</translation>
 <translation id="631124996535890460">Bằng cách tiếp tục, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
@@ -477,6 +504,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3415016869273103668">Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí</translation>
 <translation id="7073631403665023390">Nhấp hoặc chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.</translation>
 <translation id="626339649633171286">Muốn tìm hiểu thêm về Phần thưởng Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Bạn đã chuyển đổi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> thành <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Xin vui lòng kiểm tra kết nối mạng của bạn.</translation>
 <translation id="7889432931837317731">Tự động mở khi có thể</translation>
 <translation id="8967385052772844086">Xem toàn văn Báo cáo Quyền riêng tư</translation>
 <translation id="6864343534748973390">Phổ biến nhất</translation>
@@ -520,7 +549,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3171931580569169744">Bật Nhóm tab</translation>
 <translation id="5587305863196367357">Việc xác minh ví cho phép bạn quản lý tiền của mình một cách dễ dàng, thêm &amp; rút tiền</translation>
 <translation id="5760671211380791582">Bạn không có đủ BAT.</translation>
-<translation id="6960458596933484861">Bạn cần có tối thiểu 15 BAT để tạo một ví Uphold đã được xác minh. Vui lòng thử lại sau.</translation>
+<translation id="442469478596827903">Bạn cần có ít nhất 2 BAT để tạo một ví Uphold được xác minh. Vui lòng thử lại sau.</translation>
 <translation id="4389085954549744469">Nếu bạn đã có tài khoản Uphold được xác minh, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">tiếp tục đăng nhập</translation>
 <translation id="1483493594462132177">Gửi</translation>
@@ -775,4 +804,19 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="8971278306757462297">Địa chỉ nhận là địa chỉ của riêng bạn</translation>
 <translation id="749944179568745958">Không phải là địa chỉ ETH hợp lệ</translation>
 <translation id="3506416339268164412">Địa chỉ nhận là địa chỉ hợp đồng của một token</translation>
+<translation id="1543259266592091784">Nạp tiền</translation>
+<translation id="3494964159182650590">Tóm tắt Phần thưởng</translation>
+<translation id="7470079236088529568">Tổng khoản thưởng đã nhận</translation>
+<translation id="590733288489975971">Rewards từ Ads</translation>
+<translation id="207268487070188114">Tiền thưởng một lần</translation>
+<translation id="64394831139134288">Ví của tôi</translation>
+<translation id="8494748383523030337">Số dư của bạn</translation>
+<translation id="7091980679045978090">Doanh thu ước tính</translation>
+<translation id="1346059596910821859">Tiền tip</translation>
+<translation id="1549705559752367917">Gửi tiền thưởng thêm</translation>
+<translation id="6727102863431372879">Đặt</translation>
+<translation id="381822214767083050">Khoản đóng góp hàng tháng</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Nadiskonekta",
+    "message": "Na-log out",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Idiskonekta mula sa Mga Reward ng Brave",
-    "description": ""
+    "message": "Mag-log out sa $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Mga Tinatantyang Kita",

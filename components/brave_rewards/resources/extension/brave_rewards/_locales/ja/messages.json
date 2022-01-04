@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "切断されました",
+    "message": "ログアウト済み",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave Rewardとの接続を解除する",
-    "description": ""
+    "message": "$provider$からログアウト",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "推定報酬",
