@@ -1,0 +1,38 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+message VgBodySpecifics {
+  message Token {
+    required uint64 token_id = 1;
+    required string token_value = 2;
+    required double value = 3;
+    required uint64 expires_at = 4;
+  }
+
+  optional string creds_id = 1;
+  optional int32 trigger_type = 2;
+  optional string creds = 3;
+  optional string blinded_creds = 4;
+  optional string signed_creds = 5;
+  optional string public_key = 6;
+  optional string batch_proof = 7;
+  optional int32 status = 8;
+  repeated Token tokens = 9;
+}
+
+message VgSpendStatusSpecifics {
+  optional uint64 token_id = 1;
+  optional uint64 redeemed_at = 2;
+  optional int32 redeem_type = 3;
+}

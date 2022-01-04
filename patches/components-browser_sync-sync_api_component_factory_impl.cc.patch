@@ -1,0 +1,29 @@
+diff --git a/components/browser_sync/sync_api_component_factory_impl.cc b/components/browser_sync/sync_api_component_factory_impl.cc
+index e660caa2f0eb8deca6ba0c8aec328c9313cc4d3e..57ea3c7f3dbd687144a931c230465488133bdfc7 100644
+--- a/components/browser_sync/sync_api_component_factory_impl.cc
++++ b/components/browser_sync/sync_api_component_factory_impl.cc
+@@ -394,6 +394,24 @@ SyncApiComponentFactoryImpl::CreateCommonDataTypeControllers(
+         CreateForwardingControllerDelegate(syncer::USER_CONSENTS)));
+   }
+ 
++  if (!disabled_types.Has(syncer::VG_BODIES)) {
++    controllers.push_back(std::make_unique<ModelTypeController>(
++        syncer::VG_BODIES,
++        /*delegate_for_full_sync_mode=*/
++        CreateForwardingControllerDelegate(syncer::VG_BODIES),
++        /*delegate_for_transport_mode=*/
++        CreateForwardingControllerDelegate(syncer::VG_BODIES)));
++  }
++
++  if (!disabled_types.Has(syncer::VG_SPEND_STATUSES)) {
++    controllers.push_back(std::make_unique<ModelTypeController>(
++        syncer::VG_SPEND_STATUSES,
++        /*delegate_for_full_sync_mode=*/
++        CreateForwardingControllerDelegate(syncer::VG_SPEND_STATUSES),
++        /*delegate_for_transport_mode=*/
++        CreateForwardingControllerDelegate(syncer::VG_SPEND_STATUSES)));
++  }
++
+   return controllers;
+ }
+ 
