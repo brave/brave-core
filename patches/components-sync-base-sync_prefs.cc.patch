@@ -1,0 +1,15 @@
+diff --git a/components/sync/base/sync_prefs.cc b/components/sync/base/sync_prefs.cc
+index 1dafdfa614c6da7d5468593297f30a03353739e1..796d0022ea924f480e4b91c19b7ca2afce0d405f 100644
+--- a/components/sync/base/sync_prefs.cc
++++ b/components/sync/base/sync_prefs.cc
+@@ -290,6 +290,10 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+       return prefs::kSyncTabs;
+     case UserSelectableType::kWifiConfigurations:
+       return prefs::kSyncWifiConfigurations;
++    case UserSelectableType::kVgBodies:
++      return prefs::kSyncVgBodies;
++    case UserSelectableType::kVgSpendStatuses:
++      return prefs::kSyncVgSpendStatuses;
+   }
+   NOTREACHED();
+   return nullptr;

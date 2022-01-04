@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index 3afe319f02552eeba6e83e578f28525b11f1dacf..bf16e8eabeed42f1d51e26a73810b708d9840b73 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -11,6 +11,8 @@
+ #include "base/feature_list.h"
+ #include "base/path_service.h"
+ #include "base/syslog_logging.h"
++#include "brave/browser/brave_rewards/vg_sync_service.h"
++#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+@@ -623,6 +625,12 @@ ChromeSyncClient::GetControllerDelegateForModelType(syncer::ModelType type) {
+     case syncer::USER_EVENTS:
+       return browser_sync::UserEventServiceFactory::GetForProfile(profile_)
+           ->GetControllerDelegate();
++    case syncer::VG_BODIES:
++      return VgSyncServiceFactory::GetForProfile(profile_)
++          ->GetControllerDelegateForVgBodies();
++    case syncer::VG_SPEND_STATUSES:
++      return VgSyncServiceFactory::GetForProfile(profile_)
++          ->GetControllerDelegateForVgSpendStatuses();
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+     case syncer::WEB_APPS: {
+       auto* provider = web_app::WebAppProvider::GetForWebApps(profile_);

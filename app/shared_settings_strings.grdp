@@ -301,6 +301,12 @@
   </message>
 
   <!-- Sync page (strings used by the <settings-sync-page> element) -->
+  <message name="IDS_SETTINGS_VG_BODIES_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing VG bodies between multiple browser instances.">
+    VG bodies
+  </message>
+  <message name="IDS_SETTINGS_VG_SPEND_STATUSES_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing VG spend statuses between multiple browser instances.">
+    VG spend statuses
+  </message>
   <message name="IDS_SETTINGS_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
     Passwords
   </message>
