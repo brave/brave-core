@@ -383,6 +383,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSitePermissionsNewAccount",
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT},
     {"braveWalletPanelNotConnected", IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED},
+    {"braveWalletPanelScrollForMoreAssets",
+     IDS_BRAVE_WALLET_PANEL_SCROLL_FOR_MORE_ASSETS},
     {"braveWalletTransactionDetailBoxFunction",
      IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION},
     {"braveWalletTransactionDetailBoxHex",

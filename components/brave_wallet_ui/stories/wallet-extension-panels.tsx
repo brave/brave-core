@@ -542,6 +542,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               onLockWallet={onLockWallet}
               onOpenSettings={onOpenSettings}
               activeOrigin=''
+              userAssetList={AccountAssetOptions}
             />
           ) : (
             <>

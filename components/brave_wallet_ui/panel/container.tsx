@@ -67,6 +67,7 @@ import {
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
+import { formatBalance } from '../utils/format-balances'
 
 type Props = {
   panel: PanelState
@@ -544,6 +545,22 @@ function Container (props: Props) {
     }
   }, [connectedAccounts, selectedAccount, activeOrigin])
 
+  const userAssetList = React.useMemo(() => {
+    // selectedAccount.tokens can be undefined
+    if (selectedAccount.tokens) {
+      const formatedList = selectedAccount?.tokens?.map((asset) => ({
+        asset: asset.asset,
+        assetBalance: formatBalance(asset.assetBalance, asset.asset.decimals),
+        fiatBalance: asset.fiatBalance
+      })).sort(function (a, b) { return Number(b.fiatBalance) - Number(a.fiatBalance) }) // Sorting by Fiat Value
+
+      // Do not show an asset unless the selectedAccount has a balance
+      return formatedList.filter((token) => parseFloat(token.assetBalance) !== 0)
+    }
+    return []
+    // Using accounts as a dependency here to trigger balance changes
+  }, [selectedAccount, accounts])
+
   if (!hasInitialized || !accounts) {
     return null
   }
@@ -978,6 +995,7 @@ function Container (props: Props) {
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
         activeOrigin={activeOrigin}
+        userAssetList={userAssetList}
       />
     </PanelWrapper>
   )
