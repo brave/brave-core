@@ -19,23 +19,60 @@ extension WKWebView {
     }
 }
 
-func generateResponseThatRedirects(toUrl url: URL) -> (URLResponse, Data) {
-    var urlString: String
-    if InternalURL.isValid(url: url), let authUrl = InternalURL.authorize(url: url) {
-        urlString = authUrl.absoluteString
-    } else {
-        urlString = url.absoluteString
+extension InternalSchemeResponse {
+    func generateInvalidSchemeResponse(url: String, for originURL: URL) -> (URLResponse, Data)? {
+        // Same validation as in WKNavigationDelegate -> decidePolicyFor
+        guard let scheme = URL(string: url)?.scheme,
+              ["http", "https", "file", "about", InternalURL.scheme].contains(scheme) else {
+                  
+            let html = """
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta name="referrer" content="no-referrer">
+                </head>
+                <body>
+                    <h1>\(Strings.genericErrorBody)</h1>
+                </body>
+            </html>
+            """
+            let data = html.data(using: .utf8)!
+            let response = InternalSchemeHandler.response(forUrl: originURL)
+            return (response, data)
+        }
+        return nil
     }
-
-    urlString = urlString.replacingOccurrences(of: "'", with: apostropheEncoded)
     
-    let startTags = "<!DOCTYPE html><html><head><script>"
-    let endTags = "</script></head></html>"
-    let html = startTags + "location.replace('\(urlString)');" + endTags
+    func generateResponseThatRedirects(toUrl url: URL) -> (URLResponse, Data) {
+        var urlString: String
+        if InternalURL.isValid(url: url), let authUrl = InternalURL.authorize(url: url) {
+            urlString = authUrl.absoluteString
+        } else {
+            urlString = url.absoluteString
+        }
+ 
+        if let invalidSchemeResponse = generateInvalidSchemeResponse(url: urlString, for: url) {
+            return invalidSchemeResponse
+        }
 
-    let data = html.data(using: .utf8)!
-    let response = InternalSchemeHandler.response(forUrl: url)
-    return (response, data)
+        urlString = urlString.replacingOccurrences(of: "'", with: apostropheEncoded)
+        
+        let html = """
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta name="referrer" content="no-referrer">
+                <script>
+                    location.replace('\(urlString)');
+                </script>
+            </head>
+        </html>
+        """
+
+        let data = html.data(using: .utf8)!
+        let response = InternalSchemeHandler.response(forUrl: url)
+        return (response, data)
+    }
 }
 
 /// Handles requests to /about/sessionrestore to restore session history.
