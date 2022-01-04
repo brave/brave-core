@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">Chrome OS kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængeligt på dit domæne.</translation>
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="1530633922026945685">Brave skal have adgangstilladelse til dit kamera for at oprette et 3D-kort over dine omgivelser</translation>
-<translation id="4828904843379324771">Når du lukker Brave, ryddes der automatisk cookies og websitedata for de sider, du har besøgt</translation>
 <translation id="5616153642055197778">Der findes en ny og mere sikker version af Brave.</translation>
 <translation id="6797402139308059782">Lad Brave køre i baggrunden</translation>
 <translation id="5875673934455379806">Geninstaller Brave</translation>
@@ -28,6 +27,7 @@
 <translation id="8745514854244955877">Brave – Login på netværk – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Hvis du deler en computer, kan venner og familie browse individuelt og konfigurere Brave, som de ønsker hver især.</translation>
 <translation id="5997267581285668459">Valgfrit: Vær med til at forbedre funktioner og ydeevne i Chrome OS ved automatisk at sende diagnostik og brugsdata til Brave.</translation>
+<translation id="7810992039564280750">Tjekker webadresser ift. en liste over usikre websites, der er gemt i Brave. Hvis et website forsøger at stjæle din adgangskode, eller hvis du downloader en skadelig fil, sender Brave muligvis også webadresser og bl.a. mindre mængder sideindhold til Beskyttet browsing.</translation>
 <translation id="9095263438435683933">Hvis du vil sende et nummer fra denne enhed til din Android-telefon, skal du logge ind på Brave på begge enheder.</translation>
 <translation id="3813272600615358652">Denne udvidelse har ændret din startside i Brave.</translation>
 <translation id="2576129394594491151">Udvidelsen "<ph name="EXTENSION_NAME"/>" har ændret din startside i Brave.</translation>
@@ -48,9 +48,11 @@
 <translation id="2799223571221894425">Genstart</translation>
 <translation id="3783547330001921298">Denne handling vil oprette en ny Brave-profil til <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Fjern fra Brave...</translation>
+<translation id="5265419033369521352">Beskytter dig i Brave og kan bruges til at forbedre din sikkerhed i andre Brave-apps, når du er logget ind.</translation>
 <translation id="2885378588091291677">Jobliste</translation>
 <translation id="2176825726964012531">Om &amp;Brave</translation>
 <translation id="8208853227947884571">Brave er opdateret</translation>
+<translation id="5122472867956731189">Hvis et website forsøger at stjæle din adgangskode, eller hvis du downloader en skadelig fil, sender Brave muligvis også webadresser, bl.a. mindre mængder sideindhold, til Beskyttet browsing</translation>
 <translation id="2953892977076487219">Brave forsøger at redigere adgangskoder.</translation>
 <translation id="8755404239607088219">Brave kan ikke tjekke dine adgangskoder. Prøv igen senere.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
@@ -123,7 +125,6 @@
 <translation id="1786715389543715322">Opdaterer Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Tillad login via Brave</translation>
 <translation id="5536657158619734169">Der er en ny version af Brave til rådighed.</translation>
-<translation id="5874882355102994015">Brave kan ikke vise udskrifter, når den indbyggede PDF-fremviser mangler.</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
 <translation id="707769633889902835">Chrome OS kan ikke åbne denne side.</translation>
@@ -157,6 +158,7 @@
 <translation id="8320964054148936490">Computeren har allerede en nyere version af Brave. Hvis softwaren ikke virker, skal du afinstallere Brave og prøve igen.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave genstarter nu}=1{Brave genstarter om 1 sekund}one{Brave genstarter om # sekund}other{Brave genstarter om # sekunder}}</translation>
 <translation id="5980269616827212166">Brave skal have adgangstilladelse til lagerplads for at downloade filer</translation>
+<translation id="7651600795135059130">Webadresser tjekkes i forhold til en liste over usikre websites, der er gemt i Brave</translation>
 <translation id="5019879183386042809">Gør Brave til din standardbrowser</translation>
 <translation id="428541510811554120">Brave kan ikke søge efter opdateringer. Prøv at tjekke din internetforbindelse.</translation>
 <translation id="7445061995866044926">Vil du logge ud af Brave?</translation>
@@ -183,7 +185,6 @@
 <translation id="1489465648257900784">Din profil kan ikke bruges, da den stammer fra en nyere version af Brave.
 
 Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller brug en nyere version af Brave.</translation>
-<translation id="5450493308072741203">Opdater &amp;Brave</translation>
 <translation id="6666624454809779082">Brave er allerede installeret for alle brugere på computeren.</translation>
 <translation id="5360050006043219962">Log ind, og aktivér derefter synkronisering for at få adgang til dine Brave-ting på alle dine enheder.</translation>
 <translation id="8291513491595858997">Din forælder har deaktiveret "Tilladelser til websites, apps og udvidelser" for Brave. Det er ikke tilladt at aktivere denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -202,8 +203,8 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="1008530050039597147">Brave skal have adgangstilladelse til kamera for at bruge dette website</translation>
 <translation id="1197672524850678392">Brave kunne ikke startes. Prøv igen.</translation>
 <translation id="3405035915691517126">Brave kan ikke tjekke dine adgangskoder. Prøv igen efter 24 timer.</translation>
+<translation id="5101812148953915496">Websites, du besøger, husker dine oplysninger, indtil du lukker Brave</translation>
 <translation id="5516268345616100622">Jobliste – Brave</translation>
-<translation id="61852838583753520">Opdater &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Brave opdateres</translation>
 <translation id="3403365884036456766">Din præferencefil er beskadiget eller ugyldig.
 
@@ -256,6 +257,8 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="6283840329609797763">Installationen mislykkedes på grund af en uspecificeret fejl. Download Brave igen.</translation>
 <translation id="2433912322225810055">Den styrer også, hvilken side der vises, når du åbner Brave eller søger via omnifeltet.</translation>
 <translation id="4100716194836114130">Dette er din Brave-browser</translation>
+<translation id="6208136456999964972">Når du lukker alle Brave-vinduer, ryddes cookies og websitedata automatisk</translation>
+<translation id="6371875426681214174">Du <ph name="BEGIN_BOLD"/>logges ud af de fleste websites<ph name="END_BOLD"/>, når du lukker Brave. Hvis synkronisering er deaktiveret, <ph name="BEGIN_BOLD"/>logges du desuden ud af Braves tjenester og Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave skal have tilladelse til at bruge dit kamera og din mikrofon på dette website</translation>
 <translation id="7408085963519505752">Vilkår for Chrome OS</translation>
 <translation id="2262856633481902138">Brave kunne ikke synkronisere dine data, fordi loginoplysningerne for din konto er forældede.</translation>

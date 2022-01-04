@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Het Brave-nieuws bevat advertenties; deze zijn volledig privé en anoniem, afgestemd op jouw apparaat.</translation>
 <translation id="4541978218358617681">Advertentie</translation>
 <translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
+<translation id="6527303717912515753">Delen</translation>
 <translation id="1654539412343893324">Meer informatie over je gegevens</translation>
 <translation id="2989805286512600854">Openen op nieuw tabblad</translation>
 <translation id="3709782636417497984">Openen in nieuw privétabblad</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Je wallet</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="1772301834467143364">Brave-nieuws</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Voeg geld toe</translation>
 <translation id="8428213095426709021">instellingen</translation>
-<translation id="8772672608371898774">Uitgever geverifieerd door Brave</translation>
-<translation id="1397683270551078781">Nog niet geverifieerd</translation>
+<translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
+<translation id="2369994359029526515">Niet-geverifieerde ontwikkelaar</translation>
 <translation id="880893465294676334">Deze geverifieerde maker van Brave heeft zijn account nog niet geconfigureerd en kan daarom geen bijdragen van Brave-gebruikers ontvangen.
         Alle door jou verzonden fooien blijven in je wallet, totdat deze gebruiker dit proces heeft voltooid.</translation>
 <translation id="8918760045046434238">Stuur een fooitje...</translation>
@@ -277,11 +278,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
 <translation id="1554282356558968486">Onze wallet-dienst wordt geleverd door</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
-<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
+<translation id="3200197118442451932">Brave Software Inc. verwerkt noch bewaart persoonlijke informatie die u verstrekt aan <ph name="WALLET_PROVIDER"/> en heeft hier ook geen toegang tot wanneer u een account bij hen aanmaakt.</translation>
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="2193391216824305230">Gebruikersportemonnee</translation>
-<translation id="6585020831163574892">Ga naar je Uphold-account</translation>
+<translation id="1665118090708049096">Ga naar mijn <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="6239274080752256452">Geldmiddelen Opnemen</translation>
 <translation id="8874184842967597500">Niet verbonden</translation>
@@ -290,10 +292,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5358719431303818601">Afgesloten niet geverifieerd</translation>
 <translation id="4241449868720191203">Afgesloten geverifieerd</translation>
 <translation id="3248185426436836442">In afwachting</translation>
-<translation id="8108013093558639183">BAT wordt momenteel niet ondersteund in jouw regio op basis van de locatie waar je account is geopend. Kijk later terug voor de beschikbaarheid.</translation>
-<translation id="4190454391025419535">Regio niet ondersteund</translation>
-<translation id="6830703472632069884">Er was een probleem met het controleren van je portemonnee, probeer het later nog eens.</translation>
-<translation id="3512533646933434345">Fout in portemonneeverificatie</translation>
 <translation id="2260513517001048012">OPMERKING: Deze Brave Verified Creator heeft zijn account nog niet geconfigureerd om bijdragen van Brave gebruikers te ontvangen. Je browser zal blijven proberen bij te dragen tot ze het verifiëren, of tot er 90 dagen zijn verstreken.</translation>
 <translation id="4488355059795908907">Deze Brave Verified Creator heeft zijn account nog niet geconfigureerd om bijdragen van Brave gebruikers te ontvangen. Eventuele fooien die je stuurt, zullen in je portemonnee blijven totdat ze dit proces hebben voltooid.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
@@ -424,16 +422,47 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1972589975368876259">Stapel bewerken</translation>
 <translation id="2490330380242414851">Widget verwijderen</translation>
 <translation id="8446884382197647889">Meer informatie</translation>
+<translation id="7384441892795736634">Gegevens vernieuwen</translation>
+<translation id="4804818685124855865">Verbinding verbreken</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Stortingsadres</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Stortingsmemo</translation>
+<translation id="5110244215256675209">Koop Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Koop Buy <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Beschikbaar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/>
+Beschikbaar 
+Beschikbaar</translation>
+<translation id="6755546361496900700">Voorbeeld van conversie</translation>
 <translation id="2882813124794301799">Widgetstapel</translation>
 <translation id="13296465911709339">Uw tekst is gekopieerd naar het klembord.</translation>
 <translation id="2735834606413553397">Openbaar adres is gekopieerd naar klembord.</translation>
+<translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="2977461003134694205">Privacystatistieken</translation>
 <translation id="4643117005422448078">Top websites</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Trackers  &amp; Geblokkeerde ads, bespaarde bandbreedte en schatting van bespaarde tijd.</translation>
 <translation id="74417429503469271">Open de topsites die u vaak bezoekt.</translation>
+<translation id="2956070106555335453">Samenvatting</translation>
+<translation id="1366855498335432549">Storting</translation>
+<translation id="1301340234286078471">Converteren</translation>
 <translation id="223536150967420869">Kopen</translation>
+<translation id="1714829281959608206">Schakel Binance-verbinding in om het Binance-accountsaldo te bekijken en crypto te verhandelen.</translation>
+<translation id="4584930231524505442">Ik wil converteren...</translation>
+<translation id="5749014321384313843">Ik wil spenderen...</translation>
 <translation id="8688672835843460752">Beschikbaar</translation>
+<translation id="2480674848181564169">Niet genoeg geld voor omwisselen</translation>
+<translation id="2215334405220411393">Minimumbedrag om te wisselen is: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kon niet verbinden</translation>
+<translation id="7742417737698031726">Vergoeding</translation>
+<translation id="2122225204180056042">Je ontvangt</translation>
+<translation id="6432284126416751397">Bevestig de conversie</translation>
 <translation id="5137723827757859599">Er is hier op de topsites nog niks</translation>
+<translation id="3891414008432200754">Prijs</translation>
+<translation id="3733576242118819803">Bevestig (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Conversie mislukt. Probeer het alstublieft nogmaals.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Tokens verdienen en ze weer terugschenken</translation>
 <translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
 <translation id="631124996535890460">Door verder te gaan, gaat u akkoord met de <ph name="TERMS_OF_SERVICE"/> en het <ph name="PRIVACY_POLICY"/>.</translation>
@@ -477,6 +506,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3415016869273103668">Je kunt nu een gratis telefoongesprek starten</translation>
 <translation id="7073631403665023390">Klik of tik ergens op het scherm om door te gaan naar Brave Talk.</translation>
 <translation id="626339649633171286">Wil je meer informatie over Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">U converteerde <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> naar <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">gelieve uw netwerkverbinding te controleren.</translation>
 <translation id="7889432931837317731">Indien mogelijk automatisch openen</translation>
 <translation id="8967385052772844086">Volledig privacyrapport weergeven</translation>
 <translation id="6864343534748973390">Populairste</translation>
@@ -520,7 +551,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3171931580569169744">Tabbladgroepen inschakelen</translation>
 <translation id="5587305863196367357">Door uw wallet te verifiëren, kunt u uw geld efficiënter beheren en eenvoudiger geld toevoegen en opnemen</translation>
 <translation id="5760671211380791582">U hebt niet genoeg BAT.</translation>
-<translation id="6960458596933484861">U moet minimaal 15 BAT hebben om een Uphold-wallet aan te maken. Probeer het later opnieuw.</translation>
+<translation id="442469478596827903">U moet minimaal 2 BAT hebben om een geverifieerde Uphold-wallet aan te maken. Probeer het later opnieuw.</translation>
 <translation id="4389085954549744469">Indien u al een geverifieerd Uphold-account hebt, kunt u zich <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">aanmelden</translation>
 <translation id="1483493594462132177">Sturen</translation>
@@ -775,4 +806,19 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8971278306757462297">Het ontvangende adres is je eigen adres</translation>
 <translation id="749944179568745958">Geen geldig ETH-adres</translation>
 <translation id="3506416339268164412">Het ontvangende adres is een contractadres van een token</translation>
+<translation id="1543259266592091784">Fondsen toevoegen</translation>
+<translation id="3494964159182650590">Overzicht van Beloningen</translation>
+<translation id="7470079236088529568">Totaal aantal geclaimde giften</translation>
+<translation id="590733288489975971">Beloningen uit advertenties</translation>
+<translation id="207268487070188114">Eenmalige fooi</translation>
+<translation id="64394831139134288">Mijn wallet</translation>
+<translation id="8494748383523030337">Je saldo</translation>
+<translation id="7091980679045978090">Geschatte verdiensten</translation>
+<translation id="1346059596910821859">Fooi</translation>
+<translation id="1549705559752367917">Fooi versturen</translation>
+<translation id="6727102863431372879">Instellen</translation>
+<translation id="381822214767083050">Maandelijkse bijdrage</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

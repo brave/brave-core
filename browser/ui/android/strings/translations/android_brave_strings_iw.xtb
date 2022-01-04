@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">חדשות Brave נתמכות באמצעות פרסומות אנונימיות ופרטיות לחלוטין שהותאמו למכשירך.</translation>
 <translation id="4541978218358617681">פרסומת</translation>
 <translation id="1765217911817124376">הפעל את חדשות Brave</translation>
+<translation id="6527303717912515753">שיתוף</translation>
 <translation id="1654539412343893324">מידע נוסף אודות נתוניך</translation>
 <translation id="2989805286512600854">פתח בלשונית חדשה</translation>
 <translation id="3709782636417497984">פתיחה בלשונית פרטית חדשה</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">הארנק שלך</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">חדשות Brave</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/>דולר</translation>
 <translation id="3826081199286264109">דולר אמריקאי</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="8428213095426709021">הגדרות</translation>
-<translation id="8772672608371898774">מפרסם מאומת של Brave</translation>
-<translation id="1397683270551078781">טרם אומת</translation>
+<translation id="6020176662032623904">יוצר מאומת</translation>
+<translation id="2369994359029526515">יוצר בלתי מאומת</translation>
 <translation id="880893465294676334">יוצר מאומת זה של Brave טרם הגדיר את חשבונו לקבלת תרומות ממשתמשי Brave.
         טיפים שתשלחו יישארו בארנקכם עד אשר הוא יסיים תהליך זה.</translation>
 <translation id="8918760045046434238">שלח טיפ...</translation>
@@ -279,11 +280,12 @@
 <translation id="9096003370755878766">משיכת BAT שייתכן שהוספת בעבר לארנק Brave Rewards שלך</translation>
 <translation id="1554282356558968486">שירות הארנקים שלנו מסופק על ידי</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
-<translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
+<translation id="3200197118442451932">Brave Software Inc. אינה מעבדת, מאחסנת או ניגשת למידע האישי שאתה מספק ל-<ph name="WALLET_PROVIDER"/> כאשר אתה מקים חשבון אצלם.</translation>
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="2193391216824305230">ארנק משתמש</translation>
-<translation id="6585020831163574892">עבור לחשבון Uphold שלך</translation>
+<translation id="1665118090708049096">עבור לחשבון <ph name="WALLET_PROVIDER"/> 1 שלי</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="6239274080752256452">משיכת כספים</translation>
 <translation id="8874184842967597500">לא מחובר</translation>
@@ -292,10 +294,6 @@
 <translation id="5358719431303818601">מנותק לא מאומת</translation>
 <translation id="4241449868720191203">מנותק מאומת</translation>
 <translation id="3248185426436836442">בהמתנה</translation>
-<translation id="8108013093558639183">BAT אינו נתמך כרגע באזור שלך על סמך המיקום בו חשבונך נפתח. יש לבדוק זמינות מאוחר יותר.</translation>
-<translation id="4190454391025419535">האזור אינו נתמך</translation>
-<translation id="6830703472632069884">הייתה בעיה באימות הארנק שלך, נא לנסות שוב מאוחר יותר.</translation>
-<translation id="3512533646933434345">שגיאת אימות ארנק</translation>
 <translation id="2260513517001048012">הערה: יוצר Brave מאומת זה טרם הגדיר את חשבונו לקבלת תרומות ממשתמשי Brave. הדפדפן שלך ימשיך לנסות לתרום עד שהוא יאמת, או עד שיחלפו 90 יום.</translation>
 <translation id="4488355059795908907">יוצר Brave מאומת זה טרם הגדיר את חשבונו לקבלת תרומות ממשתמשי Brave. טיפים שתשלח/י יישארו בארנק שלך עד שהם ישלימו את התהליך.</translation>
 <translation id="2495032782748793764">ברירת מחדל Brave</translation>
@@ -426,16 +424,45 @@
 <translation id="1972589975368876259">ערוך ערימה</translation>
 <translation id="2490330380242414851">הסר ווידג'ט</translation>
 <translation id="8446884382197647889">למידע נוסף</translation>
+<translation id="7384441892795736634">רענון נתונים</translation>
+<translation id="4804818685124855865">התנתקות</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> כתובת הפקדה</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> תזכיר הפקדה</translation>
+<translation id="5110244215256675209">קנה קריפטו</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">קנו <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">זמין <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">תצוגה מקדימה של ההמרה</translation>
 <translation id="2882813124794301799">ערימת ווידג'ט</translation>
 <translation id="13296465911709339">הטקסט שלך הועתק ללוח.</translation>
 <translation id="2735834606413553397">הכתובת הציבורית הועתקה ללוח.</translation>
+<translation id="7144878232160441200">נסה שוב</translation>
 <translation id="2977461003134694205">סטטיסטיקות פרטיות</translation>
 <translation id="4643117005422448078">אתרים מובילים</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">עוקבים &amp; מודעות חסומים, רוחב פס שנחסך, ואמדני זמן שנחסך.</translation>
 <translation id="74417429503469271">פתחו אתרים מובילים שאתם מבקרים בהם לעתים קרובות.</translation>
+<translation id="2956070106555335453">סיכום</translation>
+<translation id="1366855498335432549">הפקדה</translation>
+<translation id="1301340234286078471">המרה</translation>
 <translation id="223536150967420869">קנייה</translation>
+<translation id="1714829281959608206">אפשר התחברות ל-Binance כדי לראות את יתרת חשבון Binance ולסחור בקריפטו.</translation>
+<translation id="4584930231524505442">אני רוצה להמיר...</translation>
+<translation id="5749014321384313843">אני רוצה להוציא...</translation>
 <translation id="8688672835843460752">זמין</translation>
+<translation id="2480674848181564169">יתרה לא מספיקה להמרה</translation>
+<translation id="2215334405220411393">סכום מינימלי להמרה הוא: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">לא ניתן להתחבר</translation>
+<translation id="7742417737698031726">עמלה</translation>
+<translation id="2122225204180056042">תקבל/י</translation>
+<translation id="6432284126416751397">אישור המרה</translation>
 <translation id="5137723827757859599">אין כאן שום דבר עדיין באתרים המובילים.</translation>
+<translation id="3891414008432200754">מחיר</translation>
+<translation id="3733576242118819803">אישור  (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">המרה נכשלה. נא לנסות שוב.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">הרוויחו טוקנים &amp; ותנו בחזרה</translation>
 <translation id="244362569344671266">הרוויחו טוקנים על ידי צפייה בפרסומות Brave פרטיות ותמכו ביוצרי תוכן באופן אוטומטי.</translation>
 <translation id="631124996535890460">על ידי המשך הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/> וכן <ph name="PRIVACY_POLICY"/>.</translation>
@@ -479,6 +506,8 @@
 <translation id="3415016869273103668">כעת תוכל להתחיל שיחה בחינם</translation>
 <translation id="7073631403665023390">לחץ או הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk.</translation>
 <translation id="626339649633171286">רוצה לדעת עוד על פרסים? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">המרתם <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ל- <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">נא לבדוק את חיבור הרשת שלכם.</translation>
 <translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
 <translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
 <translation id="6864343534748973390">הכי פופולרי</translation>
@@ -522,7 +551,7 @@
 <translation id="3171931580569169744">הפיכת קבוצות של כרטיסיות לזמינה</translation>
 <translation id="5587305863196367357">אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר ולהוסיף ולמשוך כספים.</translation>
 <translation id="5760671211380791582">אין לכם מספיק BAT.</translation>
-<translation id="6960458596933484861">נדרשים לכם מינימום של 15 BAT כדי ליצור ארנק Uphold מאומת. נסו שוב מאוחר יותר.</translation>
+<translation id="442469478596827903">עליך לפתוח לפחות 2 BAT כדי ליצור ארנק Uphold מאומת. בבקשה נסה שוב בשלב מאוחר יותר.</translation>
 <translation id="4389085954549744469">אם יש לכם חשבון Uphold מאומת, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">המשיכו לכניסה</translation>
 <translation id="1483493594462132177">שלח</translation>
@@ -777,4 +806,19 @@
 <translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
 <translation id="749944179568745958">כתובת ETH לא חוקית</translation>
 <translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
+<translation id="1543259266592091784">הוסף/י כסף</translation>
+<translation id="3494964159182650590">סיכום תגמולים</translation>
+<translation id="7470079236088529568">סך המענקים שנתבעו</translation>
+<translation id="590733288489975971">תגמולים מפרסומות</translation>
+<translation id="207268487070188114">טיפ חד-פעמי</translation>
+<translation id="64394831139134288">הארנק שלי</translation>
+<translation id="8494748383523030337">היתרה שלך</translation>
+<translation id="7091980679045978090">רווחים משוערים</translation>
+<translation id="1346059596910821859">טיפ</translation>
+<translation id="1549705559752367917">שלח טיפ</translation>
+<translation id="6727102863431372879">הגדר</translation>
+<translation id="381822214767083050">תרומה חודשית</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

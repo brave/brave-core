@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "ግንኙነቱ ተቋርጧል",
+    "message": "ወጥቷል",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ",
-    "description": ""
+    "message": "ከ $provider$ ውጣ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "የተገመቱ ገቢዎች",

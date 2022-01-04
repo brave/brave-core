@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "מנותק",
+    "message": "התנתק",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "התנתקות מתגמולי Brave",
-    "description": ""
+    "message": "התנתק מ$provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "רווחים מוערכים",

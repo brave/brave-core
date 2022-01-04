@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Disconnesso",
+    "message": "Disconnessione effettuata",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Scollegati da Brave Rewards",
-    "description": ""
+    "message": "Esci da $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Guadagni stimati",

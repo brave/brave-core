@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">OS Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
 <translation id="5147525139567260139">Kongsi tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan kebenaran untuk mengakses kamera anda untuk membuat peta 3D persekitaran anda</translation>
-<translation id="4828904843379324771">Apabila anda menutup Brave, kuki dan data laman daripada halaman yang anda lawati akan dikosongkan secara automatik</translation>
 <translation id="5616153642055197778">Terdapat versi Brave baharu yang lebih selamat tersedia.</translation>
 <translation id="6797402139308059782">Benarkan Brave dijalankan dalam latar belakang</translation>
 <translation id="5875673934455379806">Pasang semula Brave</translation>
@@ -28,6 +27,7 @@
 <translation id="8745514854244955877">Brave - Log Masuk Rangkaian - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Jika anda berkongsi komputer, rakan dan keluarga boleh menyemak imbas secara berasingan dan menyediakan Brave sebagaimana yang mereka mahukan.</translation>
 <translation id="5997267581285668459">Pilihan: Bantu kami mempertingkat ciri dan prestasi OS Brave dengan menghantar data diagnostik dan penggunaan kepada Brave secara automatik.</translation>
+<translation id="7810992039564280750">Semak URL melalui perbandingan dengan senarai laman tidak selamat yang disimpan dalam Brave. Jika laman cuba mencuri kata laluan anda atau apabila anda memuat turun fail yang berbahaya, Brave juga mungkin menghantar URL, termasuk sedikit kandungan halaman, kepada Penyemakan Imbas Selamat.</translation>
 <translation id="9095263438435683933">Untuk menghantar nombor dari sini ke telefon Android anda, log masuk ke Brave pada kedua-dua peranti.</translation>
 <translation id="3813272600615358652">Sambungan ini telah menukar halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
 <translation id="2576129394594491151">Sambungan "<ph name="EXTENSION_NAME"/>" telah menukar halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
@@ -48,9 +48,11 @@
 <translation id="2799223571221894425">Lancarkan semula</translation>
 <translation id="3783547330001921298">Tindakan ini akan membuat profil Brave baharu untuk <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
+<translation id="5265419033369521352">Memastikan anda selamat pada Brave dan mungkin digunakan untuk meningkatkan keselamatan anda dalam apl Brave yang lain apabila anda log masuk</translation>
 <translation id="2885378588091291677">Pengurus Tugas</translation>
 <translation id="2176825726964012531">Mengenai &amp;Brave</translation>
 <translation id="8208853227947884571">Brave telah dikemas kini</translation>
+<translation id="5122472867956731189">Jika laman cuba mencuri kata laluan anda atau apabila anda memuat turun fail yang berbahaya, Brave juga mungkin menghantar URL, termasuk sedikit kandungan halaman, kepada Penyemakan Imbas Selamat</translation>
 <translation id="2953892977076487219">Brave cuba mengedit kata laluan.</translation>
 <translation id="8755404239607088219">Brave tidak dapat menyemak kata laluan anda. Cuba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
@@ -123,7 +125,6 @@
 <translation id="1786715389543715322">Mengemas kini Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Benarkan log masuk Brave</translation>
 <translation id="5536657158619734169">Terdapat versi baharu Brave tersedia.</translation>
-<translation id="5874882355102994015">Brave tidak dapat memaparkan pratonton cetakan apabila alat lihat PDF terbina dalam tiada.</translation>
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">OS Brave tidak boleh membuka halaman ini.</translation>
@@ -157,6 +158,7 @@
 <translation id="8320964054148936490">Komputer ini telah mempunyai versi Brave yang lebih baharu. Jika perisian tidak berfungsi, sila nyahpasang Brave dan cuba lagi.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave akan dilancarkan semula sekarang}=1{Brave akan dilancarkan semula dalam masa sesaat}other{Brave akan dilancarkan semula dalam masa # saat}}</translation>
 <translation id="5980269616827212166">Brave memerlukan kebenaran akses storan untuk memuat turun fail</translation>
+<translation id="7651600795135059130">Semak URL melalui perbandingan dengan senarai laman tidak selamat yang disimpan dalam Brave</translation>
 <translation id="5019879183386042809">Jadikan Brave penyemak imbas lalai</translation>
 <translation id="428541510811554120">Brave tidak dapat menyemak kemas kini. Cuba periksa sambungan Internet anda.</translation>
 <translation id="7445061995866044926">Log keluar daripada Brave?</translation>
@@ -183,7 +185,6 @@
 <translation id="1489465648257900784">Profil anda tidak boleh digunakan kerana profil anda dihasilkan dari versi Brave yang lebih baharu.
 
 Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbeza atau gunakan versi Brave yang lebih baharu.</translation>
-<translation id="5450493308072741203">Kemas kini &amp;Brave</translation>
 <translation id="6666624454809779082">Brave telah dipasang untuk semua pengguna pada komputer anda.</translation>
 <translation id="5360050006043219962">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk, kemudian hidupkan penyegerakan.</translation>
 <translation id="8291513491595858997">Ibu/bapa anda telah mematikan "Kebenaran untuk laman web, apl dan sambungan" untuk Brave. Tindakan mendayakan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak dibenarkan.</translation>
@@ -202,8 +203,8 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="1008530050039597147">Brave memerlukan kebenaran kamera untuk laman ini</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat menyemak kata laluan anda. Cuba lagi selepas 24 jam.</translation>
+<translation id="5101812148953915496">Laman yang anda lawati mengingati maklumat anda sehingga anda menutup Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
-<translation id="61852838583753520">Kemas kini &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
 <translation id="3403365884036456766">Fail pilihan anda rosak atau tidak sah.
 
@@ -256,6 +257,8 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6283840329609797763">Pemasangan gagal disebabkan ralat yang tidak dinyatakan. Sila muat turun semula Brave.</translation>
 <translation id="2433912322225810055">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave atau membuat carian dari Kotak Omni.</translation>
 <translation id="4100716194836114130">Ini Brave anda</translation>
+<translation id="6208136456999964972">Apabila anda menutup semua tetingkap Brave, kuki dan data laman akan dikosongkan secara automatik</translation>
+<translation id="6371875426681214174">Anda akan <ph name="BEGIN_BOLD"/>dilog keluar daripada kebanyakan laman<ph name="END_BOLD"/> apabila anda menutup Brave. Jika penyegerakan dimatikan, anda juga akan <ph name="BEGIN_BOLD"/>dilog keluar daripada perkhidmatan Brave dan Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave memerlukan kebenaran untuk mengakses kamera dan mikrofon anda bagi tapak ini</translation>
 <translation id="7408085963519505752">Syarat Chrome OS</translation>
 <translation id="2262856633481902138">Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>

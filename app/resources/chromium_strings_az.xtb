@@ -15,7 +15,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="7419046106786626209">Chomium OS datanızı sinxronizasiya edə bilmədi, çünki sinxronizasiya domeniniz üçün əlçatan deyil.</translation>
 <translation id="5147525139567260139">Brave tabı paylaşın</translation>
 <translation id="1530633922026945685">Brave ətrafınızın 3D xəritəsini yaratmaq üçün kameranıza giriş icazəsi tələb edir</translation>
-<translation id="4828904843379324771">Brave'u bağladığınızda, ziyarət etdiyiniz səhifələrdən kukiləri və sayt datasını avtomatik olaraq təmizləyir</translation>
 <translation id="5616153642055197778">Yeni, daha güvənli Brave versiyası əlçatandır.</translation>
 <translation id="6797402139308059782">Brave'a fonda işləməyə icazə verin</translation>
 <translation id="5875673934455379806">Brave'u yenidən quraşdırın</translation>
@@ -31,6 +30,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8745514854244955877">Brave - Şəbəkəyə Giriş - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Paylaşılan kompüteriniz varsa, kompüterin paylaşıldığı şəxslər ayrı-ayrılıqda istifadə edə və Brave'u istədikləri kimi quraşdıra bilər.</translation>
 <translation id="5997267581285668459">İstəyə görə: Diaqnostika və istifadəçi datasını avtomatik Brave'a göndərməklə Brave ƏS funksiyalarını təkmilləşdirməyə yardım edin.</translation>
+<translation id="7810992039564280750">URL'ləri Brave'da saxlanılan təhlükəli saytların siyahısı ilə yoxlayır Sayt parolunuzu oğurlamağa çalışdıqda və ya zərərli fayl endirdiyinizdə Brave səhifə məzmunundan kiçik nümunələr də daxil olmaqla, URL'ləri Təhlükəsiz Baxışa göndərə bilər.</translation>
 <translation id="9095263438435683933">Buradan Android telefonunuza nömrə göndərmək üçün hər iki cihazda Brave'a daxil olun.</translation>
 <translation id="3813272600615358652">Bu artırma Brave'u başlatdığınız zaman hansı səhifənin göstərildiyini dəyişdi.</translation>
 <translation id="2576129394594491151">"<ph name="EXTENSION_NAME"/>" artırması Brave'u başlatdığınız zaman hansı səhifənin göstərildiyini dəyişdi.</translation>
@@ -52,9 +52,11 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="2799223571221894425">Yenidən başladın</translation>
 <translation id="3783547330001921298">Bununla <ph name="USER_EMAIL_ADDRESS"/> üçün yeni Brave profili yaradılacaq</translation>
 <translation id="777113543093865885">Brave'dan silin...</translation>
+<translation id="5265419033369521352">Daxil olduğunuzda Brave'da sizi qoruyur və digər Brave tətbiqlərində təhlükəsizliyinizi artırmaq üçün istifadə edilə bilər</translation>
 <translation id="2885378588091291677">Tapşırıq Meneceri</translation>
 <translation id="2176825726964012531">Brave haqqında</translation>
 <translation id="8208853227947884571">Brave güncəldir</translation>
+<translation id="5122472867956731189">Sayt parolunuzu oğurlamağa çalışdıqda və ya zərərli fayl endirdiyinizdə Brave səhifə məzmunundan kiçik nümunələr də daxil olmaqla, URL'ləri Təhlükəsiz Baxışa göndərə bilər</translation>
 <translation id="2953892977076487219">Brave parolları redaktə etməyə çalışır.</translation>
 <translation id="8755404239607088219">Brave parollarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
 <translation id="8880183781256147665">Xrom durub ...</translation>
@@ -126,7 +128,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="1786715389543715322">Brave güncəllənir (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave girişinə icazə verin</translation>
 <translation id="5536657158619734169">Brave'um yeni versiyası əlçatandır.</translation>
-<translation id="5874882355102994015">Daxili PDF görüntüləyən əskik olduqda Brave çap önizləməsini göstərə bilməz.</translation>
 <translation id="239760341987199724">Brave'u defolt brauzer təyin edin</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">Chrome OS bu səhifəni aça bilməz.</translation>
@@ -160,6 +161,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8320964054148936490">Bu kompüterdə Brave'um daha son versiyası var. Proqram təminatı işləmirsə, Chroimum'u sistemdən silin və yenidən cəhd edin.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave indi yenidən başlayacaq}=1{Brave 1 saniyəyə yenidən başlayacaq}other{Brave # saniyəyə yenidən başlayacaq}}</translation>
 <translation id="5980269616827212166">Brave faylları endirmək üçün yaddaşa giriş tələb edir</translation>
+<translation id="7651600795135059130">URL'ləri Brave'da saxlanılan təhlükəli saytların siyahısı ilə yoxlayır</translation>
 <translation id="5019879183386042809">Brave'u defolt brauzer edin</translation>
 <translation id="428541510811554120">Brave güncəlləmələri yoxlaya bilmir. İnternet bağlantınızı yoxlamağa cəhd edin.</translation>
 <translation id="7445061995866044926">Brave'dan çıxılsın?</translation>
@@ -186,7 +188,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="1489465648257900784">Profiliniz yeni versiya Brave Brave'dan olduğu üçün istifadə edilə bilməz.
 
 Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstərin və ya yeni Brave versiyası işlədin.</translation>
-<translation id="5450493308072741203">Brave'u güncəlləşdirin</translation>
 <translation id="6666624454809779082">Brave kompüterinizdəki bütün istifadəçilər üçün artıq quraşdırılıb.</translation>
 <translation id="5360050006043219962">Bütün cihazlarınızda Brave elementlərinə giriş etmək üçün daxil olun və sinxronizasiyanı aktiv edin.</translation>
 <translation id="8291513491595858997">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının aktiv edilməsinə icazə verilmir.</translation>
@@ -204,8 +205,8 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="1008530050039597147">Brave bu sayt üçün kamera icazəsi tələb edir</translation>
 <translation id="1197672524850678392">Brave başlamadı. Yenidən sınayın.</translation>
 <translation id="3405035915691517126">Brave parollarınızı yoxlaya bilmir. 24 saatdan sonra yenidən cəhd edin.</translation>
+<translation id="5101812148953915496">Ziyarət etdiyiniz saytlar Brave'u bağlayana qədər məlumatlarınızı xatırlayır</translation>
 <translation id="5516268345616100622">Tapşırıq Meneceri - Brave</translation>
-<translation id="61852838583753520">Chrome OS tətbiqini güncəlləşdirin</translation>
 <translation id="1864557848095568223">Brave güncəlləşir</translation>
 <translation id="3403365884036456766">Tərcih faylınız zədələnib və ya yanlışdır.  Brave ayarlarınızı bərpa edə bilmir.</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -256,6 +257,8 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="6283840329609797763">Naməlum xəta üzündən quraşdırmaq alınmadı. Brave'u yenidən endirin.</translation>
 <translation id="2433912322225810055">O, həmçinin Brave'u başlatdığınız zaman və ya Omnibox'dan axtarış etdiyiniz zaman göstərilən səhifəyə nəzarət edir.</translation>
 <translation id="4100716194836114130">Bu, Sizin Brave'dur</translation>
+<translation id="6208136456999964972">Bütün Brave pəncərələrini bağladığınız zaman kukilər və sayt datası avtomatik olaraq silinir</translation>
+<translation id="6371875426681214174">Brave'u bağladıqda <ph name="BEGIN_BOLD"/>əksər saytlardan<ph name="END_BOLD"/> çıxacaqsınız. Sinxronizasiya deaktivdirsə <ph name="BEGIN_BOLD"/>Brave xidmətlərindən və Brave'dan da çıxacaqsınız<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave bu sayt üçün kamera və mikrofona giriş icazəsi tələb edir</translation>
 <translation id="7408085963519505752">Chrome OS şərtləri</translation>
 <translation id="2262856633481902138">Brave datanızı sinxronizasiya edə bilmir, çünki hesaba giriş məlumatlarınız köhnədir.</translation>

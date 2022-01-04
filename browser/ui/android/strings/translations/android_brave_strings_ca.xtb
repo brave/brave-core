@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Les notícies de Brave estan patrocinades amb anuncis completament privats i anònims que coincideixin amb el dispositiu.</translation>
 <translation id="4541978218358617681">Anunci</translation>
 <translation id="1765217911817124376">Activa les Brave News</translation>
+<translation id="6527303717912515753">Comparteix</translation>
 <translation id="1654539412343893324">Més informació sobre les teves dades</translation>
 <translation id="2989805286512600854">Obre en una pestanya nova</translation>
 <translation id="3709782636417497984">Obre en una pestanya privada nova</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">La teva cartera</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">Dòlars dels Estats Units</translation>
 <translation id="1165667598801520610">Afegeix Fons</translation>
 <translation id="8428213095426709021">Configuració</translation>
-<translation id="8772672608371898774">Editor verificat per Brave</translation>
-<translation id="1397683270551078781">Pendent de comprovació</translation>
+<translation id="6020176662032623904">Creador verificat</translation>
+<translation id="2369994359029526515">Creador no verificat</translation>
 <translation id="880893465294676334">Aquest creador verificat de Brave encara no ha configurat el seu compte per poder rebre aportacions per part dels usuaris de Brave.
 Qualsevol propina que enviïs es quedarà a la teva cartera fins que hagi completat el procés.</translation>
 <translation id="8918760045046434238">Envia una propina...</translation>
@@ -279,11 +280,12 @@ Segur que vols continuar?</translation>
 <translation id="9096003370755878766">Retirar BAT que hagis afegit al teu moneder de Gratificacions Brave</translation>
 <translation id="1554282356558968486">El nostre servei de moneder és proveït per</translation>
 <translation id="6569877533335686968">Mantenir</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
-<translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
+<translation id="3200197118442451932">Brave Software Inc. no processa, emmagatzema ni accedeix a cap informació personal que proporciones a <ph name="WALLET_PROVIDER"/> quan obres un compte amb ells.</translation>
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="2193391216824305230">Moneder d'Usuari</translation>
-<translation id="6585020831163574892">Aneu al vostre compte Uphold</translation>
+<translation id="1665118090708049096">Anar al meu compte <ph name="WALLET_PROVIDER"/></translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="6239274080752256452">Retirar Fons</translation>
 <translation id="8874184842967597500">No connectat</translation>
@@ -292,10 +294,6 @@ Segur que vols continuar?</translation>
 <translation id="5358719431303818601">No s'ha verificat la desconexió</translation>
 <translation id="4241449868720191203">Desconectat verificat</translation>
 <translation id="3248185426436836442">Pendent</translation>
-<translation id="8108013093558639183">BAT actualment no és compatible amb la vostra ubicació basat en la localització d'on es va obrir el compte. Torneu a comprovar la disponibilitat més endavant.</translation>
-<translation id="4190454391025419535">Regió no compatible</translation>
-<translation id="6830703472632069884">Hi ha hagut un problema en verificar el vostre moneder, si us plau, torneu-ho a provar més tard.</translation>
-<translation id="3512533646933434345">Error de verificació del Moneder</translation>
 <translation id="2260513517001048012">NOTA: Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre contribucions d'usuaris de Brave. El vostre navegador intentarà contribuir fins que verifiquin, o fins que hagin passat 90 dies.</translation>
 <translation id="4488355059795908907">Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre contribucions d'usuaris Brave. Qualsevol consell que envieu es quedarà al vostre moneder fins que completin el procés.</translation>
 <translation id="2495032782748793764">Brave per Defecte</translation>
@@ -426,16 +424,46 @@ Segur que vols continuar?</translation>
 <translation id="1972589975368876259">Editeu la Pila</translation>
 <translation id="2490330380242414851">Elimineu el Giny</translation>
 <translation id="8446884382197647889">Més informació</translation>
+<translation id="7384441892795736634">Actualitzar dades</translation>
+<translation id="4804818685124855865">Desconnectar</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adreça de Dipòsit</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Deposit Memo</translation>
+<translation id="5110244215256675209">Compra Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Disponible <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Vista Prèvia de Conversió</translation>
 <translation id="2882813124794301799">Pila de Ginys</translation>
 <translation id="13296465911709339">El text s'ha copiat al porta-retalls.</translation>
 <translation id="2735834606413553397">S'ha copiat l'adreça pública al porta-retalls.</translation>
+<translation id="7144878232160441200">Torna-ho a intentar</translation>
 <translation id="2977461003134694205">Estadístiques de Privacitat</translation>
 <translation id="4643117005422448078">Principals llocs</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Rastrejadors &amp; Anuncis Bloquejats, Amplada de Banda guardada, i Aproximació del Temps Estalviat.</translation>
 <translation id="74417429503469271">Obrir els llocs principals que soleu visitar.</translation>
+<translation id="2956070106555335453">Resum</translation>
+<translation id="1366855498335432549">Dipositar</translation>
+<translation id="1301340234286078471">Convertir</translation>
 <translation id="223536150967420869">Compra</translation>
+<translation id="1714829281959608206">Habilitar la connexió de Binance per visualitzar el saldo del compte Binance i cel crypto-comerç</translation>
+<translation id="4584930231524505442">Vull convertir...</translation>
+<translation id="5749014321384313843">Vull gastar...</translation>
 <translation id="8688672835843460752">Disponible</translation>
+<translation id="2480674848181564169">No hi ha prou saldo per a la conversió</translation>
+<translation id="2215334405220411393">La quantitat mínima a convertir és:
+<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">No es pot conectar</translation>
+<translation id="7742417737698031726">Comissió</translation>
+<translation id="2122225204180056042">Rebràs</translation>
+<translation id="6432284126416751397">Confirmar Conversió</translation>
 <translation id="5137723827757859599">Encara no hi ha res als llocs principals.</translation>
+<translation id="3891414008432200754">Preu</translation>
+<translation id="3733576242118819803">Confirmar (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">La conversió ha fallat. Si us plau, torneu-ho a intentar.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Guanyey Fitxes &amp; Torneu</translation>
 <translation id="244362569344671266">Guanyeu fitxes mirant anuncis Privats de Brave i doneu suport als creadors de contingut de manera automàtica.</translation>
 <translation id="631124996535890460">Si continueu, esteu acceptant els <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -479,6 +507,8 @@ Segur que vols continuar?</translation>
 <translation id="3415016869273103668">Ara podeu iniciar una trucada gratuïta</translation>
 <translation id="7073631403665023390">Fes clic o toca qualsevol lloc de la pantalla per continuar a Brave Talk.</translation>
 <translation id="626339649633171286">Voleu saber més sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Heu convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Si us plau, comproveu la connexió a la xarxa.</translation>
 <translation id="7889432931837317731">Obrir de automàticament quan sigui possible</translation>
 <translation id="8967385052772844086">Veieu l'Informe de Privacitat complet</translation>
 <translation id="6864343534748973390">El més popular</translation>
@@ -522,7 +552,7 @@ Segur que vols continuar?</translation>
 <translation id="3171931580569169744">Permet els grups de pestanyes</translation>
 <translation id="5587305863196367357">Verificar la cartera et permet gestionar els teus fons, afegir-ne i retirar-ne, de manera fàcil.</translation>
 <translation id="5760671211380791582">No tens prou BAT.</translation>
-<translation id="6960458596933484861">Has de tenir un mínim de 15 BAT per a crear una cartera Uphold verificada. Si us plau, prova-ho més tard.</translation>
+<translation id="442469478596827903">Has de tenir un mínim de 2 BAT per a crear una cartera Uphold verificada. Si us plau, prova-ho més tard.</translation>
 <translation id="4389085954549744469">Si ja tens un compte Uphold verificat, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continua per a iniciar sessió</translation>
 <translation id="1483493594462132177">Envia</translation>
@@ -777,4 +807,19 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="8971278306757462297">L'adreça de recepció és la teva pròpia</translation>
 <translation id="749944179568745958">No és una adreça ETH vàlida</translation>
 <translation id="3506416339268164412">L'adreça de recepció és l'adreça de contracte d'un testimoni</translation>
+<translation id="1543259266592091784">Afegeix fons</translation>
+<translation id="3494964159182650590">Resum de recompenses</translation>
+<translation id="7470079236088529568">Total de donacions sol·licitades</translation>
+<translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
+<translation id="207268487070188114">Propina d'una sola vegada</translation>
+<translation id="64394831139134288">La meva cartera</translation>
+<translation id="8494748383523030337">El vostre Saldo</translation>
+<translation id="7091980679045978090">Guanys estimats</translation>
+<translation id="1346059596910821859">Propina</translation>
+<translation id="1549705559752367917">Envia Propina</translation>
+<translation id="6727102863431372879">Configura...</translation>
+<translation id="381822214767083050">Contribució mensual</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

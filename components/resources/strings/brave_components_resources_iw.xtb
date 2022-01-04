@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">הבא</translation>
 <translation id="7954950242989581218">גלשו באופן בטוח</translation>
 <translation id="2188651882929633653">Brave Shields חוסמים את היצורים הקריפיים שמנסים לעקוב אחריך ברשת — כולל רוב הפרסומות. כוון/י את המגנים ל-“ למטה ” אם נראה שאתר לא עובד. Brave משתמש <ph name="BEGIN_LINK_P3A"/> אנליטיקה של מוצר בפרטיות מלאה<ph name="END_LINK_P3A"/> להערכת השימוש הכולל בתכונות מסוימות. אפשר לכבות את זה ב-<ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">פרסומות</translation>
-<translation id="6769094341455418696">הרוויחו [[currency]] על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">הרווח [[מטבע]] על ידי צפייה במודעות פרטיות של Brave. המודעות המוצגות מבוססות על תחומי העניין שלך, כפי שניתן להסיק מהתנהגות הגלישה שלך. שום מידע אישי או היסטוריית גלישה לא יופצו מהדפדפן שלך.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="3742599705619405136">שיטה אוטומטית לתמיכה במו"לים וביוצרי תוכן. הגדר/י תשלום חודשים והמשך/י לגלוש כרגיל. האתרים המאומתים ע"י Brave שביקרת בהם יקבלו את התרומות שלך באופן אוטומטי, על פי מידת העניין שלך שנמדדת על ידי Brave.</translation>
 <translation id="3325399124634342726">הרווחים הנוכחיים לחודש זה (הערכה)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">אנו מציגים את [[numberOfLines]] השורות האחרונות של היומן. אם הנכם רוצים את היומן המלא, ניתן להוריד אותו למעלה.</translation>
 <translation id="7168491065836975228">החלקים הפנימיים של Rewards</translation>
 <translation id="758790787422117549">מזהה אישיות</translation>
+<translation id="1919345977826869612">מודעות</translation>
 <translation id="3671566813999349838">כמות</translation>
 <translation id="751223241692981112">נתבע ב-</translation>
 <translation id="3913089081619091801">מזהה תביעה</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="3656941797339037856">קשרו פרסים אל Gemini!</translation>
-<translation id="2383784987664887340">Gemini מאפשרת לך להחליף, לאחסן ולהרוויח 3.49% APY ב- BAT שלך. אמת וקשר את ארנק ה- Brave Reward שלך עם Gemini עכשיו!</translation>
-<translation id="2237374144728570574">* הרווח APY עם Gemini החל מ-15 בספטמבר 2021</translation>
+<translation id="3066983737886188034">Gemini מאפשר לך לסחור בקלות, לאחסן ולהרוויח ריבית על BAT שלך. אמת וקשר את ארנק ה-Brave Rewards שלך עם Gemini עכשיו!</translation>
 <translation id="7404779623219601861">מימוש BAT עבור כרטיסי מתנה</translation>
 <translation id="6215565499749144110">עם רשת TAP, באפשרותך לממש את ה-BAT שלך עבור כרטיסי מתנה של שמות מותגים פופולריים.</translation>
 <translation id="6915065518766963119">* דורש אימות Uphold</translation>
@@ -779,6 +779,9 @@
 <translation id="2659764755126740206">עבור אל חשבון ה-<ph name="PROVIDER"/> שלי</translation>
 <translation id="2389181429986654814">עבור אל <ph name="PROVIDER"/> כדי להשלים את האימות</translation>
 <translation id="7793632266654336758">השלם את אימות זהותך על מנת להתחיל לקבל תגמולים.</translation>
+<translation id="2394961582378297792">התנתק</translation>
+<translation id="5511950864417840431">התנתק מ
+<ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">רווחים מוערכים</translation>
 <translation id="7577100371127227294">טיפים חודשיים</translation>
 <translation id="5894023780213944778">הארנק שלי</translation>
@@ -879,12 +882,12 @@
 <translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
 <translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
+<translation id="2704606927547763573">הועתק</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
 <translation id="8303434745767477417">החזק בנכסי קריפטו במשמורת שלך. עקוב אחר ביצועי תיק ההשקעות וקיים אינטראקציה עם אפליקציות 3D. סחור, השקע, לווה והלווה באמצעות DeFi. הכל ישר מדפדפן הפרטיות Brave. ללא תוספות, ללא צורך בהורדה.</translation>
 <translation id="6972754398087986839">תחילת העבודה</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
-<translation id="1078873179929044999">בצעד הבא תראה’ ביטוי שחזור בן 12 מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
 <translation id="5024543173656851695">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="3933122286596948824">ביטוי השחזור שלך</translation>
 <translation id="5077747669435508720">יש לרשום או להעתיק את המילים האלה בסדר המדויק המוצג להלן, ולשמור אותן במקום בטוח. ביטוי השחזור שלך הוא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם ברצונך להחליף ארנק.</translation>
@@ -946,6 +949,7 @@
 <translation id="6151024411349343484">נסה לשנות נתיב HD (למעלה) אם אינך יכול למצוא את החשבון שאתה מחפש.</translation>
 <translation id="2844691569989101734">פנקס בזמן אמת</translation>
 <translation id="7265732100380987017">דור קודם (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">לא נמצאו תוצאות</translation>
 <translation id="5149944858285555235">שגיאה לא ידועה, חבר מחדש את חומרת הארנק ונסה שוב.</translation>
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="9220525904950070496">הסר חשבון</translation>
@@ -1026,6 +1030,8 @@
 <translation id="4709524402122994378">עסקאות</translation>
 <translation id="523862956770478816">הרשאות אתר</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> חשבונות מחוברים</translation>
+<translation id="4305817255990598646">החלף</translation>
+<translation id="3890989020011724401">חשבון חדש</translation>
 <translation id="4460220693591349571">סוג פונקציה</translation>
 <translation id="838933475572692615">נתוני HEX</translation>
 <translation id="2240831799756994975">בתים</translation>
@@ -1091,6 +1097,8 @@
 <translation id="6825399159373612149">דומיין <ph name="DOMAIN_NAME"/> אינו רשום</translation>
 <translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
 <translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
+<translation id="5517732667776806421">חסר מידע על סכום בדיקה</translation>
+<translation id="4006711930669471508">מידע סכום ביקורת לא חוקי</translation>
 <translation id="862585889767884824">של</translation>
 <translation id="9106265941552476098">דחה<ph name="TRANSACTION_LENGTH"/> עסקאות</translation>
 <translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
@@ -1112,6 +1120,7 @@
 <translation id="1119447706177454957">שגיאה פנימית</translation>
 <translation id="3327639091470204775">לא ניתן להתחבר לגשר Trezor</translation>
 <translation id="6672377693827764095">שגיאה פנימית, לא ניתן לאחזר החשבונות</translation>
+<translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="8933250418452564886">לא ניתן למצוא עסקת חומרה, יש לנסות שוב</translation>
 <translation id="5999974802900788338">התקבלה שגיאה מהתקן חומרה, ייתכן שעליך לאשר את העסקה במכשיר שלך</translation>
 <translation id="8523768065044261559">שגיאה בטיפול בעסקה, יש לנסות שוב</translation>
@@ -1119,6 +1128,8 @@
 <translation id="8273603707418703324">שגיאה בחתימת ההודעה, התבקש מחזיק מפתחות לא ידוע, יש לנסות שוב</translation>
 <translation id="5265455943786954050">הפקודה של Trezor כבר נתונה בביצוע</translation>
 <translation id="7017116822583380542">גשר Trezor אינו מוכן</translation>
+<translation id="3378339846292573874">הוסף אסימון מוצע</translation>
+<translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1127,6 +1138,31 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">סטטוס חיבור Tor</translation>
 <translation id="6024292492796847324">התקדמות אתחול Tor</translation>
+<translation id="8458987127502506209">אפשר Brave מגנים</translation>
+<translation id="640898327002833127">Brave מגנים <ph name="LINK_BEFORE"/>לְמַעלָה<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">אם האתר הזה נראה מקולקל, נסה את מגנים למטה. הערה: זה עשוי להפחית את הגנת הפרטיות של Brave.</translation>
+<translation id="8377155647357436161">עוקבים, מודעות ועוד חסומים <ph name="LINK_BEFORE"/>
+למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">בקרה מתקדמת</translation>
+<translation id="1299672573512347813">הגדרות אלה משפיעות על תאימות החיבוריות בנושא זה</translation>
+<translation id="9204041448536398473">הגדרות מגנים גלובלי</translation>
+<translation id="7637771346619326580">שנה ברירות מחדל גלובליות של מגנים</translation>
+<translation id="3520486481604057261">התאם אישית את רשימות חסימת המודעות</translation>
+<translation id="3146531623184244174">החיבורים שודרגו ל-HTTPS</translation>
+<translation id="131231380815754440">הפעל HTTPS</translation>
+<translation id="7461425058443653485">סקריפטים חסומים</translation>
+<translation id="3246600097575692802">אפשר סקריפטים חסומים</translation>
+<translation id="3603525299146223354">עוקבים &amp; מודעות</translation>
+<translation id="1146309636943354181">עוקבים &amp; פרסומות חסומים (סטנדרטי)</translation>
+<translation id="5973258875089964805">עוקבים &amp; פרסומות חסומים (אגרסיבי)</translation>
+<translation id="5544888475837817215">אפשר את כל העוקבים והמודעות</translation>
+<translation id="6203697265754637264">קבצי cookie מרובי-אתרים (cross-site) נחסמו</translation>
+<translation id="4627427111733173920">קבצי עוגיות חסומים</translation>
+<translation id="7855168553463825937">כל העוגיות חסומות</translation>
+<translation id="8366221601425141146">טביעות אצבעות נחסמו</translation>
+<translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
+<translation id="6696441392507885865">טביעת אצבע חסומה (קפדני, אתרים עלולים להישבר)</translation>
+<translation id="5882733945883311404">אפשר את כל טביעות האצבע</translation>
 <translation id="1742469581923031760">מתחבר…</translation>
 <translation id="1287487756047817908">מתנתק…</translation>
 <translation id="2325196879156848326">ההתחברות נכשלה</translation>

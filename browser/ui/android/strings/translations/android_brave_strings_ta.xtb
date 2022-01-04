@@ -12,12 +12,14 @@
 <translation id="6302422639282249274">பிரேவ் வெகுமதிகளை நிர்வகி</translation>
 <translation id="6583902294974160967">ஆதரவு</translation>
 <translation id="1799030480311994998">அம்சங்கள்</translation>
+<translation id="2005732746077850308">பிரேவ் கவசங்கள் &amp; தனியுரிமை</translation>
 <translation id="4692623383562244444">தேடுபொறிகள்</translation>
 <translation id="1468415711258933398">நிலையான தாவல்</translation>
 <translation id="3377025655491224618">மறைநிலைத் தாவல்</translation>
 <translation id="9148058034647219655">வெளியேறு</translation>
 <translation id="2356070529366658676">கேள்</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
+<translation id="6527303717912515753">பகிர்</translation>
 <translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
@@ -86,8 +88,6 @@
 <translation id="3780605330121608425">உம் பணப்பை</translation>
 <translation id="1165667598801520610">நிதி சேர்</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
-<translation id="8772672608371898774">பிரேவ் சரிபார்க்கப்பட்ட வெளியீட்டாளர்</translation>
-<translation id="1397683270551078781">இன்னும் சரிபார்க்கப்படவில்லை</translation>
 <translation id="8918760045046434238">துணுக்குதவியை அனுப்பு...</translation>
 <translation id="9182287025588539628">ஒரு-முறை உதவிக்குறிப்புகள்</translation>
 <translation id="7577100371127227294">மாதாந்திர துணுக்குதவி</translation>
@@ -120,6 +120,7 @@
 <translation id="7507533586185621084">தவறான ஒத்திசைவு குறியீடு</translation>
 <translation id="8284063834901328650">தவறான ஒத்திசைவு விரைவுக்குறி</translation>
 <translation id="3149880132460839085">பிரேவ் ஒத்திசைவு</translation>
+<translation id="3680755684186855422">புத்தகக்குறிகள் தரவை உம் பல்வேறு சாதனங்களிலுள்ள பிரேவ் உலாவிகளினிடையே ஒத்திசைத்திட பிரேவ் ஒத்திசைவு அனுமதிக்கிறது.</translation>
 <translation id="5241263629636958324">கவ்வுபலகைக்கு நகலெடுக்கப்பட்டது</translation>
 <translation id="5817918615728894473">இணை</translation>
 <translation id="7090325819305486658">தரவு விருப்பத்தேர்வுகள்</translation>
@@ -216,7 +217,9 @@
 <translation id="1972589975368876259">அடுக்கை திருத்து</translation>
 <translation id="2490330380242414851">சில்லை நீக்கு</translation>
 <translation id="8446884382197647889">மேலும் அறிக</translation>
+<translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="2882813124794301799">சில் அடுக்கு</translation>
+<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="2977461003134694205">தனியுரிமை புள்ளிவிவரங்கள்</translation>
 <translation id="4643117005422448078">முன்னணி தளங்கள்</translation>
 <translation id="74417429503469271">நீங்கள் அடிக்கடி பார்வையிடும் முன்னணி தளங்களை திற.</translation>
@@ -271,4 +274,6 @@
 <translation id="1165039591588034296">பிழை</translation>
 <translation id="1177863135347784049">தனிப்பயன்</translation>
 <translation id="7791543448312431591">சேர்</translation>
+<translation id="1346059596910821859">துணுக்குதவி</translation>
+<translation id="1549705559752367917">துணுக்குதவி அனுப்பு</translation>
 </translationbundle>
