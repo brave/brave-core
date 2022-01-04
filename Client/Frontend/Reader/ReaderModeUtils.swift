@@ -20,14 +20,29 @@ struct ReaderModeUtils {
             let tmplPath = Bundle.main.path(forResource: "Reader", ofType: "html"),
             let tmpl = try? String(contentsOfFile: tmplPath, encoding: .utf8) else { return nil }
 
-        return tmpl.replacingOccurrences(of: "%READER-CSS%", with: css)
+        return tmpl.replacingOccurrences(of: "%READER-TITLE-NONCE%", with: titleNonce) // This MUST be the first line/replacement!
+        
+            .replacingOccurrences(of: "%READER-CSS%", with: css)
             .replacingOccurrences(of: "%READER-STYLE%", with: initialStyle.encode())
             .replacingOccurrences(of: "%READER-DOMAIN%", with: simplifyDomain(readabilityResult.domain))
             .replacingOccurrences(of: "%READER-URL%", with: readabilityResult.url)
-            .replacingOccurrences(of: "%READER-TITLE%", with: readabilityResult.title)
-            .replacingOccurrences(of: "%READER-CREDITS%", with: readabilityResult.credits)
+            .replacingOccurrences(of: "%READER-TITLE%", with: readabilityResult.title.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.title.htmlEntityEncodedString)
+            .replacingOccurrences(of: "%READER-CREDITS%", with: readabilityResult.credits.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.credits.htmlEntityEncodedString)
             .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
-            .replacingOccurrences(of: "%READER-TITLE-NONCE%", with: titleNonce)
+            .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
+    }
+}
 
+private extension String {
+    var unquotedIfNecessary: String {
+        var str = self
+        if str.first == "\"" || str.first == "'" {
+            str = String(str.dropFirst())
+        }
+        
+        if str.last == "\"" || str.last == "'" {
+            str = String(str.dropLast())
+        }
+        return str
     }
 }
