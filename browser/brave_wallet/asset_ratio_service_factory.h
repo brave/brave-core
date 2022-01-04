@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -15,25 +15,24 @@
 
 namespace brave_wallet {
 
-class AssetRatioController;
+class AssetRatioService;
 
-class AssetRatioControllerFactory : public BrowserContextKeyedServiceFactory {
+class AssetRatioServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::AssetRatioController> GetForContext(
+  static mojo::PendingRemote<mojom::AssetRatioService> GetForContext(
       content::BrowserContext* context);
-  static AssetRatioController* GetControllerForContext(
+  static AssetRatioService* GetControllerForContext(
       content::BrowserContext* context);
-  static AssetRatioControllerFactory* GetInstance();
+  static AssetRatioServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<AssetRatioControllerFactory>;
+  friend struct base::DefaultSingletonTraits<AssetRatioServiceFactory>;
 
-  AssetRatioControllerFactory();
-  AssetRatioControllerFactory(const AssetRatioControllerFactory&) = delete;
-  AssetRatioControllerFactory& operator=(const AssetRatioControllerFactory&) =
-      delete;
+  AssetRatioServiceFactory();
+  AssetRatioServiceFactory(const AssetRatioServiceFactory&) = delete;
+  AssetRatioServiceFactory& operator=(const AssetRatioServiceFactory&) = delete;
 
-  ~AssetRatioControllerFactory() override;
+  ~AssetRatioServiceFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
@@ -43,4 +42,4 @@ class AssetRatioControllerFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_

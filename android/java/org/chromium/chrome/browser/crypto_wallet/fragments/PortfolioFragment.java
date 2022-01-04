@@ -32,7 +32,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -287,10 +287,10 @@ public class PortfolioFragment extends Fragment
                 asset.contractAddress, asset.logo, asset.decimals);
     }
 
-    private AssetRatioController getAssetRatioController() {
+    private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
+            return ((BraveWalletActivity) activity).getAssetRatioService();
         }
 
         return null;
@@ -380,7 +380,7 @@ public class PortfolioFragment extends Fragment
 
             if (mPortfolioHelper == null) {
                 mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioController(), getEthJsonRpcController(), accountInfos);
+                        getAssetRatioService(), getEthJsonRpcController(), accountInfos);
             }
 
             String chainName = mSpinner.getSelectedItem().toString();

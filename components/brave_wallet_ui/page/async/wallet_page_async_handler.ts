@@ -105,15 +105,15 @@ handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
 handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
-  const assetPriceController = getWalletPageApiProxy().assetRatioController
+  const assetRatioService = getWalletPageApiProxy().assetRatioService
   const walletState = getWalletState(store)
   const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
   const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
   const selectedNetwork = walletState.selectedNetwork
   if (payload.asset) {
     const selectedAsset = payload.asset
-    const defaultPrices = await assetPriceController.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
-    const priceHistory = await assetPriceController.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
+    const defaultPrices = await assetRatioService.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
+    const priceHistory = await assetRatioService.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))

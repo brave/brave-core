@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -31,19 +31,18 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class AssetRatioController : public KeyedService,
-                             public mojom::AssetRatioController {
+class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
  public:
-  AssetRatioController(
+  AssetRatioService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~AssetRatioController() override;
-  AssetRatioController(const AssetRatioController&) = delete;
-  AssetRatioController& operator=(const AssetRatioController&) = delete;
+  ~AssetRatioService() override;
+  AssetRatioService(const AssetRatioService&) = delete;
+  AssetRatioService& operator=(const AssetRatioService&) = delete;
 
-  mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::AssetRatioController> receiver);
+  mojo::PendingRemote<mojom::AssetRatioService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
 
-  // mojom::AssetRatioController
+  // mojom::AssetRatioService
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
                 brave_wallet::mojom::AssetPriceTimeframe timeframe,
@@ -103,13 +102,13 @@ class AssetRatioController : public KeyedService,
                       const std::string& body,
                       const base::flat_map<std::string, std::string>& headers);
 
-  mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
+  mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 
   static GURL base_url_for_test_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  base::WeakPtrFactory<AssetRatioController> weak_ptr_factory_;
+  base::WeakPtrFactory<AssetRatioService> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_SERVICE_H_

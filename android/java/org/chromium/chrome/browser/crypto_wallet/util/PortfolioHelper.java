@@ -11,7 +11,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -30,7 +30,7 @@ import java.util.Locale;
 public class PortfolioHelper {
     private static String TAG = "PortfolioHelper";
     private BraveWalletService mBraveWalletService;
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private EthJsonRpcController mEthJsonRpcController;
     private String mChainId;
     private AccountInfo[] mAccountInfos;
@@ -44,13 +44,13 @@ public class PortfolioHelper {
     private int mFiatHistoryTimeframe;
 
     public PortfolioHelper(BraveWalletService braveWalletService,
-            AssetRatioController assetRatioController, EthJsonRpcController ethJsonRpcController,
+            AssetRatioService assetRatioService, EthJsonRpcController ethJsonRpcController,
             AccountInfo[] accountInfos) {
         assert braveWalletService != null;
-        assert assetRatioController != null;
+        assert assetRatioService != null;
         assert ethJsonRpcController != null;
         mBraveWalletService = braveWalletService;
-        mAssetRatioController = assetRatioController;
+        mAssetRatioService = assetRatioService;
         mEthJsonRpcController = ethJsonRpcController;
         mAccountInfos = accountInfos;
     }
@@ -127,7 +127,7 @@ public class PortfolioHelper {
 
                 pricesContexts.add(priceContext);
 
-                mAssetRatioController.getPrice(
+                mAssetRatioService.getPrice(
                         fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
             }
 
@@ -260,7 +260,7 @@ public class PortfolioHelper {
             priceHistoryContext.userAsset = userAsset;
             pricesHistoryContexts.add(priceHistoryContext);
 
-            mAssetRatioController.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
+            mAssetRatioService.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
                     "usd", mFiatHistoryTimeframe, priceHistoryContext);
         }
 

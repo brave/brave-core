@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
@@ -29,7 +29,7 @@ import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
@@ -64,14 +64,14 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     private ErcTokenRegistry mErcTokenRegistry;
     private EthTxController mEthTxController;
     private EthJsonRpcController mEthJsonRpcController;
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private BraveWalletService mBraveWalletService;
     private KeyringController mKeyringController;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mEthJsonRpcController.close();
         mBraveWalletService.close();
         mKeyringController.close();
@@ -136,7 +136,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     private void setUpAssetList(String chainId) {
         AccountInfo[] accountInfos = new AccountInfo[] {getThisAccountInfo()};
         PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                getAssetRatioController(), mEthJsonRpcController, accountInfos);
+                getAssetRatioService(), mEthJsonRpcController, accountInfos);
         portfolioHelper.setChainId(chainId);
         portfolioHelper.calculateBalances(() -> {
             RecyclerView rvAssets = findViewById(R.id.rv_assets);
@@ -190,7 +190,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                 if (accountInfo.address.equals(mAddress) && accountInfo.name.equals(mName)) {
                     AccountInfo[] accountInfos = new AccountInfo[1];
                     accountInfos[0] = accountInfo;
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioController,
+                    Utils.setUpTransactionList(accountInfos, mAssetRatioService,
                             mEthTxController, mErcTokenRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId);
                     break;
@@ -216,7 +216,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         super.finishNativeInitialization();
 
         InitEthJsonRpcController();
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitBraveWalletService();
         InitKeyringController();
         InitEthTxController();
@@ -288,19 +288,19 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     @Override
     public void onConnectionError(MojoException e) {
         mEthJsonRpcController.close();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mBraveWalletService.close();
         mKeyringController.close();
         mEthTxController.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController = null;
-        mAssetRatioController = null;
+        mAssetRatioService = null;
         mBraveWalletService = null;
         mKeyringController = null;
         mEthTxController = null;
         mErcTokenRegistry = null;
         InitEthJsonRpcController();
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitBraveWalletService();
         InitKeyringController();
         InitErcTokenRegistry();
@@ -341,13 +341,13 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                 EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService =
+                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitBraveWalletService() {
@@ -362,8 +362,8 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         return mEthJsonRpcController;
     }
 
-    public AssetRatioController getAssetRatioController() {
-        return mAssetRatioController;
+    public AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
     }
 
     public BraveWalletService getBraveWalletService() {

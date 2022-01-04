@@ -15,7 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -23,7 +23,7 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
@@ -160,9 +160,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     SetNetwork("0x1");
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
-    asset_ratio_controller_ =
-        AssetRatioControllerFactory::GetControllerForContext(browser_context());
-    asset_ratio_controller_->SetAPIRequestHelperForTesting(
+    asset_ratio_service_ =
+        AssetRatioServiceFactory::GetControllerForContext(browser_context());
+    asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     eth_tx_controller_ =
         EthTxControllerFactory::GetControllerForContext(browser_context());
@@ -595,7 +595,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   KeyringController* keyring_controller_;
   content::TestWebContentsFactory factory_;
   EthTxController* eth_tx_controller_;
-  AssetRatioController* asset_ratio_controller_;
+  AssetRatioService* asset_ratio_service_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
   network::TestURLLoaderFactory url_loader_factory_;

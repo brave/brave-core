@@ -31,7 +31,7 @@ namespace brave_wallet {
 
 class EthTxControllerUnitTest;
 
-class AssetRatioController;
+class AssetRatioService;
 class EthJsonRpcController;
 class KeyringController;
 
@@ -44,7 +44,7 @@ class EthTxController : public KeyedService,
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
       KeyringController* keyring_controller,
-      AssetRatioController* asset_ratio_controller,
+      AssetRatioService* asset_ratio_service,
       std::unique_ptr<EthTxStateManager> tx_state_manager,
       std::unique_ptr<EthNonceTracker> nonce_tracker,
       std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
@@ -230,10 +230,10 @@ class EthTxController : public KeyedService,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
-  EthJsonRpcController* rpc_controller_;          // NOT OWNED
-  KeyringController* keyring_controller_;         // NOT OWNED
-  AssetRatioController* asset_ratio_controller_;  // NOT OWNED
-  PrefService* prefs_;                            // NOT OWNED
+  EthJsonRpcController* rpc_controller_;    // NOT OWNED
+  KeyringController* keyring_controller_;   // NOT OWNED
+  AssetRatioService* asset_ratio_service_;  // NOT OWNED
+  PrefService* prefs_;                      // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;

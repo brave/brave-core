@@ -14,7 +14,7 @@
 #include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -224,8 +224,8 @@ class EthTxControllerUnitTest : public testing::Test {
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
     keyring_controller_.reset(new KeyringController(&prefs_));
-    asset_ratio_controller_.reset(
-        new AssetRatioController(shared_url_loader_factory_));
+    asset_ratio_service_.reset(
+        new AssetRatioService(shared_url_loader_factory_));
 
     auto tx_state_manager =
         std::make_unique<EthTxStateManager>(&prefs_, rpc_controller_.get());
@@ -236,7 +236,7 @@ class EthTxControllerUnitTest : public testing::Test {
 
     eth_tx_controller_.reset(new EthTxController(
         rpc_controller_.get(), keyring_controller_.get(),
-        asset_ratio_controller_.get(), std::move(tx_state_manager),
+        asset_ratio_service_.get(), std::move(tx_state_manager),
         std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
 
     base::RunLoop run_loop;
@@ -369,7 +369,7 @@ class EthTxControllerUnitTest : public testing::Test {
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
   std::unique_ptr<KeyringController> keyring_controller_;
   std::unique_ptr<EthTxController> eth_tx_controller_;
-  std::unique_ptr<AssetRatioController> asset_ratio_controller_;
+  std::unique_ptr<AssetRatioService> asset_ratio_service_;
   std::vector<uint8_t> data_;
 };
 

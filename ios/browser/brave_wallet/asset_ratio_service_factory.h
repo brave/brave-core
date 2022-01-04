@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,23 +21,23 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class AssetRatioController;
+class AssetRatioService;
 
-class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
+class AssetRatioServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::AssetRatioController* GetForBrowserState(
+  static mojom::AssetRatioService* GetForBrowserState(
       ChromeBrowserState* browser_state);
-  static AssetRatioController* GetControllerForBrowserState(
+  static AssetRatioService* GetControllerForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static AssetRatioControllerFactory* GetInstance();
+  static AssetRatioServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<AssetRatioControllerFactory>;
+  friend struct base::DefaultSingletonTraits<AssetRatioServiceFactory>;
 
-  AssetRatioControllerFactory();
-  ~AssetRatioControllerFactory() override;
+  AssetRatioServiceFactory();
+  ~AssetRatioServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -47,11 +47,10 @@ class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  AssetRatioControllerFactory(const AssetRatioControllerFactory&) = delete;
-  AssetRatioControllerFactory& operator=(const AssetRatioControllerFactory&) =
-      delete;
+  AssetRatioServiceFactory(const AssetRatioServiceFactory&) = delete;
+  AssetRatioServiceFactory& operator=(const AssetRatioServiceFactory&) = delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_SERVICE_FACTORY_H_

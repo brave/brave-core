@@ -43,7 +43,7 @@ import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -911,15 +911,15 @@ public class Utils {
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
-            AssetRatioController assetRatioController, EthTxController ethTxController,
+            AssetRatioService assetRatioService, EthTxController ethTxController,
             ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             String chainId) {
-        assert assetRatioController != null;
+        assert assetRatioService != null;
         String[] assets = {"eth"};
         String[] toCurr = {"usd"};
-        assetRatioController.getPrice(
+        assetRatioService.getPrice(
                 assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
                     String tempPrice = "0";
                     if (values.length != 0) {
@@ -931,7 +931,7 @@ public class Utils {
                             fetchTransactions(accountInfos, Double.valueOf(tempPrice),
                                     Double.valueOf(tempPrice), ethTxController, ercTokenRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioController,
+                                    assetDecimals, chainId, assetRatioService,
                                     braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
@@ -941,7 +941,7 @@ public class Utils {
                     final String ethPrice = tempPrice;
                     assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
                     toCurr[0] = "usd";
-                    assetRatioController.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
+                    assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
                             (successAsset, valuesAsset) -> {
                                 String tempPriceAsset = "0";
                                 if (valuesAsset.length != 0) {
@@ -952,7 +952,7 @@ public class Utils {
                                             Double.valueOf(tempPriceAsset), ethTxController,
                                             ercTokenRegistry, contractAddress, rvTransactions,
                                             callback, context, assetSymbol, assetDecimals, chainId,
-                                            assetRatioController, braveWalletService);
+                                            assetRatioService, braveWalletService);
                                 } catch (NumberFormatException exc) {
                                 }
                             });
@@ -963,7 +963,7 @@ public class Utils {
             double assetPrice, EthTxController ethTxController, ErcTokenRegistry ercTokenRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
-            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert ethTxController != null;
         PendingTxHelper pendingTxHelper =
                 new PendingTxHelper(ethTxController, accountInfos, true, contractAddress);
@@ -975,7 +975,7 @@ public class Utils {
             } else {
                 fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
-                        assetRatioController, braveWalletService);
+                        assetRatioService, braveWalletService);
             }
         });
     }
@@ -984,7 +984,7 @@ public class Utils {
             double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
-            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert chainId != null;
         assert ercTokenRegistry != null;
         TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, chainId, tokens -> {
@@ -1020,7 +1020,7 @@ public class Utils {
                 }
             }
             fetchAssetsPrices(accountInfos, ethPrice, assetPrice, rvTransactions, callback, context,
-                    pendingTxInfos, assets, assetsDecimals, assetRatioController);
+                    pendingTxInfos, assets, assetsDecimals, assetRatioService);
         });
     }
 
@@ -1028,9 +1028,9 @@ public class Utils {
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, HashMap<String, TransactionInfo[]> pendingTxInfos,
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
-            AssetRatioController assetRatioController) {
+            AssetRatioService assetRatioService) {
         AssetsPricesHelper assetsPricesHelper =
-                new AssetsPricesHelper(assetRatioController, new HashSet<String>(assets.values()));
+                new AssetsPricesHelper(assetRatioService, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
             workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                     context, "", 0, pendingTxInfos, assets, assetsDecimals,

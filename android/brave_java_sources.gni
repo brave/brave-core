@@ -62,7 +62,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackAnimation.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackTab.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackViewAnimation.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthJsonRpcControllerFactory.java",

@@ -9,45 +9,45 @@
 #import <Foundation/Foundation.h>
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@protocol BraveWalletAssetRatioController
+@protocol BraveWalletAssetRatioService
 , BraveWalletBraveWalletService, BraveWalletEthJsonRpcController,
     BraveWalletEthTxController, BraveWalletKeyringController,
     BraveWalletSwapController;
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.AssetRatioControllerFactory)
-@interface BraveWalletAssetRatioControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletAssetRatioController>
-> @end
+NS_SWIFT_NAME(BraveWallet.AssetRatioServiceFactory)
+@interface BraveWalletAssetRatioServiceFactory
+    : KeyedServiceFactoryWrapper <id <BraveWalletAssetRatioService>>
+@end
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.EthJsonRpcControllerFactory)
 @interface BraveWalletEthJsonRpcControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletEthJsonRpcController>
-> @end
+    : KeyedServiceFactoryWrapper <id <BraveWalletEthJsonRpcController>>
+@end
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.EthTxControllerFactory)
 @interface BraveWalletEthTxControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletEthTxController>
-> @end
+    : KeyedServiceFactoryWrapper <id <BraveWalletEthTxController>>
+@end
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.KeyringControllerFactory)
 @interface BraveWalletKeyringControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletKeyringController>
-> @end
+    : KeyedServiceFactoryWrapper <id <BraveWalletKeyringController>>
+@end
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.ServiceFactory)
 @interface BraveWalletServiceFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletBraveWalletService>
-> @end
+    : KeyedServiceFactoryWrapper <id <BraveWalletBraveWalletService>>
+@end
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.SwapControllerFactory)
 @interface BraveWalletSwapControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletSwapController>
-> @end
+    : KeyedServiceFactoryWrapper <id <BraveWalletSwapController>>
+@end
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_FACTORY_WRAPPERS_H_

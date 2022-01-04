@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -17,45 +17,44 @@
 namespace brave_wallet {
 
 // static
-mojom::AssetRatioController* AssetRatioControllerFactory::GetForBrowserState(
+mojom::AssetRatioService* AssetRatioServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<AssetRatioController*>(
+  return static_cast<AssetRatioService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-AssetRatioController* AssetRatioControllerFactory::GetControllerForBrowserState(
+AssetRatioService* AssetRatioServiceFactory::GetControllerForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<AssetRatioController*>(
+  return static_cast<AssetRatioService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-AssetRatioControllerFactory* AssetRatioControllerFactory::GetInstance() {
-  return base::Singleton<AssetRatioControllerFactory>::get();
+AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
+  return base::Singleton<AssetRatioServiceFactory>::get();
 }
 
-AssetRatioControllerFactory::AssetRatioControllerFactory()
+AssetRatioServiceFactory::AssetRatioServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "AssetRatioController",
+          "AssetRatioService",
           BrowserStateDependencyManager::GetInstance()) {}
 
-AssetRatioControllerFactory::~AssetRatioControllerFactory() = default;
+AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
-std::unique_ptr<KeyedService>
-AssetRatioControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> AssetRatioServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  std::unique_ptr<AssetRatioController> asset_ratio_controller(
-      new AssetRatioController(browser_state->GetSharedURLLoaderFactory()));
-  return asset_ratio_controller;
+  std::unique_ptr<AssetRatioService> asset_ratio_service(
+      new AssetRatioService(browser_state->GetSharedURLLoaderFactory()));
+  return asset_ratio_service;
 }
 
-bool AssetRatioControllerFactory::ServiceIsNULLWhileTesting() const {
+bool AssetRatioServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-web::BrowserState* AssetRatioControllerFactory::GetBrowserStateToUse(
+web::BrowserState* AssetRatioServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);
 }

@@ -33,7 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -42,7 +42,7 @@ import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
@@ -91,7 +91,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private ErcTokenRegistry mErcTokenRegistry;
     private EthJsonRpcController mEthJsonRpcController;
     private EthTxController mEthTxController;
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private BraveWalletService mBraveWalletService;
     private boolean mShowBiometricPrompt;
 
@@ -199,7 +199,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringController.close();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();
@@ -209,13 +209,13 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         mErcTokenRegistry = null;
         mEthJsonRpcController = null;
         mEthTxController = null;
-        mAssetRatioController = null;
+        mAssetRatioService = null;
         mBraveWalletService = null;
         InitKeyringController();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitBraveWalletService();
     }
 
@@ -253,13 +253,13 @@ public class BraveWalletActivity extends AsyncInitializationActivity
                 EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService =
+                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitBraveWalletService() {
@@ -286,8 +286,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         return mEthTxController;
     }
 
-    public AssetRatioController getAssetRatioController() {
-        return mAssetRatioController;
+    public AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
     }
 
     public BraveWalletService getBraveWalletService() {
@@ -301,7 +301,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_FIRST_PAGE_ACTION);
@@ -319,7 +319,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     @Override
     public void onDestroy() {
         mKeyringController.close();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();

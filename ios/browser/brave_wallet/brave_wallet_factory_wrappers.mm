@@ -6,7 +6,7 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h"
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
-#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
@@ -19,16 +19,16 @@
 #error "This file requires ARC support."
 #endif
 
-@implementation BraveWalletAssetRatioControllerFactory
+@implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* controller =
-      brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
+      brave_wallet::AssetRatioServiceFactory::GetForBrowserState(
           browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletAssetRatioControllerImpl alloc]
-      initWithAssetRatioController:controller];
+  return [[BraveWalletAssetRatioServiceImpl alloc]
+      initWithAssetRatioService:controller];
 }
 @end
 

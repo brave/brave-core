@@ -15,7 +15,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -108,14 +108,14 @@ bool EthTxController::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
 EthTxController::EthTxController(
     EthJsonRpcController* rpc_controller,
     KeyringController* keyring_controller,
-    AssetRatioController* asset_ratio_controller,
+    AssetRatioService* asset_ratio_service,
     std::unique_ptr<EthTxStateManager> tx_state_manager,
     std::unique_ptr<EthNonceTracker> nonce_tracker,
     std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
     PrefService* prefs)
     : rpc_controller_(rpc_controller),
       keyring_controller_(keyring_controller),
-      asset_ratio_controller_(asset_ratio_controller),
+      asset_ratio_service_(asset_ratio_service),
       prefs_(prefs),
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
@@ -304,7 +304,7 @@ void EthTxController::AddUnapproved1559Transaction(
       tx_data->base_data->data.empty() ? "" : ToHex(tx_data->base_data->data);
 
   if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
-    asset_ratio_controller_->GetGasOracle(base::BindOnce(
+    asset_ratio_service_->GetGasOracle(base::BindOnce(
         &EthTxController::OnGetGasOracle, weak_factory_.GetWeakPtr(), from,
         tx_data->base_data->to, tx_data->base_data->value, data, gas_limit,
         std::move(tx_ptr), std::move(callback)));
@@ -916,7 +916,7 @@ void EthTxController::SpeedupOrCancelTransaction(
       tx->set_data(std::vector<uint8_t>());
     }
 
-    asset_ratio_controller_->GetGasOracle(base::BindOnce(
+    asset_ratio_service_->GetGasOracle(base::BindOnce(
         &EthTxController::ContinueSpeedupOrCancel1559Transaction,
         weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
         Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),

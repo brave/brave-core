@@ -12,7 +12,7 @@ class PrefService;
 
 namespace brave_wallet {
 
-class AssetRatioController;
+class AssetRatioService;
 class EthJsonRpcController;
 class EthTxController;
 class KeyringController;
@@ -20,7 +20,7 @@ class KeyringController;
 std::unique_ptr<EthTxController> BuildEthTxController(
     EthJsonRpcController* rpc_controller,
     KeyringController* keyring_controller,
-    AssetRatioController* asset_ratio_controller,
+    AssetRatioService* asset_ratio_service,
     PrefService* prefs);
 
 }  // namespace brave_wallet

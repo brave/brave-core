@@ -11,7 +11,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.ProviderError;
 
@@ -21,14 +21,14 @@ import java.util.Locale;
 
 public class SingleTokenBalanceHelper {
     private static String TAG = "SingleAccountTokenBalance";
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private EthJsonRpcController mEthJsonRpcController;
     private HashMap<String, Double> mPerAcountFiatBalance;
     private HashMap<String, Double> mPerAcountCryptoBalance;
 
     public SingleTokenBalanceHelper(
-            AssetRatioController assetRatioController, EthJsonRpcController ethJsonRpcController) {
-        mAssetRatioController = assetRatioController;
+            AssetRatioService assetRatioService, EthJsonRpcController ethJsonRpcController) {
+        mAssetRatioService = assetRatioService;
         mEthJsonRpcController = ethJsonRpcController;
     }
 
@@ -48,7 +48,7 @@ public class SingleTokenBalanceHelper {
         String[] fromAssets = new String[] {symbol.toLowerCase(Locale.getDefault())};
         String[] toAssets = new String[] {"usd"};
 
-        mAssetRatioController.getPrice(fromAssets, toAssets, AssetPriceTimeframe.LIVE,
+        mAssetRatioService.getPrice(fromAssets, toAssets, AssetPriceTimeframe.LIVE,
                 (Boolean success, AssetPrice[] prices) -> {
                     // We have to do that to support custom assets
                     String price = "0";

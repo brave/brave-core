@@ -6,8 +6,8 @@ static_library("browser") {
   configs += [ ":infura_config" ]
 
   sources = [
-    "asset_ratio_controller.cc",
-    "asset_ratio_controller.h",
+    "asset_ratio_service.cc",
+    "asset_ratio_service.h",
     "asset_ratio_response_parser.cc",
     "asset_ratio_response_parser.h",
     "brave_wallet_constants.cc",

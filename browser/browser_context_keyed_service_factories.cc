@@ -11,7 +11,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
@@ -84,7 +84,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     brave_news::BraveNewsControllerFactory::GetInstance();
   }
 
-  brave_wallet::AssetRatioControllerFactory::GetInstance();
+  brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::KeyringControllerFactory::GetInstance();
   brave_wallet::RpcControllerFactory::GetInstance();
   brave_wallet::SwapControllerFactory::GetInstance();

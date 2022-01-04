@@ -12,7 +12,7 @@ export default class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   ethJsonRpcController = new BraveWallet.EthJsonRpcControllerRemote()
   swapController = new BraveWallet.SwapControllerRemote()
-  assetRatioController = new BraveWallet.AssetRatioControllerRemote()
+  assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
   keyringController = getBraveKeyring()
   ercTokenRegistry = new BraveWallet.ERCTokenRegistryRemote()

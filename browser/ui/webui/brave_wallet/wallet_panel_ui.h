@@ -49,8 +49,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
           eth_json_rpc_controller,
       mojo::PendingReceiver<brave_wallet::mojom::SwapController>
           swap_controller,
-      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
-          asset_ratio_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+          asset_ratio_service,
       mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
           keyring_controller,
       mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>

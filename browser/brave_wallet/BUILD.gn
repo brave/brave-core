@@ -4,8 +4,8 @@ import("//testing/test.gni")
 
 source_set("brave_wallet") {
   sources = [
-    "asset_ratio_controller_factory.cc",
-    "asset_ratio_controller_factory.h",
+    "asset_ratio_service_factory.cc",
+    "asset_ratio_service_factory.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
     "brave_wallet_reset.cc",

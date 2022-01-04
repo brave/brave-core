@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -17,32 +17,32 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class AssetRatioControllerFactory {
+public class AssetRatioServiceFactory {
     private static final Object lock = new Object();
-    private static AssetRatioControllerFactory instance;
+    private static AssetRatioServiceFactory instance;
 
-    public static AssetRatioControllerFactory getInstance() {
+    public static AssetRatioServiceFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new AssetRatioControllerFactory();
+                instance = new AssetRatioServiceFactory();
             }
         }
         return instance;
     }
 
-    private AssetRatioControllerFactory() {}
+    private AssetRatioServiceFactory() {}
 
-    public AssetRatioController getAssetRatioController(
+    public AssetRatioService getAssetRatioService(
             ConnectionErrorHandler connectionErrorHandler) {
         int nativeHandle =
-                AssetRatioControllerFactoryJni.get().getInterfaceToAssetRatioController();
+                AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        AssetRatioController assetRatioController =
-                AssetRatioController.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) assetRatioController).getProxyHandler();
+        AssetRatioService assetRatioService =
+                AssetRatioService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) assetRatioService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return assetRatioController;
+        return assetRatioService;
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -51,6 +51,6 @@ public class AssetRatioControllerFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToAssetRatioController();
+        int getInterfaceToAssetRatioService();
     }
 }

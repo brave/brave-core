@@ -29,7 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -82,12 +82,12 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mApprovedTxObserver = approvedTxObserver;
     }
 
-    private AssetRatioController getAssetRatioController() {
+    private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getAssetRatioController();
+            return ((BuySendSwapActivity) activity).getAssetRatioService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
+            return ((BraveWalletActivity) activity).getAssetRatioService();
         }
 
         return null;
@@ -252,11 +252,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                         String.format(Locale.getDefault(), "%.4f",
                                 Utils.fromHexWei(valueToConvert, decimals)),
                         asset));
-        AssetRatioController assetRatioController = getAssetRatioController();
-        assert assetRatioController != null;
+        AssetRatioService assetRatioService = getAssetRatioService();
+        assert assetRatioService != null;
         String[] assets = {asset.toLowerCase(Locale.getDefault())};
         String[] toCurr = {"usd"};
-        assetRatioController.getPrice(
+        assetRatioService.getPrice(
                 assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
                     String valueFiat = "0";
                     if (values.length != 0) {

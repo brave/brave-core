@@ -46,7 +46,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -67,7 +67,7 @@ import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
@@ -189,7 +189,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private double mConvertedFromBalance;
     private double mConvertedToBalance;
     private EthTxControllerObserverImpl mEthTxControllerObserver;
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private ErcToken mCurrentErcToken;
     private ErcToken mCurrentSwapToErcToken;
     private SwapController mSwapController;
@@ -207,7 +207,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             mCameraSourcePreview.release();
         }
         mKeyringController.close();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();
@@ -436,8 +436,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void sendSwapTransaction(TxData data, String from) {
-        assert mAssetRatioController != null;
-        mAssetRatioController.getGasOracle(estimation -> {
+        assert mAssetRatioService != null;
+        mAssetRatioService.getGasOracle(estimation -> {
             String maxPriorityFeePerGas = "";
             String maxFeePerGas = "";
             if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
@@ -1477,7 +1477,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringController.close();
-        mAssetRatioController.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();
@@ -1488,10 +1488,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController = null;
         mEthTxController = null;
         mKeyringController = null;
-        mAssetRatioController = null;
+        mAssetRatioService = null;
         mSwapController = null;
         mBraveWalletService = null;
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
@@ -1500,8 +1500,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitBraveWalletService();
     }
 
-    public AssetRatioController getAssetRatioController() {
-        return mAssetRatioController;
+    public AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
     }
 
     public EthTxController getEthTxController() {
@@ -1528,13 +1528,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService =
+                AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitKeyringController() {
@@ -1598,7 +1598,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitSwapController();
         InitBraveWalletService();
 

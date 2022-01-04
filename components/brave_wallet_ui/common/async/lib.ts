@@ -95,7 +95,7 @@ export async function findUnstoppableDomainAddress (address: string) {
 
 export async function getERCTokenInfo (contractAddress: string): Promise<GetERCTokenInfoReturnInfo> {
   const apiProxy = getAPIProxy()
-  return (await apiProxy.assetRatioController.getTokenInfo(contractAddress))
+  return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
 
 export async function findHardwareAccountInfo (address: string): Promise<AccountInfo | false> {
@@ -178,10 +178,10 @@ export function refreshPrices () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { wallet: { accounts, selectedPortfolioTimeline, selectedNetwork, userVisibleTokensInfo, defaultCurrencies } } = getState()
-    const { assetRatioController } = apiProxy
+    const { assetRatioService } = apiProxy
     const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
     // Update ETH Balances
-    const getNativeAssetPrice = await assetRatioController.getPrice([selectedNetwork.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
+    const getNativeAssetPrice = await assetRatioService.getPrice([selectedNetwork.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
     const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
     const getBalanceReturnInfos = accounts.map((account) => {
       const balanceInfo = {
@@ -213,7 +213,7 @@ export function refreshPrices () {
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
       const price = token.balance > 0 && token.token.isErc20
-        ? await assetRatioController.getPrice([GetTokenParam(selectedNetwork, token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
+        ? await assetRatioService.getPrice([GetTokenParam(selectedNetwork, token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
         : { values: [{ ...emptyPrice, price: '0' }], success: true }
 
       const tokenPrice = {
@@ -246,7 +246,7 @@ export function refreshPrices () {
 export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { assetRatioController } = apiProxy
+    const { assetRatioService } = apiProxy
 
     const { wallet: { accounts, defaultCurrencies, selectedNetwork } } = getState()
 
@@ -254,7 +254,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts).filter((t) => !t.token.isErc721 && t.balance > 0).map(async (token) => {
       return {
         contractAddress: token.token.contractAddress,
-        history: await assetRatioController.getPriceHistory(
+        history: await assetRatioService.getPriceHistory(
           GetTokenParam(selectedNetwork, token.token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
         )
       }

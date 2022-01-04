@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 
 #include <algorithm>
 #include <memory>
@@ -20,11 +20,11 @@
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("asset_ratio_controller", R"(
+  return net::DefineNetworkTrafficAnnotation("asset_ratio_service", R"(
       semantics {
-        sender: "Asset Ratio Controller"
+        sender: "Asset Ratio Service"
         description:
-          "This controller is used to obtain asset prices for the Brave wallet."
+          "This service is used to obtain asset prices for the Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
@@ -94,41 +94,40 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
 
 namespace brave_wallet {
 
-GURL AssetRatioController::base_url_for_test_;
+GURL AssetRatioService::base_url_for_test_;
 
-AssetRatioController::AssetRatioController(
+AssetRatioService::AssetRatioService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(new api_request_helper::APIRequestHelper(
           GetNetworkTrafficAnnotationTag(),
           url_loader_factory)),
       weak_ptr_factory_(this) {}
 
-AssetRatioController::~AssetRatioController() {}
+AssetRatioService::~AssetRatioService() {}
 
-void AssetRatioController::SetAPIRequestHelperForTesting(
+void AssetRatioService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_.reset(new api_request_helper::APIRequestHelper(
       GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
 
-mojo::PendingRemote<mojom::AssetRatioController>
-AssetRatioController::MakeRemote() {
-  mojo::PendingRemote<mojom::AssetRatioController> remote;
+mojo::PendingRemote<mojom::AssetRatioService> AssetRatioService::MakeRemote() {
+  mojo::PendingRemote<mojom::AssetRatioService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void AssetRatioController::Bind(
-    mojo::PendingReceiver<mojom::AssetRatioController> receiver) {
+void AssetRatioService::Bind(
+    mojo::PendingReceiver<mojom::AssetRatioService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
+void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
 // static
-GURL AssetRatioController::GetPriceURL(
+GURL AssetRatioService::GetPriceURL(
     const std::vector<std::string>& from_assets,
     const std::vector<std::string>& to_assets,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
@@ -143,7 +142,7 @@ GURL AssetRatioController::GetPriceURL(
 }
 
 // static
-GURL AssetRatioController::GetPriceHistoryURL(
+GURL AssetRatioService::GetPriceHistoryURL(
     const std::string& asset,
     const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
@@ -155,7 +154,7 @@ GURL AssetRatioController::GetPriceHistoryURL(
   return GURL(spec);
 }
 
-void AssetRatioController::GetPrice(
+void AssetRatioService::GetPrice(
     const std::vector<std::string>& from_assets,
     const std::vector<std::string>& to_assets,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
@@ -163,7 +162,7 @@ void AssetRatioController::GetPrice(
   std::vector<std::string> from_assets_lower = VectorToLowerCase(from_assets);
   std::vector<std::string> to_assets_lower = VectorToLowerCase(to_assets);
   auto internal_callback = base::BindOnce(
-      &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
+      &AssetRatioService::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets_lower, to_assets_lower, std::move(callback));
 
   base::flat_map<std::string, std::string> request_headers;
@@ -179,7 +178,7 @@ void AssetRatioController::GetPrice(
       true, std::move(internal_callback), request_headers);
 }
 
-void AssetRatioController::OnGetPrice(
+void AssetRatioService::OnGetPrice(
     std::vector<std::string> from_assets,
     std::vector<std::string> to_assets,
     GetPriceCallback callback,
@@ -199,7 +198,7 @@ void AssetRatioController::OnGetPrice(
   std::move(callback).Run(true, std::move(prices));
 }
 
-void AssetRatioController::GetPriceHistory(
+void AssetRatioService::GetPriceHistory(
     const std::string& asset,
     const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
@@ -207,14 +206,14 @@ void AssetRatioController::GetPriceHistory(
   std::string asset_lower = base::ToLowerASCII(asset);
   std::string vs_asset_lower = base::ToLowerASCII(vs_asset);
   auto internal_callback =
-      base::BindOnce(&AssetRatioController::OnGetPriceHistory,
+      base::BindOnce(&AssetRatioService::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
       true, std::move(internal_callback));
 }
 
-void AssetRatioController::OnGetPriceHistory(
+void AssetRatioService::OnGetPriceHistory(
     GetPriceHistoryCallback callback,
     const int status,
     const std::string& body,
@@ -233,7 +232,7 @@ void AssetRatioController::OnGetPriceHistory(
 }
 
 // static
-GURL AssetRatioController::GetEstimatedTimeURL(const std::string& gas_price) {
+GURL AssetRatioService::GetEstimatedTimeURL(const std::string& gas_price) {
   std::string spec = base::StringPrintf(
       "%sv2/etherscan/"
       "passthrough?module=gastracker&action=gasestimate&gasprice=%s",
@@ -244,7 +243,7 @@ GURL AssetRatioController::GetEstimatedTimeURL(const std::string& gas_price) {
 }
 
 // static
-GURL AssetRatioController::GetGasOracleURL() {
+GURL AssetRatioService::GetGasOracleURL() {
   std::string spec = base::StringPrintf(
       "%sv2/etherscan/passthrough?module=gastracker&action=gasoracle",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
@@ -252,16 +251,16 @@ GURL AssetRatioController::GetGasOracleURL() {
   return GURL(spec);
 }
 
-void AssetRatioController::GetEstimatedTime(const std::string& gas_price,
-                                            GetEstimatedTimeCallback callback) {
+void AssetRatioService::GetEstimatedTime(const std::string& gas_price,
+                                         GetEstimatedTimeCallback callback) {
   auto internal_callback =
-      base::BindOnce(&AssetRatioController::OnGetEstimatedTime,
+      base::BindOnce(&AssetRatioService::OnGetEstimatedTime,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", GetEstimatedTimeURL(gas_price), "", "",
                                true, std::move(internal_callback));
 }
 
-void AssetRatioController::OnGetEstimatedTime(
+void AssetRatioService::OnGetEstimatedTime(
     GetEstimatedTimeCallback callback,
     const int status,
     const std::string& body,
@@ -280,15 +279,15 @@ void AssetRatioController::OnGetEstimatedTime(
   std::move(callback).Run(true, seconds);
 }
 
-void AssetRatioController::GetGasOracle(GetGasOracleCallback callback) {
+void AssetRatioService::GetGasOracle(GetGasOracleCallback callback) {
   auto internal_callback =
-      base::BindOnce(&AssetRatioController::OnGetGasOracle,
+      base::BindOnce(&AssetRatioService::OnGetGasOracle,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", GetGasOracleURL(), "", "", true,
                                std::move(internal_callback));
 }
 
-void AssetRatioController::OnGetGasOracle(
+void AssetRatioService::OnGetGasOracle(
     GetGasOracleCallback callback,
     const int status,
     const std::string& body,
@@ -302,8 +301,7 @@ void AssetRatioController::OnGetGasOracle(
 }
 
 // static
-GURL AssetRatioController::GetTokenInfoURL(
-    const std::string& contract_address) {
+GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
       "%sv2/etherscan/"
       "passthrough?module=token&action=tokeninfo&contractaddress=%s",
@@ -313,16 +311,16 @@ GURL AssetRatioController::GetTokenInfoURL(
   return GURL(spec);
 }
 
-void AssetRatioController::GetTokenInfo(const std::string& contract_address,
-                                        GetTokenInfoCallback callback) {
+void AssetRatioService::GetTokenInfo(const std::string& contract_address,
+                                     GetTokenInfoCallback callback) {
   auto internal_callback =
-      base::BindOnce(&AssetRatioController::OnGetTokenInfo,
+      base::BindOnce(&AssetRatioService::OnGetTokenInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", GetTokenInfoURL(contract_address), "", "",
                                true, std::move(internal_callback));
 }
 
-void AssetRatioController::OnGetTokenInfo(
+void AssetRatioService::OnGetTokenInfo(
     GetTokenInfoCallback callback,
     const int status,
     const std::string& body,

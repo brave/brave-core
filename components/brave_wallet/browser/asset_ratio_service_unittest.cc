@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "base/test/bind.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/test/browser_task_environment.h"
@@ -61,18 +61,18 @@ void OnGetGasOracle(
 
 namespace brave_wallet {
 
-class AssetRatioControllerUnitTest : public testing::Test {
+class AssetRatioServiceUnitTest : public testing::Test {
  public:
-  AssetRatioControllerUnitTest()
+  AssetRatioServiceUnitTest()
       : browser_context_(new content::TestBrowserContext()),
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    asset_ratio_controller_.reset(
-        new AssetRatioController(shared_url_loader_factory_));
+    asset_ratio_service_.reset(
+        new AssetRatioService(shared_url_loader_factory_));
   }
 
-  ~AssetRatioControllerUnitTest() override = default;
+  ~AssetRatioServiceUnitTest() override = default;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
@@ -98,7 +98,7 @@ class AssetRatioControllerUnitTest : public testing::Test {
   void GetTokenInfo(const std::string& contract_address,
                     mojom::ERCTokenPtr expected_token) {
     base::RunLoop run_loop;
-    asset_ratio_controller_->GetTokenInfo(
+    asset_ratio_service_->GetTokenInfo(
         contract_address,
         base::BindLambdaForTesting([&](mojom::ERCTokenPtr token) {
           EXPECT_EQ(token, expected_token);
@@ -108,7 +108,7 @@ class AssetRatioControllerUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<AssetRatioController> asset_ratio_controller_;
+  std::unique_ptr<AssetRatioService> asset_ratio_service_;
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -117,7 +117,7 @@ class AssetRatioControllerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
-TEST_F(AssetRatioControllerUnitTest, GetPrice) {
+TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   SetInterceptor(R"(
       {
          "payload":{
@@ -167,7 +167,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPrice) {
   expected_prices_response.push_back(std::move(asset_price));
 
   bool callback_run = false;
-  asset_ratio_controller_->GetPrice(
+  asset_ratio_service_->GetPrice(
       {"bat", "link"}, {"btc", "usd"},
       brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPrice, &callback_run, true,
@@ -177,7 +177,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPrice) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceUppercase) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceUppercase) {
   SetInterceptor(R"(
        {
          "payload":{
@@ -198,7 +198,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceUppercase) {
   expected_prices_response.push_back(std::move(asset_price));
 
   bool callback_run = false;
-  asset_ratio_controller_->GetPrice(
+  asset_ratio_service_->GetPrice(
       {"BAT"}, {"BTC"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPrice, &callback_run, true,
                      std::move(expected_prices_response)));
@@ -207,12 +207,12 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceUppercase) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceError) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceError) {
   std::string error = "error";
   SetErrorInterceptor(error);
   std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   bool callback_run = false;
-  asset_ratio_controller_->GetPrice(
+  asset_ratio_service_->GetPrice(
       {"bat"}, {"btc"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
@@ -221,11 +221,11 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceError) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceUnexpectedResponse) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceUnexpectedResponse) {
   SetInterceptor("expecto patronum");
   std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   bool callback_run = false;
-  asset_ratio_controller_->GetPrice(
+  asset_ratio_service_->GetPrice(
       {"bat"}, {"btc"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
@@ -234,7 +234,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceUnexpectedResponse) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceHistory) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceHistory) {
   SetInterceptor(R"({
       "payload": {
         "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
@@ -257,7 +257,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistory) {
   expected_price_history_response.push_back(std::move(asset_time_price));
 
   bool callback_run = false;
-  asset_ratio_controller_->GetPriceHistory(
+  asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, true,
                      std::move(expected_price_history_response)));
@@ -266,13 +266,13 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistory) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryError) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryError) {
   std::string error = "error";
   SetErrorInterceptor(error);
   std::vector<brave_wallet::mojom::AssetTimePricePtr>
       expected_price_history_response;
   bool callback_run = false;
-  asset_ratio_controller_->GetPriceHistory(
+  asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
@@ -280,13 +280,13 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryError) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryUnexpectedResponse) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryUnexpectedResponse) {
   SetInterceptor("Accio!");
   std::vector<brave_wallet::mojom::AssetTimePricePtr>
       expected_price_history_response;
 
   bool callback_run = false;
-  asset_ratio_controller_->GetPriceHistory(
+  asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
@@ -295,7 +295,7 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryUnexpectedResponse) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetEstimatedTime) {
+TEST_F(AssetRatioServiceUnitTest, GetEstimatedTime) {
   SetInterceptor(R"(
     {
       "payload": {
@@ -308,14 +308,14 @@ TEST_F(AssetRatioControllerUnitTest, GetEstimatedTime) {
   )");
 
   bool callback_run = false;
-  asset_ratio_controller_->GetEstimatedTime(
+  asset_ratio_service_->GetEstimatedTime(
       "2000000000",
       base::BindOnce(&OnGetEstimatedTime, &callback_run, true, "3615"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetEstimatedTimeEmptyResult) {
+TEST_F(AssetRatioServiceUnitTest, GetEstimatedTimeEmptyResult) {
   SetInterceptor(R"(
     {
       "payload": {
@@ -328,24 +328,24 @@ TEST_F(AssetRatioControllerUnitTest, GetEstimatedTimeEmptyResult) {
   )");
 
   bool callback_run = false;
-  asset_ratio_controller_->GetEstimatedTime(
+  asset_ratio_service_->GetEstimatedTime(
       "2000000000",
       base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetEstimatedTimeServerError) {
+TEST_F(AssetRatioServiceUnitTest, GetEstimatedTimeServerError) {
   SetErrorInterceptor("error");
   bool callback_run = false;
-  asset_ratio_controller_->GetEstimatedTime(
+  asset_ratio_service_->GetEstimatedTime(
       "2000000000",
       base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetGasOracle) {
+TEST_F(AssetRatioServiceUnitTest, GetGasOracle) {
   SetInterceptor(R"(
     {
       "payload": {
@@ -374,77 +374,77 @@ TEST_F(AssetRatioControllerUnitTest, GetGasOracle) {
           "0xb2d05e00" /* Hex of 3 * 1e9 */,
           "0xb68a0aa00" /* Hex of 49 * 1e9 */,
           "0xad8075b7a" /* Hex of 46574033786 */);
-  asset_ratio_controller_->GetGasOracle(base::BindOnce(
+  asset_ratio_service_->GetGasOracle(base::BindOnce(
       &OnGetGasOracle, &callback_run, std::move(expected_estimation)));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetGasOracleUnexpectedResponse) {
+TEST_F(AssetRatioServiceUnitTest, GetGasOracleUnexpectedResponse) {
   SetInterceptor("unexpected response");
   bool callback_run = false;
-  asset_ratio_controller_->GetGasOracle(
+  asset_ratio_service_->GetGasOracle(
       base::BindOnce(&OnGetGasOracle, &callback_run, nullptr));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetGasOracleServerError) {
+TEST_F(AssetRatioServiceUnitTest, GetGasOracleServerError) {
   SetErrorInterceptor("error");
   bool callback_run = false;
-  asset_ratio_controller_->GetGasOracle(
+  asset_ratio_service_->GetGasOracle(
       base::BindOnce(&OnGetGasOracle, &callback_run, nullptr));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryURL) {
+TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
   // Basic test
   EXPECT_EQ("/v2/history/coingecko/bat/usd/1d",
-            AssetRatioController::GetPriceHistoryURL(
+            AssetRatioService::GetPriceHistoryURL(
                 "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay)
                 .path());
   // Test the remaining timeframes
   EXPECT_EQ("/v2/history/coingecko/eth/cad/live",
-            AssetRatioController::GetPriceHistoryURL(
+            AssetRatioService::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::Live)
                 .path());
   EXPECT_EQ("/v2/history/coingecko/eth/cad/1w",
-            AssetRatioController::GetPriceHistoryURL(
+            AssetRatioService::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneWeek)
                 .path());
   EXPECT_EQ(
       "/v2/history/coingecko/eth/cad/1m",
-      AssetRatioController::GetPriceHistoryURL(
+      AssetRatioService::GetPriceHistoryURL(
           "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneMonth)
           .path());
   EXPECT_EQ(
       "/v2/history/coingecko/eth/cad/3m",
-      AssetRatioController::GetPriceHistoryURL(
+      AssetRatioService::GetPriceHistoryURL(
           "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths)
           .path());
   EXPECT_EQ("/v2/history/coingecko/eth/cad/1y",
-            AssetRatioController::GetPriceHistoryURL(
+            AssetRatioService::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::OneYear)
                 .path());
   EXPECT_EQ("/v2/history/coingecko/eth/cad/all",
-            AssetRatioController::GetPriceHistoryURL(
+            AssetRatioService::GetPriceHistoryURL(
                 "eth", "cad", brave_wallet::mojom::AssetPriceTimeframe::All)
                 .path());
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetTokenInfoURL) {
+TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
   std::string url(kAssetRatioBaseURL);
   EXPECT_EQ(url +
                 "v2/etherscan/"
                 "passthrough?module=token&action=tokeninfo&contractaddress="
                 "0xdac17f958d2ee523a2206206994597c13d831ec7",
-            AssetRatioController::GetTokenInfoURL(
+            AssetRatioService::GetTokenInfoURL(
                 "0xdac17f958d2ee523a2206206994597c13d831ec7")
                 .spec());
 }
 
-TEST_F(AssetRatioControllerUnitTest, GetTokenInfo) {
+TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
   SetInterceptor(R"(
     {
       "payload": {

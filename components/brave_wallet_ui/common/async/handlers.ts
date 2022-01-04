@@ -437,7 +437,7 @@ export const fetchSwapQuoteFactory = (
   setSwapQuote: SimpleActionCreator<BraveWallet.SwapResponse>,
   setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
 ) => async (store: Store, payload: SwapParamsPayloadType) => {
-  const { swapController, assetRatioController } = getAPIProxy()
+  const { swapController, assetRatioService } = getAPIProxy()
 
   const {
     fromAsset,
@@ -477,7 +477,7 @@ export const fetchSwapQuoteFactory = (
 
       // Get the latest gas estimates, since we'll force the fastest fees in
       // order to ensure a swap with minimum slippage.
-      const { estimation: gasEstimates } = await assetRatioController.getGasOracle()
+      const { estimation: gasEstimates } = await assetRatioService.getGasOracle()
 
       let maxPriorityFeePerGas
       let maxFeePerGas
@@ -519,8 +519,8 @@ export const fetchSwapQuoteFactory = (
 }
 
 handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
-  const assetPriceController = getAPIProxy().assetRatioController
-  const basicEstimates = await assetPriceController.getGasOracle()
+  const assetRatioService = getAPIProxy().assetRatioService
+  const basicEstimates = await assetRatioService.getGasOracle()
   if (!basicEstimates.estimation) {
     console.error('Failed to fetch gas estimates')
     return

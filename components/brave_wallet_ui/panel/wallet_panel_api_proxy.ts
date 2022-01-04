@@ -20,7 +20,7 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.walletHandler.$.bindNewPipeAndPassReceiver(),
         this.ethJsonRpcController.$.bindNewPipeAndPassReceiver(),
         this.swapController.$.bindNewPipeAndPassReceiver(),
-        this.assetRatioController.$.bindNewPipeAndPassReceiver(),
+        this.assetRatioService.$.bindNewPipeAndPassReceiver(),
         this.keyringController.$.bindNewPipeAndPassReceiver(),
         this.ercTokenRegistry.$.bindNewPipeAndPassReceiver(),
         this.ethTxController.$.bindNewPipeAndPassReceiver(),

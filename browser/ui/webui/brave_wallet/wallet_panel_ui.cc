@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
@@ -17,7 +17,7 @@
 #include "brave/browser/brave_wallet/swap_controller_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
@@ -84,8 +84,8 @@ void WalletPanelUI::CreatePanelHandler(
         eth_json_rpc_controller_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapController>
         swap_controller_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
-        asset_ratio_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+        asset_ratio_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
         keyring_controller_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
@@ -117,11 +117,10 @@ void WalletPanelUI::CreatePanelHandler(
     swap_controller->Bind(std::move(swap_controller_receiver));
   }
 
-  auto* asset_ratio_controller =
-      brave_wallet::AssetRatioControllerFactory::GetControllerForContext(
-          profile);
-  if (asset_ratio_controller) {
-    asset_ratio_controller->Bind(std::move(asset_ratio_controller_receiver));
+  auto* asset_ratio_service =
+      brave_wallet::AssetRatioServiceFactory::GetControllerForContext(profile);
+  if (asset_ratio_service) {
+    asset_ratio_service->Bind(std::move(asset_ratio_service_receiver));
   }
 
   auto* keyring_controller =
