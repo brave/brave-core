@@ -539,12 +539,20 @@ const util = {
     const buildArgsStr = util.buildArgsToString(config.buildArgs())
     const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
     const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+    const prevBuildArgs = fs.existsSync(buildArgsFile) ?
+      fs.readFileSync(buildArgsFile) : undefined
 
     const shouldRunGnGen = config.force_gn_gen ||
-        !fs.existsSync(buildNinjaFile) || !fs.existsSync(buildArgsFile) ||
-        fs.readFileSync(buildArgsFile) != buildArgsStr
+      !fs.existsSync(buildNinjaFile) || !prevBuildArgs ||
+      prevBuildArgs != buildArgsStr
 
     if (shouldRunGnGen) {
+      // `gn gen` can modify args.gn even it's failed.
+      // Therefore delete the file to make sure that args.gn and
+      // brave_build_args.txt are in sync.
+      if (prevBuildArgs)
+        fs.removeSync(buildArgsFile)
+
       util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'], options)
       fs.writeFileSync(buildArgsFile, buildArgsStr)
     }
