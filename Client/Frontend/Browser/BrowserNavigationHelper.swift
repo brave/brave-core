@@ -43,7 +43,10 @@ class BrowserNavigationHelper {
     
     func openBookmarks() {
         guard let bvc = bvc else { return }
-        let vc = BookmarksViewController(folder: nil, bookmarkManager: bvc.bookmarkManager, isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let vc = BookmarksViewController(
+            folder: bvc.bookmarkManager.lastVisitedFolder(),
+            bookmarkManager: bvc.bookmarkManager,
+            isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = bvc
         
         open(vc, doneButton: DoneButton(style: .done, position: .right))
