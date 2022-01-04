@@ -16,12 +16,14 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { formatBalance, toWeiHex } from '../../../utils/format-balances'
 import { formatWithCommasAndDecimals, formatFiatAmountWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
-import { usePricing, useTransactionParser } from '../../../common/hooks'
+import { usePricing, useTransactionParser, useTokenInfo } from '../../../common/hooks'
 import { withPlaceholderIcon } from '../../shared'
 
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas, { MaxPriorityPanels } from '../edit-gas'
 import EditAllowance from '../edit-allowance'
+
+import { getERCTokenInfo } from '../../../common/async/lib'
 
 // Styled Components
 import {
@@ -133,6 +135,11 @@ function ConfirmTransactionPanel (props: Props) {
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
   const transactionDetails = parseTransaction(transactionInfo)
 
+  const {
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
+  } = useTokenInfo(getERCTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       refreshGasEstimates()
@@ -172,6 +179,12 @@ function ConfirmTransactionPanel (props: Props) {
       const allowance = formatBalance(result, transactionDetails.decimals)
       setCurrentTokenAllowance(allowance)
     }).catch(e => console.error(e))
+  }, [])
+
+  React.useEffect(() => {
+    if (transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve) {
+      onFindTokenInfoByContractAddress(transactionDetails.recipient)
+    }
   }, [])
 
   const onSelectTab = (tab: confirmPanelTabs) => () => {
@@ -283,8 +296,8 @@ function ConfirmTransactionPanel (props: Props) {
         <>
           <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
           <URLText>{siteURL}</URLText>
-          <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', transactionDetails.symbol)}</PanelTitle>
-          <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', transactionDetails.symbol)}</Description>
+          <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</PanelTitle>
+          <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</Description>
           <EditButton onClick={onToggleEditAllowance}>{getLocale('braveWalletEditPermissionsButton')}</EditButton>
         </>
       ) : (
