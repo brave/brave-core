@@ -352,7 +352,11 @@ window.__firefox__.includeOnce("Playlist", function() {
                 if (key.toLowerCase() == 'src') {
                     $<notifyNode>(this);
                 }
-            }
+            };
+            
+            HTMLVideoElement.prototype.setAttribute.toString = function() {
+                return "function () { [native code] }";
+            };
             
             var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
             HTMLAudioElement.prototype.setAttribute = function(key, value) {
@@ -360,7 +364,11 @@ window.__firefox__.includeOnce("Playlist", function() {
                 if (key.toLowerCase() == 'src') {
                     $<notifyNode>(this);
                 }
-            }
+            };
+            
+            HTMLAudioElement.prototype.setAttribute.toString = function() {
+                return "function () { [native code] }";
+            };
             
             // When the page is idle
             // Fetch static video and audio elements
