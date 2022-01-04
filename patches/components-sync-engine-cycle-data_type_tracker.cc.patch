@@ -1,0 +1,22 @@
+diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
+index de914387e6fd6bcf975a50ffbaff08abcd28e32f..7b1d3e90a889c3ab71754b494c5e4a31e82e807e 100644
+--- a/components/sync/engine/cycle/data_type_tracker.cc
++++ b/components/sync/engine/cycle/data_type_tracker.cc
+@@ -92,6 +92,8 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(ModelType model_type) {
+     case OS_PREFERENCES:
+     case OS_PRIORITY_PREFERENCES:
+     case WORKSPACE_DESK:
++    case VG_BODIES:
++    case VG_SPEND_STATUSES:
+     case NIGORI:
+     case PROXY_TABS:
+       return kMediumLocalChangeNudgeDelay;
+@@ -145,6 +147,8 @@ bool CanGetCommitsFromExtensions(ModelType model_type) {
+     case OS_PREFERENCES:
+     case OS_PRIORITY_PREFERENCES:
+     case WORKSPACE_DESK:
++    case VG_BODIES:
++    case VG_SPEND_STATUSES:
+     case NIGORI:
+     case PROXY_TABS:
+       return false;
