@@ -95,7 +95,8 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             Bundle prefExtras = source.getExtras();
             prefExtras.putString("category", category);
             source.setFragment("org.chromium.chrome.browser.settings.BraveNewsCategorySources");
-            source.setVisible(BravePrefServiceBridge.getInstance().getShowNews());
+            source.setVisible(BravePrefServiceBridge.getInstance().getShowNews()
+                    && BravePrefServiceBridge.getInstance().getNewsOptIn());
             mMainScreen.addPreference(source);
         }
     }
@@ -158,8 +159,8 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             }
         } else if (PREF_SHOW_NEWS.equals(key)) {
             BravePrefServiceBridge.getInstance().setShowNews((boolean) newValue);
-            setSourcesVisibility((boolean) newValue);
         }
+        setSourcesVisibility((boolean) newValue);
         return true;
     }
 
