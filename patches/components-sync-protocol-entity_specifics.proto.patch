@@ -1,0 +1,21 @@
+diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
+index e761c20329bebbcc6a1f160106c95718758ec453..b7a1737fbb28d5a26d3323d7a12b63bb0b6b87ee 100644
+--- a/components/sync/protocol/entity_specifics.proto
++++ b/components/sync/protocol/entity_specifics.proto
+@@ -54,6 +54,7 @@ import "components/sync/protocol/web_app_specifics.proto";
+ import "components/sync/protocol/webauthn_credential_specifics.proto";
+ import "components/sync/protocol/wifi_configuration_specifics.proto";
+ import "components/sync/protocol/workspace_desk_specifics.proto";
++import "brave/components/sync/protocol/vg_specifics.proto";
+ 
+ message EntitySpecifics {
+   // If a datatype is encrypted, this field will contain the encrypted
+@@ -153,6 +154,8 @@ message EntitySpecifics {
+     // This is not included in model_type.h because it's currently only used by
+     // the server and by Play Services. (crbug.com/1223853)
+     WebauthnCredentialSpecifics webauthn_credential = 895275;
++    VgBodySpecifics vg_body = 967732;
++    VgSpendStatusSpecifics vg_spend_status = 967832;
+   }
+   reserved 218175;
+   reserved "wifi_credential";
