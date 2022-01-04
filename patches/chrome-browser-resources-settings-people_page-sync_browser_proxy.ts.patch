@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts b/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
+index 2994e9dea83f929a03b1ec4887f2130ea3ea6f9b..9888f71dd9e0d50a37a0ccd43298ec0f254693ef 100644
+--- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
++++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
+@@ -71,6 +71,8 @@ export type SyncPrefs = {
+   encryptAllData: boolean,
+   extensionsRegistered: boolean,
+   extensionsSynced: boolean,
++  pairsRegistered: boolean,
++  pairsSynced: boolean,
+   passphraseRequired: boolean,
+   passwordsRegistered: boolean,
+   passwordsSynced: boolean,
+@@ -102,6 +104,7 @@ export const syncPrefsIndividualDataTypes: string[] = [
+   'bookmarksSynced',
+   'extensionsSynced',
+   'readingListSynced',
++  'pairsSynced',
+   'passwordsSynced',
+   'paymentsIntegrationEnabled',
+   'preferencesSynced',

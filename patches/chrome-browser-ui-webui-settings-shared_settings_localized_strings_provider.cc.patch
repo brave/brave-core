@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
+index 1c595ddb3b9c4dcdf96ca77296ac76bcd54e8746..15b1e9a06cfd41606221e754ac9e19839cb68932 100644
+--- a/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
++++ b/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
+@@ -298,6 +298,7 @@ void AddSyncPageStrings(content::WebUIDataSource* html_source) {
+     {"syncSettingsLacrosSideBySideWarning",
+      IDS_SYNC_SETTINGS_SIDE_BY_SIDE_WARNING_LACROS},
+ #endif
++    {"pairsCheckboxLabel", IDS_SETTINGS_PAIRS_CHECKBOX_LABEL},
+   };
+   html_source->AddLocalizedStrings(kLocalizedStrings);
+ 

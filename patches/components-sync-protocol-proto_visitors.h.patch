@@ -1,8 +1,16 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0fceaacf7e 100644
+index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa58b86dda 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -392,6 +392,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -27,6 +27,7 @@
+ #include "components/sync/protocol/nigori_specifics.pb.h"
+ #include "components/sync/protocol/os_preference_specifics.pb.h"
+ #include "components/sync/protocol/os_priority_preference_specifics.pb.h"
++#include "components/sync/protocol/pair_specifics.pb.h"
+ #include "components/sync/protocol/password_specifics.pb.h"
+ #include "components/sync/protocol/password_with_local_data.pb.h"
+ #include "components/sync/protocol/persisted_entity_data.pb.h"
+@@ -392,6 +393,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(manufacturer);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,7 +18,7 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0f
    VISIT(sharing_fields);
    VISIT(invalidation_fields);
    VISIT(paask_fields);
-@@ -404,6 +405,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -404,6 +406,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(send_tab_to_self_receiving_enabled);
  }
  
@@ -18,3 +26,40 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0f
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT(vapid_fcm_token);
    VISIT_BYTES(vapid_p256dh);
+@@ -455,7 +458,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntityMetadata& proto) {
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+-  static_assert(38 == GetNumModelTypes(),
++  static_assert(39 == GetNumModelTypes(),
+                 "When adding a new protocol type, you will likely need to add "
+                 "it here as well.");
+   VISIT(encrypted);
+@@ -477,6 +480,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(nigori);
+   VISIT(os_preference);
+   VISIT(os_priority_preference);
++  VISIT(pair);
+   VISIT(password);
+   VISIT(preference);
+   VISIT(printer);
+@@ -663,6 +667,7 @@ VISIT_PROTO_FIELDS(const sync_pb::NigoriSpecifics& proto) {
+   VISIT(custom_passphrase_key_derivation_method);
+   VISIT(custom_passphrase_key_derivation_salt);
+   VISIT(trusted_vault_debug_info);
++  VISIT(encrypt_pairs);
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::WebauthnCredentialSpecifics& proto) {
+@@ -1268,6 +1273,11 @@ VISIT_PROTO_FIELDS(const sync_pb::WorkspaceDeskSpecifics::Desk& proto) {
+   VISIT_REP(apps);
+ }
+ 
++VISIT_PROTO_FIELDS(const sync_pb::PairSpecifics& proto) {
++  VISIT(key);
++  VISIT(value);
++}
++
+ VISIT_PROTO_FIELDS(
+     const sync_pb::WorkspaceDeskSpecifics::ProgressiveWebApp& proto) {
+   VISIT(app_id);

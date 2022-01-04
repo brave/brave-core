@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/pref_names.h b/components/sync/base/pref_names.h
+index 9538b7765ae5e5cb5ec3acc75838a277545f4e0c..25482414083d6ce8c1aef0ae3f904be2fea683ed 100644
+--- a/components/sync/base/pref_names.h
++++ b/components/sync/base/pref_names.h
+@@ -27,6 +27,7 @@ extern const char kSyncApps[];
+ extern const char kSyncAutofill[];
+ extern const char kSyncBookmarks[];
+ extern const char kSyncExtensions[];
++extern const char kSyncPairs[];
+ extern const char kSyncPasswords[];
+ extern const char kSyncPreferences[];
+ extern const char kSyncReadingList[];

@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/pref_names.cc b/components/sync/base/pref_names.cc
+index 63a33f1c326d3f72038e1e3f841b2fac5a731228..7d0011e7956d793bf363c06162ff34bedc07705c 100644
+--- a/components/sync/base/pref_names.cc
++++ b/components/sync/base/pref_names.cc
+@@ -44,6 +44,7 @@ const char kSyncApps[] = "sync.apps";
+ const char kSyncAutofill[] = "sync.autofill";
+ const char kSyncBookmarks[] = "sync.bookmarks";
+ const char kSyncExtensions[] = "sync.extensions";
++const char kSyncPairs[] = "sync.pairs";
+ const char kSyncPasswords[] = "sync.passwords";
+ const char kSyncPreferences[] = "sync.preferences";
+ const char kSyncReadingList[] = "sync.reading_list";

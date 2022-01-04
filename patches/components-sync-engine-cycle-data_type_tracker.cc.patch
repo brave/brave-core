@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
+index 6dc8a5143468d499adcda99d8466086862afccf8..58ac4a7a142a2996d72ed6c813b85158b98d0ee9 100644
+--- a/components/sync/engine/cycle/data_type_tracker.cc
++++ b/components/sync/engine/cycle/data_type_tracker.cc
+@@ -78,6 +78,7 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(ModelType model_type) {
+     case OS_PREFERENCES:
+     case OS_PRIORITY_PREFERENCES:
+     case WORKSPACE_DESK:
++    case PAIRS:
+     case NIGORI:
+     case PROXY_TABS:
+       return kMediumLocalChangeNudgeDelay;

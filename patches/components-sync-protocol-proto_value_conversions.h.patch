@@ -1,0 +1,22 @@
+diff --git a/components/sync/protocol/proto_value_conversions.h b/components/sync/protocol/proto_value_conversions.h
+index 9657d77c10850a654cf6895d9725f05a3e942fc4..abc8d48cdd6fadf530916580e63d7dfe3c00c86f 100644
+--- a/components/sync/protocol/proto_value_conversions.h
++++ b/components/sync/protocol/proto_value_conversions.h
+@@ -41,6 +41,7 @@ class NavigationRedirect;
+ class NigoriSpecifics;
+ class OsPreferenceSpecifics;
+ class OsPriorityPreferenceSpecifics;
++class PairSpecifics;
+ class PasswordSpecifics;
+ class PasswordSpecificsData;
+ class PaymentsCustomerData;
+@@ -166,6 +167,9 @@ std::unique_ptr<base::DictionaryValue> OsPreferenceSpecificsToValue(
+ std::unique_ptr<base::DictionaryValue> OsPriorityPreferenceSpecificsToValue(
+     const sync_pb::OsPriorityPreferenceSpecifics& specifics);
+ 
++std::unique_ptr<base::DictionaryValue> PairSpecificsToValue(
++    const sync_pb::PairSpecifics& pair_specifics);
++
+ std::unique_ptr<base::DictionaryValue> PasswordSpecificsToValue(
+     const sync_pb::PasswordSpecifics& password_specifics);
+ 

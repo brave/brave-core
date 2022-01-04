@@ -1,0 +1,12 @@
+diff --git a/tools/metrics/histograms/metadata/sync/histograms.xml b/tools/metrics/histograms/metadata/sync/histograms.xml
+index f066004127d171a71832a4d6e1c58b826f56f02e..58680e62ee94f38e005aadc099827d4aa50ecb28 100644
+--- a/tools/metrics/histograms/metadata/sync/histograms.xml
++++ b/tools/metrics/histograms/metadata/sync/histograms.xml
+@@ -139,6 +139,7 @@ chromium-metrics-reviews@google.com.
+     </obsolete>
+   </variant>
+   <variant name=".WORKSPACE_DESK" summary="WORKSPACE_DESK"/>
++  <variant name=".PAIR" summary="PAIR"/>
+ </variants>
+ 
+ <histogram

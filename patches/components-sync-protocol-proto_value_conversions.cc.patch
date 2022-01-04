@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/proto_value_conversions.cc b/components/sync/protocol/proto_value_conversions.cc
+index 46e3f567804c4a86c0ac394f652f9e271881bc1c..c41e3469ce7b778af0c7f772ad99925e91bd6029 100644
+--- a/components/sync/protocol/proto_value_conversions.cc
++++ b/components/sync/protocol/proto_value_conversions.cc
+@@ -29,6 +29,7 @@
+ #include "components/sync/protocol/nigori_specifics.pb.h"
+ #include "components/sync/protocol/os_preference_specifics.pb.h"
+ #include "components/sync/protocol/os_priority_preference_specifics.pb.h"
++#include "components/sync/protocol/pair_specifics.pb.h"
+ #include "components/sync/protocol/password_specifics.pb.h"
+ #include "components/sync/protocol/preference_specifics.pb.h"
+ #include "components/sync/protocol/printer_specifics.pb.h"
+@@ -314,6 +315,7 @@ IMPLEMENT_PROTO_TO_VALUE(NavigationRedirect)
+ IMPLEMENT_PROTO_TO_VALUE(NigoriSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(OsPreferenceSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(OsPriorityPreferenceSpecifics)
++IMPLEMENT_PROTO_TO_VALUE(PairSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(PasswordSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(PasswordSpecificsData)
+ IMPLEMENT_PROTO_TO_VALUE(PaymentsCustomerData)

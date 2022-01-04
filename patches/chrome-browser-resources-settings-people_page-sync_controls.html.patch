@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.html b/chrome/browser/resources/settings/people_page/sync_controls.html
+index eae309d779bd703675a6e20d73bce2f019afb815..53ec3f8ec0a4a7965e46d7c9807f04649940495d 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.html
++++ b/chrome/browser/resources/settings/people_page/sync_controls.html
+@@ -141,6 +141,17 @@
+             aria-labelledby="passwordsCheckboxLabel">
+         </cr-toggle>
+       </div>
++	  
++      <div class="list-item" hidden="[[!syncPrefs.pairsRegistered]]">
++        <div id="pairsCheckboxLabel">
++          $i18n{pairsCheckboxLabel}
++        </div>
++        <cr-toggle checked="{{syncPrefs.pairsSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[syncPrefs.syncAllDataTypes]]"
++            aria-labelledby="pairsCheckboxLabel">
++        </cr-toggle>
++      </div>
+ 
+       <div class="list-item" hidden="[[!syncPrefs.autofillRegistered]]">
+         <div id="autofillCheckboxLabel">

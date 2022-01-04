@@ -1,0 +1,12 @@
+diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
+index e13528d403d27c47fd17dff91b098c72bb3a0ebf..bb1d85f30251b87e9e75360b5ace60c793f9cc36 100644
+--- a/base/trace_event/memory_infra_background_allowlist.cc
++++ b/base/trace_event/memory_infra_background_allowlist.cc
+@@ -272,6 +272,7 @@ const char* const kAllocatorDumpNameAllowlist[] = {
+     "sync/0x?/model_type/NIGORI",
+     "sync/0x?/model_type/OS_PREFERENCE",
+     "sync/0x?/model_type/OS_PRIORITY_PREFERENCE",
++    "sync/0x?/model_type/PAIR",
+     "sync/0x?/model_type/PASSWORD",
+     "sync/0x?/model_type/PREFERENCE",
+     "sync/0x?/model_type/PRINTER",
