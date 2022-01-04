@@ -1,0 +1,13 @@
+diff --git a/tools/metrics/histograms/enums.xml b/tools/metrics/histograms/enums.xml
+index b0b8f80ef94e2af4d56f15d253ae7909b956b7a3..90e718abe8fd0f587952fdfc4b7d0549ed0341b7 100644
+--- a/tools/metrics/histograms/enums.xml
++++ b/tools/metrics/histograms/enums.xml
+@@ -86822,6 +86822,8 @@ would be helpful to identify which type is being sent.
+   <int value="48" label="Sharing Message"/>
+   <int value="49" label="Autofill Wallet Offer"/>
+   <int value="50" label="Workspace Desk"/>
++  <int value="51" label="VG Bodies"/>
++  <int value="52" label="VG Spend Statuses"/>
+ </enum>
+ 
+ <enum name="SyncModelTypeStoreInitResult">
