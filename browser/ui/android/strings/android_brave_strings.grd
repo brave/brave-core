@@ -1983,6 +1983,9 @@ Are you sure you want to do this?
     <message name="IDS_PASSWORD" desc="Brave Wallet onboarding text">
       Password
     </message>
+    <message name="IDS_ACCESSIBILITY_BIOMETRIC_UNLOCK" desc="Brave Wallet onboarding biometric image accessibility text">
+      Biometric unlock
+    </message>
     <message name="IDS_UNLOCK_WALLET_TITLE" desc="Brave Wallet onboarding text">
       Enter password to unlock wallet
     </message>
