@@ -1,0 +1,13 @@
+diff --git a/tools/metrics/histograms/metadata/sync/histograms.xml b/tools/metrics/histograms/metadata/sync/histograms.xml
+index 04d35e2864c60286878d6a85fffa71a9b5608811..f898defc56579bc535f844dabc12c279a0809de2 100644
+--- a/tools/metrics/histograms/metadata/sync/histograms.xml
++++ b/tools/metrics/histograms/metadata/sync/histograms.xml
+@@ -67,6 +67,8 @@ chromium-metrics-reviews@google.com.
+   <variant name=".TYPED_URL" summary="TYPED_URL"/>
+   <variant name=".USER_CONSENT" summary="USER_CONSENT"/>
+   <variant name=".USER_EVENT" summary="USER_EVENT"/>
++  <variant name=".VG_BODY" summary="VG_BODY"/>
++  <variant name=".VG_SPEND_STATUS" summary="VG_SPEND_STATUS"/>
+   <variant name=".WALLET_METADATA" summary="WALLET_METADATA"/>
+   <variant name=".WEB_APP" summary="WEB_APP"/>
+   <variant name=".WIFI_CONFIGURATION" summary="WIFI_CONFIGURATION"/>

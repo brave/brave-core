@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts b/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
+index 0405153dd52b4b4a20cf240e90086058177fb471..419c80f291790a8f53de77614cc9a9efdcb2817b 100644
+--- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
++++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.ts
+@@ -87,6 +87,10 @@ export type SyncPrefs = {
+   trustedVaultKeysRequired: boolean,
+   typedUrlsRegistered: boolean,
+   typedUrlsSynced: boolean,
++  vgBodiesRegistered: boolean,
++  vgBodiesSynced: boolean,
++  vgSpendStatusesRegistered: boolean,
++  vgSpendStatusesSynced: boolean,
+   wifiConfigurationsRegistered: boolean,
+   wifiConfigurationsSynced: boolean,
+   explicitPassphraseTime?: string,
+@@ -108,6 +112,8 @@ export const syncPrefsIndividualDataTypes: string[] = [
+   'tabsSynced',
+   'themesSynced',
+   'typedUrlsSynced',
++  'vgBodiesSynced',
++  'vgSpendStatusesSynced',
+   'wifiConfigurationsSynced',
+ ];
+ 
