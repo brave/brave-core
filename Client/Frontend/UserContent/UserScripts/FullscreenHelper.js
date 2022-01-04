@@ -41,6 +41,10 @@ if (!isFullscreenSupportedNatively && videosSupportFullscreen && !/mobile/i.test
         return false;
     };
     
+    HTMLElement.prototype.requestFullscreen.toString = function() {
+        return "function () { [native code]; }";
+    };
+    
     Object.defineProperty(document, 'fullscreenEnabled', {
         get: function() {
             return true;
