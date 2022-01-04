@@ -460,7 +460,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Private Window
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_LABEL" desc="The text label of tor avatar button.">
-        Private with Tor
+        Tor
+      </message>
+      <message name="IDS_TOR_AVATAR_BUTTON_LABEL_COUNT" desc="The text label of tor avatar button. with count">
+        Tor <ph name="COUNT">$1</ph>
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT" desc="The tooltip text of tor avatar button.">
         This is a private window with Tor
