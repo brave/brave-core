@@ -5,13 +5,15 @@
 
 brave_sync_protocol_bases = [
   "brave_device_info_specifics",
+  "vg_specifics",
 ]
 
 brave_sync_protocol_sources = []
 brave_sync_protocol_pyprotos = []
 
 foreach(base, brave_sync_protocol_bases) {
-  brave_sync_protocol_sources += [ "//brave/components/sync/protocol/${base}.proto" ]
+  brave_sync_protocol_sources +=
+      [ "//brave/components/sync/protocol/${base}.proto" ]
   brave_sync_protocol_pyprotos +=
       [ "$root_out_dir/pyproto/components/sync/protocol/${base}_pb2.py" ]
 }

@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/pref_names.cc b/components/sync/base/pref_names.cc
+index 7ecf0740b506bdb95faa59a517db2361a09d8e91..5470480c90b43fbacec123551b51b490b4accfe8 100644
+--- a/components/sync/base/pref_names.cc
++++ b/components/sync/base/pref_names.cc
+@@ -47,6 +47,8 @@ const char kSyncReadingList[] = "sync.reading_list";
+ const char kSyncTabs[] = "sync.tabs";
+ const char kSyncThemes[] = "sync.themes";
+ const char kSyncTypedUrls[] = "sync.typed_urls";
++const char kSyncVgBodies[] = "sync.vg_bodies";
++const char kSyncVgSpendStatuses[] = "sync.vg_spend_statuses";
+ const char kSyncWifiConfigurations[] = "sync.wifi_configurations";
+ 
+ // Boolean used by enterprise configuration management in order to lock down
