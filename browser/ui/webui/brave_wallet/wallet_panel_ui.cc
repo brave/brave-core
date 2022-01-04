@@ -14,7 +14,7 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -24,7 +24,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -82,8 +82,8 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
         eth_json_rpc_controller_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::SwapController>
-        swap_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SwapService>
+        swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
         asset_ratio_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
@@ -111,10 +111,10 @@ void WalletPanelUI::CreatePanelHandler(
     eth_json_rpc_controller->Bind(std::move(eth_json_rpc_controller_receiver));
   }
 
-  auto* swap_controller =
-      brave_wallet::SwapControllerFactory::GetControllerForContext(profile);
-  if (swap_controller) {
-    swap_controller->Bind(std::move(swap_controller_receiver));
+  auto* swap_service =
+      brave_wallet::SwapServiceFactory::GetControllerForContext(profile);
+  if (swap_service) {
+    swap_service->Bind(std::move(swap_service_receiver));
   }
 
   auto* asset_ratio_service =

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/brave_wallet/swap_service_factory.h"
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/storage_partition.h"
@@ -16,52 +16,52 @@
 namespace brave_wallet {
 
 // static
-SwapControllerFactory* SwapControllerFactory::GetInstance() {
-  return base::Singleton<SwapControllerFactory>::get();
+SwapServiceFactory* SwapServiceFactory::GetInstance() {
+  return base::Singleton<SwapServiceFactory>::get();
 }
 
 // static
-mojo::PendingRemote<mojom::SwapController> SwapControllerFactory::GetForContext(
+mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context))
-    return mojo::PendingRemote<mojom::SwapController>();
+    return mojo::PendingRemote<mojom::SwapService>();
 
-  return static_cast<SwapController*>(
+  return static_cast<SwapService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
 // static
-SwapController* SwapControllerFactory::GetControllerForContext(
+SwapService* SwapServiceFactory::GetControllerForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
   }
-  return static_cast<SwapController*>(
+  return static_cast<SwapService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-SwapControllerFactory::SwapControllerFactory()
+SwapServiceFactory::SwapServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "SwapController",
+          "SwapService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(RpcControllerFactory::GetInstance());
 }
 
-SwapControllerFactory::~SwapControllerFactory() {}
+SwapServiceFactory::~SwapServiceFactory() {}
 
-KeyedService* SwapControllerFactory::BuildServiceInstanceFor(
+KeyedService* SwapServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
-  return new SwapController(
+  return new SwapService(
       shared_url_loader_factory,
       RpcControllerFactory::GetControllerForContext(context));
 }
 
-content::BrowserContext* SwapControllerFactory::GetBrowserContextToUse(
+content::BrowserContext* SwapServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

@@ -5,6 +5,6 @@ brave_browser_brave_wallet_android_sources = [
   "//brave/browser/brave_wallet/android/eth_json_rpc_controller_factory_android.cc",
   "//brave/browser/brave_wallet/android/eth_tx_controller_factory_android.cc",
   "//brave/browser/brave_wallet/android/keyring_controller_factory_android.cc",
-  "//brave/browser/brave_wallet/android/swap_controller_factory_android.cc",
+  "//brave/browser/brave_wallet/android/swap_service_factory_android.cc",
   "//brave/browser/brave_wallet/android/wallet_native_utils_android.cc",
 ]

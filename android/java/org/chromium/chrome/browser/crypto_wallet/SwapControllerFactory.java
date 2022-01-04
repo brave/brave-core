@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.SwapController;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -15,29 +15,29 @@ import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class SwapControllerFactory {
+public class SwapServiceFactory {
     private static final Object sLock = new Object();
-    private static SwapControllerFactory sInstance;
+    private static SwapServiceFactory sInstance;
 
-    public static SwapControllerFactory getInstance() {
+    public static SwapServiceFactory getInstance() {
         synchronized (sLock) {
             if (sInstance == null) {
-                sInstance = new SwapControllerFactory();
+                sInstance = new SwapServiceFactory();
             }
         }
         return sInstance;
     }
 
-    private SwapControllerFactory() {}
+    private SwapServiceFactory() {}
 
-    public SwapController getSwapController(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = SwapControllerFactoryJni.get().getInterfaceToSwapController();
+    public SwapService getSwapService(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = SwapServiceFactoryJni.get().getInterfaceToSwapService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        SwapController swapController = SwapController.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) swapController).getProxyHandler();
+        SwapService swapService = SwapService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) swapService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return swapController;
+        return swapService;
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -46,6 +46,6 @@ public class SwapControllerFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToSwapController();
+        int getInterfaceToSwapService();
     }
 }

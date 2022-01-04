@@ -16,7 +16,7 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -87,7 +87,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::KeyringControllerFactory::GetInstance();
   brave_wallet::RpcControllerFactory::GetInstance();
-  brave_wallet::SwapControllerFactory::GetInstance();
+  brave_wallet::SwapServiceFactory::GetInstance();
   brave_wallet::EthTxControllerFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 

@@ -117,7 +117,7 @@ interface PanelHandlerFactory {
                      pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
                      pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                     pending_receiver<SwapController> swap_controller,
+                     pending_receiver<SwapService> swap_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringController> keyring_controller,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
@@ -131,7 +131,7 @@ interface PageHandlerFactory {
                     pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                    pending_receiver<SwapController> swap_controller,
+                    pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringController> keyring_controller,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
@@ -477,7 +477,7 @@ interface AssetRatioService {
 };
 
 // Implements swapping related functionality through the 0x API.
-interface SwapController {
+interface SwapService {
   // Obtains a price quote for a swap
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);

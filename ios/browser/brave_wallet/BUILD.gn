@@ -18,8 +18,8 @@ source_set("brave_wallet") {
     "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
     "keyring_controller_factory.h",
-    "swap_controller_factory.cc",
-    "swap_controller_factory.h",
+    "swap_service_factory.cc",
+    "swap_service_factory.h",
   ]
   deps = [
     "//brave/components/brave_wallet/browser",

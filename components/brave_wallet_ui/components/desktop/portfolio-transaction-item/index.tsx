@@ -214,7 +214,7 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
 
-      // FIXME: Add as new BraveWallet.TransactionType on the controller side.
+      // FIXME: Add as new BraveWallet.TransactionType on the service side.
       case transaction.txData.baseData.to.toLowerCase() === SwapExchangeProxy: {
         return (
           <DetailRow>

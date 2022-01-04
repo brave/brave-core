@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 
 #include <utility>
 
@@ -20,11 +20,11 @@
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("swap_controller", R"(
+  return net::DefineNetworkTrafficAnnotation("swap_service", R"(
       semantics {
-        sender: "Swap Controller"
+        sender: "Swap Service"
         description:
-          "This controller is used to obtain 0x price swap quotes and transactions to sign."
+          "This service is used to obtain 0x price swap quotes and transactions to sign."
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
@@ -64,18 +64,17 @@ GURL AppendSwapParams(const GURL& swap_url,
     url = net::AppendQueryParameter(url, "buyToken", params.buy_token);
   if (!params.sell_token.empty())
     url = net::AppendQueryParameter(url, "sellToken", params.sell_token);
-  url =
-      net::AppendQueryParameter(url, "buyTokenPercentageFee",
-                                brave_wallet::SwapController::GetFee(chain_id));
+  url = net::AppendQueryParameter(url, "buyTokenPercentageFee",
+                                  brave_wallet::SwapService::GetFee(chain_id));
   url = net::AppendQueryParameter(
       url, "slippagePercentage",
       base::StringPrintf("%.6f", params.slippage_percentage));
   std::string fee_recipient =
-      brave_wallet::SwapController::GetFeeRecipient(chain_id);
+      brave_wallet::SwapService::GetFeeRecipient(chain_id);
   if (!fee_recipient.empty())
     url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
   std::string affiliate_address =
-      brave_wallet::SwapController::GetAffiliateAddress(chain_id);
+      brave_wallet::SwapService::GetAffiliateAddress(chain_id);
   if (!affiliate_address.empty())
     url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
   if (!params.gas_price.empty())
@@ -87,9 +86,9 @@ GURL AppendSwapParams(const GURL& swap_url,
 
 namespace brave_wallet {
 
-GURL SwapController::base_url_for_test_;
+GURL SwapService::base_url_for_test_;
 
-SwapController::SwapController(
+SwapService::SwapService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     EthJsonRpcController* rpc_controller)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
@@ -98,25 +97,24 @@ SwapController::SwapController(
   DCHECK(rpc_controller_);
 }
 
-SwapController::~SwapController() {}
+SwapService::~SwapService() {}
 
-mojo::PendingRemote<mojom::SwapController> SwapController::MakeRemote() {
-  mojo::PendingRemote<mojom::SwapController> remote;
+mojo::PendingRemote<mojom::SwapService> SwapService::MakeRemote() {
+  mojo::PendingRemote<mojom::SwapService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void SwapController::Bind(
-    mojo::PendingReceiver<mojom::SwapController> receiver) {
+void SwapService::Bind(mojo::PendingReceiver<mojom::SwapService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void SwapController::SetBaseURLForTest(const GURL& base_url_for_test) {
+void SwapService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
 // static
-std::string SwapController::GetFee(const std::string& chain_id) {
+std::string SwapService::GetFee(const std::string& chain_id) {
   std::string fee;
 
   if (chain_id == brave_wallet::mojom::kRopstenChainId) {
@@ -129,7 +127,7 @@ std::string SwapController::GetFee(const std::string& chain_id) {
 }
 
 // static
-std::string SwapController::GetBaseSwapURL(const std::string& chain_id) {
+std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
   std::string url;
 
   if (chain_id == brave_wallet::mojom::kRopstenChainId) {
@@ -142,7 +140,7 @@ std::string SwapController::GetBaseSwapURL(const std::string& chain_id) {
 }
 
 // static
-std::string SwapController::GetFeeRecipient(const std::string& chain_id) {
+std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
   std::string feeRecipient;
 
   if (chain_id == brave_wallet::mojom::kRopstenChainId) {
@@ -155,7 +153,7 @@ std::string SwapController::GetFeeRecipient(const std::string& chain_id) {
 }
 
 // static
-std::string SwapController::GetAffiliateAddress(const std::string& chain_id) {
+std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
   std::string affiliateAddress;
 
   if (chain_id == brave_wallet::mojom::kMainnetChainId) {
@@ -166,8 +164,8 @@ std::string SwapController::GetAffiliateAddress(const std::string& chain_id) {
 }
 
 // static
-GURL SwapController::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
-                                      const std::string& chain_id) {
+GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
+                                   const std::string& chain_id) {
   std::string spec = base::StringPrintf(
       "%sswap/v1/price", base_url_for_test_.is_empty()
                              ? GetBaseSwapURL(chain_id).c_str()
@@ -178,8 +176,8 @@ GURL SwapController::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
 }
 
 // static
-GURL SwapController::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
-                                              const std::string& chain_id) {
+GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
+                                           const std::string& chain_id) {
   std::string spec = base::StringPrintf(
       "%sswap/v1/quote", base_url_for_test_.is_empty()
                              ? GetBaseSwapURL(chain_id).c_str()
@@ -189,14 +187,14 @@ GURL SwapController::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
   return url;
 }
 
-void SwapController::GetPriceQuote(mojom::SwapParamsPtr swap_params,
-                                   GetPriceQuoteCallback callback) {
+void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
+                                GetPriceQuoteCallback callback) {
   if (!IsNetworkSupported(rpc_controller_->GetChainId())) {
     std::move(callback).Run(false, nullptr, "UNSUPPORTED_NETWORK");
     return;
   }
   auto internal_callback =
-      base::BindOnce(&SwapController::OnGetPriceQuote,
+      base::BindOnce(&SwapService::OnGetPriceQuote,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_.Request(
       "GET",
@@ -204,7 +202,7 @@ void SwapController::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       "", "", true, std::move(internal_callback));
 }
 
-void SwapController::OnGetPriceQuote(
+void SwapService::OnGetPriceQuote(
     GetPriceQuoteCallback callback,
     const int status,
     const std::string& body,
@@ -223,7 +221,7 @@ void SwapController::OnGetPriceQuote(
   std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
 }
 
-void SwapController::GetTransactionPayload(
+void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
   if (!IsNetworkSupported(rpc_controller_->GetChainId())) {
@@ -231,7 +229,7 @@ void SwapController::GetTransactionPayload(
     return;
   }
   auto internal_callback =
-      base::BindOnce(&SwapController::OnGetTransactionPayload,
+      base::BindOnce(&SwapService::OnGetTransactionPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_.Request(
       "GET",
@@ -240,7 +238,7 @@ void SwapController::GetTransactionPayload(
       "", "", true, std::move(internal_callback));
 }
 
-void SwapController::OnGetTransactionPayload(
+void SwapService::OnGetTransactionPayload(
     GetTransactionPayloadCallback callback,
     const int status,
     const std::string& body,

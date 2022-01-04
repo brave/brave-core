@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_CONTROLLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_SERVICE_H_
 
 #include <string>
 #include <vector>
@@ -32,17 +32,16 @@ namespace brave_wallet {
 
 class EthJsonRpcController;
 
-class SwapController : public KeyedService, public mojom::SwapController {
+class SwapService : public KeyedService, public mojom::SwapService {
  public:
-  SwapController(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      EthJsonRpcController* eth_json_rpc_controller);
-  ~SwapController() override;
-  SwapController(const SwapController&) = delete;
-  SwapController& operator=(const SwapController&) = delete;
+  SwapService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+              EthJsonRpcController* eth_json_rpc_controller);
+  ~SwapService() override;
+  SwapService(const SwapService&) = delete;
+  SwapService& operator=(const SwapService&) = delete;
 
-  mojo::PendingRemote<mojom::SwapController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::SwapController> receiver);
+  mojo::PendingRemote<mojom::SwapService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::SwapService> receiver);
 
   // Obtians a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,
@@ -77,11 +76,11 @@ class SwapController : public KeyedService, public mojom::SwapController {
   api_request_helper::APIRequestHelper api_request_helper_;
 
   EthJsonRpcController* rpc_controller_;  // NOT OWNED
-  mojo::ReceiverSet<mojom::SwapController> receivers_;
+  mojo::ReceiverSet<mojom::SwapService> receivers_;
 
-  base::WeakPtrFactory<SwapController> weak_ptr_factory_;
+  base::WeakPtrFactory<SwapService> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_SERVICE_H_

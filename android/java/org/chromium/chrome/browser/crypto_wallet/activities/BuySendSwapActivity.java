@@ -59,7 +59,7 @@ import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
-import org.chromium.brave_wallet.mojom.SwapController;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -73,7 +73,7 @@ import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.SwapControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -192,7 +192,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private AssetRatioService mAssetRatioService;
     private ErcToken mCurrentErcToken;
     private ErcToken mCurrentSwapToErcToken;
-    private SwapController mSwapController;
+    private SwapService mSwapService;
     private ExecutorService mExecutor;
     private Handler mHandler;
     private String mCurrentChainId;
@@ -211,7 +211,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();
-        mSwapController.close();
+        mSwapService.close();
         mBraveWalletService.close();
     }
 
@@ -394,14 +394,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         swapParams.gasPrice = "";
 
-        assert mSwapController != null;
+        assert mSwapService != null;
         if (!sendTx) {
-            mSwapController.getPriceQuote(swapParams, (success, response, error_response) -> {
+            mSwapService.getPriceQuote(swapParams, (success, response, error_response) -> {
                 workWithSwapQuota(
                         success, response, error_response, calculatePerSellAsset, sendTx, from);
             });
         } else {
-            mSwapController.getTransactionPayload(
+            mSwapService.getTransactionPayload(
                     swapParams, (success, response, error_response) -> {
                         workWithSwapQuota(success, response, error_response, calculatePerSellAsset,
                                 sendTx, from);
@@ -1481,7 +1481,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
         mEthTxController.close();
-        mSwapController.close();
+        mSwapService.close();
         mBraveWalletService.close();
 
         mErcTokenRegistry = null;
@@ -1489,14 +1489,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthTxController = null;
         mKeyringController = null;
         mAssetRatioService = null;
-        mSwapController = null;
+        mSwapService = null;
         mBraveWalletService = null;
         InitAssetRatioService();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
-        InitSwapController();
+        InitSwapService();
         InitBraveWalletService();
     }
 
@@ -1573,12 +1573,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthTxController.addObserver(mEthTxControllerObserver);
     }
 
-    private void InitSwapController() {
-        if (mSwapController != null) {
+    private void InitSwapService() {
+        if (mSwapService != null) {
             return;
         }
 
-        mSwapController = SwapControllerFactory.getInstance().getSwapController(this);
+        mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
     }
 
     @Override
@@ -1599,7 +1599,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitEthTxController();
         InitKeyringController();
         InitAssetRatioService();
-        InitSwapController();
+        InitSwapService();
         InitBraveWalletService();
 
         if (mEthJsonRpcController != null) {

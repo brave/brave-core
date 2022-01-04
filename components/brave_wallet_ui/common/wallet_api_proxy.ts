@@ -11,7 +11,7 @@ import { BraveWallet } from '../constants/types'
 export default class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   ethJsonRpcController = new BraveWallet.EthJsonRpcControllerRemote()
-  swapController = new BraveWallet.SwapControllerRemote()
+  swapService = new BraveWallet.SwapServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
   keyringController = getBraveKeyring()

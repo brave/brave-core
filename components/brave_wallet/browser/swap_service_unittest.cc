@@ -9,7 +9,7 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -48,9 +48,9 @@ void OnRequestResponse(
 
 namespace brave_wallet {
 
-class SwapControllerUnitTest : public testing::Test {
+class SwapServiceUnitTest : public testing::Test {
  public:
-  SwapControllerUnitTest()
+  SwapServiceUnitTest()
       : browser_context_(new content::TestBrowserContext()),
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -59,11 +59,11 @@ class SwapControllerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
-    swap_controller_.reset(
-        new SwapController(shared_url_loader_factory_, rpc_controller_.get()));
+    swap_service_.reset(
+        new SwapService(shared_url_loader_factory_, rpc_controller_.get()));
   }
 
-  ~SwapControllerUnitTest() override = default;
+  ~SwapServiceUnitTest() override = default;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
@@ -89,7 +89,7 @@ class SwapControllerUnitTest : public testing::Test {
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
-  std::unique_ptr<SwapController> swap_controller_;
+  std::unique_ptr<SwapService> swap_service_;
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -98,7 +98,7 @@ class SwapControllerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
-TEST_F(SwapControllerUnitTest, GetPriceQuote) {
+TEST_F(SwapServiceUnitTest, GetPriceQuote) {
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -138,7 +138,7 @@ TEST_F(SwapControllerUnitTest, GetPriceQuote) {
   expected_swap_response->buy_token_to_eth_rate = "1";
 
   bool callback_run = false;
-  swap_controller_->GetPriceQuote(
+  swap_service_->GetPriceQuote(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, true,
                      std::move(expected_swap_response), absl::nullopt));
@@ -146,31 +146,31 @@ TEST_F(SwapControllerUnitTest, GetPriceQuote) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetPriceQuoteError) {
+TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
   std::string error =
       R"({"code":100,"reason":"Validation Failed","validationErrors":[{"field":"sellAmount","code":1000,"reason":"should have required property 'sellAmount'"},{"field":"buyAmount","code":1000,"reason":"should have required property 'buyAmount'"},{"field":"","code":1001,"reason":"should match exactly one schema in oneOf"}]})";
   SetErrorInterceptor(error);
   bool callback_run = false;
-  swap_controller_->GetPriceQuote(
+  swap_service_->GetPriceQuote(
       brave_wallet::mojom::SwapParams::New(),
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetPriceQuoteUnexpectedReturn) {
+TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
   std::string error = "Could not parse response body: Woot";
   std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
   bool callback_run = false;
-  swap_controller_->GetPriceQuote(
+  swap_service_->GetPriceQuote(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetTransactionPayload) {
+TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -216,7 +216,7 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayload) {
   expected_swap_response->buy_token_to_eth_rate = "1";
 
   bool callback_run = false;
-  swap_controller_->GetTransactionPayload(
+  swap_service_->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, true,
                      std::move(expected_swap_response), absl::nullopt));
@@ -224,7 +224,7 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayload) {
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetTransactionPayloadError) {
+TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
   std::string error = R"(
     {
       "code": 100,
@@ -246,68 +246,65 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayloadError) {
 
   SetErrorInterceptor(error);
   bool callback_run = false;
-  swap_controller_->GetTransactionPayload(
+  swap_service_->GetTransactionPayload(
       brave_wallet::mojom::SwapParams::New(),
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetTransactionPayloadUnexpectedReturn) {
+TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
   std::string error = "Could not parse response body: Woot";
   std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
   bool callback_run = false;
-  swap_controller_->GetTransactionPayload(
+  swap_service_->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
-TEST_F(SwapControllerUnitTest, GetSwapConfigurationRopsten) {
+TEST_F(SwapServiceUnitTest, GetSwapConfigurationRopsten) {
   std::string swap_api_url = "https://ropsten.api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
   std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
   std::string affiliate_address;
-  EXPECT_EQ(swap_api_url,
-            SwapController::GetBaseSwapURL(mojom::kRopstenChainId));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kRopstenChainId));
   EXPECT_EQ(buy_token_percantage_fee,
-            SwapController::GetFee(mojom::kRopstenChainId));
+            SwapService::GetFee(mojom::kRopstenChainId));
   EXPECT_EQ(fee_recipient,
-            SwapController::GetFeeRecipient(mojom::kRopstenChainId));
+            SwapService::GetFeeRecipient(mojom::kRopstenChainId));
   EXPECT_EQ(affiliate_address,
-            SwapController::GetAffiliateAddress(mojom::kRopstenChainId));
+            SwapService::GetAffiliateAddress(mojom::kRopstenChainId));
 }
 
-TEST_F(SwapControllerUnitTest, GetSwapConfigurationMainnet) {
+TEST_F(SwapServiceUnitTest, GetSwapConfigurationMainnet) {
   std::string swap_api_url = "https://api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
   std::string fee_recipient = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
   std::string affiliate_address = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-  EXPECT_EQ(swap_api_url,
-            SwapController::GetBaseSwapURL(mojom::kMainnetChainId));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kMainnetChainId));
   EXPECT_EQ(buy_token_percantage_fee,
-            SwapController::GetFee(mojom::kMainnetChainId));
+            SwapService::GetFee(mojom::kMainnetChainId));
   EXPECT_EQ(fee_recipient,
-            SwapController::GetFeeRecipient(mojom::kMainnetChainId));
+            SwapService::GetFeeRecipient(mojom::kMainnetChainId));
   EXPECT_EQ(affiliate_address,
-            SwapController::GetAffiliateAddress(mojom::kMainnetChainId));
+            SwapService::GetAffiliateAddress(mojom::kMainnetChainId));
 }
 
-TEST_F(SwapControllerUnitTest, GetSwapConfigurationOtherNet) {
+TEST_F(SwapServiceUnitTest, GetSwapConfigurationOtherNet) {
   std::string swap_api_url;
   std::string buy_token_percantage_fee;
   std::string fee_recipient;
   std::string affiliate_address;
-  EXPECT_EQ(swap_api_url,
-            SwapController::GetBaseSwapURL(mojom::kRinkebyChainId));
+  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kRinkebyChainId));
   EXPECT_EQ(buy_token_percantage_fee,
-            SwapController::GetFee(mojom::kRinkebyChainId));
+            SwapService::GetFee(mojom::kRinkebyChainId));
   EXPECT_EQ(fee_recipient,
-            SwapController::GetFeeRecipient(mojom::kRinkebyChainId));
+            SwapService::GetFeeRecipient(mojom::kRinkebyChainId));
   EXPECT_EQ(affiliate_address,
-            SwapController::GetAffiliateAddress(mojom::kRinkebyChainId));
+            SwapService::GetAffiliateAddress(mojom::kRinkebyChainId));
 }
 
 }  // namespace brave_wallet

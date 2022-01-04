@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 
-#include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -16,41 +16,41 @@
 namespace brave_wallet {
 
 // static
-mojom::SwapController* SwapControllerFactory::GetForBrowserState(
+mojom::SwapService* SwapServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<SwapController*>(
+  return static_cast<SwapService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-SwapControllerFactory* SwapControllerFactory::GetInstance() {
-  return base::Singleton<SwapControllerFactory>::get();
+SwapServiceFactory* SwapServiceFactory::GetInstance() {
+  return base::Singleton<SwapServiceFactory>::get();
 }
 
-SwapControllerFactory::SwapControllerFactory()
+SwapServiceFactory::SwapServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "SwapController",
+          "SwapService",
           BrowserStateDependencyManager::GetInstance()) {
   DependsOn(EthJsonRpcControllerFactory::GetInstance());
 }
 
-SwapControllerFactory::~SwapControllerFactory() = default;
+SwapServiceFactory::~SwapServiceFactory() = default;
 
-std::unique_ptr<KeyedService> SwapControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* rpc_controller =
       EthJsonRpcControllerFactory::GetControllerForBrowserState(browser_state);
-  std::unique_ptr<SwapController> swap_controller(new SwapController(
+  std::unique_ptr<SwapService> swap_service(new SwapService(
       browser_state->GetSharedURLLoaderFactory(), rpc_controller));
-  return swap_controller;
+  return swap_service;
 }
 
-bool SwapControllerFactory::ServiceIsNULLWhileTesting() const {
+bool SwapServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-web::BrowserState* SwapControllerFactory::GetBrowserStateToUse(
+web::BrowserState* SwapServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);
 }

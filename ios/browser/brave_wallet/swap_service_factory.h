@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,19 +21,19 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class SwapControllerFactory : public BrowserStateKeyedServiceFactory {
+class SwapServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::SwapController* GetForBrowserState(
+  static mojom::SwapService* GetForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static SwapControllerFactory* GetInstance();
+  static SwapServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<SwapControllerFactory>;
+  friend struct base::DefaultSingletonTraits<SwapServiceFactory>;
 
-  SwapControllerFactory();
-  ~SwapControllerFactory() override;
+  SwapServiceFactory();
+  ~SwapServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -43,10 +43,10 @@ class SwapControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  SwapControllerFactory(const SwapControllerFactory&) = delete;
-  SwapControllerFactory& operator=(const SwapControllerFactory&) = delete;
+  SwapServiceFactory(const SwapServiceFactory&) = delete;
+  SwapServiceFactory& operator=(const SwapServiceFactory&) = delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_

@@ -437,7 +437,7 @@ export const fetchSwapQuoteFactory = (
   setSwapQuote: SimpleActionCreator<BraveWallet.SwapResponse>,
   setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
 ) => async (store: Store, payload: SwapParamsPayloadType) => {
-  const { swapController, assetRatioService } = getAPIProxy()
+  const { swapService, assetRatioService } = getAPIProxy()
 
   const {
     fromAsset,
@@ -460,7 +460,7 @@ export const fetchSwapQuoteFactory = (
   }
 
   const quote = await (
-    full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
+    full ? swapService.getTransactionPayload(swapParams) : swapService.getPriceQuote(swapParams)
   )
 
   if (quote.success && quote.response) {

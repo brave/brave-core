@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -15,24 +15,23 @@
 
 namespace brave_wallet {
 
-class SwapController;
+class SwapService;
 
-class SwapControllerFactory : public BrowserContextKeyedServiceFactory {
+class SwapServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::SwapController> GetForContext(
+  static mojo::PendingRemote<mojom::SwapService> GetForContext(
       content::BrowserContext* context);
-  static SwapController* GetControllerForContext(
-      content::BrowserContext* context);
-  static SwapControllerFactory* GetInstance();
+  static SwapService* GetControllerForContext(content::BrowserContext* context);
+  static SwapServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<SwapControllerFactory>;
+  friend struct base::DefaultSingletonTraits<SwapServiceFactory>;
 
-  SwapControllerFactory();
-  SwapControllerFactory(const SwapControllerFactory&) = delete;
-  SwapControllerFactory& operator=(const SwapControllerFactory&) = delete;
+  SwapServiceFactory();
+  SwapServiceFactory(const SwapServiceFactory&) = delete;
+  SwapServiceFactory& operator=(const SwapServiceFactory&) = delete;
 
-  ~SwapControllerFactory() override;
+  ~SwapServiceFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
@@ -42,4 +41,4 @@ class SwapControllerFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_SWAP_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_SWAP_SERVICE_FACTORY_H_
