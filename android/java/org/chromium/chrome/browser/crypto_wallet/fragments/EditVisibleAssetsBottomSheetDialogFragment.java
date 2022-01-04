@@ -40,7 +40,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -48,7 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -58,7 +58,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
-        implements View.OnClickListener, OnWalletListItemClick, KeyringControllerObserver {
+        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserver {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
@@ -102,12 +102,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         return null;
     }
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         } else if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getKeyringController();
+            return ((BuySendSwapActivity) activity).getKeyringService();
         }
 
         return null;
@@ -301,9 +301,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             }
         }
-        KeyringController keyringController = getKeyringController();
-        assert keyringController != null;
-        keyringController.addObserver(this);
+        KeyringService keyringService = getKeyringService();
+        assert keyringService != null;
+        keyringService.addObserver(this);
     }
 
     private TextWatcherImpl filterAddCustomAssetTextWatcher = new TextWatcherImpl();

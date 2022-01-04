@@ -22,17 +22,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -70,9 +70,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             EditText passwordEdittext = view.findViewById(R.id.restore_wallet_password);
             String passwordInput = passwordEdittext.getText().toString();
 
-            KeyringController keyringController = getKeyringController();
-            assert keyringController != null;
-            keyringController.isStrongPassword(passwordInput, result -> {
+            KeyringService keyringService = getKeyringService();
+            assert keyringService != null;
+            keyringService.isStrongPassword(passwordInput, result -> {
                 if (!result) {
                     passwordEdittext.setError(getResources().getString(R.string.password_text));
 
@@ -93,15 +93,15 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             retypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
         } else {
-            KeyringController keyringController = getKeyringController();
-            assert keyringController != null;
-            keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
+            KeyringService keyringService = getKeyringService();
+            assert keyringService != null;
+            keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
                     passwordInput, false, result -> {
                         if (result) {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
                             Utils.setCryptoOnboarding(false);
-                            keyringController.notifyWalletBackupComplete();
+                            keyringService.notifyWalletBackupComplete();
                             Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);

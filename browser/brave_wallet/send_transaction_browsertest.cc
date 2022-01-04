@@ -12,7 +12,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -20,7 +20,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -136,8 +136,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(browser()->profile());
+    keyring_service_ =
+        KeyringServiceFactory::GetControllerForContext(browser()->profile());
     eth_tx_service_ =
         EthTxServiceFactory::GetControllerForContext(browser()->profile());
     eth_json_rpc_controller_ =
@@ -177,7 +177,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         "drip caution abandon festival order clown oven regular absorb "
         "evidence crew where";
     base::RunLoop run_loop;
-    keyring_controller_->RestoreWallet(
+    keyring_service_->RestoreWallet(
         mnemonic, "brave123", false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
@@ -187,38 +187,38 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void LockWallet() {
-    keyring_controller_->Lock();
-    // Needed so KeyringControllerObserver::Locked handler can be hit
+    keyring_service_->Lock();
+    // Needed so KeyringServiceObserver::Locked handler can be hit
     // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
   }
 
   void UnlockWallet() {
     base::RunLoop run_loop;
-    keyring_controller_->Unlock("brave123",
-                                base::BindLambdaForTesting([&](bool success) {
-                                  ASSERT_TRUE(success);
-                                  run_loop.Quit();
-                                }));
+    keyring_service_->Unlock("brave123",
+                             base::BindLambdaForTesting([&](bool success) {
+                               ASSERT_TRUE(success);
+                               run_loop.Quit();
+                             }));
     run_loop.Run();
-    // Needed so KeyringControllerObserver::Unlocked handler can be hit
+    // Needed so KeyringServiceObserver::Unlocked handler can be hit
     // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
   }
 
   void AddAccount(const std::string& account_name) {
     base::RunLoop run_loop;
-    keyring_controller_->AddAccount(
-        account_name, base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
+    keyring_service_->AddAccount(account_name,
+                                 base::BindLambdaForTesting([&](bool success) {
+                                   ASSERT_TRUE(success);
+                                   run_loop.Quit();
+                                 }));
     run_loop.Run();
   }
 
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
-    keyring_controller_->SetSelectedAccount(
+    keyring_service_->SetSelectedAccount(
         address, base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
@@ -436,7 +436,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
   EthTxService* eth_tx_service_;
   EthJsonRpcController* eth_json_rpc_controller_;
   std::string chain_id_;

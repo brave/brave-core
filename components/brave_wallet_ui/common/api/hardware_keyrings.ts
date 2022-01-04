@@ -19,14 +19,14 @@ export type HardwareVendor = typeof VendorTypes[number]
 // Lazy instances for keyrings
 let ledgerHardwareKeyring: LedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
-let keyringController: BraveWallet.KeyringControllerRemote
+let keyringService: BraveWallet.KeyringServiceRemote
 
-export function getBraveKeyring (): BraveWallet.KeyringControllerRemote {
-  if (!keyringController) {
-    /** @type {!braveWallet.mojom.KeyringControllerRemote} */
-    keyringController = new BraveWallet.KeyringControllerRemote()
+export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
+  if (!keyringService) {
+    /** @type {!braveWallet.mojom.KeyringServiceRemote} */
+    keyringService = new BraveWallet.KeyringServiceRemote()
   }
-  return keyringController
+  return keyringService
 }
 
 export function getHardwareKeyring (type: HardwareVendor): LedgerBridgeKeyring | TrezorBridgeKeyring {

@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -17,29 +17,29 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class KeyringControllerFactory {
+public class KeyringServiceFactory {
     private static final Object lock = new Object();
-    private static KeyringControllerFactory instance;
+    private static KeyringServiceFactory instance;
 
-    public static KeyringControllerFactory getInstance() {
+    public static KeyringServiceFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new KeyringControllerFactory();
+                instance = new KeyringServiceFactory();
             }
         }
         return instance;
     }
 
-    private KeyringControllerFactory() {}
+    private KeyringServiceFactory() {}
 
-    public KeyringController getKeyringController(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = KeyringControllerFactoryJni.get().getInterfaceToKeyringController();
+    public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        KeyringController keyringController = KeyringController.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) keyringController).getProxyHandler();
+        KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) keyringService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return keyringController;
+        return keyringService;
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -48,6 +48,6 @@ public class KeyringControllerFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToKeyringController();
+        int getInterfaceToKeyringService();
     }
 }

@@ -4,19 +4,19 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/android/jni_android.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/build/android/jni_headers/KeyringControllerFactory_jni.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/build/android/jni_headers/KeyringServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
 namespace android {
-static jint JNI_KeyringControllerFactory_GetInterfaceToKeyringController(
+static jint JNI_KeyringServiceFactory_GetInterfaceToKeyringService(
     JNIEnv* env) {
   auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending =
-      brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
+      brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
           profile);
 
   return static_cast<jint>(pending.PassPipe().release().value());

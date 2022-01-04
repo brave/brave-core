@@ -14,7 +14,7 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -85,7 +85,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   }
 
   brave_wallet::AssetRatioServiceFactory::GetInstance();
-  brave_wallet::KeyringControllerFactory::GetInstance();
+  brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::RpcControllerFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
   brave_wallet::EthTxServiceFactory::GetInstance();

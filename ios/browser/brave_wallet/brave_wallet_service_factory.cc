@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -35,7 +35,7 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "BraveWalletService",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(KeyringControllerFactory::GetInstance());
+  DependsOn(KeyringServiceFactory::GetInstance());
 }
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
@@ -44,11 +44,11 @@ std::unique_ptr<KeyedService>
 BraveWalletServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  auto* keyring_controller =
-      KeyringControllerFactory::GetControllerForBrowserState(browser_state);
+  auto* keyring_service =
+      KeyringServiceFactory::GetControllerForBrowserState(browser_state);
   std::unique_ptr<BraveWalletService> controller(
       new BraveWalletService(std::make_unique<BraveWalletServiceDelegate>(),
-                             keyring_controller, browser_state->GetPrefs()));
+                             keyring_service, browser_state->GetPrefs()));
   return controller;
 }
 

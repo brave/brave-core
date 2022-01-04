@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -16,44 +16,44 @@
 namespace brave_wallet {
 
 // static
-mojom::KeyringController* KeyringControllerFactory::GetForBrowserState(
+mojom::KeyringService* KeyringServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<KeyringController*>(
+  return static_cast<KeyringService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-KeyringController* KeyringControllerFactory::GetControllerForBrowserState(
+KeyringService* KeyringServiceFactory::GetControllerForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<KeyringController*>(
+  return static_cast<KeyringService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }
 
 // static
-KeyringControllerFactory* KeyringControllerFactory::GetInstance() {
-  return base::Singleton<KeyringControllerFactory>::get();
+KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
+  return base::Singleton<KeyringServiceFactory>::get();
 }
 
-KeyringControllerFactory::KeyringControllerFactory()
+KeyringServiceFactory::KeyringServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "KeyringController",
+          "KeyringService",
           BrowserStateDependencyManager::GetInstance()) {}
 
-KeyringControllerFactory::~KeyringControllerFactory() = default;
+KeyringServiceFactory::~KeyringServiceFactory() = default;
 
-std::unique_ptr<KeyedService> KeyringControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> KeyringServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  std::unique_ptr<KeyringController> keyring_controller(
-      new KeyringController(browser_state->GetPrefs()));
-  return keyring_controller;
+  std::unique_ptr<KeyringService> keyring_service(
+      new KeyringService(browser_state->GetPrefs()));
+  return keyring_service;
 }
 
-bool KeyringControllerFactory::ServiceIsNULLWhileTesting() const {
+bool KeyringServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-web::BrowserState* KeyringControllerFactory::GetBrowserStateToUse(
+web::BrowserState* KeyringServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);
 }

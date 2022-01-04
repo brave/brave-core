@@ -12,7 +12,7 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -23,7 +23,7 @@
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
@@ -86,8 +86,8 @@ void WalletPanelUI::CreatePanelHandler(
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
         asset_ratio_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
-        keyring_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+        keyring_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
         erc_token_registry_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::EthTxService>
@@ -123,10 +123,10 @@ void WalletPanelUI::CreatePanelHandler(
     asset_ratio_service->Bind(std::move(asset_ratio_service_receiver));
   }
 
-  auto* keyring_controller =
-      brave_wallet::KeyringControllerFactory::GetControllerForContext(profile);
-  if (keyring_controller) {
-    keyring_controller->Bind(std::move(keyring_controller_receiver));
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetControllerForContext(profile);
+  if (keyring_service) {
+    keyring_service->Bind(std::move(keyring_service_receiver));
   }
 
   auto* erc_token_registry = brave_wallet::ERCTokenRegistry::GetInstance();

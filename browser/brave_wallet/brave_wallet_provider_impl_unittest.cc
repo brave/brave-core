@@ -21,7 +21,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -33,7 +33,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -158,8 +158,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     eth_json_rpc_controller_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     SetNetwork("0x1");
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(browser_context());
+    keyring_service_ =
+        KeyringServiceFactory::GetControllerForContext(browser_context());
     asset_ratio_service_ =
         AssetRatioServiceFactory::GetControllerForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
@@ -172,7 +172,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         host_content_settings_map(), eth_json_rpc_controller(),
-        eth_tx_service()->MakeRemote(), keyring_controller(),
+        eth_tx_service()->MakeRemote(), keyring_service(),
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
@@ -202,7 +202,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
   void CreateWallet() {
     base::RunLoop run_loop;
-    keyring_controller_->CreateWallet(
+    keyring_service_->CreateWallet(
         "brave",
         base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
           EXPECT_FALSE(mnemonic.empty());
@@ -213,7 +213,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
   void AddAccount() {
     base::RunLoop run_loop;
-    keyring_controller_->AddAccount(
+    keyring_service_->AddAccount(
         "New Account", base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -225,12 +225,12 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
 
-    keyring_controller_->AddHardwareAccounts(std::move(hw_accounts));
+    keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }
 
   void Unlock() {
     base::RunLoop run_loop;
-    keyring_controller_->Unlock(
+    keyring_service_->Unlock(
         "brave", base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -239,13 +239,13 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   }
 
   void Lock() {
-    keyring_controller_->Lock();
+    keyring_service_->Lock();
     browser_task_environment_.RunUntilIdle();
   }
 
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
-    keyring_controller_->SetSelectedAccount(
+    keyring_service_->SetSelectedAccount(
         address, base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -293,11 +293,11 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   EthJsonRpcController* eth_json_rpc_controller() {
     return eth_json_rpc_controller_;
   }
-  KeyringController* keyring_controller() { return keyring_controller_; }
+  KeyringService* keyring_service() { return keyring_service_; }
   BraveWalletProviderImpl* provider() { return provider_.get(); }
   std::string from(size_t from_index = 0) {
-    CHECK(!keyring_controller_->IsLocked());
-    return keyring_controller()->default_keyring_->GetAddress(from_index);
+    CHECK(!keyring_service_->IsLocked());
+    return keyring_service()->default_keyring_->GetAddress(from_index);
   }
 
   content::BrowserContext* browser_context() { return &profile_; }
@@ -487,7 +487,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
     base::RunLoop run_loop;
-    keyring_controller_->GetDefaultKeyringInfo(
+    keyring_service_->GetDefaultKeyringInfo(
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
           for (size_t i = 0; i < keyring_info->account_infos.size(); ++i) {
             result.push_back(keyring_info->account_infos[i]->address);
@@ -592,7 +592,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   std::unique_ptr<TestEventsListener> observer_;
 
  private:
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
   content::TestWebContentsFactory factory_;
   EthTxService* eth_tx_service_;
   AssetRatioService* asset_ratio_service_;
@@ -635,8 +635,8 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(
       host_content_settings_map(), eth_json_rpc_controller(),
-      eth_tx_service()->MakeRemote(), keyring_controller(),
-      brave_wallet_service_, nullptr, prefs());
+      eth_tx_service()->MakeRemote(), keyring_service(), brave_wallet_service_,
+      nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
@@ -1039,14 +1039,14 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
         run_loop.Quit();
       }));
 
-  EXPECT_TRUE(keyring_controller()->HasPendingUnlockRequest());
+  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
   // Allowed accounts is still empty when locked
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   Unlock();
   run_loop.Run();
 
-  EXPECT_FALSE(keyring_controller()->HasPendingUnlockRequest());
+  EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
   EXPECT_EQ(allowed_accounts, std::vector<std::string>{account0});
 }
 
@@ -1106,7 +1106,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
-  keyring_controller()->Lock();
+  keyring_service()->Lock();
 
   // nullopt for the first param here because we don't AddSignMessageRequest
   // whent here are no accounts returned.
@@ -1272,7 +1272,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
-  keyring_controller()->Lock();
+  keyring_service()->Lock();
 
   // nullopt for the first param here because we don't AddSignMessageRequest
   // whent here are no accounts returned.

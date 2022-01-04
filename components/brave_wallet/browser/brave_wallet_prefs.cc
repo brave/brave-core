@@ -110,7 +110,7 @@ void ClearEthJsonRpcControllerProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
 }
 
-void ClearKeyringControllerProfilePrefs(PrefService* prefs) {
+void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);

@@ -23,7 +23,7 @@ const store = createStore(
 )
 
 getWalletPageApiProxy().addEthJsonRpcControllerObserver(store)
-getWalletPageApiProxy().addKeyringControllerObserver(store)
+getWalletPageApiProxy().addKeyringServiceObserver(store)
 getWalletPageApiProxy().addEthTxServiceObserver(store)
 getWalletPageApiProxy().addBraveWalletServiceObserver(store)
 

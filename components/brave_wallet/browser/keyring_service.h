@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_CONTROLLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -32,15 +32,15 @@ class OneShotTimer;
 namespace brave_wallet {
 
 class EthTransaction;
-class KeyringControllerUnitTest;
+class KeyringServiceUnitTest;
 class BraveWalletProviderImplUnitTest;
 class FilecoinKeyring;
 
 // This class is not thread-safe and should have single owner
-class KeyringController : public KeyedService, public mojom::KeyringController {
+class KeyringService : public KeyedService, public mojom::KeyringService {
  public:
-  explicit KeyringController(PrefService* prefs);
-  ~KeyringController() override;
+  explicit KeyringService(PrefService* prefs);
+  ~KeyringService() override;
 
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
@@ -93,10 +93,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                               const std::string& address,
                                               const std::string& id);
 
-  mojo::PendingRemote<mojom::KeyringController> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
+  mojo::PendingRemote<mojom::KeyringService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
-  // mojom::KeyringController
+  // mojom::KeyringService
   // Must unlock before using this API otherwise it will return empty string
   void GetMnemonicForDefaultKeyring(
       GetMnemonicForDefaultKeyringCallback callback) override;
@@ -191,8 +191,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void RequestUnlock();
   absl::optional<std::string> GetSelectedAccount() const;
 
-  void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
-                       observer) override;
+  void AddObserver(
+      ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) override;
   void NotifyUserInteraction() override;
   void GetSelectedAccount(GetSelectedAccountCallback callback) override;
   void SetSelectedAccount(const std::string& address,
@@ -213,35 +213,32 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   */
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, GetPrefInBytesForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetPrefInBytesForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
-                           GetOrCreateNonceForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
-                           CreateEncryptorForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetPrefInBytesForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetPrefInBytesForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            CreateDefaultKeyringInternal);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
-                           UnlockResumesDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreDefaultKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, UnlockResumesDefaultKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            GetMnemonicForDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, LockAndUnlock);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, Reset);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AccountMetasForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedAccounts);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LockAndUnlock);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, Reset);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AccountMetasForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateAndRestoreWallet);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AddAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            GetPrivateKeyForDefaultKeyringAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            SetDefaultKeyringDerivedAccountMeta);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetSelectedAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, UnknownKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedFilecoinAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreLegacyBraveWallet);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AutoLock);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, UnknownKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
 
@@ -318,13 +315,13 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   PrefService* prefs_;
   bool request_unlock_pending_ = false;
 
-  mojo::RemoteSet<mojom::KeyringControllerObserver> observers_;
-  mojo::ReceiverSet<mojom::KeyringController> receivers_;
+  mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
+  mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
-  KeyringController(const KeyringController&) = delete;
-  KeyringController& operator=(const KeyringController&) = delete;
+  KeyringService(const KeyringService&) = delete;
+  KeyringService& operator=(const KeyringService&) = delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_H_

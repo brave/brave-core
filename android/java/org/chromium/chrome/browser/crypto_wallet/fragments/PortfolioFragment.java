@@ -37,7 +37,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxService;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
@@ -296,10 +296,10 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -370,9 +370,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
-        KeyringController keyringController = getKeyringController();
-        assert keyringController != null;
-        keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        assert keyringService != null;
+        keyringService.getDefaultKeyringInfo(keyringInfo -> {
             AccountInfo[] accountInfos = new AccountInfo[] {};
             if (keyringInfo != null) {
                 accountInfos = keyringInfo.accountInfos;

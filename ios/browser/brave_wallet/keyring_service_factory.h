@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,23 +21,23 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class KeyringController;
+class KeyringService;
 
-class KeyringControllerFactory : public BrowserStateKeyedServiceFactory {
+class KeyringServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::KeyringController* GetForBrowserState(
+  static mojom::KeyringService* GetForBrowserState(
       ChromeBrowserState* browser_state);
-  static KeyringController* GetControllerForBrowserState(
+  static KeyringService* GetControllerForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static KeyringControllerFactory* GetInstance();
+  static KeyringServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<KeyringControllerFactory>;
+  friend struct base::DefaultSingletonTraits<KeyringServiceFactory>;
 
-  KeyringControllerFactory();
-  ~KeyringControllerFactory() override;
+  KeyringServiceFactory();
+  ~KeyringServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -47,9 +47,9 @@ class KeyringControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  DISALLOW_COPY_AND_ASSIGN(KeyringControllerFactory);
+  DISALLOW_COPY_AND_ASSIGN(KeyringServiceFactory);
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_KEYRING_SERVICE_FACTORY_H_

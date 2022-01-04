@@ -8,8 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.mojo.system.MojoException;
 
-public interface KeyringControllerObserver
-        extends org.chromium.brave_wallet.mojom.KeyringControllerObserver {
+public interface KeyringServiceObserver
+        extends org.chromium.brave_wallet.mojom.KeyringServiceObserver {
     @Override
     default void keyringCreated() {}
 

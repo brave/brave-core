@@ -11,7 +11,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -27,7 +27,7 @@ public class Validations {
 
         public SendToAccountAddress() {}
 
-        public void validate(String chainId, KeyringController keyringController,
+        public void validate(String chainId, KeyringService keyringService,
                 ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
                 String senderAccountAddress, String receiverAccountAddress,
                 Callbacks.Callback2<String, Boolean> callback) {
@@ -76,7 +76,7 @@ public class Validations {
             }
             if (mIsKnowContracts) return;
 
-            keyringController.getChecksumEthAddress(receiverAccountAddress, checksum_address -> {
+            keyringService.getChecksumEthAddress(receiverAccountAddress, checksum_address -> {
                 if (receiverAccountAddress.equals(checksum_address)) {
                     callback.call("", false);
                 } else if (receiverAccountAddressLower.equals(receiverAccountAddress)

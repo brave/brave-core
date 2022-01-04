@@ -9,12 +9,12 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -139,10 +139,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     histogram_tester_.reset(new base::HistogramTester);
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(profile_.get());
+    keyring_service_ =
+        KeyringServiceFactory::GetControllerForContext(profile_.get());
     service_.reset(new BraveWalletService(
-        BraveWalletServiceDelegate::Create(profile_.get()), keyring_controller_,
+        BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         GetPrefs()));
     observer_.reset(new TestBraveWalletServiceObserver());
     service_->AddObserver(observer_->GetReceiver());
@@ -355,7 +355,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                                bool* success_out,
                                std::string* error_message_out) {
     // People import with a blank default keyring, so clear it out
-    keyring_controller_->Reset();
+    keyring_service_->Reset();
     base::RunLoop run_loop;
     service_->OnGetImportInfo(
         new_password,
@@ -392,18 +392,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
     ASSERT_NE(valid_password, nullptr);
     ASSERT_NE(valid_mnemonic, nullptr);
 
-    keyring_controller_->Lock();
+    keyring_service_->Lock();
     // Check new password
     base::RunLoop run_loop;
-    keyring_controller_->Unlock(new_password,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  *valid_password = success;
-                                  run_loop.Quit();
-                                }));
+    keyring_service_->Unlock(new_password,
+                             base::BindLambdaForTesting([&](bool success) {
+                               *valid_password = success;
+                               run_loop.Quit();
+                             }));
     run_loop.Run();
 
     base::RunLoop run_loop2;
-    keyring_controller_->GetMnemonicForDefaultKeyring(
+    keyring_service_->GetMnemonicForDefaultKeyring(
         base::BindLambdaForTesting([&](const std::string& mnemonic) {
           *valid_mnemonic = (mnemonic == in_mnemonic);
           run_loop2.Quit();
@@ -416,7 +416,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     ASSERT_NE(valid_addresses, nullptr);
 
     base::RunLoop run_loop;
-    keyring_controller_->GetDefaultKeyringInfo(
+    keyring_service_->GetDefaultKeyringInfo(
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
           *valid_addresses = false;
           if (keyring_info->account_infos.size() == addresses.size()) {
@@ -490,7 +490,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 

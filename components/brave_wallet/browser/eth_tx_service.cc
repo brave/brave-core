@@ -22,7 +22,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -107,14 +107,14 @@ bool EthTxService::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
 
 EthTxService::EthTxService(
     EthJsonRpcController* rpc_controller,
-    KeyringController* keyring_controller,
+    KeyringService* keyring_service,
     AssetRatioService* asset_ratio_service,
     std::unique_ptr<EthTxStateManager> tx_state_manager,
     std::unique_ptr<EthNonceTracker> nonce_tracker,
     std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
     PrefService* prefs)
     : rpc_controller_(rpc_controller),
-      keyring_controller_(keyring_controller),
+      keyring_service_(keyring_service),
       asset_ratio_service_(asset_ratio_service),
       prefs_(prefs),
       tx_state_manager_(std::move(tx_state_manager)),
@@ -123,11 +123,11 @@ EthTxService::EthTxService(
       eth_block_tracker_(std::make_unique<EthBlockTracker>(rpc_controller)),
       weak_factory_(this) {
   DCHECK(rpc_controller_);
-  DCHECK(keyring_controller_);
+  DCHECK(keyring_service_);
   CheckIfBlockTrackerShouldRun();
   eth_block_tracker_->AddObserver(this);
   tx_state_manager_->AddObserver(this);
-  keyring_controller_->AddObserver(
+  keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
@@ -502,8 +502,8 @@ void EthTxService::OnGetNextNonce(
     return;
   }
   meta->tx->set_nonce(nonce);
-  DCHECK(!keyring_controller_->IsLocked());
-  keyring_controller_->SignTransactionByDefaultKeyring(
+  DCHECK(!keyring_service_->IsLocked());
+  keyring_service_->SignTransactionByDefaultKeyring(
       meta->from.ToChecksumAddress(), meta->tx.get(), chain_id);
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
@@ -846,7 +846,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxService::GetTxForTesting(
 }
 
 void EthTxService::CheckIfBlockTrackerShouldRun() {
-  bool locked = keyring_controller_->IsLocked();
+  bool locked = keyring_service_->IsLocked();
   bool running = eth_block_tracker_->IsRunning();
   if (!locked && !running) {
     eth_block_tracker_->Start(base::Seconds(kBlockTrackerDefaultTimeInSeconds));

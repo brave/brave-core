@@ -29,7 +29,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxService;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
@@ -37,13 +37,13 @@ import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -58,10 +58,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AssetDetailActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, OnWalletListItemClick, KeyringControllerObserver {
+        implements ConnectionErrorHandler, OnWalletListItemClick, KeyringServiceObserver {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioService mAssetRatioService;
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
     private EthTxService mEthTxService;
     private EthJsonRpcController mEthJsonRpcController;
     private int checkedTimeframeType;
@@ -77,7 +77,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyringController.close();
+        mKeyringService.close();
         mAssetRatioService.close();
         mEthTxService.close();
         mEthJsonRpcController.close();
@@ -85,10 +85,10 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
@@ -221,9 +221,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService,
@@ -287,7 +287,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitAssetRatioService();
-        InitKeyringController();
+        InitKeyringService();
         InitEthTxService();
         InitEthJsonRpcController();
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
@@ -297,7 +297,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
+        mKeyringService.close();
         mAssetRatioService.close();
         mEthTxService.close();
         mEthJsonRpcController.close();
@@ -305,8 +305,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         mAssetRatioService = null;
         InitAssetRatioService();
 
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService = null;
+        InitKeyringService();
 
         mEthTxService = null;
         InitEthTxService();
@@ -362,17 +362,17 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         Utils.openTransaction(txInfo, mEthJsonRpcController, this);
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
-        mKeyringController.addObserver(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
     }
 
     private AssetRatioService getAssetRatioService() {

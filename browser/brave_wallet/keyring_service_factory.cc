@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -14,44 +14,44 @@
 namespace brave_wallet {
 
 // static
-KeyringControllerFactory* KeyringControllerFactory::GetInstance() {
-  return base::Singleton<KeyringControllerFactory>::get();
+KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
+  return base::Singleton<KeyringServiceFactory>::get();
 }
 
 // static
-mojo::PendingRemote<mojom::KeyringController>
-KeyringControllerFactory::GetForContext(content::BrowserContext* context) {
+mojo::PendingRemote<mojom::KeyringService> KeyringServiceFactory::GetForContext(
+    content::BrowserContext* context) {
   if (!IsAllowedForContext(context))
-    return mojo::PendingRemote<mojom::KeyringController>();
+    return mojo::PendingRemote<mojom::KeyringService>();
 
-  return static_cast<KeyringController*>(
+  return static_cast<KeyringService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
 // static
-KeyringController* KeyringControllerFactory::GetControllerForContext(
+KeyringService* KeyringServiceFactory::GetControllerForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
   }
-  return static_cast<KeyringController*>(
+  return static_cast<KeyringService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-KeyringControllerFactory::KeyringControllerFactory()
+KeyringServiceFactory::KeyringServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "KeyringController",
+          "KeyringService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-KeyringControllerFactory::~KeyringControllerFactory() {}
+KeyringServiceFactory::~KeyringServiceFactory() {}
 
-KeyedService* KeyringControllerFactory::BuildServiceInstanceFor(
+KeyedService* KeyringServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new KeyringController(user_prefs::UserPrefs::Get(context));
+  return new KeyringService(user_prefs::UserPrefs::Get(context));
 }
 
-content::BrowserContext* KeyringControllerFactory::GetBrowserContextToUse(
+content::BrowserContext* KeyringServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

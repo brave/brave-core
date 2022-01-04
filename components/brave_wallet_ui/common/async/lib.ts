@@ -74,13 +74,13 @@ export const getBalance = (address: string): Promise<string> => {
 }
 
 export async function getChecksumEthAddress (value: string) {
-  const { keyringController } = getAPIProxy()
-  return (await keyringController.getChecksumEthAddress(value))
+  const { keyringService } = getAPIProxy()
+  return (await keyringService.getChecksumEthAddress(value))
 }
 
 export async function isStrongPassword (value: string) {
   const apiProxy = getAPIProxy()
-  return (await apiProxy.keyringController.isStrongPassword(value)).result
+  return (await apiProxy.keyringService.isStrongPassword(value)).result
 }
 
 export async function findENSAddress (address: string) {
@@ -315,7 +315,7 @@ export function refreshNetworkInfo () {
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch) => {
     const apiProxy = getAPIProxy()
-    const { keyringController, walletHandler } = apiProxy
+    const { keyringService, walletHandler } = apiProxy
 
     const walletInfoBase = await walletHandler.getWalletInfo()
     const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
@@ -327,7 +327,7 @@ export function refreshKeyringInfo () {
     }
 
     // Get selectedAccountAddress
-    const getSelectedAccount = await keyringController.getSelectedAccount()
+    const getSelectedAccount = await keyringService.getSelectedAccount()
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null
@@ -335,7 +335,7 @@ export function refreshKeyringInfo () {
 
     // If selectedAccount is null will setSelectedAccount to fallback address
     if (!selectedAddress) {
-      await keyringController.setSelectedAccount(fallbackAddress)
+      await keyringService.setSelectedAccount(fallbackAddress)
       walletInfo.selectedAccount = fallbackAddress
     } else {
       // If a user has already created an wallet but then chooses to restore
@@ -345,7 +345,7 @@ export function refreshKeyringInfo () {
       // payload, if not it will setSelectedAccount to the fallback address
       if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
         walletInfo.selectedAccount = fallbackAddress
-        await keyringController.setSelectedAccount(fallbackAddress)
+        await keyringService.setSelectedAccount(fallbackAddress)
       } else {
         walletInfo.selectedAccount = selectedAddress
       }

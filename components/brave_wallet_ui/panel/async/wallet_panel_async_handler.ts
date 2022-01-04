@@ -64,8 +64,8 @@ async function refreshWalletInfo (store: Store) {
 }
 
 async function hasPendingUnlockRequest () {
-  const keyringController = getWalletPanelApiProxy().keyringController
-  return (await keyringController.hasPendingUnlockRequest()).pending
+  const keyringService = getWalletPanelApiProxy().keyringService
+  return (await keyringService.hasPendingUnlockRequest()).pending
 }
 
 async function getPendingChainRequest () {

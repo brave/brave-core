@@ -119,7 +119,7 @@ interface PanelHandlerFactory {
                      pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
                      pending_receiver<SwapService> swap_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
-                     pending_receiver<KeyringController> keyring_controller,
+                     pending_receiver<KeyringService> keyring_service,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
                      pending_receiver<EthTxService> eth_tx_service,
                      pending_receiver<BraveWalletService> brave_wallet_service);
@@ -133,7 +133,7 @@ interface PageHandlerFactory {
                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
                     pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
-                    pending_receiver<KeyringController> keyring_controller,
+                    pending_receiver<KeyringService> keyring_service,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
                     pending_receiver<EthTxService> eth_tx_service,
                     pending_receiver<BraveWalletService> brave_wallet_service);
@@ -289,7 +289,7 @@ struct ERCToken {
 interface Page {
 };
 
-interface KeyringControllerObserver {
+interface KeyringServiceObserver {
   // Fired when a keyring is created
   KeyringCreated();
 
@@ -338,7 +338,7 @@ interface ERCTokenRegistry {
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
 // and signing.
-interface KeyringController {
+interface KeyringService {
   // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string mnemonic);
 
@@ -403,8 +403,8 @@ interface KeyringController {
   // Resets the keyring and the related preferences
   Reset();
 
-  // Adds a KeyringControllerObserver
-  AddObserver(pending_remote<KeyringControllerObserver> observer);
+  // Adds a KeyringServiceObserver
+  AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
@@ -450,7 +450,7 @@ interface KeyringController {
 
   // Obtains if there's a pending unlock request
   // Note that there is no need for an API to notify unlocked
-  // because the KeyringControllerObserver Unlocked event can be used for that.
+  // because the KeyringServiceObserver Unlocked event can be used for that.
   HasPendingUnlockRequest() => (bool pending);
 };
 

@@ -18,10 +18,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountPrivateKeyActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, KeyringControllerObserver {
-    private KeyringController mKeyringController;
+        implements ConnectionErrorHandler, KeyringServiceObserver {
+    private KeyringService mKeyringService;
     private String mAddress;
     private boolean mIsPrivateKeyShown;
 
@@ -104,40 +104,40 @@ public class AccountPrivateKeyActivity extends AsyncInitializationActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyringController.close();
+        mKeyringService.close();
     }
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
-        mKeyringController.addObserver(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        InitKeyringController();
-        assert mKeyringController != null;
-        mKeyringController.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
+        InitKeyringService();
+        assert mKeyringService != null;
+        mKeyringService.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
             if (result) {
                 EditText privateKeyText = findViewById(R.id.private_key_text);
                 privateKeyText.setText(privateKey);

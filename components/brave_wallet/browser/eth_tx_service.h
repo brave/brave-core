@@ -33,16 +33,16 @@ class EthTxServiceUnitTest;
 
 class AssetRatioService;
 class EthJsonRpcController;
-class KeyringController;
+class KeyringService;
 
 class EthTxService : public KeyedService,
                      public mojom::EthTxService,
-                     public mojom::KeyringControllerObserver,
+                     public mojom::KeyringServiceObserver,
                      public EthBlockTracker::Observer,
                      public EthTxStateManager::Observer {
  public:
   explicit EthTxService(EthJsonRpcController* eth_json_rpc_controller,
-                        KeyringController* keyring_controller,
+                        KeyringService* keyring_service,
                         AssetRatioService* asset_ratio_service,
                         std::unique_ptr<EthTxStateManager> tx_state_manager,
                         std::unique_ptr<EthNonceTracker> nonce_tracker,
@@ -210,7 +210,7 @@ class EthTxService : public KeyedService,
       mojom::ProviderError error,
       const std::string& error_message);
 
-  // KeyringControllerObserver:
+  // KeyringServiceObserver:
   void KeyringCreated() override;
   void KeyringRestored() override;
   void KeyringReset() override;
@@ -230,7 +230,7 @@ class EthTxService : public KeyedService,
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
   EthJsonRpcController* rpc_controller_;    // NOT OWNED
-  KeyringController* keyring_controller_;   // NOT OWNED
+  KeyringService* keyring_service_;         // NOT OWNED
   AssetRatioService* asset_ratio_service_;  // NOT OWNED
   PrefService* prefs_;                      // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
@@ -241,7 +241,7 @@ class EthTxService : public KeyedService,
 
   mojo::RemoteSet<mojom::EthTxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::EthTxService> receivers_;
-  mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
 
   base::WeakPtrFactory<EthTxService> weak_factory_;

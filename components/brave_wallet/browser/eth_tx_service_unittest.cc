@@ -24,7 +24,7 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -222,7 +222,7 @@ class EthTxServiceUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
-    keyring_controller_.reset(new KeyringController(&prefs_));
+    keyring_service_.reset(new KeyringService(&prefs_));
     asset_ratio_service_.reset(
         new AssetRatioService(shared_url_loader_factory_));
 
@@ -234,7 +234,7 @@ class EthTxServiceUnitTest : public testing::Test {
         tx_state_manager.get(), rpc_controller_.get(), nonce_tracker.get());
 
     eth_tx_service_.reset(new EthTxService(
-        rpc_controller_.get(), keyring_controller_.get(),
+        rpc_controller_.get(), keyring_service_.get(),
         asset_ratio_service_.get(), std::move(tx_state_manager),
         std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
 
@@ -245,9 +245,9 @@ class EthTxServiceUnitTest : public testing::Test {
                                   run_loop.Quit();
                                 }));
     run_loop.Run();
-    keyring_controller_->CreateWallet("testing123", base::DoNothing());
+    keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_controller_->AddAccount("Account 1", base::DoNothing());
+    keyring_service_->AddAccount("Account 1", base::DoNothing());
     base::RunLoop().RunUntilIdle();
 
     ASSERT_TRUE(base::HexStringToBytes(
@@ -257,7 +257,7 @@ class EthTxServiceUnitTest : public testing::Test {
   }
 
   std::string from() {
-    return keyring_controller_->default_keyring_->GetAddress(0);
+    return keyring_service_->default_keyring_->GetAddress(0);
   }
 
   EthTxService* eth_tx_service() { return eth_tx_service_.get(); }
@@ -366,7 +366,7 @@ class EthTxServiceUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
-  std::unique_ptr<KeyringController> keyring_controller_;
+  std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<EthTxService> eth_tx_service_;
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
   std::vector<uint8_t> data_;
@@ -1527,7 +1527,7 @@ TEST_F(EthTxServiceUnitTest, TestSubmittedToConfirmed) {
   meta.tx->set_nonce(uint256_t(4));
   meta.status = mojom::TransactionStatus::Submitted;
   eth_tx_service()->tx_state_manager_->AddOrUpdateTx(meta);
-  keyring_controller_->Lock();
+  keyring_service_->Lock();
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds + 1));
   tx_meta1 = eth_tx_service()->GetTxForTesting("001");

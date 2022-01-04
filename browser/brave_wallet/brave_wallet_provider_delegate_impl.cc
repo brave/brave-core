@@ -11,8 +11,8 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/grit/brave_components_strings.h"
@@ -98,10 +98,10 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
       web_contents_(web_contents),
       host_id_(render_frame_host->GetGlobalId()),
       weak_ptr_factory_(this) {
-  keyring_controller_ =
-      brave_wallet::KeyringControllerFactory::GetControllerForContext(
+  keyring_service_ =
+      brave_wallet::KeyringServiceFactory::GetControllerForContext(
           web_contents->GetBrowserContext());
-  DCHECK(keyring_controller_);
+  DCHECK(keyring_service_);
 }
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
@@ -151,7 +151,7 @@ void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
   }
 
   // Request accounts if no accounts are connected.
-  keyring_controller_->GetDefaultKeyringInfo(
+  keyring_service_->GetDefaultKeyringInfo(
       base::BindOnce(&BraveWalletProviderDelegateImpl::
                          ContinueRequestEthereumPermissionsKeyringInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -183,7 +183,7 @@ void BraveWalletProviderDelegateImpl::
   permissions::BraveEthereumPermissionContext::RequestPermissions(
       content::RenderFrameHost::FromID(host_id_), addresses,
       base::BindOnce(&OnRequestEthereumPermissions, addresses,
-                     keyring_controller_->GetSelectedAccount(),
+                     keyring_service_->GetSelectedAccount(),
                      std::move(callback)));
 }
 
@@ -191,8 +191,8 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   absl::optional<std::string> selected_account =
-      keyring_controller_->GetSelectedAccount();
-  keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
+      keyring_service_->GetSelectedAccount();
+  keyring_service_->GetDefaultKeyringInfo(base::BindOnce(
       [](const content::GlobalRenderFrameHostId& host_id,
          GetAllowedAccountsCallback callback, bool include_accounts_when_locked,
          const absl::optional<std::string>& selected_account,

@@ -388,9 +388,9 @@ export interface GetERCTokenInfoReturnInfo {
   token: BraveWallet.ERCToken | null
 }
 
-export type GetIsStrongPassswordReturnInfo = BraveWallet.KeyringController_IsStrongPassword_ResponseParams
+export type GetIsStrongPassswordReturnInfo = BraveWallet.KeyringService_IsStrongPassword_ResponseParams
 
-export type GetChecksumEthAddressReturnInfo = BraveWallet.KeyringController_GetChecksumEthAddress_ResponseParams
+export type GetChecksumEthAddressReturnInfo = BraveWallet.KeyringService_GetChecksumEthAddress_ResponseParams
 
 export interface RecoveryObject {
   value: string

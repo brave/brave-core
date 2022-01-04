@@ -162,13 +162,13 @@ handler.on(WalletActions.defaultBaseCryptocurrencyChanged.getType(), async (stor
 })
 
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
-  const keyringController = getAPIProxy().keyringController
-  keyringController.lock()
+  const keyringService = getAPIProxy().keyringService
+  keyringService.lock()
 })
 
 handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: UnlockWalletPayloadType) => {
-  const keyringController = getAPIProxy().keyringController
-  const result = await keyringController.unlock(payload.password)
+  const keyringService = getAPIProxy().keyringService
+  const result = await keyringService.unlock(payload.password)
   store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
 })
 
@@ -191,21 +191,21 @@ handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: 
 })
 
 handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
-  const { keyringController } = getAPIProxy()
+  const { keyringService } = getAPIProxy()
 
-  await keyringController.setSelectedAccount(payload.address)
+  await keyringService.setSelectedAccount(payload.address)
   store.dispatch(WalletActions.setSelectedAccount(payload))
   await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
-  const keyringController = getAPIProxy().keyringController
+  const keyringService = getAPIProxy().keyringService
   const state = getWalletState(store)
   if (!state.isWalletLocked) {
-    keyringController.notifyUserInteraction()
+    keyringService.notifyUserInteraction()
   }
   interactionNotifier.beginWatchingForInteraction(50000, state.isWalletLocked, async () => {
-    keyringController.notifyUserInteraction()
+    keyringService.notifyUserInteraction()
   })
   const braveWalletService = getAPIProxy().braveWalletService
   const defaultFiat = await braveWalletService.getDefaultBaseCurrency()

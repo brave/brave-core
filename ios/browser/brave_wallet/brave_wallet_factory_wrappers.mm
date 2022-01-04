@@ -10,7 +10,7 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -57,15 +57,15 @@
 }
 @end
 
-@implementation BraveWalletKeyringControllerFactory
+@implementation BraveWalletKeyringServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto* controller =
-      brave_wallet::KeyringControllerFactory::GetForBrowserState(browserState);
+      brave_wallet::KeyringServiceFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletKeyringControllerImpl alloc]
-      initWithKeyringController:controller];
+  return [[BraveWalletKeyringServiceImpl alloc]
+      initWithKeyringService:controller];
 }
 @end
 

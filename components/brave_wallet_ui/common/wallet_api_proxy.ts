@@ -14,7 +14,7 @@ export default class WalletApiProxy {
   swapService = new BraveWallet.SwapServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
-  keyringController = getBraveKeyring()
+  keyringService = getBraveKeyring()
   ercTokenRegistry = new BraveWallet.ERCTokenRegistryRemote()
   ethTxService = new BraveWallet.EthTxServiceRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
@@ -34,8 +34,8 @@ export default class WalletApiProxy {
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addKeyringControllerObserver (store: Store) {
-    const keyringControllerObserverReceiver = new BraveWallet.KeyringControllerObserverReceiver({
+  addKeyringServiceObserver (store: Store) {
+    const keyringServiceObserverReceiver = new BraveWallet.KeyringServiceObserverReceiver({
       keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
       },
@@ -64,7 +64,7 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.selectedAccountChanged())
       }
     })
-    this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote())
+    this.keyringService.addObserver(keyringServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
   addEthTxServiceObserver (store: Store) {

@@ -45,8 +45,8 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
-      mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
-          keyring_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+          keyring_service,
       mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
           erc_token_registry,
       mojo::PendingReceiver<brave_wallet::mojom::EthTxService> eth_tx_service,

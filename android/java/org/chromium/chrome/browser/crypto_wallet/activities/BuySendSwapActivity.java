@@ -56,7 +56,7 @@ import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.SwapService;
@@ -72,7 +72,7 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
@@ -80,7 +80,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -103,7 +103,7 @@ import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver,
+                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringServiceObserver,
                    ApprovedTxObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
@@ -183,7 +183,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private ErcTokenRegistry mErcTokenRegistry;
     private EthJsonRpcController mEthJsonRpcController;
     private EthTxService mEthTxService;
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
     private double mConvertedFromBalance;
@@ -206,7 +206,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
-        mKeyringController.close();
+        mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
@@ -1001,10 +1001,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
@@ -1221,7 +1221,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
 
-            mValidator.validate(mCurrentChainId, getKeyringController(), getErcTokenRegistry(),
+            mValidator.validate(mCurrentChainId, getKeyringService(), getErcTokenRegistry(),
                     getBraveWalletService(), fromAccountAddress, s.toString(),
                     (String validationResult, Boolean disableButton) -> {
                         setSendToValidationResult(validationResult, disableButton);
@@ -1476,7 +1476,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
+        mKeyringService.close();
         mAssetRatioService.close();
         mErcTokenRegistry.close();
         mEthJsonRpcController.close();
@@ -1487,7 +1487,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mErcTokenRegistry = null;
         mEthJsonRpcController = null;
         mEthTxService = null;
-        mKeyringController = null;
+        mKeyringService = null;
         mAssetRatioService = null;
         mSwapService = null;
         mBraveWalletService = null;
@@ -1495,7 +1495,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxService();
-        InitKeyringController();
+        InitKeyringService();
         InitSwapService();
         InitBraveWalletService();
     }
@@ -1516,8 +1516,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         return mBraveWalletService;
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
     }
 
     private void InitBraveWalletService() {
@@ -1537,13 +1537,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
-        mKeyringController.addObserver(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
     private void InitErcTokenRegistry() {
@@ -1597,7 +1597,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxService();
-        InitKeyringController();
+        InitKeyringService();
         InitAssetRatioService();
         InitSwapService();
         InitBraveWalletService();
@@ -1614,8 +1614,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 spinner.setSelection(getIndexOf(spinner, chainId));
             });
         }
-        if (mKeyringController != null) {
-            mKeyringController.getDefaultKeyringInfo(keyring -> {
+        if (mKeyringService != null) {
+            mKeyringService.getDefaultKeyringInfo(keyring -> {
                 String[] accountNames = new String[keyring.accountInfos.length];
                 String[] accountTitles = new String[keyring.accountInfos.length];
                 int currentPos = 0;

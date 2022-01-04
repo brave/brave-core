@@ -6,12 +6,12 @@
 #include "brave/browser/brave_wallet/brave_wallet_reset.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 
 namespace brave_wallet {
 
@@ -31,9 +31,9 @@ void ResetWallet(content::BrowserContext* context) {
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
   brave_wallet_service->Reset();
 
-  auto* keyring_controller =
-      brave_wallet::KeyringControllerFactory::GetControllerForContext(context);
-  keyring_controller->Reset();
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetControllerForContext(context);
+  keyring_service->Reset();
 }
 
 }  // namespace brave_wallet
