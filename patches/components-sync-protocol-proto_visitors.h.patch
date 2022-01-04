@@ -1,8 +1,16 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0fceaacf7e 100644
+index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..d69c995aeeaf9b69afd7bd293c82aea44213851b 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -392,6 +392,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
+ #define COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
+ 
++#include "brave/components/sync/protocol/vg_specifics.pb.h"
+ #include "components/sync/base/model_type.h"
+ #include "components/sync/protocol/app_list_specifics.pb.h"
+ #include "components/sync/protocol/app_setting_specifics.pb.h"
+@@ -392,6 +393,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(manufacturer);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,7 +18,7 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0f
    VISIT(sharing_fields);
    VISIT(invalidation_fields);
    VISIT(paask_fields);
-@@ -404,6 +405,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -404,6 +406,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(send_tab_to_self_receiving_enabled);
  }
  
@@ -18,3 +26,62 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..f8a29e947f211eaf7dc06f8f8a61ed0f
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT(vapid_fcm_token);
    VISIT_BYTES(vapid_p256dh);
+@@ -455,7 +458,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntityMetadata& proto) {
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+-  static_assert(38 == GetNumModelTypes(),
++  static_assert(40 == GetNumModelTypes(),
+                 "When adding a new protocol type, you will likely need to add "
+                 "it here as well.");
+   VISIT(encrypted);
+@@ -491,6 +494,8 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(typed_url);
+   VISIT(user_consent);
+   VISIT(user_event);
++  VISIT(vg_body);
++  VISIT(vg_spend_status);
+   VISIT(wallet_metadata);
+   VISIT(web_app);
+   VISIT(wifi_configuration);
+@@ -663,6 +668,8 @@ VISIT_PROTO_FIELDS(const sync_pb::NigoriSpecifics& proto) {
+   VISIT(custom_passphrase_key_derivation_method);
+   VISIT(custom_passphrase_key_derivation_salt);
+   VISIT(trusted_vault_debug_info);
++  VISIT(encrypt_vg_bodies);
++  VISIT(encrypt_vg_spend_statuses);
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::WebauthnCredentialSpecifics& proto) {
+@@ -1280,6 +1287,31 @@ VISIT_PROTO_FIELDS(const sync_pb::WorkspaceDeskSpecifics::WindowBound& proto) {
+   VISIT(height);
+ }
+ 
++VISIT_PROTO_FIELDS(const sync_pb::VgBodySpecifics::Token& proto) {
++  VISIT(token_id);
++  VISIT(token_value);
++  VISIT(value);
++  VISIT(expires_at);
++}
++
++VISIT_PROTO_FIELDS(const sync_pb::VgBodySpecifics& proto) {
++  VISIT(creds_id);
++  VISIT(trigger_type);
++  VISIT(creds);
++  VISIT(blinded_creds);
++  VISIT(signed_creds);
++  VISIT(public_key);
++  VISIT(batch_proof);
++  VISIT(status);
++  VISIT_REP(tokens);
++}
++
++VISIT_PROTO_FIELDS(const sync_pb::VgSpendStatusSpecifics& proto) {
++  VISIT(token_id);
++  VISIT(redeemed_at);
++  VISIT(redeem_type);
++}
++
+ }  // namespace syncer
+ 
+ #undef VISIT_
