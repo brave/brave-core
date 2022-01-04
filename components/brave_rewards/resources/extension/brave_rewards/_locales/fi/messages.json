@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Yhteys katkaistu",
+    "message": "Kirjautunut ulos",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Katkaise yhteys Brave-palkintoihin",
-    "description": ""
+    "message": "Kirjaudu ulos palveluntarjoajalta $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Arvioidut tulot",

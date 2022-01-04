@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Đã ngắt kết nối",
+    "message": "Đã đăng xuất",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Ngắt kết nối với Brave Rewards",
-    "description": ""
+    "message": "Đăng xuất khỏi $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Thu nhập ước tính",

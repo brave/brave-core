@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
 <translation id="1765217911817124376">Brave न्यूज़ शुरू करें</translation>
+<translation id="6527303717912515753">शेयर करें</translation>
 <translation id="1654539412343893324">डेटा के बारे में अधिक जानें</translation>
 <translation id="2989805286512600854">नए टैब में खोलें</translation>
 <translation id="3709782636417497984">नए प्राइवेट टैब में खोलें</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">आपका वॉलेट</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">फंड्स जोड़ें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
-<translation id="8772672608371898774">Brave सत्यापित प्रकाशक</translation>
-<translation id="1397683270551078781">अभी तक सत्यापित नहीं</translation>
+<translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
+<translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
 <translation id="880893465294676334">इस Brave वेरीफ़ाइड निर्माता ने अभी तक अपने अकाउंट को Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए कॉन्फ़िगर नहीं किया है.
 आपके द्वारा भेजे गए कोई भी सुझाव आपके वॉलेट में तब तक रहेंगे जब तक वे इस प्रक्रिया को पूरा नहीं कर लेते.</translation>
 <translation id="8918760045046434238">एक टिप भेजें...</translation>
@@ -275,11 +276,12 @@
 <translation id="9096003370755878766">BAT को निकले जिसे आपने पहले अपने Brave Rewards वॉलेट में जोड़ा होगा</translation>
 <translation id="1554282356558968486">हमारी वॉलेट सेवा द्वारा प्रदान की जाती है</translation>
 <translation id="6569877533335686968">बनाए रखें</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
-<translation id="723054503945711909">Brave Software Inc. एसे किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप उनके साथ एक खाता स्थापित करते समय Uphold को प्रदान करते हैं।</translation>
+<translation id="3200197118442451932">जब आप Brave पर अपना अकाउंट बनाते हैं तो Brave Software Inc. आपकी किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप <ph name="WALLET_PROVIDER"/> को अपना अकाउंट बनाते समय देते हैं.</translation>
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="2193391216824305230">उपयोगकर्ता का वॉलेट</translation>
-<translation id="6585020831163574892">अपने Uphold अकाउंट पर जाएँ</translation>
+<translation id="1665118090708049096">मेरे <ph name="WALLET_PROVIDER"/>अकाउंट पर जाएँ</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="6239274080752256452">धनराशि निकाले</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
@@ -288,10 +290,6 @@
 <translation id="5358719431303818601">डिस्कनेक्ट हो गया सत्यापित नहीं है</translation>
 <translation id="4241449868720191203">डिस्कनेक्ट हो गया सत्यापित है</translation>
 <translation id="3248185426436836442">लंबित है</translation>
-<translation id="8108013093558639183">आपके खाता खोले जाने के स्थान के आधार पर आपके क्षेत्र में वर्तमान में BAT समर्थित नहीं है। उपलब्धता के लिए बाद में वापस देखें।</translation>
-<translation id="4190454391025419535">क्षेत्र समर्थित नहीं है</translation>
-<translation id="6830703472632069884">आपके वॉलेट को सत्यापित करने में समस्या हुई थी, कृपया बाद में पुनः प्रयास करें।</translation>
-<translation id="3512533646933434345">वॉलेट सत्यापन त्रुटि</translation>
 <translation id="2260513517001048012">नोट: इस Brave सत्यापित निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक अपना खाता कॉन्फ़िगर नहीं किया है। आपका ब्राउज़र उनके सत्यापन करने तक या 90 दिन बीत जाने तक योगदान देने का प्रयास करना जारी रखेगा।</translation>
 <translation id="4488355059795908907">इस Brave सत्यापित निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक अपना खाता कॉन्फ़िगर नहीं किया है। जब तक वे इस प्रक्रिया को पूरा नहीं करते, तब तक आपके द्वारा भेजे गए सभी टिप आपके वॉलेट में रहेंगे।</translation>
 <translation id="2495032782748793764">Brave डिफ़ॉल्ट</translation>
@@ -422,16 +420,45 @@
 <translation id="1972589975368876259">स्टेक एडिट करें</translation>
 <translation id="2490330380242414851">विज़ेट हटाएँ</translation>
 <translation id="8446884382197647889">अधिक जानकारी प्राप्त करें</translation>
+<translation id="7384441892795736634">रिफ्रेश डेटा</translation>
+<translation id="4804818685124855865">डिस्कनेक्ट</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> डिपॉज़िट एड्रेस</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> डिपॉज़िट मेमो</translation>
+<translation id="5110244215256675209">क्रिप्टो खरीदें</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">खरीदें <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">उपलब्ध <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">संवाद को प्रीव्यू करें</translation>
 <translation id="2882813124794301799">विज़ेट स्टैक</translation>
 <translation id="13296465911709339">आपके टेक्स्ट को क्लिपबोर्ड पर कॉपी किया गया है।</translation>
 <translation id="2735834606413553397">सार्वजनिक पते को क्लिपबोर्ड पर कॉपी कर लिया गया है.</translation>
+<translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="2977461003134694205">गोपनीयता आँकड़े</translation>
 <translation id="4643117005422448078">शीर्ष साइट्स</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">ट्रैकर्स &amp; ब्लॉक किए गए एड, सेव की गई बैंडविड्थ, और बचाया गया अनुमानित समय।</translation>
 <translation id="74417429503469271">आपके द्वारा अक्सर खोली जाने वाली टॉप साइटों को खोलें।</translation>
+<translation id="2956070106555335453">सारांश</translation>
+<translation id="1366855498335432549">जमा</translation>
+<translation id="1301340234286078471">परिवर्तन करना</translation>
 <translation id="223536150967420869">खरीदें</translation>
+<translation id="1714829281959608206">Binance खाता संतुलन और क्रिप्टो व्यापार देखने के लिए Binance कनेक्शन सक्षम करें</translation>
+<translation id="4584930231524505442">मैं कन्वर्ट करना चाहता हूं ...</translation>
+<translation id="5749014321384313843">मुझे खर्च करना है...</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
+<translation id="2480674848181564169">कन्वर्शन के लिए पर्याप्त राशि नहीं</translation>
+<translation id="2215334405220411393">कन्वर्ट करने के लिए न्यूनतम राशि है : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">कनेक्ट करने में सक्षम नहीं</translation>
+<translation id="7742417737698031726">शुल्क</translation>
+<translation id="2122225204180056042">आप पाएंगे</translation>
+<translation id="6432284126416751397">संवाद की पुष्टि करें</translation>
 <translation id="5137723827757859599">अभी तक यहाँ टॉप साइटों पर कुछ भी नहीं है।</translation>
+<translation id="3891414008432200754">मूल्य</translation>
+<translation id="3733576242118819803">पुष्टि करें (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">कन्वर्शन फ़ेल हो गया है। कृपया दोबारा कोशिश करें।</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">टोकन कमाएँ और वापस देंं</translation>
 <translation id="244362569344671266">ब्रेव निजी विज्ञापनों को देखकर टोकन कमाएँ और स्वचालित रूप से कंटेंट रचनाकारों को सपोर्ट करें।</translation>
 <translation id="631124996535890460">आगे बढ़ने से, आप <ph name="TERMS_OF_SERVICE"/> और <ph name="PRIVACY_POLICY"/> से सहमत हैं।</translation>
@@ -475,6 +502,8 @@
 <translation id="3415016869273103668">अब आप फ़्री कॉल  शुरू कर सकते हैं</translation>
 <translation id="7073631403665023390">Brave Talk पर जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक या टैप करें.</translation>
 <translation id="626339649633171286">के बारे में अधिक जानना चाहते हैं? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">आपने <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> से <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> में बदला है!</translation>
+<translation id="392587271502873865">कृपया अपना नेटवर्क कनेक्शन जांचें।</translation>
 <translation id="7889432931837317731">अगर संभव हो तो स्वचालित रूप से खोलें</translation>
 <translation id="8967385052772844086">पूरी गोपनीयता रिपोर्ट देखें</translation>
 <translation id="6864343534748973390">सबसे लोकप्रिय</translation>
@@ -518,7 +547,7 @@
 <translation id="3171931580569169744">टैब ग्रूप इनेबल करें</translation>
 <translation id="5587305863196367357">वॉलेट वेरिफ़ाई करने के बाद आप अपने फंड को आसानी से मैनेज कर सकते हैं, जैसे पैसे डालना और निकालना</translation>
 <translation id="5760671211380791582">आपके पास पर्याप्त BAT नहीं हैं.</translation>
-<translation id="6960458596933484861">एक वेरिफ़ाईड Uphold वॉलेट बनाने के लिए आपको कम से कम 15 BAT की ज़रूरत होती है. कृपया बाद में दोबारा कोशिश करें.</translation>
+<translation id="442469478596827903">एक वेरिफ़ाईड Uphold वॉलेट बनाने के लिए आपको कम से कम 2 BAT की ज़रूरत होती है. कृपया बाद में दोबारा कोशिश करें.</translation>
 <translation id="4389085954549744469">अगर आपके पास पहले से एक वेरिफ़ाड Uphold अकाउंट है तो, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">लॉगिन ब्लॉक करना जारी रखें</translation>
 <translation id="1483493594462132177">भेजें</translation>
@@ -773,4 +802,19 @@
 <translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
+<translation id="1543259266592091784">धनराशि जोड़ें</translation>
+<translation id="3494964159182650590">रिवॉर्ड का विवरण</translation>
+<translation id="7470079236088529568">क्लेम किया गया कुल अनुदान</translation>
+<translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
+<translation id="207268487070188114">1- टाइम टिप</translation>
+<translation id="64394831139134288">मेरा वॉलेट</translation>
+<translation id="8494748383523030337">आपकी राशि</translation>
+<translation id="7091980679045978090">अनुमानित कमाई</translation>
+<translation id="1346059596910821859">टिप</translation>
+<translation id="1549705559752367917">टिप भेजें</translation>
+<translation id="6727102863431372879">सेट</translation>
+<translation id="381822214767083050">मासिक योगदान</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

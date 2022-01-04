@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">Chrome OS konnte Ihre Daten nicht synchronisieren, da die Synchronisierung für Ihre Domain nicht verfügbar ist.</translation>
 <translation id="5147525139567260139">Brave-Tab freigeben</translation>
 <translation id="1530633922026945685">Brave benötigt Zugriff auf die Kamera, um eine 3D-Karte Ihrer Umgebung zu erstellen</translation>
-<translation id="4828904843379324771">Wenn Sie Brave schließen, werden automatisch Cookies und Websitedaten der von Ihnen besuchten Seiten gelöscht</translation>
 <translation id="5616153642055197778">Es gibt eine neue, sicherere Version von Brave.</translation>
 <translation id="6797402139308059782">Brave im Hintergrund ausführen</translation>
 <translation id="5875673934455379806">Brave neu installieren</translation>
@@ -28,6 +27,7 @@
 <translation id="8745514854244955877">Brave – Netzwerkanmeldung – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Bei gemeinsam genutzten Computern können die verschiedenen Personen separat surfen und Brave jeweils nach ihren Wünschen einrichten.</translation>
 <translation id="5997267581285668459">Optional: Diagnose- und Nutzungsdaten automatisch an Brave senden, um die Funktionen und die Leistung von Brave OS zu verbessern.</translation>
+<translation id="7810992039564280750">Prüft URLs anhand einer Liste unsicherer Websites, die in Brave gespeichert ist. Wenn eine Website versucht, Ihr Passwort zu stehlen, oder wenn Sie eine schädliche Datei herunterladen, kann Brave auch URLs, einschließlich Teile von Seiteninhalten, an Safe Browsing senden.</translation>
 <translation id="9095263438435683933">Wenn Sie eine Nummer von diesem Gerät an Ihr Android-Smartphone senden möchten, müssen Sie sich auf beiden Geräten in Brave anmelden.</translation>
 <translation id="3813272600615358652">Die beim Start von Brave angezeigte Seite wurde durch diese Erweiterung geändert.</translation>
 <translation id="2576129394594491151">Die beim Start von Brave angezeigte Seite wurde durch die Erweiterung <ph name="EXTENSION_NAME"/> geändert.</translation>
@@ -48,9 +48,11 @@
 <translation id="2799223571221894425">Neu starten</translation>
 <translation id="3783547330001921298">Dadurch wird ein neues Brave-Profil für <ph name="USER_EMAIL_ADDRESS"/> erstellt</translation>
 <translation id="777113543093865885">Aus Brave entfernen...</translation>
+<translation id="5265419033369521352">Schützt Sie in Brave und erhöht möglicherweise die Sicherheit in anderen Brave-Apps, wenn Sie angemeldet sind.</translation>
 <translation id="2885378588091291677">Task-Manager</translation>
 <translation id="2176825726964012531">Über &amp;Brave</translation>
 <translation id="8208853227947884571">Brave ist auf dem neuesten Stand</translation>
+<translation id="5122472867956731189">Wenn eine Website versucht, Ihr Passwort zu stehlen, oder wenn Sie eine schädliche Datei herunterladen, kann Brave auch URLs, einschließlich Teile von Seiteninhalten, an Safe Browsing senden</translation>
 <translation id="2953892977076487219">Brave versucht, Passwörter zu bearbeiten.</translation>
 <translation id="8755404239607088219">Brave kann Ihre Passwörter nicht prüfen. Versuchen Sie es später noch einmal.</translation>
 <translation id="8880183781256147665">Wird zu Brave hinzugefügt...</translation>
@@ -123,7 +125,6 @@
 <translation id="1786715389543715322">Brave wird aktualisiert (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
 <translation id="5536657158619734169">Eine neue Version von Brave ist verfügbar.</translation>
-<translation id="5874882355102994015">Brave kann ohne den integrierten PDF-Viewer keine Druckvorschau anzeigen.</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="707769633889902835">Chrome OS kann diese Seite nicht öffnen.</translation>
@@ -157,6 +158,7 @@
 <translation id="8320964054148936490">Auf diesem Computer befindet sich bereits eine neuere Version von Brave. Falls die Software nicht funktioniert, deinstallieren Sie Brave bitte und versuchen Sie es erneut.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave wird jetzt neu gestartet}=1{Brave wird in einer Sekunde neu gestartet}other{Brave wird in # Sekunden neu gestartet}}</translation>
 <translation id="5980269616827212166">Brave benötigt Speicherzugriff, um Dateien herunterladen zu können</translation>
+<translation id="7651600795135059130">Prüft URLs anhand einer Liste unsicherer Websites, die in Brave gespeichert ist</translation>
 <translation id="5019879183386042809">Brave als Standardbrowser verwenden</translation>
 <translation id="428541510811554120">Brave kann nicht nach Aktualisierungen suchen. Überprüfen Sie Ihre Internetverbindung.</translation>
 <translation id="7445061995866044926">Von Brave abmelden?</translation>
@@ -183,7 +185,6 @@
 <translation id="1489465648257900784">Ihr Profil kann nicht verwendet werden, da es aus einer neueren Version von Brave stammt.
 
 Einige Funktionen stehen möglicherweise nicht zur Verfügung. Geben Sie bitte ein anderes Profilverzeichnis an oder verwenden Sie eine neuere Version von Brave.</translation>
-<translation id="5450493308072741203">&amp;Brave aktualisieren</translation>
 <translation id="6666624454809779082">Brave ist bereits für alle Nutzer auf Ihrem Computer installiert.</translation>
 <translation id="5360050006043219962">Wenn Sie auf allen Ihren Geräten auf Ihre Brave-Inhalte zugreifen möchten, melden Sie sich an und aktivieren Sie die Synchronisierung.</translation>
 <translation id="8291513491595858997">Dein Elternteil hat "Berechtigungen für Websites, Apps und Erweiterungen" für Brave deaktiviert. Das Aktivieren dieser <ph name="EXTENSION_TYPE_PARAMETER"/> ist nicht zulässig.</translation>
@@ -201,8 +202,8 @@ Einige Funktionen stehen möglicherweise nicht zur Verfügung. Geben Sie bitte e
 <translation id="1008530050039597147">Brave benötigt die Kameraberechtigung für diese Website</translation>
 <translation id="1197672524850678392">Brave konnte nicht gestartet werden. Versuchen Sie es noch einmal.</translation>
 <translation id="3405035915691517126">Brave kann Ihre Passwörter nicht prüfen. Bitte versuchen Sie es in 24 Stunden noch einmal.</translation>
+<translation id="5101812148953915496">Websites, die Sie besuchen, speichern Ihre Daten, bis Sie Brave schließen</translation>
 <translation id="5516268345616100622">Task-Manager - Brave</translation>
-<translation id="61852838583753520">&amp;Chrome OS aktualisieren</translation>
 <translation id="1864557848095568223">Brave wird aktualisiert</translation>
 <translation id="3403365884036456766">Ihre Einstellungsdatei ist beschädigt oder ungültig.
 
@@ -254,6 +255,8 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="6283840329609797763">Die Installation konnte aufgrund eines undefinierten Fehlers nicht abgeschlossen werden. Bitte laden Sie Brave erneut herunter.</translation>
 <translation id="2433912322225810055">Die Erweiterung legt auch fest, welche Seite beim Start von Brave oder bei der Suche über die Omnibox angezeigt wird.</translation>
 <translation id="4100716194836114130">Dies ist Ihr persönlicher Brave-Browser</translation>
+<translation id="6208136456999964972">Wenn Sie alle Brave-Fenster schließen, werden alle Cookies und Websitedaten automatisch gelöscht</translation>
+<translation id="6371875426681214174">Sie werden <ph name="BEGIN_BOLD"/>auf den meisten Websites abgemeldet<ph name="END_BOLD"/>, wenn Sie Brave schließen. Wenn die Synchronisierung deaktiviert ist, werden Sie auch <ph name="BEGIN_BOLD"/>bei Brave-Diensten und Brave abgemeldet<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave benötigt für diese Website die Berechtigung, auf Ihre Kamera und Ihr Mikrofon zuzugreifen</translation>
 <translation id="7408085963519505752">Chrome OS-Nutzungsbedingungen</translation>
 <translation id="2262856633481902138">Brave konnte Ihre Daten nicht synchronisieren, da die Anmeldedaten Ihres Kontos nicht mehr aktuell sind.</translation>

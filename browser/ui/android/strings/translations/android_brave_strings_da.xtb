@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave-nyheder indeholder fuldstændigt private og anonymiserede reklamer, der er tilpasset til din enhed.</translation>
 <translation id="4541978218358617681">Annonce</translation>
 <translation id="1765217911817124376">Aktivér Brave News</translation>
+<translation id="6527303717912515753">Del</translation>
 <translation id="1654539412343893324">Få mere at vide om dine data</translation>
 <translation id="2989805286512600854">Åbn i ny fane</translation>
 <translation id="3709782636417497984">Åbn i ny privat fane</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Din tegnebog</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Tilføj Penge</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
-<translation id="8772672608371898774">Brave-godkendt udgiver</translation>
-<translation id="1397683270551078781">Endnu ikke godkendt</translation>
+<translation id="6020176662032623904">Bekræftet skaber</translation>
+<translation id="2369994359029526515">Ikke-bekræftet skaber</translation>
 <translation id="880893465294676334">Denne Brave Verified Creator har endnu ikke konfigureret sin konto til at modtage bidrag fra Brave-brugere.
 Alle donationer du sender forbliver i din tegnebog, indtil vedkommende afslutter denne proces.</translation>
 <translation id="8918760045046434238">Send drikkepenge...</translation>
@@ -278,11 +279,12 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="9096003370755878766">Hæv BAT som du muligvis tidligere har tilføjet til din Brave Rewards tegnebog</translation>
 <translation id="1554282356558968486">Vores tegnebogsservice leveres af</translation>
 <translation id="6569877533335686968">Behold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
-<translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
+<translation id="3200197118442451932">Brave Software Inc. behandler, gemmer eller tilgår ikke nogen af de personlige oplysninger, du giver til <ph name="WALLET_PROVIDER"/>, når du opretter en konto hos virksomheden.</translation>
 <translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="2193391216824305230">Brugers tegnebog</translation>
-<translation id="6585020831163574892">Gå til din Uphold-konto</translation>
+<translation id="1665118090708049096">Gå til min <ph name="WALLET_PROVIDER"/>-konto</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
 <translation id="6239274080752256452">Hæv Penge</translation>
 <translation id="8874184842967597500">Ikke tilsluttet</translation>
@@ -291,10 +293,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5358719431303818601">Frakoblet ikke verificeret</translation>
 <translation id="4241449868720191203">Frakoblet verificeret</translation>
 <translation id="3248185426436836442">Afventer</translation>
-<translation id="8108013093558639183">BAT understøttes i øjeblikket ikke i dit område, baseret på den lokation din konto er registreret med. Kig tilbage senere for at tjekke tilgængelighed.</translation>
-<translation id="4190454391025419535">Område ikke understøttet</translation>
-<translation id="6830703472632069884">Der var problemer med at verificere din tegnebog, prøv venligst igen senere.</translation>
-<translation id="3512533646933434345">Fejl i verificering af tegnebog</translation>
 <translation id="2260513517001048012">OBS: Denne Brave-verificerede skaber har endnu ikke konfigureret deres konto til at modtage donationer fra Brave-brugere. Din browser vil fortsat forsøge at foretage donationen indtil de godkender den, eller indtil der er gået 90 dage.</translation>
 <translation id="4488355059795908907">Denne Brave-verificerede skaber har endnu ikke konfigureret deres konto til at modtage donationer fra Brave-brugere. Alle bidrag du sender vil forblive i din tegnebog indtil de foretager konfigurationen.</translation>
 <translation id="2495032782748793764">Brave standard</translation>
@@ -425,16 +423,45 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1972589975368876259">Redigér stak</translation>
 <translation id="2490330380242414851">Fjern widget</translation>
 <translation id="8446884382197647889">Få mere at vide</translation>
+<translation id="7384441892795736634">Opdater data</translation>
+<translation id="4804818685124855865">Afbryd</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Indbetalingsadresse</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Indbetalingsbemærkning</translation>
+<translation id="5110244215256675209">Køb krypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Køb <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Tilgængelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
 <translation id="2882813124794301799">Widget-stak</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
 <translation id="2735834606413553397">Offentlig adresse blev kopieret til udklipsholderen.</translation>
+<translation id="7144878232160441200">Prøv igen</translation>
 <translation id="2977461003134694205">Databeskyttelsesstatistik</translation>
 <translation id="4643117005422448078">Topsider</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Trackere og annoncer blokeret, besparet båndbredde og tidsbesparelsesestimater.</translation>
 <translation id="74417429503469271">Åbn de sider, du besøger oftest.</translation>
+<translation id="2956070106555335453">Resumé</translation>
+<translation id="1366855498335432549">Indsæt</translation>
+<translation id="1301340234286078471">Konverter</translation>
 <translation id="223536150967420869">Køb</translation>
+<translation id="1714829281959608206">Aktivér Binance-forbindelse for at se Binance-kontosaldo og handle krypto.</translation>
+<translation id="4584930231524505442">Jeg vil konvertere ...</translation>
+<translation id="5749014321384313843">Jeg vil bruge...</translation>
 <translation id="8688672835843460752">Tilgængelig</translation>
+<translation id="2480674848181564169">Ikke høj nok saldo til konvertering</translation>
+<translation id="2215334405220411393">Minimumsbeløb, der kan konverteres er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kunne ikke forbinde</translation>
+<translation id="7742417737698031726">Gebyr</translation>
+<translation id="2122225204180056042">Du vil modtage</translation>
+<translation id="6432284126416751397">Bekræft konvertering</translation>
 <translation id="5137723827757859599">Der er ikke noget her endnu under½ topsiderne.</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekræft (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertering mislykkedes. Prøv igen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Optjen tokens og giv tilbage</translation>
 <translation id="244362569344671266">Optjen tokens ved at se private Brave-annoncer og støtte indholdsskabere automatisk.</translation>
 <translation id="631124996535890460">Før du fortsætter, skal du acceptere <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
@@ -478,6 +505,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
 <translation id="7073631403665023390">Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.</translation>
 <translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
 <translation id="8967385052772844086">Se fuld databeskyttelsesrapport</translation>
 <translation id="6864343534748973390">Mest populær</translation>
@@ -521,7 +550,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3171931580569169744">Slå fanegrupper til</translation>
 <translation id="5587305863196367357">Bekræftelse af en wallet giver dig mulighed for at administrere dine midler mere effektivt.</translation>
 <translation id="5760671211380791582">Du har ikke nok BAT.</translation>
-<translation id="6960458596933484861">Du skal have mindst 15 BAT for at oprette en bekræftet Uphold-wallet. Prøv igen senere.</translation>
+<translation id="442469478596827903">Du skal have mindst 2 BAT for at oprette en bekræftet Uphold-wallet. Prøv igen senere.</translation>
 <translation id="4389085954549744469">Hvis du allerede har en bekræftet konto <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">fortsæt for at logge ind</translation>
 <translation id="1483493594462132177">Send</translation>
@@ -776,4 +805,19 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8971278306757462297">Modtageradressen er din egen adresse</translation>
 <translation id="749944179568745958">Ikke gyldig ETH-adresse</translation>
 <translation id="3506416339268164412">Modtager adressen er en polets kontraktadresse</translation>
+<translation id="1543259266592091784">Tilføj midler</translation>
+<translation id="3494964159182650590">Belønningsoversigt</translation>
+<translation id="7470079236088529568">Tilskud taget i alt</translation>
+<translation id="590733288489975971">Belønninger fra reklamer</translation>
+<translation id="207268487070188114">Engangsdrikkepenge</translation>
+<translation id="64394831139134288">My tegnebog</translation>
+<translation id="8494748383523030337">Din saldo</translation>
+<translation id="7091980679045978090">Anslået indtjening</translation>
+<translation id="1346059596910821859">Donation</translation>
+<translation id="1549705559752367917">Send tip</translation>
+<translation id="6727102863431372879">Indstil</translation>
+<translation id="381822214767083050">Månedligt bidrag</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

@@ -25,6 +25,8 @@
 <translation id="1142732900304639782">Ära paku nende saitide tõlkimist</translation>
 <translation id="1145536944570833626">Kustutage olemasolevad andmed.</translation>
 <translation id="1146678959555564648">Ava VR</translation>
+<translation id="114825011539563458">Kõige olulisemad privaatsus- ja turvaseaded ühes kohas</translation>
+<translation id="1149401351239820326">Aegumiskuu</translation>
 <translation id="1154704303112745282">Leht pole võrguühenduseta saadaval: <ph name="VIOLATED_URL"/></translation>
 <translation id="116280672541001035">Kasutatud</translation>
 <translation id="1171770572613082465">Vaadake populaarseid veebisaite, puudutades nuppu „Popid saidid”</translation>
@@ -62,7 +64,6 @@
 <translation id="3169981355900570544">Brave'i funktsioonide otseteed</translation>
 <translation id="1344653310988386453">Lisage esiletõstmiseks link</translation>
 <translation id="1347468774581902829">Tegevuste haldamine</translation>
-<translation id="7394874537077301178">Brave saadab rakenduse täiustamiseks Brave'ile diagnostikaandmeid. <ph name="BEGIN_LINK"/>Muuda<ph name="END_LINK"/></translation>
 <translation id="1360432990279830238">Login välja ja keelan sünkroonimise?</translation>
 <translation id="1373696734384179344">Valitud sisu allalaadimiseks pole piisavalt mäluruumi.</translation>
 <translation id="1376578503827013741">Arvutamine …</translation>
@@ -89,6 +90,7 @@
 <translation id="1506061864768559482">Otsingumootor</translation>
 <translation id="1513352483775369820">Järjehoidjad ja veebiajalugu</translation>
 <translation id="1513858653616922153">Kustuta parool</translation>
+<translation id="1518421282666914498">Emotsiooni GIF <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Aktiivne täna</translation>
 <translation id="1538801903729528855">Parem häälotsingu kasutuskogemus veebis</translation>
 <translation id="8090895580117672212">Oma Brave'i konto haldamiseks puudutage nuppu „Konto haldamine”</translation>
@@ -230,6 +232,7 @@ Puudutage otsimiseks mis tahes sõna. Otsingu täpsustamiseks puudutage pikalt, 
 <translation id="934250516944040460">Vaadake lisateavet veebisaitide teemade kohta ilma lehelt lahkumata. Funktsioon Puuduta otsimiseks saadab sõna ja seda ümbritseva konteksti Brave'i otsingule, saates tagasi definitsioonid, pildid, otsingutulemused ja muud üksikasjad.
 
 Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige rohkem või vähem sõnu. Otsingu muutmiseks avage paneel, puudutage uuel vahelehel avamiseks ikooni ja tehke otsingukastis muudatused.</translation>
+<translation id="2451607499823206582">Jälgimine</translation>
 <translation id="2459390580524506445">Täiustatud häälotsing</translation>
 <translation id="2461822463642141190">Praegune</translation>
 <translation id="247737702124049222">Pildikirjeldused on sisse lülitatud</translation>
@@ -248,6 +251,7 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="2527779675047087889">Peida lõikelaua sisu</translation>
 <translation id="2532336938189706096">Veebi kuva</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> üksust kustutati</translation>
+<translation id="3377158406585225827">Teie külastatavad URL-id saadetakse Brave'ile</translation>
 <translation id="2536728043171574184">Kuvatakse on lehe võrguühenduseta koopia</translation>
 <translation id="2546283357679194313">Küpsised ja saidiandmed</translation>
 <translation id="2561519700418191927">Video eelvaated</translation>
@@ -286,7 +290,6 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="2781151931089541271">Jäänud on 1 sekund</translation>
 <translation id="2788468313014644040">Grupi number</translation>
 <translation id="2800066122460699237">Vaheleht <ph name="TAB_TITLE"/> suletakse</translation>
-<translation id="1379423114029199501">Oma keele kasutamiseks värskendage Brave uusimale versioonile</translation>
 <translation id="2805756323405976993">Rakendused</translation>
 <translation id="2806840421670364300">FLoC</translation>
 <translation id="1592999835727612323">Teave teie Brave'i kasutuse kohta, mida ei saa teiega seostada.\n\nAsjakohased andmed Brave'i haruldaste kokkujooksmiste kohta, mis võivad hõlmata isiklikku teavet.\n\nKui sünkroonimise sisse lülitate, võivad mõõdikud sisaldada ka teavet teie külastatavate URL-ide kohta.</translation>
@@ -353,7 +356,6 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="3166827708714933426">Vahelehe ja akna otseteed</translation>
 <translation id="7249949543831830993">Brave'i käitatakse siin juba.</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3205824638308738187">Peaaegu valmis.</translation>
 <translation id="3207960819495026254">Järjehoidjatesse lisatud</translation>
 <translation id="3208584281581115441">Kontrolli kohe</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> kustutati</translation>
@@ -366,6 +368,7 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="3234978181857588512">Salvesta seadmesse</translation>
 <translation id="3236059992281584593">Jäänud on 1 minut</translation>
 <translation id="3244271242291266297">kk</translation>
+<translation id="7402642357351265733">Kui jagate ka Brave'i kasutusaruandeid, hõlmavad need teie külastatavaid URL-e</translation>
 <translation id="3250563604907490871">Pildikirjeldused jätkuvad, kui loote WiFi-ühenduse</translation>
 <translation id="3254409185687681395">Lisa see lehekülg järjehoidjatesse</translation>
 <translation id="3259831549858767975">Lehel kuvatud sisu vähendamine</translation>
@@ -417,6 +420,7 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="3527085408025491307">Kaust</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> kB on saadaval</translation>
 <translation id="3549657413697417275">Otsige oma ajaloost</translation>
+<translation id="3557272988124495906">Saate hinnaalanduse märguandeid</translation>
 <translation id="3557336313807607643">Kontaktide lisamine</translation>
 <translation id="3563767357928833671">Lõikelaua sisu on kuvatud</translation>
 <translation id="1908301351964700579">Brave teeb VR-i kasutamiseks endiselt ettevalmistusi. Taaskäivitage Brave hiljem.</translation>
@@ -445,7 +449,6 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 <translation id="3739899004075612870">Teenuses <ph name="PRODUCT_NAME"/> järjehoidj. lisatud</translation>
 <translation id="3740525748616366977">Selles seadmes pole häälotsing saadaval</translation>
 <translation id="3749259744154402564">Ei toetata</translation>
-<translation id="3771001275138982843">Värskendust ei saanud alla laadida</translation>
 <translation id="3771290962915251154">See seade on keelatud, kuna vanemlik järelevalve on sisse lülitatud</translation>
 <translation id="1138681184697033370">Brave’i teenusetingimused</translation>
 <translation id="3773856050682458546">Põhiandmed ning teave teie külastatavate veebisaitide ja kasutatavate rakenduste kohta</translation>
@@ -559,15 +562,18 @@ Puudutage pikalt mis tahes sõna, et seda otsida. Otsingu täpsustamiseks valige
 Veebisaidil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> võib teie Brave'i kontol olla muus vormis sirvimisajalugu, nt otsingud ja tegevused muudes Brave'i teenustes.</translation>
 <translation id="4532845899244822526">Kausta valimine</translation>
 <translation id="4538018662093857852">Lülita lihtsustatud režiim sisse</translation>
+<translation id="4549903594034243526">chrome_emotion_gif_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="4550003330909367850">Parooli vaatamiseks või siia kleepimiseks määrake selles seadmes ekraanilukk.</translation>
 <translation id="4554077758708533499">Ühendatud USB-kaabliga</translation>
 <translation id="4557685098773234337">Kiiremini siia jõudmiseks lisage see leht oma avakuvale</translation>
 <translation id="4558311620361989323">Veebilehe otseteed</translation>
 <translation id="4561730552726921821">Registreerumine õnnestus</translation>
 <translation id="4561979708150884304">Ühendus puudub</translation>
+<translation id="7946749962179973813">Brave pakub mõistlikke vaikevalikuid, kuid võite neid oma sirvimisharjumuste jaoks mugavamaks kohandada</translation>
 <translation id="4565377596337484307">Peida parool</translation>
 <translation id="4572422548854449519">Logige hallatud kontole sisse</translation>
 <translation id="4576892426230499203">Proovige mõnda teist kinnitusvõimalust</translation>
+<translation id="4578289292431526768">Alustage</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# minut tagasi}other{# minutit tagasi}}</translation>
 <translation id="4587589328781138893">Saidid</translation>
 <translation id="4594952190837476234">Võrguühenduseta leht loodi <ph name="CREATION_TIME"/> ja see võib veebiversioonist erineda.</translation>
@@ -587,12 +593,14 @@ Veebisaidil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> v�
 <translation id="4696983787092045100">Saada tekst seadmetesse</translation>
 <translation id="4699172675775169585">Vahemällu salvestatud kujutised ja failid</translation>
 <translation id="4714588616299687897">Säästke kuni 60% andmemahtu</translation>
+<translation id="2255101560330785621">Jätkamisel nõustute <ph name="BEGIN_TOS_LINK"/>teenusetingimuste<ph name="END_TOS_LINK"/> ja <ph name="BEGIN_PRIVACY_LINK"/>privaatsuseeskirjadega<ph name="END_PRIVACY_LINK"/>.\nRakenduse täiustamiseks saadab Brave Brave'ile kasutus- ja krahhiandmeid. <ph name="BEGIN_UMA_LINK"/>Haldamine<ph name="END_UMA_LINK"/></translation>
 <translation id="4719927025381752090">Paku tõlkimist</translation>
 <translation id="4720023427747327413">Ava teenuses <ph name="PRODUCT_NAME"/></translation>
 <translation id="4939482511480190003">Aidake Brave'i täiustada. <ph name="BEGIN_LINK"/>Vastake küsitlusele<ph name="END_LINK"/></translation>
 <translation id="47217992755561375">Vaadake oma sageli külastatud saite</translation>
 <translation id="4732120983431207637">Virnaharutaja</translation>
 <translation id="4738836084190194332">Viimati sünkroonitud: <ph name="WHEN"/></translation>
+<translation id="4741753828624614066">Saate aadressiribal täiustatud soovitusi</translation>
 <translation id="4742970037960872810">Eemalda esiletõstmine</translation>
 <translation id="4749960740855309258">Uue vahelehe avamine</translation>
 <translation id="4758061975920522644">Jagatakse vaid pilti</translation>
@@ -776,7 +784,6 @@ Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_
 <translation id="583281660410589416">Tundmatu</translation>
 <translation id="5833984609253377421">Jaga linki</translation>
 <translation id="4099502324559761073">QR-koodi skannimiseks lubage Brave'il oma kaamerat kasutada</translation>
-<translation id="3888648114124182147">Brave'i värskenduse allalaadimine …</translation>
 <translation id="2225291765389142805">Brave'i dinosaurusemäng</translation>
 <translation id="5853623416121554550">peatatud</translation>
 <translation id="3518793343998771868">Statistikat ega krahhiaruandeid Brave'ile ei saadeta</translation>
@@ -847,7 +854,6 @@ Privaatsuse liivakasti prooviperioodid on endiselt arendusjärgus ja saadaval va
 <translation id="6232535412751077445">Kui lubate funktsiooni „Ära jälgi”, kaasatakse see taotlus teie sirvimisliiklusesse. Mõju oleneb sellest, kas veebisait reageerib taotlusele ja kuidas seda tõlgendatakse.
 
 Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teile reklaame, mis ei põhine muudel külastatud veebisaitidel. Paljud veebisaidid koguvad ning kasutavad endiselt teie sirvimisandmeid, näiteks turvalisuse parandamiseks, sisu, reklaamide ja soovituste pakkumiseks ning aruandlusstatistika loomiseks.</translation>
-<translation id="624789221780392884">Värskendus on valmis</translation>
 <translation id="6264376385120300461">Laadi ikkagi alla</translation>
 <translation id="6277522088822131679">Lehe printimisel ilmnes probleem. Proovige uuesti.</translation>
 <translation id="6278428485366576908">Teema</translation>
@@ -883,7 +889,6 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="6411219469806822692">Kõrgemale ei saa minna. Alustage lehel eestpoolt.</translation>
 <translation id="7810992039564280750">Kontrollib URL-e Brave'i talletatud ohtlike saitide loendi alusel. Kui sait üritab teie parooli varastada või laadite alla kahjuliku faili, võib Brave saata URL-id ja lehe sisu osad teenusesse Brave'i ohutu sirvimine.</translation>
 <translation id="641643625718530986">Printimine ...</translation>
-<translation id="6427112570124116297">Veebi tõlkimine</translation>
 <translation id="6433501201775827830">Valige oma otsingumootor</translation>
 <translation id="6434309073475700221">Loobu</translation>
 <translation id="6437478888915024427">Lehe teave</translation>
@@ -905,6 +910,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="708829030563435351">Brave'is külastatud saite ei kuvata. Kõik saitide taimerid kustutatakse.</translation>
 <translation id="7723158744459952869">Brave'il kulus reageerimiseks liiga kaua aega</translation>
 <translation id="6539092367496845964">Midagi läks valesti. Proovige hiljem uuesti.</translation>
+<translation id="6541042852576515209">Suuruse muutmine ja pööramine</translation>
 <translation id="6541983376925655882">{NUM_HOURS,plural, =1{Kontrolliti 1 tund tagasi}other{Kontrolliti # tundi tagasi}}</translation>
 <translation id="6545017243486555795">Kustuta kõik andmed</translation>
 <translation id="6546511553472444032">Fail võib olla kahjulik</translation>
@@ -980,10 +986,8 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="6945221475159498467">Vali</translation>
 <translation id="6955535239952325894">See seade on hallatud brauserites keelatud</translation>
 <translation id="6963766334940102469">Kustuta järjehoidjad</translation>
-<translation id="6964116075545915250">Lugemisloendi muutmine</translation>
 <translation id="6979737339423435258">Algusest</translation>
 <translation id="6981982820502123353">Juurdepääsetavus</translation>
-<translation id="6989267951144302301">Ei saanud alla laadida</translation>
 <translation id="6995899638241819463">Hoiata mind, kui paroolid andmetega seotud rikkumise käigus avalikustatakse</translation>
 <translation id="7001056293070445572">See fail on suur (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7020741890149022655">Lisa lugemisloendisse <ph name="BEGIN_NEW"/>Uus<ph name="END_NEW"/></translation>
@@ -1016,7 +1020,6 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="718926126787620637">Täiskõrgusel avatud järjehoidjakaustade loend</translation>
 <translation id="7191430249889272776">Taustal on avatud vaheleht.</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 allalaadimine on ootel}other{# allalaadimist on ootel}}</translation>
-<translation id="3512968675351418494">Hankige Brave'i uusim versioon, et saaksite oma keeles veebi sirvida</translation>
 <translation id="7242755609445462077">Stiliseeritud esiletõst kuupäevast <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Veenduge, et seadmes <ph name="TARGET_DEVICE_NAME"/> oleks Brave'i sünkroonimine sisse lülitatud</translation>
 <translation id="7252076891734325316">Asetage telefon arvuti lähedale</translation>
@@ -1055,6 +1058,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="7444811645081526538">Rohkem kategooriaid</translation>
 <translation id="3699067418237091329">Logib teid enamikult saitidelt välja. Brave'i kontolt teid välja ei logita.</translation>
 <translation id="7454641608352164238">Pole piisavalt ruumi</translation>
+<translation id="7468819939926272717">Valige emotsioon</translation>
 <translation id="7474822150871987353">Vaadake lisateavet veebisaitide teemade kohta ilma lehelt lahkumata. Valige lehel üks või mitu sõna, et neid otsida.</translation>
 <translation id="7475192538862203634">Kui näete seda sageli, proovige neid <ph name="BEGIN_LINK"/>soovitusi<ph name="END_LINK"/>.</translation>
 <translation id="7475688122056506577">SD-kaarti ei leitud. Mõned failid võivad puududa.</translation>
@@ -1137,6 +1141,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="7879130110979560610">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{Teil on <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> lugemata leht}other{Teil on <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> lugemata lehte}}</translation>
 <translation id="7882131421121961860">Ajalugu ei leitud</translation>
 <translation id="6143689084714664628">Töötab Brave'is</translation>
+<translation id="7887334752153342268">Tee koopia</translation>
 <translation id="5570166585033664196">Brave'i kasutamine</translation>
 <translation id="7903184275147100332">See võib võtta minuti</translation>
 <translation id="7919123827536834358">Need keeled tõlgitakse automaatselt</translation>
@@ -1156,6 +1161,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="7975379999046275268">Lehe eelvaade <ph name="BEGIN_NEW"/>Uus<ph name="END_NEW"/></translation>
 <translation id="7981313251711023384">Eellaaditakse lehti kiiremaks sirvimiseks ja otsimiseks</translation>
 <translation id="7986497153528221272">Paroolide vaatamiseks määrake esmalt oma seadmes ekraanilukk</translation>
+<translation id="799576009106109668">Saate kiiremini sirvida, kuna sisu laaditakse ennetavalt teie praeguse veebilehekülastuse põhjal</translation>
 <translation id="7998918019931843664">Suletud vahelehe uuesti avamine</translation>
 <translation id="8004582292198964060">Brauser</translation>
 <translation id="3325020657155065477">Kustuta sellest seadmest ka Brave'i andmed</translation>
@@ -1169,6 +1175,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="8040831032425909005">Kiirtoimingutega otsinguvidina ikoon</translation>
 <translation id="804335162455518893">SD-kaarti ei leitud</translation>
 <translation id="8051695050440594747"><ph name="MEGABYTES"/> MB on saadaval</translation>
+<translation id="8058655154417507695">Aegumisaasta</translation>
 <translation id="2317945146070194624">Ava uuel Brave'i vahelehel</translation>
 <translation id="8063895661287329888">Järjehoidja lisamine ebaõnnestus.</translation>
 <translation id="806745655614357130">Hoia minu andmed eraldi</translation>
@@ -1178,6 +1185,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="8084114998886531721">Salvestatud parool</translation>
 <translation id="1718138320251931534">Oma Brave'i konto andmete haldamine</translation>
 <translation id="808747664143081553">Seadmega ühendatud</translation>
+<translation id="3249150807062904185">Jätkamisel nõustute <ph name="BEGIN_TOS_LINK"/>teenusetingimustega<ph name="END_TOS_LINK"/>.\nRakenduse täiustamiseks saadab Brave Brave'ile kasutus- ja krahhiandmeid. <ph name="BEGIN_UMA_LINK"/>Haldamine<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Järjehoidjate kõigisse oma seadmetesse hankimiseks lülitage sünkroonimine sisse</translation>
 <translation id="2919733817273403520">Aidake täiustada Brave'i funktsioone ja toimivust</translation>
@@ -1199,10 +1207,12 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="8218052821161047641">Kiirleht</translation>
 <translation id="8218622182176210845">Konto haldamine</translation>
 <translation id="8223642481677794647">Voo kaardimenüü</translation>
+<translation id="8242868071038398515">Saate märguande, kui hind mõnel saidil langeb</translation>
 <translation id="8250920743982581267">Dokumendid</translation>
 <translation id="5138664332909611586">Brave eemaldas osa sisust, kuna leht kasutab liiga palju mälu.</translation>
 <translation id="8260126382462817229">Proovige uuesti sisse logida</translation>
 <translation id="8261506727792406068">Kustuta</translation>
+<translation id="82619448491672958">Kuva muud vahelehed</translation>
 <translation id="8266862848225348053">Allalaadimise asukoht</translation>
 <translation id="8274165955039650276">Kuva allalaadimised</translation>
 <translation id="8281886186245836920">Jäta vahele</translation>
@@ -1211,12 +1221,12 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="829672787777123339">Teie seadmega ühendamine …</translation>
 <translation id="8310344678080805313">Tavapärased vahekaardid</translation>
 <translation id="831192587911042850">Lisab praeguse veebisaidi teie jälgitavate veebisaitide loendisse.</translation>
-<translation id="6195417478702700398">Parima sirvimiskogemuse tagamiseks avage Brave, et seda värskendada</translation>
 <translation id="834313815369870491">Ära kunagi tõlgi järgmisi saite</translation>
 <translation id="8349013245300336738">Sordi kasutatud andmemahu alusel</translation>
 <translation id="8354977102499939946">Otsige kiirelt oma hääle abil. Selle otsetee muutmiseks avage menüü Seaded.</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> allalaadimist taastati</translation>
 <translation id="8364299278605033898">Vaadake populaarseid veebisaite</translation>
+<translation id="8368001212524806591">Jälgi hinda</translation>
 <translation id="8387617938027387193">Kinnitage oma isik</translation>
 <translation id="8393700583063109961">Saatke sõnum</translation>
 <translation id="8410695015584479363">Jälgi hindu</translation>
@@ -1256,6 +1266,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="854522910157234410">Ava leht</translation>
 <translation id="8555836665334561807">WiFi-võrgus</translation>
 <translation id="8559990750235505898">Paku muudes keeltes olevate lehtede tõlkimist</translation>
+<translation id="8560560256644480257">GIF-i loomine: <ph name="PERCENT"/>%%</translation>
 <translation id="8560602726703398413">Lugemisloendi leiate järjehoidjatest</translation>
 <translation id="8562452229998620586">Salvestatud paroolid ilmuvad siin.</translation>
 <translation id="856481929701340285">Saidi arvutiversiooni taotlemine</translation>
@@ -1395,6 +1406,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="7667871022963214473">Privaatse sirvimisajaloo kustutamiseks seadmest sulgege kõik privaatsed vahelehed.</translation>
 <translation id="4526803704855831732">Privaatsed vahelehed</translation>
 <translation id="5248610748197335423">Sule kõik privaatsed vahelehed</translation>
+<translation id="4660964651149493586">Ava privaatne</translation>
 <translation id="4167670741834902166">Uus privaatne vaheleht</translation>
 <translation id="8120164982795455341">Uus privaatne vaheleht</translation>
 <translation id="6464648082977038075">Sule privaatsed vahelehed</translation>

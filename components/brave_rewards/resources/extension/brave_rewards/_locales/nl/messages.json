@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Verbinding verbroken",
+    "message": "Uitgelogd",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Verbreek de verbinding met Brave Rewards",
-    "description": ""
+    "message": "Log uit bij $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Geschatte verdiensten",

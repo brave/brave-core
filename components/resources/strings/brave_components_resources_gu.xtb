@@ -29,7 +29,6 @@
 <translation id="3958088479270651626">બુકમાર્ક્સ અને સેટિંગ્સ આયાત કરો</translation>
 <translation id="8275038454117074363">આયાત કરો</translation>
 <translation id="1201402288615127009">આગલું</translation>
-<translation id="1919345977826869612">જાહેરાતો</translation>
 <translation id="6112368337882254910">આપમેળે-ફાળો</translation>
 <translation id="8446884382197647889">વધુ જાણો</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
@@ -45,6 +44,7 @@
 <translation id="6643016212128521049">સાફ કરો</translation>
 <translation id="583281660410589416">અજ્ઞાત</translation>
 <translation id="7375125077091615385">પ્રકાર:</translation>
+<translation id="1919345977826869612">જાહેરાતો</translation>
 <translation id="3970114302595058915">ID</translation>
 <translation id="4250680216510889253">નહીં</translation>
 <translation id="1426410128494586442">હા</translation>
@@ -100,6 +100,7 @@
 <translation id="1987317783729300807">એકાઉન્ટ્સ</translation>
 <translation id="629730747756840877">એકાઉન્ટ</translation>
 <translation id="1483493594462132177">મોકલો</translation>
+<translation id="2704606927547763573">કૉપિ કર્યું</translation>
 <translation id="6518133107902771759">પ્રમાણિત કરો</translation>
 <translation id="6972754398087986839">પ્રારંભ કરો</translation>
 <translation id="6657585470893396449">પાસવર્ડ</translation>
@@ -123,6 +124,8 @@
 <translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="3380365263193509176">અજ્ઞાત ભૂલ</translation>
+<translation id="7461425058443653485">લિપીઓ અવરોધિત કરવામાં આવી છે</translation>
+<translation id="4627427111733173920">કુકી અવરોધિત</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
 <translation id="1116694919640316211">વિશે</translation>
 </translationbundle>

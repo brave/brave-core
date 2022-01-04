@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">Ma’lumotlarni sinxronlab bo‘lmadi, chunki domeningizda Sync xizmati mavjud emas.</translation>
 <translation id="5147525139567260139">Brave sahifasini namoyish qilish</translation>
 <translation id="1530633922026945685">Brave atrofingiz 3D xaritasini yaratishi uchun unga kamera ruxsati zarur</translation>
-<translation id="4828904843379324771">Brave yopilganda siz ochgan sahifalarning cookie fayllari va sayt maʼlumotlari avtomatik tozalanadi</translation>
 <translation id="5616153642055197778">Brave brauzerining yangi, yanada xavfsiz versiyasi chiqdi.</translation>
 <translation id="6797402139308059782">Brave fonda ishlashiga ruxsat</translation>
 <translation id="5875673934455379806">Brave brauzerini qayta o‘rnatish</translation>
@@ -29,6 +28,7 @@
 <translation id="8745514854244955877">Brave - Tarmoqqa kirish - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Agar kompyuterdan yaqinlaringiz va do‘stlaringiz ham foydalansa, ular Brave brauzerini o‘zlari xohlagancha sozlab olishlari mumkin.</translation>
 <translation id="5997267581285668459">Ixtiyoriy: Brave serverlariga diagnostika va foydalanish statistikasi ma’lumotlarini yuborish orqali Chrome OS tizimini takomillashtirishga yordam bering.</translation>
+<translation id="7810992039564280750">URL manzillar Brave bilgan zararli saytlar roʻyxati orqali tekshiriladi. Agar sayt parolingizni oʻgirlashga urinsa yoki zararli fayl yuklab olsangiz, Brave ham URL manzillar kabi sahifa elementlarini Saytlarni xavfsiz kezish tizimiga yuborishi mumkin.</translation>
 <translation id="9095263438435683933">Bu yerdan Android telefoningizga raqam yuborish uchun ikkala qurilmada Brave hisobingizga kiring.</translation>
 <translation id="3813272600615358652">Bu kengaytma Brave ishga tushganda ko‘rinadigan sahifani o‘zgartirdi.</translation>
 <translation id="2576129394594491151">“<ph name="EXTENSION_NAME"/>” kengaytmasi Brave ishga tushganda ko‘rinadigan sahifani o‘zgartirdi.</translation>
@@ -50,9 +50,11 @@
 <translation id="2799223571221894425">Qaytadan ishga tushirish</translation>
 <translation id="3783547330001921298">Bunda <ph name="USER_EMAIL_ADDRESS"/> uchun yangi Brave profili yaratiladi</translation>
 <translation id="777113543093865885">Brave‘dan o‘chirish...</translation>
+<translation id="5265419033369521352">Hisobingizga kirganingizda Brave va boshqa Brave ilovalaridan xavfsiz foydalanishingizni taʼminlaydi.</translation>
 <translation id="2885378588091291677">Vazifalar boshqaruvi</translation>
 <translation id="2176825726964012531">&amp;Brave haqida</translation>
 <translation id="8208853227947884571">Siz Brave brauzerining eng oxirgi versiyasidan foydalanyapsiz.</translation>
+<translation id="5122472867956731189">Agar sayt parolingizni oʻgirlashga urinsa yoki zararli fayl yuklab olsangiz, Brave ham URL manzillar kabi sahifa elementlarini Saytlarni xavfsiz kezish tizimiga yuborishi mumkin</translation>
 <translation id="2953892977076487219">Brave parollarni tahrirlashga urinmoqda.</translation>
 <translation id="8755404239607088219">Brave parollaringizni tekshira olmadi. Keyinroq qayta urining.</translation>
 <translation id="8880183781256147665">Brave‘ga o‘rnatilmoqda...</translation>
@@ -124,7 +126,6 @@
 <translation id="1786715389543715322">Brave yangilanmoqda (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave hisobiga kirishga ruxsat berish</translation>
 <translation id="5536657158619734169">Brave brauzerining yangi versiyasi chiqdi.</translation>
-<translation id="5874882355102994015">PDF fayllarni ko‘rish vositasi oldindan o‘rnatilmagan bo‘lsa, Brave bu formatdagi bosmalarni oldindan ko‘rsata olmaydi.</translation>
 <translation id="239760341987199724">Brave‘ni standart brauzer sifatida tayinlash.</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">Chrome OS bu sahifani ocha olmaydi.</translation>
@@ -158,6 +159,7 @@
 <translation id="8320964054148936490">Bu kompyuterda allaqachon Brave‘ning so‘nggi versiyasi o‘rnatilgan. Agar dastur ishlamayotgan bo‘lsa, uni o‘chirib qaytadan o‘rnatib ko‘ring.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave hozir qayta ishga tushadi}=1{Brave 1 soniyadan keyin qayta ishga tushadi}other{Brave # soniyadan keyin qayta ishga tushadi}}</translation>
 <translation id="5980269616827212166">Brave bu fayllarni yuklab olishi uchun xotiraga saqlash ruxsati kerak</translation>
+<translation id="7651600795135059130">URL manzillar Brave bilgan zararli saytlar roʻyxati orqali tekshiriladi</translation>
 <translation id="5019879183386042809">Brave‘ni standart brauzer etib tayinlash</translation>
 <translation id="428541510811554120">Brave yangilanishlar chiqqanini tekshira olmadi. Internet aloqasini tekshiring.</translation>
 <translation id="7445061995866044926">Brave’dan chiqmoqchimisiz?</translation>
@@ -184,7 +186,6 @@
 <translation id="1489465648257900784">Profilingizdan foydalanib bo‘lmaydi, chunki u yanada yangiroq Brave versiyasiga ta’luqli.
 
 Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tayinlang yoki yangiroq Brave versiyasidan foydalaning.</translation>
-<translation id="5450493308072741203">&amp;Brave‘ni yangilash</translation>
 <translation id="6666624454809779082">Brave allaqachon kompyuterdagi barcha foydalanuvchilar uchun o‘rnatilgan.</translation>
 <translation id="5360050006043219962">Brave brauzeridagi axborotlardan barcha qurilmalaringizda foydalanish uchun hisobingizga kiring va sinxronizatsiyani yoqing.</translation>
 <translation id="8291513491595858997">Bravedagi “Sayt, ilova va kengaytmalarga ruxsat” ota-onangiz tomonidan faolsizlantirilgan. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> yoqilishi taqiqlangan.</translation>
@@ -203,8 +204,8 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="1008530050039597147">Brave bu saytda kameradan foydalanishiga ruxsat kerak</translation>
 <translation id="1197672524850678392">Brave ishga tushmadi. Qayta urining.</translation>
 <translation id="3405035915691517126">Brave parollaringizni tekshira olmadi. 24 soatdan keyin qayta urining.</translation>
+<translation id="5101812148953915496">Siz ochgan saytlar maʼlumotlaringizni Brave yopilmaguncha esda saqlaydi</translation>
 <translation id="5516268345616100622">Vazifalar menejeri – Brave</translation>
-<translation id="61852838583753520">&amp;Chrome OS‘ni yangilash</translation>
 <translation id="1864557848095568223">Brave yangilanmoqda</translation>
 <translation id="3403365884036456766">Sozlamalaringiz saqlanadigan fayl noto‘g‘ri yoki yaroqsiz holatda.
 
@@ -257,6 +258,8 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="6283840329609797763">O‘rnatish vaqtida kutilmagan xatolik yuz berdi. Brave‘ni qaytadan yuklab oling.</translation>
 <translation id="2433912322225810055">Bundan tashqari kengaytma Brave boshlash sahifasini va omniboksdagi so‘rovlar uchun foydalaniladigan birlamchi qidiruv tizimini o‘zgartirdi.</translation>
 <translation id="4100716194836114130">Bu sizning shaxsiy Brave brauzeringiz</translation>
+<translation id="6208136456999964972">Barcha Brave oynalari yopilganda, cookie fayllar va sayt maʼlumotlari avtomatik ravishda tozalanadi</translation>
+<translation id="6371875426681214174">Brave yopilganda <ph name="BEGIN_BOLD"/>aksar saytlardan chiqib ketasiz<ph name="END_BOLD"/>. Agar sinxronizatsiya oʻchiq boʻlsa, <ph name="BEGIN_BOLD"/>Brave xizmatlari va Brave hisobingizdan ham chiqib ketasiz<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Bu sayt kamera va mikrofoningizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
 <translation id="7408085963519505752">Chrome OS shartlari</translation>
 <translation id="2262856633481902138">Brave ma’lumotlaringizni sinxronlay olmadi, chunki hisobingiz haqidagi ma’lumotlar eskirgan.</translation>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "已取消連結",
+    "message": "已登出",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "從 Brave Rewards 取消連結",
-    "description": ""
+    "message": "登出 $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "預估收益",

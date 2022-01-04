@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Prekinjeno",
+    "message": "Odjavljeni",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Prekinite povezavo z Brave Rewards",
-    "description": ""
+    "message": "Odjava iz $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Ocenjeni zaslužek",

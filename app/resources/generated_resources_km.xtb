@@ -6,7 +6,6 @@
 <translation id="1003088604756913841">បើក​តំណ​នៅក្នុងវិនដូ <ph name="APP"/> ថ្មី</translation>
 <translation id="100323615638474026">ឧបករណ៍ USB (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1004218526896219317">សិទ្ធិចូលប្រើ​គេហទំព័រ</translation>
-<translation id="100524763483954942">ត្រឡប់ទៅ​ការកំណត់វិញ</translation>
 <translation id="1005274289863221750">ប្រើម៉ៃក្រូហ្វូន និងកាមេរ៉ារបស់អ្នក</translation>
 <translation id="1005333234656240382">បើក​ការជួសជុល ADB ឬ?</translation>
 <translation id="1006873397406093306">កម្មវិធីបន្ថែម​នេះអាចអាន និងប្ដូរទិន្នន័យរបស់អ្នកនៅលើគេហទំព័រ។ អ្នកអាច​គ្រប់គ្រង​គេហទំព័រណា ដែលកម្មវិធីបន្ថែម​អាចចូលប្រើបាន។</translation>
@@ -25,6 +24,7 @@
 <translation id="1017280919048282932">បន្ថែមទៅថតឯកសារ</translation>
 <translation id="1018656279737460067">បានបោះបង់</translation>
 <translation id="6221946066118097974">កំពុងបង្ហាញ​ពាក្យសម្ងាត់​ពី<ph name="BEGIN_LINK"/>គណនី Brave<ph name="END_LINK"/> របស់អ្នក</translation>
+<translation id="1024304340821219537">អ្វីដែលអ្នកចែករំលែកជាមួយគេហទំព័រ</translation>
 <translation id="1026655690966755180">បញ្ចូលច្រក</translation>
 <translation id="1026822031284433028">ដំណើរការរូបភាព</translation>
 <translation id="1029317248976101138">ពង្រីក</translation>
@@ -32,6 +32,7 @@
 <translation id="1032605640136438169">សូម​ពិនិត្យមើល​លក្ខខណ្ឌ​ថ្មី</translation>
 <translation id="103279545524624934">បង្កើនទំហំផ្ទុកថាសដើម្បីចាប់ផ្តើមកម្មវិធី Android</translation>
 <translation id="1033780634303702874">ចូលប្រើឧបករណ៍សេរ៊ីរបស់អ្នក</translation>
+<translation id="1034484273907870301">របារផ្ទាំង​រូបក្របតំណាង​សម្រាប់មុខងារ​ថេប្លេត</translation>
 <translation id="1036348656032585052">បិទ</translation>
 <translation id="1036511912703768636">ចូលប្រើឧបករណ៍ USB ណាមួយទាំងនេះ</translation>
 <translation id="1036982837258183574">ចុច |<ph name="ACCELERATOR"/>| ដើម្បីចេញពីមុខងារអេក្រង់ពេញ</translation>
@@ -89,7 +90,9 @@
 <translation id="1087965115100412394">មិនអនុញ្ញាតឱ្យ​គេហទំព័រ​ភ្ជាប់ជាមួយ​ឧបករណ៍ MIDI ទេ</translation>
 <translation id="4057708625267533477">Brave កំពុងលុបកម្មវិធីបង្កគ្រោះថ្នាក់ចេញពីកុំព្យូទ័ររបស់អ្នក...</translation>
 <translation id="1088659085457112967">ចូលមុខងារអាន</translation>
+<translation id="1089606299949659462">បញ្ចប់ការពិនិត្យមើលហើយ!</translation>
 <translation id="1090126737595388931">គ្មានកម្មវិធីផ្ទៃខាងក្រោយកំពុងដំណើរការទេ</translation>
+<translation id="1090541560108055381">មុនពេលផ្គូផ្គង ត្រូវប្រាកដថាលេខកូដនេះគឺដូចគ្នានៅលើឧបករណ៍ទាំងពីរ</translation>
 <translation id="1091767800771861448">ចុច ESCAPE ដើម្បីរំលង (លេខកំណែដែលមិនផ្លូវការតែប៉ុណ្ណោះ)។</translation>
 <translation id="1093457606523402488">បណ្តាញដែលអាចមើលឃើញ៖</translation>
 <translation id="1094607894174825014">ប្រតិបត្តិការអាន ឬសរសេរត្រូវបានស្នើដោយប្រើអុហ្វសិតមិនត្រឹមត្រូវ៖ "<ph name="DEVICE_NAME"/>"</translation>
@@ -116,12 +119,12 @@
 <translation id="1116639326869298217">មិនអាច​ផ្ទៀងផ្ទាត់​អត្តសញ្ញាណ​របស់អ្នក​បានទេ</translation>
 <translation id="1116694919640316211">អំពី</translation>
 <translation id="1116779635164066733">ការកំណត់​នេះ​ត្រូវ​បាន​អនុវត្ត​ដោយ​កម្មវិធី​បន្ថែម "<ph name="NAME"/>" ។</translation>
-<translation id="1118549423835582252"><ph name="MANAGER"/> ណែនាំឱ្យអ្នក​ដំឡើងកំណែ <ph name="DEVICE_TYPE"/> នេះ។</translation>
 <translation id="1118738876271697201">ប្រព័ន្ធ​មិន​អាចកំណត់​លេខស៊េរី ឬម៉ូដែលឧបករណ៍បាន​ទេ។</translation>
 <translation id="1119447706177454957">កំហុសឆ្គងខាងក្នុង</translation>
 <translation id="1122068467107743258">ការងារ</translation>
 <translation id="1122198203221319518">ឧបករណ៍</translation>
 <translation id="1122242684574577509">បានបរាជ័យក្នុងការផ្ទៀងផ្ទាត់ ចុចដើម្បីចូលទៅកាន់ទំព័រចូលសម្រាប់បណ្តាញ Wi-Fi ដែលអ្នកកំពុងប្រើប្រាស់ (<ph name="NETWORK_ID"/>)។</translation>
+<translation id="1122913801042512795">ព័ត៌មានលម្អិតអំពីការចូលគណនីរបស់អ្នកហួសសម័យហើយ។ សូមចេញ រួចចូលគណនីម្ដងទៀត។</translation>
 <translation id="1122960773616686544">ឈ្មោះចំណាំ</translation>
 <translation id="1124772482545689468">អ្នកប្រើ</translation>
 <translation id="1125550662859510761">មើល​ទៅដូចជា <ph name="WIDTH"/> x <ph name="HEIGHT"/> (ដើម)</translation>
@@ -137,6 +140,7 @@
 <translation id="1137589305610962734">ទិន្នន័យ​បណ្ដោះអាសន្ន</translation>
 <translation id="1137673463384776352">បើក​តំណ​នៅក្នុង <ph name="APP"/></translation>
 <translation id="1138686548582345331">{MUTED_NOTIFICATIONS_COUNT,plural, =1{ការជូនដំណឹងថ្មី}other{ការជូនដំណឹងថ្មីៗ #}}</translation>
+<translation id="1139138655591555207">ចុច |<ph name="ACCELERATOR"/>| ដើម្បីផ្ដោតពពុះជំនួយនេះ។</translation>
 <translation id="1139343347646843679">មានបញ្ហា ពេលកំពុងកំណត់រចនាសម្ព័ន្ធ Linux។ សូមទាក់ទង​អ្នកគ្រប់គ្រង​របស់អ្នក។</translation>
 <translation id="1139923033416533844">ការប្រើប្រាស់​អង្គចងចាំ</translation>
 <translation id="1140351953533677694">ចូលប្រើឧបករណ៍ប៊្លូធូស និងសេរ៊ីរបស់អ្នក</translation>
@@ -219,7 +223,6 @@
 <translation id="1218015446623563536">លុប Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>សេវាកម្ម​ទី​តាំង​របស់ Brave ប្រើប្រាស់​ប្រភព​ដូចជា Wi-Fi, បណ្តាញ​ទូរសព្ទចល័ត និង​ឧបករណ៍​ចាប់​សញ្ញា​ ​ដើម្បី​ជួយ​ប៉ាន់ស្មាន​ទីតាំង​របស់​ឧបករណ៍​នេះ។<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>អ្នក​អាច​បិទ​ទីតាំង​ដោយ​បិទ​ការកំណត់​ទីតាំង​ចម្បង​នៅលើ​ឧបករណ៍​នេះ។ អ្នក​ក៏​អាចបិទ​ការ​ប្រើប្រាស់ Wi-Fi, បណ្តាញ​ទូរសព្ទ​ចល័ត និង​ឧបករណ៍​ចាប់​សញ្ញា​សម្រាប់​ទីតាំង​នៅក្នុង​ការកំណត់​ទីតាំង​បាន​ផង​ដែរ​។<ph name="END_PARAGRAPH2"/></translation>
-<translation id="1703988271738455429">មិនអាច​ទាញយក​ឯកសារនៃ​ការនិយាយ​ជាភាសា<ph name="LANGUAGE"/>បានទេ។ នឹងព្យាយាម​ទាញយក​នៅពេលក្រោយ។ ការនិយាយត្រូវបានផ្ញើទៅ Brave ដើម្បីដំណើរការ​សម្រាប់ពេលនេះ។</translation>
 <translation id="122082903575839559">នីតិវិធីដោះស្រាយហត្ថលេខាវិញ្ញាបនប័ត្រ</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 ជាមួយការអ៊ីនគ្រីប RSA</translation>
 <translation id="1221825588892235038">ការជ្រើសរើសតែប៉ុណ្ណោះ</translation>
@@ -307,6 +310,7 @@
 <translation id="1313660246522271310">អ្នក​នឹង​ត្រូវនាំចេញ​ពី​គេហទំព័រ​ទាំងអស់ រួមទាំង​នៅក្នុង​ផ្ទាំងដែលបានបើក​ផងដែរ</translation>
 <translation id="2903798981239218332">ចំណាំ ប្រវត្តិ និងការកំណត់ផ្សេងទៀតរបស់អ្នកនឹងត្រូវបានធ្វើសមកម្មទៅគណនី Brave របស់អ្នក។</translation>
 <translation id="1316136264406804862">កំពុងស្វែងរក...</translation>
+<translation id="1316248800168909509">មិន​អាចភ្ជាប់​ជាមួយ <ph name="DEVICE"/> បាន​ទេ។ សូមព្យាយាមម្ដងទៀត។</translation>
 <translation id="1316495628809031177">សមកាល​កម្មត្រូវ​បានផ្អាក</translation>
 <translation id="1317637799698924700">ឧបករណ៍ភ្ជាប់​របស់អ្នកនឹងធ្វើប្រតិបត្តិការ​នៅក្នុងមុខងារ​ដែលត្រូវគ្នាជាមួយ USB ប្រភេទ C ។</translation>
 <translation id="1319983966058170660">ប៊ូតុង​ថយក្រោយ​ទៅទំព័ររង <ph name="SUBPAGE_TITLE"/></translation>
@@ -323,6 +327,7 @@
 <translation id="133535873114485416">ការ​បញ្ចូលតាម​ចំណូលចិត្ត</translation>
 <translation id="1335929031622236846">ចុះឈ្មោះ​ឧបករណ៍​របស់អ្នក</translation>
 <translation id="1336902454946927954">សោសុវត្ថិភាព​របស់អ្នក​ត្រូវបានចាក់សោ ដោយសារ​មិនអាចសម្គាល់​ស្នាមម្រាមដៃរបស់អ្នក។ ដើម្បីដោះសោសុវត្ថិភាពនេះ សូមបញ្ចូលកូដ PIN របស់អ្នក។</translation>
+<translation id="1338631221631423366">កំពុងផ្គូផ្គង...</translation>
 <translation id="1338802252451106843"><ph name="ORIGIN"/> ចង់​បើក​កម្មវិធីនេះ។</translation>
 <translation id="1338950911836659113">កំពុងលុប...</translation>
 <translation id="1068826216368845969">ចូលប្រើ​ជំនួយការ​របស់អ្នក នៅពេលអ្នក​និយាយថា "Ok Brave"។ ដើម្បី​សន្សំសំចៃ​ថ្ម សូម​ជ្រើសរើស “បើក (បានណែនាំ)”។ ជំនួយការ​របស់អ្នក​នឹងឆ្លើយតប នៅពេល​ឧបករណ៍​របស់អ្នកដោតភ្លើង ឬកំពុងសាកថ្ម​តែប៉ុណ្ណោះ។</translation>
@@ -359,6 +364,7 @@
 <translation id="1378613616312864539"><ph name="NAME"/> កំពុងគ្រប់គ្រងការកំណត់នេះ</translation>
 <translation id="1378848228640136848">{NUM_COMPROMISED,plural, =0{គ្មានពាក្យសម្ងាត់​ដែលរងការលុកលុយទេ}=1{ពាក្យសម្ងាត់​ដែលរង​ការលុកលុយ 1}other{ពាក្យសម្ងាត់​ដែលរង​ការលុកលុយ {NUM_COMPROMISED}}}</translation>
 <translation id="1380028686461971526">ភ្ជាប់​បណ្ដាញ​ដោយស្វ័យប្រវត្តិ</translation>
+<translation id="3390076845266164299">ការនិយាយ​ជាភាសា<ph name="LANGUAGE"/>ត្រូវបានផ្ញើទៅ Brave ដើម្បី​ដំណើរការ</translation>
 <translation id="1383597849754832576">មិនអាចទាញយក​ឯកសារនិយាយ​បានទេ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="1383861834909034572">បើកនៅពេលបញ្ចប់</translation>
 <translation id="1383876407941801731">ស្វែងរក</translation>
@@ -368,6 +374,7 @@
 <translation id="1388728792929436380"><ph name="DEVICE_TYPE"/> ​នឹងចាប់ផ្ដើម​ឡើងវិញ នៅពេលបញ្ចប់​ការដំឡើងកំណែ​។</translation>
 <translation id="139013308650923562">អនុញ្ញាតឱ្យប្រើពុម្ព​អក្សរ​ ដែលបានដំឡើងនៅលើឧបករណ៍របស់អ្នក</translation>
 <translation id="1390548061267426325">បើកជាផ្ទាំងធម្មតា</translation>
+<translation id="1390907927270446471"><ph name="PROFILE_USERNAME"/> មិនទទួលបានសិទ្ធិក្នុងការបោះពុម្ពតាម <ph name="PRINTER_NAME"/> ទេ។ សូមទាក់ទង​អ្នកគ្រប់គ្រង​របស់អ្នក។</translation>
 <translation id="1393283411312835250">ព្រះអាទិត្យ និងពពក</translation>
 <translation id="1395730723686586365">កម្មវិធីធ្វើបច្ចុប្បន្នភាពបានចាប់ផ្តើម</translation>
 <translation id="1396139853388185343">មាន​បញ្ហា​ក្នុងការ​រៀបចំ​ម៉ាស៊ីន​បោះពុម្ព</translation>
@@ -529,6 +536,7 @@
 <translation id="1549275686094429035">បានបើក ARC</translation>
 <translation id="1549788673239553762"><ph name="APP_NAME"/> ចង់ចូលប្រើ <ph name="VOLUME_NAME"/>។ វាអាចនឹងកែសម្រួល ឬលុបឯកសាររបស់អ្នក។</translation>
 <translation id="1552301827267621511">កម្មវិធីបន្ថែម "<ph name="EXTENSION_NAME"/>" បានប្ដូរការស្វែងរកទៅប្រើ <ph name="SEARCH_PROVIDER_DOMAIN"/></translation>
+<translation id="1552522962296937598">Smart display lock and detect if others peeking from behind</translation>
 <translation id="1553538517812678578">គ្មានដែនកំណត់</translation>
 <translation id="1555130319947370107">ខៀវ</translation>
 <translation id="1556537182262721003">មិនអាចផ្លាស់ទីថតឯកសារកម្មវិធីបន្ថែមទៅក្នុងទម្រង់ទេ។</translation>
@@ -615,7 +623,6 @@
 <translation id="1628948239858170093">ស្កេនឯកសារមុនពេលបើកឬ?</translation>
 <translation id="1629314197035607094">ពាក្យសម្ងាត់បាន​ផុតកំណត់ហើយ</translation>
 <translation id="1947639598318989608">អនុញ្ញាតឱ្យ Brave រកមើលការបញ្ចុះតម្លៃដែលស្របនឹងអ្នកនៅក្នុងរទេះរបស់អ្នក​?</translation>
-<translation id="1630300831289687074">អ្នកនឹង​អាចប្រើ Bravebook របស់អ្នក​បានក្នុងពេលឆាប់ៗនេះ។</translation>
 <translation id="163072119192489970">អនុញ្ញាតឱ្យបញ្ចប់ការផ្ញើ និងការទទួលទិន្នន័យ</translation>
 <translation id="1630768113285622200">ចាប់ផ្ដើម​ឡើងវិញ និងបន្ត</translation>
 <translation id="6854627044485328437">ពាក្យសម្ងាត់ដែលបានរក្សាទុកនៅក្នុងគណនី Brave របស់អ្នក</translation>
@@ -716,7 +723,6 @@
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> របស់អ្នក​ស្ថិតក្រោម​ការគ្រប់គ្រង<ph name="END_LINK"/>របស់ <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="1723824996674794290">ផ្ទាំងថ្មី</translation>
 <translation id="1725562816265788801">ការរំកិលផ្ទាំង</translation>
-<translation id="1727662110063605623">បើកការកំណត់ ដើម្បីភ្ជាប់ <ph name="USB_DEVICE_NAME"/> ជាមួយ Parallels Desktop ឬ Linux</translation>
 <translation id="1729533290416704613">វាក៏គ្រប់គ្រងអ្វីដែលទំព័របានបង្ហាញផងដែរ នៅពេលអ្នកស្វែងរកពីប្រអប់អូមនី។</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>ដើម្បី​លុប​កម្មវិធី សូម​ចូលទៅកាន់​ការកំណត់ &gt; Google Play Store &gt; គ្រប់គ្រង​ចំណូលចិត្ត Android &gt; កម្មវិធី ឬកម្មវិធី​គ្រប់គ្រង​កម្មវិធី។ បន្ទាប់មក​ចុច​កម្មវិធី​ដែលអ្នក​ចង់លុប (អ្នកអាច​នឹងត្រូវ​អូស​ទៅស្តាំ ឬ​ទៅឆ្វេងដើម្បី​ស្វែងរក​កម្មវិធី​នោះ)។ បន្ទាប់មក​ចុច​លុប ឬ​បិទ។<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">កំពុងផ្ញើសំណើរ...</translation>
@@ -774,7 +780,6 @@
 <translation id="1780273119488802839">កំពុងនាំចូលចំណាំ...</translation>
 <translation id="659039914757960684">រៀបចំការ​ចែករំលែកនៅជិត ដើម្បីទទួល និងផ្ញើ​ឯកសារទៅ​មនុស្សនៅជុំវិញអ្នក</translation>
 <translation id="1781291988450150470">កូដ PIN បច្ចុប្បន្ន</translation>
-<translation id="1781398670452016618"><ph name="DOMAIN"/> តម្រូវឱ្យអ្នក​ភ្ជាប់ Wi-Fi ឥឡូវនេះ ដើម្បីទាញយកកំណែថ្មី​។</translation>
 <translation id="1781502536226964113">បើកនៅក្នុងទំព័រផ្ទាំងថ្មី</translation>
 <translation id="1781771911845953849">គណនី និង​ការធ្វើសមកាលកម្ម</translation>
 <translation id="1781979858217752599">ចែករំលែក​សំឡេង​វិនដូ</translation>
@@ -801,6 +806,7 @@
 <translation id="1805888043020974594">ម៉ាស៊ីនមេបោះពុម្ព</translation>
 <translation id="1805967612549112634">បញ្ជាក់កូដ PIN</translation>
 <translation id="1806335016774576568">ប្ដូរទៅ​កម្មវិធី​ដែលបើក​មួយទៀត</translation>
+<translation id="1807246157184219062">ភ្លឺ</translation>
 <translation id="6576770568655035135">កម្មវិធីដែលអ្នកបានទាញយកពី Google Play នឹងត្រូវបានលុបចេញពី Bravebook នេះ។
     <ph name="LINE_BREAKS1"/>
     ខ្លឹមសារ​ដែលអ្នកបានទិញ​ដូចជា ភាពយន្ត កម្មវិធីទូរទស្សន៍ តន្ត្រី សៀវភៅ ឬការទិញក្នុងកម្មវិធី​ផ្សេងទៀត​ក៏ប្រហែលជាត្រូវលុបផងដែរ។
@@ -991,6 +997,7 @@
 <translation id="2002109485265116295">ក្នុងពេលជាក់​ស្ដែង</translation>
 <translation id="200217416291116199">យើងសូមណែនាំឱ្យបម្រុងទុកឯកសារ ក្នុងករណីដែលការដំឡើងកំណែមិនអាចបញ្ចប់បាន។ ការចាប់ផ្ដើមការ​ដំឡើងកំណែនេះនឹងបិទ Linux។ សូមរក្សាទុកឯកសារដែលបើក មុនពេលបន្ត។</translation>
 <translation id="2003130567827682533">ដើម្បីបើក​ដំណើរការ​ទិន្នន័យ '<ph name="NAME"/>' សូមភ្ជាប់បណ្ដាញ​ Wi-Fi ជាមុនសិន</translation>
+<translation id="2004697686368036666">មុខងារ​នៅលើ​គេហទំព័រ​មួយចំនួន​អាចនឹងមិនដំណើរការទេ</translation>
 <translation id="2005199804247617997">កម្រងព័ត៌មាន​ផ្សេងទៀត</translation>
 <translation id="2006638907958895361">បើក​តំណ​នៅ​ក្នុង <ph name="APP"/></translation>
 <translation id="2007404777272201486">រាយការណ៍បញ្ហា...</translation>
@@ -1071,6 +1078,7 @@
 <translation id="2090165459409185032">ដើម្បីសង្គ្រោះទិន្នន័យគណនីរបស់អ្នក សូមចូលទៅកាន់៖ google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">ភ្ជាប់​ដោយស្វ័យប្រវត្តិ នៅពេលដែល​អ្នកចូល</translation>
 <translation id="2090876986345970080">ការកំណត់សុវត្ថិភាពប្រព័ន្ធ</translation>
+<translation id="2092038932007199943">Notify you or temporary dim your screen when someone is snooping from behind</translation>
 <translation id="2096715839409389970">សម្អាតខូគីភាគីទីបី</translation>
 <translation id="2098805196501063469">ពិនិត្យមើល​ពាក្យសម្ងាត់​ដែលនៅសល់</translation>
 <translation id="2099172618127234427">អ្នកកំពុងបើកដំណើរការលក្ខណៈពិសេសកម្ចាត់កំហុស Chrome OS ដែលនឹងកំណត់  sshd daemon និងបើកដំណើរការចាប់ផ្តើមចេញពីឧបករណ៍ USB។</translation>
@@ -1133,7 +1141,6 @@
 <translation id="2152882202543497059">រូបថត <ph name="NUMBER"/> សន្លឹក</translation>
 <translation id="2154484045852737596">កែសម្រួលកាត</translation>
 <translation id="2154502158735983655">អាន​ទិន្នន័យ​ឧបករណ៍ និង​ព័ត៌មាន​ឧបករណ៍ Chrome OS។</translation>
-<translation id="2154710561487035718">ចម្លង URL</translation>
 <translation id="2155772377859296191">មើល​ទៅដូចជា <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="2156294658807918600">បុគ្គលិក​បម្រើសេវាកម្ម៖ <ph name="SCRIPT_URL"/></translation>
 <translation id="2156557113115192526">កុំសួរម្ដងទៀត នៅពេលបើកទម្រង់​ឯកសារនេះនៅក្នុងកម្មវិធីនេះ៖
@@ -1187,6 +1194,7 @@
 <translation id="9014750448058570312">Brave ត្រូវ​ការ​ការ​អនុញ្ញាត​ដើម្បី​បន្ត</translation>
 <translation id="2202898655984161076">មានបញ្ហាកើតឡើងនៅក្នុងបញ្ជីម៉ាស៊ីនបោះពុម្ពក្នុងបញ្ជី។ ម៉ាស៊ីនបោះពុម្ពរបស់អ្នកមួយចំនួនប្រហែលមិនអាចចុះឈ្មោះដោយជោគជ័យជាមួយ <ph name="CLOUD_PRINT_NAME"/> ទេ។</translation>
 <translation id="2203088913459920044">ឈ្មោះ​អាចប្រើអក្សរ លេខ និង​តួអក្សរ​ពិសេស</translation>
+<translation id="220321590587754225">មិន​អាច​ភ្ជាប់បានទេ។ សូមព្យាយាមម្ដងទៀត។</translation>
 <translation id="2204034823255629767">អាន និងប្តូរអ្វីដែលអ្នកវាយបញ្ចូល</translation>
 <translation id="220858061631308971">សូមបញ្ចូលលេខកូដសម្គាល់នេះនៅលើ "<ph name="DEVICE_NAME"/>"៖</translation>
 <translation id="2210462644007531147">មិនអាចបញ្ចប់ការដំឡើងបានទេ</translation>
@@ -1303,7 +1311,6 @@
 <translation id="2312219318583366810">URL ទំព័រ</translation>
 <translation id="2314165183524574721">ការកំណត់លទ្ធភាព​មើលឃើញបច្ចុប្បន្ន​ត្រូវបានលាក់</translation>
 <translation id="2314774579020744484">ភាសាដែលត្រូវប្រើ នៅពេលបកប្រែទំព័រ</translation>
-<translation id="2315414688463285945">មាន​បញ្ហាក្នុងការកំណត់​រចនា​សម្ព័ន្ធ​ឯកសារ Linux ។ សូមព្យាយាម​ម្ដងទៀត​។</translation>
 <translation id="2315587498123194634">ផ្ញើតំណទៅ <ph name="DEVICE_NAME"/></translation>
 <translation id="2316129865977710310">ទេ អរគុណ</translation>
 <translation id="2317842250900878657">រួចរាល់បាន <ph name="PROGRESS_PERCENT"/>%</translation>
@@ -1395,7 +1402,6 @@
 <translation id="2410079346590497630">ព័ត៌មានលម្អិត​អំពី​កំណែបង្កើត</translation>
 <translation id="2410754283952462441">ជ្រើសរើស​គណនី</translation>
 <translation id="241082044617551207">កម្មវិធីជំនួយដែលមិនស្គាល់</translation>
-<translation id="2412593942846481727">មាន​កំណែថ្មី</translation>
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2416435988630956212">គ្រាប់ចុច​មុខងារ​នៅលើក្ដារចុច</translation>
 <translation id="2419131370336513030">មើល​កម្មវិធីដែលបានដំឡើង</translation>
@@ -1421,6 +1427,7 @@
 <translation id="244231003699905658">អាសយដ្ឋាន​មិន​ត្រឹមត្រូវ។ សូមពិនិត្យអាសយដ្ឋាន រួចព្យាយាមម្តងទៀត។</translation>
 <translation id="2442916515643169563">ស្រមោលអក្សរ</translation>
 <translation id="2443487764245141020">គេហទំព័រ​ក៏ប្រហែលជាត្រូវ​សម្គាល់ឧបករណ៍​របស់អ្នក ដោយប្រើ​ព័ត៌មានសម្គាល់​ផងដែរ</translation>
+<translation id="244475495405467108">បិទផ្ទាំងនៅខាងឆ្វេង</translation>
 <translation id="2445081178310039857">តម្រូវឲ្យមានថតឯកសារគោលកម្មវិធីបន្ថែម។</translation>
 <translation id="2445484935443597917">បង្កើត​កម្រង​ព័ត៌មាន​ថ្មី</translation>
 <translation id="244641233057214044">ពាក់ព័ន្ធនឹង​ការស្វែងរក​របស់អ្នក</translation>
@@ -1434,6 +1441,7 @@
 <translation id="2453860139492968684">បញ្ចប់</translation>
 <translation id="2454247629720664989">ពាក្យគន្លឺះ</translation>
 <translation id="2454264884354864965">កាមេរ៉ា​ត្រូវបានបិទ</translation>
+<translation id="2454524890947537054">​អនុម័តលើសំណើចូលប្រើគេហទំព័រឬ?</translation>
 <translation id="245650153866130664">ដើម្បី​ផ្ទុកសំបុត្រ​ឡើងវិញដោយស្វ័យប្រវត្តិ សូមពិនិត្យមើល “ចងចាំ​ពាក្យ​សម្ងាត់”។ ពាក្យ​សម្ងាត់របស់អ្នក​នឹងត្រូវបានរក្សាទុកនៅលើ​ឧបករណ៍​របស់អ្នកតែប៉ុណ្ណោះ។</translation>
 <translation id="2457246892030921239"><ph name="APP_NAME"/> ចង់ចម្លឯកសារពី <ph name="VOLUME_NAME"/>។</translation>
 <translation id="2457842160081795172">បច្ចុប្បន្ននៅលើបណ្តាញ <ph name="CHANNEL_NAME"/></translation>
@@ -1442,7 +1450,6 @@
 <translation id="2459703812219683497">បានរកឃើញលេខ​កូដ​បើក​ដំណើរការ</translation>
 <translation id="2462724976360937186">លេខសម្គាល់សោអាជ្ញាធរវិញ្ញាបនប័ត្រ</translation>
 <translation id="2462752602710430187">បានបន្ថែម <ph name="PRINTER_NAME"/></translation>
-<translation id="2465237718053447668"><ph name="DOMAIN"/> តម្រូវឱ្យអ្នក​ភ្ជាប់ Wi-Fi ឥឡូវនេះ រួចទាញយកកំណែថ្មី​។ ឬទាញយកពី​ការតភ្ជាប់​តាមកម្រិត (អាចមានការគិតថ្លៃ)។</translation>
 <translation id="2467755475704469005">រកមិនឃើញ​ឧបករណ៍​ណាមួយទេ។ <ph name="BEGIN_LINK"/>ស្វែងយល់​បន្ថែម<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">ការបង្កើនល្បឿន​រំកិល​នៅលើ​ផ្ទាំងប៉ះ</translation>
 <translation id="2468205691404969808">ប្រើ​ខូគី​ដើម្បី​ចងចាំ​ចំណូលចិត្ត​របស់អ្នក បើ​ទោះ​បី​ជា​អ្នក​​មិន​ចូលទៅកាន់​ទំព័រ​ទាំងនោះ​ក៏ដោយ</translation>
@@ -1473,6 +1480,7 @@
 <translation id="2489686758589235262">កំណត់​ឧបករណ៍ចុច 2 ទៀត</translation>
 <translation id="2489829450872380594">លើកក្រោយ ទូរសព្ទថ្មី​នឹងដោះសោ <ph name="DEVICE_TYPE"/> នេះ។ អ្នក​អាច​បិទ Smart Lock នៅក្នុង​ការកំណត់។</translation>
 <translation id="2489918096470125693">បន្ថែមថតឯកសារ...</translation>
+<translation id="2489931062851778802">បញ្ចូលកូដសម្ងាត់ទាំងនេះនៅលើ <ph name="DEVICE_NAME"/></translation>
 <translation id="2490481887078769936">បានលុប '<ph name="FILE_NAME"/>' ចេញពីបញ្ជី</translation>
 <translation id="249113932447298600">សូមទោស <ph name="DEVICE_LABEL"/> មិនត្រូវបានគាំទ្រទេនៅពេលនេះ។</translation>
 <translation id="2492461744635776704">កំពុងរៀបចំ​សំណើសុំ​ចុះហត្ថលេខា​លើវិញ្ញាបនបត្រ</translation>
@@ -1833,6 +1841,7 @@
 <translation id="2861301611394761800">ការធ្វើបច្ចុប្បន្នភាពប្រព័ន្ធបានបញ្ចប់។ សូមចាប់ផ្តើមប្រព័ន្ធឡើងវិញ។</translation>
 <translation id="2861941300086904918">កម្មវិធីគ្រប់គ្រងសុវត្ថិភាពអតិថិជនដើម</translation>
 <translation id="2862815659905780618">លុប​មជ្ឈដ្ឋាន​អភិវឌ្ឍ Linux</translation>
+<translation id="2864272167277395865">ជ្រើសរើសឧបករណ៍៖</translation>
 <translation id="2864601841139725659">កំណត់​រូបភាព​កម្រងព័ត៌មាន​របស់អ្នក</translation>
 <translation id="2865919525181940183">រូបថតអេក្រង់របស់កម្មវិធី ដែលបង្ហាញនៅលើអេក្រង់ក្នុងពេលនេះ</translation>
 <translation id="286674810810214575">កំពុង​ពិនិត្យមើល​ប្រភព​ថាមពល...</translation>
@@ -2119,6 +2128,7 @@
 <translation id="3154351730702813399">អ្នកគ្រប់គ្រងឧបករណ៍នេះអាចនឹងត្រួតពិនិត្យសកម្មភាពរុករករបស់អ្នក។</translation>
 <translation id="3154429428035006212">ក្រៅបណ្ដាញច្រើនជាងមួយខែ</translation>
 <translation id="3157387275655328056">បន្ថែមទៅបញ្ជីអាន</translation>
+<translation id="8000244240371532481">នៅពេលអ្នកមិនស្ថិតក្នុងមុខងារឯកជនទេ គេហទំព័រអាចប្រើខូគីដើម្បីមើលសកម្មភាពរុករកតាមអ៊ីនធឺណិតរបស់អ្នកនៅលើគេហទំព័រផ្សេងៗ ឧទាហរណ៍ ដើម្បីកំណត់ការផ្សាយពាណិជ្ជកម្មឱ្យស្របនឹងអ្នក</translation>
 <translation id="3157931365184549694">ស្តារ</translation>
 <translation id="3158033540161634471">រៀបចំស្នាម​ម្រាមដៃរបស់អ្នក</translation>
 <translation id="3158770568048368350">សកម្មភាពនេះអាចបណ្ដាលឱ្យបណ្ដាញ​ទូរសព្ទ​ចល័តរបស់អ្នកផ្ដាច់មួយភ្លែត</translation>
@@ -2134,6 +2144,7 @@
 <translation id="3165390001037658081">ក្រុមហ៊ុន​បម្រើ​សេវាទូរសព្ទ​មួយ​ចំនួន​អាចនឹង​ទប់ស្កាត់​មុខងារ​នេះ។</translation>
 <translation id="316652501498554287">គណនី G Suite សម្រាប់ការអប់រំ</translation>
 <translation id="3170072451822350649">អ្នកក៏អាចរំលងការចូល ហើយ <ph name="LINK_START"/>រុករកជារបៀបភ្ញៀវ<ph name="LINK_END"/> ផងដែរ។</translation>
+<translation id="31774765611822736">ផ្ទាំងថ្មីនៅខាងឆ្វេង</translation>
 <translation id="3177909033752230686">ភាសាទំព័រ៖</translation>
 <translation id="3179982752812949580">ពុម្ព​អក្សរ​</translation>
 <translation id="3201899458094819285">មុខងាររុករក​ដោយ​សុវត្ថិភាព (ការពារអ្នក​ និងឧបករណ៍​របស់អ្នក​ពីគេហទំព័រ​គ្រោះថ្នាក់)</translation>
@@ -2178,7 +2189,6 @@
 <translation id="3239373508713281971">បានលុប​រយៈពេល​កំណត់​សម្រាប់ <ph name="APP_NAME"/></translation>
 <translation id="3241680850019875542">ជ្រើសរើសថតឯកសារគោលនៃកម្មវិធីបន្ថែមដើម្បីវិចខ្ចប់។ ដើម្បីធ្វើបច្ចុប្បន្នភាព ផ្នែកបន្ថែម ជ្រើសរើសថតឯកសារប៊ូតុងឯកជន ដើម្បីប្រើម្តងទៀតផងដែរ។</translation>
 <translation id="3244294424315804309">បន្ត​បិទ​សំឡេង</translation>
-<translation id="3246107497225150582">{0,plural, =1{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល​មួយថ្ងៃ​ទៀត}other{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល # ថ្ងៃ​ទៀត}}</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - បណ្តាញមានបញ្ហា</translation>
 <translation id="3248902735035392926">សុវត្ថិភាព​ពិតជា​សំខាន់​។ ចំណាយ​ពេល​បន្តិច ដើម្បី<ph name="BEGIN_LINK"/>ពិនិត្យមើល​កម្មវិធី​បន្ថែម​របស់អ្នក​ឥឡូវនេះ<ph name="END_LINK"/></translation>
 <translation id="3251714896659475029">អនុញ្ញាតឱ្យ <ph name="SUPERVISED_USER_NAME"/> ចូលប្រើ Brave ជំនួយការ​ដោយនិយាយថា “Ok Brave”</translation>
@@ -2224,11 +2234,13 @@
 <translation id="3288047731229977326">កម្មវិធីបន្ថែមដែលដំណើរការនៅក្នុងរបៀបអ្នកអភិវឌ្ឈន៍អាចបង្កគ្រោះថ្នាក់ដល់កុំព្យូទ័ររបស់អ្នក។ ប្រសិនបើអ្នកមិនមែនជាអ្នកអភិវឌ្ឍន៍ អ្នកគួរតែបិទដំណើរការកម្មវិធីបន្ថែមទាំងនេះដែលដំណើរការនៅក្នុងរបៀបអ្នកអភិវឌ្ឍន៍ដើម្បីឲ្យមានសុវត្ថិភាព។</translation>
 <translation id="3289668031376215426">ការសរសេរជា​អក្សរធំស្វ័យប្រវត្តិ</translation>
 <translation id="3289856944988573801">ដើម្បីពិនិត្យរកការធ្វើបច្ចុប្បន្នភាព សូមប្រើខ្សែអ៊ីនធឺណិត ឬ Wi-Fi។</translation>
+<translation id="3290249595466894471">ក៏បញ្ជូន​គំរូមួយចំនួនតូចនៃទំព័រ ការទាញយក សកម្មភាពកម្មវិធីបន្ថែម និងព័ត៌មាន​ប្រព័ន្ធ ដើម្បីជួយរកមើល​ការគំរាមកំហែងថ្មីផងដែរ</translation>
 <translation id="3291436823898732747">ការរុករកកាន់តែប្រសើរ៖ ឧទាហរណ៍ ការណែនាំបង្ហាញនៅក្នុងពហុប្រអប់ មុនពេលអ្នកចាប់ផ្ដើមវាយបញ្ចូល</translation>
 <translation id="3293644607209440645">ផ្ញើ​ទំព័រ​នេះ</translation>
 <translation id="32939749466444286">ទម្រង់ផ្ទុក Linux មិនបាន​ចាប់ផ្ដើម​ទេ។ សូម​ព្យាយាម​ម្ដងទៀត។</translation>
 <translation id="3294437725009624529">ភ្ញៀវ</translation>
 <translation id="3294686910656423119">ស្ថិតិ​ប្រើប្រាស់ និងរបាយការណ៍អំពីការគាំង</translation>
+<translation id="4288017268387803622">ភ្ជាប់​ទិន្នន័យនេះ​ជាមួយ​គណនី Brave របស់អ្នក​ជាបណ្ដោះអាសន្ន នៅពេលអ្នក​ចូលគណនី ដើម្បី​ការពារអ្នក​នៅលើ​កម្មវិធីរបស់ Brave</translation>
 <translation id="329838636886466101">ជួសជុល</translation>
 <translation id="3298789223962368867">URL គ្មានសុពលភាពត្រូវបានបញ្ចូល។</translation>
 <translation id="32991397311664836">ឧបករណ៍៖</translation>
@@ -2243,7 +2255,6 @@
 <translation id="3305661444342691068">បើក PDF នៅក្នុងការពិនិត្យមើល</translation>
 <translation id="3308116878371095290">ទំព័រនេះត្រូវបានបង្ការពីការកំណត់ខុកឃី។</translation>
 <translation id="3308134619352333507">ប៊ូតុងលាក់</translation>
-<translation id="863285194606682292">គេហទំព័រ​ដែលអ្នកចូលមើល​នៅតែអាចចងចាំ​ព័ត៌មានរបស់អ្នក រហូតដល់​អ្នកបិទ Brave</translation>
 <translation id="3308852433423051161">កំពុងផ្ទុក Brave ជំនួយការ...</translation>
 <translation id="3309330461362844500">លេខសម្គាល់​កម្រងព័ត៌មាន​វិញ្ញាបនបត្រ</translation>
 <translation id="3311445899360743395">ទិន្នន័យ​ដែល​ពាក់ព័ន្ធនឹង​កម្មវិធីនេះ​អាចត្រូវ​បានលុបចេញ​ពីឧបករណ៍​នេះ។</translation>
@@ -2288,6 +2299,7 @@
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> កំពុង​ចែករំលែក <ph name="ATTACHMENTS"/> ជាមួយ​អ្នក។}other{<ph name="DEVICE_NAME"/> កំពុង​ចែករំលែក <ph name="ATTACHMENTS"/> ជាមួយ​អ្នក។}}</translation>
 <translation id="3364986687961713424">ពី​អ្នកគ្រប់គ្រង​របស់អ្នក៖ <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">ប្រើ Ctrl ឬ Alt</translation>
+<translation id="3367057768351048705">គេហទំព័រអាចត្រឹមតែប្រើខូគីរបស់អ្នក ដើម្បីមើលសកម្មភាពរុករកតាមអ៊ីនធឺណិតរបស់អ្នកនៅលើគេហទំព័ររបស់ពួកគេប៉ុណ្ណោះ</translation>
 <translation id="3368922792935385530">បានភ្ជាប់</translation>
 <translation id="3369067987974711168">បង្ហាញ​សកម្មភាពច្រើនទៀត​សម្រាប់​ច្រកនេះ</translation>
 <translation id="3369624026883419694">កំពុងដោះស្រាយឧបករណ៍ចែករំលែកបណ្តាញ...</translation>
@@ -2341,13 +2353,13 @@
 <translation id="3420501302812554910">តម្រូវឱ្យ​កំណត់​សោសុវត្ថិភាព​ផ្នែកខាងក្នុងឡើងវិញ</translation>
 <translation id="3421387094817716717">សោសាធារណ: Elliptic Curve</translation>
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>ចំណាំ៖<ph name="END_BOLD"/> សំឡេងថត ឬ​សំឡេង​ដែលស្រដៀង​ប្រហែលជា​អាចចូលប្រើ​លទ្ធផល​ផ្ទាល់ខ្លួន ឬជំនួយការ​របស់អ្នក​បាន។</translation>
+<translation id="3421726884497337397">ជ្រើសរើសពេលដែលត្រូវទប់ស្កាត់ខូគីរបស់ភាគីទីបី</translation>
 <translation id="3422291238483866753">សួរ​នៅពេល​គេហទំព័រ​ចង់បង្កើតផែនទី 3D នៃមជ្ឈដ្ឋានជុំវិញរបស់អ្នក ឬតាមដានទីតាំងកាមេរ៉ា (បានណែនាំ)</translation>
 <translation id="3423463006624419153">នៅលើ '<ph name="PHONE_NAME_1"/>' និង '<ph name="PHONE_NAME_2"/>' របស់អ្នក៖</translation>
 <translation id="3423858849633684918">សូមបើកដំណើរការ <ph name="PRODUCT_NAME"/> ឡើងវិញ</translation>
 <translation id="3424969259347320884">ពណ៌នាសកម្មភាពដែលអ្នកកំពុងធ្វើនៅពេលដែលផ្ទាំងនេះបានគាំង</translation>
 <translation id="3427092606871434483">អនុញ្ញាត (លំនាំដើម)</translation>
 <translation id="3428419049384081277">អ្នកបានចូលគណនីហើយ!</translation>
-<translation id="5265419033369521352">រក្សា​សុវត្ថិភាព​របស់អ្នក​នៅលើ Brave និង​អាចប្រើ​សម្រាប់​កែលម្អ​សុវត្ថិភាព​របស់អ្នក​នៅក្នុង​កម្មវិធី Brave ផ្សេងទៀត នៅពេល​អ្នក​ចូលគណនី</translation>
 <translation id="3429086384982427336">កម្មវិធីដែលរាយខាងក្រោមនឹងមិនចាត់ចែងតំណប្រូតូកូលទេ។</translation>
 <translation id="3429160811076349561">មុខងារ​សាកល្បង​ត្រូវបានបិទ</translation>
 <translation id="3429271624041785769">ភាសា​របស់ខ្លឹមសារ​បណ្ដាញ</translation>
@@ -2377,11 +2389,13 @@
 <translation id="344630545793878684">អានទិន្នន័យរបស់អ្នកនៅលើគេហទំព័រមួយចំនួន</translation>
 <translation id="3446650212859500694">ឯកសារនេះមានខ្លឹមសាររសើប</translation>
 <translation id="3446827946208017735">ស្វែងយល់ និងពិនិត្យមើល​ការកំណត់​ឯកជនភាព​សំខាន់បំផុត​នៅកន្លែង​តែមួយ</translation>
+<translation id="3447644283769633681">ទប់ស្កាត់ខូគីរបស់ភាគីទីបីទាំងអស់</translation>
 <translation id="3448086340637592206">លក្ខខណ្ឌបន្ថែម​របស់ Brave និង Chrome OS</translation>
 <translation id="3448492834076427715">ធ្វើបច្ចុប្បន្នភាព​គណនី</translation>
 <translation id="3449393517661170867">វិនដូថ្មី​ដែលចែកជា​ផ្ទាំង</translation>
 <translation id="3449839693241009168">ចុច <ph name="SEARCH_KEY"/> ដើម្បីផ្ញើការបញ្ជាទៅ <ph name="EXTENSION_NAME"/></translation>
 <translation id="3450157232394774192">អត្រាប្រើប្រាស់ស្ថានភាពទុកចោល</translation>
+<translation id="3450180775417907283"><ph name="MANAGER"/> តម្រូវឱ្យអ្នក​ភ្ជាប់ Wi-Fi ឥឡូវនេះ ដើម្បីទាញយកកំណែថ្មី​។</translation>
 <translation id="3451753556629288767">អនុញ្ញាតឱ្យបើកប្រភេទឯកសារ</translation>
 <translation id="3452999110156026232">សិទ្ធិចូលប្រើប្រាស់​របស់​មាតាបិតា</translation>
 <translation id="3453612417627951340">ត្រូវការអនុញ្ញាត</translation>
@@ -2565,7 +2579,6 @@
 <translation id="3647998456578545569">{COUNT,plural, =1{បានទទួល <ph name="ATTACHMENTS"/> ពី <ph name="DEVICE_NAME"/>}other{បានទទួល <ph name="ATTACHMENTS"/> ពី <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3648348069317717750">បានរកឃើញ <ph name="USB_DEVICE_NAME"/></translation>
 <translation id="3649138363871392317">រូបថតត្រូវបានថត</translation>
-<translation id="3649505501900178324">ហួសពេលដំឡើងកំណែ​</translation>
 <translation id="3650753875413052677">មានបញ្ហា​ក្នុងការចុះឈ្មោះ</translation>
 <translation id="3650845953328929506">ការបង្ហោះកំណត់ហេតុ​កំពុង​រង់ចាំ។</translation>
 <translation id="3650952250015018111">អនុញ្ញាត​ឱ្យ "<ph name="APP_NAME"/>" ចូលប្រើ៖</translation>
@@ -2648,7 +2661,6 @@
 <translation id="3732078975418297900">មាន​បញ្ហា​នៅលើ​ជួរ <ph name="ERROR_LINE"/></translation>
 <translation id="3732530910372558017">កូដ PIN ត្រូវតែមានយ៉ាងច្រើន​បំផុត 63 តួ</translation>
 <translation id="565625983765378675">ព័ត៌មានដែលពាក់ព័ន្ធនឹង Brave ជំនួយការ</translation>
-<translation id="3733127536501031542">ម៉ាស៊ីនមេ SSL ជាមួយនឹង Step-up</translation>
 <translation id="3733296813637058299">យើង​នឹង​ដំឡើង​កម្មវិធីទាំងនោះសម្រាប់អ្នក។ អ្នក​អាច​រកមើល​កម្មវិធីជាច្រើន​ទៀត​សម្រាប់​ <ph name="DEVICE_TYPE"/> ​របស់អ្នក​នៅក្នុង Play Store។</translation>
 <translation id="3735740477244556633">តម្រៀបតាម</translation>
 <translation id="3738632186060045350">ទិន្នន័យ <ph name="DEVICE_TYPE"/> នឹងត្រូវលុបក្នុងរយៈពេល 24 ម៉ោង</translation>
@@ -2738,11 +2750,12 @@
 <translation id="3819800052061700452">ពេញអេក្រង់</translation>
 <translation id="3820638253182943944">{MUTED_NOTIFICATIONS_COUNT,plural, =1{បង្ហាញ}other{បង្ហាញ​ទាំងអស់}}</translation>
 <translation id="3820749202859700794">SECG elliptic curve secp521r1 (aka NIST P-521)</translation>
+<translation id="3821074617718452587">ការជូនដំណឹងពីមណ្ឌលទូរសព្ទ</translation>
 <translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{កម្មវិធីបន្ថែមមួយ​ត្រូវបាន​អនុញ្ញាតហើយ}other{កម្មវិធីបន្ថែម # ត្រូវបាន​អនុញ្ញាតហើយ}}</translation>
 <translation id="3823310065043511710">យ៉ាងហោច​ណាស់ <ph name="INSTALL_SIZE"/> នៃទំហំផ្ទុក​ត្រូវបានណែនាំឱ្យប្រើ​សម្រាប់ Linux។</translation>
 <translation id="3824621460022590830">ធាតុកូដចុះឈ្មោះឧបករណ៍​មិនត្រឹមត្រូវទេ។ សូមទាក់ទង​អ្នកគ្រប់គ្រង ឬម្ចាស់ឧបករណ៍​របស់អ្នក។ លេខ​កូដ​បញ្ហា៖ <ph name="ERROR_CODE"/>។</translation>
 <translation id="3826071569074535339">អនុញ្ញាតឱ្យប្រើឧបករណ៍​ចាប់​ចលនា</translation>
-<translation id="7808602060780466265">អ្នកគ្រប់គ្រង​របស់អ្នក​បានបិទ​ការបញ្ចូល​គណនី Brave បន្ថែម</translation>
+<translation id="3826440694796503677">អ្នកគ្រប់គ្រង​របស់អ្នក​បានបិទ​ការបញ្ចូល​គណនី Brave បន្ថែម</translation>
 <translation id="3827774300009121996">ពេញអេក្រង់</translation>
 <translation id="3828029223314399057">ស្វែងរកចំណាំ</translation>
 <translation id="3829765597456725595">ការចែករំលែក​ឯកសារ SMB</translation>
@@ -2751,7 +2764,6 @@
 <translation id="383161972796689579">ម្ចាស់ឧបករណ៍នេះបានបិទការបន្ថែមអ្នកប្រើថ្មី</translation>
 <translation id="3834728400518755610">ការផ្លាស់ប្ដូរ​នៅក្នុង​ការកំណត់​មីក្រូហ្វូន​តម្រូវឱ្យបិទ Linux។ បិទ Linux ដើម្បី​បន្ត។</translation>
 <translation id="3834775135533257713">មិនអាចបន្ថែមកម្មវិធី "<ph name="TO_INSTALL_APP_NAME"/>" បានទេ ព្រោះវាមិនត្រូវគ្នាជាមួយ "<ph name="INSTALLED_APP_NAME"/>"</translation>
-<translation id="3835522725882634757">អូ ទេ! ម៉ាស៊ីនមេនេះកំពុងផ្ញើទិន្នន័យ <ph name="PRODUCT_NAME"/> ដែលមិនអាចយល់បាន។ សូម <ph name="BEGIN_LINK"/>រាយការណ៍កំហុស<ph name="END_LINK"/> ហើយរាប់បញ្ចូល <ph name="BEGIN2_LINK"/>បញ្ជីដើម<ph name="END2_LINK"/>។</translation>
 <translation id="383669374481694771">នេះគឺជា​ព័ត៌មាន​ទូទៅអំពី​ឧបករណ៍​នេះ និង​របៀបប្រើប្រាស់​ (ដូចជា​កម្រិតថ្ម សកម្មភាព​កម្មវិធី និងប្រព័ន្ធ ព្រមទាំង​បញ្ហានានា)។ ទិន្នន័យនេះ​នឹងត្រូវ​បានប្រើប្រាស់ ដើម្បី​កែលម្អ Android ហើយព័ត៌មាន​ដែលបាន​ប្រមូល​មួយចំនួនក៏​នឹងជួយ​ឱ្យកម្មវិធី និងដៃគូ Brave ដូចជា​អ្នកអភិវឌ្ឍន៍ Android ធ្វើឱ្យ​កម្មវិធី និង​ផលិតផល​របស់​ពួកគេ​ប្រសើរ​ជាងមុន​ផងដែរ។</translation>
 <translation id="3838085852053358637">មិនអាច​ផ្ទុក​កម្មវិធីបន្ថែម​បាន​ទេ</translation>
 <translation id="3838486795898716504">ច្រើនទៀត <ph name="PAGE_TITLE"/></translation>
@@ -2946,6 +2958,7 @@
 <translation id="4021279097213088397">–</translation>
 <translation id="402184264550408568">(TCP)</translation>
 <translation id="4021909830315618592">ចម្លងព័ត៌មានលម្អិតអំពីកំណែបង្កើត</translation>
+<translation id="4021941025609472374">បិទផ្ទាំងនៅខាងឆ្វេង</translation>
 <translation id="4022426551683927403">បន្ថែមទៅក្នុងថតឯកសារ</translation>
 <translation id="4023146161712577481">ការកំណត់ការតំឡើងឧបករណ៍</translation>
 <translation id="4025039777635956441">បិទ​គេហទំព័រ​ដែលបាន​ជ្រើសរើស</translation>
@@ -2989,7 +3002,6 @@
 <translation id="4068776064906523561">ស្នាម​ម្រាមដៃ​ដែល​បាន​រក្សាទុក</translation>
 <translation id="407173827865827707">នៅ​ពេលចុច</translation>
 <translation id="5493571544288146030">ពាក្យសម្ងាត់​នឹងត្រូវបាន​រក្សាទុក​នៅក្នុង <ph name="ACCOUNT"/> ដែលជា​គណនី Brave របស់អ្នក។ អ្នកនឹងមិន​ចាំបាច់ចងចាំ​ពាក្យសម្ងាត់នេះទេ។</translation>
-<translation id="4074900173531346617">វិញ្ញាបនប័ត្រអ្នកចុះហត្ថលេខាអ៊ីម៉ែល</translation>
 <translation id="407520071244661467">មាត្រដ្ឋាន</translation>
 <translation id="407543464472585404">កម្រងព័ត៌មានរបស់ <ph name="NAME"/> ត្រូវបានភ្ជាប់ជាមួយ <ph name="EMAIL"/></translation>
 <translation id="4075639477629295004">មិនអាច​ភ្ជាប់ទៅ <ph name="FILE_NAME"/> បានទេ។</translation>
@@ -3033,9 +3045,11 @@
 <translation id="4110490973560452005">ការទាញយក​បានបញ្ចប់៖ <ph name="FILE_NAME"/> ។ សូមចុច Shift+F6 ដើម្បីប្ដូរទៅផ្នែក​របាទាញយក។</translation>
 <translation id="4110686435123617899">ជ្រើសរើស​អាល់ប៊ុម <ph name="TITLE"/> <ph name="DESC"/></translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (គ្មានអ៊ីនធឺណិត)</translation>
+<translation id="4112809168763360620">Smart privacy protections</translation>
 <translation id="4115002065223188701">បណ្តាញ​នៅ​ក្រៅ​ដែន</translation>
 <translation id="4115378294792113321">ស្វាយខ្ចី</translation>
 <translation id="4117637339509843559">មុខងារ​ងងឹត</translation>
+<translation id="4117714603282104018">មតិស្ថាបនាតាមការប៉ះផ្ទាំងប៉ះ</translation>
 <translation id="4118579674665737931">សូម​ចាប់ផ្ដើម​ឧបករណ៍​ឡើងវិញ រួចព្យាយាមម្ដងទៀត។</translation>
 <translation id="9006702004768325338">ចាប់ផ្ដើមរុករកអនុស្សាវរីយ៍របស់អ្នកពី Brave រូបថត រាល់ពេលដែលអ្នកចូលគណនី។</translation>
 <translation id="4120388883569225797">មិនអាចកំណត់​សោសុវត្ថិភាពនេះ​ឡើងវិញបានទេ</translation>
@@ -3080,6 +3094,7 @@
 <translation id="4175137578744761569">ស្វាយខ្ចី និងស</translation>
 <translation id="4175737294868205930">ទំហំផ្ទុកអចិន្ត្រៃយ៍</translation>
 <translation id="4176463684765177261">បានបិទដំណើរការ</translation>
+<translation id="417971315778328003">កំណត់កូដ PIN ឬពាក្យសម្ងាត់ ដើម្បីបន្ត</translation>
 <translation id="4180788401304023883">លុបវិញ្ញាបនប័ត្រ CA "<ph name="CERTIFICATE_NAME"/>"?</translation>
 <translation id="4181602000363099176">20x</translation>
 <translation id="4181841719683918333">ភាសា</translation>
@@ -3113,6 +3128,7 @@
 <translation id="4231095370974836764">ដំឡើង​កម្មវិធី និង​ហ្គេមពី Google Play នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">កំណត់​រចនាសម្ព័ន្ធ Kerberos</translation>
 <translation id="4235965441080806197">បោះបង់ការចូលគណនី</translation>
+<translation id="4238175133949127631">Temporary dim screen</translation>
 <translation id="4241182343707213132">ចាប់ផ្តើមឡើងវិញ​ ដើម្បីដំឡើងកំណែកម្មវិធីរបស់ស្ថាប័ន</translation>
 <translation id="4242145785130247982">មិនអាចប្រើ​វិញ្ញាបនបត្រ​កម្មវិធីភ្ញៀវ​ច្រើនបានទេ</translation>
 <translation id="4242533952199664413">បើកការកំណត់</translation>
@@ -3166,7 +3182,6 @@
 <translation id="428715201724021596">កំពុងភ្ជាប់ទៅកម្រងព័ត៌មាន។ ដំណើរការនេះ​អាចចំណាយ​ពេលពីរបីនាទី។</translation>
 <translation id="4287157641315808225">បាទ/ចាស បើកដំណើរការ BraveVox</translation>
 <translation id="4287502603002637393">{MUTED_NOTIFICATIONS_COUNT,plural, =1{បង្ហាញ}other{បង្ហាញ​ទាំងអស់}}</translation>
-<translation id="4289372044984810120">គ្រប់គ្រង​គណនី​របស់អ្នក​នៅទីនេះ​។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="4289540628985791613">ទិដ្ឋភាពទូទៅ</translation>
 <translation id="4289732974614035569">ជ្រើសរើស​កូដ PIN</translation>
 <translation id="4290791284969893584">បន្ទាប់ពីបិទទំព័រ កិច្ចការដែលអ្នកបានចាប់ផ្ដើមអាចនឹងមិនបញ្ចប់ទេ</translation>
@@ -3221,7 +3236,6 @@
 <translation id="4358313196493694334">ធ្វើឱ្យទីតាំងចុច​មានលំនឹង</translation>
 <translation id="4359408040881008151">បានតំឡើងដោយសារកម្មវិធីបន្ថែមពឹងអាស្រ័យ។</translation>
 <translation id="4359717112757026264">ទិដ្ឋភាព​ទីក្រុង</translation>
-<translation id="4360237979279036412"><ph name="MANAGER"/> តម្រូវឱ្យ​អ្នក​ដំឡើងកំណែ <ph name="DEVICE_TYPE"/> នេះ​ឱ្យបានមុន​ថ្ងៃផុតកំណត់។</translation>
 <translation id="4361142739114356624">លេខកូដ​សម្រាប់​វិញ្ញាបនបត្រ​កម្មវិធី​ភ្ញៀវ​នេះ​បាន​បាត់ ឬ​មិន​ត្រឹមត្រូវ</translation>
 <translation id="4361745360460842907">បើកជាផ្ទាំង</translation>
 <translation id="4363771538994847871">រកមិនឃើញទិសដៅដើម្បីខាសទៅទេ។ ត្រូវការជំនួយដែរទេ?</translation>
@@ -3230,6 +3244,7 @@
 <translation id="4364830672918311045">បង្ហាញការជូនដំណឹង</translation>
 <translation id="4366138410738374926">បានចាប់ផ្ដើម​បោះពុម្ព</translation>
 <translation id="4369121877634339065">អូសពីលើ​រូបភាពណាមួយ ដើម្បី​ស្វែងរក</translation>
+<translation id="4369215744064167350">បានអនុម័តលើសំណើចូលប្រើគេហទំព័រ</translation>
 <translation id="4370975561335139969">អ៊ីមែល និងពាក្យសម្ងាត់ដែលអ្នកបញ្ចូលមិនត្រូវគ្នាទេ</translation>
 <translation id="4373966964907728675">កំពុងខាសដេស៍ថប</translation>
 <translation id="4374831787438678295">កម្មវិធី​ដំឡើង Linux</translation>
@@ -3242,7 +3257,6 @@
 <translation id="4378556263712303865">ការទទួលបានឧបករណ៍</translation>
 <translation id="4379281552162875326">លុប "<ph name="APP_NAME"/>" ឬ?</translation>
 <translation id="4380648069038809855">បានចូលមុខងារពេញអេក្រង់</translation>
-<translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, +1 គណនីទៀត}other{<ph name="EMAIL"/>, +<ph name="EXTRA_ACCOUNTS"/> គណនីទៀត}}</translation>
 <translation id="4384312707950789900">បញ្ចូល​ទៅក្នុង​បណ្តាញ​ដែល​ពេញចិត្ត</translation>
 <translation id="4384652540891215547">ធ្វើសកម្មភាពកម្មវិធីបន្ថែម</translation>
 <translation id="4384886290276344300">ប្ដូរការកំណត់ក្ដារចុច</translation>
@@ -3748,7 +3762,6 @@
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         សូមស្វែងយល់​អំពី​ទិន្នន័យ​ដែល Brave ថាសប្រមូល និង​មូលហេតុ​នៃការប្រមូល<ph name="BEGIN_LINK"/>នៅទីនេះ<ph name="END_LINK"/>។</translation>
-<translation id="49226369361073053">{0,plural, =0{ដំឡើងកំណែ​ឧបករណ៍​ឥឡូវនេះ}=1{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល 1 វិនាទី​ទៀត}other{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល # វិនាទី​ទៀត}}</translation>
 <translation id="492299503953721473">យកកម្មវិធី Android ចេញ</translation>
 <translation id="492363500327720082">កំពុងលុប <ph name="APP_NAME"/>...</translation>
 <translation id="4924002401726507608">ដាក់បញ្ជូនមតិកែលម្អ</translation>
@@ -3853,6 +3866,7 @@
 <translation id="5040823038948176460">ការកំណត់​ខ្លឹមសារ​បន្ថែម</translation>
 <translation id="5043440033854483429">ឈ្មោះអាចប្រើអក្សរ លេខ និងសហសញ្ញា (-) ហើយត្រូវតែមានតួអក្សររួមបញ្ចូលគ្នាទាំងអស់ចន្លោះពី 1 ទៅ 15 តួ។</translation>
 <translation id="5043913660911154449">ឬបញ្ជាក់ PPD ម៉ាស៊ីន​បោះពុម្ព​របស់អ្នក <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
+<translation id="5044527779574548527">កុំបង្ហាញ​ជំហាននេះ​ម្ដងទៀត</translation>
 <translation id="5045550434625856497">ពាក្យសម្ងាត់មិនត្រឹមត្រូវ</translation>
 <translation id="504561833207953641">កំពុង​បើក​នៅក្នុង​រយៈពេលចូលប្រើកម្មវិធីរុករកដែលមានស្រាប់។</translation>
 <translation id="5047421709274785093">ទប់ស្កាត់​ទំព័រ​មិនឱ្យប្រើ​ឧបករណ៍​ចាប់សញ្ញាពន្លឺ​ និងចលនា</translation>
@@ -3863,7 +3877,7 @@
 <translation id="8364458882768727272">ស្វែងរករូបភាពដោយប្រើ Brave Lens</translation>
 <translation id="5056950756634735043">កំពុងភ្ជាប់ជាមួយទម្រង់ផ្ទុក</translation>
 <translation id="5057110919553308744">នៅពេលអ្នកចុច​កម្មវិធីបន្ថែម</translation>
-<translation id="1203953622051744249">គ្រប់គ្រង​គណនី​ដែលអ្នក​បានចូល។ គេហទំព័រ កម្មវិធី និង​កម្មវិធីបន្ថែម​នៅក្នុង Brave និង Google Play អាចប្រើ​គណនីទាំងនេះ ដើម្បីកំណត់​បទពិសោធន៍​ប្រើប្រាស់តាមបំណង​របស់អ្នក ដោយផ្អែកលើ​ការអនុញ្ញាត។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
+<translation id="505776528429481161">ងាយស្រួលភ្ជាប់ និងរៀបចំឧបករណ៍ដែលនៅជិត</translation>
 <translation id="5059241099014281248">រឹតបន្តឹង​ការចូលគណនី</translation>
 <translation id="5059526285558225588">ជ្រើសរើសអ្វីដែលត្រូវចែករំលែក</translation>
 <translation id="5060332552815861872">មាន​ម៉ាស៊ីន​បោះពុម្ព​ 1 សម្រាប់​រក្សាទុក។</translation>
@@ -3919,6 +3933,7 @@
 <translation id="5117139026559873716">ផ្ដាច់​ទូរសព្ទ​ពី <ph name="DEVICE_TYPE"/> របស់អ្នក។ ឧបករណ៍​ទាំងពីរនេះនឹងមិនភ្ជាប់​ដោយស្វ័យប្រវត្តិទៀតទេ។</translation>
 <translation id="5117930984404104619">គ្រប់គ្រងលក្ខណៈកម្មវិធីបន្ថែមដ៏ទៃ ដោយរាប់បញ្ចូលទាំង URLs ដែលអ្នកបានទៅកាន់</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
+<translation id="5120886753782992638">ចុចត្រង់នេះ ដើម្បីចូលទៅកាន់ <ph name="APPROVED_URL"/></translation>
 <translation id="5121052518313988218">មិនអាចប្រើ​ប្រព័ន្ធ​ប្រតិបត្តិការ​នៅក្នុង​ទម្រង់ផ្ទុក Linux របស់អ្នក​បានទៀតទេ។ វានឹងឈប់ទទួលបាន​កំណែសុវត្ថិភាពថ្មី និងការដោះស្រាយបញ្ហា ហើយមុខងារដែលកំពុងដំណើរការ​អាចខូច​ដោយមិនបានរំពឹងទុក។ សូម​ដំឡើងកំណែ​ទៅកំណែចុងក្រោយបំផុត ដើម្បី​បន្តប្រើ Linux។</translation>
 <translation id="5121130586824819730">ឧបករណ៍ផ្ទុកទិន្នន័យរបស់អ្នកពេញហើយ។ សូមរក្សាទុកទីតាំងដ៏ទៃ ឬធ្វើឲ្យមានចន្លោះច្រើនជាងនេះនៅក្នុងឧបករណ៍ផ្ទុកទិន្នន័យ។</translation>
 <translation id="5123433949759960244">​បាល់បោះ</translation>
@@ -4027,6 +4042,7 @@
 <translation id="523505283826916779">ការកំណត់លទ្ធភាពប្រើប្រាស់</translation>
 <translation id="5235750401727657667">ជំនួសទំព័រ​ដែលអ្នកឃើញ នៅពេលបើកផ្ទាំងថ្មី</translation>
 <translation id="6465706586789214771">ដើម្បីងាយស្រួល​ប្រើពាក្យសម្ងាត់ទាំងនោះ​នៅលើឧបករណ៍​ទាំងអស់របស់អ្នក អ្នកអាចផ្លាស់ទីពាក្យសម្ងាត់ទាំងនោះ​ទៅគណនី Brave របស់អ្នក</translation>
+<translation id="523862956770478816">ការអនុញ្ញាតគេហទំព័រ</translation>
 <translation id="5242724311594467048">បើកដំណើរការ "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="5243522832766285132">សូម​ព្យាយាម​ម្ដង​ទៀត​នៅ​ពេល​បន្តិច​ទៀត</translation>
 <translation id="5244474230056479698">កំពុងធ្វើសមកាលកម្មទៅ <ph name="EMAIL"/></translation>
@@ -4054,6 +4070,7 @@
 <translation id="5265562206369321422">ក្រៅបណ្ដាញច្រើនជាងមួយសប្តាហ៍</translation>
 <translation id="5265797726250773323">មានបញ្ហា​ពេល​កំពុងដំឡើង</translation>
 <translation id="5266113311903163739">កំហុសឆ្គងនាំចូលអាជ្ញាធរវិញ្ញាបនប័ត្រ</translation>
+<translation id="526622169288322445">សកម្មភាព​ច្រើន​ទៀត​សម្រាប់ <ph name="ADDRESS_SUMMARY"/></translation>
 <translation id="5269977353971873915">ការបោះពុម្ពបានបរាជ័យ</translation>
 <translation id="5275352920323889391">ឆ្កែ</translation>
 <translation id="527605982717517565">អនុញ្ញាតឲ្យ JavaScript នៅលើ <ph name="HOST"/> ជានិច្ច</translation>
@@ -4234,6 +4251,7 @@
 <translation id="5472627187093107397">រក្សាទុក​ពាក្យសម្ងាត់​សម្រាប់គេហទំព័រនេះ</translation>
 <translation id="5473075389972733037">IBM</translation>
 <translation id="5473156705047072749">{NUM_CHARACTERS,plural, =1{កូដ PIN ត្រូវតែមានតួអក្សរ​យ៉ាងហោចណាស់មួយតួ}other{កូដ PIN ត្រូវតែមានតួអក្សរ​យ៉ាងហោចណាស់ # តួ}}</translation>
+<translation id="5474859849784484111"><ph name="MANAGER"/> តម្រូវឱ្យអ្នក​ភ្ជាប់ Wi-Fi ឥឡូវនេះ ដើម្បីទាញយកកំណែថ្មី​។ ឬទាញយកតាមរយៈការតភ្ជាប់​ផ្អែកតាមទិន្នន័យដែលប្រើ (អាចមានការគិតថ្លៃ)។</translation>
 <translation id="5481273127572794904">មិនអនុញ្ញាតឱ្យទាញយកឯកសារច្រើនដោយស្វ័យប្រវត្តិទេ</translation>
 <translation id="5481941284378890518">បន្ថែមម៉ាស៊ីនបោះពុម្ពនៅក្បែរ</translation>
 <translation id="5483785310822538350">បញ្ឈប់សុពលភាពការចូលប្រើឯកសារ និងឧបករណ៍</translation>
@@ -4290,7 +4308,6 @@
 <translation id="5517304475148761050">កម្មវិធី​នេះ​ត្រូវការ​សិទ្ធិចូល​ប្រើប្រាស់ Play Store</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> - <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5518219166343146486">សួរនៅពេល​ដែល​ទំព័រ​ចង់​មើល​អត្ថបទ និង​រូបភាព​ដែល​បាន​ចម្លង​ទៅ​អង្គចងចាំ</translation>
-<translation id="5518584115117143805">វិញ្ញាបនប័ត្រអ៊ីនគ្រីបអាសយដ្ឋានអ៊ីម៉ែល</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5521078259930077036">តើនេះជាទំព័រដើមដែលអ្នកចង់បានឬ?</translation>
 <translation id="5522156646677899028">កម្មវិធីបន្ថែមផ្ទុកភាពងាយរងគ្រោះផ្នែកសុវត្ថិភាពធ្ងន់ធ្ងរ។</translation>
@@ -4325,6 +4342,7 @@
 <translation id="5554489410841842733">រូបតំណាងនេះអាចមើលឃើញ នៅពេលកម្មវិធីបន្ថែមអាចដំណើរនៅលើទំព័របច្ចុប្បន្ន។</translation>
 <translation id="5554720593229208774">អាជ្ញាធរវិញ្ញាបនប័ត្រអ៊ីម៉ែល</translation>
 <translation id="5555363196923735206">ត្រឡប់កាមេរ៉ា</translation>
+<translation id="5555525474779371165">ជ្រើសរើសការការពារការរុករក​ដោយសុវត្ថិភាពរបស់អ្នក</translation>
 <translation id="5556459405103347317">ដំណើរការឡើងវិញ</translation>
 <translation id="5558125320634132440">គេហទំព័រនេះ​ត្រូវបាន​ទប់ស្កាត់ ដោយសារ​វាអាចមាន​ខ្លឹមសារ​សម្រាប់​មនុស្សពេញវ័យ</translation>
 <translation id="5558129378926964177">ពង្រីក</translation>
@@ -4623,6 +4641,7 @@
 <translation id="5901494423252125310">គម្របម៉ាស៊ីនបោះពុម្ពបើក</translation>
 <translation id="5901630391730855834">លឿង</translation>
 <translation id="5904614460720589786">មិនអាចរៀបចំ <ph name="APP_NAME"/> បានទេ ដោយសារ​មានបញ្ហា​ក្នុងការកំណត់រចនាសម្ព័ន្ធ។ សូមទាក់ទង​អ្នកគ្រប់គ្រង​របស់អ្នក។ លេខ​កូដ​បញ្ហា៖ <ph name="ERROR_CODE"/>។</translation>
+<translation id="8426966365763005150">This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.</translation>
 <translation id="5906655207909574370">ការអាប់ដេតជិតបញ្ចប់ហើយ! ចាប់ផ្តើមឧបករណ៍របស់អ្នកឡើងវិញដើម្បីបញ្ចប់ការអាប់ដេត។</translation>
 <translation id="5906732635754427568">ទិន្នន័យ​ដែល​ពាក់ព័ន្ធ​ជាមួយ​កម្មវិធីនេះ​នឹងត្រូវ​បាន​លុបចេញ​ពីឧបករណ៍​នេះ។</translation>
 <translation id="5908474332780919512">ចាប់ផ្ដើមកម្មវិធី នៅពេលអ្នកចូល</translation>
@@ -4648,6 +4667,7 @@
 <translation id="539658326146969381">ទាញយកឯកសារ PDF ជំនួស​ឲ្យការបើក​ឯកសារទាំងនោះដោយស្វ័យប្រវត្តិនៅក្នុង Brave</translation>
 <translation id="592919310198008711">នៅពេលខ្ញុំចុចកម្មវិធីបន្ថែម​</translation>
 <translation id="5932124097031739492">បាន​ដំឡើង​កំណែ Linux ដោយ​ជោគជ័យ​ហើយ​។</translation>
+<translation id="5932209916647644605"><ph name="MANAGER"/> តម្រូវឱ្យអ្នក​ដំឡើងកំណែ <ph name="DEVICE_TYPE"/> របស់អ្នក​ភ្លាមៗ។</translation>
 <translation id="5932224571077948991">គេហទំព័រ​បង្ហាញ​ការផ្សាយពាណិជ្ជកម្ម​ដែលនាំឱ្យយល់ច្រឡំ ឬរំខាន</translation>
 <translation id="59324397759951282">ឧបករណ៍ USB ពី <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">អ្នកមិនមានអាជ្ញាបណ្ណដែលអាចប្រើបានគ្រប់គ្រាន់ ដើម្បីចុះឈ្មោះឧបករណ៍ហាតវែរ Brave Meet នេះទេ។ សូមទាក់ទងផ្នែកលក់ ដើម្បីទិញអាជ្ញាបណ្ណបន្ថែមទៀត។ ប្រសិនបើអ្នក​ជឿជាក់ថា អ្នកមើលឃើញ​សារនេះ​ដោយសារ​មានការ​ភាន់ច្រឡំ សូម​ទាក់ទង​ផ្នែកជំនួយ។</translation>
@@ -4692,7 +4712,6 @@
 <translation id="597235323114979258">មើលគោលដៅ​ច្រើនទៀត</translation>
 <translation id="5972666587303800813">សេវាកម្ម No-op</translation>
 <translation id="5972708806901999743">ផ្លាស់ទីទៅលើ</translation>
-<translation id="5972801171078377748">កុំ​បង្ហាញ​ម្ដង​ទៀត</translation>
 <translation id="5972826969634861500">ចាប់ផ្តើម <ph name="PRODUCT_NAME"/></translation>
 <translation id="5973041996755340290">"<ph name="CLIENT_NAME"/>" បានចាប់ផ្ដើម​ជួសជុលកម្មវិធីរុករកតាមអ៊ីនធឺណិត​នេះ</translation>
 <translation id="5973605538625120605">ប្ដូរ​កូដ PIN</translation>
@@ -4705,7 +4724,6 @@
 <translation id="5976609451147284762">ជម្រើសនេះ​អនុវត្ត​ចំពោះ Bravebook ដែលប្រើគម្រោង​ទិន្នន័យឬឧបករណ៍ភ្ជាប់បណ្ដាញ​ទូរសព្ទចល័ត ឬនៅពេល​ភ្ជាប់ទៅ​ហតស្ប៉ត​ចល័ត</translation>
 <translation id="5979421442488174909">បកប្រែទៅ <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">ដើម្បីចំណាំទំព័រ សូមចុចផ្កាយនៅក្នុងរបាអាសយដ្ឋាន</translation>
-<translation id="5983831175889857946">ការពិនិត្យមើល​បានបញ្ចប់​ហើយ!</translation>
 <translation id="5984222099446776634">បានទៅកាន់កន្លងទៅថ្មីៗ</translation>
 <translation id="5985458664595100876">ទម្រង់ URL មិនត្រឹមត្រូវទេ។ ទម្រង់ដែលអាចប្រើបានគឺ \\server\share និង smb://server/share ។</translation>
 <translation id="598810097218913399">លុប​ការកំណត់​គ្រាប់ចុច</translation>
@@ -4719,6 +4737,7 @@
 <translation id="4448813628683709282">បានលុបពាក្យសម្ងាត់ចេញពីគណនី Brave របស់អ្នកហើយ</translation>
 <translation id="6002458620803359783">សូរអាន​តាម​ចំណូល​ចិត្ត</translation>
 <translation id="6003143259071779217">ដកបណ្ដាញ​ចល័ត eSIM​ ចេញ</translation>
+<translation id="6003479444341796444">របារចំណងជើងកំពុងបង្ហាញនៅពេលនេះ</translation>
 <translation id="6003582434972667631">រចនាប័ទ្ម​ត្រូវបានកំណត់​ដោយស្ថាប័ន​របស់អ្នក</translation>
 <translation id="6006484371116297560">ធម្មតា</translation>
 <translation id="6007240208646052708">មិនមាន​ការស្វែង​រកតាម​សំឡេង​ជាភាសា​របស់អ្នក​ទេ។</translation>
@@ -4774,6 +4793,7 @@
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>ចំណាំ៖<ph name="END_BOLD"/> សំឡេងថត ឬ​សំឡេង​ដែលស្រដៀង​ប្រហែលជា​អាចចូលប្រើ​លទ្ធផល​ផ្ទាល់ខ្លួនរបស់ <ph name="SUPERVISED_USER_NAME"/> បាន។ ដើម្បីសន្សំ​សំចៃថ្ម អ្នកអាច​ជ្រើសរើស​នៅក្នុងការកំណត់​ជំនួយការ​របស់ <ph name="SUPERVISED_USER_NAME"/> ឱ្យបើក “Ok Brave” តែនៅពេលដែល​ឧបករណ៍នេះ​ភ្ជាប់ជាមួយ​ប្រភពថាមពល​ប៉ុណ្ណោះ។</translation>
 <translation id="6064217302520318294">ការចាក់សោអេក្រង់</translation>
 <translation id="6065289257230303064">គុណលក្ខណៈថតឯកសារភាគីវិញ្ញាបនប័ត្រ</translation>
+<translation id="6065691521254183160">ចុច |<ph name="ACCELERATOR"/>| ដើម្បីបិទ/បើកការផ្ដោតរវាងពពុះជំនួយនេះ និងធាតុដែលវាកំពុងចង្អុលទៅ។</translation>
 <translation id="6066794465984119824">​មិនបានកំណត់កូដតំណាងរូបភាពទេ</translation>
 <translation id="6069464830445383022">គណនី Brave របស់អ្នកគឺជាការចូល Bravebook របស់អ្នក</translation>
 <translation id="6069671174561668781">កំណត់ផ្ទាំងរូបភាព</translation>
@@ -4799,6 +4819,7 @@
 <translation id="6085886413119427067">កំណត់របៀបភ្ជាប់​គេហទំព័រ​តាមរយៈការតភ្ជាប់ដែលមានសុវត្ថិភាព</translation>
 <translation id="6086004606538989567">គណនីដែលអ្នកបានផ្ទៀងផ្ទាត់​មិនមានសិទ្ធិចូលប្រើ​ឧបករណ៍នេះទេ។</translation>
 <translation id="6086846494333236931">បានដំឡើងដោយអ្នកគ្រប់គ្រងរបស់អ្នក</translation>
+<translation id="6086898065659145625">ការចាក់សោឆ្លាតវៃនឹងនាំអ្នកចូលដោយស្វ័យប្រវត្តិ នៅពេលទូរសព្ទរបស់អ្នកនៅជិត។</translation>
 <translation id="6087960857463881712">មុខដ៏ស្រស់ស្អាត</translation>
 <translation id="608912389580139775">ដើម្បីបញ្ចូលទំព័រនេះទៅក្នុងបញ្ជីអានរបស់អ្នក សូមចុចរូបចំណាំ</translation>
 <translation id="6091761513005122595">បានភ្ជាប់​ការចែករំលែក​ដោយ​ជោគជ័យ​ហើយ។</translation>
@@ -4885,6 +4906,7 @@
 <translation id="6184099524311454384">ស្វែងរកផ្ទាំង</translation>
 <translation id="6185132558746749656">ទីតាំងឧបករណ៍</translation>
 <translation id="6186394437969115158">ជាធម្មតា គេហទំព័របង្ហាញការផ្សាយពាណិជ្ជកម្ម ដើម្បីអាចឱ្យពួកគេផ្ដល់ខ្លឹមសារ ឬសេវាកម្មដោយឥតគិតថ្លៃ។ ប៉ុន្តែគេហទំព័រមួយចំនួនត្រូវបានគេស្គាល់ថា បង្ហាញ​ការផ្សាយពាណិជ្ជកម្ម​នាំឱ្យយល់ច្រឡំ ឬរំខាន។</translation>
+<translation id="6190953336330058278">កម្មវិធីមណ្ឌលទូរសព្ទ</translation>
 <translation id="6195005504600220730">អាន​ព័ត៌មានអំពី​កម្មវិធីរុករកតាមអ៊ីនធឺណិត ប្រព័ន្ធប្រតិបត្តិការ និងឧបករណ៍​របស់អ្នក</translation>
 <translation id="6195693561221576702">មិន​អាច​រៀបចំ​ឧបករណ៍នេះ​នៅក្នុងមុខងារ​សាកល្បងពេលគ្មានអ៊ីនធឺណិត​បានទេ។</translation>
 <translation id="6196640612572343990">រារាំង​ខូគី​ភាគី​ទីបី</translation>
@@ -4922,7 +4944,6 @@
 <translation id="6232017090690406397">ថ្ម</translation>
 <translation id="6232116551750539448">ការភ្ជាប់ទៅ <ph name="NAME"/> ត្រូវបានបាត់បង់</translation>
 <translation id="6233154960150021497">លំនាំដើមសម្រាប់ការប្រើប្រាស់សំឡេងជំនួសក្ដារចុច</translation>
-<translation id="5016134351637283420">ការនិយាយជាភាសា<ph name="LANGUAGE"/>ត្រូវបានបញ្ជូនទៅ Brave សម្រាប់ដំណើរការ។</translation>
 <translation id="7946072537360476411">លក្ខខណ្ឌ​ប្រើប្រាស់​របស់ Brave នឹងផ្លាស់ប្ដូរ​នៅថ្ងៃទី 31 ខែមីនា</translation>
 <translation id="6234474535228214774">រង់ចាំការដំឡើង</translation>
 <translation id="6235208551686043831">កាមេរ៉ា​របស់ឧបករណ៍​បានបើក​។ សូមដាក់​កូដ QR នៃ eSIM របស់អ្នក​នៅចំពីមុខ​កាមេរ៉ា​។</translation>
@@ -4959,6 +4980,7 @@
 <translation id="6263284346895336537">មិនធ្ងន់ធរទេ</translation>
 <translation id="6264365405983206840">ជ្រើសរើសទាំងអស់</translation>
 <translation id="6265687851677020761">លុប​ច្រក</translation>
+<translation id="6266532094411434237">កំពុងភ្ជាប់​ជាមួយ <ph name="DEVICE"/></translation>
 <translation id="6267166720438879315">ជ្រើសរើសវិញ្ញាបនប័ត្រមួយដើម្បីផ្ទៀងផ្ទាត់ភាពត្រឹមត្រូវដោយខ្លួនអ្នកទៅ <ph name="HOST_NAME"/></translation>
 <translation id="6268252012308737255">បើកដោយប្រើ <ph name="APP"/></translation>
 <translation id="6270391203985052864">គេហទំព័រ​អាច​ស្នើសុំ​ការអនុញ្ញាត​ដើម្បី​ផ្ញើ​ការជូន​ដំណឹង</translation>
@@ -5025,7 +5047,6 @@
 <translation id="5267531627648004734">ដកចេញពី Brave</translation>
 <translation id="6326855256003666642">ចំនួន Keepalive</translation>
 <translation id="6327785803543103246">ការស្វែងរកប្រូកស៊ីបណ្តាញដោយស្វ័យប្រវត្តិ</translation>
-<translation id="6328378651911184878"><ph name="MANAGER"/> តម្រូវឱ្យអ្នក​ដំឡើងកំណែ <ph name="DEVICE_TYPE"/> នេះភ្លាមៗ។</translation>
 <translation id="6331191339300272798">រចនាប័ទ្មងងឹត​ស្វ័យប្រវត្តិ</translation>
 <translation id="6331566915566907158">ជួយ​កែលម្អ​មុខងារ និង​ប្រតិបត្តិការ​របស់ Chrome OS</translation>
 <translation id="6331818708794917058">គេហទំព័រអាចស្នើសុំភ្ជាប់ជាមួយឧបករណ៍ MIDI</translation>
@@ -5091,7 +5112,6 @@
 <translation id="6410328738210026208">ប្តូរបណ្តាញ និង Powerwash</translation>
 <translation id="6410390304316730527">ការរុករកដោយ​សុវត្ថិភាព​ការពារអ្នក​ពី​អ្នកវាយប្រហារ ដែលអាច​បញ្ឆោតឱ្យអ្នក​ធ្វើអ្វីមួយ​គ្រោះថ្នាក់ដូចជា ដំឡើង​កម្មវិធីគ្រោះថ្នាក់ ឬបង្ហាញព័ត៌មាន​ផ្ទាល់ខ្លួនដូចជា ពាក្យសម្ងាត់ លេខទូរសព្ទ ឬបណ្ណឥណទាន​ជាដើម។ ប្រសិនបើអ្នក​បិទការរុករក​ដោយសុវត្ថិភាព សូមប្រុងប្រយ័ត្ន នៅពេលរុករក​គេហទំព័រ​ដែលមិនគួរ​ឱ្យ​ទុកចិត្ត ឬមិនស្គាល់។</translation>
 <translation id="6410668567036790476">បន្ថែមម៉ាស៊ីនស្វែងរក</translation>
-<translation id="7810992039564280750">ពិនិត្យ URL ធៀបនឹងបញ្ជីគេហទំព័រគ្មានសុវត្ថិភាព ដែលរក្សាទុកនៅក្នុង Brave។ ប្រសិនបើគេហទំព័រណាមួយ​ព្យាយាមលួចពាក្យសម្ងាត់របស់អ្នក ឬនៅពេលអ្នកទាញយក​ឯកសារដែលអាចបង្កគ្រោះថ្នាក់នោះ Brave ក៏ប្រហែលជាបញ្ជូន URL រួមជាមួយផ្នែកនៃខ្លឹមសារទំព័រ ទៅការរុករកដោយសុវត្ថិភាពផងដែរ។</translation>
 <translation id="641469293210305670">ដំឡើង​កំណែថ្មី និងកម្មវិធី</translation>
 <translation id="6414878884710400018">បើក​ចំណូល​ចិត្ត​ប្រព័ន្ធ</translation>
 <translation id="6414888972213066896">អ្នកបានសាកសួរមាតាបិតារបស់អ្នក ថាអ្នកអាចចូលទៅទំព័រនេះបានដែរទេ</translation>
@@ -5102,6 +5122,7 @@
 <translation id="6418160186546245112">កំពុងត្រលប់ទៅកំណែ <ph name="IDS_SHORT_PRODUCT_NAME"/> ដែលបានតំឡើងពីមុន។</translation>
 <translation id="6418481728190846787">ដកចេញការចូលប្រើកម្មវិធីទាំងអស់ជាអចិន្ត្រៃយ៍</translation>
 <translation id="6418511932144861495">ដំឡើងកំណែ​ថ្មីសំខាន់</translation>
+<translation id="641899100123938294">ស្កេនរកឧបករណ៍ថ្មី</translation>
 <translation id="6419524191360800346">មានកំណែថ្មី​សម្រាប់​ដំឡើងទៅ Debian 11 (Bullseye)</translation>
 <translation id="6419546358665792306">ផ្ទុកកម្មវិធី​ដែល​បាន​ពន្លា</translation>
 <translation id="6419843101460769608">កុំអនុញ្ញាត​ឱ្យគេហទំព័រ​ណាមួយ​ចូលប្រើឧបករណ៍ប៊្លូធូស</translation>
@@ -5261,6 +5282,7 @@
 <translation id="659005207229852190">ការពិនិត្យ​សុវត្ថិភាព​បានបញ្ចប់​ហើយ។</translation>
 <translation id="6590458744723262880">ប្ដូរ​ឈ្មោះ​ថត</translation>
 <translation id="6592267180249644460">កំណត់ត្រា WebRTC បានចាប់យក <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
+<translation id="659230975550262204">Show me an eye icon in the status area</translation>
 <translation id="6592808042417736307">បានថត​ស្នាមម្រាមដៃ​របស់អ្នក​ហើយ</translation>
 <translation id="6593881952206664229">មេឌៀដែលមានការរក្សាសិទ្ធិប្រហែលជាមិនចាក់ទេ</translation>
 <translation id="6594011207075825276">កំពុងស្វែងរកឧបករណ៍ស៊េរី...</translation>
@@ -5291,6 +5313,7 @@
 <translation id="6619801788773578757">បញ្ចូលកម្មវិធីបញ្ជរ</translation>
 <translation id="6619990499523117484">បញ្ជាក់​កូដ PIN របស់​អ្នក</translation>
 <translation id="6622980291894852883">បន្តការរារាំងរូបភាព</translation>
+<translation id="6624036901798307345">នៅក្នុងមុខងារ​ថេប្លេត សូមចុចលើ​ប៊ូតុងរបារឧបករណ៍​កម្មវិធីរាប់ផ្ទាំង ដើម្បីបើក​របារផ្ទាំងថ្មី ដែលបង្ហាញ​រូបក្របតំណាង​ផ្ទាំងនីមួយៗ។</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/> មានខ្លឹមសាររសើប ឬគ្រោះថ្នាក់។ សូមស្នើឱ្យម្ចាស់ឯកសារ​នេះធ្វើការកែប្រែ។</translation>
 <translation id="6624687053722465643">ភាពផ្អែម</translation>
 <translation id="6628328486509726751">បានទាញឡើង <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5299,6 +5322,7 @@
 <translation id="6635674640674343739">មិនអាច​បង្កើត​ការតភ្ជាប់​បណ្តាញ​បានទេ។ សូមពិនិត្យការតភ្ជាប់បណ្ដាញរបស់អ្នក រួចព្យាយាមម្តងទៀត។</translation>
 <translation id="6635944431854494329">ម្ចាស់អាចគ្រប់គ្រងមុខងារនេះពីការកំណត់ &gt; កម្រិតខ្ពស់ &gt; បញ្ជូនទិន្នន័យនៃការប្រើប្រាស់ និងការវិភាគទៅ Brave ដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="6635956300022133031">ជ្រើសរើស និង​ប្ដូរសំឡេង​អត្ថបទ​ទៅជា​ការនិយាយ​តាមបំណង</translation>
+<translation id="6636623428211296678">រុករកការកំណត់ច្រើនទៀតខាងក្រោម ឬបញ្ចប់ឥឡូវនេះ</translation>
 <translation id="6639554308659482635">មេម៉ូរី SQLite</translation>
 <translation id="6640268266988685324">បើក​ផ្ទាំង</translation>
 <translation id="6642720633335369752">ដើម្បី​មើលឃើញ​វិនដូកម្មវិធី​ដែលបើក​ទាំងអស់ សូមអូស​ពីក្រោម​ឡើងលើ​ ហើយសង្កត់ឱ្យជាប់។</translation>
@@ -5309,7 +5333,6 @@
 <translation id="6644846457769259194">កំពុងអាប់ដេតឧបករណ៍របស់អ្នក (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="6645437135153136856">ឧបករណ៍ Brave បោះពុម្ពតាមពពកដែលបាន​ជ្រើសរើស​មិន​អាច​ប្រើ​បាន​ទៀតទេ។ <ph name="BR"/>សូមសាក​ល្បង​រៀបចំ​ម៉ាស៊ីនបោះពុម្ព​នៅ​ក្នុងការកំណត់​ប្រព័ន្ធកុំព្យូទ័រ​របស់អ្នក។</translation>
 <translation id="6647228709620733774">URL ការបញ្ឈប់សុពលភាពអាជ្ញាធរវិញ្ញាបនប័ត្រ Netscape</translation>
-<translation id="6647838571840953560">បច្ចុប្បន្ននេះនៅលើ <ph name="CHANNEL_NAME"/></translation>
 <translation id="6648911618876616409">អាច​ដំឡើង​កំណែថ្មី​សំខាន់បាន​ហើយ។ សូមចូល​គណនី​ដើម្បី​ចាប់ផ្តើម។</translation>
 <translation id="6649018507441623493">ចាំមួយភ្លែត...</translation>
 <translation id="3733807065376082271">ពាក្យសម្ងាត់របស់អ្នកសម្រាប់ <ph name="WEBSITE"/> ត្រូវបានរក្សាទុកនៅលើឧបករណ៍នេះ និងនៅក្នុងគណនី Brave របស់អ្នក។ តើអ្នកចង់លុបពាក្យសម្ងាត់មួយណា?</translation>
@@ -5401,7 +5424,6 @@
 <translation id="6748465660675848252">អ្នកអាចបន្តបាន ប៉ុន្តែមានតែទិន្នន័យ និងការកំណត់ដែលអ្នកបានធ្វើសមកាលកម្មប៉ុណ្ណោះនឹងត្រូវស្តារឡើងវិញ។ រាល់ទិន្នន័យមូលដ្ឋានទាំងអស់នឹងបាត់បង់។</translation>
 <translation id="6750757184909117990">បិទ​បណ្ដាញ​ចល័ត</translation>
 <translation id="6750946710563435348">ប្រើ​ឈ្មោះអ្នកប្រើប្រាស់​ផ្សេងទៀត</translation>
-<translation id="6757101664402245801">បានចម្លង URL</translation>
 <translation id="6758056191028427665">អនុញ្ញាតឱ្យយើងដឹងថា ការបំពេញការងាររបស់យើងដូចម្ដេចដែរ។</translation>
 <translation id="6759193508432371551">កំណត់ដូចដើមឡើងវិញ</translation>
 <translation id="676158322851696513">"<ph name="EXTENSION_NAME"/>"</translation>
@@ -5415,6 +5437,7 @@
 <translation id="6775163072363532304">ឧបករណ៍ដែលអាចប្រើ​បាននឹងបង្ហាញ​នៅទីនេះ។</translation>
 <translation id="6777817260680419853">​បាន​ទប់ស្កាត់​ការបញ្ជូន​បន្ត</translation>
 <translation id="6778737459546443941">មាតាបិតារបស់អ្នកមិនទាន់យល់ព្រមនៅឡើយទេ</translation>
+<translation id="6779092717724412415">ដើម្បីបង្កើតការរំលេចបែបនេះ សូមជ្រើសរើសអត្ថបទណាមួយ រួចចុចកណ្ដុរខាងស្ដាំ។</translation>
 <translation id="6779447100905857289">រទេះ​របស់អ្នក</translation>
 <translation id="677965093459947883">តូច​ណាស់​</translation>
 <translation id="6781005693196527806">&amp;គ្រប់គ្រងម៉ាស៊ីន​ស្វែងរក...</translation>
@@ -5460,6 +5483,7 @@
 <translation id="6810613314571580006">ចូលគេហទំព័រដោយស្វ័យប្រវត្តិដោយប្រើព័ត៌មានអត្តសញ្ញាណដែលបានផ្ទុក។ នៅពេលលក្ខណៈពិសេសនោះបិទដំណើរការ អ្នកនឹងត្រូវបានស្នើឲ្យធ្វើការបញ្ជាក់មុនពេលចូលគេហទំព័រម្តងៗ។</translation>
 <translation id="6810768462515084623">អូ៎! ពាក្យសម្ងាត់របស់អ្នកហាក់ដូចជាផុត​កំណត់​ហើយ។ សូម​បន្ត​សុពលភាព​វា​នៅលើ​ឧបករណ៍​ផ្សេង​ទៀត រួច​ព្យាយាមម្ដងទៀត។</translation>
 <translation id="6811034713472274749">ទំព័រអាច​មើលបានហើយ</translation>
+<translation id="6811151703183939603">ខ្លាំង</translation>
 <translation id="6811332638216701903">ឈ្មោះ​ម៉ាស៊ីន DHCP</translation>
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> មិនអាចដំណើរការជាគោលទេ។</translation>
 <translation id="6812841287760418429">រក្សាការប្តូរ</translation>
@@ -5495,7 +5519,6 @@
 <translation id="6843264316370513305">ការជួសជុល​បណ្ដាញ</translation>
 <translation id="6843423766595476978">Ok Brave ត្រូវបាន​កំណត់រួចហើយ</translation>
 <translation id="6845038076637626672">បើកការពង្រីក</translation>
-<translation id="4991384657077828949">ជួយ​កែលម្អ​សុវត្ថិភាព Brave</translation>
 <translation id="6846178040388691741">"<ph name="EXTENSION_NAME"/>" ចង់​បោះពុម្ព <ph name="FILE_NAME"/> ដោយប្រើ <ph name="PRINTER_NAME"/>។</translation>
 <translation id="6847125920277401289">បង្កើន​ទំហំផ្ទុក ដើម្បីបន្ត</translation>
 <translation id="6848388270925200958">ឥឡូវនេះ អ្នកមានបណ្ណ​មួយចំនួន​ដែលអាចប្រើបាន​តែនៅលើឧបករណ៍នេះ​ប៉ុណ្ណោះ</translation>
@@ -5559,6 +5582,7 @@
 <translation id="6914783257214138813">ពាក្យ​សម្ងាត់​របស់អ្នក​នឹងអាច​មើលឃើញ​ដោយ​អ្នក​ដែល​អាចមើល​ឃើញ​ឯកសារ​នាំចេញនេះ។</translation>
 <translation id="6916590542764765824">គ្រប់គ្រងកម្មវិធីបន្ថែម</translation>
 <translation id="6919868320029503575">ពាក្យសម្ងាត់ខ្សោយ</translation>
+<translation id="4194845302979409023">បើកការរុករកដោយសុវត្ថិភាពបន្ថែមសម្រាប់កម្រងព័ត៌មាន Brave នេះដែរឬ?</translation>
 <translation id="6920989436227028121">បើកផ្ទាំងធម្មតា</translation>
 <translation id="6921104647315081813">សម្អាត​សកម្មភាព</translation>
 <translation id="692114467174262153">មិន​អាច​បើក <ph name="ALTERNATIVE_BROWSER_NAME"/> បានទេ</translation>
@@ -5593,6 +5617,7 @@
 <translation id="6955893174999506273">កំណត់​ឧបករណ៍ចុច 1 ទៀត</translation>
 <translation id="6957044667612803194">សោសុវត្ថិភាពនេះ​មិនអាចប្រើកូដ​ PIN បានទេ</translation>
 <translation id="6960507406838246615">តម្រូវឱ្យ​ដំឡើងកំណែ Linux</translation>
+<translation id="8979541182892637256">មិនអាច​ទាញយក​ឯកសារនៃ​ការនិយាយ​ជាភាសា<ph name="LANGUAGE"/>បានទេ។ នឹងព្យាយាម​ទាញយក​នៅពេលក្រោយ។ ការនិយាយ​ត្រូវបានផ្ញើទៅ Brave ដើម្បីដំណើរការ រហូតដល់បញ្ចប់​ការទាញយក។</translation>
 <translation id="696103774840402661">ឯកសារ និងទិន្នន័យមូលដ្ឋាន​ទាំងអស់សម្រាប់អ្នកប្រើប្រាស់ទាំងអស់នៅលើ <ph name="DEVICE_TYPE"/> នេះត្រូវបានលុបជាអចិន្ត្រៃយ៍។</translation>
 <translation id="6964390816189577014">វីរៈបុរស</translation>
 <translation id="6964760285928603117">លុបចេញ​ពីក្រុម</translation>
@@ -5642,6 +5667,7 @@
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> ត្រូវបានភ្ជាប់ ប៉ុន្តែម៉ាស៊ីន​បោះពុម្ពនេះ​ត្រូវការ​ការកំណត់​រចនាសម្ព័ន្ធ</translation>
 <translation id="7000347579424117903">រួមទាំង Ctrl, Alt ឬ Search</translation>
 <translation id="7001036685275644873">កំពុងបម្រុងទុក​កម្មវិធី និងឯកសារ Linux</translation>
+<translation id="7001066449188684145">តម្រូវឱ្យកំណត់អត្តសញ្ញាណ ដើម្បីបោះពុម្ពតាម <ph name="PRINTER_NAME"/>។ សូមទាក់ទង​អ្នកគ្រប់គ្រង​របស់អ្នក។</translation>
 <translation id="7002055706763150362">ដើម្បីដំឡើង Smart Lock សម្រាប់ Bravebook, Brave ត្រូវធ្វើឲ្យប្រាកដថានេះគឺជាអ្នក—វាយបញ្ចូលពាក្យសម្ងាត់របស់អ្នកដើម្បីចាប់ផ្តើម។</translation>
 <translation id="7003339318920871147">មូលដ្ឋានទិន្នន័យគេហទំព័រ</translation>
 <translation id="7003454175711353260">{COUNT,plural, =1{ឯកសារ {COUNT}}other{ឯកសារ {COUNT}}}</translation>
@@ -5674,6 +5700,7 @@
 <translation id="7026552751317161576">កុំអនុញ្ញាតឱ្យកម្មវិធី​លើអ៊ីនធឺណិត​បើកប្រភេទឯកសារ</translation>
 <translation id="7029307918966275733">Crostini មិនត្រូវបាន​ដំឡើងទេ​។ សូម​ដំឡើង Crostini ដើម្បី​មើល​បញ្ជីឈ្មោះអ្នកបង្កើត។</translation>
 <translation id="7029809446516969842">ពាក្យសម្ងាត់</translation>
+<translation id="7030304022046916278">បញ្ជូន URL ទៅការរុករកដោយសុវត្ថិភាព ដើម្បី​ពិនិត្យមើល</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/>៖ បានភ្ជាប់​រន្ធស៊េរី</translation>
 <translation id="7034692021407794547">អ្នកគ្រប់គ្រងដែលមានសិទ្ធិគ្រប់គ្រងការ​ទូទាត់​វិក្កយបត្រត្រូវតែទទួលយកលក្ខខណ្ឌ​ប្រើប្រាស់ហាតវែរ Brave Meet ជាមុនសិន នៅក្នុងផ្នែកហាតវែរ Brave Meet នៃកុងសូលអ្នកគ្រប់គ្រង។</translation>
 <translation id="7036706669646341689"><ph name="DISK_SIZE"/> នៃទំហំផ្ទុក​ត្រូវបានណែនាំ​ឱ្យប្រើសម្រាប់ Linux។ ដើម្បីបង្កើនទំហំផ្ទុក សូមលុបឯកសារចេញពីឧបករណ៍របស់អ្នក។</translation>
@@ -5695,6 +5722,7 @@
 <translation id="7053983685419859001">ទប់ស្កាត់</translation>
 <translation id="7055152154916055070">​បាន​ទប់ស្កាត់​ការបញ្ជូន​បន្ត៖</translation>
 <translation id="7055451306017383754">មិនអាច​ឈប់ចែករំលែក​បានទេ ដោយសារ​កម្មវិធីកំពុង​ប្រើថតនេះ។ ថតនេះនឹង​ឈប់ចែករំលែក នៅពេល Parallels Desktop បិទ​លើកក្រោយ។</translation>
+<translation id="7056011684066172642">Screen locks automatically if you walk off, and won't turn off if you're in front of it</translation>
 <translation id="1860933807472918250">{0,plural, =1{ឯកជន}other{ផ្ទាំងឯកជន​ដែលបើក #}}</translation>
 <translation id="7056526158851679338">តាមដានឧបករណ៍</translation>
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{ការពិនិត្យ​សុវត្ថិភាព​បានដំណើរការ 1 នាទី​មុន}other{ការពិនិត្យ​សុវត្ថិភាព​បានដំណើរការ {NUM_MINS} នាទី​មុន}}</translation>
@@ -5768,7 +5796,6 @@
 <translation id="7133578150266914903">អ្នកគ្រប់គ្រង​របស់អ្នកកំពុងស្ដារ​ឧបករណ៍​របស់អ្នក (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7134098520442464001">ធ្វើឲ្យអត្ថបទតូចជាងមុន</translation>
 <translation id="7135729336746831607">បើកប៊្លូធូស?</translation>
-<translation id="7136639886842764730"><ph name="DOMAIN"/> តម្រូវឱ្យអ្នក​ដំឡើងកំណែ <ph name="DEVICE_TYPE"/> របស់អ្នក​ភ្លាមៗ។</translation>
 <translation id="7136694880210472378">ដាក់ជាលំនាំដើម</translation>
 <translation id="7136993520339022828">មាន​បញ្ហា។ សូមព្យាយាមម្ដងទៀត ដោយជ្រើសរើស​រូបភាពផ្សេង។</translation>
 <translation id="7138515695467025690">បិទ / នឹងបើក​ដោយស្វ័យប្រវត្តិ​នៅពេលថ្ងៃលិច</translation>
@@ -5778,7 +5805,6 @@
 <translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="7149839598364933473">បំប្លែងឧបករណ៍នេះទៅជាឧបករណ៍ <ph name="DEVICE_OS"/>។</translation>
 <translation id="7149893636342594995">24 ម៉ោងមុន</translation>
-<translation id="7152478047064750137">កម្មវិធី​បន្ថែម​នេះ​មិន​តម្រូវ​ឱ្យ​មាន​ការអនុញ្ញាត​ពិសេសទេ</translation>
 <translation id="7154130902455071009">ប្តូរទំព័រចាប់ផ្តើមរបស់អ្នកទៅ៖ <ph name="START_PAGE"/></translation>
 <translation id="7155171745945906037">រូបភាពពីកាមេរ៉ា និងឯកសារដែលមានស្រាប់</translation>
 <translation id="7163202347044721291">កំពុងផ្ទៀងផ្ទាត់លេខ​កូដ​បើក​ដំណើរការ...</translation>
@@ -5853,7 +5879,6 @@
 <translation id="7243784282103630670">មានបញ្ហា ពេលកំពុងដំឡើងកំណែ Linux។ យើងនឹងស្ដារទម្រង់ផ្ទុក​ ដោយប្រើការបម្រុងទុករបស់អ្នក។</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (ល្អបំផុត)</translation>
 <translation id="7246230585855757313">ដោតបញ្ចូលសោសុវត្ថិភាព​របស់អ្នកឡើងវិញ រួចព្យាយាម​ម្ដងទៀត</translation>
-<translation id="7249777306773517303">ឧបករណ៍​នេះស្ថិតក្រោមការគ្រប់គ្រង​របស់ <ph name="DOMAIN"/> និងតម្រូវឱ្យអ្នកចូលគណនី​គ្រប់ពេល។</translation>
 <translation id="7250616558727237648">ឧបករណ៍​ដែលអ្នក​កំពុងចែករំលែក​ជាមួយ មិនបាន​ឆ្លើយតប​ទេ។ សូមព្យាយាមម្ដងទៀត។</translation>
 <translation id="725109152065019550">សូមទោស អ្នកគ្រប់គ្រងរបស់អ្នកបានបិទដំណើរការឧបករណ៍ផ្ទុកទិន្នន័យខាងក្រៅនៅលើគណនីរបស់អ្នក។</translation>
 <translation id="7251346854160851420">ផ្ទាំង​រូបភាព​លំនាំដើម</translation>
@@ -5976,7 +6001,6 @@
 <translation id="7371490947952970241">អ្នក​អាច​បិទ "ទីតាំង" ដោយ​បិទ​ការកំណត់ "ទីតាំង" ចម្បង​នៅលើ​ឧបករណ៍​នេះ។ អ្នក​ក៏​អាចបិទ​ការ​ប្រើប្រាស់ Wi-Fi, បណ្តាញ​ទូរសព្ទ​ចល័ត និង​ឧបករណ៍​ចាប់​សញ្ញា​ផ្សេងៗសម្រាប់​ទីតាំង​នៅក្នុង​ការកំណត់​ទីតាំង​បាន​ផង​ដែរ​។</translation>
 <translation id="7371917887111892735">ផ្ទាំងបង្រួមតាមទទឹងផ្ទាំងដែលបានដៅ</translation>
 <translation id="7374376573160927383">គ្រប់គ្រងឧបករណ៍ USB</translation>
-<translation id="7375235221357833624">{0,plural, =1{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល​មួយ​ម៉ោង​ទៀត}other{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល # ម៉ោង​ទៀត}}</translation>
 <translation id="7376543451826039186">ការរុករកកាន់តែរហ័ស៖ ឧទាហរណ៍ ផ្ទុកខ្លឹមសារបន្ថែមជាក់លាក់យ៉ាងសកម្មជាមុន ដោយផ្អែកលើទំព័របច្ចុប្បន្ន</translation>
 <translation id="7376553024552204454">ហាយឡាយ៍ទស្សន៍ទ្រនិចកណ្តុរនៅពេលវារំកិល</translation>
 <translation id="737728204345822099">កំណត់ត្រា​ដែលអ្នក​ចូលមើលគេហទំព័រ​នេះអាច​ត្រូវបាន​រក្សាទុក​នៅក្នុង​សោសុវត្ថិភាព​របស់អ្នក។</translation>
@@ -6108,7 +6132,6 @@
 <translation id="7506242536428928412">ដើម្បីប្រើសោសុវត្ថិភាព​ថ្មីរបស់អ្នក សូមកំណត់កូដ PIN ថ្មី</translation>
 <translation id="7506541170099744506"><ph name="DEVICE_TYPE"/> របស់អ្នកបានចុះឈ្មោះដោយជោគជ័យសម្រាប់ការគ្រប់គ្រងសហគ្រាស។</translation>
 <translation id="7507207699631365376">មើល<ph name="BEGIN_LINK"/>គោលការណ៍ឯកជនភាព<ph name="END_LINK"/>របស់ក្រុមហ៊ុនផ្ដល់សេវានេះ</translation>
-<translation id="7507930499305566459">វិញ្ញាបនប័ត្រអ្នកឆ្លើយតបស្ថានភាព</translation>
 <translation id="7509097596023256288">កំពុងរៀបចំការគ្រប់គ្រង</translation>
 <translation id="7509246181739783082">ផ្ទៀងផ្ទាត់អត្តសញ្ញាណរបស់អ្នក</translation>
 <translation id="7509539379068593709">លុប​កម្មវិធី</translation>
@@ -6118,7 +6141,6 @@
 <translation id="7514417110442087199">បញ្ចូល​ការកំណត់​គ្រាប់ចុច</translation>
 <translation id="751523031290522286"><ph name="APP_NAME"/> ត្រូវបាន​ទប់ស្កាត់​ដោយ​អ្នកគ្រប់គ្រង​។ សូមស្នើសុំ​ការអនុញ្ញាត​ពីអ្នកគ្រប់គ្រង ដើម្បីប្រើកម្មវិធីនេះ។</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> ត្រូវបានផ្អាក</translation>
-<translation id="7517063221058203587">{0,plural, =1{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល 1 នាទី​ទៀត}other{ដំឡើងកំណែ​ឧបករណ៍​ក្នុងរយៈពេល # នាទី​ទៀត}}</translation>
 <translation id="7522255036471229694">និយាយថា "Ok Brave"</translation>
 <translation id="7523585675576642403">ប្ដូរឈ្មោះ​កម្រងព័ត៌មាន</translation>
 <translation id="7525067979554623046">បង្កើត</translation>
@@ -6220,8 +6242,10 @@
 <translation id="7622966771025050155">ប្ដូរទៅ​ផ្ទាំងដែល​បានថត</translation>
 <translation id="7624337243375417909">បិទពុម្ពអក្សរធំ</translation>
 <translation id="7625568159987162309">មើល​ការ​អនុញ្ញាត និង​ទិន្នន័យ​ដែល​​ផ្ទុក​នៅលើ​ទំព័រ​នានា</translation>
+<translation id="7625823789272218216">ផ្ទាំងថ្មីនៅខាងឆ្វេង</translation>
 <translation id="7628201176665550262">អត្រាផ្ទុកឡើងវិញ</translation>
 <translation id="7629827748548208700">ផ្ទាំង៖ <ph name="TAB_NAME"/></translation>
+<translation id="7630426712700473382">ឧបករណ៍​នេះស្ថិតក្រោមការគ្រប់គ្រង​របស់ <ph name="MANAGER"/> និងតម្រូវឱ្យអ្នកចូលគណនី​គ្រប់ពេល។</translation>
 <translation id="7631014249255418691">បានបម្រុងទុក​កម្មវិធី និង​ឯកសារ Linux ដោយ​ជោគជ័យ​ហើយ</translation>
 <translation id="7631205654593498032">នៅពេលភ្ជាប់​ឧបករណ៍​របស់អ្នក មានន័យ​ថាអ្នក​យល់ព្រមឱ្យ <ph name="DEVICE_TYPE"/> របស់អ្នក​អាច៖</translation>
 <translation id="7631887513477658702">បើកឯកសារប្រភេទនេះជានិច្ច</translation>
@@ -6250,6 +6274,7 @@
 <translation id="7650582458329409456">{COUNT,plural, =1{បានរៀបចំ​ស្នាមម្រាមដៃ 1}other{បានរៀបចំ​ស្នាមម្រាមដៃ {COUNT}}}</translation>
 <translation id="7650677314924139716">ការកំណត់​ការប្រើ​ទិន្នន័យ​បច្ចុប្បន្នគឺ Wi-Fi តែប៉ុណ្ណោះ</translation>
 <translation id="7650920359639954963">មិនបើក៖ <ph name="REASON"/></translation>
+<translation id="7651784568388208829">ការបន្តកិច្ចការនៃមណ្ឌលទូរសព្ទ</translation>
 <translation id="765293928828334535">កម្មវិធី កម្មវិធីបន្ថែម និងស្គ្រីប​អ្នកប្រើប្រាស់​មិនអាច​ត្រូវ​បាន​បញ្ចូល​ពី​គេហទំព័រ​នេះទេ</translation>
 <translation id="7652954539215530680">បង្កើត​កូដ PIN</translation>
 <translation id="7654941827281939388">គណនីនេះរួចរាល់ក្នុងការប្រើនៅលើកុំព្យូទ័រនេះហើយ។</translation>
@@ -6404,6 +6429,7 @@
 <translation id="7797246427375693110">បើក / នឹងបិទ​ដោយស្វ័យប្រវត្តិ​នៅម៉ោង <ph name="TIME"/></translation>
 <translation id="7797571222998226653">បិទ</translation>
 <translation id="7798844538707273832">បាន​ទប់ស្កាត់ <ph name="PERMISSION"/> ដោយ​ស្វ័យប្រវត្តិ</translation>
+<translation id="7799220949286681310">Smart screen lock</translation>
 <translation id="7799299114731150374">បានកំណត់ផ្ទាំងរូបភាពដោយជោគជ័យ</translation>
 <translation id="7799817062559422778">មុខងារភ្លឺ</translation>
 <translation id="7800159967992492578">បិទ/បើក​ការស្វែងរកចំហៀង។ ការស្វែងរកចំហៀងបានបើកដំណើរការ។</translation>
@@ -6509,6 +6535,7 @@
 <translation id="7887864092952184874">ប៊្លូធូសកណ្តុរត្រូវបានភ្ជាប់</translation>
 <translation id="7889371445710865055">ប្ដូរ​ភាសា​សរសេរ​តាមអាន</translation>
 <translation id="7890147169288018054">មើលព័ត៌មានអំពីបណ្ដាញដូចជា អាសយដ្ឋាន IP ឬ MAC របស់អ្នកជាដើម</translation>
+<translation id="7892384782944609022">មិនអាច​ផ្គូផ្គង​បានទេ។ ជ្រើសរើសឧបករណ៍ដើម្បីព្យាយាមម្ដងទៀត។</translation>
 <translation id="7893008570150657497">ចូលប្រើរូបថត តន្ត្រី និងកំសាន្តផ្សេងទៀតពីកុំព្យូទ័ររបស់អ្នក</translation>
 <translation id="7893153962594818789">ប៊្លូធូស​ត្រូវបាន​បិទនៅលើ <ph name="DEVICE_TYPE"/> នេះ។ សូម​បញ្ចូលពាក្យ​សម្ងាត់​របស់អ្នក រួចបើក​ប៊្លូធូស។</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (លំនាំដើម)</translation>
@@ -6552,6 +6579,7 @@
 <translation id="7933518760693751884">ដើម្បីរក្សាទុកទំព័រសម្រាប់ពេលក្រោយ សូមចុចរូបចំណាំ</translation>
 <translation id="7933634003144813719">គ្រប់គ្រង​ថត​រួម</translation>
 <translation id="793531125873261495">មាន​បញ្ហា​ក្នុងការ​ទាញយក​ម៉ាស៊ីន​និម្មិត។ សូមព្យាយាម​ម្តងទៀត។</translation>
+<translation id="7935451262452051102">បាន​បញ្ចប់ <ph name="PERCENT"/>%</translation>
 <translation id="7938594894617528435">បច្ចុប្បន្ននៅក្រៅបណ្ដាញ</translation>
 <translation id="7939062555109487992">ជម្រើស​កម្រិត​ខ្ពស់</translation>
 <translation id="7939412583708276221">រក្សាទុកវាទោះបីជាយ៉ាងណាក៏ដោយ</translation>
@@ -6563,6 +6591,7 @@
 <translation id="7946586320617670168">ប្រភពដើម​ត្រូវតែ​មានសុវត្ថិភាព</translation>
 <translation id="794676567536738329">អះអាងការអនុញ្ញាត</translation>
 <translation id="7947962633355574091">ថតចម្លងអាសយដ្ឋានវីដេអូ</translation>
+<translation id="7948407723851303488">ទំព័រទាំងអស់នៃ <ph name="DOMAIN_NAME"/></translation>
 <translation id="1618464105329025698">ដើម្បី​បញ្ចូល ឬ​គ្រប់គ្រង​វិធីបង់ប្រាក់ Brave Pay សូមចូល​ទៅកាន់<ph name="BEGIN_LINK"/>គណនី Brave<ph name="END_LINK"/> របស់អ្នក</translation>
 <translation id="7952708427581814389">គេហទំព័រអាចស្នើសុំមើលអត្ថបទ និងរូបភាពនៅក្នុងឃ្លីបបតរបស់អ្នក</translation>
 <translation id="795282463722894016">បានបញ្ចប់ការស្ដារ</translation>
@@ -6683,6 +6712,7 @@
 <translation id="8062844841289846053">{COUNT,plural, =1{ក្រដាស 1 សន្លឹក}other{ក្រដាស {COUNT} សន្លឹក}}</translation>
 <translation id="8063235345342641131">រូបតំណាងពណ៌បៃតងលំនាំដើម</translation>
 <translation id="8063535366119089408">មើល​ឯកសារ</translation>
+<translation id="4608113456606545718">ការពារទិន្នន័យទូរសព្ទរបស់អ្នក នៅពេល Bravebook នេះភ្ញាក់ពីដេក។</translation>
 <translation id="8064279191081105977">ក្រុម <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">ប្រអប់តភ្ជាប់</translation>
 <translation id="8068253693380742035">ចុចដើម្បី​ចូល</translation>
@@ -6742,6 +6772,7 @@
 <translation id="811994229154425014">ដកឃ្លា​ពីរដង ដើម្បី​វាយបញ្ចូល​សញ្ញាចុច</translation>
 <translation id="8120505434908124087">ដំឡើងកម្រងព័ត៌មាន eSIM</translation>
 <translation id="812260729110117038">អ្នកផ្សាយ​ពាណិជ្ជកម្ម និង​អ្នកបោះពុម្ពផ្សាយ​អាចសិក្សាអំពី​ប្រសិទ្ធភាពនៃ​ការផ្សាយពាណិជ្ជកម្ម​ក្នុងរបៀបមួយ​ដែលមិនតាមដាន​អ្នកនៅលើ​គេហទំព័រនានា។</translation>
+<translation id="81231173274944570">បើកមតិស្ថាបនាតាមការប៉ះ។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="81238879832906896">ផ្កាពណ៌លឿង និងពណ៌ស</translation>
 <translation id="8124313775439841391">ONC គ្រប់គ្រង</translation>
 <translation id="813082847718468539">មើលព័ត៌មានគេហទំព័រ</translation>
@@ -6830,7 +6861,6 @@
 <translation id="8213449224684199188">បាន​ចូល​មុខងារ​រូបថត</translation>
 <translation id="8214489666383623925">បើកឯកសារ...</translation>
 <translation id="8215129063232901118">ចូលប្រើសមត្ថភាពទូរសព្ទរបស់អ្នកពី <ph name="DEVICE_TYPE"/> របស់អ្នក</translation>
-<translation id="8216351761227087153">មើល</translation>
 <translation id="8217399928341212914">បន្តរារាំងការទាញយកឯកសារជាច្រើនដោយស្វ័យប្រវត្តិ</translation>
 <translation id="8221491193165283816">ជាធម្មតា អ្នកទប់ស្កាត់​ការជូនដំណឹង។ ដើម្បីអនុញ្ញាត​ឱ្យគេហទំព័រនេះ​ជូនដំណឹងដល់អ្នក សូមចុច​ត្រង់នេះ។</translation>
 <translation id="822347941086490485">កំពុងស្វែងរកឧបករណ៍ HID...</translation>
@@ -6857,6 +6887,7 @@
 <translation id="8244514732452879619">បិទ​ភ្លើង​បន្តិចទៀត​</translation>
 <translation id="8246776524656196770">ការពារសោសុវត្ថិភាព​របស់អ្នកដោយប្រើកូដ PIN (លេខសម្គាល់ផ្ទាល់ខ្លួន)</translation>
 <translation id="8248050856337841185">បិទភ្ជាប់</translation>
+<translation id="3105590366897772437">គន្លឹះ Brave</translation>
 <translation id="8249048954461686687">ថតឯកសារ OEM</translation>
 <translation id="8249615410597138718">ផ្ញើ​ទៅ​ឧបករណ៍​របស់អ្នក</translation>
 <translation id="8249672078237421304">ផ្តល់ជូន​ការបកប្រែ​ទំព័រ​ដែល​មិនមែន​ជាភាសា​ដែល​អ្នក​អាន</translation>
@@ -6930,7 +6961,6 @@
 <translation id="8324784016256120271">គេហទំព័រ​អាចប្រើ​ខូគី ដើម្បីមើលសកម្មភាព​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​នៅលើ​គេហទំព័រ​ផ្សេងៗ ឧទាហរណ៍ ដើម្បីកំណត់​ការផ្សាយ​ពាណិជ្ជកម្ម​ឱ្យ​ស្របនឹងអ្នក</translation>
 <translation id="8325413836429495820">មិនអនុញ្ញាតឱ្យមើលឃ្លីបបតរបស់អ្នកទេ</translation>
 <translation id="8326478304147373412">PKCS #7, ខ្សែវិញ្ញាបនប័ត្រ</translation>
-<translation id="8327039559959785305">មានបញ្ហា​ក្នុងការភ្ជាប់​ឯកសារ Linux ។ សូមព្យាយាម​ម្ដងទៀត។</translation>
 <translation id="8327676037044516220">ការកំណត់​ខ្លឹមសារ និង​ការអនុញ្ញាត</translation>
 <translation id="833256022891467078">ថតដែល Crostini បានចែករំលែក</translation>
 <translation id="8335587457941836791">ដកការដៅចេញពីធ្នើ</translation>
@@ -7040,6 +7070,7 @@
 <translation id="8460932807646981183">គ្រប់គ្រង​ម៉ាស៊ីន​ស្វែងរក និង​ការស្វែងរក​នៅលើគេហទំព័រ</translation>
 <translation id="84613761564611563">បានស្នើ UI សម្រាប់កំណត់រចនាសម្ព័ន្ធបណ្តាញ សូមរង់ចាំ...</translation>
 <translation id="8461914792118322307">ប្រូកស៊ី</translation>
+<translation id="8463001014623882202">ការផ្ដល់សិទ្ធិមិនបានសម្រេចទេ</translation>
 <translation id="8463215747450521436">អ្នកប្រើដែលបានចាត់នេះអាចត្រូវបានលុប ឬបិទដំណើរការដោយអ្នកគ្រប់គ្រង។ សូមទំនាក់ទំនងអ្នកគ្រប់គ្រង ប្រសិនបើអ្នកចង់បន្ត។ ចូលជាអ្នកប្រើនេះ។</translation>
 <translation id="846374874681391779">របារ​ទាញយក</translation>
 <translation id="8463955938112983119"><ph name="PLUGIN_NAME"/> ត្រូវបានបិទ។</translation>
@@ -7324,9 +7355,11 @@
 <translation id="8763927697961133303">ឧបករណ៍ USB</translation>
 <translation id="5108988215075699143">អាល់ប៊ុម Brave រូបថត</translation>
 <translation id="4570609078116869893">ធ្វើ​បច្ចុប្បន្នភាព Brave ដោយ​ស្វ័យប្រវត្តិ​សម្រាប់​អ្នកប្រើប្រាស់​ទាំងអស់</translation>
+<translation id="8767765348545497220">បិទ​ពពុះជំនួយ</translation>
 <translation id="8770406935328356739">ថត root ផ្នែកបន្ថែម</translation>
 <translation id="8771300903067484968">ផ្ទៃខាងក្រោយ​នៃទំព័រចាប់​ផ្ដើមត្រូវបាន​កំណត់ទៅផ្ទៃខាងក្រោយ​លំនាំដើមឡើងវិញ។</translation>
 <translation id="8773302562181397928">រក្សាទុក <ph name="PRINTER_NAME"/></translation>
+<translation id="8773350724590665675">Snooping protection</translation>
 <translation id="8774379074441005279">បញ្ជាក់ការស្ដារ</translation>
 <translation id="8774934320277480003">ចន្លោះគែមខាងលើ</translation>
 <translation id="8775144690796719618">URL មិនត្រឹមត្រូវ</translation>
@@ -7337,7 +7370,6 @@
 <translation id="8778328560035799409">ឧបករណ៍ចុច​ដែលបានកំណត់​បច្ចុប្បន្នរបស់អ្នក​នឹងត្រូវបានសម្អាត</translation>
 <translation id="1732768497619250086">ទាញយក​ការពណ៌នា​អំពី​រូបភាពពី Brave</translation>
 <translation id="8780443667474968681">ការស្វែង​រកតាម​សំឡេង​ត្រូវបាន​បិទ។</translation>
-<translation id="878069093594050299">វិញ្ញាបនប័ត្រនេះត្រូវបានផ្ទៀងផ្ទាត់សម្រាប់ការប្រើប្រាស់ខាងក្រោម៖</translation>
 <translation id="8781834595282316166">ផ្ទាំងថ្មី​នៅក្នុងក្រុម</translation>
 <translation id="8782565991310229362">ការបើកដំណើរការកម្មវិធីបញ្ជរត្រូវបានបដិសេធ។</translation>
 <translation id="8783834180813871000">វាយបញ្ចូល​កូដ​ផ្គូផ្គងប៊្លូធូស បន្ទាប់​មក​ចុច Return ឬ Enter។</translation>
@@ -7443,6 +7475,7 @@
 <translation id="8879284080359814990">បង្ហាញជាផ្ទាំង</translation>
 <translation id="8879921471468674457">ចងចាំព័ត៌មាន​ចូលគណនី</translation>
 <translation id="8880054210564666174">មិនអាច​ទាញយក​បញ្ជីទំនាក់ទំនង​បានទេ។ សូម​ពិនិត្យ​មើល​ការ​តភ្ជាប់​បណ្ដាញ​របស់​អ្នក ឬ<ph name="LINK_BEGIN"/>ព្យាយាមម្ដងទៀត<ph name="LINK_END"/>។</translation>
+<translation id="8880344290593529089">បើកការកំណត់ដើម្បីភ្ជាប់ <ph name="USB_DEVICE_NAME"/> ជាមួយ Linux ឬ Parallels Desktop</translation>
 <translation id="8881020143150461183">សូមព្យាយាមម្ដងទៀត។ ដើម្បី​ទទួលបាន​ជំនួយបច្ចេកទេស សូមទាក់ទង <ph name="CARRIER_NAME"/> ។</translation>
 <translation id="8883273463630735858">បើក​ការបង្កើន​ល្បឿនផ្ទាំងប៉ះ</translation>
 <translation id="8884570509232205463">ឥឡូវនេះ ឧបករណ៍របស់​អ្នកត្រូវបានកំណត់ឱ្យចាក់សោនៅម៉ោង <ph name="UNLOCK_TIME"/>។</translation>
@@ -7478,6 +7511,7 @@
 <translation id="8918637186205009138"><ph name="DEVICE_TYPE"/> របស់ <ph name="GIVEN_NAME"/></translation>
 <translation id="8922624386829239660">រំកិលអេក្រង់ នៅពេលកណ្ដុរប៉ះគែមអេក្រង់</translation>
 <translation id="8923880975836399332">បៃតងចាស់</translation>
+<translation id="8925124370124776087">របារចំណងជើងត្រូវបានលាក់នៅពេលនេះ</translation>
 <translation id="8925458182817574960">ការកំណត់</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
 <translation id="892706138619340876">ការកំណត់​មួយចំនួន​ត្រូវ​បានកំណត់​ឡើងវិញ</translation>
@@ -7600,7 +7634,6 @@
 <translation id="9040661932550800571">ធ្វើបច្ចុប្បន្នភាព​ពាក្យសម្ងាត់​សម្រាប់ <ph name="ORIGIN"/>?</translation>
 <translation id="9041692268811217999">ការចូល​ប្រើ​ឯកសារមូលដ្ឋាន​នៅលើ​ម៉ាស៊ីន​របស់អ្នក​ត្រូវបានបិទ​ដោយ​អ្នកគ្រប់គ្រង​របស់អ្នក</translation>
 <translation id="904224458472510106">ប្រតិបត្តិការនេះ​មិនអាច​ត្រឡប់វិញ​បានទេ</translation>
-<translation id="9042893549633094279">ភាពឯកជន និងសុវត្ថិភាព</translation>
 <translation id="904451693890288097">សូមបញ្ចូលលេខសម្ងាត់សម្រាប់ "<ph name="DEVICE_NAME"/>"។</translation>
 <translation id="9044646465488564462">បានបរាជ័យក្នុងការភ្ជាប់ទៅបណ្តាញ៖ <ph name="DETAILS"/></translation>
 <translation id="9045160989383249058">បញ្ជីអានរបស់អ្នក​បានផ្លាស់ទីទៅ​ផ្ទាំងចំហៀងថ្មី។ សូមសាកល្បង​ប្រើវា​នៅទីនេះ។</translation>
@@ -7613,6 +7646,7 @@
 <translation id="9053893665344928494">ចងចាំជម្រើសរបស់ខ្ញុំ</translation>
 <translation id="9055636786322918818">អនុវត្ត​ការអិុនគ្រីប RC4 ។ ការប្រើប្រាស់​ជម្រើសនេះ​បង្កើន​ហានិភ័យ​ ពីព្រោះ​​ប្រព័ន្ធ​កូដសម្ងាត់ RC4 មិនមាន​សុវត្ថិភាពនោះទេ។</translation>
 <translation id="9056810968620647706">គ្មានរបស់ត្រូវគ្នាបានរកឃើញទេ។</translation>
+<translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/> ចង់ចូលប្រើខ្លឹមសារខាងក្រោម៖</translation>
 <translation id="9057354806206861646">កាលវិភាគ​ដំឡើងកំណែ</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">មាន​បញ្ហា​ចាប់ពី​ជួរទី <ph name="ERROR_LINE_START"/> ដល់ជួរទី <ph name="ERROR_LINE_END"/></translation>
@@ -7804,6 +7838,7 @@
 <translation id="964439421054175458">{NUM_APLLICATIONS,plural, =1{កម្មវិធី}other{កម្មវិធី}}</translation>
 <translation id="964790508619473209">ការគ្រប់គ្រង​អេក្រង់</translation>
 <translation id="965211523698323809">ផ្ញើ និង​ទទួលសារ​ជា​អក្សរពី <ph name="DEVICE_TYPE"/> របស់អ្នក។ <ph name="LINK_BEGIN"/>ស្វែងយល់​បន្ថែម<ph name="LINK_END"/></translation>
+<translation id="8302628777674731869">រាយការណ៍អំពីបញ្ហាពាក់ព័ន្ធនឹង Brave Cast</translation>
 <translation id="967398046773905967">កុំអនុញ្ញាត​ឱ្យគេហទំព័រ​ណាមួយ​ចូលប្រើ​ឧបករណ៍ HID</translation>
 <translation id="967624055006145463">​ទិន្នន័យដែល​បាន​រក្សា​ទុក</translation>
 <translation id="96774243435178359">ម៉ាស៊ីនបោះ​ពុម្ពដែលស្ថិតក្រោមការគ្រប់គ្រង</translation>
@@ -7878,7 +7913,6 @@
 <translation id="5828545842856466741">បន្ថែមបុគ្គល...</translation>
 <translation id="2254158488150713536">ដើម្បី​បន្ត សូម​ចុចយល់ព្រម បន្ទាប់​មកចុច​បញ្ចូល​មនុស្ស​ ដើម្បី​បង្កើត​កម្រង​ព័ត៌មាន​ថ្មីសម្រាប់​អាសយដ្ឋាន​អ៊ីមែល​របស់អ្នក។</translation>
 <translation id="1725743343613175327">ដើម្បី​បន្ត សូម​ចុចយល់ព្រម បន្ទាប់​មកចុច​បញ្ចូល​ទម្រង់ពត៌មាន​ ដើម្បី​បង្កើត​ទម្រង់ព័ត៌មាន​ថ្មីមួយ សម្រាប់​អាសយដ្ឋាន​អ៊ីមែល <ph name="DOMAIN"/> ​របស់អ្នក។</translation>
-<translation id="1278825116220478166">មនុស្ស</translation>
 <translation id="3707212204259470604">គ្រប់គ្រងមនុស្សផ្សេងទៀត</translation>
 <translation id="5832813618714645810">មនុស្ស</translation>
 <translation id="5840822070878669614">បើក Brave Web Store</translation>

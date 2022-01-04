@@ -15,7 +15,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="7419046106786626209">Chrome OS kan je gegevens niet synchroniseren omdat synchronisatie niet beschikbaar is voor je domein.</translation>
 <translation id="5147525139567260139">Een Brave-tabblad delen</translation>
 <translation id="1530633922026945685">Brave heeft toegangsrechten voor de camera nodig om een 3D-kaart van je omgeving te maken</translation>
-<translation id="4828904843379324771">Als je Brave sluit, wist de browser automatisch cookies en sitegegevens van de pagina's die je hebt bezocht</translation>
 <translation id="5616153642055197778">Er is een nieuwe, veiligere versie van Brave beschikbaar.</translation>
 <translation id="6797402139308059782">Brave laten uitvoeren op de achtergrond</translation>
 <translation id="5875673934455379806">Brave opnieuw installeren</translation>
@@ -30,6 +29,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8745514854244955877">Brave - Inloggen bij netwerk - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Als je een computer deelt, kunnen vrienden en familie afzonderlijk surfen en Brave configureren zoals zij dat willen.</translation>
 <translation id="5997267581285668459">Optioneel: Help de functies en prestaties van Chrome OS te verbeteren door automatisch diagnostische en gebruiksgegevens naar Brave te sturen.</translation>
+<translation id="7810992039564280750">Checkt URL's aan de hand van een lijst met onveilige sites die is opgeslagen in Brave. Als een site je wachtwoord probeert te stelen of als je een schadelijk bestand downloadt, kan Brave ook URL's, inclusief delen van de paginacontent, naar Safe Browsing sturen.</translation>
 <translation id="9095263438435683933">Als je een nummer hier vandaan naar je Android-telefoon wilt sturen, log je in bij Brave op beide apparaten.</translation>
 <translation id="3813272600615358652">Deze extensie heeft gewijzigd welke pagina wordt getoond wanneer je Brave start.</translation>
 <translation id="2576129394594491151">De extensie <ph name="EXTENSION_NAME"/> heeft gewijzigd welke pagina je ziet als je Brave start.</translation>
@@ -50,9 +50,11 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2799223571221894425">Opnieuw starten</translation>
 <translation id="3783547330001921298">Hiermee maak je een nieuw Brave-profiel voor <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="777113543093865885">Verwijderen uit Brave…</translation>
+<translation id="5265419033369521352">Beschermt je op Brave en kan worden gebruikt om de beveiliging in andere Brave-apps te verbeteren als je bent ingelogd.</translation>
 <translation id="2885378588091291677">Taakbeheer</translation>
 <translation id="2176825726964012531">Over &amp;Brave</translation>
 <translation id="8208853227947884571">Brave is up-to-date</translation>
+<translation id="5122472867956731189">Als een site je wachtwoord probeert te stelen of als je een schadelijk bestand downloadt, kan Brave ook URL's, inclusief delen van de paginacontent, naar Safe Browsing sturen</translation>
 <translation id="2953892977076487219">Brave probeert wachtwoorden te bewerken.</translation>
 <translation id="8755404239607088219">Brave kan je wachtwoorden niet checken. Probeer het later opnieuw.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
@@ -125,7 +127,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="1786715389543715322">Brave updaten (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Inloggen bij Brave toestaan</translation>
 <translation id="5536657158619734169">Er is een nieuwe versie van Brave beschikbaar.</translation>
-<translation id="5874882355102994015">Brave kan het afdrukvoorbeeld niet bekijken wanneer de ingebouwde pdf-viewer ontbreekt.</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bèta</translation>
 <translation id="707769633889902835">Chrome OS kan deze pagina niet openen.</translation>
@@ -159,6 +160,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8320964054148936490">Deze computer beschikt al over een recentere versie van Brave. Als de software niet werkt, moet je Brave verwijderen en het opnieuw proberen.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave wordt nu opnieuw gestart}=1{Brave wordt over één seconde opnieuw gestart}other{Brave wordt over # seconden opnieuw gestart}}</translation>
 <translation id="5980269616827212166">Brave heeft toegang tot de opslag nodig om bestanden te downloaden</translation>
+<translation id="7651600795135059130">Checkt URL's aan de hand van een lijst met onveilige sites die is opgeslagen in Brave</translation>
 <translation id="5019879183386042809">Brave als standaardbrowser instellen</translation>
 <translation id="428541510811554120">Brave kan niet checken op updates. Check de internetverbinding.</translation>
 <translation id="7445061995866044926">Uitloggen bij Brave?</translation>
@@ -185,7 +187,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="1489465648257900784">Je profiel kan niet worden gebruikt, omdat dit is gemaakt in een recentere versie van Brave.
 
 Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirectory op of gebruik een recentere versie van Brave.</translation>
-<translation id="5450493308072741203">&amp;Brave updaten</translation>
 <translation id="6666624454809779082">Brave is al geïnstalleerd voor alle gebruikers op je computer.</translation>
 <translation id="5360050006043219962">Log in en zet synchronisatie aan voor toegang tot je Brave-gegevens op al je apparaten</translation>
 <translation id="8291513491595858997">Je ouder heeft 'Rechten voor sites, apps en extensies' uitgezet voor Brave. Je mag deze <ph name="EXTENSION_TYPE_PARAMETER"/> niet aanzetten.</translation>
@@ -203,8 +204,8 @@ Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirector
 <translation id="1008530050039597147">Brave heeft camerarechten nodig voor deze site</translation>
 <translation id="1197672524850678392">Kan Brave niet starten. Probeer het opnieuw.</translation>
 <translation id="3405035915691517126">Brave kan je wachtwoorden niet checken. Probeer het over 24 uur opnieuw.</translation>
+<translation id="5101812148953915496">Sites die je bezoekt, onthouden je informatie totdat je Brave sluit</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
-<translation id="61852838583753520">&amp;Chrome OS updaten</translation>
 <translation id="1864557848095568223">Brave updaten</translation>
 <translation id="3403365884036456766">Je bestand met voorkeuren is beschadigd of ongeldig.
 
@@ -256,6 +257,8 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6283840329609797763">De installatie is mislukt wegens een onbekende fout. Download Brave opnieuw.</translation>
 <translation id="2433912322225810055">Hiermee wordt ook gecontroleerd welke pagina wordt getoond wanneer je Brave start of vanuit de omnibox zoekt.</translation>
 <translation id="4100716194836114130">Personaliseer jouw Brave</translation>
+<translation id="6208136456999964972">Als je alle Brave-vensters sluit, worden de cookies en sitegegevens automatisch gewist</translation>
+<translation id="6371875426681214174">Je wordt <ph name="BEGIN_BOLD"/>uitgelogd van de meeste sites<ph name="END_BOLD"/> als je Brave sluit. Als synchronisatie uitstaat, word je ook <ph name="BEGIN_BOLD"/>uitgelogd van Brave-services en Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave heeft toegangsrechten voor je camera en microfoon nodig voor deze site</translation>
 <translation id="7408085963519505752">Voorwaarden van Chrome OS</translation>
 <translation id="2262856633481902138">Brave kan je gegevens niet synchroniseren, omdat de inloggegevens voor je account zijn verouderd.</translation>

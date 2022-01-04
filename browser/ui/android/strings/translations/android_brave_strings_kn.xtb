@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿಯಾದ ಮತ್ತು ಅನಾಮಧೇಯಗೊಳಿಸಿದ ಜಾಹೀರಾತುಗಳೊಂದಿಗೆ Brave ಸುದ್ದಿಯು ಜಾಹೀರಾತು-ಬೆಂಬಲಿತವಾಗಿದೆ.</translation>
 <translation id="4541978218358617681">ಜಾಹೀರಾತು</translation>
 <translation id="1765217911817124376">Brave ಸುದ್ದಿ ಆನ್ ಮಾಡಿ</translation>
+<translation id="6527303717912515753">ಹಂಚಿಕೊಳ್ಳು</translation>
 <translation id="1654539412343893324">ನಿಮ್ಮ ಡೇಟಾ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
 <translation id="2989805286512600854">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="3709782636417497984">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
@@ -128,11 +129,12 @@
 <translation id="3780605330121608425">ನಿಮ್ಮ ವಾಲೆಟ್</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave ಸುದ್ದಿ</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> ಅಮೆರಿಕನ್‌ ಡಾಲರ್‌</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">ಹಣ ಜಮೆಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="8772672608371898774">ಬ್ರೇವ್  ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು</translation>
-<translation id="1397683270551078781">ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ</translation>
+<translation id="6020176662032623904">ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ರಚನೆಕಾರ</translation>
+<translation id="2369994359029526515">ಪರಿಶೀಲಿಸದೇ ಇರುವ ರಚನೆಕಾರ</translation>
 <translation id="880893465294676334">ಈ Brave ಪರಿಶೀಲಿತ ರಚನೆಕಾರರು, Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ತಮ್ಮ ಖಾತೆಯನ್ನು ಇನ್ನೂ ಕಾನ್ಫಿಗರ್ ಮಾಡಿಲ್ಲ.
         ಅವರು ಈ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವವರೆಗೆ ನೀವು ಕಳುಹಿಸುವ ಯಾವುದೇ ಟಿಪ್ಸ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‍ನಲ್ಲಿಯೇ ಉಳಿದುಕೊಳ್ಳುತ್ತದೆ.</translation>
 <translation id="8918760045046434238">ಒಂದು ಟಿಪ್‌ ಕಳುಹಿಸಿ</translation>
@@ -266,11 +268,12 @@
 <translation id="9096003370755878766">ನಿಮ್ಮ Brave ಬಹುಮಾನಗಳ ವಾಲೆಟ್‌ಗೆ ನೀವು ಈ ಹಿಂದೆ ಸೇರಿಸಿದ್ದ BAT ಅನ್ನು ವಿತ್‌ಡ್ರಾ ಮಾಡಿಕೊಳ್ಳಿ</translation>
 <translation id="1554282356558968486">ನಮ್ಮ ವ್ಯಾಲೆಟ್ ಸೇವೆಯನ್ನು ಒದಗಿಸಿದವರು</translation>
 <translation id="6569877533335686968">ಅಪ್‌ಹೋಲ್ಡ್</translation>
+<translation id="734105583050813665">ಬಿಟ್‌ಫ್ಲೈಯರ್</translation>
 <translation id="8465442795593991224">ವಿನಂತಿಸಿದ ಸೇವೆಗಳ ಆಧಾರದ ಮೇಲೆ ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಲು ಅಪ್‌ಹೋಲ್ಡ್ ನಿಮಗೆ ಅಗತ್ಯವಿರಬಹುದು.</translation>
-<translation id="723054503945711909">Brave Software Inc. ಜೊತೆಗೆ ನೀವು ಖಾತೆಯನ್ನು ಹೊಂದಿಸಿದಾಗ ನೀವು ಅಪ್‌ಹೋಲ್ಡ್ ಮಾಡಲು ಒದಗಿಸುವ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವುದಿಲ್ಲ, ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ ಅಥವಾ ಪ್ರವೇಶಿಸುವುದಿಲ್ಲ.</translation>
+<translation id="3200197118442451932">ನೀವು Brave Software Inc. ಜೊತೆಗೆ ಖಾತೆ ಪ್ರಾರಂಭಿಸಿದಾಗ ನೀವು <ph name="WALLET_PROVIDER"/> ಗೆ ಒದಗಿಸಿದ ಯಾವುದೇ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಅದು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವುದಿಲ್ಲ, ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ ಅಥವಾ ಅದನ್ನು ಪ್ರವೇಶಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="3699674790322420653">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ</translation>
 <translation id="2193391216824305230">ಬಳಕೆದಾರ ವ್ಯಾಲೆಟ್</translation>
-<translation id="6585020831163574892">ನಿಮ್ಮ Uphold ಖಾತೆಗೆ ಹೋಗಿ</translation>
+<translation id="1665118090708049096">ನನ್ನ <ph name="WALLET_PROVIDER"/> ಖಾತೆಗೆ ಹೋಗಿ</translation>
 <translation id="9200453331904391567">Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
 <translation id="6239274080752256452">ಹಣವನ್ನು ಹಿಂಪಡೆಯಿರಿ</translation>
 <translation id="8874184842967597500">ಸಂಪರ್ಕಗೊಳಿಸಿಲ್ಲ</translation>
@@ -279,10 +282,6 @@
 <translation id="5358719431303818601">ಸಂಪರ್ಕ ಕಡಿತವನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ</translation>
 <translation id="4241449868720191203">ಸಂಪರ್ಕ ಕಡಿತವನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
 <translation id="3248185426436836442">ಬಾಕಿ ಉಳಿದಿರುವುದು</translation>
-<translation id="8108013093558639183">ನಿಮ್ಮ ಖಾತೆಯನ್ನು ತೆರೆದ ಸ್ಥಳದ ಆಧಾರದ ಮೇಲೆ ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ BAT ಅನ್ನು ಪ್ರಸ್ತುತ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ಲಭ್ಯತೆಗಾಗಿ ನಂತರ ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.</translation>
-<translation id="4190454391025419535">ಪ್ರದೇಶವನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</translation>
-<translation id="6830703472632069884">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಇದೆ, ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="3512533646933434345">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ದೋಷ</translation>
 <translation id="2260513517001048012">ಸೂಚನೆ: Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಪರಿಶೀಲಿತ Brave ರಚನೆಕಾರ ಇನ್ನೂ ಕಾನ್ಫಿಗರ್ ಮಾಡಿಲ್ಲ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವವರೆಗೆ, ಕೊಡುಗೆ ನೀಡಲು ಅವು ಪ್ರಯತ್ನಿಸುತ್ತವೆ.</translation>
 <translation id="4488355059795908907">Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಪರಿಶೀಲಿತ ಈ ಪರಿಶೀಲಿತ Brave ರಚನೆಕಾರ ಇನ್ನೂ ಕಾನ್ಫಿಗರ್ ಮಾಡಿಲ್ಲ. ನೀವು ಕಳುಹಿಸುವ ಯಾವುದೇ ಸಲಹೆಗಳು ಈ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವವರೆಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಉಳಿಯುತ್ತವೆ.</translation>
 <translation id="2495032782748793764">Brave ಡೀಫಾಲ್ಟ್</translation>
@@ -413,16 +412,45 @@
 <translation id="1972589975368876259">ಸ್ಟ್ಯಾಕ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="2490330380242414851">ವಿಜೆಟ್ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
+<translation id="7384441892795736634">ಡೇಟಾ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
+<translation id="4804818685124855865">ಡಿಸ್‌ಕನೆಕ್ಟ್ ಮಾಡಿ</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ಡೆಪಾಸಿಟ್ ವಿಳಾಸ</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ಡೆಪಾಸಿಟ್ ಮೆಮೋ</translation>
+<translation id="5110244215256675209">ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
+<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
 <translation id="2882813124794301799">ವಿಜೆಟ್ ಸ್ಟ್ಯಾಕ್</translation>
 <translation id="13296465911709339">ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
 <translation id="2735834606413553397">ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
+<translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="2977461003134694205">ಗೌಪ್ಯತೆ ಅಂಕಿಅಂಶಗಳು</translation>
 <translation id="4643117005422448078">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">ಟ್ರ್ಯಾಕರ್ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ, ಬ್ಯಾಂಡ್ವಿಡ್ತ್ ಮತ್ತು ಸಮಯ ಉಳಿಸಿದ ಅಂದಾಜುಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ.</translation>
 <translation id="74417429503469271">ನೀವು ಆಗಾಗ್ಗೆ ಭೇಟಿ ನೀಡುವ ಪ್ರಮುಖ ಸೈಟ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ.</translation>
+<translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
+<translation id="1366855498335432549">ಡೆಪಾಸಿಟ್ ಮಾಡಿ</translation>
+<translation id="1301340234286078471">ಪರಿವರ್ತಿಸಿ</translation>
 <translation id="223536150967420869">ಖರೀದಿಸಿ</translation>
+<translation id="1714829281959608206">Binance ಖಾತೆ ಬ್ಯಾಲೆನ್ಸ್ ವೀಕ್ಷಿಸಲು ಮತ್ತು ಕ್ರಿಪ್ಟೋ ವ್ಯಾಪಾರ ಮಾಡಲು Binance ಸಂಪರ್ಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="4584930231524505442">ನಾನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
+<translation id="5749014321384313843">ನಾನು ಖರ್ಚು ಮಾಡಲು ಬಯಸುತ್ತೇನೆ...</translation>
 <translation id="8688672835843460752">ಲಭ್ಯವಿದೆ</translation>
+<translation id="2480674848181564169">ಪರಿವರ್ತಿಸಲು ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
+<translation id="2215334405220411393">ಪರಿವರ್ತಿಸಲು ಕನಿಷ್ಠ ಮೊತ್ತ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="7742417737698031726">ಶುಲ್ಕ</translation>
+<translation id="2122225204180056042">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
+<translation id="6432284126416751397">ಪರಿವರ್ತನೆಯನ್ನು ದೃಢೀಕರಿಸಿ</translation>
 <translation id="5137723827757859599">ಪ್ರಮುಖ ಸೈಟ್‌ಗಳಲ್ಲಿ ಖರೀದಿಸಲು ಇಲ್ಲಿ ಇನ್ನೂ ಇಲ್ಲ.</translation>
+<translation id="3891414008432200754">ದರ</translation>
+<translation id="3733576242118819803">ದೃಢಪಡಿಸಿ (<ph name="REMAINING_TIME"/>ಗಳು)</translation>
+<translation id="1627064138060308910">ಪರಿವರ್ತನೆ ವಿಫಲಗೊಂಡಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ &amp; ಹಿಂದಕ್ಕೆ ನೀಡಿ</translation>
 <translation id="244362569344671266">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.</translation>
 <translation id="631124996535890460">ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು <ph name="TERMS_OF_SERVICE"/> ಮತ್ತು <ph name="PRIVACY_POLICY"/> ಗೆ ಸಮ್ಮತಿಸಿದ್ದೀರಿ.</translation>
@@ -466,6 +494,8 @@
 <translation id="3415016869273103668">ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು</translation>
 <translation id="7073631403665023390">Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ.</translation>
 <translation id="626339649633171286">Brave ರಿವಾರ್ಡ್ಸ್ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">ನೀವು <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ರಿಂದ <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> ಗೆ ಪರಿವರ್ತಿಸಿದ್ದೀರಿ!</translation>
+<translation id="392587271502873865">ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
 <translation id="7889432931837317731">ಸಾಧ್ಯವಿರುವಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8967385052772844086">ಪೂರ್ಣ ಗೌಪ್ಯತೆ ವರದಿಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="6864343534748973390">ಹೆಚ್ಚು ಜನಪ್ರಿಯ</translation>
@@ -509,7 +539,7 @@
 <translation id="3171931580569169744">ಟ್ಯಾಬ್ ಗುಂಪುಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="5587305863196367357">ವ್ಯಾಲೆಟ್ ದೃಢೀಕರಿಸುವುದರಿಂದ ನಿಮಗೆ ನಿಮ್ಮ ಫಂಡ್‌ಗಳನ್ನು ಸುಲಭವಾಗಿ ನಿರ್ವಹಿಸಲು, ಸೇರಿಸಲು ಮತ್ತು ಹಿಂಪಡೆಯಲು ಅವಕಾಶ ದೊರೆಯುತ್ತದೆ</translation>
 <translation id="5760671211380791582">ನೀವು ಸಾಕಷ್ಟು BAT ಹೊಂದಿಲ್ಲ.</translation>
-<translation id="6960458596933484861">ದೃಢೀಕೃತ ಅಪ್‌ಹೋಲ್ಡ್ ವ್ಯಾಲೆಟ್ ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 15 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="442469478596827903">ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ಅಪ್‌ಹೋಲ್ಡ್ ವ್ಯಾಲೆಟ್ ಅನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 2 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="4389085954549744469">ನೀವು ಈಗಾಗಲೇ ದೃಢೀಕೃತ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="1483493594462132177">ಕಳುಹಿಸು</translation>
@@ -764,4 +794,19 @@
 <translation id="8971278306757462297">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸ ನಿಮ್ಮ ಸ್ವಂತ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="749944179568745958">ಇದು ಮಾನ್ಯವಾದ ETH ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="3506416339268164412">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸವು ಟೋಕನ್‌ನ ಸಂಪರ್ಕ ವಿಳಾಸವಾಗಿದೆ</translation>
+<translation id="1543259266592091784">ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಿ</translation>
+<translation id="3494964159182650590">ರಿವಾರ್ಡ್‌ಗಳ ಸಾರಾಂಶ</translation>
+<translation id="7470079236088529568">ಕ್ಲೈಮ್ ಮಾಡಲಾದ ಟೋಕನ್ ಅನುದಾನಗಳು</translation>
+<translation id="590733288489975971">ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು</translation>
+<translation id="207268487070188114">ಒಂದು-ಬಾರಿಯ ಟಿಪ್</translation>
+<translation id="64394831139134288">ನನ್ನ ವ್ಯಾಲೆಟ್</translation>
+<translation id="8494748383523030337">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್</translation>
+<translation id="7091980679045978090">ಅಂದಾಜು ಮಾಡಲಾದ ಗಳಿಕೆಗಳು</translation>
+<translation id="1346059596910821859">ಸಲಹೆ</translation>
+<translation id="1549705559752367917">ಸಲಹೆ ಕಳುಹಿಸಿ</translation>
+<translation id="6727102863431372879">ಹೊಂದಿಸಿ</translation>
+<translation id="381822214767083050">ಮಾಸಿಕ ಕೊಡುಗೆ</translation>
+<translation id="8845154268466251503">ಬಿಎಟಿ</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>
