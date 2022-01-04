@@ -1,0 +1,26 @@
+diff --git a/components/sync/protocol/proto_value_conversions.h b/components/sync/protocol/proto_value_conversions.h
+index 9657d77c10850a654cf6895d9725f05a3e942fc4..c3771a54c9d3e5604d5da92471ce36e8b8d3f806 100644
+--- a/components/sync/protocol/proto_value_conversions.h
++++ b/components/sync/protocol/proto_value_conversions.h
+@@ -66,6 +66,8 @@ class TypedUrlSpecifics;
+ class UrlDirective;
+ class UserConsentSpecifics;
+ class UserEventSpecifics;
++class VgBodySpecifics;
++class VgSpendStatusSpecifics;
+ class WalletCreditCardCloudTokenData;
+ class WalletMaskedCreditCard;
+ class WalletMetadataSpecifics;
+@@ -238,6 +240,12 @@ std::unique_ptr<base::DictionaryValue> UserConsentSpecificsToValue(
+ std::unique_ptr<base::DictionaryValue> UserEventSpecificsToValue(
+     const sync_pb::UserEventSpecifics& user_event_specifics);
+ 
++std::unique_ptr<base::DictionaryValue> VgBodySpecificsToValue(
++    const sync_pb::VgBodySpecifics& vg_body_specifics);
++
++std::unique_ptr<base::DictionaryValue> VgSpendStatusSpecificsToValue(
++    const sync_pb::VgSpendStatusSpecifics& vg_spend_status_specifics);
++
+ std::unique_ptr<base::DictionaryValue> WalletCreditCardCloudTokenDataToValue(
+     const sync_pb::WalletCreditCardCloudTokenData& cloud_token_data);
+ 
