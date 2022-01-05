@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Afbrudt",
+    "message": "Logget ud",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Afbryd forbindelsen fra Brave Belønninger",
-    "description": ""
+    "message": "Log ud fra $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Anslået indtjening",

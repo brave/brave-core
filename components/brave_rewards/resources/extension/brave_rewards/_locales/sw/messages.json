@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Imeondolewa",
+    "message": "Umeondoka",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Ondoa kwenye Brave Rewards",
-    "description": ""
+    "message": "Ondoka kwenye $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Mapato Yanayokadiriwa",

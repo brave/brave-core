@@ -165,8 +165,8 @@
 <translation id="1201402288615127009">अगला</translation>
 <translation id="7954950242989581218">सुरक्षित और अच्छा ब्राउज़ करें</translation>
 <translation id="2188651882929633653">Brave शील्ड अधिकतर विज्ञापनों सहित वेब — पर आपके एक्सेस को ट्रैक करनेवाली अनचाही वस्तुओं को ब्लॉक करता है। यदि किसी साइट पर यह काम नहीं कर रहा है तो शील्ड को “down” पर सेट करें। Brave कुछ विशिष्ट सुविधाओं का समग्र आंकलन करने लिए <ph name="BEGIN_LINK_P3A"/>पूरी तरह से निजी उत्पाद विश्लेषण<ph name="END_LINK_P3A"/> का उपयोग करता है। आप <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/> से इसे बंद कर सकते हैं।</translation>
-<translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="6769094341455418696">Brave विज्ञापन देखकर [[currency]] अर्जित करें। दर्शाए गए विज्ञापन आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं। कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं।</translation>
+<translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
+<translation id="3114984266384096064">Brave Private Ads देखकर [[currency]] कमाएं. दिखाए जाने वाले ऐड आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं. कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं.</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
 <translation id="3742599705619405136">प्रकाशकों और सामग्री रचनाकारों का समर्थन करने का एक स्वचालित तरीका।  मासिक भुगतान सेट करें और सामान्य रूप से ब्राउज़ करें।  Brave सत्यापित साइटें जो आप देखते हैं, वे आपके योगदान को स्वचालित रूप से प्राप्त करेंगी, जो कि आपके ध्यान में Brave द्वारा मापी गई हैं।</translation>
 <translation id="3325399124634342726">इस महीने की मौजूदा कमाई (अनुमानित)</translation>
@@ -317,6 +317,7 @@
 <translation id="5323604113525002127">हम लॉग की अंतिम [[numberOfLines]] लाइनें दिखाते हैं। यदि आप संपूर्ण लॉग चाहते हैं, तो आप इसे ऊपर से डाउनलोड कर सकते हैं।</translation>
 <translation id="7168491065836975228">पुरस्कार आतंरिक</translation>
 <translation id="758790787422117549">पर्सोना ID</translation>
+<translation id="1919345977826869612">विज्ञापन</translation>
 <translation id="3671566813999349838">राशि</translation>
 <translation id="751223241692981112">पर क्लेम किया गया</translation>
 <translation id="3913089081619091801">क्लेम ID</translation>
@@ -592,8 +593,7 @@
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="3656941797339037856">रिवॉर्ड को Gemini से लिंक करें!</translation>
-<translation id="2383784987664887340">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
-<translation id="2237374144728570574">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini आपको अपने BAT पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
@@ -779,6 +779,8 @@
 <translation id="2659764755126740206">मेरे <ph name="PROVIDER"/> अकाउंट पर जाएँ</translation>
 <translation id="2389181429986654814">वेरिफ़िकेशन पूरा करने के लिए <ph name="PROVIDER"/> पर जाएँ</translation>
 <translation id="7793632266654336758">रिवॉर्ड पाने के लिए कृपया पहचान वेरीफ़िकेशन पूरा करें.</translation>
+<translation id="2394961582378297792">लॉग आउट हुआ</translation>
+<translation id="5511950864417840431"><ph name="PROVIDER"/> से लॉग आउट हुआ</translation>
 <translation id="3600355176618429948">अनुमानित कमाई</translation>
 <translation id="7577100371127227294">मासिक टिप्स</translation>
 <translation id="5894023780213944778">मेरा वॉलेट</translation>
@@ -879,12 +881,12 @@
 <translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>का उपयोग DEX एग्रीगेटर के तौर पर  करता है.</translation>
 <translation id="151946611346774041">0x लेनदेन को पूरा करने के लिए एथेरियम पते और IP पते को प्रोसेस करेगा (उद्धरण प्राप्त करने सहित). 0x केवल इस डेटा का उपयोग लेनदेन को प्रोसेस करने के लिए करेगा.</translation>
 <translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
+<translation id="2704606927547763573">कॉपी किया गया</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="1420318137760245955">नए Brave Wallet में आपका स्वागत है</translation>
 <translation id="8303434745767477417">क्रिप्टो असेट को अपने पास सुरक्षित रखें. पोर्टफ़ोलियो प्रदर्शन को ट्रैक करें, और वेब 3 DApps के साथ सहभागिता करें. DeFi के साथ ट्रेड करें, निवेश करें, उधार लें और उधार दें. Brave गोपनीयता ब्राउज़र से ठीक है. कोई एक्सटेंशन नहीं, कोई डाउनलोड की आवश्यकता नहीं है.</translation>
 <translation id="6972754398087986839">आरंभ करें</translation>
 <translation id="375882617301124395">अपने क्रिप्टो वॉलेट का बैकअप लें</translation>
-<translation id="1078873179929044999">अगले स्टेप में आपको एक 12 शब्दों का एक रिकवरी फ़्रेज़ दिखाई देगा, जिसका इस्तेमाल आप अपने प्राथमिक क्रिप्टो अकाउंट को रिकवर करने के लिए कर सकते हैं. इसे किसी सुरक्षित जगह पर सेव करें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में या अगर आप वॉलेट बदलना चाहते हैं, तो अपने अकाउंट को फिर से पाने के लिए रिकवरी फ़्रेज़ एकमात्र तरीका है.</translation>
 <translation id="5024543173656851695">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="3933122286596948824">आपका रिकवरी वाक्यांश</translation>
 <translation id="5077747669435508720">इन शब्दों को नीचे दिखाए गए सटीक क्रम में लिखें या कॉपी करें, और उन्हें कहीं सुरक्षित रखें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में, या आप वॉलेट स्विच करना चाहते हैं, तो रिकवरी फ़्रेज़ ही आपका अकाउंट एक्सेस प्राप्त करने का एकमात्र तरीका है.</translation>
@@ -946,6 +948,7 @@
 <translation id="6151024411349343484">यदि आपको वह अकाउंट नहीं मिल रहा है जिसे आप ढूंढ रहे हैं, तो HD पथ (ऊपर) स्विच करने की कोशिश करें.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">लिगेसी (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">कोई परिणाम नहीं मिला.</translation>
 <translation id="5149944858285555235">अनजान एरर, कृपया अपने हार्डवेयर वॉलेट को फिर से कनेक्ट करें और दोबारा कोशिश  करें.</translation>
 <translation id="4522570452068850558">विवरण</translation>
 <translation id="9220525904950070496">खाता हटाएं</translation>
@@ -1026,6 +1029,8 @@
 <translation id="4709524402122994378">अंतरण</translation>
 <translation id="523862956770478816">साइट से जुड़ी मंज़ूरियाँ</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> अकाउंट कनेक्ट किए गए</translation>
+<translation id="4305817255990598646">स्विच</translation>
+<translation id="3890989020011724401">नया अकाउंट</translation>
 <translation id="4460220693591349571">FUNCTION TYPE</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1091,6 +1096,8 @@
 <translation id="6825399159373612149">डोमेन <ph name="DOMAIN_NAME"/> रजिस्टर नहीं किया गया है</translation>
 <translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
 <translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
+<translation id="5517732667776806421">चेकसम जानकारी नहीं है</translation>
+<translation id="4006711930669471508">चेकसम जानकारी अमान्य है</translation>
 <translation id="862585889767884824">का</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> लेन-देन रिजेक्ट करें</translation>
 <translation id="1118876217803190221">अपर्याप्त बैलेंस</translation>
@@ -1112,6 +1119,7 @@
 <translation id="1119447706177454957">आंतरिक गड़बड़ी</translation>
 <translation id="3327639091470204775">Trezor ब्रिज से नहीं कनेक्ट हो पाया</translation>
 <translation id="6672377693827764095">आंतरिक गड़बड़ी, अकाउंट की जानकारी नहीं निकाली जा सकी</translation>
+<translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
 <translation id="8933250418452564886">हार्डवेयर लेनदेन खोजने में असमर्थ, कृपया दोबारा कोशिश करें</translation>
 <translation id="5999974802900788338">हार्डवेयर डिवाइस से प्राप्त एरर, शायद आपको अपने डिवाइस पर लेनदेन की पुष्टि करने की आवश्यकता है</translation>
 <translation id="8523768065044261559">लेन-देन प्रोसेस करने में गड़बड़ी हुई, कृपया दोबारा कोशिश करें</translation>
@@ -1119,6 +1127,8 @@
 <translation id="8273603707418703324">साइन इन मेसेज से सम्बंधित एरर, अनजान कीरिंग का अनुरोध किया गया, कृपया दोबारा कोशिश करें</translation>
 <translation id="5265455943786954050">Trezor कमांड से ही जारी है</translation>
 <translation id="7017116822583380542">Trezor ब्रिज तैयार नहीं है</translation>
+<translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
+<translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1127,6 +1137,30 @@
 <translation id="6951743416068151209">टॉर प्रॉक्सी यूआराई</translation>
 <translation id="1671503397662036257">टॉर कनेक्शन की स्थिति</translation>
 <translation id="6024292492796847324">टॉर के शुरू होने की स्थिति</translation>
+<translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>UP<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">अगर यह साइट टूटी हुई लगती है, तो शील्ड्स डाउन की कोशिश करें। नोट: यह Brave  गोपनीयता सुरक्षा को कम कर सकता है.</translation>
+<translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">उच्च स्तर नियंत्रण</translation>
+<translation id="1299672573512347813">इस सेटिंग से इस साइट की वेब कम्पेटिबिलिटी पर फर्क पड़ता है.</translation>
+<translation id="9204041448536398473">ग्लोबल शील्ड सेटिंग</translation>
+<translation id="7637771346619326580">ग्लोबल शील्ड डिफ़ॉल्ट को बदलें</translation>
+<translation id="3520486481604057261">Adblock Lists कस्टमाइज़ करें</translation>
+<translation id="3146531623184244174">कनेक्शन HTTPS पर अपग्रेड किए गए</translation>
+<translation id="131231380815754440">HTTPS इनेबल करें</translation>
+<translation id="7461425058443653485">स्क्रिप्ट रोक दी गयी हैं</translation>
+<translation id="3246600097575692802">इनेबल किये गए स्क्रिप्ट ब्लॉक किए गए</translation>
+<translation id="3603525299146223354">ट्रैकर  &amp; ऐड</translation>
+<translation id="1146309636943354181">ट्रैकर्स और विज्ञापन ब्लॉक किए गए (सामान्य)</translation>
+<translation id="5973258875089964805">ट्रैकर्स और विज्ञापन ब्लॉक किए गए (प्रभाशाली)</translation>
+<translation id="5544888475837817215">सभी ट्रैकर्स और ऐड की अनुमति दें</translation>
+<translation id="6203697265754637264">क्रॉस-साइट कुकीज़ ब्लॉक किए गए</translation>
+<translation id="4627427111733173920">कूकीज़ बाधित हैं.</translation>
+<translation id="7855168553463825937">सभी कुकीज़ ब्लॉक की गईं</translation>
+<translation id="8366221601425141146">फिंगरप्रिंटिंग ब्लॉक किया गया</translation>
+<translation id="5582686930349810484">फ़िंगरप्रिंटिंग ब्लॉक की गई है (सामान्य)</translation>
+<translation id="6696441392507885865">फ़िंगरप्रिंटिंग ब्लॉक (सख्त, साइटों को ब्रेक कर सकते हैं)</translation>
+<translation id="5882733945883311404">सभी फिंगरप्रिंटिंग की अनुमति दें</translation>
 <translation id="1742469581923031760">कनेक्ट किया जा रहा है</translation>
 <translation id="1287487756047817908">डिसकनेक्ट किया जा रहा है</translation>
 <translation id="2325196879156848326">कनेक्शन नहीं हुआ है</translation>
@@ -1162,4 +1196,8 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="6769094341455418696">Brave विज्ञापन देखकर [[currency]] अर्जित करें। दर्शाए गए विज्ञापन आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं। कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं।</translation>
+<translation id="2383784987664887340">Gemini आपको अपने बैट पर आसानी से व्यापार करने, स्टोर करने और 3.49% APY कमाने देता है. वेरिफ़ाई करें और अपने Brave Rewards वॉलेट को Gemini से अभी लिंक करें!</translation>
+<translation id="2237374144728570574">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
+<translation id="1078873179929044999">अगले स्टेप में आपको एक 12 शब्दों का एक रिकवरी फ़्रेज़ दिखाई देगा, जिसका इस्तेमाल आप अपने प्राथमिक क्रिप्टो अकाउंट को रिकवर करने के लिए कर सकते हैं. इसे किसी सुरक्षित जगह पर सेव करें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में या अगर आप वॉलेट बदलना चाहते हैं, तो अपने अकाउंट को फिर से पाने के लिए रिकवरी फ़्रेज़ एकमात्र तरीका है.</translation>
 </translationbundle>

@@ -170,8 +170,13 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Αποσύνδεση από τις Ανταμοιβές Brave",
-    "description": ""
+    "message": "Αποσυνδεθείτε από $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Εκτιμώμενα κέρδη",

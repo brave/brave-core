@@ -167,8 +167,8 @@
 <translation id="1201402288615127009">次へ</translation>
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
 <translation id="2188651882929633653">Brave Shieldは、広告などインターネット上であなたに付きまとう不快なものをブロックします。サイトの動作に問題がある場合、Shieldを無効にしてみましょう。Braveは<ph name="BEGIN_LINK_P3A"/>完全に匿名の分析機能<ph name="END_LINK_P3A"/>により、特定の機能の一般的な使用状況を推定しています。こちらは<ph name="BEGIN_LINK_P3A_SETTINGS"/>設定<ph name="END_LINK_P3A_SETTINGS"/>でオフにすることができます。</translation>
-<translation id="1919345977826869612">広告</translation>
-<translation id="6769094341455418696">Brave Adsを表示することで、[[currency]]を獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="3114984266384096064">Braveプライベート広告を表示することで、[[currency]]を獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーやコンテンツクリエイターを自動的に支援する方法です。毎月支援する金額を設定し、通常通りブラウジングをしましょう。あなたが訪問したサイトがBraveの認証を完了していた場合、あなたのアテンションに基づいて自動的に支援が行われます。</translation>
 <translation id="3325399124634342726">今月の現在の収益 (推定)</translation>
@@ -319,6 +319,7 @@
 <translation id="5323604113525002127">ログの最終[[numberOfLines]]行が表示されています。ログの全体は、上記からダウンロードできます。</translation>
 <translation id="7168491065836975228">報酬の明細</translation>
 <translation id="758790787422117549">パーソナID</translation>
+<translation id="1919345977826869612">広告</translation>
 <translation id="3671566813999349838">金額</translation>
 <translation id="751223241692981112">獲得：</translation>
 <translation id="3913089081619091801">クレームID</translation>
@@ -594,8 +595,7 @@
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>
-<translation id="2383784987664887340">Gemini では、BATを簡単に取引、保管し、3.49% の APY を獲得できます。今すぐGeminiでBrave Rewards ウォレットを認証して接続しましょう！</translation>
-<translation id="2237374144728570574">* 2021 年 9 月 15 日現在の Gemini APY</translation>
+<translation id="3066983737886188034">Geminiでは、BATを簡単に取引、保管し、利息を獲得できます。今すぐBrave RewardsウォレットをGeminiで認証して接続しましょう！</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -781,6 +781,8 @@
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="2389181429986654814"><ph name="PROVIDER"/>に移動して認証を完了します</translation>
 <translation id="7793632266654336758">報酬を受け取るには、本人確認を完了する必要があります。</translation>
+<translation id="2394961582378297792">ログアウト済み</translation>
+<translation id="5511950864417840431"><ph name="PROVIDER"/>からログアウト</translation>
 <translation id="3600355176618429948">推定報酬</translation>
 <translation id="7577100371127227294">毎月のチップ</translation>
 <translation id="5894023780213944778">マイウォレット</translation>
@@ -881,12 +883,12 @@
 <translation id="2860280209982026951">BraveはDEXアグリゲーターとして<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>を使用しています。</translation>
 <translation id="151946611346774041">0xは、取引を完了するためにイーサリアムのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
+<translation id="2704606927547763573">コピーしました</translation>
 <translation id="6518133107902771759">認証する</translation>
 <translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
 <translation id="8303434745767477417">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web 3 DApp とやり取りします。DeFi で取引、投資、借り入れ、貸し出しを行います。Brave プライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
 <translation id="6972754398087986839">開始する</translation>
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
-<translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="5024543173656851695">リカバリーワードを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
@@ -948,6 +950,7 @@
 <translation id="6151024411349343484">探しているアカウントが見つからない場合は、HD パス (上記) を切り替えてみてください。</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">レガシー (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">結果が見つかりませんでした。</translation>
 <translation id="5149944858285555235">不明なエラーです。ハードウェアウォレットを再接続して、もう一度試してください。</translation>
 <translation id="4522570452068850558">詳細</translation>
 <translation id="9220525904950070496">アカウントを消去する</translation>
@@ -1028,6 +1031,8 @@
 <translation id="4709524402122994378">トランザクション</translation>
 <translation id="523862956770478816">サイトの許可設定</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>アカウントを接続しました</translation>
+<translation id="4305817255990598646">切り替える</translation>
+<translation id="3890989020011724401">新規アカウント</translation>
 <translation id="4460220693591349571">機能タイプ</translation>
 <translation id="838933475572692615">HEXデータ</translation>
 <translation id="2240831799756994975">バイト</translation>
@@ -1093,6 +1098,8 @@
 <translation id="6825399159373612149">ドメイン「<ph name="DOMAIN_NAME"/>」は登録されていません</translation>
 <translation id="8971278306757462297">受取アドレスにご自身のアドレスが指定されています</translation>
 <translation id="3506416339268164412">受取アドレスはトークンのコントラクトアドレスとなります</translation>
+<translation id="5517732667776806421">チェックサム情報がありません</translation>
+<translation id="4006711930669471508">チェックサム情報が無効です</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
 <translation id="1118876217803190221">残高不足です</translation>
@@ -1114,6 +1121,7 @@
 <translation id="1119447706177454957">内部エラー</translation>
 <translation id="3327639091470204775">Trezorブリッジに接続できませんでした</translation>
 <translation id="6672377693827764095">内部エラーが発生しました。アカウントを取得できません</translation>
+<translation id="6889920539620318793">アクティブに設定</translation>
 <translation id="8933250418452564886">ハードウェアのトランザクションが見つかりません。もう一度お試しください</translation>
 <translation id="5999974802900788338">ハードウェアデバイスからエラーを受信しました。デバイスでトランザクションの確認が必要となる可能性があります</translation>
 <translation id="8523768065044261559">トランザクションの処理中にエラーが発生しました。もう一度お試しください</translation>
@@ -1121,6 +1129,8 @@
 <translation id="8273603707418703324">メッセージの署名エラーです。不明なキーリングが要求されました。もう一度お試しください</translation>
 <translation id="5265455943786954050">すでにTrezorコマンドを処理中です</translation>
 <translation id="7017116822583380542">Trezorブリッジの準備が完了していません</translation>
+<translation id="3378339846292573874">推奨トークンを追加</translation>
+<translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1129,6 +1139,30 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">サイトが正常に表示されていないと思われる場合は、Shieldsをオフにしてみてください。注: これにより、Braveによるプライバシー保護の効果が減少する場合があります。</translation>
+<translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">高度な設定</translation>
+<translation id="1299672573512347813">この設定は、このサイトでのWeb互換性に影響を与えます。</translation>
+<translation id="9204041448536398473">Shieldのグローバル設定</translation>
+<translation id="7637771346619326580">Shieldのデフォルト設定を変更</translation>
+<translation id="3520486481604057261">Adblockリストをカスタマイズ</translation>
+<translation id="3146531623184244174">接続がHTTPSにアップグレードされました</translation>
+<translation id="131231380815754440">HTTPSを有効にする</translation>
+<translation id="7461425058443653485">ブロック済みのスクリプト</translation>
+<translation id="3246600097575692802">ブロック済みのスクリプトを有効にする</translation>
+<translation id="3603525299146223354">トラッカーと広告</translation>
+<translation id="1146309636943354181">トラッカーと広告がブロックされました（スタンダード）</translation>
+<translation id="5973258875089964805">トラッカー広告をブロックしました（強力モード）</translation>
+<translation id="5544888475837817215">すべてのトラッカーと広告を許可</translation>
+<translation id="6203697265754637264">クロスサイト・クッキーをブロック</translation>
+<translation id="4627427111733173920">クッキーをブロック</translation>
+<translation id="7855168553463825937">すべてのCookiesをブロック</translation>
+<translation id="8366221601425141146">フィンガープリントがブロックされました</translation>
+<translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
+<translation id="6696441392507885865">フィンガープリントをブロック（強、サイト破損の可能性）</translation>
+<translation id="5882733945883311404">すべてのフィンガープリントを許可</translation>
 <translation id="1742469581923031760">接続しています...</translation>
 <translation id="1287487756047817908">切断しています...</translation>
 <translation id="2325196879156848326">接続に失敗しました</translation>
@@ -1164,4 +1198,8 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="6769094341455418696">Brave Adsを表示することで、[[currency]]を獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
+<translation id="2383784987664887340">Gemini では、BATを簡単に取引、保管し、3.49% の APY を獲得できます。今すぐGeminiでBrave Rewards ウォレットを認証して接続しましょう！</translation>
+<translation id="2237374144728570574">* 2021 年 9 月 15 日現在の Gemini APY</translation>
+<translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 </translationbundle>

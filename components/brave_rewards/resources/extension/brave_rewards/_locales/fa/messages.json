@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "ارتباط قطع شد",
+    "message": "از سیستم خارج شدید",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "قطع ارتباط از پاداش‌های Brave",
-    "description": ""
+    "message": "خروج از $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "درآمدهای تخمینی",

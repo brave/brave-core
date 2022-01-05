@@ -80,6 +80,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="124116460088058876">More languages</translation>
 <translation id="1243027604378859286">Author:</translation>
 <translation id="1246424317317450637">Bold</translation>
+<translation id="1248573052514400575"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to personalise your accessibility tools in Chrome OS settings</translation>
 <translation id="1052005765108026699">To pay faster next time, save your card, name and billing address to your Brave sync chain.</translation>
 <translation id="2900208483223661703">Create sheet button: press Enter to create a new Brave Sheet quickly</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (synced)</translation>
@@ -213,6 +214,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="8523167061098356223">Play the Dino Run game in Brave</translation>
 <translation id="161042844686301425">Cyan</translation>
 <translation id="1611101756749861742">Second roll</translation>
+<translation id="1615402009686901181">Administrator policy disables screen capture when confidential content is visible</translation>
 <translation id="1620510694547887537">Camera</translation>
 <translation id="1623104350909869708">Prevent this page from creating additional dialogues</translation>
 <translation id="16338877384480380">Architecture-B</translation>
@@ -294,6 +296,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1839551713262164453">Validation of policy values has failed with errors</translation>
 <translation id="1842969606798536927">Pay</translation>
 <translation id="1863257867908022953">Tray 12</translation>
+<translation id="1864927262126810325">From <ph name="SOURCE_NAME"/></translation>
 <translation id="1871208020102129563">Proxy is set to use fixed proxy servers, not a .pac script URL.</translation>
 <translation id="1871284979644508959">Required field</translation>
 <translation id="1875025161375567525">Photo tray</translation>
@@ -315,6 +318,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="192020519938775529">{COUNT,plural, =0{None}=1{1 site}other{# sites}}</translation>
 <translation id="1923390796829649802">Manage accessibility settings button, Enter to personalise your accessibility tools in Chrome OS settings</translation>
 <translation id="1924727005275031552">New</translation>
+<translation id="2926892173992041302">Run Brave safety check button; press Enter to run a safety check in Brave settings</translation>
 <translation id="1939175642807587452">Can ask to send notifications</translation>
 <translation id="1947454675006758438">Staple top right</translation>
 <translation id="1956486093533522234">Find, secure or erase your device</translation>
@@ -333,12 +337,14 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2003709556000175978">Reset your password now</translation>
 <translation id="2003775180883135320">Quad punch top</translation>
 <translation id="2342444980304536062">Manage permissions and data stored across sites in Brave settings</translation>
+<translation id="6955198705411680473">Manage accessibility settings button; press Enter to personalise your accessibility tools in Brave settings</translation>
 <translation id="2025115093177348061">Augmented reality</translation>
 <translation id="2025186561304664664">Proxy is set to auto-configured.</translation>
 <translation id="2025891858974379949">Insecure content</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Checking the proxy and the firewall<ph name="END_LINK"/></translation>
 <translation id="2034971124472263449">Save anyway</translation>
 <translation id="2036983605131262583">Alternative roll</translation>
+<translation id="2040894699575719559">Location blocked</translation>
 <translation id="2042213636306070719">Tray 7</translation>
 <translation id="3163988908275223348">Sign in to use passwords saved in your Brave sync chain</translation>
 <translation id="2053111141626950936">Pages in <ph name="LANGUAGE"/> will not be translated.</translation>
@@ -400,6 +406,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2241693394036365668">File is downloaded</translation>
 <translation id="2248949050832152960">Use WebAuthn</translation>
 <translation id="2250931979407627383">Edge stitch left</translation>
+<translation id="2251943122176102076">Administrator doesn't recommend taking screenshots or recordings due to confidential content captured:</translation>
 <translation id="225207911366869382">This value is deprecated for this policy.</translation>
 <translation id="2258928405015593961">Enter an expiry date in the future and try again</translation>
 <translation id="225943865679747347">Error code: <ph name="ERROR_CODE"/></translation>
@@ -460,7 +467,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2465655957518002998">Choose delivery method</translation>
 <translation id="2465688316154986572">Staple</translation>
 <translation id="4058615531773510267">Manage files that you have downloaded in Brave</translation>
-<translation id="6412121772078350683"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press Tab then Enter to manage your Safe Browsing and more in Brave settings</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Running network diagnostics<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1-to-N order</translation>
 <translation id="2470767536994572628">When you edit annotations, this document will return to single-page view and its original rotation</translation>
@@ -495,6 +501,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2556876185419854533">&amp;Undo Edit</translation>
 <translation id="2570734079541893434">Manage settings</translation>
 <translation id="257674075312929031">Group</translation>
+<translation id="1447512280692323528">Manage security settings button; press Enter to manage your Safe Browsing and more in Brave settings</translation>
 <translation id="2586657967955657006">Clipboard</translation>
 <translation id="2587730715158995865">From <ph name="ARTICLE_PUBLISHER"/>. Read this and <ph name="OTHER_ARTICLE_COUNT"/> other stories.</translation>
 <translation id="2587841377698384444">Directory API ID:</translation>
@@ -538,6 +545,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2713444072780614174">White</translation>
 <translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press tab, then enter to manage your payments and credit card info in Brave settings</translation>
 <translation id="2721148159707890343">Request succeeded</translation>
+<translation id="4054726005361352357">Run a safety check in Brave settings</translation>
 <translation id="2726001110728089263">Side tray</translation>
 <translation id="2728127805433021124">Server's certificate is signed using a weak signature algorithm.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Running Connectivity Diagnostics<ph name="END_LINK"/></translation>
@@ -561,11 +569,13 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2824775600643448204">Address and search bar</translation>
 <translation id="2826760142808435982">The connection is encrypted and authenticated using <ph name="CIPHER"/> and uses <ph name="KX"/> as the key exchange mechanism.</translation>
 <translation id="2835170189407361413">Clear form</translation>
+<translation id="2839032553903800133">Notifications blocked</translation>
 <translation id="2839501879576190149">Fake site ahead</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">Attackers might be trying to steal your information from <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (for example, passwords, messages or credit cards). <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2859806420264540918">This site shows intrusive or misleading ads.</translation>
 <translation id="287596039013813457">Friendly</translation>
+<translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to manage your Safe Browsing and more in Brave settings</translation>
 <translation id="2878197950673342043">Poster fold</translation>
 <translation id="2878424575911748999">A1</translation>
 <translation id="2880660355386638022">Window placement</translation>
@@ -617,7 +627,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3041612393474885105">Certificate Information</translation>
 <translation id="3044034790304486808">Resume your research</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
-<translation id="4836986635834556421"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press Tab then Enter to run safety check in Brave settings</translation>
 <translation id="3061707000357573562">Patch Service</translation>
 <translation id="306573536155379004">Game started.</translation>
 <translation id="3080254622891793721">Graphic</translation>
@@ -662,6 +671,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3215092763954878852">Couldn't use WebAuthn</translation>
 <translation id="3218181027817787318">Relative</translation>
 <translation id="3223287115535306850">App launching throbber</translation>
+<translation id="3225347164936328585">Clapping</translation>
 <translation id="3225919329040284222">The server presented a certificate that doesn't match built-in expectations. These expectations are included for certain, high-security websites in order to protect you.</translation>
 <translation id="3226128629678568754">Press the reload button to resubmit the data needed to load the page.</translation>
 <translation id="3226387218769101247">Thumbnails</translation>
@@ -669,6 +679,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3229041911291329567">Version information about your device and browser</translation>
 <translation id="323107829343500871">Enter the CVC for <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Always detect important content on this site</translation>
+<translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to customise the look of your browser</translation>
 <translation id="3240791268468473923">Secure payment credential no matching credential sheet is opened</translation>
 <translation id="3249845759089040423">Groovy</translation>
 <translation id="3252266817569339921">French</translation>
@@ -696,6 +707,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3329013043687509092">Saturation</translation>
 <translation id="3333762389743153920">Not eligible for virtual card</translation>
 <translation id="3338095232262050444">Secure</translation>
+<translation id="3345782426586609320">Eyes</translation>
 <translation id="3355823806454867987">Change proxy settings...</translation>
 <translation id="3360103848165129075">Payment handler sheet</translation>
 <translation id="669410734497476819">Brave <ph name="BEGIN_EMPHASIS"/>won’t save<ph name="END_EMPHASIS"/> the following information:
@@ -712,6 +724,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
       • Create a 3D map of your surroundings and track camera position
       • Use your camera</translation>
 <translation id="337363190475750230">Deprovisioned</translation>
+<translation id="7740652748540081864">Run Brave safety check</translation>
 <translation id="3377144306166885718">The server used an obsolete version of TLS.</translation>
 <translation id="3377188786107721145">Policy parse error</translation>
 <translation id="3377736046129930310">Use screen lock to confirm cards faster</translation>
@@ -788,6 +801,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3611395257124510155">Virtual card for <ph name="CARD_IDENTIFIER"/></translation>
 <translation id="3614103345592970299">Size 2</translation>
 <translation id="361438452008624280">List entry '<ph name="LANGUAGE_ID"/>': unknown or unsupported language.</translation>
+<translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to run a safety check in Brave settings</translation>
 <translation id="3615877443314183785">Enter a valid expiry date</translation>
 <translation id="36224234498066874">Clear Browsing Data...</translation>
 <translation id="362276910939193118">Show full history</translation>
@@ -839,7 +853,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3765588406864124894">Mailbox 9</translation>
 <translation id="3767485424735936570">Copying and pasting this content to <ph name="VM_NAME"/> is not recommended by administrator policy</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>: press Tab then Enter to create a new note in Brave Keep quickly</translation>
-<translation id="7898994499976006343">Manage downloads in Brave button. Press Enter to manage files that you have downloaded in Brave.</translation>
 <translation id="5141491707451394486">Do you want to save this card to your Brave sync chain and on this device?</translation>
 <translation id="3780694243617746492">Output bin</translation>
 <translation id="3781428340399460090">Hot pink</translation>
@@ -896,11 +909,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3969052498612555048">Can't find your code? <ph name="BEGIN_LINK"/>Get new code<ph name="END_LINK"/></translation>
 <translation id="397105322502079400">Calculating...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> is blocked</translation>
-<translation id="5066241626630788624">Run Brave safety check button; press Enter to run safety check in Brave settings</translation>
 <translation id="3986705137476756801">Turn off Live Caption for now</translation>
-<translation id="2321540973325616220">Brave has determined that this site could be fake or fraudulent.
-
-    If you believe that this is shown in error please visit https://bugs.chromium.org/p/chromium/issues/entry?template=Safety+Tips+Appeals.</translation>
 <translation id="3987940399970879459">Less than 1 MB</translation>
 <translation id="3990250421422698716">Jog offset</translation>
 <translation id="3996311196211510766">The site <ph name="ORIGIN"/> has requested that an origin policy will
@@ -926,6 +935,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4088981014127559358">Side 1 image Y shift</translation>
 <translation id="4089152113577680600">Tray 14</translation>
 <translation id="4098354747657067197">Deceptive site ahead</translation>
+<translation id="4099048595830172239">Administrator policy doesn’t recommend sharing your screen with <ph name="APPLICATION_TITLE"/> when confidential content is visible:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>: press Tab then Enter to customise font sizes and typefaces in Brave</translation>
 <translation id="4101413244023615925">Text and graphic</translation>
 <translation id="4103249731201008433">Device serial number is invalid</translation>
@@ -938,9 +948,9 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4117700440116928470">Policy scope is not supported.</translation>
 <translation id="4121428309786185360">Expires On</translation>
 <translation id="4123572138124678573">Triple punch bottom</translation>
+<translation id="1886304460350301070">Looking for the Chrome OS flags? Visit</translation>
 <translation id="4129401438321186435">{COUNT,plural, =1{1 other}other{# others}}</translation>
 <translation id="4130226655945681476">Checking the network cables, modem and router</translation>
-<translation id="4133224101597112888">Share this tab button: press Enter to share this tab by sharing the link, creating a QR code, casting and more.</translation>
 <translation id="4134123981501319574">Create doc</translation>
 <translation id="413544239732274901">Learn more</translation>
 <translation id="4142935452406587478">Tray 10</translation>
@@ -974,7 +984,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4220128509585149162">Crashes</translation>
 <translation id="422022731706691852">Attackers on <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> might attempt to trick you into installing programs that harm your browsing experience (for example, by changing your homepage or showing extra ads on sites that you visit). <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Try running Network Diagnostics<ph name="END_LINK"/>.</translation>
-<translation id="4105395338091503638">Run a safety check in Brave settings</translation>
 <translation id="4230204356098880324">Can ask to use and move your camera</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Proceed to <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Valid</translation>
@@ -1030,6 +1039,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4390472908992056574">Brim</translation>
 <translation id="4406883609789734330">Live Caption</translation>
 <translation id="4406896451731180161">search results</translation>
+<translation id="4407755609041463909">Fire</translation>
 <translation id="4408413947728134509">Cookies <ph name="NUM_COOKIES"/></translation>
 <translation id="4414515549596849729">cookies and site data</translation>
 <translation id="4415426530740016218">Pickup Address</translation>
@@ -1045,6 +1055,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4460315069258617173">Allowed until you close tabs for this site</translation>
 <translation id="4464826014807964867">Websites with info from your organisation</translation>
 <translation id="4465818729556336129">This document is confidential and printing is not advised by your administrator.</translation>
+<translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">This form is not secure. Auto-fill has been turned off.</translation>
 <translation id="4477350412780666475">Next track</translation>
 <translation id="4481394504112738036">Confidential file</translation>
@@ -1087,6 +1098,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4606870351894164739">Impactful</translation>
 <translation id="7265018635737406618">See Brave tips button: press Enter to learn about Brave features</translation>
 <translation id="8338928872956435647">See Brave tips</translation>
+<translation id="6398431831028858802">This policy cannot be set at the Brave profile level and will be ignored.</translation>
 <translation id="4628948037717959914">Photo</translation>
 <translation id="4631649115723685955">Cashback linked</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -1128,7 +1140,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1015173303159845845">You just entered your password on a deceptive site. To secure your accounts, Brave recommends checking your saved passwords.</translation>
 <translation id="4758311279753947758">Add contact info</translation>
 <translation id="4761104368405085019">Use your microphone</translation>
-<translation id="1980929286541331105">Run Brave safety check</translation>
 <translation id="4764776831041365478">The web page at <ph name="URL"/> might be temporarily down or it may have moved permanently to a new web address.</translation>
 <translation id="4766713847338118463">Dual staple bottom</translation>
 <translation id="4771973620359291008">An unknown error has occurred.</translation>
@@ -1150,6 +1161,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>: press Tab then Enter to create a new Brave Sheet quickly</translation>
 <translation id="4825507807291741242">Powerful</translation>
 <translation id="483241715238664915">Turn on warnings</translation>
+<translation id="4834718916855725099">Administrator doesn't recommend taking screenshots or recordings due to confidential content on screen:</translation>
 <translation id="4838327282952368871">Dreamy</translation>
 <translation id="246176083348620700">View your Brave history</translation>
 <translation id="484462545196658690">Auto</translation>
@@ -1182,7 +1194,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press 'Tab', then 'Enter' to search</translation>
 <translation id="4930153903256238152">Large capacity</translation>
 <translation id="4943872375798546930">No results</translation>
-<translation id="2388640476675728425">Manage accessibility settings button, press Enter to personalise your accessibility tools in Brave settings.</translation>
 <translation id="4950898438188848926">Tab switch button, press Enter to switch to the open tab, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="495170559598752135">Actions</translation>
 <translation id="4953689047182316270">Respond to Accessibility Events</translation>
@@ -1241,7 +1252,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5115216390227830982">European-Edp</translation>
 <translation id="5115232566827194440">Restricted managed Guest session override</translation>
 <translation id="5115563688576182185">(64-bit)</translation>
-<translation id="5116898824332672776"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press tab then Enter to personalise your accessibility tools in Chrome OS settings.</translation>
 <translation id="5123063207673082822">Weekend</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Verify your card</translation>
@@ -1277,6 +1287,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5230733896359313003">Delivery Address</translation>
 <translation id="5230815978613972521">B8</translation>
 <translation id="5233045608889518621">12x19</translation>
+<translation id="5234764350956374838">Dismiss</translation>
 <translation id="5250209940322997802">'Connect to network'</translation>
 <translation id="6055400808586511449">Learn about Brave features</translation>
 <translation id="5251803541071282808">Cloud</translation>
@@ -1285,7 +1296,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5254958791078852567">E1</translation>
 <translation id="5255690596502591079">Capture anyway</translation>
 <translation id="5266128565379329178">Bind top</translation>
-<translation id="5269124652893918188"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Press tab then enter to customise the look of your browser.</translation>
 <translation id="5269225904387178860">Quad punch bottom</translation>
 <translation id="5269999699920406580">Features that apply system-wide can only be set by the owner: <ph name="OWNER_EMAIL"/></translation>
 <translation id="5273658854610202413">Warning: This policy was not merged as specified in PolicyDictionaryMultipleSourceMergeList policy because it is not part of the dictionary policies that can be merged.</translation>
@@ -1321,6 +1331,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5344579389779391559">This page may try to charge you money</translation>
 <translation id="145631537248113690">Customise fonts in Brave button, press Enter to customise font sizes and typefaces in Brave</translation>
 <translation id="5355557959165512791">You cannot visit <ph name="SITE"/> right now because its certificate has been revoked. Network errors and attacks are usually temporary, so this page will probably work later.</translation>
+<translation id="5356837363448394805">Flushed</translation>
 <translation id="536296301121032821">Failed to store policy settings</translation>
 <translation id="5363309033720083897">Serial port allowed by your administrator</translation>
 <translation id="5371425731340848620">Update card</translation>
@@ -1338,7 +1349,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5426179911063097041"><ph name="SITE"/> wants to send you notifications</translation>
 <translation id="5428105026674456456">Spanish</translation>
 <translation id="5430298929874300616">Remove bookmark</translation>
-<translation id="5434889539950523874"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>: Press tab then Enter to share this tab by sharing the link, creating a QR code, casting and more.</translation>
 <translation id="5439770059721715174">Schema validation error at "<ph name="ERROR_PATH"/>": <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">Reverse order face up</translation>
 <translation id="5447765697759493033">This site will not be translated</translation>
@@ -1371,7 +1381,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5540224163453853">Could not find the requested article.</translation>
 <translation id="5541086400771735334">Mailbox 7</translation>
 <translation id="5541546772353173584">Add Email</translation>
-<translation id="3931483091767045023">Manage security settings button, press Enter to manage your Safe Browsing and more in Brave settings</translation>
 <translation id="5545756402275714221">Articles for You</translation>
 <translation id="6084314943327785510">Brave periodically checks your passwords against lists that have been published online. When doing this, your passwords and usernames are encrypted, so they can’t be read by anyone, including Brave.</translation>
 <translation id="5556459405103347317">Reload</translation>
@@ -1437,6 +1446,8 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5785756445106461925">Further, this page includes other resources which are not secure. These resources can be viewed by others while in transit, and can be modified by an attacker to change the look of the page.</translation>
 <translation id="5786044859038896871">Do you want to fill in your card info?</translation>
 <translation id="3985758120980526872">Brave found the password that you just used in a data breach. We recommend changing this password now.</translation>
+<translation id="5789643057113097023">.</translation>
+<translation id="5797429178165847917">Capture confidential content</translation>
 <translation id="5803412860119678065">Do you want to fill in your <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Permissions</translation>
 <translation id="5810442152076338065">Your connection to <ph name="DOMAIN"/> is encrypted using an obsolete cipher suite.</translation>
@@ -1448,9 +1459,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5830698870816298009">camera use and movement</translation>
 <translation id="5838278095973806738">You should not enter any sensitive information on this site (for example, passwords or credit cards) because it could be stolen by attackers.</translation>
 <translation id="5851548754964597211">Tab list</translation>
-<translation id="5855253129151731373">This site's hostname looks similar to <ph name="LOOKALIKE_DOMAIN"/>. Attackers sometimes mimic sites by making small, hard-to-see changes to the domain name.
-
-    If you believe that this is shown in error please visit https://bugs.chromium.org/p/chromium/issues/entry?template=Safety+Tips+Appeals.</translation>
 <translation id="5860033963881614850">Off</translation>
 <translation id="5862579898803147654">Stacker 8</translation>
 <translation id="5863847714970149516">The page ahead may try to charge you money</translation>
@@ -1526,6 +1534,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6080696365213338172">You have accessed content using an administrator-provided certificate. Data you provide to <ph name="DOMAIN"/> can be intercepted by your administrator.</translation>
 <translation id="6087312102907839798">Related searches</translation>
 <translation id="6094273045989040137">Annotate</translation>
+<translation id="6094290315941448991">Administrator policy disables screen recording when confidential content is visible</translation>
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">Create site</translation>
 <translation id="6106989379647458772">The web page at <ph name="PAGE"/> might be temporarily down or it may have moved permanently to a new web address.</translation>
@@ -1552,6 +1561,8 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="8385639954311581596">Remove address from Brave?</translation>
 <translation id="622039917539443112">Parallel fold</translation>
 <translation id="6221345481584921695">Google Safe Browsing recently <ph name="BEGIN_LINK"/>detected malware<ph name="END_LINK"/> on <ph name="SITE"/>. Websites that are normally safe are sometimes infected with malware. The malicious content comes from <ph name="SUBRESOURCE_HOST"/>, a known malware distributor.</translation>
+<translation id="8997875939727100757"><ph name="MANAGE_CHROME_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to personalise your accessibility tools in Brave settings</translation>
+<translation id="6233160458685643793">Grinning</translation>
 <translation id="6234122620015464377">Trim after each document</translation>
 <translation id="4765229189146046954">Brave Pay logo</translation>
 <translation id="6241121617266208201">Hide suggestions</translation>
@@ -1570,6 +1581,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6279098320682980337">Virtual card number not filled in? Click card details to copy</translation>
 <translation id="6280223929691119688">Can’t deliver to this address. Select a different address.</translation>
 <translation id="6282194474023008486">Postcode</translation>
+<translation id="9069724554626063339">Manage downloads in Brave button; press Enter to manage files that you have downloaded in Brave</translation>
 <translation id="6289939620939689042">Page colour</translation>
 <translation id="6290238015253830360">Your suggested articles appear here</translation>
 <translation id="6293309776179964942">JIS B5</translation>
@@ -1601,6 +1613,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6390662030813198813">Engineering-E</translation>
 <translation id="6391700400718590966">Secure payment credential no matching credential sheet is closed</translation>
 <translation id="6393956493820063117">Pasting from <ph name="ORIGIN_NAME"/> to this location is blocked by administrator policy</translation>
+<translation id="6398277657359595425">Loudly crying</translation>
 <translation id="6398765197997659313">Exit full screen</translation>
 <translation id="6401136357288658127">This policy is deprecated. You should use the <ph name="NEW_POLICY"/> policy instead.</translation>
 <translation id="6404511346730675251">Edit bookmark</translation>
@@ -1628,7 +1641,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="647261751007945333">Device policies</translation>
 <translation id="6476284679642588870">Manage payment methods</translation>
 <translation id="6489534406876378309">Start uploading crashes</translation>
-<translation id="5620223546958961077"><ph name="MANAGE_CHROME_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: press tab then Enter to personalise your accessibility tools in Brave settings.</translation>
 <translation id="6493924760403974580">This app supports only this size.</translation>
 <translation id="6494750904506170417">pop-ups and redirects</translation>
 <translation id="6499038740797743453">Reset password?</translation>
@@ -1675,6 +1687,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6660413144148052430">location</translation>
 <translation id="6662457027866368246">First roll</translation>
 <translation id="666259744093848177">(x86_64 translated)</translation>
+<translation id="6663846344464066639">Folded hands</translation>
 <translation id="6665553082534466207">Triple punch right</translation>
 <translation id="6685834062052613830">Sign out and complete setup</translation>
 <translation id="6687335167692595844">Font size requested</translation>
@@ -1683,6 +1696,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6689249931105087298">Relative with black point compression</translation>
 <translation id="5406652219015697259">Brave is offering to save your cards in your Brave account because you are signed in. You can change this behaviour in settings. The cardholder name comes from your account.</translation>
 <translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Press Tab then Enter to find your device in the Brave sync chain</translation>
+<translation id="6696588630955820014">Share this tab button; press Enter to share this tab by sharing the link, creating a QR code, casting and more</translation>
 <translation id="6698381487523150993">Created:</translation>
 <translation id="6702919718839027939">Present</translation>
 <translation id="6710213216561001401">Previous</translation>
@@ -1697,6 +1711,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="674375294223700098">Unknown server certificate error.</translation>
 <translation id="6744009308914054259">While waiting for a connection, you can visit Downloads to read offline articles.</translation>
 <translation id="6753269504797312559">Policy Value</translation>
+<translation id="6755241357817244406">chrome://flags</translation>
 <translation id="6757797048963528358">Your device went to sleep.</translation>
 <translation id="6767985426384634228">Update address?</translation>
 <translation id="6768213884286397650">Hagaki (Postcard)</translation>
@@ -1739,6 +1754,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6722453239914327220">This name is from your Brave sync chain</translation>
 <translation id="6944692733090228304">You entered your password on a site that’s not managed by <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. To protect your account, don’t reuse your password on other apps and sites.</translation>
 <translation id="6945221475159498467">Select</translation>
+<translation id="6946722113367118030">Thinking</translation>
 <translation id="6948051842255602737">Game over; your score is <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">To see pickup methods and requirements, select an address</translation>
 <translation id="6949872517221025916">Reset password</translation>
@@ -1783,6 +1799,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5320462991730735481">Add and manage addresses in Brave settings</translation>
 <translation id="7064851114919012435">Contact info</translation>
 <translation id="7068733155164172741">Enter <ph name="OTP_LENGTH"/>-digit code</translation>
+<translation id="7070090581017165256">About this site</translation>
 <translation id="70705239631109039">Your connection is not fully secure</translation>
 <translation id="7075452647191940183">Request is too large</translation>
 <translation id="7079718277001814089">This site contains malware</translation>
@@ -1882,6 +1899,7 @@ Additional details:
 <translation id="7392089738299859607">Update address</translation>
 <translation id="7399802613464275309">Safety check</translation>
 <translation id="7400418766976504921">URL</translation>
+<translation id="7403392780200267761">Share this tab by sharing the link, creating a QR code, casting and more</translation>
 <translation id="7403591733719184120">Your <ph name="DEVICE_NAME"/> is managed</translation>
 <translation id="2562227627470773235">&lt;p&gt;You'll see this error if you have Superfish software on your Windows computer.&lt;/p&gt;
       &lt;p&gt;Follow these steps to temporarily disable the software so that you can get on the web. You'll need administrator privileges.&lt;/p&gt;
@@ -2020,6 +2038,7 @@ Additional details:
 <translation id="4670564340385807132">Remove form suggestion from Brave?</translation>
 <translation id="781440967107097262">Share clipboard?</translation>
 <translation id="7815407501681723534">Found <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> for '<ph name="SEARCH_STRING"/>'</translation>
+<translation id="782125616001965242">Show information about this site</translation>
 <translation id="782886543891417279">The Wi-Fi that you are using (<ph name="WIFI_NAME"/>) may require you to visit its login page.</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{None}=1{1 app (<ph name="EXAMPLE_APP_1"/>)}=2{2 apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
@@ -2041,7 +2060,6 @@ Additional details:
 <translation id="7932579305932748336">Coat</translation>
 <translation id="79338296614623784">Enter a valid phone number</translation>
 <translation id="8329449853370113380"><ph name="URL"/> wants to play protected content. Your device’s identity will be verified by Brave.</translation>
-<translation id="7935031712718413217">Possible spoofing URL</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
 <translation id="7937554595067888181">Expires on <ph name="EXPIRATION_DATE_ABBR"/></translation>
 <translation id="7938958445268990899">Server's certificate is not yet valid.</translation>
@@ -2052,7 +2070,6 @@ Additional details:
 <translation id="1535074845255182168">Manage your cookie preferences in Brave settings</translation>
 <translation id="7951415247503192394">(32-bit)</translation>
 <translation id="7953569069500808819">Edge stitch top</translation>
-<translation id="7954041596401851904">Share this tab by sharing the link, creating a QR code, casting and more.</translation>
 <translation id="7956713633345437162">Mobile bookmarks</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="7966803981046576691">Job account type</translation>
@@ -2109,6 +2126,7 @@ Additional details:
 <translation id="810875025413331850">No nearby devices found.</translation>
 <translation id="8116925261070264013">Muted</translation>
 <translation id="8118489163946903409">Payment method</translation>
+<translation id="1930033552459819898">Customise Brave button; press Enter to customise the look of your browser</translation>
 <translation id="8127301229239896662">'<ph name="SOFTWARE_NAME"/>' wasn’t installed properly on your computer or network. Ask your IT administrator to resolve this issue.</translation>
 <translation id="8131740175452115882">Confirm</translation>
 <translation id="8148608574971654810">PDF version:</translation>
@@ -2126,7 +2144,6 @@ Additional details:
 <translation id="8202370299023114387">Conflict</translation>
 <translation id="8206978196348664717">Prc4 (Envelope)</translation>
 <translation id="8211406090763984747">Connection is secure</translation>
-<translation id="3280037408312613646">Customise Brave button: press Enter to customise the look of your browser.</translation>
 <translation id="8218327578424803826">Assigned Location:</translation>
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="8228419419708659934">Two-page view</translation>
@@ -2154,7 +2171,6 @@ Additional details:
 <translation id="8282947398454257691">Know your unique device identifier</translation>
 <translation id="4596532552309852907">Manage your Safe Browsing and more in Brave settings</translation>
 <translation id="8286036467436129157">Sign In</translation>
-<translation id="8287501787477690853">Administrator doesn't recommend taking screenshots or recordings due to confidential content captured.</translation>
 <translation id="8288807391153049143">Show certificate</translation>
 <translation id="8289355894181816810">Contact your network administrator if you're not sure what this means.</translation>
 <translation id="8293206222192510085">Add Bookmark</translation>
@@ -2166,7 +2182,6 @@ Additional details:
 <translation id="830498451218851433">Fold half</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Apps installed and how often they are used</translation>
-<translation id="8390490312179389407">This page is suspicious (flagged by Brave).</translation>
 <translation id="831997045666694187">Evening</translation>
 <translation id="8321476692217554900">notifications</translation>
 <translation id="8332188693563227489">Access to <ph name="HOST_NAME"/> was denied</translation>
@@ -2202,6 +2217,7 @@ Additional details:
 <translation id="8438476240229491014">Remember this setting</translation>
 <translation id="8438786541497918448">Use camera and microphone?</translation>
 <translation id="8446884382197647889">Learn More</translation>
+<translation id="8449836157089738489">Open all in new tab group</translation>
 <translation id="8457125768502047971">Indefinite</translation>
 <translation id="8461694314515752532">Encrypt synced data with your own sync passphrase</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 credit card}other{# credit cards}}</translation>
@@ -2218,7 +2234,6 @@ Additional details:
 <translation id="8507227106804027148">Command line</translation>
 <translation id="8508648098325802031">Search icon</translation>
 <translation id="8511402995811232419">Manage cookies</translation>
-<translation id="8519478486928352883">Administrator doesn't recommend taking screenshots or recordings due to confidential content on screen.</translation>
 <translation id="1426902392270366682">Brave can help you protect your Brave account and change your password.</translation>
 <translation id="1215802963054007211">Clear your browsing history, cookies, cache and more in Brave settings</translation>
 <translation id="8533619373899488139">Visit &lt;strong&gt;chrome://policy&lt;/strong&gt; to see the list of blocked URLs and other policies enforced by your system administrator.</translation>
@@ -2226,6 +2241,7 @@ Additional details:
 <translation id="8541158209346794904">Bluetooth device</translation>
 <translation id="8542014550340843547">Triple staple bottom</translation>
 <translation id="8543181531796978784">You can <ph name="BEGIN_ERROR_LINK"/>report a detection problem<ph name="END_ERROR_LINK"/> or, if you understand the risks to your security, <ph name="BEGIN_LINK"/>visit this unsafe site<ph name="END_LINK"/>.</translation>
+<translation id="8554010658308662631">Load more</translation>
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{Reset permission}other{Reset permissions}}</translation>
 <translation id="8555010941760982128">Use this code at checkout</translation>
 <translation id="8557066899867184262">The CVC is located behind your card.</translation>
@@ -2289,6 +2305,7 @@ Additional details:
 <translation id="8792626944327216835">microphone</translation>
 <translation id="9156291179464624174"><ph name="ENROLLMENT_DOMAIN"/> has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.</translation>
 <translation id="8798099450830957504">Default</translation>
+<translation id="8798739476508189189">Looking for browser flags? Visit</translation>
 <translation id="8805819170075074995">List entry '<ph name="LANGUAGE_ID"/>': entry ignored because it is also included in the SpellcheckLanguage policy.</translation>
 <translation id="8807160976559152894">Trim after each page</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press tab, then enter to update Brave from your Brave settings</translation>
@@ -2306,6 +2323,7 @@ Additional details:
 <translation id="8870494189203302833">Same order face down</translation>
 <translation id="8871553383647848643">Customise the look of your browser</translation>
 <translation id="8874824191258364635">Enter a valid card number</translation>
+<translation id="8884537526797090108">Can't record confidential content</translation>
 <translation id="8891727572606052622">Invalid proxy mode.</translation>
 <translation id="8894794286471754040">Long edge first</translation>
 <translation id="8903921497873541725">Zoom in</translation>
@@ -2313,7 +2331,6 @@ Additional details:
 <translation id="890493561996401738">Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="2684652081942622950">Brave sync chain</translation>
 <translation id="4102271590580840789">Manage payment methods button; press enter to manage your payments and credit card info in Brave settings</translation>
-<translation id="8918231688545606538">This page is suspicious</translation>
 <translation id="8922013791253848639">Always allow ads on this site</translation>
 <translation id="892588693504540538">Punch top right</translation>
 <translation id="7757992844965332255">Do you want to save this card to your Brave sync chain?</translation>
@@ -2346,6 +2363,7 @@ Additional details:
 <translation id="9020200922353704812">Card billing address required</translation>
 <translation id="9020542370529661692">This page has been translated to <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="9020742383383852663">A8</translation>
+<translation id="9021429684248523859"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to share this tab by sharing the link, creating a QR code, casting and more</translation>
 <translation id="9025348182339809926">(Invalid)</translation>
 <translation id="9030265603405983977">Monochrome</translation>
 <translation id="9035022520814077154">Security error</translation>
@@ -2360,6 +2378,7 @@ Additional details:
 <translation id="9050666287014529139">Passphrase</translation>
 <translation id="9056953843249698117">Store</translation>
 <translation id="9062620674789239642">It may have been moved, edited or deleted.</translation>
+<translation id="9063800855227801443">Can't capture confidential content</translation>
 <translation id="9065203028668620118">Edit</translation>
 <translation id="9065745800631924235"><ph name="TEXT"/> search from history</translation>
 <translation id="9069693763241529744">Blocked by an extension</translation>
@@ -2391,6 +2410,7 @@ Additional details:
 <translation id="9157595877708044936">Setting up...</translation>
 <translation id="9158625974267017556">C6 (Envelope)</translation>
 <translation id="9164029392738894042">Accuracy Check</translation>
+<translation id="9164742147345933553">os://flags</translation>
 <translation id="9168814207360376865">Allow sites to check if you have payment methods saved</translation>
 <translation id="9169664750068251925">Always block on this site</translation>
 <translation id="9169931577761441333">Add <ph name="APP_NAME"/> to Home screen</translation>
@@ -2476,9 +2496,9 @@ Additional details:
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press Tab then Enter to open a new Private window to browse privately</translation>
 <translation id="2418728264526266844">Open Private Window button, press Enter to open a new Private window to browse privately</translation>
 <translation id="4920329334239571966">Close all Private windows</translation>
-<translation id="342933251860824958">Close all Private windows that are currently open.</translation>
-<translation id="380806882992967677"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Press Tab then Enter to close all Private windows that are currently open.</translation>
-<translation id="553857293324311872">Close Private windows button, press Enter to close all Private windows that are currently open.</translation>
+<translation id="7736544743887840328">Close all Private windows that are currently open.</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Press Tab then Enter to close all Private windows that are currently open.</translation>
+<translation id="1723247378009489676">Close Private windows button, press Enter to close all Private windows that are currently open.</translation>
 <translation id="1090109565956608696">Not allowed in Private</translation>
 <translation id="6934396344327597525">Leaving Private mode to pay via an external application. Continue?</translation>
 <translation id="7948746210201997548">{NUM_DAYS, plural,

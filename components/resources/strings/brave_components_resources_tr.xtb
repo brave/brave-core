@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Sonraki</translation>
 <translation id="7954950242989581218">Sağ salim tarayın</translation>
 <translation id="2188651882929633653">Brave Shields çoğu reklam dahil olmak üzere sizi internette izlemeye çalışan — sapkın şeyleri engeller. Bir site çalışmıyor gibi görünüyorsa Shields’ı “down” olarak ayarlayın. Brave belirli özelliklerin genel kullanımını tahmin etmek için <ph name="BEGIN_LINK_P3A"/>completely private product analytics<ph name="END_LINK_P3A"/> kullanır. Bunu <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/> bölümünden kapatabilirsiniz.</translation>
-<translation id="1919345977826869612">Reklamlar</translation>
-<translation id="6769094341455418696">Brave Ads'i görüntüleyerek [[currency]] kazanın. Gösterilen reklamlar, tarama davranışınızdan yapılan çıkarımlara göre ilgi alanlarınıza dayalıdır. Tarayıcınızdan hiçbir kişisel veri ya da tarama geçmişi alınmaz.</translation>
+<translation id="4851215387785619212">Brave Özel Reklamları</translation>
+<translation id="3114984266384096064">Brave Özel Reklamlar'ı görüntüleyerek [[currency]] kazanın. Gösterilen reklamlar, tarama davranışınızdan yapılan çıkarımlara göre ilgi alanlarınıza dayalıdır. Tarayıcınızdan hiçbir kişisel veri ya da tarama geçmişi alınmaz.</translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="3742599705619405136">Yayıncıları ve içerik oluşturucuları desteklemenin otomatik bir yolu. Aylık bir ödeme ayarlayın ve normal şekilde gezinin. Ziyaret ettiğiniz Brave Verified siteleri, Brave tarafından ölçülen ilginize bağlı olarak katkılarınızı otomatik olarak alır.</translation>
 <translation id="3325399124634342726">Bu ayki mevcut kazançlar (tahmini)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Kaydın son [[numberOfLines]] satırını gösteriyoruz. Bütün kaydı istiyorsanız yukarıdan indirebilirsiniz.</translation>
 <translation id="7168491065836975228">Kazanç İçi</translation>
 <translation id="758790787422117549">Kişilik Kimliği</translation>
+<translation id="1919345977826869612">Reklamlar</translation>
 <translation id="3671566813999349838">Tutar</translation>
 <translation id="751223241692981112">Alınan yer</translation>
 <translation id="3913089081619091801">Kimlik Al</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
-<translation id="2383784987664887340">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
-<translation id="2237374144728570574">* 15 Eylül 2021 itibarıyla Gemini Earn APY</translation>
+<translation id="3066983737886188034">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve faiz kazanmanıza izin verir. Brave Ödülleri cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206"><ph name="PROVIDER"/> hesabıma git</translation>
 <translation id="2389181429986654814">Doğrulamayı tamamlamak için <ph name="PROVIDER"/> kısmına gidin</translation>
 <translation id="7793632266654336758">Ödül almaya başlamak için lütfen kimlik doğrulamasını tamamlayın.</translation>
+<translation id="2394961582378297792">Oturum kapatıldı</translation>
+<translation id="5511950864417840431"><ph name="PROVIDER"/> oturumunu kapat</translation>
 <translation id="3600355176618429948">Tahmini Kazanç</translation>
 <translation id="7577100371127227294">Aylık Bahşişler</translation>
 <translation id="5894023780213944778">Cüzdanım</translation>
@@ -878,12 +880,12 @@
 <translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x'i<ph name="LINK_AFTER"/> bir DEX toplayıcısı olarak kullanır.</translation>
 <translation id="151946611346774041">0x, bir işlemi yerine getirmek için (teklif alma da dahil) Ethereum adresini ve IP adresini işleyecektir. 0x bu veriyi SADECE işlemleri gerçekleştirme amacıyla kullanacaktır.</translation>
 <translation id="4626407663177532837">Teklif %0,875 Brave ücretini de içerir.</translation>
+<translation id="2704606927547763573">Kopyalandı</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
 <translation id="8303434745767477417">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve web 3 DApps ile etkileşime geçin. DeFi sayesinde alım-satım yapın, yatırım yapın, ödünç alın ve ödünç verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Kripto cüzdanınızı yedekleyin</translation>
-<translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="5024543173656851695">Kurtarma sözcüklerimi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
 <translation id="3933122286596948824">Kurtarma ifadeniz</translation>
 <translation id="5077747669435508720">Bu sözcükleri aşağıda gösterilenle aynı sırada bir yere yazın veya kopyalayın ve güvenli bir yerde saklayın. Kurtarma cümleniz şifreyi unutmanız, cihazınızın kaybolması/çalınması veya cüzdanınızı değiştirmek istemeniz durumlarında hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
@@ -945,6 +947,7 @@
 <translation id="6151024411349343484">Aradığınız hesabı bulamıyorsanız HD yolunu (yukarıda) değiştirmeyi deneyin.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Eski (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Sonuç bulunamadı.</translation>
 <translation id="5149944858285555235">Bilinmeyen hata, lütfen donanım cüzdanınıza tekrar bağlanın ve tekrar deneyin.</translation>
 <translation id="4522570452068850558">Detaylar</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -1025,6 +1028,8 @@
 <translation id="4709524402122994378">işlemler</translation>
 <translation id="523862956770478816">Site izinleri</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> hesap bağlı</translation>
+<translation id="4305817255990598646">Değiştir</translation>
+<translation id="3890989020011724401">Yeni hesap</translation>
 <translation id="4460220693591349571">FONKSİYON TİPİ</translation>
 <translation id="838933475572692615">HEX VERİSİ</translation>
 <translation id="2240831799756994975">BAYT</translation>
@@ -1090,6 +1095,8 @@
 <translation id="6825399159373612149"><ph name="DOMAIN_NAME"/> etki alanı kaydedilmemiş</translation>
 <translation id="8971278306757462297">Alıcı adresi kendi adresiniz</translation>
 <translation id="3506416339268164412">Alıcı adresi bir token'ın kontrat adresi</translation>
+<translation id="5517732667776806421">Eksik sağlama toplamı bilgisi</translation>
+<translation id="4006711930669471508">Geçersiz sağlama toplamı bilgisi</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> işlemi reddet</translation>
 <translation id="1118876217803190221">Yetersiz bakiye</translation>
@@ -1111,6 +1118,7 @@
 <translation id="1119447706177454957">İç hata</translation>
 <translation id="3327639091470204775">Trezor köprüsüne bağlanılamıyor</translation>
 <translation id="6672377693827764095">İç hata, Hesaplar getirilemiyor</translation>
+<translation id="6889920539620318793">Aktif olarak ayarla</translation>
 <translation id="8933250418452564886">Donanım işlemi bulunamadı, lütfen tekrar deneyin</translation>
 <translation id="5999974802900788338">Donanım cihazından hata alındı, işlemi cihazınızdan onaylamanız gerekiyor olabilir</translation>
 <translation id="8523768065044261559">İşlemin gerçekleştirilmesinde hata, lütfen tekrar deneyin</translation>
@@ -1118,6 +1126,8 @@
 <translation id="8273603707418703324">Mesaj imzalanırken hata oluştu, bilinmeyen anahtarlık istendi, lütfen tekrar deneyin</translation>
 <translation id="5265455943786954050">Trezor komutu zaten devam ediyor</translation>
 <translation id="7017116822583380542">Trezor köprüsü hazır değil</translation>
+<translation id="3378339846292573874">Önerilen token'ı ekle</translation>
+<translation id="2322227405137827074">Bu token'ı içe aktarmak ister misiniz?</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1126,6 +1136,30 @@
 <translation id="6951743416068151209">Tor Proxy URL'si</translation>
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
+<translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
+<translation id="640898327002833127">Brave Kalkanları <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Bu site bozuk görünüyorsa, Kalkanları kapatmayı deneyin. Not: Bu, Brave gizlilik korumalarını azaltabilir.</translation>
+<translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Gelişmiş Kontroller</translation>
+<translation id="1299672573512347813">Bu ayarlar, bu sitedeki web uyumluluğunu etkiler.</translation>
+<translation id="9204041448536398473">Genel Kalkan ayarları</translation>
+<translation id="7637771346619326580">Genel Kalkan varsayılanlarını değiştir</translation>
+<translation id="3520486481604057261">Adblock Listelerini Özelleştir</translation>
+<translation id="3146531623184244174">Bağlantılar HTTPS'e yükseltildi</translation>
+<translation id="131231380815754440">HTTPS'yi etkinleştir</translation>
+<translation id="7461425058443653485">Betikler Engellendi</translation>
+<translation id="3246600097575692802">Engellenen Betikler Bölümünü Etkinleştir</translation>
+<translation id="3603525299146223354">İzleyiciler &amp; reklamlar</translation>
+<translation id="1146309636943354181">İzleyiciler &amp; reklamlar engellendi (standart)</translation>
+<translation id="5973258875089964805">İzleyiciler &amp; reklamlar engellendi (agresif)</translation>
+<translation id="5544888475837817215">Tüm izleyici ve reklamlara izin ver</translation>
+<translation id="6203697265754637264">Siteler arası çerezler engellendi</translation>
+<translation id="4627427111733173920">Çerezler engellendi</translation>
+<translation id="7855168553463825937">Tüm çerezler engellendi</translation>
+<translation id="8366221601425141146">Engellenen parmak izleri</translation>
+<translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
+<translation id="6696441392507885865">Parmak izi engelli (katı, siteleri bozabilir)</translation>
+<translation id="5882733945883311404">Tüm Parmak İzlerine izin ver</translation>
 <translation id="1742469581923031760">Bağlanıyor…</translation>
 <translation id="1287487756047817908">Bağlantı kesiliyor…</translation>
 <translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>
@@ -1161,4 +1195,8 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="6769094341455418696">Brave Ads'i görüntüleyerek [[currency]] kazanın. Gösterilen reklamlar, tarama davranışınızdan yapılan çıkarımlara göre ilgi alanlarınıza dayalıdır. Tarayıcınızdan hiçbir kişisel veri ya da tarama geçmişi alınmaz.</translation>
+<translation id="2383784987664887340">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY kazanmanıza izin verir. Brave Ödüller cüzdanınızı doğrulayın ve hemen Gemini'a bağlayın!</translation>
+<translation id="2237374144728570574">* 15 Eylül 2021 itibarıyla Gemini Earn APY</translation>
+<translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 </translationbundle>

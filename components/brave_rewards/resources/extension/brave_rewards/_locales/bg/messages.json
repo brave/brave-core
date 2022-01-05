@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": " Връзката е прекъсната",
+    "message": "Излязохте",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Прекъсване на връзката с Brave Rewards",
-    "description": ""
+    "message": "Излизане от $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Прогнозни печалби",

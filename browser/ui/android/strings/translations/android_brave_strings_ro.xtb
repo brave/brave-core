@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Știrile Brave sunt susținute prin anunțuri furnizate întru totul confidențial și anonim pe dispozitivul dvs.</translation>
 <translation id="4541978218358617681">Reclamă</translation>
 <translation id="1765217911817124376">Activați știrile Brave</translation>
+<translation id="6527303717912515753">Trimite</translation>
 <translation id="1654539412343893324">Aflați mai multe despre datele dvs.</translation>
 <translation id="2989805286512600854">Deschideți în filă nouă</translation>
 <translation id="3709782636417497984">Deschideți într-o filă incognito nouă</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Portofelul dumneavoastră</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Știrile Brave</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">Dolari SUA</translation>
 <translation id="1165667598801520610">Adaugă fonduri</translation>
 <translation id="8428213095426709021">Setări</translation>
-<translation id="8772672608371898774">Editor verificat Brave</translation>
-<translation id="1397683270551078781">Neverificat încă</translation>
+<translation id="6020176662032623904">Creator confirmat</translation>
+<translation id="2369994359029526515">Creator neconfirmat</translation>
 <translation id="880893465294676334">Acest Creator verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave.
 Cadourile bănești vor rămâne în portofelul dvs. până la finalizarea acestui proces.</translation>
 <translation id="8918760045046434238">Trimiteți o plată...</translation>
@@ -277,11 +278,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="9096003370755878766">Retrageți BAT pe care poate l-ați adăugat anterior în portofelul Recompense Brave</translation>
 <translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
 <translation id="6569877533335686968">Susținere</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
-<translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
+<translation id="3200197118442451932">Brave Software Inc. nu prelucrează, nu stochează și nu accesează informațiile personale pentru care le oferiți <ph name="WALLET_PROVIDER"/> atunci când creați un cont la ei.</translation>
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="2193391216824305230">Portofel utilizator</translation>
-<translation id="6585020831163574892">Accesați contul dvs. Uphold</translation>
+<translation id="1665118090708049096">Accesați contul <ph name="WALLET_PROVIDER"/> meu</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="8874184842967597500">Neconectat</translation>
@@ -290,10 +292,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5358719431303818601">Deconectare neverificată</translation>
 <translation id="4241449868720191203">Deconectat verificat</translation>
 <translation id="3248185426436836442">În așteptare</translation>
-<translation id="8108013093558639183">BAT nu este acceptat în prezent în regiunea dvs. conform locației cu care a fost deschis contul dvs. Verificați din nou mai târziu disponibilitatea.</translation>
-<translation id="4190454391025419535">Regiune neacceptată</translation>
-<translation id="6830703472632069884">A apărut o problemă la verificarea portofelului dvs., încercați mai târziu.</translation>
-<translation id="3512533646933434345">Eroare de verificare portofel</translation>
 <translation id="2260513517001048012">NOTĂ: Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Browserul dvs. va continua să încerce să contribuie până când va avea loc o verificare sau până când vor trece 90 de zile.</translation>
 <translation id="4488355059795908907">Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Orice fonduri pe care doriți să i le trimiteți vor rămâne în portofelul dvs. până când utilizatorul va finaliza acest proces.</translation>
 <translation id="2495032782748793764">Brave implicit</translation>
@@ -403,12 +401,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7427567994475794038">Activați Rapoartele de confidențialitate pentru a vedea câte urmăriri și reclame au fost blocate în ultimele 3 ore.</translation>
 <translation id="2053891538879944400">Ați economisit <ph name="DATA"/> <ph name="DATA_TEXT"/> date cu browserul Brave.</translation>
 <translation id="8640064498452534195">Activați Rapoartele de confidențialitate pentru a vedea câte date ați economisit.</translation>
-<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.&#128267;</translation>
+<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.🔋</translation>
 <translation id="1945330434665345785">Ați blocat <ph name="COUNT"/> (de) urmăriri și reclame cu browserul Brave săptămâna trecută.</translation>
 <translation id="2883868922264431515">Câștigați tokenuri vizualizând reclame care respectă confidențialitate și susțineți website-urile favorite.</translation>
-<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.💨💨</translation>
 <translation id="7408493389591475748">Începeți să navigați pentru a vedea rapoartele de confidențialitate</translation>
 <translation id="9080777565335515917">Setați Brave ca browser prestabilit pentru o navigare privată și sigură.</translation>
 <translation id="1390943217516275883">Permite browserului Brave să afișeze statisticile privind confidențialitatea</translation>
@@ -424,16 +422,45 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1972589975368876259">Editează colecția</translation>
 <translation id="2490330380242414851">Ștergeți widget</translation>
 <translation id="8446884382197647889">Aflați mai multe</translation>
+<translation id="7384441892795736634">Împrospătează datele</translation>
+<translation id="4804818685124855865">Deconectează</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adresă Depozit</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memento Depozit</translation>
+<translation id="5110244215256675209">Cumpără cripto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Cumpărați <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Disponibil <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Previzualizează schimbul</translation>
 <translation id="2882813124794301799">Colecție widget</translation>
 <translation id="13296465911709339">Textul dumneavoastră a fost copiat în clipboard.</translation>
 <translation id="2735834606413553397">Adresa publică a fost copiată în clipboard.</translation>
+<translation id="7144878232160441200">Reîncearcă</translation>
 <translation id="2977461003134694205">Statistici confidențialitate</translation>
 <translation id="4643117005422448078">Site-uri de top</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Urmăritori &amp; Anunțuri blocate, Lățime de bandă economisită și Estimări economisite în timp.</translation>
 <translation id="74417429503469271">Deschideți siteurile de top pe care le vizitați frecvent.</translation>
+<translation id="2956070106555335453">Rezumat</translation>
+<translation id="1366855498335432549">Depune</translation>
+<translation id="1301340234286078471">Schimbă</translation>
 <translation id="223536150967420869">Cumpără</translation>
+<translation id="1714829281959608206">Activează conexiunea Binance pentru a vedea soldul contului Binance și a tranzacționa cripto.</translation>
+<translation id="4584930231524505442">Vreau să schimb...</translation>
+<translation id="5749014321384313843">Vreau să cheltuiesc...</translation>
 <translation id="8688672835843460752">Disponibil</translation>
+<translation id="2480674848181564169">Fonduri insuficiente pentru efectuarea schimbului</translation>
+<translation id="2215334405220411393">Suma minimă de schimbat este : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Imposibil de conectat</translation>
+<translation id="7742417737698031726">Taxă</translation>
+<translation id="2122225204180056042">Vei primi</translation>
+<translation id="6432284126416751397">Confirmă conversia</translation>
 <translation id="5137723827757859599">Deocamdată nu este nimic pe siteurile de top.</translation>
+<translation id="3891414008432200754">Preț</translation>
+<translation id="3733576242118819803">Confirmați (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Schimbul a eșuat. Vă rugăm să încercați din nou.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Câștigați tokenuri și dăruiți</translation>
 <translation id="244362569344671266">Câștigați tokenuri vizualizând reclame private Brave și susțineți automat creatorii de conținut.</translation>
 <translation id="631124996535890460">Dacă alegeți să continuați, sunteți de acord cu <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>.</translation>
@@ -477,6 +504,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
 <translation id="7073631403665023390">Atingeți sau dați clic pe orice loc pe ecran pentru a continua la Brave Talk.</translation>
 <translation id="626339649633171286">Doriți să aflați mai multe despre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
 <translation id="8967385052772844086">Vizualizare text integral al Raportului de confidențialitate</translation>
 <translation id="6864343534748973390">Cele mai populare</translation>
@@ -520,7 +549,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3171931580569169744">Activați grupurile de file</translation>
 <translation id="5587305863196367357">După ce confirmați portofelul, puteți gestiona fondurile mai eficient, având posibilitatea de a efectua depuneri și retrageri</translation>
 <translation id="5760671211380791582">Nu aveți suficiente token-uri BAT.</translation>
-<translation id="6960458596933484861">Aveți nevoie de minimum 15 BAT pentru a crea un portofel Uphold confirmat. Încercați din nou mai târziu!</translation>
+<translation id="442469478596827903">Trebuie să aveți minimum 2 BAT pentru a crea un portofel Uphold verificat. Încercați din nou mai târziu.</translation>
 <translation id="4389085954549744469">Dacă aveți deja un cont Uphold confirmat, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continuați la conectare</translation>
 <translation id="1483493594462132177">Trimite</translation>
@@ -775,4 +804,29 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8971278306757462297">Adresa destinatară este propria dvs. adresă</translation>
 <translation id="749944179568745958">Nu este o adresă ETH validă</translation>
 <translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
+<translation id="1543259266592091784">Adaugă fonduri</translation>
+<translation id="3494964159182650590">Rezumat recompense</translation>
+<translation id="7470079236088529568">Total granturi revendicate</translation>
+<translation id="590733288489975971">Recompense din reclame</translation>
+<translation id="207268487070188114">Contribuție unică</translation>
+<translation id="64394831139134288">Portofelul meu</translation>
+<translation id="8494748383523030337">Soldul dumneavoastră</translation>
+<translation id="7091980679045978090">Câștiguri estimate</translation>
+<translation id="1346059596910821859">Indiciu</translation>
+<translation id="1549705559752367917">Trimiteți bacșiș</translation>
+<translation id="6727102863431372879">Setați</translation>
+<translation id="381822214767083050">Contribuție lunară</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Editor verificat Brave</translation>
+<translation id="1397683270551078781">Neverificat încă</translation>
+<translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
+<translation id="6585020831163574892">Accesați contul dvs. Uphold</translation>
+<translation id="8108013093558639183">BAT nu este acceptat în prezent în regiunea dvs. conform locației cu care a fost deschis contul dvs. Verificați din nou mai târziu disponibilitatea.</translation>
+<translation id="4190454391025419535">Regiune neacceptată</translation>
+<translation id="6830703472632069884">A apărut o problemă la verificarea portofelului dvs., încercați mai târziu.</translation>
+<translation id="3512533646933434345">Eroare de verificare portofel</translation>
+<translation id="6960458596933484861">Aveți nevoie de minimum 15 BAT pentru a crea un portofel Uphold confirmat. Încercați din nou mai târziu!</translation>
 </translationbundle>

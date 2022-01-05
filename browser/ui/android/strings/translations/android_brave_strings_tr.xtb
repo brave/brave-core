@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave Haberleri cihazınızda eşleştirilen tamamen gizli ve anonim reklamlarla desteklenir.</translation>
 <translation id="4541978218358617681">Reklam</translation>
 <translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
+<translation id="6527303717912515753">Paylaş</translation>
 <translation id="1654539412343893324">Verileriniz hakkında daha fazla bilgi alın</translation>
 <translation id="2989805286512600854">Yeni Sekmede Aç</translation>
 <translation id="3709782636417497984">Yeni Gizli Sekmede Aç</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Cüzdanınız</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave Haberleri</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
-<translation id="8772672608371898774">Brave Onaylı Yayıncı</translation>
-<translation id="1397683270551078781">Henüz doğrulanmadı</translation>
+<translation id="6020176662032623904">Doğrulanmış Oluşturucu</translation>
+<translation id="2369994359029526515">Doğrulanmamış Oluşturucu</translation>
 <translation id="880893465294676334">Bu Brave Doğrulanmış Oluşturucusu, henüz hesabını Brave Kullanıcılarından katkı alacak biçimde yapılandırmadı.
         Gönderdiğiniz tüm bahşişler, bu kişi bu işlemi tamamlayana kadar cüzdanınızda kalacaktır.</translation>
 <translation id="8918760045046434238">Bir bahşiş gönder...</translation>
@@ -278,11 +279,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="9096003370755878766">Brave Rewards cüzdanınıza daha önce eklemiş olabileceğiniz BAT'ı geri çekin</translation>
 <translation id="1554282356558968486">Cüzdan hizmetimizi sağlayan:</translation>
 <translation id="6569877533335686968">Onayla</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
-<translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
+<translation id="3200197118442451932">Brave Software Inc., <ph name="WALLET_PROVIDER"/> için onunla bir hesap oluşturduğunuzda verdiğiniz kişisel bilgilerin hiçbirini işlemez, kaydetmez veya bunlara erişmez.</translation>
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="2193391216824305230">Kullanıcı Cüzdanı</translation>
-<translation id="6585020831163574892">Uphold hesabınıza gidin</translation>
+<translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/> hesabıma git</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="6239274080752256452">Para Çek</translation>
 <translation id="8874184842967597500">Bağlı değil</translation>
@@ -291,10 +293,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5358719431303818601">Bağlantı kesilmesi doğrulanmadı</translation>
 <translation id="4241449868720191203">Bağlantı kesilmesi doğrulandı</translation>
 <translation id="3248185426436836442">Beklemede</translation>
-<translation id="8108013093558639183">BAT, hesabınızın açıldığı konuma dayalı bölgede şu anda desteklenmiyor. Uygunluk için daha sonra tekrar bakın.</translation>
-<translation id="4190454391025419535">Bu bölge desteklenmiyor</translation>
-<translation id="6830703472632069884">Cüzdanınız doğrulanırken bir problem oluştu, lütfen daha sonra tekrar deneyin.</translation>
-<translation id="3512533646933434345">Cüzdan doğrulama hatası</translation>
 <translation id="2260513517001048012">NOT: Bu Brave Onaylı Oluşturucu, Brave kullanıcılarından katkı almak için hesabının ayarlarını henüz yapmamış. Doğrulanana veya 90 gün geçene kadar tarayıcınız katkıda bulunmaya devam edecek.</translation>
 <translation id="4488355059795908907">Bu Brave Onaylı Oluşturucu, Brave kullanıcılarından katkı almak için hesabına henüz ayar yapmamış. Göndereceğiniz herhangi bir miktar süreç tamamlanana kadar cüzdanınızda kalacak.</translation>
 <translation id="2495032782748793764">Varsayılan Brave</translation>
@@ -404,12 +402,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
@@ -425,16 +423,45 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1972589975368876259">Yığını düzenle</translation>
 <translation id="2490330380242414851">Arabirim Öğesini Kaldır</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
+<translation id="7384441892795736634">Verileri Yenile</translation>
+<translation id="4804818685124855865">Bağlantıyı Kes</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Mevduat Adresi</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Mevduat Dekontu</translation>
+<translation id="5110244215256675209">Kripto Para Birimi Satın Al</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Satın al <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Kullanılabilir <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Dönüşümü Ön İzle</translation>
 <translation id="2882813124794301799">Arabirim Öğesi Yığını</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
 <translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
+<translation id="7144878232160441200">Tekrar Dene</translation>
 <translation id="2977461003134694205">Gizlilik İstatistikleri</translation>
 <translation id="4643117005422448078">En İyi Siteler</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">İzleyiciler &amp; Engellenen reklamlar, Tasarruf Edilen Bant Genişliği ve Tasarruf Edilen Zaman Tahminleri.</translation>
 <translation id="74417429503469271">Sık ziyaret ettiğiniz en iyi siteleri açın.</translation>
+<translation id="2956070106555335453">Özet</translation>
+<translation id="1366855498335432549">Para Yatır</translation>
+<translation id="1301340234286078471">Dönüştür</translation>
 <translation id="223536150967420869">Satın Al</translation>
+<translation id="1714829281959608206">Binance hesabı bakiyesini görüntülemek ve kripto para birimlerini alıp satmak için Binance bağlantısını etkinleştirin.</translation>
+<translation id="4584930231524505442">Şunu dönüştürmek istiyorum:</translation>
+<translation id="5749014321384313843">Şunu harcamak istiyorum:</translation>
 <translation id="8688672835843460752">Müsait</translation>
+<translation id="2480674848181564169">Çevirme için yeterli bakiye yok</translation>
+<translation id="2215334405220411393">Dönüştürülecek en az miktar : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Bağlanamadı</translation>
+<translation id="7742417737698031726">Ücret</translation>
+<translation id="2122225204180056042">Şunu alacaksınız:</translation>
+<translation id="6432284126416751397">Dönüşümü Onayla</translation>
 <translation id="5137723827757859599">En iyi sitelerde henüz bir şey yok.</translation>
+<translation id="3891414008432200754">Fiyat</translation>
+<translation id="3733576242118819803">Doğrulayın (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Dönüştürme Başarısız. Lütfen tekrar deneyin.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Jeton Kazanın ve Geri Verin</translation>
 <translation id="244362569344671266">Brave Özel Reklamları'nı görüntüleyerek jeton kazanın ve içerik üreticilerini otomatik olarak destekleyin.</translation>
 <translation id="631124996535890460">Devam ederek <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. kabul etmiş olursunuz</translation>
@@ -478,6 +505,8 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3415016869273103668">Şimdi ücretsiz bir arama başlatabilirsiniz</translation>
 <translation id="7073631403665023390">Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun veya tıklayın.</translation>
 <translation id="626339649633171286">Brave Ödülleri hakkında daha fazla bilgi edinmek mi istiyorsunuz? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!  çevirdiniz</translation>
+<translation id="392587271502873865">Lütfen ağ bağlantınızı kontrol edin.</translation>
 <translation id="7889432931837317731">Mümkün olduğunda otomatik olarak aç</translation>
 <translation id="8967385052772844086">Tüm Gizlilik Raporunu görüntüleyin</translation>
 <translation id="6864343534748973390">En popüler</translation>
@@ -521,7 +550,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3171931580569169744">Sekme Gruplarını Etkinleştir</translation>
 <translation id="5587305863196367357">Cüzdanın onaylanması, paranızı daha kolay yönetmenize, ekleme ve çekim yapmanıza imkan verir</translation>
 <translation id="5760671211380791582">Yeterli BAT'a sahip değilsiniz.</translation>
-<translation id="6960458596933484861">Onaylanmış bir Uphold cüzdanı oluşturmak için en az 15 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="442469478596827903">Doğrulanmış bir Uphold cüzdanı oluşturmak için en az 2 BAT'nizin olması gerekiyor. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="4389085954549744469">Zaten onaylanmış bir Uphold hesabınız varsa, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">oturum açmak için devam edin</translation>
 <translation id="1483493594462132177">Gönder</translation>
@@ -564,7 +593,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="4090490645603511157">Şifrenizi girmeden cüzdanınızın kilidini çabucak açmak için biyometrik verilerinizi kullanın.</translation>
 <translation id="5379398699598690674">Cüzdan (beta)</translation>
 <translation id="6901810042765869341">Brave Wallet kripto hesabınızı geri yüklemek için kurtarma ifadenizi girin.</translation>
-<translation id="9120654436199628567">Kripto hesabını geri yükle</translation>
+<translation id="9120654436199628567">Kripto hesabını geri yükleyin</translation>
 <translation id="4811736040444856406">Kurtarma ifadesini göster</translation>
 <translation id="283071225285270357">Kurtarma ifadenizi girin</translation>
 <translation id="2339124864228588937">Kurtarma ifadesini doğrulayın</translation>
@@ -776,4 +805,29 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="8971278306757462297">Alıcı adresi kendi adresiniz</translation>
 <translation id="749944179568745958">Geçerli bir ETH adresi değil</translation>
 <translation id="3506416339268164412">Alıcı adresi bir token'ın kontrat adresi</translation>
+<translation id="1543259266592091784">Para ekle</translation>
+<translation id="3494964159182650590">Ödüller özeti</translation>
+<translation id="7470079236088529568">Talep Edilen Toplam Bağışlar</translation>
+<translation id="590733288489975971">Ads Ödülleri</translation>
+<translation id="207268487070188114">Tek Seferlik Bahşiş</translation>
+<translation id="64394831139134288">Cüzdanım</translation>
+<translation id="8494748383523030337">Bakiyeniz</translation>
+<translation id="7091980679045978090">Tahmini kazanç</translation>
+<translation id="1346059596910821859">Bahşiş</translation>
+<translation id="1549705559752367917">Bahşiş Gönder</translation>
+<translation id="6727102863431372879">Ayarla</translation>
+<translation id="381822214767083050">Aylık katkı</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Brave Onaylı Yayıncı</translation>
+<translation id="1397683270551078781">Henüz doğrulanmadı</translation>
+<translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
+<translation id="6585020831163574892">Uphold hesabınıza gidin</translation>
+<translation id="8108013093558639183">BAT, hesabınızın açıldığı konuma dayalı bölgede şu anda desteklenmiyor. Uygunluk için daha sonra tekrar bakın.</translation>
+<translation id="4190454391025419535">Bu bölge desteklenmiyor</translation>
+<translation id="6830703472632069884">Cüzdanınız doğrulanırken bir problem oluştu, lütfen daha sonra tekrar deneyin.</translation>
+<translation id="3512533646933434345">Cüzdan doğrulama hatası</translation>
+<translation id="6960458596933484861">Onaylanmış bir Uphold cüzdanı oluşturmak için en az 15 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin.</translation>
 </translationbundle>

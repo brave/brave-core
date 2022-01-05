@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">O SO Brave não conseguiu sincronizar os dados porque a sincronização não está disponível para o seu domínio.</translation>
 <translation id="5147525139567260139">Partilhe um separador do Brave</translation>
 <translation id="1530633922026945685">O Brave necessita de autorização de acesso à câmara para criar um mapa 3D do ambiente à sua volta.</translation>
-<translation id="4828904843379324771">Quando fecha o Brave, este limpa automaticamente os cookies e os dados de sites das páginas que visitou</translation>
 <translation id="5616153642055197778">Está disponível uma versão nova e mais segura do Brave.</translation>
 <translation id="6797402139308059782">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
@@ -28,6 +27,7 @@
 <translation id="8745514854244955877">Brave – Início de sessão na rede – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Se partilhar um computador, os amigos e os familiares podem navegar separadamente e configurar o Brave da forma que quiserem.</translation>
 <translation id="5997267581285668459">Opcional: ajudar a melhorar as funcionalidades e o desempenho do Chrome OS ao enviar automaticamente dados de diagnóstico e de utilização para a Brave.</translation>
+<translation id="7810992039564280750">Verifica os URLs com base numa lista de sites inseguros armazenada no Brave. Se um site tentar roubar a sua palavra-passe, ou quando transferir um ficheiro prejudicial, o Brave também pode enviar URLs, incluindo bits de conteúdo das páginas, para a Navegação segura.</translation>
 <translation id="9095263438435683933">Para enviar um número daqui para o seu telemóvel Android, inicie sessão no Brave em ambos os dispositivos.</translation>
 <translation id="3813272600615358652">Esta extensão alterou a página apresentada quando inicia o Brave.</translation>
 <translation id="2576129394594491151">A extensão "<ph name="EXTENSION_NAME"/>" alterou a página apresentada quando inicia o Brave.</translation>
@@ -48,9 +48,11 @@
 <translation id="2799223571221894425">Reiniciar</translation>
 <translation id="3783547330001921298">Esta ação cria um novo perfil do Brave para <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="777113543093865885">Remover do Brave...</translation>
+<translation id="5265419033369521352">Mantém a sua segurança no Brave e pode ser utilizada para melhorar a sua segurança noutras apps Brave quando tem sessão iniciada</translation>
 <translation id="2885378588091291677">Gestor de tarefas</translation>
 <translation id="2176825726964012531">Acerca do &amp;Brave</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
+<translation id="5122472867956731189">Se um site tentar roubar a sua palavra-passe, ou quando transferir um ficheiro prejudicial, o Brave também pode enviar URLs, incluindo bits de conteúdo das páginas, para a Navegação segura</translation>
 <translation id="2953892977076487219">O Brave está a tentar editar palavras-passe.</translation>
 <translation id="8755404239607088219">O Brave não consegue verificar as suas palavras-passe. Tente novamente mais tarde.</translation>
 <translation id="8880183781256147665">A adicionar ao Brave...</translation>
@@ -123,7 +125,6 @@
 <translation id="1786715389543715322">A atualizar o Brave (<ph name="PROGRESS_PERCENT"/>)…</translation>
 <translation id="7021823858304886493">Permitir o início de sessão no Brave</translation>
 <translation id="5536657158619734169">Está disponível uma nova versão do Brave.</translation>
-<translation id="5874882355102994015">O Brave não pode apresentar a pré-visualização de impressão com o visualizador de PDFs incorporado em falta.</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="707769633889902835">O SO Brave não consegue abrir esta página.</translation>
@@ -157,6 +158,7 @@
 <translation id="8320964054148936490">Este computador já tem uma versão mais recente do Brave. Se o software não estiver a funcionar, desinstale o Brave e tente novamente.</translation>
 <translation id="3574823187131579180">{0,plural, =0{O Brave será reiniciado agora}=1{O Brave será reiniciado dentro de 1 segundo}one{O Brave será reiniciado dentro de # segundo(s)}other{O Brave será reiniciado dentro de # segundos}}</translation>
 <translation id="5980269616827212166">O Brave necessita da autorização de acesso ao armazenamento para transferir ficheiros</translation>
+<translation id="7651600795135059130">Verifica os URLs com base numa lista de sites inseguros armazenada no Brave</translation>
 <translation id="5019879183386042809">Definir o Brave como navegador predefinido</translation>
 <translation id="428541510811554120">O Brave não consegue verificar se existem atualizações. Experimente verificar a sua ligação à Internet.</translation>
 <translation id="7445061995866044926">Pretende terminar sessão no Brave?</translation>
@@ -183,7 +185,6 @@
 <translation id="1489465648257900784">O seu perfil não pode ser utilizado porque pertence a uma versão mais recente do Brave.
 
 Algumas funcionalidades podem não estar disponíveis. Especifique um diretório de perfil diferente ou utilize uma versão mais recente do Brave.</translation>
-<translation id="5450493308072741203">Atualizar o &amp;Brave</translation>
 <translation id="6666624454809779082">O Brave já está instalado para todos os utilizadores no seu computador.</translation>
 <translation id="5360050006043219962">Para aceder aos seus itens do Brave em todos os seus dispositivos, inicie sessão e, em seguida, ative a sincronização.</translation>
 <translation id="8291513491595858997">O teu pai/mãe desativou as "Autorizações para sites, apps e extensões" para o Brave. Não é permitido ativar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -202,8 +203,8 @@ a sincronização. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LI
 <translation id="1008530050039597147">O Brave necessita da autorização da câmara para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">O Brave não consegue verificar as suas palavras-passe. Tente novamente após 24 horas.</translation>
+<translation id="5101812148953915496">Os sites que visita memorizam as suas informações até fechar o Brave</translation>
 <translation id="5516268345616100622">Gestor de Tarefas - Brave</translation>
-<translation id="61852838583753520">Atualizar o SO &amp;Brave</translation>
 <translation id="1864557848095568223">A atualizar o Brave…</translation>
 <translation id="3403365884036456766">O ficheiro de preferências está danificado ou não é válido.
 
@@ -256,6 +257,8 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="6283840329609797763">A instalação falhou devido a um erro não especificado. Descarregue novamente o Brave .</translation>
 <translation id="2433912322225810055">Também controla a página apresentada quando inicia o Brave ou pesquisa a partir da Caixa geral.</translation>
 <translation id="4100716194836114130">Este é o seu Brave</translation>
+<translation id="6208136456999964972">Quando fecha todas as janelas do Brave, os cookies e os dados de sites são automaticamente limpos</translation>
+<translation id="6371875426681214174">A sua <ph name="BEGIN_BOLD"/>sessão será terminada na maioria dos sites<ph name="END_BOLD"/> quando fecha o Brave. Se a sincronização estiver desativada, a sua <ph name="BEGIN_BOLD"/>sessão também será terminada nos serviços Brave e no Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">O Brave necessita de autorização de acesso à câmara e ao microfone para este site.</translation>
 <translation id="7408085963519505752">Termos do SO Brave</translation>
 <translation id="2262856633481902138">O Brave não conseguiu sincronizar os dados porque os detalhes de início de sessão da sua conta estão desatualizados.</translation>

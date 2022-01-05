@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Отключен",
+    "message": "Вы вышли",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Отключиться от Brave Rewards",
-    "description": ""
+    "message": "Выйти из $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Общий доход",

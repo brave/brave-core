@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave-nyheter er annonsestøttet med helt private og anonymiserte annonser som samsvarer med enheten din.</translation>
 <translation id="4541978218358617681">Annonse</translation>
 <translation id="1765217911817124376">Slå på Brave-nyheter</translation>
+<translation id="6527303717912515753">Del</translation>
 <translation id="1654539412343893324">Finn ut mer om dataene dine</translation>
 <translation id="2989805286512600854">Åpne i ny fane</translation>
 <translation id="3709782636417497984">Åpne i ny privat fane</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">Lommeboken din</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave-nyheter</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Legg til midler</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
-<translation id="8772672608371898774">Brave-verifisert utgiver</translation>
-<translation id="1397683270551078781">Ikke verifisert ennå</translation>
+<translation id="6020176662032623904">Verifisert Skaper</translation>
+<translation id="2369994359029526515">Uverifisert Skaper</translation>
 <translation id="880893465294676334">Denne Brave-verifiserte skaperen har ennå ikke konfigurert kontoen sin til å kunne motta bidrag fra Brave-brukere.
   Eventuell driks du sender, forblir i lommeboken din inntil de har gjennomført denne prosessen.</translation>
 <translation id="8918760045046434238">Send tips …</translation>
@@ -278,11 +279,12 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
 <translation id="1554282356558968486">Lommeboktjenesten vår leveres av</translation>
 <translation id="6569877533335686968">Oppretthold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
-<translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
+<translation id="3200197118442451932">Brave Software Inc. verken behandler, lagrer eller bruker noe av den personlige informasjonen du gir til  <ph name="WALLET_PROVIDER"/> når du etablerer en konto hos dem.</translation>
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="2193391216824305230">Brukerlommebok</translation>
-<translation id="6585020831163574892">Gå til Uphold-kontoen min</translation>
+<translation id="1665118090708049096">Gå til <ph name="WALLET_PROVIDER"/>-kontoen min</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="6239274080752256452">Ta ut penger</translation>
 <translation id="8874184842967597500">Ikke tilkoblet</translation>
@@ -291,10 +293,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5358719431303818601">Ikke bekreftet frakoblet</translation>
 <translation id="4241449868720191203">Bekreftet frakoblet</translation>
 <translation id="3248185426436836442">Påventende</translation>
-<translation id="8108013093558639183">BAT støttes for øyeblikket ikke i din region, basert på hvor kontoen din ble åpnet. Sjekk for tilgjengelighet senere.</translation>
-<translation id="4190454391025419535">Regionen støttes ikke</translation>
-<translation id="6830703472632069884">Det oppstod et problem med verifiseringen av lommeboken din, vennligst prøv igjen senere.</translation>
-<translation id="3512533646933434345">Feil ved lommebokverifisering</translation>
 <translation id="2260513517001048012">MERK: denne Brave-verifiserte skaperen har ennå ikke konfigurert sin konto til å motta bidrag fra Brave-brukere. Din nettleser vil fortsette å prøve å bidra til de verifiseres, eller til det har gått 90 dager.</translation>
 <translation id="4488355059795908907">Denne Brave-verifiserte skaperen har ennå ikke konfigurert sin konto til å motta bidrag fra Brave-brukere. Tips som du har sendt vil forbli i lommeboken din til de har fullført denne prosessen.</translation>
 <translation id="2495032782748793764">Standardinnstilling for Brave</translation>
@@ -404,12 +402,12 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7427567994475794038">Slå på Personvernrapporter for å se hvor mange trackere og annonser som har blitt blokkert de siste 3 timene.</translation>
 <translation id="2053891538879944400">Du lagret <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-nettleseren.</translation>
 <translation id="8640064498452534195">Slå på Personvernrapporter for å se hvor mye data du har spart.</translation>
-<translation id="2252497442547961651">Brave-nettleseren bruker i gjennomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-nettleseren bruker i gjennomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blokkerte <ph name="COUNT"/> trackere &amp; annonser med Brave-nettleseren  forrige uke.</translation>
 <translation id="2883868922264431515">Tjen polletter ved å se annonser som repekterer personvernet ditt og støtt favorittnettstedene dine.</translation>
-<translation id="5678925890616256956">Flott! Du har blokkert 250 sporingskapsler og annonser med Brave-nettleseren.&#128293;</translation>
-<translation id="9199047775708635708">Flott! Du har spart 10 MB med Brave-nettleseren.&#128267;</translation>
-<translation id="1880168210969863408">Flott! Du har spart ti minutters innlastingstid med Brave-nettleseren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Flott! Du har blokkert 250 sporingskapsler og annonser med Brave-nettleseren.🔥</translation>
+<translation id="9199047775708635708">Flott! Du har spart 10 MB med Brave-nettleseren.🔋</translation>
+<translation id="1880168210969863408">Flott! Du har spart ti minutters innlastingstid med Brave-nettleseren.💨💨</translation>
 <translation id="7408493389591475748">Begynn å bruke nettleseren for å se personvernrapportering</translation>
 <translation id="9080777565335515917">Sett Brave som din standardnettleser for privat og trygg weblesing.</translation>
 <translation id="1390943217516275883">Lar Brave vise statistikken din for personvern</translation>
@@ -425,16 +423,45 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1972589975368876259">Rediger stabel</translation>
 <translation id="2490330380242414851">Fjern widget</translation>
 <translation id="8446884382197647889">Les mer</translation>
+<translation id="7384441892795736634">Oppdater data</translation>
+<translation id="4804818685124855865">Koble fra</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Innskuddsadresse</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Innskuddsnotat</translation>
+<translation id="5110244215256675209">Kjøp kryptovaluta</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Kjøp <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Tilgjengelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Forhåndsvis konvertering</translation>
 <translation id="2882813124794301799">Widgetstabel</translation>
 <translation id="13296465911709339">Teksten din er kopiert til utklippstavlen.</translation>
 <translation id="2735834606413553397">Den offentlige adressen har blitt kopiert til utklippstavlen.</translation>
+<translation id="7144878232160441200">Prøv på nytt</translation>
 <translation id="2977461003134694205">Personvernstatistikk</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">Sporinger &amp; Blokkerte annonser, spart båndbredde og estimater for spart tid.</translation>
 <translation id="74417429503469271">Åpne toppnettsteder du nylig har besøkt.</translation>
+<translation id="2956070106555335453">Sammendrag</translation>
+<translation id="1366855498335432549">Innskudd</translation>
+<translation id="1301340234286078471">Konverter</translation>
 <translation id="223536150967420869">Kjøp</translation>
+<translation id="1714829281959608206">Slå på Binance-tilkoblingen for å se Binance-kontosaldoen og handle kryptovaluta.</translation>
+<translation id="4584930231524505442">Jeg vil konvertere …</translation>
+<translation id="5749014321384313843">Jeg vil bruke …</translation>
 <translation id="8688672835843460752">Tilgjengelig</translation>
+<translation id="2480674848181564169">Ikke nok balanse til konvertering</translation>
+<translation id="2215334405220411393">Minimumsbeløp å konvertere er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kunne ikke koble til</translation>
+<translation id="7742417737698031726">Avgift</translation>
+<translation id="2122225204180056042">Du mottar</translation>
+<translation id="6432284126416751397">Bekreft konvertering</translation>
 <translation id="5137723827757859599">Det er ikke noe her om toppsidene enda.</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekreft (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Kunne ikke konvertere. Prøv på nytt.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Tjen tokener og gi tilbake</translation>
 <translation id="244362569344671266">Tjen tokener ved å se på private Brave-annonser og støtt innholdsprodusenter automatisk.</translation>
 <translation id="631124996535890460">Ved å fortsette samtykker du til <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
@@ -478,6 +505,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3415016869273103668">Du kan nå starte et gratis anrop</translation>
 <translation id="7073631403665023390">Klikk eller trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
 <translation id="626339649633171286">Vil du ha mer informasjon om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/></translation>
+<translation id="3604285424134705930">Du konverterte <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Vennligst sjekk nettverksforbindelsen din.</translation>
 <translation id="7889432931837317731">Åpne automatisk når mulig</translation>
 <translation id="8967385052772844086">Se hele Personvernrapporten</translation>
 <translation id="6864343534748973390">Mest populær</translation>
@@ -521,7 +550,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3171931580569169744">Aktiver fanegrupper</translation>
 <translation id="5587305863196367357">Ved å bekrefte lommeboken kan du enkelt administrere midlene dine, og gjøre innskudd og uttak</translation>
 <translation id="5760671211380791582">Du har ikke nok BAT.</translation>
-<translation id="6960458596933484861">Du må ha minst 15 BAT for å lage en bekreftet Uphold-lommebok. Prøv igjen senere.</translation>
+<translation id="442469478596827903">Du må ha minst 15 BAT for å lage en bekreftet Uphold-lommebok. Prøv igjen senere.</translation>
 <translation id="4389085954549744469">Hvis du allerede har en bekreftet Uphold-konto, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">fortsett til innlogging</translation>
 <translation id="1483493594462132177">Send</translation>
@@ -564,7 +593,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="4090490645603511157">Bruk biometri for raskt å låse opp lommeboken uten å skrive inn passordet ditt.</translation>
 <translation id="5379398699598690674">Lommebok (beta)</translation>
 <translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
-<translation id="9120654436199628567">Gjenopprett kryptokonto</translation>
+<translation id="9120654436199628567">Gjenopprette kryptokonto</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
 <translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
 <translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
@@ -776,4 +805,29 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="8971278306757462297">Mottaksadressen er din egen adresse</translation>
 <translation id="749944179568745958">Ikke en gyldig ETH-adresse</translation>
 <translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
+<translation id="1543259266592091784">Legg til midler</translation>
+<translation id="3494964159182650590">Sammendrag av belønninger</translation>
+<translation id="7470079236088529568">Tildelinger hentet</translation>
+<translation id="590733288489975971">Rewards fra Ads</translation>
+<translation id="207268487070188114">Engangsdriks</translation>
+<translation id="64394831139134288">Lommeboken min</translation>
+<translation id="8494748383523030337">Saldoen din</translation>
+<translation id="7091980679045978090">Beregnet inntekt</translation>
+<translation id="1346059596910821859">Tips</translation>
+<translation id="1549705559752367917">Send tips</translation>
+<translation id="6727102863431372879">Angi</translation>
+<translation id="381822214767083050">Månedlig bidrag</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> amerikanske dollar</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="8772672608371898774">Brave-verifisert utgiver</translation>
+<translation id="1397683270551078781">Ikke verifisert ennå</translation>
+<translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
+<translation id="6585020831163574892">Gå til Uphold-kontoen min</translation>
+<translation id="8108013093558639183">BAT støttes for øyeblikket ikke i din region, basert på hvor kontoen din ble åpnet. Sjekk for tilgjengelighet senere.</translation>
+<translation id="4190454391025419535">Regionen støttes ikke</translation>
+<translation id="6830703472632069884">Det oppstod et problem med verifiseringen av lommeboken din, vennligst prøv igjen senere.</translation>
+<translation id="3512533646933434345">Feil ved lommebokverifisering</translation>
+<translation id="6960458596933484861">Du må ha minst 15 BAT for å lage en bekreftet Uphold-lommebok. Prøv igjen senere.</translation>
 </translationbundle>

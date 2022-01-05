@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "ไม่ได้เชื่อมต่อ",
+    "message": "ออกจากระบบ",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "ยกเลิกการเชื่อมต่อกับ Brave Rewards",
-    "description": ""
+    "message": "ออกจากระบบ $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "รายได้โดยประมาณ",

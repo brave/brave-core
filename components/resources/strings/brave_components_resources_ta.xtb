@@ -84,7 +84,6 @@
 <translation id="5804484488647369316">இயல்புநிலை தேடுபொறியை அமை</translation>
 <translation id="3829010735958850433">வரவேற்பு சுற்றுலாவைத் தவிர்</translation>
 <translation id="1201402288615127009">அடுத்தது</translation>
-<translation id="1919345977826869612">விளம்பரங்கள்</translation>
 <translation id="6112368337882254910">தானாக-பங்களி</translation>
 <translation id="3325399124634342726">தற்போதைய இம்மாத சம்பாத்தியம் (மதிப்பிடப்பட்டது)</translation>
 <translation id="2539279826042558064">பிரேவ் வெகுமதிகள் மற்றும் விளம்பரங்கள் உம் சாதனத்தில் இந்நேரத்தில் கிடைக்கவில்லை.</translation>
@@ -132,6 +131,7 @@
 <translation id="583281660410589416">தெரியாதது</translation>
 <translation id="386483240851194811">வெகுமதிகள் அணைக்கப்பட்டிருந்தது</translation>
 <translation id="7375125077091615385">வகை:</translation>
+<translation id="1919345977826869612">விளம்பரங்கள்</translation>
 <translation id="3671566813999349838">தொகை</translation>
 <translation id="3970114302595058915">ஐடி</translation>
 <translation id="4250680216510889253">இல்லை</translation>
@@ -253,6 +253,7 @@
 <translation id="629730747756840877">கணக்கு</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="8093033115658137576">0x முகவரி அ உரலி</translation>
+<translation id="2704606927547763573">நகலெடுக்கப்பட்டது</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="6972754398087986839">தொடங்குக</translation>
 <translation id="6657585470893396449">கடவுச்சொல்</translation>
@@ -278,6 +279,9 @@
 <translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
 <translation id="1165039591588034296">பிழை</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
+<translation id="3146531623184244174">இணைப்புகள் HTTPS-க்கு தரமுயர்த்தப்பட்டன</translation>
+<translation id="6203697265754637264">குறுக்கு-தள நினைவிகளை தடு</translation>
+<translation id="4627427111733173920">நினைவிகள் தடுக்கப்பட்டன</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
 <translation id="1116694919640316211">அறிமுகம்</translation>
 </translationbundle>

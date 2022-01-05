@@ -13,7 +13,6 @@
 <translation id="7419046106786626209">El Sistema operativo Brave no pudo sincronizar los datos porque la sincronización no está disponible para el dominio.</translation>
 <translation id="5147525139567260139">Compartir una pestaña de Brave</translation>
 <translation id="1530633922026945685">Brave necesita permiso para acceder a la cámara a fin de crear un mapa 3D de tu entorno</translation>
-<translation id="4828904843379324771">Cuando cierras Brave, automáticamente se borran las cookies y los datos de sitios de las páginas que visitaste.</translation>
 <translation id="5616153642055197778">Hay una versión nueva y más segura de Brave disponible.</translation>
 <translation id="6797402139308059782">Permitir que Brave se ejecute en segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
@@ -28,6 +27,7 @@
 <translation id="8745514854244955877">Brave: Acceso a la red - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Si compartes una computadora, tus amigos y familiares pueden navegar de forma independiente y configurar Brave según los gustos individuales.</translation>
 <translation id="5997267581285668459">Opcional: Para ayudarnos a mejorar las funciones y el rendimiento del Sistema operativo Brave, envía automáticamente datos de uso y diagnóstico a Brave.</translation>
+<translation id="7810992039564280750">Revisa las URL con una lista de sitios no seguros almacenados en Brave. Si un sitio intenta robar tu contraseña, o cuando descargas un archivo dañino, es posible que Brave también envíe las URL, con partes del contenido de la página, a la Navegación segura.</translation>
 <translation id="9095263438435683933">Para enviar un número desde aquí a tu teléfono Android, accede a Brave en ambos dispositivos.</translation>
 <translation id="3813272600615358652">Esta extensión cambió la página que se muestra al iniciar Brave.</translation>
 <translation id="2576129394594491151">La extensión "<ph name="EXTENSION_NAME"/>" cambió la página que se muestra al iniciar Brave.</translation>
@@ -48,9 +48,11 @@
 <translation id="2799223571221894425">Reiniciar</translation>
 <translation id="3783547330001921298">Se creará un nuevo perfil de Brave para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Eliminar de Brave…</translation>
+<translation id="5265419033369521352">Te protege en Brave y puede usarse para mejorar tu seguridad en otras apps de Brave cuando accedes a tu cuenta.</translation>
 <translation id="2885378588091291677">Administrador de tareas</translation>
 <translation id="2176825726964012531">Acerca de &amp;Brave</translation>
 <translation id="8208853227947884571">Brave está actualizado.</translation>
+<translation id="5122472867956731189">Si un sitio intenta robar tu contraseña, o cuando descargas un archivo dañino, es posible que Brave también envíe las URL, con partes del contenido de la página, a la Navegación segura.</translation>
 <translation id="2953892977076487219">Brave está intentando editar contraseñas.</translation>
 <translation id="8755404239607088219">Brave no puede revisar las contraseñas. Vuelve a intentarlo más tarde.</translation>
 <translation id="8880183781256147665">Agregar a Brave...</translation>
@@ -121,7 +123,6 @@
 <translation id="1786715389543715322">Actualizando Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Permitir el acceso a Brave</translation>
 <translation id="5536657158619734169">Hay una nueva versión de Brave disponible.</translation>
-<translation id="5874882355102994015">Brave no puede mostrar la vista previa de impresión si falta el visor de PDF incorporado.</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Versión Beta de Brave</translation>
 <translation id="707769633889902835">El Sistema operativo Brave no puede abrir esta página.</translation>
@@ -155,6 +156,7 @@
 <translation id="8320964054148936490">Este equipo ya tiene una versión más reciente de Brave. Si el software no funciona, desinstala Brave y vuelve a intentarlo.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Se reiniciará Brave ahora}=1{Se reiniciará Brave en 1 segundo}other{Se reiniciará Brave en # segundos}}</translation>
 <translation id="5980269616827212166">Brave necesita permiso de acceso al almacenamiento para descargar archivos.</translation>
+<translation id="7651600795135059130">Revisa las URL y la lista de sitios no seguros almacenados en Brave.</translation>
 <translation id="5019879183386042809">Establecer Brave como navegador predeterminado</translation>
 <translation id="428541510811554120">Brave no puede buscar actualizaciones. Revisa la conexión a Internet.</translation>
 <translation id="7445061995866044926">¿Salir de Brave?</translation>
@@ -179,7 +181,6 @@
 <translation id="6676384891291319759">Acceder a Internet</translation>
 <translation id="1257247502847251159">Brave necesita permiso de acceso al micrófono para este sitio.</translation>
 <translation id="1489465648257900784">Tu perfil no se puede utilizar porque proviene de una versión más actualizada de Brave. Es posible que algunas características no estén disponibles. Especifica un directorio de perfil diferente o utiliza una versión más reciente de Brave.</translation>
-<translation id="5450493308072741203">Actualizar &amp;Brave</translation>
 <translation id="6666624454809779082">Brave ya está instalado para todos los usuarios en tu computadora.</translation>
 <translation id="5360050006043219962">A fin de ver tu contenido de Brave en todos tus dispositivos, accede a tu cuenta y activa la sincronización.</translation>
 <translation id="8291513491595858997">Tu padre o madre desactivaron la opción "Permisos para sitios, apps y extensiones" para Brave. No se permite habilitar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -198,8 +199,8 @@
 <translation id="1008530050039597147">Brave necesita permiso de acceso a la cámara para este sitio.</translation>
 <translation id="1197672524850678392">No se pudo iniciar Brave. Vuelve a intentarlo.</translation>
 <translation id="3405035915691517126">Brave no puede revisar las contraseñas. Vuelve a intentarlo después de 24 horas.</translation>
+<translation id="5101812148953915496">Los sitios que visitas recordarán tu información hasta que cierres Brave</translation>
 <translation id="5516268345616100622">Administrador de tareas - Brave</translation>
-<translation id="61852838583753520">Actualizar &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="3403365884036456766">Tu archivo de preferencias está dañado o no es válido. Brave no puede recuperar tu configuración.</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -250,6 +251,8 @@
 <translation id="6283840329609797763">La instalación falló debido a un error no especificado. Descarga Brave otra vez.</translation>
 <translation id="2433912322225810055">También controla qué página se muestra al iniciar Brave o al realizar búsquedas desde el cuadro multifunción.</translation>
 <translation id="4100716194836114130">Este es tu Brave</translation>
+<translation id="6208136456999964972">Cuando cierres todas las ventanas de Brave, se borrarán automáticamente las cookies y los datos de sitios</translation>
+<translation id="6371875426681214174"><ph name="BEGIN_BOLD"/>Saldrás de la mayoría de los sitios<ph name="END_BOLD"/> cuando cierres Brave. Si la sincronización está desactivada, también <ph name="BEGIN_BOLD"/>saldrás de los servicios de Brave y Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave necesita permiso para acceder a tu cámara y micrófono para este sitio</translation>
 <translation id="7408085963519505752">Condiciones del Sistema operativo Brave</translation>
 <translation id="2262856633481902138">Brave no pudo sincronizar los datos porque los datos de acceso de la cuenta están obsoletos.</translation>

@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Terputus",
+    "message": "Keluar",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Putuskan dari Brave Reward",
-    "description": ""
+    "message": "Keluar dari $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Perkiraan Pendapatan",
