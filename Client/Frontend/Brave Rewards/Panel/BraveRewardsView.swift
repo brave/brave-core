@@ -14,8 +14,6 @@ extension BraveRewardsViewController {
         private let stackView = UIStackView().then {
             $0.axis = .vertical
             $0.spacing = 20
-            $0.isLayoutMarginsRelativeArrangement = true
-            $0.layoutMargins = UIEdgeInsets(top: 20, left: 16, bottom: 20, right: 16)
         }
         let rewardsToggle = UISwitch().then {
             $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -50,7 +48,7 @@ extension BraveRewardsViewController {
             
             addSubview(stackView)
             stackView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
+                $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 16, bottom: 20, right: 16))
             }
             stackView.addStackViewItems(
                 .view(UIStackView().then {
