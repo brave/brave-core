@@ -50,6 +50,16 @@ EthTxService* EthTxServiceFactory::GetServiceForContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
+// static
+void EthTxServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::EthTxService> receiver) {
+  auto* eth_tx_service = EthTxServiceFactory::GetServiceForContext(context);
+  if (eth_tx_service) {
+    eth_tx_service->Bind(std::move(receiver));
+  }
+}
+
 EthTxServiceFactory::EthTxServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "EthTxService",

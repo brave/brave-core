@@ -6,6 +6,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -42,6 +43,17 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
   }
   return static_cast<BraveWalletService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+// static
+void BraveWalletServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::BraveWalletService> receiver) {
+  auto* brave_wallet_service =
+      BraveWalletServiceFactory::GetServiceForContext(context);
+  if (brave_wallet_service) {
+    brave_wallet_service->Bind(std::move(receiver));
+  }
 }
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()

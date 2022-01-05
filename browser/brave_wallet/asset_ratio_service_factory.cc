@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 
+#include <utility>
+
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -38,6 +40,17 @@ AssetRatioService* AssetRatioServiceFactory::GetServiceForContext(
   }
   return static_cast<AssetRatioService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+// static
+void AssetRatioServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::AssetRatioService> receiver) {
+  auto* asset_ratio_service =
+      AssetRatioServiceFactory::GetServiceForContext(context);
+  if (asset_ratio_service) {
+    asset_ratio_service->Bind(std::move(receiver));
+  }
 }
 
 AssetRatioServiceFactory::AssetRatioServiceFactory()

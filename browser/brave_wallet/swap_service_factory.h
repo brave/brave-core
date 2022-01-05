@@ -11,6 +11,7 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace brave_wallet {
@@ -23,6 +24,9 @@ class SwapServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
   static SwapService* GetServiceForContext(content::BrowserContext* context);
   static SwapServiceFactory* GetInstance();
+  static void BindForContext(
+      content::BrowserContext* context,
+      mojo::PendingReceiver<mojom::SwapService> receiver);
 
  private:
   friend struct base::DefaultSingletonTraits<SwapServiceFactory>;

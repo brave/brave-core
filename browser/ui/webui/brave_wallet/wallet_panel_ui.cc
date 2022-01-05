@@ -105,44 +105,21 @@ void WalletPanelUI::CreatePanelHandler(
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(profile);
-  if (json_rpc_service) {
-    json_rpc_service->Bind(std::move(json_rpc_service_receiver));
-  }
-
-  auto* swap_service =
-      brave_wallet::SwapServiceFactory::GetServiceForContext(profile);
-  if (swap_service) {
-    swap_service->Bind(std::move(swap_service_receiver));
-  }
-
-  auto* asset_ratio_service =
-      brave_wallet::AssetRatioServiceFactory::GetServiceForContext(profile);
-  if (asset_ratio_service) {
-    asset_ratio_service->Bind(std::move(asset_ratio_service_receiver));
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
-  if (keyring_service) {
-    keyring_service->Bind(std::move(keyring_service_receiver));
-  }
+  brave_wallet::JsonRpcServiceFactory::BindForContext(
+      profile, std::move(json_rpc_service_receiver));
+  brave_wallet::SwapServiceFactory::BindForContext(
+      profile, std::move(swap_service_receiver));
+  brave_wallet::AssetRatioServiceFactory::BindForContext(
+      profile, std::move(asset_ratio_service_receiver));
+  brave_wallet::KeyringServiceFactory::BindForContext(
+      profile, std::move(keyring_service_receiver));
+  brave_wallet::EthTxServiceFactory::BindForContext(
+      profile, std::move(eth_tx_service_receiver));
+  brave_wallet::BraveWalletServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_service_receiver));
 
   auto* erc_token_registry = brave_wallet::ERCTokenRegistry::GetInstance();
   if (erc_token_registry) {
     erc_token_registry->Bind(std::move(erc_token_registry_receiver));
-  }
-
-  auto* eth_tx_service =
-      brave_wallet::EthTxServiceFactory::GetServiceForContext(profile);
-  if (eth_tx_service) {
-    eth_tx_service->Bind(std::move(eth_tx_service_receiver));
-  }
-
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
-  if (brave_wallet_service) {
-    brave_wallet_service->Bind(std::move(brave_wallet_service_receiver));
   }
 }

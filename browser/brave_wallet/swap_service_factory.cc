@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 
+#include <utility>
+
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
@@ -39,6 +41,16 @@ SwapService* SwapServiceFactory::GetServiceForContext(
   }
   return static_cast<SwapService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+// static
+void SwapServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::SwapService> receiver) {
+  auto* swap_service = SwapServiceFactory::GetServiceForContext(context);
+  if (swap_service) {
+    swap_service->Bind(std::move(receiver));
+  }
 }
 
 SwapServiceFactory::SwapServiceFactory()
