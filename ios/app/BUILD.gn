@@ -38,6 +38,7 @@ source_set("app") {
     "//brave/ios/browser/api/sync/driver",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/component_updater",
+    "//brave/ios/browser/skus",
     "//components/browser_sync",
     "//components/component_updater",
     "//components/history/core/browser",

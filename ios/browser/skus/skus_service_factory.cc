@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/skus/sdk_controller_factory.h"
+#include "brave/ios/browser/skus/skus_service_factory.h"
 
-#include "brave/components/skus/browser/sdk_controller.h"
+#include "brave/components/skus/browser/skus_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -16,36 +16,39 @@
 namespace skus {
 
 // static
-mojom::SdkController* SdkControllerFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
-  return static_cast<skus::SdkController*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+  auto* service = GetInstance()->GetServiceForBrowserState(browser_state, true);
+  if (!service) {
+    return mojo::PendingRemote<mojom::SkusService>();
+  }
+  return static_cast<skus::SkusService*>(service)->MakeRemote();
 }
 
 // static
-SdkControllerFactory* SdkControllerFactory::GetInstance() {
-  return base::Singleton<SdkControllerFactory>::get();
+SkusServiceFactory* SkusServiceFactory::GetInstance() {
+  return base::Singleton<SkusServiceFactory>::get();
 }
 
-SdkControllerFactory::SdkControllerFactory()
+SkusServiceFactory::SkusServiceFactory()
     : BrowserStateKeyedServiceFactory(
-          "SkusSdkController",
+          "SkusService",
           BrowserStateDependencyManager::GetInstance()) {}
 
-SdkControllerFactory::~SdkControllerFactory() = default;
+SkusServiceFactory::~SkusServiceFactory() = default;
 
-std::unique_ptr<KeyedService> SdkControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   if (browser_state->IsOffTheRecord()) {
     return nullptr;
   }
-  std::unique_ptr<SdkController> sku_service(new SdkController(
+  std::unique_ptr<SkusService> sku_service(new SkusService(
       browser_state->GetPrefs(), browser_state->GetSharedURLLoaderFactory()));
   return sku_service;
 }
 
-bool SdkControllerFactory::ServiceIsNULLWhileTesting() const {
+bool SkusServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
