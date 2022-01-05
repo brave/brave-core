@@ -44,7 +44,7 @@ _DesktopSideNav.story = {
 export const _DesktopTopTabNav = () => {
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
 
-  const navigateTo = (path: TopTabNavTypes) => {
+  const onSelectTab = (path: TopTabNavTypes) => {
     setSelectedTab(path)
   }
 
@@ -53,7 +53,7 @@ export const _DesktopTopTabNav = () => {
       <TopTabNav
         tabList={TopNavOptions()}
         selectedTab={selectedTab}
-        onSubmit={navigateTo}
+        onSelectTab={onSelectTab}
       />
     </DesktopComponentWrapperRow>
   )

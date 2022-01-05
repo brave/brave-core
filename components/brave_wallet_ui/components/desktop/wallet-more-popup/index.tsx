@@ -7,36 +7,51 @@ import {
   PopupButtonText,
   SettingsIcon,
   LockIcon,
-  ExplorerIcon
+  ExplorerIcon,
+  BackupIcon
 } from './style'
 
 export interface Props {
-  onClickSetting: () => void
-  onClickLock: () => void
-  onClickViewOnBlockExplorer: () => void
+  onClickSetting?: () => void
+  onClickLock?: () => void
+  onClickViewOnBlockExplorer?: () => void
+  onClickBackup?: () => void
 }
 
 const WalletMorePopup = (props: Props) => {
   const {
     onClickLock,
     onClickSetting,
-    onClickViewOnBlockExplorer
+    onClickViewOnBlockExplorer,
+    onClickBackup
   } = props
 
   return (
     <StyledWrapper>
-      <PopupButton onClick={onClickLock}>
-        <LockIcon />
-        <PopupButtonText>{getLocale('braveWalletWalletPopupLock')}</PopupButtonText>
-      </PopupButton>
-      <PopupButton onClick={onClickSetting}>
-        <SettingsIcon />
-        <PopupButtonText>{getLocale('braveWalletWalletPopupSettings')}</PopupButtonText>
-      </PopupButton>
-      <PopupButton onClick={onClickViewOnBlockExplorer}>
-        <ExplorerIcon />
-        <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
-      </PopupButton>
+      {onClickLock &&
+        <PopupButton onClick={onClickLock}>
+          <LockIcon />
+          <PopupButtonText>{getLocale('braveWalletWalletPopupLock')}</PopupButtonText>
+        </PopupButton>
+      }
+      {onClickBackup &&
+        <PopupButton onClick={onClickBackup}>
+          <BackupIcon />
+          <PopupButtonText>{getLocale('braveWalletBackupButton')}</PopupButtonText>
+        </PopupButton>
+      }
+      {onClickSetting &&
+        <PopupButton onClick={onClickSetting}>
+          <SettingsIcon />
+          <PopupButtonText>{getLocale('braveWalletWalletPopupSettings')}</PopupButtonText>
+        </PopupButton>
+      }
+      {onClickViewOnBlockExplorer &&
+        <PopupButton onClick={onClickViewOnBlockExplorer}>
+          <ExplorerIcon />
+          <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
+        </PopupButton>
+      }
     </StyledWrapper>
   )
 }

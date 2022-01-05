@@ -127,7 +127,7 @@ provideStrings({
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
-  braveWalletWalletPopupLock: 'Lock Crypto',
+  braveWalletWalletPopupLock: 'Lock Wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
 
   // Backup Warning

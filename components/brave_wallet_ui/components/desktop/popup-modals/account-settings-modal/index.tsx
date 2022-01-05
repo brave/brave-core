@@ -102,7 +102,7 @@ const AddAccountModal = (props: Props) => {
     generateQRData()
   })
 
-  const changeTab = (id: AccountSettingsNavTypes) => {
+  const onSelectTab = (id: AccountSettingsNavTypes) => {
     onChangeTab(id)
   }
 
@@ -155,7 +155,7 @@ const AddAccountModal = (props: Props) => {
       {!hideNav &&
         <TopTabNav
           tabList={tabList}
-          onSubmit={changeTab}
+          onSelectTab={onSelectTab}
           selectedTab={tab}
         />
       }

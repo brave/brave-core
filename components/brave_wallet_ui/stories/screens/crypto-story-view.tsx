@@ -139,14 +139,13 @@ const CryptoStoryView = (props: Props) => {
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const browseMore = () => {
     alert('Will expand to view more!')
   }
 
-  // In the future these will be actual paths
-  // for example wallet/crypto/portfolio
-  const tabTo = (path: TopTabNavTypes) => {
+  const onSelectTab = (path: TopTabNavTypes) => {
     setSelectedTab(path)
   }
 
@@ -219,16 +218,30 @@ const CryptoStoryView = (props: Props) => {
     alert('Will speedup transaction')
   }
 
+  const onClickMore = () => {
+    setShowMore(true)
+  }
+
+  const onHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onHideMore}>
       {!hideNav &&
         <>
           <TopTabNav
             tabList={TopNavOptions()}
             selectedTab={selectedTab}
-            onSubmit={tabTo}
+            onSelectTab={onSelectTab}
             hasMoreButtons={true}
-            onLockWallet={onLockWallet}
+            showMore={showMore}
+            onClickLock={onLockWallet}
+            onClickBackup={onShowBackup}
+            onClickMore={onClickMore}
+            onClickSettings={onClickSettings}
           />
           {showDefaultWalletBanner &&
             <WalletBanner
@@ -311,7 +324,6 @@ const CryptoStoryView = (props: Props) => {
           defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
-          onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
           onUpdateAccountName={onUpdateAccountName}
           onRemoveAccount={onRemoveAccount}

@@ -24,11 +24,6 @@ import {
   SecondaryListContainer,
   DisclaimerText,
   SubDivider,
-  BackupIcon,
-  ButtonsRow,
-  SettingsIcon,
-  BackupButton,
-  BackupButtonText,
   Button,
   TopRow,
   WalletInfoRow,
@@ -66,7 +61,6 @@ export interface Props {
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
-  onClickBackup: () => void
   onClickAddAccount: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
@@ -94,7 +88,6 @@ function Accounts (props: Props) {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     toggleNav,
-    onClickBackup,
     onClickAddAccount,
     onUpdateAccountName,
     onRemoveAccount,
@@ -151,14 +144,6 @@ function Accounts (props: Props) {
     }
   }
 
-  const onClickSettings = () => {
-    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }
-
   const onChangeTab = (id: AccountSettingsNavTypes) => {
     setEditTab(id)
   }
@@ -197,15 +182,6 @@ function Accounts (props: Props) {
         <>
           <PrimaryRow>
             <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
-            <ButtonsRow>
-              <BackupButton onClick={onClickBackup}>
-                <BackupIcon />
-                <BackupButtonText>{getLocale('braveWalletBackupButton')}</BackupButtonText>
-              </BackupButton>
-              <Button onClick={onClickSettings}>
-                <SettingsIcon />
-              </Button>
-            </ButtonsRow>
           </PrimaryRow>
           <PrimaryListContainer>
             {primaryAccounts.map((account) =>
