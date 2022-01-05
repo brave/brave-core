@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
@@ -100,6 +101,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "brave/components/de_amp/browser/de_amp_throttle.h"
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -634,6 +636,13 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
                   browser_context),
               settings_map))
     result.push_back(std::move(debounce_throttle));
+  std::unique_ptr<blink::URLLoaderThrottle> de_amp_throttle =
+          de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
+              base::ThreadTaskRunnerHandle::Get(), contents);
+
+  if (de_amp_throttle) {
+    result.push_back(std::move(de_amp_throttle));
+  }
 
   return result;
 }
