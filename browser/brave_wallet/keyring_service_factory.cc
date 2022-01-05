@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 
+#include <utility>
+
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -37,6 +39,16 @@ KeyringService* KeyringServiceFactory::GetServiceForContext(
   }
   return static_cast<KeyringService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+// static
+void KeyringServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::KeyringService> receiver) {
+  auto* keyring_service = KeyringServiceFactory::GetServiceForContext(context);
+  if (keyring_service) {
+    keyring_service->Bind(std::move(receiver));
+  }
 }
 
 KeyringServiceFactory::KeyringServiceFactory()

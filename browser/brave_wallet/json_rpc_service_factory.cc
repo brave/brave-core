@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 
+#include <utility>
+
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -41,6 +43,16 @@ JsonRpcService* JsonRpcServiceFactory::GetServiceForContext(
   }
   return static_cast<JsonRpcService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+// static
+void JsonRpcServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::JsonRpcService> receiver) {
+  auto* json_rpc_service = JsonRpcServiceFactory::GetServiceForContext(context);
+  if (json_rpc_service) {
+    json_rpc_service->Bind(std::move(receiver));
+  }
 }
 
 JsonRpcServiceFactory::JsonRpcServiceFactory()
