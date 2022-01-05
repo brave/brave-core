@@ -575,7 +575,8 @@ public class BraveNewTabPageLayout
         }
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
-        if (appOpenCount == 1 && !NTPWidgetManager.getInstance().hasUpdatedUserPrefForBinance()
+        if ((appOpenCount == 0 || appOpenCount == 1)
+                && !NTPWidgetManager.getInstance().hasUpdatedUserPrefForBinance()
                 && !BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
             NTPWidgetManager.getInstance().setWidget(NTPWidgetManager.PREF_BINANCE, -1);
             NTPWidgetManager.getInstance().setUpdatedUserPrefForBinance();
