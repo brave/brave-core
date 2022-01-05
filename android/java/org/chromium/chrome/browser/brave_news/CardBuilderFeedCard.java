@@ -1331,15 +1331,15 @@ public class CardBuilderFeedCard {
                     if (!type.equals("paired")) {
                         radius = new GranularRoundedCorners(30, 30, 0, 0);
                     }
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions =
-                                requestOptions.centerInside().transform(new CenterCrop(), radius);
-                        Glide.with(mActivity)
-                                .asBitmap()
-                                .load(decodedByte)
-                                .centerCrop()
-                                .apply(requestOptions)
-                                .into(imageView);
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions =
+                            requestOptions.centerInside().transform(new CenterCrop(), radius);
+                    Glide.with(mActivity)
+                            .asBitmap()
+                            .load(decodedByte)
+                            .centerCrop()
+                            .apply(requestOptions)
+                            .into(imageView);
                 }
             });
         }
