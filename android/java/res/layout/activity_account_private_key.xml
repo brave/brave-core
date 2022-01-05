@@ -47,7 +47,7 @@
                 android:textColor="@color/wallet_text_color"
                 android:background="@null"
                 android:enabled="false"
-                android:textColorHint="@color/wallet_edittext_outline_color"
+                android:textColorHint="@color/brave_theme_hint_text"
                 tools:ignore="LabelFor" />
 
             <TextView

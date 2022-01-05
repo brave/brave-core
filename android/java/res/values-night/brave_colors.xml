@@ -25,6 +25,9 @@
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
+    <!-- Text colors -->
+    <color name="brave_theme_hint_text">#84889C</color>
+
     <!-- Brave news colors -->
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>
@@ -74,7 +77,7 @@
     <color name="wallet_bg">#17171F</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
     <color name="wallet_warning_box_bg_color">#3B3E4F</color>
-    <color name="recovery_phrase_warning_text_color">#1E2029</color>
+    <color name="recovery_phrase_warning_text_color">#C2C4CF</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
 
