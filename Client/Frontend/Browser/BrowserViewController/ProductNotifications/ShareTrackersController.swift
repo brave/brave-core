@@ -132,8 +132,6 @@ private class ShareTrackersView: UIView {
     private let stackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 20
-        $0.isLayoutMarginsRelativeArrangement = true
-        $0.layoutMargins = UX.contentMargins
     }
     
     private lazy var titleLabel = UILabel().then {
@@ -189,7 +187,7 @@ private class ShareTrackersView: UIView {
         addSubview(stackView)
         
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(UX.contentMargins)
         }
 
         stackView.addStackViewItems(
