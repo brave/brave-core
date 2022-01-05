@@ -21,6 +21,9 @@
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark">@color/toolbar_background_primary_dark</color>
 
+    <!-- Text colors -->
+    <color name="brave_theme_hint_text">#868E96</color>
+
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
