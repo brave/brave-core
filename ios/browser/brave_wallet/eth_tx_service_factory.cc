@@ -21,10 +21,11 @@
 namespace brave_wallet {
 
 // static
-mojom::EthTxService* EthTxServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+mojo::PendingRemote<mojom::EthTxService>
+EthTxServiceFactory::GetForBrowserState(ChromeBrowserState* browser_state) {
   return static_cast<EthTxService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static
