@@ -5,22 +5,22 @@
 
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 
-#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 
 namespace brave {
 
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
-  brave_wallet::AssetRatioControllerFactory::GetInstance();
+  brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
-  brave_wallet::EthJsonRpcControllerFactory::GetInstance();
-  brave_wallet::EthTxControllerFactory::GetInstance();
-  brave_wallet::KeyringControllerFactory::GetInstance();
-  brave_wallet::SwapControllerFactory::GetInstance();
+  brave_wallet::JsonRpcServiceFactory::GetInstance();
+  brave_wallet::EthTxServiceFactory::GetInstance();
+  brave_wallet::KeyringServiceFactory::GetInstance();
+  brave_wallet::SwapServiceFactory::GetInstance();
 }
 
 }  // namespace brave

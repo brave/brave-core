@@ -32,12 +32,12 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
@@ -76,19 +76,19 @@ public class PortfolioFragment extends Fragment
         return new PortfolioFragment();
     }
 
-    private EthJsonRpcController getEthJsonRpcController() {
+    private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthJsonRpcController();
+            return ((BraveWalletActivity) activity).getJsonRpcService();
         }
 
         return null;
     }
 
-    private EthTxController getEthTxController() {
+    private EthTxService getEthTxService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxController();
+            return ((BraveWalletActivity) activity).getEthTxService();
         }
 
         return null;
@@ -149,9 +149,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updateNetwork() {
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.getChainId(chain_id -> {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.getChainId(chain_id -> {
                 String chainName = mSpinner.getSelectedItem().toString();
                 String chainId = Utils.getNetworkConst(getActivity(), chainName);
                 if (chainId.equals(chain_id)) {
@@ -182,16 +182,15 @@ public class PortfolioFragment extends Fragment
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.setNetwork(
-                    Utils.getNetworkConst(getActivity(), item), (success) -> {
-                        if (!success) {
-                            Log.e(TAG, "Could not set network");
-                            return;
-                        }
-                        updatePortfolioGetPendingTx(true);
-                    });
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.setNetwork(Utils.getNetworkConst(getActivity(), item), (success) -> {
+                if (!success) {
+                    Log.e(TAG, "Could not set network");
+                    return;
+                }
+                updatePortfolioGetPendingTx(true);
+            });
         }
     }
 
@@ -287,19 +286,19 @@ public class PortfolioFragment extends Fragment
                 asset.contractAddress, asset.logo, asset.decimals);
     }
 
-    private AssetRatioController getAssetRatioController() {
+    private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
+            return ((BraveWalletActivity) activity).getAssetRatioService();
         }
 
         return null;
     }
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -370,9 +369,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
-        KeyringController keyringController = getKeyringController();
-        assert keyringController != null;
-        keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        assert keyringService != null;
+        keyringService.getDefaultKeyringInfo(keyringInfo -> {
             AccountInfo[] accountInfos = new AccountInfo[] {};
             if (keyringInfo != null) {
                 accountInfos = keyringInfo.accountInfos;
@@ -380,7 +379,7 @@ public class PortfolioFragment extends Fragment
 
             if (mPortfolioHelper == null) {
                 mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioController(), getEthJsonRpcController(), accountInfos);
+                        getAssetRatioService(), getJsonRpcService(), accountInfos);
             }
 
             String chainName = mSpinner.getSelectedItem().toString();
@@ -456,7 +455,7 @@ public class PortfolioFragment extends Fragment
 
     private void getPendingTx(AccountInfo[] accountInfos) {
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(getEthTxController(), accountInfos, false, null);
+                new PendingTxHelper(getEthTxService(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

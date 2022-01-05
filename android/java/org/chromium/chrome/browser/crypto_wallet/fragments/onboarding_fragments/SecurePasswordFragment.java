@@ -27,7 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
@@ -38,10 +38,10 @@ import java.util.concurrent.Executor;
 public class SecurePasswordFragment extends CryptoOnboardingFragment {
     private boolean mCreateWalletClicked;
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -82,9 +82,9 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             EditText passwordEdittext = view.findViewById(R.id.secure_crypto_password);
             String passwordInput = passwordEdittext.getText().toString();
 
-            KeyringController keyringController = getKeyringController();
-            assert keyringController != null;
-            keyringController.isStrongPassword(passwordInput, result -> {
+            KeyringService keyringService = getKeyringService();
+            assert keyringService != null;
+            keyringService.isStrongPassword(passwordInput, result -> {
                 if (!result) {
                     passwordEdittext.setError(getResources().getString(R.string.password_text));
                     mCreateWalletClicked = false;
@@ -138,9 +138,9 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     }
 
     private void goToTheNextPage(String passwordInput) {
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.createWallet(passwordInput, recoveryPhrases -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.createWallet(passwordInput, recoveryPhrases -> {
                 // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
                 onNextPage.gotoNextPage(false);

@@ -22,9 +22,9 @@ const store = createStore(
     applyMiddleware(...middlewares)
 )
 
-getWalletPageApiProxy().addEthJsonRpcControllerObserver(store)
-getWalletPageApiProxy().addKeyringControllerObserver(store)
-getWalletPageApiProxy().addEthTxControllerObserverObserver(store)
+getWalletPageApiProxy().addJsonRpcServiceObserver(store)
+getWalletPageApiProxy().addKeyringServiceObserver(store)
+getWalletPageApiProxy().addEthTxServiceObserver(store)
 getWalletPageApiProxy().addBraveWalletServiceObserver(store)
 
 export default store

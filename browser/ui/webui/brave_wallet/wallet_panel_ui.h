@@ -45,18 +45,16 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
-          eth_json_rpc_controller,
-      mojo::PendingReceiver<brave_wallet::mojom::SwapController>
-          swap_controller,
-      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
-          asset_ratio_controller,
-      mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
-          keyring_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+          json_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+          asset_ratio_service,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+          keyring_service,
       mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
           erc_token_registry,
-      mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-          eth_tx_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::EthTxService> eth_tx_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service) override;
 

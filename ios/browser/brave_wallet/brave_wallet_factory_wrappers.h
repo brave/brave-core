@@ -9,33 +9,32 @@
 #import <Foundation/Foundation.h>
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@protocol BraveWalletAssetRatioController
-, BraveWalletBraveWalletService, BraveWalletEthJsonRpcController,
-    BraveWalletEthTxController, BraveWalletKeyringController,
-    BraveWalletSwapController;
+@protocol BraveWalletAssetRatioService
+, BraveWalletBraveWalletService, BraveWalletJsonRpcService,
+    BraveWalletEthTxService, BraveWalletKeyringService, BraveWalletSwapService;
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.AssetRatioControllerFactory)
-@interface BraveWalletAssetRatioControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletAssetRatioController>
+NS_SWIFT_NAME(BraveWallet.AssetRatioServiceFactory)
+@interface BraveWalletAssetRatioServiceFactory
+    : KeyedServiceFactoryWrapper < id <BraveWalletAssetRatioService>
 > @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.EthJsonRpcControllerFactory)
-@interface BraveWalletEthJsonRpcControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletEthJsonRpcController>
+NS_SWIFT_NAME(BraveWallet.JsonRpcServiceFactory)
+@interface BraveWalletJsonRpcServiceFactory
+    : KeyedServiceFactoryWrapper < id <BraveWalletJsonRpcService>
 > @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.EthTxControllerFactory)
-@interface BraveWalletEthTxControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletEthTxController>
+NS_SWIFT_NAME(BraveWallet.EthTxServiceFactory)
+@interface BraveWalletEthTxServiceFactory
+    : KeyedServiceFactoryWrapper < id <BraveWalletEthTxService>
 > @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.KeyringControllerFactory)
-@interface BraveWalletKeyringControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletKeyringController>
+NS_SWIFT_NAME(BraveWallet.KeyringServiceFactory)
+@interface BraveWalletKeyringServiceFactory
+    : KeyedServiceFactoryWrapper < id <BraveWalletKeyringService>
 > @end
 
 OBJC_EXPORT
@@ -45,9 +44,9 @@ NS_SWIFT_NAME(BraveWallet.ServiceFactory)
 > @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.SwapControllerFactory)
-@interface BraveWalletSwapControllerFactory
-    : KeyedServiceFactoryWrapper < id <BraveWalletSwapController>
+NS_SWIFT_NAME(BraveWallet.SwapServiceFactory)
+@interface BraveWalletSwapServiceFactory
+    : KeyedServiceFactoryWrapper < id <BraveWalletSwapService>
 > @end
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_FACTORY_WRAPPERS_H_

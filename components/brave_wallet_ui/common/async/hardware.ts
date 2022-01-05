@@ -49,8 +49,8 @@ export async function signTrezorTransaction (
   path: string,
   txInfo: BraveWallet.TransactionInfo,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()): Promise<SignHardwareTransactionType> {
-  const chainId = await apiProxy.ethJsonRpcController.getChainId()
-  const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
+  const chainId = await apiProxy.jsonRpcService.getChainId()
+  const nonce = await apiProxy.ethTxService.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
@@ -65,7 +65,7 @@ export async function signTrezorTransaction (
   }
   const { v, r, s } = signed.payload
   const result =
-    await apiProxy.ethTxController.processHardwareSignature(txInfo.id, v, r, s)
+    await apiProxy.ethTxService.processHardwareSignature(txInfo.id, v, r, s)
   if (!result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
@@ -77,11 +77,11 @@ export async function signLedgerTransaction (
   path: string,
   txInfo: BraveWallet.TransactionInfo,
   deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring()): Promise<SignHardwareTransactionOperationResult> {
-  const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
+  const nonce = await apiProxy.ethTxService.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
-  const data = await apiProxy.ethTxController.getTransactionMessageToSign(txInfo.id)
+  const data = await apiProxy.ethTxService.getTransactionMessageToSign(txInfo.id)
   if (!data || !data.message) {
     return { success: false, error: getLocale('braveWalletNoMessageToSignError') }
   }
@@ -96,7 +96,7 @@ export async function signLedgerTransaction (
     return { success: false, error: error, code: code }
   }
   const { v, r, s } = signed.payload
-  const result = await apiProxy.ethTxController.processHardwareSignature(txInfo.id, '0x' + v, '0x' + r, '0x' + s)
+  const result = await apiProxy.ethTxService.processHardwareSignature(txInfo.id, '0x' + v, '0x' + r, '0x' + s)
   if (!result || !result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }

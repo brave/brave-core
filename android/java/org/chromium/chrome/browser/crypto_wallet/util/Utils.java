@@ -43,14 +43,14 @@ import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -884,13 +884,13 @@ public class Utils {
     }
 
     public static void openTransaction(
-            TransactionInfo txInfo, EthJsonRpcController ethJsonRpcController, Activity activity) {
+            TransactionInfo txInfo, JsonRpcService jsonRpcService, Activity activity) {
         if (txInfo == null || txInfo.txHash == null || txInfo.txHash.isEmpty()) {
             return;
         }
-        assert ethJsonRpcController != null;
-        ethJsonRpcController.getChainId(chainId -> {
-            ethJsonRpcController.getAllNetworks(networks -> {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(chainId -> {
+            jsonRpcService.getAllNetworks(networks -> {
                 for (EthereumChain network : networks) {
                     if (!chainId.equals(network.chainId)) {
                         continue;
@@ -911,62 +911,59 @@ public class Utils {
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
-            AssetRatioController assetRatioController, EthTxController ethTxController,
+            AssetRatioService assetRatioService, EthTxService ethTxService,
             ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             String chainId) {
-        assert assetRatioController != null;
+        assert assetRatioService != null;
         String[] assets = {"eth"};
         String[] toCurr = {"usd"};
-        assetRatioController.getPrice(
-                assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                    String tempPrice = "0";
-                    if (values.length != 0) {
-                        tempPrice = values[0].price;
-                    }
-                    if ((assetSymbol == null && assetDecimals == 0)
-                            || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+            String tempPrice = "0";
+            if (values.length != 0) {
+                tempPrice = values[0].price;
+            }
+            if ((assetSymbol == null && assetDecimals == 0)
+                    || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+                try {
+                    fetchTransactions(accountInfos, Double.valueOf(tempPrice),
+                            Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
+                            contractAddress, rvTransactions, callback, context, assetSymbol,
+                            assetDecimals, chainId, assetRatioService, braveWalletService);
+                } catch (NumberFormatException exc) {
+                }
+
+                return;
+            }
+            final String ethPrice = tempPrice;
+            assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
+            toCurr[0] = "usd";
+            assetRatioService.getPrice(
+                    assets, toCurr, AssetPriceTimeframe.LIVE, (successAsset, valuesAsset) -> {
+                        String tempPriceAsset = "0";
+                        if (valuesAsset.length != 0) {
+                            tempPriceAsset = valuesAsset[0].price;
+                        }
                         try {
-                            fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                                    Double.valueOf(tempPrice), ethTxController, ercTokenRegistry,
+                            fetchTransactions(accountInfos, Double.valueOf(ethPrice),
+                                    Double.valueOf(tempPriceAsset), ethTxService, ercTokenRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioController,
-                                    braveWalletService);
+                                    assetDecimals, chainId, assetRatioService, braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
-
-                        return;
-                    }
-                    final String ethPrice = tempPrice;
-                    assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
-                    toCurr[0] = "usd";
-                    assetRatioController.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
-                            (successAsset, valuesAsset) -> {
-                                String tempPriceAsset = "0";
-                                if (valuesAsset.length != 0) {
-                                    tempPriceAsset = valuesAsset[0].price;
-                                }
-                                try {
-                                    fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                            Double.valueOf(tempPriceAsset), ethTxController,
-                                            ercTokenRegistry, contractAddress, rvTransactions,
-                                            callback, context, assetSymbol, assetDecimals, chainId,
-                                            assetRatioController, braveWalletService);
-                                } catch (NumberFormatException exc) {
-                                }
-                            });
-                });
+                    });
+        });
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, EthTxController ethTxController, ErcTokenRegistry ercTokenRegistry,
+            double assetPrice, EthTxService ethTxService, ErcTokenRegistry ercTokenRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
-            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
-        assert ethTxController != null;
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
+        assert ethTxService != null;
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(ethTxController, accountInfos, true, contractAddress);
+                new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
             if (assetSymbol != null && assetDecimals != 0) {
@@ -975,7 +972,7 @@ public class Utils {
             } else {
                 fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
-                        assetRatioController, braveWalletService);
+                        assetRatioService, braveWalletService);
             }
         });
     }
@@ -984,7 +981,7 @@ public class Utils {
             double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
-            AssetRatioController assetRatioController, BraveWalletService braveWalletService) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert chainId != null;
         assert ercTokenRegistry != null;
         TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, chainId, tokens -> {
@@ -1020,7 +1017,7 @@ public class Utils {
                 }
             }
             fetchAssetsPrices(accountInfos, ethPrice, assetPrice, rvTransactions, callback, context,
-                    pendingTxInfos, assets, assetsDecimals, assetRatioController);
+                    pendingTxInfos, assets, assetsDecimals, assetRatioService);
         });
     }
 
@@ -1028,9 +1025,9 @@ public class Utils {
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, HashMap<String, TransactionInfo[]> pendingTxInfos,
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
-            AssetRatioController assetRatioController) {
+            AssetRatioService assetRatioService) {
         AssetsPricesHelper assetsPricesHelper =
-                new AssetsPricesHelper(assetRatioController, new HashSet<String>(assets.values()));
+                new AssetsPricesHelper(assetRatioService, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
             workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                     context, "", 0, pendingTxInfos, assets, assetsDecimals,

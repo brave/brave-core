@@ -11,12 +11,12 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -84,11 +84,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     brave_news::BraveNewsControllerFactory::GetInstance();
   }
 
-  brave_wallet::AssetRatioControllerFactory::GetInstance();
-  brave_wallet::KeyringControllerFactory::GetInstance();
-  brave_wallet::RpcControllerFactory::GetInstance();
-  brave_wallet::SwapControllerFactory::GetInstance();
-  brave_wallet::EthTxControllerFactory::GetInstance();
+  brave_wallet::AssetRatioServiceFactory::GetInstance();
+  brave_wallet::KeyringServiceFactory::GetInstance();
+  brave_wallet::JsonRpcServiceFactory::GetInstance();
+  brave_wallet::SwapServiceFactory::GetInstance();
+  brave_wallet::EthTxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

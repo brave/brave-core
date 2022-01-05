@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 
@@ -20,14 +20,14 @@ import java.util.Locale;
 
 public class AssetsPricesHelper {
     private static String TAG = "AssetsPricesHelper";
-    private AssetRatioController mAssetRatioController;
+    private AssetRatioService mAssetRatioService;
     private HashSet<String> mAssets;
     private HashMap<String, Double> mAssetsPrices;
 
-    public AssetsPricesHelper(AssetRatioController assetRatioController, HashSet<String> assets) {
-        assert assetRatioController != null;
+    public AssetsPricesHelper(AssetRatioService assetRatioService, HashSet<String> assets) {
+        assert assetRatioService != null;
         assert assets != null;
-        mAssetRatioController = assetRatioController;
+        mAssetRatioService = assetRatioService;
         mAssets = assets;
         mAssetsPrices = new HashMap<String, Double>();
     }
@@ -53,7 +53,7 @@ public class AssetsPricesHelper {
 
             pricesContexts.add(priceContext);
 
-            mAssetRatioController.getPrice(
+            mAssetRatioService.getPrice(
                     fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
         }
 

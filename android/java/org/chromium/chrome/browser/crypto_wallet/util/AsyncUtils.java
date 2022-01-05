@@ -8,17 +8,17 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
 import org.chromium.brave_wallet.mojom.AssetPrice;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
     private final static String TAG = "AsyncUtils";
 
-    // Helper to track multiple wallet controllers responses
+    // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
         private Runnable mWhenAllCompletedRunnable;
         private int mTotalElements;
@@ -92,7 +92,7 @@ public class AsyncUtils {
     }
 
     public static class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetErc20TokenBalanceResponse {
+            implements JsonRpcService.GetErc20TokenBalanceResponse {
         public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -104,8 +104,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetBalanceResponse {
+    public static class GetBalanceResponseContext
+            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalanceResponse {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -118,7 +118,7 @@ public class AsyncUtils {
     }
 
     public static class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioController.GetPriceResponse {
+            extends SingleResponseBaseContext implements AssetRatioService.GetPriceResponse {
         public Boolean success;
         public AssetPrice[] prices;
 
@@ -135,7 +135,7 @@ public class AsyncUtils {
     }
 
     public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
-            implements EthTxController.GetAllTransactionInfoResponse {
+            implements EthTxService.GetAllTransactionInfoResponse {
         public TransactionInfo[] txInfos;
         public String name;
 
@@ -152,8 +152,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
-            implements AssetRatioController.GetPriceHistoryResponse {
+    public static class GetPriceHistoryResponseContext
+            extends SingleResponseBaseContext implements AssetRatioService.GetPriceHistoryResponse {
         public Boolean success;
         public AssetTimePrice[] timePrices;
         public ErcToken userAsset;

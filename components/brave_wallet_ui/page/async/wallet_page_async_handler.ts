@@ -68,52 +68,52 @@ async function refreshWalletInfo (store: Store) {
 }
 
 handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.createWallet(payload.password)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
 handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, payload: RestoreWalletPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.restoreWallet(payload.mnemonic, payload.password, payload.isLegacy)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.restoreWallet(payload.mnemonic, payload.password, payload.isLegacy)
   if (!result.isValidMnemonic) {
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
-  keyringController.notifyWalletBackupComplete()
+  keyringService.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
 })
 
 handler.on(WalletPageActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.addAccount(payload.accountName)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.addAccount(payload.accountName)
   return result.success
 })
 
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.getMnemonicForDefaultKeyring()
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.getMnemonicForDefaultKeyring()
   store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
 })
 
 handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  keyringController.notifyWalletBackupComplete()
+  const keyringService = getWalletPageApiProxy().keyringService
+  keyringService.notifyWalletBackupComplete()
 })
 
 handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
-  const assetPriceController = getWalletPageApiProxy().assetRatioController
+  const assetRatioService = getWalletPageApiProxy().assetRatioService
   const walletState = getWalletState(store)
   const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
   const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
   const selectedNetwork = walletState.selectedNetwork
   if (payload.asset) {
     const selectedAsset = payload.asset
-    const defaultPrices = await assetPriceController.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
-    const priceHistory = await assetPriceController.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
+    const defaultPrices = await assetRatioService.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
+    const priceHistory = await assetRatioService.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
@@ -121,8 +121,8 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
 })
 
 handler.on(WalletPageActions.importAccount.getType(), async (store: Store, payload: ImportAccountPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.importAccount(payload.accountName, payload.privateKey)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.importAccount(payload.accountName, payload.privateKey)
   if (result.success) {
     store.dispatch(WalletPageActions.setImportAccountError(false))
     store.dispatch(WalletPageActions.setShowAddModal(false))
@@ -132,10 +132,10 @@ handler.on(WalletPageActions.importAccount.getType(), async (store: Store, paylo
 })
 
 handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
-  const { keyringController } = getWalletPageApiProxy()
+  const { keyringService } = getWalletPageApiProxy()
   const result = (payload.protocol === BraveWallet.FilecoinAddressProtocol.SECP256K1)
-    ? await keyringController.importFilecoinSECP256K1Account(payload.accountName, encodeKeyToHex(payload.privateKey), payload.network)
-    : await keyringController.importFilecoinBLSAccount(payload.accountName, payload.privateKey, extractPublicKeyForBLS(payload.privateKey), payload.network)
+    ? await keyringService.importFilecoinSECP256K1Account(payload.accountName, encodeKeyToHex(payload.privateKey), payload.network)
+    : await keyringService.importFilecoinBLSAccount(payload.accountName, payload.privateKey, extractPublicKeyForBLS(payload.privateKey), payload.network)
 
   if (result.success) {
     store.dispatch(WalletPageActions.setImportAccountError(false))
@@ -146,8 +146,8 @@ handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Stor
 })
 
 handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.importAccountFromJson(payload.accountName, payload.password, payload.json)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.importAccountFromJson(payload.accountName, payload.password, payload.json)
   if (result.success) {
     store.dispatch(WalletPageActions.setImportAccountError(false))
     store.dispatch(WalletPageActions.setShowAddModal(false))
@@ -157,42 +157,42 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Stor
 })
 
 handler.on(WalletPageActions.removeImportedAccount.getType(), async (store: Store, payload: RemoveImportedAccountPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  const result = await keyringController.removeImportedAccount(payload.address)
+  const keyringService = getWalletPageApiProxy().keyringService
+  const result = await keyringService.removeImportedAccount(payload.address)
   return result.success
 })
 
 handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payload: ViewPrivateKeyPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
+  const keyringService = getWalletPageApiProxy().keyringService
   const result = payload.isDefault
-    ? await keyringController.getPrivateKeyForDefaultKeyringAccount(payload.address)
-    : await keyringController.getPrivateKeyForImportedAccount(payload.address)
+    ? await keyringService.getPrivateKeyForDefaultKeyringAccount(payload.address)
+    : await keyringService.getPrivateKeyForImportedAccount(payload.address)
   store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 
 handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, payload: UpdateAccountNamePayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
+  const keyringService = getWalletPageApiProxy().keyringService
   const hardwareAccount = await findHardwareAccountInfo(payload.address)
   if (hardwareAccount && hardwareAccount.hardware) {
-    const result = await keyringController.setDefaultKeyringHardwareAccountName(payload.address, payload.name)
+    const result = await keyringService.setDefaultKeyringHardwareAccountName(payload.address, payload.name)
     return result.success
   }
 
   const result = payload.isDerived
-    ? await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
-    : await keyringController.setDefaultKeyringImportedAccountName(payload.address, payload.name)
+    ? await keyringService.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
+    : await keyringService.setDefaultKeyringImportedAccountName(payload.address, payload.name)
   return result.success
 })
 
 handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  keyringController.addHardwareAccounts(accounts)
+  const keyringService = getWalletPageApiProxy().keyringService
+  keyringService.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
 handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
-  const keyringController = getWalletPageApiProxy().keyringController
-  keyringController.removeHardwareAccount(payload.address)
+  const keyringService = getWalletPageApiProxy().keyringService
+  keyringService.removeHardwareAccount(payload.address)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
@@ -210,12 +210,12 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = getWalletPageApiProxy().braveWalletService
-  const keyringController = getWalletPageApiProxy().keyringController
+  const keyringService = getWalletPageApiProxy().keyringService
   const result =
     await braveWalletService.importFromExternalWallet(
       BraveWallet.ExternalWalletType.CryptoWallets, payload.password, payload.newPassword)
   if (result.success) {
-    keyringController.notifyWalletBackupComplete()
+    keyringService.notifyWalletBackupComplete()
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
@@ -225,12 +225,12 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
 
 handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = getWalletPageApiProxy().braveWalletService
-  const keyringController = getWalletPageApiProxy().keyringController
+  const keyringService = getWalletPageApiProxy().keyringService
   const result =
     await braveWalletService.importFromExternalWallet(
       BraveWallet.ExternalWalletType.MetaMask, payload.password, payload.newPassword)
   if (result.success) {
-    keyringController.notifyWalletBackupComplete()
+    keyringService.notifyWalletBackupComplete()
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
@@ -269,14 +269,14 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
 // Getting and setting network:
 //
 // import { Network } from '../../constants/types'
-// const ethJsonRpcController = getWalletPageApiProxy().ethJsonRpcController
-// const network = await ethJsonRpcController.getNetwork()
-// await ethJsonRpcController.setNetwork(Network.Rinkeby)
-// const chainId = await ethJsonRpcController.getChainId()
-// const blockTrackerUrl = await ethJsonRpcController.getBlockTrackerUrl()
+// const jsonRpcService = getWalletPageApiProxy().jsonRpcService
+// const network = await jsonRpcService.getNetwork()
+// await jsonRpcService.setNetwork(Network.Rinkeby)
+// const chainId = await jsonRpcService.getChainId()
+// const blockTrackerUrl = await jsonRpcService.getBlockTrackerUrl()
 //
 // Getting ETH and BAT ERC20 balance
-// const balance = await ethJsonRpcController.getBalance(address)
-// const token_balance = await ethJsonRpcController.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
+// const balance = await jsonRpcService.getBalance(address)
+// const token_balance = await jsonRpcService.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
 
 export default handler.middleware

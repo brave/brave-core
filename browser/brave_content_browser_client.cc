@@ -21,9 +21,9 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -247,22 +247,22 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto* rpc_controller =
-      brave_wallet::RpcControllerFactory::GetControllerForContext(
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
 
-  if (!rpc_controller)
+  if (!json_rpc_service)
     return;
 
-  auto tx_controller = brave_wallet::EthTxControllerFactory::GetForContext(
+  auto tx_service = brave_wallet::EthTxServiceFactory::GetForContext(
       frame_host->GetBrowserContext());
-  if (!tx_controller)
+  if (!tx_service)
     return;
 
-  auto* keyring_controller =
-      brave_wallet::KeyringControllerFactory::GetControllerForContext(
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!keyring_controller)
+  if (!keyring_service)
     return;
 
   auto* brave_wallet_service =
@@ -277,7 +277,7 @@ void MaybeBindBraveWalletProvider(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          rpc_controller, std::move(tx_controller), keyring_controller,
+          json_rpc_service, std::move(tx_service), keyring_service,
           brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host),

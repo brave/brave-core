@@ -18,12 +18,12 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.callbackRouter.$.bindNewPipeAndPassRemote(),
         this.panelHandler.$.bindNewPipeAndPassReceiver(),
         this.walletHandler.$.bindNewPipeAndPassReceiver(),
-        this.ethJsonRpcController.$.bindNewPipeAndPassReceiver(),
-        this.swapController.$.bindNewPipeAndPassReceiver(),
-        this.assetRatioController.$.bindNewPipeAndPassReceiver(),
-        this.keyringController.$.bindNewPipeAndPassReceiver(),
+        this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+        this.swapService.$.bindNewPipeAndPassReceiver(),
+        this.assetRatioService.$.bindNewPipeAndPassReceiver(),
+        this.keyringService.$.bindNewPipeAndPassReceiver(),
         this.ercTokenRegistry.$.bindNewPipeAndPassReceiver(),
-        this.ethTxController.$.bindNewPipeAndPassReceiver(),
+        this.ethTxService.$.bindNewPipeAndPassReceiver(),
         this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
 }

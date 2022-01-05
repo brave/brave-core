@@ -22,7 +22,7 @@ class WebContents;
 
 namespace brave_wallet {
 
-class KeyringController;
+class KeyringService;
 
 class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
                                         public content::WebContentsObserver {
@@ -56,7 +56,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   // content::WebContentsObserver overrides
   void WebContentsDestroyed() override;
 
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
   content::WebContents* web_contents_;
   const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;

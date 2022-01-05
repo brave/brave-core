@@ -10,18 +10,18 @@
 
 #include "base/logging.h"
 #include "base/synchronization/lock.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
-                                         EthJsonRpcController* rpc_controller,
+                                         JsonRpcService* json_rpc_service,
                                          EthNonceTracker* nonce_tracker)
     : tx_state_manager_(tx_state_manager),
-      rpc_controller_(rpc_controller),
+      json_rpc_service_(json_rpc_service),
       nonce_tracker_(nonce_tracker),
       weak_factory_(this) {}
 EthPendingTxTracker::~EthPendingTxTracker() = default;
@@ -39,7 +39,7 @@ bool EthPendingTxTracker::UpdatePendingTransactions(size_t* num_pending) {
       continue;
     }
     std::string id = pending_transaction->id;
-    rpc_controller_->GetTransactionReceipt(
+    json_rpc_service_->GetTransactionReceipt(
         pending_transaction->tx_hash,
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
                        weak_factory_.GetWeakPtr(), std::move(id)));
@@ -58,7 +58,7 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
     if (!pending_transaction->tx->IsSigned()) {
       continue;
     }
-    rpc_controller_->SendRawTransaction(
+    json_rpc_service_->SendRawTransaction(
         pending_transaction->tx->GetSignedTransaction(),
         base::BindOnce(&EthPendingTxTracker::OnSendRawTransaction,
                        weak_factory_.GetWeakPtr()));
@@ -128,7 +128,7 @@ bool EthPendingTxTracker::ShouldTxDropped(
     const EthTxStateManager::TxMeta& meta) {
   const std::string hex_address = meta.from.ToChecksumAddress();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
-    rpc_controller_->GetTransactionCount(
+    json_rpc_service_->GetTransactionCount(
         hex_address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
                        weak_factory_.GetWeakPtr(), std::move(hex_address)));

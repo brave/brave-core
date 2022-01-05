@@ -13,9 +13,9 @@ import android.view.View;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -26,7 +26,7 @@ public class BraveWalletPreferences
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
 
     private BraveWalletAutoLockPreferences mPrefAutolock;
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class BraveWalletPreferences
 
         mPrefAutolock = (BraveWalletAutoLockPreferences) findPreference(PREF_BRAVE_WALLET_AUTOLOCK);
 
-        InitKeyringController();
+        InitKeyringService();
     }
 
     @Override
@@ -46,24 +46,24 @@ public class BraveWalletPreferences
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mKeyringController != null) {
-            mKeyringController.close();
+        if (mKeyringService != null) {
+            mKeyringService.close();
         }
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class BraveWalletPreferences
     }
 
     private void refreshAutolockView() {
-        if (mKeyringController != null) {
-            mKeyringController.getAutoLockMinutes(minutes -> {
+        if (mKeyringService != null) {
+            mKeyringService.getAutoLockMinutes(minutes -> {
                 mPrefAutolock.setSummary(getContext().getResources().getQuantityString(
                         R.plurals.time_long_mins, minutes, minutes));
                 RecyclerView.ViewHolder viewHolder =

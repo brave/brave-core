@@ -10,7 +10,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -62,7 +62,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   new_tab_page::MigrateNewTabPagePrefs(profile);
 #endif
 
-  brave_wallet::KeyringController::MigrateObsoleteProfilePrefs(
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
       profile->GetPrefs());
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 

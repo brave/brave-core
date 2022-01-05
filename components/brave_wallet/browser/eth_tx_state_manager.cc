@@ -31,12 +31,12 @@ constexpr size_t kMaxRejectedTxNum = 10;
 }  // namespace
 
 EthTxStateManager::EthTxStateManager(PrefService* prefs,
-                                     EthJsonRpcController* rpc_controller)
-    : prefs_(prefs), rpc_controller_(rpc_controller), weak_factory_(this) {
-  DCHECK(rpc_controller_);
-  rpc_controller_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
-  chain_id_ = rpc_controller_->GetChainId();
-  network_url_ = rpc_controller_->GetNetworkUrl();
+                                     JsonRpcService* json_rpc_service)
+    : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
+  DCHECK(json_rpc_service_);
+  json_rpc_service_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
+  chain_id_ = json_rpc_service_->GetChainId();
+  network_url_ = json_rpc_service_->GetNetworkUrl();
 }
 EthTxStateManager::~EthTxStateManager() = default;
 
@@ -294,7 +294,7 @@ EthTxStateManager::GetTransactionsByStatus(
 
 void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
   chain_id_ = chain_id;
-  network_url_ = rpc_controller_->GetNetworkUrl();
+  network_url_ = json_rpc_service_->GetNetworkUrl();
 }
 
 void EthTxStateManager::OnAddEthereumChainRequestCompleted(

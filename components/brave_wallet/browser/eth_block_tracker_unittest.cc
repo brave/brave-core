@@ -10,7 +10,7 @@
 
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -54,8 +54,8 @@ class EthBlockTrackerUnitTest : public testing::Test {
   void SetUp() override {
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    rpc_controller_.reset(new brave_wallet::EthJsonRpcController(
-        shared_url_loader_factory_, &prefs_));
+    json_rpc_service_.reset(
+        new brave_wallet::JsonRpcService(shared_url_loader_factory_, &prefs_));
   }
   std::string GetResponseString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
@@ -69,11 +69,11 @@ class EthBlockTrackerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<EthJsonRpcController> rpc_controller_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
 };
 
 TEST_F(EthBlockTrackerUnitTest, Timer) {
-  EthBlockTracker tracker(rpc_controller_.get());
+  EthBlockTracker tracker(json_rpc_service_.get());
   bool request_sent = false;
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [&](const network::ResourceRequest& request) { request_sent = true; }));
@@ -101,7 +101,7 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
-  EthBlockTracker tracker(rpc_controller_.get());
+  EthBlockTracker tracker(json_rpc_service_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -160,7 +160,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
-  EthBlockTracker tracker(rpc_controller_.get());
+  EthBlockTracker tracker(json_rpc_service_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -194,7 +194,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
-  EthBlockTracker tracker(rpc_controller_.get());
+  EthBlockTracker tracker(json_rpc_service_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -234,7 +234,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
-  EthBlockTracker tracker(rpc_controller_.get());
+  EthBlockTracker tracker(json_rpc_service_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();

@@ -17,9 +17,9 @@ namespace brave_wallet {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
-void ClearEthJsonRpcControllerProfilePrefs(PrefService* prefs);
-void ClearKeyringControllerProfilePrefs(PrefService* prefs);
-void ClearEthTxControllerProfilePrefs(PrefService* prefs);
+void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);
+void ClearKeyringServiceProfilePrefs(PrefService* prefs);
+void ClearEthTxServiceProfilePrefs(PrefService* prefs);
 void ClearBraveWalletServicePrefs(PrefService* prefs);
 void MigrateObsoleteProfilePrefs(PrefService* prefs);
 

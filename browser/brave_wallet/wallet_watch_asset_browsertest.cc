@@ -8,11 +8,11 @@
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -56,8 +56,8 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(browser()->profile());
+    keyring_service_ =
+        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {
@@ -71,7 +71,7 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
         "drip caution abandon festival order clown oven regular absorb "
         "evidence crew where";
     base::RunLoop run_loop;
-    keyring_controller_->RestoreWallet(
+    keyring_service_->RestoreWallet(
         mnemonic, "brave123", false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
@@ -114,7 +114,7 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
 
  private:
   net::test_server::EmbeddedTestServer https_server_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {

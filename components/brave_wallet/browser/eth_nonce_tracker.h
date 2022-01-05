@@ -17,13 +17,13 @@
 namespace brave_wallet {
 
 class EthAddress;
-class EthJsonRpcController;
+class JsonRpcService;
 class EthTxStateManager;
 
 class EthNonceTracker {
  public:
   EthNonceTracker(EthTxStateManager* tx_state_manager,
-                  EthJsonRpcController* rpc_controller);
+                  JsonRpcService* json_rpc_service);
   ~EthNonceTracker();
   EthNonceTracker(const EthNonceTracker&) = delete;
   EthNonceTracker operator=(const EthNonceTracker&) = delete;
@@ -42,7 +42,7 @@ class EthNonceTracker {
                          const std::string& error_message);
 
   EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
 
   base::Lock nonce_lock_;
 

@@ -46,41 +46,41 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
-import org.chromium.brave_wallet.mojom.EthTxControllerObserver;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.ProviderError;
-import org.chromium.brave_wallet.mojom.SwapController;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.SwapControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringControllerObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -103,7 +103,7 @@ import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringControllerObserver,
+                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringServiceObserver,
                    ApprovedTxObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
@@ -146,10 +146,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
     }
 
-    private class EthTxControllerObserverImpl implements EthTxControllerObserver {
+    private class EthTxServiceObserverImpl implements EthTxServiceObserver {
         private BuySendSwapActivity mParentActivity;
 
-        public EthTxControllerObserverImpl(BuySendSwapActivity parentActivity) {
+        public EthTxServiceObserverImpl(BuySendSwapActivity parentActivity) {
             mParentActivity = parentActivity;
         }
 
@@ -181,18 +181,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public String mActivateAllowanceTxId;
 
     private ErcTokenRegistry mErcTokenRegistry;
-    private EthJsonRpcController mEthJsonRpcController;
-    private EthTxController mEthTxController;
-    private KeyringController mKeyringController;
+    private JsonRpcService mJsonRpcService;
+    private EthTxService mEthTxService;
+    private KeyringService mKeyringService;
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
     private double mConvertedFromBalance;
     private double mConvertedToBalance;
-    private EthTxControllerObserverImpl mEthTxControllerObserver;
-    private AssetRatioController mAssetRatioController;
+    private EthTxServiceObserverImpl mEthTxServiceObserver;
+    private AssetRatioService mAssetRatioService;
     private ErcToken mCurrentErcToken;
     private ErcToken mCurrentSwapToErcToken;
-    private SwapController mSwapController;
+    private SwapService mSwapService;
     private ExecutorService mExecutor;
     private Handler mHandler;
     private String mCurrentChainId;
@@ -206,12 +206,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
-        mKeyringController.close();
-        mAssetRatioController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
-        mEthTxController.close();
-        mSwapController.close();
+        mJsonRpcService.close();
+        mEthTxService.close();
+        mSwapService.close();
         mBraveWalletService.close();
     }
 
@@ -315,8 +315,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
             }
 
-            if (mEthJsonRpcController != null) {
-                mEthJsonRpcController.setNetwork(chainId, (success) -> {
+            if (mJsonRpcService != null) {
+                mJsonRpcService.setNetwork(chainId, (success) -> {
                     if (!success) {
                         Log.e(TAG, "Could not set network");
                     }
@@ -394,18 +394,17 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         swapParams.gasPrice = "";
 
-        assert mSwapController != null;
+        assert mSwapService != null;
         if (!sendTx) {
-            mSwapController.getPriceQuote(swapParams, (success, response, error_response) -> {
+            mSwapService.getPriceQuote(swapParams, (success, response, error_response) -> {
                 workWithSwapQuota(
                         success, response, error_response, calculatePerSellAsset, sendTx, from);
             });
         } else {
-            mSwapController.getTransactionPayload(
-                    swapParams, (success, response, error_response) -> {
-                        workWithSwapQuota(success, response, error_response, calculatePerSellAsset,
-                                sendTx, from);
-                    });
+            mSwapService.getTransactionPayload(swapParams, (success, response, error_response) -> {
+                workWithSwapQuota(
+                        success, response, error_response, calculatePerSellAsset, sendTx, from);
+            });
         }
     }
 
@@ -436,8 +435,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void sendSwapTransaction(TxData data, String from) {
-        assert mAssetRatioController != null;
-        mAssetRatioController.getGasOracle(estimation -> {
+        assert mAssetRatioService != null;
+        mAssetRatioService.getGasOracle(estimation -> {
             String maxPriorityFeePerGas = "";
             String maxFeePerGas = "";
             if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
@@ -516,8 +515,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         final double fee = gasLimit * Utils.fromWei(response.gasPrice, 18);
         final double fromValue = valueFrom;
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getBalance(
+        assert mJsonRpcService != null;
+        mJsonRpcService.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
@@ -567,11 +566,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void checkAllowance(String contract, String spenderAddress, double amountToSend) {
-        assert mEthJsonRpcController != null;
+        assert mJsonRpcService != null;
         assert mCurrentErcToken != null;
         String ownerAddress =
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
-        mEthJsonRpcController.getErc20TokenAllowance(
+        mJsonRpcService.getErc20TokenAllowance(
                 contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
                     warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
                     if (error != ProviderError.SUCCESS
@@ -587,8 +586,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void updateBalance(String address, boolean from) {
-        assert mEthJsonRpcController != null;
-        if (mEthJsonRpcController == null) {
+        assert mJsonRpcService != null;
+        if (mJsonRpcService == null) {
             return;
         }
         ErcToken ercToken = mCurrentErcToken;
@@ -596,7 +595,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             ercToken = mCurrentSwapToErcToken;
         }
         if (ercToken == null || ercToken.contractAddress.isEmpty()) {
-            mEthJsonRpcController.getBalance(address, (balance, error, errorMessage) -> {
+            mJsonRpcService.getBalance(address, (balance, error, errorMessage) -> {
                 warnWhenError(TAG, "getBalance", error, errorMessage);
                 if (error != ProviderError.SUCCESS) {
                     return;
@@ -604,7 +603,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 populateBalance(balance, from);
             });
         } else {
-            mEthJsonRpcController.getErc20TokenBalance(
+            mJsonRpcService.getErc20TokenBalance(
                     ercToken.contractAddress, address, (balance, error, errorMessage) -> {
                         warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
                         if (error != ProviderError.SUCCESS) {
@@ -1001,10 +1000,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
@@ -1221,7 +1220,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
 
-            mValidator.validate(mCurrentChainId, getKeyringController(), getErcTokenRegistry(),
+            mValidator.validate(mCurrentChainId, getKeyringService(), getErcTokenRegistry(),
                     getBraveWalletService(), fromAccountAddress, s.toString(),
                     (String validationResult, Boolean disableButton) -> {
                         setSendToValidationResult(validationResult, disableButton);
@@ -1264,9 +1263,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
-        assert mEthTxController != null;
+        assert mEthTxService != null;
         assert mCurrentErcToken != null;
-        mEthTxController.makeErc20ApproveData(mAllowanceTarget,
+        mEthTxService.makeErc20ApproveData(mAllowanceTarget,
                 Utils.toHexWei(String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance),
                         mCurrentErcToken.decimals),
                 (success, data) -> {
@@ -1283,8 +1282,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private void sendTransaction(
             TxData data, String from, String maxPriorityFeePerGas, String maxFeePerGas) {
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getAllNetworks(networks -> {
+        assert mJsonRpcService != null;
+        mJsonRpcService.getAllNetworks(networks -> {
             boolean isEIP1559 = false;
             // We have hardcoded EIP-1559 gas fields.
             if (!maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty()) {
@@ -1300,7 +1299,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 isEIP1559 = network.isEip1559;
             }
 
-            assert mEthTxController != null;
+            assert mEthTxService != null;
             if (isEIP1559) {
                 TxData1559 txData1559 = new TxData1559();
                 txData1559.baseData = data;
@@ -1315,21 +1314,21 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
                 txData1559.gasEstimation.fastMaxFeePerGas = "";
                 txData1559.gasEstimation.baseFeePerGas = "";
-                mEthTxController.addUnapproved1559Transaction(
+                mEthTxService.addUnapproved1559Transaction(
                         txData1559, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in
-                            // EthTxControllerObserverImpl
+                            // EthTxServiceObserverImpl
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToValidationResult(error_message, false);
                         });
             } else {
-                mEthTxController.addUnapprovedTransaction(
+                mEthTxService.addUnapprovedTransaction(
                         data, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in
-                            // EthTxControllerObserverImpl
+                            // EthTxServiceObserverImpl
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToValidationResult(error_message, false);
@@ -1340,11 +1339,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     private void addUnapprovedTransactionERC20(
             String to, String value, String from, String contractAddress) {
-        assert mEthTxController != null;
-        if (mEthTxController == null) {
+        assert mEthTxService != null;
+        if (mEthTxService == null) {
             return;
         }
-        mEthTxController.makeErc20TransferData(to, value, (success, data) -> {
+        mEthTxService.makeErc20TransferData(to, value, (success, data) -> {
             if (!success) {
                 return;
             }
@@ -1476,48 +1475,48 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mAssetRatioController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
         mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
-        mEthTxController.close();
-        mSwapController.close();
+        mJsonRpcService.close();
+        mEthTxService.close();
+        mSwapService.close();
         mBraveWalletService.close();
 
         mErcTokenRegistry = null;
-        mEthJsonRpcController = null;
-        mEthTxController = null;
-        mKeyringController = null;
-        mAssetRatioController = null;
-        mSwapController = null;
+        mJsonRpcService = null;
+        mEthTxService = null;
+        mKeyringService = null;
+        mAssetRatioService = null;
+        mSwapService = null;
         mBraveWalletService = null;
-        InitAssetRatioController();
+        InitAssetRatioService();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
-        InitEthTxController();
-        InitKeyringController();
-        InitSwapController();
+        InitJsonRpcService();
+        InitEthTxService();
+        InitKeyringService();
+        InitSwapService();
         InitBraveWalletService();
     }
 
-    public AssetRatioController getAssetRatioController() {
-        return mAssetRatioController;
+    public AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
     }
 
-    public EthTxController getEthTxController() {
-        return mEthTxController;
+    public EthTxService getEthTxService() {
+        return mEthTxService;
     }
 
-    public EthJsonRpcController getEthJsonRpcController() {
-        return mEthJsonRpcController;
+    public JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
     public BraveWalletService getBraveWalletService() {
         return mBraveWalletService;
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
     }
 
     private void InitBraveWalletService() {
@@ -1528,22 +1527,21 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
-        mKeyringController.addObserver(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
     private void InitErcTokenRegistry() {
@@ -1554,31 +1552,30 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
-    private void InitEthTxController() {
-        if (mEthTxController != null) {
+    private void InitEthTxService() {
+        if (mEthTxService != null) {
             return;
         }
 
-        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
-        mEthTxControllerObserver = new EthTxControllerObserverImpl(this);
-        mEthTxController.addObserver(mEthTxControllerObserver);
+        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
+        mEthTxServiceObserver = new EthTxServiceObserverImpl(this);
+        mEthTxService.addObserver(mEthTxServiceObserver);
     }
 
-    private void InitSwapController() {
-        if (mSwapController != null) {
+    private void InitSwapService() {
+        if (mSwapService != null) {
             return;
         }
 
-        mSwapController = SwapControllerFactory.getInstance().getSwapController(this);
+        mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
     }
 
     @Override
@@ -1595,15 +1592,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitErcTokenRegistry();
-        InitEthJsonRpcController();
-        InitEthTxController();
-        InitKeyringController();
-        InitAssetRatioController();
-        InitSwapController();
+        InitJsonRpcService();
+        InitEthTxService();
+        InitKeyringService();
+        InitAssetRatioService();
+        InitSwapService();
         InitBraveWalletService();
 
-        if (mEthJsonRpcController != null) {
-            mEthJsonRpcController.getChainId(chainId -> {
+        if (mJsonRpcService != null) {
+            mJsonRpcService.getChainId(chainId -> {
                 mCurrentChainId = chainId;
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);
@@ -1614,8 +1611,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 spinner.setSelection(getIndexOf(spinner, chainId));
             });
         }
-        if (mKeyringController != null) {
-            mKeyringController.getDefaultKeyringInfo(keyring -> {
+        if (mKeyringService != null) {
+            mKeyringService.getDefaultKeyringInfo(keyring -> {
                 String[] accountNames = new String[keyring.accountInfos.length];
                 String[] accountTitles = new String[keyring.accountInfos.length];
                 int currentPos = 0;

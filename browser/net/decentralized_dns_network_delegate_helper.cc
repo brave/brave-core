@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/utils.h"
@@ -36,10 +36,10 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::OK;
   }
 
-  auto* rpc_controller =
-      brave_wallet::RpcControllerFactory::GetControllerForContext(
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           ctx->browser_context);
-  if (!rpc_controller)
+  if (!json_rpc_service)
     return net::OK;
 
   if (IsUnstoppableDomainsTLD(ctx->request_url) &&
@@ -47,7 +47,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
           g_browser_process->local_state())) {
     auto keys = std::vector<std::string>(std::begin(kRecordKeys),
                                          std::end(kRecordKeys));
-    rpc_controller->UnstoppableDomainsProxyReaderGetMany(
+    json_rpc_service->UnstoppableDomainsProxyReaderGetMany(
         brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(), keys,
         base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
                        next_callback, ctx));
@@ -57,7 +57,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
-    rpc_controller->EnsResolverGetContentHash(
+    json_rpc_service->EnsResolverGetContentHash(
         brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));

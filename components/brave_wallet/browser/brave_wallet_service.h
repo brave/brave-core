@@ -32,7 +32,7 @@ constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
 constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
 constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
 
-class KeyringController;
+class KeyringService;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -45,7 +45,7 @@ class BraveWalletService : public KeyedService,
 
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
-      KeyringController* keyring_controller,
+      KeyringService* keyring_service,
       PrefService* prefs);
   ~BraveWalletService() override;
 
@@ -180,7 +180,7 @@ class BraveWalletService : public KeyedService,
       add_suggest_token_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;

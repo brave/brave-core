@@ -6,12 +6,12 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h"
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
-#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 
@@ -19,76 +19,70 @@
 #error "This file requires ARC support."
 #endif
 
-@implementation BraveWalletAssetRatioControllerFactory
+@implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
-      brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
-          browserState);
-  if (!controller) {
+  auto* service =
+      brave_wallet::AssetRatioServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
     return nil;
   }
-  return [[BraveWalletAssetRatioControllerImpl alloc]
-      initWithAssetRatioController:controller];
+  return [[BraveWalletAssetRatioServiceImpl alloc]
+      initWithAssetRatioService:service];
 }
 @end
 
-@implementation BraveWalletEthJsonRpcControllerFactory
+@implementation BraveWalletJsonRpcServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
-      brave_wallet::EthJsonRpcControllerFactory::GetForBrowserState(
-          browserState);
-  if (!controller) {
+  auto* service =
+      brave_wallet::JsonRpcServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
     return nil;
   }
-  return [[BraveWalletEthJsonRpcControllerImpl alloc]
-      initWithEthJsonRpcController:controller];
+  return [[BraveWalletJsonRpcServiceImpl alloc] initWithJsonRpcService:service];
 }
 @end
 
-@implementation BraveWalletEthTxControllerFactory
+@implementation BraveWalletEthTxServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
-      brave_wallet::EthTxControllerFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  auto* service =
+      brave_wallet::EthTxServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
     return nil;
   }
-  return [[BraveWalletEthTxControllerImpl alloc]
-      initWithEthTxController:controller];
+  return [[BraveWalletEthTxServiceImpl alloc] initWithEthTxService:service];
 }
 @end
 
-@implementation BraveWalletKeyringControllerFactory
+@implementation BraveWalletKeyringServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
-      brave_wallet::KeyringControllerFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  auto* service =
+      brave_wallet::KeyringServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
     return nil;
   }
-  return [[BraveWalletKeyringControllerImpl alloc]
-      initWithKeyringController:controller];
+  return [[BraveWalletKeyringServiceImpl alloc] initWithKeyringService:service];
 }
 @end
 
 @implementation BraveWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto* service =
       brave_wallet::BraveWalletServiceFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  if (!service) {
     return nil;
   }
   return [[BraveWalletBraveWalletServiceImpl alloc]
-      initWithBraveWalletService:controller];
+      initWithBraveWalletService:service];
 }
 @end
 
-@implementation BraveWalletSwapControllerFactory
+@implementation BraveWalletSwapServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
-      brave_wallet::SwapControllerFactory::GetForBrowserState(browserState);
-  if (!controller) {
+  auto* service =
+      brave_wallet::SwapServiceFactory::GetForBrowserState(browserState);
+  if (!service) {
     return nil;
   }
-  return
-      [[BraveWalletSwapControllerImpl alloc] initWithSwapController:controller];
+  return [[BraveWalletSwapServiceImpl alloc] initWithSwapService:service];
 }
 @end

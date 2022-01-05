@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
@@ -38,10 +38,10 @@ import java.util.List;
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -56,9 +56,9 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getMnemonicForDefaultKeyring(result -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getMnemonicForDefaultKeyring(result -> {
                 recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                 setupRecoveryPhraseRecyclerView(view);
                 TextView copyButton = view.findViewById(R.id.btn_copy);

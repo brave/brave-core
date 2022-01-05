@@ -11,8 +11,8 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ import java.util.Locale;
 
 public class SingleTokenBalanceHelper {
     private static String TAG = "SingleAccountTokenBalance";
-    private AssetRatioController mAssetRatioController;
-    private EthJsonRpcController mEthJsonRpcController;
+    private AssetRatioService mAssetRatioService;
+    private JsonRpcService mJsonRpcService;
     private HashMap<String, Double> mPerAcountFiatBalance;
     private HashMap<String, Double> mPerAcountCryptoBalance;
 
     public SingleTokenBalanceHelper(
-            AssetRatioController assetRatioController, EthJsonRpcController ethJsonRpcController) {
-        mAssetRatioController = assetRatioController;
-        mEthJsonRpcController = ethJsonRpcController;
+            AssetRatioService assetRatioService, JsonRpcService jsonRpcService) {
+        mAssetRatioService = assetRatioService;
+        mJsonRpcService = jsonRpcService;
     }
 
     public HashMap<String, Double> getPerAccountFiatBalance() {
@@ -48,7 +48,7 @@ public class SingleTokenBalanceHelper {
         String[] fromAssets = new String[] {symbol.toLowerCase(Locale.getDefault())};
         String[] toAssets = new String[] {"usd"};
 
-        mAssetRatioController.getPrice(fromAssets, toAssets, AssetPriceTimeframe.LIVE,
+        mAssetRatioService.getPrice(fromAssets, toAssets, AssetPriceTimeframe.LIVE,
                 (Boolean success, AssetPrice[] prices) -> {
                     // We have to do that to support custom assets
                     String price = "0";
@@ -77,14 +77,14 @@ public class SingleTokenBalanceHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.accountAddress = accountInfo.address;
                             contexts.add(context);
-                            mEthJsonRpcController.getBalance(accountInfo.address, context);
+                            mJsonRpcService.getBalance(accountInfo.address, context);
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =
                                     new AsyncUtils.GetErc20TokenBalanceResponseContext(
                                             balancesMultiResponse.singleResponseComplete);
                             context.accountAddress = accountInfo.address;
                             contexts.add(context);
-                            mEthJsonRpcController.getErc20TokenBalance(
+                            mJsonRpcService.getErc20TokenBalance(
                                     Utils.getContractAddress(chainId, symbol, contractAddress),
                                     accountInfo.address, context);
                         }

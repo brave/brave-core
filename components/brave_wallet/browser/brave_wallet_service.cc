@@ -15,7 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -109,10 +109,10 @@ namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
-    KeyringController* keyring_controller,
+    KeyringService* keyring_service,
     PrefService* prefs)
     : delegate_(std::move(delegate)),
-      keyring_controller_(keyring_controller),
+      keyring_service_(keyring_service),
       prefs_(prefs),
       weak_ptr_factory_(this) {
   if (delegate_)
@@ -650,11 +650,11 @@ void BraveWalletService::OnGetImportInfo(
     return;
   }
 
-  keyring_controller_->RestoreWallet(
+  keyring_service_->RestoreWallet(
       info.mnemonic, new_password, info.is_legacy_crypto_wallets,
       base::BindOnce(
           [](ImportFromExternalWalletCallback callback,
-             size_t number_of_accounts, KeyringController* keyring_controller,
+             size_t number_of_accounts, KeyringService* keyring_service,
              bool is_valid_mnemonic) {
             if (!is_valid_mnemonic) {
               std::move(callback).Run(
@@ -663,12 +663,12 @@ void BraveWalletService::OnGetImportInfo(
               return;
             }
             if (number_of_accounts > 1) {
-              keyring_controller->AddAccountsWithDefaultName(
-                  number_of_accounts - 1);
+              keyring_service->AddAccountsWithDefaultName(number_of_accounts -
+                                                          1);
             }
             std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
           },
-          std::move(callback), info.number_of_accounts, keyring_controller_));
+          std::move(callback), info.number_of_accounts, keyring_service_));
 }
 
 void BraveWalletService::AddSignMessageRequest(

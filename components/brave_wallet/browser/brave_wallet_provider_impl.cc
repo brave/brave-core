@@ -16,9 +16,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -31,30 +31,30 @@ namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
-    EthJsonRpcController* rpc_controller,
-    mojo::PendingRemote<mojom::EthTxController> tx_controller,
-    KeyringController* keyring_controller,
+    JsonRpcService* json_rpc_service,
+    mojo::PendingRemote<mojom::EthTxService> tx_service,
+    KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     PrefService* prefs)
     : host_content_settings_map_(host_content_settings_map),
       delegate_(std::move(delegate)),
-      rpc_controller_(rpc_controller),
-      keyring_controller_(keyring_controller),
+      json_rpc_service_(json_rpc_service),
+      keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
       weak_factory_(this) {
-  DCHECK(rpc_controller);
-  rpc_controller_->AddObserver(
+  DCHECK(json_rpc_service);
+  json_rpc_service_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
-  DCHECK(tx_controller);
-  tx_controller_.Bind(std::move(tx_controller));
-  tx_controller_.set_disconnect_handler(base::BindOnce(
+  DCHECK(tx_service);
+  tx_service_.Bind(std::move(tx_service));
+  tx_service_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
-  tx_controller_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
+  tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 
-  keyring_controller_->AddObserver(
+  keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   host_content_settings_map_->AddObserver(this);
 
@@ -110,7 +110,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
 
   // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
-    if (rpc_controller_->GetChainId() != chain->chain_id) {
+    if (json_rpc_service_->GetChainId() != chain->chain_id) {
       SwitchEthereumChain(chain->chain_id, std::move(callback));
       return;
     }
@@ -141,7 +141,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
   chain_callbacks_[chain->chain_id] = std::move(callback);
-  rpc_controller_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChain(
       chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&BraveWalletProviderImpl::OnAddEthereumChain,
                      weak_factory_.GetWeakPtr()));
@@ -167,14 +167,14 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
     const std::string& chain_id,
     SwitchEthereumChainCallback callback) {
   // Only show bubble when there is no immediate error
-  if (rpc_controller_->AddSwitchEthereumChainRequest(
+  if (json_rpc_service_->AddSwitchEthereumChainRequest(
           chain_id, delegate_->GetOrigin(), std::move(callback)))
     delegate_->ShowPanel();
 }
 
 void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback) {
-  rpc_controller_->GetNetwork(
+  json_rpc_service_->GetNetwork(
       base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -182,7 +182,7 @@ void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
 void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback,
     mojom::EthereumChainPtr chain) {
-  keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
+  keyring_service_->GetDefaultKeyringInfo(base::BindOnce(
       &BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
       weak_factory_.GetWeakPtr(), std::move(callback), std::move(chain)));
 }
@@ -195,7 +195,7 @@ void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
 }
 
 void BraveWalletProviderImpl::IsLocked(IsLockedCallback callback) {
-  keyring_controller_->IsLocked(std::move(callback));
+  keyring_service_->IsLocked(std::move(callback));
 }
 
 void BraveWalletProviderImpl::AddAndApproveTransaction(
@@ -236,7 +236,7 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
     return;
   }
 
-  tx_controller_->AddUnapprovedTransaction(
+  tx_service_->AddUnapprovedTransaction(
       std::move(tx_data), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
@@ -270,7 +270,7 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
 
   // If the chain id is not known yet, then get it and set it first
   if (tx_data->chain_id == "0x0" || tx_data->chain_id.empty()) {
-    rpc_controller_->GetChainId(base::BindOnce(
+    json_rpc_service_->GetChainId(base::BindOnce(
         &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
         weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
         from));
@@ -318,7 +318,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
     return;
   }
 
-  tx_controller_->AddUnapproved1559Transaction(
+  tx_service_->AddUnapproved1559Transaction(
       std::move(tx_data), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
@@ -398,7 +398,7 @@ void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
   }
 
   std::string address;
-  if (!keyring_controller_->RecoverAddressByDefaultKeyring(
+  if (!keyring_service_->RecoverAddressByDefaultKeyring(
           message_bytes, signature_bytes, &address)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -429,7 +429,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
   if (chain_id) {
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
-    if (chain_id_hex != rpc_controller_->GetChainId()) {
+    if (chain_id_hex != json_rpc_service_->GetChainId()) {
       std::move(callback).Run(
           "", mojom::ProviderError::kInternalError,
           l10n_util::GetStringFUTF8(
@@ -472,7 +472,7 @@ void BraveWalletProviderImpl::ContinueSignMessage(
 
   auto request =
       mojom::SignMessageRequest::New(sign_message_id_++, address, message);
-  if (keyring_controller_->IsHardwareAccount(address)) {
+  if (keyring_service_->IsHardwareAccount(address)) {
     brave_wallet_service_->AddSignMessageRequest(
         std::move(request),
         base::BindOnce(
@@ -504,7 +504,7 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  auto signature_with_err = keyring_controller_->SignMessageByDefaultKeyring(
+  auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
       address, message, is_eip712);
   if (!signature_with_err.signature)
     std::move(callback).Run("", mojom::ProviderError::kInternalError,
@@ -569,8 +569,8 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
                                       RequestCallback callback) {
-  if (rpc_controller_) {
-    rpc_controller_->Request(json_payload, true, std::move(callback));
+  if (json_rpc_service_) {
+    json_rpc_service_->Request(json_payload, true, std::move(callback));
   }
 }
 
@@ -589,8 +589,7 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
     const std::string& error_message) {
   // If the call was successful but the keyring is locked, then request an
   // unlock.  After the unlock happens a new request will be made.
-  if (error == mojom::ProviderError::kSuccess &&
-      keyring_controller_->IsLocked()) {
+  if (error == mojom::ProviderError::kSuccess && keyring_service_->IsLocked()) {
     if (pending_request_ethereum_permissions_callback_) {
       std::move(callback).Run(
           std::vector<std::string>(),
@@ -599,7 +598,7 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
       return;
     }
     pending_request_ethereum_permissions_callback_ = std::move(callback);
-    keyring_controller_->RequestUnlock();
+    keyring_service_->RequestUnlock();
     delegate_->ShowPanel();
     return;
   }
@@ -648,8 +647,8 @@ void BraveWalletProviderImpl::OnUpdateKnownAccounts(
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
-  if (rpc_controller_) {
-    rpc_controller_->GetChainId(std::move(callback));
+  if (json_rpc_service_) {
+    json_rpc_service_->GetChainId(std::move(callback));
   }
 }
 
@@ -668,7 +667,7 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 }
 
 void BraveWalletProviderImpl::OnConnectionError() {
-  tx_controller_.reset();
+  tx_service_.reset();
   rpc_observer_receiver_.reset();
   tx_observer_receiver_.reset();
   keyring_observer_receiver_.reset();

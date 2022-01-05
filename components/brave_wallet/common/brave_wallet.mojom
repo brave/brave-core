@@ -116,12 +116,12 @@ interface PanelHandlerFactory {
   CreatePanelHandler(pending_remote<Page> page,
                      pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
-                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                     pending_receiver<SwapController> swap_controller,
-                     pending_receiver<AssetRatioController> asset_ratio_controller,
-                     pending_receiver<KeyringController> keyring_controller,
+                     pending_receiver<JsonRpcService> json_rpc_service,
+                     pending_receiver<SwapService> swap_service,
+                     pending_receiver<AssetRatioService> asset_ratio_service,
+                     pending_receiver<KeyringService> keyring_service,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
-                     pending_receiver<EthTxController> eth_tx_controller,
+                     pending_receiver<EthTxService> eth_tx_service,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -130,12 +130,12 @@ interface PageHandlerFactory {
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
-                    pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                    pending_receiver<SwapController> swap_controller,
-                    pending_receiver<AssetRatioController> asset_ratio_controller,
-                    pending_receiver<KeyringController> keyring_controller,
+                    pending_receiver<JsonRpcService> json_rpc_service,
+                    pending_receiver<SwapService> swap_service,
+                    pending_receiver<AssetRatioService> asset_ratio_service,
+                    pending_receiver<KeyringService> keyring_service,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
-                    pending_receiver<EthTxController> eth_tx_controller,
+                    pending_receiver<EthTxService> eth_tx_service,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
@@ -289,7 +289,7 @@ struct ERCToken {
 interface Page {
 };
 
-interface KeyringControllerObserver {
+interface KeyringServiceObserver {
   // Fired when a keyring is created
   KeyringCreated();
 
@@ -338,7 +338,7 @@ interface ERCTokenRegistry {
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
 // and signing.
-interface KeyringController {
+interface KeyringService {
   // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string mnemonic);
 
@@ -403,8 +403,8 @@ interface KeyringController {
   // Resets the keyring and the related preferences
   Reset();
 
-  // Adds a KeyringControllerObserver
-  AddObserver(pending_remote<KeyringControllerObserver> observer);
+  // Adds a KeyringServiceObserver
+  AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
@@ -450,12 +450,12 @@ interface KeyringController {
 
   // Obtains if there's a pending unlock request
   // Note that there is no need for an API to notify unlocked
-  // because the KeyringControllerObserver Unlocked event can be used for that.
+  // because the KeyringServiceObserver Unlocked event can be used for that.
   HasPendingUnlockRequest() => (bool pending);
 };
 
 // Used for cryptocurrency prices over time.
-interface AssetRatioController {
+interface AssetRatioService {
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
   // change as well.
@@ -477,7 +477,7 @@ interface AssetRatioController {
 };
 
 // Implements swapping related functionality through the 0x API.
-interface SwapController {
+interface SwapService {
   // Obtains a price quote for a swap
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
@@ -487,7 +487,7 @@ interface SwapController {
       (bool success, SwapResponse? response, string? error_response);
 };
 
-interface EthJsonRpcControllerObserver {
+interface JsonRpcServiceObserver {
   // Fired when the selected network changes
   ChainChangedEvent(string chain_id);
 
@@ -551,7 +551,7 @@ struct SwitchChainRequest {
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
-interface EthJsonRpcController {
+interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
@@ -595,8 +595,8 @@ interface EthJsonRpcController {
   // Used for making requests to the currently selected EVM compatible node
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
-  // Adds an observer for the events of EthJsonRpcController
-  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  // Adds an observer for the events of JsonRpcService
+  AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 
   // Sets a custom network for testing
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
@@ -645,7 +645,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
 };
 
-interface EthTxControllerObserver {
+interface EthTxServiceObserver {
   // Fired when a new unapproved transaction is encountered
   OnNewUnapprovedTx(TransactionInfo tx_info);
 
@@ -659,7 +659,7 @@ interface EthTxControllerObserver {
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
-interface EthTxController {
+interface EthTxService {
   // Used to add a transaction
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
 
@@ -684,11 +684,11 @@ interface EthTxController {
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
 
   // Obtains a list of all transactions from an address.
-  // This returns different data depending on which network is currently selected in EthJsonRpcController
+  // This returns different data depending on which network is currently selected in JsonRpcService
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
 
-  // Adds an observer for EthTxController
-  AddObserver(pending_remote<EthTxControllerObserver> observer);
+  // Adds an observer for EthTxService
+  AddObserver(pending_remote<EthTxServiceObserver> observer);
 
   // Used to speed-up or cancel a transaction
   SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
