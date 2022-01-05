@@ -189,7 +189,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
-  void Reset() override;
+  void Reset();
 
   using GetSupportsInterfaceCallback =
       base::OnceCallback<void(bool is_supported,

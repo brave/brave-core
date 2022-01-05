@@ -15,6 +15,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -110,9 +112,13 @@ namespace brave_wallet {
 BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     KeyringService* keyring_service,
+    JsonRpcService* json_rpc_service,
+    EthTxService* eth_tx_service,
     PrefService* prefs)
     : delegate_(std::move(delegate)),
       keyring_service_(keyring_service),
+      json_rpc_service_(json_rpc_service),
+      eth_tx_service_(eth_tx_service),
       prefs_(prefs),
       weak_ptr_factory_(this) {
   if (delegate_)
@@ -780,9 +786,18 @@ void BraveWalletService::OnNetworkChanged() {
 }
 
 void BraveWalletService::Reset() {
+  if (eth_tx_service_)
+    eth_tx_service_->Reset();
+  if (json_rpc_service_)
+    json_rpc_service_->Reset();
+
+  // Clear BraveWalletService
   ClearBraveWalletServicePrefs(prefs_);
   CancelAllSuggestedTokenCallbacks();
   CancelAllSignMessageCallbacks();
+
+  if (keyring_service_)
+    keyring_service_->Reset();
 }
 
 }  // namespace brave_wallet

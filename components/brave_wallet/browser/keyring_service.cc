@@ -534,7 +534,7 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
     } else {
       // We have no way to check if new mnemonic is same as current mnemonic so
       // we need to clear all prefs for fresh start
-      Reset();
+      Reset(false);
     }
   }
 
@@ -1232,15 +1232,17 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
   std::move(callback).Run(IsLocked());
 }
 
-void KeyringService::Reset() {
+void KeyringService::Reset(bool notify_observer) {
   StopAutoLockTimer();
   encryptor_.reset();
   default_keyring_.reset();
 
   ClearKeyringServiceProfilePrefs(prefs_);
 
-  for (const auto& observer : observers_) {
-    observer->KeyringReset();
+  if (notify_observer) {
+    for (const auto& observer : observers_) {
+      observer->KeyringReset();
+    }
   }
 }
 

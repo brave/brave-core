@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -70,6 +72,8 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
   return new BraveWalletService(
       BraveWalletServiceDelegate::Create(context),
       KeyringServiceFactory::GetServiceForContext(context),
+      JsonRpcServiceFactory::GetServiceForContext(context),
+      EthTxServiceFactory::GetServiceForContext(context),
       user_prefs::UserPrefs::Get(context));
 }
 

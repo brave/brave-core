@@ -5,8 +5,9 @@
 
 #include "base/android/jni_android.h"
 #include "base/logging.h"
-#include "brave/browser/brave_wallet/brave_wallet_reset.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/build/android/jni_headers/WalletNativeUtils_jni.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
@@ -17,7 +18,10 @@ static void JNI_WalletNativeUtils_ResetWallet(JNIEnv* env) {
   auto* profile = ProfileManager::GetActiveUserProfile();
   DCHECK(profile);
 
-  brave_wallet::ResetWallet(profile);
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  if (brave_wallet_service)
+    brave_wallet_service->Reset();
 }
 
 }  // namespace android

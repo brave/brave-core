@@ -9,6 +9,8 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -48,9 +50,12 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto* keyring_service =
       KeyringServiceFactory::GetServiceForState(browser_state);
-  std::unique_ptr<BraveWalletService> service(
-      new BraveWalletService(std::make_unique<BraveWalletServiceDelegate>(),
-                             keyring_service, browser_state->GetPrefs()));
+  auto* json_rpc_service =
+      JsonRpcServiceFactory::GetServiceForState(browser_state);
+  auto* eth_tx_service = EthTxServiceFactory::GetServiceForState(browser_state);
+  std::unique_ptr<BraveWalletService> service(new BraveWalletService(
+      std::make_unique<BraveWalletServiceDelegate>(), keyring_service,
+      json_rpc_service, eth_tx_service, browser_state->GetPrefs()));
   return service;
 }
 

@@ -145,7 +145,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void GetKeyringInfo(const std::string& keyring_id,
                       GetKeyringInfoCallback callback) override;
-  void Reset() override;
   void SetDefaultKeyringHardwareAccountName(
       const std::string& address,
       const std::string& name,
@@ -159,6 +158,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& name,
       SetDefaultKeyringImportedAccountNameCallback callback) override;
 
+  void Reset(bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id);
   bool IsHardwareAccount(const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,

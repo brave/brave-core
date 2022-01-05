@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/singleton.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -27,6 +28,7 @@ class EthTxServiceFactory : public BrowserStateKeyedServiceFactory {
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojo::PendingRemote<mojom::EthTxService> GetForBrowserState(
       ChromeBrowserState* browser_state);
+  static EthTxService* GetServiceForState(ChromeBrowserState* browser_state);
 
   static EthTxServiceFactory* GetInstance();
 
