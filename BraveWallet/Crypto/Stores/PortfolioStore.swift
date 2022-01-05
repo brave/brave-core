@@ -107,16 +107,12 @@ public class PortfolioStore: ObservableObject {
     group.notify(queue: .main, execute: completion)
   }
   
-  func fetchPricesAndHistory(_ completion: @escaping () -> Void) {
-    let group = DispatchGroup()
-    // Fill prices for each asset
-    group.enter()
+  func fetchPrices(_ completion: @escaping () -> Void) {
     assetRatioController.price(
       userVisibleAssets.map { $0.token.symbol.lowercased() },
       toAssets: ["usd"],
       timeframe: timeframe
     ) { [weak self] success, assetPrices in
-      defer { group.leave() }
       // `success` only refers to finding _all_ prices and if even 1 of N prices
       // fail to fetch it will be false
       guard let self = self else { return }
@@ -127,8 +123,19 @@ public class PortfolioStore: ObservableObject {
           self.userVisibleAssets[index].price = assetPrice.price
         }
       }
+      completion()
     }
-    for asset in userVisibleAssets {
+  }
+  
+  func fetchHistoryForNonZeroBalances(_ completion: @escaping () -> Void) {
+    let assets = userVisibleAssets.filter { $0.decimalBalance > 0 }
+    if assets.isEmpty {
+      completion()
+      return
+    }
+    let group = DispatchGroup()
+    // Fill prices for each asset
+    for asset in assets {
       group.enter()
       assetRatioController.priceHistory(
         asset.token.symbol,
@@ -159,11 +166,13 @@ public class PortfolioStore: ObservableObject {
         group.enter()
         keyringController.defaultKeyringInfo { keyring in
           fetchBalances(accounts: keyring.accountInfos) {
-            group.leave()
+            fetchHistoryForNonZeroBalances {
+              group.leave()
+            }
           }
         }
         group.enter()
-        fetchPricesAndHistory {
+        fetchPrices {
           group.leave()
         }
         group.notify(queue: .main) {
