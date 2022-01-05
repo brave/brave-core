@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Tiếp theo</translation>
 <translation id="7954950242989581218">Duyệt web an toàn</translation>
 <translation id="2188651882929633653">Brave Shields chặn những thứ nguy hại luôn tìm cách theo dõi bạn trên web — bao gồm hầu hết các quảng cáo. Hãy đặt Shields là “down” nếu một trang’ có vẻ như không hoạt động. Brave sử dụng <ph name="BEGIN_LINK_P3A"/>completely private product analytics<ph name="END_LINK_P3A"/> để ước tính việc sử dụng tổng thể của một số tính năng nhất định. Bạn có thể tắt chức năng này trong <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Quảng cáo</translation>
-<translation id="6769094341455418696">Kiếm [[currency]] bằng cách xem Brave Ads. Các quảng cáo được hiển thị dựa trên sở thích của bạn, được suy luận từ hành vi duyệt web của bạn. Không có dữ liệu cá nhân hay lịch sử duyệt web nào rời khỏi trình duyệt của bạn.</translation>
+<translation id="4851215387785619212">Quảng cáo Riêng tư Brave</translation>
+<translation id="3114984266384096064">Kiếm [[currency]] bằng cách xem Quảng cáo Riêng tư Brave. Các quảng cáo được hiển thị dựa trên sở thích của bạn, được suy luận từ hành vi duyệt web của bạn. Không có dữ liệu cá nhân hay lịch sử duyệt web nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
 <translation id="3742599705619405136">Một cách tự động để hỗ trợ các nhà xuất bản và người sáng tạo nội dung. Đặt chế độ thanh toán hàng tháng và lướt xem bình thường. Các trang web đã được Brave xác thực mà bạn truy cập sẽ tự động nhận được đóng góp của bạn, dựa trên mức độ chú ý của bạn mà Brave đo được.</translation>
 <translation id="3325399124634342726">Tiền kiếm được hiện tại trong tháng này (ước tính)</translation>
@@ -316,6 +316,7 @@
 <translation id="5323604113525002127">Chúng tôi hiển thị [[numberOfLines]] dòng cuối cùng của nhật ký. Nếu bạn muốn toàn bộ nhật ký, bạn có thể tải xuống ở trên.</translation>
 <translation id="7168491065836975228">Phần thưởng nội bộ</translation>
 <translation id="758790787422117549">ID cá nhân</translation>
+<translation id="1919345977826869612">Quảng cáo</translation>
 <translation id="3671566813999349838">Số lượng</translation>
 <translation id="751223241692981112">Đã nhận vào</translation>
 <translation id="3913089081619091801">ID Nhận</translation>
@@ -591,8 +592,7 @@
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
-<translation id="2383784987664887340">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
-<translation id="2237374144728570574">* APY của Gemini Earn tính đến ngày 15 tháng 9 năm 2021</translation>
+<translation id="3066983737886188034">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được tiền lãi trên BAT của bạn. Hãy xác minh và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
@@ -778,6 +778,8 @@
 <translation id="2659764755126740206">Đến tài khoản <ph name="PROVIDER"/> của tôi</translation>
 <translation id="2389181429986654814">Truy cập <ph name="PROVIDER"/> để hoàn thành xác minh</translation>
 <translation id="7793632266654336758">Vui lòng hoàn thành xác minh danh tính để bắt đầu nhận phần thưởng.</translation>
+<translation id="2394961582378297792">Đã đăng xuất</translation>
+<translation id="5511950864417840431">Đăng xuất khỏi <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Thu nhập ước tính</translation>
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
 <translation id="5894023780213944778">Ví của tôi</translation>
@@ -878,12 +880,12 @@
 <translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
+<translation id="2704606927547763573">Đã sao chép</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
 <translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
-<translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ, mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy lưu giữ cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="5024543173656851695">Tôi hiểu rằng nếu tôi mất các từ khôi phục, tôi sẽ không thể truy cập vào ví tiền điện tử của mình.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="5077747669435508720">Ghi lại hoặc sao chép những từ này theo thứ tự chính xác được hiển thị bên dưới và lưu chúng ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
@@ -945,6 +947,7 @@
 <translation id="6151024411349343484">Hãy thử chuyển đường dẫn HD (ở trên) nếu bạn không tìm được tài khoản mà bạn đang tìm kiếm.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Cũ (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Không tìm thấy kết quả nào.</translation>
 <translation id="5149944858285555235">Lỗi không xác định, vui lòng kết nối lại ví phần cứng của bạn và thử lại.</translation>
 <translation id="4522570452068850558">Thông tin chi tiết</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -1025,6 +1028,8 @@
 <translation id="4709524402122994378">transactions</translation>
 <translation id="523862956770478816">Quyền trang</translation>
 <translation id="1575262454612599115">Đã kết nối <ph name="NUMBER_OF_ACCOUNTS"/> tài khoản</translation>
+<translation id="4305817255990598646">Chuyển đổi</translation>
+<translation id="3890989020011724401">Tài khoản mới</translation>
 <translation id="4460220693591349571">LOẠI CHỨC NĂNG</translation>
 <translation id="838933475572692615">DỮ LIỆU HEX</translation>
 <translation id="2240831799756994975">BYTE</translation>
@@ -1090,6 +1095,8 @@
 <translation id="6825399159373612149">Tên miền <ph name="DOMAIN_NAME"/> chưa được đăng ký</translation>
 <translation id="8971278306757462297">Địa chỉ nhận là địa chỉ của riêng bạn</translation>
 <translation id="3506416339268164412">Địa chỉ nhận là địa chỉ hợp đồng của một token</translation>
+<translation id="5517732667776806421">Thiếu thông tin tổng kiểm</translation>
+<translation id="4006711930669471508">Thông tin tổng kiểm không hợp lệ</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
 <translation id="1118876217803190221">Số dư không đủ</translation>
@@ -1111,6 +1118,7 @@
 <translation id="1119447706177454957">Lỗi nội bộ</translation>
 <translation id="3327639091470204775">Không thể kết nối đến cầu Trezor</translation>
 <translation id="6672377693827764095">Lỗi nội bộ, không thể lấy tài khoản</translation>
+<translation id="6889920539620318793">Đặt làm hoạt động</translation>
 <translation id="8933250418452564886">Không tìm được giao dịch phần cứng, hãy thử lại</translation>
 <translation id="5999974802900788338">Đã nhận lỗi từ thiết bị phần cứng, có lẽ bạn cần xác nhận giao dịch trên thiết bị của bạn</translation>
 <translation id="8523768065044261559">Lỗi khi xử lý giao dịch, hãy thử lại</translation>
@@ -1118,6 +1126,8 @@
 <translation id="8273603707418703324">Lỗi khi ký tin nhắn, đã yêu cầu móc khóa không xác định, hãy thử lại</translation>
 <translation id="5265455943786954050">Lệnh Trezor đang được thực hiện</translation>
 <translation id="7017116822583380542">Cầu Trezor chưa sẵn sàng</translation>
+<translation id="3378339846292573874">Thêm token được đề xuất</translation>
+<translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1126,6 +1136,30 @@
 <translation id="6951743416068151209">URI Proxy Tor</translation>
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
+<translation id="8458987127502506209">Bật Lá chắn Brave</translation>
+<translation id="640898327002833127">Lá chắn Brave <ph name="LINK_BEFORE"/>BẬT<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Nếu trang này có vẻ bị hỏng, hãy thử hạ Lá chắn xuống. Lưu ý: điều này có thể làm giảm khả năng bảo vệ sự riêng tư của Brave.</translation>
+<translation id="8377155647357436161">Đã chặn trình theo dõi, quảng cáo và nhiều hơn nữa <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Kiểm soát cao cấp</translation>
+<translation id="1299672573512347813">Những cài đặt này ảnh hưởng đến khả năng tương thích web trên trang này.</translation>
+<translation id="9204041448536398473">Cài đặt Lá chắn toàn cục</translation>
+<translation id="7637771346619326580">Thay đổi cài đặt mặc định Lá chắn toàn cục</translation>
+<translation id="3520486481604057261">Tùy biến danh sách chặn quảng cáo</translation>
+<translation id="3146531623184244174">Kết nối đã được nâng cấp lên HPPTS</translation>
+<translation id="131231380815754440">Bật HTTPS</translation>
+<translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
+<translation id="3246600097575692802">Bật mã lệnh bị chặn</translation>
+<translation id="3603525299146223354">Trình theo dõi &amp; quảng cáo</translation>
+<translation id="1146309636943354181">Trình theo dõi và quảng cáo đã bị chặn (tiêu chuẩn)</translation>
+<translation id="5973258875089964805">Trình theo dõi và quảng cáo đã bị chặn (tích cực)</translation>
+<translation id="5544888475837817215">Cho phép tất cả trình theo dõi và quảng cáo</translation>
+<translation id="6203697265754637264">Đã chặn cookie trên mọi website</translation>
+<translation id="4627427111733173920">Đã chặn cookie</translation>
+<translation id="7855168553463825937">Tất cả cookie bị chặn</translation>
+<translation id="8366221601425141146">Đã chặn tính năng tạo dấu vân tay</translation>
+<translation id="5582686930349810484">Vân tay bị chặn (tiêu chuẩn)</translation>
+<translation id="6696441392507885865">Lấy dấu vân tay bị chặn (nghiêm ngặt, các trang có thể bị hỏng)</translation>
+<translation id="5882733945883311404">Cho phép tất cả lấy dấu vân tay</translation>
 <translation id="1742469581923031760">Đang kết nối…</translation>
 <translation id="1287487756047817908">Đang ngắt kết nối…</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>

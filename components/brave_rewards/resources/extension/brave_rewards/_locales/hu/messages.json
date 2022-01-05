@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Nincs kapcsolat",
+    "message": "Kijelentkezett",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave Jutalmak kapcsolat bontása",
-    "description": ""
+    "message": "Kijelentkezés innen: $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Becsült bevételek",

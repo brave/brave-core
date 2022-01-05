@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Veza je prekinuta",
+    "message": "Odjavljeno",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Prekinite vezu sa Brave Nagradama",
-    "description": ""
+    "message": "Odjavite se sa $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Procenjena zarada",

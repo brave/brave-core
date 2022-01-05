@@ -170,8 +170,13 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Déconnexion des primes Brave",
-    "description": ""
+    "message": "Se déconnecter de $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Revenus estimés",

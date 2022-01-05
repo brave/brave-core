@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Sense connexió",
+    "message": "Sessió tancada",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Desconnectar de Gratificacions Brave",
-    "description": ""
+    "message": "Tanca la sessió de $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Guanys estimats",

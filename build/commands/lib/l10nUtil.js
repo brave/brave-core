@@ -90,7 +90,10 @@ function addGrd(chromiumPath, bravePath, exclude = new Set()) {
       if (exclude.has(grdp)) {
         continue
       }
-      mapping[path.resolve(path.join(chromiumDir, grdp))] = path.resolve(path.join(braveDir, grdp))
+      const chromiumGrdpPath = path.resolve(path.join(chromiumDir, grdp))
+      const braveGrdpPath = path.resolve(path.join(braveDir, grdp))
+      // grdp files can have their own grdp parts too
+      mapping = { ...mapping, ...addGrd(chromiumGrdpPath, braveGrdpPath, exclude) }
     }
     if (verboseLogFindGrd)
       console.log("  - Added " + (Object.keys(mapping).length - 1) + " GRDP.")

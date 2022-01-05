@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "연결 해제됨",
+    "message": "로그아웃됨",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave Rewards에서 접속 해제됨.",
-    "description": ""
+    "message": "$provider$에서 로그아웃",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "예상 수익",

@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave News عبارة عن خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة وغير مسماة ومطابقة لجهازك.</translation>
 <translation id="4541978218358617681">إعلان</translation>
 <translation id="1765217911817124376">تشغيل أخبار Brave</translation>
+<translation id="6527303717912515753">مشاركة</translation>
 <translation id="1654539412343893324">اعرف المزيد عن بياناتك</translation>
 <translation id="2989805286512600854">فتح في علامة تبويب جديدة</translation>
 <translation id="3709782636417497984">فتح في علامة تبويب خاصة جديدة</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">محفظتك</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">دولار أمريكي</translation>
 <translation id="1165667598801520610">إضافة أموال</translation>
 <translation id="8428213095426709021">الإعدادات</translation>
-<translation id="8772672608371898774">ناشر تم التحقق منه لدى Brave</translation>
-<translation id="1397683270551078781">لم يقم بتأكيد حسابه بعد</translation>
+<translation id="6020176662032623904">مُنشِئ مُصدَّق عليه</translation>
+<translation id="2369994359029526515">مُنشِئ غير مُصدَّق عليه</translation>
 <translation id="880893465294676334">لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. ستظل أي مساهمات ترسلها في محفظتك حتى يستكمل هذه العملية.</translation>
 <translation id="8918760045046434238">جارٍ إرسال نصيحة...</translation>
 <translation id="1978261665418056203">لا توجد أنشطة بعد في هذا
@@ -272,11 +273,12 @@
 <translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
 <translation id="1554282356558968486">تتوفر خدمتنا للمحافظ من قبل</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">شركة Bitflyer</translation>
 <translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
-<translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
+<translation id="3200197118442451932">لا تقوم شركة Brave Software Inc. بمعالجة المعلومات الشخصية التي تقدمها إلى <ph name="WALLET_PROVIDER"/>أو تخزينها أو الوصول إليها، عندما تقوم بإنشاء حساب بواسطتها.</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="2193391216824305230">محفظة المستخدم</translation>
-<translation id="6585020831163574892">انتقل إلى حساب Uphold الخاص بك</translation>
+<translation id="1665118090708049096">الانتقال إلى <ph name="WALLET_PROVIDER"/>حسابي</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="6239274080752256452">سحب رصيد</translation>
 <translation id="8874184842967597500">غير متصل</translation>
@@ -285,10 +287,6 @@
 <translation id="5358719431303818601">لم يتم التحقق من قطع الاتصال</translation>
 <translation id="4241449868720191203">تم التحقق من قطع الاتصال</translation>
 <translation id="3248185426436836442">معلَّق</translation>
-<translation id="8108013093558639183">BAT غير مدعوم في منطقتك حالياً وذلك بناءً على الموقع الذي تم فتح حسابك فيه. يرجى إعادة التحقق من توفره لاحقاً.</translation>
-<translation id="4190454391025419535">المنطقة غير مدعومة</translation>
-<translation id="6830703472632069884">طرأت مشكلة أثناء التحقق من محفظتك. يرجى إعادة المحاولة في وقتٍ لاحق.</translation>
-<translation id="3512533646933434345">خطأ في التحقق من المحفظة</translation>
 <translation id="2260513517001048012">ملاحظة: لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. سيستمر متصفحك في محاولة المساهمة حتى يجري التحقق أو حتى مرور 90 يوم.</translation>
 <translation id="4488355059795908907">لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. ستظل أي مساهمات ترسلها في محفظتك حتى يستكمل هذه العملية.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
@@ -419,16 +417,45 @@
 <translation id="1972589975368876259">تعديل الحزمة</translation>
 <translation id="2490330380242414851">إزالة الأداة الذكية</translation>
 <translation id="8446884382197647889">مزيد من المعلومات</translation>
+<translation id="7384441892795736634">إعادة تحديث البيانات</translation>
+<translation id="4804818685124855865">قطع الاتصال</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> عنوان الإيداع</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> مذكرة الإيداع</translation>
+<translation id="5110244215256675209">اشتر عملة رقمية مشفرة</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">اشترِ <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">متاح <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">معاينة التحويل</translation>
 <translation id="2882813124794301799">حزمة الأدوات الذكية</translation>
 <translation id="13296465911709339">تم نسخ النص الخاص بك إلى الحافظة.</translation>
 <translation id="2735834606413553397">تم نسخ العنوان العام إلى الحافظة.</translation>
+<translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="2977461003134694205">إحصائيات الخصوصية</translation>
 <translation id="4643117005422448078">المواقع الأولى</translation>
+<translation id="6966052266404721769">تبادل العملات المشفرة</translation>
 <translation id="1392658226187691544">برامج التتبع &amp; والإعلانات المحظورة والنطاق الترددي المحفوظ وتقديرات الوقت المحفوظة.</translation>
 <translation id="74417429503469271">افتح أفضل المواقع التي تزورها بشكل متكرر.</translation>
+<translation id="2956070106555335453">ملخص</translation>
+<translation id="1366855498335432549">إيداع</translation>
+<translation id="1301340234286078471">تحويل</translation>
 <translation id="223536150967420869">شراء</translation>
+<translation id="1714829281959608206">تمكين اتصال تبادل العملات المشفرة لرؤية رصيد حساب تبادل العملات المشفرة ومقايضة العملات المشفرة</translation>
+<translation id="4584930231524505442">أريد تحويل ...</translation>
+<translation id="5749014321384313843">أريد أن أنفق ...</translation>
 <translation id="8688672835843460752">متوفر</translation>
+<translation id="2480674848181564169">لا يوجد رصيد كافي للتحويل</translation>
+<translation id="2215334405220411393">الحد الأدنى للمبلغ المراد تحويله هو <ph name="COIN_BALANCE"/><ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">غير قادر على الاتصال</translation>
+<translation id="7742417737698031726">الرسوم</translation>
+<translation id="2122225204180056042">سوف تحصل على</translation>
+<translation id="6432284126416751397">تأكيد التحويل</translation>
 <translation id="5137723827757859599">لا يوجد شيء هنا حتى الآن في أفضل المواقع.</translation>
+<translation id="3891414008432200754">السعر</translation>
+<translation id="3733576242118819803">تأكيد (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">فشل التحويل. يُرجى المحاولة مرة أخرى.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">اكسب العملات الرمزية &amp; وأعطها مرة أخرى</translation>
 <translation id="244362569344671266">اربح العملات الرمزية من خلال عرض إعلانات Brave الخاصة وادعم منشئي المحتوى تلقائياً.</translation>
 <translation id="631124996535890460">بالمتابعة، فإنك توافق على <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -472,6 +499,8 @@
 <translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
 <translation id="7073631403665023390">انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.</translation>
 <translation id="626339649633171286">هل ترغب في معرفة المزيد عن Brave Rewards؟<ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
 <translation id="7889432931837317731">الفتح تلقائياً عندما يكون ذلك ممكناً</translation>
 <translation id="8967385052772844086">عرض تقرير الخصوصية الكامل</translation>
 <translation id="6864343534748973390">الأكثر شهرة</translation>
@@ -515,7 +544,7 @@
 <translation id="3171931580569169744">تمكين معلومات علامات التبويب</translation>
 <translation id="5587305863196367357">يسمح لك اعتماد المحفظة بإدارة أموالك بسهولة وإضافة الأموال وسحبها</translation>
 <translation id="5760671211380791582">ليس لديك ما يكفي من BAT.</translation>
-<translation id="6960458596933484861">يتعين أن يكون لديك 15 BAT كحد أدنى لإنشاء محفظة Uphold معتمدة. يُرجى إعادة المحاولة لاحقًا.</translation>
+<translation id="442469478596827903">يتعين أن يكون لديك عملتا BAT كحد أدنى لإنشاء محفظة Uphold معتمدة. يُرجى إعادة المحاولة لاحقًا.</translation>
 <translation id="4389085954549744469">إذا كان لديك بالفعل حساب Uphold مُتحقق منه، <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">يمكنك المتابعة إلى تسجيل الدخول</translation>
 <translation id="1483493594462132177">إرسال</translation>
@@ -758,7 +787,7 @@
 <translation id="5891811606602061966">تعذّر توريد الحساب. يُرجى المحاولة مرة أخرى.</translation>
 <translation id="7033470144757208254">يستخدم Brave بروتوكول 0x كمجمع DEX.</translation>
 <translation id="5061574358754621254">بيانات أسعار مدعومة من CoinGecko</translation>
-<translation id="4626407663177532837">يتضمن عرض الأسعار 0.875% كرسوم لـ Brave.</translation>
+<translation id="4626407663177532837">يتضمن عرض الأسعار 0.875٪ كرسوم لـ Brave.</translation>
 <translation id="8574289650879708853">إضافة أصل مخصص</translation>
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="6600400596821238377">اسم الرمز المميز</translation>
@@ -770,4 +799,19 @@
 <translation id="8971278306757462297">عنوان الاستلام هو العنوان الخاص بك</translation>
 <translation id="749944179568745958">هذا ليس عنوان إيثريوم (ETH) صالحًا</translation>
 <translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
+<translation id="1543259266592091784">إضافة أموال</translation>
+<translation id="3494964159182650590">ملخص المكافآت</translation>
+<translation id="7470079236088529568">تم تحصيل جميع المنح المستحقة</translation>
+<translation id="590733288489975971">مكافآت من الإعلانات</translation>
+<translation id="207268487070188114">إكرامية لمرة وحيدة</translation>
+<translation id="64394831139134288">محفظتي</translation>
+<translation id="8494748383523030337">رصيدك</translation>
+<translation id="7091980679045978090">الأرباح المُقدَّرة</translation>
+<translation id="1346059596910821859">مكافأة</translation>
+<translation id="1549705559752367917">إرسال المساهمة</translation>
+<translation id="6727102863431372879">تعيين</translation>
+<translation id="381822214767083050">المساهمة الشهرية</translation>
+<translation id="8845154268466251503">صيغة BAT</translation>
+<translation id="7732576862074737148">≈<ph name="VALUE"/>دولار أمريكي</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> لعملة BAT</translation>
 </translationbundle>

@@ -34,6 +34,7 @@
 <translation id="7266075701303521777">Brave 新闻有广告支持，为您的设备匹配完全私密的匿名广告。</translation>
 <translation id="4541978218358617681">广告</translation>
 <translation id="1765217911817124376">开启 Brave 新闻</translation>
+<translation id="6527303717912515753">分享</translation>
 <translation id="1654539412343893324">了解有关数据的更多信息</translation>
 <translation id="2989805286512600854">在新标签页中打开</translation>
 <translation id="3709782636417497984">正在新的无痕标签页中打开</translation>
@@ -134,12 +135,12 @@
 <translation id="3780605330121608425">您的钱包</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave 新闻</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> 美元</translation>
 <translation id="3826081199286264109">美元</translation>
 <translation id="1165667598801520610">添加资金</translation>
 <translation id="8428213095426709021">设置</translation>
-<translation id="8772672608371898774">Brave 经验证的发布者</translation>
-<translation id="1397683270551078781">尚未验证</translation>
+<translation id="6020176662032623904">已验证的创建者</translation>
+<translation id="2369994359029526515">未验证的创建者</translation>
 <translation id="8918760045046434238">发送酬谢费...</translation>
 <translation id="1978261665418056203">本月尚无任何
 活动...</translation>
@@ -276,11 +277,12 @@
 <translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
 <translation id="1554282356558968486">我们的钱包服务提供商：</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
-<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
+<translation id="3200197118442451932">当您在供应商那里设立账户时，Brave Software Inc. 不会处理、存储或访问您提供给 <ph name="WALLET_PROVIDER"/> 的任何个人信息。</translation>
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="2193391216824305230">用户钱包</translation>
-<translation id="6585020831163574892">转到您的 Uphold 帐户</translation>
+<translation id="1665118090708049096">转至我的 <ph name="WALLET_PROVIDER"/> 账户</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="6239274080752256452">资金提现</translation>
 <translation id="8874184842967597500">未连接</translation>
@@ -289,10 +291,6 @@
 <translation id="5358719431303818601">未验证断开连接</translation>
 <translation id="4241449868720191203">已验证断开连接</translation>
 <translation id="3248185426436836442">等待审批</translation>
-<translation id="8108013093558639183">根据您帐户的开户位置，您所在的地区当前不支持 BAT。稍后再查看可用性。</translation>
-<translation id="4190454391025419535">不支持的区域</translation>
-<translation id="6830703472632069884">验证您的钱包时出现问题，请稍后再试。</translation>
-<translation id="3512533646933434345">钱包验证错误</translation>
 <translation id="2260513517001048012">注意：Brave 验证的这个创建者还没有配置其帐户来接收来自 Brave 用户的捐赠。您的浏览器将一直尝试捐赠，直到他们验证，或直到 90 天已经过去。</translation>
 <translation id="4488355059795908907">Brave 验证的此创建者尚未将其帐户配置为接收 Brave  用户的捐赠。您发送的任何小费将保留在您的钱包中，直到他们完成此过程。</translation>
 <translation id="2495032782748793764">Brave 默认</translation>
@@ -423,16 +421,45 @@
 <translation id="1972589975368876259">编辑堆栈</translation>
 <translation id="2490330380242414851">移除小部件</translation>
 <translation id="8446884382197647889">详细了解</translation>
+<translation id="7384441892795736634">刷新数据</translation>
+<translation id="4804818685124855865">断开连接</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
+<translation id="5110244215256675209">购买 Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">预览兑换</translation>
 <translation id="2882813124794301799">小部件堆栈</translation>
 <translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
 <translation id="2735834606413553397">公共地址已复制到剪贴板。</translation>
+<translation id="7144878232160441200">重试</translation>
 <translation id="2977461003134694205">隐私统计数据</translation>
 <translation id="4643117005422448078">热门网站</translation>
+<translation id="6966052266404721769">Binance</translation>
 <translation id="1392658226187691544">追踪器和广告已被屏蔽，所节省带宽和所节省时间的估算值。</translation>
 <translation id="74417429503469271">打开您经常访问的热门网站。</translation>
+<translation id="2956070106555335453">摘要</translation>
+<translation id="1366855498335432549">存入</translation>
+<translation id="1301340234286078471">兑换</translation>
 <translation id="223536150967420869">购买</translation>
+<translation id="1714829281959608206">启用 Binance 连接以查看 Binance 帐户余额并交易加密货币。</translation>
+<translation id="4584930231524505442">我想兑换...</translation>
+<translation id="5749014321384313843">我想消费...</translation>
 <translation id="8688672835843460752">可用</translation>
+<translation id="2480674848181564169">余额不足，无法转换</translation>
+<translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">无法连接</translation>
+<translation id="7742417737698031726">费用</translation>
+<translation id="2122225204180056042">你会收到</translation>
+<translation id="6432284126416751397">确认兑换</translation>
 <translation id="5137723827757859599">热门网站上还没有任何内容。</translation>
+<translation id="3891414008432200754">价格</translation>
+<translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">转换失败。请重试。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">赚取代币和回报</translation>
 <translation id="244362569344671266">通过查看 Brave Private Ads 赚取代币并自动支持内容创作者。</translation>
 <translation id="631124996535890460">继续进行即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>.</translation>
@@ -476,6 +503,8 @@
 <translation id="3415016869273103668">你现在可以开始免费通话</translation>
 <translation id="7073631403665023390">单击或轻按屏幕上的任何地方，继续使用 Brave 通话。</translation>
 <translation id="626339649633171286">想要了解 Brave 奖励更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
+<translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">请检查您的网络连接。</translation>
 <translation id="7889432931837317731">可能时自动打开</translation>
 <translation id="8967385052772844086">查看完整的隐私报告</translation>
 <translation id="6864343534748973390">最受欢迎的</translation>
@@ -519,7 +548,7 @@
 <translation id="3171931580569169744">启用标签组</translation>
 <translation id="5587305863196367357">验证钱包让您能够轻松充值和提现</translation>
 <translation id="5760671211380791582">您的 BAT 不足。</translation>
-<translation id="6960458596933484861">您需要至少有 15 个 BAT 才能创建验证过的 Uphold 钱包。请稍后重试。</translation>
+<translation id="442469478596827903">您需要至少有 2 个 BAT 才能创建验证过的 Uphold 钱包。请稍后重试。</translation>
 <translation id="4389085954549744469">如果您已经有了验证过的 Uphold 账户，请<ph name="CONTINUE_TO_LOGIN"/>。</translation>
 <translation id="6146966915297143881">继续登录</translation>
 <translation id="1483493594462132177">发送</translation>
@@ -774,4 +803,19 @@
 <translation id="8971278306757462297">接收地址是您自己的地址</translation>
 <translation id="749944179568745958">不是有效的 ETH 地址</translation>
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
+<translation id="1543259266592091784">添加资金</translation>
+<translation id="3494964159182650590">奖励摘要</translation>
+<translation id="7470079236088529568">已领取的补助总额</translation>
+<translation id="590733288489975971">广告奖励</translation>
+<translation id="207268487070188114">一次性赏金</translation>
+<translation id="64394831139134288">我的钱包</translation>
+<translation id="8494748383523030337">您的余额</translation>
+<translation id="7091980679045978090">预估收益</translation>
+<translation id="1346059596910821859">打赏</translation>
+<translation id="1549705559752367917">发送赏金</translation>
+<translation id="6727102863431372879">设定</translation>
+<translation id="381822214767083050">每月捐款</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

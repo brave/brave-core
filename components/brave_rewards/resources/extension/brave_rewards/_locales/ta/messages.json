@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Disconnected",
+    "message": "Logged out",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "பிரேவ் வெகுமதிகளிலிருந்து இணைப்பை துண்டி",
-    "description": ""
+    "message": "Log out from $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Estimated Earnings",
