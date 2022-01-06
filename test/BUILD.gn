@@ -619,6 +619,7 @@ if (!is_android) {
       "//brave/browser/brave_shields/brave_shields_web_contents_observer_browsertest.cc",
       "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
       "//brave/browser/brave_shields/domain_block_page_browsertest.cc",
+      "//brave/browser/brave_shields/websockets_pool_limit_browsertest.cc",
       "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
       "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
       "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
