@@ -347,6 +347,11 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
+    // ICF currently (cr98) causes a barrage of linker warning and significantly
+    // slows down the build. Tracked in https://crbug.com/1279639
+    if (!this.isOfficialBuild()) {
+      args.use_icf = false
+    }
     if (this.use_goma && this.gomaServerHost) {
       args.use_system_xcode = false
     }
