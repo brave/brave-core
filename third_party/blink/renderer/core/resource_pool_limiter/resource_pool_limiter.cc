@@ -14,8 +14,6 @@
 
 namespace blink {
 
-using ResourceType = ResourcePoolLimiter::ResourceType;
-
 namespace {
 
 const SecurityOrigin* GetTopFrameOrContextSecurityOrigin(
@@ -37,7 +35,7 @@ const SecurityOrigin* GetTopFrameOrContextSecurityOrigin(
 }
 
 String GetResourceIdInUse(const SecurityOrigin* origin,
-                          ResourceType resource_type) {
+                          ResourcePoolLimiter::ResourceType resource_type) {
   DCHECK(origin);
   StringBuilder string_builder;
   string_builder.AppendNumber(static_cast<int>(resource_type));
@@ -48,9 +46,9 @@ String GetResourceIdInUse(const SecurityOrigin* origin,
   return string_builder.ToString();
 }
 
-int GetResourceLimit(ResourceType resource_type) {
+int GetResourceLimit(ResourcePoolLimiter::ResourceType resource_type) {
   switch (resource_type) {
-    case ResourceType::kWebSocket:
+    case ResourcePoolLimiter::ResourceType::kWebSocket:
       return 10;
   }
   NOTREACHED();
@@ -80,8 +78,9 @@ ResourcePoolLimiter::ResourcePoolLimiter() = default;
 ResourcePoolLimiter::~ResourcePoolLimiter() = default;
 
 std::unique_ptr<ResourcePoolLimiter::ResourceInUseTracker>
-ResourcePoolLimiter::IssueResourceInUseTracker(ExecutionContext* context,
-                                               ResourceType resource_type) {
+ResourcePoolLimiter::IssueResourceInUseTracker(
+    ExecutionContext* context,
+    ResourcePoolLimiter::ResourceType resource_type) {
   DCHECK(context);
   String resource_id = GetResourceIdInUse(
       GetTopFrameOrContextSecurityOrigin(context), resource_type);
