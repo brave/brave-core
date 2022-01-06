@@ -134,7 +134,7 @@ const AddAccountModal = (props: Props) => {
     }
   }
 
-  const onChangeTab = (id: AddAccountNavTypes) => {
+  const onSelectTab = (id: AddAccountNavTypes) => {
     if (id === 'create') {
       setAccountName(suggestedAccountName)
     } else {
@@ -180,7 +180,7 @@ const AddAccountModal = (props: Props) => {
     <PopupModal title={title} onClose={onClickClose}>
       <TopTabNav
         tabList={AddAccountNavOptions()}
-        onSubmit={onChangeTab}
+        onSelectTab={onSelectTab}
         selectedTab={tab}
       />
 

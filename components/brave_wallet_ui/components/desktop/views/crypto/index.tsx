@@ -148,10 +148,11 @@ const CryptoView = (props: Props) => {
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   let { category, id } = useParams<ParamsType>()
 
-  const tabTo = (path: TopTabNavTypes) => {
+  const onSelectTab = (path: TopTabNavTypes) => {
     history.push(`/crypto/${path}`)
   }
 
@@ -232,16 +233,38 @@ const CryptoView = (props: Props) => {
     }
   }
 
+  const onClickSettings = () => {
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
+  const onClickShowMore = () => {
+    setShowMore(true)
+  }
+
+  const onClickHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onClickHideMore}>
       {!hideNav &&
         <>
           <TopTabNav
-            tabList={TopNavOptions()}
             selectedTab={category}
-            onSubmit={tabTo}
+            showMore={showMore}
             hasMoreButtons={true}
-            onLockWallet={onLockWallet}
+            onSelectTab={onSelectTab}
+            tabList={TopNavOptions()}
+            onClickLock={onLockWallet}
+            onClickBackup={onShowBackup}
+            onClickSettings={onClickSettings}
+            onClickMore={onClickShowMore}
           />
           {(defaultWallet !== BraveWallet.DefaultWallet.BraveWallet &&
             (defaultWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || (defaultWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
@@ -311,7 +334,6 @@ const CryptoView = (props: Props) => {
           defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
-          onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
           onUpdateAccountName={onUpdateAccountName}
           onRemoveAccount={onRemoveAccount}

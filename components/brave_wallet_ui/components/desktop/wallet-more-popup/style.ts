@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { SettingsAdvancedIcon, OpenNewIcon } from 'brave-ui/components/icons'
-import { LockIconD } from '../../../assets/svg-icons/nav-button-icons'
+import { LockIconD, SafeIcon } from '../../../assets/svg-icons/nav-button-icons'
 import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -69,4 +69,14 @@ export const LockIcon = styled.div`
   background-color: ${(p) => p.theme.color.interactive07};
   -webkit-mask-image: url(${LockIconD});
   mask-image: url(${LockIconD});
+`
+
+export const BackupIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-right: 18px;
+  margin-left: 14px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${SafeIcon});
+  mask-image: url(${SafeIcon});
 `

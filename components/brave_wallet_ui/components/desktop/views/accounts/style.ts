@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { SettingsAdvancedIcon, EditOIcon } from 'brave-ui/components/icons'
-import { SafeIcon } from '../../../../assets/svg-icons/nav-button-icons'
+import { EditOIcon } from 'brave-ui/components/icons'
 import QRICON from '../../../../assets/svg-icons/qr-code-icon.svg'
 import { WalletButton } from '../../../shared/style'
 
@@ -83,35 +82,6 @@ export const SubDivider = styled.div`
   background-color: ${(p) => p.theme.color.divider01};
 `
 
-export const ButtonsRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding-right: 20px;
-`
-
-export const BackupButton = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-  padding: 0px;
-  margin-right: 45px;
-`
-
-export const BackupButtonText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-`
-
 export const Button = styled(WalletButton)`
   display: flex;
   align-items: center;
@@ -122,21 +92,6 @@ export const Button = styled(WalletButton)`
   background: none;
   border: none;
   padding: 0px;
-`
-
-export const SettingsIcon = styled(SettingsAdvancedIcon)`
-  width: 20px;
-  height: 20px;
-  color: ${(p) => p.theme.color.interactive07};
-`
-
-export const BackupIcon = styled.div`
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${SafeIcon});
-  mask-image: url(${SafeIcon});
 `
 
 export const TopRow = styled.div`
