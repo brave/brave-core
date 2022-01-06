@@ -131,6 +131,7 @@ function Container (props: Props) {
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
+    accounts,
     selectedAccount,
     props.wallet.fullTokenList,
     props.wallet.userVisibleTokensInfo,
@@ -628,7 +629,7 @@ function Container (props: Props) {
                 onConnectHardwareWallet={onConnectHardwareWallet}
                 onCreateAccount={onCreateAccount}
                 onImportAccount={onImportAccount}
-                onImportFilecoinAccount ={onImportFilecoinAccount}
+                onImportFilecoinAccount={onImportFilecoinAccount}
                 isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
                 onHideAddModal={onHideAddModal}
