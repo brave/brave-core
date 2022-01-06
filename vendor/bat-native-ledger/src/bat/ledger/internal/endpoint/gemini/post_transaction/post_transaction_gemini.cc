@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -131,10 +132,16 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
       return;
     }
 
-    if (transfer_status != "Completed") {
-      BLOG(1, "Transfer not yet completed (status: " << transfer_status << ")");
-      callback(type::Result::RETRY, id);
-      return;
+    // When new contribution flows are enabled we do not need to wait for Gemini
+    // transactions to enter the "Completed" status. Instead, the AC processor
+    // will poll the payment server until the external transaction is completed.
+    if (!ledger_->context().options().enable_experimental_features) {
+      if (transfer_status != "Completed") {
+        BLOG(1,
+             "Transfer not yet completed (status: " << transfer_status << ")");
+        callback(type::Result::RETRY, id);
+        return;
+      }
     }
   }
 

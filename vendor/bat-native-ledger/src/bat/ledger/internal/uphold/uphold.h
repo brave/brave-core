@@ -60,6 +60,11 @@ class Uphold {
                      const std::string& address,
                      client::TransactionCallback callback);
 
+  void TransferFunds(const double amount,
+                     const std::string& address,
+                     const std::string& message,
+                     client::TransactionCallback callback);
+
   void WalletAuthorization(
       const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);

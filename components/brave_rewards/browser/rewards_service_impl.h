@@ -812,6 +812,7 @@ class RewardsServiceImpl : public RewardsService,
   bool reset_states_;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
+  bool enable_experimental_features_ = false;
   int persist_log_level_ = 0;
 
   GetTestResponseCallback test_response_callback_;

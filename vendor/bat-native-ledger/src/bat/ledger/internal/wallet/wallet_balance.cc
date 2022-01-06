@@ -12,6 +12,7 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/contributions/contribution_token_manager.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/option_keys.h"
 
@@ -84,6 +85,25 @@ void WalletBalance::GetUnblindedTokens(
   if (!balance) {
     BLOG(0, "Balance is null");
     callback(type::Result::LEDGER_ERROR, std::move(balance));
+    return;
+  }
+
+  if (ledger_->context().options().enable_experimental_features) {
+    auto shared_balance =
+        std::make_shared<decltype(balance)>(std::move(balance));
+
+    ledger_->context()
+        .Get<ContributionTokenManager>()
+        .GetAvailableTokenBalance(ContributionTokenType::kVG)
+        .Then(
+            callback_adapter_([this, shared_balance, callback](double amount) {
+              auto& balance = *shared_balance;
+              balance->total += amount;
+              balance->wallets.insert(
+                  std::make_pair(constant::kWalletUnBlinded, amount));
+              ExternalWallets(std::move(balance), callback);
+            }));
+
     return;
   }
 

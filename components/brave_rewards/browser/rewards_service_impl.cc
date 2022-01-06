@@ -1545,6 +1545,9 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   if (name == ledger::option::kIsBitflyerRegion)
     return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
 
+  if (name == ledger::option::kEnableExperimentalFeatures)
+    return enable_experimental_features_;
+
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
 
@@ -2451,6 +2454,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       if (lower == "true" || lower == "1") {
         persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
       }
+      continue;
     }
 
     if (name == "countryid") {
@@ -2458,6 +2462,13 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       if (base::StringToInt(value, &country_id)) {
         country_id_ = country_id;
       }
+      continue;
+    }
+
+    if (name == "enable-experimental-features") {
+      std::string lower = base::ToLowerASCII(value);
+      enable_experimental_features_ = lower == "true" || lower == "1";
+      continue;
     }
   }
 }

@@ -10,6 +10,8 @@
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/contributions/contribution_router.h"
+#include "bat/ledger/internal/contributions/contribution_scheduler.h"
 #include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/core/bat_ledger_initializer.h"
 #include "bat/ledger/internal/core/sql_store.h"
@@ -168,6 +170,16 @@ void LedgerImpl::OneTimeTip(const std::string& publisher_key,
                             double amount,
                             ResultCallback callback) {
   WhenReady([this, publisher_key, amount, callback]() {
+    if (context().options().enable_experimental_features) {
+      context()
+          .Get<ContributionRouter>()
+          .SendOrSavePendingContribution(publisher_key, amount)
+          .Then(callback_adapter_([callback](bool success) {
+            callback(CallbackAdapter::ResultCode(success));
+          }));
+      return;
+    }
+
     contribution()->OneTimeTip(publisher_key, amount, callback);
   });
 }
@@ -578,7 +590,13 @@ void LedgerImpl::RefreshPublisher(const std::string& publisher_key,
 }
 
 void LedgerImpl::StartMonthlyContribution() {
-  WhenReady([this]() { contribution()->StartMonthlyContribution(); });
+  WhenReady([this]() {
+    if (context().options().enable_experimental_features) {
+      context().Get<ContributionScheduler>().StartContributions();
+      return;
+    }
+    contribution()->StartMonthlyContribution();
+  });
 }
 
 void LedgerImpl::SaveMediaInfo(

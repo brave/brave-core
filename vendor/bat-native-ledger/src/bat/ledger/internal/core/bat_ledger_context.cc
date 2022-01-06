@@ -29,8 +29,13 @@ BATLedgerContext::Environment GetEnvironment() {
   }
 }
 
-BATLedgerContext::Options GetOptions() {
-  return {.environment = GetEnvironment()};
+BATLedgerContext::Options GetOptions(LedgerClient* ledger_client) {
+  DCHECK(ledger_client);
+  return {.environment = GetEnvironment(),
+          .auto_contribute_allowed =
+              !ledger_client->GetBooleanOption(option::kIsBitflyerRegion),
+          .enable_experimental_features = ledger_client->GetBooleanOption(
+              option::kEnableExperimentalFeatures)};
 }
 
 }  // namespace
@@ -38,12 +43,12 @@ BATLedgerContext::Options GetOptions() {
 BATLedgerContext::BATLedgerContext(LedgerImpl* ledger_impl)
     : ledger_client_(ledger_impl->ledger_client()),
       ledger_impl_(ledger_impl),
-      options_(GetOptions()) {
+      options_(GetOptions(ledger_client_)) {
   DCHECK(ledger_client_);
 }
 
 BATLedgerContext::BATLedgerContext(LedgerClient* ledger_client)
-    : ledger_client_(ledger_client), options_(GetOptions()) {
+    : ledger_client_(ledger_client), options_(GetOptions(ledger_client_)) {
   DCHECK(ledger_client_);
 }
 

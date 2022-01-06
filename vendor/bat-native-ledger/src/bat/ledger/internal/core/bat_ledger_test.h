@@ -65,6 +65,8 @@ class BATLedgerTest : public testing::Test {
     return std::move(*result);
   }
 
+  bool InitializeLedger();
+
  private:
   base::test::TaskEnvironment task_environment_;
   TestLedgerClient client_;

@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "bat/ledger/internal/core/bat_ledger_initializer.h"
+
 namespace ledger {
 
 BATLedgerTest::BATLedgerTest() = default;
@@ -23,6 +25,10 @@ void BATLedgerTest::AddNetworkResultForTesting(const std::string& url,
 void BATLedgerTest::SetLogCallbackForTesting(
     TestLedgerClient::LogCallback callback) {
   client_.SetLogCallbackForTesting(callback);
+}
+
+bool BATLedgerTest::InitializeLedger() {
+  return WaitFor(context().Get<BATLedgerInitializer>().Initialize());
 }
 
 }  // namespace ledger

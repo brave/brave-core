@@ -40,6 +40,7 @@
 #include "bat/ledger/internal/upgrades/upgrade_32.h"
 #include "bat/ledger/internal/upgrades/upgrade_33.h"
 #include "bat/ledger/internal/upgrades/upgrade_34.h"
+#include "bat/ledger/internal/upgrades/upgrade_35.h"
 #include "bat/ledger/internal/upgrades/upgrade_4.h"
 #include "bat/ledger/internal/upgrades/upgrade_5.h"
 #include "bat/ledger/internal/upgrades/upgrade_6.h"
@@ -104,7 +105,8 @@ using AllUpgrades = UpgradeSequence<Upgrade1,
                                     Upgrade31,
                                     Upgrade32,
                                     Upgrade33,
-                                    Upgrade34>;
+                                    Upgrade34,
+                                    Upgrade35>;
 
 class UpgradeJob : public BATLedgerJob<bool> {
  public:

@@ -142,9 +142,17 @@ void Gemini::OnFetchBalance(const type::Result result,
 void Gemini::TransferFunds(const double amount,
                            const std::string& address,
                            client::TransactionCallback callback) {
+  TransferFunds(amount, address, "", callback);
+}
+
+void Gemini::TransferFunds(const double amount,
+                           const std::string& address,
+                           const std::string& message,
+                           client::TransactionCallback callback) {
   Transaction transaction;
   transaction.address = address;
   transaction.amount = amount;
+  transaction.message = message;
   transfer_->Start(transaction, callback);
 }
 

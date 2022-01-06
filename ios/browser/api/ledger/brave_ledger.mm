@@ -102,7 +102,8 @@ static const auto kOneDay =
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
     {ledger::option::kClaimUGP, true},
-    {ledger::option::kIsBitflyerRegion, false}};
+    {ledger::option::kIsBitflyerRegion, false},
+    {ledger::option::kEnableExperimentalFeatures, false}};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};

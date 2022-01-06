@@ -278,6 +278,17 @@ class UpgradeNew : public BATLedgerJob<bool> {
       created_at TIMESTAMP NOT NULL
     );
 
+    CREATE TABLE job_state (
+      job_id TEXT NOT NULL PRIMARY KEY,
+      job_type TEXT NOT NULL,
+      state TEXT,
+      error TEXT,
+      created_at TEXT NOT NULL,
+      completed_at TEXT
+    );
+
+    CREATE INDEX job_state_job_type_index ON job_state (job_type);
+
   )sql";
 
   void Start(int version) {

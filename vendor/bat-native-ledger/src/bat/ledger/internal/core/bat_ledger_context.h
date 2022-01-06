@@ -79,6 +79,8 @@ class BATLedgerContext : private base::SupportsUserData {
 
   struct Options {
     Environment environment = Environment::kProduction;
+    bool auto_contribute_allowed = false;
+    bool enable_experimental_features = false;
   };
 
   // NOTE: Values are based on the original logging design where each level from

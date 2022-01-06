@@ -14,6 +14,7 @@ namespace option {
 const char kPublisherListRefreshInterval[] = "publisher_list_refresh_interval";
 const char kClaimUGP[] = "claim_ugp";
 const char kIsBitflyerRegion[] = "is_bitflyer_region";
+const char kEnableExperimentalFeatures[] = "enable_experimental_features";
 
 }  // namespace option
 }  // namespace ledger

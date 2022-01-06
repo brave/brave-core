@@ -7,7 +7,11 @@
 
 #include <utility>
 
+#include "bat/ledger/internal/contributions/contribution_fee_processor.h"
+#include "bat/ledger/internal/contributions/contribution_scheduler.h"
+#include "bat/ledger/internal/contributions/pending_contribution_processor.h"
 #include "bat/ledger/internal/core/bat_ledger_job.h"
+#include "bat/ledger/internal/core/job_store.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/upgrades/upgrade_manager.h"
 
@@ -87,7 +91,12 @@ class InitializeJob : public BATLedgerJob<bool> {
   }
 };
 
-using InitializeAllJob = InitializeJob<UpgradeManager, LedgerImplInitializer>;
+using InitializeAllJob = InitializeJob<UpgradeManager,
+                                       JobStore,
+                                       ContributionFeeProcessor,
+                                       PendingContributionProcessor,
+                                       ContributionScheduler,
+                                       LedgerImplInitializer>;
 
 }  // namespace
 
