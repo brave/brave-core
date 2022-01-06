@@ -547,7 +547,7 @@ const util = {
       prevBuildArgs != buildArgsStr
 
     if (shouldRunGnGen) {
-      // `gn gen` can modify args.gn even it's failed.
+      // `gn gen` can modify args.gn even if it's failed.
       // Therefore delete the file to make sure that args.gn and
       // brave_build_args.txt are in sync.
       if (prevBuildArgs)
