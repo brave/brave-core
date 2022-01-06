@@ -150,15 +150,16 @@ private struct AccountDetailsHeaderView: View {
             }
           }
         )
-      HStack {
-        Text(address.truncatedAddress)
-          .foregroundColor(Color(.secondaryBraveLabel))
-        Button(action: { UIPasteboard.general.string = address }) {
+      Button(action: { UIPasteboard.general.string = address }) {
+        HStack {
+          Text(address.truncatedAddress)
+            .foregroundColor(Color(.secondaryBraveLabel))
           Label(Strings.Wallet.copyToPasteboard, image: "brave.clipboard")
             .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveLabel))
         }
       }
+      .buttonStyle(.plain)
       .font(.title3.weight(.semibold))
     }
     .padding(.horizontal)

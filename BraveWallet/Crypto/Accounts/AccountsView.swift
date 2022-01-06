@@ -24,6 +24,14 @@ struct AccountsView: View {
     keyringStore.keyring.accountInfos.filter(\.isImported)
   }
   
+  private func copyAccountAddressButton(_ address: String) -> some View {
+    Button(action: {
+      UIPasteboard.general.string = address
+    }) {
+      Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+    }
+  }
+  
   var body: some View {
     List {
       Section(
@@ -41,6 +49,9 @@ struct AccountsView: View {
             selectedAccount = account
           } label: {
             AccountView(address: account.address, name: account.name)
+          }
+          .contextMenu {
+            copyAccountAddressButton(account.address)
           }
         }
       }
@@ -64,6 +75,9 @@ struct AccountsView: View {
               selectedAccount = account
             } label: {
               AccountView(address: account.address, name: account.name)
+            }
+            .contextMenu {
+              copyAccountAddressButton(account.address)
             }
           }
         }
