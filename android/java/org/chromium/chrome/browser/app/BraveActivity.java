@@ -176,12 +176,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
-    public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
-    public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
-    public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
+    public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
@@ -269,7 +268,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.set_default_browser) {
             handleBraveSetDefaultBrowserDialog();
         } else if (id == R.id.brave_rewards_id) {
-            openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
+            openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.brave_news_id) {
@@ -556,11 +555,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_4);
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
-        }
-        if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
-            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
-            openRewardsPanel();
-            BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)

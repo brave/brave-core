@@ -127,10 +127,11 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
+            android:gravity="center"
+            android:padding="8dp"
             android:fontFamily="@font/poppins_regular"
             android:text="@string/send_tip"
+            android:textStyle="bold"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

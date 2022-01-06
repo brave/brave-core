@@ -69,6 +69,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/rewards_from_ads_summary_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
