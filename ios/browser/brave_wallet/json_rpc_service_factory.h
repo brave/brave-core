@@ -11,6 +11,7 @@
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ChromeBrowserState;
 class KeyedService;
@@ -26,7 +27,7 @@ class JsonRpcService;
 class JsonRpcServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::JsonRpcService* GetForBrowserState(
+  static mojo::PendingRemote<mojom::JsonRpcService> GetForBrowserState(
       ChromeBrowserState* browser_state);
 
   static JsonRpcService* GetServiceForState(ChromeBrowserState* browser_state);

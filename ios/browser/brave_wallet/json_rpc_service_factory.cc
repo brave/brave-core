@@ -16,10 +16,11 @@
 namespace brave_wallet {
 
 // static
-mojom::JsonRpcService* JsonRpcServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+mojo::PendingRemote<mojom::JsonRpcService>
+JsonRpcServiceFactory::GetForBrowserState(ChromeBrowserState* browser_state) {
   return static_cast<JsonRpcService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static
