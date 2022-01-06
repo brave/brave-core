@@ -55,6 +55,10 @@ source_set("common") {
     "brave_services_key_helper.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
+    "rewards_sync_scoped_persistent_pref_store.cc",
+    "rewards_sync_scoped_persistent_pref_store.h",
+    "scoped_persistent_pref_store.cc",
+    "scoped_persistent_pref_store.h",
   ]
 
   public_deps = [ "//brave/components/constants" ]
