@@ -204,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   prefs->SetBoolean("brave.brave_ads.enabled", true);
   // Adjust the stored timestamp to measure a longer duration.
   auto earlier = base::Time::Now() - base::Minutes(90);
-  LOG(INFO) << "Backdating timestamp to " << earlier;
+  VLOG(1) << "Backdating timestamp to " << earlier;
   prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, earlier);
 
   // Mock turning rewards off.
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Mock turning rewards back on.
   prefs->SetBoolean("brave.brave_ads.enabled", true);
   auto yesterday = base::Time::Now() - base::Days(1);
-  LOG(INFO) << "Backdating timestamp to " << yesterday;
+  VLOG(1) << "Backdating timestamp to " << yesterday;
   prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, yesterday);
 
   // Mock turning rewards off.
@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Mock turning rewards on for more than a week.
   prefs->SetBoolean("brave.brave_ads.enabled", true);
   auto last_week = base::Time::Now() - base::Days(12);
-  LOG(INFO) << "Backdating timestamp to " << last_week;
+  VLOG(1) << "Backdating timestamp to " << last_week;
   prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, last_week);
 
   // Mock turning rewards off.
@@ -237,7 +237,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Mock turning rewards on for more than a month.
   prefs->SetBoolean("brave.brave_ads.enabled", true);
   auto last_month = base::Time::Now() - base::Days(40);
-  LOG(INFO) << "Backdating timestamp to " << last_month;
+  VLOG(1) << "Backdating timestamp to " << last_month;
   prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, last_month);
 
   // Mock turning rewards off.
@@ -248,7 +248,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Mock turning rewards on for our longest measured value.
   prefs->SetBoolean("brave.brave_ads.enabled", true);
   auto long_ago = base::Time::Now() - base::Days(128);
-  LOG(INFO) << "Backdating timestamp to " << long_ago;
+  VLOG(1) << "Backdating timestamp to " << long_ago;
   prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, long_ago);
 
   // Mock turning rewards off.

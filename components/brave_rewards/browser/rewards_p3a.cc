@@ -209,7 +209,7 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       constexpr int days_per_week = 7;
       constexpr double days_per_month = 30.44;  // average length
       base::TimeDelta duration = base::Time::Now() - enabled_timestamp;
-      DLOG(INFO) << "Rewards disabled after " << duration;
+      VLOG(1) << "Rewards disabled after " << duration;
       if (duration < base::Hours(threshold)) {
         value = RewardsEnabledDuration::kHours;
       } else if (duration < base::Days(threshold)) {
