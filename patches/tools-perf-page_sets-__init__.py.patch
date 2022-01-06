@@ -1,0 +1,15 @@
+diff --git a/tools/perf/page_sets/__init__.py b/tools/perf/page_sets/__init__.py
+index ebbcb6e921c8f80bfc044c5391bd74c5adef8616..f577b411e9ca9feb531586b99b534aa911f25353 100644
+--- a/tools/perf/page_sets/__init__.py
++++ b/tools/perf/page_sets/__init__.py
+@@ -19,3 +19,10 @@ for base_class in base_classes:
+   for cls in discover.DiscoverClasses(
+       start_dir, top_level_dir, base_class).values():
+     setattr(sys.modules[__name__], cls.__name__, cls)
++
++  brave_top_level_dir = os.path.abspath(os.path.join(os.path.dirname(
++      __file__), os.pardir, os.pardir, os.pardir, 'brave', 'tools', 'perf'))
++  brave_start_dir = os.path.join(brave_top_level_dir, 'brave_page_sets')
++  for cls in discover.DiscoverClasses(
++          brave_start_dir, brave_top_level_dir, base_class).values():
++    setattr(sys.modules[__name__], cls.__name__, cls)

@@ -19,14 +19,18 @@ module.exports = function RunCommand (options) {
 
   const chromiumDir = config.srcDir
   const v8Dir = path.join(config.srcDir, 'v8')
+  const catapultDir = path.join(config.srcDir, 'third_party', 'catapult')
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
+  const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
 
   Promise.all([
     // chromium
     updatePatches(chromiumDir, patchDir, chromiumPathFilter),
     // v8
     updatePatches(v8Dir, v8PatchDir),
+    // third_party/catapult
+    updatePatches(catapultDir, catapultPatchDir),
   ])
   .then(() => {
     console.log('Done.')

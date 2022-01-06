@@ -1,0 +1,25 @@
+diff --git a/tools/perf/core/results_dashboard.py b/tools/perf/core/results_dashboard.py
+index 04566ede7d081040b4b479689be38ec738c3eb8e..b020c2f57b5e38110f3d2869bc02d6a64f4c42b7 100755
+--- a/tools/perf/core/results_dashboard.py
++++ b/tools/perf/core/results_dashboard.py
+@@ -59,7 +59,7 @@ class SendResultsFatalException(SendResultException):
+ 
+ 
+ def LuciAuthTokenGeneratorCallback():
+-  args = ['luci-auth', 'token']
++  args = [os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'vendor', 'depot_tools', 'vpython3.bat' if sys.platform == 'win32' else 'vpython3'), os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'tools', 'perf', 'dashboard_auth.py')]
+   p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+   if p.wait() == 0:
+     return p.stdout.read().strip()
+@@ -302,6 +302,11 @@ def MakeDashboardJsonV1(chart_json, revision_dict, test_name, bot, project,
+ 
+ 
+ def _MakeBuildStatusUrl(project, buildbucket, buildername, buildnumber):
++  import re
++  m = re.match('brave/refs/tags/(.+)', buildername)
++  if m:
++    return 'https://github.com/brave/brave-browser/releases/tag/%s' % m.group(1)
++
+   if not (buildername and buildnumber):
+     return None
+   if not project:

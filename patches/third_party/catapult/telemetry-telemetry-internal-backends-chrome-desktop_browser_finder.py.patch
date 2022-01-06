@@ -1,0 +1,16 @@
+diff --git a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
+index e0f327ab20e9ec8a78924618f76037a2008d7008..81bcabcdd2a5a168ca8a1628547d9287bf94c717 100644
+--- a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
++++ b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
+@@ -145,6 +145,11 @@ class PossibleDesktopBrowser(possible_browser.PossibleBrowser):
+         file_util.CopyFileWithIntermediateDirectories(source, full_dest_path)
+ 
+   def _TearDownEnvironment(self):
++    if '--update-source-profile' in self._browser_options.extra_browser_args:
++      # Override the source profile by the result profile.
++      shutil.rmtree(self._browser_options.profile_dir)
++      shutil.copytree(self._profile_directory,
++                      self._browser_options.profile_dir)
+     if self._profile_directory and os.path.exists(self._profile_directory):
+       # Remove the profile directory, which was hosted on a temp dir.
+       shutil.rmtree(self._profile_directory, ignore_errors=True)

@@ -1,0 +1,15 @@
+diff --git a/tools/perf/core/perf_dashboard_machine_group_mapping.json b/tools/perf/core/perf_dashboard_machine_group_mapping.json
+index cd94667a582bb0fb3f1beba888cf356460f80ef6..0f875f716319802d47c3aa4f971f6de6fedab752 100644
+--- a/tools/perf/core/perf_dashboard_machine_group_mapping.json
++++ b/tools/perf/core/perf_dashboard_machine_group_mapping.json
+@@ -1,4 +1,5 @@
+ {
++  "brave.perf": "BravePerf",
+   "chromium": "Chromium",
+   "chromium.android": "ChromiumAndroid",
+   "chromium.android.fyi": "ChromiumAndroidFyi",
+@@ -74,4 +75,3 @@
+   "tryserver.nacl": "NativeClientTryServer",
+   "tryserver.webrtc": "WebRTCTryServer"
+ }
+-
