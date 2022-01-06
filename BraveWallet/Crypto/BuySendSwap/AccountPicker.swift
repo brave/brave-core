@@ -123,6 +123,13 @@ struct AccountPicker: View {
             }) {
               AccountView(address: account.address, name: account.name)
             }
+            .contextMenu {
+              Button(action: {
+                UIPasteboard.general.string = account.address
+              }) {
+                Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+              }
+            }
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
