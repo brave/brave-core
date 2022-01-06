@@ -9,11 +9,15 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -141,9 +145,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     histogram_tester_.reset(new base::HistogramTester);
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(profile_.get());
+    json_rpc_service_ =
+        JsonRpcServiceFactory::GetServiceForContext(profile_.get());
+    eth_tx_service_ = EthTxServiceFactory::GetServiceForContext(profile_.get());
     service_.reset(new BraveWalletService(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        GetPrefs()));
+        json_rpc_service_, eth_tx_service_, GetPrefs()));
     observer_.reset(new TestBraveWalletServiceObserver());
     service_->AddObserver(observer_->GetReceiver());
 
@@ -491,6 +498,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
   KeyringService* keyring_service_;
+  JsonRpcService* json_rpc_service_;
+  EthTxService* eth_tx_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 

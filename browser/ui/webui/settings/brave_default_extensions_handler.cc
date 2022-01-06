@@ -11,9 +11,12 @@
 #include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_reset.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -210,12 +213,18 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
 
 void BraveDefaultExtensionsHandler::ResetWallet(
     base::Value::ConstListView args) {
-  brave_wallet::ResetWallet(profile_);
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+  if (brave_wallet_service)
+    brave_wallet_service->Reset();
 }
 
 void BraveDefaultExtensionsHandler::ResetTransactionInfo(
     base::Value::ConstListView args) {
-  brave_wallet::ResetTransactionInfo(profile_);
+  auto* eth_tx_service =
+      brave_wallet::EthTxServiceFactory::GetServiceForContext(profile_);
+  if (eth_tx_service)
+    eth_tx_service->Reset();
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(

@@ -400,9 +400,6 @@ interface KeyringService {
   // Obtains the keyring information
   GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
 
-  // Resets the keyring and the related preferences
-  Reset();
-
   // Adds a KeyringServiceObserver
   AddObserver(pending_remote<KeyringServiceObserver> observer);
 
@@ -608,9 +605,6 @@ interface JsonRpcService {
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (string balance, ProviderError error, string error_message);
-
-  // Resets the keyring and the related preferences
-  Reset();
 };
 
 enum TransactionStatus {

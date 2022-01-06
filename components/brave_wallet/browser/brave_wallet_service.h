@@ -33,6 +33,8 @@ constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
 constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
 
 class KeyringService;
+class JsonRpcService;
+class EthTxService;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -46,6 +48,8 @@ class BraveWalletService : public KeyedService,
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
       KeyringService* keyring_service,
+      JsonRpcService* json_rpc_service,
+      EthTxService* eth_tx_service,
       PrefService* prefs);
   ~BraveWalletService() override;
 
@@ -181,6 +185,8 @@ class BraveWalletService : public KeyedService,
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringService* keyring_service_;
+  JsonRpcService* json_rpc_service_;
+  EthTxService* eth_tx_service_;
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
