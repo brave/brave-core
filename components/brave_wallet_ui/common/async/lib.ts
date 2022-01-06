@@ -16,7 +16,7 @@ import {
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
-import { GetTokenParam } from '../../utils/api-utils'
+import { GetTokenParam, GetFlattenedAccountBalances } from '../../utils/api-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -203,20 +203,26 @@ export function refreshPrices () {
       return
     }
 
-    const getTokenPrices = await Promise.all(userVisibleTokensInfo.map(async (token) => {
+    const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts).map(async (token) => {
       const emptyPrice = {
-        assetTimeframeChange: '',
-        fromAsset: token.symbol,
+        fromAsset: token.token.symbol,
+        toAsset: defaultFiatCurrency,
         price: '',
-        toAsset: defaultFiatCurrency
+        assetTimeframeChange: ''
       }
-      const price = await assetRatioController.getPrice([GetTokenParam(selectedNetwork, token)], [defaultFiatCurrency], selectedPortfolioTimeline)
+
+      // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
+      const price = token.balance > 0 && token.token.isErc20
+        ? await assetRatioController.getPrice([GetTokenParam(selectedNetwork, token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
+        : { values: [{ ...emptyPrice, price: '0' }], success: true }
+
       const tokenPrice = {
         ...price.values[0],
-        fromAsset: token.symbol.toLowerCase()
+        fromAsset: token.token.symbol.toLowerCase()
       }
       return price.success ? tokenPrice : emptyPrice
     }))
+
     const getERCTokenBalanceReturnInfos = accounts.map((account) => {
       return account.tokens.map((token) => {
         const balanceInfo = {
@@ -243,18 +249,27 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const { assetRatioController } = apiProxy
 
     const { wallet: { accounts, defaultCurrencies, selectedNetwork } } = getState()
-    const result = await Promise.all(accounts.map(async (account) => {
-      return Promise.all(account.tokens.filter((t) => !t.asset.isErc721).map(async (token) => {
-        return {
-          token: token,
-          history: await assetRatioController.getPriceHistory(
-            GetTokenParam(selectedNetwork, token.asset), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
-          )
-        }
-      }))
+
+    // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
+    const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts).filter((t) => !t.token.isErc721 && t.balance > 0).map(async (token) => {
+      return {
+        contractAddress: token.token.contractAddress,
+        history: await assetRatioController.getPriceHistory(
+          GetTokenParam(selectedNetwork, token.token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+        )
+      }
     }))
 
-    dispatch(WalletActions.portfolioPriceHistoryUpdated(result))
+    const priceHistoryWithBalances = accounts.map((account) => {
+      return (account.tokens.filter((t) => !t.asset.isErc721).map((token) => {
+        return {
+          token: token,
+          history: priceHistory.find((t) => token.asset.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+        }
+      }))
+    })
+
+    dispatch(WalletActions.portfolioPriceHistoryUpdated(priceHistoryWithBalances))
   }
 }
 
