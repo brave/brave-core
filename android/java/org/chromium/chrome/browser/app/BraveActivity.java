@@ -17,7 +17,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -37,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -46,6 +49,12 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.json.JSONException;
 
@@ -667,8 +676,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             // inflate the settings bar layout
             View inflatedSettingsBarLayout =
                     inflater.inflate(R.layout.brave_news_settings_bar_layout, null);
-            RelativeLayout newContentButtonLayout =
-                    (RelativeLayout) inflater.inflate(R.layout.brave_news_load_new_content, null);
+            View newContentButtonLayout =
+                    inflater.inflate(R.layout.brave_news_load_new_content, null);
             // add the bar to the layout stack
             compositorView.addView(inflatedSettingsBarLayout, 2);
             compositorView.addView(newContentButtonLayout, 3);
@@ -683,9 +692,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             // getToolbarShadowHeight compensation
             inflatedLayoutParams.setMargins(
                     0, controlContainer.getBottom() - getToolbarShadowHeight(), 0, 0);
-            newContentButtonLayoutParams.setMargins(0, 400, 0, 0);
+            newContentButtonLayoutParams.setMargins(0, 600, 0, 0);
             newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-            newContentButtonLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
             newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
 
@@ -709,15 +717,29 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     // Sets NTP background
-    public void setBackground(BitmapDrawable bgWallpaper) {
+    public void setBackground(Bitmap bgWallpaper) {
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
 
         ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
         ScrollView scrollView = (ScrollView) root.getChildAt(0);
         scrollView.setId(View.generateViewId());
 
-        //@TODO alex use Glide to set the image?
-        scrollView.setBackground(bgWallpaper);
+        Glide.with(this)
+                .asBitmap()
+                .load(bgWallpaper)
+                .fitCenter()
+                .priority(Priority.IMMEDIATE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource,
+                            @Nullable Transition<? super Bitmap> transition) {
+                        Drawable drawable = new BitmapDrawable(getResources(), resource);
+                        scrollView.setBackground(drawable);
+                    }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                });
     }
 
     private void checkFingerPrintingOnUpgrade() {
