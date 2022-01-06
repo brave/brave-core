@@ -16,10 +16,12 @@
 namespace brave_wallet {
 
 // static
-mojom::EthJsonRpcController* EthJsonRpcControllerFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::EthJsonRpcController>
+EthJsonRpcControllerFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
   return static_cast<EthJsonRpcController*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static

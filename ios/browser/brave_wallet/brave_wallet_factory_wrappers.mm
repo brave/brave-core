@@ -21,74 +21,74 @@
 
 @implementation BraveWalletAssetRatioControllerFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
           browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletAssetRatioControllerImpl alloc]
-      initWithAssetRatioController:controller];
+  return [[BraveWalletAssetRatioControllerMojoImpl alloc]
+      initWithAssetRatioController:std::move(controller)];
 }
 @end
 
 @implementation BraveWalletEthJsonRpcControllerFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::EthJsonRpcControllerFactory::GetForBrowserState(
           browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletEthJsonRpcControllerImpl alloc]
-      initWithEthJsonRpcController:controller];
+  return [[BraveWalletEthJsonRpcControllerMojoImpl alloc]
+      initWithEthJsonRpcController:std::move(controller)];
 }
 @end
 
 @implementation BraveWalletEthTxControllerFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::EthTxControllerFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletEthTxControllerImpl alloc]
-      initWithEthTxController:controller];
+  return [[BraveWalletEthTxControllerMojoImpl alloc]
+      initWithEthTxController:std::move(controller)];
 }
 @end
 
 @implementation BraveWalletKeyringControllerFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::KeyringControllerFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletKeyringControllerImpl alloc]
-      initWithKeyringController:controller];
+  return [[BraveWalletKeyringControllerMojoImpl alloc]
+      initWithKeyringController:std::move(controller)];
 }
 @end
 
 @implementation BraveWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::BraveWalletServiceFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return [[BraveWalletBraveWalletServiceImpl alloc]
-      initWithBraveWalletService:controller];
+  return [[BraveWalletBraveWalletServiceMojoImpl alloc]
+      initWithBraveWalletService:std::move(controller)];
 }
 @end
 
 @implementation BraveWalletSwapControllerFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* controller =
+  auto controller =
       brave_wallet::SwapControllerFactory::GetForBrowserState(browserState);
   if (!controller) {
     return nil;
   }
-  return
-      [[BraveWalletSwapControllerImpl alloc] initWithSwapController:controller];
+  return [[BraveWalletSwapControllerMojoImpl alloc]
+      initWithSwapController:std::move(controller)];
 }
 @end
