@@ -190,10 +190,6 @@ class EthJsonRpcController : public KeyedService,
                              const std::string& account_address,
                              GetERC721TokenBalanceCallback callback) override;
 
-  // Resets things back to the original state of BraveWalletService.
-  // To be used when the Wallet is reset / erased
-  void Reset() override;
-
   using GetSupportsInterfaceCallback =
       base::OnceCallback<void(bool is_supported,
                               mojom::ProviderError error,
@@ -329,7 +325,6 @@ class EthJsonRpcController : public KeyedService,
                        RequestCallback callback);
 
   FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, IsValidDomain);
-  FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, Reset);
   bool IsValidDomain(const std::string& domain);
 
   void OnGetERC721OwnerOf(

@@ -12,7 +12,6 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -756,7 +755,7 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
   }
 }
 
-void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
+void BraveWalletService::OnNetworkChanged() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.
   for (auto& callback : add_suggest_token_callbacks_)
@@ -764,25 +763,6 @@ void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
         .Run(false, mojom::ProviderError::kUserRejectedRequest,
              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   add_suggest_token_callbacks_.clear();
-}
-
-void BraveWalletService::CancelAllSignMessageCallbacks() {
-  while (!sign_message_requests_.empty()) {
-    auto callback = std::move(sign_message_callbacks_.front());
-    sign_message_requests_.pop_front();
-    sign_message_callbacks_.pop_front();
-    std::move(callback).Run(false, std::string(), std::string());
-  }
-}
-
-void BraveWalletService::OnNetworkChanged() {
-  CancelAllSuggestedTokenCallbacks();
-}
-
-void BraveWalletService::Reset() {
-  ClearBraveWalletServicePrefs(prefs_);
-  CancelAllSuggestedTokenCallbacks();
-  CancelAllSignMessageCallbacks();
 }
 
 }  // namespace brave_wallet

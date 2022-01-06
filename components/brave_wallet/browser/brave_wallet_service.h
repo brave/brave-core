@@ -119,10 +119,6 @@ class BraveWalletService : public KeyedService,
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const std::string& origin) override;
 
-  // Resets things back to the original state of BraveWalletService.
-  // To be used when the Wallet is reset / erased
-  void Reset() override;
-
   void RecordWalletUsage(base::Time wallet_last_used);
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
@@ -138,7 +134,6 @@ class BraveWalletService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAsset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
 
   void OnDefaultWalletChanged();
   void OnDefaultBaseCurrencyChanged();
@@ -169,8 +164,6 @@ class BraveWalletService : public KeyedService,
                                   bool is_erc721,
                                   const std::string& chain_id);
   void OnNetworkChanged();
-  void CancelAllSuggestedTokenCallbacks();
-  void CancelAllSignMessageCallbacks();
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;

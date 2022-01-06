@@ -30,7 +30,6 @@ class EthPendingTxTracker {
 
   bool UpdatePendingTransactions(size_t* num_pending);
   void ResubmitPendingTransactions();
-  void Reset();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);

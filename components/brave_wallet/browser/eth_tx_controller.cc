@@ -17,7 +17,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
@@ -116,7 +115,6 @@ EthTxController::EthTxController(
     : rpc_controller_(rpc_controller),
       keyring_controller_(keyring_controller),
       asset_ratio_controller_(asset_ratio_controller),
-      prefs_(prefs),
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
       pending_tx_tracker_(std::move(pending_tx_tracker)),
@@ -867,10 +865,6 @@ void EthTxController::KeyringRestored() {
   UpdatePendingTransactions();
 }
 
-void EthTxController::KeyringReset() {
-  UpdatePendingTransactions();
-}
-
 void EthTxController::SpeedupOrCancelTransaction(
     const std::string& tx_meta_id,
     bool cancel,
@@ -1031,13 +1025,6 @@ void EthTxController::RetryTransaction(const std::string& tx_meta_id,
                                    std::move(tx), std::move(callback),
                                    Uint256ValueToHex(meta->tx->gas_limit()),
                                    mojom::ProviderError::kSuccess, "");
-}
-
-void EthTxController::Reset() {
-  ClearEthTxControllerProfilePrefs(prefs_);
-  eth_block_tracker_->Stop();
-  pending_tx_tracker_->Reset();
-  known_no_pending_tx = false;
 }
 
 }  // namespace brave_wallet

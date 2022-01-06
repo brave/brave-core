@@ -65,11 +65,6 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
   }
 }
 
-void EthPendingTxTracker::Reset() {
-  network_nonce_map_.clear();
-  dropped_blocks_counter_.clear();
-}
-
 void EthPendingTxTracker::OnGetTxReceipt(std::string id,
                                          TransactionReceipt receipt,
                                          mojom::ProviderError error,
@@ -104,7 +99,6 @@ void EthPendingTxTracker::OnGetNetworkNonce(std::string address,
                                             const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess)
     return;
-
   network_nonce_map_[address] = result;
 }
 
