@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ERC_TOKEN_REGISTRY_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ERC_TOKEN_REGISTRY_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_REGISTRY_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_REGISTRY_H_
 
 #include <string>
 #include <vector>
@@ -19,21 +19,21 @@
 
 namespace brave_wallet {
 
-class ERCTokenRegistry : public mojom::ERCTokenRegistry {
+class BlockchainRegistry : public mojom::BlockchainRegistry {
  public:
-  ERCTokenRegistry(const ERCTokenRegistry&) = delete;
-  ~ERCTokenRegistry() override;
-  ERCTokenRegistry& operator=(const ERCTokenRegistry&) = delete;
+  BlockchainRegistry(const BlockchainRegistry&) = delete;
+  ~BlockchainRegistry() override;
+  BlockchainRegistry& operator=(const BlockchainRegistry&) = delete;
 
-  static ERCTokenRegistry* GetInstance();
-  mojo::PendingRemote<mojom::ERCTokenRegistry> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::ERCTokenRegistry> receiver);
+  static BlockchainRegistry* GetInstance();
+  mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
   void UpdateTokenList(std::vector<mojom::ERCTokenPtr> erc_tokens);
 
   mojom::ERCTokenPtr GetTokenByContract(const std::string& contract);
 
-  // ERCTokenRegistry interface methods
+  // BlockchainRegistry interface methods
   void GetTokenByContract(const std::string& contract,
                           GetTokenByContractCallback callback) override;
   void GetTokenBySymbol(const std::string& symbol,
@@ -47,14 +47,14 @@ class ERCTokenRegistry : public mojom::ERCTokenRegistry {
 
  protected:
   std::vector<mojom::ERCTokenPtr> erc_tokens_;
-  friend struct base::DefaultSingletonTraits<ERCTokenRegistry>;
+  friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
-  ERCTokenRegistry();
+  BlockchainRegistry();
 
  private:
-  mojo::ReceiverSet<mojom::ERCTokenRegistry> receivers_;
+  mojo::ReceiverSet<mojom::BlockchainRegistry> receivers_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ERC_TOKEN_REGISTRY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_REGISTRY_H_

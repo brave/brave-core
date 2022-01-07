@@ -22,7 +22,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -31,7 +31,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -61,7 +61,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     private ExecutorService mExecutor;
     private Handler mHandler;
 
-    private ErcTokenRegistry mErcTokenRegistry;
+    private BlockchainRegistry mBlockchainRegistry;
     private EthTxService mEthTxService;
     private JsonRpcService mJsonRpcService;
     private AssetRatioService mAssetRatioService;
@@ -76,7 +76,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mBraveWalletService.close();
         mKeyringService.close();
         mEthTxService.close();
-        mErcTokenRegistry.close();
+        mBlockchainRegistry.close();
     }
 
     @Override
@@ -144,7 +144,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
             List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
-            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+            String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
             for (ErcToken userAsset : portfolioHelper.getUserAssets()) {
                 String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
@@ -191,7 +191,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = new AccountInfo[1];
                     accountInfos[0] = accountInfo;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
-                            mErcTokenRegistry, mBraveWalletService, null, null, 0,
+                            mBlockchainRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId);
                     break;
                 }
@@ -220,7 +220,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         InitBraveWalletService();
         InitKeyringService();
         InitEthTxService();
-        InitErcTokenRegistry();
+        InitBlockchainRegistry();
 
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(chainId -> {
@@ -292,27 +292,27 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         mBraveWalletService.close();
         mKeyringService.close();
         mEthTxService.close();
-        mErcTokenRegistry.close();
+        mBlockchainRegistry.close();
         mJsonRpcService = null;
         mAssetRatioService = null;
         mBraveWalletService = null;
         mKeyringService = null;
         mEthTxService = null;
-        mErcTokenRegistry = null;
+        mBlockchainRegistry = null;
         InitJsonRpcService();
         InitAssetRatioService();
         InitBraveWalletService();
         InitKeyringService();
-        InitErcTokenRegistry();
+        InitBlockchainRegistry();
         InitEthTxService();
     }
 
-    private void InitErcTokenRegistry() {
-        if (mErcTokenRegistry != null) {
+    private void InitBlockchainRegistry() {
+        if (mBlockchainRegistry != null) {
             return;
         }
 
-        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
     }
 
     private void InitEthTxService() {

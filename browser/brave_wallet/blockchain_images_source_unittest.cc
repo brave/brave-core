@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/erc_token_images_source.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
 
 #include <memory>
 #include <utility>
@@ -18,11 +18,11 @@
 
 namespace brave_wallet {
 
-class ERCTokenImagesSourceTest : public testing::Test {
+class BlockchainImagesSourceTest : public testing::Test {
  protected:
-  ERCTokenImagesSourceTest()
+  BlockchainImagesSourceTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-  ~ERCTokenImagesSourceTest() override = default;
+  ~BlockchainImagesSourceTest() override = default;
 
   void SetUp() override {
     base::FilePath test_dir;
@@ -30,11 +30,11 @@ class ERCTokenImagesSourceTest : public testing::Test {
     base::FilePath wallet_dir = test_dir.AppendASCII("wallet");
     // brave/test/data/wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
-    source_ = std::make_unique<ERCTokenImagesSource>(wallet_dir);
+    source_ = std::make_unique<BlockchainImagesSource>(wallet_dir);
   }
   void TearDown() override { source_.reset(); }
 
-  ERCTokenImagesSource* source() const { return source_.get(); }
+  BlockchainImagesSource* source() const { return source_.get(); }
 
   bool data_received() const { return data_received_; }
   std::string data() const { return data_; }
@@ -45,7 +45,7 @@ class ERCTokenImagesSourceTest : public testing::Test {
     content::WebContents::Getter wc_getter;
     source()->StartDataRequest(
         url, std::move(wc_getter),
-        base::BindOnce(&ERCTokenImagesSourceTest::OnDataReceived,
+        base::BindOnce(&BlockchainImagesSourceTest::OnDataReceived,
                        base::Unretained(this)));
   }
 
@@ -60,28 +60,28 @@ class ERCTokenImagesSourceTest : public testing::Test {
     }
   }
 
-  std::unique_ptr<ERCTokenImagesSource> source_;
+  std::unique_ptr<BlockchainImagesSource> source_;
   bool data_received_ = false;
   std::string data_;
 
-  DISALLOW_COPY_AND_ASSIGN(ERCTokenImagesSourceTest);
+  DISALLOW_COPY_AND_ASSIGN(BlockchainImagesSourceTest);
 };
 
-TEST_F(ERCTokenImagesSourceTest, GetMimeType) {
+TEST_F(BlockchainImagesSourceTest, GetMimeType) {
   EXPECT_EQ(source()->GetMimeType("test/img1.png"), "image/png");
   EXPECT_EQ(source()->GetMimeType("test/img1.gif"), "image/gif");
   EXPECT_EQ(source()->GetMimeType("test/img1.jpg"), "image/jpg");
   EXPECT_EQ(source()->GetMimeType("test/img1.svg"), "image/svg+xml");
 }
 
-TEST_F(ERCTokenImagesSourceTest, StartDataRequest) {
+TEST_F(BlockchainImagesSourceTest, StartDataRequest) {
   StartRequest(GURL("chrome://erc-token-images/logo.png"));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(data_received());
   EXPECT_FALSE(data().empty());
 }
 
-TEST_F(ERCTokenImagesSourceTest, StartDataRequestImageNotExist) {
+TEST_F(BlockchainImagesSourceTest, StartDataRequestImageNotExist) {
   StartRequest(GURL("chrome://erc-token-images/ent.svg"));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(data_received());

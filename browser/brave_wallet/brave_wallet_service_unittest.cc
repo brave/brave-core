@@ -14,8 +14,8 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -154,7 +154,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     observer_.reset(new TestBraveWalletServiceObserver());
     service_->AddObserver(observer_->GetReceiver());
 
-    auto* registry = ERCTokenRegistry::GetInstance();
+    auto* registry = BlockchainRegistry::GetInstance();
     std::vector<mojom::ERCTokenPtr> input_erc_tokens;
     ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
     registry->UpdateTokenList(std::move(input_erc_tokens));
@@ -222,7 +222,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::ERCTokenPtr GetBatToken() { return bat_token_.Clone(); }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
-  ERCTokenRegistry* GetRegistry() { return ERCTokenRegistry::GetInstance(); }
+  BlockchainRegistry* GetRegistry() { return BlockchainRegistry::GetInstance(); }
 
   void GetUserAssets(const std::string& chain_id,
                      bool* callback_called,
@@ -1359,10 +1359,10 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::string chain_id = GetCurrentChainId(GetPrefs());
   ASSERT_EQ(chain_id, mojom::kMainnetChainId);
 
-  mojom::ERCTokenPtr usdc_from_erc_token_registry = mojom::ERCToken::New(
+  mojom::ERCTokenPtr usdc_from_blockchain_registry = mojom::ERCToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
       true, false, "USDC", 6, true, "");
-  ASSERT_EQ(usdc_from_erc_token_registry,
+  ASSERT_EQ(usdc_from_blockchain_registry,
             GetRegistry()->GetTokenByContract(
                 "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
   mojom::ERCTokenPtr usdc_from_user_assets =
@@ -1379,7 +1379,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                            "COLOR", "", true, false, "COLOR", 18, true, "");
 
   // Case 1: Suggested token does not exist (no entry with the same contract
-  // address) in ERCTokenRegistry nor user assets. Current network is mainnet.
+  // address) in BlockchainRegistry nor user assets. Current network is mainnet.
   // Token should be in user asset list and is visible, and the data should be
   // the same as the one in the request.
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
@@ -1389,7 +1389,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   EXPECT_EQ(token, custom_token);
 
   // Case 2: Suggested token exists (has an entry with the same contract
-  // address) in ERCTokenRegistry and user asset list and is visible. Current
+  // address) in BlockchainRegistry and user asset list and is visible. Current
   // network is mainnet.
   // Token should be in user asset list and is visible, and the data should be
   // the same as the one in the user asset list.
@@ -1400,7 +1400,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                                  usdc_from_user_assets->is_erc721, chain_id);
   EXPECT_EQ(token, usdc_from_user_assets);
 
-  // Case 3: Suggested token exists in ERCTokenRegistry and user asset list but
+  // Case 3: Suggested token exists in BlockchainRegistry and user asset list but
   // is not visible. Current network is mainnet.
   // Token should be in user asset list and is visible, and the data should be
   // the same as the one in the user asset list.
@@ -1415,19 +1415,19 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                                  usdc_from_user_assets->is_erc721, chain_id);
   EXPECT_EQ(token, usdc_from_user_assets);
 
-  // Case 4: Suggested token exists in ERCTokenRegistry but not in user asset
+  // Case 4: Suggested token exists in BlockchainRegistry but not in user asset
   // list. Current network is mainnet.
   // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in ERCTokenRegistry.
+  // the same as the one in BlockchainRegistry.
   ASSERT_TRUE(
       service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
   AddSuggestToken(usdc_from_request.Clone(),
-                  usdc_from_erc_token_registry.Clone(), true);
+                  usdc_from_blockchain_registry.Clone(), true);
   token =
-      service_->GetUserAsset(usdc_from_erc_token_registry->contract_address,
-                             usdc_from_erc_token_registry->token_id,
-                             usdc_from_erc_token_registry->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_erc_token_registry);
+      service_->GetUserAsset(usdc_from_blockchain_registry->contract_address,
+                             usdc_from_blockchain_registry->token_id,
+                             usdc_from_blockchain_registry->is_erc721, chain_id);
+  EXPECT_EQ(token, usdc_from_blockchain_registry);
 
   mojom::ERCTokenPtr usdt_from_user_assets = mojom::ERCToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png", true,
@@ -1438,7 +1438,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
       mojom::ERCToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT",
                            "", true, false, "USDT", 18, true, "");
   // Case 5: Suggested token exists in user asset list and is visible, does not
-  // exist in ERCTokenRegistry.
+  // exist in BlockchainRegistry.
   // Token should be in user asset list and is visible, and the data should be
   // the same as the one in user asset list.
   AddSuggestToken(usdt_from_request.Clone(), usdt_from_user_assets.Clone(),
@@ -1449,7 +1449,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   EXPECT_EQ(token, usdt_from_user_assets);
 
   // Case 6: Suggested token exists in user asset list but is not visible, does
-  // not exist in ERCTokenRegistry.
+  // not exist in BlockchainRegistry.
   // Token should be in user asset list and is visible, and the data should be
   // the same as the one in user asset list.
   ASSERT_TRUE(service_->SetUserAssetVisible(usdt_from_user_assets.Clone(),
@@ -1477,7 +1477,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   chain_id = GetCurrentChainId(GetPrefs());
   ASSERT_NE(chain_id, mojom::kMainnetChainId);
 
-  // If suggested token exists in ERCTokenRegistry and user asset, should
+  // If suggested token exists in BlockchainRegistry and user asset, should
   // use the user asset one.
   ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
   AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
@@ -1487,7 +1487,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                                  usdc_from_user_assets->is_erc721, chain_id);
   EXPECT_EQ(token, usdc_from_user_assets);
 
-  // If suggested token exists in ERCTokenRegistry and not in user asset,
+  // If suggested token exists in BlockchainRegistry and not in user asset,
   // should use the token from the original request.
   ASSERT_TRUE(
       service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));

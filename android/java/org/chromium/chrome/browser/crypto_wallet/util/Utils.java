@@ -47,7 +47,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -912,7 +912,7 @@ public class Utils {
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
             AssetRatioService assetRatioService, EthTxService ethTxService,
-            ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
+            BlockchainRegistry blockChainRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             String chainId) {
@@ -928,7 +928,7 @@ public class Utils {
                     || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
                 try {
                     fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                            Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
+                            Double.valueOf(tempPrice), ethTxService, blockChainRegistry,
                             contractAddress, rvTransactions, callback, context, assetSymbol,
                             assetDecimals, chainId, assetRatioService, braveWalletService);
                 } catch (NumberFormatException exc) {
@@ -947,7 +947,7 @@ public class Utils {
                         }
                         try {
                             fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                    Double.valueOf(tempPriceAsset), ethTxService, ercTokenRegistry,
+                                    Double.valueOf(tempPriceAsset), ethTxService, blockChainRegistry,
                                     contractAddress, rvTransactions, callback, context, assetSymbol,
                                     assetDecimals, chainId, assetRatioService, braveWalletService);
                         } catch (NumberFormatException exc) {
@@ -957,7 +957,7 @@ public class Utils {
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, EthTxService ethTxService, ErcTokenRegistry ercTokenRegistry,
+            double assetPrice, EthTxService ethTxService, BlockchainRegistry blockChainRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
@@ -970,7 +970,7 @@ public class Utils {
                 workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                         context, assetSymbol, assetDecimals, pendingTxInfos, null, null, null);
             } else {
-                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
+                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, blockChainRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
                         assetRatioService, braveWalletService);
             }
@@ -978,13 +978,13 @@ public class Utils {
     }
 
     private static void fetchAssetsPricesDecimals(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
+            double assetPrice, BlockchainRegistry blockChainRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert chainId != null;
-        assert ercTokenRegistry != null;
-        TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, chainId, tokens -> {
+        assert blockChainRegistry != null;
+        TokenUtils.getAllTokensFiltered(braveWalletService, blockChainRegistry, chainId, tokens -> {
             HashMap<String, String> assets = new HashMap<String, String>();
             HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
             for (String accountName : pendingTxInfos.keySet()) {

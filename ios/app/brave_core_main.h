@@ -12,7 +12,7 @@
 @class BraveHistoryAPI;
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
-@protocol BraveWalletERCTokenRegistry;
+@protocol BraveWalletBlockchainRegistry;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,7 +44,7 @@ OBJC_EXPORT
 
 - (void)scheduleLowPriorityStartupTasks;
 
-@property(class, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
+@property(class, readonly) id<BraveWalletBlockchainRegistry> blockChainRegistry;
 
 @end
 

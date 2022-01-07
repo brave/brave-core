@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -44,9 +44,9 @@ public class TokenUtils {
     }
 
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            ErcTokenRegistry ercTokenRegistry, String chainId,
-            ErcTokenRegistry.GetAllTokensResponse callback) {
-        ercTokenRegistry.getAllTokens((ErcToken[] tokens) -> {
+            BlockchainRegistry blockChainRegistry, String chainId,
+            BlockchainRegistry.GetAllTokensResponse callback) {
+        blockChainRegistry.getAllTokens((ErcToken[] tokens) -> {
             braveWalletService.getUserAssets(chainId, (ErcToken[] userTokens) -> {
                 ErcToken[] filteredTokens =
                         filterOut(concatenateTwoArrays(tokens, userTokens), true);
@@ -56,16 +56,16 @@ public class TokenUtils {
     }
 
     public static void getBuyTokensFiltered(
-            ErcTokenRegistry ercTokenRegistry, ErcTokenRegistry.GetAllTokensResponse callback) {
-        ercTokenRegistry.getBuyTokens((ErcToken[] tokens) -> {
+            BlockchainRegistry blockChainRegistry, BlockchainRegistry.GetAllTokensResponse callback) {
+        blockChainRegistry.getBuyTokens((ErcToken[] tokens) -> {
             ErcToken[] filteredTokens = filterOut(tokens, true);
             callback.call(filteredTokens);
         });
     }
 
-    public static void isCustomToken(ErcToken token, ErcTokenRegistry ercTokenRegistry,
+    public static void isCustomToken(ErcToken token, BlockchainRegistry blockChainRegistry,
             org.chromium.mojo.bindings.Callbacks.Callback1<Boolean> callback) {
-        ercTokenRegistry.getAllTokens((ErcToken[] tokens) -> {
+        blockChainRegistry.getAllTokens((ErcToken[] tokens) -> {
             boolean isCustom = true;
             for (ErcToken tokenFromAll : tokens) {
                 if (token.contractAddress.equals(tokenFromAll.contractAddress)) {

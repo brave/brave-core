@@ -50,7 +50,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -69,7 +69,7 @@ import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -180,7 +180,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     public String mActivateAllowanceTxId;
 
-    private ErcTokenRegistry mErcTokenRegistry;
+    private BlockchainRegistry mBlockchainRegistry;
     private JsonRpcService mJsonRpcService;
     private EthTxService mEthTxService;
     private KeyringService mKeyringService;
@@ -208,7 +208,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         mKeyringService.close();
         mAssetRatioService.close();
-        mErcTokenRegistry.close();
+        mBlockchainRegistry.close();
         mJsonRpcService.close();
         mEthTxService.close();
         mSwapService.close();
@@ -909,8 +909,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
                 TabUtils.bringChromeTabbedActivityToTheTop(this);
             });
-            if (mErcTokenRegistry != null && mCustomAccountAdapter != null) {
-                mErcTokenRegistry.getTokenBySymbol("BAT", token -> {
+            if (mBlockchainRegistry != null && mCustomAccountAdapter != null) {
+                mBlockchainRegistry.getTokenBySymbol("BAT", token -> {
                     if (token != null) {
                         updateSwapToAsset(token.symbol, token);
                     }
@@ -942,9 +942,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-                    assert mErcTokenRegistry != null;
+                    assert mBlockchainRegistry != null;
                     String asset = assetFromDropDown.getText().toString();
-                    mErcTokenRegistry.getBuyUrl(from, asset, value, url -> {
+                    mBlockchainRegistry.getBuyUrl(from, asset, value, url -> {
                         TabUtils.openUrlInNewTab(false, url);
                         TabUtils.bringChromeTabbedActivityToTheTop(this);
                     });
@@ -1220,7 +1220,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
 
-            mValidator.validate(mCurrentChainId, getKeyringService(), getErcTokenRegistry(),
+            mValidator.validate(mCurrentChainId, getKeyringService(), getBlockchainRegistry(),
                     getBraveWalletService(), fromAccountAddress, s.toString(),
                     (String validationResult, Boolean disableButton) -> {
                         setSendToValidationResult(validationResult, disableButton);
@@ -1393,7 +1393,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         // Replace USDC and DAI contract addresses for Ropsten network
         mCurrentErcToken.contractAddress = Utils.getContractAddress(
                 mCurrentChainId, mCurrentErcToken.symbol, mCurrentErcToken.contractAddress);
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (mCurrentErcToken.symbol.equals("ETH")) {
             mCurrentErcToken.logo = "eth.png";
         }
@@ -1425,7 +1425,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         // Replace USDC and DAI contract addresses for Ropsten network
         mCurrentSwapToErcToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
                 mCurrentSwapToErcToken.symbol, mCurrentSwapToErcToken.contractAddress);
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (mCurrentSwapToErcToken.symbol.equals("ETH")) {
             mCurrentSwapToErcToken.logo = "eth.png";
         }
@@ -1469,21 +1469,21 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         btnBuySendSwap.setEnabled(enable);
     }
 
-    public ErcTokenRegistry getErcTokenRegistry() {
-        return mErcTokenRegistry;
+    public BlockchainRegistry getBlockchainRegistry() {
+        return mBlockchainRegistry;
     }
 
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringService.close();
         mAssetRatioService.close();
-        mErcTokenRegistry.close();
+        mBlockchainRegistry.close();
         mJsonRpcService.close();
         mEthTxService.close();
         mSwapService.close();
         mBraveWalletService.close();
 
-        mErcTokenRegistry = null;
+        mBlockchainRegistry = null;
         mJsonRpcService = null;
         mEthTxService = null;
         mKeyringService = null;
@@ -1491,7 +1491,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mSwapService = null;
         mBraveWalletService = null;
         InitAssetRatioService();
-        InitErcTokenRegistry();
+        InitBlockchainRegistry();
         InitJsonRpcService();
         InitEthTxService();
         InitKeyringService();
@@ -1544,12 +1544,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mKeyringService.addObserver(this);
     }
 
-    private void InitErcTokenRegistry() {
-        if (mErcTokenRegistry != null) {
+    private void InitBlockchainRegistry() {
+        if (mBlockchainRegistry != null) {
             return;
         }
 
-        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
     }
 
     private void InitJsonRpcService() {
@@ -1591,7 +1591,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitErcTokenRegistry();
+        InitBlockchainRegistry();
         InitJsonRpcService();
         InitEthTxService();
         InitKeyringService();
@@ -1633,9 +1633,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
 
                 // updateSwapToAsset needs mCustomAccountAdapter to be initialized
-                if (mErcTokenRegistry != null && mActivityType == ActivityType.SWAP
+                if (mBlockchainRegistry != null && mActivityType == ActivityType.SWAP
                         && mInitialLayoutInflationComplete) {
-                    mErcTokenRegistry.getTokenBySymbol("BAT", token -> {
+                    mBlockchainRegistry.getTokenBySymbol("BAT", token -> {
                         if (token != null) {
                             updateSwapToAsset(token.symbol, token);
                         }

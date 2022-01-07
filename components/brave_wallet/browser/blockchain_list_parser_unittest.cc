@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

@@ -39,10 +39,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -80,12 +80,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         mType = type;
     }
 
-    private ErcTokenRegistry getErcTokenRegistry() {
+    private BlockchainRegistry getBlockchainRegistry() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getErcTokenRegistry();
+            return ((BraveWalletActivity) activity).getBlockchainRegistry();
         } else if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getErcTokenRegistry();
+            return ((BuySendSwapActivity) activity).getBlockchainRegistry();
         }
 
         return null;
@@ -274,15 +274,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             addCustomAsset.setVisibility(View.GONE);
         }
 
-        ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
-        if (ercTokenRegistry != null) {
+        BlockchainRegistry blockChainRegistry = getBlockchainRegistry();
+        if (blockChainRegistry != null) {
             BraveWalletService braveWalletService = getBraveWalletService();
             assert braveWalletService != null;
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId, (userAssets) -> {
                     TokenUtils.getAllTokensFiltered(
-                            braveWalletService, ercTokenRegistry, mChainId, tokens -> {
+                            braveWalletService, blockChainRegistry, mChainId, tokens -> {
                                 tokens = Utils.fixupTokensRegistry(tokens, mChainId);
                                 setUpAssetsList(view, tokens, userAssets);
                             });
@@ -294,10 +294,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
-                TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, mChainId,
+                TokenUtils.getAllTokensFiltered(braveWalletService, blockChainRegistry, mChainId,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                TokenUtils.getBuyTokensFiltered(ercTokenRegistry,
+                TokenUtils.getBuyTokensFiltered(blockChainRegistry,
                         tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             }
         }
@@ -349,7 +349,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         // Add ETH as a first item always
         ErcToken eth = Utils.createEthereumErcToken();
         WalletListItemModel itemModelEth =
@@ -461,7 +461,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     public void onAssetCheckedChanged(WalletListItemModel walletListItemModel, boolean isChecked) {
         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
             TokenUtils.isCustomToken(
-                    walletListItemModel.getErcToken(), getErcTokenRegistry(), isCustom -> {
+                    walletListItemModel.getErcToken(), getBlockchainRegistry(), isCustom -> {
                         BraveWalletService braveWalletService = getBraveWalletService();
                         assert braveWalletService != null;
                         assert (mChainId != null && !mChainId.isEmpty());

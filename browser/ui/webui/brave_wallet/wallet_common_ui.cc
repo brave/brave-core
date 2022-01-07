@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/version.h"
-#include "brave/browser/brave_wallet/erc_token_images_source.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -33,7 +33,7 @@ void AddERCTokenImageSource(Profile* profile) {
   base::FilePath path = profile->GetPath().DirName();
   path = path.AppendASCII(brave_wallet::kWalletBaseDirectory);
   content::URLDataSource::Add(
-      profile, std::make_unique<brave_wallet::ERCTokenImagesSource>(path));
+      profile, std::make_unique<brave_wallet::BlockchainImagesSource>(path));
 }
 
 bool IsBraveWalletOrigin(const url::Origin& origin) {

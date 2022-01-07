@@ -113,13 +113,13 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
 }
 
 export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
-  const { ercTokenRegistry } = getAPIProxy()
-  return (await ercTokenRegistry.getBuyUrl(address, symbol, amount)).url
+  const { blockChainRegistry } = getAPIProxy()
+  return (await blockChainRegistry.getBuyUrl(address, symbol, amount)).url
 }
 
 export async function getBuyAssets () {
-  const { ercTokenRegistry } = getAPIProxy()
-  return (await ercTokenRegistry.getBuyTokens()).tokens
+  const { blockChainRegistry } = getAPIProxy()
+  return (await blockChainRegistry.getBuyTokens()).tokens
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {

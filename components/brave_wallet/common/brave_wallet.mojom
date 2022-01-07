@@ -104,7 +104,7 @@ interface BraveWalletProvider {
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
   // visible asset list if user approves.
-  // Note that we will use the token data from ERCTokenRegistry (for
+  // Note that we will use the token data from BlockchainRegistry (for
   // mainnet) or from user asset list if there is an existing token with the
   // same contract address, instead of the token data in the request.
   AddSuggestToken(ERCToken token) => (bool approved, ProviderError error, string error_message);
@@ -120,7 +120,7 @@ interface PanelHandlerFactory {
                      pending_receiver<SwapService> swap_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringService> keyring_service,
-                     pending_receiver<ERCTokenRegistry> erc_token_registry,
+                     pending_receiver<BlockchainRegistry> blockchain_registry,
                      pending_receiver<EthTxService> eth_tx_service,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
@@ -134,7 +134,7 @@ interface PageHandlerFactory {
                     pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringService> keyring_service,
-                    pending_receiver<ERCTokenRegistry> erc_token_registry,
+                    pending_receiver<BlockchainRegistry> blockchain_registry,
                     pending_receiver<EthTxService> eth_tx_service,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
@@ -319,7 +319,7 @@ interface KeyringServiceObserver {
 };
 
 // List of tokens and coins that are supported.
-interface ERCTokenRegistry {
+interface BlockchainRegistry {
   // Obtains token information by a contract lookup
   GetTokenByContract(string contract) => (ERCToken? token);
 
@@ -739,15 +739,15 @@ interface BraveWalletService {
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
 
   // Adds a user asset to the user asset list pref for the specified chain ID.
-  // This asset could be a token from ERCTokenRegistry or a custom token.
+  // This asset could be a token from BlockchainRegistry or a custom token.
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
 
   // Removes a user asset from the user asset list pref for the specified chain
-  // ID. This asset could be a token from ERCTokenRegistry or a custom token.
+  // ID. This asset could be a token from BlockchainRegistry or a custom token.
   RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
 
   // Sets whether or not an asset is visible for the specified chain ID.
-  // This asset could be a token from ERCTokenRegistry or a custom token.
+  // This asset could be a token from BlockchainRegistry or a custom token.
   SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state

@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -16,33 +16,33 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class ERCTokenRegistryFactory {
+public class BlockChainRegistryFactory {
     private static final Object lock = new Object();
-    private static ERCTokenRegistryFactory instance;
+    private static BlockChainRegistryFactory instance;
 
-    public static ERCTokenRegistryFactory getInstance() {
+    public static BlockChainRegistryFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new ERCTokenRegistryFactory();
+                instance = new BlockChainRegistryFactory();
             }
         }
         return instance;
     }
 
-    private ERCTokenRegistryFactory() {}
+    private BlockChainRegistryFactory() {}
 
-    public ErcTokenRegistry getERCTokenRegistry(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = ERCTokenRegistryFactoryJni.get().getInterfaceToERCTokenRegistry();
+    public BlockchainRegistry getBlockChainRegistry(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = BlockChainRegistryFactoryJni.get().getInterfaceToBlockChainRegistry();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        ErcTokenRegistry ercTokenRegistry = ErcTokenRegistry.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) ercTokenRegistry).getProxyHandler();
+        BlockchainRegistry blockChainRegistry = BlockchainRegistry.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) blockChainRegistry).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return ercTokenRegistry;
+        return blockChainRegistry;
     }
 
     public String getTokensIconsLocation() {
-        return ERCTokenRegistryFactoryJni.get().getTokensIconsLocation();
+        return BlockChainRegistryFactoryJni.get().getTokensIconsLocation();
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -51,7 +51,7 @@ public class ERCTokenRegistryFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToERCTokenRegistry();
+        int getInterfaceToBlockChainRegistry();
         String getTokensIconsLocation();
     }
 }

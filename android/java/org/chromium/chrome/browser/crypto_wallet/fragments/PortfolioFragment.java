@@ -40,7 +40,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -248,7 +248,7 @@ public class PortfolioFragment extends Fragment
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         for (ErcToken userAsset : userAssets) {
             String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
             Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);

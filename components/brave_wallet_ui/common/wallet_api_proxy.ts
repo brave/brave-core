@@ -15,7 +15,7 @@ export default class WalletApiProxy {
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
   keyringService = getBraveKeyring()
-  ercTokenRegistry = new BraveWallet.ERCTokenRegistryRemote()
+  blockChainRegistry = new BraveWallet.BlockchainRegistryRemote()
   ethTxService = new BraveWallet.EthTxServiceRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 

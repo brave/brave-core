@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
 #include <algorithm>
 #include <utility>
@@ -13,36 +13,36 @@
 
 namespace brave_wallet {
 
-ERCTokenRegistry::ERCTokenRegistry() = default;
+BlockchainRegistry::BlockchainRegistry() = default;
 
-ERCTokenRegistry::~ERCTokenRegistry() {}
+BlockchainRegistry::~BlockchainRegistry() {}
 
-ERCTokenRegistry* ERCTokenRegistry::GetInstance() {
-  return base::Singleton<ERCTokenRegistry>::get();
+BlockchainRegistry* BlockchainRegistry::GetInstance() {
+  return base::Singleton<BlockchainRegistry>::get();
 }
 
-mojo::PendingRemote<mojom::ERCTokenRegistry> ERCTokenRegistry::MakeRemote() {
-  mojo::PendingRemote<mojom::ERCTokenRegistry> remote;
+mojo::PendingRemote<mojom::BlockchainRegistry> BlockchainRegistry::MakeRemote() {
+  mojo::PendingRemote<mojom::BlockchainRegistry> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void ERCTokenRegistry::Bind(
-    mojo::PendingReceiver<mojom::ERCTokenRegistry> receiver) {
+void BlockchainRegistry::Bind(
+    mojo::PendingReceiver<mojom::BlockchainRegistry> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void ERCTokenRegistry::UpdateTokenList(
+void BlockchainRegistry::UpdateTokenList(
     std::vector<mojom::ERCTokenPtr> erc_tokens) {
   erc_tokens_ = std::move(erc_tokens);
 }
 
-void ERCTokenRegistry::GetTokenByContract(const std::string& contract,
+void BlockchainRegistry::GetTokenByContract(const std::string& contract,
                                           GetTokenByContractCallback callback) {
   std::move(callback).Run(GetTokenByContract(contract));
 }
 
-mojom::ERCTokenPtr ERCTokenRegistry::GetTokenByContract(
+mojom::ERCTokenPtr BlockchainRegistry::GetTokenByContract(
     const std::string& contract) {
   auto token_it =
       std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
@@ -52,7 +52,7 @@ mojom::ERCTokenPtr ERCTokenRegistry::GetTokenByContract(
   return token_it == erc_tokens_.end() ? nullptr : token_it->Clone();
 }
 
-void ERCTokenRegistry::GetTokenBySymbol(const std::string& symbol,
+void BlockchainRegistry::GetTokenBySymbol(const std::string& symbol,
                                         GetTokenBySymbolCallback callback) {
   auto token_it = std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
                                [&](const mojom::ERCTokenPtr& current_token) {
@@ -67,7 +67,7 @@ void ERCTokenRegistry::GetTokenBySymbol(const std::string& symbol,
   std::move(callback).Run(token_it->Clone());
 }
 
-void ERCTokenRegistry::GetAllTokens(GetAllTokensCallback callback) {
+void BlockchainRegistry::GetAllTokens(GetAllTokensCallback callback) {
   std::vector<brave_wallet::mojom::ERCTokenPtr> erc_tokens_copy(
       erc_tokens_.size());
   std::transform(erc_tokens_.begin(), erc_tokens_.end(),
@@ -79,7 +79,7 @@ void ERCTokenRegistry::GetAllTokens(GetAllTokensCallback callback) {
   std::move(callback).Run(std::move(erc_tokens_copy));
 }
 
-void ERCTokenRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
+void BlockchainRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
   std::vector<brave_wallet::mojom::ERCTokenPtr> erc_buy_tokens;
   for (auto token : *kBuyTokens) {
     auto erc_token = brave_wallet::mojom::ERCToken::New();
@@ -89,7 +89,7 @@ void ERCTokenRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
   std::move(callback).Run(std::move(erc_buy_tokens));
 }
 
-void ERCTokenRegistry::GetBuyUrl(const std::string& address,
+void BlockchainRegistry::GetBuyUrl(const std::string& address,
                                  const std::string& symbol,
                                  const std::string& amount,
                                  GetBuyUrlCallback callback) {

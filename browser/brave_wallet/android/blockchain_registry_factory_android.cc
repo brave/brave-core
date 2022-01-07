@@ -6,9 +6,9 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/version.h"
-#include "brave/build/android/jni_headers/ERCTokenRegistryFactory_jni.h"
+#include "brave/build/android/jni_headers/BlockchainRegistryFactory_jni.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -17,15 +17,15 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_ERCTokenRegistryFactory_GetInterfaceToERCTokenRegistry(
+static jint JNI_BlockchainRegistryFactory_GetInterfaceToBlockchainRegistry(
     JNIEnv* env) {
-  auto pending = brave_wallet::ERCTokenRegistry::GetInstance()->MakeRemote();
+  auto pending = brave_wallet::BlockchainRegistry::GetInstance()->MakeRemote();
 
   return static_cast<jint>(pending.PassPipe().release().value());
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
-JNI_ERCTokenRegistryFactory_GetTokensIconsLocation(JNIEnv* env) {
+JNI_BlockchainRegistryFactory_GetTokensIconsLocation(JNIEnv* env) {
   auto* profile = ProfileManager::GetActiveUserProfile();
 
   absl::optional<base::Version> version =

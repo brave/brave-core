@@ -20,8 +20,8 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -80,7 +80,7 @@ std::vector<mojom::ERCTokenPtr> TokenListReady(
 }
 
 void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr> erc_tokens) {
-  ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
+  BlockchainRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
 }
 
 }  // namespace

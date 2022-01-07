@@ -33,7 +33,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -115,12 +115,12 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         return null;
     }
 
-    private ErcTokenRegistry getErcTokenRegistry() {
+    private BlockchainRegistry getBlockchainRegistry() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getErcTokenRegistry();
+            return ((BuySendSwapActivity) activity).getBlockchainRegistry();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getErcTokenRegistry();
+            return ((BraveWalletActivity) activity).getBlockchainRegistry();
         }
 
         return null;
@@ -182,10 +182,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             txType.setText(getResources().getString(R.string.send));
             if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
                     || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
-                assert ercTokenRegistry != null;
+                BlockchainRegistry blockChainRegistry = getBlockchainRegistry();
+                assert blockChainRegistry != null;
                 TokenUtils.getAllTokensFiltered(
-                        getBraveWalletService(), ercTokenRegistry, chainId, tokens -> {
+                        getBraveWalletService(), blockChainRegistry, chainId, tokens -> {
                             for (ErcToken token : tokens) {
                                 // Replace USDC and DAI contract addresses for Ropsten network
                                 token.contractAddress = Utils.getContractAddress(
