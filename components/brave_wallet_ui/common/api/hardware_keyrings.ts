@@ -7,31 +7,17 @@ import { assert } from 'chrome://resources/js/assert.m.js'
 import { BraveWallet } from '../../constants/types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
-import * as HWInterfaces from '../hardware/interfaces'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
+
 export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
-export enum HardwareCoins {
-  FILECOIN = 'fil',
-  ETH = 'eth'
-}
-
-export function getCoinName (coin: HardwareCoins) {
-  switch (coin) {
-    case HardwareCoins.FILECOIN:
-      return 'Filecoin'
-    case HardwareCoins.ETH:
-      return 'Ethereum'
-  }
-  return ''
-}
-
-const VendorTypes = [BraveWallet.TREZOR_HARDWARE_VENDOR, BraveWallet.LEDGER_HARDWARE_VENDOR] as const
+const VendorTypes = [
+  BraveWallet.TREZOR_HARDWARE_VENDOR,
+  BraveWallet.LEDGER_HARDWARE_VENDOR
+] as const
 export type HardwareVendor = typeof VendorTypes[number]
 
 // Lazy instances for keyrings
-let ethereumHardwareKeyring: LedgerBridgeKeyring
-let filecoinHardwareKeyring: FilecoinLedgerKeyring
+let ledgerHardwareKeyring: LedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 let keyringService: BraveWallet.KeyringServiceRemote
 
@@ -43,9 +29,9 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
   return keyringService
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = HardwareCoins.ETH): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring {
+export function getHardwareKeyring (type: HardwareVendor): LedgerBridgeKeyring | TrezorBridgeKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    const ledgerKeyring = getLedgerHardwareKeyring(coin)
+    const ledgerKeyring = getLedgerHardwareKeyring()
     assert(type === ledgerKeyring.type())
     return ledgerKeyring
   }
@@ -55,18 +41,11 @@ export function getHardwareKeyring (type: HardwareVendor, coin: HardwareCoins = 
   return trezorKeyring
 }
 
-export function getLedgerHardwareKeyring (coin: HardwareCoins): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.LedgerFilecoinKeyring {
-  if (coin === HardwareCoins.ETH) {
-    if (!ethereumHardwareKeyring) {
-      ethereumHardwareKeyring = new LedgerBridgeKeyring()
-    }
-    return ethereumHardwareKeyring
+export function getLedgerHardwareKeyring (): LedgerBridgeKeyring {
+  if (!ledgerHardwareKeyring) {
+    ledgerHardwareKeyring = new LedgerBridgeKeyring()
   }
-  assert(coin === HardwareCoins.FILECOIN)
-  if (!filecoinHardwareKeyring) {
-    filecoinHardwareKeyring = new FilecoinLedgerKeyring()
-  }
-  return filecoinHardwareKeyring
+  return ledgerHardwareKeyring
 }
 
 export function getTrezorHardwareKeyring (): TrezorBridgeKeyring {
