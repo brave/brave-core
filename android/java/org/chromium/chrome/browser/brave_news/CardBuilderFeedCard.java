@@ -282,12 +282,19 @@ public class CardBuilderFeedCard {
                                 adLogo.setTextColor(R.color.brave_theme_color);
                                 GradientDrawable gd = new GradientDrawable();
                                 gd.setColor(
-                                        mActivity.getResources().getColor(R.color.news_time_color));
+                                        mActivity.getResources().getColor(R.color.news_text_color));
                                 gd.setCornerRadius(15);
                                 gd.setStroke(1, R.color.brave_theme_color);
                                 adLogo.setBackground(gd);
                                 adLogo.setPadding(5, 5, 10, 5);
                                 adLogo.setLayoutParams(adLogoParams);
+                                adLogo.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        openUrlInSameTabAndSavePosition(
+                                                BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                                    }
+                                });
 
                                 rowTableParams.setMargins(50, 0, 50, 0);
                                 rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
@@ -350,12 +357,7 @@ public class CardBuilderFeedCard {
                                     public void onClick(View v) {
                                         mBraveNewsController.onDisplayAdVisit(
                                                 adData.uuid, adData.creativeInstanceId);
-                                        SharedPreferencesManager.getInstance().writeInt(
-                                                Integer.toString(BraveActivity.getBraveActivity()
-                                                                         .getActivityTab()
-                                                                         .getId()),
-                                                position);
-                                        TabUtils.openUrlInSameTab(adData.targetUrl.url);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
                                     }
                                 });
                             }
@@ -364,6 +366,7 @@ public class CardBuilderFeedCard {
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
                     }
+
                     break;
                 case CardType.DEALS:
 
@@ -433,12 +436,7 @@ public class CardBuilderFeedCard {
                     moreOffersLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    Integer.toString(BraveActivity.getBraveActivity()
-                                                             .getActivityTab()
-                                                             .getId()),
-                                    position);
-                            TabUtils.openUrlInSameTab(BRAVE_OFFERS_URL);
+                            openUrlInSameTabAndSavePosition(BRAVE_OFFERS_URL);
                         }
                     });
 
@@ -648,6 +646,13 @@ public class CardBuilderFeedCard {
         }
 
         return mLinearLayout;
+    }
+
+    private void openUrlInSameTabAndSavePosition(String myUrl) {
+        SharedPreferencesManager.getInstance().writeInt(
+                Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
+                mPosition);
+        TabUtils.openUrlInSameTab(myUrl);
     }
 
     private void addElementsToSingleLayout(ViewGroup view, int index, int itemType) {
@@ -1107,11 +1112,7 @@ public class CardBuilderFeedCard {
                 @Override
                 public void onClick(View v) {
                     // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    SharedPreferencesManager.getInstance().writeInt(
-                            Integer.toString(
-                                    BraveActivity.getBraveActivity().getActivityTab().getId()),
-                            mPosition);
-                    TabUtils.openUrlInSameTab(itemData.url.url);
+                    openUrlInSameTabAndSavePosition(itemData.url.url);
                 }
             });
 
@@ -1119,11 +1120,7 @@ public class CardBuilderFeedCard {
                 @Override
                 public void onClick(View v) {
                     // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    SharedPreferencesManager.getInstance().writeInt(
-                            Integer.toString(
-                                    BraveActivity.getBraveActivity().getActivityTab().getId()),
-                            mPosition);
-                    TabUtils.openUrlInSameTab(itemData.url.url);
+                    openUrlInSameTabAndSavePosition(itemData.url.url);
                 }
             });
 
