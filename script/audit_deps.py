@@ -35,11 +35,12 @@ CARGO_INCLUDE_PATHS = [
 # Ping security team before adding to ignored_npm_advisories
 IGNORED_NPM_ADVISORIES = [
     # Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
+    'https://github.com/advisories/GHSA-566m-qj78-rww5',  # rxdos
     'https://github.com/advisories/GHSA-93q8-gq69-wqmw',  # rxdos
     'https://github.com/advisories/GHSA-w5p7-h5w8-2hfq',  # rxdos
     'https://github.com/advisories/GHSA-w8qv-6jwh-64r5',  # rxdos
-    'https://github.com/advisories/GHSA-ww39-953v-wcq6',  # rxdos
-    'https://github.com/advisories/GHSA-whgm-jr23-g3j9'   # rxdos
+    'https://github.com/advisories/GHSA-whgm-jr23-g3j9',  # rxdos
+    'https://github.com/advisories/GHSA-ww39-953v-wcq6'   # rxdos
 ]
 
 
