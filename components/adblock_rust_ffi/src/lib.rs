@@ -155,13 +155,9 @@ pub unsafe extern "C" fn engine_get_csp_directives(
     if let Some(directive) =
         engine.get_csp_directives(url, host, tab_host, resource_type, Some(third_party))
     {
-        let ptr = CString::new(directive).expect("Error: CString::new()").into_raw();
-        std::mem::forget(ptr);
-        ptr
+        CString::new(directive).expect("Error: CString::new()").into_raw()
     } else {
-        let ptr = CString::new("").expect("Error: CString::new()").into_raw();
-        std::mem::forget(ptr);
-        ptr
+        CString::new("").expect("Error: CString::new()").into_raw()
     }
 }
 
@@ -269,13 +265,11 @@ pub unsafe extern "C" fn engine_url_cosmetic_resources(
     let url = CStr::from_ptr(url).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let ptr = CString::new(
+    CString::new(
         serde_json::to_string(&engine.url_cosmetic_resources(url)).unwrap_or_else(|_| "".into()),
     )
     .expect("Error: CString::new()")
-    .into_raw();
-    std::mem::forget(ptr);
-    ptr
+    .into_raw()
 }
 
 /// Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
