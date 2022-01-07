@@ -21,10 +21,7 @@ pub struct FeatureExtractorStreamer {
 impl FeatureExtractorStreamer {
     pub fn try_new(url: &Url) -> Result<Self, SpeedReaderError> {
         let mut sink = FeaturisingTreeSink::default();
-        sink.features.insert(
-            "url_depth".to_string(),
-            url_depth(url).unwrap_or_default() as u32,
-        );
+        sink.features.insert("url_depth".to_string(), url_depth(url).unwrap_or_default() as u32);
 
         let parser = html5ever::parse_document(sink, ParseOpts::default());
 
@@ -59,10 +56,7 @@ pub struct FeaturisingTreeSink {
 
 impl Default for FeaturisingTreeSink {
     fn default() -> FeaturisingTreeSink {
-        FeaturisingTreeSink {
-            features: HashMap::new(),
-            rcdom: Sink::default(),
-        }
+        FeaturisingTreeSink { features: HashMap::new(), rcdom: Sink::default() }
     }
 }
 
@@ -83,10 +77,7 @@ impl TreeSink for FeaturisingTreeSink {
         flags: ElementFlags,
     ) -> Handle {
         // increases count on feature map for selected tags
-        self.features
-            .entry(name.local.to_string())
-            .and_modify(|v| *v += 1)
-            .or_insert(1);
+        self.features.entry(name.local.to_string()).and_modify(|v| *v += 1).or_insert(1);
 
         // seaches for `<meta property="{og:},{fb:}..." />`
         if name.local == local_name!("meta") {
@@ -98,10 +89,7 @@ impl TreeSink for FeaturisingTreeSink {
                         .or_insert(1);
                 }
                 if a.value.starts_with("fb:") {
-                    self.features
-                        .entry("fb_pages".to_string())
-                        .and_modify(|v| *v = 1)
-                        .or_insert(1);
+                    self.features.entry("fb_pages".to_string()).and_modify(|v| *v = 1).or_insert(1);
                 }
             }
         }
@@ -112,10 +100,7 @@ impl TreeSink for FeaturisingTreeSink {
                 // `StrTendril` doesn't implement an `as_str()` so
                 // use the `&*` sigil to ask for the correct borrow.
                 if &*a.value == "amphtml" {
-                    self.features
-                        .entry("amphtml".to_string())
-                        .and_modify(|v| *v = 1)
-                        .or_insert(1);
+                    self.features.entry("amphtml".to_string()).and_modify(|v| *v = 1).or_insert(1);
                 }
             }
         }
@@ -125,10 +110,7 @@ impl TreeSink for FeaturisingTreeSink {
             if a.value.starts_with("https://schema.org/Article")
                 || a.value.starts_with("https://schema.org/NewsArticle")
             {
-                self.features
-                    .entry("schema_org".to_string())
-                    .and_modify(|v| *v = 1)
-                    .or_insert(1);
+                self.features.entry("schema_org".to_string()).and_modify(|v| *v = 1).or_insert(1);
             }
         }
 
@@ -212,8 +194,7 @@ impl TreeSink for FeaturisingTreeSink {
         prev_element: &Handle,
         child: NodeOrText<Handle>,
     ) {
-        self.rcdom
-            .append_based_on_parent_node(element, prev_element, child)
+        self.rcdom.append_based_on_parent_node(element, prev_element, child)
     }
 
     fn append_doctype_to_document(
@@ -222,8 +203,7 @@ impl TreeSink for FeaturisingTreeSink {
         public_id: StrTendril,
         system_id: StrTendril,
     ) {
-        self.rcdom
-            .append_doctype_to_document(name, public_id, system_id);
+        self.rcdom.append_doctype_to_document(name, public_id, system_id);
     }
 
     fn add_attrs_if_missing(&mut self, target: &Handle, attrs: Vec<Attribute>) {
@@ -263,15 +243,9 @@ mod tests {
         assert_eq!(url_depth(&Url::parse("http://url.com").unwrap()), Ok(1));
         assert_eq!(url_depth(&Url::parse("http://url.com/").unwrap()), Ok(1));
 
-        assert_eq!(
-            url_depth(&Url::parse("http://url.com/another/path/here?test").unwrap()),
-            Ok(3)
-        );
+        assert_eq!(url_depth(&Url::parse("http://url.com/another/path/here?test").unwrap()), Ok(3));
 
-        assert_eq!(
-            url_depth(&Url::parse("https://www.url.com/another/path").unwrap()),
-            Ok(2)
-        );
+        assert_eq!(url_depth(&Url::parse("https://www.url.com/another/path").unwrap()), Ok(2));
         assert!(matches!(
             url_depth(&Url::parse("data:text/plain,HelloWorld").unwrap()),
             Err(SpeedReaderError::InvalidUrl(_))
