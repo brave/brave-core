@@ -11,12 +11,12 @@ CI/run-network-audit:
 - chromium_src/**/*features.cc
 - patches/chrome-VERSION.patch
 
-dev/storybook:
-- "**/*.ts" 
+CI/storybook-url:
+- "**/*.ts"
 - "**/*.tsx"
 - "**/*.svelte"
 - "**/*.css"
-- "**/*.scs"
+- "**/*.scss"
 
 potential-layer-violation-fixes:
 - browser/android/BUILD.gn
