@@ -9,7 +9,7 @@ import android.content.res.Resources;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
@@ -102,9 +102,9 @@ public class Validations {
             }
         }
 
-        void fillKnowContracts(ErcToken[] tokens) {
+        void fillKnowContracts(BlockchainToken[] tokens) {
             mKnownContractAddresses = new HashSet<String>();
-            for (ErcToken token : tokens) {
+            for (BlockchainToken token : tokens) {
                 if (token.contractAddress != null && !token.contractAddress.isEmpty()) {
                     mKnownContractAddresses.add(
                             token.contractAddress.toLowerCase(Locale.getDefault()));

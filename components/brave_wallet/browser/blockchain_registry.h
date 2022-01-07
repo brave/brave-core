@@ -29,9 +29,9 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
-  void UpdateTokenList(std::vector<mojom::ERCTokenPtr> erc_tokens);
+  void UpdateTokenList(std::vector<mojom::BlockchainTokenPtr> blockchain_tokens);
 
-  mojom::ERCTokenPtr GetTokenByContract(const std::string& contract);
+  mojom::BlockchainTokenPtr GetTokenByContract(const std::string& contract);
 
   // BlockchainRegistry interface methods
   void GetTokenByContract(const std::string& contract,
@@ -46,7 +46,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                  GetBuyUrlCallback callback) override;
 
  protected:
-  std::vector<mojom::ERCTokenPtr> erc_tokens_;
+  std::vector<mojom::BlockchainTokenPtr> blockchain_tokens_;
   friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
   BlockchainRegistry();

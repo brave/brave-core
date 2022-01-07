@@ -33,8 +33,8 @@ void BlockchainRegistry::Bind(
 }
 
 void BlockchainRegistry::UpdateTokenList(
-    std::vector<mojom::ERCTokenPtr> erc_tokens) {
-  erc_tokens_ = std::move(erc_tokens);
+    std::vector<mojom::BlockchainTokenPtr> blockchain_tokens) {
+  blockchain_tokens_ = std::move(blockchain_tokens);
 }
 
 void BlockchainRegistry::GetTokenByContract(const std::string& contract,
@@ -42,24 +42,24 @@ void BlockchainRegistry::GetTokenByContract(const std::string& contract,
   std::move(callback).Run(GetTokenByContract(contract));
 }
 
-mojom::ERCTokenPtr BlockchainRegistry::GetTokenByContract(
+mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByContract(
     const std::string& contract) {
   auto token_it =
-      std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
-                   [&](const mojom::ERCTokenPtr& current_token) {
+      std::find_if(blockchain_tokens_.begin(), blockchain_tokens_.end(),
+                   [&](const mojom::BlockchainTokenPtr& current_token) {
                      return current_token->contract_address == contract;
                    });
-  return token_it == erc_tokens_.end() ? nullptr : token_it->Clone();
+  return token_it == blockchain_tokens_.end() ? nullptr : token_it->Clone();
 }
 
 void BlockchainRegistry::GetTokenBySymbol(const std::string& symbol,
                                         GetTokenBySymbolCallback callback) {
-  auto token_it = std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
-                               [&](const mojom::ERCTokenPtr& current_token) {
+  auto token_it = std::find_if(blockchain_tokens_.begin(), blockchain_tokens_.end(),
+                               [&](const mojom::BlockchainTokenPtr& current_token) {
                                  return current_token->symbol == symbol;
                                });
 
-  if (token_it == erc_tokens_.end()) {
+  if (token_it == blockchain_tokens_.end()) {
     std::move(callback).Run(nullptr);
     return;
   }
@@ -68,25 +68,25 @@ void BlockchainRegistry::GetTokenBySymbol(const std::string& symbol,
 }
 
 void BlockchainRegistry::GetAllTokens(GetAllTokensCallback callback) {
-  std::vector<brave_wallet::mojom::ERCTokenPtr> erc_tokens_copy(
-      erc_tokens_.size());
-  std::transform(erc_tokens_.begin(), erc_tokens_.end(),
-                 erc_tokens_copy.begin(),
-                 [](const brave_wallet::mojom::ERCTokenPtr& current_token)
-                     -> brave_wallet::mojom::ERCTokenPtr {
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_tokens_copy(
+      blockchain_tokens_.size());
+  std::transform(blockchain_tokens_.begin(), blockchain_tokens_.end(),
+                 blockchain_tokens_copy.begin(),
+                 [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
+                     -> brave_wallet::mojom::BlockchainTokenPtr {
                    return current_token.Clone();
                  });
-  std::move(callback).Run(std::move(erc_tokens_copy));
+  std::move(callback).Run(std::move(blockchain_tokens_copy));
 }
 
 void BlockchainRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
-  std::vector<brave_wallet::mojom::ERCTokenPtr> erc_buy_tokens;
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens;
   for (auto token : *kBuyTokens) {
-    auto erc_token = brave_wallet::mojom::ERCToken::New();
-    *erc_token = token;
-    erc_buy_tokens.push_back(std::move(erc_token));
+    auto blockchain_token = brave_wallet::mojom::BlockchainToken::New();
+    *blockchain_token = token;
+    blockchain_buy_tokens.push_back(std::move(blockchain_token));
   }
-  std::move(callback).Run(std::move(erc_buy_tokens));
+  std::move(callback).Run(std::move(blockchain_buy_tokens));
 }
 
 void BlockchainRegistry::GetBuyUrl(const std::string& address,

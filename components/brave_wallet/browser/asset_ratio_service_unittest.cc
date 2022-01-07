@@ -96,11 +96,11 @@ class AssetRatioServiceUnitTest : public testing::Test {
   }
 
   void GetTokenInfo(const std::string& contract_address,
-                    mojom::ERCTokenPtr expected_token) {
+                    mojom::BlockchainTokenPtr expected_token) {
     base::RunLoop run_loop;
     asset_ratio_service_->GetTokenInfo(
         contract_address,
-        base::BindLambdaForTesting([&](mojom::ERCTokenPtr token) {
+        base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           EXPECT_EQ(token, expected_token);
           run_loop.Quit();
         }));
@@ -481,7 +481,7 @@ TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
   )");
   GetTokenInfo(
       "0xdac17f958d2ee523a2206206994597c13d831ec7",
-      mojom::ERCToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      mojom::BlockchainToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7",
                            "Tether USD", "", true, false, "USDT", 6, true, ""));
 
   SetInterceptor("unexpected response");

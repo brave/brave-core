@@ -23,7 +23,7 @@ base::ListValue PermissionRequestResponseToValue(
     const url::Origin& origin,
     const std::vector<std::string> accounts);
 
-mojom::ERCTokenPtr ValueToERCToken(const base::Value& value);
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value);
 
 }  // namespace brave_wallet
 

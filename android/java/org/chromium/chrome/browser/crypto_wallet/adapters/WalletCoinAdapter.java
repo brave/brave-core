@@ -125,7 +125,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     }
                 }
                 if (mType != AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                    onWalletListItemClick.onAssetClick(walletListItemModel.getErcToken());
+                    onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
                 }
             } else {
                 onWalletListItemClick.onAccountClick(walletListItemModel);
@@ -166,15 +166,15 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
 
         if (mType != AdapterType.ACCOUNTS_LIST) {
-            if (walletListItemModel.getErcToken() == null
-                    || !walletListItemModel.getErcToken().logo.isEmpty()) {
+            if (walletListItemModel.getBlockchainToken() == null
+                    || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
                 Utils.setBitmapResource(mExecutor, mHandler, context,
                         walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
                         holder.iconImg, null, true);
             } else {
                 Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
-                        walletListItemModel.getErcToken().contractAddress,
-                        walletListItemModel.getErcToken().symbol,
+                        walletListItemModel.getBlockchainToken().contractAddress,
+                        walletListItemModel.getBlockchainToken().symbol,
                         context.getResources().getDisplayMetrics().density, null, context, false,
                         (float) 0.9);
                 if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {

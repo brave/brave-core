@@ -14,7 +14,7 @@
 namespace brave_wallet {
 
 bool ParseTokenList(const std::string& json,
-                    std::vector<mojom::ERCTokenPtr>* token_list);
+                    std::vector<mojom::BlockchainTokenPtr>* token_list);
 
 }  // namespace brave_wallet
 

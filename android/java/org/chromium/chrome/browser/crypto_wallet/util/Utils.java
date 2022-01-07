@@ -46,7 +46,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -854,8 +854,8 @@ public class Utils {
         }
     }
 
-    public static ErcToken createEthereumErcToken() {
-        ErcToken eth = new ErcToken();
+    public static BlockchainToken createEthereumBlockchainToken() {
+        BlockchainToken eth = new BlockchainToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
@@ -864,8 +864,8 @@ public class Utils {
         return eth;
     }
 
-    public static ErcToken[] fixupTokensRegistry(ErcToken[] tokens, String chainId) {
-        for (ErcToken token : tokens) {
+    public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
+        for (BlockchainToken token : tokens) {
             token.contractAddress =
                     getContractAddress(chainId, token.symbol, token.contractAddress);
         }
@@ -992,7 +992,7 @@ public class Utils {
                 for (TransactionInfo txInfo : txInfos) {
                     if (txInfo.txType == TransactionType.ERC20_TRANSFER
                             || txInfo.txType == TransactionType.ERC20_APPROVE) {
-                        for (ErcToken token : tokens) {
+                        for (BlockchainToken token : tokens) {
                             // Replace USDC and DAI contract addresses for Ropsten network
                             token.contractAddress = getContractAddress(
                                     chainId, token.symbol, token.contractAddress);

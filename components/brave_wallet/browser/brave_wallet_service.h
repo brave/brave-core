@@ -67,13 +67,13 @@ class BraveWalletService : public KeyedService,
 
   void GetUserAssets(const std::string& chain_id,
                      GetUserAssetsCallback callback) override;
-  void AddUserAsset(mojom::ERCTokenPtr token,
+  void AddUserAsset(mojom::BlockchainTokenPtr token,
                     const std::string& chain_id,
                     AddUserAssetCallback callback) override;
-  void RemoveUserAsset(mojom::ERCTokenPtr token,
+  void RemoveUserAsset(mojom::BlockchainTokenPtr token,
                        const std::string& chain_id,
                        RemoveUserAssetCallback callback) override;
-  void SetUserAssetVisible(mojom::ERCTokenPtr token,
+  void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
@@ -163,12 +163,12 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
-  bool AddUserAsset(mojom::ERCTokenPtr token, const std::string& chain_id);
-  bool RemoveUserAsset(mojom::ERCTokenPtr token, const std::string& chain_id);
-  bool SetUserAssetVisible(mojom::ERCTokenPtr token,
+  bool AddUserAsset(mojom::BlockchainTokenPtr token, const std::string& chain_id);
+  bool RemoveUserAsset(mojom::BlockchainTokenPtr token, const std::string& chain_id);
+  bool SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            const std::string& chain_id,
                            bool visible);
-  mojom::ERCTokenPtr GetUserAsset(const std::string& contract_address,
+  mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
                                   const std::string& token_id,
                                   bool is_erc721,
                                   const std::string& chain_id);

@@ -32,7 +32,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -186,7 +186,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 assert blockChainRegistry != null;
                 TokenUtils.getAllTokensFiltered(
                         getBraveWalletService(), blockChainRegistry, chainId, tokens -> {
-                            for (ErcToken token : tokens) {
+                            for (BlockchainToken token : tokens) {
                                 // Replace USDC and DAI contract addresses for Ropsten network
                                 token.contractAddress = Utils.getContractAddress(
                                         chainId, token.symbol, token.contractAddress);

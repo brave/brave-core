@@ -729,7 +729,7 @@ void BraveWalletProviderImpl::OnContentSettingChanged(
 }
 
 void BraveWalletProviderImpl::AddSuggestToken(
-    mojom::ERCTokenPtr token,
+    mojom::BlockchainTokenPtr token,
     AddSuggestTokenCallback callback) {
   if (!token) {
     std::move(callback).Run(

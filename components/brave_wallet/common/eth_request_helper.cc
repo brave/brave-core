@@ -414,7 +414,7 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
 }
 
 bool ParseWalletWatchAssetParams(const std::string& json,
-                                 mojom::ERCTokenPtr* token,
+                                 mojom::BlockchainTokenPtr* token,
                                  std::string* error_message) {
   if (!token || !error_message) {
     return false;
@@ -516,7 +516,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   }
 
   *token =
-      mojom::ERCToken::New(eth_addr.ToChecksumAddress(), *symbol /* name */,
+      mojom::BlockchainToken::New(eth_addr.ToChecksumAddress(), *symbol /* name */,
                            logo, true, false, *symbol, decimals, true, "");
   return true;
 }

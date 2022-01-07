@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -146,7 +146,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
 
             String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-            for (ErcToken userAsset : portfolioHelper.getUserAssets()) {
+            for (BlockchainToken userAsset : portfolioHelper.getUserAssets()) {
                 String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
                 Double fiatBalance = Utils.getOrDefault(
                         portfolioHelper.getPerTokenFiatSum(), currentAssetSymbol, 0.0d);
@@ -168,7 +168,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     userAsset.logo = "eth.png";
                 }
                 walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-                walletListItemModel.setErcToken(userAsset);
+                walletListItemModel.setBlockchainToken(userAsset);
                 walletListItemModelList.add(walletListItemModel);
             }
 
@@ -235,7 +235,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onAssetClick(ErcToken asset) {
+    public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset.symbol,

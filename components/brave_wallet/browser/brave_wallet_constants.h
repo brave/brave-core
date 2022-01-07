@@ -27,7 +27,7 @@ constexpr int32_t kAutoLockMinutesMin = 1;
 constexpr int32_t kAutoLockMinutesMax = 10080;
 
 // List of assets from Wyre, available to buy
-static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
+static base::NoDestructor<std::vector<mojom::BlockchainToken>> kBuyTokens(
     {{"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, false, "BAT", 18, true, ""},
      {"", "Ethereum", "", false, false, "ETH", 18, true, ""},

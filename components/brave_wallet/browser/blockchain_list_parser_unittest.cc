@@ -39,7 +39,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
      }
     }
   )");
-  std::vector<mojom::ERCTokenPtr> token_list;
+  std::vector<mojom::BlockchainTokenPtr> token_list;
   ASSERT_TRUE(ParseTokenList(json, &token_list));
   ASSERT_EQ(token_list.size(), 3UL);
 

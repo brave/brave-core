@@ -80,12 +80,12 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  std::vector<mojom::ERCTokenPtr> GetUserAssets() const {
+  std::vector<mojom::BlockchainTokenPtr> GetUserAssets() const {
     base::RunLoop run_loop;
-    std::vector<mojom::ERCTokenPtr> tokens_out;
+    std::vector<mojom::BlockchainTokenPtr> tokens_out;
     brave_wallet_service_->GetUserAssets(
         GetCurrentChainId(browser()->profile()->GetPrefs()),
-        base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
+        base::BindLambdaForTesting([&](std::vector<mojom::BlockchainTokenPtr> tokens) {
           for (const auto& token : tokens)
             tokens_out.push_back(token.Clone());
           run_loop.Quit();
