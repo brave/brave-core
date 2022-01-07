@@ -182,7 +182,7 @@ double CalcWalletBalance(base::flat_map<std::string, double> wallets,
 
 void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
   base::Time enabled_timestamp = prefs->GetTime(prefs::kEnabledTimestamp);
-  auto value = RewardsEnabledDuration::kNever;
+  auto enabled_duration = RewardsEnabledDuration::kNever;
 
   if (enabled_timestamp.is_null()) {
     // No previous timestamp, so record one of the non-duration states.
@@ -191,12 +191,12 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       // Probably they've been on since we started measuring.
       // Ignore this interval since we can't measure it and treat it
       // the same as never having enabled.
-      value = RewardsEnabledDuration::kNever;
+      enabled_duration = RewardsEnabledDuration::kNever;
     } else {
       // Rewards have been enabled.
       // Remember when so we can measure the duration on later changes.
       prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
-      value = RewardsEnabledDuration::kStillEnabled;
+      enabled_duration = RewardsEnabledDuration::kStillEnabled;
     }
   } else {
     // Previous timestamp available.
@@ -211,15 +211,15 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       base::TimeDelta duration = base::Time::Now() - enabled_timestamp;
       VLOG(1) << "Rewards disabled after " << duration;
       if (duration < base::Hours(threshold)) {
-        value = RewardsEnabledDuration::kHours;
+        enabled_duration = RewardsEnabledDuration::kHours;
       } else if (duration < base::Days(threshold)) {
-        value = RewardsEnabledDuration::kDays;
+        enabled_duration = RewardsEnabledDuration::kDays;
       } else if (duration < base::Days(threshold * days_per_week)) {
-        value = RewardsEnabledDuration::kWeeks;
+        enabled_duration = RewardsEnabledDuration::kWeeks;
       } else if (duration < base::Days(threshold * days_per_month)) {
-        value = RewardsEnabledDuration::kMonths;
+        enabled_duration = RewardsEnabledDuration::kMonths;
       } else {
-        value = RewardsEnabledDuration::kQuarters;
+        enabled_duration = RewardsEnabledDuration::kQuarters;
       }
       // Null the timestamp so we're ready for a fresh measurement.
       prefs->SetTime(prefs::kEnabledTimestamp, base::Time());
@@ -230,11 +230,11 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       // We nevertheless mark a new timestamp here to maintain consistent
       // measurement even if our prefs change through some other path.
       prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
-      value = RewardsEnabledDuration::kStillEnabled;
+      enabled_duration = RewardsEnabledDuration::kStillEnabled;
     }
   }
 
-  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.EnabledDuration", value);
+  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.EnabledDuration", enabled_duration);
 }
 
 void ExtractAndLogStats(const base::DictionaryValue& dict) {
