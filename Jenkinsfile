@@ -50,7 +50,7 @@ pipeline {
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
                         RUN_UPSTREAM_TESTS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-upstream-tests') }.equals(1)
-                        STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('dev/storybook') }.equals(1)
+                        STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
                         def branchExistsInOtherRepo = httpRequest(url: GITHUB_API + '/' + OTHER_REPO + '/branches/' + CHANGE_BRANCH_ENCODED, validResponseCodes: '100:499', customHeaders: GITHUB_AUTH_HEADERS, quiet: true).status.equals(200)
                         if (branchExistsInOtherRepo) {
                             def otherPrDetails = readJSON(text: httpRequest(url: GITHUB_API + '/' + OTHER_REPO + '/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
