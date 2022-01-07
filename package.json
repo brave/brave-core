@@ -344,6 +344,7 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
+    "@glif/filecoin-wallet-provider": "2.0.0-alpha.9",
     "@ledgerhq/hw-app-eth": "6.15.0",
     "@ledgerhq/hw-transport-webhid": "6.11.2",
     "@types/jszip": "^3.1.6",
