@@ -17,9 +17,6 @@ public interface KeyringControllerObserver
     default void keyringRestored() {}
 
     @Override
-    default void keyringReset() {}
-
-    @Override
     default void locked() {}
 
     @Override

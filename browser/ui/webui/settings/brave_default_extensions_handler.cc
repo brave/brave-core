@@ -11,9 +11,10 @@
 #include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_reset.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -206,7 +207,9 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
 
 void BraveDefaultExtensionsHandler::ResetWallet(
     base::Value::ConstListView args) {
-  brave_wallet::ResetWallet(profile_);
+  auto* keyring_controller =
+      brave_wallet::KeyringControllerFactory::GetControllerForContext(profile_);
+  keyring_controller->Reset();
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(

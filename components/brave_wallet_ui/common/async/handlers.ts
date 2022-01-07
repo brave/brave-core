@@ -124,10 +124,6 @@ handler.on(WalletActions.keyringRestored.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.keyringReset.getType(), async (store) => {
-  window.location.reload()
-})
-
 handler.on(WalletActions.locked.getType(), async (store) => {
   interactionNotifier.stopWatchingForInteraction()
   await refreshWalletInfo(store)

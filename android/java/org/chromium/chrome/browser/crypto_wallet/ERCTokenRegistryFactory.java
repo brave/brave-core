@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
+import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
