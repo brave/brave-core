@@ -1,0 +1,27 @@
+
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}}.Test{{interface.name}})
+@interface {{class_prefix}}Test{{interface.name}} : NSObject <{{class_prefix}}{{interface.name}}>
+{%- for method in interface.methods -%}
+{%-   set args = method.parameters %}
+@property(nonatomic, nullable, copy) void (^_{{method|objc_method_name_formatter}})(
+{%-   for param in method.parameters -%}
+{%-     set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
+{%-     set type = "%s%s"|format(param.kind|objc_wrapper_type, " " + nullable if nullable) -%}
+{{type}} {{param.name|under_to_lower_camel}}
+{%-     if not loop.last -%},{{" "}}{%- endif -%}
+{%-   endfor -%}
+{%-   if method.response_parameters -%}
+{%-   if method.parameters -%},{{" "}}{%- endif -%}
+void (^completion)(
+{%- for param in method.response_parameters -%}
+{%-   set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
+{%-   set type = "%s%s"|format(param.kind|objc_wrapper_type, " " + nullable if nullable) -%}
+{{type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+)
+{%- endif -%}
+);
+{%- endfor %}
+@end
