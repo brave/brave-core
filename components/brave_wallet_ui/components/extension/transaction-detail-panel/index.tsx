@@ -49,7 +49,7 @@ export interface Props {
   transaction: BraveWallet.TransactionInfo
   selectedNetwork: BraveWallet.EthereumChain
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.ERCToken[]
+  visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onBack: () => void
@@ -119,7 +119,7 @@ const TransactionDetailPanel = (props: Props) => {
   const transactionValue = React.useMemo((): string => {
     if (transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
       transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
-      return transactionDetails.erc721ERCToken?.name + ' ' + transactionDetails.erc721TokenId
+      return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
     return formatWithCommasAndDecimals(transactionDetails.value) + ' ' + transactionDetails.symbol
   }, [transactionDetails, transaction])

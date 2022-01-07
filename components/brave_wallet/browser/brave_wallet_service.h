@@ -163,15 +163,17 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
-  bool AddUserAsset(mojom::BlockchainTokenPtr token, const std::string& chain_id);
-  bool RemoveUserAsset(mojom::BlockchainTokenPtr token, const std::string& chain_id);
+  bool AddUserAsset(mojom::BlockchainTokenPtr token,
+                    const std::string& chain_id);
+  bool RemoveUserAsset(mojom::BlockchainTokenPtr token,
+                       const std::string& chain_id);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            const std::string& chain_id,
                            bool visible);
   mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
-                                  const std::string& token_id,
-                                  bool is_erc721,
-                                  const std::string& chain_id);
+                                         const std::string& token_id,
+                                         bool is_erc721,
+                                         const std::string& chain_id);
   void OnNetworkChanged();
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();

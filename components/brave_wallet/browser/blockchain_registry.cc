@@ -21,7 +21,8 @@ BlockchainRegistry* BlockchainRegistry::GetInstance() {
   return base::Singleton<BlockchainRegistry>::get();
 }
 
-mojo::PendingRemote<mojom::BlockchainRegistry> BlockchainRegistry::MakeRemote() {
+mojo::PendingRemote<mojom::BlockchainRegistry>
+BlockchainRegistry::MakeRemote() {
   mojo::PendingRemote<mojom::BlockchainRegistry> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
@@ -37,8 +38,9 @@ void BlockchainRegistry::UpdateTokenList(
   blockchain_tokens_ = std::move(blockchain_tokens);
 }
 
-void BlockchainRegistry::GetTokenByContract(const std::string& contract,
-                                          GetTokenByContractCallback callback) {
+void BlockchainRegistry::GetTokenByContract(
+    const std::string& contract,
+    GetTokenByContractCallback callback) {
   std::move(callback).Run(GetTokenByContract(contract));
 }
 
@@ -53,11 +55,12 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByContract(
 }
 
 void BlockchainRegistry::GetTokenBySymbol(const std::string& symbol,
-                                        GetTokenBySymbolCallback callback) {
-  auto token_it = std::find_if(blockchain_tokens_.begin(), blockchain_tokens_.end(),
-                               [&](const mojom::BlockchainTokenPtr& current_token) {
-                                 return current_token->symbol == symbol;
-                               });
+                                          GetTokenBySymbolCallback callback) {
+  auto token_it =
+      std::find_if(blockchain_tokens_.begin(), blockchain_tokens_.end(),
+                   [&](const mojom::BlockchainTokenPtr& current_token) {
+                     return current_token->symbol == symbol;
+                   });
 
   if (token_it == blockchain_tokens_.end()) {
     std::move(callback).Run(nullptr);
@@ -70,12 +73,13 @@ void BlockchainRegistry::GetTokenBySymbol(const std::string& symbol,
 void BlockchainRegistry::GetAllTokens(GetAllTokensCallback callback) {
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_tokens_copy(
       blockchain_tokens_.size());
-  std::transform(blockchain_tokens_.begin(), blockchain_tokens_.end(),
-                 blockchain_tokens_copy.begin(),
-                 [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
-                     -> brave_wallet::mojom::BlockchainTokenPtr {
-                   return current_token.Clone();
-                 });
+  std::transform(
+      blockchain_tokens_.begin(), blockchain_tokens_.end(),
+      blockchain_tokens_copy.begin(),
+      [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
+          -> brave_wallet::mojom::BlockchainTokenPtr {
+        return current_token.Clone();
+      });
   std::move(callback).Run(std::move(blockchain_tokens_copy));
 }
 
@@ -90,9 +94,9 @@ void BlockchainRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
 }
 
 void BlockchainRegistry::GetBuyUrl(const std::string& address,
-                                 const std::string& symbol,
-                                 const std::string& amount,
-                                 GetBuyUrlCallback callback) {
+                                   const std::string& symbol,
+                                   const std::string& amount,
+                                   GetBuyUrlCallback callback) {
   std::string url = base::StringPrintf(kBuyUrl, address.c_str(), symbol.c_str(),
                                        amount.c_str(), kWyreID);
 

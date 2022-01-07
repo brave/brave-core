@@ -85,11 +85,12 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     std::vector<mojom::BlockchainTokenPtr> tokens_out;
     brave_wallet_service_->GetUserAssets(
         GetCurrentChainId(browser()->profile()->GetPrefs()),
-        base::BindLambdaForTesting([&](std::vector<mojom::BlockchainTokenPtr> tokens) {
-          for (const auto& token : tokens)
-            tokens_out.push_back(token.Clone());
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> tokens) {
+              for (const auto& token : tokens)
+                tokens_out.push_back(token.Clone());
+              run_loop.Quit();
+            }));
     run_loop.Run();
     return tokens_out;
   }

@@ -19,7 +19,7 @@ namespace brave_wallet {
 namespace {
 
 void TestValueToBlockchainTokenFailCases(const base::Value& value,
-                                  const std::vector<std::string>& keys) {
+                                         const std::vector<std::string>& keys) {
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
     invalid_value.RemoveKey(key);

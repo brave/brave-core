@@ -50,7 +50,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   insufficientFundsError: boolean
   contractAddressError?: string
   sameAddressError?: string
-  erc721ERCToken?: BraveWallet.ERCToken
+  erc721BlockchainToken?: BraveWallet.BlockchainToken
   erc721TokenId?: string
   isSwap?: boolean
 
@@ -85,8 +85,8 @@ export function useTransactionParser (
   selectedNetwork: BraveWallet.EthereumChain,
   accounts: WalletAccountType[],
   spotPrices: BraveWallet.AssetPrice[],
-  visibleTokens: BraveWallet.ERCToken[],
-  fullTokenList?: BraveWallet.ERCToken[]
+  visibleTokens: BraveWallet.BlockchainToken[],
+  fullTokenList?: BraveWallet.BlockchainToken[]
 ) {
   const findSpotPrice = usePricing(spotPrices)
   const getAddressLabel = useAddressLabels(accounts)
@@ -221,7 +221,7 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsError: insufficientNativeFunds,
-          erc721ERCToken: token,
+          erc721BlockchainToken: token,
           erc721TokenId: hexToNumber(tokenID ?? ''),
           contractAddressError: checkForContractAddressError(toAddress),
           sameAddressError: checkForSameAddressError(toAddress, owner),

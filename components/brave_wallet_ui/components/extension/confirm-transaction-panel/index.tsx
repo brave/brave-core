@@ -23,7 +23,7 @@ import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas, { MaxPriorityPanels } from '../edit-gas'
 import EditAllowance from '../edit-allowance'
 
-import { getERCTokenInfo } from '../../../common/async/lib'
+import { getBlockchainTokenInfo } from '../../../common/async/lib'
 
 // Styled Components
 import {
@@ -74,8 +74,8 @@ export type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
   siteURL: string
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.ERCToken[]
-  fullTokenList: BraveWallet.ERCToken[]
+  visibleTokens: BraveWallet.BlockchainToken[]
+  fullTokenList: BraveWallet.BlockchainToken[]
   transactionInfo: BraveWallet.TransactionInfo
   selectedNetwork: BraveWallet.EthereumChain
   transactionSpotPrices: BraveWallet.AssetPrice[]
@@ -138,7 +138,7 @@ function ConfirmTransactionPanel (props: Props) {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getERCTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -314,12 +314,12 @@ function ConfirmTransactionPanel (props: Props) {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721ERCToken} />
+            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721BlockchainToken} />
           }
           <TransactionAmmountBig>
             {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
               transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-              ? transactionDetails.erc721ERCToken?.name + ' ' + transactionDetails.erc721TokenId
+              ? transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
               : formatWithCommasAndDecimals(transactionDetails.value) + ' ' + transactionDetails.symbol
             }
           </TransactionAmmountBig>

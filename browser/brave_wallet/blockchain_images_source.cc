@@ -68,7 +68,7 @@ void BlockchainImagesSource::StartDataRequest(
 }
 
 void BlockchainImagesSource::OnGotImageFile(GotDataCallback callback,
-                                          absl::optional<std::string> input) {
+                                            absl::optional<std::string> input) {
   scoped_refptr<base::RefCountedMemory> bytes;
   if (!input) {
     std::move(callback).Run(std::move(bytes));

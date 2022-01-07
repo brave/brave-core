@@ -101,7 +101,7 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: BraveWallet.ERCToken) => {
+reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: BraveWallet.BlockchainToken) => {
   return {
     ...state,
     selectedAsset: payload

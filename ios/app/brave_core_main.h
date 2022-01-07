@@ -44,7 +44,7 @@ OBJC_EXPORT
 
 - (void)scheduleLowPriorityStartupTasks;
 
-@property(class, readonly) id<BraveWalletBlockchainRegistry> blockChainRegistry;
+@property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
 
 @end
 

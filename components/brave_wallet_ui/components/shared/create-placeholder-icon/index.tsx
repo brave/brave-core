@@ -12,7 +12,7 @@ interface Config {
 }
 
 interface Props {
-  selectedAsset?: BraveWallet.ERCToken
+  selectedAsset?: BraveWallet.BlockchainToken
 }
 
 function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {

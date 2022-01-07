@@ -72,14 +72,14 @@ import {
 export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
-  onAddUserAsset: (token: BraveWallet.ERCToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
+  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.ERCToken) => void
+  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
   showVisibleAssetsModal: boolean
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
@@ -89,7 +89,7 @@ export interface Props {
   accounts: WalletAccountType[]
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  selectedAsset: BraveWallet.ERCToken | undefined
+  selectedAsset: BraveWallet.BlockchainToken | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -97,15 +97,15 @@ export interface Props {
   portfolioBalance: string
   transactions: AccountTransactions
   isLoading: boolean
-  fullAssetList: BraveWallet.ERCToken[]
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  fullAssetList: BraveWallet.BlockchainToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   isFetchingPortfolioPriceHistory: boolean
   transactionSpotPrices: BraveWallet.AssetPrice[]
   onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.ERCToken
+  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
 const Portfolio = (props: Props) => {
@@ -191,7 +191,7 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const selectAsset = (asset: BraveWallet.ERCToken) => () => {
+  const selectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     onSelectAsset(asset)
     toggleNav()
   }
@@ -233,12 +233,12 @@ const Portfolio = (props: Props) => {
     onShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
-  const getFiatBalance = (account: WalletAccountType, asset: BraveWallet.ERCToken) => {
+  const getFiatBalance = (account: WalletAccountType, asset: BraveWallet.BlockchainToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
     return (found) ? found.fiatBalance : ''
   }
 
-  const getAssetBalance = (account: WalletAccountType, asset: BraveWallet.ERCToken) => {
+  const getAssetBalance = (account: WalletAccountType, asset: BraveWallet.BlockchainToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
     return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : ''
   }

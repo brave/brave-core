@@ -29,7 +29,8 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
-  void UpdateTokenList(std::vector<mojom::BlockchainTokenPtr> blockchain_tokens);
+  void UpdateTokenList(
+      std::vector<mojom::BlockchainTokenPtr> blockchain_tokens);
 
   mojom::BlockchainTokenPtr GetTokenByContract(const std::string& contract);
 

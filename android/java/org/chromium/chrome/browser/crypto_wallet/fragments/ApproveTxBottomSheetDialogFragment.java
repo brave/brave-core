@@ -30,10 +30,10 @@ import com.google.android.material.tabs.TabLayout;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -182,10 +182,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             txType.setText(getResources().getString(R.string.send));
             if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
                     || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                BlockchainRegistry blockChainRegistry = getBlockchainRegistry();
-                assert blockChainRegistry != null;
+                BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
+                assert blockchainRegistry != null;
                 TokenUtils.getAllTokensFiltered(
-                        getBraveWalletService(), blockChainRegistry, chainId, tokens -> {
+                        getBraveWalletService(), blockchainRegistry, chainId, tokens -> {
                             for (BlockchainToken token : tokens) {
                                 // Replace USDC and DAI contract addresses for Ropsten network
                                 token.contractAddress = Utils.getContractAddress(

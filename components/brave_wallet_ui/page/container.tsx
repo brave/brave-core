@@ -51,7 +51,7 @@ import {
   getERC20Allowance,
   onConnectHardwareWallet,
   isStrongPassword,
-  getERCTokenInfo,
+  getBlockchainTokenInfo,
   getBuyAssets
 } from '../common/async/lib'
 
@@ -141,7 +141,7 @@ function Container (props: Props) {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getERCTokenInfo, userVisibleTokenOptions, tokenOptions, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokenOptions, tokenOptions, selectedNetwork)
 
   const {
     exchangeRate,
@@ -288,7 +288,7 @@ function Container (props: Props) {
   }, [mnemonic])
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = (asset: BraveWallet.ERCToken): number | string => {
+  const fullAssetBalance = (asset: BraveWallet.BlockchainToken): number | string => {
     const amounts = accounts.map((account) => {
       let balance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -304,7 +304,7 @@ function Container (props: Props) {
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const fullAssetFiatBalance = (asset: BraveWallet.ERCToken): number | string => {
+  const fullAssetFiatBalance = (asset: BraveWallet.BlockchainToken): number | string => {
     const amounts = accounts.map((account) => {
       let fiatBalance
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -328,7 +328,7 @@ function Container (props: Props) {
     }))
   }, [userVisibleTokenOptions, accounts])
 
-  const onSelectAsset = (asset: BraveWallet.ERCToken) => {
+  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
 
@@ -447,11 +447,11 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (token: BraveWallet.ERCToken, isVisible: boolean) => {
+  const onSetUserAssetVisible = (token: BraveWallet.BlockchainToken, isVisible: boolean) => {
     props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
-  const onAddUserAsset = (token: BraveWallet.ERCToken) => {
+  const onAddUserAsset = (token: BraveWallet.BlockchainToken) => {
     props.walletActions.addUserAsset({
       token: {
         ...token,
@@ -461,7 +461,7 @@ function Container (props: Props) {
     })
   }
 
-  const onRemoveUserAsset = (token: BraveWallet.ERCToken) => {
+  const onRemoveUserAsset = (token: BraveWallet.BlockchainToken) => {
     props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 

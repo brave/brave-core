@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -44,9 +44,9 @@ public class TokenUtils {
     }
 
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockChainRegistry, String chainId,
+            BlockchainRegistry blockchainRegistry, String chainId,
             BlockchainRegistry.GetAllTokensResponse callback) {
-        blockChainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
+        blockchainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
             braveWalletService.getUserAssets(chainId, (BlockchainToken[] userTokens) -> {
                 BlockchainToken[] filteredTokens =
                         filterOut(concatenateTwoArrays(tokens, userTokens), true);
@@ -55,17 +55,17 @@ public class TokenUtils {
         });
     }
 
-    public static void getBuyTokensFiltered(
-            BlockchainRegistry blockChainRegistry, BlockchainRegistry.GetAllTokensResponse callback) {
-        blockChainRegistry.getBuyTokens((BlockchainToken[] tokens) -> {
+    public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
+            BlockchainRegistry.GetAllTokensResponse callback) {
+        blockchainRegistry.getBuyTokens((BlockchainToken[] tokens) -> {
             BlockchainToken[] filteredTokens = filterOut(tokens, true);
             callback.call(filteredTokens);
         });
     }
 
-    public static void isCustomToken(BlockchainToken token, BlockchainRegistry blockChainRegistry,
+    public static void isCustomToken(BlockchainToken token, BlockchainRegistry blockchainRegistry,
             org.chromium.mojo.bindings.Callbacks.Callback1<Boolean> callback) {
-        blockChainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
+        blockchainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
             boolean isCustom = true;
             for (BlockchainToken tokenFromAll : tokens) {
                 if (token.contractAddress.equals(tokenFromAll.contractAddress)) {
@@ -77,7 +77,8 @@ public class TokenUtils {
         });
     }
 
-    private static BlockchainToken[] concatenateTwoArrays(BlockchainToken[] arrayFirst, BlockchainToken[] arraySecond) {
+    private static BlockchainToken[] concatenateTwoArrays(
+            BlockchainToken[] arrayFirst, BlockchainToken[] arraySecond) {
         List<BlockchainToken> both = new ArrayList<>();
 
         Collections.addAll(both, arrayFirst);

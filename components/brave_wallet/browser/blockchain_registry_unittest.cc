@@ -91,14 +91,16 @@ TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
   std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
   ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
   registry->UpdateTokenList(std::move(input_blockchain_tokens));
-  registry->GetTokenByContract("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-                               base::BindOnce([](mojom::BlockchainTokenPtr token) {
-                                 ASSERT_EQ(token->symbol, "BAT");
-                               }));
+  registry->GetTokenByContract(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      base::BindOnce([](mojom::BlockchainTokenPtr token) {
+        ASSERT_EQ(token->symbol, "BAT");
+      }));
 
   registry->GetTokenByContract(
       "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
-      base::BindOnce([](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
+      base::BindOnce(
+          [](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
@@ -113,8 +115,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
       }));
 
   registry->GetTokenBySymbol(
-      "BRB",
-      base::BindOnce([](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
+      "BRB", base::BindOnce(
+                 [](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
 }
 
 }  // namespace brave_wallet

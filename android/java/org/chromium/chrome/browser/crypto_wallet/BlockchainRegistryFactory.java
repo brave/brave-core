@@ -16,33 +16,33 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class BlockChainRegistryFactory {
+public class BlockchainRegistryFactory {
     private static final Object lock = new Object();
-    private static BlockChainRegistryFactory instance;
+    private static BlockchainRegistryFactory instance;
 
-    public static BlockChainRegistryFactory getInstance() {
+    public static BlockchainRegistryFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new BlockChainRegistryFactory();
+                instance = new BlockchainRegistryFactory();
             }
         }
         return instance;
     }
 
-    private BlockChainRegistryFactory() {}
+    private BlockchainRegistryFactory() {}
 
-    public BlockchainRegistry getBlockChainRegistry(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = BlockChainRegistryFactoryJni.get().getInterfaceToBlockChainRegistry();
+    public BlockchainRegistry getBlockchainRegistry(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = BlockchainRegistryFactoryJni.get().getInterfaceToBlockchainRegistry();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        BlockchainRegistry blockChainRegistry = BlockchainRegistry.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) blockChainRegistry).getProxyHandler();
+        BlockchainRegistry blockchainRegistry = BlockchainRegistry.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) blockchainRegistry).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return blockChainRegistry;
+        return blockchainRegistry;
     }
 
     public String getTokensIconsLocation() {
-        return BlockChainRegistryFactoryJni.get().getTokensIconsLocation();
+        return BlockchainRegistryFactoryJni.get().getTokensIconsLocation();
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -51,7 +51,7 @@ public class BlockChainRegistryFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToBlockChainRegistry();
+        int getInterfaceToBlockchainRegistry();
         String getTokensIconsLocation();
     }
 }

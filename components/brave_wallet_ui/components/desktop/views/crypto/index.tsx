@@ -29,7 +29,7 @@ export interface Props {
   onLockWallet: () => void
   onShowBackup: () => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportFilecoinAccount: (accountName: string, key: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
@@ -45,17 +45,17 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (error: boolean) => void
-  onAddUserAsset: (token: BraveWallet.ERCToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.ERCToken) => void
+  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
   onOpenWalletSettings: () => void
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   hasImportError: boolean
   transactionSpotPrices: BraveWallet.AssetPrice[]
   privateKey: string
-  fullAssetList: BraveWallet.ERCToken[]
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  fullAssetList: BraveWallet.BlockchainToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   needsBackup: boolean
   accounts: WalletAccountType[]
   networkList: BraveWallet.EthereumChain[]
@@ -65,7 +65,7 @@ export interface Props {
   selectedAssetPriceHistory: PriceDataObjectType[]
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
-  selectedAsset: BraveWallet.ERCToken | undefined
+  selectedAsset: BraveWallet.BlockchainToken | undefined
   portfolioBalance: string
   transactions: AccountTransactions
   userAssetList: AccountAssetOptionType[]
@@ -81,7 +81,7 @@ export interface Props {
   onShowVisibleAssetsModal: (showModal: boolean) => void
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.ERCToken
+  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
 const CryptoView = (props: Props) => {
@@ -212,7 +212,7 @@ const CryptoView = (props: Props) => {
     history.push(`${WalletRoutes.Accounts}`)
   }
 
-  const selectAsset = (asset: BraveWallet.ERCToken | undefined) => {
+  const selectAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset) {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
     } else {

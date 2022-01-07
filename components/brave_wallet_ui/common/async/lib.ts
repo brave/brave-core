@@ -12,7 +12,7 @@ import {
   BraveWallet,
   WalletAccountType,
   AccountInfo,
-  GetERCTokenInfoReturnInfo
+  GetBlockchainTokenInfoReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -93,7 +93,7 @@ export async function findUnstoppableDomainAddress (address: string) {
   return apiProxy.jsonRpcService.unstoppableDomainsGetEthAddr(address)
 }
 
-export async function getERCTokenInfo (contractAddress: string): Promise<GetERCTokenInfoReturnInfo> {
+export async function getBlockchainTokenInfo (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> {
   const apiProxy = getAPIProxy()
   return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
@@ -113,13 +113,13 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
 }
 
 export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
-  const { blockChainRegistry } = getAPIProxy()
-  return (await blockChainRegistry.getBuyUrl(address, symbol, amount)).url
+  const { blockchainRegistry } = getAPIProxy()
+  return (await blockchainRegistry.getBuyUrl(address, symbol, amount)).url
 }
 
 export async function getBuyAssets () {
-  const { blockChainRegistry } = getAPIProxy()
-  return (await blockChainRegistry.getBuyTokens()).tokens
+  const { blockchainRegistry } = getAPIProxy()
+  return (await blockchainRegistry.getBuyTokens()).tokens
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
@@ -132,7 +132,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
     // Selected Network's Native Asset
-    const nativeAsset: BraveWallet.ERCToken = {
+    const nativeAsset: BraveWallet.BlockchainToken = {
       contractAddress: '',
       decimals: currentNetwork.decimals,
       isErc20: false,
@@ -144,7 +144,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       tokenId: ''
     }
 
-    const visibleTokens: BraveWallet.ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
+    const visibleTokens: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
@@ -157,7 +157,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     }
     await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
 
-    const getERCTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
+    const getBlockchainTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
         if (token.isErc721) {
           return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
@@ -167,7 +167,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     }))
 
     const tokenBalancesAndPrices = {
-      balances: getERCTokenBalanceReturnInfos,
+      balances: getBlockchainTokenBalanceReturnInfos,
       prices: { success: true, values: [] }
     }
     await dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
@@ -223,7 +223,7 @@ export function refreshPrices () {
       return price.success ? tokenPrice : emptyPrice
     }))
 
-    const getERCTokenBalanceReturnInfos = accounts.map((account) => {
+    const getBlockchainTokenBalanceReturnInfos = accounts.map((account) => {
       return account.tokens.map((token) => {
         const balanceInfo = {
           error: BraveWallet.ProviderError.kSuccess,
@@ -235,7 +235,7 @@ export function refreshPrices () {
     })
 
     const tokenBalancesAndPrices = {
-      balances: getERCTokenBalanceReturnInfos,
+      balances: getBlockchainTokenBalanceReturnInfos,
       prices: { success: true, values: getTokenPrices }
     }
 

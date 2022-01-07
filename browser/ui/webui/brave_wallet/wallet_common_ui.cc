@@ -25,7 +25,7 @@
 
 namespace brave_wallet {
 
-void AddERCTokenImageSource(Profile* profile) {
+void AddBlockchainTokenImageSource(Profile* profile) {
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(
                    profile, chrome::FaviconUrlFormat::kFavicon2));

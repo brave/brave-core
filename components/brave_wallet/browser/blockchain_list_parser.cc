@@ -73,31 +73,38 @@ bool ParseTokenList(const std::string& json,
     auto blockchain_token = brave_wallet::mojom::BlockchainToken::New();
     blockchain_token->contract_address = blockchain_token_value_pair.first;
     const base::DictionaryValue* blockchain_token_value;
-    if (!blockchain_token_value_pair.second.GetAsDictionary(&blockchain_token_value)) {
+    if (!blockchain_token_value_pair.second.GetAsDictionary(
+            &blockchain_token_value)) {
       return false;
     }
 
-    absl::optional<bool> is_erc20_opt = blockchain_token_value->FindBoolKey("erc20");
+    absl::optional<bool> is_erc20_opt =
+        blockchain_token_value->FindBoolKey("erc20");
     if (is_erc20_opt)
       blockchain_token->is_erc20 = *is_erc20_opt;
     else
       blockchain_token->is_erc20 = false;
 
-    absl::optional<bool> is_erc721_opt = blockchain_token_value->FindBoolKey("erc721");
+    absl::optional<bool> is_erc721_opt =
+        blockchain_token_value->FindBoolKey("erc721");
     if (is_erc721_opt)
       blockchain_token->is_erc721 = *is_erc721_opt;
     else
       blockchain_token->is_erc721 = false;
 
-    if (!ParseResultFromDict(blockchain_token_value, "symbol", &blockchain_token->symbol)) {
+    if (!ParseResultFromDict(blockchain_token_value, "symbol",
+                             &blockchain_token->symbol)) {
       continue;
     }
-    if (!ParseResultFromDict(blockchain_token_value, "name", &blockchain_token->name)) {
+    if (!ParseResultFromDict(blockchain_token_value, "name",
+                             &blockchain_token->name)) {
       return false;
     }
-    ParseResultFromDict(blockchain_token_value, "logo", &blockchain_token->logo);
+    ParseResultFromDict(blockchain_token_value, "logo",
+                        &blockchain_token->logo);
 
-    absl::optional<int> decimals_opt = blockchain_token_value->FindIntKey("decimals");
+    absl::optional<int> decimals_opt =
+        blockchain_token_value->FindIntKey("decimals");
     if (decimals_opt)
       blockchain_token->decimals = *decimals_opt;
     else

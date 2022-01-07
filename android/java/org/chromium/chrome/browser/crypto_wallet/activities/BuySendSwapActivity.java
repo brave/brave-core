@@ -47,10 +47,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -68,8 +68,8 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -574,8 +574,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
                     warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
                     if (error != ProviderError.SUCCESS
-                            || amountToSend
-                                    <= Utils.fromHexWei(allowance, mCurrentBlockchainToken.decimals)) {
+                            || amountToSend <= Utils.fromHexWei(
+                                       allowance, mCurrentBlockchainToken.decimals)) {
                         return;
                     }
                     Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
@@ -931,7 +931,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 if (to.isEmpty()) {
                     return;
                 }
-                if (mCurrentBlockchainToken == null || mCurrentBlockchainToken.contractAddress.isEmpty()) {
+                if (mCurrentBlockchainToken == null
+                        || mCurrentBlockchainToken.contractAddress.isEmpty()) {
                     TxData data =
                             Utils.getTxData("", "", "", to, Utils.toHexWei(value, 18), new byte[0]);
                     sendTransaction(data, from, "", "");
@@ -1360,8 +1361,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             btnBuySendSwap.setEnabled(true);
             if (mCurrentBlockchainToken != null) {
                 String btnText = btnBuySendSwap.getText().toString();
-                String toCompare =
-                        String.format(getString(R.string.activate_erc20), mCurrentBlockchainToken.symbol);
+                String toCompare = String.format(
+                        getString(R.string.activate_erc20), mCurrentBlockchainToken.symbol);
                 if (btnText.equals(toCompare)) {
                     mActivateAllowanceTxId = txInfo.id;
                 }
@@ -1391,8 +1392,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assetFromDropDown.setText(asset);
         mCurrentBlockchainToken = blockchainToken;
         // Replace USDC and DAI contract addresses for Ropsten network
-        mCurrentBlockchainToken.contractAddress = Utils.getContractAddress(
-                mCurrentChainId, mCurrentBlockchainToken.symbol, mCurrentBlockchainToken.contractAddress);
+        mCurrentBlockchainToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
+                mCurrentBlockchainToken.symbol, mCurrentBlockchainToken.contractAddress);
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (mCurrentBlockchainToken.symbol.equals("ETH")) {
             mCurrentBlockchainToken.logo = "eth.png";
@@ -1423,8 +1424,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assetToDropDown.setText(asset);
         mCurrentSwapToBlockchainToken = blockchainToken;
         // Replace USDC and DAI contract addresses for Ropsten network
-        mCurrentSwapToBlockchainToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
-                mCurrentSwapToBlockchainToken.symbol, mCurrentSwapToBlockchainToken.contractAddress);
+        mCurrentSwapToBlockchainToken.contractAddress =
+                Utils.getContractAddress(mCurrentChainId, mCurrentSwapToBlockchainToken.symbol,
+                        mCurrentSwapToBlockchainToken.contractAddress);
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (mCurrentSwapToBlockchainToken.symbol.equals("ETH")) {
             mCurrentSwapToBlockchainToken.logo = "eth.png";
@@ -1437,7 +1439,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     assetToDropDown, true);
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null,
-                    mCurrentSwapToBlockchainToken.contractAddress, mCurrentSwapToBlockchainToken.symbol,
+                    mCurrentSwapToBlockchainToken.contractAddress,
+                    mCurrentSwapToBlockchainToken.symbol,
                     getResources().getDisplayMetrics().density, assetToDropDown, this, true,
                     (float) 0.5);
         }

@@ -21,7 +21,7 @@ class WebContents;
 
 namespace brave_wallet {
 
-void AddERCTokenImageSource(Profile* profile);
+void AddBlockchainTokenImageSource(Profile* profile);
 
 bool IsBraveWalletOrigin(const url::Origin& origin);
 

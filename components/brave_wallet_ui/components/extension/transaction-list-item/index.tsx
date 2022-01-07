@@ -44,7 +44,7 @@ export interface Props {
   transaction: BraveWallet.TransactionInfo
   account?: WalletAccountType
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.ERCToken[]
+  visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void

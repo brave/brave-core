@@ -18,10 +18,10 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -79,8 +79,10 @@ std::vector<mojom::BlockchainTokenPtr> TokenListReady(
   return blockchain_tokens;
 }
 
-void UpdateTokenRegistry(std::vector<mojom::BlockchainTokenPtr> blockchain_tokens) {
-  BlockchainRegistry::GetInstance()->UpdateTokenList(std::move(blockchain_tokens));
+void UpdateTokenRegistry(
+    std::vector<mojom::BlockchainTokenPtr> blockchain_tokens) {
+  BlockchainRegistry::GetInstance()->UpdateTokenList(
+      std::move(blockchain_tokens));
 }
 
 }  // namespace

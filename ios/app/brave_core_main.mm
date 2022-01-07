@@ -213,7 +213,7 @@ static bool CustomLogHandler(int severity,
   return _syncProfileService;
 }
 
-+ (id<BraveWalletBlockchainRegistry>)blockChainRegistry {
++ (id<BraveWalletBlockchainRegistry>)blockchainRegistry {
   auto* registry = brave_wallet::BlockchainRegistry::GetInstance();
   return [[BraveWalletBlockchainRegistryImpl alloc]
       initWithBlockchainRegistry:registry];

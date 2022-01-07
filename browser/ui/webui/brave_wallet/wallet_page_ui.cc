@@ -19,9 +19,9 @@
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -56,7 +56,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
-  brave_wallet::AddERCTokenImageSource(profile);
+  brave_wallet::AddBlockchainTokenImageSource(profile);
 }
 
 WalletPageUI::~WalletPageUI() = default;

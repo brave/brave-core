@@ -1649,8 +1649,8 @@ TEST_F(BraveWalletProviderImplUnitTest, AddSuggestToken) {
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
 
   mojom::BlockchainTokenPtr token =
-      mojom::ERCToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
-                           "", true, false, "BAT", 18, true, "");
+      mojom::BlockchainToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                                  "BAT", "", true, false, "BAT", 18, true, "");
   bool approved = false;
   mojom::ProviderError error;
   std::string error_message;

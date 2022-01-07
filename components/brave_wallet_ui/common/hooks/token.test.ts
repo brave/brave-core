@@ -3,17 +3,17 @@ import {
   mockERC20Token,
   mockNetwork
 } from '../constants/mocks'
-import { FindERCTokenInfoReturnInfo } from '../../constants/types'
+import { FindBlockchainTokenInfoReturnInfo } from '../../constants/types'
 import useTokenInfo from './token'
 
-const findERCTokenInfo = async (address: string) => {
-  return await { token: null } as FindERCTokenInfoReturnInfo
+const findBlockchainTokenInfo = async (address: string) => {
+  return await { token: null } as FindBlockchainTokenInfoReturnInfo
 }
 
 describe('useTokenInfo hook', () => {
   it('Should return DOG token info from visibleTokens list', () => {
     const { result } = renderHook(() => useTokenInfo(
-      findERCTokenInfo, [mockERC20Token], [], mockNetwork
+      findBlockchainTokenInfo, [mockERC20Token], [], mockNetwork
     ))
     act(() => result.current.onFindTokenInfoByContractAddress('mockContractAddress'))
     expect(result.current.foundTokenInfoByContractAddress?.name).toEqual('Dog Coin')
@@ -21,7 +21,7 @@ describe('useTokenInfo hook', () => {
 
   it('Should return DOG token info from fullTokens list', () => {
     const { result } = renderHook(() => useTokenInfo(
-      findERCTokenInfo, [], [mockERC20Token], mockNetwork
+      findBlockchainTokenInfo, [], [mockERC20Token], mockNetwork
     ))
     act(() => result.current.onFindTokenInfoByContractAddress('mockContractAddress'))
     expect(result.current.foundTokenInfoByContractAddress?.name).toEqual('Dog Coin')
@@ -29,7 +29,7 @@ describe('useTokenInfo hook', () => {
 
   it('Should not find info and return undifined', () => {
     const { result } = renderHook(() => useTokenInfo(
-      findERCTokenInfo, [mockERC20Token], [], mockNetwork
+      findBlockchainTokenInfo, [mockERC20Token], [], mockNetwork
     ))
     act(() => result.current.onFindTokenInfoByContractAddress('testContractAddress'))
     expect(result.current.foundTokenInfoByContractAddress?.name).toEqual(undefined)

@@ -37,9 +37,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -274,15 +274,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             addCustomAsset.setVisibility(View.GONE);
         }
 
-        BlockchainRegistry blockChainRegistry = getBlockchainRegistry();
-        if (blockChainRegistry != null) {
+        BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
+        if (blockchainRegistry != null) {
             BraveWalletService braveWalletService = getBraveWalletService();
             assert braveWalletService != null;
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId, (userAssets) -> {
                     TokenUtils.getAllTokensFiltered(
-                            braveWalletService, blockChainRegistry, mChainId, tokens -> {
+                            braveWalletService, blockchainRegistry, mChainId, tokens -> {
                                 tokens = Utils.fixupTokensRegistry(tokens, mChainId);
                                 setUpAssetsList(view, tokens, userAssets);
                             });
@@ -294,10 +294,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
-                TokenUtils.getAllTokensFiltered(braveWalletService, blockChainRegistry, mChainId,
+                TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, mChainId,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                TokenUtils.getBuyTokensFiltered(blockChainRegistry,
+                TokenUtils.getBuyTokensFiltered(blockchainRegistry,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             }
         }
@@ -341,7 +341,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         public void afterTextChanged(Editable s) {}
     };
 
-    private void setUpAssetsList(View view, BlockchainToken[] tokens, BlockchainToken[] userSelectedTokens) {
+    private void setUpAssetsList(
+            View view, BlockchainToken[] tokens, BlockchainToken[] userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<String>();
         for (BlockchainToken userSelectedToken : userSelectedTokens) {
             selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase(Locale.getDefault()));
@@ -434,7 +435,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.wallet_remove_custom_asset);
         builder.setMessage(String.format(getString(R.string.wallet_remove_custom_asset_desc),
-                walletListItemModel.getBlockchainToken().name, walletListItemModel.getBlockchainToken().symbol));
+                walletListItemModel.getBlockchainToken().name,
+                walletListItemModel.getBlockchainToken().symbol));
 
         builder.setPositiveButton(
                 R.string.wallet_remove_custom_asset_yes, new DialogInterface.OnClickListener() {
@@ -468,14 +470,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         if (!isCustom) {
                             if (isChecked) {
                                 braveWalletService.addUserAsset(
-                                        walletListItemModel.getBlockchainToken(), mChainId, (success) -> {
+                                        walletListItemModel.getBlockchainToken(), mChainId,
+                                        (success) -> {
                                             if (success) {
                                                 walletListItemModel.setIsUserSelected(true);
                                             }
                                         });
                             } else {
                                 braveWalletService.removeUserAsset(
-                                        walletListItemModel.getBlockchainToken(), mChainId, (success) -> {
+                                        walletListItemModel.getBlockchainToken(), mChainId,
+                                        (success) -> {
                                             if (success) {
                                                 walletListItemModel.setIsUserSelected(false);
                                             }

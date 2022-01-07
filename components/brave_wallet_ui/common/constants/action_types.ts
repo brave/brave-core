@@ -36,17 +36,17 @@ export type TransactionStatusChanged = {
 }
 
 export type AddUserAssetPayloadType = {
-  token: BraveWallet.ERCToken
+  token: BraveWallet.BlockchainToken
   chainId: string
 }
 
 export type RemoveUserAssetPayloadType = {
-  token: BraveWallet.ERCToken
+  token: BraveWallet.BlockchainToken
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  token: BraveWallet.ERCToken
+  token: BraveWallet.BlockchainToken
   chainId: string
   isVisible: boolean
 }

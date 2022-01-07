@@ -28,7 +28,7 @@ export default function useSend (
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
-  fullTokenList: BraveWallet.ERCToken[]
+  fullTokenList: BraveWallet.BlockchainToken[]
 ) {
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')
