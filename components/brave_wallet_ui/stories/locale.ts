@@ -152,18 +152,26 @@ provideStrings({
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
-  braveWalletAccountsSecondary: 'Secondary accounts',
+  braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
+  braveWalletAccountsSecondary: 'Imported accounts',
   braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
 
   // Add Account Options
+  braveWalletCreateAccount: 'Create $1 account',
   braveWalletAddAccountCreate: 'Create',
   braveWalletAddAccountImport: 'Import',
+  braveWalletAddAccountImportHardware: 'Import from hardware wallet',
   braveWalletAddAccountHardware: 'Hardware',
   braveWalletAddAccountConnect: 'Connect',
   braveWalletAddAccountPlaceholder: 'Account name',
   braveWalletCreateAccountButton: 'Create account',
+  braveWalletCreateAccountImportAccount: 'Import $1 account',
+  braveWalletCreateAccountTitle: 'Select one of the following account types',
+  braveWalletCreateAccountEthereumDescription: 'Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
+  braveWalletCreateAccountSolanaDescription: 'Supports SLP compatible assets on the Solana blockchain',
+  braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
 
   // Import Account
   braveWalletImportAccountDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
@@ -177,7 +185,7 @@ provideStrings({
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
   braveWalletConnectHardwareInfo1: 'Connect your $1 wallet directly to your computer.',
-  braveWalletConnectHardwareInfo2: 'Unlock your device and select the Ethereum app.',
+  braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
   braveWalletConnectingHardwareWallet: 'Connecting...',

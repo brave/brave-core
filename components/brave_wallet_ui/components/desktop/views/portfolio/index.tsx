@@ -7,7 +7,8 @@ import {
   BraveWallet,
   WalletAccountType,
   AccountAssetOptionType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
@@ -74,7 +75,7 @@ export interface Props {
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
-  onClickAddAccount: () => void
+  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onAddUserAsset: (token: BraveWallet.ERCToken) => void
   onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
@@ -352,7 +353,7 @@ const Portfolio = (props: Props) => {
           <ButtonRow>
             <AddButton
               buttonType='secondary'
-              onSubmit={onClickAddAccount}
+              onSubmit={onClickAddAccount('create')}
               text={getLocale('braveWalletAddAccount')}
             />
           </ButtonRow>
