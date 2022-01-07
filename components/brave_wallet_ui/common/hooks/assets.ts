@@ -11,8 +11,10 @@ import {
   WalletAccountType
 } from '../../constants/types'
 import { BAT, ETH } from '../../options/asset-options'
+import { formatBalance } from '../../utils/format-balances'
 
 export default function useAssets (
+  accounts: WalletAccountType[],
   selectedAccount: WalletAccountType,
   fullTokenList: BraveWallet.ERCToken[],
   userVisibleTokensInfo: BraveWallet.ERCToken[],
@@ -84,11 +86,28 @@ export default function useAssets (
     }).catch(e => console.error(e))
   }, [])
 
+  const panelUserAssetList = React.useMemo((): AccountAssetOptionType[] => {
+    // selectedAccount.tokens can be undefined
+    if (selectedAccount?.tokens) {
+      const formatedList = selectedAccount?.tokens?.map((asset) => ({
+        asset: asset.asset,
+        assetBalance: formatBalance(asset.assetBalance, asset.asset.decimals),
+        fiatBalance: asset.fiatBalance
+      })).sort(function (a, b) { return Number(b.fiatBalance) - Number(a.fiatBalance) }) // Sorting by Fiat Value
+
+      // Do not show an asset unless the selectedAccount has a balance
+      return formatedList.filter((token) => parseFloat(token.assetBalance) !== 0)
+    }
+    return []
+    // Using accounts as a dependency here to trigger balance changes
+  }, [selectedAccount, accounts])
+
   return {
     tokenOptions,
     assetOptions,
     userVisibleTokenOptions,
     sendAssetOptions,
-    buyAssetOptions
+    buyAssetOptions,
+    panelUserAssetList
   }
 }
