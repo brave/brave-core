@@ -327,7 +327,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             btRewardsSettings.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             }));
@@ -526,7 +527,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 if (mBraveActivity != null)
-                    mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
             }
         }));
 
@@ -1346,7 +1348,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                     assert (BraveReflectionUtil.EqualTypes(
                             mActivity.getClass(), BraveActivity.class));
                     BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                            BraveActivity.REWARDS_SETTINGS_URL);
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             });
@@ -1740,7 +1742,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
-                rightDrawable = R.drawable.disclosure;
+                rightDrawable = R.drawable.ic_wallet_arrow;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;

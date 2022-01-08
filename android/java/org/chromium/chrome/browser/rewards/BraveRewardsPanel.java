@@ -265,7 +265,7 @@ public class BraveRewardsPanel
         int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
 
-        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.9)));
+        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
 
@@ -278,7 +278,7 @@ public class BraveRewardsPanel
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                 dismiss();
             }
         }));
@@ -668,7 +668,7 @@ public class BraveRewardsPanel
                     assert (BraveReflectionUtil.EqualTypes(
                             mActivity.getClass(), BraveActivity.class));
                     BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                            BraveActivity.REWARDS_SETTINGS_URL);
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             });
@@ -1150,6 +1150,29 @@ public class BraveRewardsPanel
             }
         }
         setVerifyWalletButton(walletStatus);
+        showRewardsFromAdsSummary(walletStatus);
+    }
+
+    private void showRewardsFromAdsSummary(int walletStatus) {
+        if (mBraveRewardsNativeWorker != null) {
+            String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+            Log.e("NTP", "walletType : " + walletType);
+            Log.e("NTP", "walletStatus : " + walletStatus);
+            if (walletStatus == BraveRewardsExternalWallet.VERIFIED
+                    && (walletType.equals(BraveWalletProvider.UPHOLD)
+                            || walletType.equals(BraveWalletProvider.BITFLYER)
+                            || walletType.equals(BraveWalletProvider.GEMINI))) {
+                mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
+                        .setVisibility(View.GONE);
+                mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
+                        .setVisibility(View.GONE);
+            } else {
+                mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
+                        .setVisibility(View.VISIBLE);
+                mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
+                        .setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void setVerifyWalletButton(@WalletStatus final int status) {

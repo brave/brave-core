@@ -47,19 +47,20 @@
         <TextView
             android:id="@+id/btn_verify_wallet"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:background="@drawable/wallet_verify_button"
             android:drawablePadding="8dp"
             android:paddingStart="16dp"
-            android:paddingTop="8dp"
+            android:paddingTop="6dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="8dp"
+            android:paddingBottom="6dp"
             android:text="@string/brave_ui_wallet_button_unverified"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp"
+            android:gravity="center_vertical"
             android:fontFamily="@font/poppins_regular"
-            app:drawableEndCompat="@drawable/disclosure" />
+            app:drawableEndCompat="@drawable/ic_wallet_arrow" />
 
     </FrameLayout>
 
@@ -67,12 +68,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
+        android:paddingBottom="8dp"
         android:orientation="horizontal">
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:layout_gravity="bottom"
             android:paddingStart="32dp">
 
             <LinearLayout
@@ -122,6 +125,7 @@
                     android:alpha="0.65"
                     android:textColor="@android:color/white"
                     android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="-8dp"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -197,6 +201,7 @@
                     android:alpha="0.65"
                     android:textColor="@android:color/white"
                     android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="-8dp"
                     android:textSize="14sp" />
 
             </LinearLayout>

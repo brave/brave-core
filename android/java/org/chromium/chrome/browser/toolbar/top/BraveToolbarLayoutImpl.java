@@ -395,9 +395,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             tab.getId(), tab.getUrl().getSpec());
                 }
                 if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
-                        && (tab.getUrl().getSpec().equals(BraveActivity.REWARDS_SETTINGS_URL)
-                                || tab.getUrl().getSpec().equals(
-                                        BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                        && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                 Profile.getLastUsedRegularProfile())
                         && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
@@ -687,8 +685,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         View braveRewardsOnboardingModalView =
                 dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
-        braveRewardsOnboardingModalView.setBackgroundColor(
-                context.getResources().getColor(android.R.color.white));
+        // braveRewardsOnboardingModalView.setBackgroundColor(
+        //         context.getResources().getColor(android.R.color.white));
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
         String tosText =
@@ -771,6 +769,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                if (BraveActivity.getBraveActivity() != null) {
+                    BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+                    BraveActivity.getBraveActivity().openRewardsPanel();
+                }
                 dialog.dismiss();
             }
         }));
