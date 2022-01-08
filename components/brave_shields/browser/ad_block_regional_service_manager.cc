@@ -47,6 +47,9 @@ void AdBlockRegionalServiceManager::Init(
     AdBlockRegionalCatalogProvider* catalog_provider) {
   DCHECK(!initialized_);
   resource_provider_ = resource_provider;
+  catalog_provider->LoadRegionalCatalog(
+      base::BindOnce(&AdBlockRegionalServiceManager::OnRegionalCatalogLoaded,
+                     weak_factory_.GetWeakPtr()));
   catalog_provider->AddObserver(this);
   initialized_ = true;
 }
@@ -240,7 +243,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
-                     base::Unretained(this), uuid, enabled));
+                     weak_factory_.GetWeakPtr(), uuid, enabled));
 }
 
 absl::optional<base::Value> AdBlockRegionalServiceManager::UrlCosmeticResources(
