@@ -241,7 +241,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Ad
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_BUTTON" desc="Text for opt in card subtitle">
-        Turn on Brave News
+        Show Brave News
       </message>
       <message name="IDS_BRAVE_NEWS_SHARE" desc="Text for share option in the long press menu">
         Share
@@ -271,7 +271,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         More Brave Offers
       </message>
       <message name="IDS_NEWS_TURN_ON_BUTTON" desc="Text for turn on button">
-        Turn on Brave News
+        Show Brave News
       </message>
 <!--   // for RSS
       <message name="IDS_NEWS_YOUR_SOURCES_SECTION" desc="Text for custom sources section">
