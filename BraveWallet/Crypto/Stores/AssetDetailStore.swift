@@ -177,8 +177,13 @@ class AssetDetailStore: ObservableObject {
 
 extension AssetDetailStore: BraveWalletKeyringControllerObserver {
   func accountsChanged() {
-    fetchAccountBalances()
-    fetchTransactions()
+    keyringController.defaultKeyringInfo { [self] keyring in
+      accounts = keyring.accountInfos.map {
+        .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
+      }
+      fetchAccountBalances()
+      fetchTransactions()
+    }
   }
   
   func keyringCreated() {
