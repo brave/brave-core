@@ -1,0 +1,33 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+import("//chrome/browser/buildflags.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//chrome/browser/commerce/merchant_viewer/android:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/share:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/tabmodel:java",
+    "//chrome/browser/ui/android/omnibox:java",
+    "//components/favicon/android:java",
+    "//components/omnibox/browser:browser_java",
+    "//components/permissions/android:java",
+    "//components/prefs/android:java",
+    "//components/search_engines/android:java",
+    "//components/user_prefs/android:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+}

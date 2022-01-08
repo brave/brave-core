@@ -43,7 +43,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
 
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 20;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 21;
 
     private int mItemsLeft;
 
