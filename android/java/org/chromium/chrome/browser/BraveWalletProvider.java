@@ -38,7 +38,7 @@ public class BraveWalletProvider {
     public void completeWalletProviderVerification(
             ExternalNavigationParams params, BraveExternalNavigationHandler handler) {
         String originalUrl = params.getUrl().getSpec();
-        String url = originalUrl.replaceFirst("^rewards://", "chrome://rewards/");
+        String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
         handler.clobberCurrentTabWithFallbackUrl(url, params);
     }
 }
