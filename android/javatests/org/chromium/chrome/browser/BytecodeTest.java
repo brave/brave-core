@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,8 +46,11 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.tab.Tab;
@@ -515,6 +519,13 @@ public class BytecodeTest {
                 constructorsMatch("org/chromium/chrome/browser/autofill/AutofillPopupBridge",
                         "org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge", View.class,
                         long.class, WindowAndroid.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
+                Context.class, AutocompleteDelegate.class, UrlBarEditingTextStateProvider.class,
+                PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
+                LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
+                JankTracker.class, ExploreIconProvider.class));
     }
 
     @Test
