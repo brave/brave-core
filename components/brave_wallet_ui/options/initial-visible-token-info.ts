@@ -1,6 +1,6 @@
-import { ERCToken } from '../constants/types'
+import { BlockchainToken } from '../constants/types'
 
-export const ETH: ERCToken = {
+export const ETH: BlockchainToken = {
   contractAddress: '',
   decimals: 18,
   isErc20: false,

@@ -8,9 +8,9 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.res.Resources;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -28,7 +28,7 @@ public class Validations {
         public SendToAccountAddress() {}
 
         public void validate(String chainId, KeyringService keyringService,
-                ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
+                BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
                 String senderAccountAddress, String receiverAccountAddress,
                 Callbacks.Callback2<String, Boolean> callback) {
             // Steps to validate:
@@ -62,11 +62,11 @@ public class Validations {
             mIsKnowContracts = false;
             if (mKnownContractAddresses == null) {
                 assert braveWalletService != null;
-                assert ercTokenRegistry != null;
+                assert blockchainRegistry != null;
                 assert chainId != null && !chainId.isEmpty();
 
                 TokenUtils.getAllTokensFiltered(
-                        braveWalletService, ercTokenRegistry, chainId, (tokens) -> {
+                        braveWalletService, blockchainRegistry, chainId, (tokens) -> {
                             tokens = Utils.fixupTokensRegistry(tokens, chainId);
                             fillKnowContracts(tokens);
                             checkForKnowContracts(receiverAccountAddressLower, callback, resources);
@@ -102,9 +102,9 @@ public class Validations {
             }
         }
 
-        void fillKnowContracts(ErcToken[] tokens) {
+        void fillKnowContracts(BlockchainToken[] tokens) {
             mKnownContractAddresses = new HashSet<String>();
-            for (ErcToken token : tokens) {
+            for (BlockchainToken token : tokens) {
                 if (token.contractAddress != null && !token.contractAddress.isEmpty()) {
                     mKnownContractAddresses.add(
                             token.contractAddress.toLowerCase(Locale.getDefault()));

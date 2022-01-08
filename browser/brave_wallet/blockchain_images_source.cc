@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/erc_token_images_source.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
 
 #include <utility>
 
@@ -31,16 +31,16 @@ absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
 
 }  // namespace
 
-ERCTokenImagesSource::ERCTokenImagesSource(const base::FilePath& base_path)
+BlockchainImagesSource::BlockchainImagesSource(const base::FilePath& base_path)
     : base_path_(base_path), weak_factory_(this) {}
 
-ERCTokenImagesSource::~ERCTokenImagesSource() = default;
+BlockchainImagesSource::~BlockchainImagesSource() = default;
 
-std::string ERCTokenImagesSource::GetSource() {
+std::string BlockchainImagesSource::GetSource() {
   return kImageSourceHost;
 }
 
-void ERCTokenImagesSource::StartDataRequest(
+void BlockchainImagesSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
@@ -63,12 +63,12 @@ void ERCTokenImagesSource::StartDataRequest(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFileToString, images_path.AppendASCII(path)),
-      base::BindOnce(&ERCTokenImagesSource::OnGotImageFile,
+      base::BindOnce(&BlockchainImagesSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ERCTokenImagesSource::OnGotImageFile(GotDataCallback callback,
-                                          absl::optional<std::string> input) {
+void BlockchainImagesSource::OnGotImageFile(GotDataCallback callback,
+                                            absl::optional<std::string> input) {
   scoped_refptr<base::RefCountedMemory> bytes;
   if (!input) {
     std::move(callback).Run(std::move(bytes));
@@ -80,7 +80,7 @@ void ERCTokenImagesSource::OnGotImageFile(GotDataCallback callback,
   std::move(callback).Run(std::move(bytes));
 }
 
-std::string ERCTokenImagesSource::GetMimeType(const std::string& path) {
+std::string BlockchainImagesSource::GetMimeType(const std::string& path) {
   if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII))
     return "image/png";
   if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII))
@@ -90,7 +90,7 @@ std::string ERCTokenImagesSource::GetMimeType(const std::string& path) {
   return "image/svg+xml";
 }
 
-bool ERCTokenImagesSource::AllowCaching() {
+bool BlockchainImagesSource::AllowCaching() {
   return true;
 }
 

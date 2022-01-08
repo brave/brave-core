@@ -75,7 +75,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
 ]
 
 // Use only with storybook as dummy data.
-export const NewAssetOptions: BraveWallet.ERCToken[] = [
+export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
   {
     contractAddress: '1',
     name: 'Ethereum',

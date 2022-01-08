@@ -28,7 +28,7 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
     std::string chain_id;
     EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
-    mojom::ERCTokenPtr token;
+    mojom::BlockchainTokenPtr token;
     EXPECT_FALSE(ParseWalletWatchAssetParams(error_case, &token, &message));
     std::string signature;
     EXPECT_FALSE(
@@ -657,11 +657,11 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }
   })";
 
-  mojom::ERCTokenPtr expected_token = mojom::ERCToken::New(
+  mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
       "https://test.com/test.png", true, false, "BAT", 18, true, "");
 
-  mojom::ERCTokenPtr token;
+  mojom::BlockchainTokenPtr token;
   std::string error_message;
   EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
   EXPECT_EQ(token, expected_token);

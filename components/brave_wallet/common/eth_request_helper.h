@@ -52,7 +52,7 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);
 
 bool ParseWalletWatchAssetParams(const std::string& json,
-                                 mojom::ERCTokenPtr* token,
+                                 mojom::BlockchainTokenPtr* token,
                                  std::string* error_message);
 bool ParseRequestPermissionsParams(
     const std::string& json,

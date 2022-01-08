@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -39,7 +39,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
      }
     }
   )");
-  std::vector<mojom::ERCTokenPtr> token_list;
+  std::vector<mojom::BlockchainTokenPtr> token_list;
   ASSERT_TRUE(ParseTokenList(json, &token_list));
   ASSERT_EQ(token_list.size(), 3UL);
 

@@ -54,7 +54,7 @@ export interface Props {
   transactions: AccountTransactions
   privateKey: string
   selectedNetwork: BraveWallet.EthereumChain
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   defaultCurrencies: DefaultCurrencies
@@ -65,7 +65,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (token: BraveWallet.ERCToken) => void
+  onSelectAsset: (token: BraveWallet.BlockchainToken) => void
   goBack: () => void
   onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void

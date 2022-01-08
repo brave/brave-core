@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_ERC_TOKEN_IMAGES_SOURCE_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_ERC_TOKEN_IMAGES_SOURCE_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 
 #include <string>
 
@@ -19,19 +19,19 @@ class FilePath;
 namespace brave_wallet {
 
 // This serves background image data.
-class ERCTokenImagesSource : public content::URLDataSource {
+class BlockchainImagesSource : public content::URLDataSource {
  public:
-  explicit ERCTokenImagesSource(const base::FilePath& base_path);
+  explicit BlockchainImagesSource(const base::FilePath& base_path);
 
-  ~ERCTokenImagesSource() override;
+  ~BlockchainImagesSource() override;
 
-  ERCTokenImagesSource(const ERCTokenImagesSource&) = delete;
-  ERCTokenImagesSource& operator=(const ERCTokenImagesSource&) = delete;
+  BlockchainImagesSource(const BlockchainImagesSource&) = delete;
+  BlockchainImagesSource& operator=(const BlockchainImagesSource&) = delete;
   std::string getImagePath();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ERCTokenImagesSourceTest, GetMimeType);
-  friend class ERCTokenImagesSourceTest;
+  FRIEND_TEST_ALL_PREFIXES(BlockchainImagesSourceTest, GetMimeType);
+  friend class BlockchainImagesSourceTest;
 
   // content::URLDataSource overrides:
   std::string GetSource() override;
@@ -45,9 +45,9 @@ class ERCTokenImagesSource : public content::URLDataSource {
                       absl::optional<std::string> input);
 
   base::FilePath base_path_;
-  base::WeakPtrFactory<ERCTokenImagesSource> weak_factory_;
+  base::WeakPtrFactory<BlockchainImagesSource> weak_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_ERC_TOKEN_IMAGES_SOURCE_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_

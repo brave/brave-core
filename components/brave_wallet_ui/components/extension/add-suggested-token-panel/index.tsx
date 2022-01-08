@@ -28,7 +28,7 @@ export interface Props {
   onCancel: () => void
   onAddToken: () => void
   selectedNetwork: BraveWallet.EthereumChain
-  token?: BraveWallet.ERCToken
+  token?: BraveWallet.BlockchainToken
 }
 
 function AddSuggestedTokenPanel (props: Props) {

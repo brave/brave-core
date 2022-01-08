@@ -136,7 +136,7 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.EthereumC
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: BraveWallet.ERCToken[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: BraveWallet.BlockchainToken[]) => {
   return {
     ...state,
     userVisibleTokensInfo: payload
@@ -175,7 +175,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userTokens: BraveWallet.ERCToken[] = state.userVisibleTokensInfo
+  const userTokens: BraveWallet.BlockchainToken[] = state.userVisibleTokensInfo
   const userVisibleTokensInfo = userTokens.map((token) => {
     return {
       ...token,

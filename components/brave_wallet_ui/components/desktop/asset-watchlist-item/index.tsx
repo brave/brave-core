@@ -18,11 +18,11 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectAsset: (key: string, selected: boolean, token: BraveWallet.ERCToken, isCustom: boolean) => void
-  onRemoveAsset: (token: BraveWallet.ERCToken) => void
+  onSelectAsset: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
+  onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isCustom: boolean
   isSelected: boolean
-  token: BraveWallet.ERCToken
+  token: BraveWallet.BlockchainToken
 }
 
 const AssetWatchlistItem = (props: Props) => {

@@ -16,11 +16,11 @@ import { formatBalance } from '../../utils/format-balances'
 export default function useAssets (
   accounts: WalletAccountType[],
   selectedAccount: WalletAccountType,
-  fullTokenList: BraveWallet.ERCToken[],
-  userVisibleTokensInfo: BraveWallet.ERCToken[],
-  getBuyAssets: () => Promise<BraveWallet.ERCToken[]>
+  fullTokenList: BraveWallet.BlockchainToken[],
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[],
+  getBuyAssets: () => Promise<BraveWallet.BlockchainToken[]>
 ) {
-  const tokenOptions: BraveWallet.ERCToken[] = React.useMemo(
+  const tokenOptions: BraveWallet.BlockchainToken[] = React.useMemo(
     () =>
       fullTokenList.map((token) => ({
         ...token,
@@ -29,7 +29,7 @@ export default function useAssets (
     [fullTokenList]
   )
 
-  const userVisibleTokenOptions: BraveWallet.ERCToken[] = React.useMemo(
+  const userVisibleTokenOptions: BraveWallet.BlockchainToken[] = React.useMemo(
     () =>
       userVisibleTokensInfo.map((token) => ({
         ...token,

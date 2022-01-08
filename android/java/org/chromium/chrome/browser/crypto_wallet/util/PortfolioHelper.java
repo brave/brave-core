@@ -13,8 +13,8 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
@@ -36,7 +36,7 @@ public class PortfolioHelper {
     private AccountInfo[] mAccountInfos;
 
     // Data supplied as result
-    private ErcToken[] mUserAssets; // aka selected assets
+    private BlockchainToken[] mUserAssets; // aka selected assets
     private Double mTotalFiatSum;
     private HashMap<String, Double> mPerTokenFiatSum;
     private HashMap<String, Double> mPerTokenCryptoSum;
@@ -64,7 +64,7 @@ public class PortfolioHelper {
         mFiatHistoryTimeframe = timeframe;
     }
 
-    public ErcToken[] getUserAssets() {
+    public BlockchainToken[] getUserAssets() {
         return mUserAssets;
     }
 
@@ -116,7 +116,7 @@ public class PortfolioHelper {
                     new AsyncUtils.MultiResponseHandler(mUserAssets.length);
             ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
                     new ArrayList<AsyncUtils.GetPriceResponseContext>();
-            for (ErcToken userAsset : mUserAssets) {
+            for (BlockchainToken userAsset : mUserAssets) {
                 String[] fromAssets =
                         new String[] {userAsset.symbol.toLowerCase(Locale.getDefault())};
                 String[] toAssets = new String[] {"usd"};
@@ -160,7 +160,7 @@ public class PortfolioHelper {
 
                 // Tokens balances
                 for (AccountInfo accountInfo : mAccountInfos) {
-                    for (ErcToken userAsset : mUserAssets) {
+                    for (BlockchainToken userAsset : mUserAssets) {
                         if (userAsset.contractAddress.isEmpty()) {
                             AsyncUtils.GetBalanceResponseContext context =
                                     new AsyncUtils.GetBalanceResponseContext(
@@ -220,7 +220,7 @@ public class PortfolioHelper {
     }
 
     private void resetResultData() {
-        mUserAssets = new ErcToken[0];
+        mUserAssets = new BlockchainToken[0];
         mTotalFiatSum = 0.0d;
         mPerTokenFiatSum = new HashMap<String, Double>();
         mPerTokenCryptoSum = new HashMap<String, Double>();
@@ -252,7 +252,7 @@ public class PortfolioHelper {
         ArrayList<AsyncUtils.GetPriceHistoryResponseContext> pricesHistoryContexts =
                 new ArrayList<AsyncUtils.GetPriceHistoryResponseContext>();
 
-        for (ErcToken userAsset : mUserAssets) {
+        for (BlockchainToken userAsset : mUserAssets) {
             AsyncUtils.GetPriceHistoryResponseContext priceHistoryContext =
                     new AsyncUtils.GetPriceHistoryResponseContext(
                             historyMultiResponse.singleResponseComplete);

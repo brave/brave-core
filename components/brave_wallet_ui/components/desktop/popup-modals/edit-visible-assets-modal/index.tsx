@@ -29,15 +29,15 @@ import {
 
 export interface Props {
   onClose: () => void
-  onAddUserAsset: (token: BraveWallet.ERCToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.ERCToken) => void
+  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
   addUserAssetError: boolean
-  fullAssetList: BraveWallet.ERCToken[]
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  fullAssetList: BraveWallet.BlockchainToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   selectedNetwork: BraveWallet.EthereumChain
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.ERCToken
+  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
 const EditVisibleAssetsModal = (props: Props) => {
@@ -54,7 +54,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     foundTokenInfoByContractAddress
   } = props
 
-  const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.ERCToken[]>([])
+  const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
@@ -171,7 +171,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       }
       onAddUserAsset(foundTokenInfoByContractAddress)
     } else {
-      const newToken: BraveWallet.ERCToken = {
+      const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
         isErc20: !tokenID,
@@ -187,15 +187,15 @@ const EditVisibleAssetsModal = (props: Props) => {
     setIsLoading(true)
   }
 
-  const isUserToken = (token: BraveWallet.ERCToken) => {
+  const isUserToken = (token: BraveWallet.BlockchainToken) => {
     return userVisibleTokensInfo.map(e => e.contractAddress.toLowerCase()).includes(token.contractAddress.toLowerCase())
   }
 
-  const isAssetSelected = (token: BraveWallet.ERCToken): boolean => {
+  const isAssetSelected = (token: BraveWallet.BlockchainToken): boolean => {
     return (isUserToken(token) && token.visible) ?? false
   }
 
-  const isCustomToken = React.useCallback((token: BraveWallet.ERCToken): boolean => {
+  const isCustomToken = React.useCallback((token: BraveWallet.BlockchainToken): boolean => {
     const assetListContracts = fullAssetList.map((token) => token.contractAddress)
     if (token.isErc20 || token.isErc721) {
       return !assetListContracts.includes(token.contractAddress)
@@ -204,7 +204,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [fullAssetList])
 
-  const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.ERCToken, isCustom: boolean) => {
+  const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {
     if (isUserToken(token)) {
       if (isCustom) {
         selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
@@ -237,7 +237,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     toggleShowAddCustomToken()
   }
 
-  const onRemoveAsset = (token: BraveWallet.ERCToken) => {
+  const onRemoveAsset = (token: BraveWallet.BlockchainToken) => {
     setIsLoading(true)
     onRemoveUserAsset(token)
   }

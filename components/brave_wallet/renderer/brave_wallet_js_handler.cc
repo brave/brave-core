@@ -775,7 +775,7 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        std::move(promise_resolver), isolate,
                        force_json_response));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
-    mojom::ERCTokenPtr token;
+    mojom::BlockchainTokenPtr token;
     if (!ParseWalletWatchAssetParams(normalized_json_request, &token,
                                      error_message)) {
       if (error_message && !error_message->empty() && error)

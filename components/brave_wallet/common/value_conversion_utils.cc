@@ -107,8 +107,8 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   return dict;
 }
 
-mojom::ERCTokenPtr ValueToERCToken(const base::Value& value) {
-  mojom::ERCTokenPtr tokenPtr = mojom::ERCToken::New();
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
+  mojom::BlockchainTokenPtr tokenPtr = mojom::BlockchainToken::New();
   if (!value.is_dict())
     return nullptr;
 

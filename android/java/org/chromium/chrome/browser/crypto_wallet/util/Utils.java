@@ -44,10 +44,10 @@ import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -854,8 +854,8 @@ public class Utils {
         }
     }
 
-    public static ErcToken createEthereumErcToken() {
-        ErcToken eth = new ErcToken();
+    public static BlockchainToken createEthereumBlockchainToken() {
+        BlockchainToken eth = new BlockchainToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
@@ -864,8 +864,8 @@ public class Utils {
         return eth;
     }
 
-    public static ErcToken[] fixupTokensRegistry(ErcToken[] tokens, String chainId) {
-        for (ErcToken token : tokens) {
+    public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
+        for (BlockchainToken token : tokens) {
             token.contractAddress =
                     getContractAddress(chainId, token.symbol, token.contractAddress);
         }
@@ -912,7 +912,7 @@ public class Utils {
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
             AssetRatioService assetRatioService, EthTxService ethTxService,
-            ErcTokenRegistry ercTokenRegistry, BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             String chainId) {
@@ -928,7 +928,7 @@ public class Utils {
                     || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
                 try {
                     fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                            Double.valueOf(tempPrice), ethTxService, ercTokenRegistry,
+                            Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
                             contractAddress, rvTransactions, callback, context, assetSymbol,
                             assetDecimals, chainId, assetRatioService, braveWalletService);
                 } catch (NumberFormatException exc) {
@@ -947,9 +947,10 @@ public class Utils {
                         }
                         try {
                             fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                    Double.valueOf(tempPriceAsset), ethTxService, ercTokenRegistry,
-                                    contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioService, braveWalletService);
+                                    Double.valueOf(tempPriceAsset), ethTxService,
+                                    blockchainRegistry, contractAddress, rvTransactions, callback,
+                                    context, assetSymbol, assetDecimals, chainId, assetRatioService,
+                                    braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
                     });
@@ -957,7 +958,7 @@ public class Utils {
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, EthTxService ethTxService, ErcTokenRegistry ercTokenRegistry,
+            double assetPrice, EthTxService ethTxService, BlockchainRegistry blockchainRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
@@ -970,7 +971,7 @@ public class Utils {
                 workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                         context, assetSymbol, assetDecimals, pendingTxInfos, null, null, null);
             } else {
-                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
+                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, blockchainRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
                         assetRatioService, braveWalletService);
             }
@@ -978,13 +979,13 @@ public class Utils {
     }
 
     private static void fetchAssetsPricesDecimals(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
+            double assetPrice, BlockchainRegistry blockchainRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert chainId != null;
-        assert ercTokenRegistry != null;
-        TokenUtils.getAllTokensFiltered(braveWalletService, ercTokenRegistry, chainId, tokens -> {
+        assert blockchainRegistry != null;
+        TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId, tokens -> {
             HashMap<String, String> assets = new HashMap<String, String>();
             HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
             for (String accountName : pendingTxInfos.keySet()) {
@@ -992,7 +993,7 @@ public class Utils {
                 for (TransactionInfo txInfo : txInfos) {
                     if (txInfo.txType == TransactionType.ERC20_TRANSFER
                             || txInfo.txType == TransactionType.ERC20_APPROVE) {
-                        for (ErcToken token : tokens) {
+                        for (BlockchainToken token : tokens) {
                             // Replace USDC and DAI contract addresses for Ropsten network
                             token.contractAddress = getContractAddress(
                                     chainId, token.symbol, token.contractAddress);

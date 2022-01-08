@@ -34,7 +34,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -116,7 +116,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(mAssetName);
         if (!mAssetLogo.isEmpty()) {
-            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+            String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
             String iconPath =
                     mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
             Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,

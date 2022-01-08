@@ -1,7 +1,7 @@
 brave_browser_brave_wallet_android_sources = [
   "//brave/browser/brave_wallet/android/asset_ratio_service_factory_android.cc",
+  "//brave/browser/brave_wallet/android/blockchain_registry_factory_android.cc",
   "//brave/browser/brave_wallet/android/brave_wallet_service_factory.cc",
-  "//brave/browser/brave_wallet/android/erc_token_registry_factory_android.cc",
   "//brave/browser/brave_wallet/android/eth_tx_service_factory_android.cc",
   "//brave/browser/brave_wallet/android/json_rpc_service_factory_android.cc",
   "//brave/browser/brave_wallet/android/keyring_service_factory_android.cc",

@@ -18,13 +18,13 @@ namespace brave_wallet {
 
 namespace {
 
-void TestValueToERCTokenFailCases(const base::Value& value,
-                                  const std::vector<std::string>& keys) {
+void TestValueToBlockchainTokenFailCases(const base::Value& value,
+                                         const std::vector<std::string>& keys) {
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
     invalid_value.RemoveKey(key);
-    EXPECT_FALSE(ValueToERCToken(invalid_value))
-        << "ValueToERCToken should fail if " << key << " not exists";
+    EXPECT_FALSE(ValueToBlockchainToken(invalid_value))
+        << "ValueToBlockchainToken should fail if " << key << " not exists";
   }
 }
 
@@ -138,7 +138,7 @@ TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
   ASSERT_TRUE(result->Equals(chain));
 }
 
-TEST(ValueConversionUtilsUnitTest, ValueToERCToken) {
+TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   absl::optional<base::Value> json_value = base::JSONReader::Read(R"({
       "contract_address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "name": "Basic Attention Token",
@@ -152,15 +152,15 @@ TEST(ValueConversionUtilsUnitTest, ValueToERCToken) {
   })");
   ASSERT_TRUE(json_value);
 
-  mojom::ERCTokenPtr expected_token = mojom::ERCToken::New(
+  mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, false, "BAT", 18, true, "");
 
-  mojom::ERCTokenPtr token = ValueToERCToken(json_value.value());
+  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value.value());
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
-  TestValueToERCTokenFailCases(
+  TestValueToBlockchainTokenFailCases(
       json_value.value(), {"contract_address", "name", "symbol", "is_erc20",
                            "is_erc721", "decimals", "visible"});
 
@@ -169,7 +169,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToERCToken) {
   optional_value.RemoveKey("logo");
   optional_value.RemoveKey("token_id");
   expected_token->logo = "";
-  token = ValueToERCToken(optional_value);
+  token = ValueToBlockchainToken(optional_value);
   EXPECT_EQ(token, expected_token);
 }
 

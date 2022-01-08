@@ -93,7 +93,7 @@ class BraveWalletProviderImpl final
       GetNetworkAndDefaultKeyringInfoCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
 
-  void AddSuggestToken(mojom::ERCTokenPtr token,
+  void AddSuggestToken(mojom::BlockchainTokenPtr token,
                        AddSuggestTokenCallback callback) override;
 
  private:

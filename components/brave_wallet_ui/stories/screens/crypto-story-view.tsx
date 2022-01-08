@@ -37,7 +37,7 @@ export interface Props {
   userAssetList: AccountAssetOptionType[]
   transactions: AccountTransactions
   portfolioBalance: string
-  selectedAsset: BraveWallet.ERCToken | undefined
+  selectedAsset: BraveWallet.BlockchainToken | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -47,14 +47,14 @@ export interface Props {
   networkList: BraveWallet.EthereumChain[]
   accounts: WalletAccountType[]
   needsBackup: boolean
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
-  fullAssetList: BraveWallet.ERCToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  fullAssetList: BraveWallet.BlockchainToken[]
   privateKey: string
   transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
-  onAddUserAsset: (token: BraveWallet.ERCToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.ERCToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.ERCToken) => void
+  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -70,13 +70,13 @@ export interface Props {
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportFilecoinAccount: (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onCreateAccount: (name: string) => void
-  onSelectAsset: (asset: BraveWallet.ERCToken | undefined) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onShowBackup: () => void
   onShowVisibleAssetsModal: (value: boolean) => void
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.ERCToken
+  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
 const CryptoStoryView = (props: Props) => {

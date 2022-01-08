@@ -48,7 +48,7 @@ export const mockNetwork: BraveWallet.EthereumChain = {
   isEip1559: true
 }
 
-export const mockERC20Token: BraveWallet.ERCToken = {
+export const mockERC20Token: BraveWallet.BlockchainToken = {
   contractAddress: 'mockContractAddress',
   name: 'Dog Coin',
   symbol: 'DOG',

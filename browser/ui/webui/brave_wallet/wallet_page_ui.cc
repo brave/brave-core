@@ -19,9 +19,9 @@
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -56,7 +56,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
-  brave_wallet::AddERCTokenImageSource(profile);
+  brave_wallet::AddBlockchainTokenImageSource(profile);
 }
 
 WalletPageUI::~WalletPageUI() = default;
@@ -81,8 +81,8 @@ void WalletPageUI::CreatePageHandler(
         asset_ratio_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
         keyring_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
-        erc_token_registry_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
+        blockchain_registry_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::EthTxService>
         eth_tx_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
@@ -109,8 +109,8 @@ void WalletPageUI::CreatePageHandler(
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
 
-  auto* erc_token_registry = brave_wallet::ERCTokenRegistry::GetInstance();
-  if (erc_token_registry) {
-    erc_token_registry->Bind(std::move(erc_token_registry_receiver));
+  auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
+  if (blockchain_registry) {
+    blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
 }

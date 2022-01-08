@@ -24,7 +24,7 @@ export interface Props {
   action?: () => void
   assetBalance: string
   fiatBalance: string
-  token: BraveWallet.ERCToken
+  token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
   isPanel?: boolean
 }

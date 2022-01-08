@@ -236,8 +236,8 @@ handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
 })
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
-  const ercTokenRegistry = getAPIProxy().ercTokenRegistry
-  const fullList = await ercTokenRegistry.getAllTokens()
+  const blockchainRegistry = getAPIProxy().blockchainRegistry
+  const fullList = await blockchainRegistry.getAllTokens()
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 

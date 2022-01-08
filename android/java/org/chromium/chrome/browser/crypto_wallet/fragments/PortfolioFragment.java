@@ -33,14 +33,14 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -239,8 +239,8 @@ public class PortfolioFragment extends Fragment
         });
     }
 
-    private void setUpCoinList(ErcToken[] userAssets, HashMap<String, Double> perTokenCryptoSum,
-            HashMap<String, Double> perTokenFiatSum) {
+    private void setUpCoinList(BlockchainToken[] userAssets,
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
         View view = getView();
         assert view != null;
 
@@ -248,8 +248,8 @@ public class PortfolioFragment extends Fragment
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        for (ErcToken userAsset : userAssets) {
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
+        for (BlockchainToken userAsset : userAssets) {
             String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
             Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
             String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
@@ -267,7 +267,7 @@ public class PortfolioFragment extends Fragment
                 userAsset.logo = "eth.png";
             }
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-            walletListItemModel.setErcToken(userAsset);
+            walletListItemModel.setBlockchainToken(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -279,7 +279,7 @@ public class PortfolioFragment extends Fragment
     }
 
     @Override
-    public void onAssetClick(ErcToken asset) {
+    public void onAssetClick(BlockchainToken asset) {
         String chainName = mSpinner.getSelectedItem().toString();
         String chainId = Utils.getNetworkConst(getActivity(), chainName);
         Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,

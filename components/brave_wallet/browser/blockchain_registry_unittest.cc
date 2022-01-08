@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "base/test/bind.h"
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -48,14 +48,14 @@ const char token_list_json[] = R"(
 
 }  // namespace
 
-TEST(ERCTokenRegistryUnitTest, GetAllTokens) {
-  auto* registry = ERCTokenRegistry::GetInstance();
-  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
-  registry->UpdateTokenList(std::move(input_erc_tokens));
+TEST(BlockchainRegistryUnitTest, GetAllTokens) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
+  registry->UpdateTokenList(std::move(input_blockchain_tokens));
 
   registry->GetAllTokens(
-      base::BindOnce([](std::vector<mojom::ERCTokenPtr> token_list) {
+      base::BindOnce([](std::vector<mojom::BlockchainTokenPtr> token_list) {
         // ENS Registrar should not be parsed because it doesn't have decimals
         // nor a symbol defined
         ASSERT_EQ(token_list.size(), 3UL);
@@ -86,35 +86,37 @@ TEST(ERCTokenRegistryUnitTest, GetAllTokens) {
       }));
 }
 
-TEST(ERCTokenRegistryUnitTest, GetTokenByContract) {
-  auto* registry = ERCTokenRegistry::GetInstance();
-  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
-  registry->UpdateTokenList(std::move(input_erc_tokens));
-  registry->GetTokenByContract("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-                               base::BindOnce([](mojom::ERCTokenPtr token) {
-                                 ASSERT_EQ(token->symbol, "BAT");
-                               }));
+TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
+  registry->UpdateTokenList(std::move(input_blockchain_tokens));
+  registry->GetTokenByContract(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      base::BindOnce([](mojom::BlockchainTokenPtr token) {
+        ASSERT_EQ(token->symbol, "BAT");
+      }));
 
   registry->GetTokenByContract(
       "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
-      base::BindOnce([](mojom::ERCTokenPtr token) { ASSERT_FALSE(token); }));
+      base::BindOnce(
+          [](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
 }
 
-TEST(ERCTokenRegistryUnitTest, GetTokenBySymbol) {
-  auto* registry = ERCTokenRegistry::GetInstance();
-  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
-  registry->UpdateTokenList(std::move(input_erc_tokens));
+TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
+  registry->UpdateTokenList(std::move(input_blockchain_tokens));
   registry->GetTokenBySymbol(
-      "BAT", base::BindOnce([](mojom::ERCTokenPtr token) {
+      "BAT", base::BindOnce([](mojom::BlockchainTokenPtr token) {
         ASSERT_EQ(token->contract_address,
                   "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
       }));
 
   registry->GetTokenBySymbol(
-      "BRB",
-      base::BindOnce([](mojom::ERCTokenPtr token) { ASSERT_FALSE(token); }));
+      "BRB", base::BindOnce(
+                 [](mojom::BlockchainTokenPtr token) { ASSERT_FALSE(token); }));
 }
 
 }  // namespace brave_wallet

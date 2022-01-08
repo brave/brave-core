@@ -259,9 +259,9 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
     }
   )");
 
-  mojom::ERCTokenPtr expected_token =
-      mojom::ERCToken::New("0xdAC17F958D2ee523a2206206994597C13D831ec7",
-                           "Tether USD", "", true, false, "USDT", 6, true, "");
+  mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
+      false, "USDT", 6, true, "");
   EXPECT_EQ(ParseTokenInfo(json), expected_token);
 
   // ERC721
@@ -281,7 +281,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  expected_token = mojom::ERCToken::New(
+  expected_token = mojom::BlockchainToken::New(
       "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
       false, true, "CARD", 0, true, "");
   EXPECT_EQ(ParseTokenInfo(json), expected_token);

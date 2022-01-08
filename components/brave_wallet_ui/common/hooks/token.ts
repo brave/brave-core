@@ -6,20 +6,20 @@
 import * as React from 'react'
 import {
   BraveWallet,
-  GetERCTokenInfoReturnInfo
+  GetBlockchainTokenInfoReturnInfo
 } from '../../constants/types'
 
 export default function useTokenInfo (
-  getERCTokenInfo: (address: string) => Promise<GetERCTokenInfoReturnInfo>,
-  visibleTokens: BraveWallet.ERCToken[],
-  fullTokenList: BraveWallet.ERCToken[],
+  getBlockchainTokenInfo: (address: string) => Promise<GetBlockchainTokenInfoReturnInfo>,
+  visibleTokens: BraveWallet.BlockchainToken[],
+  fullTokenList: BraveWallet.BlockchainToken[],
   selectedNetwork: BraveWallet.EthereumChain
 ) {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
-  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.ERCToken | undefined>()
+  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.BlockchainToken | undefined>()
 
   // Instead of having this be a useCallback hook here we are using useEffect to
-  // handle the asynchronous getERCTokenInfo fallback method.
+  // handle the asynchronous getBlockchainTokenInfo fallback method.
   // That away each component that uses this hook will not have to handle
   // this async call individually.
   React.useEffect(() => {
@@ -38,7 +38,7 @@ export default function useTokenInfo (
     }
 
     if (!checkedLists && selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID) {
-      getERCTokenInfo(contractAddress).then((value: GetERCTokenInfoReturnInfo) => {
+      getBlockchainTokenInfo(contractAddress).then((value: GetBlockchainTokenInfoReturnInfo) => {
         if (value.token) {
           setFoundTokenInfoByContractAddress(value.token)
           return

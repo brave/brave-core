@@ -66,7 +66,7 @@ export type PrivateKeyAvailablePayloadType = {
 }
 
 export type UpdateSelectedAssetType = {
-  asset: BraveWallet.ERCToken
+  asset: BraveWallet.BlockchainToken
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 

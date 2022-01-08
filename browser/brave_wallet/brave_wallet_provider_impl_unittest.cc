@@ -540,7 +540,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void AddSuggestToken(mojom::ERCTokenPtr token,
+  void AddSuggestToken(mojom::BlockchainTokenPtr token,
                        bool approved,
                        bool* approved_out,
                        mojom::ProviderError* error_out,
@@ -1648,9 +1648,9 @@ TEST_F(BraveWalletProviderImplUnitTest, AddSuggestToken) {
   Navigate(GURL("https://brave.com"));
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
 
-  mojom::ERCTokenPtr token =
-      mojom::ERCToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
-                           "", true, false, "BAT", 18, true, "");
+  mojom::BlockchainTokenPtr token =
+      mojom::BlockchainToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                                  "BAT", "", true, false, "BAT", 18, true, "");
   bool approved = false;
   mojom::ProviderError error;
   std::string error_message;

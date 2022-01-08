@@ -50,12 +50,12 @@ export interface Props {
   transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.ERCToken[]
+  visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   displayAccountName: boolean
   defaultCurrencies: DefaultCurrencies
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (asset: BraveWallet.ERCToken) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken) => void
   onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void

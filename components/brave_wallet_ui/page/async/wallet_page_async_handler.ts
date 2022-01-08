@@ -256,27 +256,4 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
   })
 })
 
-// TODO(bbondy): Remove - Example usage:
-//
-// Interacting with the token registry
-// const ercTokenRegistry = getWalletPageApiProxy().ercTokenRegistry
-// const val1 = await ercTokenRegistry.getAllTokens()
-// const val2 = await ercTokenRegistry.getTokenBySymbol('BAT')
-// const val3 = await ercTokenRegistry.getTokenByContract('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
-// const val4 = await ercTokenRegistry.getTokenByContract('dsaida')
-// console.log('val1-4: ', val1, val2, val3, val4)
-//
-// Getting and setting network:
-//
-// import { Network } from '../../constants/types'
-// const jsonRpcService = getWalletPageApiProxy().jsonRpcService
-// const network = await jsonRpcService.getNetwork()
-// await jsonRpcService.setNetwork(Network.Rinkeby)
-// const chainId = await jsonRpcService.getChainId()
-// const blockTrackerUrl = await jsonRpcService.getBlockTrackerUrl()
-//
-// Getting ETH and BAT ERC20 balance
-// const balance = await jsonRpcService.getBalance(address)
-// const token_balance = await jsonRpcService.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
-
 export default handler.middleware
