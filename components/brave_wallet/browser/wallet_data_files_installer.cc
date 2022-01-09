@@ -82,6 +82,8 @@ TokenListMap TokenListReady(const base::FilePath& install_dir,
   HandleParseTokenList(absolute_install_dir, "contract-map.json", &lists);
   // Used for EVM compatabile networks including testnets
   HandleParseTokenList(absolute_install_dir, "evm-contract-map.json", &lists);
+  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json",
+                       &lists);
 
   return lists;
 }

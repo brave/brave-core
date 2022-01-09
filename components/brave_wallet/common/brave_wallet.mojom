@@ -528,6 +528,9 @@ const string kRopstenChainId = "0x3";
 const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
+const string kSolanaMainnet = "solana:0x65";
+const string kSolanaTestnet = "solana:0x66";
+const string kSolanaDevnet = "solana:0x67";
 
 struct EthereumChain {
   string chain_id;
