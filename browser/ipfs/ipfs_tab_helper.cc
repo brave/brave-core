@@ -234,9 +234,12 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
 
 bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
   url::Origin url_origin = url::Origin::Create(url);
-  return url.SchemeIsHTTPOrHTTPS() &&
-         !IsAPIGateway(url_origin.GetURL(), chrome::GetChannel()) &&
-         !IsDefaultGatewayURL(url, pref_service_);
+  bool resolve = url.SchemeIsHTTPOrHTTPS() &&
+                 !IsAPIGateway(url_origin.GetURL(), chrome::GetChannel());
+  if (!IsLocalGatewayConfigured(pref_service_)) {
+    resolve = resolve && !IsDefaultGatewayURL(url, pref_service_);
+  }
+  return resolve;
 }
 
 void IPFSTabHelper::MaybeShowDNSLinkButton(
