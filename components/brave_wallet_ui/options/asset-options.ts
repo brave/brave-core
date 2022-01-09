@@ -22,7 +22,8 @@ export const ETH = {
   isErc721: false,
   decimals: 18,
   visible: true,
-  tokenId: ''
+  tokenId: '',
+  coingeckoId: ''
 } as BraveWallet.BlockchainToken
 
 export const BAT = {
@@ -34,7 +35,8 @@ export const BAT = {
   isErc721: false,
   decimals: 18,
   visible: false,
-  tokenId: ''
+  tokenId: '',
+  coingeckoId: ''
 } as BraveWallet.BlockchainToken
 
 export const RopstenSwapAssetOptions: BraveWallet.BlockchainToken[] = [
@@ -48,7 +50,8 @@ export const RopstenSwapAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
@@ -59,7 +62,8 @@ export const RopstenSwapAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 6,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   }
 ]
 
@@ -74,7 +78,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '2',
@@ -85,7 +90,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '3',
@@ -96,7 +102,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '4',
@@ -107,7 +114,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '5',
@@ -118,7 +126,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '6',
@@ -129,7 +138,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   }
 ]
 
@@ -145,7 +155,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '3',
@@ -156,7 +167,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 8,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '4',
@@ -167,7 +179,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 8,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '5',
@@ -178,7 +191,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 8,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   },
   {
     contractAddress: '0xE41d2489571d322189246DaFA5ebDe1F4699F498',
@@ -189,6 +203,7 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     isErc721: false,
     decimals: 18,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   }
 ]

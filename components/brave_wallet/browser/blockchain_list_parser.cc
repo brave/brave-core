@@ -113,6 +113,9 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
     std::string chain_id = "0x1";
     ParseResultFromDict(blockchain_token_value, "chainId", &chain_id);
 
+    ParseResultFromDict(blockchain_token_value, "coingeckoId",
+                        &blockchain_token->coingecko_id);
+
     (*token_list_map)[chain_id].push_back(std::move(blockchain_token));
   }
 

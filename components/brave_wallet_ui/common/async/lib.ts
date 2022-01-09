@@ -142,7 +142,8 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
       visible: false,
-      tokenId: ''
+      tokenId: '',
+      coingeckoId: ''
     }
 
     const visibleTokens: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens

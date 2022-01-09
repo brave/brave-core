@@ -1023,8 +1023,9 @@ TEST_F(BraveWalletServiceUnitTest,
       {"https://url1.com"}, "TC", "Test Coin", 11, false);
   AddCustomNetwork(GetPrefs(), chain.Clone());
 
-  auto native_asset = mojom::BlockchainToken::New(
-      "", "Test Coin", "https://url1.com", false, false, "TC", 11, true, "");
+  auto native_asset =
+      mojom::BlockchainToken::New("", "Test Coin", "https://url1.com", false,
+                                  false, "TC", 11, true, "", "");
 
   bool success = false;
   bool callback_called = false;
@@ -1364,23 +1365,23 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
       mojom::BlockchainToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F",
                                   "USD Coin", "usdc.png", true, false, "USDC",
-                                  6, true, "");
+                                  6, true, "", "");
   ASSERT_EQ(usdc_from_blockchain_registry,
             GetRegistry()->GetTokenByContract(
                 mojom::kMainnetChainId,
                 "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
   mojom::BlockchainTokenPtr usdc_from_user_assets = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true, false,
-      "USDC", 6, true, "");
+      "USDC", 6, true, "", "");
   ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
 
-  mojom::BlockchainTokenPtr usdc_from_request =
-      mojom::BlockchainToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F",
-                                  "USDC", "", true, false, "USDC", 6, true, "");
+  mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false,
+      "USDC", 6, true, "", "");
 
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      "COLOR", 18, true, "");
+      "COLOR", 18, true, "", "");
 
   // Case 1: Suggested token does not exist (no entry with the same contract
   // address) in BlockchainRegistry nor user assets. Current network is mainnet.
@@ -1435,12 +1436,12 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 
   mojom::BlockchainTokenPtr usdt_from_user_assets = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png", true,
-      false, "USDT", 6, true, "");
+      false, "USDT", 6, true, "", "");
   ASSERT_TRUE(service_->AddUserAsset(usdt_from_user_assets.Clone(), chain_id));
 
   mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
-      "USDT", 18, true, "");
+      "USDT", 18, true, "", "");
   // Case 5: Suggested token exists in user asset list and is visible, does not
   // exist in BlockchainRegistry.
   // Token should be in user asset list and is visible, and the data should be
@@ -1473,7 +1474,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   // kUserRejectedRequest error.
   mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
       "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
-      false, "BUSD", 18, true, "");
+      false, "BUSD", 18, true, "", "");
   AddSuggestToken(busd.Clone(), busd.Clone(), false,
                   true /* run_switch_network */);
 
@@ -1513,7 +1514,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
-      true, false, "USDC", 6, true, "");
+      true, false, "USDC", 6, true, "", "");
   ASSERT_TRUE(service_->AddUserAsset(usdc.Clone(), mojom::kRopstenChainId));
   EXPECT_EQ(usdc,
             service_->GetUserAsset(usdc->contract_address, usdc->token_id,
@@ -1560,7 +1561,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
           [](bool, const std::string&, const std::string&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      "COLOR", 18, true, "");
+      "COLOR", 18, true, "", "");
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
   service_->Reset();

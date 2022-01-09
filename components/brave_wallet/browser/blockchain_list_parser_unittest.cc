@@ -29,7 +29,8 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
        "logo": "bat.svg",
        "erc20": true,
        "symbol": "BAT",
-       "decimals": 18
+       "decimals": 18,
+       "coingeckoId": "basic-attention-token"
      },
      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
        "name": "Uniswap",
@@ -44,53 +45,56 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   std::map<std::string, std::vector<mojom::BlockchainTokenPtr>> token_list_map;
   ASSERT_TRUE(ParseTokenList(json, &token_list_map));
   ASSERT_EQ(token_list_map["0x1"].size(), 2UL);
-  ASSERT_EQ(token_list_map["0x2"].size(), 0UL);
+  EXPECT_EQ(token_list_map["0x2"].size(), 0UL);
   ASSERT_EQ(token_list_map["0x3"].size(), 1UL);
 
   const auto& mainnet_token_list = token_list_map["0x1"];
-  ASSERT_EQ(mainnet_token_list[0]->name, "Crypto Kitties");
-  ASSERT_EQ(mainnet_token_list[0]->contract_address,
+  EXPECT_EQ(mainnet_token_list[0]->name, "Crypto Kitties");
+  EXPECT_EQ(mainnet_token_list[0]->contract_address,
             "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
-  ASSERT_FALSE(mainnet_token_list[0]->is_erc20);
-  ASSERT_TRUE(mainnet_token_list[0]->is_erc721);
-  ASSERT_EQ(mainnet_token_list[0]->symbol, "CK");
-  ASSERT_EQ(mainnet_token_list[0]->logo, "CryptoKitties-Kitty-13733.svg");
-  ASSERT_EQ(mainnet_token_list[0]->decimals, 0);
+  EXPECT_FALSE(mainnet_token_list[0]->is_erc20);
+  EXPECT_TRUE(mainnet_token_list[0]->is_erc721);
+  EXPECT_EQ(mainnet_token_list[0]->symbol, "CK");
+  EXPECT_EQ(mainnet_token_list[0]->logo, "CryptoKitties-Kitty-13733.svg");
+  EXPECT_EQ(mainnet_token_list[0]->decimals, 0);
+  EXPECT_TRUE(mainnet_token_list[0]->coingecko_id.empty());
 
-  ASSERT_EQ(mainnet_token_list[1]->name, "Basic Attention Token");
-  ASSERT_EQ(mainnet_token_list[1]->contract_address,
+  EXPECT_EQ(mainnet_token_list[1]->name, "Basic Attention Token");
+  EXPECT_EQ(mainnet_token_list[1]->contract_address,
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  ASSERT_TRUE(mainnet_token_list[1]->is_erc20);
-  ASSERT_FALSE(mainnet_token_list[1]->is_erc721);
-  ASSERT_EQ(mainnet_token_list[1]->symbol, "BAT");
-  ASSERT_EQ(mainnet_token_list[1]->logo, "bat.svg");
-  ASSERT_EQ(mainnet_token_list[1]->decimals, 18);
+  EXPECT_TRUE(mainnet_token_list[1]->is_erc20);
+  EXPECT_FALSE(mainnet_token_list[1]->is_erc721);
+  EXPECT_EQ(mainnet_token_list[1]->symbol, "BAT");
+  EXPECT_EQ(mainnet_token_list[1]->logo, "bat.svg");
+  EXPECT_EQ(mainnet_token_list[1]->decimals, 18);
+  EXPECT_EQ(mainnet_token_list[1]->coingecko_id, "basic-attention-token");
 
   const auto& ropsten_token_list = token_list_map["0x3"];
-  ASSERT_EQ(ropsten_token_list[0]->name, "Uniswap");
-  ASSERT_EQ(ropsten_token_list[0]->contract_address,
+  EXPECT_EQ(ropsten_token_list[0]->name, "Uniswap");
+  EXPECT_EQ(ropsten_token_list[0]->contract_address,
             "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
-  ASSERT_TRUE(ropsten_token_list[0]->is_erc20);
-  ASSERT_FALSE(ropsten_token_list[0]->is_erc721);
-  ASSERT_EQ(ropsten_token_list[0]->symbol, "UNI");
-  ASSERT_EQ(ropsten_token_list[0]->logo, "uni.svg");
-  ASSERT_EQ(ropsten_token_list[0]->decimals, 18);
+  EXPECT_TRUE(ropsten_token_list[0]->is_erc20);
+  EXPECT_FALSE(ropsten_token_list[0]->is_erc721);
+  EXPECT_EQ(ropsten_token_list[0]->symbol, "UNI");
+  EXPECT_EQ(ropsten_token_list[0]->logo, "uni.svg");
+  EXPECT_EQ(ropsten_token_list[0]->decimals, 18);
+  EXPECT_TRUE(mainnet_token_list[0]->coingecko_id.empty());
 
   token_list_map.clear();
   json = R"({})";
-  ASSERT_TRUE(ParseTokenList(json, &token_list_map));
-  ASSERT_TRUE(token_list_map.empty());
+  EXPECT_TRUE(ParseTokenList(json, &token_list_map));
+  EXPECT_TRUE(token_list_map.empty());
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": 3})";
-  ASSERT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {}})";
-  ASSERT_TRUE(token_list_map.empty());
-  ASSERT_TRUE(ParseTokenList(json, &token_list_map));
+  EXPECT_TRUE(token_list_map.empty());
+  EXPECT_TRUE(ParseTokenList(json, &token_list_map));
   json = "3";
-  ASSERT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
   json = "[3]";
-  ASSERT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
   json = "";
-  ASSERT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
 }
 
 }  // namespace brave_wallet

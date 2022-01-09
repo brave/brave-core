@@ -414,7 +414,7 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json) {
 
   return mojom::BlockchainToken::New(eth_addr.ToChecksumAddress(), *name,
                                      "" /* logo */, is_erc20, is_erc721,
-                                     *symbol, decimals, true, "");
+                                     *symbol, decimals, true, "", "");
 }
 
 }  // namespace brave_wallet

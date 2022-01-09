@@ -267,6 +267,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.SetIntKey("decimals", token->decimals);
   value.SetBoolKey("visible", true);
   value.SetStringKey("token_id", token->token_id);
+  value.SetStringKey("coingecko_id", token->coingecko_id);
 
   user_assets_list->Append(std::move(value));
   return true;
