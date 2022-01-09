@@ -49,10 +49,24 @@ static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
 
 absl::optional<base::Version> last_installed_wallet_version;
 
-std::vector<mojom::BlockchainTokenPtr> TokenListReady(
-    const base::FilePath& install_dir,
-    base::Value manifest) {
-  std::vector<mojom::BlockchainTokenPtr> blockchain_tokens;
+void HandleParseTokenList(base::FilePath absolute_install_dir,
+                          const std::string& filename,
+                          TokenListMap* token_list_map) {
+  const base::FilePath token_list_json_path =
+      absolute_install_dir.AppendASCII(filename);
+  std::string token_list_json;
+  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
+    LOG(ERROR) << "Can't read token list file: " << filename;
+  }
+
+  if (!ParseTokenList(token_list_json, token_list_map)) {
+    LOG(ERROR) << "Can't parse token list: " << filename;
+  }
+}
+
+TokenListMap TokenListReady(const base::FilePath& install_dir,
+                            base::Value manifest) {
+  TokenListMap lists;
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
@@ -61,28 +75,19 @@ std::vector<mojom::BlockchainTokenPtr> TokenListReady(
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
-    return blockchain_tokens;
+    return lists;
   }
 
-  const base::FilePath token_list_json_path =
-      absolute_install_dir.AppendASCII("contract-map.json");
-  std::string token_list_json;
-  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
-    LOG(ERROR) << "Can't read token list file.";
-  }
+  // Used for Ethereum mainnet
+  HandleParseTokenList(absolute_install_dir, "contract-map.json", &lists);
+  // Used for EVM compatabile networks including testnets
+  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json", &lists);
 
-  if (!ParseTokenList(token_list_json, &blockchain_tokens)) {
-    LOG(ERROR) << "Can't parse token list.";
-    blockchain_tokens.clear();
-  }
-
-  return blockchain_tokens;
+  return lists;
 }
 
-void UpdateTokenRegistry(
-    std::vector<mojom::BlockchainTokenPtr> blockchain_tokens) {
-  BlockchainRegistry::GetInstance()->UpdateTokenList(
-      std::move(blockchain_tokens));
+void UpdateTokenRegistry(TokenListMap lists) {
+  BlockchainRegistry::GetInstance()->UpdateTokenList(std::move(lists));
 }
 
 }  // namespace

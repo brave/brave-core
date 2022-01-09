@@ -155,14 +155,14 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_->AddObserver(observer_->GetReceiver());
 
     auto* registry = BlockchainRegistry::GetInstance();
-    std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
-    ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
-    registry->UpdateTokenList(std::move(input_blockchain_tokens));
+    TokenListMap token_list_map;
+    ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
+    registry->UpdateTokenList(std::move(token_list_map));
 
     bool callback_called = false;
     mojom::BlockchainTokenPtr token1;
     GetRegistry()->GetTokenByContract(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        mojom::kMainnetChainId, "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           token1_ = std::move(token);
           callback_called = true;
@@ -174,7 +174,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     callback_called = false;
     mojom::BlockchainTokenPtr token2;
     GetRegistry()->GetTokenByContract(
-        "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+        mojom::kMainnetChainId, "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           token2_ = std::move(token);
           callback_called = true;
@@ -186,7 +186,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     callback_called = false;
     mojom::BlockchainTokenPtr erc721_token;
     GetRegistry()->GetTokenByContract(
-        "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+        mojom::kMainnetChainId, "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           erc721_token_ = std::move(token);
           callback_called = true;
@@ -1367,6 +1367,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                                   6, true, "");
   ASSERT_EQ(usdc_from_blockchain_registry,
             GetRegistry()->GetTokenByContract(
+                mojom::kMainnetChainId,
                 "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
   mojom::BlockchainTokenPtr usdc_from_user_assets = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true, false,

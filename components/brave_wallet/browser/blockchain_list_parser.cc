@@ -26,9 +26,8 @@ bool ParseResultFromDict(const base::DictionaryValue* response_dict,
 
 namespace brave_wallet {
 
-bool ParseTokenList(const std::string& json,
-                    std::vector<mojom::BlockchainTokenPtr>* token_list) {
-  DCHECK(token_list);
+bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
+  DCHECK(token_list_map);
 
   // {
   //  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
@@ -51,7 +50,8 @@ bool ParseTokenList(const std::string& json,
   //    "logo": "uni.svg",
   //    "erc20": true,
   //    "symbol": "UNI",
-  //    "decimals": 18
+  //    "decimals": 18,
+  //    "chainId": "0x1"
   //  }
   // }
 
@@ -110,7 +110,10 @@ bool ParseTokenList(const std::string& json,
     else
       continue;
 
-    token_list->push_back(std::move(blockchain_token));
+    std::string chain_id = "0x1";
+    ParseResultFromDict(blockchain_token_value, "chainId", &chain_id);
+
+    (*token_list_map)[chain_id].push_back(std::move(blockchain_token));
   }
 
   return true;

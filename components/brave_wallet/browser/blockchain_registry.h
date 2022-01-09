@@ -11,6 +11,7 @@
 
 #include "base/macros.h"
 #include "base/memory/singleton.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -29,8 +30,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
-  void UpdateTokenList(
-      std::vector<mojom::BlockchainTokenPtr> blockchain_tokens);
+  void UpdateTokenList(TokenListMap tokens);
 
   mojom::BlockchainTokenPtr GetTokenByContract(const std::string& chain_id,
                                                const std::string& contract);
@@ -53,7 +53,10 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                  GetBuyUrlCallback callback) override;
 
  protected:
-  std::vector<mojom::BlockchainTokenPtr> blockchain_tokens_;
+  std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
+      const std::string& chain_id);
+
+  TokenListMap token_list_map_;
   friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
   BlockchainRegistry();
