@@ -142,7 +142,8 @@ public class AddAccountActivity extends AsyncInitializationActivity
                                     });
                         } else {
                             mKeyringService.importAccount(mAddAccountText.getText().toString(),
-                                    mPrivateKeyControl.getText().toString(), (result, address) -> {
+                                    mPrivateKeyControl.getText().toString().trim(),
+                                    (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);
                                             Utils.clearClipboard(

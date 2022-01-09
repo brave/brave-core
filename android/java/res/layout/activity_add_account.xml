@@ -78,7 +78,7 @@
                 android:layout_height="200dp"
                 android:gravity="top"
                 android:hint="@string/import_account_text"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:importantForAutofill="no"
                 android:paddingEnd="18dp"
                 android:paddingStart="18dp"
