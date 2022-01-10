@@ -61,6 +61,15 @@ extension Strings {
     public static let closeTabTitle = NSLocalizedString("CloseTabTitle", bundle: Bundle.shared, value: "Close Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let showNextTabTitle = NSLocalizedString("ShowNextTabTitle", bundle: Bundle.shared, value: "Show Next Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let showPreviousTabTitle = NSLocalizedString("ShowPreviousTabTitle", bundle: Bundle.shared, value: "Show Previous Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showHistoryTitle = NSLocalizedString("showHistoryTitle", bundle: Bundle.braveShared, value: "Show History", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showDownloadsTitle = NSLocalizedString("showDownloadsTitle", bundle: Bundle.braveShared, value: "Show Downloads", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showBookmarksTitle = NSLocalizedString("showBookmarksTitle", bundle: Bundle.shared, value: "Show Bookmarks", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let addBookmarkTitle = NSLocalizedString("addBookmarkTitle", bundle: Bundle.braveShared, value: "Add Bookmark", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let addFavouritesTitle = NSLocalizedString("addFavouritesTitle", bundle: Bundle.braveShared, value: "Add to Favourites", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findInPageTitle = NSLocalizedString("findInPageTitle", bundle: Bundle.braveShared, value: "Find in Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findNextTitle = NSLocalizedString("findNextTitle", bundle: Bundle.braveShared, value: "Find Next", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findPreviousTitle = NSLocalizedString("findPreviousTitle", bundle: Bundle.braveShared, value: "Find Previous", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let shareWithTitle = NSLocalizedString("shareWithTitle", bundle: Bundle.braveShared, value: "Share with...", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
 }
 
 // Home page.
