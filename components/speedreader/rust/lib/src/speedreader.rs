@@ -89,10 +89,7 @@ impl SpeedReader {
                 RewriterType::Readability => {
                     Ok(Box::new(SpeedReaderReadability::try_new(url, output_sink)?))
                 }
-                _ => Ok(Box::new(SpeedReaderHeuristics::try_new(
-                    url.as_str(),
-                    output_sink,
-                )?)),
+                _ => Ok(Box::new(SpeedReaderHeuristics::try_new(url.as_str(), output_sink)?)),
             }
         } else {
             Err(SpeedReaderError::BadURL(article_url.to_owned()))

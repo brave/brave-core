@@ -28,9 +28,9 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                     parser.process(tendril);
                     Ok(())
                 }
-                Err(_) => Err(SpeedReaderError::DocumentParseError(
-                    "Could not write tendril".to_owned(),
-                )),
+                Err(_) => {
+                    Err(SpeedReaderError::DocumentParseError("Could not write tendril".to_owned()))
+                }
             }
         } else {
             Err(SpeedReaderError::ProcessorClosed)
@@ -51,9 +51,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                     ))
                 }
             } else {
-                Err(SpeedReaderError::RewritingError(
-                    "Could not score document".to_owned(),
-                ))
+                Err(SpeedReaderError::RewritingError("Could not score document".to_owned()))
             }
         } else {
             Err(SpeedReaderError::ProcessorClosed)
@@ -72,11 +70,7 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
 
         if scheme == "http" || scheme == "https" {
             let parser = html5ever::parse_document(Sink::default(), ParseOpts::default());
-            Ok(SpeedReaderReadability {
-                parser: Some(parser),
-                url,
-                output_sink,
-            })
+            Ok(SpeedReaderReadability { parser: Some(parser), url, output_sink })
         } else {
             Err(SpeedReaderError::InvalidUrl(url.to_string()))
         }

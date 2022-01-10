@@ -10,9 +10,9 @@ use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
 use thiserror::Error;
+use time::format_description::well_known::Rfc3339;
 use time::macros::format_description;
 use time::OffsetDateTime;
-use time::format_description::well_known::Rfc3339;
 use url::Url;
 use util::StringUtils;
 
@@ -61,9 +61,8 @@ where
         .and_then(|url| Url::parse(url).ok())
         .unwrap_or_else(|| Url::parse("https://example.com").unwrap());
 
-    let mut dom: Sink = parse_document(Sink::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
+    let mut dom: Sink =
+        parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
     extract_dom(&mut dom, &url, &HashMap::new())
 }
@@ -297,9 +296,12 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
 
         // Add in last modified datetime
         if let Some(ref last_modified) = meta.last_modified {
-            let format = format_description!("Updated [month repr:short]. [day], [year] [hour repr:12]:[minute] [period]");
+            let format = format_description!(
+                "Updated [month repr:short]. [day], [year] [hour repr:12]:[minute] [period]"
+            );
             if let Some(formatted) = last_modified.format(format).ok() {
-                let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
+                let modified =
+                    dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
                 dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
             }
         }
@@ -353,12 +355,7 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
         // Less than 3 words in the title. Try first colon.
         if cur_title.split_whitespace().count() < 3 {
             cur_title = title.substring(title.find(':').unwrap() + 1, title.len());
-        } else if title
-            .substring(0, title.find(':').unwrap_or(0))
-            .split_whitespace()
-            .count()
-            > 5
-        {
+        } else if title.substring(0, title.find(':').unwrap_or(0)).split_whitespace().count() > 5 {
             return title;
         }
         cur_title.trim().to_string()
@@ -400,20 +397,14 @@ fn try_parse_author(v: &serde_json::Value) -> Option<String> {
         }
         serde_json::Value::Array(a) => {
             if !a.is_empty() {
-                Some(
-                    a.iter()
-                        .filter_map(|e| try_parse_author(e))
-                        .collect::<Vec<_>>()
-                        .join(", "),
-                )
+                Some(a.iter().filter_map(|e| try_parse_author(e)).collect::<Vec<_>>().join(", "))
             } else {
                 None
             }
         }
-        serde_json::Value::Object(o) => o
-            .get("name")
-            .and_then(|name| name.as_str())
-            .map(|x| x.to_string()),
+        serde_json::Value::Object(o) => {
+            o.get("name").and_then(|name| name.as_str()).map(|x| x.to_string())
+        }
         _ => None,
     }
 }
@@ -459,10 +450,8 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
                 .unwrap_or(Err(JsonLdError::MissingType))?;
 
             // Get article title
-            if let Some(title) = o
-                .get("name")
-                .or_else(|| o.get("headline"))
-                .and_then(from_json_string)
+            if let Some(title) =
+                o.get("name").or_else(|| o.get("headline")).and_then(from_json_string)
             {
                 meta.title = title;
             }
@@ -478,10 +467,8 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
             }
 
             // Get article modified date
-            if let Some(timestamp) = o
-                .get("dateModified")
-                .or_else(|| o.get("datePublished"))
-                .and_then(from_json_string)
+            if let Some(timestamp) =
+                o.get("dateModified").or_else(|| o.get("datePublished")).and_then(from_json_string)
             {
                 meta.last_modified = OffsetDateTime::parse(&timestamp, &Rfc3339).ok();
             }
@@ -498,20 +485,15 @@ mod tests {
     use std::io::Cursor;
 
     fn normalize_output(input: &str) -> String {
-        return input
-            .lines()
-            .map(|line| line.trim())
-            .filter(|line| !line.is_empty())
-            .collect();
+        return input.lines().map(|line| line.trim()).filter(|line| !line.is_empty()).collect();
     }
 
     fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
     where
         R: Read,
     {
-        let mut dom: Sink = parse_document(Sink::default(), Default::default())
-            .from_utf8()
-            .read_from(input)?;
+        let mut dom: Sink =
+            parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
         let mut meta = extract_metadata(&dom);
         meta.title = clean_title(&dom, meta.title);
@@ -577,10 +559,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let meta = preprocess(&mut cursor).unwrap().meta;
-        assert_eq!(
-            "Geek's Guide to the Galaxy",
-            meta.author.expect("No author extracted"),
-        );
+        assert_eq!("Geek's Guide to the Galaxy", meta.author.expect("No author extracted"),);
     }
 
     #[test]
@@ -601,10 +580,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -625,10 +601,7 @@ mod tests {
         </html>"#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -651,10 +624,7 @@ mod tests {
         </html>"#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -677,10 +647,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -705,10 +672,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -731,10 +695,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -756,10 +717,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -780,10 +738,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -812,10 +767,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -834,10 +786,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content),
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content),);
     }
 
     #[test]
@@ -856,10 +805,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content),
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content),);
     }
 
     #[test]
@@ -888,10 +834,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -925,10 +868,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -953,10 +893,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -977,10 +914,7 @@ mod tests {
             large_p_node.push_str("</p>");
             p_blob.push_str(&large_p_node);
         }
-        let input = format!(
-            r#"<html><body><div class="sidebar">{}</div></body></html>"#,
-            p_blob
-        );
+        let input = format!(r#"<html><body><div class="sidebar">{}</div></body></html>"#, p_blob);
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
         assert!(product.content.len() > 150);
@@ -1168,9 +1102,6 @@ mod tests {
             "An inquest into Eloise Parry's death has been adjourned until July.",
             meta.description.expect("No description extracted")
         );
-        assert!(
-            meta.last_modified.is_some(),
-            "Could not parse dateModified field"
-        );
+        assert!(meta.last_modified.is_some(), "Could not parse dateModified field");
     }
 }
