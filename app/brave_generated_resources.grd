@@ -1047,7 +1047,7 @@ Are you sure you want to do this?
         Gateway
       </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_LOCAL" desc="Select control value for which IPFS resolve method to use">
-        Local node
+        Brave node
       </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_DISABLED" desc="Select control value for which IPFS resolve method to use">
         Disabled
