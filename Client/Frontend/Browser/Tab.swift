@@ -48,6 +48,7 @@ class Tab: NSObject {
     
     let rewardsId: UInt32
     
+    var onScreenshotUpdated: (() -> Void)?
     var rewardsEnabledCallback: ((Bool) -> Void)?
     
     var alertShownCount: Int = 0
@@ -568,6 +569,8 @@ class Tab: NSObject {
         if revUUID {
             self.screenshotUUID = UUID()
         }
+        
+        onScreenshotUpdated?()
     }
 
     /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.

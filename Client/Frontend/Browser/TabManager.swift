@@ -967,6 +967,7 @@ extension TabManager: WKNavigationDelegate {
 
             // Saving Tab Private Mode - not supported yet.
             if let tab = tabForWebView(webView), !tab.isPrivate {
+                preserveScreenshots()
                 saveTab(tab)
             }
         }
