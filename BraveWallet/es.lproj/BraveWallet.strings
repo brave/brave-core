@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Soy consciente de que, si pierdo la frase de recuperación, no podré acceder a mi cartera de criptomonedas.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "En el siguiente paso, verás una frase de recuperación compuesta por 12 palabras que podrás utilizar para recuperar tus cuentas de criptomonedas principales. Guárdala en un lugar seguro, ya que esa frase de recuperación será lo único que te permitirá volver a acceder a tu cuenta en caso de que olvides la contraseña, de que pierdas o te roben el dispositivo, o de que quieras cambiar de cartera.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Haz una copia de seguridad de tu cartera de criptomonedas";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Haz una copia de seguridad de tu cartera para proteger tus criptoactivos y asegurarte de que nunca pierdas el acceso a ella.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Beta";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Habilitar";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Cuentas de criptomonedas principales";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu clave privada se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu frase de recuperación se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Actualizar el precio del mercado";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Guardar código QR";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Hemos detectado una captura de pantalla";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Buscar activos";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Envía criptomonedas o haz una transferencia de una cuenta a otra.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "La dirección destinataria es la dirección de un contrato de token";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "La dirección destinataria es tu propia dirección";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Dirección de ETH no válida";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ajustes";

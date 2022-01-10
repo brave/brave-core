@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "我了解如果遺失我的復原詞句，將無法存取我的加密錢包。";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "在下一個步驟中，您會看見由 12 個字組成的復原詞句，供您復原主要加密帳戶。請將復原詞句儲存在安全的位置。萬一忘記密碼、裝置遺失或遭竊，或是要切換錢包，復原詞句是您重新取得帳戶存取權的唯一方法。";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "備份您的加密錢包";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "立即備份您的錢包，以保護您的加密資產，確保您絕不失去存取權。";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "測試版";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "啟用";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "主要加密帳戶";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "警告：有心人士可能會將私密金鑰的螢幕擷取畫面備份至雲端檔案服務，而任何取得照片存取權限的應用程式都能加以讀取。Brave 建議您不要儲存該螢幕擷取畫面，並且儘快刪除。";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "警告：有心人士可能會將復原詞句的螢幕擷取畫面備份至雲端檔案服務，而任何取得照片存取權限的應用程式都能加以讀取。Brave 建議您不要儲存該螢幕擷取畫面，並且儘快刪除。";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "重新整理市場價格";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "掃描 QR 碼";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "已偵測到螢幕擷取畫面";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "搜尋資產";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "從一個帳戶傳送加密資產或轉帳至另一個帳戶。";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "接收位址是代幣的合約網址";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "接收位址是您自己的位址";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "並非有效的 ETH 位址";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "設定";

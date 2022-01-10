@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Kurtarma ifademi kaybedersem, kripto cüzdanıma erişemeyeceğimi anladım.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik kurtarma ifadesini göreceksiniz. Bu ifadeyi güvenli bir yerde saklayın. Kurtarma ifadeniz, şifrenin unutulması, cihazın kaybedilmesi veya çalınması ya da cüzdan değiştirmek istemeniz durumlarında hesabınıza tekrar erişim sağlamanın tek yoludur.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Kripto cüzdanınızı yedekleyin";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Kripto varlıklarınızı korumak ve erişimi asla kaybetmediğinizden emin olmak için cüzdanınızı şimdi yedekleyin.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Beta";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Etkinleştir";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Ana Kripto Hesapları";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Uyarı: Özel anahtarınızın ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Brave, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Uyarı: Kurtarma ifadenizin ekran görüntüsü bir bulut dosya hizmetine yedeklenebilir ve fotoğraflarınıza erişimi olan herhangi bir uygulama tarafından okunabilir. Brave, bu ekran görüntüsünü saklamamanızı ve mümkün olduğunca çabuk şekilde silmenizi önerir.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Piyasa fiyatını yenileyin";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR kodunu tarayın";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Ekran görüntüsü tespit edildi";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Varlıkları arayın";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Bir hesaptan diğerine kripto gönderin veya aktarın.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Alıcı adres bir token'ın kontrat adresi";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Alıcı adres kendi adresiniz";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Geçerli bir ETH adresi değil";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ayarlar";
