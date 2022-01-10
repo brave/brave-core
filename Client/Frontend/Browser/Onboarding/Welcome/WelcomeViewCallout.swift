@@ -72,6 +72,9 @@ class WelcomeViewCallout: UIView {
     private let primaryButton = RoundInterfaceButton(type: .custom).then {
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .braveBlurple
+        $0.titleLabel?.numberOfLines = 0
+        $0.titleLabel?.minimumScaleFactor = 0.7
+        $0.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
     private let secondaryButtonContentView = UIStackView().then {
@@ -97,6 +100,9 @@ class WelcomeViewCallout: UIView {
         $0.backgroundColor = .clear
         $0.setContentHuggingPriority(.required, for: .horizontal)
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        $0.titleLabel?.numberOfLines = 0
+        $0.titleLabel?.minimumScaleFactor = 0.7
+        $0.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
     // MARK: - State
