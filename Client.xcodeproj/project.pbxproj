@@ -392,8 +392,6 @@
 		27829E752549FF13007CF0B2 /* WalletTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27829E742549FF13007CF0B2 /* WalletTransferViewController.swift */; };
 		27829E842549FF9D007CF0B2 /* WalletTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27829E832549FF9D007CF0B2 /* WalletTransferView.swift */; };
 		2784874524DC658C0004F03C /* BraveNewsEmptyFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2784874424DC658C0004F03C /* BraveNewsEmptyFeedView.swift */; };
-		278655B925C227E1009FFE80 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277569F425ACFD3F00C129AF /* OnePasswordExtension.framework */; };
-		278655BA25C227E1009FFE80 /* OnePasswordExtension.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 277569F425ACFD3F00C129AF /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		278C467823EDF0060083347F /* SimpleShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C467723EDF0060083347F /* SimpleShieldsView.swift */; };
 		278C467B23EDF0940083347F /* ShieldsSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C467A23EDF0940083347F /* ShieldsSwitch.swift */; };
 		278C467C23EE2B450083347F /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBA234CC7EF009DAC37 /* UIStackViewExtensions.swift */; };
@@ -1362,13 +1360,6 @@
 			remoteGlobalIDString = 0755AE8C1BEA19580094AB41;
 			remoteInfo = "pop-tests-tvos";
 		};
-		277569F325ACFD3F00C129AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 277569EF25ACFD3E00C129AF /* OnePasswordExtension.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9C3F4D8C1A59ACDC004B3ECE;
-			remoteInfo = OnePasswordExtension;
-		};
 		27756C8425AD153000C129AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 27756C5925AD152F00C129AF /* Static.xcodeproj */;
@@ -1628,7 +1619,6 @@
 				27AD20C426851C5400889AA7 /* BraveCore.xcframework in Copy Frameworks */,
 				5DE7689A20B3456E00FF5533 /* BraveShared.framework in Copy Frameworks */,
 				27756C8B25AD153700C129AF /* Static.framework in Copy Frameworks */,
-				278655BA25C227E1009FFE80 /* OnePasswordExtension.framework in Copy Frameworks */,
 				2748626A25AD30A500BC40AA /* sqlcipher.xcframework in Copy Frameworks */,
 				277568D825ACF91600C129AF /* SPMLibraries.framework in Copy Frameworks */,
 				442E7FBA2731F96300412A36 /* GCDWebservers.xcframework in Copy Frameworks */,
@@ -2117,13 +2107,6 @@
 		277569A125ACFC1C00C129AF /* pop-tests-osx-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pop-tests-osx-Info.plist"; sourceTree = "<group>"; };
 		277569A225ACFC1C00C129AF /* POPBasicAnimationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = POPBasicAnimationTests.mm; sourceTree = "<group>"; };
 		277569A325ACFC1C00C129AF /* Podfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
-		277569EE25ACFD3E00C129AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		277569EF25ACFD3E00C129AF /* OnePasswordExtension.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = OnePasswordExtension.xcodeproj; sourceTree = "<group>"; };
-		277569F625ACFD3F00C129AF /* 1Password.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = 1Password.xcassets; sourceTree = "<group>"; };
-		277569F725ACFD3F00C129AF /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		277569F825ACFD3F00C129AF /* OnePasswordExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
-		27756A4825ACFD3F00C129AF /* OnePasswordExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
-		27756A4925ACFD4000C129AF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		27756C5925AD152F00C129AF /* Static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Static.xcodeproj; sourceTree = "<group>"; };
 		27756C5C25AD152F00C129AF /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		27756C5D25AD152F00C129AF /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -3352,7 +3335,6 @@
 				288A2D9D1AB8B3260023ABC3 /* Shared.framework in Frameworks */,
 				5DE7689920B3456E00FF5533 /* BraveShared.framework in Frameworks */,
 				2FCAE2311ABB51F800877008 /* Storage.framework in Frameworks */,
-				278655B925C227E1009FFE80 /* OnePasswordExtension.framework in Frameworks */,
 				271F683C26EBD0E400AA2A50 /* BraveWallet.framework in Frameworks */,
 				5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */,
 				0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */,
@@ -4395,28 +4377,6 @@
 			path = "pop-tests";
 			sourceTree = "<group>";
 		};
-		277569ED25ACFCF000C129AF /* onepassword-app-extension */ = {
-			isa = PBXGroup;
-			children = (
-				277569F625ACFD3F00C129AF /* 1Password.xcassets */,
-				277569EE25ACFD3E00C129AF /* Info.plist */,
-				277569F725ACFD3F00C129AF /* LICENSE.txt */,
-				27756A4825ACFD3F00C129AF /* OnePasswordExtension.h */,
-				277569F825ACFD3F00C129AF /* OnePasswordExtension.m */,
-				277569EF25ACFD3E00C129AF /* OnePasswordExtension.xcodeproj */,
-				27756A4925ACFD4000C129AF /* README.md */,
-			);
-			path = "onepassword-app-extension";
-			sourceTree = "<group>";
-		};
-		277569F025ACFD3E00C129AF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				277569F425ACFD3F00C129AF /* OnePasswordExtension.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		27756C5825AD152F00C129AF /* Static */ = {
 			isa = PBXGroup;
 			children = (
@@ -4804,7 +4764,6 @@
 			children = (
 				445ABC8C2731DCE00089710D /* GCDWebServers */,
 				27756C5825AD152F00C129AF /* Static */,
-				277569ED25ACFCF000C129AF /* onepassword-app-extension */,
 				288A2D7E1AB8B2AD0023ABC3 /* Result */,
 				3B6889C41D66950E002AC85E /* UIImageColors.swift */,
 				7479B4ED1C5306A200DF000B /* Reachability.swift */,
@@ -7398,10 +7357,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 277569F025ACFD3E00C129AF /* Products */;
-					ProjectRef = 277569EF25ACFD3E00C129AF /* OnePasswordExtension.xcodeproj */;
-				},
-				{
 					ProductGroup = 2775698A25ACFC1C00C129AF /* Products */;
 					ProjectRef = 2775698925ACFC1C00C129AF /* pop.xcodeproj */;
 				},
@@ -7482,13 +7437,6 @@
 			fileType = wrapper.cfbundle;
 			path = "pop-tests.xctest";
 			remoteRef = 277569B725ACFC1C00C129AF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		277569F425ACFD3F00C129AF /* OnePasswordExtension.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = OnePasswordExtension.framework;
-			remoteRef = 277569F325ACFD3F00C129AF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		27756C8525AD153000C129AF /* Static.framework */ = {
