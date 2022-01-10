@@ -151,8 +151,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         btnSwap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SWAP);
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
             }
         });
 
