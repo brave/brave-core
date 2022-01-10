@@ -49,7 +49,7 @@
       IPFS Not Connected
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_HEADING" desc="Heading of IPFS not connected interstitial page.">
-      Can't load IPFS resources using local node
+      Can't load IPFS resources using Brave node
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH" desc="Main paragraph of IPFS not connected interstitial page.">
       Failed to use the local IPFS node to load the requested IPFS resources. Click the "Proceed" button to use the public gateway instead, and to fall back automatically to the public gateway in the future.
@@ -64,7 +64,7 @@
       Hide Advanced
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_EXPLANATION" desc="The text of the IPFS not connected interstitial that will be displayed when the user presses the 'Advanced' button for additional information.">
-      Brave cannot load the requested IPFS resources either because the local node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the local node fails. You can change this behavior at any point in Brave settings.
+      Brave cannot load the requested IPFS resources either because the Brave node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the Brave node fails. You can change this behavior at any point in Brave settings.
     </message>
     <message name="IDS_IPFS_ONBOARDING_TITLE" desc="Title of IPFS onboarding interstitial page.">
       IPFS Preference
@@ -72,8 +72,8 @@
     <message name="IDS_IPFS_ONBOARDING_HEADING" desc="Heading of IPFS onboarding interstitial page.">
       Set your IPFS preference
     </message>
-    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON" desc="The text for the button that enables a local node to work with IPFS.">
-      Use a local node
+    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON" desc="The text for the button that enables a Brave node to work with IPFS.">
+      Use a Brave node
     </message>
     <message name="IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON" desc="The text for the button that enables a public gateway to work with IPFS.">
       Use a public gateway

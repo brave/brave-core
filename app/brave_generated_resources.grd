@@ -954,10 +954,10 @@ Are you sure you want to do this?
         Rotate key
       </message>
       <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
-        Unable to stop local node
+        Unable to stop Brave node
       </message>
       <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
-        Unable to launch local node
+        Unable to launch Brave node
       </message>
       <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
         Restart node to apply changes
@@ -1056,7 +1056,7 @@ Are you sure you want to do this?
         IPFS public gateway address
       </message>
       <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
+        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS Brave node and gateway privacy considerations.
       </message>
       <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
         Change
@@ -1083,7 +1083,7 @@ Are you sure you want to do this?
         IPFS public gateway fallback
       </message>
       <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
-        Automatically fall back to public IPFS gateway if your local node cannot be reached.
+        Automatically fall back to public IPFS gateway if your Brave node cannot be reached.
       </message>
       <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL" desc="The text label for redirecting IPFS resources to the configured gateway">
         Redirect IPFS resources to the configured IPFS gateway
