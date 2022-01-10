@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Jag är medveten om att jag inte kan komma åt min kryptoplånbok om jag tappar bort återställningsfrasen.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "I nästa steg ser du en 12-ordig återställningsfras som du kan återställa dina primära kryptokonton med. Spara den på en säker plats, för frasen är ditt enda sätt att få åtkomst till kontot om du skulle glömma lösenordet, din enhet skulle tappas bort eller stjälas eller du vill byta plånbok.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Säkerhetskopiera kryptoplånboken";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Säkerhetskopiera plånboken nu för att skydda dina kryptotillgångar och se till att du aldrig förlorar åtkomst till dem.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Beta";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Aktivera";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Primära kryptokonton";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Varning: En skärmbild av din privata nyckel kan säkerhetskopieras till en molnfiltjänst och kunna läsas av alla program med åtkomst till foton. Brave rekommenderar att du inte sparar den här skärmbilden och tar bort den så snart som möjligt.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Varning: En skärmbild av din återställningsfras kan säkerhetskopieras till en molnfiltjänst och kunna läsas av alla program med åtkomst till foton. Brave rekommenderar att du inte sparar den här skärmbilden och tar bort den så snart som möjligt.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Uppdatera marknadspris";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Skanna QR-kod";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Skärmbild har upptäckts";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Sök efter tillgångar";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Skicka krypto eller för över från ett konto till ett annat.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Mottagaradressen är en tokens kontaktadress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Mottagaradressen är din egen adress";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Inte en giltig ETH-adress";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Inställningar";

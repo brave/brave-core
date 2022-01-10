@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "복구 문구를 잃어버리면 내 암호화폐 월렛에 액세스할 수 없다는 사실을 충분히 이해합니다.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "암호화폐 월렛 백업";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "지금 월렛을 백업하여 암호화폐 자산을 보호하고 액세스를 잃어버리지 마세요.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "베타";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "활성화";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "주사용 암호화폐 계정";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "경고: 비공개 키의 스크린샷을 찍어 클라우드 파일 서비스에 백업해두면 사진 앱으로 열어 볼 수 있습니다. 하지만 Brave는 스크린샷을 저장해두는 방법을 권장하지 않으며, 저장했을 경우에도 가급적 빨리 삭제하기를 권합니다.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "경고: 복구 문구의 스크린샷을 찍어 클라우드 파일 서비스에 백업해두면 사진 앱으로 열어 볼 수 있습니다. 하지만 Brave는 스크린샷을 저장해두는 방법을 권장하지 않으며, 저장했을 경우에도 가급적 빨리 삭제하기를 권합니다.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "시장 가격 새로고침";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR 코드 스캔";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "스크린샷 감지됨";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "자산 검색";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "수신 주소가 토큰의 컨트랙트 주소입니다.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "수신 주소가 귀하의 주소입니다.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "유효한 ETH 주소 아님";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "설정";

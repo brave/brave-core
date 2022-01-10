@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Saya memahami bahwa jika saya kehilangan frasa pemulihan saya, saya tidak akan dapat mengakses dompet kripto saya.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "Dalam langkah selanjutnya Anda akan melihat frasa pemulihan 12 kata, yang dapat Anda gunakan untuk memulihkan akun kripto utama Anda. Simpan frasa tersebut di tempat yang aman. Frasa pemulihan Anda adalah satu-satunya cara untuk mendapatkan kembali akses akun jika lupa kata sandi, perangkat hilang atau dicuri, atau jika Anda ingin mengganti dompet.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Cadangkan dompet kripto Anda";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Cadangkan dompet Anda sekarang untuk melindungi aset kripto Anda dan memastikan bahwa Anda tidak akan pernah kehilangan akses.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Beta";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Aktifkan";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Akun Kripto Utama";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Peringatan: Tangkapan layar kunci privat Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Peringatan: Tangkapan layar frasa pemulihan Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Perbarui harga pasar";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Pindai kode QR";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Tangkapan layar terdeteksi";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Cari aset";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Kirim kripto atau transfer dari satu akun ke akun lainnya.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Alamat penerima adalah alamat kontrak token";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Alamat penerima adalah alamat Anda sendiri";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Bukan alamat ETH yang valid";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Pengaturan";

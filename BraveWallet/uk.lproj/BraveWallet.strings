@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Я розумію, що за втрати фрази для відновлення не зможу отримати доступ до свого криптовалютного гаманця.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "На наступному етапі ви побачите фразу для відновлення з 12 слів, яку можна використовувати для відновлення основних криптовалютних рахунків. Збережіть її в безпечному місці. Фраза для відновлення — це єдиний спосіб відновлення доступу в разі забутого пароля, загубленого або викраденого пристрою або переходу на інший гаманець.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Створіть резервну копію свого криптовалютного гаманця";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Створіть резервну копію свого гаманця, щоб захистити ваші криптовалютні активи й мати постійний доступ до них.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Бета-версія";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Увімкнути";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Основні криптовалютні рахунки";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Попередження: знімок екрана з вашим особистим ключем може бути збережено на хмарному файловому сервісі, його зможе зчитати будь-який додаток з доступом до фото. Brave рекомендує не зберігати знімок екрана й видалити його якомога швидше.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Попередження: знімок екрана з вашою фразою для відновлення може бути збережено на хмарному файловому сервісі, його зможе зчитати будь-який додаток з доступом до фото. Brave рекомендує не зберігати знімок екрана й видалити його якомога швидше.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Оновити ринкову ціну";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Сканування QR-коду";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Виявлено знімок екрана";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Пошук активів";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Надсилання криптовалюти або її переведення з одного рахунку на інший";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Адреса отримання — адреса контракту токена";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Адреса отримання — ваша власна адреса";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Недійсна адреса ETH";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Налаштування";

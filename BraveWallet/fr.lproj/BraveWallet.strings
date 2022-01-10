@@ -91,11 +91,17 @@
 /* The label next to a toggle which the user must acknowledge */
 "wallet.backupWalletDisclaimer" = "Je comprends que si je perds ma phrase de récupération, je ne pourrai plus accéder à mon portefeuille de cryptomonnaie.";
 
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "À l'étape suivante, vous verrez une phrase de récupération contenant 12 mots, que vous pouvez utiliser pour récupérer vos comptes de cryptomonnaie principaux. Sauvegardez-la à un endroit sécurisé. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte si vous oubliez votre mot de passe, si votre appareil est perdu ou volé, ou si vous voulez changer de portefeuille.";
+
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Sauvegardez votre portefeuille de cryptomonnaie";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Sauvegardez votre portefeuille dès maintenant pour protéger vos crypto-actifs et vous assurer de ne jamais perdre l'accès.";
+
+/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
+"wallet.betaLabel" = "Bêta";
 
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Activer";
@@ -373,6 +379,12 @@
 /* A title above a list of crypto accounts that are not imported */
 "wallet.primaryCryptoAccountsTitle" = "Comptes de cryptomonnaie principaux";
 
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Avertissement : Une capture d'écran de votre clé privée peut être sauvegardée sur un service de fichiers sur le cloud. Elle pourra être lue par n'importe quelle application disposant d'un accès aux photos. Brave vous recommande de ne pas enregistrer cette capture d'écran et de la supprimer dès que possible.";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Avertissement : Une capture d'écran de votre phrase de récupération peut être sauvegardée sur un service de fichiers sur le cloud. Elle pourra être lue par n'importe quelle application disposant d'un accès aux photos. Brave vous recommande de ne pas enregistrer cette capture d'écran et de la supprimer dès que possible.";
+
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Actualiser le cours du marché";
 
@@ -427,6 +439,9 @@
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Scanner un code QR";
 
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Capture d'écran détectée";
+
 /* The title of the asset search page */
 "wallet.searchTitle" = "Rechercher des actifs";
 
@@ -468,6 +483,15 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Envoyez des cryptos ou transférez-les d'un compte à l'autre.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "L'adresse de réception est l'adresse du contrat du jeton";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "L'adresse de réception est votre propre adresse";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Il ne s'agit pas d'une adresse ETH valide.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Paramètres";
