@@ -24,6 +24,7 @@ struct PrivacyEverywhereView: View {
                 Text(Strings.Callout.privacyEverywhereCalloutTitle)
                     .font(.title3.weight(.medium))
                     .foregroundColor(Color(.bravePrimary))
+                    .multilineTextAlignment(.center)
                 Image(uiImage: #imageLiteral(resourceName: "privacy-everywhere-image"))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
