@@ -46,8 +46,9 @@ extension BrowserViewController {
             
             Preferences.FullScreenCallout.rewardsCalloutCompleted.value = true
             present(controller, animated: true)
-            topToolbar.locationView.rewardsButton.iconState =
-                (rewards.isEnabled || rewards.isCreatingWallet) ? .enabled : .disabled
+            topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ?
+                (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) :
+                .initial
             return
         }
         
