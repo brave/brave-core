@@ -129,6 +129,7 @@ provideStrings({
   braveWalletWalletPopupSettings: 'Settings',
   braveWalletWalletPopupLock: 'Lock Wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
+  braveWalletWalletPopupConnectedSites: 'Connected sites',
 
   // Backup Warning
   braveWalletBackupWarningText: 'Back up your wallet now to protect your crypto assets and ensure you never lose access.',
@@ -304,7 +305,7 @@ provideStrings({
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
   braveWalletPanelConnected: 'Connected',
-  braveWalletPanelNotConnected: 'Not connected',
+  braveWalletPanelNotConnected: 'Connect',
   braveWalletPanelScrollForMoreAssets: 'Scroll for more assets',
 
   // Site Permissions Panel

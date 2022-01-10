@@ -8,7 +8,8 @@ import {
   SettingsIcon,
   LockIcon,
   ExplorerIcon,
-  BackupIcon
+  BackupIcon,
+  ConnectedSitesIcon
 } from './style'
 
 export interface Props {
@@ -26,6 +27,14 @@ const WalletMorePopup = (props: Props) => {
     onClickBackup
   } = props
 
+  const onClickConnectedSites = () => {
+    chrome.tabs.create({ url: 'brave://settings/content/ethereum?search=ethereum' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
   return (
     <StyledWrapper>
       {onClickLock &&
@@ -40,6 +49,10 @@ const WalletMorePopup = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletBackupButton')}</PopupButtonText>
         </PopupButton>
       }
+      <PopupButton onClick={onClickConnectedSites}>
+        <ConnectedSitesIcon />
+        <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>
+      </PopupButton>
       {onClickSetting &&
         <PopupButton onClick={onClickSetting}>
           <SettingsIcon />
