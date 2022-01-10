@@ -91,6 +91,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         mUnlockWalletRestoreButton.setOnClickListener(v -> {
             if (onNextPage != null) {
                 onNextPage.gotoRestorePage();
+                mUnlockWalletPassword.getText().clear();
             }
         });
 
