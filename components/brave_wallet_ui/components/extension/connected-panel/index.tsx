@@ -170,10 +170,14 @@ const ConnectedPanel = (props: Props) => {
       <ScrollContainer ref={scrollRef} onScroll={onScroll}>
         <CenterColumn>
           <StatusRow>
-            <OvalButton disabled={activeOrigin === WalletOrigin} onClick={onShowSitePermissions}>
-              {isConnected && <BigCheckMark />}
-              <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
-            </OvalButton>
+            {activeOrigin !== WalletOrigin ? (
+              <OvalButton onClick={onShowSitePermissions}>
+                {isConnected && <BigCheckMark />}
+                <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
+              </OvalButton>
+            ) : (
+              <div />
+            )}
             <Tooltip
               text={selectedNetwork.chainName}
               positionRight={true}
