@@ -64,7 +64,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     fileprivate var homePanelIsInline = false
     var searchLoader: SearchLoader?
     let alertStackView = UIStackView() // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
-    fileprivate var findInPageBar: FindInPageBar?
+    var findInPageBar: FindInPageBar?
     
     // Single data source used for all favorites vcs
     let backgroundDataSource = NTPDataSource()
