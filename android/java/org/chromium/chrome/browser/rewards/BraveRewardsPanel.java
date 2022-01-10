@@ -1348,7 +1348,7 @@ public class BraveRewardsPanel
         if (mSwitchAutoContribute != null) {
             mSwitchAutoContribute.setOnCheckedChangeListener(null);
             mSwitchAutoContribute.setChecked(
-                    mBraveRewardsNativeWorker.GetPublisherExcluded(mCurrentTabId));
+                    !mBraveRewardsNativeWorker.GetPublisherExcluded(mCurrentTabId));
             mSwitchAutoContribute.setOnCheckedChangeListener(autoContributeSwitchListener);
         }
         updatePublisherStatus(mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId));
