@@ -265,6 +265,7 @@
   },
   "resolutions": {
     "immer": "9.0.6",
+    "node-forge": "1.0.0",
     "set-value": "4.1.0"
   },
   "devDependencies": {
