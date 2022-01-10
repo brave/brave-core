@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/guid.h"
+#include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -26,6 +27,32 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
+
+bool IsRevivedAC(const ledger::type::ContributionInfo& contribution) {
+  using ledger::type::ContributionProcessor;
+  using ledger::type::RewardsType;
+
+  if (contribution.type != RewardsType::AUTO_CONTRIBUTE) {
+    return false;
+  }
+
+  // Only externally-funded ACs are considered "revived".
+  if (contribution.processor == ContributionProcessor::BRAVE_TOKENS ||
+      contribution.processor == ContributionProcessor::BRAVE_USER_FUNDS) {
+    return false;
+  }
+
+  // If the |created_at| field does not have a valid timestamp, then do not
+  // consider this a revived AC.
+  if (contribution.created_at == 0) {
+    return false;
+  }
+
+  // ACs that were started over 20 days ago are considered "revived".
+  base::Time created_at = base::Time::FromDoubleT(contribution.created_at);
+  return base::Time::Now() - created_at > base::Days(20);
+}
+
 ledger::type::ContributionStep ConvertResultIntoContributionStep(
     const ledger::type::Result result) {
   switch (result) {
@@ -223,19 +250,19 @@ void Contribution::ContributionCompleted(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/7717)
-  // rename to ContributionCompleted
-  ledger_->ledger_client()->OnReconcileComplete(
-      result,
-      contribution->Clone());
+  // It is currently possible for some externally funded ACs to be stalled until
+  // browser restart. Those ACs should complete in the background without
+  // updating the current month's balance report or generating a notification.
+  if (!IsRevivedAC(*contribution)) {
+    ledger_->ledger_client()->OnReconcileComplete(result,
+                                                  contribution->Clone());
 
-  if (result == type::Result::LEDGER_OK) {
-    ledger_->database()->SaveBalanceReportInfoItem(
-        util::GetCurrentMonth(),
-        util::GetCurrentYear(),
-        GetReportTypeFromRewardsType(contribution->type),
-        contribution->amount,
-        [](const type::Result){});
+    if (result == type::Result::LEDGER_OK) {
+      ledger_->database()->SaveBalanceReportInfoItem(
+          util::GetCurrentMonth(), util::GetCurrentYear(),
+          GetReportTypeFromRewardsType(contribution->type),
+          contribution->amount, [](const type::Result) {});
+    }
   }
 
   auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
