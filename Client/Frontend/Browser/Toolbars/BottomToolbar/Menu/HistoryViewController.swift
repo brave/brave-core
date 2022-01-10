@@ -233,7 +233,6 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         
         if !tableView.isEditing {
             cell.gestureRecognizers?.forEach { cell.removeGestureRecognizer($0) }
-            cell.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedCell(_:))))
         }
         
         guard let historyItem = historyFRC?.object(at: indexPath) else { return }
@@ -283,17 +282,6 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    @objc private func longPressedCell(_ gesture: UILongPressGestureRecognizer) {
-        guard gesture.state == .began,
-              let cell = gesture.view as? UITableViewCell,
-              let indexPath = tableView.indexPath(for: cell),
-              let urlString = historyFRC?.object(at: indexPath)?.url.absoluteString else {
-            return
-        }
-        
-        presentLongPressActions(gesture, urlString: urlString, isPrivateBrowsing: isPrivateBrowsing)
-    }
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return historyFRC?.sectionCount ?? 0
     }
@@ -318,6 +306,53 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
                 }
             default:
                 break
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let historyItemURL = historyFRC?.object(at: indexPath)?.url else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { [unowned self] _ in
+            let openInNewTabAction = UIAction(
+                title: Strings.openNewTabButtonTitle,
+                image: UIImage(systemName: "plus.square.on.square"),
+                handler: UIAction.deferredActionHandler { _ in
+                self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: isPrivateBrowsing)
+            })
+            
+            let newPrivateTabAction = UIAction(
+                title: Strings.openNewPrivateTabButtonTitle,
+                image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+                handler: UIAction.deferredActionHandler {_ in
+                self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: true)
+            })
+            
+            let copyAction = UIAction(
+                title: Strings.copyLinkActionTitle,
+                image: UIImage(systemName: "doc.on.doc"),
+                handler: UIAction.deferredActionHandler { _ in
+                self.toolbarUrlActionsDelegate?.copy(historyItemURL)
+            })
+            
+            let shareAction = UIAction(
+                title: Strings.shareLinkActionTitle,
+                image: UIImage(systemName: "square.and.arrow.up"),
+                handler: UIAction.deferredActionHandler { _ in
+                self.toolbarUrlActionsDelegate?.share(historyItemURL)
+            })
+            
+            var newTabActionMenu: [UIAction] = [openInNewTabAction]
+            
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                newTabActionMenu.append(newPrivateTabAction)
+            }
+            
+            let urlMenu = UIMenu(title: "", options: .displayInline, children: newTabActionMenu)
+            let linkMenu = UIMenu(title: "", options: .displayInline, children: [copyAction, shareAction])
+            
+            return UIMenu(title: historyItemURL.absoluteString, identifier: nil, children: [urlMenu, linkMenu])
         }
     }
 }

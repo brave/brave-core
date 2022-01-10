@@ -39,6 +39,10 @@ extension ToolbarProtocol {
     }
 }
 
+protocol ToolbarUrlActionsProtocol where Self: UIViewController {
+    var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate? { get }
+}
+
 protocol ToolbarDelegate: AnyObject {
     func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton)

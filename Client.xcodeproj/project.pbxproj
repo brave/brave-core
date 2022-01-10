@@ -96,7 +96,6 @@
 		0A8A6225257905E300B035F4 /* UniversalLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8A6224257905E300B035F4 /* UniversalLinkManager.swift */; };
 		0A8A623025790D0900B035F4 /* UniversalLinkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8A622F25790D0900B035F4 /* UniversalLinkManagerTests.swift */; };
 		0A8ABE19247435E30062DA81 /* BraveVPNCommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8ABE18247435E30062DA81 /* BraveVPNCommonUI.swift */; };
-		0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */; };
 		0A8C69AB225CFCAF00988715 /* AddEditBookmarkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C69AA225CFCAF00988715 /* AddEditBookmarkTableViewController.swift */; };
 		0A8C69B5225DE99700988715 /* BookmarkDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C69B4225DE99700988715 /* BookmarkDetailsView.swift */; };
 		0A8C69BE225E350300988715 /* IndentedImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C69BD225E350300988715 /* IndentedImageTableViewCell.swift */; };
@@ -1758,7 +1757,6 @@
 		0A8A6224257905E300B035F4 /* UniversalLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkManager.swift; sourceTree = "<group>"; };
 		0A8A622F25790D0900B035F4 /* UniversalLinkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkManagerTests.swift; sourceTree = "<group>"; };
 		0A8ABE18247435E30062DA81 /* BraveVPNCommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveVPNCommonUI.swift; sourceTree = "<group>"; };
-		0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarUrlActionsProtocol.swift; sourceTree = "<group>"; };
 		0A8C69AA225CFCAF00988715 /* AddEditBookmarkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditBookmarkTableViewController.swift; sourceTree = "<group>"; };
 		0A8C69B4225DE99700988715 /* BookmarkDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailsView.swift; sourceTree = "<group>"; };
 		0A8C69BD225E350300988715 /* IndentedImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndentedImageTableViewCell.swift; sourceTree = "<group>"; };
@@ -5672,7 +5670,6 @@
 			children = (
 				0A7B5D5A2268971600AADF22 /* Bookmarks */,
 				A198E75020C701ED00334C11 /* HistoryViewController.swift */,
-				0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */,
 				0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */,
 				27AE360C25E55AA200E795E5 /* MenuViewController.swift */,
 				277E94F125F834240001926E /* VPNMenuButton.swift */,
@@ -8757,7 +8754,6 @@
 				0AE5086A261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift in Sources */,
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
-				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,
 				2746D27D24A3E44900E38852 /* RewardsInternalsLogController.swift in Sources */,
 				0AFC8F9523D1DF6500941895 /* TranslucentBottomSheet.swift in Sources */,
 				5E99D01525E56BFB003F30B4 /* PlaylistManager.swift in Sources */,

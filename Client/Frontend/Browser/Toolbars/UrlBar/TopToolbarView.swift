@@ -32,7 +32,6 @@ protocol TopToolbarDelegate: AnyObject {
     func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
     func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
     func topToolbarDidLongPressLocation(_ topToolbar: TopToolbarView)
-    func topToolbarLocationAccessibilityActions(_ topToolbar: TopToolbarView) -> [UIAccessibilityCustomAction]?
     func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView)
     func topToolbar(_ topToolbar: TopToolbarView, didEnterText text: String)
     func topToolbar(_ topToolbar: TopToolbarView, didSubmitText text: String)
@@ -609,10 +608,6 @@ extension TopToolbarView: TabLocationViewDelegate {
     
     func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView) {
         delegate?.topToolbarDidPressPlaylistButton(self)
-    }
-
-    func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]? {
-        return delegate?.topToolbarLocationAccessibilityActions(self)
     }
     
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {
