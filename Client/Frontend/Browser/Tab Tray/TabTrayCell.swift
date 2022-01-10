@@ -37,10 +37,14 @@ class TabCell: UICollectionViewCell {
     var margin = 0.0
     
     var closedTab: ((Tab) -> Void)?
-    var tab: Tab?
+    weak var tab: Tab?
     
     func configure(with tab: Tab) {
         self.tab = tab
+        tab.onScreenshotUpdated = { [weak self, weak tab] in
+            self?.screenshotView.image = tab?.screenshot
+        }
+        
         titleLabel.text = tab.displayTitle
         favicon.image = #imageLiteral(resourceName: "defaultFavicon")
 

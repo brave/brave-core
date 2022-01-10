@@ -1821,6 +1821,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             // VoiceOver will sometimes be stuck on the element, not allowing user to move
             // forward/backward. Strange, but LayoutChanged fixes that.
             UIAccessibility.post(notification: .layoutChanged, argument: nil)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                self.screenshotHelper.takeScreenshot(tab)
+            }
         } else if let webView = tab.webView {
             // Ref #2016: Keyboard auto hides while typing
             // For some reason the web view will steal first responder as soon
