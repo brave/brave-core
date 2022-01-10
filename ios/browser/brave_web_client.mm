@@ -61,5 +61,5 @@ base::RefCountedMemory* BraveWebClient::GetDataResourceBytes(
 
 void BraveWebClient::GetAdditionalWebUISchemes(
     std::vector<std::string>* additional_schemes) {
-  // additional_schemes->push_back(dom_distiller::kDomDistillerScheme);
+    
 }

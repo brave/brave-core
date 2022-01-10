@@ -202,9 +202,9 @@
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
 }
 
-- (BraveSyncInternalsView*)createSyncInternalsView {
+- (BraveSyncInternalsController*)createSyncInternalsController {
   return
-      [[BraveSyncInternalsView alloc] initWithBrowserState:_chromeBrowserState];
+      [[BraveSyncInternalsController alloc] initWithBrowserState:_chromeBrowserState];
 }
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {

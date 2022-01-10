@@ -13,9 +13,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface BraveSyncInternalsView: UIView
+@interface BraveSyncInternalsController: UIViewController
 - (instancetype)init NS_UNAVAILABLE;
-- (void)loadURL:(NSString *)urlString;
 @end
 
 NS_ASSUME_NONNULL_END
