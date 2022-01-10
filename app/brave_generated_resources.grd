@@ -478,7 +478,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Open in Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
-        Open using IPFS
+        IPFS
       </message>
       <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
         Publish and retrieve files from IPFS
