@@ -30,7 +30,7 @@ class BraveShieldsDataController
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnResourcesCountChange(const int count) = 0;
+    virtual void OnResourcesChanged() = 0;
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -38,6 +38,7 @@ class BraveShieldsDataController
   void ClearAllResourcesList();
   int GetTotalBlockedCount();
   bool GetIsBraveShieldsEnabled();
+  GURL GetCurrentSiteURL();
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);

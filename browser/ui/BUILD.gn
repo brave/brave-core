@@ -95,6 +95,8 @@ source_set("ui") {
       "toolbar/brave_recent_tabs_sub_menu_model.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
+      "webui/brave_shields/shields_data_handler.cc",
+      "webui/brave_shields/shields_data_handler.h",
       "webui/brave_shields/shields_panel_handler.cc",
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",

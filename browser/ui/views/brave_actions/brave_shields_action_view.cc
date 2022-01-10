@@ -171,7 +171,7 @@ void BraveShieldsActionView::Update() {
   UpdateIconState();
 }
 
-void BraveShieldsActionView::OnResourcesCountChange(const int count) {
+void BraveShieldsActionView::OnResourcesChanged() {
   UpdateIconState();
 }
 

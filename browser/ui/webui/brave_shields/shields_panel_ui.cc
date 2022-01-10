@@ -46,13 +46,16 @@ void ShieldsPanelUI::BindInterface(
 }
 
 void ShieldsPanelUI::CreatePanelHandler(
-    mojo::PendingRemote<brave_shields_panel::mojom::Page> page,
     mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler>
-        panel_receiver) {
-  DCHECK(page);
+        panel_receiver,
+    mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
+        data_handler_receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
   panel_handler_ =
       std::make_unique<ShieldsPanelHandler>(std::move(panel_receiver), this);
+
+  data_handler_ = std::make_unique<ShieldsDataHandler>(
+      std::move(data_handler_receiver), this);
 }

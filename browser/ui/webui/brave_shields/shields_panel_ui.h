@@ -8,10 +8,10 @@
 
 #include <memory>
 
+#include "brave/browser/ui/webui/brave_shields/shields_data_handler.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_handler.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
@@ -31,11 +31,13 @@ class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
 
  private:
   void CreatePanelHandler(
-      mojo::PendingRemote<brave_shields_panel::mojom::Page> page,
       mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler>
-          panel_receiver) override;
+          panel_receiver,
+      mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
+          data_handler_receiver) override;
 
   std::unique_ptr<ShieldsPanelHandler> panel_handler_;
+  std::unique_ptr<ShieldsDataHandler> data_handler_;
 
   mojo::Receiver<brave_shields_panel::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};

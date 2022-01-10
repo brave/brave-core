@@ -33,13 +33,6 @@ class BraveShieldsActionView
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
-  // brave_shields::BraveShieldsDataController
-  void OnResourcesCountChange(const int count) override;
-  // TabStripModelObserver
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
   SkPath GetHighlightPath() const;
 
  private:
@@ -47,6 +40,13 @@ class BraveShieldsActionView
   void UpdateIconState();
   gfx::ImageSkia GetIconImage(bool is_enabled);
   std::unique_ptr<IconWithBadgeImageSource> GetImageSource();
+  // brave_shields::BraveShieldsDataController
+  void OnResourcesChanged() override;
+  // TabStripModelObserver
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
 
   std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
   Profile* profile_ = nullptr;

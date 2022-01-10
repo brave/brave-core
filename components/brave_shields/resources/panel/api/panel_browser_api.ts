@@ -8,20 +8,20 @@ import * as BraveShields from 'gen/brave/components/brave_shields/common/brave_s
 export * from 'gen/brave/components/brave_shields/common/brave_shields_panel.mojom.m.js'
 
 interface API {
-  pageCallbackRouter: BraveShields.PageCallbackRouter
   panelHandler: BraveShields.PanelHandlerRemote
+  dataHandler: BraveShields.DataHandlerRemote
 }
 
 let panelBrowserAPIInstance: API
 class PanelBrowserAPI implements API {
-  pageCallbackRouter = new BraveShields.PageCallbackRouter()
   panelHandler = new BraveShields.PanelHandlerRemote()
+  dataHandler = new BraveShields.DataHandlerRemote()
 
   constructor () {
     const factory = BraveShields.PanelHandlerFactory.getRemote()
     factory.createPanelHandler(
-      this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-      this.panelHandler.$.bindNewPipeAndPassReceiver()
+      this.panelHandler.$.bindNewPipeAndPassReceiver(),
+      this.dataHandler.$.bindNewPipeAndPassReceiver()
     )
   }
 }
