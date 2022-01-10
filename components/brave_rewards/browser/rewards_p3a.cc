@@ -9,8 +9,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -178,6 +178,63 @@ double CalcWalletBalance(base::flat_map<std::string, double> wallets,
   // wallet (ex: not grants).
   balance_minus_grant += user_funds;
   return balance_minus_grant;
+}
+
+void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
+  base::Time enabled_timestamp = prefs->GetTime(prefs::kEnabledTimestamp);
+  auto enabled_duration = RewardsEnabledDuration::kNever;
+
+  if (enabled_timestamp.is_null()) {
+    // No previous timestamp, so record one of the non-duration states.
+    if (!rewards_enabled) {
+      // Rewards have been disabled with no previous timestamp.
+      // Probably they've been on since we started measuring.
+      // Ignore this interval since we can't measure it and treat it
+      // the same as never having enabled.
+      enabled_duration = RewardsEnabledDuration::kNever;
+    } else {
+      // Rewards have been enabled.
+      // Remember when so we can measure the duration on later changes.
+      prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
+      enabled_duration = RewardsEnabledDuration::kStillEnabled;
+    }
+  } else {
+    // Previous timestamp available.
+    if (!rewards_enabled) {
+      // Rewards have been disabled. Record the duration they were on.
+      // Set the threshold at three units so each bin represents the
+      // nominal value as an order-of-magnitude: more than three days
+      // is a week, more than three weeks is a month, and so on.
+      constexpr int threshold = 3;
+      constexpr int days_per_week = 7;
+      constexpr double days_per_month = 30.44;  // average length
+      base::TimeDelta duration = base::Time::Now() - enabled_timestamp;
+      VLOG(1) << "Rewards disabled after " << duration;
+      if (duration < base::Hours(threshold)) {
+        enabled_duration = RewardsEnabledDuration::kHours;
+      } else if (duration < base::Days(threshold)) {
+        enabled_duration = RewardsEnabledDuration::kDays;
+      } else if (duration < base::Days(threshold * days_per_week)) {
+        enabled_duration = RewardsEnabledDuration::kWeeks;
+      } else if (duration < base::Days(threshold * days_per_month)) {
+        enabled_duration = RewardsEnabledDuration::kMonths;
+      } else {
+        enabled_duration = RewardsEnabledDuration::kQuarters;
+      }
+      // Null the timestamp so we're ready for a fresh measurement.
+      prefs->SetTime(prefs::kEnabledTimestamp, base::Time());
+    } else {
+      // Rewards have been enabled. Overwrite the previous timestamp.
+      // Normally we null the timestamp when rewards are disabled,
+      // so typically we'll take the other `else` branch above instead.
+      // We nevertheless mark a new timestamp here to maintain consistent
+      // measurement even if our prefs change through some other path.
+      prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
+      enabled_duration = RewardsEnabledDuration::kStillEnabled;
+    }
+  }
+
+  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.EnabledDuration", enabled_duration);
 }
 
 void ExtractAndLogStats(const base::DictionaryValue& dict) {
