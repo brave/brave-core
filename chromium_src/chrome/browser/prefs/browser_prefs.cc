@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
+#include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
@@ -72,6 +73,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
   // Added 07/2021
   profile->GetPrefs()->ClearPref(prefs::kNetworkPredictionOptions);
+
+  // Added 01/2022
+  brave_rewards::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 }
 
 // This method should be periodically pruned of year+ old migrations.

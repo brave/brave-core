@@ -8,6 +8,8 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_brave_rewards_sources = [
+  "//brave/browser/brave_rewards/rewards_prefs_util.cc",
+  "//brave/browser/brave_rewards/rewards_prefs_util.h",
   "//brave/browser/brave_rewards/rewards_service_factory.cc",
   "//brave/browser/brave_rewards/rewards_service_factory.h",
   "//brave/browser/brave_rewards/rewards_tab_helper.cc",
