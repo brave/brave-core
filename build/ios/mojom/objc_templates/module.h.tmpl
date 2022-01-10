@@ -47,6 +47,10 @@ NS_SWIFT_NAME({{class_prefix}})
 {%    include "interface_declaration.tmpl" %}
 {%- endfor %}
 
+{% for interface in interfaces %}
+{%    include "test_interface_declaration.tmpl" %}
+{%- endfor %}
+
 NS_ASSUME_NONNULL_END
 
 #endif  // {{header_guard}}
