@@ -25,7 +25,6 @@ protocol TabLocationViewDelegate {
     
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
-    func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]?
 }
 
 private struct TabLocationViewUX {
@@ -123,7 +122,6 @@ class TabLocationView: UIView {
         urlTextField.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .horizontal)
         urlTextField.attributedPlaceholder = self.placeholder
         urlTextField.accessibilityIdentifier = "url"
-        urlTextField.accessibilityActionsSource = self
         urlTextField.font = UIConstants.defaultChromeFont
         urlTextField.backgroundColor = .clear
         urlTextField.clipsToBounds = true
@@ -381,17 +379,6 @@ extension TabLocationView: UIDragInteractionDelegate {
 
     func dragInteraction(_ interaction: UIDragInteraction, sessionWillBegin session: UIDragSession) {
         delegate?.tabLocationViewDidBeginDragInteraction(self)
-    }
-}
-
-// MARK: - AccessibilityActionsSource
-
-extension TabLocationView: AccessibilityActionsSource {
-    func accessibilityCustomActionsForView(_ view: UIView) -> [UIAccessibilityCustomAction]? {
-        if view === urlTextField {
-            return delegate?.tabLocationViewLocationAccessibilityActions(self)
-        }
-        return nil
     }
 }
 

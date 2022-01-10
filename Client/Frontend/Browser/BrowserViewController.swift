@@ -91,12 +91,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     // popover rotation handling
     var displayedPopoverController: UIViewController?
     var updateDisplayedPopoverProperties: (() -> Void)?
-
-    // location label actions
-    var pasteGoAction: AccessibleAction!
-    var pasteAction: AccessibleAction!
-    var copyAddressAction: AccessibleAction!
-
+    
     let profile: Profile
     let tabManager: TabManager
     let historyAPI: BraveHistoryAPI
@@ -532,8 +527,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             footer.addSubview(toolbar!)
             toolbar?.tabToolbarDelegate = self
             toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
-            updateTabCountUsingTabManager(self.tabManager)
         }
+        updateToolbarUsingTabManager(tabManager)
 
         view.setNeedsUpdateConstraints()
         
@@ -680,6 +675,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         topToolbar.translatesAutoresizingMaskIntoConstraints = false
         topToolbar.delegate = self
         topToolbar.tabToolbarDelegate = self
+        
+        let toolBarInteraction = UIContextMenuInteraction(delegate: self)
+        topToolbar.locationView.addInteraction(toolBarInteraction)
+
         header = UIStackView().then {
             $0.axis = .vertical
             $0.clipsToBounds = true
@@ -695,30 +694,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         
         addChild(tabsBar)
         tabsBar.didMove(toParent: self)
-
-        // UIAccessibilityCustomAction subclass holding an AccessibleAction instance does not work, thus unable to generate AccessibleActions and UIAccessibilityCustomActions "on-demand" and need to make them "persistent" e.g. by being stored in BVC
-        pasteGoAction = AccessibleAction(name: Strings.pasteAndGoTitle, handler: { () -> Bool in
-            if let pasteboardContents = UIPasteboard.general.string {
-                self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
-                return true
-            }
-            return false
-        })
-        pasteAction = AccessibleAction(name: Strings.pasteTitle, handler: { () -> Bool in
-            if let pasteboardContents = UIPasteboard.general.string {
-                // Enter overlay mode and make the search controller appear.
-                self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
-
-                return true
-            }
-            return false
-        })
-        copyAddressAction = AccessibleAction(name: Strings.copyAddressTitle, handler: { () -> Bool in
-            if let url = self.topToolbar.currentURL {
-                UIPasteboard.general.url = url as URL
-            }
-            return true
-        })
 
         view.addSubview(alertStackView)
         footer = UIView()
@@ -896,7 +871,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
         checkCrashRestoration()
         
-        updateTabCountUsingTabManager(tabManager)
+        updateToolbarUsingTabManager(tabManager)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         
         if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger?.selectedTabId == 0 {
@@ -1942,6 +1917,10 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 }
 
 extension BrowserViewController: TabsBarViewControllerDelegate {
+    func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
+        openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+    }
+    
     func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
         if tab == tabManager.selectedTab { return }
         topToolbar.leaveOverlayMode(didCancel: true)
@@ -1949,7 +1928,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
     }
     
     func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton) {
-        showAddTabContextMenu(sourceView: tabsBarController.view, button: button)
+        // The actions are carried to menu actions for Tab-Tray Button
     }
 }
 
@@ -2240,7 +2219,7 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         if selected?.type != previous?.type {
-            updateTabCountUsingTabManager(tabManager)
+            updateToolbarUsingTabManager(tabManager)
         }
 
         removeAllBars()
@@ -2283,7 +2262,7 @@ extension BrowserViewController: TabManagerDelegate {
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
         // If we are restoring tabs then we update the count once at the end
         if !tabManager.isRestoring {
-            updateTabCountUsingTabManager(tabManager)
+            updateToolbarUsingTabManager(tabManager)
         }
         tab.tabDelegate = self
         updateTabsBarVisibility()
@@ -2294,7 +2273,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
-        updateTabCountUsingTabManager(tabManager)
+        updateToolbarUsingTabManager(tabManager)
         // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
         // so we don't expcitly unset it.
         topToolbar.leaveOverlayMode(didCancel: true)
@@ -2306,11 +2285,11 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     func tabManagerDidAddTabs(_ tabManager: TabManager) {
-        updateTabCountUsingTabManager(tabManager)
+        updateToolbarUsingTabManager(tabManager)
     }
 
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
-        updateTabCountUsingTabManager(tabManager)
+        updateToolbarUsingTabManager(tabManager)
     }
 
     func show(toast: Toast, afterWaiting delay: DispatchTimeInterval = SimpleToastUX.toastDelayBefore, duration: DispatchTimeInterval? = SimpleToastUX.toastDismissAfter) {
@@ -2337,10 +2316,99 @@ extension BrowserViewController: TabManagerDelegate {
         show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
     }
 
-    fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager) {
+    func updateToolbarUsingTabManager(_ tabManager: TabManager) {
+        // Update Tab Count on Tab-Tray Button
         let count = tabManager.tabsForCurrentMode.count
         toolbar?.updateTabCount(count)
         topToolbar.updateTabCount(count)
+        
+        // Update Actions for Tab-Tray Button
+        var newTabMenuChildren: [UIAction] = []
+        var addTabMenuChildren: [UIAction] = []
+            
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            let openNewPrivateTab = UIAction(
+                title: Strings.newPrivateTabTitle,
+                image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                    self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+                })
+            
+            if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) ||
+                (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
+                newTabMenuChildren.append(openNewPrivateTab)
+            }
+            
+            addTabMenuChildren.append(openNewPrivateTab)
+        }
+        
+        let openNewTab = UIAction(
+            title: PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                Strings.newPrivateTabTitle : Strings.newTabTitle,
+            image: PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
+            handler: UIAction.deferredActionHandler { [unowned self] _ in
+                self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            })
+        
+        if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) ||
+            (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
+            newTabMenuChildren.append(openNewTab)
+        }
+        addTabMenuChildren.append(openNewTab)
+        
+        var bookmarkMenuChildren: [UIAction] = []
+
+        if tabManager.openedWebsitesCount > 0 {
+            let bookmarkAllTabs = UIAction(
+                title: Strings.bookmarkAllTabsTitle,
+                image: UIImage(systemName: "book"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                    let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: tabManager.tabsForCurrentMode)
+                    let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
+                    
+                    presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+                })
+            
+            bookmarkMenuChildren.append(bookmarkAllTabs)
+        }
+        
+        var closeTabMenuChildren: [UIAction] = []
+        
+        if tabManager.tabsForCurrentMode.count > 1 {
+            let closeAllTabs = UIAction(
+                title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
+                image: UIImage(systemName: "xmark"),
+                attributes: .destructive,
+                handler: UIAction.deferredActionHandler { _ in
+                tabManager.removeAll()
+            })
+            
+            closeTabMenuChildren.append(closeAllTabs)
+        }
+        
+        let closeActiveTab = UIAction(
+            title: String(format: Strings.closeTabTitle),
+            image: UIImage(systemName: "xmark"),
+            attributes: .destructive,
+            handler: UIAction.deferredActionHandler { [unowned self] _ in
+                if let tab = self.tabManager.selectedTab {
+                    self.tabManager.removeTab(tab)
+                }
+            })
+        
+        closeTabMenuChildren.append(closeActiveTab)
+        
+        let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
+        let addTabMenu = UIMenu(title: "", options: .displayInline, children: addTabMenuChildren)
+        let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
+        let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
+        
+        toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
+        topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
+        
+        //Update Actions for Add-Tab Button
+        toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])
     }
 }
 

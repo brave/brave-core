@@ -294,38 +294,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         switchTableEditingMode()
     }
     
-    @objc private func longPressedCell(_ gesture: UILongPressGestureRecognizer) {
-        guard gesture.state == .began,
-              let cell = gesture.view as? UITableViewCell,
-              let indexPath = tableView.indexPath(for: cell),
-              let bookmark = fetchBookmarkItem(at: indexPath) else {
-            return
-        }
-                        
-        presentLongPressActions(gesture, urlString: bookmark.url, isPrivateBrowsing: isPrivateBrowsing,
-                                customActions: bookmark.isFolder ? folderLongPressActions(bookmark) : nil)
-    }
-    
-    private func folderLongPressActions(_ folder: Bookmarkv2) -> [UIAlertAction] {
-        let children = bookmarkManager.getChildren(forFolder: folder, includeFolders: false) ?? []
-        
-        let urls: [URL] = children.compactMap { b in
-            guard let url = b.url else { return nil }
-            return URL(string: url)
-        }
-        
-        return [
-            UIAlertAction(
-                title: String(format: Strings.openAllBookmarks, children.count),
-                style: .default,
-                handler: { [weak self] _ in
-                    self?.toolbarUrlActionsDelegate?.batchOpen(urls)
-                    self?.presentingViewController?.dismiss(animated: true)
-                }
-            )
-        ]
-    }
-    
     // MARK: Data Fetch
     
     override func reloadData() {
@@ -393,7 +361,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         tableView.setEditing(editMode, animated: forceOff ? false : true)
         
         updateEditBookmarksButton(editMode)
-        resetCellLongpressGesture(tableView.isEditing)
         
         editBookmarksButton?.isEnabled = bookmarksFRC?.fetchedObjectsCount != 0
         addFolderButton?.isEnabled = !editMode
@@ -402,15 +369,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     private func updateEditBookmarksButton(_ tableIsEditing: Bool) {
         self.editBookmarksButton?.title = tableIsEditing ? Strings.done : Strings.edit
         self.editBookmarksButton?.style = tableIsEditing ? .done : .plain
-    }
-    
-    private func resetCellLongpressGesture(_ editing: Bool) {
-        for cell in self.tableView.visibleCells {
-            cell.gestureRecognizers?.forEach { cell.removeGestureRecognizer($0) }
-            if !editing {
-                cell.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedCell(_:))))
-            }
-        }
     }
 
     private func addFolder(titled title: String) {
@@ -447,8 +405,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         func configCell(image: UIImage? = nil, icon: FaviconMO? = nil) {
             if !tableView.isEditing {
                 cell.gestureRecognizers?.forEach { cell.removeGestureRecognizer($0) }
-                let lp = UILongPressGestureRecognizer(target: self, action: #selector(longPressedCell(_:)))
-                cell.addGestureRecognizer(lp)
             }
             
             if !shouldReuse {
@@ -606,6 +562,83 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         } else {
             fetchedBookmarkItem = bookmarksFRC?.object(at: indexPath)
             return fetchedBookmarkItem?.canBeDeleted ?? false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let bookmarkItem = fetchBookmarkItem(at: indexPath) else {
+            return nil
+        }
+        
+        var actionItemsMenu: UIMenu
+        
+        if bookmarkItem.isFolder {
+            var actionChildren: [UIAction] = []
+
+            let children = bookmarkManager.getChildren(forFolder: bookmarkItem, includeFolders: false) ?? []
+            
+            let urls: [URL] = children.compactMap { bookmark in
+                guard let url = bookmark.url else { return nil }
+                return URL(string: url)
+            }
+            
+            let openBatchURLAction = UIAction(
+                title: String(format: Strings.openAllBookmarks, children.count),
+                image: UIImage(systemName: "arrow.up.forward.app"),
+                handler: UIAction.deferredActionHandler { _ in
+                self.toolbarUrlActionsDelegate?.batchOpen(urls)
+            })
+            
+            if children.count > 0 {
+                actionChildren.append(openBatchURLAction)
+            }
+            
+            actionItemsMenu = UIMenu(title: "", identifier: nil, children: actionChildren)
+        } else {
+            guard let bookmarkItemURL = URL(string: bookmarkItem.url ?? "") else { return nil }
+
+            let openInNewTabAction = UIAction(
+                title: Strings.openNewTabButtonTitle,
+                image: UIImage(systemName: "plus.square.on.square"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                self.toolbarUrlActionsDelegate?.openInNewTab(bookmarkItemURL, isPrivate: isPrivateBrowsing)
+            })
+            
+            let newPrivateTabAction = UIAction(
+                title: Strings.openNewPrivateTabButtonTitle,
+                image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                self.toolbarUrlActionsDelegate?.openInNewTab(bookmarkItemURL, isPrivate: true)
+            })
+            
+            let copyAction = UIAction(
+                title: Strings.copyLinkActionTitle,
+                image: UIImage(systemName: "doc.on.doc"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                self.toolbarUrlActionsDelegate?.copy(bookmarkItemURL)
+            })
+            
+            let shareAction = UIAction(
+                title: Strings.shareLinkActionTitle,
+                image: UIImage(systemName: "square.and.arrow.up"),
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                self.toolbarUrlActionsDelegate?.share(bookmarkItemURL)
+            })
+            
+            var newTabActionMenu: [UIAction] = [openInNewTabAction]
+            
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                newTabActionMenu.append(newPrivateTabAction)
+            }
+            
+            let urlMenu = UIMenu(title: "", options: .displayInline, children: newTabActionMenu)
+            let linkMenu = UIMenu(title: "", options: .displayInline, children: [copyAction, shareAction])
+            
+            actionItemsMenu = UIMenu(title: bookmarkItemURL.absoluteString, identifier: nil, children: [urlMenu, linkMenu])
+        }
+
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+            return actionItemsMenu
         }
     }
 }

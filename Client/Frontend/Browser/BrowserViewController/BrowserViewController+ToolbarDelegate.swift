@@ -100,14 +100,6 @@ extension BrowserViewController: TopToolbarDelegate {
         }
     }
 
-    func locationActions(for topToolbar: TopToolbarView) -> [AccessibleAction] {
-        if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-            return [pasteGoAction, pasteAction, copyAddressAction]
-        } else {
-            return [copyAddressAction]
-        }
-    }
-
     func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
         // use the initial value for the URL so we can do proper pattern matching with search URLs
         var searchURL = self.tabManager.selectedTab?.currentInitialURL
@@ -122,31 +114,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     func topToolbarDidLongPressLocation(_ topToolbar: TopToolbarView) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        for action in locationActions(for: topToolbar) {
-            alert.addAction(action.alertAction(style: .default))
-        }
-        
-        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-        
-        let setupPopover = { [unowned self] in
-            if let popoverPresentationController = alert.popoverPresentationController {
-                popoverPresentationController.sourceView = topToolbar
-                popoverPresentationController.sourceRect = topToolbar.frame
-                popoverPresentationController.permittedArrowDirections = .any
-                popoverPresentationController.delegate = self
-            }
-        }
-        
-        setupPopover()
-        
-        if alert.popoverPresentationController != nil {
-            displayedPopoverController = alert
-            updateDisplayedPopoverProperties = setupPopover
-        }
-        
-        self.present(alert, animated: true)
+        // The actions are carried to menu actions for Top ToolBar Location View
     }
 
     func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
@@ -154,10 +122,6 @@ extension BrowserViewController: TopToolbarDelegate {
             // Only scroll to top if we are not showing the home view controller
             selectedTab.webView?.scrollView.setContentOffset(CGPoint.zero, animated: true)
         }
-    }
-
-    func topToolbarLocationAccessibilityActions(_ topToolbar: TopToolbarView) -> [UIAccessibilityCustomAction]? {
-        return locationActions(for: topToolbar).map { $0.accessibilityCustomAction }
     }
 
     func topToolbar(_ topToolbar: TopToolbarView, didEnterText text: String) {
@@ -464,7 +428,7 @@ extension BrowserViewController: TopToolbarDelegate {
         presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
     }
     
-    private func presentSettingsNavigation(with controller: UIViewController, cancelEnabled: Bool = false) {
+    func presentSettingsNavigation(with controller: UIViewController, cancelEnabled: Bool = false) {
         let navigationController = SettingsNavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
         
@@ -550,34 +514,8 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        showAddTabContextMenu(sourceView: toolbar ?? topToolbar, button: button)
-    }
-    
-    private func addTabAlertActions() -> [UIAlertAction] {
-        var actions: [UIAlertAction] = []
-        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            let newPrivateTabAction = UIAlertAction(title: Strings.newPrivateTabTitle,
-                                                    style: .default,
-                                                    handler: { [unowned self] _ in
-                self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
-            })
-            actions.append(newPrivateTabAction)
-        }
-        let bottomActionTitle = PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.newPrivateTabTitle : Strings.newTabTitle
-        actions.append(UIAlertAction(title: bottomActionTitle, style: .default, handler: { [unowned self] _ in
-            self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
-        }))
-        return actions
-    }
-    
-    func showAddTabContextMenu(sourceView: UIView, button: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-        addTabAlertActions().forEach(alertController.addAction)
-        alertController.popoverPresentationController?.sourceView = sourceView
-        alertController.popoverPresentationController?.sourceRect = button.frame
+        // The actions are carried to menu actions for Tab-Tray Button
         UIImpactFeedbackGenerator(style: .heavy).bzzt()
-        present(alertController, animated: true)
     }
     
     func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
@@ -590,48 +528,8 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        guard self.presentedViewController == nil else {
-            return
-        }
-        let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) ||
-            (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
-            addTabAlertActions().forEach(controller.addAction)
-        }
-        
-        if tabManager.openedWebsitesCount > 0 {
-            controller.addAction( UIAlertAction(title: Strings.bookmarkAllTabsTitle, style: .default, handler: { [unowned self] _ in
-                let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: self.tabManager.tabsForCurrentMode)
-                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
-                
-                self.presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
-            }), accessibilityIdentifier: "toolbarTabButtonLongPress.bookmarkTab")
-        }
-            
-        if tabManager.tabsForCurrentMode.count > 1 {
-            controller.addAction(
-                UIAlertAction(title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
-                              style: .destructive, handler: { _ in
-                self.tabManager.removeAll()
-            }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
-        }
-        
-        controller.addAction(UIAlertAction(title: Strings.closeTabTitle, style: .destructive, handler: { _ in
-            if let tab = self.tabManager.selectedTab {
-                self.tabManager.removeTab(tab)
-            }
-        }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
-        
-        controller.do {
-            $0.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil),
-                         accessibilityIdentifier: "toolbarTabButtonLongPress.cancel")
-            $0.popoverPresentationController?.sourceView = toolbar ?? topToolbar
-            $0.popoverPresentationController?.sourceRect = button.frame
-        }
-        
+        // The actions are carried to menu actions for Tab-Tray Button
         UIImpactFeedbackGenerator(style: .heavy).bzzt()
-        present(controller, animated: true, completion: nil)
     }
     
     func showBackForwardList() {
@@ -651,6 +549,50 @@ extension BrowserViewController: ToolbarDelegate {
         let newTabIndex = index + (direction == .left ? -1 : 1)
         if newTabIndex >= 0 && newTabIndex < tabs.count {
             tabManager.selectTab(tabs[newTabIndex])
+        }
+    }
+}
+
+extension BrowserViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
+            var actionMenuChildren: [UIAction] = []
+            
+            let pasteGoAction = UIAction(
+                title: Strings.pasteAndGoTitle,
+                image: UIImage(systemName: "doc.on.clipboard.fill"),
+                handler: UIAction.deferredActionHandler { _ in
+                if let pasteboardContents = UIPasteboard.general.string {
+                    self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
+                }
+            })
+            
+            let pasteAction = UIAction(
+                title: Strings.pasteAndGoTitle,
+                image: UIImage(systemName: "doc.on.clipboard"),
+                handler: UIAction.deferredActionHandler { _ in
+                if let pasteboardContents = UIPasteboard.general.string {
+                    // Enter overlay mode and make the search controller appear.
+                    self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
+                }
+            })
+            
+            let copyAction = UIAction(
+                title: Strings.copyAddressTitle,
+                image: UIImage(systemName: "doc.on.doc"),
+                handler: UIAction.deferredActionHandler { _ in
+                if let url = self.topToolbar.currentURL {
+                    UIPasteboard.general.url = url as URL
+                }
+            })
+            
+            if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
+                actionMenuChildren = [pasteGoAction, pasteAction, copyAction]
+            } else {
+                actionMenuChildren = [copyAction]
+            }
+            
+            return UIMenu(title: "", identifier: nil, children: actionMenuChildren)
         }
     }
 }

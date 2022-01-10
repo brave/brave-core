@@ -495,6 +495,10 @@ extension BrowserViewController: WKNavigationDelegate {
             
             tabsBar.reloadDataAndRestoreSelectedTab()
         }
+        
+        // Added this method to determine long press menu actions better
+        // Since these actions are depending on tabmanager opened WebsiteCount
+        updateToolbarUsingTabManager(tabManager)
     }
     
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
