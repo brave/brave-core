@@ -127,14 +127,12 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 

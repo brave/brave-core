@@ -105,11 +105,11 @@ void DatabaseContributionInfo::GetRecord(
   auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-    "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
-    "ci.processor "
-    "FROM %s as ci "
-    "WHERE ci.contribution_id = ?",
-    kTableName);
+      "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
+      "ci.processor, ci.created_at "
+      "FROM %s as ci "
+      "WHERE ci.contribution_id = ?",
+      kTableName);
 
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
@@ -117,14 +117,13 @@ void DatabaseContributionInfo::GetRecord(
 
   BindString(command.get(), 0, contribution_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -166,6 +165,7 @@ void DatabaseContributionInfo::OnGetRecord(
   info->retry_count = GetIntColumn(record, 4);
   info->processor =
       static_cast<type::ContributionProcessor>(GetIntColumn(record, 5));
+  info->created_at = GetInt64Column(record, 6);
 
   auto publishers_callback =
     std::bind(&DatabaseContributionInfo::OnGetPublishers,
@@ -452,6 +452,29 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
 void DatabaseContributionInfo::GetNotCompletedRecords(
     ledger::ContributionInfoListCallback callback) {
   auto transaction = type::DBTransaction::New();
+
+  // It is possible for externally-funded (SKU-based) ACs to be stalled after
+  // hitting the max number of retries. Attempt to revive these ACs if an
+  // external transaction has already been submitted for their SKU order.
+  // TODO(zenparsing): Remove this query once we support unlimited retries with
+  // backoff for ACs.
+  auto revive_command = type::DBCommand::New();
+  revive_command->type = type::DBCommand::Type::RUN;
+  revive_command->command = R"sql(
+      UPDATE contribution_info SET step = 1, retry_count = 0
+      WHERE contribution_id IN (
+        SELECT ci.contribution_id
+        FROM contribution_info ci
+        INNER JOIN contribution_info_publishers cip
+          ON cip.contribution_id = ci.contribution_id
+        INNER JOIN sku_order so
+          ON so.contribution_id = ci.contribution_id
+        WHERE ci.step = -7 AND ci.type = 2 AND so.status = 2
+        GROUP BY ci.contribution_id
+        HAVING SUM(cip.contributed_amount) = 0)
+  )sql";
+
+  transaction->commands.push_back(std::move(revive_command));
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
