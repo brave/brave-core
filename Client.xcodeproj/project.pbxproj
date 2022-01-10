@@ -530,6 +530,7 @@
 		2F29FB8B267BE06100B0AD6A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F29FB7E267BE06100B0AD6A /* Model.xcdatamodeld */; };
 		2F2C3549261D10AE00631310 /* CustomIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F693223260D218900ECEB38 /* CustomIntentHandler.swift */; };
 		2F2C35A6261DF41100631310 /* CustomIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F693223260D218900ECEB38 /* CustomIntentHandler.swift */; };
+		2F41064527860EE200732FFF /* EmptyStateOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F41064427860EE200732FFF /* EmptyStateOverlayView.swift */; };
 		2F44FA1B1A9D426A00FD20CC /* TestHashExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FA1A1A9D426A00FD20CC /* TestHashExtensions.swift */; };
 		2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4B7B7421A793CF20022C5E0 /* FiraSans-BoldItalic.ttf */; };
 		2F44FC721A9E840300FD20CC /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */; };
@@ -2292,6 +2293,7 @@
 		2F29FB88267BE06100B0AD6A /* Model5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model5.xcdatamodel; sourceTree = "<group>"; };
 		2F29FB89267BE06100B0AD6A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		2F29FB8A267BE06100B0AD6A /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
+		2F41064427860EE200732FFF /* EmptyStateOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateOverlayView.swift; sourceTree = "<group>"; };
 		2F44FA1A1A9D426A00FD20CC /* TestHashExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHashExtensions.swift; sourceTree = "<group>"; };
 		2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		2F44FCC41A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableSectionHeaderFooterView.swift; sourceTree = "<group>"; };
@@ -5716,6 +5718,7 @@
 				27AE360C25E55AA200E795E5 /* MenuViewController.swift */,
 				277E94F125F834240001926E /* VPNMenuButton.swift */,
 				CA9A233326B97B4300923D70 /* PlaylistMenuButton.swift */,
+				2F41064427860EE200732FFF /* EmptyStateOverlayView.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -8845,6 +8848,7 @@
 				27953F7723F5DF5D00B4B595 /* AboutShieldsViewController.swift in Sources */,
 				0A1E84442190A57F0042F782 /* SyncCameraView.swift in Sources */,
 				A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */,
+				2F41064527860EE200732FFF /* EmptyStateOverlayView.swift in Sources */,
 				5EC594ED232C2C8F00922111 /* OnboardingWebViewController.swift in Sources */,
 				0A4B012420D0321A004D4011 /* UX.swift in Sources */,
 				2FD1C60B2638823D00E3C25F /* HistoryFetchers.swift in Sources */,
