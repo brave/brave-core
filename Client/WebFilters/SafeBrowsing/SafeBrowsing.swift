@@ -11,83 +11,14 @@ import Data
 private let log = Logger.browserLogger
 
 class SafeBrowsing {
-    let listNames = MalwareList.generate()
-    
-    private(set) var domainList: Set<String>
-    
-    init(domainList: Set<String> = Set<String>()) {
-        self.domainList = domainList
-        
-        if domainList.isEmpty {
-            fillDomainList()
-        }
-    }
-    
-    func shouldBlock(_ url: URL) -> Bool {
-        guard let baseDomain = url.baseDomain else {
+    static func isSafeBrowsingEnabledForURL(_ url: URL) -> Bool {
+        guard url.baseDomain != nil else {
             log.error("url: \(url) host is nil")
             return false
         }
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
         let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
         let isSafeBrowsingEnabled = domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: false)
-        let isUrlBlacklisted = domainList.contains(baseDomain)
-
-        return isSafeBrowsingEnabled && isUrlBlacklisted
-    }
-    
-    func showMalwareWarningPage(forUrl url: URL, inWebView webView: WKWebView) {
-        var components = URLComponents(string: WebServer.sharedInstance.base + "/\(InternalURL.Path.errorpage)/SafeBrowsingError.html")!
-        
-        // This parameter help us to know what url caused the malware protection to show so we can
-        // update url with it(instead of showing localhost error page url).
-        components.queryItems = [URLQueryItem(name: "url", value: url.absoluteString)]
-        
-        webView.load(PrivilegedRequest(url: components.url!) as URLRequest)
-    }
-    
-    private func fillDomainList() {
-        var newList = Set<String>()
-
-        self.listNames.forEach {
-            if let list = self.openList(withName: $0.name) {
-                newList.formUnion(self.parse(list, regex: $0.regex))
-            }
-        }
-        self.domainList = newList
-    }
-    
-    private func openList(withName name: String) -> String? {
-        guard let filePath = Bundle.main.path(forResource: name, ofType: "txt") else {
-            log.error("Could not find text file with :\(name) name")
-            return nil
-        }
-
-        do {
-            return try String(contentsOfFile: filePath, encoding: .utf8)
-        } catch {
-            log.error("Could not open safe browsing list file with :\(name) name, error: \(error)")
-            return nil
-        }
-    }
-    
-    private func parse(_ list: String, regex: NSRegularExpression?) -> Set<String> {
-        var domains = Set<String>()
-        
-        guard let regex = regex else {
-            domains.formUnion(list.components(separatedBy: .newlines))
-            return domains
-        }
-        
-        let nsList = list as NSString
-
-        regex.matches(in: list, options: [], range: NSRange(location: 0, length: nsList.length))
-            .map {
-                nsList.substring(with: $0.range)
-            }.forEach {
-                domains.insert($0)
-        }
-        
-        return domains
+        return isSafeBrowsingEnabled
     }
 }

@@ -394,7 +394,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         ReaderModeHandlers.register(server, profile: profile) //TODO: PORT TO InternalSchemeHandler
-        SafeBrowsingHandler.register(server) //TODO: REMOVE COMPLETELY!!!
         BookmarksInterstitialPageHandler.register(server) //TODO: PORT TO InternalSchemeHandler
 
         // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task

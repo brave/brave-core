@@ -147,11 +147,7 @@ extension BrowserViewController: WKNavigationDelegate {
             return
         }
         
-        if let safeBrowsing = safeBrowsing, safeBrowsing.shouldBlock(url) {
-            safeBrowsing.showMalwareWarningPage(forUrl: url, inWebView: webView)
-            decisionHandler(.cancel, preferences)
-            return
-        }
+        webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = SafeBrowsing.isSafeBrowsingEnabledForURL(url)
         
         // Universal links do not work if the request originates from the app, manual handling is required.
         if let mainDocURL = navigationAction.request.mainDocumentURL,
