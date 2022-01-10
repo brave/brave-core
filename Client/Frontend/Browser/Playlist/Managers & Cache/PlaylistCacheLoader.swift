@@ -609,10 +609,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
             return
         }
         
-        if safeBrowsing.shouldBlock(url) {
-            decisionHandler(.cancel)
-            return
-        }
+        webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = SafeBrowsing.isSafeBrowsingEnabledForURL(url)
         
         // Universal links do not work if the request originates from the app, manual handling is required.
         if let mainDocURL = navigationAction.request.mainDocumentURL,

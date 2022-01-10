@@ -8,8 +8,6 @@ import BraveShared
 @testable import Client
 
 class SafeBrowsingTests: XCTestCase {
-    
-    let domainsList = Set<String>(arrayLiteral: "brave.com", "example.com")
 
     override func setUp() {
         super.setUp()
@@ -25,32 +23,21 @@ class SafeBrowsingTests: XCTestCase {
     }
 
     func testShouldBlock() {
-        let sb = SafeBrowsing(domainList: domainsList)
-        
-        XCTAssert(sb.shouldBlock(URL(string: "http://brave.com")!))
-        XCTAssert(sb.shouldBlock(URL(string: "https://brave.com")!))
-        
-        // Make sure subdomains are blocked too.
-        XCTAssert(sb.shouldBlock(URL(string: "https://www.brave.com")!))
-        
-        XCTAssertFalse(sb.shouldBlock(URL(string: "https://bravexxx.com")!))
-        XCTAssert(sb.shouldBlock(URL(string: "https://example.com")!))
-        XCTAssertFalse(sb.shouldBlock(URL(string: "https://foo.com")!))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "http://brave.com")!))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://brave.com")!))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://www.brave.com")!))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://example.com")!))
     }
     
     func testShouldBlockGlobalShieldOff() {
-        let sb = SafeBrowsing(domainList: domainsList)
-        
         Preferences.Shields.blockPhishingAndMalware.value = false
-        XCTAssertFalse(sb.shouldBlock(URL(string: "https://brave.com")!))
-        XCTAssertFalse(sb.shouldBlock(URL(string: "https://example.com")!))
-        XCTAssertFalse(sb.shouldBlock(URL(string: "https://foo.com")!))
+        XCTAssertFalse(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://brave.com")!))
+        XCTAssertFalse(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://example.com")!))
+        XCTAssertFalse(SafeBrowsing.isSafeBrowsingEnabledForURL(URL(string: "https://foo.com")!))
     }
     
     func testShouldBlockLocalShields() {
         let context = DataController.viewContext
-        let sb = SafeBrowsing(domainList: domainsList)
-        
         let braveUrl = URL(string: "https://brave.com")!
         let exampleUrl = URL(string: "https://example.com")!
         
@@ -62,14 +49,14 @@ class SafeBrowsingTests: XCTestCase {
         _ = Domain.getOrCreate(forUrl: exampleUrl, persistent: true)
         
         // Global shield on, local shield should have precedence over global shield
-        XCTAssertFalse(sb.shouldBlock(braveUrl))
-        XCTAssert(sb.shouldBlock(exampleUrl))
+        XCTAssertFalse(SafeBrowsing.isSafeBrowsingEnabledForURL(braveUrl))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(exampleUrl))
         
         Preferences.Shields.blockPhishingAndMalware.value = false
         Domain.setBraveShieldInternal(forUrl: exampleUrl, shield: .SafeBrowsing, isOn: true, context: .existing(context))
         
-        XCTAssertFalse(sb.shouldBlock(braveUrl))
-        XCTAssert(sb.shouldBlock(exampleUrl))
+        XCTAssertFalse(SafeBrowsing.isSafeBrowsingEnabledForURL(braveUrl))
+        XCTAssert(SafeBrowsing.isSafeBrowsingEnabledForURL(exampleUrl))
         
     }
 }
