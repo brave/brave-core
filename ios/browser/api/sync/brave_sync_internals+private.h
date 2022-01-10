@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 class ChromeBrowserState;
 
-@interface BraveSyncInternalsView (Private)
+@interface BraveSyncInternalsController (Private)
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;
 @end
 

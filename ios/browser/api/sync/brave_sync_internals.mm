@@ -8,9 +8,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/web/js_messaging/web_view_web_state_map.h"
 #import "ios/web/public/browser_state.h"
-#import "ios/web/web_state/web_state_impl.h"
 #import "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/thread/web_thread.h"
 #import "ios/web/public/web_state.h"
@@ -19,6 +19,7 @@
 #import "ios/web/public/webui/web_ui_ios.h"
 #import "ios/web/web_state/ui/crw_web_controller.h"
 #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+#import "ios/web/web_state/web_state_impl.h"
 #import "ios/web/webui/web_ui_ios_impl.h"
 #import "net/base/mac/url_conversions.h"
 #include "ui/base/page_transition_types.h"
@@ -52,7 +53,7 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 - (void)setWebView:(WKWebView*)webView;
 @end
 
-@interface BraveSyncInternalsView ()<CRWWebStateDelegate, CRWWebStateObserver> {
+@interface BraveSyncInternalsController ()<CRWWebStateDelegate, CRWWebStateObserver> {
   ChromeBrowserState* _chromeBrowserState;
   std::unique_ptr<web::WebState> _webState;
   std::unique_ptr<web::WebStateObserverBridge> _webStateObserver;
@@ -63,56 +64,44 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 }
 @end
 
-@implementation BraveSyncInternalsView
+@implementation BraveSyncInternalsController
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
     _chromeBrowserState = mainBrowserState;
     web::WebState::CreateParams webStateCreateParams(mainBrowserState);
     _webState = web::WebState::Create(webStateCreateParams);
-    //web::WebState::CreateWithStorageSession(webStateCreateParams,
-    //                                        sessionStorage);
-    
+
     _webStateObserver = std::make_unique<web::WebStateObserverBridge>(self);
     _webState->AddObserver(_webStateObserver.get());
 
     _webStateDelegate = std::make_unique<web::WebStateDelegateBridge>(self);
     _webState->SetDelegate(_webStateDelegate.get());
-    
-//    web::WKWebViewConfigurationProvider& config_provider =
-//          web::WKWebViewConfigurationProvider::FromBrowserState(_chromeBrowserState);
-//
-//    _webView = web::EnsureWebViewCreatedWithConfiguration(_webState.get(),
 
     _webController = static_cast<web::WebStateImpl*>(_webState.get())->GetWebController();
     _webView = [_webController ensureWebViewCreated];
-    
-    UIView* view = [_webController view];
-    [self addSubview:view];
-    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0];
-    
-    NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0];
-    
-    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
-    
-    NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-
-    NSArray* constraints = @[leading, trailing, top, bottom];
-    [self addConstraints:constraints];
-    [NSLayoutConstraint activateConstraints:constraints];
   }
   return self;
 }
 
 - (void)dealloc {
   [[_webController view] removeFromSuperview];
-  _webController = nil;
-  _webView = nil;
+  _webController = nullptr;
+  _webView = nullptr;
   _webState->RemoveObserver(_webStateObserver.get());
   _webStateObserver.reset();
   _webState.reset();
   _chromeBrowserState = nullptr;
+}
+
+- (void)loadView {
+    self.view = [_webController view];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self loadURL:[NSString stringWithFormat:@"%s/%s", kChromeUIScheme,
+                                             kChromeUISyncInternalsHost]];
 }
 
 - (void)loadURL:(NSString *)urlString {
@@ -186,17 +175,14 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 
 - (void)webState:(web::WebState*)webState
     didStartNavigation:(web::NavigationContext*)navigation {
-  printf("Page Did Start Navigation\n");
 }
 
 - (void)webState:(web::WebState*)webState
     didFinishNavigation:(web::NavigationContext*)navigation {
-  printf("Page Did Finish Navigation\n");
 }
 
 - (void)webState:(web::WebState*)webState didLoadPageWithSuccess:(BOOL)success {
   DCHECK_EQ(_webState.get(), webState);
-  printf("Page Loaded With Success\n");
 }
 
 // MARK: - WebStateDelegate implementation.
