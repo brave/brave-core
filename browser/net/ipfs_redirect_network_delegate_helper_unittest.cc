@@ -19,6 +19,7 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
@@ -141,6 +142,8 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
       initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = true;
+  request_info->tab_origin =
+      GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -161,6 +164,40 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
   GURL converted_url = GURL("https://dweb.link/test");
   EXPECT_EQ(location, converted_url);
   EXPECT_EQ(allowed_unsafe_redirect_url, converted_url);
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       HeadersIPFSWorkWithNoRedirectHttps) {
+  GURL url(
+      "https://cloudflare-ipfs.com/ipfs/"
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->browser_context = profile();
+  request_info->ipfs_gateway_url = GetPublicGateway();
+  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
+  request_info->resource_type = blink::mojom::ResourceType::kImage;
+  request_info->ipfs_auto_fallback = true;
+  request_info->tab_origin = GURL("https://some.dweb.link/");
+
+  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  orig_response_headers->AddHeader("x-ipfs-path", "/test");
+  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  GURL allowed_unsafe_redirect_url;
+
+  int rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, brave::ResponseCallback(), request_info);
+
+  EXPECT_EQ(rc, net::OK);
+
+  std::string location;
+  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                           &location));
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
