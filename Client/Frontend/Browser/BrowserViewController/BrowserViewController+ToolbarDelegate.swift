@@ -568,7 +568,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
             })
             
             let pasteAction = UIAction(
-                title: Strings.pasteAndGoTitle,
+                title: Strings.pasteTitle,
                 image: UIImage(systemName: "doc.on.clipboard"),
                 handler: UIAction.deferredActionHandler { _ in
                 if let pasteboardContents = UIPasteboard.general.string {
