@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
-import { BraveWallet, WalletAccountType } from '../../../../../constants/types'
+import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -29,11 +29,13 @@ export interface Props {
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   preAddedHardwareWalletAccounts: WalletAccountType[]
+  selectedAccountType: CreateAccountOptionsType
 }
 
 const derivationBatch = 4
 
 export default function (props: Props) {
+  const { selectedAccountType } = props
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
@@ -189,7 +191,7 @@ export default function (props: Props) {
           <DisclaimerText>
             {getLocale('braveWalletConnectHardwareInfo1').replace('$1', selectedHardwareWallet)}
           </DisclaimerText>
-          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo2')}</DisclaimerText>
+          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo2').replace('$1', selectedAccountType.name)}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
       {connectionError &&

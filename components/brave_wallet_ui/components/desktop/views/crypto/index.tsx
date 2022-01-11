@@ -10,7 +10,8 @@ import {
   WalletAccountType,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultCurrencies
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -149,6 +150,7 @@ const CryptoView = (props: Props) => {
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
 
   let { category, id } = useParams<ParamsType>()
 
@@ -204,8 +206,14 @@ const CryptoView = (props: Props) => {
     onHideAddModal()
   }
 
-  const onClickAddAccount = () => {
-    history.push(`${WalletRoutes.AddAccountModal}`)
+  const onClickAddAccount = (tabId: AddAccountNavTypes) => () => {
+    if (tabId === 'create') {
+      history.push(`${WalletRoutes.AddAccountModal}`)
+      setAddAccountModalTab(tabId)
+      return
+    }
+    setAddAccountModalTab(tabId)
+    onShowAddModal()
   }
 
   const onRouteBack = () => {
@@ -357,7 +365,6 @@ const CryptoView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
           onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
@@ -369,6 +376,7 @@ const CryptoView = (props: Props) => {
           onImportAccountFromJson={onImportAccountFromJson}
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
+          tab={addAccountModalTab}
         />
       }
     </StyledWrapper>

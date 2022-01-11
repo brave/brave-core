@@ -520,3 +520,15 @@ export type BlockExplorerUrlTypes =
   | 'tx'
   | 'address'
   | 'token'
+
+export type CreateAccountType =
+  | 'ethereum'
+  | 'filecoin'
+  | 'solana'
+
+export interface CreateAccountOptionsType {
+  name: string
+  description: string
+  network: CreateAccountType
+  icon: string
+}

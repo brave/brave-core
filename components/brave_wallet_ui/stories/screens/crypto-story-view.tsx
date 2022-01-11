@@ -15,7 +15,8 @@ import {
   AccountTransactions,
   WalletAccountType,
   UpdateAccountNamePayloadType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -139,6 +140,7 @@ const CryptoStoryView = (props: Props) => {
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
+  const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const browseMore = () => {
@@ -172,7 +174,8 @@ const CryptoStoryView = (props: Props) => {
     setShowBackupWarning(false)
   }
 
-  const onClickAddAccount = () => {
+  const onClickAddAccount = (tabId: AddAccountNavTypes) => () => {
+    setAddAccountModalTab(tabId)
     onToggleAddModal()
   }
 
@@ -346,7 +349,6 @@ const CryptoStoryView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
@@ -358,6 +360,7 @@ const CryptoStoryView = (props: Props) => {
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
           onRouteBackToAccounts={onRouteBackToAccounts}
+          tab={addAccountModalTab}
         />
       }
     </StyledWrapper>

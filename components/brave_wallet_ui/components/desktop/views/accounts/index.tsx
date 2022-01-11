@@ -6,7 +6,8 @@ import {
   UpdateAccountNamePayloadType,
   AccountTransactions,
   BraveWallet,
-  DefaultCurrencies
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -19,7 +20,6 @@ import {
   StyledWrapper,
   SectionTitle,
   PrimaryListContainer,
-  PrimaryRow,
   SecondaryListContainer,
   DisclaimerText,
   SubDivider,
@@ -33,7 +33,12 @@ import {
   QRCodeIcon,
   EditIcon,
   SubviewSectionTitle,
-  TransactionPlaceholderContainer
+  TransactionPlaceholderContainer,
+  ButtonRow,
+  StyledButton,
+  HardwareIcon,
+  ButtonText,
+  WalletIcon
 } from './style'
 
 import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
@@ -60,7 +65,7 @@ export interface Props {
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
-  onClickAddAccount: () => void
+  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
@@ -179,9 +184,9 @@ function Accounts (props: Props) {
       }
       {!selectedAccount ? (
         <>
-          <PrimaryRow>
-            <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
-          </PrimaryRow>
+          <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
+          <DisclaimerText>{getLocale('braveWalletAccountsPrimaryDisclaimer')}</DisclaimerText>
+          <SubDivider />
           <PrimaryListContainer>
             {primaryAccounts.map((account) =>
               <AccountListItem
@@ -193,6 +198,13 @@ function Accounts (props: Props) {
               />
             )}
           </PrimaryListContainer>
+          <ButtonRow>
+            <AddButton
+              buttonType='secondary'
+              onSubmit={onClickAddAccount('create')}
+              text={getLocale('braveWalletCreateAccountButton')}
+            />
+          </ButtonRow>
           <SectionTitle>{getLocale('braveWalletAccountsSecondary')}</SectionTitle>
           <DisclaimerText>{getLocale('braveWalletAccountsSecondaryDisclaimer')}</DisclaimerText>
           <SubDivider />
@@ -233,11 +245,16 @@ function Accounts (props: Props) {
               )}
             </SecondaryListContainer>
           )}
-          <AddButton
-            buttonType='secondary'
-            onSubmit={onClickAddAccount}
-            text={getLocale('braveWalletAddAccount')}
-          />
+          <ButtonRow>
+            <StyledButton onClick={onClickAddAccount('import')}>
+              <WalletIcon />
+              <ButtonText>{getLocale('braveWalletAddAccountImport')}</ButtonText>
+            </StyledButton>
+            <StyledButton onClick={onClickAddAccount('hardware')}>
+              <HardwareIcon />
+              <ButtonText>{getLocale('braveWalletAddAccountImportHardware')}</ButtonText>
+            </StyledButton>
+          </ButtonRow>
         </>
       ) : (
         <>
