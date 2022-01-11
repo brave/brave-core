@@ -22,7 +22,7 @@ export const formatInputValue = (value: string, decimals: number, round = true) 
 
   // Remove trailing zeros, including the decimal separator if necessary.
   // Example: 1.0000000000 becomes 1.
-  return formattedValue.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, '$1')
+  return formattedValue.replace(/\.0*$|(\.\d*[1-9])0+$/, '$1')
 }
 
 export const formatBalance = (balance: string, decimals: number) => {
