@@ -530,3 +530,7 @@ group("tools") {
 group("storybook") {
   deps = [ "//brave/.storybook:storybook" ]
 }
+
+group("redirect_cc") {
+  deps = [ "//brave/tools/redirect_cc" ]
+}

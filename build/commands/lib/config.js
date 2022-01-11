@@ -298,7 +298,6 @@ Config.prototype.buildArgs = function () {
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
     chrome_version_string: this.chromeVersion,
-    chrome_version_major: chrome_version_parts[0],
     brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
     brave_variations_server_url: this.braveVariationsServerUrl,
@@ -527,7 +526,14 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
-  if (process.platform === 'win32') {
+  if (this.nativeRedirectCC) {
+    if (false && this.use_goma) {
+      args.use_goma = true
+      args.goma_dir = this.nativeRedirectCCDir
+    } else {
+      args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+    }
+  } else if (process.platform === 'win32') {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
   } else {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
@@ -660,6 +666,13 @@ Config.prototype.update = function (options) {
     }
   } else {
     this.use_goma = false
+  }
+
+  if (options.native_redirect_cc || true) {
+    this.nativeRedirectCC = true
+    this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
+  } else {
+    this.nativeRedirectCC = false
   }
 
   if (options.force_gn_gen) {

@@ -1,0 +1,47 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (current_toolchain == host_toolchain) {
+  executable("executable") {
+    sources = [ "redirect_cc.cc" ]
+
+    deps = [ "//base" ]
+
+    output_name = "redirect_cc"
+
+    # Always build release since this is a build tool.
+    if (is_debug) {
+      configs -= [ "//build/config:debug" ]
+      configs += [ "//build/config:release" ]
+    }
+
+    # Disable //brave/chromium_src overrides.
+    configs -= [ "//brave/build:compiler" ]
+
+    # Fix //base compilation.
+    defines = [ "BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H=" ]
+  }
+
+  copy("copy_redirect_cc_to_gomacc") {
+    if (is_win) {
+      sources = [ "$root_out_dir/redirect_cc.exe" ]
+      outputs = [ "$root_out_dir/gomacc.exe" ]
+    } else {
+      sources = [ "$root_out_dir/redirect_cc" ]
+      outputs = [ "$root_out_dir/gomacc" ]
+    }
+
+    deps = [ ":executable" ]
+  }
+}
+
+group("redirect_cc") {
+  if (current_toolchain == host_toolchain) {
+    deps = [
+      ":copy_redirect_cc_to_gomacc",
+      ":executable",
+    ]
+  }
+}

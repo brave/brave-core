@@ -1,0 +1,11 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+is_debug = false
+is_component_build = false
+dcheck_always_on = false
+enable_nacl = false
+enable_stripping = true
+symbol_level = 0

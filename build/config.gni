@@ -1,4 +1,5 @@
 import("//build/util/branding.gni")
+import("//build/util/version.gni")
 
 declare_args() {
   # Release channel support.
@@ -15,14 +16,13 @@ declare_args() {
   sparkle_eddsa_private_key = ""
   sparkle_eddsa_public_key = ""
 
-  brave_product_name = ""
+  brave_product_name = "brave"
   brave_exe = ""
   brave_version_major = ""
   brave_version_minor = ""
   brave_version_build = ""
   brave_version_patch = 0
   chrome_version_string = ""
-  chrome_version_major = ""
   build_omaha = false
   tag_ap = ""
   target_android_base = ""

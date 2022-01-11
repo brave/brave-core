@@ -530,6 +530,40 @@ const util = {
     util.run(msBuild, msBuildArgs)
   },
 
+  buildNativeRedirectCC: (options = config.defaultOptions) => {
+    if (!config.nativeRedirectCC) {
+      return
+    }
+
+    // Expected path to redirect_cc.
+    const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
+    // Only build if missing
+    if (!config.isCI && fs.existsSync(redirectCC)) {
+      return
+    }
+
+    console.log('building native redirect_cc...')
+
+    gnArgs = {
+      imports: [
+        "//brave/tools/redirect_cc/args.gni",
+      ],
+      use_goma: config.use_goma,
+    }
+    const buildArgsStr = util.buildArgsToString(gnArgs)
+    util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
+
+    if (config.use_goma) {
+      util.run('goma_ctl', ['ensure_start'], options)
+    }
+
+    let ninjaOpts = [
+      '-C', config.nativeRedirectCCDir, 'brave/tools/redirect_cc',
+      ...config.extraNinjaOpts
+    ]
+    util.run('autoninja', ninjaOpts, options)
+  },
+
   runGnGen: (options) => {
     const buildArgsStr = util.buildArgsToString(config.buildArgs())
     const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
@@ -554,6 +588,8 @@ const util = {
   },
 
   generateNinjaFiles: (options = config.defaultOptions) => {
+    util.buildNativeRedirectCC()
+
     console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
@@ -719,6 +755,12 @@ const util = {
 
   buildArgsToString: (buildArgs) => {
     let args = ''
+    if (buildArgs.imports !== undefined) {
+      for (const imp of buildArgs.imports) {
+        args += 'import(' + JSON.stringify(imp) + ') '
+      }
+      delete buildArgs.imports
+    }
     for (let arg in buildArgs) {
       let val = buildArgs[arg]
       if (typeof val === 'string') {
