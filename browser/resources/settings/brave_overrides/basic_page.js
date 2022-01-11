@@ -233,30 +233,13 @@ RegisterPolymerTemplateModifications({
       if (!advancedSubSectionsTemplate) {
         console.error('[Brave Settings Overrides] Could not find advanced sub-sections container')
       }
-      const advancedToggleTemplate = advancedTemplate.content.querySelector('template')
-      if (!advancedToggleTemplate) {
-        console.error('[Brave Settings Overrides] Could not find advanced toggle template')
-      }
-      const advancedToggleText = advancedToggleTemplate.content.querySelector('cr-button span')
-      if (!advancedToggleText) {
-        console.error('[Brave Settings Overrides] Could not find advanced toggle text')
-      }
-      advancedToggleText.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
       // Move autofill to before languages
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
       const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
       sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
-      // Move safety check after downloads
-      // Move help tips after safety check
+      // Move help tips after downloads
       const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      if (loadTimeData.getBoolean('enableLandingPageRedesign')) {
-        // Safety check is grouped under privacy, so only move Help Tips
-        sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
-      } else {
-        const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
-        sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
-        sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
-      }
+      sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
     }
   }
 })
