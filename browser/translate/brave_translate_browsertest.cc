@@ -24,7 +24,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_language_list.h"
 #include "components/translate/core/browser/translate_manager.h"
@@ -32,6 +31,7 @@
 #include "components/translate/core/common/translate_util.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
@@ -93,7 +93,6 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -106,7 +105,10 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     CHECK(https_server_->Start());
   }
 
-  void SetUpOnMainThread() override { ResetObserver(); }
+  void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    ResetObserver();
+  }
 
   void TearDownOnMainThread() override {
     language_determined_waiter_.reset();
@@ -114,14 +116,23 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error.
-    command_line->AppendSwitch(::switches::kIgnoreCertificateErrors);
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
 
     // Remap translate.brave.com requests to the https test server.
     const std::string host_port = https_server_->host_port_pair().ToString();
     command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
                                     "MAP translate.brave.com:443 " + host_port);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -207,6 +218,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
       backend_request_;
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<TranslateWaiter> language_determined_waiter_;
   std::string script_;

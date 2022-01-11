@@ -20,12 +20,12 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "extensions/common/constants.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -60,11 +60,11 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -93,9 +93,18 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   content::WebContents* OpenRequestAdsEnabledPopup(
@@ -141,6 +150,7 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   rewards_browsertest::RewardsBrowserTestResponse rewards_response_;
 };
