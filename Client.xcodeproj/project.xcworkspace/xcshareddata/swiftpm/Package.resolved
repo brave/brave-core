@@ -137,15 +137,6 @@
         }
       },
       {
-        "package": "YubiKit",
-        "repositoryURL": "https://github.com/Yubico/yubikit-ios",
-        "state": {
-          "branch": null,
-          "revision": "7a0521f7da0dec54b14ed06a0275a5bf277163ab",
-          "version": "3.2.0"
-        }
-      },
-      {
         "package": "ZIPFoundation",
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation",
         "state": {

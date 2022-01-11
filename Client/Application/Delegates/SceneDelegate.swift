@@ -81,8 +81,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Assign each browser a window of its own
         let window = UIWindow(windowScene: windowScene).then {
-            SceneObserver.setupApplication(window: $0) // TODO: REFACTOR for multiple windows
-            
             $0.backgroundColor = .black
             $0.overrideUserInterfaceStyle = expectedThemeOverride
             $0.tintColor = UIColor {
