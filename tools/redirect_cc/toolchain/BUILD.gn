@@ -1,0 +1,34 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (host_os == "linux") {
+  import("//build/toolchain/gcc_toolchain.gni")
+
+  clang_toolchain("redirect_cc") {
+    toolchain_args = {
+      current_cpu = host_cpu
+      current_os = host_os
+      cc_wrapper = ""
+      use_goma = false
+      is_component_build = false
+      is_debug = false
+    }
+  }
+} else if (host_os == "mac") {
+  import("//build/config/mac/mac_sdk.gni")
+  import("//build/toolchain/apple/toolchain.gni")
+
+  apple_toolchain("redirect_cc") {
+    bin_path = mac_bin_path
+    toolchain_args = {
+      current_cpu = host_cpu
+      current_os = host_os
+      cc_wrapper = ""
+      use_goma = false
+      is_component_build = false
+      is_debug = false
+    }
+  }
+}

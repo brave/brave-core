@@ -1,0 +1,64 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (is_win) {
+  _redirect_cc_toolchain = "//build/toolchain/win:redirect_cc"
+} else {
+  _redirect_cc_toolchain = "//brave/tools/redirect_cc/toolchain:redirect_cc"
+}
+
+if (current_toolchain == _redirect_cc_toolchain) {
+  executable("redirect_cc_executable") {
+    # Always build static release since this is a build tool.
+    assert(!is_debug && !is_component_build)
+
+    sources = [
+      "logging.cc",
+      "logging.h",
+      "os_utils.h",
+      "redirect_cc.cc",
+      "types.h",
+      "utils.cc",
+      "utils.h",
+    ]
+
+    if (is_win) {
+      sources += [ "os_utils_win.cc" ]
+    } else {
+      sources += [ "os_utils_posix.cc" ]
+    }
+  }
+
+  copy("create_redirect_cc") {
+    if (is_win) {
+      sources = [ "$root_out_dir/redirect_cc_executable.exe" ]
+      outputs = [ "$root_out_dir/redirect_cc.exe" ]
+    } else {
+      sources = [ "$root_out_dir/redirect_cc_executable" ]
+      outputs = [ "$root_out_dir/redirect_cc" ]
+    }
+
+    deps = [ ":redirect_cc_executable" ]
+  }
+
+  copy("create_gomacc") {
+    if (is_win) {
+      sources = [ "$root_out_dir/redirect_cc_executable.exe" ]
+      outputs = [ "$root_out_dir/gomacc.exe" ]
+    } else {
+      sources = [ "$root_out_dir/redirect_cc_executable" ]
+      outputs = [ "$root_out_dir/gomacc" ]
+    }
+
+    deps = [ ":redirect_cc_executable" ]
+  }
+
+  group("redirect_cc") {
+    deps = [
+      ":create_gomacc",
+      ":create_redirect_cc",
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+diff --git a/build/toolchain/apple/toolchain.gni b/build/toolchain/apple/toolchain.gni
+index 1e2339c439e7604fe46be1db44ac59a7be4d06b2..c5eda7f742b5e39f44f4ed7a21aef875baeb3e56 100644
+--- a/build/toolchain/apple/toolchain.gni
++++ b/build/toolchain/apple/toolchain.gni
+@@ -583,5 +583,12 @@ template("apple_toolchain") {
+     tool("action") {
+       pool = "//build/toolchain:action_pool($default_toolchain)"
+     }
++
++    if (target_name != "redirect_cc") {
++      if (!defined(deps)) {
++        deps = []
++      }
++      deps += [ "//brave/tools/redirect_cc(//brave/tools/redirect_cc/toolchain:redirect_cc)" ]
++    }
+   }
+ }

@@ -537,7 +537,20 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
-  if (process.platform === 'win32') {
+  if (this.use_goma) {
+    // Limit action pool (non-compile actions) to amount of CPU cores.
+    args.action_pool_depth = os.cpus().length
+  }
+
+  if (this.nativeRedirectCC) {
+    if (false && this.use_goma) {
+      // Upstream goma mode.
+      args.use_goma = true
+      args.goma_dir = path.join(this.outputDir, 'redirect_cc')
+    } else {
+      args.cc_wrapper = path.join(this.outputDir, 'redirect_cc', 'redirect_cc')
+    }
+  } else if (process.platform === 'win32') {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
   } else {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
@@ -670,6 +683,15 @@ Config.prototype.update = function (options) {
     }
   } else {
     this.use_goma = false
+  }
+
+  if (options.native_redirect_cc || true) {
+    this.nativeRedirectCC = true
+    this.defaultGomaJValue = 200
+  } else {
+    this.nativeRedirectCC = false
+    // os.cpus().length is number of threads not physical cores
+    this.defaultGomaJValue = Math.min(40, os.cpus().length * 2)
   }
 
   if (options.force_gn_gen) {

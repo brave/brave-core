@@ -1,0 +1,60 @@
+diff --git a/build/toolchain/win/BUILD.gn b/build/toolchain/win/BUILD.gn
+index bc69978da3c18c77ac351af9757bca81ecd636b8..26887631e1b8a0d9373e4b1332b62be1dd566479 100644
+--- a/build/toolchain/win/BUILD.gn
++++ b/build/toolchain/win/BUILD.gn
+@@ -471,6 +471,13 @@ template("msvc_toolchain") {
+     tool("action") {
+       pool = "//build/toolchain:action_pool($default_toolchain)"
+     }
++
++    if (target_name != "redirect_cc") {
++      if (!defined(deps)) {
++        deps = []
++      }
++      deps += [ "//brave/tools/redirect_cc(//build/toolchain/win:redirect_cc)" ]
++    }
+   }
+ }
+ 
+@@ -539,6 +546,41 @@ template("win_toolchains") {
+       current_cpu = toolchain_arch
+     }
+   }
++
++  if (target_name == "x64") {
++    msvc_toolchain("redirect_cc") {
++      environment = "environment." + toolchain_arch
++      prefix = rebase_path("$clang_base_path/bin", root_build_dir)
++      cl = "$prefix/${clang_cl}"
++      _clang_lib_dir =
++          rebase_path("$clang_base_path/lib/clang/$clang_version/lib/windows",
++                      root_build_dir)
++      if (host_os == "win") {
++        # Flip the slashes so that copy/paste of the command works.
++        cl = string_replace(cl, "/", "\\")
++
++        # And to match the other -libpath flags.
++        _clang_lib_dir = string_replace(_clang_lib_dir, "/", "\\")
++      }
++
++      sys_include_flags = "${win_toolchain_data.include_flags_imsvc}"
++      if (use_lld) {
++        sys_lib_flags =
++            "-libpath:$_clang_lib_dir ${win_toolchain_data.libpath_flags}"
++      }
++
++      toolchain_args = {
++        if (defined(invoker.toolchain_args)) {
++          forward_variables_from(invoker.toolchain_args, "*")
++        }
++        is_clang = true
++        current_os = "win"
++        current_cpu = toolchain_arch
++        is_component_build = false
++        is_debug = false
++      }
++    }
++  }
+ }
+ 
+ if (target_cpu == "x86" || target_cpu == "x64") {

@@ -1,0 +1,17 @@
+diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
+index 25d9010ea1022c6d1c67a3ea89fb0efc057baf70..ee8a9944dd41f25a93f23f5e5e04ec4a3b7035e0 100644
+--- a/build/toolchain/gcc_toolchain.gni
++++ b/build/toolchain/gcc_toolchain.gni
+@@ -725,6 +725,12 @@ template("gcc_toolchain") {
+     }
+ 
+     forward_variables_from(invoker, [ "deps" ])
++    if (target_name != "redirect_cc") {
++      if (!defined(deps)) {
++        deps = []
++      }
++      deps += [ "//brave/tools/redirect_cc(//brave/tools/redirect_cc/toolchain:redirect_cc)" ]
++    }
+   }
+ }
+ 

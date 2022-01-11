@@ -564,7 +564,9 @@ const util = {
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
-      util.buildRedirectCCTool()
+      if (!config.nativeRedirectCC) {
+        util.buildRedirectCCTool()
+      }
     }
     util.runGnGen(options)
   },
