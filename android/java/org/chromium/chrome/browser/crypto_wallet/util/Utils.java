@@ -192,12 +192,18 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(
-            Activity activity, BuySendSwapActivity.ActivityType activityType) {
+    public static void openBuySendSwapActivity(Activity activity,
+            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol) {
         assert activity != null;
         Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
         buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
+        buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
         activity.startActivity(buySendSwapActivityIntent);
+    }
+
+    public static void openBuySendSwapActivity(
+            Activity activity, BuySendSwapActivity.ActivityType activityType) {
+        openBuySendSwapActivity(activity, activityType, null);
     }
 
     public static void openAssetDetailsActivity(Activity activity, String chainId,

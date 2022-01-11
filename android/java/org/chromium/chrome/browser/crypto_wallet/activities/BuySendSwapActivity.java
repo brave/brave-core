@@ -239,21 +239,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
         TextView fromBalanceText = findViewById(R.id.from_balance_text);
         TextView fromAssetText = findViewById(R.id.from_asset_text);
-        fromAssetText.setText("ETH");
 
         TextView toBalanceText = findViewById(R.id.to_balance_text);
         TextView toAssetText = findViewById(R.id.to_asset_text);
-        toAssetText.setText("BAT");
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
 
         mSlippageToleranceText = findViewById(R.id.slippage_tolerance_dropdown);
 
         onInitialLayoutInflationComplete();
+        mInitialLayoutInflationComplete = true;
 
         adjustControls();
-
-        mInitialLayoutInflationComplete = true;
     }
 
     private class BuySendSwapUiInfo {
@@ -494,6 +491,38 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         marketLimitPriceText.setText(String.format(getString(R.string.market_price_in), symbol));
         checkBalanceShowError(response, errorResponse);
+    }
+
+    private void initSwapFromToAssets() {
+        final BlockchainToken eth = Utils.createEthereumBlockchainToken();
+        if (mBlockchainRegistry != null && mCustomAccountAdapter != null
+                && mActivityType == ActivityType.SWAP && mInitialLayoutInflationComplete) {
+            String swapToAsset = "BAT";
+
+            // Swap from
+            String swapFromAssetSymbol = getIntent().getStringExtra("swapFromAssetSymbol");
+            if (swapFromAssetSymbol == null
+                    || swapFromAssetSymbol.equals(eth.symbol)) { // default swap from ETH
+                updateBuySendAsset(eth.symbol, eth);
+            } else {
+                mBlockchainRegistry.getTokenBySymbol(swapFromAssetSymbol, token -> {
+                    if (token != null) {
+                        updateBuySendAsset(token.symbol, token);
+                    }
+                });
+            }
+
+            // Swap to
+            if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
+                updateSwapToAsset(eth.symbol, eth);
+            } else {
+                mBlockchainRegistry.getTokenBySymbol(swapToAsset, token -> {
+                    if (token != null) {
+                        updateSwapToAsset(token.symbol, token);
+                    }
+                });
+            }
+        }
     }
 
     private void checkBalanceShowError(SwapResponse response, String errorResponse) {
@@ -909,13 +938,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
                 TabUtils.bringChromeTabbedActivityToTheTop(this);
             });
-            if (mBlockchainRegistry != null && mCustomAccountAdapter != null) {
-                mBlockchainRegistry.getTokenBySymbol("BAT", token -> {
-                    if (token != null) {
-                        updateSwapToAsset(token.symbol, token);
-                    }
-                });
-            }
+            initSwapFromToAssets();
         }
 
         btnBuySendSwap.setOnClickListener(v -> {
@@ -1420,6 +1443,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     public void updateSwapToAsset(String asset, BlockchainToken blockchainToken) {
+        if (mCurrentBlockchainToken != null
+                && mCurrentBlockchainToken.symbol.equals(blockchainToken.symbol))
+            return;
         TextView assetToDropDown = findViewById(R.id.to_asset_text);
         assetToDropDown.setText(asset);
         mCurrentSwapToBlockchainToken = blockchainToken;
@@ -1636,14 +1662,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
 
                 // updateSwapToAsset needs mCustomAccountAdapter to be initialized
-                if (mBlockchainRegistry != null && mActivityType == ActivityType.SWAP
-                        && mInitialLayoutInflationComplete) {
-                    mBlockchainRegistry.getTokenBySymbol("BAT", token -> {
-                        if (token != null) {
-                            updateSwapToAsset(token.symbol, token);
-                        }
-                    });
-                }
+                initSwapFromToAssets();
             });
         }
     }
