@@ -5,7 +5,6 @@
 
 import {
   BraveWallet,
-  AccountAssetOptionType,
   SlippagePresetObjectType,
   WalletAccountType
 } from '../../constants/types'
@@ -52,8 +51,8 @@ export type SetUserAssetVisiblePayloadType = {
 }
 
 export type SwapParamsPayloadType = {
-  fromAsset: AccountAssetOptionType
-  toAsset: AccountAssetOptionType
+  fromAsset: BraveWallet.BlockchainToken
+  toAsset: BraveWallet.BlockchainToken
   fromAssetAmount?: string
   toAssetAmount?: string
   slippageTolerance: SlippagePresetObjectType

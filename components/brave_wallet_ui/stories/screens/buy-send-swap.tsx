@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  AccountAssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -24,10 +23,10 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
-  selectedSendAsset: AccountAssetOptionType
+  selectedSendAsset: BraveWallet.BlockchainToken
   sendAssetBalance: string
-  swapToAsset: AccountAssetOptionType
-  swapFromAsset: AccountAssetOptionType
+  swapToAsset: BraveWallet.BlockchainToken
+  swapFromAsset: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedTab: BuySendSwapTypes
@@ -45,22 +44,22 @@ export interface Props {
   toAddress: string
   addressError: string
   addressWarning: string
-  buyAssetOptions: AccountAssetOptionType[]
-  sendAssetOptions: AccountAssetOptionType[]
-  swapAssetOptions: AccountAssetOptionType[]
+  buyAssetOptions: BraveWallet.BlockchainToken[]
+  sendAssetOptions: BraveWallet.BlockchainToken[]
+  swapAssetOptions: BraveWallet.BlockchainToken[]
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   customSlippageTolerance: string
   defaultCurrencies: DefaultCurrencies
   onCustomSlippageToleranceChange: (value: string) => void
-  onSubmitBuy: (asset: AccountAssetOptionType) => void
+  onSubmitBuy: (asset: BraveWallet.BlockchainToken) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
@@ -73,7 +72,7 @@ export interface Props {
   onSelectPresetSendAmount: (percent: number) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
   onSwapQuoteRefresh: () => void
-  onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectSendAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onAddNetwork: () => void
   onAddAsset: (value: boolean) => void
 }

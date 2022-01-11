@@ -1,16 +1,15 @@
 import {
-  AccountAssetOptionType,
   BraveWallet,
   UserAccountType
 } from '../constants/types'
 
 import { getBuyAssetUrl } from '../common/async/lib'
 
-export function GetBuyOrFaucetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string): Promise<string> {
+export function GetBuyOrFaucetUrl (networkChainId: string, asset: BraveWallet.BlockchainToken, account: UserAccountType, buyAmount: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     switch (networkChainId) {
       case BraveWallet.MAINNET_CHAIN_ID:
-        getBuyAssetUrl(account.address, asset.asset.symbol, buyAmount)
+        getBuyAssetUrl(account.address, asset.symbol, buyAmount)
           .then(resolve)
           .catch(reject)
         break

@@ -94,11 +94,10 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
       name: info.name,
       address: info.address,
       balance: '',
-      asset: 'eth',
       accountType: getAccountType(info),
       deviceId: info.hardware ? info.hardware.deviceId : '',
-      tokens: []
-    }
+      tokenBalanceRegistry: {}
+    } as WalletAccountType
   })
   const selectedAccount = payload.selectedAccount
     ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
@@ -111,7 +110,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    selectedAccount: selectedAccount
+    selectedAccount
   }
 })
 
@@ -137,10 +136,15 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.EthereumC
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: BraveWallet.BlockchainToken[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: WalletState, payload: BraveWallet.BlockchainToken[]) => {
+  const userVisibleTokensInfo = payload.map((token) => ({
+    ...token,
+    logo: `chrome://erc-token-images/${token.logo}`
+  })) as BraveWallet.BlockchainToken[]
+
   return {
     ...state,
-    userVisibleTokensInfo: payload
+    userVisibleTokensInfo
   }
 })
 
@@ -154,11 +158,14 @@ reducer.on(WalletActions.setAllNetworks, (state: any, payload: GetAllNetworksLis
 reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensReturnInfo) => {
   return {
     ...state,
-    fullTokenList: payload.tokens
+    fullTokenList: payload.tokens.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    }))
   }
 })
 
-reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNativeAssetBalancesReturnInfo) => {
+reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payload: GetNativeAssetBalancesReturnInfo) => {
   let accounts: WalletAccountType[] = [...state.accounts]
 
   accounts.forEach((account, index) => {
@@ -166,44 +173,45 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
       accounts[index].balance = normalizeNumericValue(payload.balances[index].balance)
     }
   })
+
+  // Refresh selectedAccount object
+  const selectedAccount = accounts.find(
+      account => account === state.selectedAccount
+  ) ?? state.selectedAccount
+
   return {
     ...state,
-    accounts
+    accounts,
+    selectedAccount
   }
 })
 
-reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetBlockchainTokenBalanceReturnInfo) => {
-  const userTokens: BraveWallet.BlockchainToken[] = state.userVisibleTokensInfo
-  const userVisibleTokensInfo = userTokens.map((token) => {
-    return {
-      ...token,
-      logo: `chrome://erc-token-images/${token.logo}`
-    }
-  })
+reducer.on(WalletActions.tokenBalancesUpdated, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo) => {
+  const userVisibleTokensInfo = state.userVisibleTokensInfo
 
   let accounts: WalletAccountType[] = [...state.accounts]
   accounts.forEach((account, accountIndex) => {
     payload.balances[accountIndex].forEach((info, tokenIndex) => {
-      let assetBalance = ''
-
-      if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
-        assetBalance = account.balance
+      const contractAddress = userVisibleTokensInfo[tokenIndex].contractAddress.toLowerCase()
+      if (contractAddress === '') {
+        accounts[accountIndex].balance = normalizeNumericValue(account.balance)
       } else if (info.error === BraveWallet.ProviderError.kSuccess && userVisibleTokensInfo[tokenIndex].isErc721) {
-        assetBalance = info.balance
+        accounts[accountIndex].tokenBalanceRegistry[contractAddress] = normalizeNumericValue(info.balance)
       } else if (info.error === BraveWallet.ProviderError.kSuccess) {
-        assetBalance = info.balance
-      } else if (account.tokens[tokenIndex]) {
-        assetBalance = account.tokens[tokenIndex].assetBalance
+        accounts[accountIndex].tokenBalanceRegistry[contractAddress] = normalizeNumericValue(info.balance)
       }
-      account.tokens.splice(tokenIndex, 1, {
-        asset: userVisibleTokensInfo[tokenIndex],
-        assetBalance: normalizeNumericValue(assetBalance)
-      })
     })
   })
+
+  // Refresh selectedAccount object
+  const selectedAccount = accounts.find(
+    account => account === state.selectedAccount
+  ) ?? state.selectedAccount
+
   return {
     ...state,
-    accounts
+    accounts,
+    selectedAccount
   }
 })
 
@@ -215,13 +223,13 @@ reducer.on(WalletActions.pricesUpdated, (state: WalletState, payload: GetPriceRe
 })
 
 reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: PortfolioTokenHistoryAndInfo[][]) => {
-  const history = payload.map((account) => {
-    return account.map((token) => {
-      if (Number(token.token.assetBalance) !== 0 && token.token.asset.visible) {
-        return token.history.values.map((value) => {
+  const history = payload.map((infoArray) => {
+    return infoArray.map((info) => {
+      if (Number(info.balance) !== 0 && info.token.visible) {
+        return info.history.values.map((value) => {
           return {
             date: value.date,
-            price: Number(formatFiatBalance(token.token.assetBalance, token.token.asset.decimals, value.price))
+            price: Number(formatFiatBalance(info.balance, info.token.decimals, value.price))
           }
         })
       } else {

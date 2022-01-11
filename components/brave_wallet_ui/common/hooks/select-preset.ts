@@ -4,31 +4,35 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BigNumber from 'bignumber.js'
+
+import { BraveWallet, WalletAccountType } from '../../constants/types'
+
+// Hooks
+import useBalance from './balance'
+
+// Utils
 import { formatInputValue } from '../../utils/format-balances'
-import { WalletAccountType, AccountAssetOptionType } from '../../constants/types'
 
 export default function usePreset (
   selectedAccount: WalletAccountType,
-  swapAsset: AccountAssetOptionType,
-  sendAsset: AccountAssetOptionType,
+  selectedNetwork: BraveWallet.EthereumChain,
+  swapAsset: BraveWallet.BlockchainToken,
+  sendAsset: BraveWallet.BlockchainToken,
   onSetFromAmount: (value: string) => void,
   onSetSendAmount: (value: string) => void
 ) {
+  const getBalance = useBalance(selectedNetwork)
+
   return (sendOrSwap: 'send' | 'swap') => (percent: number) => {
     const selectedAsset = sendOrSwap === 'send' ? sendAsset : swapAsset
-    const asset = selectedAccount.tokens.find(
-      (token) => (
-        token.asset.contractAddress === selectedAsset.asset.contractAddress ||
-        token.asset.symbol === selectedAsset.asset.symbol
-      )
-    )
+    const decimals = selectedAsset?.decimals ?? 18
 
-    const decimals = asset?.asset.decimals ?? 18
-    const amountWeiBN = new BigNumber(asset?.assetBalance || '0').times(percent)
+    const assetBalance = getBalance(selectedAccount, selectedAsset) || '0'
+    const amountBN = new BigNumber(assetBalance).times(percent)
 
     const formattedAmount = (percent === 1)
-      ? formatInputValue(amountWeiBN.toString(), decimals, false)
-      : formatInputValue(amountWeiBN.toString(), decimals)
+      ? formatInputValue(amountBN.toString(), decimals, false)
+      : formatInputValue(amountBN.toString(), decimals)
 
     if (sendOrSwap === 'send') {
       onSetSendAmount(formattedAmount)

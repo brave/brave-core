@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AccountAssetOptionType,
+  BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType
 } from '../../../constants/types'
@@ -14,7 +14,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAsset: AccountAssetOptionType
+  selectedAsset: BraveWallet.BlockchainToken
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddressOrUrl: string

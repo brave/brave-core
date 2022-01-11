@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 import {
-  AccountAssetOptionType,
+  BraveWallet,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
@@ -31,8 +31,8 @@ import {
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 export interface Props {
-  toAsset: AccountAssetOptionType
-  fromAsset: AccountAssetOptionType
+  toAsset: BraveWallet.BlockchainToken
+  fromAsset: BraveWallet.BlockchainToken
   fromAmount: string
   toAmount: string
   exchangeRate: string
@@ -54,7 +54,7 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onFilterAssetList: (asset: AccountAssetOptionType) => void
+  onFilterAssetList: (asset: BraveWallet.BlockchainToken) => void
   onQuoteRefresh: () => void
 }
 
@@ -108,7 +108,7 @@ function Swap (props: Props) {
 
     if (validationError === 'insufficientAllowance') {
       return getLocale('braveWalletSwapInsufficientAllowance')
-        .replace('$1', fromAsset.asset.symbol)
+        .replace('$1', fromAsset.symbol)
     }
 
     if (validationError === 'insufficientLiquidity') {

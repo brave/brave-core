@@ -11,7 +11,6 @@ import {
   NavTypes,
   BraveWallet,
   PriceDataObjectType,
-  AccountAssetOptionType,
   RPCResponseType,
   OrderTypes,
   UserAccountType,
@@ -234,8 +233,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.EthereumChain>(mockNetworks[0])
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[1])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
@@ -376,7 +375,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         balance: singleAccountBalance(wallet),
         asset: selectedAsset ? selectedAsset.symbol : '',
         accountType: 'Primary',
-        tokens: []
+        tokenBalanceRegistry: {}
       } as WalletAccountType
     })
     return newList
@@ -483,7 +482,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will make a custom asset visible')
   }
 
-  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -496,8 +495,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
-  const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    alert(`Buy ${asset.asset.symbol} asset`)
+  const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
+    alert(`Buy ${asset.symbol} asset`)
   }
 
   const onSwapQuoteRefresh = () => {

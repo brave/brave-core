@@ -18,17 +18,10 @@ export default function useBalance (network: BraveWallet.EthereumChain) {
       return account.balance
     }
 
-    if (!account.tokens) {
+    if (!account.tokenBalanceRegistry) {
       return ''
     }
 
-    const loadedToken = account.tokens.find(
-      (each) => each.asset.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()
-    )
-    if (!loadedToken) {
-      return ''
-    }
-
-    return loadedToken.assetBalance
+    return (account.tokenBalanceRegistry || {})[token.contractAddress.toLowerCase()] || ''
   }, [network])
 }

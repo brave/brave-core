@@ -5,7 +5,7 @@ import {
   BraveWallet,
   TopTabNavTypes,
   PriceDataObjectType,
-  AccountAssetOptionType,
+  UserAssetInfoType,
   AccountTransactions,
   WalletAccountType,
   UpdateAccountNamePayloadType,
@@ -69,7 +69,7 @@ export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   portfolioBalance: string
   transactions: AccountTransactions
-  userAssetList: AccountAssetOptionType[]
+  userAssetList: UserAssetInfoType[]
   isLoading: boolean
   showAddModal: boolean
   selectedNetwork: BraveWallet.EthereumChain
