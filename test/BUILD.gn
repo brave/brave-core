@@ -1071,6 +1071,7 @@ if (!is_android) {
       "//components/embedder_support",
       "//components/externalauth/android:google_delegate_public_impl_java",
       "//components/federated_learning",
+      "//components/language/android:ulp_delegate_public_java",
       "//components/language/core/common",
       "//components/network_time",
       "//components/optimization_guide/core",
