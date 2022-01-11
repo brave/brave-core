@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    android:layout_gravity="bottom"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
+    android:visibility="gone"
+    app:contentPadding="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/notification_day_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:background="@drawable/unverified_48_rounded_bg"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:fontFamily="@font/poppins_regular"
+                app:drawableStartCompat="@drawable/ic_calendar" />
+
+            <ImageView
+                android:id="@+id/btn_close_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:layout_gravity="end|center_vertical"
+                app:srcCompat="@drawable/ic_close_12"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/notification_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/rewards_panel_text_color"
+            android:drawablePadding="4dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/notification_subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/rewards_panel_secondary_text_color"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_gravity="center_horizontal" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/btn_action_notification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/blue_48_rounded_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@android:color/white" />
+
+            <ProgressBar
+                android:id="@+id/claim_progress"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                android:layout_height="48dp"
+                android:layout_width="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="visible"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

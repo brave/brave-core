@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">EthereumプロバイダーAPIのアクセスからサイトをブロック</translation>
 <translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
 <translation id="8081858229109418493">プロフィール名とアイコン</translation>
+<translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
+<translation id="2988792685798128092">サイトを閉じたときに消去</translation>
 <translation id="2044383478723007273">テーマ</translation>
 <translation id="1692470335103807198">より多くのテーマを取得する</translation>
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="6821903322090655051">Brave Rewardsは無効です</translation>
-<translation id="9184430019924125685">こちらをクリックして詳細を確認</translation>
+<translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="3849957491997306859">自動検出</translation>
 <translation id="8798099450830957504">デフォルト</translation>
 <translation id="4176463684765177261">無効</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
 <translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
 <translation id="6248554379744796526">リスト内に未検証のサイトを表示する</translation>
-<translation id="3241299447027267831">動画への支援を許可する</translation>
+<translation id="5510618543889994434">動画への支援を許可する</translation>
 <translation id="924777189963477634">自動支援を有効にすることで、あなたは<ph name="BEGIN_LINK_TOS"/>利用規約<ph name="END_LINK_TOS"/>と<ph name="BEGIN_LINK_PP"/>プライバシーポリシー<ph name="END_LINK_PP"/>に同意したものとみなされます。</translation>
 <translation id="5733490796524078528">チップボタン</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -209,6 +211,10 @@
 <translation id="2414886740292270097">ダーク</translation>
 <translation id="1360441190790440400">Linuxと同じ</translation>
 <translation id="1336940801687497203">Windowsと同じ</translation>
+<translation id="5919209812221905840">Microsoft Edgeのデフォルトのプロトコルハンドラー</translation>
+<translation id="5239541974656019812">BraveをMicrosoft Edgeのデフォルトのプロトコルハンドラーに設定する</translation>
+<translation id="7136694880210472378">デフォルトに設定</translation>
+<translation id="1751388324499810661">BraveはMicrosoft Edgeのデフォルトのプロトコルハンドラーです</translation>
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
@@ -377,10 +383,10 @@
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="609106526832379947">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
-<translation id="1947672064022327074">イーサリアムに対応した仮想通貨ウォレットを使ってみますか？</translation>
-<translation id="7583735190612229830">仮想通貨ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
-<translation id="8731422418734770661">クリプトウォレットを設定</translation>
-<translation id="8199661191594897555">クリプトウォレットを開始してリロード</translation>
+<translation id="1947672064022327074">イーサリアムに対応した暗号資産ウォレットを使ってみますか？</translation>
+<translation id="7583735190612229830">暗号資産ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
+<translation id="8731422418734770661">暗号資産ウォレットを設定</translation>
+<translation id="8199661191594897555">暗号資産ウォレットを開始してリロード</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
@@ -426,7 +432,7 @@
 <translation id="2653659639078652383">送信</translation>
 <translation id="2556708692502648323">ウォレットネットワーク</translation>
 <translation id="1330032157352961756">新規チェーンID</translation>
-<translation id="9053905035135220650">0xから始まる16進文字列</translation>
+<translation id="3423620355610881890">正の10進数</translation>
 <translation id="726121047592132939">新規チェーン名</translation>
 <translation id="1034112277864078119">チェーン名を入力</translation>
 <translation id="4672314527143443556">チェーンの通貨名</translation>
@@ -440,7 +446,7 @@
 <translation id="3047726704186619366">アイコンURL</translation>
 <translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
 <translation id="6301398959353668507">この項目は必須です。</translation>
-<translation id="4514843126085243862">形式が無効です。チェーンIDは0xから始まる16進文字列にしてください</translation>
+<translation id="7504462451153306677">形式が無効です。チェーンIDは正の数にしてください</translation>
 <translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
 <translation id="650071759190249039">内部エラーが発生しました。ネットワークを追加できません。</translation>
 <translation id="868529041590572443">ネイティブ通貨についての情報をすべて入力してください</translation>

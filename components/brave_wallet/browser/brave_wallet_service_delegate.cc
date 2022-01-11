@@ -9,26 +9,30 @@
 
 namespace brave_wallet {
 
-void BraveWalletServiceDelegate::IsCryptoWalletsInstalled(
-    IsCryptoWalletsInstalledCallback callback) {
+void BraveWalletServiceDelegate::IsExternalWalletInstalled(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInstalledCallback callback) {
   std::move(callback).Run(false);
 }
 
-void BraveWalletServiceDelegate::IsMetaMaskInstalled(
-    IsMetaMaskInstalledCallback callback) {
+void BraveWalletServiceDelegate::IsExternalWalletInitialized(
+    mojom::ExternalWalletType type,
+    IsExternalWalletInitializedCallback callback) {
   std::move(callback).Run(false);
 }
 
-void BraveWalletServiceDelegate::GetImportInfoFromCryptoWallets(
+void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
+    mojom::ExternalWalletType type,
     const std::string& password,
     GetImportInfoCallback callback) {
   std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
-void BraveWalletServiceDelegate::GetImportInfoFromMetaMask(
-    const std::string& password,
-    GetImportInfoCallback callback) {
-  std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
+void BraveWalletServiceDelegate::AddEthereumPermission(
+    const std::string& origin,
+    const std::string& account,
+    AddEthereumPermissionCallback callback) {
+  std::move(callback).Run(false);
 }
 
 void BraveWalletServiceDelegate::HasEthereumPermission(

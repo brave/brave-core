@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
+
 import java.util.List;
 
 public interface BraveToolbarLayout {
@@ -25,4 +27,6 @@ public interface BraveToolbarLayout {
     public void populateUrlAnimatorSetImpl(boolean showExpandedState,
             int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
             List<Animator> animators);
+
+    public boolean isLocationBarValid(LocationBarCoordinator locationBar);
 }

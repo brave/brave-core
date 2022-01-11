@@ -9,23 +9,13 @@ import { types } from '../constants/rewards_types'
 
 export const isInitialized = () => action(types.IS_INITIALIZED)
 
-export const onSettingSave = (key: string, value: any) => action(types.ON_SETTING_SAVE, {
+export const onSettingSave = (key: string, value: any, persist: boolean = true) => action(types.ON_SETTING_SAVE, {
   key,
-  value
+  value,
+  persist
 })
 
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
-
-export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
-
-export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
-
-export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
-
-export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
-  result,
-  wallet
-})
 
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
   action(types.ON_REWARDS_PARAMETERS, {
@@ -48,12 +38,34 @@ export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOT
   promotionId
 })
 
+export const onClaimPromotion = (properties: Rewards.Captcha) => action(types.ON_CLAIM_PROMOTION, {
+  properties
+})
+
+export const attestPromotion = (promotionId: string, x: number, y: number) => action(types.ATTEST_PROMOTION, {
+  promotionId,
+  x,
+  y
+})
+
 export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
   properties
 })
 
+export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
+  promotionId
+})
+
 export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
   promotionId
+})
+
+export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
+  key
+})
+
+export const onRecoverWalletData = (result: number) => action(types.ON_RECOVER_WALLET_DATA, {
+  result
 })
 
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
@@ -80,6 +92,10 @@ export const onBalanceReport = (properties: {month: number, year: number, report
   month: properties.month,
   year: properties.year,
   report: properties.report
+})
+
+export const onExternalWalletProviderList = (list: Rewards.ExternalWalletProvider[]) => action(types.ON_EXTERNAL_WALLET_PROVIDER_LIST, {
+  list
 })
 
 export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
@@ -119,6 +135,70 @@ export const getAdsData = () => action(types.GET_ADS_DATA)
 
 export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA, {
   adsData
+})
+
+export const getAdsHistory = () => action(types.GET_ADS_HISTORY)
+
+export const onAdsHistory = (adsHistory: Rewards.AdsHistory[]) => action(types.ON_ADS_HISTORY, {
+  adsHistory
+})
+
+export const toggleAdThumbUp = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_UP, {
+  uuid,
+  creativeSetId,
+  likeAction
+})
+
+export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
+  result
+})
+
+export const toggleAdThumbDown = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_DOWN, {
+  uuid,
+  creativeSetId,
+  likeAction
+})
+
+export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
+  result
+})
+
+export const toggleAdOptIn = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN, {
+  category,
+  optAction
+})
+
+export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
+  result
+})
+
+export const toggleAdOptOut = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT, {
+  category,
+  optAction
+})
+
+export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {
+  result
+})
+
+export const toggleSavedAd = (uuid: string, creativeSetId: string, savedAd: boolean) => action(types.TOGGLE_SAVED_AD, {
+  uuid,
+  creativeSetId,
+  savedAd
+})
+
+export const onToggleSavedAd = (result: Rewards.ToggleSavedAd) => action(types.ON_TOGGLE_SAVED_AD, {
+  result
+})
+
+export const toggleFlaggedAd = (uuid: string, creativeSetId: string, flaggedAd: boolean) => action(types.TOGGLE_FLAGGED_AD, {
+  uuid,
+  creativeSetId,
+  flaggedAd
+})
+
+export const onToggleFlaggedAd = (result: Rewards.ToggleFlaggedAd) => action(types.ON_TOGGLE_FLAGGED_AD, {
+  result
 })
 
 export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS_SETTING_SAVE, {
@@ -174,9 +254,95 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
   balance
 })
 
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  result,
+  wallet
+})
+
+export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
+  path,
+  query
+})
+
+export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
+  data
+})
+
+export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
+
+export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
+
+export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
+  month,
+  year
+})
+
+export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) => action(types.ON_MONTHLY_REPORT, {
+  result: properties.result,
+  month: properties.month,
+  year: properties.year,
+  report: properties.report
+})
+
+export const onReconcileStampReset = () => action(types.ON_RECONCILE_STAMP_RESET)
+
+export const getMonthlyReportIds = () => action(types.GET_MONTHLY_REPORT_IDS)
+
+export const onMonthlyReportIds = (ids: string[]) => action(types.ON_MONTHLY_REPORT_IDS, ids)
+
+export const dismissPromoPrompt = (promo: string) => action(types.DISMISS_PROMO_PROMPT, {
+  promo
+})
+
+export const getCountryCode = () => action(types.GET_COUNTRY_CODE)
+
+export const onCountryCode = (countryCode: string) => action(types.ON_COUNTRY_CODE, {
+  countryCode
+})
+
 export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {
   result
 })
+
+export const completeReset = () => action(types.COMPLETE_RESET)
+
+export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
+  success
+})
+
+export const getPaymentId = () => action(types.GET_PAYMENT_ID)
+
+export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
+
+export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
+  paymentId
+})
+
+export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
+
+export const onWalletPassphrase = (passphrase: string) => action(types.ON_WALLET_PASSPHRASE, {
+  passphrase
+})
+
+export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
+
+export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_ONBOARDING_STATUS, {
+  showOnboarding
+})
+
+export const saveOnboardingResult = (result: 'opted-in' | 'dismissed') => action(types.SAVE_ONBOARDING_RESULT, {
+  result
+})
+
+export const getEnabledInlineTippingPlatforms = () => action(types.GET_ENABLED_INLINE_TIPPING_PLATFORMS)
+
+export const onEnabledInlineTippingPlatforms = (platforms: string[]) => action(types.ON_ENABLED_INLINE_TIPPING_PLATFORMS, {
+  platforms
+})
+
+export const restartBrowser = () => action(types.RESTART_BROWSER)
 
 export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
   key

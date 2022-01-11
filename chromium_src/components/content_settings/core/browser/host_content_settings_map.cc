@@ -6,13 +6,13 @@
 #include "build/build_config.h"
 
 #if defined(OS_IOS)
-#include "../../../../../../components/content_settings/core/browser/host_content_settings_map.cc"
+#include "src/components/content_settings/core/browser/host_content_settings_map.cc"
 #else
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 
 #define PrefProvider BravePrefProvider
 #define DefaultProvider BraveDefaultProvider
-#include "../../../../../../components/content_settings/core/browser/host_content_settings_map.cc"
+#include "src/components/content_settings/core/browser/host_content_settings_map.cc"
 #undef PrefProvider
 #undef DefaultProvider
 #endif

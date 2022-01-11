@@ -11,7 +11,7 @@ class BraveBrowsingDataRemoverDelegate;
 #define BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H \
   friend class BraveBrowsingDataRemoverDelegate;
 
-#include "../../../../../chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
+#include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
 #undef BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H_

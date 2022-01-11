@@ -7,5 +7,5 @@
   if (nonce_length_)       \
     return nonce_length_;
 
-#include "../../../crypto/aead.cc"
+#include "src/crypto/aead.cc"
 #undef BRAVE_NONCE_LENGTH

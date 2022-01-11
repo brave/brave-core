@@ -23,7 +23,7 @@ class EthTransaction;
 
 class HDKeyring {
  public:
-  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin };
+  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin };
 
   HDKeyring();
   virtual ~HDKeyring();
@@ -58,11 +58,20 @@ class HDKeyring {
                                            const std::vector<uint8_t>& message,
                                            uint256_t chain_id,
                                            bool is_eip712);
+  // Obtains the address that signed the message
+  // message: The keccak256 hash of the message (33 bytes = 04 prefix + 32
+  // bytes)
+  // signature: The 64 byte signature + v parameter (0 chain id assumed)
+  bool RecoverAddress(const std::vector<uint8_t>& message,
+                      const std::vector<uint8_t>& signature,
+                      std::string* address);
 
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
  protected:
   std::string GetAddressInternal(const HDKey* hd_key) const;
+  bool AddImportedAddress(const std::string& address,
+                          std::unique_ptr<HDKey> hd_key);
 
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;

@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_UTIL_H_
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
-#include "../../../../components/permissions/permission_util.h"
+#include "src/components/permissions/permission_util.h"
 #undef PermissionUtil
 
 namespace permissions {

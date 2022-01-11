@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Checkbox } from 'brave-ui'
-import { ERCToken } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { withPlaceholderIcon } from '../../shared'
 import { hexToNumber } from '../../../utils/format-balances'
 
@@ -18,11 +18,11 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectAsset: (key: string, selected: boolean, token: ERCToken, isCustom: boolean) => void
-  onRemoveAsset: (token: ERCToken) => void
+  onSelectAsset: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
+  onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isCustom: boolean
   isSelected: boolean
-  token: ERCToken
+  token: BraveWallet.BlockchainToken
 }
 
 const AssetWatchlistItem = (props: Props) => {

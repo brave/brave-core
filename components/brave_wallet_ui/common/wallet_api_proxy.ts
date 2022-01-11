@@ -3,26 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import * as WalletActions from '../common/actions/wallet_actions'
-import { Store } from '../common/async/types'
+import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
-// Provide access to all the generated types.
-export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../constants/types'
 
 export default class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
-  ethJsonRpcController = new BraveWallet.EthJsonRpcControllerRemote()
-  swapController = new BraveWallet.SwapControllerRemote()
-  assetRatioController = new BraveWallet.AssetRatioControllerRemote()
+  jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
+  swapService = new BraveWallet.SwapServiceRemote()
+  assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 
-  keyringController = getBraveKeyring()
-  ercTokenRegistry = new BraveWallet.ERCTokenRegistryRemote()
-  ethTxController = new BraveWallet.EthTxControllerRemote()
+  keyringService = getBraveKeyring()
+  blockchainRegistry = new BraveWallet.BlockchainRegistryRemote()
+  ethTxService = new BraveWallet.EthTxServiceRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 
-  addEthJsonRpcControllerObserver (store: Store) {
-    const ethJsonRpcControllerObserverReceiver = new BraveWallet.EthJsonRpcControllerObserverReceiver({
+  addJsonRpcServiceObserver (store: Store) {
+    const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
       chainChangedEvent: function (chainId) {
         store.dispatch(WalletActions.chainChangedEvent({ chainId }))
       },
@@ -33,16 +31,19 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
       }
     })
-    this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
+    this.jsonRpcService.addObserver(jsonRpcServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addKeyringControllerObserver (store: Store) {
-    const keyringControllerObserverReceiver = new BraveWallet.KeyringControllerObserverReceiver({
+  addKeyringServiceObserver (store: Store) {
+    const keyringServiceObserverReceiver = new BraveWallet.KeyringServiceObserverReceiver({
       keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
       },
       keyringRestored: function () {
         store.dispatch(WalletActions.keyringRestored())
+      },
+      keyringReset: function () {
+        store.dispatch(WalletActions.keyringReset())
       },
       locked: function () {
         store.dispatch(WalletActions.locked())
@@ -63,11 +64,11 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.selectedAccountChanged())
       }
     })
-    this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote())
+    this.keyringService.addObserver(keyringServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addEthTxControllerObserverObserver (store: Store) {
-    const ethTxControllerObserverReceiver = new BraveWallet.EthTxControllerObserverReceiver({
+  addEthTxServiceObserver (store: Store) {
+    const ethTxServiceObserverReceiver = new BraveWallet.EthTxServiceObserverReceiver({
       onNewUnapprovedTx: function (txInfo) {
         store.dispatch(WalletActions.newUnapprovedTxAdded({ txInfo }))
       },
@@ -78,7 +79,7 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.transactionStatusChanged({ txInfo }))
       }
     })
-    this.ethTxController.addObserver(ethTxControllerObserverReceiver.$.bindNewPipeAndPassRemote())
+    this.ethTxService.addObserver(ethTxServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
   addBraveWalletServiceObserver (store: Store) {

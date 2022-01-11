@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/circular_deque.h"
 #include "base/gtest_prod_util.h"
@@ -31,7 +32,9 @@ constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
 constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
 constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
 
-class KeyringController;
+class KeyringService;
+class JsonRpcService;
+class EthTxService;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -39,10 +42,14 @@ class BraveWalletService : public KeyedService,
  public:
   using SignMessageRequestCallback =
       base::OnceCallback<void(bool, const std::string&, const std::string&)>;
+  using AddSuggestTokenCallback =
+      base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
-      KeyringController* keyring_controller,
+      KeyringService* keyring_service,
+      JsonRpcService* json_rpc_service,
+      EthTxService* eth_tx_service,
       PrefService* prefs);
   ~BraveWalletService() override;
 
@@ -60,26 +67,27 @@ class BraveWalletService : public KeyedService,
 
   void GetUserAssets(const std::string& chain_id,
                      GetUserAssetsCallback callback) override;
-  void AddUserAsset(mojom::ERCTokenPtr token,
+  void AddUserAsset(mojom::BlockchainTokenPtr token,
                     const std::string& chain_id,
                     AddUserAssetCallback callback) override;
-  void RemoveUserAsset(mojom::ERCTokenPtr token,
+  void RemoveUserAsset(mojom::BlockchainTokenPtr token,
                        const std::string& chain_id,
                        RemoveUserAssetCallback callback) override;
-  void SetUserAssetVisible(mojom::ERCTokenPtr token,
+  void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
-  void IsCryptoWalletsInstalled(
-      IsCryptoWalletsInstalledCallback callback) override;
-  void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
-  void ImportFromCryptoWallets(
+  void IsExternalWalletInstalled(mojom::ExternalWalletType,
+                                 IsExternalWalletInstalledCallback) override;
+  void IsExternalWalletInitialized(
+      mojom::ExternalWalletType,
+      IsExternalWalletInitializedCallback) override;
+  void ImportFromExternalWallet(
+      mojom::ExternalWalletType type,
       const std::string& password,
       const std::string& new_password,
-      ImportFromCryptoWalletsCallback callback) override;
-  void ImportFromMetaMask(const std::string& password,
-                          const std::string& new_password,
-                          ImportFromMetaMaskCallback callback) override;
+      ImportFromExternalWalletCallback callback) override;
+
   void GetDefaultWallet(GetDefaultWalletCallback callback) override;
   void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
   void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
@@ -87,6 +95,9 @@ class BraveWalletService : public KeyedService,
   void GetDefaultBaseCryptocurrency(
       GetDefaultBaseCryptocurrencyCallback callback) override;
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
+  void AddEthereumPermission(const std::string& origin,
+                             const std::string& account,
+                             AddEthereumPermissionCallback callback) override;
   void HasEthereumPermission(const std::string& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
@@ -103,21 +114,35 @@ class BraveWalletService : public KeyedService,
       int id,
       const std::string& signature,
       const std::string& error) override;
+  void GetPendingAddSuggestTokenRequests(
+      GetPendingAddSuggestTokenRequestsCallback callback) override;
+  void NotifyAddSuggestTokenRequestsProcessed(
+      bool approved,
+      const std::vector<std::string>& contract_addresses) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const std::string& origin) override;
+
+  // Resets things back to the original state of BraveWalletService.
+  // To be used when the Wallet is reset / erased
+  void Reset() override;
 
   void RecordWalletUsage(base::Time wallet_last_used);
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
+  void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
+                              AddSuggestTokenCallback callback);
 
  private:
   friend class BraveWalletProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAsset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
 
   void OnDefaultWalletChanged();
   void OnDefaultBaseCurrencyChanged();
@@ -135,14 +160,35 @@ class BraveWalletService : public KeyedService,
       base::OnceCallback<void(bool, const absl::optional<std::string>&)>
           callback,
       bool result,
-      BraveWalletServiceDelegate::ImportInfo info,
-      BraveWalletServiceDelegate::ImportError error);
+      ImportInfo info,
+      ImportError error);
+
+  bool AddUserAsset(mojom::BlockchainTokenPtr token,
+                    const std::string& chain_id);
+  bool RemoveUserAsset(mojom::BlockchainTokenPtr token,
+                       const std::string& chain_id);
+  bool SetUserAssetVisible(mojom::BlockchainTokenPtr token,
+                           const std::string& chain_id,
+                           bool visible);
+  mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
+                                         const std::string& token_id,
+                                         bool is_erc721,
+                                         const std::string& chain_id);
+  void OnNetworkChanged();
+  void CancelAllSuggestedTokenCallbacks();
+  void CancelAllSignMessageCallbacks();
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
+  base::flat_map<std::string, AddSuggestTokenCallback>
+      add_suggest_token_callbacks_;
+  base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
+      add_suggest_token_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
+  JsonRpcService* json_rpc_service_;
+  EthTxService* eth_tx_service_;
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;

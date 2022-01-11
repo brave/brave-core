@@ -10,16 +10,20 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
@@ -157,7 +161,7 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       "a.com", "/ephemeral_storage_with_network_cookies.html");
 
   ephemeral_storage::EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      base::Seconds(kKeepAliveInterval));
 }
 
 void EphemeralStorageBrowserTest::SetUpHttpsServer() {
@@ -178,6 +182,10 @@ void EphemeralStorageBrowserTest::SetUpCommandLine(
     base::CommandLine* command_line) {
   InProcessBrowserTest::SetUpCommandLine(command_line);
   mock_cert_verifier_.SetUpCommandLine(command_line);
+  // Backgrounded renderer processes run at a lower priority, causing the
+  // JS events to slow down. Disable backgrounding so that the tests work
+  // properly.
+  command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
 }
 
 void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {
@@ -275,8 +283,7 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
 void EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive() {
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 }
 
@@ -300,24 +307,38 @@ void EphemeralStorageBrowserTest::ExpectValuesFromFramesAreEmpty(
   EXPECT_EQ("", values.iframe_2.cookies);
 }
 
+void EphemeralStorageBrowserTest::ExpectValuesFromFrameAreEmpty(
+    const base::Location& location,
+    const ValuesFromFrame& values) {
+  testing::ScopedTrace scoped_trace(location.file_name(),
+                                    location.line_number(),
+                                    "Some values are not empty");
+
+  EXPECT_EQ(nullptr, values.local_storage);
+  EXPECT_EQ(nullptr, values.session_storage);
+  EXPECT_EQ("", values.cookies);
+}
+
 void EphemeralStorageBrowserTest::CreateBroadcastChannel(
     RenderFrameHost* frame) {
   EXPECT_TRUE(content::ExecJs(
       frame,
       "self.bc = new BroadcastChannel('channel');"
       "self.bc_message = '';"
-      "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
+      "self.bc.onmessage = (m) => { self.bc_message = m.data; };"
+      "if (self.bc.name != 'channel')"
+      "  throw new Error('channel name invalid');"));
 }
 
 void EphemeralStorageBrowserTest::SendBroadcastMessage(
     RenderFrameHost* frame,
     base::StringPiece message) {
   EXPECT_TRUE(content::ExecJs(
-      frame, base::StringPrintf("(async () => {"
-                                "  self.bc.postMessage('%s');"
+      frame, content::JsReplace("(async () => {"
+                                "  self.bc.postMessage($1);"
                                 "  await new Promise(r => setTimeout(r, 200));"
                                 "})();",
-                                message.data())));
+                                message)));
 }
 
 void EphemeralStorageBrowserTest::ClearBroadcastMessage(
@@ -326,8 +347,76 @@ void EphemeralStorageBrowserTest::ClearBroadcastMessage(
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetBroadcastMessage(
-    RenderFrameHost* frame) {
-  return content::EvalJs(frame, "self.bc_message");
+    RenderFrameHost* frame,
+    bool wait_for_non_empty) {
+  return content::EvalJs(
+      frame, content::JsReplace("(async () => {"
+                                "  while ($1 && self.bc_message == '') {"
+                                "    await new Promise(r => setTimeout(r, 10));"
+                                "  }"
+                                "  return self.bc_message;"
+                                "})();",
+                                wait_for_non_empty));
+}
+
+void EphemeralStorageBrowserTest::SetCookieSetting(
+    const GURL& url,
+    ContentSetting content_setting) {
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  host_content_settings_map->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString(
+          base::StrCat({"[*.]", url.host_piece(), ":*"})),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
+      content_setting);
+}
+
+// Helper to load easy-to-use Indexed DB API.
+void EphemeralStorageBrowserTest::LoadIndexedDbHelper(RenderFrameHost* host) {
+  const char kLoadIndexMinScript[] =
+      "new Promise((resolve) => {"
+      "  const script = document.createElement('script');"
+      "  script.onload = () => {"
+      "    resolve(true);"
+      "  };"
+      "  script.onerror = () => {"
+      "    resolve(false);"
+      "  };"
+      "  script.src = '/ephemeral-storage/static/js/libs/index-min.js';"
+      "  document.body.appendChild(script);"
+      "});";
+
+  ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
+}
+
+bool EphemeralStorageBrowserTest::SetIDBValue(RenderFrameHost* host) {
+  LoadIndexedDbHelper(host);
+  content::EvalJsResult eval_js_result = content::EvalJs(
+      host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
+  return eval_js_result.error.empty();
+}
+
+HostContentSettingsMap* EphemeralStorageBrowserTest::content_settings() {
+  return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+}
+
+network::mojom::CookieManager* EphemeralStorageBrowserTest::CookieManager() {
+  return browser()
+      ->profile()
+      ->GetDefaultStoragePartition()
+      ->GetCookieManagerForBrowserProcess();
+}
+
+std::vector<net::CanonicalCookie> EphemeralStorageBrowserTest::GetAllCookies() {
+  base::RunLoop run_loop;
+  std::vector<net::CanonicalCookie> cookies_out;
+  CookieManager()->GetAllCookies(base::BindLambdaForTesting(
+      [&](const std::vector<net::CanonicalCookie>& cookies) {
+        cookies_out = cookies;
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+  return cookies_out;
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
@@ -893,7 +982,12 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
     // Expect broadcast message is received in these frames.
     for (auto* rfh : test_case.expect_received) {
-      EXPECT_EQ(kTestMessage, GetBroadcastMessage(rfh));
+      SCOPED_TRACE(testing::Message()
+                   << "WebContents URL: "
+                   << content::WebContents::FromRenderFrameHost(rfh)
+                          ->GetLastCommittedURL()
+                   << " RFH URL: " << rfh->GetLastCommittedURL());
+      EXPECT_EQ(kTestMessage, GetBroadcastMessage(rfh, true));
       processed_rfhs.insert(rfh);
     }
 
@@ -904,7 +998,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        << "WebContents URL: "
                        << wc_frames.first->GetLastCommittedURL()
                        << " RFH URL: " << rfh->GetLastCommittedURL());
-          EXPECT_NE(kTestMessage, GetBroadcastMessage(rfh));
+          EXPECT_NE(kTestMessage, GetBroadcastMessage(rfh, false));
         }
         ClearBroadcastMessage(rfh);
       }

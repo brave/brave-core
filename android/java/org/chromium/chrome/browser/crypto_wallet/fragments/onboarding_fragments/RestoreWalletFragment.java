@@ -22,17 +22,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
-    private KeyringController getKeyringController() {
+    private EditText recoveryPhraseText;
+    private EditText passwordEdittext;
+    private EditText retypePasswordEdittext;
+    private CheckBox showRecoveryPhraseCheckbox;
+
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -47,14 +52,16 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText recoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
+        recoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
+        passwordEdittext = view.findViewById(R.id.restore_wallet_password);
+        retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
+        showRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
 
         ImageView restoreWalletCopyImage = view.findViewById(R.id.restore_wallet_copy_image);
         assert getActivity() != null;
         restoreWalletCopyImage.setOnClickListener(
                 v -> recoveryPhraseText.setText(Utils.getTextFromClipboard(getActivity())));
 
-        CheckBox showRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
         showRecoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 recoveryPhraseText.setTransformationMethod(
@@ -65,38 +72,58 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             }
         });
 
-        EditText passwordEdittext = view.findViewById(R.id.restore_wallet_password);
-        EditText retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
-
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(v -> {
-            String passwordInput = passwordEdittext.getText().toString().trim();
-            String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
+            String passwordInput = passwordEdittext.getText().toString();
 
-            if (passwordInput.isEmpty()
-                    || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-                passwordEdittext.setError(getResources().getString(R.string.password_text));
-            } else if (retypePasswordInput.isEmpty()
-                    || !passwordInput.equals(retypePasswordInput)) {
-                retypePasswordEdittext.setError(
-                        getResources().getString(R.string.retype_password_error));
-            } else {
-                KeyringController keyringController = getKeyringController();
-                if (keyringController != null) {
-                    keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                            passwordEdittext.getText().toString().trim(), false, result -> {
-                                if (result) {
-                                    Utils.hideKeyboard(getActivity());
-                                    onNextPage.gotoNextPage(true);
-                                    Utils.setCryptoOnboarding(false);
-                                } else {
-                                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
-                                                 Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            });
+            KeyringService keyringService = getKeyringService();
+            assert keyringService != null;
+            keyringService.isStrongPassword(passwordInput, result -> {
+                if (!result) {
+                    passwordEdittext.setError(getResources().getString(R.string.password_text));
+
+                    return;
                 }
-            }
+
+                proceedWithAStrongPassword(passwordInput, view, recoveryPhraseText);
+            });
         });
+    }
+
+    private void proceedWithAStrongPassword(
+            String passwordInput, View view, EditText recoveryPhraseText) {
+        String retypePasswordInput = retypePasswordEdittext.getText().toString();
+
+        if (!passwordInput.equals(retypePasswordInput)) {
+            retypePasswordEdittext.setError(
+                    getResources().getString(R.string.retype_password_error));
+        } else {
+            KeyringService keyringService = getKeyringService();
+            assert keyringService != null;
+            keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                    passwordInput, false, result -> {
+                        if (result) {
+                            Utils.hideKeyboard(getActivity());
+                            onNextPage.gotoNextPage(true);
+                            Utils.setCryptoOnboarding(false);
+                            keyringService.notifyWalletBackupComplete();
+                            Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
+                            Utils.clearClipboard(passwordInput, 0);
+                            Utils.clearClipboard(retypePasswordInput, 0);
+                            cleanUp();
+                        } else {
+                            Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                         Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+        }
+    }
+
+    private void cleanUp() {
+        recoveryPhraseText.getText().clear();
+        passwordEdittext.getText().clear();
+        retypePasswordEdittext.getText().clear();
+        showRecoveryPhraseCheckbox.setChecked(false);
     }
 }

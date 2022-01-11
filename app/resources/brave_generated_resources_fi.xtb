@@ -36,6 +36,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7017590444693657895">Estää sivustoja pääsemästä Ethereumin tarjoajan APIin</translation>
 <translation id="8988939298652262600">Brave ei arvioi laajennusten turvallisuutta ja varmuutta. Asenna tämä laajennus vain, jos luotat kehittäjään.</translation>
 <translation id="8081858229109418493">Profiilin nimi ja kuvake</translation>
+<translation id="6438096877646138757">Sivustot, jotka tyhjentävät evästeet, kun suljet ne</translation>
+<translation id="2988792685798128092">Tyhjennä, kun sivusto suljetaan</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="1692470335103807198">Löydä lisää teemoja</translation>
 <translation id="2906510232093002459">Braven oletuskuvat</translation>
@@ -55,7 +57,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="6285118765755298263">Indeksoi muut hakukoneet</translation>
 <translation id="919715748352669592">Automaattisesti indeksoi sivustot, jotka seuraavat OpenSearch-määritystä.</translation>
 <translation id="6821903322090655051">Brave Rewards -ei ole käytössä</translation>
-<translation id="9184430019924125685">Napsauta tästä saadaksesi lisätietoa</translation>
+<translation id="413570371620795359">Ota käyttöön avaamalla Palkinnot-paneeli ja aloita</translation>
 <translation id="3849957491997306859">Havaittu automaattisesti</translation>
 <translation id="8798099450830957504">Oletus</translation>
 <translation id="4176463684765177261">Pois käytöstä</translation>
@@ -69,7 +71,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7286722244752781970">Sivustolla vierailun vähimmäiskesto ennen vierailun kirjautumista</translation>
 <translation id="4424486208397124985">Vierailukertojan vähimmäismäärä julkaisijan kannalta</translation>
 <translation id="6248554379744796526">Näytä vahvistamattomat sivustot luettelossa</translation>
-<translation id="3241299447027267831">Salli videoihin liittyvä lahjoittaminen</translation>
+<translation id="5510618543889994434">Salli videoihin liittyvä lahjoittaminen</translation>
 <translation id="924777189963477634">Ottamalla automaattiset lahjoitukset käyttöön hyväksyt <ph name="BEGIN_LINK_TOS"/>palveluehdot<ph name="END_LINK_TOS"/> ja <ph name="BEGIN_LINK_PP"/>tietosuojakäytännön<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tippipainikkeet</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2414886740292270097">Pimeä</translation>
 <translation id="1360441190790440400">Sama kuin Linux</translation>
 <translation id="1336940801687497203">Sama kuin Windows</translation>
+<translation id="5919209812221905840">Oletusarvoinen Microsoft Edge -protokollakäsittelijä</translation>
+<translation id="5239541974656019812">Tee Bravesta Microsoft Edge -protokollakäsittelijä</translation>
+<translation id="7136694880210472378">Aseta oletukseksi</translation>
+<translation id="1751388324499810661">Brave on oletusarvoinen Microsoft Edge -protokollakäsittelijä</translation>
 <translation id="8721331068159819483">Sama kuin macOS</translation>
 <translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
 <translation id="8488282162676695335">Brave-lompakko</translation>
@@ -425,7 +431,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2653659639078652383">Lähetä</translation>
 <translation id="2556708692502648323">Lompakkoverkot</translation>
 <translation id="1330032157352961756">Uuden ketjun tunnus</translation>
-<translation id="9053905035135220650">0x-etuliitteellä varustettu heksadesimaalimerkkijono</translation>
+<translation id="3423620355610881890">Positiivinen desimaaliluku</translation>
 <translation id="726121047592132939">Uuden ketjun nimi</translation>
 <translation id="1034112277864078119">Anna ketjun nimi</translation>
 <translation id="4672314527143443556">Ketjun valuutan nimi</translation>
@@ -439,7 +445,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3047726704186619366">Kuvakkeen URL-osoitteet</translation>
 <translation id="2487558607408469181">Lohkoketjuohjelman URL-osoitteet</translation>
 <translation id="6301398959353668507">Tätä kenttää ei saa jättää tyhjäksi.</translation>
-<translation id="4514843126085243862">Virheellinen muoto, ketjun tunnus on 0x-etuliitteellä varustettu heksadesimaalimerkkijono</translation>
+<translation id="7504462451153306677">Virheellinen muoto, ketjun tunnus on positiivinen luku</translation>
 <translation id="8325036459845654666">Tämä verkko on jo lisätty.</translation>
 <translation id="650071759190249039">Sisäinen virhe, verkon lisääminen ei onnistu.</translation>
 <translation id="868529041590572443">Täytä kaikki alkuperäisen valuutan tiedot</translation>

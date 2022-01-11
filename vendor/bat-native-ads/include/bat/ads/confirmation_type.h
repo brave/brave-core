@@ -22,6 +22,7 @@ class ConfirmationType final {
     kServed,
     kTransferred,
     kFlagged,
+    kSaved,
     kUpvoted,
     kDownvoted,
     kConversion
@@ -42,7 +43,7 @@ class ConfirmationType final {
   bool operator!=(const ConfirmationType& rhs) const;
 
  private:
-  Value value_;
+  Value value_ = kUndefined;
 };
 
 }  // namespace ads

@@ -9,7 +9,7 @@
 #include <vector>
 
 #define GetAccountsInCookieJar GetAccountsInCookieJar_Unused
-#include "../../../../../../components/signin/public/identity_manager/identity_manager.cc"
+#include "src/components/signin/public/identity_manager/identity_manager.cc"
 #undef GetAccountsInCookieJar
 
 namespace signin {

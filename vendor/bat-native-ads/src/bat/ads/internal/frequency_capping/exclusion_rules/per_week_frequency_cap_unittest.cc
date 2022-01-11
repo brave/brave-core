@@ -91,7 +91,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(7));
+  FastForwardClockBy(base::Days(7));
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
@@ -115,7 +115,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(6));
+  FastForwardClockBy(base::Days(6));
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);

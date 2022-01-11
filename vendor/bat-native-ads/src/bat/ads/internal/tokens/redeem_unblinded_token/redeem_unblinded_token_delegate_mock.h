@@ -25,10 +25,11 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
               OnDidSendConfirmation,
               (const ConfirmationInfo& confirmation));
 
-  MOCK_METHOD(void,
-              OnDidRedeemUnblindedToken,
-              (const ConfirmationInfo& confirmation,
-               const privacy::UnblindedTokenInfo& unblinded_payment_token));
+  MOCK_METHOD(
+      void,
+      OnDidRedeemUnblindedToken,
+      (const ConfirmationInfo& confirmation,
+       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token));
 
   MOCK_METHOD(void,
               OnFailedToRedeemUnblindedToken,

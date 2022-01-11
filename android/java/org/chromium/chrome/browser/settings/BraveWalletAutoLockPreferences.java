@@ -21,9 +21,9 @@ import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardVisibilityDelegate;
@@ -34,14 +34,14 @@ public class BraveWalletAutoLockPreferences
 
     public static final int WALLET_AUTOLOCK_DEFAULT_TIME = 5;
 
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
 
     public BraveWalletAutoLockPreferences(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setOnPreferenceClickListener(this);
 
-        InitKeyringController();
+        InitKeyringService();
     }
 
     @Override
@@ -53,8 +53,8 @@ public class BraveWalletAutoLockPreferences
     @Override
     public void onDetached() {
         super.onDetached();
-        if (mKeyringController != null) {
-            mKeyringController.close();
+        if (mKeyringService != null) {
+            mKeyringService.close();
         }
     }
 
@@ -117,24 +117,24 @@ public class BraveWalletAutoLockPreferences
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
     private void setPrefWalletAutoLockTime(String s) {
         int numMinutes = inputToInt(s);
 
-        if (mKeyringController != null) {
-            mKeyringController.setAutoLockMinutes(numMinutes, success -> {
+        if (mKeyringService != null) {
+            mKeyringService.setAutoLockMinutes(numMinutes, success -> {
                 if (success) updateSummary(numMinutes);
             });
         }

@@ -86,7 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:scrollbars="vertical"
-        android:textColorHint="@color/onboarding_gray"
+        android:textColorHint="@color/brave_theme_hint_text"
         android:textColor="@android:color/black"
         android:hint="@string/rate_feedback_hint"
         android:visibility="gone"

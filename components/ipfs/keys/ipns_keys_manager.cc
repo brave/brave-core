@@ -44,7 +44,7 @@ const int kMinimalRequestRetryIntervalMs = 350;
 const int kRequestsRetryRate = 3;
 
 base::TimeDelta CalculateKeysRetryTime() {
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalRequestRetryIntervalMs,
                     kRequestsRetryRate * kMinimalRequestRetryIntervalMs));
 }

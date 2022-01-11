@@ -22,4 +22,4 @@ void AddAndroidWidevine(
 }  // namespace cdm
 #endif
 
-#include "../../../../../chrome/renderer/media/chrome_key_systems.cc"  // NOLINT
+#include "src/chrome/renderer/media/chrome_key_systems.cc"

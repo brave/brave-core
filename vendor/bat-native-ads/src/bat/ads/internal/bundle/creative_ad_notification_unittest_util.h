@@ -6,10 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_UNITTEST_UTIL_H_
 
+#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
+
 namespace ads {
 
 struct CreativeAdNotificationInfo;
 
+CreativeAdNotificationList BuildCreativeAdNotifications(const int count);
 CreativeAdNotificationInfo BuildCreativeAdNotification();
 
 }  // namespace ads

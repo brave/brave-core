@@ -9,7 +9,7 @@
 #include "net/base/url_util.h"
 
 #define CookieMonster ChromiumCookieMonster
-#include "../../../../net/cookies/cookie_monster.cc"
+#include "src/net/cookies/cookie_monster.cc"
 #undef CookieMonster
 
 namespace net {

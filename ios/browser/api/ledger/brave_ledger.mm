@@ -10,11 +10,11 @@
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
 #include "base/logging.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -33,6 +33,7 @@
 #include "components/os_crypt/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -783,7 +784,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
     return;
   }
 
-  auto origin = parsedUrl.GetOrigin();
+  url::Origin origin = url::Origin::Create(parsedUrl);
   std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
@@ -795,7 +796,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   ledger::type::VisitDataPtr visitData = ledger::type::VisitData::New();
   visitData->domain = visitData->name = baseDomain;
   visitData->path = parsedUrl.PathForRequest();
-  visitData->url = origin.spec();
+  visitData->url = origin.Serialize();
 
   if (faviconURL.absoluteString) {
     visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
@@ -977,11 +978,9 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
-- (void)updatePendingAndFinishedPromotions:
-    (void (^)(bool shouldReconcileAds))completion {
+- (void)updatePendingAndFinishedPromotions:(void (^)())completion {
   ledger->GetAllPromotions(^(ledger::type::PromotionMap map) {
     NSMutableArray* promos = [[NSMutableArray alloc] init];
-    bool shouldReconcileAds = false;
     for (auto it = map.begin(); it != map.end(); ++it) {
       if (it->second.get() != nullptr) {
         [promos
@@ -998,10 +997,6 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
     for (LedgerPromotion* promotion in promos) {
       if (promotion.status == LedgerPromotionStatusFinished) {
         [self.mFinishedPromotions addObject:promotion];
-
-        if (promotion.type == LedgerPromotionTypeAds) {
-          shouldReconcileAds = true;
-        }
       } else if (promotion.status == LedgerPromotionStatusActive ||
                  promotion.status == LedgerPromotionStatusAttested) {
         [self.mPendingPromotions addObject:promotion];
@@ -1017,7 +1012,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
       }
     }
     if (completion) {
-      completion(shouldReconcileAds);
+      completion();
     }
     for (BraveLedgerObserver* observer in [self.observers copy]) {
       if (observer.promotionsAdded) {
@@ -1030,17 +1025,17 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   });
 }
 
-- (void)fetchPromotions:(nullable void (^)(NSArray<LedgerPromotion*>* grants,
-                                           bool shouldReconcileAds))completion {
+- (void)fetchPromotions:
+    (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
   ledger->FetchPromotions(
       ^(ledger::type::Result result,
         std::vector<ledger::type::PromotionPtr> promotions) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
-        [self updatePendingAndFinishedPromotions:^(bool shouldReconcileAds) {
+        [self updatePendingAndFinishedPromotions:^{
           if (completion) {
-            completion(self.pendingPromotions, shouldReconcileAds);
+            completion(self.pendingPromotions);
           }
         }];
       });
@@ -1303,7 +1298,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   }
 
   GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-  auto origin = parsedUrl.GetOrigin();
+  url::Origin origin = url::Origin::Create(parsedUrl);
   const std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

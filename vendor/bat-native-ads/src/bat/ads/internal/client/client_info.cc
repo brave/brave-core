@@ -140,22 +140,22 @@ bool ClientInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
+void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->StartObject();
 
   writer->String("adPreferences");
-  SaveToJson(writer, state.ad_preferences);
+  SaveToJson(writer, info.ad_preferences);
 
   writer->String("adsShownHistory");
   writer->StartArray();
-  for (const auto& ad_shown : state.ads_shown_history) {
+  for (const auto& ad_shown : info.ads_shown_history) {
     SaveToJson(writer, ad_shown);
   }
   writer->EndArray();
 
   writer->String("purchaseIntentSignalHistory");
   writer->StartObject();
-  for (const auto& segment_history : state.purchase_intent_signal_history) {
+  for (const auto& segment_history : info.purchase_intent_signal_history) {
     writer->String(segment_history.first.c_str());
 
     writer->StartArray();
@@ -168,7 +168,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
 
   writer->String("seenAds");
   writer->StartObject();
-  for (const auto& seen_ads : state.seen_ads) {
+  for (const auto& seen_ads : info.seen_ads) {
     const std::string type = std::string(seen_ads.first);
     writer->String(type.c_str());
     writer->StartObject();
@@ -184,7 +184,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
 
   writer->String("seenAdvertisers");
   writer->StartObject();
-  for (const auto& seen_advertisers : state.seen_advertisers) {
+  for (const auto& seen_advertisers : info.seen_advertisers) {
     const std::string type = std::string(seen_advertisers.first);
     writer->String(type.c_str());
     writer->StartObject();
@@ -199,11 +199,11 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Double(state.serve_ad_at.ToDoubleT());
+  writer->Double(info.serve_ad_at.ToDoubleT());
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();
-  for (const auto& probabilities : state.text_classification_probabilities) {
+  for (const auto& probabilities : info.text_classification_probabilities) {
     writer->StartObject();
 
     writer->String("textClassificationProbabilities");
@@ -231,7 +231,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndArray();
 
   writer->String("version_code");
-  writer->String(state.version_code.c_str());
+  writer->String(info.version_code.c_str());
 
   writer->EndObject();
 }

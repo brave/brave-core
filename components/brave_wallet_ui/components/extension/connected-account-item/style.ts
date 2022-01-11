@@ -28,6 +28,14 @@ export const LeftSide = styled.div`
   flex-direction: row;
 `
 
+export const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-right: 10px;
+`
+
 export const AccountCircle = styled.div<StyleProps>`
   width: 40px;
   height: 40px;
@@ -52,8 +60,8 @@ export const AccountAddressText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const DisconnectButton = styled(WalletButton) <Partial<StyleProps>>`
-  display: flex;;
+export const PrimaryButton = styled(WalletButton) <Partial<StyleProps>>`
+  display: flex;
   cursor: pointer;
   outline: none;
   border: none;
@@ -65,7 +73,7 @@ export const DisconnectButton = styled(WalletButton) <Partial<StyleProps>>`
   font-weight: 600;
   color: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.palette.white};
+    color: ${(p) => p.theme.palette.blurple300};
   }
   letter-spacing: 0.01em;
 `

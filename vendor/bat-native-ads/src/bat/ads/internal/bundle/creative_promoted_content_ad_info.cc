@@ -12,6 +12,10 @@ CreativePromotedContentAdInfo::CreativePromotedContentAdInfo() = default;
 CreativePromotedContentAdInfo::CreativePromotedContentAdInfo(
     const CreativePromotedContentAdInfo& info) = default;
 
+CreativePromotedContentAdInfo::CreativePromotedContentAdInfo(
+    const CreativeAdInfo& creative_ad)
+    : CreativeAdInfo(creative_ad) {}
+
 CreativePromotedContentAdInfo::~CreativePromotedContentAdInfo() = default;
 
 bool CreativePromotedContentAdInfo::operator==(

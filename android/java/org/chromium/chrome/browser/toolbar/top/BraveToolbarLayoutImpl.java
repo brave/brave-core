@@ -77,6 +77,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPage;
+import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopup;
 import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopupListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -86,6 +87,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
@@ -151,7 +153,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private BraveRewardsPanelPopup mRewardsPopup;
+    private BraveRewardsPanel mRewardsPopup;
     private BraveTalkOptInPopup mBraveTalkOptInPopup;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
@@ -393,16 +395,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             tab.getId(), tab.getUrl().getSpec());
                 }
                 if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
-                        && (tab.getUrl().getSpec().equals(BraveActivity.REWARDS_SETTINGS_URL)
-                                || tab.getUrl().getSpec().equals(
-                                        BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                        && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                 Profile.getLastUsedRegularProfile())
                         && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     showBraveRewardsOnboardingModal();
                     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                    BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 }
             }
 
@@ -686,8 +685,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         View braveRewardsOnboardingModalView =
                 dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
-        braveRewardsOnboardingModalView.setBackgroundColor(
-                context.getResources().getColor(android.R.color.white));
+        // braveRewardsOnboardingModalView.setBackgroundColor(
+        //         context.getResources().getColor(android.R.color.white));
         braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
         String tosText =
@@ -762,21 +761,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 dialog.dismiss();
             }
         }));
-        Button btnBraveRewards =
-                braveRewardsOnboardingModalView.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards =
+                braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
-                dialog.dismiss();
-            }
-        }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                if (BraveActivity.getBraveActivity() != null) {
+                    BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+                    BraveActivity.getBraveActivity().openRewardsPanel();
+                }
                 dialog.dismiss();
             }
         }));
@@ -871,7 +867,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanelPopup(v);
+            mRewardsPopup = new BraveRewardsPanel(v);
             mRewardsPopup.showLikePopDownMenu();
             if (mBraveRewardsNotificationsCount.isShown()) {
                 SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
@@ -1322,5 +1318,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
         super.onDraw(canvas);
+    }
+
+    @Override
+    public boolean isLocationBarValid(LocationBarCoordinator locationBar) {
+        return locationBar != null && locationBar.getPhoneCoordinator() != null
+                && locationBar.getPhoneCoordinator().getViewForDrawing() != null;
     }
 }

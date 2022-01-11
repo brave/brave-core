@@ -2,30 +2,37 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 import {
+  BraveWallet,
   WalletAccountType,
-  EthereumChain,
-  TransactionInfo,
-  TransactionType,
-  AssetPrice,
-  ERCToken,
-  GasEstimation1559
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../../../common/constants/action_types'
+
+// Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { formatBalance, toWeiHex } from '../../../utils/format-balances'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import {
+  formatWithCommasAndDecimals,
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
+
+// Hooks
+import { usePricing, useTransactionParser, useTokenInfo } from '../../../common/hooks'
+
 import { getLocale } from '../../../../common/locale'
-import { usePricing, useTransactionParser } from '../../../common/hooks'
 import { withPlaceholderIcon } from '../../shared'
 
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas, { MaxPriorityPanels } from '../edit-gas'
 import EditAllowance from '../edit-allowance'
+
+import { getBlockchainTokenInfo } from '../../../common/async/lib'
 
 // Styled Components
 import {
@@ -35,7 +42,7 @@ import {
   AccountNameText,
   TopRow,
   NetworkText,
-  TransactionAmmountBig,
+  TransactionAmountBig,
   TransactionFiatAmountBig,
   GrandTotalText,
   MessageBox,
@@ -76,15 +83,16 @@ export type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
   siteURL: string
   accounts: WalletAccountType[]
-  visibleTokens: ERCToken[]
-  fullTokenList: ERCToken[]
-  transactionInfo: TransactionInfo
-  selectedNetwork: EthereumChain
-  transactionSpotPrices: AssetPrice[]
-  gasEstimates?: GasEstimation1559
+  visibleTokens: BraveWallet.BlockchainToken[]
+  fullTokenList: BraveWallet.BlockchainToken[]
+  transactionInfo: BraveWallet.TransactionInfo
+  selectedNetwork: BraveWallet.EthereumChain
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+  gasEstimates?: BraveWallet.GasEstimation1559
   transactionsQueueLength: number
   transactionQueueNumber: number
-  onQueueNextTransction: () => void
+  defaultCurrencies: DefaultCurrencies
+  onQueueNextTransaction: () => void
   onConfirm: () => void
   onReject: () => void
   onRejectAllTransactions: () => void
@@ -106,7 +114,8 @@ function ConfirmTransactionPanel (props: Props) {
     transactionsQueueLength,
     transactionQueueNumber,
     fullTokenList,
-    onQueueNextTransction,
+    defaultCurrencies,
+    onQueueNextTransaction,
     onConfirm,
     onReject,
     onRejectAllTransactions,
@@ -131,9 +140,14 @@ function ConfirmTransactionPanel (props: Props) {
   const [currentTokenAllowance, setCurrentTokenAllowance] = React.useState<string>('')
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
 
-  const findSpotPrice = usePricing(transactionSpotPrices)
+  const { findAssetPrice } = usePricing(transactionSpotPrices)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
   const transactionDetails = parseTransaction(transactionInfo)
+
+  const {
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
+  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -158,7 +172,7 @@ function ConfirmTransactionPanel (props: Props) {
   )
 
   React.useEffect(() => {
-    if (transactionInfo.txType !== TransactionType.ERC20Approve) {
+    if (transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve) {
       return
     }
 
@@ -174,6 +188,12 @@ function ConfirmTransactionPanel (props: Props) {
       const allowance = formatBalance(result, transactionDetails.decimals)
       setCurrentTokenAllowance(allowance)
     }).catch(e => console.error(e))
+  }, [])
+
+  React.useEffect(() => {
+    if (transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve) {
+      onFindTokenInfoByContractAddress(transactionDetails.recipient)
+    }
   }, [])
 
   const onSelectTab = (tab: confirmPanelTabs) => () => {
@@ -232,7 +252,7 @@ function ConfirmTransactionPanel (props: Props) {
       <EditGas
         transactionInfo={transactionInfo}
         onCancel={onToggleEditGas}
-        networkSpotPrice={findSpotPrice(selectedNetwork.symbol)}
+        networkSpotPrice={findAssetPrice(selectedNetwork.symbol)}
         selectedNetwork={selectedNetwork}
         baseFeePerGas={baseFeePerGas}
         suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}
@@ -261,7 +281,7 @@ function ConfirmTransactionPanel (props: Props) {
     <StyledWrapper>
       <TopRow>
         <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
-        {transactionInfo.txType === TransactionType.ERC20Approve &&
+        {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
           <AddressAndOrb>
             <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
             <AccountCircle orb={toOrb} />
@@ -271,7 +291,7 @@ function ConfirmTransactionPanel (props: Props) {
           <QueueStepRow>
             <QueueStepText>{transactionQueueNumber} {getLocale('braveWalletQueueOf')} {transactionsQueueLength}</QueueStepText>
             <QueueStepButton
-              onClick={onQueueNextTransction}
+              onClick={onQueueNextTransaction}
             >
               {transactionQueueNumber === transactionsQueueLength
                 ? getLocale('braveWalletQueueFirst')
@@ -281,12 +301,12 @@ function ConfirmTransactionPanel (props: Props) {
           </QueueStepRow>
         }
       </TopRow>
-      {transactionInfo.txType === TransactionType.ERC20Approve ? (
+      {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve ? (
         <>
           <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
           <URLText>{siteURL}</URLText>
-          <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', transactionDetails.symbol)}</PanelTitle>
-          <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', transactionDetails.symbol)}</Description>
+          <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</PanelTitle>
+          <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</Description>
           <EditButton onClick={onToggleEditAllowance}>{getLocale('braveWalletEditPermissionsButton')}</EditButton>
         </>
       ) : (
@@ -301,20 +321,20 @@ function ConfirmTransactionPanel (props: Props) {
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
-          {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-            transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721ERCToken} />
+          {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+            transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
+            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721BlockchainToken} />
           }
-          <TransactionAmmountBig>
-            {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-              transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
-              ? transactionDetails.erc721ERCToken?.name + ' ' + transactionDetails.erc721TokenId
-              : formatWithCommasAndDecimals(transactionDetails.value) + ' ' + transactionDetails.symbol
+          <TransactionAmountBig>
+            {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+              transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+              ? transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
+              : formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)
             }
-          </TransactionAmmountBig>
-          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
-            transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
-            <TransactionFiatAmountBig>${formatWithCommasAndDecimals(transactionDetails.fiatValue)}</TransactionFiatAmountBig>
+          </TransactionAmountBig>
+          {transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
+            transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
+            <TransactionFiatAmountBig>{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</TransactionFiatAmountBig>
           }
         </>
       )}
@@ -330,22 +350,22 @@ function ConfirmTransactionPanel (props: Props) {
           text='Details'
         />
       </TabRow>
-      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === TransactionType.ERC20Approve}>
+      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve}>
         {selectedTab === 'transaction' ? (
           <>
-            {transactionInfo.txType === TransactionType.ERC20Approve &&
+            {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
               <>
                 <TopColumn>
                   <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
                   <SectionRow>
                     <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
-                    <TransactionTypeText>{formatWithCommasAndDecimals(transactionDetails.gasFee)} {selectedNetwork.symbol}</TransactionTypeText>
+                    <TransactionTypeText>{formatWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals))} {selectedNetwork.symbol}</TransactionTypeText>
                   </SectionRow>
                   <TransactionText
                     hasError={transactionDetails.insufficientFundsError}
                   >
                     {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
-                    ${formatWithCommasAndDecimals(transactionDetails.gasFeeFiat)}
+                    {formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}
                   </TransactionText>
                 </TopColumn>
                 <Divider />
@@ -360,20 +380,20 @@ function ConfirmTransactionPanel (props: Props) {
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
                   <SectionRightColumn>
-                    <TransactionTypeText>{transactionDetails.value} {transactionDetails.symbol}</TransactionTypeText>
+                    <TransactionTypeText>{formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)}</TransactionTypeText>
                     <TransactionText />
                   </SectionRightColumn>
                 </SectionRow>
               </>
             }
-            {transactionInfo.txType !== TransactionType.ERC20Approve &&
+            {transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve &&
               <>
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
                   <SectionRightColumn>
                     <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                    <TransactionTypeText>{formatWithCommasAndDecimals(transactionDetails.gasFee)} {selectedNetwork.symbol}</TransactionTypeText>
-                    <TransactionText>${formatWithCommasAndDecimals(transactionDetails.gasFeeFiat)}</TransactionText>
+                    <TransactionTypeText>{formatWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals))} {selectedNetwork.symbol}</TransactionTypeText>
+                    <TransactionText>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</TransactionText>
                   </SectionRightColumn>
                 </SectionRow>
                 <Divider />
@@ -382,11 +402,11 @@ function ConfirmTransactionPanel (props: Props) {
                   <SingleRow>
                     <TransactionTitle>{getLocale('braveWalletConfirmTransactionTotal')}</TransactionTitle>
                     <GrandTotalText>
-                      {(transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
-                        transactionInfo.txType !== TransactionType.ERC721TransferFrom)
+                      {(transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
+                        transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom)
                         ? formatWithCommasAndDecimals(transactionDetails.value)
                         : transactionDetails.value
-                      } {transactionDetails.symbol} + {transactionDetails.gasFee} {selectedNetwork.symbol}</GrandTotalText>
+                      } {transactionDetails.symbol} + {formatBalance(transactionDetails.gasFee, selectedNetwork.decimals)} {selectedNetwork.symbol}</GrandTotalText>
                   </SingleRow>
                   <TransactionText
                     hasError={transactionDetails.insufficientFundsError}
@@ -394,7 +414,7 @@ function ConfirmTransactionPanel (props: Props) {
                     {transactionDetails.insufficientFundsError
                       ? `${getLocale('braveWalletSwapInsufficientBalance')} `
                       : ''}
-                    ${formatWithCommasAndDecimals(transactionDetails.fiatTotal)}
+                    {formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatTotal, defaultCurrencies.fiat)}
                   </TransactionText>
 
                 </SectionColumn>

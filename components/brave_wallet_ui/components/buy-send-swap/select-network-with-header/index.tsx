@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
 import { getLocale } from '../../../../common/locale'
@@ -10,17 +10,23 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  networks: EthereumChain[]
-  selectedNetwork: EthereumChain
-  onSelectNetwork: (network: EthereumChain) => () => void
+  networks: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
+  hasAddButton?: boolean
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
   onBack: () => void
+  onAddNetwork?: () => void
 }
 
 function SelectNetworkWithHeader (props: Props) {
-  const { networks, onSelectNetwork, onBack, selectedNetwork } = props
+  const { networks, onSelectNetwork, onBack, selectedNetwork, hasAddButton, onAddNetwork } = props
   return (
     <SelectWrapper>
-      <Header title={getLocale('braveWalletSelectNetwork')} onBack={onBack} />
+      <Header
+        title={getLocale('braveWalletSelectNetwork')}
+        onBack={onBack}
+        hasAddButton={hasAddButton}
+        onClickAdd={onAddNetwork} />
       <SelectScrollContainer>
         <SelectNetwork
           selectedNetwork={selectedNetwork}

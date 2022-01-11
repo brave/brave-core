@@ -12,7 +12,7 @@
   BraveShouldShowPermission(ContentSettingsType type) override; \
   virtual bool IsContentDisplayedInVrHeadset
 
-#include "../../../../../../chrome/browser/ui/page_info/chrome_page_info_delegate.h"
+#include "src/chrome/browser/ui/page_info/chrome_page_info_delegate.h"
 #undef IsContentDisplayedInVrHeadset
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_INFO_CHROME_PAGE_INFO_DELEGATE_H_

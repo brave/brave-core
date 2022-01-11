@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Frånkopplad",
+    "message": "Utloggad",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Frånkoppla Brave Rewards",
-    "description": ""
+    "message": "Logga ut från $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Beräknade intäkter",

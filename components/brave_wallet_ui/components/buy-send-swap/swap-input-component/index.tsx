@@ -5,8 +5,10 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   SwapValidationErrorType,
-  AmountPresetTypes
+  AmountPresetTypes,
+  DefaultCurrencies
 } from '../../../constants/types'
+import { CurrencySymbols } from '../../../utils/currency-symbols'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
@@ -14,7 +16,7 @@ import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { withPlaceholderIcon } from '../../shared'
-import { hexToNumber } from '../../../utils/format-balances'
+import { formatBalance, hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -50,11 +52,13 @@ export type BuySendSwapInputType =
   | 'selector'
 
 export interface Props {
+  autoFocus?: boolean
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
   selectedAsset?: AccountAssetOptionType
   selectedAssetInputAmount?: string
   addressError?: string
+  addressWarning?: string
   toAddressOrUrl?: string
   toAddress?: string
   inputName?: string
@@ -63,6 +67,7 @@ export interface Props {
   orderExpiration?: ExpirationPresetObjectType
   validationError?: SwapValidationErrorType
   customSlippageTolerance?: string
+  defaultCurrencies?: DefaultCurrencies
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -76,12 +81,14 @@ export interface Props {
 
 function SwapInputComponent (props: Props) {
   const {
+    autoFocus,
     selectedAsset,
     selectedAssetBalance,
     componentType,
     selectedAssetInputAmount,
     inputName,
     addressError,
+    addressWarning,
     toAddressOrUrl,
     toAddress,
     orderType,
@@ -89,6 +96,7 @@ function SwapInputComponent (props: Props) {
     orderExpiration,
     validationError,
     customSlippageTolerance,
+    defaultCurrencies,
     onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
@@ -210,8 +218,10 @@ function SwapInputComponent (props: Props) {
     return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 4, marginRight: 8 })
   }, [])
 
-  const formatedAssetBalance = selectedAssetBalance
-    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')
+  const formattedAssetBalance = selectedAssetBalance
+    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(
+        formatBalance(selectedAssetBalance, selectedAsset?.asset.decimals ?? 18)
+      )
     : ''
 
   return (
@@ -228,7 +238,7 @@ function SwapInputComponent (props: Props) {
             */}
 
               {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-                <FromBalanceText>{formatedAssetBalance}</FromBalanceText>
+                <FromBalanceText>{formattedAssetBalance}</FromBalanceText>
               }
               {componentType === 'toAddress' &&
                 <PasteButton onClick={onPaste}>
@@ -239,7 +249,7 @@ function SwapInputComponent (props: Props) {
           }
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
-              <AssetTicker>$</AssetTicker>
+              <AssetTicker>{CurrencySymbols[defaultCurrencies?.fiat ?? 'USD']}</AssetTicker>
             }
             {!selectedAsset?.asset.isErc721 &&
               <Input
@@ -252,6 +262,7 @@ function SwapInputComponent (props: Props) {
                 spellCheck={false}
                 hasError={componentType === 'fromAmount' && fromAmountHasErrors}
                 disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
+                autoFocus={autoFocus}
               />
             }
             {componentType === 'exchange' && orderType === 'market' &&
@@ -341,6 +352,11 @@ function SwapInputComponent (props: Props) {
       {componentType === 'toAddress' && addressError &&
         <WarningText>{addressError}</WarningText>
       }
+
+      {componentType === 'toAddress' && addressWarning &&
+        <WarningText>{addressWarning}</WarningText>
+      }
+
       {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
         <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
       }

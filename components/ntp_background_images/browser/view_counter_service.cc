@@ -17,6 +17,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -76,10 +77,7 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   branded_new_tab_count_state_ =
       std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
 
-  if (auto* data = GetCurrentBrandedWallpaperData())
-    model_.set_total_branded_image_count(data->backgrounds.size());
-  if (auto* data = GetCurrentWallpaperData())
-    model_.set_total_image_count(data->backgrounds.size());
+  ResetModel();
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(ads::prefs::kEnabled,
@@ -152,24 +150,18 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
+    size_t current_campaign_index;
+    size_t current_background_index;
+    std::tie(current_campaign_index, current_background_index) =
+        model_.GetCurrentBrandedImageIndex();
     return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
-        model_.current_branded_wallpaper_image_index());
+        current_campaign_index, current_background_index);
   }
 
   return base::Value();
 }
 
-std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (auto* data = GetCurrentBrandedWallpaperData()) {
-    return data->GetTopSitesForWebUI();
-  }
-#endif
-
-  return {};
-}
-
-std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
+std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData())
     return data->top_sites;
@@ -225,7 +217,13 @@ void ViewCounterService::ResetModel() {
 
   // SR/SI
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    model_.set_total_branded_image_count(data->backgrounds.size());
+    std::vector<size_t> campaigns_total_branded_images_count;
+    for (const auto& campaign : data->campaigns) {
+      campaigns_total_branded_images_count.push_back(
+          campaign.backgrounds.size());
+    }
+    model_.SetCampaignsTotalBrandedImageCount(
+        campaigns_total_branded_images_count);
     model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
   }
   // BI

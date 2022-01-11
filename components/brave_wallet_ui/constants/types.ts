@@ -3,19 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
+import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-// Provide access to all the generated types.
-export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
+// Re-export BraveWallet for use in other modules, to avoid hard-coding the
+// path of generated mojom files.
+export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export { TimeDelta }
 
 export interface WalletAccountType {
   id: string
   name: string
   address: string
   balance: string
-  fiatBalance: string
   asset: string
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   tokens: AccountAssetOptionType[]
@@ -38,19 +40,16 @@ export interface AssetOptionType {
 export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number
-  fiatBalance: number
 }
 
 export interface AccountAssetOptionType {
-  asset: BraveWallet.ERCToken
+  asset: BraveWallet.BlockchainToken
   assetBalance: string
-  fiatBalance: string
 }
 
 export interface UserWalletObject {
   name: string
   address: string
-  fiatBalance: string
   assetBalance: number
 }
 
@@ -97,7 +96,11 @@ export type PanelTypes =
   | 'addEthereumChain'
   | 'switchEthereumChain'
   | 'approveTransaction'
+  | 'showUnlock'
   | 'sitePermissions'
+  | 'addSuggestedToken'
+  | 'transactions'
+  | 'transactionDetails'
 
 export type NavTypes =
   | 'crypto'
@@ -173,6 +176,11 @@ export interface ImportWalletError {
   errorMessage?: string
 }
 
+export interface DefaultCurrencies {
+  fiat: string
+  crypto: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
@@ -184,8 +192,8 @@ export interface WalletState {
   selectedNetwork: BraveWallet.EthereumChain
   accounts: WalletAccountType[]
   transactions: AccountTransactions
-  userVisibleTokensInfo: BraveWallet.ERCToken[]
-  fullTokenList: BraveWallet.ERCToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  fullTokenList: BraveWallet.BlockchainToken[]
   portfolioPriceHistory: PriceDataObjectType[]
   pendingTransactions: BraveWallet.TransactionInfo[]
   knownTransactions: BraveWallet.TransactionInfo[]
@@ -200,6 +208,7 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
+  defaultCurrencies: DefaultCurrencies
 }
 
 export interface PanelState {
@@ -214,6 +223,7 @@ export interface PanelState {
   signMessageData: BraveWallet.SignMessageRequest[]
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
+  suggestedToken?: BraveWallet.BlockchainToken
 }
 
 export interface PageState {
@@ -221,9 +231,9 @@ export interface PageState {
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
-  selectedAsset: BraveWallet.ERCToken | undefined
-  selectedBTCAssetPrice: BraveWallet.AssetPrice | undefined
-  selectedUSDAssetPrice: BraveWallet.AssetPrice | undefined
+  selectedAsset: BraveWallet.BlockchainToken | undefined
+  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -304,27 +314,20 @@ export interface GetPriceHistoryReturnObjectInfo {
 }
 
 export interface GetAllTokensReturnInfo {
-  tokens: BraveWallet.ERCToken[]
+  tokens: BraveWallet.BlockchainToken[]
 }
 
-export interface GetBalanceReturnInfo {
-  success: boolean
-  balance: string
+export interface GetNativeAssetBalancesReturnInfo {
+  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[]
 }
 
-export interface GetNativeAssetBalancesPriceReturnInfo {
-  usdPrice: string
-  balances: GetBalanceReturnInfo[]
+export interface GetBlockchainTokenBalanceReturnInfo {
+  balances: BraveWallet.JsonRpcService_GetERC20TokenBalance_ResponseParams[][]
 }
 
-export interface GetERCTokenBalanceReturnInfo {
-  success: boolean
-  balance: string
-}
-
-export interface GetERC20TokenBalanceAndPriceReturnInfo {
-  balances: GetERCTokenBalanceReturnInfo[][]
-  prices: GetPriceReturnInfo
+export interface GetFlattenedAccountBalancesReturnInfo {
+  token: BraveWallet.BlockchainToken
+  balance: number
 }
 
 export interface PortfolioTokenHistoryAndInfo {
@@ -370,10 +373,15 @@ export type AccountTransactions = {
   [accountId: string]: BraveWallet.TransactionInfo[]
 }
 
-export interface GetEthAddrReturnInfo {
-  success: boolean
-  address: string
+export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
+
+export interface GetBlockchainTokenInfoReturnInfo {
+  token: BraveWallet.BlockchainToken | null
 }
+
+export type GetIsStrongPassswordReturnInfo = BraveWallet.KeyringService_IsStrongPassword_ResponseParams
+
+export type GetChecksumEthAddressReturnInfo = BraveWallet.KeyringService_GetChecksumEthAddress_ResponseParams
 
 export interface RecoveryObject {
   value: string
@@ -440,7 +448,7 @@ export type TransactionDataType = {
 export type AllowSpendReturnPayload = {
   siteUrl: string
   contractAddress: string
-  erc20Token: BraveWallet.ERCToken
+  erc20Token: BraveWallet.BlockchainToken
   transactionFeeWei: string
   transactionFeeFiat: string
   transactionData: TransactionDataType
@@ -472,7 +480,7 @@ export type TransactionPanelPayload = {
   transactionAmount: string
   transactionGas: string
   toAddress: string
-  erc20Token: BraveWallet.ERCToken
+  erc20Token: BraveWallet.BlockchainToken
   ethPrice: string
   tokenPrice: string
   transactionData: TransactionDataType
@@ -500,9 +508,27 @@ export enum WalletRoutes {
   PortfolioSub = '/crypto/portfolio/:id?',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
+  AddAssetModal = '/crypto/portfolio/add-asset',
   AccountsSub = '/crypto/accounts/:id?',
   Backup = '/crypto/backup-wallet',
   CryptoPage = '/crypto/:category/:id?'
 }
 
-export const WalletOrigin = 'chrome://wallet/'
+export const WalletOrigin = 'chrome://wallet'
+
+export type BlockExplorerUrlTypes =
+  | 'tx'
+  | 'address'
+  | 'token'
+
+export type CreateAccountType =
+  | 'ethereum'
+  | 'filecoin'
+  | 'solana'
+
+export interface CreateAccountOptionsType {
+  name: string
+  description: string
+  network: CreateAccountType
+  icon: string
+}

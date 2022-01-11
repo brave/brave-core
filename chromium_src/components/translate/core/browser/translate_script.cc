@@ -13,7 +13,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslateScript ChromiumTranslateScript
-#include "../../../../../../components/translate/core/browser/translate_script.cc"
+#include "src/components/translate/core/browser/translate_script.cc"
 #undef TranslateScript
 
 namespace {

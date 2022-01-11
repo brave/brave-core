@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
@@ -44,10 +44,10 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private Button recoveryPhraseButton;
     private List<String> recoveryPhrases;
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -70,13 +70,13 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         recoveryPhraseButton.setOnClickListener(v -> {
             if (recoveryPhrasesToVerifyAdapter != null
                     && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
-                KeyringController keyringController = getKeyringController();
-                if (keyringController != null) {
-                    keyringController.getMnemonicForDefaultKeyring(result -> {
+                KeyringService keyringService = getKeyringService();
+                if (keyringService != null) {
+                    keyringService.getMnemonicForDefaultKeyring(result -> {
                         String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
                                 recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
                         if (result.equals(recoveryPhraseToVerify)) {
-                            keyringController.notifyWalletBackupComplete();
+                            keyringService.notifyWalletBackupComplete();
                             onNextPage.gotoNextPage(true);
                         } else {
                             phraseNotMatch();
@@ -92,9 +92,9 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
         recoveryPhraseSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
 
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getMnemonicForDefaultKeyring(result -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getMnemonicForDefaultKeyring(result -> {
                 recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                 Collections.shuffle(recoveryPhrases);
                 setupRecoveryPhraseRecyclerView(view);
@@ -163,8 +163,9 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
             }
 
             if (recoveryPhrasesAdapter != null && recoveryPhrasesToVerifyAdapter != null) {
-                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
-                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                List<String> newList =
+                        new ArrayList<>(recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(newList);
                 recoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
             }
 

@@ -25,6 +25,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "net/http/http_status_code.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -232,9 +233,13 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
 }
 
 bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
-  return url.SchemeIsHTTPOrHTTPS() &&
-         !IsAPIGateway(url.GetOrigin(), chrome::GetChannel()) &&
-         !IsDefaultGatewayURL(url, pref_service_);
+  url::Origin url_origin = url::Origin::Create(url);
+  bool resolve = url.SchemeIsHTTPOrHTTPS() &&
+                 !IsAPIGateway(url_origin.GetURL(), chrome::GetChannel());
+  if (!IsLocalGatewayConfigured(pref_service_)) {
+    resolve = resolve && !IsDefaultGatewayURL(url, pref_service_);
+  }
+  return resolve;
 }
 
 void IPFSTabHelper::MaybeShowDNSLinkButton(

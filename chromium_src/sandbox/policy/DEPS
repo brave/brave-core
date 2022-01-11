@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../../sandbox/policy/win",
-  "+sandbox/policy",
-]

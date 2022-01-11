@@ -39,10 +39,10 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
   const CreativeAdNotificationInfo creative_ad_1 =
       BuildCreativeAdNotification();
 
-  const base::Time event_time =
-      base::Time::Now() - base::TimeDelta::FromHours(12);
+  const base::Time event_time = base::Time::Now() - base::Hours(12);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed, event_time);
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, event_time);
   ad_events.push_back(ad_event);
 
   // Act
@@ -68,23 +68,23 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
       BuildCreativeAdNotification();
 
   const AdEventInfo ad_event_4 =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kConversion,
-                   now - base::TimeDelta::FromHours(3));
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kConversion, now - base::Hours(3));
   ad_events.push_back(ad_event_4);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(6));
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(6));
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_2 =
-      BuildAdEvent(creative_ad_2, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(11));
+      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(11));
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(12));
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(12));
   ad_events.push_back(ad_event_1);
 
   // Act
@@ -92,8 +92,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
       GetLastSeenAdTime(ad_events, creative_ad_1);
 
   // Assert
-  const base::Time expected_last_seen_ad_time =
-      now - base::TimeDelta::FromHours(6);
+  const base::Time expected_last_seen_ad_time = now - base::Hours(6);
   EXPECT_EQ(expected_last_seen_ad_time, last_seen_ad_time.value());
 }
 
@@ -118,10 +117,10 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
   const CreativeAdNotificationInfo creative_ad_1 =
       BuildCreativeAdNotification();
 
-  const base::Time event_time =
-      base::Time::Now() - base::TimeDelta::FromHours(12);
+  const base::Time event_time = base::Time::Now() - base::Hours(12);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed, event_time);
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, event_time);
   ad_events.push_back(ad_event);
 
   // Act
@@ -153,23 +152,23 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   const base::Time now = base::Time::Now();
 
   const AdEventInfo ad_event_4 =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(3));
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(3));
   ad_events.push_back(ad_event_4);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(creative_ad_3, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(6));
+      BuildAdEvent(creative_ad_3, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(6));
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_2 =
-      BuildAdEvent(creative_ad_2, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(11));
+      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(11));
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad_1, ConfirmationType::kViewed,
-                   now - base::TimeDelta::FromHours(12));
+      BuildAdEvent(creative_ad_1, AdType::kAdNotification,
+                   ConfirmationType::kViewed, now - base::Hours(12));
   ad_events.push_back(ad_event_1);
 
   // Act
@@ -177,8 +176,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
       GetLastSeenAdvertiserTime(ad_events, creative_ad_3);
 
   // Assert
-  const base::Time expected_last_seen_advertiser_time =
-      now - base::TimeDelta::FromHours(3);
+  const base::Time expected_last_seen_advertiser_time = now - base::Hours(3);
   EXPECT_EQ(expected_last_seen_advertiser_time,
             last_seen_advertiser_time.value());
 }

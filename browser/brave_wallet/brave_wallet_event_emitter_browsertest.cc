@@ -7,12 +7,12 @@
 #include "base/task/post_task.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -95,19 +95,18 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  mojo::Remote<brave_wallet::mojom::EthJsonRpcController>
-  GetEthJsonRpcController() {
-    if (!rpc_controller_) {
+  mojo::Remote<brave_wallet::mojom::JsonRpcService> GetJsonRpcService() {
+    if (!json_rpc_service_) {
       auto pending =
-          brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+          brave_wallet::JsonRpcServiceFactory::GetInstance()->GetForContext(
               browser()->profile());
-      rpc_controller_.Bind(std::move(pending));
+      json_rpc_service_.Bind(std::move(pending));
     }
-    return std::move(rpc_controller_);
+    return std::move(json_rpc_service_);
   }
 
  private:
-  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller_;
+  mojo::Remote<brave_wallet::mojom::JsonRpcService> json_rpc_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -134,9 +133,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
-  auto controller = GetEthJsonRpcController();
-  controller->SetNetwork(brave_wallet::mojom::kGoerliChainId,
-                         base::DoNothing());
+  auto service = GetJsonRpcService();
+  service->SetNetwork(brave_wallet::mojom::kGoerliChainId, base::DoNothing());
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_chain_changed_event"),

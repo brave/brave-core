@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">ጣቢያዎች የ Ethereum አቅራቢ API ን እንዳያገኙ ያግዱ</translation>
 <translation id="8988939298652262600">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አያጣራም። ይህን ቅጥያ መጫን ያለብዎ ገንቢውን የሚያምኑት ከሆነ ብቻ ነው።</translation>
 <translation id="8081858229109418493">የገጽ ስም እና አዶ</translation>
+<translation id="6438096877646138757">ኩኪዎችን ሲዘጉ የሚያጸዱ ጣቢያዎች</translation>
+<translation id="2988792685798128092">ቅርበት ያለውን ጣቢያ አጽዳ</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
 <translation id="1692470335103807198">ተጨማሪ ገጽታዎችን ያግኙ</translation>
 <translation id="2906510232093002459">የ Brave ነባሪ ምስሎች</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
 <translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ-ሰር ይጠቁማል።</translation>
 <translation id="6821903322090655051">የ Brave Rewards ሽልማት ታግደዋል</translation>
-<translation id="9184430019924125685">የበለጠ ለማወቅ እዚህ ጠቅ ያድርጉ</translation>
+<translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
 <translation id="3849957491997306859">በራስ-ፈልግ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
 <translation id="4424486208397124985">አንስተኛ የአሳታሚ ጠቃሚነት ጎብኝዎች</translation>
 <translation id="6248554379744796526">በዝርዝሩ ውስጥ ያልተረጋገጡ ድረ ገጾችን አሳይ</translation>
-<translation id="3241299447027267831">ለቪድዮዎች አስተዋጽኦችን ይፍቀዱ</translation>
+<translation id="5510618543889994434">ለቪድዮዎች አስተዋፅዖችን ይፍቀዱ</translation>
 <translation id="924777189963477634">በራስ-አስተዋጽዖን በማብራት በሚከተለው <ph name="BEGIN_LINK_TOS"/>የኣገልግሎት ውሎች<ph name="END_LINK_TOS"/> እና <ph name="BEGIN_LINK_PP"/>የግላዊነት ፖሊሲ<ph name="END_LINK_PP"/>ተስማምተዋል።</translation>
 <translation id="5733490796524078528">የጥቆማ አዝራሮች</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@
 <translation id="2414886740292270097">ጨለማ</translation>
 <translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
 <translation id="1336940801687497203">ልክ እንደ Windows</translation>
+<translation id="5919209812221905840">ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ</translation>
+<translation id="5239541974656019812">Braveን ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ ያድርጉት</translation>
+<translation id="7136694880210472378">ነባሪ አድርግ</translation>
+<translation id="1751388324499810661">Brave ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ ነው</translation>
 <translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
@@ -425,7 +431,7 @@
 <translation id="2653659639078652383">አስገባ</translation>
 <translation id="2556708692502648323">የዋሌት አውታረ መረቦች</translation>
 <translation id="1330032157352961756">የአዲስ ሰንሰለት መታወቂያ</translation>
-<translation id="9053905035135220650">የ 0x-ቅድመ ቅጥያ ሄክሳዴሲማል ሕብረቁምፊ</translation>
+<translation id="3423620355610881890">አወንታዊ የአስርዮሽ ቁጥር</translation>
 <translation id="726121047592132939">የአዲሱ ሰንሰለት ስም</translation>
 <translation id="1034112277864078119">የሰንሰለት ስም አስገባ</translation>
 <translation id="4672314527143443556">የሰንሰለት መገበያያ ገንዘብ ስም</translation>
@@ -439,7 +445,7 @@
 <translation id="3047726704186619366">ኣይከን URLs</translation>
 <translation id="2487558607408469181">አሳሽ URLs ን አግድ</translation>
 <translation id="6301398959353668507">ይህ መስክ ባዶ ሊሆን አይችልም።</translation>
-<translation id="4514843126085243862">ልክ ያልሆነ ፎርማት፣ የሰንሰለቱ መታወቂያ 0x ቅድመ ቅጥያ ሄክሳዴሲማል ሕብረቁምፊ ነው።</translation>
+<translation id="7504462451153306677">ልክ ያልሆነ ቅርጸት፣ የሰንሰለቱ መታወቂያ አወንታዊ ቁጥር ነው።</translation>
 <translation id="8325036459845654666">ይህ አውታረ መረብ አስቀድሞ ታክሏል።</translation>
 <translation id="650071759190249039">የውስጥ ስህተት፣ አውታረ መረብ ማከል አልተቻለም።</translation>
 <translation id="868529041590572443">እባክዎ ስለ ቤተኛ የመገበያያ ገንዘብ ሁሉንም መረጃ ይሙሉ</translation>

@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
 #define CookieMonster ChromiumCookieMonster
-#include "../../../../net/cookies/cookie_monster.h"
+#include "src/net/cookies/cookie_monster.h"
 #undef CookieMonster
 
 namespace net {

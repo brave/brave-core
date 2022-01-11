@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -87,9 +87,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     private void setUpAccountList(View view) {
         RecyclerView rvAccounts = view.findViewById(R.id.rv_accounts);
         walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -116,9 +116,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         RecyclerView rvSecondaryAccounts = view.findViewById(R.id.rv_secondary_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -166,10 +166,10 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         }
     }
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;

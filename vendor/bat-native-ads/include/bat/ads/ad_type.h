@@ -40,7 +40,7 @@ class AdType final {
   bool operator!=(const AdType& rhs) const;
 
  private:
-  Value value_;
+  Value value_ = kUndefined;
 };
 
 }  // namespace ads

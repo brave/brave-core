@@ -8,17 +8,15 @@ import * as React from 'react'
 import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
-  AppItem,
+  BraveWallet,
   AppsListType,
   PriceDataObjectType,
   AccountAssetOptionType,
   AccountTransactions,
-  AssetPrice,
   WalletAccountType,
-  AssetPriceTimeframe,
-  EthereumChain,
-  ERCToken,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -30,56 +28,61 @@ import { PortfolioView, AccountsView } from '../../components/desktop/views'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { HardwareWalletAccount } from './../../common/hardware/types'
 
 export interface Props {
+  defaultCurrencies: DefaultCurrencies
   isFetchingPortfolioPriceHistory: boolean
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   showAddModal: boolean
   isLoading: boolean
   userAssetList: AccountAssetOptionType[]
   transactions: AccountTransactions
   portfolioBalance: string
-  selectedAsset: ERCToken | undefined
-  selectedBTCAssetPrice: AssetPrice | undefined
-  selectedUSDAssetPrice: AssetPrice | undefined
+  selectedAsset: BraveWallet.BlockchainToken | undefined
+  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
-  selectedPortfolioTimeline: AssetPriceTimeframe
-  selectedTimeline: AssetPriceTimeframe
-  networkList: EthereumChain[]
+  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
+  networkList: BraveWallet.EthereumChain[]
   accounts: WalletAccountType[]
   needsBackup: boolean
-  userVisibleTokensInfo: ERCToken[]
-  fullAssetList: ERCToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  fullAssetList: BraveWallet.BlockchainToken[]
   privateKey: string
-  transactionSpotPrices: AssetPrice[]
+  transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
-  onAddUserAsset: (token: ERCToken) => void
-  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: ERCToken) => void
+  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onRemoveAccount: (address: string, hardware: boolean) => void
-  fetchFullTokenList: () => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   getBalance: (address: string) => Promise<string>
-  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onImportAccount: (accountName: string, privateKey: string) => void
+  onImportFilecoinAccount: (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onCreateAccount: (name: string) => void
-  onSelectAsset: (asset: ERCToken | undefined) => void
-  onChangeTimeline: (path: AssetPriceTimeframe) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onShowBackup: () => void
+  onShowVisibleAssetsModal: (value: boolean) => void
+  showVisibleAssetsModal: boolean
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
 const CryptoStoryView = (props: Props) => {
   const {
+    defaultCurrencies,
     hasImportError,
     userVisibleTokensInfo,
     transactionSpotPrices,
@@ -97,11 +100,13 @@ const CryptoStoryView = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    selectedUSDAssetPrice,
-    selectedBTCAssetPrice,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
+    showVisibleAssetsModal,
+    onShowVisibleAssetsModal,
     onAddUserAsset,
     onSetUserAssetVisible,
     onRemoveUserAsset,
@@ -114,41 +119,43 @@ const CryptoStoryView = (props: Props) => {
     onAddHardwareAccounts,
     getBalance,
     onImportAccount,
+    onImportFilecoinAccount,
     onUpdateAccountName,
-    fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
-    onSetImportError
+    onSetImportError,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [favoriteApps, setFavoriteApps] = React.useState<AppItem[]>([
+  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
+  const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const browseMore = () => {
     alert('Will expand to view more!')
   }
 
-  // In the future these will be actual paths
-  // for example wallet/crypto/portfolio
-  const tabTo = (path: TopTabNavTypes) => {
+  const onSelectTab = (path: TopTabNavTypes) => {
     setSelectedTab(path)
   }
 
-  const addToFavorites = (app: AppItem) => {
+  const addToFavorites = (app: BraveWallet.AppItem) => {
     const newList = [...favoriteApps, app]
     setFavoriteApps(newList)
   }
-  const removeFromFavorites = (app: AppItem) => {
+  const removeFromFavorites = (app: BraveWallet.AppItem) => {
     const newList = favoriteApps.filter(
       (fav) => fav.name !== app.name
     )
@@ -167,7 +174,8 @@ const CryptoStoryView = (props: Props) => {
     setShowBackupWarning(false)
   }
 
-  const onClickAddAccount = () => {
+  const onClickAddAccount = (tabId: AddAccountNavTypes) => () => {
+    setAddAccountModalTab(tabId)
     onToggleAddModal()
   }
 
@@ -213,16 +221,30 @@ const CryptoStoryView = (props: Props) => {
     alert('Will speedup transaction')
   }
 
+  const onClickMore = () => {
+    setShowMore(true)
+  }
+
+  const onHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onHideMore}>
       {!hideNav &&
         <>
           <TopTabNav
             tabList={TopNavOptions()}
             selectedTab={selectedTab}
-            onSubmit={tabTo}
+            onSelectTab={onSelectTab}
             hasMoreButtons={true}
-            onLockWallet={onLockWallet}
+            showMore={showMore}
+            onClickLock={onLockWallet}
+            onClickBackup={onShowBackup}
+            onClickMore={onClickMore}
+            onClickSettings={onClickSettings}
           />
           {showDefaultWalletBanner &&
             <WalletBanner
@@ -262,6 +284,7 @@ const CryptoStoryView = (props: Props) => {
       }
       {selectedTab === 'portfolio' &&
         <PortfolioView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
           networkList={networkList}
@@ -273,7 +296,6 @@ const CryptoStoryView = (props: Props) => {
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          fetchFullTokenList={fetchFullTokenList}
           addUserAssetError={false}
           onAddUserAsset={onAddUserAsset}
           onRemoveUserAsset={onRemoveUserAsset}
@@ -282,8 +304,8 @@ const CryptoStoryView = (props: Props) => {
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
           transactions={transactions}
-          selectedUSDAssetPrice={selectedUSDAssetPrice}
-          selectedBTCAssetPrice={selectedBTCAssetPrice}
+          selectedAssetFiatPrice={selectedAssetFiatPrice}
+          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
           userAssetList={userAssetList}
           isLoading={isLoading}
           selectedNetwork={selectedNetwork}
@@ -294,13 +316,17 @@ const CryptoStoryView = (props: Props) => {
           onRetryTransaction={onClickRetryTransaction}
           onSpeedupTransaction={onClickSpeedupTransaction}
           onCancelTransaction={onClickCancelTransaction}
+          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+          showVisibleAssetsModal={showVisibleAssetsModal}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
         />
       }
       {selectedTab === 'accounts' &&
         <AccountsView
+          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
           accounts={accounts}
-          onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
           onUpdateAccountName={onUpdateAccountName}
           onRemoveAccount={onRemoveAccount}
@@ -323,10 +349,10 @@ const CryptoStoryView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
+          onImportFilecoinAccount={onImportFilecoinAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
           onAddHardwareAccounts={onAddHardwareAccounts}
           getBalance={getBalance}
@@ -334,6 +360,7 @@ const CryptoStoryView = (props: Props) => {
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
           onRouteBackToAccounts={onRouteBackToAccounts}
+          tab={addAccountModalTab}
         />
       }
     </StyledWrapper>

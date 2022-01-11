@@ -6,7 +6,7 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#include "../../../../components/permissions/permission_request_manager.cc"
+#include "src/components/permissions/permission_request_manager.cc"
 
 namespace permissions {
 

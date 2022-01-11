@@ -2,12 +2,14 @@ import * as React from 'react'
 import BigNumber from 'bignumber.js'
 
 import { getLocale } from '../../../../common/locale'
-import { TransactionInfo, EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
+
 import { NavButton, Panel } from '../'
+
+// Utils
 import {
   formatFiatGasFee,
-  toWei,
   toGWei,
   addCurrencies,
   formatGasFee,
@@ -15,6 +17,9 @@ import {
   gWeiToWeiHex,
   toWeiHex
 } from '../../../utils/format-balances'
+import { addNumericValues } from '../../../utils/bn-utils'
+
+// Hooks
 import { useTransactionFeesParser } from '../../../common/hooks'
 
 // Styled Components
@@ -33,7 +38,8 @@ import {
   SliderLabelRow,
   SliderLabel,
   SliderWrapper,
-  SliderValue
+  SliderValue,
+  WarningText
 } from './style'
 
 export enum MaxPriorityPanels {
@@ -44,8 +50,8 @@ export enum MaxPriorityPanels {
 export interface Props {
   onCancel: () => void
   networkSpotPrice: string
-  transactionInfo: TransactionInfo
-  selectedNetwork: EthereumChain
+  transactionInfo: BraveWallet.TransactionInfo
+  selectedNetwork: BraveWallet.EthereumChain
   baseFeePerGas: string
   suggestedMaxPriorityFeeChoices: string[]
   suggestedSliderStep: string
@@ -74,10 +80,10 @@ const EditGas = (props: Props) => {
   const { isEIP1559Transaction } = transactionFees
 
   const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] = React.useState<string>(suggestedMaxPriorityFeeChoices[1])
-  const [gasLimit, setGasLimit] = React.useState<string>(toWei(transactionFees.gasLimit, 0))
-  const [gasPrice, setGasPrice] = React.useState<string>(toGWei(transactionFees.gasPrice, selectedNetwork.decimals))
-  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas, selectedNetwork.decimals))
-  const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas, selectedNetwork.decimals))
+  const [gasLimit, setGasLimit] = React.useState<string>(transactionFees.gasLimit)
+  const [gasPrice, setGasPrice] = React.useState<string>(toGWei(transactionFees.gasPrice))
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas))
+  const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas))
 
   const handleGasPriceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasPrice(event.target.value)
@@ -91,11 +97,8 @@ const EditGas = (props: Props) => {
     const value = event.target.value
     setMaxPriorityFeePerGas(value)
 
-    const computedMaxFeePerGasWeiHex = addCurrencies(baseFeePerGas, gWeiToWei(value))
-    const computedMaxFeePerGasGWei = toGWei(
-      computedMaxFeePerGasWeiHex,
-      selectedNetwork.decimals
-    )
+    const computedMaxFeePerGasWei = addNumericValues(baseFeePerGas, gWeiToWei(value))
+    const computedMaxFeePerGasGWei = toGWei(computedMaxFeePerGasWei)
     setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
@@ -175,6 +178,14 @@ const EditGas = (props: Props) => {
     onCancel()
   }
 
+  const isZeroGasPrice = React.useMemo(() => {
+    return (
+      !isEIP1559Transaction &&
+      gasPrice !== '' &&
+      new BigNumber(gWeiToWei(gasPrice)).isZero()
+    )
+  }, [gasPrice])
+
   const isSaveButtonDisabled = React.useMemo(() => {
     if (gasLimit === '') {
       return true
@@ -188,7 +199,7 @@ const EditGas = (props: Props) => {
       return true
     }
 
-    if (!isEIP1559Transaction && new BigNumber(gWeiToWei(gasPrice)).lte(0)) {
+    if (!isEIP1559Transaction && new BigNumber(gWeiToWei(gasPrice)).lt(0)) {
       return true
     }
 
@@ -217,7 +228,7 @@ const EditGas = (props: Props) => {
             <CurrentBaseRow>
               <CurrentBaseText>{getLocale('braveWalletEditGasBaseFee')}</CurrentBaseText>
               <CurrentBaseText>
-                {`${toGWei(baseFeePerGas, selectedNetwork.decimals)} ${getLocale('braveWalletEditGasGwei')}`}
+                {`${toGWei(baseFeePerGas)} ${getLocale('braveWalletEditGasGwei')}`}
               </CurrentBaseText>
             </CurrentBaseRow>
 
@@ -281,6 +292,10 @@ const EditGas = (props: Props) => {
               value={gasPrice}
               onChange={handleGasPriceInputChanged}
             />
+
+            {isZeroGasPrice && (
+              <WarningText>{getLocale('braveWalletEditGasZeroGasPriceWarning')}</WarningText>
+            )}
           </FormColumn>
         }
 

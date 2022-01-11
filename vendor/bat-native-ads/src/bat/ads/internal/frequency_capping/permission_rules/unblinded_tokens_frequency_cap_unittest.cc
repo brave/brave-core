@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -19,18 +18,11 @@ class BatAdsUnblindedTokensFrequencyCapTest : public UnitTestBase {
   BatAdsUnblindedTokensFrequencyCapTest() = default;
 
   ~BatAdsUnblindedTokensFrequencyCapTest() override = default;
-
-  privacy::UnblindedTokens* get_unblinded_tokens() {
-    return ConfirmationsState::Get()->get_unblinded_tokens();
-  }
 };
 
 TEST_F(BatAdsUnblindedTokensFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const privacy::UnblindedTokenList unblinded_tokens =
-      privacy::GetUnblindedTokens(10);
-
-  get_unblinded_tokens()->SetTokens(unblinded_tokens);
+  privacy::SetUnblindedTokens(10);
 
   // Act
   UnblindedTokensFrequencyCap frequency_cap;
@@ -53,10 +45,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest, DoNotAllowAdIfNoUnblindedTokens) {
 
 TEST_F(BatAdsUnblindedTokensFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  const privacy::UnblindedTokenList unblinded_tokens =
-      privacy::GetUnblindedTokens(9);
-
-  get_unblinded_tokens()->SetTokens(unblinded_tokens);
+  privacy::SetUnblindedTokens(9);
 
   // Act
   UnblindedTokensFrequencyCap frequency_cap;

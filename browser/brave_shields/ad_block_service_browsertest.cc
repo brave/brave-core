@@ -76,6 +76,7 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
+using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 
@@ -238,8 +239,8 @@ bool AdBlockServiceTest::StartAdBlockRegionalServices() {
 }
 
 void AdBlockServiceTest::SetSubscriptionIntervals() {
-  auto initial_delay = base::TimeDelta::FromSeconds(2);
-  auto retry_interval = base::TimeDelta::FromSeconds(2);
+  auto initial_delay = base::Seconds(2);
+  auto retry_interval = base::Seconds(2);
 
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
   auto* subscription_service_manager =
@@ -541,14 +542,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          R"(
                            new Promise(function (resolve, reject) {
                              var s = document.createElement('script');
@@ -575,14 +576,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  EXPECT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
-  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  EXPECT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          R"(
                            new Promise(function (resolve, reject) {
                              var s = document.createElement('script');
@@ -1205,7 +1206,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -1214,7 +1215,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   contents = browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
@@ -2209,4 +2210,68 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   ASSERT_EQ(true, EvalJs(contents, "show_ad"));
+}
+
+class DefaultCookieListFlagEnabledTest : public AdBlockServiceTest {
+ public:
+  DefaultCookieListFlagEnabledTest() {
+    feature_list_.InitAndEnableFeature(kBraveAdblockCookieListDefault);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Test that the `brave-adblock-default-1p-blocking` flag forces the Cookie
+// List UUID to be enabled, until manually enabled and then disabled again.
+IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest,
+                       CosmeticFilteringIframeScriptlet) {
+  std::vector<adblock::FilterList> regional_catalog =
+      std::vector<adblock::FilterList>();
+  regional_catalog.push_back(adblock::FilterList(
+      brave_shields::kCookieListUuid,
+      "https://easylist-downloads.adblockplus.org/liste_fr.txt",
+      "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
+      "emaecjinaegfkoklcdafkiocjhoeilao",
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
+      "/"
+      "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
+      "SHXcdHwItvLK"
+      "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
+      "M5v3"
+      "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
+      "PvwS6jIH3L"
+      "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
+      "hwI1lqfKbFnyr4aP"
+      "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
+      "Removes advertisements from French websites"));
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->SetRegionalCatalog(regional_catalog);
+
+  {
+    const auto lists =
+        g_brave_browser_process->ad_block_regional_service_manager()
+            ->GetRegionalLists();
+    // Although never explicitly enabled, it should be presented as enabled by
+    // default at first.
+    ASSERT_EQ(1UL, lists->GetList().size());
+    EXPECT_EQ(true, lists->GetList()[0].FindKey("enabled")->GetBool());
+  }
+
+  // Enable the filter list, and then disable it again.
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->EnableFilterList(brave_shields::kCookieListUuid, true);
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->EnableFilterList(brave_shields::kCookieListUuid, false);
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  {
+    const auto lists =
+        g_brave_browser_process->ad_block_regional_service_manager()
+            ->GetRegionalLists();
+    // It should be actually disabled now.
+    ASSERT_EQ(1UL, lists->GetList().size());
+    EXPECT_EQ(false, lists->GetList()[0].FindKey("enabled")->GetBool());
+  }
 }

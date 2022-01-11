@@ -11,7 +11,7 @@
 #define browser_creator_ \
   browser_creator_;      \
   friend class BraveStartupBrowserCreatorImpl
-#include "../../../../../../chrome/browser/ui/startup/startup_browser_creator_impl.h"  // NOLINT
+#include "src/chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #undef browser_creator_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_STARTUP_STARTUP_BROWSER_CREATOR_IMPL_H_

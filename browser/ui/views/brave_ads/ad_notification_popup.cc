@@ -333,12 +333,17 @@ void AdNotificationPopup::SaveOrigin(const gfx::Point& origin) const {
                                    origin.y());
 }
 
-gfx::Rect AdNotificationPopup::CalculateBounds() {
+gfx::Size AdNotificationPopup::CalculateViewSize() const {
   DCHECK(ad_notification_view_);
   gfx::Size size = ad_notification_view_->size();
   DCHECK(!size.IsEmpty());
 
   size += gfx::Size(-GetShadowMargin().width(), -GetShadowMargin().height());
+  return size;
+}
+
+gfx::Rect AdNotificationPopup::CalculateBounds() {
+  const gfx::Size size = CalculateViewSize();
   const gfx::Point origin = GetOriginForSize(size);
   return gfx::Rect(origin, size);
 }
@@ -348,8 +353,11 @@ void AdNotificationPopup::RecomputeAlignment() {
     return;
   }
 
-  const gfx::Rect bounds = GetWidget()->GetWindowBoundsInScreen();
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), bounds);
+  const gfx::Point window_origin =
+      GetWidget()->GetWindowBoundsInScreen().origin();
+  const gfx::Size view_size = CalculateViewSize();
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(
+      GetWidget(), gfx::Rect(window_origin, view_size));
 }
 
 const gfx::ShadowDetails& AdNotificationPopup::GetShadowDetails() const {
@@ -399,7 +407,7 @@ void AdNotificationPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
 
   const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+      base::Milliseconds(features::AdNotificationFadeDuration());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -409,7 +417,7 @@ void AdNotificationPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
 
   const base::TimeDelta fade_duration =
-      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+      base::Milliseconds(features::AdNotificationFadeDuration());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();

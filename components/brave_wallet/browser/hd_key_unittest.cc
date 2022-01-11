@@ -6,7 +6,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -257,10 +257,20 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
   EXPECT_TRUE(key->Verify(msg_a, sig_a));
   EXPECT_TRUE(key->Verify(msg_b, sig_b));
-  const std::vector<uint8_t> public_key_a = key->Recover(msg_a, sig_a, recid_a);
-  const std::vector<uint8_t> public_key_b = key->Recover(msg_b, sig_b, recid_b);
+  const std::vector<uint8_t> public_key_a =
+      key->Recover(true, msg_a, sig_a, recid_a);
+  const std::vector<uint8_t> public_key_b =
+      key->Recover(true, msg_b, sig_b, recid_b);
+  const std::vector<uint8_t> uncompressed_public_key_a =
+      key->Recover(false, msg_a, sig_a, recid_a);
+  const std::vector<uint8_t> uncompressed_public_key_b =
+      key->Recover(false, msg_b, sig_b, recid_b);
   EXPECT_EQ(base::HexEncode(public_key_a), base::HexEncode(key->public_key_));
   EXPECT_EQ(base::HexEncode(public_key_b), base::HexEncode(key->public_key_));
+  EXPECT_EQ(base::HexEncode(uncompressed_public_key_a),
+            base::HexEncode(key->GetUncompressedPublicKey()));
+  EXPECT_EQ(base::HexEncode(uncompressed_public_key_b),
+            base::HexEncode(key->GetUncompressedPublicKey()));
 
   EXPECT_FALSE(key->Verify(std::vector<uint8_t>(32), std::vector<uint8_t>(64)));
   EXPECT_FALSE(key->Verify(msg_a, sig_b));
@@ -272,16 +282,18 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(63)));
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(65)));
 
-  EXPECT_TRUE(
-      IsPublicKeyEmpty(key->Recover(std::vector<uint8_t>(31), sig_a, recid_a)));
-  EXPECT_TRUE(
-      IsPublicKeyEmpty(key->Recover(std::vector<uint8_t>(33), sig_a, recid_a)));
-  EXPECT_TRUE(
-      IsPublicKeyEmpty(key->Recover(msg_a, std::vector<uint8_t>(31), recid_a)));
-  EXPECT_TRUE(
-      IsPublicKeyEmpty(key->Recover(msg_a, std::vector<uint8_t>(33), recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(msg_a, sig_a, -1)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(msg_a, sig_a, 4)));
+  EXPECT_TRUE(IsPublicKeyEmpty(
+      key->Recover(true, std::vector<uint8_t>(31), sig_a, recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(
+      key->Recover(true, std::vector<uint8_t>(33), sig_a, recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(
+      key->Recover(true, msg_a, std::vector<uint8_t>(31), recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(
+      key->Recover(true, msg_a, std::vector<uint8_t>(33), recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(true, msg_a, sig_a, -1)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(true, msg_a, sig_a, 4)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(false, msg_a, sig_a, -1)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(false, msg_a, sig_a, 4)));
 }
 
 TEST(HDKeyUnitTest, SetPrivateKey) {

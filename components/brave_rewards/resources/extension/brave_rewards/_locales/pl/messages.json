@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Rozłączony",
+    "message": "Wylogowano",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Rozłącz Nagrody Brave",
-    "description": ""
+    "message": "Wyloguj z $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Szacunkowe dochody",

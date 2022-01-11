@@ -6,13 +6,17 @@ declare_args() {
   brave_android_manifest_includes = []
 }
 
-brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
+brave_android_manifest_includes = [
+  "//brave/android/java/AndroidManifest.xml",
+  "//brave/android/java/AndroidManifest_intent_filters.xml",
+]
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:java",
   "//brave/browser/notifications:brave_java",
   "//brave/browser/notifications:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
   "//brave/components/brave_today/common:mojom_java",
   "//brave/components/brave_wallet/common:mojom_java",

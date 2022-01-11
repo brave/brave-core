@@ -39,7 +39,7 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void OnGetWalletInfo(GetWalletInfoCallback callback,
                        brave_wallet::mojom::KeyringInfoPtr keyring_info);
 
-  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
+  mojo::Remote<brave_wallet::mojom::KeyringService> keyring_service_;
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;

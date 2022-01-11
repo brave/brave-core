@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/guid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -104,6 +105,95 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   currency.SetIntKey("decimals", chain->decimals);
   dict.SetKey("nativeCurrency", std::move(currency));
   return dict;
+}
+
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
+  mojom::BlockchainTokenPtr tokenPtr = mojom::BlockchainToken::New();
+  if (!value.is_dict())
+    return nullptr;
+
+  const std::string* contract_address = value.FindStringKey("contract_address");
+  if (!contract_address)
+    return nullptr;
+  tokenPtr->contract_address = *contract_address;
+
+  const std::string* name = value.FindStringKey("name");
+  if (!name)
+    return nullptr;
+  tokenPtr->name = *name;
+
+  const std::string* symbol = value.FindStringKey("symbol");
+  if (!symbol)
+    return nullptr;
+  tokenPtr->symbol = *symbol;
+
+  const std::string* logo = value.FindStringKey("logo");
+  if (logo) {
+    tokenPtr->logo = *logo;
+  }
+
+  absl::optional<bool> is_erc20 = value.FindBoolKey("is_erc20");
+  if (!is_erc20)
+    return nullptr;
+  tokenPtr->is_erc20 = is_erc20.value();
+
+  absl::optional<bool> is_erc721 = value.FindBoolKey("is_erc721");
+  if (!is_erc721)
+    return nullptr;
+  tokenPtr->is_erc721 = is_erc721.value();
+
+  absl::optional<int> decimals = value.FindIntKey("decimals");
+  if (!decimals)
+    return nullptr;
+  tokenPtr->decimals = decimals.value();
+
+  absl::optional<bool> visible = value.FindBoolKey("visible");
+  if (!visible)
+    return nullptr;
+  tokenPtr->visible = visible.value();
+
+  const std::string* token_id = value.FindStringKey("token_id");
+  if (token_id)
+    tokenPtr->token_id = *token_id;
+
+  return tokenPtr;
+}
+
+// Creates a response object as described in:
+// https://eips.ethereum.org/EIPS/eip-2255
+base::ListValue PermissionRequestResponseToValue(
+    const url::Origin& origin,
+    const std::vector<std::string> accounts) {
+  base::ListValue container_list;
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("id", base::GenerateGUID());
+
+  base::ListValue context_list;
+  context_list.Append(base::Value("https://github.com/MetaMask/rpc-cap"));
+  dict.SetKey("context", std::move(context_list));
+
+  base::ListValue caveats_list;
+  base::Value caveats_obj1(base::Value::Type::DICTIONARY);
+  caveats_obj1.SetStringKey("name", "primaryAccountOnly");
+  caveats_obj1.SetStringKey("type", "limitResponseLength");
+  caveats_obj1.SetIntKey("value", 1);
+  caveats_list.Append(std::move(caveats_obj1));
+  base::Value caveats_obj2(base::Value::Type::DICTIONARY);
+  caveats_obj2.SetStringKey("name", "exposedAccounts");
+  caveats_obj2.SetStringKey("type", "filterResponse");
+  base::ListValue filter_response_list;
+  for (auto account : accounts) {
+    filter_response_list.Append(base::Value(account));
+  }
+  caveats_obj2.SetKey("value", std::move(filter_response_list));
+  caveats_list.Append(std::move(caveats_obj2));
+  dict.SetKey("caveats", std::move(caveats_list));
+
+  dict.SetDoubleKey("date", base::Time::Now().ToJsTime());
+  dict.SetStringKey("invoker", origin.Serialize());
+  dict.SetStringKey("parentCapability", "eth_accounts");
+  container_list.Append(std::move(dict));
+  return container_list;
 }
 
 }  // namespace brave_wallet

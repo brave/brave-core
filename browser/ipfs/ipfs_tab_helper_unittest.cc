@@ -65,6 +65,14 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
 
   GURL api_server = ipfs::GetAPIServer(chrome::GetChannel());
   ASSERT_FALSE(helper->CanResolveURL(api_server));
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  ASSERT_TRUE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
   ASSERT_FALSE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
 }
 

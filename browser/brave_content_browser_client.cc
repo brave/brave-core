@@ -21,10 +21,11 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
@@ -64,6 +65,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -174,9 +176,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #endif
@@ -243,22 +247,22 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto* rpc_controller =
-      brave_wallet::RpcControllerFactory::GetControllerForContext(
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
 
-  if (!rpc_controller)
+  if (!json_rpc_service)
     return;
 
-  auto tx_controller = brave_wallet::EthTxControllerFactory::GetForContext(
+  auto tx_service = brave_wallet::EthTxServiceFactory::GetForContext(
       frame_host->GetBrowserContext());
-  if (!tx_controller)
+  if (!tx_service)
     return;
 
-  auto* keyring_controller =
-      brave_wallet::KeyringControllerFactory::GetControllerForContext(
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!keyring_controller)
+  if (!keyring_service)
     return;
 
   auto* brave_wallet_service =
@@ -273,7 +277,7 @@ void MaybeBindBraveWalletProvider(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          rpc_controller, std::move(tx_controller), keyring_controller,
+          json_rpc_service, std::move(tx_service), keyring_service,
           brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host),
@@ -391,6 +395,31 @@ bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
   return false;
 }
 
+bool BraveContentBrowserClient::AllowWorkerFingerprinting(
+    const GURL& url,
+    content::BrowserContext* browser_context) {
+  return WorkerGetBraveFarblingLevel(url, browser_context) !=
+         BraveFarblingLevel::MAXIMUM;
+}
+
+uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
+    const GURL& url,
+    content::BrowserContext* browser_context) {
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
+  const bool shields_up =
+      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
+  if (!shields_up)
+    return BraveFarblingLevel::OFF;
+  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+      host_content_settings_map, url);
+  if (fingerprinting_type == ControlType::BLOCK)
+    return BraveFarblingLevel::MAXIMUM;
+  if (fingerprinting_type == ControlType::ALLOW)
+    return BraveFarblingLevel::OFF;
+  return BraveFarblingLevel::BALANCED;
+}
+
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
@@ -438,6 +467,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV2)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        brave_shields_panel::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+  }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   if (brave_vpn::IsBraveVPNEnabled()) {
@@ -814,6 +848,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
               handle, g_brave_browser_process->ad_block_service(),
               g_brave_browser_process->ad_block_custom_filters_service(),
+              EphemeralStorageServiceFactory::GetForContext(context),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(context)),
               g_browser_process->GetApplicationLocale()))

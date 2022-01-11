@@ -19,8 +19,9 @@ import {
 } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
-import { ArrivingSoonMessage } from './arriving_soon_message'
-import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
+import { PaymentStatusView } from '../../shared/components/payment_status_view'
+
+import * as style from './style'
 
 // Utils
 import * as utils from '../utils'
@@ -255,28 +256,28 @@ class AdsBox extends React.Component<Props, State> {
     })
   }
 
-  onThumbUpPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbUp(creativeInstanceId, creativeSetId, action)
+  onThumbUpPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbUp(adContent)
   }
 
-  onThumbDownPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbDown(creativeInstanceId, creativeSetId, action)
+  onThumbDownPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbDown(adContent)
   }
 
-  onOptInAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptInAction(category, action)
+  onOptIn = (category: string, action: number) => {
+    this.props.actions.toggleAdOptIn(category, action)
   }
 
-  onOptOutAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptOutAction(category, action)
+  onOptOut = (category: string, action: number) => {
+    this.props.actions.toggleAdOptOut(category, action)
   }
 
-  onMenuSave = (creativeInstanceId: string, creativeSetId: string, saved: boolean) => {
-    this.props.actions.toggleSaveAd(creativeInstanceId, creativeSetId, saved)
+  onMenuSave = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleSavedAd(adContent)
   }
 
-  onMenuFlag = (creativeInstanceId: string, creativeSetId: string, flagged: boolean) => {
-    this.props.actions.toggleFlagAd(creativeInstanceId, creativeSetId, flagged)
+  onMenuFlag = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleFlaggedAd(adContent)
   }
 
   getGroupedAdsHistory = (adsHistory: Rewards.AdsHistory[], savedOnly: boolean) => {
@@ -322,11 +323,11 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const adContent: Rewards.AdContent = {
+      adType: adHistory.adContent.adType,
       creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
       brand: brand,
       brandInfo: brandInfo,
-      brandLogo: adHistory.adContent.brandLogo,
       brandDisplayUrl: adHistory.adContent.brandDisplayUrl,
       brandUrl: adHistory.adContent.brandUrl,
       likeAction: adHistory.adContent.likeAction,
@@ -334,32 +335,24 @@ class AdsBox extends React.Component<Props, State> {
       savedAd: adHistory.adContent.savedAd,
       flaggedAd: adHistory.adContent.flaggedAd,
       onThumbUpPress: () =>
-        this.onThumbUpPress(adHistory.adContent.creativeInstanceId,
-                            adHistory.adContent.creativeSetId,
-                            adHistory.adContent.likeAction),
+        this.onThumbUpPress(adHistory.adContent),
       onThumbDownPress: () =>
-        this.onThumbDownPress(adHistory.adContent.creativeInstanceId,
-                              adHistory.adContent.creativeSetId,
-                              adHistory.adContent.likeAction),
+        this.onThumbDownPress(adHistory.adContent),
       onMenuSave: () =>
-        this.onMenuSave(adHistory.adContent.creativeInstanceId,
-                        adHistory.adContent.creativeSetId,
-                        adHistory.adContent.savedAd),
+        this.onMenuSave(adHistory.adContent),
       onMenuFlag: () =>
-        this.onMenuFlag(adHistory.adContent.creativeInstanceId,
-                        adHistory.adContent.creativeSetId,
-                        adHistory.adContent.flaggedAd)
+        this.onMenuFlag(adHistory.adContent)
     }
 
     const categoryContent: Rewards.CategoryContent = {
       category: adHistory.categoryContent.category,
       optAction: adHistory.categoryContent.optAction,
-      onOptInAction: () =>
-        this.onOptInAction(adHistory.categoryContent.category,
-                           adHistory.categoryContent.optAction),
-      onOptOutAction: () =>
-        this.onOptOutAction(adHistory.categoryContent.category,
-                            adHistory.categoryContent.optAction)
+      onOptIn: () =>
+        this.onOptIn(adHistory.categoryContent.category,
+                     adHistory.categoryContent.optAction),
+      onOptOut: () =>
+        this.onOptOut(adHistory.categoryContent.category,
+                      adHistory.categoryContent.optAction)
     }
 
     return {
@@ -391,10 +384,12 @@ class AdsBox extends React.Component<Props, State> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
+    let adEarningsReceived = false
 
     const {
       adsData,
       adsHistory,
+      balanceReport,
       parameters
     } = this.props.rewardsData
 
@@ -409,6 +404,10 @@ class AdsBox extends React.Component<Props, State> {
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
     }
 
+    if (balanceReport) {
+      adEarningsReceived = Number(balanceReport.ads || 0) > 0
+    }
+
     const enabled = adsEnabled && adsIsSupported
     const toggle = !(!adsUIEnabled || !adsIsSupported)
     const showDisabled = !toggle || !adsEnabled || !adsIsSupported
@@ -416,8 +415,6 @@ class AdsBox extends React.Component<Props, State> {
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
     const tokenString = getLocale('tokens')
-
-    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <>
@@ -435,13 +432,13 @@ class AdsBox extends React.Component<Props, State> {
           onSettingsClick={this.onSettingsToggle}
           attachedAlert={this.adsNotSupportedAlert(adsIsSupported)}
         >
-          {
-            earningsLastMonth > 0 && estimatedPendingDays &&
-              <ArrivingSoonMessage
-                earningsLastMonth={earningsLastMonth}
-                estimatedPendingDays={estimatedPendingDays}
-              />
-          }
+          <style.PaymentStatus>
+            <PaymentStatusView
+              earningsLastMonth={earningsLastMonth}
+              earningsReceived={adEarningsReceived}
+              nextPaymentDate={nextPaymentDate}
+            />
+          </style.PaymentStatus>
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
               value={earningsThisMonth.toFixed(3)}

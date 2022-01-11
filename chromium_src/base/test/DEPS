@@ -1,3 +1,0 @@
-include_rules = [
-  "+../../../../../base/test/launcher/test_results_tracker.cc",
-]

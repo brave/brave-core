@@ -11,7 +11,7 @@
 #include "url/origin.h"
 
 #define CookieOptions CookieOptions_ChromiumImpl
-#include "../../../../net/cookies/cookie_options.h"
+#include "src/net/cookies/cookie_options.h"
 #undef CookieOptions
 
 namespace net {

@@ -126,16 +126,14 @@ pub extern "C" fn rewriter_write(
 
     let mut rewriter = AssertUnwindSafe(rewriter);
 
-    let res = panic::catch_unwind(move || {
-      rewriter.write(chunk)
-    });
+    let res = panic::catch_unwind(move || rewriter.write(chunk));
 
     let res = match res {
-      Ok(v) => v,
-      Err(_err) => {
-          // crate::errors::LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
-          return -1;
-      }
+        Ok(v) => v,
+        Err(_err) => {
+            // crate::errors::LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
+            return -1;
+        }
     };
     unwrap_or_ret_err_code! { res };
     0

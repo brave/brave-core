@@ -7,11 +7,11 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -50,17 +50,47 @@ class BatAdsAdPacingTest : public UnitTestBase {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
-        {"/v8/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}}};
+        {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
+        {// Get issuers request
+         R"(/v1/issuers/)",
+         {{net::HTTP_OK, R"(
+        {
+          "ping": 7200000,
+          "issuers": [
+            {
+              "name": "confirmations",
+              "publicKeys": [
+                {
+                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                  "associatedValue": ""
+                }
+              ]
+            },
+            {
+              "name": "payments",
+              "publicKeys": [
+                {
+                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+                  "associatedValue": "0.0"
+                },
+                {
+                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                  "associatedValue": "0.1"
+                }
+              ]
+            }
+          ]
+        }
+        )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
 
     InitializeAds();
 
-    RecordUserActivityEvents();
-  }
-
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+    ForceUserActivityFrequencyCapPermission();
   }
 
   CreativeAdNotificationInfo BuildCreativeAdNotification1() {

@@ -14,7 +14,7 @@
 #define BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS UpdateColorsForBrave();
 
 #define MdTextButton MdTextButtonBase
-#include "../../../../../../ui/views/controls/button/md_text_button.cc"
+#include "src/ui/views/controls/button/md_text_button.cc"
 #undef MdTextButton
 
 namespace {

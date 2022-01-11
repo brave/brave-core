@@ -10,6 +10,8 @@ namespace prefs {
 
 const char kAdBlockCheckedDefaultRegion[] =
     "brave.ad_block.checked_default_region";
+const char kAdBlockCookieListSettingTouched[] =
+    "brave.ad_block.cookie_list_setting_touched";
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kAdBlockListSubscriptions[] = "brave.ad_block.list_subscriptions";

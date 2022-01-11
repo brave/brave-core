@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -118,15 +119,16 @@ std::unique_ptr<base::Value> GetJsonRpcRequest(
 
 namespace brave_wallet {
 
-void BraveWalletJSHandler::OnEthereumPermissionRequested(
+void BraveWalletJSHandler::OnRequestPermissionsAccountsRequested(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -138,14 +140,54 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
   // page has a handler that checks window.ethereum.selectedAddress
   UpdateAndBindJSProperties();
   std::unique_ptr<base::Value> formed_response;
-  if (!success || accounts.empty()) {
-    brave_wallet::ProviderErrors code =
-        !success ? brave_wallet::ProviderErrors::kInternalError
-                 : brave_wallet::ProviderErrors::kUserRejectedRequest;
-    std::string message =
-        !success ? "Internal JSON-RPC error" : "User rejected the request.";
+  bool success = error == mojom::ProviderError::kSuccess;
+  if (success && accounts.empty()) {
+    formed_response =
+        GetProviderErrorDictionary(mojom::ProviderError::kUserRejectedRequest,
+                                   "User rejected the request.");
+  } else if (!success) {
+    formed_response = GetProviderErrorDictionary(error, error_message);
+  } else {
+    formed_response =
+        base::Value::ToUniquePtrValue(PermissionRequestResponseToValue(
+            url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin()),
+            accounts));
+  }
 
-    formed_response = GetProviderErrorDictionary(code, message);
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response),
+               success && !accounts.empty());
+}
+
+void BraveWalletJSHandler::OnEthereumPermissionRequested(
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  first_allowed_account_.clear();
+  if (accounts.size() > 0)
+    first_allowed_account_ = accounts[0];
+  // Note that we'll update this from `AccountsChangedEvent` as well, but we
+  // need to update it earlier here before we give a response in case the JS
+  // page has a handler that checks window.ethereum.selectedAddress
+  UpdateAndBindJSProperties();
+  std::unique_ptr<base::Value> formed_response;
+  bool success = error == mojom::ProviderError::kSuccess;
+  if (success && accounts.empty()) {
+    formed_response =
+        GetProviderErrorDictionary(mojom::ProviderError::kUserRejectedRequest,
+                                   "User rejected the request.");
+  } else if (!success) {
+    formed_response = GetProviderErrorDictionary(error, error_message);
   } else {
     formed_response = base::Value::ToUniquePtrValue(base::ListValue());
     for (size_t i = 0; i < accounts.size(); i++) {
@@ -182,18 +224,16 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (!success) {
-    brave_wallet::ProviderErrors code =
-        brave_wallet::ProviderErrors::kInternalError;
-    std::string message = "Internal JSON-RPC error";
-    formed_response = GetProviderErrorDictionary(code, message);
+  if (error != mojom::ProviderError::kSuccess) {
+    formed_response = GetProviderErrorDictionary(error, error_message);
   } else {
     formed_response = base::Value::ToUniquePtrValue(base::ListValue());
     for (size_t i = 0; i < accounts.size(); i++) {
@@ -203,7 +243,44 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), success);
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
+}
+
+void BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested(
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    const std::vector<std::string>& accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  first_allowed_account_.clear();
+  if (accounts.size() > 0)
+    first_allowed_account_ = accounts[0];
+  // Note that we'll update this from `AccountsChangedEvent` as well, but we
+  // need to update it earlier here before we give a response in case the JS
+  // page has a handler that checks window.ethereum.selectedAddress
+  UpdateAndBindJSProperties();
+  std::unique_ptr<base::Value> formed_response;
+  if (error == mojom::ProviderError::kSuccess) {
+    formed_response =
+        base::Value::ToUniquePtrValue(PermissionRequestResponseToValue(
+            url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin()),
+            accounts));
+  } else {
+    formed_response = GetProviderErrorDictionary(error, error_message);
+  }
+
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
 }
 
 void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
@@ -213,24 +290,22 @@ void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    int provider_error,
+    mojom::ProviderError error,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (!provider_error) {
+  if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value());
   } else {
-    formed_response = GetProviderErrorDictionary(
-        static_cast<brave_wallet::ProviderErrors>(provider_error),
-        error_message);
+    formed_response = GetProviderErrorDictionary(error, error_message);
   }
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
                force_json_response, std::move(formed_response),
-               !provider_error);
+               error == mojom::ProviderError::kSuccess);
 }
 
 void BraveWalletJSHandler::OnAddAndApproveTransaction(
@@ -240,27 +315,28 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
     const std::string& tx_hash,
+    mojom::ProviderError error,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (success) {
+  if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(tx_hash));
   } else {
     formed_response = GetProviderErrorDictionary(
-        brave_wallet::ProviderErrors::kInvalidParams, error_message);
+        mojom::ProviderError::kInvalidParams, error_message);
   }
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), success);
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
 }
 
-void BraveWalletJSHandler::OnSignMessage(
+void BraveWalletJSHandler::OnSignRecoverMessage(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
@@ -268,23 +344,50 @@ void BraveWalletJSHandler::OnSignMessage(
     v8::Isolate* isolate,
     bool force_json_response,
     const std::string& signature,
-    int error,
+    mojom::ProviderError error,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (!error) {
+  if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(signature));
   } else {
-    formed_response = GetProviderErrorDictionary(
-        static_cast<brave_wallet::ProviderErrors>(error), error_message);
+    formed_response = GetProviderErrorDictionary(error, error_message);
   }
 
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), !error);
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
+}
+
+void BraveWalletJSHandler::OnAddSuggestToken(
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool force_json_response,
+    bool accepted,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  std::unique_ptr<base::Value> formed_response;
+  if (error == mojom::ProviderError::kSuccess) {
+    formed_response = base::Value::ToUniquePtrValue(base::Value(accepted));
+  } else {
+    formed_response = GetProviderErrorDictionary(error, error_message);
+  }
+
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response),
+               error == mojom::ProviderError::kSuccess);
 }
 
 void BraveWalletJSHandler::SendResponse(
@@ -516,8 +619,7 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
     mojom::EthereumChainPtr chain,
     mojom::KeyringInfoPtr keyring_info) {
   if (!chain || !keyring_info) {
-    brave_wallet::ProviderErrors code =
-        brave_wallet::ProviderErrors::kInternalError;
+    mojom::ProviderError code = mojom::ProviderError::kInternalError;
     std::string message = "Internal JSON-RPC error";
     std::unique_ptr<base::Value> formed_response =
         GetProviderErrorDictionary(code, message);
@@ -559,7 +661,9 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    bool force_json_response) {
+    bool force_json_response,
+    mojom::ProviderError* error,
+    std::string* error_message) {
   if (!EnsureConnected() || !input_value)
     return false;
 
@@ -577,11 +681,12 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     return false;
 
   if (method == kEthAccounts) {
-    brave_wallet_provider_->GetAllowedAccounts(base::BindOnce(
-        &BraveWalletJSHandler::OnGetAllowedAccounts,
-        weak_ptr_factory_.GetWeakPtr(), std::move(id),
-        std::move(global_context), std::move(global_callback),
-        std::move(promise_resolver), isolate, force_json_response));
+    brave_wallet_provider_->GetAllowedAccounts(
+        false, base::BindOnce(
+                   &BraveWalletJSHandler::OnGetAllowedAccounts,
+                   weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                   std::move(global_context), std::move(global_callback),
+                   std::move(promise_resolver), isolate, force_json_response));
   } else if (method == kEthRequestAccounts) {
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &BraveWalletJSHandler::OnEthereumPermissionRequested,
@@ -627,7 +732,21 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
 
     brave_wallet_provider_->SignMessage(
         address, message,
-        base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  } else if (method == kPersonalEcRecover) {
+    std::string message;
+    std::string signature;
+    if (!ParsePersonalEcRecoverParams(normalized_json_request, &message,
+                                      &signature)) {
+      return false;
+    }
+    brave_wallet_provider_->RecoverAddress(
+        message, signature,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,
@@ -650,11 +769,46 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     }
     brave_wallet_provider_->SignTypedMessage(
         address, message, base::HexEncode(message_to_sign), std::move(domain),
-        base::BindOnce(&BraveWalletJSHandler::OnSignMessage,
+        base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,
                        force_json_response));
+  } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
+    mojom::BlockchainTokenPtr token;
+    if (!ParseWalletWatchAssetParams(normalized_json_request, &token,
+                                     error_message)) {
+      if (error_message && !error_message->empty() && error)
+        *error = mojom::ProviderError::kInvalidParams;
+      return false;
+    }
+    brave_wallet_provider_->AddSuggestToken(
+        std::move(token),
+        base::BindOnce(&BraveWalletJSHandler::OnAddSuggestToken,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  } else if (method == kRequestPermissionsMethod) {
+    std::vector<std::string> restricted_methods;
+    if (!ParseRequestPermissionsParams(normalized_json_request,
+                                       &restricted_methods))
+      return false;
+    if (std::find(restricted_methods.begin(), restricted_methods.end(),
+                  "eth_accounts") == restricted_methods.end())
+      return false;
+    brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
+        &BraveWalletJSHandler::OnRequestPermissionsAccountsRequested,
+        weak_ptr_factory_.GetWeakPtr(), std::move(id),
+        std::move(global_context), std::move(global_callback),
+        std::move(promise_resolver), isolate, force_json_response));
+  } else if (method == kGetPermissionsMethod) {
+    brave_wallet_provider_->GetAllowedAccounts(
+        true, base::BindOnce(
+                  &BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested,
+                  weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                  std::move(global_context), std::move(global_callback),
+                  std::move(promise_resolver), isolate, force_json_response));
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,
@@ -770,10 +924,12 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
   std::unique_ptr<base::Value> input_value =
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
+  mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
+  std::string message = "Generic processing error";
   if (!CommonRequestOrSendAsync(
           std::move(input_value), std::move(global_context),
           std::move(global_callback), v8::Global<v8::Promise::Resolver>(),
-          isolate, true)) {
+          isolate, true, &code, &message)) {
     base::Value id;
     std::string input_json;
     input_value = content::V8ValueConverter::Create()->FromV8Value(
@@ -788,8 +944,6 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
         v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
     auto global_callback =
         std::make_unique<v8::Global<v8::Function>>(isolate, callback);
-    ProviderErrors code = ProviderErrors::kUnsupportedMethod;
-    std::string message = "Generic processing error";
     auto formed_response = GetProviderErrorDictionary(code, message);
     SendResponse(std::move(id), std::move(global_context),
                  std::move(global_callback),
@@ -838,11 +992,12 @@ v8::Local<v8::Promise> BraveWalletJSHandler::RequestBaseValue(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
 
-  if (!CommonRequestOrSendAsync(
-          std::move(input_value), std::move(global_context), nullptr,
-          std::move(promise_resolver), isolate, force_json_response)) {
-    ProviderErrors code = ProviderErrors::kUnsupportedMethod;
-    std::string message = "Generic processing error";
+  mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
+  std::string message = "Generic processing error";
+  if (!CommonRequestOrSendAsync(std::move(input_value),
+                                std::move(global_context), nullptr,
+                                std::move(promise_resolver), isolate,
+                                force_json_response, &code, &message)) {
     auto formed_response = GetProviderErrorDictionary(code, message);
     auto global_context(
         v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));

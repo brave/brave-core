@@ -5,34 +5,22 @@
 
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 
 namespace ads {
 namespace inline_content_ads {
 namespace frequency_capping {
 
-PermissionRules::PermissionRules() = default;
+PermissionRules::PermissionRules() : PermissionRulesBase() {}
 
 PermissionRules::~PermissionRules() = default;
 
+///////////////////////////////////////////////////////////////////////////////
+
 bool PermissionRules::HasPermission() const {
-  CatalogFrequencyCap catalog_frequency_cap;
-  if (!ShouldAllow(&catalog_frequency_cap)) {
-    return false;
-  }
-
-  UnblindedTokensFrequencyCap unblinded_tokens_frequency_cap;
-  if (!ShouldAllow(&unblinded_tokens_frequency_cap)) {
-    return false;
-  }
-
-  UserActivityFrequencyCap user_activity_frequency_cap;
-  if (!ShouldAllow(&user_activity_frequency_cap)) {
+  if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
 

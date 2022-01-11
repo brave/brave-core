@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 
+#include <vector>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
@@ -30,7 +32,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
        GetCreativePromotedContentAdsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

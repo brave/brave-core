@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Desconectada",
+    "message": "Sesión cerrada",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Desconectar de Recompensas Brave",
-    "description": ""
+    "message": "Cerrar sesión en $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Ganancias estimadas",

@@ -5,7 +5,7 @@
 
 #include "components/content_settings/browser/content_settings_manager_impl.h"
 
-#include "../../../../../components/content_settings/browser/content_settings_manager_impl.cc"
+#include "src/components/content_settings/browser/content_settings_manager_impl.cc"
 
 namespace content_settings {
 

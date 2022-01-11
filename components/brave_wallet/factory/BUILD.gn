@@ -5,8 +5,8 @@
 
 source_set("factory") {
   sources = [
-    "eth_tx_controller_factory_helper.cc",
-    "eth_tx_controller_factory_helper.h",
+    "eth_tx_service_factory_helper.cc",
+    "eth_tx_service_factory_helper.h",
   ]
   deps = [
     "//base",

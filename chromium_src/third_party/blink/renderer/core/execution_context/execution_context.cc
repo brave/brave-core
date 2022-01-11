@@ -262,4 +262,4 @@ std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {
 
 }  // namespace brave
 
-#include "../../../../../../../third_party/blink/renderer/core/execution_context/execution_context.cc"
+#include "src/third_party/blink/renderer/core/execution_context/execution_context.cc"

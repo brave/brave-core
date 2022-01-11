@@ -31,7 +31,7 @@
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/browser/cookie_settings.cc"
+#include "src/components/content_settings/core/browser/cookie_settings.cc"
 
 #undef ShutdownOnUIThread
 #undef BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL

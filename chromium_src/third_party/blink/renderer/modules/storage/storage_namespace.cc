@@ -11,7 +11,7 @@
 #define GetStorageKey GetEphemeralStorageKeyOrStorageKey
 #define BindStorageArea BindStorageArea_Unused
 
-#include "../../../../../../../third_party/blink/renderer/modules/storage/storage_namespace.cc"
+#include "src/third_party/blink/renderer/modules/storage/storage_namespace.cc"
 
 #undef BindStorageArea
 #undef GetStorageKey

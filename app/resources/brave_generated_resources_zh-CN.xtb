@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">阻止站点访问以太坊提供商的 API</translation>
 <translation id="8988939298652262600">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
+<translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
+<translation id="2988792685798128092">站点关闭时清除</translation>
 <translation id="2044383478723007273">Brave 颜色</translation>
 <translation id="1692470335103807198">获得更多主题</translation>
 <translation id="2906510232093002459">Brave 默认图片</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="6821903322090655051">Brave 奖励已禁用</translation>
-<translation id="9184430019924125685">单击此处了解更多</translation>
+<translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
 <translation id="3849957491997306859">自动检测</translation>
 <translation id="8798099450830957504">默认</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="3241299447027267831">允许打赏视频</translation>
+<translation id="5510618543889994434">允许打赏视频</translation>
 <translation id="924777189963477634">开启自动打赏即表示您同意<ph name="BEGIN_LINK_TOS"/>服务条款<ph name="END_LINK_TOS"/>和<ph name="BEGIN_LINK_PP"/>隐私政策<ph name="END_LINK_PP"/>。</translation>
 <translation id="5733490796524078528">打赏按钮</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">与 Linux 相同</translation>
 <translation id="1336940801687497203">与窗口相同</translation>
+<translation id="5919209812221905840">默认 microsoft-edge 协议处理程序</translation>
+<translation id="5239541974656019812">将 Brave 设置为默认 microsoft-edge 协议处理程序</translation>
+<translation id="7136694880210472378">设为默认搜索引擎</translation>
+<translation id="1751388324499810661">Brave 是默认的 microsoft-edge 协议处理程序</translation>
 <translation id="8721331068159819483">与 macOS 相同</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
@@ -425,7 +431,7 @@
 <translation id="2653659639078652383">提交</translation>
 <translation id="2556708692502648323">钱包网络</translation>
 <translation id="1330032157352961756">新链 ID</translation>
-<translation id="9053905035135220650">前缀为 0x 的十六进制字符串</translation>
+<translation id="3423620355610881890">正的十进制数</translation>
 <translation id="726121047592132939">新链名称</translation>
 <translation id="1034112277864078119">输入链名称</translation>
 <translation id="4672314527143443556">链的货币名</translation>
@@ -439,7 +445,7 @@
 <translation id="3047726704186619366">图标 URL</translation>
 <translation id="2487558607408469181">拦截浏览器 URL</translation>
 <translation id="6301398959353668507">此字段不能为空。</translation>
-<translation id="4514843126085243862">无效格式，链 ID 是一个前缀为 0x 的十六进制字符串</translation>
+<translation id="7504462451153306677">无效格式，链 ID 是一个正数</translation>
 <translation id="8325036459845654666">已添加此网络。</translation>
 <translation id="650071759190249039">内部错误，无法添加网络。</translation>
 <translation id="868529041590572443">请填写有关原生货币的所有信息</translation>

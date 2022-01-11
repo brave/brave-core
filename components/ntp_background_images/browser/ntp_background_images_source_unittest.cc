@@ -68,18 +68,18 @@ TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
       })";
   service_->OnGetSponsoredComponentJsonData(false, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsWallpaperPath("sponsored-images/wallpaper-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/logo.png"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-2.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-3.jpg"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("sponsored-images/abcd.png"));
-  EXPECT_EQ("image/png", source_->GetMimeType("sponsored-images/logo.png"));
-  EXPECT_EQ(
-      "image/jpg", source_->GetMimeType("sponsored-images/wallpaper-2.jpg"));
-  EXPECT_EQ(
-      0,
-      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-0.jpg"));
-  EXPECT_EQ(
-      -1,
-      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
+
+  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpg"));
+  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpeg"));
+  EXPECT_EQ("image/webp", source_->GetMimeType("wallpaper-0.webp"));
+  EXPECT_EQ("image/png", source_->GetMimeType("wallpaper-0.png"));
+  EXPECT_EQ("image/avif", source_->GetMimeType("wallpaper-0.avif"));
 }
 
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
@@ -185,19 +185,13 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
       })";
   service_->OnGetSponsoredComponentJsonData(true, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsTopSiteFaviconPath("super-referral/bat.png"));
-  EXPECT_FALSE(source_->IsTopSiteFaviconPath("super-referral/logo.png"));
-  EXPECT_TRUE(source_->IsWallpaperPath("super-referral/wallpaper-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/bat.png"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/logo.png"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/background-1.jpg"));
   EXPECT_TRUE(source_->IsValidPath("super-referral/brave.png"));
+  EXPECT_FALSE(source_->IsValidPath("sponsored-images/logo.png"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
-  EXPECT_EQ("image/png", source_->GetMimeType("super-referral/logo.png"));
-  EXPECT_EQ("image/jpg",
-            source_->GetMimeType("super-referral/wallpaper-2.jpg"));
-  EXPECT_EQ(
-      0, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-0.jpg"));
-  EXPECT_EQ(
-      -1, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-3.jpg"));
 }
 #endif
 

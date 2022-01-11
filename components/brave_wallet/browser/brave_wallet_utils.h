@@ -24,6 +24,7 @@ class GURL;
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
+bool IsFilecoinEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
@@ -57,7 +58,7 @@ bool DecodeStringArray(const std::string& input,
 void SecureZeroData(void* data, size_t size);
 
 // Updates preferences for when the wallet is unlocked.
-// This is done in a utils function instead of in the KeyringController
+// This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
@@ -98,6 +99,9 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
 // Get a specific chain from all chains.
 mojom::EthereumChainPtr GetChain(PrefService* prefs,
                                  const std::string& chain_id);
+
+// Get the current chain ID from kBraveWalletCurrentChainId pref.
+std::string GetCurrentChainId(PrefService* prefs);
 
 }  // namespace brave_wallet
 

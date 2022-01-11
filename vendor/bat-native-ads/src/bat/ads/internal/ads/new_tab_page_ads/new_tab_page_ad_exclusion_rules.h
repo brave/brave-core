@@ -6,25 +6,33 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EXCLUSION_RULES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EXCLUSION_RULES_H_
 
-#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
+#include "bat/ads/internal/ads/exclusion_rules_base.h"
 
 namespace ads {
 
-struct AdInfo;
+namespace ad_targeting {
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
+}  // namespace ad_targeting
+
+namespace resource {
+class AntiTargeting;
+}  // namespace resource
 
 namespace new_tab_page_ads {
 namespace frequency_capping {
 
-class ExclusionRules final {
+class ExclusionRules final : public ExclusionRulesBase {
  public:
-  explicit ExclusionRules(const AdEventList& ad_events);
-  ~ExclusionRules();
-
-  bool ShouldExcludeAd(const AdInfo& ad) const;
+  ExclusionRules(
+      const AdEventList& ad_events,
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      resource::AntiTargeting* anti_targeting_resource,
+      const BrowsingHistoryList& browsing_history);
+  ~ExclusionRules() override;
 
  private:
-  AdEventList ad_events_;
-
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
 };

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global window */
 
-import { TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   kTrezorBridgeUrl,
@@ -18,7 +18,7 @@ import {
   TrezorGetAccountsResponse,
   SignTransactionResponse,
   TrezorErrorsCodes
-} from '../../../common/hardware/trezor/trezor-messages'
+} from './trezor-messages'
 import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
@@ -220,7 +220,7 @@ test('Unlock device success', () => {
 
 test('Check trezor bridge type', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
-  return expect(hardwareKeyring.type()).toStrictEqual(TREZOR_HARDWARE_VENDOR)
+  return expect(hardwareKeyring.type()).toStrictEqual(BraveWallet.TREZOR_HARDWARE_VENDOR)
 })
 
 test('Bridge not ready', () => {
@@ -237,7 +237,11 @@ test('Bridge not ready', () => {
 test('Device is busy', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
-  hardwareTransport.contentWindow = {}
+  hardwareTransport.contentWindow = {
+    postMessage: () => {
+      // This is intentional
+    }
+  }
   hardwareTransport.createBridge = async () => {
     return hardwareTransport
   }

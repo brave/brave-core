@@ -56,6 +56,63 @@ constexpr char kTestSponsoredImages[] = R"(
         ]
     })";
 
+constexpr char kTestSponsoredImagesWithMultipleCampaigns[] = R"(
+    {
+        "schemaVersion": 1,
+        "campaigns": [
+          {
+            "logo": {
+              "imageUrl":  "logo.png",
+              "alt": "Technikke: For music lovers",
+              "destinationUrl": "https://www.brave.com/",
+              "companyName": "Technikke"
+            },
+            "wallpapers": [
+                {
+                  "imageUrl": "background-1.jpg",
+                  "focalPoint": { "x": 696, "y": 691 }
+                },
+                {
+                  "imageUrl": "background-2.jpg",
+                  "logo": {
+                    "imageUrl": "logo-2.png",
+                    "alt": "logo2",
+                    "companyName": "BAT",
+                    "destinationUrl": "https://www.bat.com/"
+                  }
+                },
+                {
+                  "imageUrl": "background-3.jpg",
+                  "focalPoint": {}
+                }
+            ]
+          },
+          {
+            "logo": {
+              "imageUrl":  "logo-3.png",
+              "alt": "Technikke: For music lovers",
+              "destinationUrl": "https://www.brave.com/",
+              "companyName": "Technikke"
+            },
+            "wallpapers": [
+                {
+                  "imageUrl": "background-4.jpg",
+                  "focalPoint": { "x": 696, "y": 691 }
+                },
+                {
+                  "imageUrl": "background-5.jpg",
+                  "logo": {
+                    "imageUrl": "logo-4.png",
+                    "alt": "logo3",
+                    "companyName": "BAT",
+                    "destinationUrl": "https://www.bat.com/"
+                  }
+                }
+            ]
+          }
+        ]
+    })";
+
 constexpr char kTestBackgroundImages[] = R"(
     {
       "schemaVersion": 1,
@@ -210,7 +267,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   auto* si_data = service_->GetBrandedImagesData(false);
   EXPECT_EQ(si_data, nullptr);
   EXPECT_TRUE(observer.on_si_updated_);
-  EXPECT_TRUE(observer.si_data_->default_logo.alt_text.empty());
+  EXPECT_TRUE(observer.si_data_->campaigns.empty());
   service_->bi_images_data_.reset();
   observer.on_bi_updated_ = false;
   observer.bi_data_ = nullptr;
@@ -231,23 +288,32 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_TRUE(si_data->IsValid());
   EXPECT_FALSE(si_data->IsSuperReferral());
   // Above json data has 3 wallpapers.
+  EXPECT_EQ(1UL, si_data->campaigns.size());
+  const auto campaign = si_data->campaigns[0];
   const size_t image_count = 3;
-  EXPECT_EQ(image_count, si_data->backgrounds.size());
-  EXPECT_EQ(696, si_data->backgrounds[0].focal_point.x());
+  EXPECT_EQ(image_count, campaign.backgrounds.size());
+  EXPECT_EQ(696, campaign.backgrounds[0].focal_point.x());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
+            campaign.backgrounds[0].image_file.BaseName());
   // Check default value is set if "focalPoint" is missed.
-  EXPECT_EQ(0, si_data->backgrounds[1].focal_point.x());
-  EXPECT_EQ(0, si_data->backgrounds[2].focal_point.x());
+  EXPECT_EQ(0, campaign.backgrounds[1].focal_point.x());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-2.jpg"),
+            campaign.backgrounds[1].image_file.BaseName());
+  EXPECT_EQ(0, campaign.backgrounds[2].focal_point.x());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-3.jpg"),
+            campaign.backgrounds[2].image_file.BaseName());
   EXPECT_TRUE(observer.on_si_updated_);
-  EXPECT_FALSE(observer.si_data_->default_logo.alt_text.empty());
-  EXPECT_TRUE(*si_data->GetBackgroundAt(0).FindBoolKey(kIsSponsoredKey));
-  EXPECT_FALSE(*si_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
+  EXPECT_FALSE(
+      observer.si_data_->campaigns[0].backgrounds[0].logo.alt_text.empty());
+  EXPECT_TRUE(*si_data->GetBackgroundAt(0, 0).FindBoolKey(kIsSponsoredKey));
+  EXPECT_FALSE(*si_data->GetBackgroundAt(0, 0).FindBoolKey(kIsBackgroundKey));
 
   // Default logo is used for wallpaper at 0.
   EXPECT_EQ("logo.png",
-            *si_data->GetBackgroundAt(0).FindStringPath(kLogoImagePath));
+            *si_data->GetBackgroundAt(0, 0).FindStringPath(kLogoImagePath));
   // Per wallpaper logo is used for wallpaper at 1.
   EXPECT_EQ("logo-2.png",
-            *si_data->GetBackgroundAt(1).FindStringPath(kLogoImagePath));
+            *si_data->GetBackgroundAt(0, 1).FindStringPath(kLogoImagePath));
 
   // Test BI data loading
   service_->bi_images_data_.reset();
@@ -327,6 +393,47 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->OnGetComponentJsonData(test_background_json_string_higher_schema);
   bi_data = service_->GetBackgroundImagesData();
   EXPECT_FALSE(bi_data);
+
+  service_->RemoveObserver(&observer);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
+  Init();
+  TestObserver observer;
+  service_->AddObserver(&observer);
+
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(kReferralInitialization, true);
+
+  service_->si_images_data_.reset();
+  observer.on_si_updated_ = false;
+  observer.si_data_ = nullptr;
+  service_->OnGetSponsoredComponentJsonData(
+      false, kTestSponsoredImagesWithMultipleCampaigns);
+  // Mark this is not SR to get SI data.
+  service_->MarkThisInstallIsNotSuperReferralForever();
+  auto* si_data = service_->GetBrandedImagesData(false);
+  EXPECT_TRUE(si_data);
+  EXPECT_TRUE(si_data->IsValid());
+  EXPECT_FALSE(si_data->IsSuperReferral());
+  EXPECT_EQ(2UL, si_data->campaigns.size());
+  const auto campaign_0 = si_data->campaigns[0];
+  EXPECT_EQ(3UL, campaign_0.backgrounds.size());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
+            campaign_0.backgrounds[0].image_file.BaseName());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo.png"),
+            campaign_0.backgrounds[0].logo.image_file.BaseName());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-2.png"),
+            campaign_0.backgrounds[1].logo.image_file.BaseName());
+
+  const auto campaign_1 = si_data->campaigns[1];
+  EXPECT_EQ(2UL, campaign_1.backgrounds.size());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-4.jpg"),
+            campaign_1.backgrounds[0].image_file.BaseName());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-5.jpg"),
+            campaign_1.backgrounds[1].image_file.BaseName());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-4.png"),
+            campaign_1.backgrounds[1].logo.image_file.BaseName());
 
   service_->RemoveObserver(&observer);
 }
@@ -423,10 +530,10 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
 
   const size_t wallpaper_count = 3;
   const size_t top_site_count = 3;
-  EXPECT_EQ(wallpaper_count, data->wallpaper_image_urls().size());
+  EXPECT_EQ(wallpaper_count, data->campaigns[0].backgrounds.size());
   EXPECT_EQ(top_site_count, data->top_sites.size());
   EXPECT_TRUE(data->IsSuperReferral());
-  EXPECT_FALSE(*data->GetBackgroundAt(0).FindBoolKey(kIsSponsoredKey));
+  EXPECT_FALSE(*data->GetBackgroundAt(0, 0).FindBoolKey(kIsSponsoredKey));
   EXPECT_TRUE(observer.on_si_updated_);
 
   service_->RemoveObserver(&observer);

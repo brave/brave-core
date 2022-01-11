@@ -4,11 +4,12 @@
   <message name="IDS_ACCNAME_BRAVE_WALLET_BUTTON" desc="The accessible name for the Brave Wallet bubble.">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET" desc="The name of the feature Brave Wallet">Brave Wallet</message>
   <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for brave provider call if the user rejected the request">The user rejected the request.</message>
-  <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The text of the response for wallet_addEthereumChain call with invalid parameters">Invalid parameters.</message>
+  <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The call was made with invalid parameters">Invalid parameters.</message>
   <message name="IDS_WALLET_UNKNOWN_CHAIN" desc="The text of the response for wallet_switchEthereumChain call with unknown">Chain <ph name="VALUE">$1<ex>1</ex></ph> hasn't been added</message>
   <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
+  <message name="IDS_WALLET_PARSING_ERROR" desc="There was a parsing error">A response parsing error has occurred</message>
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
@@ -81,15 +82,17 @@
   <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">0x address or url</message>
   <message name="IDS_BRAVE_WALLET_SWAP_DISCLAIMER" desc="Swap 0x Security and Privacy Disclaimer">Brave uses <ph name="LINK_BEFORE">$1</ph>0x<ph name="LINK_AFTER">$2</ph> as a DEX aggregator.</message>
   <message name="IDS_BRAVE_WALLET_SWAP_DISCLAIMER_DESCRIPTION" desc="Swap 0x Security and Privacy Disclaimer Description">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">Quote includes a 0.875% Brave fee.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Welcome to the new Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Get Started</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
-  <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
+  <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON_SKIP" desc="Backup screen skip button">Skip</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON_CANCEL" desc="Backup screen cancel button">Cancel</message>
@@ -112,8 +115,9 @@
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_BUTTON" desc="Lock screen unlock button">Unlock</message>
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_ERROR" desc="Lock screen wrong password error">Incorrect password</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SETTINGS" desc="Wallet popup settings button">Settings</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock Crypto</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your crypto assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>
   <message name="IDS_BRAVE_WALLET_DISMISS_BUTTON" desc="Backup warning banner dismiss button">Dismiss</message>
@@ -127,13 +131,21 @@
   <message name="IDS_BRAVE_WALLET_RESTORE_FORM_TEXT" desc="Restore Wallet new password input">New Password</message>
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copy to Clipboard</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Secondary accounts</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY_DISCLAIMER" desc="Accounts screen secondary description">These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Imported accounts</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY_DISCLAIMER" desc="Accounts screen primary description">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER" desc="Accounts screen secondary description">These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_ASSETS" desc="Accounts screen assets title">Assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS" desc="Accounts screen visible assets button">Visible assets</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE" desc="Add account modal create button">Create</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BUTTON" desc="Add account modal create account button">Create account</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT" desc="Add account modal create account header title">Create <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_IMPORT_ACCOUNT" desc="Add account modal import account header title">Import <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TITLE" desc="Add account modal create account title">Select one of the following account types</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ETHEREUM_DESCRIPTION" desc="Add account modal create account Ethereum description">Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">Supports SLP compatible assets on the Solana blockchain</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION" desc="Add account modal create account Filecoin description">Store FIL asset</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
+  <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE" desc="Add account modal import hardware wallet button">Import from hardware wallet</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_HARDWARE" desc="Add account modal hardware button">Hardware</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CONNECT" desc="Add account modal connect button">Connect</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER" desc="Add account modal input placholder">Account name</message>
@@ -146,7 +158,7 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR" desc="Add account modal failed to import error">Failed to import account, please try again.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE" desc="Connect hardware wallet title">Select your hardware wallet device</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO1" desc="Connect hardware wallet info1">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> wallet directly to your computer.</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2" desc="Connect hardware wallet info2">Unlock your device and select the Ethereum app.</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2" desc="Connect hardware wallet info2">Unlock your device and select the <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> app.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WRONG_APPLICATION_USER_HINT" desc="User hint for wrong application being opened when connecting hardware wallet">This error may occur when the wrong application is open on the Ledger device.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TREZOR" desc="Connect hardware wallet trezor button">Trezor</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_LEDGER" desc="Connect hardware wallet ledger button">Ledger</message>
@@ -158,6 +170,7 @@
   <message name="IDS_BRAVE_WALLET_SWITCH_H_D_PATH_TEXT_HARDWARE_WALLET" desc="Connect hardware wallet connected description">Try switching HD path (above) if you cannot find the account you are looking for.</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_LIVE_DERIVATION_PATH" desc="Connect hardware wallet ledger live selection">Ledger Live</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_LEGACY_DERIVATION_PATH" desc="Connect hardware wallet legacy selection">Legacy (MEW/MyCrypto)</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND" desc="Nothing found in connect hardware search">No results found.</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR" desc="Connect hardware wallet connection error">Unknown error, please reconnect your hardware wallet and try again.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DETAILS" desc="Account settings modal details button">Details</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_WATCHLIST" desc="Account settings modal visible assets button">Visible assets</message>
@@ -251,7 +264,10 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE" desc="Site Permissions panel title">Site permissions</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS" desc="Site Permissions panel accounts connected"><ph name="NUMBER_OF_ACCOUNTS"><ex>5</ex>$1</ph> accounts connected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_DISCONNECT" desc="Site Permissions panel disconnect from site">Disconnect</message>
-  <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Not connected</message>
+  <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_SWITCH" desc="Site Permissions panel switch account for connected site">Switch</message>
+  <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
+  <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
+  <message name="IDS_BRAVE_WALLET_PANEL_SCROLL_FOR_MORE_ASSETS" desc="Brave Wallet panel scroll to view more assets">Scroll for more assets</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>
@@ -295,6 +311,13 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED" desc="Status label for submitted transaction">Submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
+  <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_SPEEDUP" desc="Transaction Detail Panel Speedup transactions button">Speedup</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_HASH" desc="Transaction Detail Panel Transaction Hash">Transaction hash</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_NETWORK" desc="Transaction Detail Panel Blockchain Network">Network</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_STATUS" desc="Transaction Detail Panel Status of Transactions">Status</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE1" desc="Edit gas panel max fee label">Max priority fee</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE2" desc="Edit gas panel edit gas button">Edit gas</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_DESCRIPTION" desc="Edit gas panel description">While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.</message>
@@ -311,6 +334,7 @@
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_GWEI" desc="Edit gas panel gwei label">Gwei</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM" desc="Edit gas panel set custom button">Set custom</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED" desc="Edit gas panel set suggested button">Set suggested</message>
+  <message name="IDS_BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING" desc="Edit gas panel zero gas price warning">Transaction may not be propagated in the network.</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_TITLE" desc="Edit allowance panel title">Edit permissions</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION" desc="Edit allowance panel description">Spend limit permission allows <ph name="SITE_ORIGIN"><ex>uniswap</ex>$1</ph> to withdraw and spend up to the following amount:</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_BUTTON" desc="Edit allowance panel button">Edit permissions</message>
@@ -321,6 +345,8 @@
   <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="DOMAIN_NAME"><ex>doug.wallet</ex>$1</ph> is not registered</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">Missing checksum information</message>
+  <message name="IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR" desc="Send input address has invalid checksum information">Invalid checksum information</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
@@ -348,6 +374,7 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNTS_IMPORT_ERROR" desc="Hardware wallet error when importing accounts from Trezor device">Internal error, Unable to fetch accounts</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_EDIT" desc="Edit custom network button title">Edit</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_REMOVE" desc="Remove custom network button title">Remove</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_SET_AS_ACTIVE" desc="Set custom network as active button title">Set as active</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR" desc="Process transaction error when signing transactions with hardware device">Error processing the transaction</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR" desc="Unable to approve hardware transaction during signing process">Error processing the transaction</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NOT_FOUND_ERROR" desc="Unable to find hardware transaction during signing process">Unable to find hardware transaction, please try again</message>
@@ -357,4 +384,6 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR" desc="Error when command Trezor is already in progress">Trezor command is already in progress</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR" desc="Error when Trezor bridge is not ready">Trezor bridge is not ready</message>
+  <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE" desc="Add Suggested Token Panel Title">Add suggested token</message>
+  <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION" desc="Add Suggested Token Panel Description">Would you like to import this token?</message>
 </grit-part>

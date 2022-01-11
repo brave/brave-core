@@ -1,0 +1,14 @@
+diff --git a/build/config/ios/BUILD.gn b/build/config/ios/BUILD.gn
+index 1d8506af3f3ffa549ef349b9cdd99d36f7df4395..30404072a4204a057b44956d59d37952770b8e99 100644
+--- a/build/config/ios/BUILD.gn
++++ b/build/config/ios/BUILD.gn
+@@ -127,7 +127,8 @@ config("runtime_library") {
+   # libclang_rt.iossim.a for arm64 simulator builds. This can be
+   # removed when an arm64 slice is added to upstream Clang.
+   if (target_environment == "simulator" && current_cpu == "arm64") {
+-    assert(xcode_version_int == 1300)
++    assert(xcode_version_int == 1300 || xcode_version_int == 1310 ||
++           xcode_version_int == 1320)
+     ldflags += [
+       "-lSystem",
+       rebase_path("$ios_toolchains_path/usr/lib/clang/13.0.0/" +

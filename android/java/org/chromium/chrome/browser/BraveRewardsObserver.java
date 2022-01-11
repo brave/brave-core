@@ -16,19 +16,20 @@ public interface BraveRewardsObserver {
   default public void OnNotificationDeleted(String id) {};
   default public void OnGetPendingContributionsTotal(double amount) {};
   default public void OnGetAutoContributeProperties() {};
+  default public void onGetAutoContributionAmount(double amount){};
   default public void OnGetReconcileStamp(long timestamp) {};
   default public void OnRecurringDonationUpdated() {};
   default public void OnResetTheWholeState(boolean success) {};
   default public void OnGrantFinish(int result) {};
-  default public void OnGetExternalWallet(int error_code,
-          String external_wallet) {};
-  default public void OnDisconnectWallet(int error_code,
-          String external_wallet) {};
-  default public void OnProcessRewardsPageUrl(int error_code,
-          String wallet_type, String action, String json_args ) {};
+  default public void OnGetExternalWallet(int error_code, String external_wallet){};
+  default public void OnDisconnectWallet(int error_code, String external_wallet){};
   default public void OnClaimPromotion(int error_code) {};
+  default public void onUnblindedTokensReady() {}
+  default public void onReconcileComplete(int resultCode, int rewardsType, double amount) {}
   default public void OnRecoverWallet(int errorCode) {};
   default public void OnRefreshPublisher(int status, String publisherKey){};
   default public void OnOneTimeTip(){};
   default public void OnStartProcess(){};
+  default public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
+          int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};
 }

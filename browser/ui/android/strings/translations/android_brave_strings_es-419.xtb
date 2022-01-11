@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">Pago en línea</translation>
 <translation id="6583902294974160967">Asistencia</translation>
 <translation id="1799030480311994998">Funciones</translation>
-<translation id="5345505584130165588">Privacidad y escudos de Brave</translation>
+<translation id="2005732746077850308">Escudos y privacidad de Brave</translation>
 <translation id="4692623383562244444">Motores de búsqueda</translation>
 <translation id="1468415711258933398">Pestaña estándar</translation>
 <translation id="3377025655491224618">Pestaña de incógnito</translation>
@@ -23,13 +23,29 @@
 <translation id="4022987104439075738">Puerta de enlace a IPFS</translation>
 <translation id="2688519859165248360">Permite la navegación a los recursos de IPFS a través de una puerta de enlace de IPFS.</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="7822245778264751380">Precio de Ethereum (ETH)</translation>
+<translation id="3872060236937011862"><ph name="ASSET_NAME"/>Precio (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Servicio de DNS de Ethereum</translation>
 <translation id="3894650624018948468">Método de resolución</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="2218918398178303658">DNS mediante HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6252490671914511928">Las mejores noticias de hoy’ en un feed completamente privado, solo para ti.</translation>
+<translation id="7266075701303521777">Noticias de Brave admite publicidades con anuncios completamente privados y anónimos que coinciden con tu dispositivo.</translation>
+<translation id="4541978218358617681">Anuncio</translation>
+<translation id="1765217911817124376">Activar Noticias de Brave</translation>
+<translation id="6527303717912515753">Compartir</translation>
+<translation id="1654539412343893324">Obtén más información sobre tus datos</translation>
+<translation id="2989805286512600854">Abrir en una nueva pestaña</translation>
+<translation id="3709782636417497984">Abrir en una nueva pestaña de incógnito</translation>
+<translation id="2014017248518069982">Inhabilitar contenido de <ph name="PUBLISHER"/></translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> inhabilitado</translation>
+<translation id="1276592121036104130">Cargar contenido nuevo</translation>
+<translation id="3189348785087463371">Promocionado</translation>
+<translation id="7554145152551782675">Más ofertas de Brave</translation>
+<translation id="4975944254857623648">Fuentes predeterminadas</translation>
+<translation id="253886574765651454">Agregar fuente</translation>
+<translation id="7823038307453615214">Mostrar Brave News</translation>
 <translation id="5787084571334399599">No permite que el navegador use técnicas de huella digital</translation>
 <translation id="7459000603787995422">Cierra las pestañas al salir</translation>
 <translation id="4448697385961650078">Bloquear rastreadores y anuncios</translation>
@@ -115,11 +131,13 @@
 <translation id="4254029385847607686">DICIEMBRE</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="1772301834467143364">Noticias sobre Brave</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Agregar fondos</translation>
 <translation id="8428213095426709021">Configuración</translation>
-<translation id="8772672608371898774">Publicador verificado de Brave</translation>
-<translation id="1397683270551078781">Sin verificar</translation>
+<translation id="6020176662032623904">Creador verificado</translation>
+<translation id="2369994359029526515">Creador no verificado</translation>
 <translation id="8918760045046434238">Enviar una propina…</translation>
 <translation id="1978261665418056203">Todavía no hay actividades este
 mes...</translation>
@@ -164,6 +182,8 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="4282642752844565114">Cantidad incorrecta de palabras</translation>
 <translation id="7507533586185621084">Código de sincronización incorrecto</translation>
 <translation id="8284063834901328650">Código de sincronización QR incorrecto</translation>
+<translation id="859506441384380749">Una versión obsoleta de Brave generó el código. Primero, actualiza tu otro dispositivo</translation>
+<translation id="3132642509209154999">El código se venció. Genera uno nuevo en tu otro dispositivo e inténtalo de nuevo.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync le permite sincronizar datos de favoritos de forma privada entre sus navegadores Brave en diferentes dispositivos.</translation>
 <translation id="3735228155296883311">Solo escanea el código de la cadena de sincronización que creaste en otro dispositivo o inicia una nueva cadena de sincronización.</translation>
@@ -250,11 +270,12 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="9096003370755878766">Retira BAT que hayas agregado previamente a tu billetera de Recompensas Brave.</translation>
 <translation id="1554282356558968486">Nuestro servicio de billetera es proporcionado por</translation>
 <translation id="6569877533335686968">Uphold</translation>
+<translation id="734105583050813665">Bitflyer</translation>
 <translation id="8465442795593991224">Uphold puede solicitarte que verifiques tu identidad según los servicios requeridos.</translation>
-<translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
+<translation id="3200197118442451932">Brave Software Inc. no procesa, almacena ni accede a ningún dato personal que le facilitas a <ph name="WALLET_PROVIDER"/> cuando abres una cuenta con ellos.</translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="2193391216824305230">Billetera de usuario</translation>
-<translation id="6585020831163574892">Ve a tu cuenta de Uphold</translation>
+<translation id="1665118090708049096">Ir a mi cuenta de <ph name="WALLET_PROVIDER"/></translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="6239274080752256452">Retirar fondos</translation>
 <translation id="8874184842967597500">No conectado</translation>
@@ -263,10 +284,6 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="5358719431303818601">Desconectado (sin verificar)</translation>
 <translation id="4241449868720191203">Desconectado (verificado)</translation>
 <translation id="3248185426436836442">Pendiente</translation>
-<translation id="8108013093558639183">Actualmente no se admite BAT en tu región en función de la ubicación en la que se abre tu cuenta. Vuelve más tarde para verificar la disponibilidad.</translation>
-<translation id="4190454391025419535">Región no admitida</translation>
-<translation id="6830703472632069884">Se produjo un error al verificar tu billetera. Vuelve a intentarlo más tarde.</translation>
-<translation id="3512533646933434345">Error de verificación de billetera</translation>
 <translation id="2260513517001048012">NOTA: Este creador verificado de Brave todavía no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
 <translation id="4488355059795908907">Este creador verificado de Brave todavía no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador complete este proceso.</translation>
 <translation id="2495032782748793764">Valores predeterminados de Brave</translation>
@@ -410,8 +427,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6755546361496900700">Vista previa de la conversión</translation>
 <translation id="2882813124794301799">Pila de widgets</translation>
 <translation id="13296465911709339">El texto se ha copiado al portapapeles.</translation>
-<translation id="4670943871783273148">El texto se ha guardado en un archivo de texto.</translation>
-<translation id="4432845796903761592">Archivo no guardado.</translation>
+<translation id="2735834606413553397">La dirección pública se copió al portapapeles.</translation>
 <translation id="7144878232160441200">Volver a intentarlo</translation>
 <translation id="2977461003134694205">Estadísticas de privacidad</translation>
 <translation id="4643117005422448078">Sitios populares</translation>
@@ -525,33 +541,32 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3171931580569169744">Permitir los grupos de pestañas</translation>
 <translation id="5587305863196367357">Verificar la billetera te permite gestionar tus fondos con facilidad tanto al ingresarlos como al retirarlos</translation>
 <translation id="5760671211380791582">No tienes BAT suficientes.</translation>
-<translation id="6960458596933484861">Necesitas tener un mínimo de 15 BAT para crear una billetera de Uphold verificada. Inténtalo de nuevo más tarde.</translation>
+<translation id="442469478596827903">Necesitas al menos 2 BAT para crear una billetera de Uphold verificada. Inténtalo de nuevo más tarde.</translation>
 <translation id="4389085954549744469">Si ya tienes una cuenta de Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continúa para iniciar sesión</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Intercambio</translation>
-<translation id="8825032646286791700">Finanzas descentralizadas y almacenamiento seguro de criptomonedas</translation>
-<translation id="5460364286096798286">Conserva criptomonedas bajo tu custodia. Intercambia activos. Consulta precios y el rendimiento de carteras. Invierte, pide prestado y presta con finanzas descentralizadas.</translation>
-<translation id="1748009926009835882">Configurar criptomonedas</translation>
+<translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
+<translation id="8339846196588658366">Conserve criptoactivos bajo su custodia y consulte el rendimiento de carteras. Todo desde el navegador de Brave para proteger su privacidad.</translation>
+<translation id="4472575034687746823">Comenzar</translation>
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
-<translation id="5156354224138379811">En el siguiente paso, verá 12 palabras que le permitirán recuperar su billetera de criptomonedas.</translation>
+<translation id="1078873179929044999">En el siguiente paso, verá una frase de recuperación de 12 palabras que puede usar para recuperar sus cuentas de criptoactivos principales. Guárdela en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
 <translation id="2359808026110333948">Continuar</translation>
-<translation id="5024543173656851695">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis palabras de recuperación.</translation>
+<translation id="1904000155026201268">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis frase de recuperación.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
-<translation id="6146351434671268516">Escribe o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
-<translation id="7408247683131762445">ADVERTENCIA: Nunca reveles tu frase de copia de seguridad. Cualquier persona que tenga acceso a esta frase puede llevarse tus fondos permanentemente.</translation>
-<translation id="939275786514736244">He guardado mi copia en un lugar seguro</translation>
+<translation id="5077747669435508720">Escriba o copie estas palabras en el orden exacto que se muestra a continuación y guárdelas en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
+<translation id="2708402071160162126">ADVERTENCIA: Nunca comparta la frase de recuperación. Cualquier persona que tenga esta frase puede llevarse sus activos de forma permanente.</translation>
+<translation id="111912712268284159">He guardado la frase en un lugar seguro.</translation>
 <translation id="6896758677409633944">Copiar</translation>
-<translation id="5317780077021120954">Guardar</translation>
-<translation id="2604744480284798833">Haga una copia de seguridad de su billetera ahora para evitar perder el acceso a su cartera de criptomonedas.</translation>
-<translation id="1202920745614909195">Compra criptomonedas con Apple Pay, tarjeta de crédito o tarjeta de débito.</translation>
+<translation id="375882617301124395">Haga una copia de seguridad de su billetera</translation>
+<translation id="8289942708804097960">Comprar criptomonedas con tarjeta de débito o crédito.</translation>
 <translation id="841880029259839903">Envía criptomonedas o transfiere de una cuenta a otra.</translation>
 <translation id="8982246458261383692">Intercambia activos de criptomonedas con el agregador DEX de Brave.</translation>
 <translation id="1783600039044302171">Protege tus criptomonedas con una contraseña</translation>
 <translation id="3726490322412361740">Introduce la contraseña</translation>
-<translation id="4450951602553063001">Vuelve a introducir la contraseña</translation>
-<translation id="1783870616707290226">La contraseña debe tener 7 caracteres o más</translation>
-<translation id="7383102760859258982">La contraseña reescrita no coincide</translation>
+<translation id="3038243139480464605">Verificar contraseña</translation>
+<translation id="3717685683157254329">Las contraseñas deben tener un mínimo de 7 caracteres y deben contener al menos una letra, un número y un carácter especial.</translation>
+<translation id="7396672979287122068">La contraseña verificada no coincide.</translation>
 <translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1 D</translation>
 <translation id="7640956400175663828">1 S</translation>
@@ -559,24 +574,26 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6366007539108097840">3 M</translation>
 <translation id="6977728312178289892">1 A</translation>
 <translation id="6895566650974550243">TODO</translation>
-<translation id="2267753748892043616">Agregar cuenta</translation>
-<translation id="2632612428525029752">Actualizar cuenta</translation>
+<translation id="5071303414930953888">Cuenta <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="7665369617277396874">Agregar cuenta</translation>
+<translation id="3448492834076427715">Actualizar cuenta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
 <translation id="5493402808936397665">Habilita los datos biométricos para desbloquear rápidamente tu billetera sin introducir la contraseña.</translation>
-<translation id="1544192797660353713">Billetera</translation>
+<translation id="8030647312184163932">Desbloquear mediante huella digital</translation>
+<translation id="4090490645603511157">Use datos biométricos para desbloquear rápidamente su billetera sin ingresar la contraseña.</translation>
+<translation id="5379398699598690674">Billetera (versión beta)</translation>
 <translation id="6901810042765869341">Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu billetera de Brave.</translation>
-<translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
+<translation id="9120654436199628567">Restaurar cuenta de criptomonedas</translation>
 <translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
 <translation id="283071225285270357">Introduce tu frase de recuperación</translation>
 <translation id="2339124864228588937">Verificar la frase de recuperación</translation>
-<translation id="2718669004132381989">Toque las palabras para colocarlas una al lado de la otra en el orden correcto.</translation>
+<translation id="3747079125031086337">Seleccione las palabras de su frase de recuperación en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="6657585470893396449">Contraseña</translation>
-<translation id="1569452037668432756">Introduce tu contraseña para desbloquear</translation>
-<translation id="224719674509047150">La contraseña debe tener al menos 7 caracteres, un número y un carácter especial</translation>
+<translation id="5168349973342709369">Introduzca la contraseña para desbloquear la billetera</translation>
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
 <translation id="5760476995887363522">Las frases no coinciden. Inténtelo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
@@ -587,11 +604,10 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Para (estimación)</translation>
 <translation id="6998989275928107238">A</translation>
-<translation id="6664416064035847539">dirección o URL</translation>
+<translation id="2589431635772931954">Dirección o URL</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="3535654229833214438">Transacciones</translation>
-<translation id="4636930964841734540">Información</translation>
 <translation id="2449682593754783720">1 hora</translation>
 <translation id="969133700726811190">1 día</translation>
 <translation id="5882300031363619940">1 semana</translation>
@@ -603,7 +619,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="4608713693379664295">Cuentas principales de criptomonedas</translation>
 <translation id="4003821417160006384">Cuentas secundarias</translation>
-<translation id="8094541587800369158">Estas cuentas pueden usarse con DApps de Web3 y pueden aparecer en tu cartera. Sin embargo, no pueden restaurarse con una frase de recuperación de la copia de seguridad de tu cuenta principal. Activa Brave Sync para restaurar automáticamente las cuentas secundarias.</translation>
+<translation id="2471916999505901943">Estas cuentas pueden usarse con aplicaciones descentralizadas de Web 3 y pueden aparecer en su cartera. Sin embargo, tenga en cuenta que las cuentas secundarias no pueden restaurarse desde la copia de seguridad de su cuenta principal.</translation>
 <translation id="6725413948756358325">Nombre de la cuenta</translation>
 <translation id="6062431965141524986">Puedes crear una cuenta secundaria importando tu clave privada.</translation>
 <translation id="3952797765659730604">Introduce, pega o importa tu archivo de cadena de clave privada o JSON.</translation>
@@ -615,6 +631,18 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="5050890334032852465">Guardar lista de seguimiento de la cuenta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="2490428413101944234">Probar grifo</translation>
+<translation id="2581671693710952401">Obtener Ethers</translation>
+<translation id="8165484222652118977">Obtener ETH desde una llave para la red de prueba <ph name="NETWORK"/></translation>
+<translation id="7420359180991315365">Continuar a Wyre</translation>
+<translation id="8488282162676695335">Billetera de Brave</translation>
+<translation id="3784455785234192852">Bloqueo</translation>
+<translation id="5040262127954254034">Privacidad</translation>
+<translation id="8239147115686034860">Bloquear automáticamente la billetera Brave</translation>
+<translation id="414639769490080648">La cantidad de minutos que debe esperar hasta que la billetera Brave se bloquee automáticamente</translation>
+<translation id="4993345308607970390">Restablecer billetera de Brave</translation>
+<translation id="6369495274982305511">¿Confirmas que deseas restablecer tu billetera? Si no hiciste una copia de seguridad de tu billetera, perderás todos los datos de la cuenta al reestablecerla (incluidos los fondos asociados a esta). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# minuto} other {# minutos}}</translation>
 <translation id="4449475351935531438">Cortafuegos + VPN de Brave</translation>
 <translation id="719977489961414786">Actualice a una VPN para proteger su conexión y bloquear rastreadores invasivos en todas partes.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
@@ -698,8 +726,8 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="7995708795274219641">Monto + gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="6122742277607781713">Cartera</translation>
-<translation id="6083912983861746409">Precio de gas (GWEI)</translation>
-<translation id="2499079593046817044">Limite de gas (GWEI)</translation>
+<translation id="750843150060816463">Precio del gas (GWEI)</translation>
+<translation id="1426320910664514906">Limite de gas</translation>
 <translation id="6389441740143786465">Desactivar centro de difusión</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="473775607612524610">Actualizar</translation>
@@ -715,8 +743,72 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5932938770824268122">Clave privada</translation>
 <translation id="2472882733835903303">Mostrar clave privada</translation>
 <translation id="4391056902675005799">Ocultar clave privada</translation>
-<translation id="5929798090073091848">Advertencia: Nunca revele esta clave. Cualquier persona que la tenga en su poder puede robar los activos retenidos en su cuenta.</translation>
+<translation id="7518007103754668253">Advertencia: Nunca revele esta clave. Cualquier persona que la tenga en su poder puede robar los activos retenidos en su cuenta.</translation>
 <translation id="1133619932669546254">Activar <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TIPO DE FUNCIÓN: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No hay datos</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> envió <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (USD <ph name="FIAT_VALUE"/>) el <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprobada el <ph name="ASSET"/><ph name="DATE"/></translation>
+<translation id="7400134344541309180">Aprobada sin límites <ph name="ASSET"/> - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378">Intercambio de<ph name="ACCOUNT_NAME"/> el <ph name="DATE"/></translation>
+<translation id="2833661570529295305">Sin autorización</translation>
+<translation id="8034530868111548216">Aprobados</translation>
+<translation id="6015436276085482001">Rechazada</translation>
+<translation id="6666273175654835609">Enviado</translation>
+<translation id="2331676293859649642">Confirmado</translation>
+<translation id="1165039591588034296">Error</translation>
+<translation id="4354768722613827480">Tarifa: <ph name="VALUE"/> ETH (USD <ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">¿Ya usa el navegador más rápido?</translation>
+<translation id="2065971949051836200">Ahora puede navegar 3 veces más rápido desde su teléfono. Use Brave para navegar por Internet.</translation>
+<translation id="2888278614497184977">Brave = navegación por Internet 3 veces más rápida</translation>
+<translation id="6887232551109532144">Aumente la duración de la batería con cada carga</translation>
+<translation id="5388885352353494741">Tiene a su alcance la posibilidad de ahorrar batería. Use Brave para navegar por Internet.</translation>
+<translation id="3164151360474408351">Brave = más duración en cada carga</translation>
+<translation id="3211051910418903298">Recargue los datos móviles con menor frecuencia</translation>
+<translation id="1092355580602106002">Menos anuncios = menos datos en las páginas que cargue. Use Brave para navegar por Internet.</translation>
+<translation id="623962032102267945">Brave = menos uso de datos móviles en cada página</translation>
+<translation id="4355217341028673744">• Más privacidad</translation>
+<translation id="3679020972083025535">• Sin anuncios molestos</translation>
+<translation id="8047527352810290817">Editar gas</translation>
+<translation id="7358989216567322955">Tarifa de prioridad máxima</translation>
+<translation id="9091334651803050473">Si bien no es una garantía, es probable que los mineros prioricen la transacción de usted si usted paga una comisión más alta.</translation>
+<translation id="2941112035454246133">Baja</translation>
+<translation id="5431902940483264007">Óptima</translation>
+<translation id="7304030187361489308">Alta</translation>
+<translation id="1177863135347784049">Personalizado</translation>
+<translation id="4853037749278079787">Tarifa máxima: USD<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">Tarifa básica actual: <ph name="ASSET_VALUE"/> GWEI</translation>
+<translation id="1011713837432053857">Límite de cantidad de gas</translation>
+<translation id="1254969878422524947">Límite de propina por gas (Gwei)</translation>
+<translation id="7373308452149471621">Límite de precio por gas (Gwei)</translation>
+<translation id="5891811606602061966">No se pudo importar la cuenta. Inténtelo de nuevo.</translation>
+<translation id="7033470144757208254">Brave utiliza 0x como agregador DEX.</translation>
+<translation id="5061574358754621254">Datos sobre precios con la tecnología de CoinGecko</translation>
+<translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
+<translation id="8574289650879708853">Agregar activo personalizado</translation>
+<translation id="7791543448312431591">Agregar</translation>
+<translation id="6600400596821238377">Nombre del token</translation>
+<translation id="4432966365400169165">Dirección de contrato del token</translation>
+<translation id="4092152169181928870">Símbolo del token</translation>
+<translation id="4351811224047421378">Decimales de precisión</translation>
+<translation id="8614026298974065517">Eliminar activo personalizado</translation>
+<translation id="4378941981362528553">Desea eliminar el token (<ph name="TOKEN_NAME"/><ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="8971278306757462297">La dirección de recepción es tu propia dirección</translation>
+<translation id="749944179568745958">No es una dirección de ETH válida</translation>
+<translation id="3506416339268164412">La dirección de recepción es la dirección de contrato del token</translation>
+<translation id="1543259266592091784">Agregar fondos</translation>
+<translation id="3494964159182650590">Resumen de recompensas</translation>
+<translation id="7470079236088529568">Total de donaciones reclamadas</translation>
+<translation id="590733288489975971">Recompensas de anuncios</translation>
+<translation id="207268487070188114">Propina por única vez</translation>
+<translation id="64394831139134288">Mi billetera</translation>
+<translation id="8494748383523030337">Tu saldo</translation>
+<translation id="7091980679045978090">Ganancias estimadas</translation>
+<translation id="1346059596910821859">Propina</translation>
+<translation id="1549705559752367917">Enviar propina</translation>
+<translation id="6727102863431372879">Configurar</translation>
+<translation id="381822214767083050">Contribución mensual</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

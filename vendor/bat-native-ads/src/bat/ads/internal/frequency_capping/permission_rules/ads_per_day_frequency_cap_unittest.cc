@@ -67,7 +67,7 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   const size_t count = features::GetMaximumAdNotificationsPerDay();
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::Days(1));
 
   // Act
   AdsPerDayFrequencyCap frequency_cap;
@@ -82,7 +82,7 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   const size_t count = features::GetMaximumAdNotificationsPerDay();
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(23));
+  FastForwardClockBy(base::Hours(23));
 
   // Act
   AdsPerDayFrequencyCap frequency_cap;

@@ -9,7 +9,7 @@
 #define BRAVE_DOM_WINDOW_H \
   LocalFrame* GetDisconnectedFrame() const;
 
-#include "../../../../../../../third_party/blink/renderer/core/frame/dom_window.h"
+#include "src/third_party/blink/renderer/core/frame/dom_window.h"
 
 #undef BRAVE_DOM_WINDOW_H
 

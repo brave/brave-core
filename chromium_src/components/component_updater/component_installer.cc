@@ -8,7 +8,7 @@
 #include "components/crx_file/crx_verifier.h"
 #define CRX3_WITH_PUBLISHER_PROOF CRX3
 #define Register Register_ChromiumImpl
-#include "../../../../components/component_updater/component_installer.cc"
+#include "src/components/component_updater/component_installer.cc"
 #undef Register
 #undef CRX3_WITH_PUBLISHER_PROOF
 

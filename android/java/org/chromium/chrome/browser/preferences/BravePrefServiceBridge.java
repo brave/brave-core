@@ -277,7 +277,6 @@ public class BravePrefServiceBridge {
     }
 
     public boolean getShowNews() {
-        boolean getShowNews = BravePrefServiceBridgeJni.get().getShowNews();
         return BravePrefServiceBridgeJni.get().getShowNews();
     }
 

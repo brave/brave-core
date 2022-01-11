@@ -10,10 +10,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
@@ -61,15 +61,12 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(browser()->profile());
+    keyring_service_ =
+        KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
 
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
-  }
-  GURL GetLastCommitedOrigin() {
-    return web_contents()->GetLastCommittedURL().GetOrigin();
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
@@ -79,7 +76,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
         "drip caution abandon festival order clown oven regular absorb "
         "evidence crew where";
     base::RunLoop run_loop;
-    keyring_controller_->RestoreWallet(
+    keyring_service_->RestoreWallet(
         mnemonic, "brave123", false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
@@ -110,7 +107,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
-  KeyringController* keyring_controller_;
+  KeyringService* keyring_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {

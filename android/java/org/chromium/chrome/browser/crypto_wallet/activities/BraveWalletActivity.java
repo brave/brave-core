@@ -11,15 +11,18 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLE
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -27,22 +30,24 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.base.ActivityState;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
@@ -54,6 +59,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -66,39 +72,36 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BraveWalletActivity
-        extends AsyncInitializationActivity implements OnNextPage, ConnectionErrorHandler {
+public class BraveWalletActivity extends AsyncInitializationActivity
+        implements OnNextPage, ConnectionErrorHandler, KeyringServiceObserver {
     private Toolbar mToolbar;
 
-    private View cryptoLayout;
+    private View mCryptoLayout;
+    private View mCryptoOnboardingLayout;
     private View cryptoOnboardingLayout;
-    private ImageView swapButton;
+    private ImageView mSwapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
-    private KeyringController mKeyringController;
-    private ErcTokenRegistry mErcTokenRegistry;
-    private EthJsonRpcController mEthJsonRpcController;
-    private EthTxController mEthTxController;
-    private AssetRatioController mAssetRatioController;
+    private KeyringService mKeyringService;
+    private BlockchainRegistry mBlockchainRegistry;
+    private JsonRpcService mJsonRpcService;
+    private EthTxService mEthTxService;
+    private AssetRatioService mAssetRatioService;
     private BraveWalletService mBraveWalletService;
+    private boolean mShowBiometricPrompt;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.wallet_search, menu);
-        final MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
 
-        EditText searchEditText = searchView.findViewById(R.id.search_src_text);
-        searchEditText.setTextColor(getResources().getColor(android.R.color.black));
-        searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
-        ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);
-        closeButtonImage.setImageResource(R.drawable.ic_baseline_close_24);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        if (menu instanceof MenuBuilder) {
+            ((MenuBuilder) menu).setOptionalIconsVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -108,6 +111,10 @@ public class BraveWalletActivity
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
             settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
             return true;
+        } else if (item.getItemId() == R.id.lock) {
+            if (mKeyringService != null) {
+                mKeyringService.lock();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -115,6 +122,7 @@ public class BraveWalletActivity
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
+        mShowBiometricPrompt = true;
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
         mToolbar.setTitle("");
@@ -122,22 +130,23 @@ public class BraveWalletActivity
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(mToolbar);
 
-        swapButton = findViewById(R.id.swap_button);
+        mSwapButton = findViewById(R.id.swap_button);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // For Android 7 and above use vector images for send/swap button.
             // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            swapButton.setImageResource(R.drawable.ic_swap_icon);
-            swapButton.setBackgroundResource(R.drawable.ic_swap_bg);
+            mSwapButton.setImageResource(R.drawable.ic_swap_icon);
+            mSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
         }
 
-        swapButton.setOnClickListener(v -> {
+        mSwapButton.setOnClickListener(v -> {
             SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                     SwapBottomSheetDialogFragment.newInstance();
             swapBottomSheetDialogFragment.show(
                     getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
         });
 
-        cryptoLayout = findViewById(R.id.crypto_layout);
+        mCryptoLayout = findViewById(R.id.crypto_layout);
+        mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         cryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
         cryptoWalletOnboardingPagerAdapter =
                 new CryptoWalletOnboardingPagerAdapter(getSupportFragmentManager());
@@ -181,75 +190,74 @@ public class BraveWalletActivity
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mAssetRatioController.close();
-        mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
-        mEthTxController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
+        mBlockchainRegistry.close();
+        mJsonRpcService.close();
+        mEthTxService.close();
         mBraveWalletService.close();
 
-        mKeyringController = null;
-        mErcTokenRegistry = null;
-        mEthJsonRpcController = null;
-        mEthTxController = null;
-        mAssetRatioController = null;
+        mKeyringService = null;
+        mBlockchainRegistry = null;
+        mJsonRpcService = null;
+        mEthTxService = null;
+        mAssetRatioService = null;
         mBraveWalletService = null;
-        InitKeyringController();
-        InitErcTokenRegistry();
-        InitEthJsonRpcController();
-        InitEthTxController();
-        InitAssetRatioController();
+        InitKeyringService();
+        InitBlockchainRegistry();
+        InitJsonRpcService();
+        InitEthTxService();
+        InitAssetRatioService();
         InitBraveWalletService();
     }
 
-    private void InitEthTxController() {
-        if (mEthTxController != null) {
+    private void InitEthTxService() {
+        if (mEthTxService != null) {
             return;
         }
 
-        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
+        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
-    private void InitErcTokenRegistry() {
-        if (mErcTokenRegistry != null) {
+    private void InitBlockchainRegistry() {
+        if (mBlockchainRegistry != null) {
             return;
         }
 
-        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     private void InitBraveWalletService() {
@@ -260,24 +268,24 @@ public class BraveWalletActivity
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
     }
 
-    public ErcTokenRegistry getErcTokenRegistry() {
-        return mErcTokenRegistry;
+    public BlockchainRegistry getBlockchainRegistry() {
+        return mBlockchainRegistry;
     }
 
-    public EthJsonRpcController getEthJsonRpcController() {
-        return mEthJsonRpcController;
+    public JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
-    public EthTxController getEthTxController() {
-        return mEthTxController;
+    public EthTxService getEthTxService() {
+        return mEthTxService;
     }
 
-    public AssetRatioController getAssetRatioController() {
-        return mAssetRatioController;
+    public AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
     }
 
     public BraveWalletService getBraveWalletService() {
@@ -287,16 +295,16 @@ public class BraveWalletActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitKeyringController();
-        InitErcTokenRegistry();
-        InitEthJsonRpcController();
-        InitEthTxController();
-        InitAssetRatioController();
+        InitKeyringService();
+        InitBlockchainRegistry();
+        InitJsonRpcService();
+        InitEthTxService();
+        InitAssetRatioService();
         InitBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_FIRST_PAGE_ACTION);
-        } else if (mKeyringController != null) {
-            mKeyringController.isLocked(isLocked -> {
+        } else if (mKeyringService != null) {
+            mKeyringService.isLocked(isLocked -> {
                 if (isLocked) {
                     setNavigationFragments(UNLOCK_WALLET_ACTION);
                 } else {
@@ -308,11 +316,11 @@ public class BraveWalletActivity
 
     @Override
     public void onDestroy() {
-        mKeyringController.close();
-        mAssetRatioController.close();
-        mErcTokenRegistry.close();
-        mEthJsonRpcController.close();
-        mEthTxController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
+        mBlockchainRegistry.close();
+        mJsonRpcService.close();
+        mEthTxService.close();
         mBraveWalletService.close();
         mModalDialogManager.destroy();
         super.onDestroy();
@@ -335,7 +343,10 @@ public class BraveWalletActivity
 
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
-        cryptoLayout.setVisibility(View.GONE);
+        mShowBiometricPrompt = true;
+        mCryptoLayout.setVisibility(View.GONE);
+        mSwapButton.setVisibility(View.GONE);
+        mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
             setupWalletFragment.setOnNextPageListener(this);
@@ -347,6 +358,7 @@ public class BraveWalletActivity
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.unlock_wallet_title), unlockWalletFragment));
         } else if (type == RESTORE_WALLET_ACTION) {
+            mShowBiometricPrompt = false;
             RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
             restoreWalletFragment.setOnNextPageListener(this);
             navigationItems.add(
@@ -358,11 +370,29 @@ public class BraveWalletActivity
             cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
             cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
         }
+        addRemoveSecureFlag(true);
+    }
+
+    private void addRemoveSecureFlag(boolean add) {
+        if (add) {
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
+        try {
+            getWindowManager().removeViewImmediate(getWindow().getDecorView());
+            getWindowManager().addView(getWindow().getDecorView(), getWindow().getAttributes());
+        } catch (IllegalArgumentException exc) {
+            // The activity isn't active right now
+        }
     }
 
     private void replaceNavigationFragments(int type, boolean doNavigate) {
+        mShowBiometricPrompt = true;
         if (cryptoWalletOnboardingViewPager != null && cryptoWalletOnboardingPagerAdapter != null) {
             if (type == RESTORE_WALLET_ACTION) {
+                mShowBiometricPrompt = false;
                 RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
                 restoreWalletFragment.setOnNextPageListener(this);
                 cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
@@ -392,9 +422,10 @@ public class BraveWalletActivity
     }
 
     private void setCryptoLayout() {
-        cryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
-        cryptoOnboardingLayout.setVisibility(View.GONE);
-        cryptoLayout.setVisibility(View.VISIBLE);
+        addRemoveSecureFlag(false);
+
+        mCryptoOnboardingLayout.setVisibility(View.GONE);
+        mCryptoLayout.setVisibility(View.VISIBLE);
 
         ViewPager viewPager = findViewById(R.id.navigation_view_pager);
         CryptoFragmentPageAdapter adapter =
@@ -404,10 +435,10 @@ public class BraveWalletActivity
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (swapButton != null) swapButton.setVisibility(View.VISIBLE);
+        if (mSwapButton != null) mSwapButton.setVisibility(View.VISIBLE);
 
-        if (mKeyringController != null)
-            mKeyringController.isWalletBackedUp(backed_up -> {
+        if (mKeyringService != null)
+            mKeyringService.isWalletBackedUp(backed_up -> {
                 if (!backed_up) {
                     showWalletBackupBanner();
                 } else {
@@ -434,8 +465,10 @@ public class BraveWalletActivity
     }
 
     public void backupBannerOnClick() {
-        cryptoOnboardingLayout.setVisibility(View.VISIBLE);
-        cryptoLayout.setVisibility(View.GONE);
+        addRemoveSecureFlag(true);
+        mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
+        mCryptoLayout.setVisibility(View.GONE);
+        mSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems);
@@ -465,6 +498,20 @@ public class BraveWalletActivity
     }
 
     @Override
+    public boolean showBiometricPrompt() {
+        int state = ApplicationStatus.getStateForActivity(this);
+
+        return mShowBiometricPrompt
+                && (state != ActivityState.PAUSED || state != ActivityState.STOPPED
+                        || state != ActivityState.DESTROYED);
+    }
+
+    @Override
+    public void showBiometricPrompt(boolean show) {
+        mShowBiometricPrompt = show;
+    }
+
+    @Override
     public void gotoNextPage(boolean finishOnboarding) {
         if (finishOnboarding) {
             setCryptoLayout();
@@ -484,5 +531,15 @@ public class BraveWalletActivity
     @Override
     public void gotoRestorePage() {
         replaceNavigationFragments(RESTORE_WALLET_ACTION, true);
+    }
+
+    @Override
+    public void locked() {
+        setNavigationFragments(UNLOCK_WALLET_ACTION);
+    }
+
+    @Override
+    public void backedUp() {
+        findViewById(R.id.wallet_backup_banner).setVisibility(View.GONE);
     }
 }

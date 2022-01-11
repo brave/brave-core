@@ -2,26 +2,22 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import {
-  TransactionInfo,
-  SignMessageRequest,
-  SwitchChainRequest,
-  TransactionStatus,
-  TREZOR_HARDWARE_VENDOR,
-  LEDGER_HARDWARE_VENDOR
-} from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
+  BraveWallet,
   WalletPanelState,
   PanelState,
   WalletState,
-  HardwareInfo
+  HardwareInfo,
+  WalletRoutes
 } from '../../constants/types'
 import {
   AccountPayloadType,
+  AddSuggestTokenProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
@@ -48,8 +44,8 @@ import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { TrezorErrorsCodes } from '../../common/hardware/trezor/trezor-messages'
 import { HardwareVendor } from '../../common/api/hardware_keyrings'
+import { isRemoteImageURL } from '../../utils/string-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -67,9 +63,14 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
+async function hasPendingUnlockRequest () {
+  const keyringService = getWalletPanelApiProxy().keyringService
+  return (await keyringService.hasPendingUnlockRequest()).pending
+}
+
 async function getPendingChainRequest () {
-  const ethJsonRpcController = getWalletPanelApiProxy().ethJsonRpcController
-  const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
+  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
+  const chains = (await jsonRpcService.getPendingChainRequests()).networks
   if (chains && chains.length) {
     return chains[0]
   }
@@ -77,9 +78,9 @@ async function getPendingChainRequest () {
 }
 
 async function getPendingSwitchChainRequest () {
-  const ethJsonRpcController = getWalletPanelApiProxy().ethJsonRpcController
+  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
   const requests =
-    (await ethJsonRpcController.getPendingSwitchChainRequests()).requests
+    (await jsonRpcService.getPendingSwitchChainRequests()).requests
   if (requests && requests.length) {
     return requests[0]
   }
@@ -92,6 +93,20 @@ async function getPendingSignMessageRequest () {
     (await braveWalletService.getPendingSignMessageRequests()).requests
   if (requests && requests.length) {
     return requests
+  }
+  return null
+}
+
+async function getPendingAddSuggestTokenRequest () {
+  const braveWalletService = getWalletPanelApiProxy().braveWalletService
+  const requests =
+    (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
+  if (requests && requests.length) {
+    const logo = requests[0].token.logo
+    if (logo !== '' && !isRemoteImageURL(logo)) {
+      requests[0].token.logo = `chrome://erc-token-images/${logo}`
+    }
+    return requests[0]
   }
   return null
 }
@@ -138,6 +153,10 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     store.dispatch(PanelActions.showConnectToSite({ accounts, origin }))
     return
   } else {
+    const unlockRequest = await hasPendingUnlockRequest()
+    if (unlockRequest) {
+      store.dispatch(PanelActions.showUnlock())
+    }
     const chain = await getPendingChainRequest()
     if (chain) {
       store.dispatch(PanelActions.addEthereumChain({ chain }))
@@ -151,6 +170,11 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const switchChainRequest = await getPendingSwitchChainRequest()
     if (switchChainRequest) {
       store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
+      return
+    }
+    const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
+    if (addSuggestTokenRequest) {
+      store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
       return
     }
   }
@@ -171,7 +195,7 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: TransactionInfo) => {
+handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (found && found.hardware) {
     const info: HardwareInfo = found.hardware
@@ -182,7 +206,7 @@ handler.on(PanelActions.cancelConnectHardwareWallet.getType(), async (store: Sto
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
+handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (!found || !found.hardware) {
     return
@@ -190,7 +214,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   const hardwareAccount: HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
-  if (hardwareAccount.vendor === LEDGER_HARDWARE_VENDOR) {
+  if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       await store.dispatch(PanelActions.navigateToMain())
@@ -215,7 +239,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       console.log(error)
       await store.dispatch(PanelActions.navigateToMain())
     }
-  } else if (hardwareAccount.vendor === TREZOR_HARDWARE_VENDOR) {
+  } else if (hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR) {
     const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
@@ -266,6 +290,12 @@ handler.on(PanelActions.showApproveTransaction.getType(), async (store: Store, p
   apiProxy.panelHandler.showUI()
 })
 
+handler.on(PanelActions.showUnlock.getType(), async (store: Store) => {
+  store.dispatch(PanelActions.navigateTo('showUnlock'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
 handler.on(PanelActions.addEthereumChain.getType(), async (store: Store, payload: EthereumChainPayload) => {
   store.dispatch(PanelActions.navigateTo('addEthereumChain'))
   const apiProxy = getWalletPanelApiProxy()
@@ -274,8 +304,8 @@ handler.on(PanelActions.addEthereumChain.getType(), async (store: Store, payload
 
 handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store: any, payload: EthereumChainRequestPayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const ethJsonRpcController = apiProxy.ethJsonRpcController
-  ethJsonRpcController.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
+  const jsonRpcService = apiProxy.jsonRpcService
+  jsonRpcService.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
   const chain = await getPendingChainRequest()
   if (chain) {
     store.dispatch(PanelActions.addEthereumChain({ chain }))
@@ -284,7 +314,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: SwitchChainRequest) => {
+handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: BraveWallet.SwitchChainRequest) => {
   // We need to get current network list first because switch chain doesn't
   // require permission connect first.
   await refreshWalletInfo(store)
@@ -295,8 +325,8 @@ handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, requ
 
 handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const ethJsonRpcController = apiProxy.ethJsonRpcController
-  ethJsonRpcController.notifySwitchChainRequestProcessed(payload.approved, payload.origin)
+  const jsonRpcService = apiProxy.jsonRpcService
+  jsonRpcService.notifySwitchChainRequestProcessed(payload.approved, payload.origin)
   const switchChainRequest = await getPendingSwitchChainRequest()
   if (switchChainRequest) {
     store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
@@ -323,7 +353,7 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: BraveWallet.SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -342,16 +372,17 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.message)
   if (!signed.success && signed.code) {
-    const deviceError = (info.vendor === TREZOR_HARDWARE_VENDOR)
-      ? dialogErrorFromTrezorErrorCode(signed.code as TrezorErrorsCodes) : dialogErrorFromLedgerErrorCode(signed.code)
+    const deviceError = (info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR)
+      ? dialogErrorFromTrezorErrorCode(signed.code) : dialogErrorFromLedgerErrorCode(signed.code)
     if (deviceError !== 'transactionRejected') {
       await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
       return
     }
   }
   const payload: SignMessageHardwareProcessedPayload =
-    signed.success ? { success: signed.success, id: messageData.id, signature: signed.payload }
-                   : { success: signed.success, id: messageData.id, error: signed.error }
+    signed.success
+      ? { success: signed.success, id: messageData.id, signature: signed.payload }
+      : { success: signed.success, id: messageData.id, error: signed.error }
   store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -364,6 +395,24 @@ handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, pa
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))
+    return
+  }
+  apiProxy.panelHandler.closeUI()
+})
+
+handler.on(PanelActions.addSuggestToken.getType(), async (store: Store, payload: BraveWallet.AddSuggestTokenRequest[]) => {
+  store.dispatch(PanelActions.navigateTo('addSuggestedToken'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
+handler.on(PanelActions.addSuggestTokenProcessed.getType(), async (store: Store, payload: AddSuggestTokenProcessedPayload) => {
+  const apiProxy = getWalletPanelApiProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  braveWalletService.notifyAddSuggestTokenRequestsProcessed(payload.approved, [payload.contractAddress])
+  const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
+  if (addSuggestTokenRequest) {
+    store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -398,7 +447,7 @@ handler.on(PanelActions.openWalletApps.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.Restore}` }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -406,7 +455,15 @@ handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandWalletAccounts.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet/crypto/accounts/add-account' }, () => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.AddAccountModal}` }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+})
+
+handler.on(PanelActions.expandWalletAddAsset.getType(), async (store) => {
+  chrome.tabs.create({ url: `chrome://wallet${WalletRoutes.AddAssetModal}` }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -425,13 +482,21 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
   const state = getPanelState(store)
   const walletState = getWalletState(store)
   if (
-    [TransactionStatus.Submitted, TransactionStatus.Rejected, TransactionStatus.Approved]
+    [BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Rejected, BraveWallet.TransactionStatus.Approved]
       .includes(payload.txInfo.txStatus)
   ) {
     if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
       const apiProxy = getWalletPanelApiProxy()
       apiProxy.panelHandler.closeUI()
     }
+  }
+})
+
+handler.on(WalletActions.unlocked.getType(), async (store: Store) => {
+  const state = getPanelState(store)
+  if (state.selectedPanel === 'showUnlock') {
+    const apiProxy = getWalletPanelApiProxy()
+    apiProxy.panelHandler.closeUI()
   }
 })
 

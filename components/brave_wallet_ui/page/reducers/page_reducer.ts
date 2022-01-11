@@ -6,10 +6,8 @@
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
 import {
+  BraveWallet,
   PageState,
-  AssetPriceTimeframe,
-  ERCToken,
-  SwapResponse,
   SwapErrorResponse,
   ImportWalletError
 } from '../../constants/types'
@@ -27,10 +25,10 @@ const defaultState: PageState = {
   invalidMnemonic: false,
   importAccountError: false,
   importWalletError: { hasError: false },
-  selectedTimeline: AssetPriceTimeframe.OneDay,
+  selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
-  selectedUSDAssetPrice: undefined,
-  selectedBTCAssetPrice: undefined,
+  selectedAssetFiatPrice: undefined,
+  selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
@@ -103,7 +101,7 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: ERCToken) => {
+reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: BraveWallet.BlockchainToken) => {
   return {
     ...state,
     selectedAsset: payload
@@ -114,8 +112,8 @@ reducer.on(Actions.updatePriceInfo, (state: PageState, payload: SelectAssetPaylo
   const history = payload.priceHistory ? payload.priceHistory.values : []
   return {
     ...state,
-    selectedUSDAssetPrice: payload.usdPriceInfo,
-    selectedBTCAssetPrice: payload.btcPriceInfo,
+    selectedAssetFiatPrice: payload.defaultFiatPrice,
+    selectedAssetCryptoPrice: payload.defaultCryptoPrice,
     selectedAssetPriceHistory: history,
     selectedTimeline: payload.timeFrame,
     isFetchingPriceHistory: false
@@ -164,7 +162,7 @@ reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolea
   }
 })
 
-reducer.on(Actions.setPageSwapQuote, (state: any, payload: SwapResponse) => {
+reducer.on(Actions.setPageSwapQuote, (state: any, payload: BraveWallet.SwapResponse) => {
   return {
     ...state,
     swapQuote: payload

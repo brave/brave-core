@@ -275,9 +275,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
       </message>
+      <!-- Settings / Diagnostic reports -->
+      <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF" desc="The label of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
+        Automatically send diagnostic reports
+      </message>
+      <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC" desc="The description of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
+        Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
+      </message>
       <!-- Settings / Get Started -->
       <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
         Profile name and icon
+      </message>
+      <!-- Settings / Cookies and other site data -->
+      <message name="IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS" desc="Title of the list containing sites to clear cookies when all windows with the site are closed">
+        Sites that clear cookies when you close them
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling cookies cleanup when all windows with the site are clsoed.">
+        Clear on site close
       </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
@@ -446,7 +460,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Private Window
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_LABEL" desc="The text label of tor avatar button.">
-        Private with Tor
+        Tor
+      </message>
+      <message name="IDS_TOR_AVATAR_BUTTON_LABEL_COUNT" desc="The text label of tor avatar button. with count">
+        Tor <ph name="COUNT">$1</ph>
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT" desc="The tooltip text of tor avatar button.">
         This is a private window with Tor
@@ -461,7 +478,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Open in Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
-        Open using IPFS
+        IPFS
       </message>
       <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
         Publish and retrieve files from IPFS
@@ -988,10 +1005,25 @@ Are you sure you want to do this?
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
-        Reset Wallet
+        Reset Brave Wallet
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO" desc="Reset wallet transactions">
+        Clear wallet transaction and nonce information
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
+        Clearing transactions may be useful for developers or when clearing state on a local server
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
         Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
+        Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
+        Your wallet was reset.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
+        Your wallet transaction information was reset.
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
         Yes
@@ -1298,7 +1330,7 @@ Are you sure you want to do this?
           Don't ask again
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
-          Send crash reports automatically so Brave can prevent this issue from happening again?
+          Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT" desc="The header text for crash report ask dialog">
           <ph name="BROWSER_NAME">$1<ex>Brave Browser</ex></ph> quit unexpectedly.
@@ -1307,7 +1339,7 @@ Are you sure you want to do this?
           Brave Browser
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT" desc="The footnote text for crash report ask dialog.">
-          You can change <ph name="SETTING_TEXT">$1<ex>this setting</ex></ph> again at any time.
+          You can change <ph name="SETTING_TEXT">$1<ex>this</ex></ph> at any time in browser settings.
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting

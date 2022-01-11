@@ -162,8 +162,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_UP: {
-      chrome.send('brave_rewards.toggleAdThumbUp',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      chrome.send('brave_rewards.toggleAdThumbUp', [action.payload.adContent])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_UP: {
@@ -171,47 +170,44 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_DOWN: {
-      chrome.send('brave_rewards.toggleAdThumbDown',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      chrome.send('brave_rewards.toggleAdThumbDown', [action.payload.adContent])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_DOWN: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_AD_OPT_IN_ACTION: {
-      chrome.send('brave_rewards.toggleAdOptInAction',
+    case types.TOGGLE_AD_OPT_IN: {
+      chrome.send('brave_rewards.toggleAdOptIn',
                   [action.payload.category, action.payload.optAction])
       break
     }
-    case types.ON_TOGGLE_AD_OPT_IN_ACTION: {
+    case types.ON_TOGGLE_AD_OPT_IN: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_AD_OPT_OUT_ACTION: {
-      chrome.send('brave_rewards.toggleAdOptOutAction',
+    case types.TOGGLE_AD_OPT_OUT: {
+      chrome.send('brave_rewards.toggleAdOptOut',
                   [action.payload.category, action.payload.optAction])
       break
     }
-    case types.ON_TOGGLE_AD_OPT_OUT_ACTION: {
+    case types.ON_TOGGLE_AD_OPT_OUT: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_SAVE_AD: {
-      chrome.send('brave_rewards.toggleSaveAd',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.savedAd])
+    case types.TOGGLE_SAVED_AD: {
+      chrome.send('brave_rewards.toggleSavedAd', [action.payload.adContent])
       break
     }
-    case types.ON_TOGGLE_SAVE_AD: {
+    case types.ON_TOGGLE_SAVED_AD: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_FLAG_AD: {
-      chrome.send('brave_rewards.toggleFlagAd',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.flaggedAd])
+    case types.TOGGLE_FLAGGED_AD: {
+      chrome.send('brave_rewards.toggleFlaggedAd', [action.payload.adContent])
       break
     }
-    case types.ON_TOGGLE_FLAG_AD: {
+    case types.ON_TOGGLE_FLAGGED_AD: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }

@@ -3,5 +3,6 @@ include_rules = [
   "+components",
   "+ios/chrome/browser",
   "+ios/web/public",
+  "+mojo/public/cpp/bindings",
   "+services/network/public/cpp",
 ]

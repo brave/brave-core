@@ -12,6 +12,8 @@ static_library("common") {
   sources = [
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
+    "eth_address.cc",
+    "eth_address.h",
     "eth_request_helper.cc",
     "eth_request_helper.h",
     "eth_sign_typed_data_helper.cc",
@@ -30,6 +32,7 @@ static_library("common") {
     ":mojom__generator",
     "//base",
     "//brave/third_party/ethash",
+    "//url",
   ]
 }
 
@@ -52,7 +55,6 @@ preprocess_if_expr("preprocess_mojo") {
 mojom("mojom") {
   generate_java = true
   sources = [ "brave_wallet.mojom" ]
-
   deps = [
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",

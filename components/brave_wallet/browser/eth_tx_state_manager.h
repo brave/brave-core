@@ -13,10 +13,10 @@
 
 #include "base/observer_list.h"
 #include "base/time/time.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -27,9 +27,9 @@ class Value;
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
-class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
+class EthTxStateManager : public mojom::JsonRpcServiceObserver {
  public:
   struct TxMeta {
     TxMeta();
@@ -50,7 +50,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   };
 
   explicit EthTxStateManager(PrefService* prefs,
-                             EthJsonRpcController* rpc_controller);
+                             JsonRpcService* json_rpc_service);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
@@ -69,7 +69,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
       absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
-  // mojom::EthJsonRpcControllerObserver
+  // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
@@ -91,8 +91,8 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
 
   base::ObserverList<Observer> observers_;
   PrefService* prefs_;
-  EthJsonRpcController* rpc_controller_;
-  mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
+  JsonRpcService* json_rpc_service_;
+  mojo::Receiver<mojom::JsonRpcServiceObserver> observer_receiver_{this};
   std::string chain_id_;
   std::string network_url_;
   base::WeakPtrFactory<EthTxStateManager> weak_factory_;

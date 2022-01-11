@@ -33,16 +33,17 @@ void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
 void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kNotifications, "");
   registry->RegisterTimeDeltaPref(prefs::kNotificationTimerInterval,
-                                  base::TimeDelta::FromDays(1));
+                                  base::Days(1));
   registry->RegisterTimeDeltaPref(prefs::kBackupNotificationInterval,
-                                  base::TimeDelta::FromDays(30));
+                                  base::Days(30));
   registry->RegisterTimeDeltaPref(prefs::kNotificationStartupDelay,
-                                  base::TimeDelta::FromSeconds(30));
+                                  base::Seconds(30));
   registry->RegisterBooleanPref(prefs::kBackupSucceeded, false);
   registry->RegisterBooleanPref(prefs::kUserHasFunded, false);
   registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
   registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
+  registry->RegisterTimePref(prefs::kEnabledTimestamp, base::Time());
   registry->RegisterDictionaryPref(prefs::kExternalWallets);
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");

@@ -11,22 +11,24 @@ import {
   SelectWrapper,
   LoadingWrapper,
   LoadIcon,
-  AddressBalanceWrapper
+  AddressBalanceWrapper,
+  NoSearchResultText
 } from './style'
 import {
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping
 } from './types'
+import { BraveWallet, WalletAccountType } from '../../../../../constants/types'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 interface Props {
   hardwareWallet: string
-  accounts: HardwareWalletAccount[]
+  accounts: BraveWallet.HardwareWalletAccount[]
+  preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void
@@ -39,6 +41,7 @@ interface Props {
 export default function (props: Props) {
   const {
     accounts,
+    preAddedHardwareWalletAccounts,
     hardwareWallet,
     selectedDerivationScheme,
     setSelectedDerivationScheme,
@@ -48,7 +51,7 @@ export default function (props: Props) {
     onAddAccounts,
     getBalance
   } = props
-  const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[] | undefined>()
+  const [filteredAccountList, setFilteredAccountList] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
 
   React.useMemo(() => {
@@ -58,7 +61,7 @@ export default function (props: Props) {
 
   const derivationPathsEnum = HardwareWalletDerivationPathsMapping[hardwareWallet]
 
-  const onSelectAccountCheckbox = (account: HardwareWalletAccount) => () => {
+  const onSelectAccountCheckbox = (account: BraveWallet.HardwareWalletAccount) => () => {
     const { derivationPath } = account
     const isSelected = selectedDerivationPaths.includes(derivationPath)
     const updatedPaths = isSelected
@@ -87,6 +90,10 @@ export default function (props: Props) {
     onLoadMore()
   }
 
+  const isPreAddedAccount = React.useCallback((account: BraveWallet.HardwareWalletAccount) => {
+    return preAddedHardwareWalletAccounts.some(e => e.address === account.address)
+  }, [preAddedHardwareWalletAccounts])
+
   return (
     <>
       <SelectWrapper>
@@ -107,25 +114,44 @@ export default function (props: Props) {
       </DisclaimerWrapper>
       <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
-        {filteredAccountList?.length === 0 ? (
-          <LoadingWrapper>
-            <LoadIcon size='big' />
-          </LoadingWrapper>
-        ) : (
-          <>
-            {filteredAccountList?.map((account) => {
-              return (
-                <AccountListItem
-                  key={account.derivationPath}
-                  account={account}
-                  selected={selectedDerivationPaths.includes(account.derivationPath)}
-                  onSelect={onSelectAccountCheckbox(account)}
-                  getBalance={getBalance}
-                />
-              )
-            })}
-          </>
-        )}
+        {
+          accounts.length === 0 && (
+            <LoadingWrapper>
+              <LoadIcon size='big'/>
+            </LoadingWrapper>
+          )
+        }
+
+        {
+          accounts.length > 0 && filteredAccountList?.length === 0 && (
+            <NoSearchResultText>
+              {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+            </NoSearchResultText>
+          )
+        }
+
+        {
+          accounts.length > 0 && filteredAccountList.length > 0 && (
+            <>
+              {filteredAccountList?.map((account) => {
+                return (
+                  <AccountListItem
+                    key={account.derivationPath}
+                    account={account}
+                    selected={
+                      selectedDerivationPaths.includes(account.derivationPath) ||
+                      isPreAddedAccount(account)
+                    }
+                    disabled={isPreAddedAccount(account)}
+                    onSelect={onSelectAccountCheckbox(account)}
+                    getBalance={getBalance}
+                  />
+                )
+              })}
+            </>
+          )
+        }
+
       </HardwareWalletAccountsList>
       <ButtonsContainer>
         <NavButton
@@ -133,23 +159,29 @@ export default function (props: Props) {
           text={isLoadingMore ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
             : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
           buttonType='primary'
-          disabled={isLoadingMore}
+          disabled={isLoadingMore || accounts.length === 0}
         />
-        <NavButton onSubmit={onAddAccounts} text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')} buttonType='primary' />
+        <NavButton
+          onSubmit={onAddAccounts}
+          text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')}
+          buttonType='primary'
+          disabled={accounts.length === 0}
+        />
       </ButtonsContainer>
     </>
   )
 }
 
 interface AccountListItemProps {
-  account: HardwareWalletAccount
+  account: BraveWallet.HardwareWalletAccount
   onSelect: () => void
   selected: boolean
+  disabled: boolean
   getBalance: (address: string) => Promise<string>
 }
 
 function AccountListItem (props: AccountListItemProps) {
-  const { account, onSelect, selected, getBalance } = props
+  const { account, onSelect, selected, disabled, getBalance } = props
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
@@ -169,7 +201,11 @@ function AccountListItem (props: AccountListItemProps) {
           <div>{reduceAddress(account.address)}</div>
         </AddressBalanceWrapper>
         <AddressBalanceWrapper>{balance}</AddressBalanceWrapper>
-        <Checkbox value={{ selected }} onChange={onSelect}>
+        <Checkbox
+          value={{ selected }}
+          onChange={onSelect}
+          disabled={disabled}
+        >
           <div data-key='selected' />
         </Checkbox>
       </HardwareWalletAccountListItemColumn>

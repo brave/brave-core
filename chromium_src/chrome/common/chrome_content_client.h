@@ -14,7 +14,7 @@
   kPDFInternalPluginName_Unused[]; \
   static const char kPDFInternalPluginName
 
-#include "../../../../chrome/common/chrome_content_client.h"
+#include "src/chrome/common/chrome_content_client.h"
 
 #undef kPDFExtensionPluginName
 #undef kPDFInternalPluginName

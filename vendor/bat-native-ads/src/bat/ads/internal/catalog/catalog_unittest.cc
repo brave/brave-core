@@ -7,6 +7,8 @@
 
 #include <cstdint>
 
+#include "bat/ads/internal/catalog/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
+#include "bat/ads/internal/catalog/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
@@ -94,10 +96,27 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_new_tab_page_ad.version = 1;
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
     catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 1";
+    catalog_creative_new_tab_page_ad.payload.image_url =
+        "https://brave.com/1/test.jpg";
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 1";
     catalog_creative_new_tab_page_ad.payload.target_url =
         "https://brave.com/1/new_tab_page_ad";
+    CatalogNewTabPageAdWallpaperInfo wallpaper_1;
+    wallpaper_1.image_url = "https://brave.com/1/test2.jpg";
+    CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
+    focal_point_1.x = 1200;
+    focal_point_1.y = 1400;
+    wallpaper_1.focal_point = focal_point_1;
+    catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
+    CatalogNewTabPageAdWallpaperInfo wallpaper_2;
+    wallpaper_2.image_url = "https://brave.com/1/test3.jpg";
+    CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
+    focal_point_2.x = 1200;
+    focal_point_2.y = 1400;
+    wallpaper_2.focal_point = focal_point_2;
+    catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+
     catalog_creative_new_tab_page_ads.push_back(
         catalog_creative_new_tab_page_ad);
 
@@ -280,10 +299,27 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_new_tab_page_ad.version = 1;
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
     catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 2";
+    catalog_creative_new_tab_page_ad.payload.image_url =
+        "https://brave.com/2/test.jpg";
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 2";
     catalog_creative_new_tab_page_ad.payload.target_url =
         "https://brave.com/2/new_tab_page_ad";
+    CatalogNewTabPageAdWallpaperInfo wallpaper_1;
+    wallpaper_1.image_url = "https://brave.com/2/test2.jpg";
+    CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
+    focal_point_1.x = 1000;
+    focal_point_1.y = 1200;
+    wallpaper_1.focal_point = focal_point_1;
+    catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
+    CatalogNewTabPageAdWallpaperInfo wallpaper_2;
+    wallpaper_2.image_url = "https://brave.com/2/test3.jpg";
+    CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
+    focal_point_2.x = 500;
+    focal_point_2.y = 600;
+    wallpaper_2.focal_point = focal_point_2;
+    catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+
     catalog_creative_new_tab_page_ads.push_back(
         catalog_creative_new_tab_page_ad);
 
@@ -518,7 +554,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(8, version);
+  EXPECT_EQ(9, version);
 }
 
 TEST_F(BatAdsCatalogTest, GetPing) {
@@ -537,39 +573,6 @@ TEST_F(BatAdsCatalogTest, GetPing) {
 
   // Assert
   EXPECT_EQ(7200, ping);
-}
-
-TEST_F(BatAdsCatalogTest, GetIssuers) {
-  // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
-
-  Catalog catalog;
-  ASSERT_TRUE(catalog.FromJson(json));
-
-  // Act
-  const CatalogIssuersInfo catalog_issuers = catalog.GetIssuers();
-
-  // Assert
-  CatalogIssuersInfo expected_catalog_issuers;
-
-  expected_catalog_issuers.public_key =
-      "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34=";
-
-  CatalogIssuerInfo catalog_issuer_1;
-  catalog_issuer_1.name = "0.01BAT";
-  catalog_issuer_1.public_key = "VihGXGoiQ5Fjxe4SrskIVMcmERa1LoAgvhFxxfLmNEI=";
-  expected_catalog_issuers.issuers.push_back(catalog_issuer_1);
-
-  CatalogIssuerInfo catalog_issuer_2;
-  catalog_issuer_2.name = "0.05BAT";
-  catalog_issuer_2.public_key = "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk=";
-  expected_catalog_issuers.issuers.push_back(catalog_issuer_2);
-
-  EXPECT_EQ(expected_catalog_issuers, catalog_issuers);
 }
 
 TEST_F(BatAdsCatalogTest, GetCampaign) {

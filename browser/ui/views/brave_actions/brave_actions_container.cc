@@ -264,7 +264,9 @@ void BraveActionsContainer::AddActionViewForShields() {
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
     shields_action_btn_ =
-        AddChildViewAt(std::make_unique<BraveShieldsActionView>(), 1);
+        AddChildViewAt(std::make_unique<BraveShieldsActionView>(
+                           browser_->profile(), browser_->tab_strip_model()),
+                       1);
     shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
     shields_action_btn_->Init();
   }
@@ -449,13 +451,11 @@ void BraveActionsContainer::SetPopupOwner(
     DCHECK(!popup_owner_);
     popup_owner_ = popup_owner;
     UpdateActionVisibility(popup_owner->GetId());
-    return;
+  } else if (popup_owner_) {
+    auto* previous_owner = popup_owner_;
+    popup_owner_ = nullptr;
+    UpdateActionVisibility(previous_owner->GetId());
   }
-
-  auto* previous_owner = popup_owner_;
-  DCHECK(previous_owner);
-  popup_owner_ = nullptr;
-  UpdateActionVisibility(previous_owner->GetId());
 }
 
 void BraveActionsContainer::HideActivePopup() {

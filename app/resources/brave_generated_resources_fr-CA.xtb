@@ -36,6 +36,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7017590444693657895">Empêcher les sites d'accéder à l'API du fournisseur d'Ethereum</translation>
 <translation id="8988939298652262600">Brave n'examine pas la sécurité et la sûreté des extensions. N'installez cette extension que si vous faites confiance au développeur.</translation>
 <translation id="8081858229109418493">Nom et icône du profil</translation>
+<translation id="6438096877646138757">Sites effaçant les témoins lorsque vous les fermez</translation>
+<translation id="2988792685798128092">Effacer à la fermeture du site</translation>
 <translation id="2044383478723007273">Couleurs de Brave</translation>
 <translation id="1692470335103807198">Obtenir plus de thèmes</translation>
 <translation id="2906510232093002459">Images Brave par défaut</translation>
@@ -55,7 +57,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="6821903322090655051">Les récompenses Brave sont désactivées</translation>
-<translation id="9184430019924125685">Cliquez ici pour en savoir plus</translation>
+<translation id="413570371620795359">Ouvrez la section Récompenses pour activer cette fonctionnalité et vous lancer</translation>
 <translation id="3849957491997306859">Détection automatique</translation>
 <translation id="8798099450830957504">Par défaut</translation>
 <translation id="4176463684765177261">Désactivé</translation>
@@ -69,7 +71,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7286722244752781970">Temps minimum de page avant l'enregistrement d'une visite</translation>
 <translation id="4424486208397124985">Nombre minimal de visites pour s'assurer de la pertinence de l'éditeur</translation>
 <translation id="6248554379744796526">Affichez les sites non vérifiés dans la liste</translation>
-<translation id="3241299447027267831">Autoriser les contributions à des vidéos</translation>
+<translation id="5510618543889994434">Autoriser les contributions à des vidéos</translation>
 <translation id="924777189963477634">En activant la contribution automatique, vous acceptez les <ph name="BEGIN_LINK_TOS"/>Conditions d'utilisation<ph name="END_LINK_TOS"/> et la <ph name="BEGIN_LINK_PP"/>Politique de confidentialité<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Boutons de dons</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2414886740292270097">Foncé</translation>
 <translation id="1360441190790440400">Comme pour Linux</translation>
 <translation id="1336940801687497203">Comme Windows</translation>
+<translation id="5919209812221905840">Gestionnaire par défaut du protocole microsoft-edge</translation>
+<translation id="5239541974656019812">Utiliser Brave pour gérer le protocole microsoft-edge</translation>
+<translation id="7136694880210472378">Utiliser par défaut</translation>
+<translation id="1751388324499810661">Brave est utilisé pour gérer le protocole microsoft-edge par défaut</translation>
 <translation id="8721331068159819483">Même chose que pour Mac OS</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Prend en charge les fichiers torrents et les liens magnétiques.</translation>
 <translation id="8488282162676695335">Portefeuille Brave</translation>
@@ -425,7 +431,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2653659639078652383">Envoyer</translation>
 <translation id="2556708692502648323">Réseaux du portefeuille</translation>
 <translation id="1330032157352961756">Identifiant de la nouvelle chaîne</translation>
-<translation id="9053905035135220650">Chaîne hexadécimale commençant par 0x</translation>
+<translation id="3423620355610881890">Un nombre décimal positif</translation>
 <translation id="726121047592132939">Nom de la nouvelle chaîne</translation>
 <translation id="1034112277864078119">Saisir le nom de la chaîne</translation>
 <translation id="4672314527143443556">Nom de devise de la chaîne</translation>
@@ -439,7 +445,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3047726704186619366">URL d'icône</translation>
 <translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
 <translation id="6301398959353668507">Champ obligatoire.</translation>
-<translation id="4514843126085243862">Format non valide : l'identifiant de la chaîne est une chaîne hexadécimale commençant par 0x</translation>
+<translation id="7504462451153306677">Format non valide : l'identifiant de la chaîne est un nombre positif</translation>
 <translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
 <translation id="650071759190249039">Erreur interne, impossible d'ajouter le réseau.</translation>
 <translation id="868529041590572443">Veuillez remplir tous les renseignements sur la devise native</translation>

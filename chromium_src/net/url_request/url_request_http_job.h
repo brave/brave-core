@@ -20,7 +20,7 @@
       bool is_in_nontrivial_first_party_set) const;           \
   void NotifyBeforeStartTransactionCallback
 
-#include "../../../../net/url_request/url_request_http_job.h"
+#include "src/net/url_request/url_request_http_job.h"
 
 #undef NotifyBeforeStartTransactionCallback
 

@@ -107,7 +107,7 @@ export function ExternalWalletBubble (props: Props) {
           <style.link>
             <style.linkMarker />
             <button onClick={actionHandler('disconnect')}>
-              {getString('walletDisconnectLink')}
+              {formatMessage(getString('walletDisconnectLink'), [providerName])}
             </button>
           </style.link>
         </style.links>

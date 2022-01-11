@@ -49,7 +49,7 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
   BRAVE_ENUM_ITEMS_FOR_SWITCH
 #endif
 
-#include "../../../../components/permissions/permission_request.cc"
+#include "src/components/permissions/permission_request.cc"
 #undef IDS_VR_INFOBAR_TEXT
 #undef IDS_VR_PERMISSION_FRAGMENT
 #undef IsDuplicateOf
@@ -80,15 +80,13 @@ bool PermissionRequest::SupportsLifetime() const {
 #else
     RequestType::kRegisterProtocolHandler,
     RequestType::kSecurityAttestation,
+    RequestType::kU2fApiRequest,
 #endif  // defined(OS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
     RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
   };
-  if (base::Contains(kExcludedTypes, request_type())) {
-    return false;
-  }
-  return true;
+  return !base::Contains(kExcludedTypes, request_type());
 }
 
 void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {

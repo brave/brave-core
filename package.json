@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.35.1",
+  "version": "1.36.30",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "update_patches": "node ./build/commands/scripts/commands.js update_patches",
     "apply_patches": "node ./build/commands/scripts/commands.js apply_patches",
     "start": "node ./build/commands/scripts/commands.js start",
-    "network-audit": "npm run test brave_network_audit_tests -- --ui-test-action-timeout=330000 --test-launcher-timeout=1000000",
+    "network-audit": "npm run test brave_network_audit_tests -- --ui-test-action-timeout=330000 --test-launcher-timeout=1300000",
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
@@ -256,7 +256,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "96.0.4664.45",
+        "tag": "97.0.4692.71",
         "repository": {
           "url": "ubuntu@172.31.54.92:/home/ubuntu/chromium.git"
         }
@@ -278,7 +278,7 @@
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.36",
     "@types/chrome": "0.0.147",
-    "@types/enzyme": "3.10.9",
+    "@types/enzyme": "3.10.10",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.20",
     "@types/qr-image": "3.2.3",
@@ -350,6 +350,7 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.1.9",
     "@types/webtorrent": "^0.109.0",
+    "@noble/bls12-381": "1.0.1",
     "array-move": "^2.2.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",

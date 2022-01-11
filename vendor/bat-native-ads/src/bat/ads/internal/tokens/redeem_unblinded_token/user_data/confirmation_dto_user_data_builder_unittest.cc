@@ -47,7 +47,7 @@ bool IsValidEnvelope(const base::Value& envelope) {
   return true;
 }
 
-bool IsValidUserDataDictionary(const base::Value user_data) {
+bool IsValidUserDataDictionary(const base::Value& user_data) {
   const base::DictionaryValue* user_data_dictionary = nullptr;
   user_data.GetAsDictionary(&user_data_dictionary);
   if (!user_data_dictionary->is_dict()) {

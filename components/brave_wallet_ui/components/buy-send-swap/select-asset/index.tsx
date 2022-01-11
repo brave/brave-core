@@ -16,12 +16,18 @@ import {
 
 export interface Props {
   assets: AccountAssetOptionType[]
+  onAddAsset: () => void
   onSelectAsset: (asset: AccountAssetOptionType) => () => void
   onBack: () => void
 }
 
 function SelectAsset (props: Props) {
-  const { assets, onBack, onSelectAsset } = props
+  const {
+    assets,
+    onAddAsset,
+    onBack,
+    onSelectAsset
+  } = props
 
   const fuse = React.useMemo(() => new Fuse(assets, {
     shouldSort: true,
@@ -51,7 +57,12 @@ function SelectAsset (props: Props) {
 
   return (
     <SelectWrapper>
-      <Header title={getLocale('braveWalletSelectAsset')} onBack={onBack} />
+      <Header
+        title={getLocale('braveWalletSelectAsset')}
+        onBack={onBack}
+        hasAddButton={true}
+        onClickAdd={onAddAsset}
+      />
       <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} />
       <SelectScrollSearchContainer>
         {

@@ -73,6 +73,8 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_shields_data_controller.cc",
+      "brave_shields_data_controller.h",
       "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",
@@ -93,6 +95,10 @@ source_set("ui") {
       "toolbar/brave_recent_tabs_sub_menu_model.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
+      "webui/brave_shields/shields_panel_handler.cc",
+      "webui/brave_shields/shields_panel_handler.h",
+      "webui/brave_shields/shields_panel_ui.cc",
+      "webui/brave_shields/shields_panel_ui.h",
       "webui/brave_tip_ui.cc",
       "webui/brave_tip_ui.h",
       "webui/brave_welcome_ui.cc",
@@ -391,6 +397,8 @@ source_set("ui") {
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_shields/common:mojom",
+      "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_today/browser",
@@ -399,7 +407,9 @@ source_set("ui") {
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",
       "//components/sync_device_info",
+      "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
+      "//ui/webui:webui",
     ]
   }
 
@@ -520,8 +530,8 @@ source_set("ui") {
 
   if (is_win) {
     sources += [
-      "webui/new_tab_page/ms_edge_protocol_message_handler.cc",
-      "webui/new_tab_page/ms_edge_protocol_message_handler.h",
+      "webui/settings/ms_edge_protocol_message_handler.cc",
+      "webui/settings/ms_edge_protocol_message_handler.h",
     ]
   }
 

@@ -9,7 +9,7 @@
 #define LogProfileAvatarSelection \
     LogProfileAvatarSelection_ChromiumImpl(size_t index); \
     static void LogProfileAvatarSelection
-#include "../../../../../chrome/browser/profiles/profile_metrics.h"
+#include "src/chrome/browser/profiles/profile_metrics.h"
 #undef LogProfileAvatarSelection
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_METRICS_H_

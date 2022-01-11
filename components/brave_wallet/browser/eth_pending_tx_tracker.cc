@@ -10,18 +10,18 @@
 
 #include "base/logging.h"
 #include "base/synchronization/lock.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
-                                         EthJsonRpcController* rpc_controller,
+                                         JsonRpcService* json_rpc_service,
                                          EthNonceTracker* nonce_tracker)
     : tx_state_manager_(tx_state_manager),
-      rpc_controller_(rpc_controller),
+      json_rpc_service_(json_rpc_service),
       nonce_tracker_(nonce_tracker),
       weak_factory_(this) {}
 EthPendingTxTracker::~EthPendingTxTracker() = default;
@@ -39,7 +39,7 @@ bool EthPendingTxTracker::UpdatePendingTransactions(size_t* num_pending) {
       continue;
     }
     std::string id = pending_transaction->id;
-    rpc_controller_->GetTransactionReceipt(
+    json_rpc_service_->GetTransactionReceipt(
         pending_transaction->tx_hash,
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
                        weak_factory_.GetWeakPtr(), std::move(id)));
@@ -58,17 +58,23 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
     if (!pending_transaction->tx->IsSigned()) {
       continue;
     }
-    rpc_controller_->SendRawTransaction(
+    json_rpc_service_->SendRawTransaction(
         pending_transaction->tx->GetSignedTransaction(),
         base::BindOnce(&EthPendingTxTracker::OnSendRawTransaction,
                        weak_factory_.GetWeakPtr()));
   }
 }
 
+void EthPendingTxTracker::Reset() {
+  network_nonce_map_.clear();
+  dropped_blocks_counter_.clear();
+}
+
 void EthPendingTxTracker::OnGetTxReceipt(std::string id,
-                                         bool status,
-                                         TransactionReceipt receipt) {
-  if (!status)
+                                         TransactionReceipt receipt,
+                                         mojom::ProviderError error,
+                                         const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
     return;
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
   if (!nonce_lock->Try())
@@ -93,15 +99,19 @@ void EthPendingTxTracker::OnGetTxReceipt(std::string id,
 }
 
 void EthPendingTxTracker::OnGetNetworkNonce(std::string address,
-                                            bool status,
-                                            uint256_t result) {
-  if (!status)
+                                            uint256_t result,
+                                            mojom::ProviderError error,
+                                            const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
     return;
+
   network_nonce_map_[address] = result;
 }
 
-void EthPendingTxTracker::OnSendRawTransaction(bool status,
-                                               const std::string& tx_hash) {}
+void EthPendingTxTracker::OnSendRawTransaction(
+    const std::string& tx_hash,
+    mojom::ProviderError error,
+    const std::string& error_message) {}
 
 bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
@@ -118,7 +128,7 @@ bool EthPendingTxTracker::ShouldTxDropped(
     const EthTxStateManager::TxMeta& meta) {
   const std::string hex_address = meta.from.ToChecksumAddress();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
-    rpc_controller_->GetTransactionCount(
+    json_rpc_service_->GetTransactionCount(
         hex_address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
                        weak_factory_.GetWeakPtr(), std::move(hex_address)));

@@ -9,7 +9,7 @@
 #define BRAVE_PROXY_CONFIG_MONITOR_H \
   net::ProxyConfigService* GetProxyConfigServiceForTesting() \
     { return proxy_config_service_.get(); }
-#include "../../../../../chrome/browser/net/proxy_config_monitor.h"  // NOLINT
+#include "src/chrome/browser/net/proxy_config_monitor.h"
 #undef BRAVE_PROXY_CONFIG_MONITOR_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NET_PROXY_CONFIG_MONITOR_H_

@@ -18,9 +18,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-struct CreativeInlineContentAdInfo;
-
 namespace database {
 namespace table {
 
@@ -90,7 +87,7 @@ class CreativeInlineContentAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeInlineContentAdsCallback callback);
 
-  void MigrateToV16(mojom::DBTransaction* transaction);
+  void MigrateToV19(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

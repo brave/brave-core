@@ -7,7 +7,7 @@
 
 #define GetContentSecurityPolicy GetContentSecurityPolicy_ChromiumImpl
 
-#include "../../../../../content/public/browser/url_data_source.cc"
+#include "src/content/public/browser/url_data_source.cc"
 #undef GetContentSecurityPolicy
 
 namespace content {

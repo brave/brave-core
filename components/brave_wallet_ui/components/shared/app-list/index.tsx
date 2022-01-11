@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppItem, AppsListType } from '../../../constants/types'
+import { AppsListType, BraveWallet } from '../../../constants/types'
 import { NavButton } from '../../extension/'
 import { AppListItem } from '../'
 import { getLocale } from '../../../../common/locale'
@@ -13,18 +13,18 @@ import {
 
 export interface Props {
   list: AppsListType[]
-  favApps: AppItem[]
+  favApps: BraveWallet.AppItem[]
   action: () => void
-  addToFav: (app: AppItem) => void
-  removeFromFav: (app: AppItem) => void
+  addToFav: (app: BraveWallet.AppItem) => void
+  removeFromFav: (app: BraveWallet.AppItem) => void
 }
 
 export default class AppList extends React.PureComponent<Props> {
-  checkIsSelected = (app: AppItem) => {
+  checkIsSelected = (app: BraveWallet.AppItem) => {
     return this.props.favApps.some((a) => a.name === app.name)
   }
 
-  toggleFavorite = (app: AppItem) => () => {
+  toggleFavorite = (app: BraveWallet.AppItem) => () => {
     if (this.checkIsSelected(app)) {
       this.props.removeFromFav(app)
     } else {

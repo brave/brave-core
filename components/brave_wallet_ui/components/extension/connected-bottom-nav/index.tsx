@@ -6,20 +6,21 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 // Styled Components
 import {
   StyledWrapper,
-  // AppsIcon,
+  LightningBoltIcon,
   NavButton,
   NavButtonText,
   NavDivider,
-  NavOutline
+  NavOutline,
+  TransactionsButton
 } from './style'
 
-import { PanelTypes, EthereumChain } from '../../../constants/types'
+import { BraveWallet, PanelTypes } from '../../../constants/types'
 
 export interface Props {
   onNavigate: (path: PanelTypes) => void
   isSwapDisabled: boolean
   isBuyDisabled: boolean
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 function ConnectedBottomNav (props: Props) {
@@ -55,11 +56,10 @@ function ConnectedBottomNav (props: Props) {
             <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>
           </NavButton>
         </PanelTooltip>
-        {/* <NavDivider /> */}
-        {/* Temp commented out for MVP */}
-        {/* <NavButton onClick={navigate('apps')}>
-          <AppsIcon />
-        </NavButton> */}
+        <NavDivider />
+        <TransactionsButton onClick={navigate('transactions')}>
+          <LightningBoltIcon />
+        </TransactionsButton>
       </NavOutline>
     </StyledWrapper>
   )

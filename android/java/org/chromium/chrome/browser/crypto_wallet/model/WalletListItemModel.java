@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.graphics.Bitmap;
 
-import org.chromium.brave_wallet.mojom.ErcToken;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class WalletListItemModel {
@@ -19,7 +19,7 @@ public class WalletListItemModel {
     private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
-    private ErcToken mErcToken;
+    private BlockchainToken mBlockchainToken;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
     private double mTotalGas;
@@ -104,12 +104,12 @@ public class WalletListItemModel {
         return mTxStatusBitmap;
     }
 
-    public void setErcToken(ErcToken ercToken) {
-        mErcToken = ercToken;
+    public void setBlockchainToken(BlockchainToken blockchainToken) {
+        mBlockchainToken = blockchainToken;
     }
 
-    public ErcToken getErcToken() {
-        return mErcToken;
+    public BlockchainToken getBlockchainToken() {
+        return mBlockchainToken;
     }
 
     public void setIsImportedAccount(boolean isImportedAccount) {

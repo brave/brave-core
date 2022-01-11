@@ -127,6 +127,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       const initialRewardsDataPayload = payload as InitialRewardsData
       const newRewardsState = {
         balance: initialRewardsDataPayload.balance,
+        report: initialRewardsDataPayload.report,
         totalContribution: getTotalContributions(initialRewardsDataPayload.report),
         parameters: initialRewardsDataPayload.parameters
       } as any

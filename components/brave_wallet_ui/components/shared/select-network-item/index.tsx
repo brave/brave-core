@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { create } from 'ethereum-blockies'
 // Styled Components
 import {
@@ -11,8 +11,8 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: EthereumChain
-  network: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
+  network: BraveWallet.EthereumChain
   onSelectNetwork: () => void
 }
 

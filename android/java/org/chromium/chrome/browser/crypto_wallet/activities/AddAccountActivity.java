@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,9 +22,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -37,14 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddAccountActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AddAccountActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, KeyringServiceObserver {
     private String mAddress;
     private String mName;
     private boolean mIsUpdate;
     private boolean mIsImported;
     private EditText mPrivateKeyControl;
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
     private EditText mAddAccountText;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
 
@@ -88,10 +90,10 @@ public class AddAccountActivity
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mKeyringController != null) {
+                if (mKeyringService != null) {
                     if (mIsUpdate) {
                         if (mIsImported) {
-                            mKeyringController.setDefaultKeyringImportedAccountName(
+                            mKeyringService.setDefaultKeyringImportedAccountName(
                                     mAddress, mAddAccountText.getText().toString(), result -> {
                                         if (result) {
                                             Intent returnIntent = new Intent();
@@ -105,7 +107,7 @@ public class AddAccountActivity
                                         }
                                     });
                         } else {
-                            mKeyringController.setDefaultKeyringDerivedAccountName(
+                            mKeyringService.setDefaultKeyringDerivedAccountName(
                                     mAddress, mAddAccountText.getText().toString(), result -> {
                                         if (result) {
                                             Intent returnIntent = new Intent();
@@ -121,41 +123,48 @@ public class AddAccountActivity
                         }
                     } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
                         if (Utils.isJSONValid(mPrivateKeyControl.getText().toString())) {
-                            mKeyringController.importAccountFromJson(
+                            mKeyringService.importAccountFromJson(
                                     mAddAccountText.getText().toString(),
                                     importAccountPasswordText.getText().toString(),
                                     mPrivateKeyControl.getText().toString(), (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);
+                                            Utils.clearClipboard(
+                                                    mPrivateKeyControl.getText().toString(), 0);
+                                            Utils.clearClipboard(
+                                                    importAccountPasswordText.getText().toString(),
+                                                    0);
                                             finish();
                                         } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.account_name_empty_error));
+                                            mAddAccountText.setError(getString(
+                                                    R.string.wallet_failed_to_import_account));
                                         }
                                     });
                         } else {
-                            mKeyringController.importAccount(mAddAccountText.getText().toString(),
-                                    mPrivateKeyControl.getText().toString(), (result, address) -> {
+                            mKeyringService.importAccount(mAddAccountText.getText().toString(),
+                                    mPrivateKeyControl.getText().toString().trim(),
+                                    (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);
+                                            Utils.clearClipboard(
+                                                    mPrivateKeyControl.getText().toString(), 0);
                                             finish();
                                         } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.password_error));
+                                            mAddAccountText.setError(getString(
+                                                    R.string.wallet_failed_to_import_account));
                                         }
                                     });
                         }
                     } else {
-                        mKeyringController.addAccount(
-                                mAddAccountText.getText().toString(), result -> {
-                                    if (result) {
-                                        setResult(Activity.RESULT_OK);
-                                        finish();
-                                    } else {
-                                        mAddAccountText.setError(
-                                                getString(R.string.account_name_empty_error));
-                                    }
-                                });
+                        mKeyringService.addAccount(mAddAccountText.getText().toString(), result -> {
+                            if (result) {
+                                setResult(Activity.RESULT_OK);
+                                finish();
+                            } else {
+                                mAddAccountText.setError(
+                                        getString(R.string.account_name_empty_error));
+                            }
+                        });
                     }
                 }
             }
@@ -179,34 +188,35 @@ public class AddAccountActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyringController.close();
+        mKeyringService.close();
     }
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
     }
 
     @Override
@@ -236,13 +246,15 @@ public class AddAccountActivity
             findViewById(R.id.import_account_layout).setVisibility(View.GONE);
             findViewById(R.id.import_account_title).setVisibility(View.GONE);
         }
-        InitKeyringController();
+        InitKeyringService();
         if (mIsUpdate) {
             return;
         }
 
-        assert mKeyringController != null;
-        mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        assert mKeyringService != null;
+        mKeyringService.getDefaultKeyringInfo(keyringInfo -> {
             if (keyringInfo != null) {
                 mAddAccountText.setText(getUniqueNextAccountName(keyringInfo.accountInfos, 1));
             }
@@ -294,5 +306,10 @@ public class AddAccountActivity
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

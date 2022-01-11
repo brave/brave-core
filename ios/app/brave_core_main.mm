@@ -12,7 +12,7 @@
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
@@ -213,10 +213,10 @@ static bool CustomLogHandler(int severity,
   return _syncProfileService;
 }
 
-+ (id<BraveWalletERCTokenRegistry>)ercTokenRegistry {
-  auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
-  return [[BraveWalletERCTokenRegistryImpl alloc]
-      initWithERCTokenRegistry:registry];
++ (id<BraveWalletBlockchainRegistry>)blockchainRegistry {
+  auto* registry = brave_wallet::BlockchainRegistry::GetInstance();
+  return [[BraveWalletBlockchainRegistryImpl alloc]
+      initWithBlockchainRegistry:registry];
 }
 
 @end

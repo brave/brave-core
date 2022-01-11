@@ -6,5 +6,5 @@
 #include "brave/browser/ui/views/toolbar/brave_app_menu.h"
 
 #define AppMenu BraveAppMenu
-#include "../../../../../../../chrome/browser/ui/views/frame/app_menu_button.cc"
+#include "src/chrome/browser/ui/views/frame/app_menu_button.cc"
 #undef AppMenu

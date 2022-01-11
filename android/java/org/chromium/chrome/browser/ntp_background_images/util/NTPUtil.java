@@ -105,13 +105,16 @@ public class NTPUtil {
 
             boolean isTablet = ConfigurationUtils.isTablet(activity);
             boolean isLandscape = ConfigurationUtils.isLandscape(activity);
+
+            // Correction defaults to tablet BackgroundImage
             imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.46 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.70 : 0.30));
+
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.12 : 0.88))
-                            : (int) (pxHeight * (isCompensate ? 0.46 : 0.59));
+                            : (int) (pxHeight * (isCompensate ? 0.53 : 0.59));
                 }
                 if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
                     imageCreditCorrection = (int) imageCreditCorrection - (int) (pxHeight * 0.04);
@@ -120,7 +123,7 @@ public class NTPUtil {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.02 : 0.98))
-                            : (int) (pxHeight * (isCompensate ? 0.30 : 0.50));
+                            : (int) (pxHeight * (isCompensate ? 0.36 : 0.50));
                 } else {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.28 : 0.72))
@@ -155,8 +158,13 @@ public class NTPUtil {
 
         parentLayout.addView(mainLayout);
         parentLayout.addView(imageCreditLayout);
-        parentLayout.addView(optinLayout);
-        parentLayout.addView(newsRecyclerLayout);
+        if (optinLayout != null) {
+            parentLayout.addView(optinLayout);
+        }
+
+        if (newsRecyclerLayout != null) {
+            parentLayout.addView(newsRecyclerLayout);
+        }
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -183,17 +191,14 @@ public class NTPUtil {
             int topMargin = correctImageCreditLayoutTopPosition(ntpImage);
             imageCreditLayoutParams.setMargins(0, topMargin, 0, 50);
 
-            LinearLayout.LayoutParams optinLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            optinLayoutParams.setMargins(30, imageCreditLayout.getBottom(), 30, 500);
-            optinLayout.setLayoutParams(optinLayoutParams);
-
             View feedSpinner = (View) view.findViewById(R.id.feed_spinner);
             FrameLayout.LayoutParams feedSpinnerParams =
                     (FrameLayout.LayoutParams) feedSpinner.getLayoutParams();
             feedSpinnerParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             feedSpinnerParams.setMargins(0, 0, 0, dpToPx(context, 35));
-            feedSpinner.setLayoutParams(feedSpinnerParams);
+            if (feedSpinner != null) {
+                feedSpinner.setLayoutParams(feedSpinnerParams);
+            }
 
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
 
@@ -204,6 +209,7 @@ public class NTPUtil {
         parentLayout.setOrientation(LinearLayout.VERTICAL);
 
         imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
+
         sponsoredLogo.setLayoutParams(layoutParams);
     }
 

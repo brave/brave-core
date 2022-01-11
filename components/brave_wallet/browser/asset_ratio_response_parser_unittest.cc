@@ -222,4 +222,145 @@ TEST(AssetRatioResponseParserUnitTest, ParseGasOracle) {
   EXPECT_FALSE(ParseGasOracle(""));
 }
 
+TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
+  // ERC20
+  std::string json(R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "OK",
+        "result": [{
+          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "tokenName": "Tether USD",
+          "symbol": "USDT",
+          "divisor": "6",
+          "tokenType": "ERC20",
+          "totalSupply": "39828710009874796",
+          "blueCheckmark": "true",
+          "description": "Tether gives you the joint benefits of open...",
+          "website": "https://tether.to/",
+          "email": "support@tether.to",
+          "blog": "https://tether.to/category/announcements/",
+          "reddit": "",
+          "slack": "",
+          "facebook": "",
+          "twitter": "https://twitter.com/Tether_to",
+          "bitcointalk": "",
+          "github": "",
+          "telegram": "",
+          "wechat": "",
+          "linkedin": "",
+          "discord": "",
+          "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+          "tokenPriceUSD": "1.000000000000000000"
+        }]
+      },
+      "lastUpdated": "2021-12-09T22:02:23.187Z"
+    }
+  )");
+
+  mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
+      false, "USDT", 6, true, "");
+  EXPECT_EQ(ParseTokenInfo(json), expected_token);
+
+  // ERC721
+  json = (R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "OK",
+        "result": [{
+          "contractAddress": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
+          "tokenName": "Gods Unchained Cards",
+          "symbol": "CARD",
+          "divisor": "0",
+          "tokenType": "ERC721"
+        }]
+      },
+      "lastUpdated": "2021-12-09T22:02:23.187Z"
+    }
+  )");
+  expected_token = mojom::BlockchainToken::New(
+      "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
+      false, true, "CARD", 0, true, "");
+  EXPECT_EQ(ParseTokenInfo(json), expected_token);
+
+  const std::string valid_json = (R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "OK",
+        "result": [{
+          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "tokenName": "Tether USD",
+          "symbol": "USDT",
+          "divisor": "6",
+          "tokenType": "ERC20"
+        }]
+      },
+      "lastUpdated": "2021-12-09T22:02:23.187Z"
+    }
+  )");
+  ASSERT_TRUE(ParseTokenInfo(valid_json));
+
+  // Invalid contract address.
+  json = valid_json;
+  base::ReplaceFirstSubstringAfterOffset(
+      &json, 0, "0xdac17f958d2ee523a2206206994597c13d831ec7", "0xdac17f9");
+  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid contract address should fail";
+  base::ReplaceFirstSubstringAfterOffset(&json, 0, "0xdac17f9", "");
+  EXPECT_FALSE(ParseTokenInfo(json)) << "Empty contract address should fail";
+
+  // Invalid decimals.
+  json = (R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "OK",
+        "result": [{
+          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "tokenName": "Tether USD",
+          "symbol": "USDT",
+          "divisor": "NOT A NUMBER",
+          "tokenType": "ERC20"
+        }]
+      },
+      "lastUpdated": "2021-12-09T22:02:23.187Z"
+    }
+  )");
+  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid decimals should fail";
+  base::ReplaceFirstSubstringAfterOffset(&json, 0, "NOT A NUMBER", "");
+  EXPECT_FALSE(ParseTokenInfo(json)) << "Empty decimals should fail";
+
+  // Invalid token type.
+  json = valid_json;
+  base::ReplaceFirstSubstringAfterOffset(&json, 0, "ERC20", "ERC");
+  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid token type should fail";
+
+  // Missing required fields.
+  const std::vector<std::string> required_fields = {
+      "contractAddress", "tokenName", "symbol", "divisor", "tokenType"};
+  for (const auto& field : required_fields) {
+    json = valid_json;
+    base::ReplaceFirstSubstringAfterOffset(&json, 0, field, "test");
+    EXPECT_FALSE(ParseTokenInfo(json)) << "Missing " << field << " should fail";
+  }
+
+  // Empty values of required fields.
+  const std::vector<std::string> values = {"Tether USD", "USDT", "ERC20"};
+  for (const auto& value : values) {
+    json = valid_json;
+    base::ReplaceFirstSubstringAfterOffset(&json, 0, value, "");
+    EXPECT_FALSE(ParseTokenInfo(json));
+  }
+
+  // Invalid JSON
+  EXPECT_FALSE(ParseTokenInfo(""));
+  EXPECT_FALSE(ParseTokenInfo("json"));
+  EXPECT_FALSE(ParseTokenInfo("[\"json\"]"));
+  EXPECT_FALSE(ParseTokenInfo("{\"result\": \"no payload property\"}"));
+  EXPECT_FALSE(ParseTokenInfo(R"({"payload":{})"));
+}
+
 }  // namespace brave_wallet

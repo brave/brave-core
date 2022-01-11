@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMMON_BRAVE_FEATURES_H_
 #define BRAVE_COMMON_BRAVE_FEATURES_H_
 
-#include "base/component_export.h"
 #include "base/feature_list.h"
 #include "build/build_config.h"
 
 namespace features {
 
 #if defined(OS_ANDROID)
-COMPONENT_EXPORT(CHROME_FEATURES)
 extern const base::Feature kBraveRewards;
 #endif  // defined(OS_ANDROID)
+
+extern const base::Feature kTabAudioIconInteractive;
 
 }  // namespace features
 

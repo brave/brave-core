@@ -12,7 +12,7 @@
                                      ContentSettingsType type);     \
   virtual bool CanBypassEmbeddingOriginCheck
 
-#include "../../../../components/permissions/permissions_client.h"
+#include "src/components/permissions/permissions_client.h"
 #undef CanBypassEmbeddingOriginCheck
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSIONS_CLIENT_H_

@@ -54,8 +54,7 @@ constexpr const char* kPrivateIPRegexps[] = {
 void WaitForTimeout(int timeout) {
   base::RunLoop run_loop;
   base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromMilliseconds(timeout));
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(timeout));
   run_loop.Run();
 }
 
@@ -283,6 +282,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   // Finally, load brave://rewards and enable Brave Rewards.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://rewards")));
   ASSERT_TRUE(EnableBraveRewards());
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://wallet")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 

@@ -5,16 +5,20 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
+
 import org.chromium.brave_wallet.mojom.AssetPrice;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
-    // Helper to track multiple wallet controllers responses
+    private final static String TAG = "AsyncUtils";
+
+    // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
         private Runnable mWhenAllCompletedRunnable;
         private int mTotalElements;
@@ -69,47 +73,52 @@ public class AsyncUtils {
     }
 
     public static class GetBalanceResponseBaseContext extends SingleResponseBaseContext {
-        public Boolean success;
         public String balance;
-        public ErcToken userAsset;
+        public Integer error;
+        public String errorMessage;
+        public BlockchainToken userAsset;
+        public String accountAddress;
 
         public GetBalanceResponseBaseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
-        public void callBase(Boolean success, String balance) {
-            this.success = success;
+        public void callBase(String balance, Integer error, String errorMessage) {
             this.balance = balance;
+            this.error = error;
+            this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
         }
     }
 
     public static class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetErc20TokenBalanceResponse {
+            implements JsonRpcService.GetErc20TokenBalanceResponse {
         public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
+        public void call(String balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
+            super.callBase(balance, error, errorMessage);
         }
     }
 
-    public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetBalanceResponse {
+    public static class GetBalanceResponseContext
+            extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalanceResponse {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
+        public void call(String balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getBalance", error, errorMessage);
+            super.callBase(balance, error, errorMessage);
         }
     }
 
     public static class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioController.GetPriceResponse {
+            extends SingleResponseBaseContext implements AssetRatioService.GetPriceResponse {
         public Boolean success;
         public AssetPrice[] prices;
 
@@ -126,7 +135,7 @@ public class AsyncUtils {
     }
 
     public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
-            implements EthTxController.GetAllTransactionInfoResponse {
+            implements EthTxService.GetAllTransactionInfoResponse {
         public TransactionInfo[] txInfos;
         public String name;
 
@@ -143,11 +152,11 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
-            implements AssetRatioController.GetPriceHistoryResponse {
+    public static class GetPriceHistoryResponseContext
+            extends SingleResponseBaseContext implements AssetRatioService.GetPriceHistoryResponse {
         public Boolean success;
         public AssetTimePrice[] timePrices;
-        public ErcToken userAsset;
+        public BlockchainToken userAsset;
 
         public GetPriceHistoryResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);

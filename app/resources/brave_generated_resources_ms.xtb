@@ -36,6 +36,8 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7017590444693657895">Sekat tapak daripada mengakses API pembekal Ethereum</translation>
 <translation id="8988939298652262600">Brave tidak menyemak sekuriti dan keselamatan sambungan. Pasang sambungan ini hanya jika anda mempercayai pembangunnya.</translation>
 <translation id="8081858229109418493">Nama profil dan ikon</translation>
+<translation id="6438096877646138757">Laman yang menghapuskan kuki apabila anda menutup laman</translation>
+<translation id="2988792685798128092">Hapuskan apabila laman ditutup</translation>
 <translation id="2044383478723007273">Warna-warna Brave</translation>
 <translation id="1692470335103807198">Dapatkan lebih banyak tema</translation>
 <translation id="2906510232093002459">Imej lalai Brave</translation>
@@ -55,7 +57,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
 <translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
 <translation id="6821903322090655051">Ganjaran Brave dilumpuhkan</translation>
-<translation id="9184430019924125685">Klik di sini untuk ketahui lebih lanjut</translation>
+<translation id="413570371620795359">Buka panel Ganjaran untuk mendayakan dan bermula</translation>
 <translation id="3849957491997306859">Dikesan secara automatik</translation>
 <translation id="8798099450830957504">Lalai</translation>
 <translation id="4176463684765177261">Dilumpuhkan</translation>
@@ -69,7 +71,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7286722244752781970">Masa halaman minimum sebelum mengelog ke laman</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk kerelevanan penerbit</translation>
 <translation id="6248554379744796526">Tunjukkan laman web yang tidak disahkan dalam senarai</translation>
-<translation id="3241299447027267831">Benarkan sumbangan untuk video</translation>
+<translation id="5510618543889994434">Benarkan sumbangan untuk video</translation>
 <translation id="924777189963477634">Dengan menghidupkan Autosumbang, anda bersetuju dengan <ph name="BEGIN_LINK_TOS"/>Syarat Perkhidmatan<ph name="END_LINK_TOS"/> dan <ph name="BEGIN_LINK_PP"/>Dasar Privasi<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Butang petua</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +106,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7895302206188277628">Kandungan dipautkan</translation>
 <translation id="3654831858282189202">Terbitkan dengan kunci IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Import Teks Dipilih ke IPFS</translation>
 <translation id="6925604404524625582">Import dan Salin Pautan ke Petikan IPFS</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
@@ -207,6 +210,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="1360441190790440400">Sama seperti Linux</translation>
 <translation id="1336940801687497203">Sama seperti Windows</translation>
+<translation id="5919209812221905840">Pengendali protokol microsoft-edge lalai</translation>
+<translation id="5239541974656019812">Jadikan Brave sebagai pengendali protokol microsoft-edge</translation>
+<translation id="7136694880210472378">Jadikan lalai</translation>
+<translation id="1751388324499810661">Brave ialah pengendali protokol microsoft-edge lalai</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
 <translation id="8488282162676695335">Dompet Brave</translation>
@@ -222,6 +229,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/> mengenai DNS melalui pertimbangan privasi HTTPS dan Ethereum.</translation>
 <translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Sediakan kunci IPNS anda</translation>
 <translation id="951216659045543447">Tandatangani kandungan dengan kunci peribadi yang berkaitan dan terbitkan ke IPNS</translation>
@@ -256,6 +264,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="80225669816651290">Nod tempatan</translation>
 <translation id="4927734062756955434">Alamat gerbang awam IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> mengenai nod tempatan IPFS dan pertimbangan privasi get laluan.</translation>
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="557281710253742286">Tetapkan gerbang IPFS</translation>
 <translation id="8571837315037233299">Alamat gerbang</translation>
@@ -422,7 +431,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2653659639078652383">Serah</translation>
 <translation id="2556708692502648323">Rangkaian dompet</translation>
 <translation id="1330032157352961756">id rantaian baharu</translation>
-<translation id="9053905035135220650">Rentetan perenambelasan kata awalan 0x</translation>
+<translation id="3423620355610881890">Nombor perpuluhan positif</translation>
 <translation id="726121047592132939">Nama rantaian baharu</translation>
 <translation id="1034112277864078119">Masukkan nama rantaian</translation>
 <translation id="4672314527143443556">Nama mata wang rantaian</translation>
@@ -436,7 +445,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3047726704186619366">Ikon URL</translation>
 <translation id="2487558607408469181">Sekat URL penjelajah</translation>
 <translation id="6301398959353668507">Medan ini tidak boleh kosong.</translation>
-<translation id="4514843126085243862">Format tidak sah, id rantaian ialah rentetan perenambelasan kata awalan 0x</translation>
+<translation id="7504462451153306677">Format tidak sah, id rantaian ialah nombor positif</translation>
 <translation id="8325036459845654666">Rangkaian ini telah ditambah.</translation>
 <translation id="650071759190249039">Ralat Dalaman, gagal menambah rangkaian.</translation>
 <translation id="868529041590572443">Sila isi semua maklumat tentang mata wang natif</translation>

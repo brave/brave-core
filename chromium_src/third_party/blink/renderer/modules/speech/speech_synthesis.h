@@ -15,7 +15,7 @@
       Vector<mojom::blink::SpeechSynthesisVoicePtr> voices); \
   void OnSetVoiceList
 
-#include "../../../../../../../third_party/blink/renderer/modules/speech/speech_synthesis.h"
+#include "src/third_party/blink/renderer/modules/speech/speech_synthesis.h"
 #undef OnSetVoiceList
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_SPEECH_SPEECH_SYNTHESIS_H_

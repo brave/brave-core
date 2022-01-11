@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "সংযোগবিচ্ছিন্ন",
+    "message": "লগ আউট করেছেন",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন",
-    "description": ""
+    "message": "$provider$ থেকে লগ আউট করুন",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "আনুমানিক উপার্জন",

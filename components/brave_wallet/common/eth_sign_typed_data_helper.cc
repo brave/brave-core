@@ -242,8 +242,16 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
 
     absl::optional<double> value_double = value.GetIfDouble();
-    if (!value_double)
-      return absl::nullopt;
+    if (!value_double) {
+      const std::string* value_str = value.GetIfString();
+      if (!value_str)
+        return absl::nullopt;
+      double val;
+      if (!base::StringToDouble(*value_str, &val))
+        return absl::nullopt;
+      value_double = val;
+    }
+
     // check if value excceeds type bound
     switch (type_check) {
       case 8:
@@ -274,8 +282,16 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         type_check > 256)
       return absl::nullopt;
     absl::optional<double> value_double = value.GetIfDouble();
-    if (!value_double)
-      return absl::nullopt;
+    if (!value_double) {
+      const std::string* value_str = value.GetIfString();
+      if (!value_str)
+        return absl::nullopt;
+      double val;
+      if (!base::StringToDouble(*value_str, &val))
+        return absl::nullopt;
+      value_double = val;
+    }
+
     // check if value excceeds type bound
     switch (type_check) {
       case 8:

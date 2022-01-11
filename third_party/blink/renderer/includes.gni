@@ -5,6 +5,13 @@ brave_blink_renderer_core_visibility =
 
 brave_blink_renderer_core_public_deps = [ "//brave/third_party/blink/renderer" ]
 
+brave_blink_renderer_core_sources = [
+  "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.cc",
+  "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h",
+]
+
+brave_blink_renderer_core_deps = []
+
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/modules/BUILD.gn
 brave_blink_renderer_modules_visibility =

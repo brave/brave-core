@@ -38,14 +38,16 @@ export interface DetailRow {
   adDetailRows: AdDetailRow[]
 }
 
-export type AdAction = 'click' | 'dismiss' | 'view' | 'landed'
+export type AdType = '' | 'ad_notification' | 'new_tab_page_ad' | 'promoted_content_ad' | 'inline_content_ad'
+
+export type AdAction = 'view' | 'click' | 'dismiss' | 'landed'
 
 interface AdContent {
+  adType: AdType
   brand: string
   brandInfo: string
-  brandLogo: string
-  brandUrl: string
   brandDisplayUrl: string
+  brandUrl: string
   likeAction: number
   adAction: AdAction
   savedAd: boolean
@@ -60,8 +62,8 @@ interface AdContent {
 interface CategoryContent {
   category: string
   optAction: number
-  onOptInAction?: () => void
-  onOptOutAction?: () => void
+  onOptIn?: () => void
+  onOptOut?: () => void
 }
 
 export interface AdDetailRow {
@@ -138,8 +140,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
         <StyledCategoryActions>
           <CategoryLikePicker
             optAction={content.optAction}
-            onOptIn={content.onOptInAction}
-            onOptOut={content.onOptOutAction}
+            onOptIn={content.onOptIn}
+            onOptOut={content.onOptOut}
           />
         </StyledCategoryActions>
       </StyledCategoryContentDiv>

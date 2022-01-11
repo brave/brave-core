@@ -30,7 +30,7 @@ class BatAdsCatalogFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsCatalogFrequencyCapTest, AllowAd) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -48,14 +48,13 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
   InitializeAds();
 
-  AdvanceClock(base::TimeDelta::FromHours(23) +
-               base::TimeDelta::FromMinutes(59));
+  AdvanceClock(base::Hours(23) + base::Minutes(59));
 
   // Act
   CatalogFrequencyCap frequency_cap;
@@ -69,13 +68,13 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
   InitializeAds();
 
-  AdvanceClock(base::TimeDelta::FromDays(1));
+  AdvanceClock(base::Days(1));
 
   // Act
   CatalogFrequencyCap frequency_cap;

@@ -6,19 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_BLOCK_TRACKER_H_
 
+#include <string>
+
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
-class EthJsonRpcController;
+class JsonRpcService;
 
 class EthBlockTracker {
  public:
-  explicit EthBlockTracker(EthJsonRpcController* rpc_controller);
+  explicit EthBlockTracker(JsonRpcService* json_rpc_service);
   ~EthBlockTracker();
   EthBlockTracker(const EthBlockTracker&) = delete;
   EthBlockTracker operator=(const EthBlockTracker&) = delete;
@@ -42,20 +45,26 @@ class EthBlockTracker {
   uint256_t GetCurrentBlock() const { return current_block_; }
 
   void CheckForLatestBlock(
-      base::OnceCallback<void(bool status, uint256_t block_num)>);
+      base::OnceCallback<void(uint256_t block_num,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>);
 
  private:
   void SendGetBlockNumber(
-      base::OnceCallback<void(bool status, uint256_t block_num)>);
+      base::OnceCallback<void(uint256_t block_num,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>);
   void GetBlockNumber();
-  void OnGetBlockNumber(bool status, uint256_t block_num);
+  void OnGetBlockNumber(uint256_t block_num,
+                        mojom::ProviderError error,
+                        const std::string& error_message);
 
   uint256_t current_block_ = 0;
   base::RepeatingTimer timer_;
 
   base::ObserverList<Observer> observers_;
 
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };

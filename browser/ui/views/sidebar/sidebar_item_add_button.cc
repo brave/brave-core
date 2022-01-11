@@ -63,8 +63,7 @@ void SidebarItemAddButton::ShowBubbleWithDelay() {
     timer_.Stop();
 
   constexpr int kBubbleLaunchDelayInMS = 200;
-  timer_.Start(FROM_HERE,
-               base::TimeDelta::FromMilliseconds(kBubbleLaunchDelayInMS), this,
+  timer_.Start(FROM_HERE, base::Milliseconds(kBubbleLaunchDelayInMS), this,
                &SidebarItemAddButton::DoShowBubble);
 }
 

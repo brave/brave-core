@@ -11,12 +11,12 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -59,7 +59,7 @@ class EthNonceTrackerUnitTest : public testing::Test {
     transaction_count_ = count;
     url_loader_factory_.ClearResponses();
 
-    // See EthJsonRpcController::SetNetwork() to better understand where the
+    // See JsonRpcService::SetNetwork() to better understand where the
     // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
         brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId)
@@ -81,15 +81,15 @@ class EthNonceTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
   base::RunLoop run_loop;
-  controller.SetNetwork(
+  service.SetNetwork(
       brave_wallet::mojom::kLocalhostChainId,
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
 
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
 
@@ -171,14 +171,14 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
   base::RunLoop run_loop;
-  controller.SetNetwork(
+  service.SetNetwork(
       brave_wallet::mojom::kLocalhostChainId,
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(4);
 

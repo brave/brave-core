@@ -3,21 +3,22 @@ import * as EthereumBlockies from 'ethereum-blockies'
 
 import { getLocale } from '../../../../common/locale'
 import {
-  AssetPrice,
-  EthereumChain,
-  ERCToken,
-  TransactionInfo,
-  TransactionStatus,
-  TransactionType,
-  WalletAccountType
+  BraveWallet,
+  WalletAccountType,
+  DefaultCurrencies
 } from '../../../constants/types'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
+import {
+  formatFiatAmountWithCommasAndDecimals,
+  formatTokenAmountWithCommasAndDecimals
+} from '../../../utils/format-prices'
+import { formatBalance } from '../../../utils/format-balances'
 
 // Hooks
-import { useTransactionParser } from '../../../common/hooks'
+import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 
 // Styled Components
@@ -36,7 +37,6 @@ import {
   FromCircle,
   MoreButton,
   MoreIcon,
-  StatusBubble,
   StatusRow,
   StyledWrapper,
   ToCircle,
@@ -44,22 +44,25 @@ import {
   TransactionFeeTooltipBody,
   TransactionFeeTooltipTitle
 } from './style'
+import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
+import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 
 export interface Props {
-  selectedNetwork: EthereumChain
-  transaction: TransactionInfo
+  selectedNetwork: BraveWallet.EthereumChain
+  transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
-  visibleTokens: ERCToken[]
-  transactionSpotPrices: AssetPrice[]
+  visibleTokens: BraveWallet.BlockchainToken[]
+  transactionSpotPrices: BraveWallet.AssetPrice[]
   displayAccountName: boolean
+  defaultCurrencies: DefaultCurrencies
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (asset: ERCToken) => void
-  onRetryTransaction: (transaction: TransactionInfo) => void
-  onSpeedupTransaction: (transaction: TransactionInfo) => void
-  onCancelTransaction: (transaction: TransactionInfo) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken) => void
+  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
 const PortfolioTransactionItem = (props: Props) => {
@@ -71,6 +74,7 @@ const PortfolioTransactionItem = (props: Props) => {
     transactionSpotPrices,
     displayAccountName,
     accounts,
+    defaultCurrencies,
     onSelectAccount,
     onSelectAsset,
     onRetryTransaction,
@@ -103,15 +107,7 @@ const PortfolioTransactionItem = (props: Props) => {
     }
   }
 
-  const onClickViewOnBlockExplorer = () => {
-    const explorerURL = selectedNetwork.blockExplorerUrls[0]
-    if (explorerURL && transaction.txHash) {
-      const url = `${explorerURL}/tx/${transaction.txHash}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const onClickRetryTransaction = () => {
     onRetryTransaction(transaction)
@@ -141,13 +137,7 @@ const PortfolioTransactionItem = (props: Props) => {
       return
     }
 
-    const explorerUrl = selectedNetwork.blockExplorerUrls[0]
-    if (explorerUrl) {
-      const url = `${explorerUrl}/address/${address}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
+    onClickViewOnBlockExplorer('address', address)
   }
 
   const findToken = React.useCallback((symbol: string) => {
@@ -167,7 +157,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
   const transactionIntentLocale = React.useMemo(() => {
     switch (true) {
-      case transaction.txType === TransactionType.ERC20Approve: {
+      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
         const text = getLocale('braveWalletApprovalTransactionIntent')
         return (
           <>
@@ -185,10 +175,10 @@ const PortfolioTransactionItem = (props: Props) => {
         return displayAccountName ? text.toLowerCase() : text
       }
 
-      case transaction.txType === TransactionType.ETHSend:
-      case transaction.txType === TransactionType.ERC20Transfer:
-      case transaction.txType === TransactionType.ERC721TransferFrom:
-      case transaction.txType === TransactionType.ERC721SafeTransferFrom:
+      case transaction.txType === BraveWallet.TransactionType.ETHSend:
+      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
+      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
+      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
       default: {
         const text = getLocale('braveWalletTransactionSent')
         return (
@@ -196,11 +186,11 @@ const PortfolioTransactionItem = (props: Props) => {
             {displayAccountName ? text : toProperCase(text)}{' '}
             <AddressOrAsset
               // Disabled for ERC721 tokens until we have NFT meta data
-              disabled={transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom}
+              disabled={transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom || transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom}
               onClick={onAssetClick(transactionDetails.symbol)}
             >
               {transactionDetails.symbol}
-              {transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom
+              {transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom || transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
                 ? ' ' + transactionDetails.erc721TokenId : ''}
             </AddressOrAsset>
           </>
@@ -211,7 +201,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {
-      case transaction.txType === TransactionType.ERC20Approve: {
+      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
         const text = getLocale('braveWalletApprovalTransactionIntent')
         return (
           <DetailRow>
@@ -228,7 +218,7 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
 
-      // FIXME: Add as new TransactionType on the controller side.
+      // FIXME: Add as new BraveWallet.TransactionType on the service side.
       case transaction.txData.baseData.to.toLowerCase() === SwapExchangeProxy: {
         return (
           <DetailRow>
@@ -248,10 +238,10 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
 
-      case transaction.txType === TransactionType.ETHSend:
-      case transaction.txType === TransactionType.ERC20Transfer:
-      case transaction.txType === TransactionType.ERC721TransferFrom:
-      case transaction.txType === TransactionType.ERC721SafeTransferFrom:
+      case transaction.txType === BraveWallet.TransactionType.ETHSend:
+      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
+      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
+      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
       default: {
         return (
           <DetailRow>
@@ -289,7 +279,18 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionIntentLocale}
             </DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
-            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
+
+            <TransactionTimestampTooltip
+              text={
+                <TransactionFeeTooltipBody>
+                  {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
+                </TransactionFeeTooltipBody>
+              }
+            >
+              <DetailTextDarkBold>
+                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+              </DetailTextDarkBold>
+            </TransactionTimestampTooltip>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>
@@ -297,25 +298,25 @@ const PortfolioTransactionItem = (props: Props) => {
       <StatusRow>
         <StatusBubble status={transactionDetails.status} />
         <DetailTextDarkBold>
-          {transactionDetails.status === TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
-          {transactionDetails.status === TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
-          {transactionDetails.status === TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
-          {transactionDetails.status === TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
-          {transactionDetails.status === TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
-          {transactionDetails.status === TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
         </DetailTextDarkBold>
       </StatusRow>
       <DetailRow>
         <BalanceColumn>
-          <DetailTextDark>{/* We need to return a Transaction Time Stamp to calculate Fiat value here */}${transactionDetails.fiatValue}</DetailTextDark>
-          <DetailTextLight>{transactionDetails.nativeCurrencyTotal} {selectedNetwork.symbol}</DetailTextLight>
+          <DetailTextDark>{/* We need to return a Transaction Time Stamp to calculate Fiat value here */}{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</DetailTextDark>
+          <DetailTextLight>{formatTokenAmountWithCommasAndDecimals(transactionDetails.nativeCurrencyTotal, selectedNetwork.symbol)}</DetailTextLight>
         </BalanceColumn>
         <TransactionFeesTooltip
           text={
             <>
-              <TransactionFeeTooltipTitle>Transaction fee</TransactionFeeTooltipTitle>
-              <TransactionFeeTooltipBody>{transactionDetails.gasFee} {selectedNetwork.symbol}</TransactionFeeTooltipBody>
-              <TransactionFeeTooltipBody>${transactionDetails.gasFeeFiat}</TransactionFeeTooltipBody>
+              <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
+              <TransactionFeeTooltipBody>{formatTokenAmountWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals), selectedNetwork.symbol)}</TransactionFeeTooltipBody>
+              <TransactionFeeTooltipBody>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</TransactionFeeTooltipBody>
             </>
           }
         >
@@ -324,7 +325,7 @@ const PortfolioTransactionItem = (props: Props) => {
           </CoinsButton>
         </TransactionFeesTooltip>
 
-        {transactionDetails.status !== TransactionStatus.Rejected ? (
+        {transactionDetails.status !== BraveWallet.TransactionStatus.Rejected ? (
           <MoreButton onClick={onShowTransactionPopup}>
             <MoreIcon />
           </MoreButton>
@@ -334,28 +335,28 @@ const PortfolioTransactionItem = (props: Props) => {
 
         {showTransactionPopup &&
           <TransactionPopup>
-            {[TransactionStatus.Approved, TransactionStatus.Submitted, TransactionStatus.Confirmed] &&
+            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed] &&
               <TransactionPopupItem
-                onClick={onClickViewOnBlockExplorer}
+                onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
                 text={getLocale('braveWalletTransactionExplorer')}
               />
             }
 
-            {[TransactionStatus.Submitted, TransactionStatus.Approved].includes(transactionDetails.status) &&
+            {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={onClickSpeedupTransaction}
                 text={getLocale('braveWalletTransactionSpeedup')}
               />
             }
 
-            {[TransactionStatus.Submitted, TransactionStatus.Approved].includes(transactionDetails.status) &&
+            {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={onClickCancelTransaction}
                 text={getLocale('braveWalletTransactionCancel')}
               />
             }
 
-            {[TransactionStatus.Error].includes(transactionDetails.status) &&
+            {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={onClickRetryTransaction}
                 text={getLocale('braveWalletTransactionRetry')}

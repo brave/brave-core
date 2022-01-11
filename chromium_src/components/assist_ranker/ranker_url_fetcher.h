@@ -11,7 +11,7 @@
                        network::mojom::URLLoaderFactory* url_loader_factory); \
   bool Request
 
-#include "../../../../components/assist_ranker/ranker_url_fetcher.h"
+#include "src/components/assist_ranker/ranker_url_fetcher.h"
 #undef Request
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_ASSIST_RANKER_RANKER_URL_FETCHER_H_

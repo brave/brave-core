@@ -11,4 +11,4 @@
 #define IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED \
   IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED  // NOLINT
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/safety_check_handler.cc"
+#include "src/chrome/browser/ui/webui/settings/safety_check_handler.cc"

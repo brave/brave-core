@@ -52,5 +52,5 @@ void AddDoHServers(std::string* doh_templates,
   AddDoHServers(&doh_templates, local_state_, \
                 force_check_parental_controls_for_automatic_mode);
 
-#include "../../../../../chrome/browser/net/stub_resolver_config_reader.cc"
+#include "src/chrome/browser/net/stub_resolver_config_reader.cc"
 #undef BRAVE_GET_AND_UPDATE_CONFIGURATION

@@ -4,29 +4,33 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { assert } from 'chrome://resources/js/assert.m.js'
-import { TREZOR_HARDWARE_VENDOR, LEDGER_HARDWARE_VENDOR, KeyringControllerRemote } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../constants/types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
+
 export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
-const VendorTypes = [TREZOR_HARDWARE_VENDOR, LEDGER_HARDWARE_VENDOR] as const
+const VendorTypes = [
+  BraveWallet.TREZOR_HARDWARE_VENDOR,
+  BraveWallet.LEDGER_HARDWARE_VENDOR
+] as const
 export type HardwareVendor = typeof VendorTypes[number]
 
 // Lazy instances for keyrings
 let ledgerHardwareKeyring: LedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
-let keyringController: KeyringControllerRemote
+let keyringService: BraveWallet.KeyringServiceRemote
 
-export function getBraveKeyring (): KeyringControllerRemote {
-  if (!keyringController) {
-    /** @type {!braveWallet.mojom.KeyringControllerRemote} */
-    keyringController = new KeyringControllerRemote()
+export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
+  if (!keyringService) {
+    /** @type {!braveWallet.mojom.KeyringServiceRemote} */
+    keyringService = new BraveWallet.KeyringServiceRemote()
   }
-  return keyringController
+  return keyringService
 }
 
 export function getHardwareKeyring (type: HardwareVendor): LedgerBridgeKeyring | TrezorBridgeKeyring {
-  if (type === LEDGER_HARDWARE_VENDOR) {
+  if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const ledgerKeyring = getLedgerHardwareKeyring()
     assert(type === ledgerKeyring.type())
     return ledgerKeyring

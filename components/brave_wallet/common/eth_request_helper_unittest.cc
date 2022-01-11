@@ -28,6 +28,11 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
     std::string chain_id;
     EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
+    mojom::BlockchainTokenPtr token;
+    EXPECT_FALSE(ParseWalletWatchAssetParams(error_case, &token, &message));
+    std::string signature;
+    EXPECT_FALSE(
+        ParsePersonalEcRecoverParams(error_case, &message, &signature));
   }
 }
 
@@ -114,6 +119,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C9";
   const std::string trezor_address =
       "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CA";
+  const std::string hw_address = "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CC";
 
   mojom::AccountInfoPtr primary_account = mojom::AccountInfo::New(
       "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", false, nullptr);
@@ -123,10 +129,14 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   mojom::AccountInfoPtr trezor_account = mojom::AccountInfo::New(
       trezor_address, "trezor", false,
       mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"));
+  mojom::AccountInfoPtr hw_account = mojom::AccountInfo::New(
+      hw_address, "hw", false,
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"));
   std::vector<mojom::AccountInfoPtr> account_infos;
   account_infos.push_back(std::move(primary_account));
   account_infos.push_back(std::move(ledger_account));
   account_infos.push_back(std::move(trezor_account));
+  account_infos.push_back(std::move(hw_account));
 
   // Test both EIP1559 and legacy gas fee fields are specified.
   std::string json(
@@ -152,16 +162,22 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
                                  account_infos, from));
   EXPECT_TRUE(
       ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(ledger_address)));
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(trezor_address)));
   // From is not found in the account infos, can happen when keyring is locked.
   EXPECT_TRUE(ShouldCreate1559Tx(
       tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
-  // Network don't support EIP1559
+  // Network doesn't support EIP1559
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
-  // Keyring don't support EIP1559
+  // Keyring doesn't support EIP1559
   EXPECT_FALSE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, hw_address));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  base::ToLowerASCII(trezor_address)));
+                                  base::ToLowerASCII(hw_address)));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -225,17 +241,21 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
                                  base::ToLowerASCII(ledger_address)));
+  EXPECT_TRUE(
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
+                                 base::ToLowerASCII(trezor_address)));
   // From is not found in the account infos, can happen when keyring is locked.
   EXPECT_TRUE(ShouldCreate1559Tx(
       tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
 
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
-  // Keyring don't support EIP1559
+  // Keyring does't support EIP1559
   EXPECT_FALSE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, hw_address));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  base::ToLowerASCII(trezor_address)));
+                                  base::ToLowerASCII(hw_address)));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
@@ -277,6 +297,13 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
           "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
         ]
       })");
+  const std::string json_missing_0x_prefix(
+      R"({
+        "params": [
+          "deadbeef",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
   const std::string json_extra_entry(
       R"({
         "params": [
@@ -300,6 +327,11 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(message, "0xdeadbeef");
 
+  EXPECT_TRUE(
+      ParsePersonalSignParams(json_missing_0x_prefix, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeef");
+
   EXPECT_TRUE(ParsePersonalSignParams(json_extra_entry, &address, &message));
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(message, "0xdeadbeef");
@@ -314,8 +346,63 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, nullptr));
   EXPECT_FALSE(
       ParsePersonalSignParams("{\"params\":[{}]}", &address, &message));
-  EXPECT_FALSE(
-      ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
+  EXPECT_FALSE(ParsePersonalSignParams("{\"params\":[\"123\",123]}", &address,
+                                       &message));
+}
+
+TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0x68656c6c6f20776f726c64",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0x68656c6c6f20776f726c64",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c",
+          "12345",
+          null,
+          123
+        ]
+      })");
+  const std::string json_with_message_string(
+      R"({
+        "params": [
+          "hello world",
+          "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ade58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c"
+        ]
+      })");
+  std::string message;
+  std::string signature;
+  EXPECT_TRUE(ParsePersonalEcRecoverParams(json, &message, &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+
+  signature.clear();
+  message.clear();
+  EXPECT_TRUE(
+      ParsePersonalEcRecoverParams(json_extra_entry, &message, &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+
+  signature.clear();
+  message.clear();
+  EXPECT_TRUE(ParsePersonalEcRecoverParams(json_with_message_string, &message,
+                                           &signature));
+  EXPECT_EQ(message, "0x68656c6c6f20776f726c64");
+  EXPECT_EQ(
+      signature,
+      "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
+      "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
@@ -552,6 +639,330 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
+}
+
+TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
+  std::string json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "https://test.com/test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+
+  mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
+      "https://test.com/test.png", true, false, "BAT", 18, true, "");
+
+  mojom::BlockchainTokenPtr token;
+  std::string error_message;
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  expected_token->logo = "";
+
+  // Test optional image and non-checksum address.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Decimals as string is allowed for web compability.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": "18",
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Missing type
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+      }
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing address
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid address
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "123",
+        "symbol": "BAT",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing symbol
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid symbol, len = 12
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "LOOOOOOOOONG",
+        "decimals": 18,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Missing decimals
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid decimals, negative number or larger than 36.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": -1,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 37,
+      },
+      "type": "ERC20"
+    }
+  })";
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(error_message.empty());
+
+  // Params in an array should work for legacy send.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": [{
+      "options": {
+        "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+        "symbol": "BAT",
+        "decimals": 18
+      },
+      "type": "ERC20"
+    }]
+  })";
+
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Test image parameter
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "http://test.com/test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "http://test.com/test.png";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo =
+      "data:image/"
+      "png;base64,"
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3"
+      "A0FDAAAAAElFTkSuQmCC";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+
+  // Invalid image parameter will have empty logo string.
+  json = R"({
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "wallet_watchAsset",
+    "params": {
+      "options": {
+        "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "symbol": "BAT",
+        "decimals": 18,
+        "image": "test.png"
+      },
+      "type": "ERC20"
+    }
+  })";
+  expected_token->logo = "";
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_EQ(token, expected_token);
+  EXPECT_TRUE(error_message.empty());
+}
+
+TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
+  std::vector<std::string> restricted_methods;
+
+  std::string json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>{"eth_accounts"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{
+          "eth_accounts": {},
+          "eth_someFutureMethod": {}
+        }]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods,
+            (std::vector<std::string>{"eth_accounts", "eth_someFutureMethod"}));
+
+  json =
+      R"({
+        "method": "wallet_requestPermissions",
+        "params": [{}]
+      })";
+  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
+  EXPECT_EQ(restricted_methods, (std::vector<std::string>()));
+
+  EXPECT_FALSE(ParseRequestPermissionsParams(json, nullptr));
+  EXPECT_FALSE(ParseRequestPermissionsParams("", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("\"42\"", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{}", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams("[]", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: 5 }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [5] }", &restricted_methods));
+  EXPECT_FALSE(
+      ParseRequestPermissionsParams("{ params: [] }", &restricted_methods));
 }
 
 }  // namespace brave_wallet

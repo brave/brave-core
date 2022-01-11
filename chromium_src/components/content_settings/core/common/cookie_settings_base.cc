@@ -251,11 +251,12 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
 }
 
 // Determines whether a 3p cookies block should be applied if a requesting URL
-// uses an explicit 1PES setting (CONTENT_SETTING_SESSION_ONLY).
+// uses an explicit CONTENT_SETTING_SESSION_ONLY setting.
 // By default Chromimum allows all 3p cookies if applied CookieSettingsPatterns
-// for the URL were explicit. We use explicit setting to enable 1PES mode, but
-// in this mode we still want to block 3p frames as usual and not fallback to
-// "allow everything" path.
+// for the URL are explicit, i.e. if a user added the rule manually then they
+// trusts the website. We use explicit setting to enable 1PES mode, but in this
+// mode we still want to block 3p frames as usual and not fallback to "allow
+// everything" path.
 bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
     bool block_third_party_cookies,
     ContentSetting cookie_setting,
@@ -263,9 +264,7 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
     bool is_first_party_allowed_scheme) const {
   return block_third_party_cookies &&
          cookie_setting == CONTENT_SETTING_SESSION_ONLY &&
-         is_explicit_setting && !is_first_party_allowed_scheme &&
-         base::FeatureList::IsEnabled(
-             net::features::kBraveFirstPartyEphemeralStorage);
+         is_explicit_setting && !is_first_party_allowed_scheme;
 }
 
 CookieSettingWithBraveMetadata
@@ -285,5 +284,5 @@ CookieSettingsBase::GetCookieSettingWithBraveMetadata(
 }  // namespace content_settings
 
 #define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
-#include "../../../../../../components/content_settings/core/common/cookie_settings_base.cc"  // NOLINT
+#include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed

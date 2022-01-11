@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   SignHardwareTransactionType,
   SignHardwareMessageOperationResult,
@@ -17,6 +16,7 @@ import { getHardwareKeyring, getLedgerHardwareKeyring, getTrezorHardwareKeyring,
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
+import { BraveWallet } from '../../constants/types'
 
 export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
   if (code === 'TransportOpenUserCancelled') {
@@ -34,9 +34,12 @@ export function dialogErrorFromLedgerErrorCode (code: string | number): Hardware
   return 'openEthereumApp'
 }
 
-export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes): HardwareWalletResponseCodeType {
+export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes | string): HardwareWalletResponseCodeType {
   if (code === TrezorErrorsCodes.CommandInProgress) {
     return 'deviceBusy'
+  }
+  if (code === 'Method_Interrupted') {
+    return 'transactionRejected'
   }
   return 'openEthereumApp'
 }
@@ -46,8 +49,8 @@ export async function signTrezorTransaction (
   path: string,
   txInfo: BraveWallet.TransactionInfo,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()): Promise<SignHardwareTransactionType> {
-  const chainId = await apiProxy.ethJsonRpcController.getChainId()
-  const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
+  const chainId = await apiProxy.jsonRpcService.getChainId()
+  const nonce = await apiProxy.ethTxService.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
@@ -62,7 +65,7 @@ export async function signTrezorTransaction (
   }
   const { v, r, s } = signed.payload
   const result =
-    await apiProxy.ethTxController.processHardwareSignature(txInfo.id, v, r, s)
+    await apiProxy.ethTxService.processHardwareSignature(txInfo.id, v, r, s)
   if (!result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
@@ -74,11 +77,11 @@ export async function signLedgerTransaction (
   path: string,
   txInfo: BraveWallet.TransactionInfo,
   deviceKeyring: LedgerBridgeKeyring = getLedgerHardwareKeyring()): Promise<SignHardwareTransactionOperationResult> {
-  const nonce = await apiProxy.ethTxController.getNonceForHardwareTransaction(txInfo.id)
+  const nonce = await apiProxy.ethTxService.getNonceForHardwareTransaction(txInfo.id)
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
-  const data = await apiProxy.ethTxController.getTransactionMessageToSign(txInfo.id)
+  const data = await apiProxy.ethTxService.getTransactionMessageToSign(txInfo.id)
   if (!data || !data.message) {
     return { success: false, error: getLocale('braveWalletNoMessageToSignError') }
   }
@@ -93,7 +96,7 @@ export async function signLedgerTransaction (
     return { success: false, error: error, code: code }
   }
   const { v, r, s } = signed.payload
-  const result = await apiProxy.ethTxController.processHardwareSignature(txInfo.id, '0x' + v, '0x' + r, '0x' + s)
+  const result = await apiProxy.ethTxService.processHardwareSignature(txInfo.id, '0x' + v, '0x' + r, '0x' + s)
   if (!result || !result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }

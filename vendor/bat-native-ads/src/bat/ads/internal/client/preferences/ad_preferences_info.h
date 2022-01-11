@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/client/preferences/filtered_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info_aliases.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
 #include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
@@ -23,7 +23,7 @@ struct AdPreferencesInfo final {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  FilteredAdList filtered_ads;
+  FilteredAdvertiserList filtered_advertisers;
   FilteredCategoryList filtered_categories;
   SavedAdList saved_ads;
   FlaggedAdList flagged_ads;

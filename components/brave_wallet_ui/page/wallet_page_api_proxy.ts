@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WalletApiProxy, * as BraveWallet from '../common/wallet_api_proxy'
+import WalletApiProxy from '../common/wallet_api_proxy'
+import { BraveWallet } from '../constants/types'
 
 let walletPageApiProxyInstance: WalletPageApiProxy
 
@@ -18,12 +19,12 @@ class WalletPageApiProxy extends WalletApiProxy {
       this.callbackRouter.$.bindNewPipeAndPassRemote(),
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),
-      this.ethJsonRpcController.$.bindNewPipeAndPassReceiver(),
-      this.swapController.$.bindNewPipeAndPassReceiver(),
-      this.assetRatioController.$.bindNewPipeAndPassReceiver(),
-      this.keyringController.$.bindNewPipeAndPassReceiver(),
-      this.ercTokenRegistry.$.bindNewPipeAndPassReceiver(),
-      this.ethTxController.$.bindNewPipeAndPassReceiver(),
+      this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+      this.swapService.$.bindNewPipeAndPassReceiver(),
+      this.assetRatioService.$.bindNewPipeAndPassReceiver(),
+      this.keyringService.$.bindNewPipeAndPassReceiver(),
+      this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
+      this.ethTxService.$.bindNewPipeAndPassReceiver(),
       this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
 }

@@ -23,7 +23,7 @@
     }                                                                  \
   }
 
-#include "../../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
+#include "src/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
 
 namespace blink {
 

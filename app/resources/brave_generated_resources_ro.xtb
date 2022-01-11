@@ -36,6 +36,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7017590444693657895">Nu permiteți site-urilor să acceseze API-urile furnizorilor de Ethereum</translation>
 <translation id="8988939298652262600">Brave nu evaluează extensiile din punct de vedere al securității și siguranței. Instalează această extensie doar dacă ai încredere în dezvoltator.</translation>
 <translation id="8081858229109418493">Nume profil și iconiță</translation>
+<translation id="6438096877646138757">Site-uri care șterg modulele cookie atunci când le închideți</translation>
+<translation id="2988792685798128092">Ștergeți la închiderea site-ului</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
 <translation id="1692470335103807198">Obține mai multe teme</translation>
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
@@ -55,7 +57,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="6821903322090655051">Opțiunea Brave Rewards este dezactivată</translation>
-<translation id="9184430019924125685">Dați clic aici pentru a afla mai multe</translation>
+<translation id="413570371620795359">Accesați panoul Brave Rewards, pentru a activa opțiunea și a începe utilizarea</translation>
 <translation id="3849957491997306859">Detectare automată</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
 <translation id="4176463684765177261">Dezactivat</translation>
@@ -69,7 +71,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
 <translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
 <translation id="6248554379744796526">Arată siteuri neverificate în listă</translation>
-<translation id="3241299447027267831">Permiteți contribuțiile pentru videoclipuri</translation>
+<translation id="5510618543889994434">Permiteți contribuțiile pentru videoclipuri</translation>
 <translation id="924777189963477634">Prin activarea contribuțiilor automate, acceptați <ph name="BEGIN_LINK_TOS"/>Termenii de utilizare<ph name="END_LINK_TOS"/> și <ph name="BEGIN_LINK_PP"/>Politica de confidențialitate<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Butoane pentru contribuții</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +106,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7895302206188277628">Conținut corelat</translation>
 <translation id="3654831858282189202">Publicați cu cheia IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importați textul selectat în IPFS</translation>
 <translation id="6925604404524625582">Importați și copiați linkul în IPFS Snapshot</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
@@ -207,6 +210,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2414886740292270097">Negru</translation>
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
 <translation id="1336940801687497203">Aceeași cu Windows</translation>
+<translation id="5919209812221905840">Program prestabilit de gestionare microsoft-edge</translation>
+<translation id="5239541974656019812">Setați Brave ca program prestabilit de gestionare microsoft-edge</translation>
+<translation id="7136694880210472378">Setează ca prestabilit</translation>
+<translation id="1751388324499810661">Brave este programul prestabilit de gestionare microsoft-edge</translation>
 <translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
@@ -222,6 +229,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre confidențialitatea DNS prin HTTPS și Ethereum.</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurați-vă cheile IPNS</translation>
 <translation id="951216659045543447">Semnați conținutul cu cheiaprivată corespunzătoare și publicați-l pe IPNS</translation>
@@ -256,6 +264,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și confidențialitatea gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -422,7 +431,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2653659639078652383">Trimite</translation>
 <translation id="2556708692502648323">Rețele portofele</translation>
 <translation id="1330032157352961756">Identificatorul noului lanț</translation>
-<translation id="9053905035135220650">Un șir hexazecimal cu prefix 0x</translation>
+<translation id="3423620355610881890">Un număr zecimal pozitiv</translation>
 <translation id="726121047592132939">Numele noului lanț</translation>
 <translation id="1034112277864078119">Introduceți numele lanțului</translation>
 <translation id="4672314527143443556">Numele monedei lanțului</translation>
@@ -436,7 +445,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3047726704186619366">Adrese URL pictograme</translation>
 <translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
 <translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
-<translation id="4514843126085243862">Format incorect; identificatorul lanțului este un șir hexazecimal cu prefix 0x</translation>
+<translation id="7504462451153306677">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
 <translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 <translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
 <translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>

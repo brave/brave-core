@@ -9,22 +9,20 @@ import BigNumber from 'bignumber.js'
 
 import {
   AccountAssetOptionType,
-  EthereumChain,
+  BraveWallet,
   ExpirationPresetObjectType,
   OrderTypes,
   SlippagePresetObjectType,
   SwapErrorResponse,
   SwapValidationErrorType,
-  SwapResponse,
   ToOrFromType,
   WalletAccountType,
-  ROPSTEN_CHAIN_ID,
   ApproveERC20Params
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { ETH, RopstenSwapAssetOptions } from '../../options/asset-options'
-import { formatBalance, toWei, toWeiHex } from '../../utils/format-balances'
+import { RopstenSwapAssetOptions } from '../../options/asset-options'
+import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import useBalance from './balance'
@@ -33,16 +31,16 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 
 export default function useSwap (
   selectedAccount: WalletAccountType,
-  selectedNetwork: EthereumChain,
+  selectedNetwork: BraveWallet.EthereumChain,
   assetOptions: AccountAssetOptionType[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
-  quote?: SwapResponse,
+  quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {
   const swapAssetOptions = React.useMemo(() => {
-    if (selectedNetwork.chainId === ROPSTEN_CHAIN_ID) {
+    if (selectedNetwork.chainId === BraveWallet.ROPSTEN_CHAIN_ID) {
       return RopstenSwapAssetOptions
     }
 
@@ -86,9 +84,9 @@ export default function useSwap (
       .catch(e => console.log(e))
   }, [fromAsset, quote, selectedAccount])
 
-  const getBalance = useBalance(selectedAccount)
-  const { assetBalance: fromAssetBalance } = getBalance(fromAsset)
-  const { assetBalance: ethBalance } = getBalance(ETH)
+  const getBalance = useBalance(selectedNetwork)
+  const fromAssetBalance = getBalance(selectedAccount, fromAsset?.asset)
+  const ethBalance = getBalance(selectedAccount)
 
   const feesBN = React.useMemo(() => {
     if (!quote) {
@@ -105,12 +103,10 @@ export default function useSwap (
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
     const fromAmountWei = toWei(fromAmount, fromAsset.asset.decimals)
-    const fromAssetBalanceWei = toWei(fromAssetBalance, fromAsset.asset.decimals)
-    const ethBalanceWei = toWei(ethBalance, ETH.asset.decimals)
 
     const amountBN = new BigNumber(fromAmountWei)
-    const balanceBN = new BigNumber(fromAssetBalanceWei)
-    const ethBalanceBN = new BigNumber(ethBalanceWei)
+    const balanceBN = new BigNumber(fromAssetBalance)
+    const ethBalanceBN = new BigNumber(ethBalance)
 
     if (amountBN.gt(balanceBN)) {
       return 'insufficientBalance'
@@ -120,7 +116,7 @@ export default function useSwap (
       return 'insufficientEthBalance'
     }
 
-    if (fromAsset.asset.symbol === ETH.asset.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
+    if (fromAsset.asset.symbol === selectedNetwork.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
       return 'insufficientEthBalance'
     }
 
@@ -160,8 +156,8 @@ export default function useSwap (
 
     const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
 
-    setFromAmount(formatBalance(sellAmount, fromAsset.asset.decimals))
-    setToAmount(formatBalance(buyAmount, toAsset.asset.decimals))
+    setFromAmount(formatInputValue(sellAmount, fromAsset.asset.decimals))
+    setToAmount(formatInputValue(buyAmount, toAsset.asset.decimals))
 
     /**
      * Price computation block
@@ -412,13 +408,15 @@ export default function useSwap (
     }
 
     if (swapValidationError === 'insufficientAllowance' && allowance) {
-      const fromAssetBalanceWeiHex = toWeiHex(fromAssetBalance, fromAsset.asset.decimals)
+      const allowanceHex = !fromAssetBalance
+        ? toWeiHex(fromAmount, fromAsset.asset.decimals)
+        : toHex(fromAssetBalance)
 
       approveERC20Allowance({
         from: selectedAccount.address,
         contractAddress: fromAsset.asset.contractAddress,
         spenderAddress: quote.allowanceTarget,
-        allowance: fromAssetBalanceWeiHex
+        allowance: allowanceHex
       })
 
       return

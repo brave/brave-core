@@ -19,16 +19,21 @@ import {
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
-  ImportWalletErrorPayloadType
+  ImportWalletErrorPayloadType,
+  ImportFilecoinAccountPayloadType
 } from '../constants/action_types'
-import { SwapResponse, SwapErrorResponse, ERCToken, UpdateAccountNamePayloadType } from '../../constants/types'
+import {
+  BraveWallet,
+  SwapErrorResponse,
+  UpdateAccountNamePayloadType
+} from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
-import { HardwareWalletAccount } from 'components/brave_wallet_ui/common/hardware/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')
 export const importAccount = createAction<ImportAccountPayloadType>('importAccount')
+export const importFilecoinAccount = createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount')
 export const importAccountFromJson = createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson')
 export const removeImportedAccount = createAction<RemoveImportedAccountPayloadType>('removeImportedAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
@@ -45,17 +50,17 @@ export const setImportAccountError = createAction<boolean>('setImportAccountErro
 export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
-export const updateSelectedAsset = createAction<ERCToken>('updateSelectedAsset')
+export const updateSelectedAsset = createAction<BraveWallet.BlockchainToken>('updateSelectedAsset')
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')
-export const addHardwareAccounts = createAction<HardwareWalletAccount[]>('addHardwareAccounts')
+export const addHardwareAccounts = createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts')
 export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount')
 export const checkWalletsToImport = createAction('checkWalletsToImport')
 export const setCryptoWalletsInstalled = createAction<boolean>('setCryptoWalletsInstalled')
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
-export const setPageSwapQuote = createAction<SwapResponse>('setPageSwapQuote')
+export const setPageSwapQuote = createAction<BraveWallet.SwapResponse>('setPageSwapQuote')
 export const setPageSwapError = createAction<SwapErrorResponse | undefined>('setPageSwapError')
 export const fetchPageSwapQuote = createAction<SwapParamsPayloadType>('fetchPageSwapQuote')

@@ -36,6 +36,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7017590444693657895">Blokér websider, så de ikke opretter adgang til Ethereum-leverandørens API.</translation>
 <translation id="8988939298652262600">Brave gennemgår ikke udvidelser af hensyn til sikkerhed. Installer kun denne udvidelse, hvis du har tillid til udvikleren.</translation>
 <translation id="8081858229109418493">Profilnavn og ikon</translation>
+<translation id="6438096877646138757">Sider, der fjerner cookies, når du lukker dem</translation>
+<translation id="2988792685798128092">Fjern, når siden lukkes</translation>
 <translation id="2044383478723007273">Brave farver</translation>
 <translation id="1692470335103807198">Få flere temaer</translation>
 <translation id="2906510232093002459">Brave standardbilleder</translation>
@@ -55,7 +57,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="6285118765755298263">Indeksér andre søgemaskiner</translation>
 <translation id="919715748352669592">Indekserer automatisk websteder, der følger Open Source-specifikationer.</translation>
 <translation id="6821903322090655051">Brave Rewards er deaktiveret</translation>
-<translation id="9184430019924125685">Klik for at få mere at vide</translation>
+<translation id="413570371620795359">Åbn Belønninger-panelet for at aktivere og komme i gang</translation>
 <translation id="3849957491997306859">Autoslettet</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
@@ -69,7 +71,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7286722244752781970">Minimumstid på en side før et besøg logges</translation>
 <translation id="4424486208397124985">Mindstebesøg for udgiver-relevans</translation>
 <translation id="6248554379744796526">Vis ikke-verificerede sider på listen</translation>
-<translation id="3241299447027267831">Tillad bidrag til videoer</translation>
+<translation id="5510618543889994434">Tillad bidrag til videoer</translation>
 <translation id="924777189963477634">Hvis du aktiverer Auto-Bidrag, accepterer du vores <ph name="BEGIN_LINK_TOS"/>Servicevilkår<ph name="END_LINK_TOS"/> og <ph name="BEGIN_LINK_PP"/>Privatlivspolitik<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Donationsknapper</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -209,6 +211,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2414886740292270097">Mørk</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
+<translation id="5919209812221905840">Standard-protokolbehandler på Microsoft-niveau</translation>
+<translation id="5239541974656019812">Gør Brave til din protokolbehandler på Microsoft-niveau</translation>
+<translation id="7136694880210472378">Gør til standard</translation>
+<translation id="1751388324499810661">Brave er en standard-protokolbehandler på Microsoft-niveau</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
@@ -426,7 +432,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2653659639078652383">Indsend</translation>
 <translation id="2556708692502648323">Wallet-netværk</translation>
 <translation id="1330032157352961756">Id for ny kæde</translation>
-<translation id="9053905035135220650">En 0x-prefixed hexadecimal-streng</translation>
+<translation id="3423620355610881890">Et positivt decimaltal</translation>
 <translation id="726121047592132939">Navn på ny kæde</translation>
 <translation id="1034112277864078119">Angiv kædenavn</translation>
 <translation id="4672314527143443556">Kædens valutanavn</translation>
@@ -440,7 +446,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3047726704186619366">Ikon-url'er</translation>
 <translation id="2487558607408469181">Blokér Explorer-url'er</translation>
 <translation id="6301398959353668507">Dette felt må ikke være tomt.</translation>
-<translation id="4514843126085243862">Ugyldigt format. Kædei-id'er er en 0x-prefixed hexadecimal-streng</translation>
+<translation id="7504462451153306677">Ugyldigt format. Kæde-id er et positivt tal.</translation>
 <translation id="8325036459845654666">Netværk allerede tilføjet</translation>
 <translation id="650071759190249039">Intern fejl. Kunne ikke tilføje netværk.</translation>
 <translation id="868529041590572443">Angiv al information om lokalvaluta</translation>

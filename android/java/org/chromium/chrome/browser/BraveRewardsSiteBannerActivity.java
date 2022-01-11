@@ -25,7 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import org.json.JSONException;
+
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -46,10 +49,12 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     private final int FADE_OUT_DURATION = 500;
     private final float LANDSCAPE_HEADER_WEIGHT = 2.0f;
     public static final String TAB_ID_EXTRA = "currentTabId";
+    public static final String IS_MONTHLY_CONTRIBUTION = "is_monthly_contribution";
     public static final String TIP_AMOUNT_EXTRA="tipAmount";
     public static final String TIP_MONTHLY_EXTRA="tipMonthly";
 
     private int currentTabId_ = -1;
+    private boolean mIsMonthlyContribution;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private final int PUBLISHER_ICON_SIDE_LEN= 70; //dp
     private final int TOUCH_PADDING_MONTHLY= 32; //dp
@@ -121,6 +126,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         }
 
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
+        mIsMonthlyContribution =
+                IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
@@ -138,7 +145,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         double balance = .0;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null){
-            balance = rewards_balance.mTotal;
+            balance = rewards_balance.getTotal();
         }
 
         DecimalFormat df = new DecimalFormat("#.###");
@@ -160,6 +167,11 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         //set tip button onClick
         CheckBox monthly = (CheckBox) findViewById(R.id.make_monthly_checkbox);
+        if (mIsMonthlyContribution) {
+            monthly.setChecked(true);
+            TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
+            send_btn.setText(getResources().getString(R.string.brave_ui_do_monthly));
+        }
         View.OnClickListener send_tip_clicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +179,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewards_balance != null){
-                    balance = rewards_balance.mTotal;
+                    balance = rewards_balance.getTotal();
                 }
                 int amount = 0;
                 for (ToggleButton tb : radio_tip_amount){
@@ -185,6 +197,11 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                     }
                 }
                 boolean enough_funds = ((balance - amount) >= 0);
+
+                if (mIsMonthlyContribution) {
+                    mBraveRewardsNativeWorker.SetAutoContributionAmount(amount);
+                    finish();
+                }
 
                 //proceed to tipping
                 if (true == enough_funds) {
@@ -278,12 +295,14 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         tv.setText(part1);
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        @PublisherStatus int pubStatus =
-                mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
-        setPublisherNoteText(pubStatus);
+        mBraveRewardsNativeWorker.GetExternalWallet();
+        @PublisherStatus
+        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
 
         if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED) {
+                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
             findViewById(R.id.publisher_favicon_verified).setVisibility(View.VISIBLE);
         }
 
@@ -322,33 +341,64 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         });
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void setPublisherNoteText(@PublisherStatus int pubStatus) {
-        String note_part1 = "";
-        if (pubStatus == BraveRewardsPublisher.CONNECTED) {
-            // show |brave_ui_site_banner_connected_text| text if
-            // publisher is CONNECTED and user doesn't have any Brave funds (anonymous or
-            // blinded wallets)
-            BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
-            if (balance_obj != null) {
-                double braveFunds = ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_ANONYMOUS) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) : .0) +
-                                    ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_BLINDED) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) : .0);
-                if (braveFunds <= 0) {
-                    note_part1 = getResources().getString(R.string.brave_ui_site_banner_connected_text);
-                }
+    @Override
+    public void OnGetExternalWallet(int errorCode, String externalWallet) {
+        int walletStatus = BraveRewardsExternalWallet.NOT_CONNECTED;
+        if (!TextUtils.isEmpty(externalWallet)) {
+            try {
+                BraveRewardsExternalWallet mExternalWallet =
+                        new BraveRewardsExternalWallet(externalWallet);
+                walletStatus = mExternalWallet.getStatus();
+            } catch (JSONException e) {
+                Log.e("BraveRewards", e.getMessage());
             }
         }
-        else if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
-            note_part1 = getResources().getString(R.string.brave_ui_site_banner_notice_text);
+        @PublisherStatus
+        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
+        setPublisherNoteText(pubStatus, walletStatus);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setPublisherNoteText(@PublisherStatus int pubStatus, int walletStatus) {
+        String notePart1 = "";
+        String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+        if (walletStatus == BraveRewardsExternalWallet.NOT_CONNECTED) {
+            if (pubStatus == BraveRewardsPublisher.CONNECTED
+                    || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                    || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                    || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
+                Log.e("BraveRewards", "User is unverified and publisher is verified");
+            } else {
+                notePart1 = getResources().getString(
+                        R.string.brave_ui_site_banner_unverified_notice_text);
+                Log.e("BraveRewards", "User is unverified and publisher is unverified");
+            }
+        } else {
+            if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
+                notePart1 = getResources().getString(
+                        R.string.brave_ui_site_banner_unverified_notice_text);
+                Log.e("BraveRewards", "User is verified and publisher is unverified");
+            } else if (pubStatus == BraveRewardsPublisher.CONNECTED
+                    || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                            && !walletType.equals(BraveWalletProvider.UPHOLD))
+                    || (pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                            && !walletType.equals(BraveWalletProvider.BITFLYER))
+                    || (pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED
+                            && !walletType.equals(BraveWalletProvider.GEMINI))) {
+                notePart1 = getResources().getString(
+                        R.string.brave_ui_site_banner_different_verified_notice_text);
+                Log.e("BraveRewards",
+                        "User is verified and publisher is verified but not with the same provider");
+            }
         }
 
-        if (!TextUtils.isEmpty(note_part1)) {
+        if (!TextUtils.isEmpty(notePart1)) {
             findViewById(R.id.not_verified_warning_layout ).setVisibility(View.VISIBLE);
-            String note_part2 = getResources().getString(R.string.learn_more);
+            String notePart2 = getResources().getString(R.string.learn_more);
             final StringBuilder sb1 = new StringBuilder();
-            sb1.append(note_part1);
+            sb1.append(notePart1);
             sb1.append(" <br><font color=#00afff>");
-            sb1.append(note_part2);
+            sb1.append(notePart2);
             sb1.append("</font></br>");
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(sb1.toString());
             TextView not_verified_warning_text = (TextView )findViewById(R.id.not_verified_warning_text );
@@ -363,7 +413,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                         int offset = not_verified_warning_text.getOffsetForPosition(
                                 motionEvent.getX(), motionEvent.getY());
 
-                        if (BraveRewardsHelper.subtextAtOffset(full_note_str, note_part2, offset) ){
+                        if (BraveRewardsHelper.subtextAtOffset(full_note_str, notePart2, offset)) {
                             event_consumed = true;
                             Intent intent = new Intent();
                             intent.putExtra(BraveActivity.OPEN_URL, BraveActivity.REWARDS_LEARN_MORE_URL);
@@ -474,7 +524,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 double balance = .0;
                 BraveRewardsBalance rewardsBalance = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (rewardsBalance != null) {
-                    balance = rewardsBalance.mTotal;
+                    balance = rewardsBalance.getTotal();
                 }
                 DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);

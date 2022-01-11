@@ -25,26 +25,22 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
 /**
  * The preference used to reset Brave Wallet.
  */
 public class BraveWalletResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
+        extends Preference implements Preference.OnPreferenceClickListener {
     private String TAG = "BraveWalletResetPreference";
 
     private int mPrefAccentColor;
     private final String mConfirmationPhrase;
-    private KeyringController mKeyringController;
 
     /**
      * Constructor for BraveWalletResetPreference.
@@ -58,8 +54,6 @@ public class BraveWalletResetPreference
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);
-
-        InitKeyringController();
     }
 
     @Override
@@ -73,14 +67,6 @@ public class BraveWalletResetPreference
     public boolean onPreferenceClick(Preference preference) {
         showBraveWalletResetDialog();
         return true;
-    }
-
-    @Override
-    public void onDetached() {
-        super.onDetached();
-        if (mKeyringController != null) {
-            mKeyringController.close();
-        }
     }
 
     private void showBraveWalletResetDialog() {
@@ -97,20 +83,15 @@ public class BraveWalletResetPreference
             @Override
             public void onClick(DialogInterface dialog, int button) {
                 if (button == AlertDialog.BUTTON_POSITIVE) {
-                    if (mKeyringController != null) {
-                        String inputText = input.getText().toString().trim();
-                        if (TextUtils.equals(inputText, mConfirmationPhrase)) {
-                            Log.w(TAG, "Reset");
-                            mKeyringController.reset();
-                            Utils.setCryptoOnboarding(true);
-                        }
-                        mKeyringController.close();
-
-                        // Force clear activity stack
-                        launchBraveTabbedActivity();
-                    } else {
-                        Log.w(TAG, "mKeyringController is null");
+                    String inputText = input.getText().toString().trim();
+                    if (TextUtils.equals(inputText, mConfirmationPhrase)) {
+                        Log.w(TAG, "Reset");
+                        WalletNativeUtils.resetWallet();
+                        Utils.setCryptoOnboarding(true);
                     }
+
+                    // Force clear activity stack
+                    launchBraveTabbedActivity();
                 } else {
                     dialog.dismiss();
                 }
@@ -151,21 +132,6 @@ public class BraveWalletResetPreference
                 okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
             }
         });
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
-    }
-
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
-            return;
-        }
-
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
     }
 
     private void launchBraveTabbedActivity() {

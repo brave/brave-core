@@ -114,7 +114,7 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
 
   void RefreshPublisherListUsingRewardsPopup() {
     rewards_browsertest_util::WaitForElementThenClick(
-        context_helper_->OpenRewardsPopup(),
+        context_helper_->OpenRewardsPopup().get(),
         "[data-test-id='unverified-check-button']");
   }
 
@@ -442,25 +442,21 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   contribution_->IsPendingBalanceCorrect();
 
   // Open the Rewards popup
-  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup_contents =
+      context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Check if verified notification is shown
-  rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "#root",
-      "3zsistemi.si");
+  rewards_browsertest_util::WaitForElementToContain(popup_contents.get(),
+                                                    "#root", "3zsistemi.si");
 
   // Close notification
   rewards_browsertest_util::WaitForElementThenClick(
-      popup_contents,
-      "[data-test-id=notification-close]");
+      popup_contents.get(), "[data-test-id=notification-close]");
 
   // Check if insufficient funds notification is shown
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "#root",
-      "Insufficient Funds");
+      popup_contents.get(), "#root", "Insufficient Funds");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -896,9 +892,10 @@ IN_PROC_BROWSER_TEST_F(
                             true);
 
   // Verify current tip amount displayed on panel
-  content::WebContents* popup = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup =
+      context_helper_->OpenRewardsPopup();
   const double tip_amount =
-      rewards_browsertest_util::GetRewardsPopupMonthlyTipValue(popup);
+      rewards_browsertest_util::GetRewardsPopupMonthlyTipValue(popup.get());
   ASSERT_EQ(tip_amount, 10.0);
 }
 
@@ -921,12 +918,11 @@ IN_PROC_BROWSER_TEST_F(
                             true);
 
   // Verify "Change amount" opens monthly tip form
-  content::WebContents* banner = context_helper_->OpenSiteBanner(
+  base::WeakPtr<content::WebContents> banner = context_helper_->OpenSiteBanner(
       rewards_browsertest_util::TipAction::ChangeMonthly);
 
   rewards_browsertest_util::WaitForElementToContain(
-      banner,
-      "[data-test-id=form-submit-button]",
+      banner.get(), "[data-test-id=form-submit-button]",
       "Set monthly contribution");
 
   // Verify "Cancel" opens cancel confirmation form
@@ -934,8 +930,7 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::TipAction::ClearMonthly);
 
   rewards_browsertest_util::WaitForElementToContain(
-      banner,
-      "[data-test-id=form-submit-button]",
+      banner.get(), "[data-test-id=form-submit-button]",
       "Confirm Canceling Monthly");
 }
 

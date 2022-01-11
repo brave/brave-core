@@ -11,6 +11,8 @@
 
 #include "base/callback.h"
 #include "base/observer_list_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace content {
 class BrowserContext;
@@ -20,23 +22,11 @@ namespace brave_wallet {
 
 class BraveWalletServiceDelegate {
  public:
-  struct ImportInfo {
-    std::string mnemonic;
-    bool is_legacy_crypto_wallets;
-    size_t number_of_accounts;
-  };
-
-  enum class ImportError {
-    kNone = 0,
-    kJsonError,
-    kPasswordError,
-    kInternalError
-  };
-
-  using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
-  using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsExternalWalletInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsExternalWalletInitializedCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
       base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+  using AddEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;
@@ -54,13 +44,16 @@ class BraveWalletServiceDelegate {
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
 
-  virtual void IsCryptoWalletsInstalled(
-      IsCryptoWalletsInstalledCallback callback);
-  virtual void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback);
-  virtual void GetImportInfoFromCryptoWallets(const std::string& password,
-                                              GetImportInfoCallback callback);
-  virtual void GetImportInfoFromMetaMask(const std::string& password,
-                                         GetImportInfoCallback callback);
+  virtual void IsExternalWalletInstalled(mojom::ExternalWalletType,
+                                         IsExternalWalletInstalledCallback);
+  virtual void IsExternalWalletInitialized(mojom::ExternalWalletType,
+                                           IsExternalWalletInitializedCallback);
+  virtual void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
+                                               const std::string& password,
+                                               GetImportInfoCallback callback);
+  virtual void AddEthereumPermission(const std::string& origin,
+                                     const std::string& account,
+                                     AddEthereumPermissionCallback callback);
   virtual void HasEthereumPermission(const std::string& origin,
                                      const std::string& account,
                                      HasEthereumPermissionCallback callback);

@@ -72,7 +72,8 @@ class HDKey {
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
-  std::vector<uint8_t> Recover(const std::vector<uint8_t>& msg,
+  std::vector<uint8_t> Recover(bool compressed,
+                               const std::vector<uint8_t>& msg,
                                const std::vector<uint8_t>& sig,
                                int recid);
 

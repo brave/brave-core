@@ -17,12 +17,12 @@
 namespace brave_wallet {
 
 class EthNonceTracker;
-class EthJsonRpcController;
+class JsonRpcService;
 
 class EthPendingTxTracker {
  public:
   EthPendingTxTracker(EthTxStateManager* tx_state_manager,
-                      EthJsonRpcController* rpc_controller,
+                      JsonRpcService* json_rpc_service,
                       EthNonceTracker* nonce_tracker);
   ~EthPendingTxTracker();
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
@@ -30,15 +30,24 @@ class EthPendingTxTracker {
 
   bool UpdatePendingTransactions(size_t* num_pending);
   void ResubmitPendingTransactions();
+  void Reset();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(std::string id, bool status, TransactionReceipt receipt);
-  void OnGetNetworkNonce(std::string address, bool status, uint256_t result);
-  void OnSendRawTransaction(bool status, const std::string& tx_hash);
+  void OnGetTxReceipt(std::string id,
+                      TransactionReceipt receipt,
+                      mojom::ProviderError error,
+                      const std::string& error_message);
+  void OnGetNetworkNonce(std::string address,
+                         uint256_t result,
+                         mojom::ProviderError error,
+                         const std::string& error_message);
+  void OnSendRawTransaction(const std::string& tx_hash,
+                            mojom::ProviderError error,
+                            const std::string& error_message);
 
   bool IsNonceTaken(const EthTxStateManager::TxMeta&);
   bool ShouldTxDropped(const EthTxStateManager::TxMeta&);
@@ -51,7 +60,7 @@ class EthPendingTxTracker {
   base::flat_map<std::string, uint8_t> dropped_blocks_counter_;
 
   EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
+  JsonRpcService* json_rpc_service_;
   EthNonceTracker* nonce_tracker_;
 
   base::WeakPtrFactory<EthPendingTxTracker> weak_factory_;

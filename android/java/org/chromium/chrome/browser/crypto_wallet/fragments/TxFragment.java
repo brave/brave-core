@@ -24,8 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -50,23 +50,23 @@ public class TxFragment extends Fragment {
         return new TxFragment(txInfo, asset, totalPrice);
     }
 
-    private AssetRatioController getAssetRatioController() {
+    private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getAssetRatioController();
+            return ((BuySendSwapActivity) activity).getAssetRatioService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
+            return ((BraveWalletActivity) activity).getAssetRatioService();
         }
 
         return null;
     }
 
-    private EthTxController getEthTxController() {
+    private EthTxService getEthTxService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthTxController();
+            return ((BuySendSwapActivity) activity).getEthTxService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxController();
+            return ((BraveWalletActivity) activity).getEthTxService();
         }
 
         return null;
@@ -127,9 +127,9 @@ public class TxFragment extends Fragment {
                     RadioGroup radioGroup = dialog.findViewById(R.id.max_priority_radio_group);
                     radioGroup.clearCheck();
                     radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                        AssetRatioController assetRatioController = getAssetRatioController();
-                        assert assetRatioController != null;
-                        assetRatioController.getGasOracle(estimation -> {
+                        AssetRatioService assetRatioService = getAssetRatioService();
+                        assert assetRatioService != null;
+                        assetRatioService.getGasOracle(estimation -> {
                             mTxInfo.txData.gasEstimation = estimation;
                             mCheckedPriorityId = checkedId;
                             String gasLimit = mTxInfo.txData.baseData.gasLimit;
@@ -217,9 +217,9 @@ public class TxFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         mPreviousCheckedPriorityId = mCheckedPriorityId;
-                        EthTxController ethTxController = getEthTxController();
-                        assert ethTxController != null;
-                        if (ethTxController == null) {
+                        EthTxService ethTxService = getEthTxService();
+                        assert ethTxService != null;
+                        if (ethTxService == null) {
                             dialog.dismiss();
 
                             return;
@@ -231,7 +231,7 @@ public class TxFragment extends Fragment {
                             EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                             mTxInfo.txData.baseData.gasPrice =
                                     Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
-                            ethTxController.setGasPriceAndLimitForUnapprovedTransaction(mTxInfo.id,
+                            ethTxService.setGasPriceAndLimitForUnapprovedTransaction(mTxInfo.id,
                                     mTxInfo.txData.baseData.gasPrice,
                                     mTxInfo.txData.baseData.gasLimit, success -> {
                                         if (!success) {
@@ -273,7 +273,7 @@ public class TxFragment extends Fragment {
                             mTxInfo.txData.baseData.gasLimit = gasLimit;
                             mTxInfo.txData.maxPriorityFeePerGas = maxPriorityFeePerGas;
                             mTxInfo.txData.maxFeePerGas = maxFeePerGas;
-                            ethTxController.setGasFeeAndLimitForUnapprovedTransaction(mTxInfo.id,
+                            ethTxService.setGasFeeAndLimitForUnapprovedTransaction(mTxInfo.id,
                                     maxPriorityFeePerGas, maxFeePerGas, gasLimit, success -> {
                                         if (!success) {
                                             return;
@@ -368,11 +368,11 @@ public class TxFragment extends Fragment {
                 getResources().getString(R.string.crypto_wallet_total_amount),
                 String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, 18)),
                 mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
-        AssetRatioController assetRatioController = getAssetRatioController();
-        if (assetRatioController != null) {
+        AssetRatioService assetRatioService = getAssetRatioService();
+        if (assetRatioService != null) {
             String[] assets = {"eth"};
             String[] toCurr = {"usd"};
-            assetRatioController.getPrice(
+            assetRatioService.getPrice(
                     assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
                         if (!success || values.length == 0) {
                             return;

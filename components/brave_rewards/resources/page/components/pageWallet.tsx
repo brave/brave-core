@@ -37,6 +37,7 @@ interface State {
 }
 
 interface Props extends Rewards.ComponentProps {
+  showManageWalletButton: boolean
 }
 
 class PageWallet extends React.Component<Props, State> {
@@ -865,7 +866,7 @@ class PageWallet extends React.Component<Props, State> {
           onViewPendingTips={this.onModalPendingToggle}
           onViewStatement={this.onModalActivityToggle}
         />
-        <ManageWalletButton onClick={this.onModalBackupOpen} />
+        { this.props.showManageWalletButton && <ManageWalletButton onClick={this.onModalBackupOpen} /> }
         {
           modalBackup
             ? <ModalBackupRestore

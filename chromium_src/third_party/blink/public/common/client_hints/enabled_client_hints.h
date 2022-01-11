@@ -19,7 +19,7 @@
                            bool should_send);                                \
   bool IsEnabled_Unused
 
-#include "../../../../../../../third_party/blink/public/common/client_hints/enabled_client_hints.h"
+#include "src/third_party/blink/public/common/client_hints/enabled_client_hints.h"
 
 #undef IsEnabled
 

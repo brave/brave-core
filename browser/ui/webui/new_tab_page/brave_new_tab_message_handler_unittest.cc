@@ -14,8 +14,8 @@ TEST(BraveNewTabMessageHandlerTest, TalkPrompt) {
   auto* clock = new base::SimpleTestClock();
   clock->SetNow(first_run::GetFirstRunSentinelCreationTime());
   EXPECT_EQ(BraveNewTabMessageHandler::CanPromptBraveTalk(clock->Now()), false);
-  clock->Advance(base::TimeDelta::FromDays(2));
+  clock->Advance(base::Days(2));
   EXPECT_EQ(BraveNewTabMessageHandler::CanPromptBraveTalk(clock->Now()), false);
-  clock->Advance(base::TimeDelta::FromDays(1));
+  clock->Advance(base::Days(1));
   EXPECT_EQ(BraveNewTabMessageHandler::CanPromptBraveTalk(clock->Now()), true);
 }

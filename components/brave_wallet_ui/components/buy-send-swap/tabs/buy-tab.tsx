@@ -3,7 +3,8 @@ import {
   UserAccountType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  EthereumChain
+  BraveWallet,
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -13,16 +14,19 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
-  selectedNetwork: EthereumChain
+  networkList: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
+  defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: AccountAssetOptionType) => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
+  onAddNetwork: () => void
+  onAddAsset: () => void
 }
 
 function BuyTab (props: Props) {
@@ -34,10 +38,13 @@ function BuyTab (props: Props) {
     buyAmount,
     showHeader,
     assetOptions,
+    defaultCurrencies,
+    onAddAsset,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
-    onSetBuyAmount
+    onSetBuyAmount,
+    onAddNetwork
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(assetOptions[0])
@@ -46,7 +53,7 @@ function BuyTab (props: Props) {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }
@@ -85,6 +92,7 @@ function BuyTab (props: Props) {
             />
           }
           <Buy
+            defaultCurrencies={defaultCurrencies}
             buyAmount={buyAmount}
             selectedAsset={selectedAsset}
             selectedNetwork={selectedNetwork}
@@ -106,6 +114,8 @@ function BuyTab (props: Props) {
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
+          onAddNetwork={onAddNetwork}
+          onAddAsset={onAddAsset}
         />
       }
     </>

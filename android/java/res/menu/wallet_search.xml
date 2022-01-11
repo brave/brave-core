@@ -7,14 +7,15 @@
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@+id/search"
-      android:title="@string/search_title"
-      android:icon="@drawable/ic_search_21dp"
-      app:showAsAction="collapseActionView|always"
-      app:iconTint="@color/wallet_text_color"
-      app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
+  <item android:id="@+id/lock"
+      android:icon="@drawable/ic_wallet_lock"
+      android:title="@string/brave_wallet_toolbar_lock"
+      app:iconTint="@color/wallet_text_color"
+      app:showAsAction="never" />
   <item android:id="@+id/settings"
+      android:icon="@drawable/ic_wallet_settings"
       android:title="@string/brave_ui_settings"
-      app:iconTint="@color/wallet_text_color" />
+      app:iconTint="@color/wallet_text_color"
+      app:showAsAction="never" />
 </menu>

@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">Αποκλείστε την πρόσβαση ιστότοπων στην API παρόχου Ethereum</translation>
 <translation id="8988939298652262600">Το Brave δεν εξετάζει τις επεκτάσεις για ασφάλεια και προστασία. Εγκαταστήστε αυτήν την επέκταση μόνο αν εμπιστεύεστε τον προγραμματιστή.</translation>
 <translation id="8081858229109418493">Όνομα προφίλ και εικονίδιο</translation>
+<translation id="6438096877646138757">Ιστοσελίδες που διαγράφουν τα cookies όταν τις κλείνεις</translation>
+<translation id="2988792685798128092">Εκκαθάριση επί τόπου</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
 <translation id="1692470335103807198">Λάβετε περισσότερα θέματα</translation>
 <translation id="2906510232093002459">Προεπιλεγμένες εικόνες Brave</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">Ευρετηριοποίηση άλλων μηχανών αναζήτησης</translation>
 <translation id="919715748352669592">Εντοπίζει αυτόματα μέσω ευρετηρίου ιστότοπους που τηρούν την προδιαγραφή OpenSearch.</translation>
 <translation id="6821903322090655051">Οι Ανταμοιβές Brave έχουν απενεργοποιηθεί</translation>
-<translation id="9184430019924125685">Κάντε κλικ εδώ για να μάθετε περισσότερα</translation>
+<translation id="413570371620795359">Ανοίξτε το πλαίσιο Ανταμοιβών για να το ενεργοποιήσετε και να ξεκινήσετε</translation>
 <translation id="3849957491997306859">Εντοπίστηκε αυτόματα</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>
 <translation id="4176463684765177261">Απενεργοποιημένη</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">Ελάχιστος χρόνος παραμονής στη σελίδα πριν καταγραφεί μία επίσκεψη</translation>
 <translation id="4424486208397124985">Ελάχιστες επισκέψεις για να θεωρείται συναφής ο εκδότης</translation>
 <translation id="6248554379744796526">Εμφάνιση μη επαληθευμένων ιστότοπων σε λίστα</translation>
-<translation id="3241299447027267831">Να επιτρέπονται οι συνεισφορές στα βίντεο</translation>
+<translation id="5510618543889994434">Να επιτρέπονται οι συνεισφορές για βίντεο</translation>
 <translation id="924777189963477634">Ενεργοποιώντας την αυτόματη συνεισφορά, συμφωνείτε με τους <ph name="BEGIN_LINK_TOS"/>Όρους Παροχής Υπηρεσιών<ph name="END_LINK_TOS"/> και την <ph name="BEGIN_LINK_PP"/>Πολιτική Απορρήτου<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Κουμπιά φιλοδωρήματος</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@
 <translation id="2414886740292270097">Σκούρο</translation>
 <translation id="1360441190790440400">Ίδιο με Linux</translation>
 <translation id="1336940801687497203">Ίδιο με Windows</translation>
+<translation id="5919209812221905840">Προεπιλεγμένο πρόγραμμα χειρισμού πρωτοκόλλου microsoft-edge</translation>
+<translation id="5239541974656019812">Ορισμός του Brave ως προεπιλεγμένου προγράμματος χειρισμού πρωτοκόλλου microsoft-edge</translation>
+<translation id="7136694880210472378">Ορισμός ως προεπιλογής</translation>
+<translation id="1751388324499810661">Το Brave είναι το προεπιλεγμένο πρόγραμμα χειρισμού πρωτοκόλλου microsoft-edge</translation>
 <translation id="8721331068159819483">Το ίδιο όπως στο macOS</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
 <translation id="8488282162676695335">Πορτοφόλι Brave</translation>
@@ -425,7 +431,7 @@
 <translation id="2653659639078652383">Υποβολή</translation>
 <translation id="2556708692502648323">Δίκτυα πορτοφολιού</translation>
 <translation id="1330032157352961756">Το αναγνωριστικό της νέας αλυσίδας</translation>
-<translation id="9053905035135220650">Ένα string με δεκαεξαδικό πρόθεμα 0x</translation>
+<translation id="3423620355610881890">Θετικός δεκαδικός αριθμός</translation>
 <translation id="726121047592132939">Όνομα της νέας αλυσίδας</translation>
 <translation id="1034112277864078119">Καταχωρήστε το όνομα της αλυσίδας</translation>
 <translation id="4672314527143443556">Όνομα νομίσματος αλυσίδας</translation>
@@ -439,7 +445,7 @@
 <translation id="3047726704186619366">Διευθύνσεις URL εικονιδίων</translation>
 <translation id="2487558607408469181">URL εξερευνητών block</translation>
 <translation id="6301398959353668507">Το πεδίο δεν μπορεί να είναι κενό</translation>
-<translation id="4514843126085243862">Μη έγκυρη μορφή. Το αναγνωριστικό αλυσίδας είναι ένα δεκαεξαδικό string με πρόθεμα 0x</translation>
+<translation id="7504462451153306677">Μη έγκυρη μορφή, το αναγνωριστικό αλυσίδας είναι θετικός αριθμός</translation>
 <translation id="8325036459845654666">Το δίκτυο έχει ήδη προστεθεί</translation>
 <translation id="650071759190249039">Εσωτερικό σφάλμα. Αδυναμία προσθήκης δικτύου.</translation>
 <translation id="868529041590572443">Συμπληρώστε όλα τα στοιχεία σχετικά με το φυσικό νόμισμα</translation>

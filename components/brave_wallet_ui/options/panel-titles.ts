@@ -21,5 +21,13 @@ export const PanelTitles = (): PanelTitleObjectType[] => [
   {
     id: 'sitePermissions',
     title: getLocale('braveWalletSitePermissionsTitle')
+  },
+  {
+    id: 'transactions',
+    title: getLocale('braveWalletRecentTransactions')
+  },
+  {
+    id: 'transactionDetails',
+    title: getLocale('braveWalletTransactionDetails')
   }
 ]

@@ -78,6 +78,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
+    "Brave.Rewards.EnabledDuration",
     "Brave.Rewards.WalletBalance.2",
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
@@ -178,12 +179,12 @@ bool IsSuspendedMetric(base::StringPiece metric_name,
 
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
-  const auto delta = base::TimeDelta::FromSecondsD(
+  const auto delta = base::Seconds(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
   return delta;
 }
 
-base::TimeDelta TimeDeltaTillMonday(base::Time time) {
+base::Time NextMonday(base::Time time) {
   base::Time::Exploded exploded;
   time.LocalMidnight().LocalExplode(&exploded);
   // 1 stands for Monday, 0 for Sunday
@@ -194,8 +195,10 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
     days_till_monday = 1;
   }
 
-  base::TimeDelta result = base::TimeDelta::FromDays(days_till_monday) -
-                           (time - time.LocalMidnight());
+  // Adding few hours of padding to prevent potential problems with DST.
+  base::Time result =
+      (time.LocalMidnight() + base::Days(days_till_monday) + base::Hours(4))
+          .LocalMidnight();
   return result;
 }
 
@@ -235,8 +238,7 @@ void BraveP3AService::Init(
   // Init basic prefs.
   initialized_ = true;
 
-  average_upload_interval_ =
-      base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
+  average_upload_interval_ = base::Seconds(kDefaultUploadIntervalSeconds);
 
   upload_server_url_ = GURL(kP3AServerUrl);
   MaybeOverrideSettingsFromCommandLine();
@@ -264,10 +266,12 @@ void BraveP3AService::Init(
   if (last_rotation.is_null()) {
     DoRotation();
   } else {
-    const base::TimeDelta last_rotation_interval =
-        rotation_interval_.is_zero() ? TimeDeltaTillMonday(last_rotation)
-                                     : rotation_interval_;
-    if (base::Time::Now() - last_rotation > last_rotation_interval) {
+    if (!rotation_interval_.is_zero()) {
+      if (base::Time::Now() - last_rotation > rotation_interval_) {
+        DoRotation();
+      }
+    }
+    if (base::Time::Now() > NextMonday(last_rotation)) {
       DoRotation();
     }
   }
@@ -322,7 +326,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3AUploadIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      average_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
+      average_upload_interval_ = base::Seconds(seconds);
     }
   }
 
@@ -335,7 +339,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3ARotationIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      rotation_interval_ = base::TimeDelta::FromSeconds(seconds);
+      rotation_interval_ = base::Seconds(seconds);
     }
   }
 
@@ -507,14 +511,20 @@ void BraveP3AService::DoRotation() {
 }
 
 void BraveP3AService::UpdateRotationTimer() {
-  base::TimeDelta next_rotation = rotation_interval_.is_zero()
-                                      ? TimeDeltaTillMonday(base::Time::Now())
-                                      : rotation_interval_;
+  base::Time now = base::Time::Now();
+  base::Time next_rotation = rotation_interval_.is_zero()
+                                 ? NextMonday(base::Time::Now())
+                                 : now + rotation_interval_;
+  if (now >= next_rotation) {
+    // Should never happen, but let's stay on the safe side.
+    NOTREACHED();
+    return;
+  }
   rotation_timer_.Start(FROM_HERE, next_rotation, this,
                         &BraveP3AService::DoRotation);
 
-  VLOG(2) << "BraveP3AService new rotation timer will fire at "
-          << base::Time::Now() + next_rotation << " after " << next_rotation;
+  VLOG(2) << "BraveP3AService new rotation timer will fire at " << next_rotation
+          << " after " << next_rotation - now;
 }
 
 }  // namespace brave

@@ -31,10 +31,6 @@ bool FlaggedAdInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  if (document.HasMember("uuid")) {
-    creative_instance_id = document["uuid"].GetString();
-  }
-
   if (document.HasMember("creative_set_id")) {
     creative_set_id = document["creative_set_id"].GetString();
   }
@@ -42,14 +38,11 @@ bool FlaggedAdInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& info) {
   writer->StartObject();
 
-  writer->String("uuid");
-  writer->String(ad.creative_instance_id.c_str());
-
   writer->String("creative_set_id");
-  writer->String(ad.creative_set_id.c_str());
+  writer->String(info.creative_set_id.c_str());
 
   writer->EndObject();
 }

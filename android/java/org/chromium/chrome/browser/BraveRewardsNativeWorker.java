@@ -191,6 +191,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getExternalWalletType() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getExternalWalletType(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public double GetWalletRate() {
         synchronized(lock) {
             return BraveRewardsNativeWorkerJni.get().getWalletRate(mNativeBraveRewardsNativeWorker);
@@ -410,17 +417,17 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void ProcessRewardsPageUrl(String path, String query) {
-        synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().processRewardsPageUrl(
-                    mNativeBraveRewardsNativeWorker, path, query);
-        }
-    }
-
     public void RecoverWallet(String passPhrase) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().recoverWallet(
                     mNativeBraveRewardsNativeWorker, passPhrase);
+        }
+    }
+
+    public void getAdsAccountStatement() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAdsAccountStatement(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -449,6 +456,13 @@ public class BraveRewardsNativeWorker {
         synchronized(lock) {
             BraveRewardsNativeWorkerJni.get().setAutoContributionAmount(
                     mNativeBraveRewardsNativeWorker, amount);
+        }
+    }
+
+    public void getAutoContributionAmount() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getAutoContributionAmount(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -496,7 +510,9 @@ public class BraveRewardsNativeWorker {
     public void OnPublisherInfo(int tabId) {
         @PublisherStatus int pubStatus = GetPublisherStatus(tabId);
         boolean verified = (pubStatus == BraveRewardsPublisher.CONNECTED
-                                   || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED)
+                                   || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                                   || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                                   || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED)
                 ? true
                 : false;
         NotifyPublisherObservers(verified);
@@ -552,6 +568,13 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
+    public void OnGetAutoContributionAmount(double amount) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onGetAutoContributionAmount(amount);
+        }
+    }
+
+    @CalledByNative
     public void OnGetReconcileStamp(long timestamp) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnGetReconcileStamp(timestamp);
@@ -588,18 +611,18 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnDisconnectWallet(int error_code, String external_wallet) {
+    public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
+            int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnDisconnectWallet(error_code, external_wallet);
+            observer.OnGetAdsAccountStatement(success, next_payment_date, ads_received_this_month,
+                    earnings_this_month, earnings_last_month);
         }
     }
 
     @CalledByNative
-    public void OnProcessRewardsPageUrl(int error_code, String wallet_type,
-            String action, String json_args) {
+    public void OnDisconnectWallet(int error_code, String external_wallet) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnProcessRewardsPageUrl(error_code, wallet_type,
-                    action, json_args);
+            observer.OnDisconnectWallet(error_code, external_wallet);
         }
     }
 
@@ -618,11 +641,26 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void onUnblindedTokensReady() {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onUnblindedTokensReady();
+        }
+    }
+
+    @CalledByNative
+    public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onReconcileComplete(resultCode, rewardsType, amount);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveRewardsNativeWorker caller);
         void destroy(long nativeBraveRewardsNativeWorker);
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
+        String getExternalWalletType(long nativeBraveRewardsNativeWorker);
         double getWalletRate(long nativeBraveRewardsNativeWorker);
         void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
@@ -659,13 +697,14 @@ public class BraveRewardsNativeWorker {
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
-        void processRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
         void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
+        void getAutoContributionAmount(long nativeBraveRewardsNativeWorker);
         void startProcess(long nativeBraveRewardsNativeWorker);
+        void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
     }
 }

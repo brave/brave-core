@@ -55,15 +55,16 @@ void RewardsBrowserTestContextHelper::OpenPopupFirstTime() {
   loaded_ = true;
 }
 
-content::WebContents* RewardsBrowserTestContextHelper::OpenRewardsPopup() {
+base::WeakPtr<content::WebContents>
+RewardsBrowserTestContextHelper::OpenRewardsPopup() {
   // Construct an observer to wait for the popup to load
-  content::WebContents* popup_contents = nullptr;
+  base::WeakPtr<content::WebContents> popup_contents;
   auto check_load_is_rewards_panel =
       [&](const content::NotificationSource& source,
           const content::NotificationDetails&) -> bool {
         auto web_contents_source =
             static_cast<const content::Source<content::WebContents>&>(source);
-        popup_contents = web_contents_source.ptr();
+        popup_contents = web_contents_source.ptr()->GetWeakPtr();
 
         // Check that this notification is for the Rewards panel and not, say,
         // the extension background page.
@@ -89,14 +90,15 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenRewardsPopup() {
   // Wait for the popup to load
   popup_observer.Wait();
   rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents, "[data-test-id=rewards-panel]");
+      popup_contents.get(), "[data-test-id=rewards-panel]");
 
   return popup_contents;
 }
 
-content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
+base::WeakPtr<content::WebContents>
+RewardsBrowserTestContextHelper::OpenSiteBanner(
     rewards_browsertest_util::TipAction tip_action) {
-  content::WebContents* popup_contents = OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
   content::WindowedNotificationObserver site_banner_observer(
@@ -126,30 +128,30 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
   // If necessary, show the monthly tip actions menu.
   if (open_tip_actions) {
     rewards_browsertest_util::WaitForElementThenClick(
-        popup_contents, "[data-test-id=monthly-tip-actions-button]");
+        popup_contents.get(), "[data-test-id=monthly-tip-actions-button]");
   }
 
   // Click button to initiate sending a tip.
-  rewards_browsertest_util::WaitForElementThenClick(
-      popup_contents,
-      button_selector);
+  rewards_browsertest_util::WaitForElementThenClick(popup_contents.get(),
+                                                    button_selector);
 
   // Wait for the site banner to load
   site_banner_observer.Wait();
 
   // Retrieve the notification source
-  const auto& site_banner_source =
+  base::WeakPtr<content::WebContents> banner =
       static_cast<const content::Source<content::WebContents>&>(
-          site_banner_observer.source());
+          site_banner_observer.source())
+          .ptr()
+          ->GetWeakPtr();
 
   // Allow the site banner to update its UI. We cannot use ExecJs here,
   // because it does not resolve promises.
-  (void)EvalJs(site_banner_source.ptr(),
-      "new Promise(resolve => setTimeout(resolve, 0))",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  (void)EvalJs(banner.get(), "new Promise(resolve => setTimeout(resolve, 0))",
+               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+               content::ISOLATED_WORLD_ID_CONTENT_END);
 
-  return site_banner_source.ptr();
+  return banner;
 }
 
 void RewardsBrowserTestContextHelper::VisitPublisher(
@@ -165,7 +167,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
 
   // The minimum publisher duration when testing is 1 second (and the
   // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(2100));
+  base::PlatformThread::Sleep(base::Milliseconds(2100));
 
   // Load rewards page
   rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);

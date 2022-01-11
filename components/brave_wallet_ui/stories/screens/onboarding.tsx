@@ -10,7 +10,6 @@ import {
 } from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
-import { isStrongPassword } from '../../utils/password-utils'
 import { OnboardingWrapper } from '../style'
 
 export interface Props {
@@ -18,6 +17,7 @@ export interface Props {
   metaMaskWalletDetected: boolean
   braveLegacyWalletDetected: boolean
   importError: ImportWalletError
+  checkIsStrongPassword: (value: string) => Promise<boolean>
   onSetImportError: (hasError: boolean) => void
   onPasswordProvided: (password: string) => void
   onImportMetaMask: (password: string, newPassword: string) => void
@@ -32,6 +32,7 @@ function Onboarding (props: Props) {
     metaMaskWalletDetected,
     braveLegacyWalletDetected,
     importError,
+    checkIsStrongPassword,
     onSetImportError,
     onPasswordProvided,
     onSubmit,
@@ -40,6 +41,8 @@ function Onboarding (props: Props) {
     onImportCryptoWallets
   } = props
   const [onboardingStep, setOnboardingStep] = React.useState<WalletOnboardingSteps>(WalletOnboardingSteps.OnboardingWelcome)
+  const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
+  const [isStrongImportPassword, setIsStrongImportPassword] = React.useState<boolean>(false)
   const [importPassword, setImportPassword] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
@@ -89,7 +92,7 @@ function Onboarding (props: Props) {
     onSubmit(false)
   }
 
-  const handleImportPasswordChanged = (value: string) => {
+  const handleImportPasswordChanged = async (value: string) => {
     if (importError.hasError) {
       onSetImportError(false)
     }
@@ -98,10 +101,14 @@ function Onboarding (props: Props) {
       setUseSamePassword(false)
     }
     setImportPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongImportPassword(isStrong)
   }
 
-  const handlePasswordChanged = (value: string) => {
+  const handlePasswordChanged = async (value: string) => {
     setPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongPassword(isStrong)
   }
 
   const handleConfirmPasswordChanged = (value: string) => {
@@ -138,13 +145,9 @@ function Onboarding (props: Props) {
   const checkPassword = React.useMemo(() => {
     if (password === '') {
       return false
-    } else {
-      if (!isStrongPassword.test(password)) {
-        return true
-      }
-      return false
     }
-  }, [password])
+    return !isStrongPassword
+  }, [password, isStrongPassword])
 
   const checkConfirmedPassword = React.useMemo(() => {
     if (confirmedPassword === '') {
@@ -158,11 +161,11 @@ function Onboarding (props: Props) {
     setOnboardingStep(WalletOnboardingSteps.OnboardingCreatePassword)
   }
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     if (useSamePassword) {
-      setPassword(importPassword)
+      handlePasswordChanged(importPassword)
       setConfirmedPassword(importPassword)
-      if (!isStrongPassword.test(importPassword)) {
+      if (!isStrongImportPassword) {
         setNeedsNewPassword(true)
         setUseSamePasswordVerified(false)
       } else {
@@ -174,6 +177,7 @@ function Onboarding (props: Props) {
       setConfirmedPassword('')
       setNeedsNewPassword(false)
       setUseSamePasswordVerified(false)
+      setIsStrongPassword(false)
     }
   }, [useSamePassword])
 

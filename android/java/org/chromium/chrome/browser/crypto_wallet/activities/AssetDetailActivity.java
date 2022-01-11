@@ -26,23 +26,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -51,40 +53,42 @@ import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AssetDetailActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, OnWalletListItemClick {
+        implements ConnectionErrorHandler, OnWalletListItemClick, KeyringServiceObserver {
     private SmoothLineChartEquallySpaced chartES;
-    private AssetRatioController mAssetRatioController;
-    private KeyringController mKeyringController;
-    private EthTxController mEthTxController;
-    private EthJsonRpcController mEthJsonRpcController;
+    private AssetRatioService mAssetRatioService;
+    private KeyringService mKeyringService;
+    private EthTxService mEthTxService;
+    private JsonRpcService mJsonRpcService;
     private int checkedTimeframeType;
     private String mAssetSymbol;
     private String mAssetName;
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
+    private String mChainId;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyringController.close();
-        mAssetRatioController.close();
-        mEthTxController.close();
-        mEthJsonRpcController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
+        mEthTxService.close();
+        mJsonRpcService.close();
     }
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
@@ -92,6 +96,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         setContentView(R.layout.activity_asset_detail);
 
         if (getIntent() != null) {
+            mChainId = getIntent().getStringExtra(Utils.CHAIN_ID);
             mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
             mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
@@ -110,10 +115,17 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(mAssetName);
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        String iconPath = mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
-        Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                assetTitleText, false);
+        if (!mAssetLogo.isEmpty()) {
+            String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
+            String iconPath =
+                    mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
+                    assetTitleText, false);
+        } else {
+            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, mContractAddress,
+                    mAssetSymbol, getResources().getDisplayMetrics().density, assetTitleText, this,
+                    false, (float) 0.5);
+        }
 
         TextView assetPriceText = findViewById(R.id.asset_price_text);
         assetPriceText.setText(String.format(
@@ -147,19 +159,19 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int leftDot = R.drawable.ic_live_dot;
             ((RadioButton) findViewById(checkedTimeframeType))
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             RadioButton button = findViewById(checkedId);
-            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
-            getPriceHistory(mAssetSymbol, timeframeType);
+            getPriceHistory(mAssetSymbol, "usd", timeframeType);
             checkedTimeframeType = checkedId;
         });
 
+        final TextView assetPrice = findViewById(R.id.asset_price);
         chartES = findViewById(R.id.line_chart);
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
-        chartES.drawLine(0.f, findViewById(R.id.asset_price));
+        chartES.drawLine(0, assetPrice);
+        chartES.setNoDrawText(true);
         chartES.setOnTouchListener(new View.OnTouchListener() {
             @Override
             @SuppressLint("ClickableViewAccessibility")
@@ -171,7 +183,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX(), findViewById(R.id.asset_price));
+                    chartES.drawLine(event.getRawX(), assetPrice);
                 } else if (event.getAction() == MotionEvent.ACTION_UP
                         || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     chartES.drawLine(-1, null);
@@ -184,39 +196,78 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         onInitialLayoutInflationComplete();
     }
 
-    private void getPriceHistory(String asset, int timeframe) {
-        if (mAssetRatioController != null) {
-            mAssetRatioController.getPriceHistory(
-                    asset, timeframe, (result, priceHistory) -> { chartES.setData(priceHistory); });
+    private void getPriceHistory(String asset, String vsAsset, int timeframe) {
+        if (mAssetRatioService != null) {
+            mAssetRatioService.getPriceHistory(asset, vsAsset, timeframe,
+                    (result, priceHistory) -> { chartES.setData(priceHistory); });
         }
+    }
+
+    private void getPrice(String asset, String vsAsset, int timeframe) {
+        assert mAssetRatioService != null;
+        String[] fromAssets = new String[] {asset.toLowerCase(Locale.getDefault())};
+        String[] toAssets = new String[] {vsAsset.toLowerCase(Locale.getDefault())};
+        mAssetRatioService.getPrice(fromAssets, toAssets, timeframe, (success, price) -> {
+            if (!success && price.length == 0) {
+                return;
+            }
+            String btcPriceText = price[0].price + " BTC";
+            TextView btcPrice = findViewById(R.id.asset_price_btc_text);
+            btcPrice.setText(btcPriceText);
+        });
     }
 
     private void setUpAccountList() {
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringController keyringController = getKeyringController();
-        if (keyringController != null) {
-            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getDefaultKeyringInfo(keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioController,
-                            mEthTxController, null, mAssetSymbol, mContractAddress, mAssetDecimals,
+                    Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
+                            null, null, mAssetSymbol, mContractAddress, mAssetDecimals,
                             findViewById(R.id.rv_transactions), this, this, null);
-                    List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-                    for (AccountInfo accountInfo : accountInfos) {
-                        walletListItemModelList.add(
-                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                        accountInfo.address, null, null, accountInfo.isImported));
-                    }
-                    if (walletCoinAdapter != null) {
-                        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
-                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
-                        rvAccounts.setAdapter(walletCoinAdapter);
-                        rvAccounts.setLayoutManager(
-                                new LinearLayoutManager(AssetDetailActivity.this));
-                    }
+
+                    SingleTokenBalanceHelper singleTokenBalanceHelper =
+                            new SingleTokenBalanceHelper(
+                                    getAssetRatioService(), getJsonRpcService());
+                    singleTokenBalanceHelper.getPerAccountBalances(mChainId, mContractAddress,
+                            mAssetSymbol, mAssetDecimals, accountInfos, () -> {
+                                List<WalletListItemModel> walletListItemModelList =
+                                        new ArrayList<>();
+                                for (AccountInfo accountInfo : accountInfos) {
+                                    Double thisAccountFiatBalance = Utils.getOrDefault(
+                                            singleTokenBalanceHelper.getPerAccountFiatBalance(),
+                                            accountInfo.address, 0.0d);
+                                    final String fiatBalanceString = String.format(
+                                            Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
+
+                                    Double thisAccountCryptoBalance = Utils.getOrDefault(
+                                            singleTokenBalanceHelper.getPerAccountCryptoBalance(),
+                                            accountInfo.address, 0.0d);
+                                    final String cryptoBalanceString =
+                                            String.format(Locale.getDefault(), "%.4f %s",
+                                                    thisAccountCryptoBalance, mAssetSymbol);
+
+                                    walletListItemModelList.add(new WalletListItemModel(
+                                            R.drawable.ic_eth, accountInfo.name,
+                                            accountInfo.address, fiatBalanceString,
+                                            cryptoBalanceString, accountInfo.isImported));
+
+                                    if (walletCoinAdapter != null) {
+                                        walletCoinAdapter.setWalletListItemModelList(
+                                                walletListItemModelList);
+                                        walletCoinAdapter.setOnWalletListItemClick(
+                                                AssetDetailActivity.this);
+                                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
+                                        rvAccounts.setAdapter(walletCoinAdapter);
+                                        rvAccounts.setLayoutManager(
+                                                new LinearLayoutManager(AssetDetailActivity.this));
+                                    }
+                                }
+                            });
                 }
             });
         }
@@ -235,58 +286,57 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitAssetRatioController();
-        InitKeyringController();
-        InitEthTxController();
-        InitEthJsonRpcController();
-        getPriceHistory(mAssetSymbol, AssetPriceTimeframe.ONE_DAY);
+        InitAssetRatioService();
+        InitKeyringService();
+        InitEthTxService();
+        InitJsonRpcService();
+        getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
+        getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         setUpAccountList();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mAssetRatioController.close();
-        mEthTxController.close();
-        mEthJsonRpcController.close();
+        mKeyringService.close();
+        mAssetRatioService.close();
+        mEthTxService.close();
+        mJsonRpcService.close();
 
-        mAssetRatioController = null;
-        InitAssetRatioController();
+        mAssetRatioService = null;
+        InitAssetRatioService();
 
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService = null;
+        InitKeyringService();
 
-        mEthTxController = null;
-        InitEthTxController();
+        mEthTxService = null;
+        InitEthTxService();
 
-        mEthJsonRpcController = null;
-        InitEthJsonRpcController();
+        mJsonRpcService = null;
+        InitJsonRpcService();
     }
 
-    private void InitAssetRatioController() {
-        if (mAssetRatioController != null) {
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
             return;
         }
 
-        mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
-    private void InitEthTxController() {
-        if (mEthTxController != null) {
+    private void InitEthTxService() {
+        if (mEthTxService != null) {
             return;
         }
 
-        mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
+        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
     }
 
-    private void InitEthJsonRpcController() {
-        if (mEthJsonRpcController != null) {
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
             return;
         }
 
-        mEthJsonRpcController =
-                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     @Override
@@ -307,19 +357,28 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mEthJsonRpcController, this);
+        Utils.openTransaction(txInfo, mJsonRpcService, this);
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
-    public KeyringController getKeyringController() {
-        return mKeyringController;
+    public KeyringService getKeyringService() {
+        return mKeyringService;
+    }
+
+    private AssetRatioService getAssetRatioService() {
+        return mAssetRatioService;
+    }
+
+    private JsonRpcService getJsonRpcService() {
+        return mJsonRpcService;
     }
 
     @Override
@@ -331,5 +390,10 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 setUpAccountList();
             }
         }
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

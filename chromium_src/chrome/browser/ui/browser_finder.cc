@@ -14,7 +14,7 @@
 
 #define FindBrowserWithWebContents FindBrowserWithWebContents_ChromiumImpl
 
-#include "../../../../../chrome/browser/ui/browser_finder.cc"
+#include "src/chrome/browser/ui/browser_finder.cc"
 
 #undef FindBrowserWithWebContents
 

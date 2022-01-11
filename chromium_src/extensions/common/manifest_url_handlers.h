@@ -14,7 +14,7 @@
   GetWebStoreURL_Unused(const Extension* extension); \
   static const GURL GetWebStoreURL
 
-#include "../../../../extensions/common/manifest_url_handlers.h"
+#include "src/extensions/common/manifest_url_handlers.h"
 
 #undef GetHomepageURL
 #undef GetWebStoreURL

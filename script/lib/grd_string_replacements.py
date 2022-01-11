@@ -21,10 +21,6 @@ branding_replacements = [
 # to translate the XTB files
 default_replacements = [
     (r'Brave Web Store', r'Web Store'),
-    (r'Automatically send usage statistics and crash reports to Brave',
-     r'Automatically send crash reports to Brave'),
-    (r'Automatically sends usage statistics and crash reports to Brave',
-     r'Automatically sends crash reports to Brave'),
     (r'You\'re incognito', r'This is a private window'),
     (r'an incognito', r'a private'),
     (r'an Incognito', r'a Private'),

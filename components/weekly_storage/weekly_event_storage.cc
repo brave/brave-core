@@ -69,7 +69,7 @@ void WeeklyEventStorage::FilterToWeek() {
   }
 
   // Remove all events older than a week.
-  auto cutoff = clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  auto cutoff = clock_->Now() - base::Days(kDaysInWeek);
   events_.remove_if([cutoff](Event event) { return event.day <= cutoff; });
 }
 

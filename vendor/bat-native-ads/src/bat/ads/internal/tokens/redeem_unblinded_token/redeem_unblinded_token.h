@@ -15,7 +15,7 @@ namespace ads {
 struct ConfirmationInfo;
 
 namespace privacy {
-struct UnblindedTokenInfo;
+struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
 class RedeemUnblindedToken final {
@@ -44,7 +44,7 @@ class RedeemUnblindedToken final {
 
   void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
-      const privacy::UnblindedTokenInfo& unblinded_payment_token);
+      const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token);
 
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry);

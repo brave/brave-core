@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet {
 
@@ -45,16 +45,16 @@ uint256_t GetHighestContinuousFrom(
 }  // namespace
 
 EthNonceTracker::EthNonceTracker(EthTxStateManager* tx_state_manager,
-                                 EthJsonRpcController* rpc_controller)
+                                 JsonRpcService* json_rpc_service)
     : tx_state_manager_(tx_state_manager),
-      rpc_controller_(rpc_controller),
+      json_rpc_service_(json_rpc_service),
       weak_factory_(this) {}
 EthNonceTracker::~EthNonceTracker() = default;
 
 void EthNonceTracker::GetNextNonce(const EthAddress& from,
                                    GetNextNonceCallback callback) {
   const std::string hex_address = from.ToHex();
-  rpc_controller_->GetTransactionCount(
+  json_rpc_service_->GetTransactionCount(
       hex_address, base::BindOnce(&EthNonceTracker::OnGetNetworkNonce,
                                   weak_factory_.GetWeakPtr(), EthAddress(from),
                                   std::move(callback)));
@@ -62,8 +62,9 @@ void EthNonceTracker::GetNextNonce(const EthAddress& from,
 
 void EthNonceTracker::OnGetNetworkNonce(EthAddress from,
                                         GetNextNonceCallback callback,
-                                        bool status,
-                                        uint256_t network_nonce) {
+                                        uint256_t network_nonce,
+                                        mojom::ProviderError error,
+                                        const std::string& error_message) {
   if (!nonce_lock_.Try()) {
     std::move(callback).Run(false, network_nonce);
     return;

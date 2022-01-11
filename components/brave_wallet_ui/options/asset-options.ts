@@ -1,4 +1,4 @@
-import { AccountAssetOptionType, ERCToken } from '../constants/types'
+import { AccountAssetOptionType, BraveWallet } from '../constants/types'
 import {
   ALGOIconUrl,
   BATIconUrl,
@@ -20,8 +20,22 @@ export const ETH: AccountAssetOptionType = {
     visible: true,
     tokenId: ''
   },
-  assetBalance: '0',
-  fiatBalance: '0'
+  assetBalance: '0'
+}
+
+export const BAT: AccountAssetOptionType = {
+  asset: {
+    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+    name: 'Basic Attention Token',
+    symbol: 'BAT',
+    logo: 'chrome://erc-token-images/bat.png',
+    isErc20: true,
+    isErc721: false,
+    decimals: 18,
+    visible: false,
+    tokenId: ''
+  },
+  assetBalance: '0'
 }
 
 export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
@@ -38,8 +52,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -53,13 +66,12 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   }
 ]
 
 // Use only with storybook as dummy data.
-export const NewAssetOptions: ERCToken[] = [
+export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
   {
     contractAddress: '1',
     name: 'Ethereum',
@@ -143,8 +155,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -158,8 +169,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -173,8 +183,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -188,8 +197,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   },
   {
     asset: {
@@ -203,7 +211,6 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       visible: true,
       tokenId: ''
     },
-    assetBalance: '0',
-    fiatBalance: '0'
+    assetBalance: '0'
   }
 ]

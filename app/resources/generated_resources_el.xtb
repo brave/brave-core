@@ -6,7 +6,6 @@
 <translation id="1003088604756913841">Άνοιγμα Συνδέσμου σε νέο παράθυρο <ph name="APP"/></translation>
 <translation id="100323615638474026">Συσκευή USB (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1004218526896219317">Πρόσβαση στον ιστότοπο</translation>
-<translation id="100524763483954942">Επιστροφή στις ρυθμίσεις</translation>
 <translation id="1005274289863221750">Χρήση του μικροφώνου και της κάμεράς σας</translation>
 <translation id="1005333234656240382">Θέλετε να ενεργοποιήσετε τον εντοπισμό και τη διόρθωση σφαλμάτων ADB;</translation>
 <translation id="1006873397406093306">Αυτή η επέκταση μπορεί να διαβάσει και να αλλάξει τα δεδομένα σας στους ιστότοπους. Μπορείτε να ελέγξετε σε ποιους ιστότοπους αποκτά πρόσβαση η επέκταση.</translation>
@@ -25,6 +24,7 @@
 <translation id="1017280919048282932">&amp;Προσθήκη στο λεξικό</translation>
 <translation id="1018656279737460067">Ακυρώθηκε</translation>
 <translation id="6221946066118097974">Εμφάνιση κωδικών πρόσβασης από τον <ph name="BEGIN_LINK"/>Λογαριασμό σας Brave<ph name="END_LINK"/></translation>
+<translation id="1024304340821219537">Τι μοιράζεστε με ιστοτόπους</translation>
 <translation id="1026655690966755180">Προσθήκη θύρας</translation>
 <translation id="1026822031284433028">Φόρτωση εικόνας</translation>
 <translation id="1029317248976101138">Μεγέθυνση</translation>
@@ -32,6 +32,7 @@
 <translation id="1032605640136438169">Ελέγξτε τους νέους όρους.</translation>
 <translation id="103279545524624934">Απελευθερώστε χώρο στον δίσκο, για την εκκίνηση εφαρμογών Android.</translation>
 <translation id="1033780634303702874">Πρόσβαση στις σειριακές συσκευές</translation>
+<translation id="1034484273907870301">Μικρογραφία γραμμής καρτελών για λειτουργία tablet</translation>
 <translation id="1036348656032585052">Απενεργοποίηση</translation>
 <translation id="1036511912703768636">Πρόσβαση σε οποιαδήποτε από αυτές τις συσκευές USB</translation>
 <translation id="1036982837258183574">Πατήστε το |<ph name="ACCELERATOR"/>| για να εξέλθετε από την πλήρη οθόνη</translation>
@@ -89,7 +90,9 @@
 <translation id="1087965115100412394">Να μην επιτρέπεται στους ιστοτόπους να συνδέονται σε συσκευές MIDI</translation>
 <translation id="4057708625267533477">Το Brave καταργεί επιβλαβές λογισμικό από τον υπολογιστή σας…</translation>
 <translation id="1088659085457112967">Είσοδος σε λειτουργία ανάγνωσης</translation>
+<translation id="1089606299949659462">Ο έλεγχος ολοκληρώθηκε!</translation>
 <translation id="1090126737595388931">Δεν εκτελούνται εφαρμογές φόντου</translation>
+<translation id="1090541560108055381">Πριν από τη σύζευξη, βεβαιωθείτε ότι αυτός ο κωδικός είναι ο ίδιος και στις δύο συσκευές.</translation>
 <translation id="1091767800771861448">Πατήστε ESCAPE για παράλειψη (Μόνο για ανεπίσημες εκδόσεις).</translation>
 <translation id="1093457606523402488">Ορατά δίκτυα:</translation>
 <translation id="1094607894174825014">Η λειτουργία ανάγνωσης ή γραφής ζητήθηκε με μη έγκυρη μετατόπιση στη συσκευή: "<ph name="DEVICE_NAME"/>".</translation>
@@ -116,12 +119,12 @@
 <translation id="1116639326869298217">Δεν ήταν δυνατή η επαλήθευση της ταυτότητάς σας</translation>
 <translation id="1116694919640316211">Σχετικά με</translation>
 <translation id="1116779635164066733">Αυτή η ρύθμιση εφαρμόζεται από την επέκταση "<ph name="NAME"/>".</translation>
-<translation id="1118549423835582252">Το <ph name="MANAGER"/> προτείνει να ενημερώσετε τη συσκευή <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="1118738876271697201">Το σύστημα δεν κατάφερε να προσδιορίσει το μοντέλο ή τον σειριακό αριθμό της συσκευής.</translation>
 <translation id="1119447706177454957">Εσωτερικό σφάλμα</translation>
 <translation id="1122068467107743258">Εργασία</translation>
 <translation id="1122198203221319518">&amp;Εργαλεία</translation>
 <translation id="1122242684574577509">Αποτυχία ελέγχου ταυτότητας. Κάντε κλικ για να μεταβείτε στη σελίδα σύνδεσης για το δίκτυο Wi-Fi που χρησιμοποιείτε (<ph name="NETWORK_ID"/>).</translation>
+<translation id="1122913801042512795">Τα στοιχεία σύνδεσης του λογαριασμού σας δεν είναι ενημερωμένα. Αποσυνδεθείτε και συνδεθείτε εκ νέου.</translation>
 <translation id="1122960773616686544">Όνομα σελιδοδείκτη</translation>
 <translation id="1124772482545689468">Χρήστης</translation>
 <translation id="1125550662859510761">Θα εμφανίζεται ως <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Εγγενής)</translation>
@@ -137,6 +140,7 @@
 <translation id="1137589305610962734">προσωρινά δεδομένα</translation>
 <translation id="1137673463384776352">Άνοιγμα συνδέσμου στην εφαρμογή <ph name="APP"/></translation>
 <translation id="1138686548582345331">{MUTED_NOTIFICATIONS_COUNT,plural, =1{Νέα Ειδοποίηση}other{# νέες ειδοποιήσεις}}</translation>
+<translation id="1139138655591555207">Πατήστε |<ph name="ACCELERATOR"/>| για εστίαση σε αυτό το συννεφάκι βοήθειας.</translation>
 <translation id="1139343347646843679">Παρουσιάστηκε ένα σφάλμα κατά τη διαμόρφωση των Linux. Επικοινωνήστε με τον διαχειριστή.</translation>
 <translation id="1139923033416533844">Χρήση μνήμης</translation>
 <translation id="1140351953533677694">Πρόσβαση στις συσκευές Bluetooth και τις σειριακές συσκευές</translation>
@@ -219,7 +223,6 @@
 <translation id="1218015446623563536">Διαγραφή Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Η υπηρεσία τοποθεσίας της Brave χρησιμοποιεί πηγές όπως δίκτυα Wi‑Fi και κινητής τηλεφωνίας καθώς και αισθητήρες, για τον υπολογισμό της τοποθεσίας αυτής της συσκευής.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Μπορείτε να απενεργοποιήσετε την Τοποθεσία απενεργοποιώντας τη βασική ρύθμιση "Τοποθεσία" σε αυτήν τη συσκευή. Μπορείτε επίσης να απενεργοποιήσετε τη χρήση δικτύων Wi-Fi και κινητής τηλεφωνίας και των αισθητήρων για την τοποθεσία στις ρυθμίσεις τοποθεσίας.<ph name="END_PARAGRAPH2"/></translation>
-<translation id="1703988271738455429">Δεν ήταν δυνατή η λήψη αρχείων ομιλίας στα <ph name="LANGUAGE"/>. Θα γίνει προσπάθεια για λήψη αργότερα. Η ομιλία αποστέλλεται στην Brave για επεξεργασία.</translation>
 <translation id="122082903575839559">Αλγόριθμος υπογραφής πιστοποιητικού</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 με κρυπτογράφηση RSA</translation>
 <translation id="1221825588892235038">Μόνο επιλογή</translation>
@@ -307,6 +310,7 @@
 <translation id="1313660246522271310">Θα αποσυνδεθείτε από όλους τους ιστοτόπους, συμπεριλαμβανομένων όσων εμφανίζονται σε ανοικτές καρτέλες.</translation>
 <translation id="2903798981239218332">Οι σελιδοδείκτες, το ιστορικό και άλλες ρυθμίσεις θα συγχρονιστούν με το Λογαριασμό σας Brave</translation>
 <translation id="1316136264406804862">Αναζήτηση...</translation>
+<translation id="1316248800168909509">Δεν ήταν δυνατή η σύνδεση με τη συσκευή <ph name="DEVICE"/>. Δοκιμάστε ξανά.</translation>
 <translation id="1316495628809031177">Ο συγχρονισμός τέθηκε σε παύση</translation>
 <translation id="1317637799698924700">Η βάση σύνδεσης θα βρίσκεται σε λειτουργία συμβατότητας USB τύπου C.</translation>
 <translation id="1319983966058170660">Κουμπί Πίσω δευτερεύουσας σελίδας <ph name="SUBPAGE_TITLE"/></translation>
@@ -323,6 +327,7 @@
 <translation id="133535873114485416">Προτιμώμενη εισαγωγή</translation>
 <translation id="1335929031622236846">Εγγραφή της συσκευής σας</translation>
 <translation id="1336902454946927954">Το κλειδί ασφαλείας σας είναι κλειδωμένο επειδή δεν ήταν δυνατή η αναγνώριση του δακτυλικού σας αποτυπώματος. Για να το ξεκλειδώσετε, εισαγάγετε το PIN σας.</translation>
+<translation id="1338631221631423366">Σύζευξη…</translation>
 <translation id="1338802252451106843">Το <ph name="ORIGIN"/> θέλει να ανοίξει αυτήν την εφαρμογή.</translation>
 <translation id="1338950911836659113">Γίνεται διαγραφή…</translation>
 <translation id="1068826216368845969">Αποκτήστε πρόσβαση στον Βοηθό σας με τη φράση Ok Brave. Για να εξοικονομήσετε μπαταρία, επιλέξτε Ενεργό (Συνιστάται). Ο Βοηθός σας θα απαντάει μόνο όταν η συσκευή είναι συνδεδεμένη ή φορτίζει.</translation>
@@ -359,6 +364,7 @@
 <translation id="1378613616312864539">Ο/Η <ph name="NAME"/> ελέγχει αυτήν τη ρύθμιση</translation>
 <translation id="1378848228640136848">{NUM_COMPROMISED,plural, =0{Δεν υπάρχουν παραβιασμένοι κωδικοί πρόσβασης}=1{1 παραβιασμένος κωδικός πρόσβασης}other{{NUM_COMPROMISED} παραβιασμένοι κωδικοί πρόσβασης}}</translation>
 <translation id="1380028686461971526">Αυτόματη σύνδεση στο δίκτυο</translation>
+<translation id="3390076845266164299">Η ομιλία στα <ph name="LANGUAGE"/> αποστέλλεται στην Brave για επεξεργασία</translation>
 <translation id="1383597849754832576">Δεν είναι δυνατή η λήψη αρχείων ομιλίας. Δοκιμάστε ξανά αργότερα.</translation>
 <translation id="1383861834909034572">Άνοιγμα κατά την ολοκλήρωση</translation>
 <translation id="1383876407941801731">Αναζήτηση</translation>
@@ -368,6 +374,7 @@
 <translation id="1388728792929436380">Όταν ολοκληρωθούν οι ενημερώσεις, θα γίνει επανεκκίνηση της συσκευής (<ph name="DEVICE_TYPE"/>).</translation>
 <translation id="139013308650923562">Να επιτρέπεται η χρήση των γραμματοσειρών που είναι εγκατεστημένες στη συσκευή σας</translation>
 <translation id="1390548061267426325">Άνοιγμα σε κανονική καρτέλα</translation>
+<translation id="1390907927270446471">Το προφίλ <ph name="PROFILE_USERNAME"/> δεν έχει την εξουσιοδότηση για εκτύπωση στον εκτυπωτή <ph name="PRINTER_NAME"/>. Επικοινωνήστε με τον διαχειριστή σας.</translation>
 <translation id="1393283411312835250">Ήλιος και σύννεφα</translation>
 <translation id="1395730723686586365">Ξεκίνησε το πρόγραμμα ενημέρωσης</translation>
 <translation id="1396139853388185343">Σφάλμα κατά τη ρύθμιση του εκτυπωτή</translation>
@@ -529,6 +536,7 @@
 <translation id="1549275686094429035">Το ARC ενεργοποιήθηκε</translation>
 <translation id="1549788673239553762">Η εφαρμογή <ph name="APP_NAME"/> θέλει να αποκτήσει πρόσβαση σε <ph name="VOLUME_NAME"/>. Ενδέχεται να τροποποιήσει ή να διαγράψει τα αρχεία σας.</translation>
 <translation id="1552301827267621511">Η επέκταση "<ph name="EXTENSION_NAME"/>" άλλαξε τον πάροχο αναζήτησης που χρησιμοποιείται <ph name="SEARCH_PROVIDER_DOMAIN"/>.</translation>
+<translation id="1552522962296937598">Smart display lock and detect if others peeking from behind</translation>
 <translation id="1553538517812678578">απεριόριστο</translation>
 <translation id="1555130319947370107">Μπλε</translation>
 <translation id="1556537182262721003">Δεν ήταν δυνατή η μετακίνηση του καταλόγου επέκτασης στο προφίλ.</translation>
@@ -614,7 +622,6 @@
 <translation id="1628948239858170093">Σάρωση αρχείου πριν από το άνοιγμα;</translation>
 <translation id="1629314197035607094">Ο κωδικός πρόσβασης έληξε</translation>
 <translation id="1947639598318989608">Να επιτρέπεται στην Brave να βρίσκει εξατομικευμένες εκπτώσεις στα καρότσια σας;</translation>
-<translation id="1630300831289687074">Θα μπορέσετε να χρησιμοποιήσετε σύντομα το Bravebook.</translation>
 <translation id="163072119192489970">Επιτρέπεται να ολοκληρώνουν την αποστολή και τη λήψη δεδομένων</translation>
 <translation id="1630768113285622200">Επαναφορά και συνέχεια</translation>
 <translation id="6854627044485328437">Ο κωδικός πρόσβασης αποθηκεύτηκε στον Λογαριασμό σας Brave.</translation>
@@ -714,7 +721,6 @@
 <translation id="1722460139690167654">Η συσκευή <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="1723824996674794290">&amp;Νέο παράθυρο</translation>
 <translation id="1725562816265788801">Κύλιση καρτέλας</translation>
-<translation id="1727662110063605623">Άνοιγμα των Ρυθμίσεων για τη σύνδεση της συσκευής <ph name="USB_DEVICE_NAME"/> στο Parallels Desktop ή το Linux</translation>
 <translation id="1729533290416704613">Επίσης, ελέγχει τη σελίδα που εμφανίζεται όταν κάνετε αναζήτηση από το κύριο πλαίσιο.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Για να καταργήσετε εφαρμογές, μεταβείτε στις Ρυθμίσεις &gt; Google Play Store &gt; Διαχείριση προτιμήσεων Android &gt; Εφαρμογές ή Διαχείριση εφαρμογών. Έπειτα, πατήστε την εφαρμογή που θέλετε να απεγκαταστήσετε (μπορεί να χρειαστεί να σύρετε προς τα δεξιά ή προς τα αριστερά για να βρείτε την εφαρμογή). Στη συνέχεια, πατήστε Απεγκατάσταση ή Απενεργοποίηση.<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">Αποστολή αίτησης...</translation>
@@ -771,7 +777,6 @@
 <translation id="1780152987505130652">Κλείσιμο ομάδας</translation>
 <translation id="1780273119488802839">Εισαγωγή σελιδοδεικτών...</translation>
 <translation id="1781291988450150470">Τρέχον PIN</translation>
-<translation id="1781398670452016618">Ο τομέας <ph name="DOMAIN"/> απαιτεί να συνδεθείτε άμεσα σε Wi-Fi και να κατεβάσετε μια ενημέρωση.</translation>
 <translation id="1781502536226964113">Ανοίξτε τη σελίδα νέας καρτέλας</translation>
 <translation id="1781771911845953849">Λογαριασμοί και συγχρονισμός</translation>
 <translation id="1781979858217752599">Κοινοποίηση ήχου παραθύρου</translation>
@@ -798,6 +803,7 @@
 <translation id="1805888043020974594">Διακομιστής εκτύπωσης</translation>
 <translation id="1805967612549112634">Επιβεβαίωση PIN</translation>
 <translation id="1806335016774576568">Εναλλαγή σε άλλη ανοικτή εφαρμογή</translation>
+<translation id="1807246157184219062">Ανοιχτόχρωμο</translation>
 <translation id="6576770568655035135">Οι εφαρμογές που έχετε κατεβάσει από το Google Play θα διαγραφούν από αυτό το Bravebook.
     <ph name="LINE_BREAKS1"/>
     Το περιεχόμενο που έχετε αγοράσει, όπως ταινίες, τηλεοπτικές εκπομπές, μουσική, βιβλία ή άλλες αγορές εντός εφαρμογής ενδέχεται να διαγραφούν εξίσου.
@@ -987,6 +993,7 @@
 <translation id="2002109485265116295">Σε πραγματικό χρόνο</translation>
 <translation id="200217416291116199">Συνιστάται η δημιουργία αντιγράφων ασφαλείας των αρχείων σε περίπτωση που δεν είναι δυνατή η ολοκλήρωση της αναβάθμισης. Η έναρξη της αναβάθμισης θα προκαλέσει τον τερματισμό λειτουργίας του Linux. Αποθηκεύστε τα ανοικτά αρχεία πριν συνεχίσετε.</translation>
 <translation id="2003130567827682533">Για να ενεργοποιήσετε τα δεδομένα "<ph name="NAME"/>", πρώτα συνδεθείτε σε κάποιο δίκτυο Wi-Fi</translation>
+<translation id="2004697686368036666">Ορισμένες λειτουργίες κάποιων ιστοτόπων μπορεί να μην είναι διαθέσιμες.</translation>
 <translation id="2005199804247617997">Άλλα προφίλ</translation>
 <translation id="2006638907958895361">Άνοιγμα Συνδέσμου στην εφαρμογή <ph name="APP"/></translation>
 <translation id="2007404777272201486">Αναφορά προβλήματος...</translation>
@@ -1066,6 +1073,7 @@
 <translation id="2090165459409185032">Για να ανακτήσετε τα στοιχεία του λογαριασμού σας, μεταβείτε στη διεύθυνση: google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">Συνδέεται αυτόματα κατά τη σύνδεση</translation>
 <translation id="2090876986345970080">Ρύθμιση ασφαλείας συστήματος</translation>
+<translation id="2092038932007199943">Notify you or temporary dim your screen when someone is snooping from behind</translation>
 <translation id="2096715839409389970">Διαγραφή cookie τρίτου μέρους</translation>
 <translation id="2098805196501063469">Έλεγχος κωδικών πρόσβασης που απομένουν</translation>
 <translation id="2099172618127234427">Ενεργοποιείτε τις λειτουργίες εντοπισμού σφαλμάτων του Chrome OS οι οποίες θα ρυθμίσουν το sshd daemon και θα επιτρέψουν την εκκίνηση από μονάδες USB.</translation>
@@ -1128,7 +1136,6 @@
 <translation id="2152882202543497059"><ph name="NUMBER"/> φωτογραφίες</translation>
 <translation id="2154484045852737596">Επεξεργασία κάρτας</translation>
 <translation id="2154502158735983655">Ανάγνωση πληροφοριών και δεδομένων συσκευής Chrome OS.</translation>
-<translation id="2154710561487035718">Αντιγραφή διεύθυνσης URL</translation>
 <translation id="2155772377859296191">Θα εμφανίζεται ως <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="2156294658807918600">Service Worker: <ph name="SCRIPT_URL"/></translation>
 <translation id="2156557113115192526">Να μην ερωτηθώ ξανά κατά το άνοιγμα αυτής της μορφής αρχείου σε αυτήν την εφαρμογή:
@@ -1182,6 +1189,7 @@
 <translation id="9014750448058570312">Το Brave χρειάζεται άδεια για να συνεχίσει</translation>
 <translation id="2202898655984161076">Προέκυψε πρόβλημα κατά την καταχώριση εκτυπωτών. Μερικοί από τους εκτυπωτές σας ενδέχεται να μην έχουν καταχωρηθεί σωστά με το <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="2203088913459920044">Στα ονόματα μπορείτε να χρησιμοποιείτε γράμματα, αριθμούς και ειδικούς χαρακτήρες.</translation>
+<translation id="220321590587754225">Δεν ήταν δυνατή η σύνδεση. Δοκιμάστε ξανά.</translation>
 <translation id="2204034823255629767">Ανάγνωση και αλλαγή όσων πληκτρολογείτε</translation>
 <translation id="220858061631308971">Εισαγάγετε αυτόν τον κωδικό PIN στη συσκευή "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="2210462644007531147">Δεν ήταν δυνατή η ολοκλήρωση της εγκατάστασης</translation>
@@ -1297,7 +1305,6 @@
 <translation id="2312219318583366810">URL σελίδας</translation>
 <translation id="2314165183524574721">Η τρέχουσα ρύθμιση ορατότητας είναι Κρυφή</translation>
 <translation id="2314774579020744484">Χρησιμοποιούμενη γλώσσα για τη μετάφραση σελίδων</translation>
-<translation id="2315414688463285945">Παρουσιάστηκε σφάλμα κατά τη διαμόρφωση αρχείων Linux. Δοκιμάστε ξανά.</translation>
 <translation id="2315587498123194634">Αποστολή συνδέσμου σε <ph name="DEVICE_NAME"/></translation>
 <translation id="2316129865977710310">Όχι, ευχαριστώ</translation>
 <translation id="2317842250900878657">Ολοκληρώθηκε<ph name="PROGRESS_PERCENT"/>%</translation>
@@ -1389,7 +1396,6 @@
 <translation id="2410079346590497630">Λεπτομέρειες έκδοσης</translation>
 <translation id="2410754283952462441">Επιλέξτε λογαριασμό</translation>
 <translation id="241082044617551207">Άγνωστη προσθήκη</translation>
-<translation id="2412593942846481727">Υπάρχει διαθέσιμη ενημέρωση</translation>
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2416435988630956212">Πλήκτρα λειτουργίας πληκτρολογίου</translation>
 <translation id="2419131370336513030">Προβολή εγκατεστημένων εφαρμογών</translation>
@@ -1415,6 +1421,7 @@
 <translation id="244231003699905658">Μη έγκυρη διεύθυνση. Βεβαιωθείτε ότι η διεύθυνση είναι σωστή και δοκιμάστε ξανά.</translation>
 <translation id="2442916515643169563">Σκίαση κειμένου</translation>
 <translation id="2443487764245141020">Ενδέχεται επίσης να απαιτείται η αναγνώριση της συσκευής σας από ιστοτόπους μέσω αναγνωριστικού</translation>
+<translation id="244475495405467108">Κλείσιμο καρτελών αριστερά</translation>
 <translation id="2445081178310039857">Απαιτείται ο κατάλογος ρίζας επέκτασης.</translation>
 <translation id="2445484935443597917">Δημιουργία νέου προφίλ</translation>
 <translation id="244641233057214044">Σχετικά με την αναζήτησή σας</translation>
@@ -1428,6 +1435,7 @@
 <translation id="2453860139492968684">Τέλος</translation>
 <translation id="2454247629720664989">Λέξη-κλειδί</translation>
 <translation id="2454264884354864965">Η κάμερα είναι απενεργοποιημένη</translation>
+<translation id="2454524890947537054">Έγκριση αιτήματος ιστού;</translation>
 <translation id="245650153866130664">Για αυτόματη προσθήκη ενός εισιτηρίου, επιλέξτε Απομνημόνευση κωδικού πρόσβασης. Ο κωδικός πρόσβασής σας θα αποθηκευτεί μόνο στη συσκευή σας.</translation>
 <translation id="2457246892030921239">Η εφαρμογή <ph name="APP_NAME"/> θέλει να αντιγράψει αρχεία από <ph name="VOLUME_NAME"/>.</translation>
 <translation id="2457842160081795172">Αυτή τη στιγμή στο κανάλι <ph name="CHANNEL_NAME"/></translation>
@@ -1436,7 +1444,6 @@
 <translation id="2459703812219683497">Εντοπίστηκε κωδικός ενεργοποίησης</translation>
 <translation id="2462724976360937186">Αναγνωριστικό κλειδιού Αρχής πιστοποίησης</translation>
 <translation id="2462752602710430187">Προστέθηκε <ph name="PRINTER_NAME"/></translation>
-<translation id="2465237718053447668">Ο τομέας <ph name="DOMAIN"/> απαιτεί να συνδεθείτε άμεσα σε Wi-Fi και να κατεβάσετε μια ενημέρωση. Εναλλακτικά, κατεβάστε την από μια σύνδεση με ογκοχρέωση (ενδέχεται να ισχύουν χρεώσεις).</translation>
 <translation id="2467755475704469005">Δεν εντοπίστηκε συσκευή. <ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">Επιτάχυνση κύλισης επιφάνειας αφής</translation>
 <translation id="2468205691404969808">Χρησιμοποιεί cookie για την απομνημόνευση των προτιμήσεών σας, ακόμα κι αν δεν επισκέπτεστε αυτές τις σελίδες</translation>
@@ -1467,6 +1474,7 @@
 <translation id="2489686758589235262">Αντιστοίχιση δύο ακόμα διακοπτών</translation>
 <translation id="2489829450872380594">Την επόμενη φορά, ένα νέο τηλέφωνο θα ξεκλειδώσει αυτήν τη συσκευή <ph name="DEVICE_TYPE"/>. Μπορείτε να απενεργοποιήσετε το Smart Lock στις Ρυθμίσεις.</translation>
 <translation id="2489918096470125693">Προσθήκη &amp;φακέλου...</translation>
+<translation id="2489931062851778802">Εισαγάγετε αυτά τα κλειδιά στη συσκευή <ph name="DEVICE_NAME"/></translation>
 <translation id="2490481887078769936">Το αρχείο '<ph name="FILE_NAME"/>' καταργήθηκε από τη λίστα.</translation>
 <translation id="249113932447298600">Λυπούμαστε, η συσκευή <ph name="DEVICE_LABEL"/> δεν υποστηρίζεται προς το παρόν.</translation>
 <translation id="2492461744635776704">Προετοιμασία αιτήματος για υπογραφή πιστοποιητικού</translation>
@@ -1827,6 +1835,7 @@
 <translation id="2861301611394761800">Η ενημέρωση του συστήματος ολοκληρώθηκε. Επανεκκινήστε το σύστημα.</translation>
 <translation id="2861941300086904918">Πρόγραμμα διαχείρισης ασφαλείας Native Client</translation>
 <translation id="2862815659905780618">Κατάργηση περιβάλλοντος ανάπτυξης Linux</translation>
+<translation id="2864272167277395865">Επιλέξτε μια συσκευή:</translation>
 <translation id="2864601841139725659">Ρύθμιση της εικόνας προφίλ σας</translation>
 <translation id="2865919525181940183">Στιγμιότυπο οθόνης των προγραμμάτων που εμφανίζονται αυτήν τη στιγμή στην οθόνη</translation>
 <translation id="286674810810214575">Έλεγχος πηγών ενέργειας...</translation>
@@ -2127,6 +2136,7 @@
 <translation id="3165390001037658081">Ορισμένες εταιρείες κινητής τηλεφωνίας ενδέχεται να αποκλείσουν αυτήν τη λειτουργία.</translation>
 <translation id="316652501498554287">Λογαριασμοί G Suite for Education</translation>
 <translation id="3170072451822350649">Μπορείτε επίσης να παραλείψετε τη σύνδεση και να <ph name="LINK_START"/>πραγματοποιήσετε περιήγηση ως Επισκέπτης<ph name="LINK_END"/>.</translation>
+<translation id="31774765611822736">Νέα καρτέλα αριστερά</translation>
 <translation id="3177909033752230686">Γλώσσα σελίδας:</translation>
 <translation id="3179982752812949580">Γραμματοσειρά κειμένου</translation>
 <translation id="3201899458094819285">Ασφαλής περιήγηση (προστατεύει εσάς και τη συσκευή σας από επικίνδυνους ιστοτόπους)</translation>
@@ -2171,7 +2181,6 @@
 <translation id="3239373508713281971">Το χρονικό όριο για την εφαρμογή <ph name="APP_NAME"/> καταργήθηκε.</translation>
 <translation id="3241680850019875542">Επιλέξτε τον κατάλογο ρίζας της επέκτασης που θέλετε να στοιβάξετε. Για να ενημερώσετε μια επέκταση, επιλέξτε επίσης το αρχείο ιδιωτικού κλειδιού που θα επαναχρησιμοποιηθεί.</translation>
 <translation id="3244294424315804309">Συνέχιση σίγασης ήχου</translation>
-<translation id="3246107497225150582">{0,plural, =1{Ενημέρωση συσκευής εντός μίας ημέρας}other{Ενημέρωση συσκευής εντός # ημερών}}</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - Σφάλμα δικτύου</translation>
 <translation id="3248902735035392926">Η ασφάλεια μετράει. Αφιερώστε ένα λεπτό για να <ph name="BEGIN_LINK"/>ελέγξετε τις επεκτάσεις σας τώρα<ph name="END_LINK"/></translation>
 <translation id="3251714896659475029">Να επιτρέπεται στο παιδί <ph name="SUPERVISED_USER_NAME"/> να αποκτά πρόσβαση στον Βοηθό Brave με τη φράση "Ok Brave"</translation>
@@ -2217,11 +2226,13 @@
 <translation id="3288047731229977326">Οι επεκτάσεις που εκτελούνται σε λειτουργία προγραμματιστή μπορούν να βλάψουν τον υπολογιστή σας. Εάν δεν είστε προγραμματιστής, θα πρέπει να απενεργοποιήσετε αυτές τις επεκτάσεις που εκτελούνται σε λειτουργία προγραμματιστή για να διατηρήσετε την ασφάλειά σας.</translation>
 <translation id="3289668031376215426">Αυτόματη χρήση κεφαλαίων</translation>
 <translation id="3289856944988573801">Για να ελέγξετε για ενημερώσεις, χρησιμοποιήστε δίκτυο Ethernet ή Wi-Fi.</translation>
+<translation id="3290249595466894471">Στέλνει επίσης ένα μικρό δείγμα σελίδων, λήψεων, δραστηριοτήτων επέκτασης και πληροφοριών συστήματος, για να βοηθήσει στην ανακάλυψη νέων απειλών</translation>
 <translation id="3291436823898732747">Βελτιωμένη περιήγηση: Για παράδειγμα, προτάσεις στο κύριο πλαίσιο πριν ξεκινήσετε την πληκτρολόγηση</translation>
 <translation id="3293644607209440645">Αποστολή αυτής της σελίδας</translation>
 <translation id="32939749466444286">Το κοντέινερ Linux δεν εκκινήθηκε. Δοκιμάστε ξανά.</translation>
 <translation id="3294437725009624529">Επισκέπτης</translation>
 <translation id="3294686910656423119">Στατιστικά στοιχεία χρήσης και αναφορές σφαλμάτων</translation>
+<translation id="4288017268387803622">Όταν είστε συνδεδεμένοι, συνδέει προσωρινά αυτά τα δεδομένα με τον Λογαριασμό σας Brave, για να σας προστατεύσει σε όλες τις εφαρμογές Brave</translation>
 <translation id="329838636886466101">Επιδιόρθωση</translation>
 <translation id="3298789223962368867">Καταχωρήθηκε μη έγκυρη διεύθυνση URL.</translation>
 <translation id="32991397311664836">Συσκευές:</translation>
@@ -2236,7 +2247,6 @@
 <translation id="3305661444342691068">Άνοιγμα PDF σε προεπισκόπηση</translation>
 <translation id="3308116878371095290">Σε αυτήν τη σελίδα δεν έχει επιτραπεί ο ορισμός των cookie.</translation>
 <translation id="3308134619352333507">Απόκρυψη κουμπιού</translation>
-<translation id="863285194606682292">Οι ιστότοποι που επισκέπτεστε εξακολουθούν να έχουν δυνατότητα απομνημόνευσης των πληροφοριών σας μέχρι να κλείσετε το Brave.</translation>
 <translation id="3308852433423051161">Φόρτωση Βοηθού Brave…</translation>
 <translation id="3309330461362844500">Αναγνωριστικό προφίλ πιστοποιητικού</translation>
 <translation id="3311445899360743395">Τα δεδομένα που σχετίζονται με αυτήν την εφαρμογή μπορεί να καταργηθούν από αυτήν τη συσκευή.</translation>
@@ -2281,6 +2291,7 @@
 <translation id="3361421571228286637">{COUNT,plural, =1{Η συσκευή <ph name="DEVICE_NAME"/> μοιράζεται μαζί σας <ph name="ATTACHMENTS"/>.}other{Η συσκευή <ph name="DEVICE_NAME"/> μοιράζεται μαζί σας <ph name="ATTACHMENTS"/>.}}</translation>
 <translation id="3364986687961713424">Από τον διαχειριστή σας: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">Χρησιμοποιήστε το Ctrl ή το Alt</translation>
+<translation id="3367057768351048705">Κάθε ιστότοπος μπορεί να χρησιμοποιεί τα cookie σας για την προβολή της δραστηριότητας περιήγησής σας μόνο σε αυτόν τον συγκεκριμένο ιστότοπο.</translation>
 <translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="3369067987974711168">Εμφάνιση περισσότερων ενεργειών για τη συγκεκριμένη θύρα</translation>
 <translation id="3369624026883419694">Ανάλυση της διεύθυνσης του κεντρικού υπολογιστή...</translation>
@@ -2334,18 +2345,18 @@
 <translation id="3420501302812554910">Το εσωτερικό κλειδί ασφαλείας απαιτεί επαναφορά</translation>
 <translation id="3421387094817716717">Δημόσιο κλειδί ελλειπτικής καμπύλης</translation>
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>Σημείωση:<ph name="END_BOLD"/> Μια παρόμοια φωνή ή εγγραφή μπορεί να αποκτήσει επίσης πρόσβαση στα προσωπικά αποτελέσματα ή στον Βοηθό σας.</translation>
+<translation id="3421726884497337397">Επιλέξτε πότε θα γίνεται αποκλεισμός cookie τρίτου μέρους</translation>
 <translation id="3422291238483866753">Να γίνεται ερώτηση όταν ένας ιστότοπος θέλει να δημιουργήσει τρισδιάστατο χάρτη του περιβάλλοντα χώρου σας και να παρακολουθεί τη θέση της κάμερας (συνιστάται)</translation>
 <translation id="3423463006624419153">Στα τηλέφωνα "<ph name="PHONE_NAME_1"/>" και "<ph name="PHONE_NAME_2"/>":</translation>
 <translation id="3423858849633684918">Επανεκκινήστε το <ph name="PRODUCT_NAME"/></translation>
 <translation id="3424969259347320884">Περιγράψτε τι κάνατε όταν παρουσιάστηκε το σφάλμα στην καρτέλα</translation>
 <translation id="3427092606871434483">Να επιτρέπεται (προεπιλογή)</translation>
 <translation id="3428419049384081277">Είστε συνδεδεμένοι!</translation>
-<translation id="5265419033369521352">Διατηρεί την ασφάλειά σας στο Brave και μπορεί να χρησιμοποιηθεί για τη βελτίωση της ασφάλειάς σας σε άλλες εφαρμογές Brave όταν είστε συνδεδεμένοι.</translation>
 <translation id="3429086384982427336">Οι εφαρμογές που αναφέρονται παρακάτω δεν θα χειρίζονται ποτέ συνδέσμους πρωτοκόλλου.</translation>
 <translation id="3429160811076349561">Οι δοκιμαστικές λειτουργίες είναι απενεργοποιημένες</translation>
 <translation id="3429271624041785769">Γλώσσες περιεχομένου ιστού</translation>
 <translation id="3429275422858276529">Προσθέστε σελιδοδείκτη σε αυτήν τη σελίδα, για να την εντοπίσετε εύκολα αργότερα</translation>
-<translation id="343115368966109153">Λήψη <ph name="FILE_NAME"/>; Θα είναι ορατό σε οποιονδήποτε χρησιμοποιεί τη συσκευή.</translation>
+<translation id="343115368966109153">Να γίνει λήψη του <ph name="FILE_NAME"/>; Θα είναι ορατό σε οποιονδήποτε χρησιμοποιεί τη συσκευή.</translation>
 <translation id="3432227430032737297">Κατάργηση όλων όσων εμφανίζονται</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="3433621910545056227">Ωχ!  Το σύστημα απέτυχε να εφαρμόσει το κλείδωμα χρόνου εγκατάστασης χαρακτηριστικών.</translation>
@@ -2370,11 +2381,13 @@
 <translation id="344630545793878684">Ανάγνωση των δεδομένων σας σε ορισμένους ιστότοπους</translation>
 <translation id="3446650212859500694">Αυτό το αρχείο έχει ευαίσθητο περιεχόμενο.</translation>
 <translation id="3446827946208017735">Κατανοήστε και εξετάστε τις σημαντικότερες ρυθμίσεις απορρήτου σε ένα μέρος</translation>
+<translation id="3447644283769633681">Αποκλεισμός όλων των cookie τρίτου μέρους</translation>
 <translation id="3448086340637592206">Πρόσθετοι Όροι Brave και Chrome OS</translation>
 <translation id="3448492834076427715">Ενημέρωση λογαριασμού</translation>
 <translation id="3449393517661170867">Νέο παράθυρο με καρτέλες</translation>
 <translation id="3449839693241009168">Πατήστε <ph name="SEARCH_KEY"/> για να αποστείλετε εντολές στο <ph name="EXTENSION_NAME"/></translation>
 <translation id="3450157232394774192">Ποσοστό κατοχής κατάστασης αδράνειας</translation>
+<translation id="3450180775417907283">Ο τομέας <ph name="MANAGER"/> απαιτεί να συνδεθείτε άμεσα σε Wi-Fi και να κατεβάσετε μια ενημέρωση.</translation>
 <translation id="3451753556629288767">Επιτρέπεται να ανοίγει τύπους αρχείων</translation>
 <translation id="3452999110156026232">Γονική πρόσβαση</translation>
 <translation id="3453612417627951340">Χρειάζεται εξουσιοδότηση</translation>
@@ -2557,7 +2570,6 @@
 <translation id="3647998456578545569">{COUNT,plural, =1{Ελήφθη <ph name="ATTACHMENTS"/> από τη συσκευή <ph name="DEVICE_NAME"/>}other{Ελήφθησαν <ph name="ATTACHMENTS"/> από τη συσκευή <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3648348069317717750">Εντοπίστηκε συσκευή <ph name="USB_DEVICE_NAME"/></translation>
 <translation id="3649138363871392317">Έγινε λήψη φωτογραφίας</translation>
-<translation id="3649505501900178324">Εκπρόθεσμη ενημέρωση</translation>
 <translation id="3650753875413052677">Σφάλμα εγγραφής</translation>
 <translation id="3650845953328929506">Η μεταφόρτωση του αρχείου καταγραφής είναι σε εκκρεμότητα.</translation>
 <translation id="3650952250015018111">Να επιτρέπεται στην εφαρμογή "<ph name="APP_NAME"/>" η πρόσβαση σε:</translation>
@@ -2640,7 +2652,6 @@
 <translation id="3732078975418297900">Σφάλμα στη γραμμή <ph name="ERROR_LINE"/></translation>
 <translation id="3732530910372558017">Το PIN θα πρέπει να περιέχει το πολύ 63 χαρακτήρες</translation>
 <translation id="565625983765378675">Σχετικές πληροφορίες Βοηθού Brave</translation>
-<translation id="3733127536501031542">Διακομιστής SSL με αναβάθμιση</translation>
 <translation id="3733296813637058299">Θα εγκαταστήσουμε αυτές τις εφαρμογές για εσάς. Μπορείτε να βρείτε περισσότερες εφαρμογές για τη συσκευή σας <ph name="DEVICE_TYPE"/> στο Play Store.</translation>
 <translation id="3735740477244556633">Ταξινόμηση κατά</translation>
 <translation id="3738632186060045350">Τα δεδομένα της συσκευής <ph name="DEVICE_TYPE"/> θα διαγραφούν εντός 24 ωρών</translation>
@@ -2730,11 +2741,12 @@
 <translation id="3819800052061700452">&amp;Πλήρης οθόνη</translation>
 <translation id="3820638253182943944">{MUTED_NOTIFICATIONS_COUNT,plural, =1{Εμφάνιση}other{Εμφάνιση όλων}}</translation>
 <translation id="3820749202859700794">Ελλειπτική καμπύλη SECG secp521r1 (επίσης γνωστή ως NIST P-521)</translation>
+<translation id="3821074617718452587">Ειδοποιήσεις Phone Hub</translation>
 <translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{Μια επέκταση εγκρίθηκε}other{# επεκτάσεις εγκρίθηκαν}}</translation>
 <translation id="3823310065043511710">Για το Linux συνιστώνται τουλάχιστον <ph name="INSTALL_SIZE"/> αποθηκευτικού χώρου.</translation>
 <translation id="3824621460022590830">Το διακριτικό εγγραφής συσκευής δεν είναι έγκυρο. Επικοινωνήστε με τον κάτοχο ή τον διαχειριστή της συσκευής σας. Κωδικός σφάλματος: <ph name="ERROR_CODE"/>.</translation>
 <translation id="3826071569074535339">Επιτρέπεται να χρησιμοποιούν αισθητήρες κίνησης</translation>
-<translation id="7808602060780466265">Ο διαχειριστής έχει απενεργοποιήσει τη δυνατότητα προσθήκης περισσότερων Λογαριασμών Brave</translation>
+<translation id="3826440694796503677">Ο διαχειριστής έχει απενεργοποιήσει τη δυνατότητα προσθήκης περισσότερων Λογαριασμών Brave</translation>
 <translation id="3827774300009121996">&amp;Πλήρης Οθόνη</translation>
 <translation id="3828029223314399057">Αναζήτηση σελιδοδεικτών</translation>
 <translation id="3829765597456725595">Κοινή χρήση αρχείου SMB</translation>
@@ -2743,7 +2755,6 @@
 <translation id="383161972796689579">Ο κάτοχος αυτής της συσκευής έχει απενεργοποιήσει την προσθήκη νέων χρηστών</translation>
 <translation id="3834728400518755610">Η αλλαγή στη ρύθμιση μικροφώνου απαιτεί τον τερματισμό του Linux. Τερματίστε το Linux, για να συνεχίσετε.</translation>
 <translation id="3834775135533257713">Δεν ήταν δυνατή η προσθήκη της εφαρμογής "<ph name="TO_INSTALL_APP_NAME"/>", επειδή προκαλείται διένεξη με την εφαρμογή "<ph name="INSTALLED_APP_NAME"/>".</translation>
-<translation id="3835522725882634757">Ο διακομιστής αποστέλλει δεδομένα που το <ph name="PRODUCT_NAME"/> δεν μπορεί να κατανοήσει. <ph name="BEGIN_LINK"/>Αναφέρετε ένα σφάλμα<ph name="END_LINK"/> και συμπεριλάβατε τη <ph name="BEGIN2_LINK"/>γενική λίστα<ph name="END2_LINK"/>.</translation>
 <translation id="383669374481694771">Αυτές είναι γενικές πληροφορίες σχετικά με αυτήν τη συσκευή και τον τρόπο με τον οποίο χρησιμοποιείται (όπως το επίπεδο της μπαταρίας, τη δραστηριότητα συστήματος και εφαρμογών και τα σφάλματα). Τα δεδομένα θα χρησιμοποιηθούν για τη βελτίωση του Android, ενώ ορισμένες συγκεντρωτικές πληροφορίες θα συμβάλλουν στη βελτίωση των εφαρμογών Brave και θα χρησιμοποιηθούν από τους συνεργάτες της Brave, όπως τους προγραμματιστές Android, προκειμένου να βελτιώσουν τις εφαρμογές και τα προϊόντα τους.</translation>
 <translation id="3838085852053358637">Η φόρτωση της επέκτασης απέτυχε</translation>
 <translation id="3838486795898716504">Περισσότερες σελίδες <ph name="PAGE_TITLE"/></translation>
@@ -2936,6 +2947,7 @@
 <translation id="4021279097213088397">–</translation>
 <translation id="402184264550408568">(TCP)</translation>
 <translation id="4021909830315618592">Αντιγραφή λεπτομερειών έκδοσης</translation>
+<translation id="4021941025609472374">Κλείσιμο καρτελών αριστερά</translation>
 <translation id="4022426551683927403">&amp;Προσθήκη στο λεξικό</translation>
 <translation id="4023146161712577481">Καθορισμός διαμόρφωσης συσκευής.</translation>
 <translation id="4025039777635956441">Σίγαση επιλεγμένου ιστοτόπου</translation>
@@ -2979,7 +2991,6 @@
 <translation id="4068776064906523561">Αποθηκευμένα δακτυλικά αποτυπώματα</translation>
 <translation id="407173827865827707">Όταν κάνετε κλικ</translation>
 <translation id="5493571544288146030">Ο κωδικός πρόσβασης θα αποθηκευτεί στον Λογαριασμό σας Brave, <ph name="ACCOUNT"/>. Δεν χρειάζεται να τον θυμάστε.</translation>
-<translation id="4074900173531346617">Πιστοποιητικό υπηρεσίας υπογραφής ηλεκτρονικού ταχυδρομείου</translation>
 <translation id="407520071244661467">Κλίμακα</translation>
 <translation id="407543464472585404">Το προφίλ του χρήστη <ph name="NAME"/> έχει συνδεθεί στη διεύθυνση <ph name="EMAIL"/>.</translation>
 <translation id="4075639477629295004">Δεν είναι δυνατή η μετάδοση του αρχείου <ph name="FILE_NAME"/>.</translation>
@@ -3023,9 +3034,11 @@
 <translation id="4110490973560452005">Η λήψη ολοκληρώθηκε: <ph name="FILE_NAME"/>. Πατήστε Shift+F6 για να μεταβείτε στη γραμμή λήψεων.</translation>
 <translation id="4110686435123617899">Επιλογή λευκώματος <ph name="TITLE"/> <ph name="DESC"/></translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (εκτός σύνδεσης)</translation>
+<translation id="4112809168763360620">Smart privacy protections</translation>
 <translation id="4115002065223188701">Δίκτυο εκτός εύρους</translation>
 <translation id="4115378294792113321">Ματζέντα</translation>
 <translation id="4117637339509843559">Λειτουργία χαμηλού φωτισμού</translation>
+<translation id="4117714603282104018">Ανάδραση επιφάνειας αφής</translation>
 <translation id="4118579674665737931">Επανεκκινήστε τη συσκευή και δοκιμάστε ξανά.</translation>
 <translation id="9006702004768325338">Ξεκινήστε να εξερευνάτε τις αναμνήσεις σας από τις Φωτογραφίες Brave, κάθε φορά που συνδέεστε.</translation>
 <translation id="4120388883569225797">Δεν είναι δυνατή η επαναφορά αυτού του κλειδιού ασφαλείας</translation>
@@ -3070,6 +3083,7 @@
 <translation id="4175137578744761569">Ανοιχτό μοβ και λευκό</translation>
 <translation id="4175737294868205930">Μόνιμος αποθηκευτικός χώρος</translation>
 <translation id="4176463684765177261">Απενεργοποιημένο</translation>
+<translation id="417971315778328003">Ρυθμίστε ένα PIN ή έναν κωδικό πρόσβασης για να συνεχίσετε</translation>
 <translation id="4180788401304023883">Να διαγραφεί το πιστοποιητικό ΑΠ "<ph name="CERTIFICATE_NAME"/>";</translation>
 <translation id="4181602000363099176">20x</translation>
 <translation id="4181841719683918333">Γλώσσες</translation>
@@ -3103,6 +3117,7 @@
 <translation id="4231095370974836764">Εγκαταστήστε εφαρμογές και παιχνίδια από το Google Play στη συσκευή <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">Διαμόρφωση του Kerberos</translation>
 <translation id="4235965441080806197">Ακύρωση σύνδεσης</translation>
+<translation id="4238175133949127631">Temporary dim screen</translation>
 <translation id="4241182343707213132">Κάντε επανεκκίνηση για να ενημερώσετε τις εφαρμογές του οργανισμού σας</translation>
 <translation id="4242145785130247982">Δεν υποστηρίζονται πολλά πιστοποιητικά πελάτη.</translation>
 <translation id="4242533952199664413">Ανοίξτε τις ρυθμίσεις</translation>
@@ -3156,7 +3171,6 @@
 <translation id="428715201724021596">Η σύνδεση στο προφίλ βρίσκεται σε εξέλιξη. Ενδέχεται να χρειαστούν μερικά λεπτά.</translation>
 <translation id="4287157641315808225">Ναι, ενεργοποίηση του BraveVox</translation>
 <translation id="4287502603002637393">{MUTED_NOTIFICATIONS_COUNT,plural, =1{Εμφάνιση}other{Εμφάνιση όλων}}</translation>
-<translation id="4289372044984810120">Διαχειρίσου τους λογαριασμούς σου εδώ. <ph name="LINK_BEGIN"/>Μάθε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="4289540628985791613">Επισκόπηση</translation>
 <translation id="4289732974614035569">Επιλογή PIN</translation>
 <translation id="4290791284969893584">Μετά το κλείσιμο μιας σελίδας, οι εργασίες που έχετε ξεκινήσει ενδέχεται να μην ολοκληρωθούν</translation>
@@ -3210,7 +3224,6 @@
 <translation id="4358313196493694334">Σταθεροποίηση τοποθεσίας κλικ</translation>
 <translation id="4359408040881008151">Εγκαταστάθηκε λόγω των εξαρτώμενων επεκτάσεων</translation>
 <translation id="4359717112757026264">Αστικό τοπίο</translation>
-<translation id="4360237979279036412">Το <ph name="MANAGER"/> απαιτεί να ενημερώσετε τη συσκευή <ph name="DEVICE_TYPE"/> πριν από την προθεσμία.</translation>
 <translation id="4361142739114356624">Το Ιδιωτικό κλειδί για αυτό το Πιστοποιητικό πελάτη λείπει ή δεν είναι έγκυρο</translation>
 <translation id="4361745360460842907">Άνοιγμα ως καρτέλα</translation>
 <translation id="4363771538994847871">Δεν βρέθηκαν προορισμοί μετάδοσης. Χρειάζεστε βοήθεια;</translation>
@@ -3219,6 +3232,7 @@
 <translation id="4364830672918311045">Εμφάνιση ειδοποιήσεων</translation>
 <translation id="4366138410738374926">Έναρξη εκτύπωσης</translation>
 <translation id="4369121877634339065">Σύρετε πάνω από την οθόνη για αναζήτηση.</translation>
+<translation id="4369215744064167350">Το αίτημα ιστοτόπου εγκρίθηκε</translation>
 <translation id="4370975561335139969">Η διεύθυνση ηλεκτρονικού ταχυδρομείου και ο κωδικός πρόσβασης δεν ταιριάζουν</translation>
 <translation id="4373966964907728675">Μετάδοση επιφάνειας εργασίας</translation>
 <translation id="4374831787438678295">Πρόγραμμα εγκατάστασης Linux</translation>
@@ -3231,7 +3245,6 @@
 <translation id="4378556263712303865">Επίταξη συσκευής</translation>
 <translation id="4379281552162875326">Απεγκατάσταση της εφαρμογής <ph name="APP_NAME"/>;</translation>
 <translation id="4380648069038809855">Εισαγωγή σε πλήρη οθόνη</translation>
-<translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, +1 ακόμη λογαριασμός}other{<ph name="EMAIL"/>, +<ph name="EXTRA_ACCOUNTS"/> ακόμη λογαριασμοί}}</translation>
 <translation id="4384312707950789900">Προσθήκη στα προτιμώμενα</translation>
 <translation id="4384652540891215547">Ενεργοποίηση επέκτασης</translation>
 <translation id="4384886290276344300">Αλλαγή ρυθμίσεων πληκτρολογίου</translation>
@@ -3735,7 +3748,6 @@
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         Ενημερωθείτε σχετικά με τα δεδομένα που συλλέγει το Google Drive και τους λόγους συλλογής τους <ph name="BEGIN_LINK"/>εδώ<ph name="END_LINK"/>.</translation>
-<translation id="49226369361073053">{0,plural, =0{Ενημέρωση συσκευής τώρα}=1{Ενημέρωση συσκευής εντός 1 δευτερολέπτου}other{Ενημέρωση συσκευής εντός # δευτερολέπτων}}</translation>
 <translation id="492299503953721473">Κατάργηση εφαρμογών Android</translation>
 <translation id="492363500327720082">Απεγκατάσταση <ph name="APP_NAME"/>…</translation>
 <translation id="4924002401726507608">Υποβολή σχολίων</translation>
@@ -3839,6 +3851,7 @@
 <translation id="5040823038948176460">Επιπλέον ρυθμίσεις περιεχομένου</translation>
 <translation id="5043440033854483429">Στο όνομα μπορείτε να χρησιμοποιήσετε γράμματα, αριθμούς και ενωτικά (-) και πρέπει να περιέχει από 1 έως 15 χαρακτήρες.</translation>
 <translation id="5043913660911154449">Εναλλακτικά, καθορίστε το PPD του εκτυπωτή σας <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
+<translation id="5044527779574548527">Να μην εμφανιστεί ξανά αυτό το βήμα</translation>
 <translation id="5045550434625856497">Λανθασμένος κωδικός πρόσβασης</translation>
 <translation id="504561833207953641">Άνοιγμα σε υπάρχουσα περίοδο σύνδεσης προγράμματος περιήγησης.</translation>
 <translation id="5047421709274785093">Να μην επιτρέπεται στους ιστοτόπους να χρησιμοποιούν αισθητήρες κίνησης και φωτός</translation>
@@ -3849,7 +3862,7 @@
 <translation id="8364458882768727272">Αναζήτηση εικόνας με το Brave Lens</translation>
 <translation id="5056950756634735043">Σύνδεση στο κοντέινερ</translation>
 <translation id="5057110919553308744">Όταν κάνετε κλικ στην επέκταση</translation>
-<translation id="1203953622051744249">Διαχειριστείτε τους συνδεδεμένους λογαριασμούς. Οι ιστότοποι, οι εφαρμογές και οι επεκτάσεις στο Brave και στο Google Play μπορεί να χρησιμοποιούν αυτούς τους λογαριασμούς για να προσαρμόσουν την εμπειρία σας, ανάλογα με τις άδειες. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
+<translation id="505776528429481161">Εύκολη σύνδεση και ρύθμιση κοντινών συσκευών</translation>
 <translation id="5059241099014281248">Περιορισμός σύνδεσης</translation>
 <translation id="5059526285558225588">Επιλέξτε τι θα μοιράζεστε</translation>
 <translation id="5060332552815861872">Υπάρχει 1 διαθέσιμος εκτυπωτής για αποθήκευση.</translation>
@@ -3904,6 +3917,7 @@
 <translation id="5117139026559873716">Αποσυνδέστε το τηλέφωνό σας από τη συσκευή <ph name="DEVICE_TYPE"/>. Δεν θα συνδέεται πλέον αυτόματα.</translation>
 <translation id="5117930984404104619">Παρακολούθηση της συμπεριφοράς άλλων επεκτάσεων, συμπεριλαμβανομένων των διευθύνσεων URL που έχουν δεχτεί επίσκεψη</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
+<translation id="5120886753782992638">Κάνε κλικ εδώ για να μεταβείς στον ιστότοπο <ph name="APPROVED_URL"/></translation>
 <translation id="5121052518313988218">Το λειτουργικό σύστημα στο κοντέινερ Linux δεν υποστηρίζεται πλέον. Θα σταματήσει να λαμβάνει ενημερώσεις ασφάλειας και διορθώσεις σφαλμάτων και λειτουργίες που αυτήν τη στιγμή λειτουργούν μπορεί να διακοπούν απρόσμενα. Αναβαθμίστε στην πιο πρόσφατη έκδοση για να συνεχίσετε να χρησιμοποιείτε το Linux.</translation>
 <translation id="5121130586824819730">Ο σκληρός σας δίσκος είναι πλήρης. Αποθηκεύστε σε άλλη τοποθεσία ή αδειάστε τον σκληρό δίσκο.</translation>
 <translation id="5123433949759960244">Μπάλα μπάσκετ</translation>
@@ -4011,6 +4025,7 @@
 <translation id="523505283826916779">Ρυθμίσεις προσβασιμότητας</translation>
 <translation id="5235750401727657667">Αντικατάσταση της σελίδας που βλέπετε κατά το άνοιγμα νέας καρτέλας</translation>
 <translation id="6465706586789214771">Για να τους χρησιμοποιείτε εύκολα σε όλες τις συσκευές σας, μπορείτε να τους μετακινήσετε στον Λογαριασμό σας Brave</translation>
+<translation id="523862956770478816">Δικαιώματα ιστοτόπου</translation>
 <translation id="5242724311594467048">Ενεργοποίηση "<ph name="EXTENSION_NAME"/>";</translation>
 <translation id="5243522832766285132">Δοκιμάστε ξανά σε λίγο</translation>
 <translation id="5244474230056479698">Συγχρονισμός με <ph name="EMAIL"/></translation>
@@ -4038,6 +4053,7 @@
 <translation id="5265562206369321422">Εκτός σύνδεσης για περισσότερο από μία εβδομάδα</translation>
 <translation id="5265797726250773323">Σφάλμα κατά την εγκατάσταση</translation>
 <translation id="5266113311903163739">Σφάλμα εισαγωγής της Αρχής Πιστοποίησης</translation>
+<translation id="526622169288322445">Περισσότερες ενέργειες για <ph name="ADDRESS_SUMMARY"/></translation>
 <translation id="5269977353971873915">Η εκτύπωση απέτυχε</translation>
 <translation id="5275352920323889391">Σκύλος</translation>
 <translation id="527605982717517565">Να επιτρέπεται πάντα το JavaScript στο <ph name="HOST"/></translation>
@@ -4217,6 +4233,7 @@
 <translation id="5472627187093107397">Αποθήκευση κωδικών πρόσβασης για αυτόν τον ιστότοπο</translation>
 <translation id="5473075389972733037">IBM</translation>
 <translation id="5473156705047072749">{NUM_CHARACTERS,plural, =1{Το PIN πρέπει να αποτελείται τουλάχιστον από έναν χαρακτήρα.}other{Το PIN πρέπει να αποτελείται τουλάχιστον από # χαρακτήρες.}}</translation>
+<translation id="5474859849784484111">Ο τομέας <ph name="MANAGER"/> απαιτεί να συνδεθείτε άμεσα σε Wi-Fi και να κατεβάσετε μια ενημέρωση. Εναλλακτικά, μπορείτε να την κατεβάσετε από μια σύνδεση με ογκοχρέωση (ενδέχεται να ισχύουν χρεώσεις).</translation>
 <translation id="5481273127572794904">Δεν επιτρέπεται να πραγματοποιούν αυτόματη λήψη πολλών αρχείων</translation>
 <translation id="5481941284378890518">Προσθήκη εκτυπωτών σε κοντινή απόσταση</translation>
 <translation id="5483785310822538350">Ανάκληση πρόσβασης στο αρχείο και τη συσκευή</translation>
@@ -4273,7 +4290,6 @@
 <translation id="5517304475148761050">Αυτή η εφαρμογή απαιτεί πρόσβαση στο Play Store</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> - <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5518219166343146486">Να γίνεται ερώτηση όταν ένας ιστότοπος θέλει να δει κείμενο και εικόνες που αντιγράψατε στο πρόχειρο</translation>
-<translation id="5518584115117143805">Πιστοποιητικό κρυπτογράφησης ηλεκτρονικού ταχυδρομείου</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5521078259930077036">Είναι αυτή η αρχική σελίδα που περιμένατε;</translation>
 <translation id="5522156646677899028">Αυτή η επέκταση περιλαμβάνει μια σοβαρή ευπάθεια ασφαλείας.</translation>
@@ -4308,6 +4324,7 @@
 <translation id="5554489410841842733">Αυτό το εικονίδιο θα είναι ορατό όταν η επέκταση θα μπορεί να ενεργεί στην τρέχουσα σελίδα.</translation>
 <translation id="5554720593229208774">Αρχή πιστοποίησης ηλεκτρονικού ταχυδρομείου</translation>
 <translation id="5555363196923735206">Αναστροφή κάμερας</translation>
+<translation id="5555525474779371165">Επιλέξτε την προστασία σας στην Ασφαλή περιήγηση</translation>
 <translation id="5556459405103347317">Επαναφόρτωση</translation>
 <translation id="5558125320634132440">Αυτός ο ιστότοπος αποκλείστηκε επειδή μπορεί να περιλαμβάνει περιεχόμενο για ενηλίκους.</translation>
 <translation id="5558129378926964177">Μεγέθυνση</translation>
@@ -4605,6 +4622,7 @@
 <translation id="5901494423252125310">Η θύρα του εκτυπωτή είναι ανοικτή</translation>
 <translation id="5901630391730855834">Κίτρινο</translation>
 <translation id="5904614460720589786">Δεν ήταν δυνατή η ρύθμιση της εφαρμογής <ph name="APP_NAME"/> λόγω προβλήματος διαμόρφωσης. Επικοινωνήστε με τον διαχειριστή. Κωδικός σφάλματος: <ph name="ERROR_CODE"/>.</translation>
+<translation id="8426966365763005150">This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.</translation>
 <translation id="5906655207909574370">Η ενημέρωση σχεδόν ολοκληρώθηκε! Επανεκκινήστε τη συσκευή σας για να ολοκληρωθεί η ενημέρωση.</translation>
 <translation id="5906732635754427568">Τα δεδομένα που σχετίζονται με αυτήν την εφαρμογή θα καταργηθούν από αυτήν τη συσκευή.</translation>
 <translation id="5908474332780919512">Εκκίνηση εφαρμογής κατά τη σύνδεση</translation>
@@ -4630,6 +4648,7 @@
 <translation id="539658326146969381">Λήψη αρχείων PDF αντί για αυτόματο άνοιγμα στο Brave</translation>
 <translation id="592919310198008711">Όταν κάνω κλικ σε μια επέκταση</translation>
 <translation id="5932124097031739492">Έγινε επιτυχής αναβάθμιση των Linux.</translation>
+<translation id="5932209916647644605">Ο τομέας <ph name="MANAGER"/> απαιτεί να ενημερώσετε άμεσα τη συσκευή <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="5932224571077948991">Ο ιστότοπος εμφανίζει παρεμβατικές ή παραπλανητικές διαφημίσεις</translation>
 <translation id="59324397759951282">Συσκευή USB από <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Δεν έχετε αρκετές διαθέσιμες άδειες για να εγγράψετε τη συγκεκριμένη συσκευή εξοπλισμού Brave Meet. Επικοινωνήστε με το τμήμα πωλήσεων για να αγοράσετε περισσότερες. Εάν πιστεύετε ότι αυτό το μήνυμα εμφανίζεται κατά λάθος, επικοινωνήστε με την υποστήριξη.</translation>
@@ -4674,7 +4693,6 @@
 <translation id="597235323114979258">Δείτε περισσότερους προορισμούς</translation>
 <translation id="5972666587303800813">Υπηρεσία No-op</translation>
 <translation id="5972708806901999743">Μετακίνηση στην κορυφή</translation>
-<translation id="5972801171078377748">Να μην εμφανιστεί ξανά</translation>
 <translation id="5972826969634861500">Έναρξη του <ph name="PRODUCT_NAME"/></translation>
 <translation id="5973041996755340290">Το "<ph name="CLIENT_NAME"/>" ξεκίνησε τον εντοπισμό σφαλμάτων σε αυτό το πρόγραμμα περιήγησης.</translation>
 <translation id="5973605538625120605">Αλλαγή PIN</translation>
@@ -4686,7 +4704,6 @@
 <translation id="5976609451147284762">Αυτή η επιλογή ισχύει για Bravebook με πρόγραμμα δεδομένων ή κλειδί πρόσβασης δικτύου κινητής τηλεφωνίας ή κατά τη σύνδεση σε φορητό σημείο πρόσβασης Wi-Fi.</translation>
 <translation id="5979421442488174909">&amp;Μετάφραση σε <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">Για την προσθήκη σελιδοδεικτών σε σελίδες, κάντε κλικ στο αστέρι στη γραμμή διευθύνσεων</translation>
-<translation id="5983831175889857946">Ο έλεγχος ολοκληρώθηκε!</translation>
 <translation id="5984222099446776634">Πραγματοποιήθηκε επίσκεψη πρόσφατα</translation>
 <translation id="5985458664595100876">Μη έγκυρη μορφή URL. Οι υποστηριζόμενες μορφές είναι \\server\share και smb://server/share.</translation>
 <translation id="598810097218913399">Κατάργηση ανάθεσης</translation>
@@ -4700,6 +4717,7 @@
 <translation id="4448813628683709282">Ο κωδικός πρόσβασης διαγράφηκε από τον Λογαριασμό σας Brave.</translation>
 <translation id="6002458620803359783">Προτιμώμενες φωνές</translation>
 <translation id="6003143259071779217">Κατάργηση δικτύου κινητής τηλεφωνίας eSIM</translation>
+<translation id="6003479444341796444">Εμφανίζεται η γραμμή τίτλου.</translation>
 <translation id="6003582434972667631">Το θέμα έχει οριστεί από τον οργανισμό σας</translation>
 <translation id="6006484371116297560">Κλασικό</translation>
 <translation id="6007240208646052708">Η Φωνητική αναζήτηση δεν είναι διαθέσιμη στη γλώσσα σας.</translation>
@@ -4755,6 +4773,7 @@
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Σημείωση:<ph name="END_BOLD"/> Μια παρόμοια φωνή ή εγγραφή μπορεί να αποκτήσει επίσης πρόσβαση στα προσωπικά αποτελέσματα του παιδιού <ph name="SUPERVISED_USER_NAME"/>. Για εξοικονόμηση μπαταρίας, μπορείτε να επιλέξετε στις ρυθμίσεις του Βοηθού του χρήστη <ph name="SUPERVISED_USER_NAME"/> να γίνεται ενεργοποίηση της φράσης Ok Brave μόνο όταν αυτή η συσκευή είναι συνδεδεμένη σε πηγή ενέργειας.</translation>
 <translation id="6064217302520318294">Κλείδωμα οθόνης</translation>
 <translation id="6065289257230303064">Χαρακτηριστικά καταλόγου υποκειμένου πιστοποιητικού</translation>
+<translation id="6065691521254183160">Πατήστε |<ph name="ACCELERATOR"/>| για εναλλαγή της εστίασης ανάμεσα στο συννεφάκι βοήθειας και στο στοιχείο που στοχεύει.</translation>
 <translation id="6066794465984119824">Δεν έχει οριστεί ο κατακερματισμός εικόνας.</translation>
 <translation id="6069464830445383022">Συνδεθείτε στο Bravebook με τον Λογαριασμό σας Brave</translation>
 <translation id="6069671174561668781">Ορισμός ταπετσαρίας</translation>
@@ -4780,6 +4799,7 @@
 <translation id="6085886413119427067">Καθορίζει τον τρόπο σύνδεσης σε ιστοτόπους μέσω μιας ασφαλούς σύνδεσης.</translation>
 <translation id="6086004606538989567">Ο λογαριασμός που επαληθεύσατε δεν έχει εξουσιοδότηση για πρόσβαση σε αυτήν τη συσκευή.</translation>
 <translation id="6086846494333236931">Εγκαταστάθηκε από το διαχειριστή σας</translation>
+<translation id="6086898065659145625">Το Smart Lock θα σας συνδέει αυτόματα όταν το τηλέφωνό σας βρίσκεται σε κοντινή απόσταση.</translation>
 <translation id="6087960857463881712">Καταπληκτικό πρόσωπο</translation>
 <translation id="608912389580139775">Για να προσθέσετε αυτήν τη σελίδα στη λίστα ανάγνωσής σας, κάντε κλικ στο εικονίδιο σελιδοδείκτη</translation>
 <translation id="6091761513005122595">Το σύστημα κοινοποίησης προσαρτήθηκε επιτυχώς.</translation>
@@ -4866,6 +4886,7 @@
 <translation id="6184099524311454384">Αναζήτηση στις καρτέλες</translation>
 <translation id="6185132558746749656">Τοποθεσία συσκευής</translation>
 <translation id="6186394437969115158">Οι ιστότοποι προβάλλουν συνήθως διαφημίσεις, ώστε να μπορούν να παρέχουν περιεχόμενο ή υπηρεσίες δωρεάν. Ωστόσο, ορισμένοι ιστότοποι είναι γνωστοί για την προβολή παρεμβατικών ή παραπλανητικών διαφημίσεων.</translation>
+<translation id="6190953336330058278">Εφαρμογές Phone Hub</translation>
 <translation id="6195005504600220730">Διαβάστε πληροφορίες σχετικά με το πρόγραμμα περιήγησης, το λειτουργικό σύστημα και τη συσκευή σας</translation>
 <translation id="6195693561221576702">Δεν είναι δυνατή η ρύθμιση αυτής της συσκευής σε λειτουργία επίδειξης εκτός σύνδεσης.</translation>
 <translation id="6196640612572343990">Αποκλεισμός cookie τρίτων</translation>
@@ -4903,7 +4924,6 @@
 <translation id="6232017090690406397">Μπαταρία</translation>
 <translation id="6232116551750539448">Η σύνδεση με το <ph name="NAME"/> χάθηκε</translation>
 <translation id="6233154960150021497">Προεπιλεγμένη χρήση φωνής αντί για πληκτρολόγιο</translation>
-<translation id="5016134351637283420">Η ομιλία στα <ph name="LANGUAGE"/> αποστέλλεται στην Brave για επεξεργασία.</translation>
 <translation id="7946072537360476411">Οι Όροι Παροχής Υπηρεσιών του Brave αλλάζουν στις 31 Μαρτίου</translation>
 <translation id="6234474535228214774">Εγκατάσταση σε εκκρεμότητα</translation>
 <translation id="6235208551686043831">Η κάμερα της συσκευής ενεργοποιήθηκε. Τοποθετήστε τον κωδικό QR της eSIM μπροστά στην κάμερα.</translation>
@@ -4940,6 +4960,7 @@
 <translation id="6263284346895336537">Δεν είναι κρίσιμη</translation>
 <translation id="6264365405983206840">Επιλογή Όλ&amp;ων</translation>
 <translation id="6265687851677020761">Κατάργηση θύρας</translation>
+<translation id="6266532094411434237">Σύνδεση με τη συσκευή <ph name="DEVICE"/></translation>
 <translation id="6267166720438879315">Επιλέξτε ένα πιστοποιητικό για την επαλήθευση της ταυτότητάς σας στον κεντρικό υπολογιστή <ph name="HOST_NAME"/></translation>
 <translation id="6268252012308737255">Άνοιγμα με <ph name="APP"/></translation>
 <translation id="6270391203985052864">Οι ιστότοποι μπορούν να ζητούν να στέλνουν ειδοποιήσεις.</translation>
@@ -5006,7 +5027,6 @@
 <translation id="5267531627648004734">Κατάργηση από το Brave</translation>
 <translation id="6326855256003666642">Πλήθος Keepalive</translation>
 <translation id="6327785803543103246">Αυτόματη ανακάλυψη διακομιστή μεσολάβησης ιστού</translation>
-<translation id="6328378651911184878">Το <ph name="MANAGER"/> απαιτεί την άμεση ενημέρωση της συσκευής <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6331191339300272798">Αυτόματο σκούρο θέμα</translation>
 <translation id="6331566915566907158">Συμβάλετε στη βελτίωση των λειτουργιών και της απόδοσης του Chrome OS</translation>
 <translation id="6331818708794917058">Οι ιστότοποι μπορούν να ζητούν τη σύνδεση σε συσκευές MIDI</translation>
@@ -5072,7 +5092,6 @@
 <translation id="6410328738210026208">Αλλαγή καναλιού και Powerwash</translation>
 <translation id="6410390304316730527">Η Ασφαλής περιήγηση σάς προστατεύει από υπευθύνους επίθεσης που μπορεί να σας εξαπατήσουν να κάνετε κάτι επικίνδυνο, όπως εγκατάσταση κακόβουλου λογισμικού ή αποκάλυψη προσωπικών στοιχείων όπως κωδικούς πρόσβασης, αριθμούς τηλεφώνου ή στοιχεία πιστωτικών καρτών. Εάν την απενεργοποιήσετε, να είστε προσεκτικοί κατά την περιήγηση σε άγνωστους ή μη αξιόπιστους ιστοτόπους.</translation>
 <translation id="6410668567036790476">Προσθήκη μηχανής αναζήτησης</translation>
-<translation id="7810992039564280750">Ελέγχει αν τα URL περιλαμβάνονται στην λίστα μη ασφαλών ιστοτόπων που είναι αποθηκευμένη στο Brave. Εάν ένας ιστότοπος προσπαθήσει να κλέψει τον κωδικό σας ή όταν κάνετε λήψη ενός επιβλαβούς αρχείου, το Brave μπορεί επίσης να στείλει URL, καθώς και τμήματα του περιεχομένου της σελίδας, στην Ασφαλή περιήγηση.</translation>
 <translation id="641469293210305670">Εγκατάσταση ενημερώσεων και εφαρμογών</translation>
 <translation id="6414878884710400018">Άνοιγμα προτιμήσεων συστήματος</translation>
 <translation id="6414888972213066896">Ρώτησες τους γονείς σου εάν σου επιτρέπουν να επισκεφτείς αυτόν τον ιστότοπο</translation>
@@ -5083,6 +5102,7 @@
 <translation id="6418160186546245112">Γίνεται επαναφορά στην προηγούμενη εγκατεστημένη έκδοση του <ph name="IDS_SHORT_PRODUCT_NAME"/></translation>
 <translation id="6418481728190846787">Οριστική κατάργηση πρόσβασης για όλες τις εφαρμογές</translation>
 <translation id="6418511932144861495">Εγκατάσταση σημαντικής ενημέρωσης</translation>
+<translation id="641899100123938294">Σάρωση για νέες συσκευές</translation>
 <translation id="6419524191360800346">Υπάρχει διαθέσιμη αναβάθμιση σε Debian 11 (Bullseye)</translation>
 <translation id="6419546358665792306">Φόρτωση ανεπτυγμένης επέκτασης</translation>
 <translation id="6419843101460769608">Να μην επιτρέπεται η πρόσβαση των ιστοτόπων στις συσκευές Bluetooth</translation>
@@ -5242,6 +5262,7 @@
 <translation id="659005207229852190">Ο έλεγχος ασφαλείας ολοκληρώθηκε.</translation>
 <translation id="6590458744723262880">Μετονομασία φακέλου</translation>
 <translation id="6592267180249644460">Έγινε λήψη αρχείου καταγραφής WebRTC <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
+<translation id="659230975550262204">Show me an eye icon in the status area</translation>
 <translation id="6592808042417736307">Το δακτυλικό σας αποτύπωμα καταγράφηκε.</translation>
 <translation id="6593881952206664229">Ενδέχεται να μην γίνεται αναπαραγωγή των μέσων που προστατεύονται από πνευματικά δικαιώματα</translation>
 <translation id="6594011207075825276">Εύρεση σειριακών συσκευών…</translation>
@@ -5271,6 +5292,7 @@
 <translation id="6619801788773578757">Προσθήκη εφαρμογής Kiosk</translation>
 <translation id="6619990499523117484">Επιβεβαιώστε το PIN σας</translation>
 <translation id="6622980291894852883">Συνέχιση αποκλεισμού εικόνων</translation>
+<translation id="6624036901798307345">Σε λειτουργία tablet, πατήστε στο κουμπί μετρητή καρτελών της γραμμής εργαλείων για να ανοίξετε τη νέα γραμμή καρτελών που εμφανίζει μικρογραφίες κάθε καρτέλας.</translation>
 <translation id="6624535038674360844">Το αρχείο <ph name="FILE_NAME"/> έχει ευαίσθητο ή επικίνδυνο περιεχόμενο. Ζητήστε από τον κάτοχο να το διορθώσει.</translation>
 <translation id="6624687053722465643">Γλυκό</translation>
 <translation id="6628328486509726751">Ανέβηκε <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5279,6 +5301,7 @@
 <translation id="6635674640674343739">Δεν είναι δυνατή η δημιουργία σύνδεσης δικτύου. Ελέγξτε τη σύνδεση δικτύου και δοκιμάστε ξανά.</translation>
 <translation id="6635944431854494329">Ο κάτοχος μπορεί να ελέγξει αυτήν τη λειτουργία από την ενότητα Ρυθμίσεις &gt; Σύνθετες &gt; Αυτόματη αποστολή διαγνωστικών και δεδομένων χρήσης στην Brave.</translation>
 <translation id="6635956300022133031">Επιλογή και προσαρμογή των φωνών μετατροπής κειμένου σε ομιλία</translation>
+<translation id="6636623428211296678">Εξερευνήστε περισσότερες ρυθμίσεις παρακάτω ή ολοκληρώστε τώρα τη διαδικασία</translation>
 <translation id="6639554308659482635">Μνήμη SQLite</translation>
 <translation id="6640268266988685324">Άνοιγμα καρτέλας</translation>
 <translation id="6642720633335369752">Για να δείτε όλα τα ανοικτά παράθυρα εφαρμογών, σύρετε προς τα επάνω από το κάτω μέρος και κρατήστε το δάχτυλό σας πατημένο στην οθόνη.</translation>
@@ -5289,7 +5312,6 @@
 <translation id="6644846457769259194">Ενημέρωση της συσκευής σας (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="6645437135153136856">Η επιλεγμένη συσκευή Google Cloud Print δεν υποστηρίζεται πλέον. <ph name="BR"/> Δοκιμάστε να ρυθμίσετε τον εκτυπωτή ανάλογα με τις ρυθμίσεις συστήματος του υπολογιστή σας.</translation>
 <translation id="6647228709620733774">URL ανάκλησης Αρχής πιστοποίησης του Netscape</translation>
-<translation id="6647838571840953560">Αυτήν τη στιγμή στο κανάλι <ph name="CHANNEL_NAME"/></translation>
 <translation id="6648911618876616409">Μια σημαντική ενημέρωση είναι έτοιμη για εγκατάσταση. Συνδεθείτε για να ξεκινήσετε.</translation>
 <translation id="6649018507441623493">Περιμένετε μια στιγμή…</translation>
 <translation id="3733807065376082271">Ο κωδικός πρόσβασής σας για τον ιστότοπο <ph name="WEBSITE"/> είναι αποθηκευμένος σε αυτήν τη συσκευή και στον Λογαριασμό σας Brave. Ποιον θέλετε να διαγράψετε;</translation>
@@ -5381,7 +5403,6 @@
 <translation id="6748465660675848252">Μπορείτε να συνεχίσετε, αλλά μόνο τα συγχρονισμένα δεδομένα και οι ρυθμίσεις σας θα αποκατασταθούν. Όλα τα τοπικά δεδομένα θα χαθούν.</translation>
 <translation id="6750757184909117990">Απενεργοποίηση δικτύου κινητής τηλεφωνίας</translation>
 <translation id="6750946710563435348">Χρήση άλλου ονόματος χρήστη</translation>
-<translation id="6757101664402245801">Το URL αντιγράφηκε</translation>
 <translation id="6758056191028427665">Πείτε μας πώς τα πηγαίνουμε</translation>
 <translation id="6759193508432371551">Επαναφορά εργοστασιακών ρυθμίσεων</translation>
 <translation id="676158322851696513">"<ph name="EXTENSION_NAME"/>"</translation>
@@ -5395,6 +5416,7 @@
 <translation id="6775163072363532304">Οι διαθέσιμες συσκευές θα εμφανίζονται εδώ.</translation>
 <translation id="6777817260680419853">Η ανακατεύθυνση αποκλείστηκε</translation>
 <translation id="6778737459546443941">Ο γονέας σου δεν τον έχει εγκρίνει ακόμα</translation>
+<translation id="6779092717724412415">Για τη δημιουργία μιας επισήμανσης όπως αυτής που βλέπετε εδώ, επιλέξτε οποιοδήποτε κείμενο και κάντε δεξί κλικ.</translation>
 <translation id="6779447100905857289">τα καλάθια σας</translation>
 <translation id="677965093459947883">Πολύ μικρό</translation>
 <translation id="6781005693196527806">&amp;Διαχείριση μηχανών αναζήτησης...</translation>
@@ -5439,6 +5461,7 @@
 <translation id="6810613314571580006">Αυτόματη σύνδεση σε ιστότοπους με χρήση αποθηκευμένων διαπιστευτηρίων. Όταν η λειτουργία είναι απενεργοποιημένη, θα σας ζητείται επιβεβαίωση κάθε φορά που προσπαθείτε να συνδεθείτε σε έναν ιστότοπο.</translation>
 <translation id="6810768462515084623">Δυστυχώς, φαίνεται πως ο κωδικός πρόσβασής σας έληξε. Ανανεώστε τον σε μια άλλη συσκευή και δοκιμάστε ξανά.</translation>
 <translation id="6811034713472274749">Σελίδα έτοιμη για προβολή</translation>
+<translation id="6811151703183939603">Σκληρή</translation>
 <translation id="6811332638216701903">Όνομα κεντρικού υπολογιστή DHCP</translation>
 <translation id="6812349420832218321">Δεν είναι δυνατή η εκτέλεση του <ph name="PRODUCT_NAME"/> ως ρίζα</translation>
 <translation id="6812841287760418429">Διατήρηση αλλαγών</translation>
@@ -5474,7 +5497,6 @@
 <translation id="6843264316370513305">Εντοπισμός και διόρθωση σφαλμάτων δικτύου</translation>
 <translation id="6843423766595476978">Η εντολή "Ok Brave" είναι έτοιμη</translation>
 <translation id="6845038076637626672">Άνοιγμα μεγιστοποιημένης εφαρμογής</translation>
-<translation id="4991384657077828949">Συμβάλετε στη βελτίωση της ασφάλειας του Brave</translation>
 <translation id="6846178040388691741">Η επέκταση "<ph name="EXTENSION_NAME"/>" θέλει να εκτυπώσει το αρχείο <ph name="FILE_NAME"/> με τον εκτυπωτή <ph name="PRINTER_NAME"/>.</translation>
 <translation id="6847125920277401289">Απελευθερώστε χώρο για να συνεχίσετε</translation>
 <translation id="6848388270925200958">Αυτήν τη στιγμή, έχετε ορισμένες κάρτες που μπορούν να χρησιμοποιηθούν μόνο σε αυτήν τη συσκευή</translation>
@@ -5537,6 +5559,7 @@
 <translation id="6914783257214138813">Οι κωδικοί πρόσβασής σας θα είναι ορατοί σε οποιονδήποτε μπορεί να δει το αρχείο εξαγωγής.</translation>
 <translation id="6916590542764765824">Διαχείριση επεκτάσεων</translation>
 <translation id="6919868320029503575">Ασθενείς κωδικοί πρόσβασης</translation>
+<translation id="4194845302979409023">Να ενεργοποιηθεί η Βελτιωμένη Ασφαλής περιήγηση για αυτό το προφίλ Brave;</translation>
 <translation id="6920989436227028121">Άνοιγμα ως κανονικής καρτέλας</translation>
 <translation id="6921104647315081813">Διαγραφή δραστηριοτήτων</translation>
 <translation id="692114467174262153">Δεν ήταν δυνατό το άνοιγμα του <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
@@ -5571,6 +5594,7 @@
 <translation id="6955893174999506273">Αντιστοίχιση ενός ακόμα διακόπτη</translation>
 <translation id="6957044667612803194">Αυτό το κλειδί ασφαλείας δεν υποστηρίζει PIN</translation>
 <translation id="6960507406838246615">Απαιτείται ενημέρωση Linux</translation>
+<translation id="8979541182892637256">Δεν ήταν δυνατή η λήψη αρχείων ομιλίας στα <ph name="LANGUAGE"/>. Θα γίνει προσπάθεια για λήψη αργότερα. Η ομιλία αποστέλλεται στην Brave για επεξεργασία, μέχρι να ολοκληρωθεί η λήψη.</translation>
 <translation id="696103774840402661">Όλα τα αρχεία και τοπικά δεδομένα για όλους τους χρήστες σε αυτήν τη συσκευή <ph name="DEVICE_TYPE"/> διαγράφηκαν οριστικά.</translation>
 <translation id="6964390816189577014">Ήρωας</translation>
 <translation id="6964760285928603117">Κατάργηση από την ομάδα</translation>
@@ -5619,6 +5643,7 @@
 <translation id="7000206553895739324">Ο εκτυπωτής <ph name="PRINTER_NAME"/> συνδέθηκε αλλά χρειάζεται διαμόρφωση</translation>
 <translation id="7000347579424117903">Συμπερίληψη Ctrl, Alt ή πλήκτρου Αναζήτησης</translation>
 <translation id="7001036685275644873">Δημιουργία αντιγράφων ασφαλείας εφαρμογών και αρχείων Linux</translation>
+<translation id="7001066449188684145">Απαιτείται ταυτοποίηση για εκτύπωση στον εκτυπωτή <ph name="PRINTER_NAME"/>. Επικοινωνήστε με τον διαχειριστή σας.</translation>
 <translation id="7002055706763150362">Για να ρυθμίσετε τη λειτουργία Smart Lock για Bravebook, το Brave θα πρέπει να επαληθεύσει την ταυτότητά σας. Πληκτρολογήστε τον κωδικό πρόσβασής σας για να ξεκινήσετε.</translation>
 <translation id="7003339318920871147">Βάσεις δεδομένων ιστού</translation>
 <translation id="7003454175711353260">{COUNT,plural, =1{{COUNT} αρχείο}other{{COUNT} αρχεία}}</translation>
@@ -5651,6 +5676,7 @@
 <translation id="7026552751317161576">Να μην επιτρέπεται σε εφαρμογές ιστού το άνοιγμα τύπων αρχείων</translation>
 <translation id="7029307918966275733">Το Crostini δεν έχει εγκατασταθεί. Εγκαταστήστε το Crostini για να δείτε τους συντελεστές.</translation>
 <translation id="7029809446516969842">Κωδ. πρόσβασης</translation>
+<translation id="7030304022046916278">Στέλνει URL στην Ασφαλή περιήγηση για να τα ελέγξει</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - Συνδεδεμένη σε σειριακή θύρα</translation>
 <translation id="7034692021407794547">Ένας διαχειριστής με προνόμια διαχείρισης χρέωσης θα πρέπει πρώτα να αποδεχτεί τους Όρους Παροχής Υπηρεσιών για τον εξοπλισμό Brave Meet στην ενότητα Εξοπλισμός Brave Meet της Κονσόλας διαχειριστή.</translation>
 <translation id="7036706669646341689">Για το Linux συνιστώνται <ph name="DISK_SIZE"/> αποθηκευτικού χώρου. Για να αυξήσετε τον δωρεάν αποθηκευτικό χώρο, διαγράψτε αρχεία από τη συσκευή σας.</translation>
@@ -5672,6 +5698,7 @@
 <translation id="7053983685419859001">Αποκλεισμός</translation>
 <translation id="7055152154916055070">Αποκλεισμένη ανακατεύθυνση:</translation>
 <translation id="7055451306017383754">Η κατάργηση κοινοποίησης δεν ήταν δυνατή, επειδή μια εφαρμογή χρησιμοποιεί αυτόν τον φάκελο. Η κοινοποίηση του φακέλου θα καταργηθεί κατά τον επόμενο τερματισμό λειτουργίας του Parallels Desktop.</translation>
+<translation id="7056011684066172642">Screen locks automatically if you walk off, and won't turn off if you're in front of it</translation>
 <translation id="7056526158851679338">&amp;Επιθεώρηση συσκευών</translation>
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{Ο έλεγχος ασφαλείας εκτελέστηκε πριν από 1 λεπτό.}other{Ο έλεγχος ασφαλείας εκτελέστηκε πριν από {NUM_MINS} λεπτά.}}</translation>
 <translation id="7057767408836081338">Η απόκτηση των δεδομένων της εφαρμογής απέτυχε. Παρόλα αυτά, γίνεται προσπάθεια εκτέλεσης της εφαρμογής…</translation>
@@ -5744,7 +5771,6 @@
 <translation id="7133578150266914903">Ο διαχειριστής σας κάνει επαναφορά σε αυτήν τη συσκευή (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7134098520442464001">Σμίκρυνση κειμένου</translation>
 <translation id="7135729336746831607">Ενεργοποίηση Bluetooth;</translation>
-<translation id="7136639886842764730">Ο τομέας <ph name="DOMAIN"/> απαιτεί να ενημερώσετε άμεσα τη συσκευή <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="7136694880210472378">Ορισμός ως προεπιλογής</translation>
 <translation id="7136993520339022828">Προέκυψε κάποιο σφάλμα. Προσπαθήστε ξανά επιλέγοντας άλλες εικόνες.</translation>
 <translation id="7138515695467025690">Ανενεργό/Θα ενεργοποιείται αυτόματα με τη δύση του ηλίου</translation>
@@ -5754,7 +5780,6 @@
 <translation id="7144878232160441200">Επανάληψη</translation>
 <translation id="7149839598364933473">Μετατροπή αυτής της συσκευής σε συσκευή <ph name="DEVICE_OS"/>.</translation>
 <translation id="7149893636342594995">Τελευταίες 24 ώρες</translation>
-<translation id="7152478047064750137">Αυτή η επέκταση δεν απαιτεί ειδικές άδειες</translation>
 <translation id="7154130902455071009">Αλλαγή της σελίδας έναρξης σε: <ph name="START_PAGE"/></translation>
 <translation id="7155171745945906037">Υπάρχουσα φωτογραφία από την κάμερα ή το αρχείο</translation>
 <translation id="7163202347044721291">Επαλήθευση κωδικού ενεργοποίησης…</translation>
@@ -5829,7 +5854,6 @@
 <translation id="7243784282103630670">Παρουσιάστηκε ένα σφάλμα κατά την αναβάθμιση του Linux. Θα επαναφέρουμε το κοντέινερ χρησιμοποιώντας το αντίγραφο ασφαλείας σας.</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (βέλτιστη)</translation>
 <translation id="7246230585855757313">Επανατοποθετήστε το κλειδί ασφαλείας και δοκιμάστε ξανά</translation>
-<translation id="7249777306773517303">Η διαχείριση της συσκευής γίνεται από τον τομέα <ph name="DOMAIN"/> και απαιτεί να συνδέεστε κάθε φορά.</translation>
 <translation id="7250616558727237648">Η συσκευή στην οποία κοινοποιείτε δεν αποκρίθηκε. Δοκιμάστε ξανά.</translation>
 <translation id="725109152065019550">Λυπούμαστε, ο διαχειριστής σας έχει απενεργοποιήσει τον εξωτερικό χώρο αποθήκευσης στον λογαριασμό σας.</translation>
 <translation id="7251346854160851420">Προεπιλεγμένη ταπετσαρία</translation>
@@ -5952,7 +5976,6 @@
 <translation id="7371490947952970241">Μπορείτε να απενεργοποιήσετε την Τοποθεσία απενεργοποιώντας τη βασική ρύθμιση τοποθεσίας στη συσκευή σας. Μπορείτε επίσης να απενεργοποιήσετε τη χρήση δικτύων Wi-Fi και κινητής τηλεφωνίας και των αισθητήρων για την τοποθεσία στις ρυθμίσεις τοποθεσίας.</translation>
 <translation id="7371917887111892735">Σμίκρυνση καρτελών στο πλάτος της καρφιτσωμένης καρτέλας</translation>
 <translation id="7374376573160927383">Διαχείριση συσκευών USB</translation>
-<translation id="7375235221357833624">{0,plural, =1{Ενημέρωση συσκευής εντός μίας ώρας}other{Ενημέρωση συσκευής εντός # ωρών}}</translation>
 <translation id="7376543451826039186">Ταχύτερη περιήγηση: Για παράδειγμα, προληπτική φόρτωση συγκεκριμένου επιπλέον περιεχομένου, βάσει της τρέχουσας σελίδας</translation>
 <translation id="7376553024552204454">Επισήμανση του δείκτη του ποντικιού όταν κινείται</translation>
 <translation id="737728204345822099">Μια καταγραφή της επίσκεψής σας σε αυτόν τον ιστότοπο ενδέχεται να διατηρηθεί στο κλειδί ασφαλείας.</translation>
@@ -6084,7 +6107,6 @@
 <translation id="7506242536428928412">Για να χρησιμοποιήσετε το νέο κλειδί ασφαλείας, ορίστε ένα νέο PIN.</translation>
 <translation id="7506541170099744506">Η συσκευή <ph name="DEVICE_TYPE"/> εγγράφηκε με επιτυχία για διαχείριση επιχειρήσεων.</translation>
 <translation id="7507207699631365376">Δείτε την <ph name="BEGIN_LINK"/>πολιτική απορρήτου<ph name="END_LINK"/> του παρόχου</translation>
-<translation id="7507930499305566459">Πιστοποιητικό απόκρισης κατάστασης</translation>
 <translation id="7509097596023256288">Ρύθμιση διαχείρισης</translation>
 <translation id="7509246181739783082">Επαλήθευση της ταυτότητάς σας</translation>
 <translation id="7509539379068593709">Απεγκατάσταση εφαρμογής</translation>
@@ -6094,7 +6116,6 @@
 <translation id="7514417110442087199">Προσθήκη ανάθεσης</translation>
 <translation id="751523031290522286">Η εφαρμογή <ph name="APP_NAME"/> αποκλείστηκε από τον διαχειριστή. Ζητήστε άδεια από τον διαχειριστή για χρήση αυτής της εφαρμογής.</translation>
 <translation id="7516981202574715431">Η εφαρμογή <ph name="APP_NAME"/> τέθηκε σε παύση</translation>
-<translation id="7517063221058203587">{0,plural, =1{Ενημέρωση συσκευής εντός 1 λεπτού}other{Ενημέρωση συσκευής εντός # λεπτών}}</translation>
 <translation id="7522255036471229694">Εκφωνήστε "Ok Brave"</translation>
 <translation id="7523585675576642403">Μετονομασία προφίλ</translation>
 <translation id="7525067979554623046">Δημιουργία</translation>
@@ -6195,8 +6216,10 @@
 <translation id="7622966771025050155">Μετάβαση στην καρτέλα ολοκλήρωσης λήψης</translation>
 <translation id="7624337243375417909">η λειτουργία Caps Lock ενεργοποιήθηκε</translation>
 <translation id="7625568159987162309">Δείτε άδειες και δεδομένα που έχουν αποθηκευτεί σε ιστοτόπους</translation>
+<translation id="7625823789272218216">Νέα καρτέλα αριστερά</translation>
 <translation id="7628201176665550262">Ρυθμός ανανέωσης</translation>
 <translation id="7629827748548208700">Καρτέλα: <ph name="TAB_NAME"/></translation>
+<translation id="7630426712700473382">Η διαχείριση της συσκευής γίνεται από <ph name="MANAGER"/> και απαιτεί να συνδέεστε κάθε φορά.</translation>
 <translation id="7631014249255418691">Δημιουργήθηκαν επιτυχώς αντίγραφα ασφαλείας για τις εφαρμογές και τα αρχεία Linux</translation>
 <translation id="7631205654593498032">Όταν συνδέετε τις συσκευές σας, συμφωνείτε ότι η συσκευή <ph name="DEVICE_TYPE"/> μπορεί:</translation>
 <translation id="7631887513477658702">&amp;Πάντα Άνοιγμα Αρχείων Αυτού του Τύπου</translation>
@@ -6225,6 +6248,7 @@
 <translation id="7650582458329409456">{COUNT,plural, =1{Ρύθμιση 1 δακτυλικού αποτυπώματος}other{Ρύθμιση {COUNT} δακτυλικών αποτυπωμάτων}}</translation>
 <translation id="7650677314924139716">Η τρέχουσα ρύθμιση χρήσης δεδομένων είναι Μόνο Wi-Fi.</translation>
 <translation id="7650920359639954963">Δεν έχει ενεργοποιηθεί: <ph name="REASON"/></translation>
+<translation id="7651784568388208829">Συνέχιση εργασίας Phone Hub</translation>
 <translation id="765293928828334535">Δεν ήταν δυνατή η προσθήκη εφαρμογών, επεκτάσεων και σεναρίων χρήστη από αυτόν τον ιστότοπο</translation>
 <translation id="7652954539215530680">Δημιουργήστε ένα PIN</translation>
 <translation id="7654941827281939388">Αυτός ο λογαριασμός χρησιμοποιείται ήδη σε αυτόν τον υπολογιστή.</translation>
@@ -6378,6 +6402,7 @@
 <translation id="7797246427375693110">Ενεργό/Θα απενεργοποιείται αυτόματα στις <ph name="TIME"/></translation>
 <translation id="7797571222998226653">Απενεργοποιημένο</translation>
 <translation id="7798844538707273832">Απέκλεισε αυτόματα την άδεια <ph name="PERMISSION"/></translation>
+<translation id="7799220949286681310">Smart screen lock</translation>
 <translation id="7799299114731150374">Επιτυχής ορισμός ταπετσαρίας</translation>
 <translation id="7799817062559422778">Φωτεινή λειτουργία</translation>
 <translation id="7800159967992492578">Εναλλαγή πλευρικής αναζήτησης. Η πλευρική αναζήτηση ενεργοποιήθηκε.</translation>
@@ -6483,6 +6508,7 @@
 <translation id="7887864092952184874">Έγινε σύζευξη του ποντικιού Bluetooth</translation>
 <translation id="7889371445710865055">Αλλαγή γλώσσας υπαγόρευσης</translation>
 <translation id="7890147169288018054">Προβολή πληροφοριών δικτύου, όπως της διεύθυνσης IP ή MAC</translation>
+<translation id="7892384782944609022">Δεν ήταν δυνατή η σύζευξη. Επιλέξτε συσκευές για να δοκιμάσετε ξανά.</translation>
 <translation id="7893008570150657497">Πρόσβασης στις φωτογραφίες, στη μουσική και στα άλλα μέσα από τον υπολογιστή σας</translation>
 <translation id="7893153962594818789">Το Bluetooth είναι απενεργοποιημένο σε αυτό το <ph name="DEVICE_TYPE"/>. Καταχωρίστε τον κωδικό πρόσβασης και ενεργοποιήστε το Bluetooth.</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Προεπιλογή)</translation>
@@ -6526,6 +6552,7 @@
 <translation id="7933518760693751884">Για να αποθηκεύσετε μια σελίδα για αργότερα, κάντε κλικ στο εικονίδιο Σελιδοδείκτης</translation>
 <translation id="7933634003144813719">Διαχείριση κοινόχρηστων φακέλων</translation>
 <translation id="793531125873261495">Σφάλμα λήψης του εικονικού μηχανήματος. Δοκιμάστε ξανά.</translation>
+<translation id="7935451262452051102">Ολοκλήρωση κατά <ph name="PERCENT"/>%</translation>
 <translation id="7938594894617528435">Αυτήν τη στιγμή εκτός σύνδεσης</translation>
 <translation id="7939062555109487992">Επιλογές για προχωρημένους</translation>
 <translation id="7939412583708276221">Να συνεχιστεί</translation>
@@ -6537,6 +6564,7 @@
 <translation id="7946586320617670168">Η προέλευση θα πρέπει να είναι ασφαλής</translation>
 <translation id="794676567536738329">Επιβεβαίωση δικαιωμάτων</translation>
 <translation id="7947962633355574091">Α&amp;ντιγραφή διεύθυνσης βίντεο</translation>
+<translation id="7948407723851303488">Όλες οι σελίδες του τομέα <ph name="DOMAIN_NAME"/></translation>
 <translation id="1618464105329025698">Για να προσθέσετε ή να διαχειριστείτε τρόπους πληρωμής του Brave Pay, επισκεφτείτε τον <ph name="BEGIN_LINK"/>Λογαριασμό σας Brave<ph name="END_LINK"/></translation>
 <translation id="7952708427581814389">Οι ιστότοποι μπορούν να ζητούν να βλέπουν το κείμενο και τις εικόνες στο πρόχειρο</translation>
 <translation id="795282463722894016">Η επαναφορά ολοκληρώθηκε</translation>
@@ -6655,6 +6683,7 @@
 <translation id="8062844841289846053">{COUNT,plural, =1{1 φύλλο χαρτιού}other{{COUNT} φύλλα χαρτιού}}</translation>
 <translation id="8063235345342641131">Προεπιλεγμένο πράσινο avatar</translation>
 <translation id="8063535366119089408">Προβολή αρχείου</translation>
+<translation id="4608113456606545718">Προστασία των δεδομένων του τηλεφώνου σας κατά την αφύπνιση αυτού του Bravebook από κατάσταση αδράνειας.</translation>
 <translation id="8064279191081105977">Ομάδα <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">Παράθυρο διαλόγου σύνδεσης</translation>
 <translation id="8068253693380742035">Αγγίξτε για να συνδεθείτε</translation>
@@ -6714,6 +6743,7 @@
 <translation id="811994229154425014">Διπλό πάτημα για την πληκτρολόγηση τελείας</translation>
 <translation id="8120505434908124087">Εκχώρηση προφίλ eSIM</translation>
 <translation id="812260729110117038">Οι διαφημιζόμενοι και οι εκδότες μπορούν να εξετάζουν την αποδοτικότητα των διαφημίσεων, με τέτοιον τρόπο ώστε να μην γίνεται εντοπισμός καθώς περιηγείστε μεταξύ ιστοτόπων.</translation>
+<translation id="81231173274944570">Ενεργοποίηση ανάδρασης αφής. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="81238879832906896">Κίτρινο και λευκό λουλούδι</translation>
 <translation id="8124313775439841391">ONC με ιδιότητες διαχείρισης</translation>
 <translation id="813082847718468539">Προβολή πληροφοριών τοποθεσίας</translation>
@@ -6802,7 +6832,6 @@
 <translation id="8213449224684199188">Έγινε είσοδος στη λειτουργία φωτογραφίας</translation>
 <translation id="8214489666383623925">Άνοιγμα Αρχείου...</translation>
 <translation id="8215129063232901118">Αποκτήστε πρόσβαση στις δυνατότητες του τηλεφώνου σας από τη συσκευή <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="8216351761227087153">Παρακολούθηση</translation>
 <translation id="8217399928341212914">Συνέχιση αποκλεισμού λήψεων πολλών αρχείων</translation>
 <translation id="8221491193165283816">Συνήθως αποκλείετε τις ειδοποιήσεις. Για να επιτρέψετε σε αυτόν τον ιστότοπο να σας στέλνει ειδοποιήσεις, κάντε κλικ εδώ.</translation>
 <translation id="822347941086490485">Εύρεση συσκευών HID…</translation>
@@ -6829,6 +6858,7 @@
 <translation id="8244514732452879619">Πλησιάζει η ώρα για ύπνο</translation>
 <translation id="8246776524656196770">Προστατεύστε το κλειδί ασφαλείας με ένα PIN (προσωπικός αριθμός ταυτοποίησης)</translation>
 <translation id="8248050856337841185">&amp;Επικόλληση</translation>
+<translation id="3105590366897772437">Συμβουλή για το Brave</translation>
 <translation id="8249048954461686687">Φάκελος OEM</translation>
 <translation id="8249615410597138718">Αποστολή στις συσκευές σας</translation>
 <translation id="8249672078237421304">Να προτείνεται να μεταφράζονται οι σελίδες που δεν εμφανίζονται στη γλώσσα ανάγνωσής σας</translation>
@@ -6902,7 +6932,6 @@
 <translation id="8324784016256120271">Οι ιστότοποι μπορούν να χρησιμοποιούν cookie για να βλέπουν τη δραστηριότητα περιήγησης μεταξύ διαφορετικών ιστοτόπων, για παράδειγμα, για την εξατομίκευση των διαφημίσεων.</translation>
 <translation id="8325413836429495820">Δεν επιτρέπεται να βλέπουν το πρόχειρό σας</translation>
 <translation id="8326478304147373412">PKCS #7, αλυσίδα πιστοποιητικού</translation>
-<translation id="8327039559959785305">Σφάλμα τοποθέτησης αρχείων Linux. Δοκιμάστε ξανά.</translation>
 <translation id="8327676037044516220">Ρυθμίσεις αδειών και περιεχομένου</translation>
 <translation id="833256022891467078">Κοινόχρηστοι φάκελοι Crostini</translation>
 <translation id="8335587457941836791">Ξεκαρφίτσωμα από το ράφι</translation>
@@ -7011,6 +7040,7 @@
 <translation id="8460932807646981183">Διαχείριση μηχανών αναζήτησης και αναζήτησης ιστοτόπου</translation>
 <translation id="84613761564611563">Ζητήθηκε διεπαφή χρήστη για διαμόρφωση δικτύου. Περιμένετε…</translation>
 <translation id="8461914792118322307">Διακομιστής μεσολάβησης</translation>
+<translation id="8463001014623882202">Η εξουσιοδότηση απέτυχε</translation>
 <translation id="8463215747450521436">Αυτός ο εποπτευόμενος χρήστης ενδέχεται να έχει διαγραφεί ή απενεργοποιηθεί από το διαχειριστή. Επικοινωνήστε με το διαχειριστή εάν επιθυμείτε να συνεχίσετε να συνδέεστε με τα στοιχεία αυτού του χρήστη.</translation>
 <translation id="846374874681391779">Γραμμή λήψεων</translation>
 <translation id="8463955938112983119">Το <ph name="PLUGIN_NAME"/> απενεργοποιήθηκε.</translation>
@@ -7293,9 +7323,11 @@
 <translation id="8763927697961133303">Συσκευή USB</translation>
 <translation id="5108988215075699143">Λεύκωμα Φωτογραφιών Brave</translation>
 <translation id="4570609078116869893">Αυτόματη ενημέρωση του Brave για όλους τους χρήστες</translation>
+<translation id="8767765348545497220">Κλείστε το συννεφάκι βοήθειας</translation>
 <translation id="8770406935328356739">Κατάλογος ρίζας επέκτασης</translation>
 <translation id="8771300903067484968">Έγινε επαναφορά του φόντου της αρχικής σελίδας στο προεπιλεγμένο φόντο.</translation>
 <translation id="8773302562181397928">Εξοικονομήστε <ph name="PRINTER_NAME"/></translation>
+<translation id="8773350724590665675">Snooping protection</translation>
 <translation id="8774379074441005279">Επιβεβαίωση επαναφοράς</translation>
 <translation id="8774934320277480003">Επάνω περιθώριο</translation>
 <translation id="8775144690796719618">Μη έγκυρη διεύθ. URL</translation>
@@ -7306,7 +7338,6 @@
 <translation id="8778328560035799409">Οι τρέχοντες αντιστοιχισμένοι διακόπτες θα διαγραφούν.</translation>
 <translation id="1732768497619250086">Λήψη περιγραφών εικόνων από την Brave</translation>
 <translation id="8780443667474968681">Η Φωνητική αναζήτηση απενεργοποιήθηκε.</translation>
-<translation id="878069093594050299">Το πιστοποιητικό επαληθεύτηκε για τις ακόλουθες χρήσεις:</translation>
 <translation id="8781834595282316166">Νέα καρτέλα στην ομάδα</translation>
 <translation id="8782565991310229362">Η εκκίνηση της εφαρμογής kiosk ακυρώθηκε.</translation>
 <translation id="8783834180813871000">Πληκτρολογήστε τον κωδικό σύζευξης του Bluetooth και, στη συνέχεια, πιέστε το πλήκτρο Return ή το Enter.</translation>
@@ -7411,6 +7442,7 @@
 <translation id="8879284080359814990">&amp;Εμφάνιση ως καρτέλα</translation>
 <translation id="8879921471468674457">Απομνημόνευση πληροφοριών σύνδεσης</translation>
 <translation id="8880054210564666174">Δεν είναι δυνατή η λήψη της λίστας επαφών. Ελέγξτε τη σύνδεση δικτύου σας ή <ph name="LINK_BEGIN"/>δοκιμάστε ξανά<ph name="LINK_END"/>.</translation>
+<translation id="8880344290593529089">Ανοίξτε τις Ρυθμίσεις για σύνδεση της συσκευής <ph name="USB_DEVICE_NAME"/> στο Linux ή το Parallels Desktop.</translation>
 <translation id="8881020143150461183">Δοκιμάστε ξανά. Για τεχνική υποστήριξη, επικοινωνήστε με <ph name="CARRIER_NAME"/>.</translation>
 <translation id="8883273463630735858">Ενεργοποίηση επιτάχυνσης επιφάνειας αφής</translation>
 <translation id="8884570509232205463">Η συσκευή σας θα κλειδωθεί στις <ph name="UNLOCK_TIME"/>.</translation>
@@ -7446,6 +7478,7 @@
 <translation id="8918637186205009138"><ph name="DEVICE_TYPE"/> του/της <ph name="GIVEN_NAME"/></translation>
 <translation id="8922624386829239660">Μετακίνηση οθόνης όταν το ποντίκι αγγίζει τις άκρες της οθόνης</translation>
 <translation id="8923880975836399332">Σκούρο γαλαζοπράσινο</translation>
+<translation id="8925124370124776087">Έχει γίνει απόκρυψη της γραμμής τίτλου.</translation>
 <translation id="8925458182817574960">&amp;Ρυθμίσεις</translation>
 <translation id="8926389886865778422">Να μην ερωτηθώ ξανά</translation>
 <translation id="892706138619340876">Έγινε επαναφορά ορισμένων ρυθμίσεων</translation>
@@ -7567,7 +7600,6 @@
 <translation id="9040661932550800571">Ενημέρωση κωδικού πρόσβασης για <ph name="ORIGIN"/>;</translation>
 <translation id="9041692268811217999">Η πρόσβαση στα τοπικά αρχεία στο μηχάνημά σας έχει απενεργοποιηθεί από το διαχειριστή σας</translation>
 <translation id="904224458472510106">Αυτή η λειτουργία δεν μπορεί να αναιρεθεί</translation>
-<translation id="9042893549633094279">Απόρρητο και ασφάλεια</translation>
 <translation id="904451693890288097">Εισαγάγετε το κλειδί πρόσβασης για τη συσκευή "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="9044646465488564462">Η σύνδεση στο δίκτυο απέτυχε: <ph name="DETAILS"/></translation>
 <translation id="9045160989383249058">Η λίστα ανάγνωσής σας μετακινήθηκε στο νέο πλαϊνό πλαίσιο. Δοκιμάστε το εδώ.</translation>
@@ -7580,6 +7612,7 @@
 <translation id="9053893665344928494">Απομνημόνευση της επιλογής μου</translation>
 <translation id="9055636786322918818">Να επιβάλλεται η κρυπτογράφηση RC4. Η χρήση αυτής της επιλογής αυξάνει τον κίνδυνο, επειδή η κρυπτογράφηση RC4 δεν είναι ασφαλής.</translation>
 <translation id="9056810968620647706">Δεν βρέθηκαν αντιστοιχίες.</translation>
+<translation id="9057007989365783744">Ο χρήστης <ph name="SUPERVISED_USER_NAME"/> θέλει να αποκτήσει πρόσβαση στο παρακάτω περιεχόμενο:</translation>
 <translation id="9057354806206861646">Ενημέρωση χρονοδιαγράμματος</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">Σφάλμα από τη γραμμή <ph name="ERROR_LINE_START"/> έως <ph name="ERROR_LINE_END"/></translation>
@@ -7770,6 +7803,7 @@
 <translation id="964439421054175458">{NUM_APLLICATIONS,plural, =1{Εφαρμογή}other{Εφαρμογές}}</translation>
 <translation id="964790508619473209">Διάταξη οθόνης</translation>
 <translation id="965211523698323809">Στείλτε και λάβετε μηνύματα κειμένου μέσω της συσκευής <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
+<translation id="8302628777674731869">Αναφορά ζητήματος σχετικά με το Brave Cast</translation>
 <translation id="967398046773905967">Να μην επιτρέπεται η πρόσβαση των ιστοτόπων στις συσκευές HID.</translation>
 <translation id="967624055006145463">Αποθηκευμένα δεδομένα</translation>
 <translation id="96774243435178359">Διαχειριζόμενοι εκτυπωτές</translation>
@@ -7877,12 +7911,12 @@
 <translation id="5828545842856466741">Προσθήκη χρήστη…</translation>
 <translation id="2254158488150713536">Για να συνεχίσετε, κάντε κλικ στο κουμπί OK και, στη συνέχεια, κάντε κλικ στην επιλογή "Προσθήκη ατόμου" για να δημιουργήσετε ένα νέο προφίλ για τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας.</translation>
 <translation id="1725743343613175327">Για να συνεχίσετε, κάντε κλικ στο κουμπί OK και, στη συνέχεια, κάντε κλικ στην επιλογή "Προσθήκη ατόμου" για να δημιουργήσετε ένα νέο προφίλ για τη διεύθυνση ηλεκτρονικού ταχυδρομείου <ph name="DOMAIN"/>.</translation>
-<translation id="1278825116220478166">Άτομα</translation>
 <translation id="3707212204259470604">Διαχείριση άλλων προφίλ</translation>
 <translation id="5832813618714645810">Προφίλ</translation>
 <translation id="5840822070878669614">Ανοίξτε το Διαδικτυακό Κατάστημα</translation>
 <translation id="383007806262310953">Εμφάνιση γραμμής σελιδοδεικτών</translation>
 <translation id="8648684608605749476">Αποκλεισμός cookie τρίτων μερών στην Ανώνυμη περιήγηση</translation>
+<translation id="8000244240371532481">Ενώ βρίσκεστε σε κατάσταση ανώνυμης περιήγησης, οι ιστότοποι μπορούν να χρησιμοποιήσουν τα cookie σας για να βλέπουν τη δραστηριότητα περιήγησής σας μεταξύ διαφορετικών ιστοτόπων όπως, για παράδειγμα, για την εξατομίκευση των διαφημίσεων.</translation>
 <translation id="255999604394332437">Ενώ βρίσκεστε σε ανώνυμη περιήγηση, οι ιστότοποι δεν μπορούν να χρησιμοποιήσουν τα cookie σας για να δουν τη δραστηριότητα περιήγησής σας σε διαφορετικούς ιστότοπους, για παράδειγμα, για την εξατομίκευση διαφημίσεων. Οι λειτουργίες σε ορισμένους ιστότοπους ενδέχεται να μην λειτουργούν.</translation>
 <translation id="6105125042109106861">Τα cookie τρίτου μέρους αποκλείονται στην κατάσταση ανώνυμης περιήγησης.</translation>
 <translation id="6710473112951410470">Μόνο για τρέχουσα περίοδο λειτουργίας σε ανώνυμη περιήγηση</translation>

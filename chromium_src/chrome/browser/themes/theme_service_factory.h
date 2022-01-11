@@ -12,7 +12,7 @@
 
 #define GetBrowserContextToUse GetBrowserContextToUse_ChromiumImpl(content::BrowserContext* context) const; content::BrowserContext* GetBrowserContextToUse  // NOLINT
 
-#include "../../../../../chrome/browser/themes/theme_service_factory.h"
+#include "src/chrome/browser/themes/theme_service_factory.h"
 
 #undef GetBrowserContextToUse
 

@@ -15,7 +15,7 @@
       HttpRequestHeaders* request_headers, bool* should_clear_upload); \
   NET_EXPORT static void UpdateHttpRequest
 
-#include "../../../../net/url_request/redirect_util.h"
+#include "src/net/url_request/redirect_util.h"
 #undef UpdateHttpRequest
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_URL_REQUEST_REDIRECT_UTIL_H_

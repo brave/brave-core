@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "قُطع الاتصال",
+    "message": "تم تسجيل الخروج ",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "قطع الاتصال بـ Brave Rewards",
-    "description": ""
+    "message": "تسجيل خروج من $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "المكاسب المُقدَّرة",

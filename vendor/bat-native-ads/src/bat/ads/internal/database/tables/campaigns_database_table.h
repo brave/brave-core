@@ -14,7 +14,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
 namespace database {
 namespace table {
 
@@ -37,7 +36,7 @@ class Campaigns final : public Table {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void MigrateToV16(mojom::DBTransaction* transaction);
+  void MigrateToV19(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

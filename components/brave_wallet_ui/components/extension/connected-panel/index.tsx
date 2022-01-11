@@ -12,6 +12,7 @@ import {
 } from '../../../utils/format-prices'
 import { formatBalance } from '../../../utils/format-balances'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
+import { PortfolioAssetItem } from '../../desktop'
 
 // Styled Components
 import {
@@ -28,37 +29,76 @@ import {
   CaratDownIcon,
   StatusRow,
   BalanceColumn,
-  SwitchIcon
+  SwitchIcon,
+  ScrollContainer,
+  MoreAssetsText,
+  AssetContainer
 } from './style'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+
+// Hooks
+import { useExplorer, usePricing } from '../../../common/hooks'
+
 import {
   WalletAccountType,
   PanelTypes,
-  EthereumChain,
+  BraveWallet,
   BuySupportedChains,
   SwapSupportedChains,
-  WalletOrigin
+  WalletOrigin,
+  DefaultCurrencies,
+  WalletRoutes,
+  AccountAssetOptionType
 } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   isConnected: boolean
   activeOrigin: string
+  defaultCurrencies: DefaultCurrencies
+  userAssetList: AccountAssetOptionType[]
   navAction: (path: PanelTypes) => void
   onLockWallet: () => void
   onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { onLockWallet, onOpenSettings, isConnected, navAction, selectedAccount, selectedNetwork, activeOrigin } = props
+  const {
+    spotPrices,
+    onLockWallet,
+    onOpenSettings,
+    isConnected,
+    navAction,
+    userAssetList,
+    selectedAccount,
+    selectedNetwork,
+    activeOrigin,
+    defaultCurrencies
+  } = props
   const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [isScrolled, setIsScrolled] = React.useState<boolean>(false)
+
+  let scrollRef = React.useRef<HTMLDivElement | null>(null)
+
+  const onScroll = () => {
+    const scrollPosition = scrollRef.current
+    if (scrollPosition !== null) {
+      const { scrollTop } = scrollPosition
+      if (scrollTop > 20) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+  }
 
   const navigate = (path: PanelTypes) => () => {
     navAction(path)
@@ -102,24 +142,27 @@ const ConnectedPanel = (props: Props) => {
     return !SwapSupportedChains.includes(selectedNetwork.chainId)
   }, [SwapSupportedChains, selectedNetwork])
 
-  const formatedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
+  const formattedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
 
-  const formatedAssetBalanceWithDecimals = selectedAccount.balance
-    ? formatTokenAmountWithCommasAndDecimals(formatedAssetBalance, selectedNetwork.symbol)
+  const formattedAssetBalanceWithDecimals = selectedAccount.balance
+    ? formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, selectedNetwork.symbol)
     : ''
 
-  const onClickViewOnBlockExplorer = () => {
-    const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    if (exporerURL && selectedAccount.address) {
-      const url = `${exporerURL}/address/${selectedAccount.address}`
-      chrome.tabs.create({ url: url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-        }
-      })
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
+  const { computeFiatAmount } = usePricing(spotPrices)
+
+  const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
+    selectedAccount.balance, selectedNetwork.symbol, selectedNetwork.decimals
+  ), [computeFiatAmount, selectedNetwork, selectedAccount])
+
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+
+  const onClickAsset = (symbol: string) => () => {
+    const url = `brave://wallet${WalletRoutes.Portfolio}/${symbol}`
+    chrome.tabs.create({ url: url }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 
   return (
@@ -129,39 +172,61 @@ const ConnectedPanel = (props: Props) => {
         onClickLock={onLockWallet}
         onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
-        onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
+        onClickViewOnBlockExplorer={onClickViewOnBlockExplorer('address', selectedAccount.address)}
         showMore={showMore}
       />
-      <CenterColumn>
-        <StatusRow>
-          <OvalButton disabled={activeOrigin === WalletOrigin} onClick={onShowSitePermissions}>
-            {isConnected && <BigCheckMark />}
-            <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
-          </OvalButton>
-          <Tooltip
-            text={selectedNetwork.chainName}
-            positionRight={true}
-          >
-            <OvalButton onClick={navigate('networks')}>
-              <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-              <CaratDownIcon />
-            </OvalButton>
-          </Tooltip>
-        </StatusRow>
-        <BalanceColumn>
-          <AccountCircle orb={orb} onClick={navigate('accounts')}>
-            <SwitchIcon />
-          </AccountCircle>
-          <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
-          <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
-            <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
-          </Tooltip>
-        </BalanceColumn>
-        <BalanceColumn>
-          <AssetBalanceText>{formatedAssetBalanceWithDecimals}</AssetBalanceText>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
-        </BalanceColumn>
-      </CenterColumn>
+      <ScrollContainer ref={scrollRef} onScroll={onScroll}>
+        <CenterColumn>
+          <StatusRow>
+            {activeOrigin !== WalletOrigin ? (
+              <OvalButton onClick={onShowSitePermissions}>
+                {isConnected && <BigCheckMark />}
+                <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
+              </OvalButton>
+            ) : (
+              <div />
+            )}
+            <Tooltip
+              text={selectedNetwork.chainName}
+              positionRight={true}
+            >
+              <OvalButton onClick={navigate('networks')}>
+                <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
+                <CaratDownIcon />
+              </OvalButton>
+            </Tooltip>
+          </StatusRow>
+          <BalanceColumn>
+            <AccountCircle orb={orb} onClick={navigate('accounts')}>
+              <SwitchIcon />
+            </AccountCircle>
+            <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
+            <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
+              <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+            </Tooltip>
+          </BalanceColumn>
+          <BalanceColumn>
+            <AssetBalanceText>{formattedAssetBalanceWithDecimals}</AssetBalanceText>
+            <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccountFiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+          </BalanceColumn>
+        </CenterColumn>
+        <AssetContainer isScrolled={isScrolled}>
+          {userAssetList?.map((asset) =>
+            <PortfolioAssetItem
+              spotPrices={spotPrices}
+              defaultCurrencies={defaultCurrencies}
+              action={onClickAsset(asset.asset.symbol)}
+              key={asset.asset.contractAddress}
+              assetBalance={asset.assetBalance}
+              token={asset.asset}
+              isPanel={true}
+            />
+          )}
+        </AssetContainer>
+      </ScrollContainer>
+      {userAssetList.length !== 0 &&
+        <MoreAssetsText isScrolled={isScrolled}>{getLocale('braveWalletPanelScrollForMoreAssets')}</MoreAssetsText>
+      }
       <ConnectedBottomNav
         selectedNetwork={selectedNetwork}
         isBuyDisabled={isBuyDisabled}

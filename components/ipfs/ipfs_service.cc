@@ -17,8 +17,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -288,8 +288,7 @@ bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
   bool exited = false;
   int exit_code = 0;
   base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
-  exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(10),
-                                          &exit_code);
+  exited = process.WaitForExitWithTimeout(base::Seconds(10), &exit_code);
   if (!exited)
     process.Terminate(0, true);
   return exited && !exit_code;
@@ -508,7 +507,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
 base::TimeDelta IpfsService::CalculatePeersRetryTime() {
   if (zero_peer_time_for_test_)
     return base::TimeDelta();
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalPeersRetryIntervalMs,
                     kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }

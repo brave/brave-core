@@ -166,12 +166,17 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Prerušené spojenie",
+    "message": "Odhlásené",
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Odpojiť sa od Brave Rewards",
-    "description": ""
+    "message": "Odhlásiť od $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Odhadované výnosy",

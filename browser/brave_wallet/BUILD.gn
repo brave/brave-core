@@ -4,22 +4,22 @@ import("//testing/test.gni")
 
 source_set("brave_wallet") {
   sources = [
-    "asset_ratio_controller_factory.cc",
-    "asset_ratio_controller_factory.h",
+    "asset_ratio_service_factory.cc",
+    "asset_ratio_service_factory.h",
+    "blockchain_images_source.cc",
+    "blockchain_images_source.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
-    "erc_token_images_source.cc",
-    "erc_token_images_source.h",
-    "eth_tx_controller_factory.cc",
-    "eth_tx_controller_factory.h",
-    "keyring_controller_factory.cc",
-    "keyring_controller_factory.h",
-    "rpc_controller_factory.cc",
-    "rpc_controller_factory.h",
-    "swap_controller_factory.cc",
-    "swap_controller_factory.h",
+    "eth_tx_service_factory.cc",
+    "eth_tx_service_factory.h",
+    "json_rpc_service_factory.cc",
+    "json_rpc_service_factory.h",
+    "keyring_service_factory.cc",
+    "keyring_service_factory.h",
+    "swap_service_factory.cc",
+    "swap_service_factory.h",
   ]
   deps = [
     "//brave/browser/profiles:util",
@@ -27,7 +27,6 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/factory",
-    "//brave/third_party/argon2",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
@@ -57,6 +56,7 @@ source_set("brave_wallet_delegate") {
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//components/content_settings/core/common",
     "//components/permissions",
     "//content/public/browser",
@@ -65,30 +65,47 @@ source_set("brave_wallet_delegate") {
   if (is_android) {
     sources += [ "brave_wallet_provider_delegate_impl_helper_android.cc" ]
   } else {
-    sources += [ "brave_wallet_provider_delegate_impl_helper.cc" ]
+    sources += [
+      "brave_wallet_provider_delegate_impl_helper.cc",
+      "brave_wallet_service_delegate_impl.cc",
+      "brave_wallet_service_delegate_impl.h",
+    ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
-      "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/ui",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
     ]
     if (enable_extensions) {
-      sources += [
-        "brave_wallet_service_delegate_impl.cc",
-        "brave_wallet_service_delegate_impl.h",
-      ]
-      deps += [
-        "//extensions/browser",
-        "//extensions/common",
-      ]
-      if (ethereum_remote_client_enabled) {
-        deps += [
-          "//brave/browser/ethereum_remote_client",
-          "//brave/browser/ethereum_remote_client:browser",
-        ]
-      }
+      deps += [ ":external_wallets_importer" ]
     }
+  }
+}
+
+source_set("external_wallets_importer") {
+  sources = [
+    "external_wallets_importer.cc",
+    "external_wallets_importer.h",
+  ]
+  deps = [
+    "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/third_party/argon2",
+    "//components/value_store:value_store",
+  ]
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+  if (ethereum_remote_client_enabled) {
+    deps += [
+      "//brave/browser/ethereum_remote_client",
+      "//brave/browser/ethereum_remote_client:browser",
+    ]
   }
 }
 
@@ -114,16 +131,16 @@ source_set("tab_helper") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "blockchain_images_source_unittest.cc",
     "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "brave_wallet_tab_helper_unittest.cc",
-    "erc_token_images_source_unittest.cc",
     "eth_nonce_tracker_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
     "eth_tx_state_manager_unittest.cc",
-    "keyring_controller_unittest.cc",
+    "filecoin_keyring_unittest.cc",
+    "keyring_service_unittest.cc",
   ]
-
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
@@ -145,7 +162,8 @@ source_set("unit_tests") {
       "//brave/components/brave_wallet/common:common_constants",
     ]
     if (enable_extensions) {
-      sources += [ "brave_wallet_service_delegate_impl_unittest.cc" ]
+      sources += [ "external_wallets_importer_unittest.cc" ]
+      deps += [ ":external_wallets_importer" ]
     }
   }
 }

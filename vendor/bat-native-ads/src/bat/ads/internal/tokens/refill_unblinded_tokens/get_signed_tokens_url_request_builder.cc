@@ -21,7 +21,7 @@ GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
 
 GetSignedTokensUrlRequestBuilder::~GetSignedTokensUrlRequestBuilder() = default;
 
-// GET /v1/confirmation/token/{payment_id}?nonce={nonce}
+// GET /v2/confirmation/token/{payment_id}?nonce={nonce}
 
 mojom::UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
@@ -34,7 +34,7 @@ mojom::UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetSignedTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/confirmation/token/%s?nonce=%s",
+  return base::StringPrintf("%s/v2/confirmation/token/%s?nonce=%s",
                             confirmations::server::GetHost().c_str(),
                             wallet_.id.c_str(), nonce_.c_str());
 }

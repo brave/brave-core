@@ -5,10 +5,9 @@
 
 import { createReducer } from 'redux-act'
 import {
+  BraveWallet,
   PanelState,
-  SwapErrorResponse,
-  SwapResponse,
-  SwitchChainRequest
+  SwapErrorResponse
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -49,7 +48,8 @@ const defaultState: PanelState = {
     },
     chainId: ''
   },
-  hardwareWalletCode: undefined
+  hardwareWalletCode: undefined,
+  suggestedToken: undefined
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -80,14 +80,14 @@ reducer.on(PanelActions.addEthereumChain, (state: any, networkPayload: EthereumC
   }
 })
 
-reducer.on(PanelActions.switchEthereumChain, (state: any, request: SwitchChainRequest) => {
+reducer.on(PanelActions.switchEthereumChain, (state: any, request: BraveWallet.SwitchChainRequest) => {
   return {
     ...state,
     switchChainRequest: request
   }
 })
 
-reducer.on(PanelActions.setPanelSwapQuote, (state: any, payload: SwapResponse) => {
+reducer.on(PanelActions.setPanelSwapQuote, (state: any, payload: BraveWallet.SwapResponse) => {
   return {
     ...state,
     swapQuote: payload
@@ -112,6 +112,13 @@ reducer.on(PanelActions.setHardwareWalletInteractionError, (state: any, payload?
   return {
     ...state,
     hardwareWalletCode: payload
+  }
+})
+
+reducer.on(PanelActions.addSuggestToken, (state: any, payload: BraveWallet.AddSuggestTokenRequest) => {
+  return {
+    ...state,
+    suggestedToken: payload.token
   }
 })
 

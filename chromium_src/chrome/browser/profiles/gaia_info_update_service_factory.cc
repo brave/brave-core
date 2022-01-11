@@ -9,7 +9,7 @@
 #include "chrome/browser/signin/identity_manager_factory.h"
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
-#include "../../../../../chrome/browser/profiles/gaia_info_update_service_factory.cc"
+#include "src/chrome/browser/profiles/gaia_info_update_service_factory.cc"
 #undef BuildServiceInstanceFor
 
 KeyedService* GAIAInfoUpdateServiceFactory::BuildServiceInstanceFor(

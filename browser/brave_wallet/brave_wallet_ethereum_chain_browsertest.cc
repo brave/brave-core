@@ -9,10 +9,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,6 +26,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -109,9 +110,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return brave_wallet::RpcControllerFactory::GetInstance()
-        ->GetControllerForContext(browser()->profile());
+  brave_wallet::JsonRpcService* GetJsonRpcService() {
+    return brave_wallet::JsonRpcServiceFactory::GetInstance()
+        ->GetServiceForContext(browser()->profile());
   }
 
  private:
@@ -133,17 +134,18 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   WaitForLoadStop(contents);
   ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
                   ->IsShowingBubble());
-  GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x38", true);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x38", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(true,
-                                                               url.GetOrigin());
+  url::Origin url_origin = url::Origin::Create(url);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true,
+                                                         url_origin.GetURL());
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x38");
-  EXPECT_EQ(GetEthJsonRpcController()->GetChainId(), "0x38");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x38");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
@@ -155,7 +157,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
   WaitForLoadStop(contents);
   ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
                   ->IsShowingBubble());
-  GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x38", false);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x38", false);
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result_first.value);
@@ -252,10 +254,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   ASSERT_TRUE(tab_helperB->IsShowingBubble());
 
   // Add Ethereum chain but don't switch
-  GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x11", true);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(
-      false, urlB.GetOrigin());
+  url::Origin urlB_origin = url::Origin::Create(urlB);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(false,
+                                                         urlB_origin.GetURL());
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
@@ -265,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
   // But current chain should not change
-  EXPECT_EQ(GetEthJsonRpcController()->GetChainId(), "0x1");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x1");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
@@ -304,10 +307,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   ASSERT_TRUE(tab_helperB->IsShowingBubble());
 
   // Add Ethereum chain and switch
-  GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x11", true);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  GetEthJsonRpcController()->NotifySwitchChainRequestProcessed(
-      true, urlB.GetOrigin());
+  url::Origin urlB_origin = url::Origin::Create(urlB);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true,
+                                                         urlB_origin.GetURL());
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);
@@ -315,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
-  EXPECT_EQ(GetEthJsonRpcController()->GetChainId(), "0x11");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x11");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
@@ -351,7 +355,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
   auto* prefs = browser()->profile()->GetPrefs();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
-  GetEthJsonRpcController()->AddEthereumChainRequestCompleted("0x11", true);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());

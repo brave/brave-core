@@ -237,7 +237,10 @@ bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kNativeBraveWalletFeature);
 }
-
+bool IsFilecoinEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
+}
 const std::vector<brave_wallet::mojom::EthereumChain>
 GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::EthereumChain> result;
@@ -475,7 +478,7 @@ void SecureZeroData(void* data, size_t size) {
 }
 
 // Updates preferences for when the wallet is unlocked.
-// This is done in a utils function instead of in the KeyringController
+// This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs) {
@@ -722,6 +725,10 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
       "logo", chain->icon_urls.empty() ? "" : chain->icon_urls[0]);
 
   asset_list->Append(std::move(native_asset));
+}
+
+std::string GetCurrentChainId(PrefService* prefs) {
+  return prefs->GetString(kBraveWalletCurrentChainId);
 }
 
 }  // namespace brave_wallet

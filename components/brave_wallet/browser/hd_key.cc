@@ -621,10 +621,11 @@ bool HDKey::Verify(const std::vector<uint8_t>& msg,
   return true;
 }
 
-std::vector<uint8_t> HDKey::Recover(const std::vector<uint8_t>& msg,
+std::vector<uint8_t> HDKey::Recover(bool compressed,
+                                    const std::vector<uint8_t>& msg,
                                     const std::vector<uint8_t>& sig,
                                     int recid) {
-  size_t public_key_len = 33;
+  size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
   if (msg.size() != 32 || sig.size() != 64) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
@@ -651,9 +652,9 @@ std::vector<uint8_t> HDKey::Recover(const std::vector<uint8_t>& msg,
     return public_key;
   }
 
-  if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key.data(),
-                                     &public_key_len, &pubkey,
-                                     SECP256K1_EC_COMPRESSED)) {
+  if (!secp256k1_ec_pubkey_serialize(
+          secp256k1_ctx_, public_key.data(), &public_key_len, &pubkey,
+          compressed ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED)) {
     LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
   }
 

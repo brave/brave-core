@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define GetLayoutConstant GetLayoutConstant_ChromiumImpl
-#include "../../../../../chrome/browser/ui/layout_constants.cc"
+#include "src/chrome/browser/ui/layout_constants.cc"
 #undef GetLayoutConstant
 
 #include "brave/browser/ui/brave_layout_constants.h"

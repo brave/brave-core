@@ -32,15 +32,15 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -76,19 +76,19 @@ public class PortfolioFragment extends Fragment
         return new PortfolioFragment();
     }
 
-    private EthJsonRpcController getEthJsonRpcController() {
+    private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthJsonRpcController();
+            return ((BraveWalletActivity) activity).getJsonRpcService();
         }
 
         return null;
     }
 
-    private EthTxController getEthTxController() {
+    private EthTxService getEthTxService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxController();
+            return ((BraveWalletActivity) activity).getEthTxService();
         }
 
         return null;
@@ -149,9 +149,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updateNetwork() {
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.getChainId(chain_id -> {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.getChainId(chain_id -> {
                 String chainName = mSpinner.getSelectedItem().toString();
                 String chainId = Utils.getNetworkConst(getActivity(), chainName);
                 if (chainId.equals(chain_id)) {
@@ -182,16 +182,15 @@ public class PortfolioFragment extends Fragment
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
-        if (ethJsonRpcController != null) {
-            ethJsonRpcController.setNetwork(
-                    Utils.getNetworkConst(getActivity(), item), (success) -> {
-                        if (!success) {
-                            Log.e(TAG, "Could not set network");
-                            return;
-                        }
-                        updatePortfolioGetPendingTx(true);
-                    });
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (jsonRpcService != null) {
+            jsonRpcService.setNetwork(Utils.getNetworkConst(getActivity(), item), (success) -> {
+                if (!success) {
+                    Log.e(TAG, "Could not set network");
+                    return;
+                }
+                updatePortfolioGetPendingTx(true);
+            });
         }
     }
 
@@ -231,19 +230,17 @@ public class PortfolioFragment extends Fragment
         mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
         mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(mPreviousCheckedRadioId);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int leftDot = R.drawable.ic_live_dot;
             ((RadioButton) view.findViewById(mPreviousCheckedRadioId))
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             RadioButton button = view.findViewById(checkedId);
-            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             mPreviousCheckedRadioId = checkedId;
             updatePortfolioGraph();
         });
     }
 
-    private void setUpCoinList(ErcToken[] userAssets, HashMap<String, Double> perTokenCryptoSum,
-            HashMap<String, Double> perTokenFiatSum) {
+    private void setUpCoinList(BlockchainToken[] userAssets,
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
         View view = getView();
         assert view != null;
 
@@ -251,8 +248,8 @@ public class PortfolioFragment extends Fragment
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-        for (ErcToken userAsset : userAssets) {
+        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
+        for (BlockchainToken userAsset : userAssets) {
             String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
             Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
             String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
@@ -270,7 +267,7 @@ public class PortfolioFragment extends Fragment
                 userAsset.logo = "eth.png";
             }
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-            walletListItemModel.setErcToken(userAsset);
+            walletListItemModel.setBlockchainToken(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -282,24 +279,26 @@ public class PortfolioFragment extends Fragment
     }
 
     @Override
-    public void onAssetClick(ErcToken asset) {
-        Utils.openAssetDetailsActivity(getActivity(), asset.symbol, asset.name,
+    public void onAssetClick(BlockchainToken asset) {
+        String chainName = mSpinner.getSelectedItem().toString();
+        String chainId = Utils.getNetworkConst(getActivity(), chainName);
+        Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
                 asset.contractAddress, asset.logo, asset.decimals);
     }
 
-    private AssetRatioController getAssetRatioController() {
+    private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
+            return ((BraveWalletActivity) activity).getAssetRatioService();
         }
 
         return null;
     }
 
-    private KeyringController getKeyringController() {
+    private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
+            return ((BraveWalletActivity) activity).getKeyringService();
         }
 
         return null;
@@ -370,9 +369,9 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
-        KeyringController keyringController = getKeyringController();
-        assert keyringController != null;
-        keyringController.getDefaultKeyringInfo(keyringInfo -> {
+        KeyringService keyringService = getKeyringService();
+        assert keyringService != null;
+        keyringService.getDefaultKeyringInfo(keyringInfo -> {
             AccountInfo[] accountInfos = new AccountInfo[] {};
             if (keyringInfo != null) {
                 accountInfos = keyringInfo.accountInfos;
@@ -380,7 +379,7 @@ public class PortfolioFragment extends Fragment
 
             if (mPortfolioHelper == null) {
                 mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioController(), getEthJsonRpcController(), accountInfos);
+                        getAssetRatioService(), getJsonRpcService(), accountInfos);
             }
 
             String chainName = mSpinner.getSelectedItem().toString();
@@ -456,7 +455,7 @@ public class PortfolioFragment extends Fragment
 
     private void getPendingTx(AccountInfo[] accountInfos) {
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(getEthTxController(), accountInfos, false, null);
+                new PendingTxHelper(getEthTxService(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

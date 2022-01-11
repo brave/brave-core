@@ -11,8 +11,20 @@
 
 namespace ads {
 
+CreativeAdNotificationList BuildCreativeAdNotifications(const int count) {
+  CreativeAdNotificationList creative_ads;
+
+  for (int i = 0; i < count; i++) {
+    const CreativeAdNotificationInfo& creative_ad =
+        BuildCreativeAdNotification();
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
 CreativeAdNotificationInfo BuildCreativeAdNotification() {
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
   CreativeAdNotificationInfo creative_ad_notification(creative_ad);
 
   creative_ad_notification.title = "Test Ad Title";

@@ -111,6 +111,11 @@
             android:title="@string/ens_title" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_autocomplete_in_address_bar"
+            android:title="@string/show_autocomplete_in_address_bar"
+            android:order="25"
+            android:persistent="false"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="search_suggestions"
             android:title="@string/autocomplete_searches_and_urls_title"
             android:order="25"

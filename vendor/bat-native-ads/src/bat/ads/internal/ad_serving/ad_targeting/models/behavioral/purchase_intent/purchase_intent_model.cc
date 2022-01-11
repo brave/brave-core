@@ -28,7 +28,7 @@ uint16_t CalculateScoreForHistory(
   const int64_t time_window = features::GetPurchaseIntentTimeWindowInSeconds();
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
-        signal_segment.created_at + base::TimeDelta::FromSeconds(time_window);
+        signal_segment.created_at + base::Seconds(time_window);
 
     if (base::Time::Now() > signal_decayed_time) {
       continue;

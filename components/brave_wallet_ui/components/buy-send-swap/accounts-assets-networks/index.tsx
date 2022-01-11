@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {
   AccountAssetOptionType,
+  BraveWallet,
   BuySendSwapViewTypes,
-  UserAccountType,
-  EthereumChain
+  UserAccountType
 } from '../../../constants/types'
 
 import {
@@ -20,13 +20,15 @@ import {
 export interface Props {
   selectedView: BuySendSwapViewTypes
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   assetOptions: AccountAssetOptionType[]
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
+  onAddAsset: () => void
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: EthereumChain) => () => void
+  onClickSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
   onSelectedAsset: (account: AccountAssetOptionType) => () => void
   goBack: () => void
+  onAddNetwork: () => void
 }
 
 function SelectHeader (props: Props) {
@@ -36,10 +38,12 @@ function SelectHeader (props: Props) {
     networkList,
     assetOptions,
     selectedNetwork,
+    onAddAsset,
     onClickSelectAccount,
     goBack,
     onSelectedAsset,
-    onClickSelectNetwork
+    onClickSelectNetwork,
+    onAddNetwork
   } = props
 
   return (
@@ -53,6 +57,7 @@ function SelectHeader (props: Props) {
       }
       {selectedView === 'assets' &&
         <SelectAsset
+          onAddAsset={onAddAsset}
           assets={assetOptions}
           onSelectAsset={onSelectedAsset}
           onBack={goBack}
@@ -64,6 +69,8 @@ function SelectHeader (props: Props) {
           networks={networkList}
           onSelectNetwork={onClickSelectNetwork}
           onBack={goBack}
+          hasAddButton={true}
+          onAddNetwork={onAddNetwork}
         />
       }
     </StyledWrapper>

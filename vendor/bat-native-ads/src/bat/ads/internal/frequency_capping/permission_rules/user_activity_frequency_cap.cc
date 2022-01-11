@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 
+#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring_util.h"
 
@@ -15,6 +16,10 @@ UserActivityFrequencyCap::UserActivityFrequencyCap() = default;
 UserActivityFrequencyCap::~UserActivityFrequencyCap() = default;
 
 bool UserActivityFrequencyCap::ShouldAllow() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
   if (!DoesRespectCap()) {
     last_message_ = "User was inactive";
     return false;

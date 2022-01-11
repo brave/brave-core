@@ -37,6 +37,9 @@ bool ParseEthSignParams(const std::string& json,
 bool ParsePersonalSignParams(const std::string& json,
                              std::string* address,
                              std::string* message);
+bool ParsePersonalEcRecoverParams(const std::string& json,
+                                  std::string* message,
+                                  std::string* signature);
 
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,
@@ -47,6 +50,13 @@ bool ParseEthSignTypedDataParams(const std::string& json,
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);
+
+bool ParseWalletWatchAssetParams(const std::string& json,
+                                 mojom::BlockchainTokenPtr* token,
+                                 std::string* error_message);
+bool ParseRequestPermissionsParams(
+    const std::string& json,
+    std::vector<std::string>* restricted_methods);
 
 }  // namespace brave_wallet
 

@@ -17,7 +17,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -37,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -46,6 +49,12 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.json.JSONException;
 
@@ -137,6 +146,8 @@ import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -165,10 +176,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
-    public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
-    public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
-    public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
+    public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
+            "brave://rewards/#verify";
+    public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
@@ -256,7 +268,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.set_default_browser) {
             handleBraveSetDefaultBrowserDialog();
         } else if (id == R.id.brave_rewards_id) {
-            openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
+            openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.brave_news_id) {
@@ -526,6 +538,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
         }
+        if (!TextUtils.isEmpty(BinanceWidgetManager.getInstance().getBinanceAccountBalance())) {
+            try {
+                BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
+                        BinanceWidgetManager.getInstance().getBinanceAccountBalance());
+            } catch (JSONException e) {
+                Log.e("NTP", e.getMessage());
+            }
+        }
 
         if (PackageUtils.isFirstInstall(this)
                 && SharedPreferencesManager.getInstance().readInt(
@@ -535,11 +555,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_4);
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
-        }
-        if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
-            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
-            openRewardsPanel();
-            BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
@@ -655,8 +670,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             // inflate the settings bar layout
             View inflatedSettingsBarLayout =
                     inflater.inflate(R.layout.brave_news_settings_bar_layout, null);
-            RelativeLayout newContentButtonLayout =
-                    (RelativeLayout) inflater.inflate(R.layout.brave_news_load_new_content, null);
+            View newContentButtonLayout =
+                    inflater.inflate(R.layout.brave_news_load_new_content, null);
             // add the bar to the layout stack
             compositorView.addView(inflatedSettingsBarLayout, 2);
             compositorView.addView(newContentButtonLayout, 3);
@@ -667,11 +682,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
-            // position bellow the control_container element (nevigation bar) with 25dp compensation
-            inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - 5, 0, 0);
-            newContentButtonLayoutParams.setMargins(0, 400, 0, 0);
+            // position bellow the control_container element (nevigation bar) with
+            // getToolbarShadowHeight compensation
+            inflatedLayoutParams.setMargins(
+                    0, controlContainer.getBottom() - getToolbarShadowHeight(), 0, 0);
+            newContentButtonLayoutParams.setMargins(0, 600, 0, 0);
             newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-            newContentButtonLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
             newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
 
@@ -695,15 +711,29 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     // Sets NTP background
-    public void setBackground(BitmapDrawable bgWallpaper) {
+    public void setBackground(Bitmap bgWallpaper) {
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
 
         ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
         ScrollView scrollView = (ScrollView) root.getChildAt(0);
         scrollView.setId(View.generateViewId());
 
-        //@TODO alex use Glide to set the image?
-        scrollView.setBackground(bgWallpaper);
+        Glide.with(this)
+                .asBitmap()
+                .load(bgWallpaper)
+                .fitCenter()
+                .priority(Priority.IMMEDIATE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource,
+                            @Nullable Transition<? super Bitmap> transition) {
+                        Drawable drawable = new BitmapDrawable(getResources(), resource);
+                        scrollView.setBackground(drawable);
+                    }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                });
     }
 
     private void checkFingerPrintingOnUpgrade() {
@@ -1178,6 +1208,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
         return mBrowserControlsManagerSupplier;
+    }
+
+    public int getToolbarShadowHeight() {
+        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        assert toolbarShadow != null;
+        if (toolbarShadow != null) {
+            return toolbarShadow.getHeight();
+        }
+        return 0;
     }
 
     public int getToolbarBottom() {

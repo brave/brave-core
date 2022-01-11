@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">จ่ายเงินออนไลน์</translation>
 <translation id="6583902294974160967">การสนับสนุน</translation>
 <translation id="1799030480311994998">ฟีเจอร์</translation>
-<translation id="5345505584130165588">Brave Shields &amp; ความเป็นส่วนตัว</translation>
+<translation id="2005732746077850308">Brave Shield &amp; ความเป็นส่วนตัว</translation>
 <translation id="4692623383562244444">เครื่องมือค้นหา</translation>
 <translation id="1468415711258933398">แท็บทั่วไป</translation>
 <translation id="3377025655491224618">แท็บส่วนตัว</translation>
@@ -23,13 +23,29 @@
 <translation id="4022987104439075738">เกตเวย์ IPFS</translation>
 <translation id="2688519859165248360">อนุญาตให้นำทางไปยังทรัพยากร IPFS ผ่านเกตเวย์ IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="7822245778264751380">ราคา Ethereum (ETH)</translation>
+<translation id="3872060236937011862">ราคา <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">วิธีแก้ไข</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
 <translation id="2218918398178303658">DNS ผ่านทาง HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6252490671914511928">เรื่องเด่นประจำวันนี้ในฟีดส่วนตัว สำหรับคุณโดยเฉพาะ</translation>
+<translation id="7266075701303521777">ข่าว Brave เป็นโฆษณาที่ได้รับการสนับสนุนความส่วนตัวโดยสมบูรณ์และเป็นโฆษณาที่ไม่ระบุชื่อ ซึ่งเหมาะกับอุปกรณ์ของคุณ</translation>
+<translation id="4541978218358617681">โฆษณา</translation>
+<translation id="1765217911817124376">เปิดข่าว Brave</translation>
+<translation id="6527303717912515753">แชร์</translation>
+<translation id="1654539412343893324">เรียนรู้เพิ่มเติมเกี่ยวกับข้อมูลของคุณ</translation>
+<translation id="2989805286512600854">เปิดในแท็บใหม่</translation>
+<translation id="3709782636417497984">เปิดในแท็บส่วนตัวใหม่</translation>
+<translation id="2014017248518069982">ปิดกั้นเนื้อหาจาก <ph name="PUBLISHER"/></translation>
+<translation id="6332791358521956870">ปิดกั้น <ph name="PUBLISHER"/> แล้ว</translation>
+<translation id="1276592121036104130">โหลดเนื้อหาใหม่</translation>
+<translation id="3189348785087463371">โปรโมทแล้ว</translation>
+<translation id="7554145152551782675">ข้อเสนอของ Brave เพิ่มเติม</translation>
+<translation id="4975944254857623648">แหล่งข้อมูลเริ่มต้น</translation>
+<translation id="253886574765651454">เพิ่มแหล่งข้อมูล</translation>
+<translation id="7823038307453615214">แสดง Brave News</translation>
 <translation id="5787084571334399599">ป้องกันเบราว์เซอร์ไม่ให้สร้างลายนิ้วมือ</translation>
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="4448697385961650078">บล็อกโฆษณา &amp; แอปติดตาม</translation>
@@ -118,12 +134,13 @@
 <translation id="4254029385847607686">ธันวาคม</translation>
 <translation id="3780605330121608425">กระเป๋าเงินของคุณ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
-<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="1772301834467143364">ข่าว Brave</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">เพิ่มเงิน</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
-<translation id="8772672608371898774">สำนักพิมพ์ที่ได้รับการยืนยันจาก Brave</translation>
-<translation id="1397683270551078781">ยังไม่ได้ยืนยัน</translation>
+<translation id="6020176662032623904">ผู้สร้างยืนยันตัวตนแล้ว</translation>
+<translation id="2369994359029526515">ผู้สร้างยังไม่ยืนยันตัวตน</translation>
 <translation id="880893465294676334">ครีเอเตอร์ที่ได้รับการรับรองจาก Brave รายนี้ยังไม่ได้กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave
         ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าเงินของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์</translation>
 <translation id="8918760045046434238">ส่งทิป...</translation>
@@ -172,6 +189,8 @@
 <translation id="4282642752844565114">จำนวนคำไม่ถูกต้อง</translation>
 <translation id="7507533586185621084">รหัสซิงค์ไม่ถูกต้อง</translation>
 <translation id="8284063834901328650">รหัส QR ซิงค์ไม่ถูกต้อง</translation>
+<translation id="859506441384380749">รหัสนี้สร้างโดย Brave เวอร์ชันที่เลิกใช้แล้ว กรุณาอัปเกรดอุปกรณ์อื่นของคุณก่อน</translation>
+<translation id="3132642509209154999">รหัสนี้หมดอายุแล้ว กรุณาสร้างรหัสใหม่บนอุปกรณ์อื่นของคุณแล้วลองอีกครั้ง</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync ช่วยให้คุณซิงค์ข้อมูลบุ๊กมาร์กระหว่างเบราว์เซอร์ Brave บนอุปกรณ์ต่างๆ ของคุณได้อย่างเป็นส่วนตัว</translation>
 <translation id="3735228155296883311">เพียงสแกนโค้ดจากลูกโซ่การซิงค์ที่คุณสร้างขึ้นบนอุปกรณ์อื่น หรือเริ่มลูกโซ่การซิงค์ใหม่</translation>
@@ -261,11 +280,12 @@
 <translation id="9096003370755878766">ถอน BAT ที่คุณอาจเพิ่มเข้าไปในกระเป๋าเงิน Brave Rewards ของคุณก่อนหน้านี้</translation>
 <translation id="1554282356558968486">บริการวอลเล็ทของเราให้บริการโดย</translation>
 <translation id="6569877533335686968">ส่งเสริม</translation>
+<translation id="734105583050813665">bitfFyer</translation>
 <translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
-<translation id="723054503945711909">Brave Software Inc. จะไม่ประมวลผล เก็บบันทึก หรือเข้าถึงข้อมูลส่วนบุคคลใด ๆ ที่คุณให้ไว้กับ Uphold เมื่อคุณสร้างบัญชีกับทางนั้น</translation>
+<translation id="3200197118442451932">Brave Software Inc. ไม่ได้ประมวลผล จัดเก็บ หรือเข้าถึงข้อมูลส่วนตัวใดๆ ที่คุณให้แก่ <ph name="WALLET_PROVIDER"/> เมื่อคุณจัดทำบัญชีด้วยข้อมูลเหล่านี้</translation>
 <translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="2193391216824305230">กระเป๋าเงินผู้ใช้</translation>
-<translation id="6585020831163574892">ไปที่บัญชี Uphold ของคุณ</translation>
+<translation id="1665118090708049096">ไปที่บัญชี <ph name="WALLET_PROVIDER"/> ของฉัน</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="6239274080752256452">ถอนเงิน</translation>
 <translation id="8874184842967597500">ไม่ได้เชื่อมต่อ</translation>
@@ -274,10 +294,6 @@
 <translation id="5358719431303818601">ยังไม่ได้รับการยืนยันการยกเลิกการเชื่อมต่อ</translation>
 <translation id="4241449868720191203">ยืนยันการยกเลิกการเชื่อมต่อแล้ว</translation>
 <translation id="3248185426436836442">รอดำเนินการ</translation>
-<translation id="8108013093558639183">ขณะนี้ BAT ไม่รองรับในภูมิภาคของคุณตามตำแหน่งที่คุณเปิดบัญชี ตรวจสอบว่าพร้อมใช้งานเมื่อไรภายหลัง</translation>
-<translation id="4190454391025419535">ภูมิภาคไม่สนับสนุน</translation>
-<translation id="6830703472632069884">เกิดปัญหาขณะยืนยันประเป๋าเงินของคุณ โปรดลองใหม่อีกครั้งภายหลัง</translation>
-<translation id="3512533646933434345">เกิดความผิดพลาดในการยืนยันกระเป๋าเงิน</translation>
 <translation id="2260513517001048012">หมายเหตุ: Brave Verified Creator นี้ยังไม่ได้ตั้งค่าบัญชีเพื่อรับเงินช่วยเหลือจากผู้ใช้งาน Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินจนกว่าจะได้รับการยืนยัน หรือจนเวลาผ่านไป 90 วัน</translation>
 <translation id="4488355059795908907">Brave Verified Creator นี้ยังไม่ได้ตั้งค่าบัญชีเพื่อรับเงินช่วยเหลือจากผู้ใช้งาน Brave ทิปใด ๆ ที่คุณส่งจะยังอยู่ในกระเป๋าเงินของคุณจนกว่ากระบวนการนี้จะทำสำเร็จ</translation>
 <translation id="2495032782748793764">Brave Default</translation>
@@ -341,6 +357,7 @@
 <translation id="5617673581653540121">การเชื่อมต่อของคุณได้รับการเข้ารหัสแล้ว</translation>
 <translation id="4055107796760496928">หากทำได้ Brave จะอัปเกรดคุณเป็นการเชื่อมต่อที่ปลอดภัยโดยอัตโนมัติ</translation>
 <translation id="8869714780588464835">แบ่งปันข่าวสาร</translation>
+<translation id="7427391215172269363">ฉันบันทึกข้อมูลด้วยการท่องเว็บด้วย Brave ทุกวัน</translation>
 <translation id="5372054974373489308">บล็อกโฆษณาติดตามกว่า 1,000 รายการแล้ว!</translation>
 <translation id="2338952568654182692">บล็อกโฆษณาติดตามกว่า 5000 รายการแล้ว!</translation>
 <translation id="5289711064670408815">บล็อกโฆษณาติดตามกว่า 10,000 รายการแล้ว!</translation>
@@ -420,8 +437,7 @@
 <translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
 <translation id="2882813124794301799">Widget Stack</translation>
 <translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
-<translation id="4670943871783273148">ข้อความของคุณได้รับการบันทึกลงในไฟล์ข้อความแล้ว</translation>
-<translation id="4432845796903761592">ไฟล์ไม่ถูกบันทึก</translation>
+<translation id="2735834606413553397">คัดลอกที่อยู่สาธารณะไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="2977461003134694205">สถิติความเป็นส่วนตัว</translation>
 <translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
@@ -535,33 +551,32 @@
 <translation id="3171931580569169744">เปิดใช้งาน Tab Groups</translation>
 <translation id="5587305863196367357">การยืนยันกระเป๋าเงินจะทำให้คุณจัดการเงินของคุณได้อย่างง่ายดายในส่วนของการเติมเงินและการถอนเงิน</translation>
 <translation id="5760671211380791582">คุณมี BAT ไม่เพียงพอ</translation>
-<translation id="6960458596933484861">คุณต้องมีอย่างน้อย 15 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยัน โปรดลองใหม่อีกครั้งในภายหลัง</translation>
+<translation id="442469478596827903">คุณต้องมีอย่างน้อย 2 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยันแล้ว โปรดลองใหม่อีกครั้งในภายหลัง</translation>
 <translation id="4389085954549744469">หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันแล้ว  <ph name="CONTINUE_TO_LOGIN"/></translation>
 <translation id="6146966915297143881">ดำเนินการเข้าสู่ระบบ</translation>
 <translation id="1483493594462132177">ส่ง</translation>
 <translation id="538450413584738399">สวอป</translation>
-<translation id="8825032646286791700">DeFi การจัดเก็บคริปโตที่ปลอดภัย</translation>
-<translation id="5460364286096798286">ถือคริปโตไว้ในความดูแลของคุณ ซื้อขายสินทรัพย์ ดูราคาและผลงาน ลงทุน ยืม และให้ยืมด้วย DeFi</translation>
-<translation id="1748009926009835882">ตั้งค่าคริปโต</translation>
+<translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
+<translation id="8339846196588658366">ถือสินทรัพย์คริปไว้ในความดูแลของคุณและติดตามผลตอบแทนในพอร์ตโฟลิโอ ทั้งหมดนี้ทำได้จากเบราว์เซอร์ที่มีความเป็นส่วนตัวจาก Brave</translation>
+<translation id="4472575034687746823">เริ่มต้น</translation>
 <translation id="2759836790106646094">สำรองข้อมูลกระเป๋าเงินของคุณตอนนี้!</translation>
-<translation id="5156354224138379811">ในขั้นตอนต่อไป คุณจะเห็น 12 คำที่จะช่วยคุณกู้คืนกระเป๋าเงินคริปโตของคุณ</translation>
+<translation id="1078873179929044999">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) 12 คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ เก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานกระเป๋าเงิน</translation>
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
-<translation id="5024543173656851695">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
+<translation id="1904000155026201268">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
 <translation id="3933122286596948824">วลีกู้คืนของคุณ</translation>
-<translation id="6146351434671268516">จดหรือคัดลอกคำเหล่านี้ตามลำดับที่ถูกต้องและบันทึกไว้ในที่ที่ปลอดภัย</translation>
-<translation id="7408247683131762445">คำเตือน: ห้ามเปิดเผยวลีสำรองข้อมูลของคุณโดยเด็ดขาด ใครก็ตามที่มีรหัสลับนี้จะสามารถใช้เงินของคุณได้ตลอดไป</translation>
-<translation id="939275786514736244">ฉันได้สำรองวลีของฉันไว้ที่ไหนสักแห่งที่ปลอดภัย</translation>
+<translation id="5077747669435508720">จดหรือคัดลอกคำเหล่านี้ไว้ตามลำดับที่ถูกต้องดังที่แสดงด้านล่างแล้วเก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานวอลเล็ต</translation>
+<translation id="2708402071160162126">คำเตือน: อย่าให้ใครรู้กลุ่มคำสำหรับการกู้คืนของคุณ ใครก็ตามที่มีกลุ่มคำเหล่านี้จะสามารถนำสินทรัพย์ของคุณไปได้ตลอดกาล</translation>
+<translation id="111912712268284159">ฉันได้เก็บสำรองกลุ่มคำของฉันไว้ในที่ที่ปลอดภัยแล้ว</translation>
 <translation id="6896758677409633944">คัดลอก</translation>
-<translation id="5317780077021120954">บันทึก</translation>
-<translation id="2604744480284798833">เก็บสำรองวอลเล็ตของคุณทันทีเพื่อปกป้องพอร์ตคริปโตของคุณจากการสูญเสียสิทธิ์การเข้าถึง</translation>
-<translation id="1202920745614909195">ซื้อคริปโตด้วย Apple Pay บัตรเครดิตหรือบัตรเดบิต</translation>
+<translation id="375882617301124395">เก็บสำรองคริปโตวอลเล็ตของคุณ</translation>
+<translation id="8289942708804097960">ซื้อคริปโตด้วยบัตรเครดิตหรือบัตรเดบิต</translation>
 <translation id="841880029259839903">ส่งคริปโตหรือโอนจากบัญชีหนึ่งไปยังอีกบัญชีหนึ่ง</translation>
 <translation id="8982246458261383692">แลกเปลี่ยนสินทรัพย์คริปโตด้วย DEX Aggregator ของ Brave</translation>
 <translation id="1783600039044302171">รักษาความปลอดภัยคริปโตของคุณด้วยรหัสผ่าน</translation>
 <translation id="3726490322412361740">ป้อนรหัสผ่าน</translation>
-<translation id="4450951602553063001">ป้อนรหัสผ่านอีกครั้ง</translation>
-<translation id="1783870616707290226">รหัสผ่านต้องมีอักขระมากกว่า 7 ตัว</translation>
-<translation id="7383102760859258982">รหัสผ่านที่พิมพ์อีกครั้งไม่ตรงกัน</translation>
+<translation id="3038243139480464605">ยืนยันรหัสผ่าน</translation>
+<translation id="3717685683157254329">รหัสผ่านต้องมีอักขระอย่างน้อย 7  ตัว และประกอบด้วยตัวอักษร 1  ตัว ตัวเลข 1 ตัว และอักขระพิเศษ 1 ตัว</translation>
+<translation id="7396672979287122068">รหัสผ่านที่ยืนยันไม่ตรงกัน</translation>
 <translation id="3188963375823360044">1 ชม.</translation>
 <translation id="8163269366661594721">1 วัน</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -569,24 +584,26 @@
 <translation id="6366007539108097840">3 เดือน</translation>
 <translation id="6977728312178289892">1 ปี</translation>
 <translation id="6895566650974550243">ทั้งหมด</translation>
-<translation id="2267753748892043616">เพิ่มบัญชี</translation>
-<translation id="2632612428525029752">อัปเดตบัญชี</translation>
+<translation id="5071303414930953888">บัญชี <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="7665369617277396874">เพิ่มบัญชี</translation>
+<translation id="3448492834076427715">อัปเดตบัญชี</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">เปิดใช้งานการปลดล็อกด้วยลายนิ้วมือหรือไม่</translation>
 <translation id="5493402808936397665">เปิดใช้งานไบโอเมตริกซ์เพื่อปลดล็อกกระเป๋าเงินของคุณอย่างรวดเร็วโดยไม่ต้องป้อนรหัสผ่าน</translation>
-<translation id="1544192797660353713">วอลเล็ท</translation>
+<translation id="8030647312184163932">ปลดล็อกด้วยลายนิ้วมือ</translation>
+<translation id="4090490645603511157">เปิดใช้งานไบโอเมตริกซ์เพื่อปลดล็อกกระเป๋าเงินของคุณอย่างรวดเร็วโดยไม่ต้องป้อนรหัสผ่าน</translation>
+<translation id="5379398699598690674">กระเป๋าเงิน (เบต้า)</translation>
 <translation id="6901810042765869341">ป้อนวลีกู้คืนของคุณเพื่อกู้คืนบัญชีคริปโตของ Brave Wallet</translation>
-<translation id="1970161551843843564">คืนค่าบัญชีคริปโต</translation>
+<translation id="9120654436199628567">กู้คืนบัญชีคริปโต</translation>
 <translation id="4811736040444856406">แสดงวลีกูคืน</translation>
 <translation id="283071225285270357">ป้อนวลีกู้คืนของคุณ</translation>
 <translation id="2339124864228588937">ยืนยันวลีกู้คืน</translation>
-<translation id="2718669004132381989">แตะคำเพื่อวางต่อกันเป็นลำดับที่ถูกต้อง</translation>
+<translation id="3747079125031086337">เลือกคำในกลุ่มคำสำหรับการกู้คืนของคุณตามลำดับที่ถูกต้อง</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="9111102763498581341">ปลดล็อก</translation>
 <translation id="6657585470893396449">รหัสผ่าน</translation>
-<translation id="1569452037668432756">ป้อนรหัสผ่านเพื่อปลดล็อก</translation>
-<translation id="224719674509047150">รหัสผ่านต้องมีอักขระอย่างน้อย 7 ตัวที่ประกอบด้วยตัวเลขและอักขระพิเศษอย่างน้อยหนึ่งตัว</translation>
+<translation id="5168349973342709369">ป้อนรหัสผ่านเพื่อปลดล็อควอลเล็ต</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="5760476995887363522">กลุ่มคำไม่ตรงกัน กรุณาลองอีกครั้ง</translation>
 <translation id="2360588547830602174">การกู้คืนบัญชีล้มเหลว กรุณาลองอีกครั้ง</translation>
@@ -597,11 +614,10 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">ถึง (ประมาณ)</translation>
 <translation id="6998989275928107238">ถึง</translation>
-<translation id="6664416064035847539">ที่อยู่หรือ URL</translation>
+<translation id="2589431635772931954">ที่อยู่หรือ URL</translation>
 <translation id="632241521608275119">ค่าเผื่อความคลาดเคลื่อน</translation>
 <translation id="1987317783729300807">บัญชี</translation>
 <translation id="3535654229833214438">ธุรกรรม</translation>
-<translation id="4636930964841734540">ข้อมูล</translation>
 <translation id="2449682593754783720">1 ชั่วโมง</translation>
 <translation id="969133700726811190">1 วัน</translation>
 <translation id="5882300031363619940">1 สัปดาห์</translation>
@@ -613,7 +629,7 @@
 <translation id="3819257035322786455">การสำรองข้อมูล</translation>
 <translation id="4608713693379664295">บัญชีคริปโตหลัก</translation>
 <translation id="4003821417160006384">บัญชีสำรอง</translation>
-<translation id="8094541587800369158">สามารถใช้บัญชีเหล่านี้กับ web 3 dapps และสามารถแสดงในพอร์ตโฟลิโอของคุณได้ อย่างไรก็ตาม ไม่สามารถกู้คืนบัญชีเหล่านี้ผ่านวลีกู้คืนจากข้อมูลสำรองของบัญชีหลักของคุณได้ เปิดใช้งานบัญชี Brave Sync เพื่อกู้คืนบัญชีสำรองโดยอัตโนมัติ</translation>
+<translation id="2471916999505901943">บัญชีเหล่านี้ใช้ได้กับ web3 DApps และแสดงในพอร์ตโฟลิโอของคุณได้ อย่างไรก็ตามโปรดทราบว่าบัญชีรองจะไม่สามารถกู้คืนได้โดยใช้กลุ่มคำสำหรับการกู้คืนจากการเก็บสำรองบัญชีหลักของคุณ</translation>
 <translation id="6725413948756358325">ชื่อบัญชี</translation>
 <translation id="6062431965141524986">คุณสามารถสร้างบัญชีสำรองได้โดยการนำเข้าคีย์ส่วนตัวของคุณ</translation>
 <translation id="3952797765659730604">ป้อน วาง หรือนำเข้าไฟล์สตริงคีย์ส่วนตัวหรือ JSON</translation>
@@ -625,6 +641,18 @@
 <translation id="5050890334032852465">บันทึกรายการเฝ้าดูของบัญชี</translation>
 <translation id="7755766175599167100">ค้นหาโทเค็น</translation>
 <translation id="3835223348537121988">ยอดคงเหลือ:</translation>
+<translation id="2490428413101944234">Test faucet</translation>
+<translation id="2581671693710952401">รับอีเธอร์</translation>
+<translation id="8165484222652118977">รับ Ether จาก Faucet สำหรับเครือข่ายทดสอบ <ph name="NETWORK"/></translation>
+<translation id="7420359180991315365">ไปที่ Wyre</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="3784455785234192852">ล็อค</translation>
+<translation id="5040262127954254034">ความเป็นส่วนตัว</translation>
+<translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
+<translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
+<translation id="4993345308607970390">รีเซ็ตกระเป๋าเงิน Brave</translation>
+<translation id="6369495274982305511">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตกระเป๋าเงินของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# นาที} other {# นาที}}</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">อัปเกรดเป็น VPN เพื่อปกป้องการเชื่อมต่อของคุณและบล็อกตัวติดตามที่เข้าแทรกแซงได้ทุกที่</translation>
 <translation id="3435896845095436175">เปิดการใช้งาน</translation>
@@ -708,8 +736,8 @@
 <translation id="7995708795274219641">จำนวน + แก๊ส</translation>
 <translation id="1950052789869821983">ธุรกรรม</translation>
 <translation id="6122742277607781713">พอร์ตโฟลิโอ</translation>
-<translation id="6083912983861746409">ค่าแก๊ส (GWEI)</translation>
-<translation id="2499079593046817044">วงเงินค่าแก๊ส (GWEI)</translation>
+<translation id="750843150060816463">ราคาแก๊ส (GWEI)</translation>
+<translation id="1426320910664514906">วงเงินแก็ส</translation>
 <translation id="6389441740143786465">ปิดใช้งานการแชร์ฮับ</translation>
 <translation id="9065203028668620118">แก้ไข</translation>
 <translation id="473775607612524610">อัปเดต</translation>
@@ -725,8 +753,72 @@
 <translation id="5932938770824268122">คีย์ส่วนตัว</translation>
 <translation id="2472882733835903303">แสดงคีย์ส่วนตัว</translation>
 <translation id="4391056902675005799">ซ่อนคีย์ส่วนตัว</translation>
-<translation id="5929798090073091848">คำเตือน: ห้ามเปิดเผยคีย์นี้ ใครก็ตามที่มีคีย์ส่วนตัวสามารถขโมยทรัพย์สินที่คุณถืออยู่ในบัญชีได้</translation>
+<translation id="7518007103754668253">คำเตือน: ห้ามเปิดเผยคีย์นี้ ใครก็ตามที่มีคีย์ส่วนตัวสามารถขโมยทรัพย์สินที่คุณถืออยู่ในบัญชีได้</translation>
 <translation id="1133619932669546254">เปิดใช้งาน <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ประเภทฟังก์ชัน: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">ไม่มีข้อมูล</translation>
+<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ได้ส่ง <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ได้อนุมัติ <ph name="ASSET"/> - <ph name="DATE"/></translation>
+<translation id="7400134344541309180">อนุมัติ <ph name="ASSET"/> ไม่จำกัดแล้ว - <ph name="PROXY"/></translation>
+<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> แลกเปลี่ยน - <ph name="DATE"/></translation>
+<translation id="2833661570529295305">Unapproved</translation>
+<translation id="8034530868111548216">Approved</translation>
+<translation id="6015436276085482001">ถูกปฏิเสธ</translation>
+<translation id="6666273175654835609">Submitted</translation>
+<translation id="2331676293859649642">Confirmed</translation>
+<translation id="1165039591588034296">ข้อผิดพลาด</translation>
+<translation id="4354768722613827480">ค่าธรรมเนียม: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="2561824823738097741">คุณกำลังใช้งานเว็บเบราว์เซอร์ที่เร็วที่สุดอยู่หรือเปล่า</translation>
+<translation id="2065971949051836200">อินเทอร์เน็ตแรงขึ้น 3 เท่าพร้อมให้บริการบนโทรศัพท์ของคุณแล้ว ใช้ Brave สำหรับทุกการท่องเว็บของคุณ</translation>
+<translation id="2888278614497184977">Brave = การท่องเว็บที่รวดเร็วยิ่งขึ้น 3 เท่า</translation>
+<translation id="6887232551109532144">ใช้งานแบตเตอรี่ได้นานขึ้นทุกครั้งที่ชาร์จ</translation>
+<translation id="5388885352353494741">ประหยัดแบตเตอรี่ง่ายๆ เพียงใช้ Brave สำหรับทุกการท่องเว็บของคุณ</translation>
+<translation id="3164151360474408351">Brave = แบตเตอรี่ยาวนานขึ้นทุกการชาร์จ</translation>
+<translation id="3211051910418903298">ไม่ต้องเติมอินเทอร์เน็ตบ่อย</translation>
+<translation id="1092355580602106002">โฆษณาที่น้อยลง = ข้อมูลที่น้อยลงในทุกหน้าที่คุณโหลด ใช้ Brave สำหรับทุกการท่องเว็บของคุณ</translation>
+<translation id="623962032102267945">Brave = ใช้อินเทอร์เน็ตน้อยลงในทุกหน้า</translation>
+<translation id="4355217341028673744">ความเป็นส่วนตัวยิ่งขึ้น</translation>
+<translation id="3679020972083025535">• ไม่มีโฆษณาที่น่ารำคาญ</translation>
+<translation id="8047527352810290817">แก้ไขค่าแก๊ส</translation>
+<translation id="7358989216567322955">ค่าธรรมเนียมลัดคิวสูงสุด</translation>
+<translation id="9091334651803050473">นักขุดจะมีแนวโน้มที่จะลัดคิวให้ธุรกรรมของคุณหากคุณจ่ายค่าธรรมเนียมสูงกว่า ทั้งนี้ไม่มีการประกัน</translation>
+<translation id="2941112035454246133">ต่ำ</translation>
+<translation id="5431902940483264007">เหมาะสม</translation>
+<translation id="7304030187361489308">สูง</translation>
+<translation id="1177863135347784049">ที่กำหนดเอง</translation>
+<translation id="4853037749278079787">ค่าธรรมเนียมสูงสุด: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">ค่าธรรมเนียมพื้นฐานปัจจุบัน: <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">ขีดจำกัดปริมาณแก๊ส</translation>
+<translation id="1254969878422524947">วงเงินทิปต่อค่าแก๊ส (Gwei)</translation>
+<translation id="7373308452149471621">วงเงินราคาต่อค่าแก๊ส (Gwei)</translation>
+<translation id="5891811606602061966">นำเข้าบัญชีไม่สำเร็จ โปรดลองอีกครั้ง</translation>
+<translation id="7033470144757208254">Brave ใช้ 0x เป็นเครื่องมือค้นหาตลาด​แลกเปลี่ยน (DEX Aggregator)</translation>
+<translation id="5061574358754621254">ข้อมูลราคาโดย CoinGecko</translation>
+<translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
+<translation id="8574289650879708853">เพิ่มโทเค็นที่กำหนดเอง</translation>
+<translation id="7791543448312431591">เพิ่ม</translation>
+<translation id="6600400596821238377">ชื่อโทเค็น</translation>
+<translation id="4432966365400169165">แอดเดรสสัญญาโทเค็น</translation>
+<translation id="4092152169181928870">สัญลักษณ์โทเค็น</translation>
+<translation id="4351811224047421378">ความเที่ยงตรงของทศนิยม</translation>
+<translation id="8614026298974065517">ลบสินทรัพย์ที่กำหนดเอง</translation>
+<translation id="4378941981362528553">คุณต้องการลบโทเค็น <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) หรือไม่</translation>
+<translation id="8971278306757462297">ที่อยู่สำหรับรับเหรียญคือที่อยู่ของคุณเอง</translation>
+<translation id="749944179568745958">ที่อยู่ ETH ไม่ถูกต้อง</translation>
+<translation id="3506416339268164412">ที่อยู่รับเหรียญคือที่อยู่สัญญาโทเค็น (Token Contract Address)</translation>
+<translation id="1543259266592091784">เพิ่มเงินทุน</translation>
+<translation id="3494964159182650590">สรุปรางวัล</translation>
+<translation id="7470079236088529568">สิทธิ์ที่ใช้ทั้งหมด</translation>
+<translation id="590733288489975971">Rewards จาก Ads</translation>
+<translation id="207268487070188114">ทิปครั้งเดียว</translation>
+<translation id="64394831139134288">กระเป๋าเงินของฉัน</translation>
+<translation id="8494748383523030337">ยอดของคุณ</translation>
+<translation id="7091980679045978090">รายได้โดยประมาณ</translation>
+<translation id="1346059596910821859">ทิป</translation>
+<translation id="1549705559752367917">ส่งทิป</translation>
+<translation id="6727102863431372879">ตั้งค่า</translation>
+<translation id="381822214767083050">เงินสนับสนุนรายเดือน</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
+<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 </translationbundle>

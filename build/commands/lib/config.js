@@ -134,7 +134,6 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  this.chromePgoPhase = 0
   // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
@@ -175,6 +174,17 @@ const Config = function () {
 
 Config.prototype.isOfficialBuild = function () {
   return this.buildConfig === 'Release'
+}
+
+Config.prototype.isBraveReleaseBuild = function () {
+  const npm_brave_relese_build = getNPMConfig(['is_brave_release_build'])
+  if (npm_brave_relese_build !== undefined) {
+    assert(npm_brave_relese_build === '0' || npm_brave_relese_build === '1',
+      'Bad is_brave_release_build npm value (should be 0 or 1)')
+    return npm_brave_relese_build === '1'
+  }
+
+  return false
 }
 
 Config.prototype.isComponentBuild = function () {
@@ -285,11 +295,14 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
-    chrome_pgo_phase: this.chromePgoPhase,
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     ...this.extraGnArgs,
+  }
+
+  if (!this.isBraveReleaseBuild()) {
+    args.chrome_pgo_phase = 0
   }
 
   if (this.shouldSign()) {
@@ -492,9 +505,6 @@ Config.prototype.buildArgs = function () {
     delete args.uphold_staging_client_id
     delete args.uphold_staging_client_secret
     delete args.webcompat_report_api_endpoint
-    delete args.rewards_grant_dev_endpoint
-    delete args.rewards_grant_staging_endpoint
-    delete args.rewards_grant_prod_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
@@ -925,7 +935,7 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
-    if (this.targetOS) {
+    if (this.targetOS && (this.targetOS === 'android' || this.targetOS === 'ios')) {
       buildConfigDir = this.targetOS + "_" + buildConfigDir
     }
     if (this.targetEnvironment) {

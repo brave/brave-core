@@ -258,11 +258,10 @@ OBJC_EXPORT
 @property(nonatomic, readonly) NSArray<LedgerPromotion*>* finishedPromotions;
 
 /// Updates `pendingPromotions` and `finishedPromotions` based on the database
-- (void)updatePendingAndFinishedPromotions:
-    (nullable void (^)(bool shouldReconcileAds))completion;
+- (void)updatePendingAndFinishedPromotions:(nullable void (^)())completion;
 
-- (void)fetchPromotions:(nullable void (^)(NSArray<LedgerPromotion*>* grants,
-                                           bool shouldReconcileAds))completion;
+- (void)fetchPromotions:
+    (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion;
 
 - (void)claimPromotion:(NSString*)promotionId
              publicKey:(NSString*)deviceCheckPublicKey

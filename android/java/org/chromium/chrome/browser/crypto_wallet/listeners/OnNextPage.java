@@ -9,4 +9,6 @@ public interface OnNextPage {
     void gotoNextPage(boolean finishOnboarding);
     void gotoOnboardingPage();
     void gotoRestorePage();
+    boolean showBiometricPrompt();
+    void showBiometricPrompt(boolean show);
 }

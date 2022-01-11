@@ -1,15 +1,23 @@
 import * as React from 'react'
+import { create } from 'ethereum-blockies'
+
+// Hooks
+import { useExplorer, usePricing } from '../../../common/hooks'
+
+// Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
 } from '../../../utils/format-prices'
-import { create } from 'ethereum-blockies'
+import { formatBalance } from '../../../utils/format-balances'
+
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
-import { EthereumChain } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
 import { TransactionPopup } from '../'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -28,16 +36,27 @@ import {
 import { TransactionPopupItem } from '../transaction-popup'
 
 export interface Props {
+  spotPrices: BraveWallet.AssetPrice[]
+  defaultCurrencies: DefaultCurrencies
   address: string
-  fiatBalance: string
   assetBalance: string
   assetTicker: string
-  selectedNetwork: EthereumChain
+  assetDecimals: number
+  selectedNetwork: BraveWallet.EthereumChain
   name: string
 }
 
 const PortfolioAccountItem = (props: Props) => {
-  const { address, name, assetBalance, fiatBalance, assetTicker, selectedNetwork } = props
+  const {
+    address,
+    name,
+    assetBalance,
+    assetTicker,
+    assetDecimals,
+    selectedNetwork,
+    defaultCurrencies,
+    spotPrices
+  } = props
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
   const onCopyToClipboard = async () => {
     await copyToClipboard(address)
@@ -47,15 +66,14 @@ const PortfolioAccountItem = (props: Props) => {
     return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [address])
 
-  const onClickViewOnBlockExplorer = () => {
-    const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    if (exporerURL && address) {
-      const url = `${exporerURL}/address/${address}`
-      window.open(url, '_blank')
-    } else {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
-    }
-  }
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+
+  const formattedAssetBalance = formatBalance(assetBalance, assetDecimals)
+
+  const { computeFiatAmount } = usePricing(spotPrices)
+  const fiatBalance = React.useMemo(() => {
+    return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
+  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])
 
   const onShowTransactionPopup = () => {
     setShowAccountPopup(true)
@@ -80,8 +98,8 @@ const PortfolioAccountItem = (props: Props) => {
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
-          <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(assetBalance, assetTicker)}</AssetBalanceText>
+          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+          <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, assetTicker)}</AssetBalanceText>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>
           <MoreIcon />
@@ -89,7 +107,7 @@ const PortfolioAccountItem = (props: Props) => {
         {showAccountPopup &&
           <TransactionPopup>
             <TransactionPopupItem
-              onClick={onClickViewOnBlockExplorer}
+              onClick={onClickViewOnBlockExplorer('address', address)}
               text={getLocale('braveWalletTransactionExplorer')}
             />
           </TransactionPopup>

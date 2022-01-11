@@ -25,15 +25,15 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
@@ -83,6 +83,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
 
@@ -365,7 +366,7 @@ void RewardsServiceImpl::ConnectionClosed() {
       FROM_HERE,
       base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
                      AsWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -433,12 +434,14 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == prefs::kAutoContributeEnabled || key == ads::prefs::kEnabled) {
-    if (IsRewardsEnabled()) {
+    bool rewards_enabled = IsRewardsEnabled();
+    if (rewards_enabled) {
       RecordBackendP3AStats();
     } else {
       p3a::RecordRewardsDisabledForSomeMetrics();
       p3a::RecordWalletState({.wallet_created = true});
     }
+    p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), rewards_enabled);
   }
 }
 
@@ -661,7 +664,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
   }
 
-  auto origin = url.GetOrigin().host();
+  auto origin = url.host();
   std::string baseDomain =
       GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
 #if BUILDFLAG(ENABLE_IPFS)
@@ -857,6 +860,7 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   } else {
     p3a::RecordRewardsDisabledForSomeMetrics();
   }
+  p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), IsRewardsEnabled());
 
   GetBraveWallet(
       base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
@@ -1245,6 +1249,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
 
   if (!token_received) {
     std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    return;
   }
 
   base::Value solution(base::Value::Type::DICTIONARY);
@@ -1362,13 +1367,6 @@ void RewardsServiceImpl::OnAttestPromotion(
 
   for (auto& observer : observers_) {
     observer.OnPromotionFinished(this, result, promotion->Clone());
-  }
-
-  if (promotion->type == ledger::type::PromotionType::ADS) {
-    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    if (ads_service) {
-      ads_service->ReconcileAdRewards();
-    }
   }
 
   std::move(callback).Run(result, std::move(promotion));
@@ -1791,7 +1789,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     return;
   }
 
-  auto origin = parsed_url.GetOrigin().spec();
+  auto origin = url::Origin::Create(parsed_url).Serialize();
   std::string baseDomain =
       GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
   std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
@@ -2264,7 +2262,7 @@ bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
 void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
   if (sufficient) return;
 
-  base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
+  base::Time next_time = base::Time::Now() + base::Days(3);
   profile_->GetPrefs()->SetTime(prefs::kAddFundsNotification, next_time);
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(

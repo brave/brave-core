@@ -163,9 +163,6 @@ OBJC_EXPORT
 /// Purge orphaned ad events for a given ad type
 - (void)purgeOrphanedAdEvents:(AdsAdType)adType;
 
-/// Reconcile ad rewards with server
-- (void)reconcileAdRewards;
-
 /// Get the number of ads received and the estimated earnings of viewing said
 /// ads for this cycle
 - (void)detailsForCurrentCycle:
@@ -174,13 +171,15 @@ OBJC_EXPORT
               NSDate* _Nullable nextPaymentDate))completion
     NS_SWIFT_NAME(detailsForCurrentCycle(_:));
 
-/// Toggle that the user liked the given ad and more like it should be shown
+/// Toggle that the user liked the given ad and advertiser and more like it
+/// should be shown
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-              creativeSetID:(NSString*)creativeSetID;
+               advertiserId:(NSString*)advertiserId;
 
-/// Toggle that the user disliked the given ad and it shouldn't be shown again
+/// Toggle that the user disliked the given ad and advertiser and it shouldn't
+/// be shown again
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                creativeSetID:(NSString*)creativeSetID;
+                 advertiserId:(NSString*)advertiserId;
 
 #pragma mark -
 

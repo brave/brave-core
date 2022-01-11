@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "url/gurl.h"
 
@@ -20,6 +21,10 @@ namespace content {
 class NavigationHandle;
 class WebContents;
 }  // namespace content
+
+namespace ephemeral_storage {
+class EphemeralStorageService;
+}  // namespace ephemeral_storage
 
 namespace brave_shields {
 
@@ -32,6 +37,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
   ~DomainBlockNavigationThrottle() override;
@@ -44,6 +50,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
 
@@ -58,11 +65,17 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
  private:
   void OnShouldBlockDomain(bool should_block_domain);
   void ShowInterstitial();
+  void Enable1PESAndResume();
 
   AdBlockService* ad_block_service_ = nullptr;
   AdBlockCustomFiltersService* ad_block_custom_filters_service_ = nullptr;
+  ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_ =
+      nullptr;
   HostContentSettingsMap* content_settings_ = nullptr;
   std::string locale_;
+
+  DomainBlockingType domain_blocking_type_ = DomainBlockingType::kNone;
+
   base::WeakPtrFactory<DomainBlockNavigationThrottle> weak_ptr_factory_{this};
 };
 

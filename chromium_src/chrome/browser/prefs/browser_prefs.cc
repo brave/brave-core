@@ -10,11 +10,12 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/translate/core/browser/translate_prefs.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -28,7 +29,7 @@
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define MigrateObsoleteLocalStatePrefs \
   MigrateObsoleteLocalStatePrefs_ChromiumImpl
-#include "../../../../../chrome/browser/prefs/browser_prefs.cc"
+#include "src/chrome/browser/prefs/browser_prefs.cc"
 #undef MigrateObsoleteProfilePrefs
 #undef MigrateObsoleteLocalStatePrefs
 
@@ -61,7 +62,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   new_tab_page::MigrateNewTabPagePrefs(profile);
 #endif
 
-  brave_wallet::KeyringController::MigrateObsoleteProfilePrefs(
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
       profile->GetPrefs());
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 
+#include <vector>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
@@ -29,7 +31,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
        GetCreativeNewTabPageAdsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -38,14 +40,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {"technology & computing"};
+  const SegmentList& segments = {"technology & computing"};
 
-  database::table::CreativeNewTabPageAds creative_new_tab_page_ads;
-  creative_new_tab_page_ads.GetForSegments(
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.GetForSegments(
       segments, [](const bool success, const SegmentList& segments,
-                   const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+                   const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_EQ(1UL, creative_new_tab_page_ads.size());
+        EXPECT_EQ(1UL, creative_ads.size());
       });
 }
 

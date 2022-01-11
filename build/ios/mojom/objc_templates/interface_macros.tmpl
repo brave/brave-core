@@ -1,5 +1,4 @@
-{%- macro objc_methods(interface) -%}
-{%-  for method in interface.methods %}
+{%- macro objc_method(method) -%}
 {%-   set name = method|objc_method_name_formatter %}
 - (void){{name}}
 {%- if method.parameters or method.response_parameters %}:{%- endif -%}
@@ -23,7 +22,11 @@
 {%- endfor -%}
 ))completion
 {%- endif -%}
-;
+{%- endmacro -%}
+
+{%- macro objc_methods(interface) -%}
+{%-  for method in interface.methods -%}
+{{ objc_method(method) }};
 {%- endfor -%}
 {%- endmacro -%}
 

@@ -6,7 +6,7 @@
 #include "chrome/browser/permissions/prediction_based_permission_ui_selector.h"
 
 #define IsPermissionRequestSupported IsPermissionRequestSupported_ChromiumImpl
-#include "../../../../../chrome/browser/permissions/prediction_based_permission_ui_selector.cc"
+#include "src/chrome/browser/permissions/prediction_based_permission_ui_selector.cc"
 #undef IsPermissionRequestSupported
 
 bool PredictionBasedPermissionUiSelector::IsPermissionRequestSupported(

@@ -17,7 +17,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
-#include "bat/ads/internal/client/preferences/filtered_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info_aliases.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
 #include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
@@ -33,6 +33,7 @@ struct PurchaseIntentSignalHistoryInfo;
 }  // namespace ad_targeting
 
 class AdType;
+struct AdContentInfo;
 struct AdHistoryInfo;
 struct AdInfo;
 struct ClientInfo;
@@ -48,7 +49,7 @@ class Client final {
 
   void Initialize(InitializeCallback callback);
 
-  FilteredAdList GetFilteredAds() const;
+  FilteredAdvertiserList GetFilteredAdvertisers() const;
   FilteredCategoryList GetFilteredCategories() const;
   FlaggedAdList GetFlaggedAds() const;
 
@@ -61,32 +62,23 @@ class Client final {
   const ad_targeting::PurchaseIntentSignalHistoryMap&
   GetPurchaseIntentSignalHistory() const;
 
-  AdContentActionType ToggleAdThumbUp(const std::string& creative_instance_id,
-                                      const std::string& creative_set_id,
-                                      const AdContentActionType action);
-  AdContentActionType ToggleAdThumbDown(const std::string& creative_instance_id,
-                                        const std::string& creative_set_id,
-                                        const AdContentActionType action);
-  AdContentActionType GetLikeActionForSegment(const std::string& segment);
+  AdContentLikeActionType ToggleAdThumbUp(const AdContentInfo& ad_content);
+  AdContentLikeActionType ToggleAdThumbDown(const AdContentInfo& ad_content);
+  AdContentLikeActionType GetAdContentLikeActionTypeForSegment(
+      const std::string& segment);
 
-  CategoryContentActionType ToggleAdOptInAction(
+  CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentActionType action);
-  CategoryContentActionType ToggleAdOptOutAction(
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentActionType action);
-  CategoryContentActionType GetOptActionForSegment(const std::string& segment);
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
+      const std::string& segment);
 
-  bool ToggleSaveAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool saved);
-  bool GetSavedAdForCreativeInstanceId(const std::string& creative_instance_id);
+  bool ToggleSavedAd(const AdContentInfo& ad_content);
 
-  bool ToggleFlagAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool flagged);
-  bool GetFlaggedAdForCreativeInstanceId(
-      const std::string& creative_instance_id);
+  bool ToggleFlaggedAd(const AdContentInfo& ad_content);
 
   void UpdateSeenAd(const AdInfo& ad);
   const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);

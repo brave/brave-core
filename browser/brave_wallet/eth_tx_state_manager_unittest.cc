@@ -14,9 +14,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -93,13 +93,13 @@ class EthTxStateManagerUnitTest : public testing::Test {
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
-    rpc_controller_.reset(
-        new EthJsonRpcController(shared_url_loader_factory_, GetPrefs()));
+    json_rpc_service_.reset(
+        new JsonRpcService(shared_url_loader_factory_, GetPrefs()));
   }
 
   void SetNetwork(const std::string& chain_id) {
     base::RunLoop run_loop;
-    rpc_controller_->SetNetwork(
+    json_rpc_service_->SetNetwork(
         chain_id,
         base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
     run_loop.Run();
@@ -111,7 +111,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<EthJsonRpcController> rpc_controller_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
 };
 
 TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
@@ -221,7 +221,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), json_rpc_service_.get());
 
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -305,7 +305,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
 
 TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), json_rpc_service_.get());
 
   auto addr1 =
       EthAddress::FromHex("0x3535353535353535353535353535353535353535");
@@ -383,7 +383,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
 
 TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), json_rpc_service_.get());
 
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -422,7 +422,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
 
 TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), json_rpc_service_.get());
 
   for (size_t i = 0; i < 20; ++i) {
     EthTxStateManager::TxMeta meta;
@@ -476,8 +476,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &meta.confirmed_time));
-  meta.submitted_time = meta.confirmed_time - base::TimeDelta::FromSeconds(3);
-  meta.created_time = meta.confirmed_time - base::TimeDelta::FromMinutes(1);
+  meta.submitted_time = meta.confirmed_time - base::Seconds(3);
+  meta.created_time = meta.confirmed_time - base::Minutes(1);
 
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);
@@ -606,7 +606,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
 
 TEST_F(EthTxStateManagerUnitTest, Observer) {
   TestEthTxStateManagerObserver observer;
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), json_rpc_service_.get());
   tx_state_manager.AddObserver(&observer);
 
   EthTxStateManager::TxMeta meta;

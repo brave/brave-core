@@ -10,7 +10,7 @@
  private: \
   friend void UpdateDarkModeStatus();
 
-#include "../../../../ui/native_theme/native_theme_win.h"  // NOLINT
+#include "src/ui/native_theme/native_theme_win.h"
 #undef BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
 
 namespace ui {

@@ -3,13 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_override.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 
 #define GetTranslateSecurityOrigin GetTranslateSecurityOrigin_Chromium
-#include "../../../../../../components/translate/core/common/translate_util.cc"
+#include "src/components/translate/core/common/translate_util.cc"
 #undef GetTranslateSecurityOrigin
 
 namespace translate {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kTFLiteLanguageDetectionEnabled, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 // Redirect native translate requests to the translate.brave.com (expect the
 // script request).

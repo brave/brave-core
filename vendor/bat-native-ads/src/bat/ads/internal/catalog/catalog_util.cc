@@ -30,7 +30,7 @@ bool HasCatalogExpired() {
   const base::Time time =
       base::Time::FromDoubleT(catalog_last_updated_timestamp);
 
-  if (now < time + base::TimeDelta::FromDays(kCatalogLifespanInDays)) {
+  if (now < time + base::Days(kCatalogLifespanInDays)) {
     return false;
   }
 

@@ -36,6 +36,8 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7017590444693657895">I-block ang mga site na ma-access ang API ng Ethereum provider</translation>
 <translation id="8988939298652262600">Hindi nagsusuri ng mga extension ang Brave para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
 <translation id="8081858229109418493">Pangalan at icon ng profile</translation>
+<translation id="6438096877646138757">Mga site na nagki-clear ng cookies kapag isinara mo ang mga ito</translation>
+<translation id="2988792685798128092">I-clear sa pagsara sa site</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
 <translation id="1692470335103807198">Kumuha pa ng mga theme</translation>
 <translation id="2906510232093002459">Mga default na image ng Brave</translation>
@@ -55,7 +57,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
 <translation id="6821903322090655051">Naka-disable ang Brave Rewards</translation>
-<translation id="9184430019924125685">Mag-click dito para matuto pa</translation>
+<translation id="413570371620795359">Buksan ang panel ng Mga Reward para i-enable at magsimula</translation>
 <translation id="3849957491997306859">Awtomatikong na-detect</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
@@ -69,7 +71,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7286722244752781970">Minimum na oras sa page bago mag-log ng pagbisita</translation>
 <translation id="4424486208397124985">Minimum na bilang ng mga pagbisita para sa kaugnayan ng publisher</translation>
 <translation id="6248554379744796526">Magpakita ng mga hindi na-verify na site sa listahan</translation>
-<translation id="3241299447027267831">Payagan ang mga kontribusyon sa mga video</translation>
+<translation id="5510618543889994434">Payagan ang mga kontribusyon sa mga video</translation>
 <translation id="924777189963477634">Sa pag-on sa Awtomatikong Kontribusyon, sang-ayon ka sa <ph name="BEGIN_LINK_TOS"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK_TOS"/> at <ph name="BEGIN_LINK_PP"/>Patakaran sa Privacy<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Mga button ng tip</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2414886740292270097">Dark</translation>
 <translation id="1360441190790440400">Pareho sa Linux</translation>
 <translation id="1336940801687497203">Pareho sa Windows</translation>
+<translation id="5919209812221905840">Default na handler para sa protocol ng microsoft-edge</translation>
+<translation id="5239541974656019812">Gawing Brave ang handler para sa protocol ng microsoft-edge</translation>
+<translation id="7136694880210472378">Gawing default</translation>
+<translation id="1751388324499810661">Ang Brave ay ang default na handler para sa protocol ng microsoft-edge</translation>
 <translation id="8721331068159819483">Kapareho ng macOS</translation>
 <translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -425,7 +431,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2653659639078652383">Isumite</translation>
 <translation id="2556708692502648323">Mga network ng wallet</translation>
 <translation id="1330032157352961756">Ang id ng bagong chain</translation>
-<translation id="9053905035135220650">Isang 0x-prefixed na hexadecimal string</translation>
+<translation id="3423620355610881890">Isang positibong decimal na numero</translation>
 <translation id="726121047592132939">Ang pangalan ng bagong chain</translation>
 <translation id="1034112277864078119">Ilagay ang pangalan ng chain</translation>
 <translation id="4672314527143443556">Pangalan ng currency ng chain</translation>
@@ -439,7 +445,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3047726704186619366">Mga URL ng ico</translation>
 <translation id="2487558607408469181">I-block ang mga explorer na URL</translation>
 <translation id="6301398959353668507">Hindi pwedeng blangko ang field.</translation>
-<translation id="4514843126085243862">Invalid na format, ang chain id ay isang 0x-prefixed na hexadecimal string</translation>
+<translation id="7504462451153306677">Invalid na format, ang chain id ay isang positibong numero</translation>
 <translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
 <translation id="650071759190249039">Internal na Error, hindi maidagdag ang network.</translation>
 <translation id="868529041590572443">Pakilagay ang lahat ng impormasyon tungkol sa native na currency</translation>

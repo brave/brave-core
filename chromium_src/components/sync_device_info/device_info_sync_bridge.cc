@@ -18,7 +18,7 @@
 // breaks the ability to remove other device in sync chain for Brave
 #define BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF if (false)
 
-#include "../../../../components/sync_device_info/device_info_sync_bridge.cc"
+#include "src/components/sync_device_info/device_info_sync_bridge.cc"
 
 #undef BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
 #undef RefreshLocalDeviceInfoIfNeeded
@@ -77,7 +77,7 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
       base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                      weak_ptr_factory_.GetWeakPtr(), client_id, 1,
                      std::move(callback)),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
@@ -91,7 +91,7 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
         base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                        weak_ptr_factory_.GetWeakPtr(), client_id, attempt + 1,
                        std::move(callback)),
-        base::TimeDelta::FromSeconds(1));
+        base::Seconds(1));
   } else {
     std::move(callback).Run();
   }

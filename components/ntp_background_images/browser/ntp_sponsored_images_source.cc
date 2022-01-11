@@ -56,39 +56,19 @@ void NTPSponsoredImagesSource::StartDataRequest(
 
   const std::string path = URLDataSource::URLToRequestPath(url);
   if (!IsValidPath(path)) {
-    scoped_refptr<base::RefCountedMemory> bytes;
-    std::move(callback).Run(std::move(bytes));
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  scoped_refptr<base::RefCountedMemory>()));
+
     return;
   }
 
-  // Favicon data is fetched from cached folder not from component data.
-  if (IsTopSiteFaviconPath(path)) {
-    GetImageFile(GetTopSiteFaviconFilePath(path), std::move(callback));
-    return;
-  }
-
-  auto* images_data = service_->GetBrandedImagesData(IsSuperReferralPath(path));
-
-  if (!images_data) {
+  base::FilePath image_file_path = GetLocalFilePathFor(path);
+  if (image_file_path.empty()) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback),
                                   scoped_refptr<base::RefCountedMemory>()));
     return;
-  }
-
-  base::FilePath image_file_path;
-  if (IsLogoPath(path)) {
-    if (IsDefaultLogoPath(path)) {
-      image_file_path = images_data->default_logo.image_file;
-    } else {
-      DCHECK(images_data->backgrounds[GetLogoIndexFromPath(path)].logo);
-      image_file_path =
-          images_data->backgrounds[GetLogoIndexFromPath(path)].logo->image_file;
-    }
-  } else {
-    DCHECK(IsWallpaperPath(path));
-    image_file_path =
-        images_data->backgrounds[GetWallpaperIndexFromPath(path)].image_file;
   }
 
   GetImageFile(image_file_path, std::move(callback));
@@ -117,107 +97,88 @@ void NTPSponsoredImagesSource::OnGotImageFile(
 }
 
 std::string NTPSponsoredImagesSource::GetMimeType(const std::string& path) {
-  if (IsLogoPath(path) || IsTopSiteFaviconPath(path))
+  const auto file_path = base::FilePath::FromUTF8Unsafe(path);
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+      file_path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"))) {
+    return "image/jpeg";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
     return "image/png";
-  return "image/jpg";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
+    return "image/webp";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
+    return "image/avif";
+  } else {
+    NOTREACHED();
+    return "image/jpeg";
+  }
 }
 
 bool NTPSponsoredImagesSource::AllowCaching() {
   return false;
 }
 
+base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
+    const std::string& path) {
+  const bool is_super_referral_path = IsSuperReferralPath(path);
+  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
+  if (!images_data)
+    return base::FilePath();
+
+  const auto basename_from_path =
+      base::FilePath::FromUTF8Unsafe(path).BaseName();
+
+  for (const auto& topsite : images_data->top_sites) {
+    if (topsite.image_file.BaseName() == basename_from_path)
+      return topsite.image_file;
+  }
+
+  for (const auto& campaign : images_data->campaigns) {
+    for (const auto& background : campaign.backgrounds) {
+      const auto logo_basename_from_data =
+          background.logo.image_file.BaseName();
+      const auto wallpaper_basename_from_data =
+          background.image_file.BaseName();
+
+      if (logo_basename_from_data == basename_from_path)
+        return background.logo.image_file;
+
+      if (wallpaper_basename_from_data == basename_from_path)
+        return background.image_file;
+    }
+  }
+
+  NOTREACHED();
+  return base::FilePath();
+}
+
 bool NTPSponsoredImagesSource::IsValidPath(const std::string& path) const {
-  if (IsLogoPath(path))
-    return true;
-
-  if (IsWallpaperPath(path))
-    return true;
-
-  if (IsTopSiteFaviconPath(path))
-    return true;
-
-  return false;
-}
-
-bool NTPSponsoredImagesSource::IsWallpaperPath(const std::string& path) const {
-  return GetWallpaperIndexFromPath(path) != -1;
-}
-
-bool NTPSponsoredImagesSource::IsDefaultLogoPath(
-    const std::string& path) const {
-  std::string target_logo_path = IsSuperReferralPath(path)
-                                     ? std::string(kSuperReferralPath)
-                                     : std::string(kSponsoredImagesPath);
-  target_logo_path += kDefaultLogoFileName;
-  return target_logo_path.compare(path) == 0;
-}
-
-bool NTPSponsoredImagesSource::IsLogoPath(const std::string& path) const {
-  if (IsDefaultLogoPath(path))
-    return true;
-
-  return GetLogoIndexFromPath(path) != -1;
-}
-
-int NTPSponsoredImagesSource::GetLogoIndexFromPath(
-    const std::string& path) const {
   const bool is_super_referral_path = IsSuperReferralPath(path);
   auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
   if (!images_data)
-    return -1;
-
-  const int wallpaper_count = images_data->backgrounds.size();
-  for (int i = 0; i < wallpaper_count; ++i) {
-    const std::string generated_path = base::StringPrintf(
-        "%s%s%d.png",
-        is_super_referral_path ? kSuperReferralPath : kSponsoredImagesPath,
-        kLogoFileNamePrefix, i);
-    if (path.compare(generated_path) == 0)
-      return i;
-  }
-
-  return -1;
-}
-
-int NTPSponsoredImagesSource::GetWallpaperIndexFromPath(
-    const std::string& path) const {
-  const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
-  if (!images_data)
-    return -1;
-
-  const int wallpaper_count = images_data->backgrounds.size();
-  for (int i = 0; i < wallpaper_count; ++i) {
-    const std::string generated_path = base::StringPrintf(
-        "%s%s%d.jpg",
-        is_super_referral_path ? kSuperReferralPath : kSponsoredImagesPath,
-        kWallpaperPathPrefix, i);
-    if (path.compare(generated_path) == 0)
-      return i;
-  }
-
-  return -1;
-}
-
-bool NTPSponsoredImagesSource::IsTopSiteFaviconPath(
-    const std::string& path) const {
-  // Top site is only used for super referral.
-  if (!IsSuperReferralPath(path))
     return false;
 
-  return !GetTopSiteFaviconFilePath(path).empty();
-}
+  const auto basename_from_path =
+      base::FilePath::FromUTF8Unsafe(path).BaseName();
 
-base::FilePath NTPSponsoredImagesSource::GetTopSiteFaviconFilePath(
-    const std::string& path) const {
-  std::vector<std::string> list = service_->GetTopSitesFaviconList();
-  for (const auto& favicon_file : list) {
-    base::FilePath file_path = base::FilePath::FromUTF8Unsafe(favicon_file);
-    if (path.compare(kSuperReferralPath +
-                     file_path.BaseName().AsUTF8Unsafe()) == 0)
-      return file_path;
+  for (const auto& topsite : images_data->top_sites) {
+    if (topsite.image_file.BaseName() == basename_from_path)
+      return true;
   }
-  return base::FilePath();
+
+  for (const auto& campaign : images_data->campaigns) {
+    for (const auto& background : campaign.backgrounds) {
+      const auto logo_basename_from_data =
+          background.logo.image_file.BaseName();
+      const auto wallpaper_basename_from_data =
+          background.image_file.BaseName();
+
+      if (logo_basename_from_data == basename_from_path ||
+          wallpaper_basename_from_data == basename_from_path)
+        return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace ntp_background_images

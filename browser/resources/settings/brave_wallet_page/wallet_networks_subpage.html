@@ -43,7 +43,6 @@
               <cr-icon-button class="icon-more-vert"
                               on-click="onNetworkMenuTapped_"
                               itemName=[[item.name]]
-                              hidden=[[isDefaultNetwork(item.chainId)]]
                               focus-type="menu">
               </cr-icon-button>
             </div>
@@ -54,8 +53,14 @@
                     $i18n{walletNetworkEdit}
                   </button>
                   <button class="dropdown-item" id="remove"
+                      hidden=[[isActiveNetwork]]
                       on-click="onDeleteActionTapped_">
                     $i18n{walletNetworkRemove}
+                  </button>
+                  <button class="dropdown-item" id="set-active"
+                      hidden=[[isActiveNetwork]]
+                      on-click="onSetAsActiveActionTapped_">
+                    $i18n{walletNetworkSetAsActive}
                   </button>
                 </cr-action-menu>
               </template>

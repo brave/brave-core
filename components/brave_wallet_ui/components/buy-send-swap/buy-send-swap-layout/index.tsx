@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BuySendSwapTypes, EthereumChain } from '../../../constants/types'
+import { BraveWallet, BuySendSwapTypes } from '../../../constants/types'
 import { BuySendSwapOptions } from '../../../options/buy-send-swap-options'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Tooltip from '../buy-send-swap-tooltip'
@@ -22,7 +22,7 @@ export interface Props {
   onChangeTab: (tab: BuySendSwapTypes) => () => void
   isBuyDisabled: boolean
   isSwapDisabled: boolean
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 function BuySendSwapLayout (props: Props) {

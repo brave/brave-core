@@ -52,9 +52,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderHeuristics<O> {
                     ))
                 }
             } else {
-                Err(SpeedReaderError::RewritingError(
-                    "Not readable with heuristics".to_owned(),
-                ))
+                Err(SpeedReaderError::RewritingError("Not readable with heuristics".to_owned()))
             }
         } else {
             // No valid URL - no document

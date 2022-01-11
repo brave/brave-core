@@ -11,6 +11,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -21,7 +22,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "net/base/features.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -47,7 +48,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 
 #define GetVersionNumber GetBraveVersionNumberForDisplay
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
+#include "src/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
 #undef GetVersionNumber
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
@@ -406,7 +407,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
     {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
     {"resetWallet", IDS_SETTINGS_WALLET_RESET},
+    {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
+    {"resetTransactionInfoDesc",
+     IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC},
     {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION},
+    {"walletResetTransactionInfoConfirmation",
+     IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION},
+    {"walletResetConfirmed", IDS_SETTINGS_WALLET_RESET_CONFIRMED},
+    {"walletResetTransactionInfoConfirmed",
+     IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED},
     {"walletNetworksLinkTitle", IDS_SETTINGS_WALLET_NETWORKS_ITEM},
     {"walletAddNetworkDialogTitle", IDS_SETTINGS_WALLET_ADD_NETWORK_TITLE},
     {"walletAddNetworkInvalidURLInput",
@@ -454,6 +463,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_WALLET_NETWORKS_REPLACE},
     {"walletNetworkEdit", IDS_BRAVE_WALLET_NETWORK_EDIT},
     {"walletNetworkRemove", IDS_BRAVE_WALLET_NETWORK_REMOVE},
+    {"walletNetworkSetAsActive", IDS_BRAVE_WALLET_NETWORK_SET_AS_ACTIVE},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -466,6 +476,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   auto confirmation_text = l10n_util::GetStringFUTF16(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION, confirmation_phrase);
   html_source->AddString("walletResetConfirmation", confirmation_text);
+  auto reset_tx_confirmation_text = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION,
+      confirmation_phrase);
+  html_source->AddString("walletResetTransactionInfoConfirmation",
+                         reset_tx_confirmation_text);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif
@@ -538,6 +553,19 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isMediaRouterEnabled",
                           media_router::MediaRouterEnabled(profile));
+
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    const webui::LocalizedString kSessionOnlyToEphemeralStrings[] = {
+        {"cookiePageSessionOnlyExceptions",
+         IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS},
+        {"siteSettingsSessionOnly",
+         IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE},
+        {"siteSettingsActionSessionOnly",
+         IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE},
+    };
+    html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
+  }
 }
 
 }  // namespace settings

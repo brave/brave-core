@@ -5,7 +5,7 @@
 
 #include "crypto/symmetric_key.h"
 
-#include "../../../crypto/symmetric_key.cc"
+#include "src/crypto/symmetric_key.cc"
 
 #include "crypto/openssl_util.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"

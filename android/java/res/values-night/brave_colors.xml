@@ -25,6 +25,9 @@
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
+    <!-- Text colors -->
+    <color name="brave_theme_hint_text">#84889C</color>
+
     <!-- Brave news colors -->
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>
@@ -63,6 +66,7 @@
     <color name="brave_stats_close_button_color">#F0F2FF</color>
     <color name="brave_stats_radio_group_bg">#17171F</color>
     <color name="brave_stats_radio_button_active">#3B3E4F</color>
+    <color name="spinner_bg_color">#212529</color>
     <color name="brave_blue_tint_color">#737ADE</color>
 
     <color name="wallet_text_color">#F0F2FF</color>
@@ -73,8 +77,21 @@
     <color name="wallet_bg">#17171F</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
     <color name="wallet_warning_box_bg_color">#3B3E4F</color>
-    <color name="recovery_phrase_warning_text_color">#1E2029</color>
+    <color name="recovery_phrase_warning_text_color">#C2C4CF</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
+
+    <color name="rewards_panel_bg_color">#17171F</color>
+    <color name="rewards_panel_text_color">#FFFFFF</color>
+    <color name="rewards_panel_secondary_text_color">#84889C</color>
+    <color name="rewards_panel_card_bg_color">#1E2029</color>
+    <color name="rewards_panel_action_color">#737ADE</color>
+    <color name="rewards_panel_verified_button_border">#5E6175</color>
+    <color name="rewards_panel_summary_title_bg">#AD17171F</color>
+    <color name="rewards_panel_summary_bg">#9E17171F</color>
+    <color name="rewards_panel_summary_divider_color">#66FFFFFF</color>
+    <color name="rewards_panel_foreground_color">#80FFFFFF</color>
+
+    <color name="rewards_divider_color">#3B3E4F</color>
 
 </resources>

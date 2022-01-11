@@ -5,7 +5,7 @@
 
 #include "services/network/cookie_access_delegate_impl.h"
 
-#include "../../../../services/network/cookie_access_delegate_impl.cc"
+#include "src/services/network/cookie_access_delegate_impl.cc"
 
 namespace network {
 

@@ -55,6 +55,8 @@ template("mojom_wrappers") {
       "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
       "//brave/build/ios/mojom/objc_templates/module.mm.tmpl",
       "//brave/build/ios/mojom/objc_templates/struct_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/test_interface_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/test_interface_implementation.tmpl",
       "//brave/build/ios/mojom/objc_templates/private_interface_bridge_declaration.tmpl",
       "//brave/build/ios/mojom/objc_templates/private_interface_bridge_implementation.tmpl",
       "//brave/build/ios/mojom/objc_templates/private_interface_declaration.tmpl",

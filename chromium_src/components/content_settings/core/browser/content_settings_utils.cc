@@ -16,6 +16,6 @@
   map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING, \
                              &(rules->cosmetic_filtering_rules));
 
-#include "../../../../../../components/content_settings/core/browser/content_settings_utils.cc"
+#include "src/components/content_settings/core/browser/content_settings_utils.cc"
 
 #undef BRAVE_BRAVE_GET_RENDER_CONTENT_SETTING_RULES

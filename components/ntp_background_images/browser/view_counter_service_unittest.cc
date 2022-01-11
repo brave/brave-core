@@ -29,14 +29,22 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(
     bool super_referral) {
   auto demo = std::make_unique<NTPSponsoredImagesData>();
   demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
-  demo->backgrounds = {
-      { base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")), { 3988, 2049 } },
-      { base::FilePath(FILE_PATH_LITERAL("wallpaper2.jpg")), { 5233, 3464 } },
-      { base::FilePath(FILE_PATH_LITERAL("wallpaper3.jpg")), {  0, 0 } },
+  Logo demo_logo;
+  demo_logo.alt_text = "Technikke: For music lovers.";
+  demo_logo.company_name = "Technikke";
+  demo_logo.destination_url = "https://brave.com";
+
+  Campaign demo_campaign;
+  demo_campaign.backgrounds = {
+      {base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")),
+       {3988, 2049},
+       demo_logo},
+      {base::FilePath(FILE_PATH_LITERAL("wallpaper2.jpg")),
+       {5233, 3464},
+       demo_logo},
+      {base::FilePath(FILE_PATH_LITERAL("wallpaper3.jpg")), {0, 0}, demo_logo},
   };
-  demo->default_logo.alt_text = "Technikke: For music lovers.";
-  demo->default_logo.company_name = "Technikke";
-  demo->default_logo.destination_url = "https://brave.com";
+  demo->campaigns.push_back(demo_campaign);
 
   if (super_referral) {
     demo->theme_name = "Technikke";

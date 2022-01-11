@@ -16,6 +16,8 @@ export interface Props {
   isOnboarding: boolean
 }
 
+const recoverPhraseCopiedTimeout = 5000 // 5s
+
 function BackupWallet (props: Props) {
   const { recoveryPhrase, isOnboarding, onSubmit, onCancel, onBack } = props
   const [backupStep, setBackupStep] = React.useState<number>(0)
@@ -23,6 +25,7 @@ function BackupWallet (props: Props) {
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
   const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
   const [verifyError, setVerifyError] = React.useState<boolean>(false)
+  const [isRecoverPhraseCopied, setIsRecoverPhraseCopied] = React.useState(false)
 
   const nextStep = () => {
     if (backupStep === 2) {
@@ -87,21 +90,22 @@ function BackupWallet (props: Props) {
 
   const onCopyToClipboard = async () => {
     await copyToClipboard(recoveryPhrase.join(' '))
+    setIsRecoverPhraseCopied(true)
   }
 
-  const showBackButton = React.useMemo(() => {
-    if (isOnboarding) {
-      return true
+  React.useEffect(() => {
+    if (isRecoverPhraseCopied) {
+      const timer = setTimeout(() => {
+        setIsRecoverPhraseCopied(false)
+      }, recoverPhraseCopiedTimeout)
+      return () => clearTimeout(timer)
     }
-    if (!isOnboarding && backupStep !== 0) {
-      return true
-    }
-    return false
-  }, [isOnboarding, backupStep])
+    return () => {}
+  }, [isRecoverPhraseCopied])
 
   return (
     <>
-      {showBackButton &&
+      {backupStep !== 0 &&
         <BackButton onSubmit={onGoBack} />
       }
       {backupStep === 0 &&
@@ -111,6 +115,7 @@ function BackupWallet (props: Props) {
           onCancel={onCancel}
           isBackupTermsAccepted={backupTerms}
           isOnboarding={isOnboarding}
+          recoveryPhraseLength={recoveryPhrase.length}
         />
       }
       {backupStep === 1 &&
@@ -119,6 +124,7 @@ function BackupWallet (props: Props) {
           isRecoveryTermsAccepted={backedUp}
           onSubmitTerms={checkedBox}
           recoverPhrase={recoveryPhrase}
+          isRecoverPhraseCopied={isRecoverPhraseCopied}
           onCopy={onCopyToClipboard}
         />
       }

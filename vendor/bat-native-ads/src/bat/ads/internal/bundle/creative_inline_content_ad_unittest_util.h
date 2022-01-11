@@ -6,10 +6,15 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_INLINE_CONTENT_AD_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_INLINE_CONTENT_AD_UNITTEST_UTIL_H_
 
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
+
 namespace ads {
 
 struct CreativeInlineContentAdInfo;
 
+void SaveCreativeAds(const CreativeInlineContentAdList& creative_ads);
+
+CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count);
 CreativeInlineContentAdInfo BuildCreativeInlineContentAd();
 
 }  // namespace ads

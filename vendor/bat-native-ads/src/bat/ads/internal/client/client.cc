@@ -34,27 +34,47 @@ const char kClientFilename[] = "client.json";
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
-FilteredAdList::iterator FindFilteredAd(const std::string& creative_instance_id,
-                                        FilteredAdList* filtered_ads) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(filtered_ads);
+FilteredAdvertiserList::iterator FindFilteredAdvertiser(
+    const std::string& advertiser_id,
+    FilteredAdvertiserList* filtered_advertisers) {
+  DCHECK(!advertiser_id.empty());
+  DCHECK(filtered_advertisers);
 
   return std::find_if(
-      filtered_ads->begin(), filtered_ads->end(),
-      [&creative_instance_id](const FilteredAdInfo& filtered_ad) {
-        return filtered_ad.creative_instance_id == creative_instance_id;
+      filtered_advertisers->begin(), filtered_advertisers->end(),
+      [&advertiser_id](const FilteredAdvertiserInfo& filtered_advertiser) {
+        return filtered_advertiser.id == advertiser_id;
       });
 }
 
 FilteredCategoryList::iterator FindFilteredCategory(
-    const std::string& name,
+    const std::string& category,
     FilteredCategoryList* filtered_categories) {
   DCHECK(filtered_categories);
 
-  return std::find_if(filtered_categories->begin(), filtered_categories->end(),
-                      [&name](const FilteredCategoryInfo& category) {
-                        return category.name == name;
-                      });
+  return std::find_if(
+      filtered_categories->begin(), filtered_categories->end(),
+      [&category](const FilteredCategoryInfo& filtered_category) {
+        return filtered_category.name == category;
+      });
+}
+
+CategoryContentOptActionType ToggleOptInActionType(
+    const CategoryContentOptActionType action_type) {
+  if (action_type == CategoryContentOptActionType::kOptIn) {
+    return CategoryContentOptActionType::kNone;
+  }
+
+  return CategoryContentOptActionType::kOptIn;
+}
+
+CategoryContentOptActionType ToggleOptOutActionType(
+    const CategoryContentOptActionType action_type) {
+  if (action_type == CategoryContentOptActionType::kOptOut) {
+    return CategoryContentOptActionType::kNone;
+  }
+
+  return CategoryContentOptActionType::kOptOut;
 }
 
 }  // namespace
@@ -80,10 +100,10 @@ bool Client::HasInstance() {
   return g_client;
 }
 
-FilteredAdList Client::GetFilteredAds() const {
+FilteredAdvertiserList Client::GetFilteredAdvertisers() const {
   DCHECK(is_initialized_);
 
-  return client_->ad_preferences.filtered_ads;
+  return client_->ad_preferences.filtered_advertisers;
 }
 
 FilteredCategoryList Client::GetFilteredCategories() const {
@@ -111,7 +131,7 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.push_front(ad_history);
 
   const base::Time distant_past =
-      base::Time::Now() - base::TimeDelta::FromDays(history::kForDays);
+      base::Time::Now() - base::Days(history::kForDays);
 
   const auto iter = std::remove_if(
       client_->ads_shown_history.begin(), client_->ads_shown_history.end(),
@@ -159,283 +179,209 @@ Client::GetPurchaseIntentSignalHistory() const {
   return client_->purchase_intent_signal_history;
 }
 
-AdContentActionType Client::ToggleAdThumbUp(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const AdContentActionType action) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(!creative_set_id.empty());
-
+AdContentLikeActionType Client::ToggleAdThumbUp(
+    const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  AdContentActionType like_action;
-  if (action == AdContentActionType::kThumbsUp) {
-    like_action = AdContentActionType::kNeutral;
-  } else {
-    like_action = AdContentActionType::kThumbsUp;
+  const auto iter = FindFilteredAdvertiser(
+      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
+  if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+    client_->ad_preferences.filtered_advertisers.erase(iter);
   }
 
-  // Remove this ad from the filtered ads list
-  auto it_ad = FindFilteredAd(creative_instance_id,
-                              &client_->ad_preferences.filtered_ads);
-  if (it_ad != client_->ad_preferences.filtered_ads.end()) {
-    client_->ad_preferences.filtered_ads.erase(it_ad);
-  }
+  const AdContentLikeActionType like_action_type =
+      ad_content.ToggleThumbUpActionType();
 
-  // Update the history detail for ads matching this UUID
   for (auto& item : client_->ads_shown_history) {
-    if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.like_action = like_action;
+    if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
+      item.ad_content.like_action_type = like_action_type;
     }
   }
 
   Save();
 
-  return like_action;
+  return like_action_type;
 }
 
-AdContentActionType Client::ToggleAdThumbDown(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const AdContentActionType action) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(!creative_set_id.empty());
-
+AdContentLikeActionType Client::ToggleAdThumbDown(
+    const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  AdContentActionType like_action;
-  if (action == AdContentActionType::kThumbsDown) {
-    like_action = AdContentActionType::kNeutral;
-  } else {
-    like_action = AdContentActionType::kThumbsDown;
-  }
+  const AdContentLikeActionType like_action_type =
+      ad_content.ToggleThumbDownActionType();
 
-  // Update this ad in the filtered ads list
-  auto it_ad = FindFilteredAd(creative_instance_id,
-                              &client_->ad_preferences.filtered_ads);
-  if (like_action == AdContentActionType::kNeutral) {
-    if (it_ad != client_->ad_preferences.filtered_ads.end()) {
-      client_->ad_preferences.filtered_ads.erase(it_ad);
+  const auto iter = FindFilteredAdvertiser(
+      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
+
+  if (like_action_type == AdContentLikeActionType::kNeutral) {
+    if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+      client_->ad_preferences.filtered_advertisers.erase(iter);
     }
   } else {
-    if (it_ad == client_->ad_preferences.filtered_ads.end()) {
-      FilteredAdInfo filtered_ad;
-      filtered_ad.creative_instance_id = creative_instance_id;
-      filtered_ad.creative_set_id = creative_set_id;
-      client_->ad_preferences.filtered_ads.push_back(filtered_ad);
+    if (iter == client_->ad_preferences.filtered_advertisers.end()) {
+      FilteredAdvertiserInfo filtered_advertiser;
+      filtered_advertiser.id = ad_content.advertiser_id;
+
+      client_->ad_preferences.filtered_advertisers.push_back(
+          filtered_advertiser);
     }
   }
 
-  // Update the history detail for ads matching this UUID
   for (auto& item : client_->ads_shown_history) {
-    if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.like_action = like_action;
+    if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
+      item.ad_content.like_action_type = like_action_type;
     }
   }
 
   Save();
 
-  return like_action;
+  return like_action_type;
 }
 
-AdContentActionType Client::GetLikeActionForSegment(
+AdContentLikeActionType Client::GetAdContentLikeActionTypeForSegment(
     const std::string& segment) {
   for (const auto& element : client_->ads_shown_history) {
     if (element.category_content.category == segment) {
-      return element.ad_content.like_action;
+      return element.ad_content.like_action_type;
     }
   }
 
-  return AdContentActionType::kNeutral;
+  return AdContentLikeActionType::kNeutral;
 }
 
-CategoryContentActionType Client::ToggleAdOptInAction(
+CategoryContentOptActionType Client::ToggleAdOptIn(
     const std::string& category,
-    const CategoryContentActionType action) {
+    const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);
 
-  CategoryContentActionType opt_action;
-  if (action == CategoryContentActionType::kOptIn) {
-    opt_action = CategoryContentActionType::kNone;
-  } else {
-    opt_action = CategoryContentActionType::kOptIn;
+  const auto iter = FindFilteredCategory(
+      category, &client_->ad_preferences.filtered_categories);
+  if (iter != client_->ad_preferences.filtered_categories.end()) {
+    client_->ad_preferences.filtered_categories.erase(iter);
   }
 
-  // Remove this category from the filtered categories list
-  auto it = FindFilteredCategory(category,
-                                 &client_->ad_preferences.filtered_categories);
-  if (it != client_->ad_preferences.filtered_categories.end()) {
-    client_->ad_preferences.filtered_categories.erase(it);
-  }
+  const CategoryContentOptActionType toggled_opt_action_type =
+      ToggleOptInActionType(opt_action_type);
 
-  // Update the history for this category
   for (auto& item : client_->ads_shown_history) {
     if (item.category_content.category == category) {
-      item.category_content.opt_action = opt_action;
+      item.category_content.opt_action_type = toggled_opt_action_type;
     }
   }
 
   Save();
 
-  return opt_action;
+  return toggled_opt_action_type;
 }
 
-CategoryContentActionType Client::ToggleAdOptOutAction(
+CategoryContentOptActionType Client::ToggleAdOptOut(
     const std::string& category,
-    const CategoryContentActionType action) {
+    const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);
 
-  CategoryContentActionType opt_action;
-  if (action == CategoryContentActionType::kOptOut) {
-    opt_action = CategoryContentActionType::kNone;
-  } else {
-    opt_action = CategoryContentActionType::kOptOut;
-  }
+  const CategoryContentOptActionType toggled_opt_action_type =
+      ToggleOptOutActionType(opt_action_type);
 
-  // Update this category in the filtered categories list
-  auto it = FindFilteredCategory(category,
-                                 &client_->ad_preferences.filtered_categories);
-  if (opt_action == CategoryContentActionType::kNone) {
-    if (it != client_->ad_preferences.filtered_categories.end()) {
-      client_->ad_preferences.filtered_categories.erase(it);
+  const auto iter = FindFilteredCategory(
+      category, &client_->ad_preferences.filtered_categories);
+
+  if (toggled_opt_action_type == CategoryContentOptActionType::kNone) {
+    if (iter != client_->ad_preferences.filtered_categories.end()) {
+      client_->ad_preferences.filtered_categories.erase(iter);
     }
   } else {
-    if (it == client_->ad_preferences.filtered_categories.end()) {
+    if (iter == client_->ad_preferences.filtered_categories.end()) {
       FilteredCategoryInfo filtered_category;
       filtered_category.name = category;
       client_->ad_preferences.filtered_categories.push_back(filtered_category);
     }
   }
 
-  // Update the history for this category
   for (auto& item : client_->ads_shown_history) {
     if (item.category_content.category == category) {
-      item.category_content.opt_action = opt_action;
+      item.category_content.opt_action_type = toggled_opt_action_type;
     }
   }
 
   Save();
 
-  return opt_action;
+  return toggled_opt_action_type;
 }
 
-CategoryContentActionType Client::GetOptActionForSegment(
+CategoryContentOptActionType Client::GetCategoryContentOptActionTypeForSegment(
     const std::string& segment) {
   for (const auto& element : client_->ads_shown_history) {
     if (element.category_content.category == segment) {
-      return element.category_content.opt_action;
+      return element.category_content.opt_action_type;
     }
   }
 
-  return CategoryContentActionType::kNone;
+  return CategoryContentOptActionType::kNone;
 }
 
-bool Client::ToggleSaveAd(const std::string& creative_instance_id,
-                          const std::string& creative_set_id,
-                          const bool saved) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(!creative_set_id.empty());
-
+bool Client::ToggleSavedAd(const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  const bool is_saved_ad = !saved;
-
-  // Update this ad in the saved ads list
-  auto it_ad = std::find_if(
-      client_->ad_preferences.saved_ads.cbegin(),
-      client_->ad_preferences.saved_ads.cend(),
-      [&creative_instance_id](const SavedAdInfo& saved_ad) {
-        return saved_ad.creative_instance_id == creative_instance_id;
-      });
-
-  if (is_saved_ad) {
-    if (it_ad == client_->ad_preferences.saved_ads.end()) {
-      SavedAdInfo saved_ad;
-      saved_ad.creative_instance_id = creative_instance_id;
-      saved_ad.creative_set_id = creative_set_id;
-      client_->ad_preferences.saved_ads.push_back(saved_ad);
-    }
+  const bool is_saved = !ad_content.is_saved;
+  if (is_saved) {
+    SavedAdInfo saved_ad;
+    saved_ad.creative_instance_id = ad_content.creative_instance_id;
+    client_->ad_preferences.saved_ads.push_back(saved_ad);
   } else {
-    if (it_ad != client_->ad_preferences.saved_ads.end()) {
-      client_->ad_preferences.saved_ads.erase(it_ad);
+    const auto iter = std::find_if(client_->ad_preferences.saved_ads.cbegin(),
+                                   client_->ad_preferences.saved_ads.cend(),
+                                   [&ad_content](const SavedAdInfo& saved_ad) {
+                                     return saved_ad.creative_instance_id ==
+                                            ad_content.creative_instance_id;
+                                   });
+
+    if (iter != client_->ad_preferences.saved_ads.end()) {
+      client_->ad_preferences.saved_ads.erase(iter);
     }
   }
 
-  // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
-    if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.saved_ad = is_saved_ad;
+    if (item.ad_content.creative_instance_id ==
+        ad_content.creative_instance_id) {
+      item.ad_content.is_saved = is_saved;
     }
   }
 
   Save();
 
-  return is_saved_ad;
+  return is_saved;
 }
 
-bool Client::GetSavedAdForCreativeInstanceId(
-    const std::string& creative_instance_id) {
-  for (const auto& element : client_->ads_shown_history) {
-    if (element.ad_content.creative_instance_id == creative_instance_id) {
-      return element.ad_content.saved_ad;
-    }
-  }
-
-  return false;
-}
-
-bool Client::ToggleFlagAd(const std::string& creative_instance_id,
-                          const std::string& creative_set_id,
-                          const bool flagged) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK(!creative_set_id.empty());
-
+bool Client::ToggleFlaggedAd(const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  const bool is_flagged_ad = !flagged;
-
-  // Update this ad in the flagged ads list
-  auto it_ad = std::find_if(
-      client_->ad_preferences.flagged_ads.cbegin(),
-      client_->ad_preferences.flagged_ads.cend(),
-      [&creative_instance_id](const FlaggedAdInfo& flagged_ad) {
-        return flagged_ad.creative_instance_id == creative_instance_id;
-      });
-
-  if (is_flagged_ad) {
-    if (it_ad == client_->ad_preferences.flagged_ads.end()) {
-      FlaggedAdInfo flagged_ad;
-      flagged_ad.creative_instance_id = creative_instance_id;
-      flagged_ad.creative_set_id = creative_set_id;
-      client_->ad_preferences.flagged_ads.push_back(flagged_ad);
-    }
+  const bool is_flagged = !ad_content.is_flagged;
+  if (is_flagged) {
+    FlaggedAdInfo flagged_ad;
+    flagged_ad.creative_set_id = ad_content.creative_set_id;
+    client_->ad_preferences.flagged_ads.push_back(flagged_ad);
   } else {
-    if (it_ad != client_->ad_preferences.flagged_ads.end()) {
-      client_->ad_preferences.flagged_ads.erase(it_ad);
+    const auto iter = std::find_if(
+        client_->ad_preferences.flagged_ads.cbegin(),
+        client_->ad_preferences.flagged_ads.cend(),
+        [&ad_content](const FlaggedAdInfo& flagged_ad) {
+          return flagged_ad.creative_set_id == ad_content.creative_set_id;
+        });
+
+    if (iter != client_->ad_preferences.flagged_ads.end()) {
+      client_->ad_preferences.flagged_ads.erase(iter);
     }
   }
 
-  // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
-    if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.flagged_ad = is_flagged_ad;
+    if (item.ad_content.creative_set_id == ad_content.creative_set_id) {
+      item.ad_content.is_flagged = is_flagged;
     }
   }
 
   Save();
 
-  return is_flagged_ad;
-}
-
-bool Client::GetFlaggedAdForCreativeInstanceId(
-    const std::string& creative_instance_id) {
-  for (const auto& element : client_->ads_shown_history) {
-    if (element.ad_content.creative_instance_id == creative_instance_id) {
-      return element.ad_content.flagged_ad;
-    }
-  }
-
-  return false;
+  return is_flagged;
 }
 
 void Client::UpdateSeenAd(const AdInfo& ad) {

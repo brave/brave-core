@@ -22,14 +22,16 @@ class BraveRenderViewContextMenu;
   RegisterMenuShownCallbackForTesting(                           \
       base::OnceCallback<void(BraveRenderViewContextMenu*)> cb); \
   static void RegisterMenuShownCallbackForTesting_unused
-#include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
 
 // Declare our own subclass with overridden methods.
 class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  public:
-  BraveRenderViewContextMenu(content::RenderFrameHost* render_frame_host,
+  // Non-const reference passed in the parent class upstream
+  // NOLINTNEXTLINE(runtime/references)
+  BraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
                              const content::ContextMenuParams& params);
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;

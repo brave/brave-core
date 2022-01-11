@@ -125,7 +125,6 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:checked="true"
-                    app:drawableStartCompat="@drawable/ic_live_dot"
                     android:text="@string/day_1" />
 
                 <RadioButton
@@ -327,6 +326,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/wallet_powered_by_coin_gecko"
+            android:textColor="@color/wallet_secondary_text_color"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

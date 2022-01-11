@@ -69,7 +69,7 @@ struct CookieSettingWithBraveMetadata {
  public:                                                                       \
   bool IsCookieSessionOnly
 
-#include "../../../../../../components/content_settings/core/common/cookie_settings_base.h"
+#include "src/components/content_settings/core/common/cookie_settings_base.h"
 
 #undef IsCookieSessionOnly
 

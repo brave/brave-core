@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "../../../../net/base/url_util.cc"
+#include "src/net/base/url_util.cc"
 
 #include <iostream>
 #include <string>
@@ -21,7 +21,7 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
   // GetDomainAndRegistry might return an empty string if this host is an IP
   // address or a file URL.
   if (domain.empty())
-    domain = url::Origin::Create(url.GetOrigin()).Serialize();
+    domain = url::Origin::Create(url).Serialize();
 
   return domain;
 }

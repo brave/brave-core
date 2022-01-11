@@ -24,7 +24,7 @@
 
 #define GetChromeChannel GetChromeChannel_ChromiumImpl
 
-#include "../../../../chrome/install_static/install_util.cc"
+#include "src/chrome/install_static/install_util.cc"
 
 #undef GetChromeChannel
 

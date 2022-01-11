@@ -12,7 +12,7 @@
   BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* context) \
       const;                                                             \
   KeyedService* BuildServiceInstanceFor
-#include "../../../../../chrome/browser/federated_learning/floc_id_provider_factory.h"
+#include "src/chrome/browser/federated_learning/floc_id_provider_factory.h"
 #undef BuildServiceInstanceFor
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FEDERATED_LEARNING_FLOC_ID_PROVIDER_FACTORY_H_

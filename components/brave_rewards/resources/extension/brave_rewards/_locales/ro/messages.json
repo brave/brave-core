@@ -170,8 +170,13 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Deconectare de la Brave Rewards",
-    "description": ""
+    "message": "Deconectați-vă de la $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletEstimatedEarnings": {
     "message": "Venituri estimate",

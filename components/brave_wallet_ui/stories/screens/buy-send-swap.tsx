@@ -7,10 +7,11 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  EthereumChain,
+  BraveWallet,
   BuySupportedChains,
   SwapSupportedChains,
-  SwapValidationErrorType
+  SwapValidationErrorType,
+  DefaultCurrencies
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -21,13 +22,13 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
   selectedSendAsset: AccountAssetOptionType
   sendAssetBalance: string
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
@@ -43,18 +44,20 @@ export interface Props {
   toAddressOrUrl: string
   toAddress: string
   addressError: string
+  addressWarning: string
   buyAssetOptions: AccountAssetOptionType[]
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   customSlippageTolerance: string
+  defaultCurrencies: DefaultCurrencies
   onCustomSlippageToleranceChange: (value: string) => void
   onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
@@ -71,6 +74,8 @@ export interface Props {
   onSelectTab: (tab: BuySendSwapTypes) => void
   onSwapQuoteRefresh: () => void
   onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
+  onAddNetwork: () => void
+  onAddAsset: (value: boolean) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -91,6 +96,7 @@ function BuySendSwap (props: Props) {
     fromAmount,
     toAmount,
     addressError,
+    addressWarning,
     selectedSendAsset,
     sendAssetBalance,
     fromAssetBalance,
@@ -104,6 +110,7 @@ function BuySendSwap (props: Props) {
     isFetchingSwapQuote,
     isSwapSubmitDisabled,
     customSlippageTolerance,
+    defaultCurrencies,
     onCustomSlippageToleranceChange,
     onSubmitBuy,
     onSubmitSend,
@@ -125,7 +132,9 @@ function BuySendSwap (props: Props) {
     onSelectPresetSendAmount,
     onSelectTab,
     onSwapQuoteRefresh,
-    onSelectSendAsset
+    onSelectSendAsset,
+    onAddNetwork,
+    onAddAsset
   } = props
 
   // Switched this to useLayoutEffect to fix bad setState call error
@@ -150,6 +159,10 @@ function BuySendSwap (props: Props) {
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     onSelectTab(tab)
+  }
+
+  const onClickAddAsset = () => {
+    onAddAsset(true)
   }
 
   return (
@@ -195,11 +208,14 @@ function BuySendSwap (props: Props) {
           onSelectPresetAmount={onSelectPresetFromAmount}
           assetOptions={swapAssetOptions}
           onQuoteRefresh={onSwapQuoteRefresh}
+          onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
       {selectedTab === 'send' &&
         <Send
           addressError={addressError}
+          addressWarning={addressWarning}
           accounts={accounts}
           networkList={networkList}
           selectedAssetAmount={sendAmount}
@@ -218,10 +234,13 @@ function BuySendSwap (props: Props) {
           selectedAsset={selectedSendAsset}
           showHeader={true}
           assetOptions={sendAssetOptions}
+          onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
       {selectedTab === 'buy' &&
         <Buy
+          defaultCurrencies={defaultCurrencies}
           accounts={accounts}
           networkList={networkList}
           buyAmount={buyAmount}
@@ -233,6 +252,8 @@ function BuySendSwap (props: Props) {
           selectedNetwork={selectedNetwork}
           showHeader={true}
           assetOptions={buyAssetOptions}
+          onAddNetwork={onAddNetwork}
+          onAddAsset={onClickAddAsset}
         />
       }
     </Layout>

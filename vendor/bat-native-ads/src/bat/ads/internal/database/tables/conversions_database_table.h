@@ -15,9 +15,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-struct ConversionInfo;
-
 namespace database {
 namespace table {
 
@@ -49,6 +46,7 @@ class Conversions final : public Table {
 
   void MigrateToV1(mojom::DBTransaction* transaction);
   void MigrateToV10(mojom::DBTransaction* transaction);
+  void MigrateToV20(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

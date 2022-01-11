@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_version.h"
+#include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/server/ads_server_util.h"
 
 namespace ads {
@@ -30,7 +30,7 @@ mojom::UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 
 std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v%d/catalog", server::GetHost().c_str(),
-         kCurrentCatalogVersion);
+                            kCatalogVersion);
 }
 
 }  // namespace ads

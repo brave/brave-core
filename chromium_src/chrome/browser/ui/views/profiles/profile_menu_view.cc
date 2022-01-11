@@ -11,5 +11,5 @@ constexpr gfx::VectorIcon kGuestMenuEmptyArtIcon;
 }  // namespace
 
 #define kGuestMenuArtIcon kGuestMenuEmptyArtIcon
-#include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view.cc"
+#include "src/chrome/browser/ui/views/profiles/profile_menu_view.cc"
 #undef kGuestMenuArtIcon

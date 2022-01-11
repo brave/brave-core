@@ -36,6 +36,8 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7017590444693657895">Zablokovať webovým stránkam prístup k rozhraniu API poskytovateľa kryptomeny Ethereum</translation>
 <translation id="8988939298652262600">Brave nekontroluje rozšírenia z hľadiska bezpečnosti a ochrany. Toto rozšírenie nainštalujte, iba ak dôverujete vývojárovi.</translation>
 <translation id="8081858229109418493">Meno a ikonka profilu</translation>
+<translation id="6438096877646138757">Stránky, ktoré odstránia súbory cookie, keď ich zatvoríte</translation>
+<translation id="2988792685798128092">Zatvoriť s okamžitým odstránením</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
 <translation id="1692470335103807198">Získať viac tém</translation>
 <translation id="2906510232093002459">Predvolené obrázky Brave</translation>
@@ -55,7 +57,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
 <translation id="6821903322090655051">Odmeny Brave sú vypnuté</translation>
-<translation id="9184430019924125685">Kliknutím sem získate ďalšie informácie</translation>
+<translation id="413570371620795359">Otvorením panelu Odmeny zapnite panel a začnite</translation>
 <translation id="3849957491997306859">Automaticky zistené</translation>
 <translation id="8798099450830957504">Predvolené</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
@@ -69,7 +71,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7286722244752781970">Minimálny čas na stránke k zalogovaniu návštevy</translation>
 <translation id="4424486208397124985">Minimálny počet návštev pre relevanciu vydavateľa</translation>
 <translation id="6248554379744796526">Zobraziť neoverené stránky v zozname</translation>
-<translation id="3241299447027267831">Povoliť príspevky k videám</translation>
+<translation id="5510618543889994434">Umožniť príspevky k videám</translation>
 <translation id="924777189963477634">Zapnutím automatických príspevkov súhlasíte so<ph name="BEGIN_LINK_TOS"/>Zmluvnými podmienkami<ph name="END_LINK_TOS"/> a <ph name="BEGIN_LINK_PP"/>Zásadami ochrany osobných údajov<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Tlačidlá príspevkov</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -104,6 +106,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7895302206188277628">Prepojený obsah</translation>
 <translation id="3654831858282189202">Zverejniť pomocou kľúča IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importovať vybraný text do IPFS</translation>
 <translation id="6925604404524625582">Importovať a kopírovať odkaz do výpisu IPFS</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
@@ -207,6 +210,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2414886740292270097">Tmavý</translation>
 <translation id="1360441190790440400">Rovnaký ako Linux</translation>
 <translation id="1336940801687497203">Rovnaký ako Windows</translation>
+<translation id="5919209812221905840">Predvolený obslužný nástroj protokolov prehliadača Microsoft Edge</translation>
+<translation id="5239541974656019812">Nastaviť Brave ako obslužný nástroj protokolov prehliadača Microsoft Edge</translation>
+<translation id="7136694880210472378">Nastaviť ako predvolený</translation>
+<translation id="1751388324499810661">Brave je predvolený obslužný nástroj protokolov prehliadača Microsoft Edge</translation>
 <translation id="8721331068159819483">Rovnaké ako macOS</translation>
 <translation id="2896916411183256228">Na zobrazenie torrentov priamo v prehliadači používa WebTorrent. Podporuje torrentové súbory a magnetové odkazy.</translation>
 <translation id="8488282162676695335">Peňaženka Brave</translation>
@@ -424,7 +431,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2653659639078652383">Odoslať</translation>
 <translation id="2556708692502648323">Siete peňaženiek</translation>
 <translation id="1330032157352961756">ID nového reťazca</translation>
-<translation id="9053905035135220650">Šestnástkový reťazec s predvoľbou 0x</translation>
+<translation id="3423620355610881890">Kladné desiatkové číslo</translation>
 <translation id="726121047592132939">Názov nového reťazca</translation>
 <translation id="1034112277864078119">Zadajte názov reťazca</translation>
 <translation id="4672314527143443556">Názov meny reťazca</translation>
@@ -438,7 +445,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3047726704186619366">Adresy URL ikon</translation>
 <translation id="2487558607408469181">Adresy URL blokového prieskumníka</translation>
 <translation id="6301398959353668507">Pole nesmie byť prázdne.</translation>
-<translation id="4514843126085243862">Neplatný formát, ID reťazca je šestnástkový reťazec s predvoľbou 0x</translation>
+<translation id="7504462451153306677">Neplatný formát, Id reťazca je kladné číslo</translation>
 <translation id="8325036459845654666">Táto sieť je už pridaná.</translation>
 <translation id="650071759190249039">Interná chyba, nepodarilo sa pridať sieť.</translation>
 <translation id="868529041590572443">Vyplňte všetky informácie o natívnej mene</translation>

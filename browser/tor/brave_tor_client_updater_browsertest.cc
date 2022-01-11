@@ -117,6 +117,9 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
+  base::FilePath torrc_path =
+      g_brave_browser_process->tor_client_updater()->GetTorrcPath();
+  ASSERT_TRUE(PathExists(torrc_path));
 }
 
 // Load the Tor client updater extension and verify that we can launch
@@ -131,8 +134,16 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
+  base::FilePath torrc_path =
+      g_brave_browser_process->tor_client_updater()->GetTorrcPath();
+  ASSERT_TRUE(PathExists(torrc_path));
 
   base::CommandLine cmd_line(executable_path);
+  cmd_line.AppendArg("--ignore-missing-torrc");
+  cmd_line.AppendArg("-f");
+  cmd_line.AppendArgPath(torrc_path);
+  cmd_line.AppendArg("--defaults-torrc");
+  cmd_line.AppendArgPath(torrc_path);
   base::Process tor_client_process =
       base::LaunchProcess(cmd_line, base::LaunchOptions());
   ASSERT_TRUE(tor_client_process.IsValid());

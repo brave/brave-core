@@ -15,7 +15,7 @@
 #define NOTREACHED() DCHECK(true)
 #endif
 
-#include "../../../../../chrome/browser/signin/account_consistency_mode_manager.cc"
+#include "src/chrome/browser/signin/account_consistency_mode_manager.cc"
 
 #if defined(OS_ANDROID)
 #undef BUILDFLAG_INTERNAL_ENABLE_MIRROR

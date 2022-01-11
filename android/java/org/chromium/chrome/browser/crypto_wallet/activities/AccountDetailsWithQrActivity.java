@@ -22,9 +22,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
@@ -34,15 +35,15 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDetailsWithQrActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AccountDetailsWithQrActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, KeyringServiceObserver {
     private static final int WIDTH = 300;
 
     private ImageView qrCodeImage;
 
     private String mAddress;
     private String mName;
-    private KeyringController mKeyringController;
+    private KeyringService mKeyringService;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -67,7 +68,7 @@ public class AccountDetailsWithQrActivity
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
         accountCopyImage.setOnClickListener(v
                 -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress,
-                        R.string.address_has_been_copied));
+                        R.string.address_has_been_copied, false));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText(mName);
@@ -100,36 +101,37 @@ public class AccountDetailsWithQrActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitKeyringController();
+        InitKeyringService();
     }
 
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService.addObserver(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyringController.close();
+        mKeyringService.close();
     }
 
     @Override
     public void onUserInteraction() {
-        if (mKeyringController == null) {
+        if (mKeyringService == null) {
             return;
         }
-        mKeyringController.notifyUserInteraction();
+        mKeyringService.notifyUserInteraction();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringController.close();
-        mKeyringController = null;
-        InitKeyringController();
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
     }
 
     @Override
@@ -172,5 +174,10 @@ public class AccountDetailsWithQrActivity
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void locked() {
+        finish();
     }
 }

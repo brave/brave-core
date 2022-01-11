@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "chrome/browser/profiles/profile.h"
 
 WalletHandler::WalletHandler(
@@ -25,26 +25,26 @@ WalletHandler::WalletHandler(
 WalletHandler::~WalletHandler() = default;
 
 void WalletHandler::EnsureConnected() {
-  if (!keyring_controller_) {
+  if (!keyring_service_) {
     auto pending =
-        brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
+        brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
             profile_);
-    keyring_controller_.Bind(std::move(pending));
+    keyring_service_.Bind(std::move(pending));
   }
-  DCHECK(keyring_controller_);
-  keyring_controller_.set_disconnect_handler(base::BindOnce(
+  DCHECK(keyring_service_);
+  keyring_service_.set_disconnect_handler(base::BindOnce(
       &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void WalletHandler::OnConnectionError() {
-  keyring_controller_.reset();
+  keyring_service_.reset();
   EnsureConnected();
 }
 
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   EnsureConnected();
 
-  keyring_controller_->GetDefaultKeyringInfo(
+  keyring_service_->GetDefaultKeyringInfo(
       base::BindOnce(&WalletHandler::OnGetWalletInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

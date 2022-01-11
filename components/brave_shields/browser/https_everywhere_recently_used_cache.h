@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/containers/mru_cache.h"
+#include "base/containers/lru_cache.h"
 #include "base/synchronization/lock.h"
 
 template <class T> class HTTPSERecentlyUsedCache {
@@ -38,7 +38,7 @@ template <class T> class HTTPSERecentlyUsedCache {
   }
 
  private:
-  base::MRUCache<std::string, T> data_;
+  base::LRUCache<std::string, T> data_;
   base::Lock lock_;
 };
 

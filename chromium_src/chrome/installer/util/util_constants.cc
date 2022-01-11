@@ -11,7 +11,7 @@
 
 #define kChromeExe kChromeExe_Unused
 
-#include "../../../../../chrome/installer/util/util_constants.cc"
+#include "src/chrome/installer/util/util_constants.cc"
 
 #if defined(OFFICIAL_BUILD)
 #undef kGoogleUpdateIsMachineEnvVar

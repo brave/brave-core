@@ -12,8 +12,11 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -37,6 +40,19 @@ absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
     return absl::nullopt;
 
   return list->front().Clone();
+}
+
+absl::optional<base::Value> GetParamsDict(const std::string& json) {
+  auto json_value =
+      base::JSONReader::Read(json, base::JSON_ALLOW_TRAILING_COMMAS);
+  if (!json_value || !json_value->is_dict()) {
+    return absl::nullopt;
+  }
+  auto* value = json_value->FindDictKey(brave_wallet::kParams);
+  if (!value)
+    return absl::nullopt;
+
+  return value->Clone();
 }
 
 // This is a best effort parsing of the data
@@ -147,9 +163,10 @@ bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
                                        account->address, address);
                                  });
 
-  // Only ledger hardware keyring supports EIP-1559 at the moment.
+  // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
   if (account_it != account_infos.end() && (*account_it)->hardware &&
-      (*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor) {
+      ((*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor &&
+       (*account_it)->hardware->vendor != mojom::kTrezorHardwareVendor)) {
     keyring_supports_eip1559 = false;
   }
 
@@ -279,10 +296,41 @@ bool ParsePersonalSignParams(const std::string& json,
   *address = *address_str;
   if (IsValidHexString(*message_str)) {
     *message = *message_str;
+  } else if (IsValidHexString("0x" + *message_str)) {
+    *message = "0x" + *message_str;
   } else {
     *message = ToHex(*message_str);
   }
 
+  return true;
+}
+
+bool ParsePersonalEcRecoverParams(const std::string& json,
+                                  std::string* message,
+                                  std::string* signature) {
+  if (!message || !signature)
+    return false;
+
+  // personal_ecRecover allows extra params
+  auto list = GetParamsList(json);
+  if (!list || list->size() < 2)
+    return false;
+
+  const std::string* message_str = (*list)[0].GetIfString();
+  const std::string* signature_str = (*list)[1].GetIfString();
+  if (!message_str || !signature_str)
+    return false;
+
+  if (IsValidHexString(*message_str)) {
+    *message = *message_str;
+  } else {
+    *message = ToHex(*message_str);
+  }
+
+  if (!IsValidHexString(*signature_str))
+    return false;
+
+  *signature = *signature_str;
   return true;
 }
 
@@ -362,6 +410,134 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
 
   *chain_id = *chain_id_str;
 
+  return true;
+}
+
+bool ParseWalletWatchAssetParams(const std::string& json,
+                                 mojom::BlockchainTokenPtr* token,
+                                 std::string* error_message) {
+  if (!token || !error_message) {
+    return false;
+  }
+  *error_message = "";
+
+  // Might be a list from legacy send method.
+  absl::optional<base::Value> params = GetObjectFromParamsList(json);
+  if (!params)
+    params = GetParamsDict(json);
+
+  if (!params || !params.value().is_dict()) {
+    *error_message = "params parameter is required";
+    return false;
+  }
+
+  const std::string* type = params.value().FindStringKey("type");
+  if (!type) {
+    *error_message = "type parameter is required";
+    return false;
+  }
+  // Only ERC20 is supported currently.
+  if (*type != "ERC20") {
+    *error_message =
+        base::StringPrintf("Asset of type '%s' not supported", type->c_str());
+    return false;
+  }
+
+  const base::Value* options_dict = params.value().FindDictKey("options");
+  if (!options_dict) {
+    *error_message = "options parameter is required";
+    return false;
+  }
+
+  const std::string* address = options_dict->FindStringKey("address");
+  if (!address) {
+    *error_message = "address parameter is required";
+    return false;
+  }
+
+  const auto eth_addr = EthAddress::FromHex(*address);
+  if (eth_addr.IsEmpty()) {
+    *error_message =
+        base::StringPrintf("Invalid address '%s'", address->c_str());
+    return false;
+  }
+
+  const std::string* symbol = options_dict->FindStringKey("symbol");
+  if (!symbol) {
+    *error_message = "symbol parameter is required";
+    return false;
+  }
+
+  // EIP-747 limits the symbol length to 5, but metamask uses 11, so we use
+  // the same limit here for compatibility.
+  if (symbol->size() == 0 || symbol->size() > 11) {
+    *error_message = base::StringPrintf(
+        "Invalid symbol '%s': symbol length should be greater than 0 and less "
+        "than 12",
+        symbol->c_str());
+    return false;
+  }
+
+  // Allow decimals in both number and string for compability.
+  // EIP747 specifies the type of decimals number, but websites like coingecko
+  // uses string.
+  const base::Value* decimals_value = options_dict->FindKey("decimals");
+  if (!decimals_value ||
+      (!decimals_value->is_int() && !decimals_value->is_string())) {
+    *error_message = "decimals parameter is required.";
+    return false;
+  }
+  int decimals = decimals_value->is_int() ? decimals_value->GetInt() : 0;
+  if (decimals_value->is_string() &&
+      !base::StringToInt(decimals_value->GetString(), &decimals)) {
+    *error_message = base::StringPrintf(
+        "Invalid decimals '%s': decimals should be a number greater than 0 and "
+        "less than 36",
+        decimals_value->GetString().c_str());
+    return false;
+  }
+
+  if (decimals < 0 || decimals > 36) {
+    *error_message = base::StringPrintf(
+        "Invalid decimals '%d': decimals should be greater than 0 and less "
+        "than 36",
+        decimals);
+    return false;
+  }
+
+  std::string logo;
+  const std::string* image = options_dict->FindStringKey("image");
+  if (image) {
+    GURL url = GURL(*image);
+    if (url.is_valid() && (url.SchemeIsHTTPOrHTTPS() ||
+                           base::StartsWith(*image, "data:image/"))) {
+      logo = url.spec();
+    }
+  }
+
+  *token = mojom::BlockchainToken::New(eth_addr.ToChecksumAddress(),
+                                       *symbol /* name */, logo, true, false,
+                                       *symbol, decimals, true, "");
+  return true;
+}
+
+// Parses param request objects from
+// https://eips.ethereum.org/EIPS/eip-2255
+bool ParseRequestPermissionsParams(
+    const std::string& json,
+    std::vector<std::string>* restricted_methods) {
+  // [{
+  //   "eth_accounts": {}
+  // }]
+  if (!restricted_methods)
+    return false;
+  restricted_methods->clear();
+  auto param_obj = GetObjectFromParamsList(json);
+  if (!param_obj)
+    return false;
+  for (auto prop : param_obj->DictItems()) {
+    restricted_methods->push_back(prop.first);
+  }
   return true;
 }
 

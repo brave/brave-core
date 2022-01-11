@@ -14,11 +14,10 @@ class Time;
 
 namespace ads {
 
-base::Time TimeFromUTCString(const std::string& time_string);
-double UTCTimeStringToTimestamp(const std::string& time_string);
+base::Time TimeFromString(const std::string& time_string, const bool is_local);
+double TimestampFromString(const std::string& time_string, const bool is_local);
 
 base::Time TimestampToTime(const double timestamp);
-double TimeToTimestamp(const base::Time& time);
 
 base::Time MinTime();
 base::Time MaxTime();

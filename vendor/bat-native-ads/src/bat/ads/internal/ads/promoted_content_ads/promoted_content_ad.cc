@@ -56,7 +56,7 @@ void PromotedContentAd::FireEvent(
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [=](const bool success, const std::string& creative_instance_id,
-          const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
+          const CreativePromotedContentAdInfo& creative_ad) {
         if (!success) {
           BLOG(1,
                "Failed to fire promoted content ad event due to missing "
@@ -67,8 +67,8 @@ void PromotedContentAd::FireEvent(
           return;
         }
 
-        const PromotedContentAdInfo ad =
-            BuildPromotedContentAd(creative_promoted_content_ad, uuid);
+        const PromotedContentAdInfo& ad =
+            BuildPromotedContentAd(creative_ad, uuid);
 
         FireEvent(ad, uuid, creative_instance_id, event_type);
       });

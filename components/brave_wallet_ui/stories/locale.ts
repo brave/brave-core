@@ -78,10 +78,12 @@ provideStrings({
   braveWalletSendPlaceholder: '0x address or url',
   braveWalletSwapDisclaimer: 'Brave uses $10x$2 as a DEX aggregator.',
   braveWalletSwapDisclaimerDescription: '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
+  braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
   braveWalletButtonCopy: 'Copy',
+  braveWalletButtonCopied: 'Copied',
   braveWalletButtonVerify: 'Verify',
 
   // Wallet Onboarding Welcome
@@ -92,7 +94,7 @@ provideStrings({
 
   // Backup Wallet Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
-  braveWalletBackupIntroDescription: 'In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
+  braveWalletBackupIntroDescription: 'In the next step you’ll see a $1-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
   braveWalletBackupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
   braveWalletBackupButtonSkip: 'Skip',
   braveWalletBackupButtonCancel: 'Cancel',
@@ -125,8 +127,9 @@ provideStrings({
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
-  braveWalletWalletPopupLock: 'Lock Crypto',
+  braveWalletWalletPopupLock: 'Lock Wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
+  braveWalletWalletPopupConnectedSites: 'Connected sites',
 
   // Backup Warning
   braveWalletBackupWarningText: 'Back up your wallet now to protect your crypto assets and ensure you never lose access.',
@@ -150,18 +153,26 @@ provideStrings({
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
-  braveWalletAccountsSecondary: 'Secondary accounts',
+  braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
+  braveWalletAccountsSecondary: 'Imported accounts',
   braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
 
   // Add Account Options
+  braveWalletCreateAccount: 'Create $1 account',
   braveWalletAddAccountCreate: 'Create',
   braveWalletAddAccountImport: 'Import',
+  braveWalletAddAccountImportHardware: 'Import from hardware wallet',
   braveWalletAddAccountHardware: 'Hardware',
   braveWalletAddAccountConnect: 'Connect',
   braveWalletAddAccountPlaceholder: 'Account name',
   braveWalletCreateAccountButton: 'Create account',
+  braveWalletCreateAccountImportAccount: 'Import $1 account',
+  braveWalletCreateAccountTitle: 'Select one of the following account types',
+  braveWalletCreateAccountEthereumDescription: 'Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
+  braveWalletCreateAccountSolanaDescription: 'Supports SLP compatible assets on the Solana blockchain',
+  braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
 
   // Import Account
   braveWalletImportAccountDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
@@ -175,7 +186,7 @@ provideStrings({
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
   braveWalletConnectHardwareInfo1: 'Connect your $1 wallet directly to your computer.',
-  braveWalletConnectHardwareInfo2: 'Unlock your device and select the Ethereum app.',
+  braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
   braveWalletConnectingHardwareWallet: 'Connecting...',
@@ -187,6 +198,7 @@ provideStrings({
   braveWalletLedgerLiveDerivationPath: 'Ledger Live',
   braveWalletLedgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
   braveWalletUnknownInternalError: 'Unknown error, please reconnect your hardware wallet and try again.',
+  braveWalletConnectHardwareSearchNothingFound: 'No results found.',
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',
@@ -301,12 +313,15 @@ provideStrings({
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
   braveWalletPanelConnected: 'Connected',
-  braveWalletPanelNotConnected: 'Not connected',
+  braveWalletPanelNotConnected: 'Connect',
+  braveWalletPanelScrollForMoreAssets: 'Scroll for more assets',
 
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',
   braveWalletSitePermissionsAccounts: '$1 accounts connected',
   braveWalletSitePermissionsDisconnect: 'Disconnect',
+  braveWalletSitePermissionsSwitch: 'Switch',
+  braveWalletSitePermissionsNewAccount: 'New account',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',
@@ -374,6 +389,7 @@ provideStrings({
   braveWalletEditGasGwei: 'Gwei',
   braveWalletEditGasSetCustom: 'Set custom',
   braveWalletEditGasSetSuggested: 'Set suggested',
+  braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
 
   // Edit permissions
   braveWalletEditPermissionsTitle: 'Edit permissions',
@@ -388,10 +404,33 @@ provideStrings({
   braveWalletNotDomain: 'Domain is not registered',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
+  braveWalletAddressMissingChecksumInfoWarning: 'Missing checksum information',
+  braveWalletNotValidChecksumAddressError: 'Invalid checksum information',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
   braveWalletQueueNext: 'next',
   braveWalletQueueFirst: 'first',
-  braveWalletQueueRejectAll: 'Reject transactions'
+  braveWalletQueueRejectAll: 'Reject transactions',
+
+  // Add Suggested Token Panel
+  braveWalletAddSuggestedTokenTitle: 'Add suggested token',
+  braveWalletAddSuggestedTokenDescription: 'Would you like to import this token?',
+
+  // Transaction Detail Panel
+  braveWalletRecentTransactions: 'Recent transactions',
+  braveWalletTransactionDetails: 'Transaction details',
+  braveWalletTransactionDetailDate: 'Date',
+  braveWalletTransactionDetailSpeedUp: 'Speedup',
+  braveWalletTransactionDetailHash: 'Transaction hash',
+  braveWalletTransactionDetailNetwork: 'Network',
+  braveWalletTransactionDetailStatus: 'Status',
+
+  // Transactions Status
+  braveWalletTransactionStatusUnapproved: 'Unapproved',
+  braveWalletTransactionStatusApproved: 'Approved',
+  braveWalletTransactionStatusRejected: 'Rejected',
+  braveWalletTransactionStatusSubmitted: 'Submitted',
+  braveWalletTransactionStatusConfirmed: 'Confirmed',
+  braveWalletTransactionStatusError: 'Error'
 })

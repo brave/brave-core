@@ -5,7 +5,7 @@
 
 #define ParseJSON ParseJSON_ChromiumImpl
 #define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
-#include "../../../../../net/tools/transport_security_state_generator/input_file_parsers.cc"
+#include "src/net/tools/transport_security_state_generator/input_file_parsers.cc"
 #undef ParseCertificatesFile
 #undef ParseJSON
 

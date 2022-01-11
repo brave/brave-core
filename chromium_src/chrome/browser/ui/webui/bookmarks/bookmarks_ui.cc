@@ -12,6 +12,6 @@
   source->AddLocalizedString( \
       "emptyList", IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST);
 
-#include "../../../../../../../chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
+#include "src/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
 
 #undef BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE

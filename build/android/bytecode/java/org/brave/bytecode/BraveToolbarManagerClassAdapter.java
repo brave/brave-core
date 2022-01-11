@@ -108,10 +108,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(
                 sBraveToolbarManagerClassName, "onOrientationChange", "Ljava/lang/Override;");
 
-        makePublicMethod(sToolbarManagerClassName, "updateButtonStatus");
-        addMethodAnnotation(
-                sBraveToolbarManagerClassName, "updateButtonStatus", "Ljava/lang/Override;");
-
         makePublicMethod(sToolbarManagerClassName, "updateBookmarkButtonStatus");
         addMethodAnnotation(sBraveToolbarManagerClassName, "updateBookmarkButtonStatus",
                 "Ljava/lang/Override;");

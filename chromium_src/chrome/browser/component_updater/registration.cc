@@ -6,7 +6,7 @@
 #include "chrome/browser/component_updater/registration.h"
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/registration.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/registration.cc"
 #undef RegisterComponentsForUpdate
 
 #include "chrome/browser/browser_process.h"
@@ -14,11 +14,8 @@
 
 namespace component_updater {
 
-void RegisterComponentsForUpdate(bool is_off_the_record_profile,
-                                 PrefService* profile_prefs,
-                                 const base::FilePath& profile_path) {
-  RegisterComponentsForUpdate_ChromiumImpl(is_off_the_record_profile,
-                                           profile_prefs, profile_path);
+void RegisterComponentsForUpdate() {
+  RegisterComponentsForUpdate_ChromiumImpl();
   ComponentUpdateService* cus = g_browser_process->component_updater();
   brave_wallet::RegisterWalletDataFilesComponent(cus);
 }

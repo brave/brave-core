@@ -83,8 +83,7 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
           'LV', 'MM', 'MT', 'NG', 'NL', 'NO', 'NZ', 'PE', 'PH', 'PL', 'PT', 'RO', 'SE', 'SG', 'SI', 'SK', 'TR', 'TW',
           'US', 'UY', 'VC', 'VG', 'VN', 'ZA'
         ],
-        title: getLocale('geminiPromoTitle'),
-        disclaimer: getLocale('geminiPromoDisclaimer')
+        title: getLocale('geminiPromoTitle')
       }
     case 'tap-network':
       return {

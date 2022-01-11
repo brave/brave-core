@@ -6,7 +6,6 @@
 #include "bat/ads/pref_names.h"
 
 namespace ads {
-
 namespace prefs {
 
 // Stores whether Brave ads is enabled or disabled
@@ -46,6 +45,9 @@ const char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 // Stores catalog last updated
 const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
 
+// Stores issuer ping
+const char kIssuerPing[] = "brave.brave_ads.issuer_ping";
+
 // Stores epsilon greedy bandit arms
 const char kEpsilonGreedyBanditArms[] =
     "brave.brave_ads.epsilon_greedy_bandit_arms";
@@ -54,13 +56,15 @@ const char kEpsilonGreedyBanditArms[] =
 const char kEpsilonGreedyBanditEligibleSegments[] =
     "brave.brave_ads.epsilon_greedy_bandit_eligible_segments";
 
-const char kUnreconciledTransactions[] =
-    "brave.brave_ads.ad_rewards.unreconciled_transactions";
+// Rewards
+const char kNextTokenRedemptionAt[] =
+    "brave.brave_ads.rewards.next_time_redemption_at";
 
 // Stores migration status
 const char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
+const char kHasMigratedRewardsState[] =
+    "brave.brave_ads.migrated.rewards_state";
 
 }  // namespace prefs
-
 }  // namespace ads

@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { assert } from 'chrome://resources/js/assert.m.js'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Eth from '@ledgerhq/hw-app-eth'
+
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
@@ -14,7 +15,7 @@ import {
   SignatureVRS,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../../../common/hardware_operations'
+} from '../../hardware_operations'
 import { LedgerKeyring } from '../hardwareKeyring'
 import { HardwareVendor } from '../../api/hardware_keyrings'
 import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
@@ -31,7 +32,7 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
   private deviceId: string
 
   type = (): HardwareVendor => {
-    return LEDGER_HARDWARE_VENDOR
+    return BraveWallet.LEDGER_HARDWARE_VENDOR
   }
 
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {

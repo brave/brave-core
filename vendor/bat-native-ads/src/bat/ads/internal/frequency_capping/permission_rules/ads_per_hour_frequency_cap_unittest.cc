@@ -99,7 +99,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Act
   AdsPerHourFrequencyCap frequency_cap;
@@ -118,7 +118,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Hour) {
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(59));
+  FastForwardClockBy(base::Minutes(59));
 
   // Act
   AdsPerHourFrequencyCap frequency_cap;

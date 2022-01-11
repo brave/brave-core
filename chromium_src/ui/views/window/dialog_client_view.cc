@@ -5,7 +5,7 @@
 
 #include "ui/views/layout/box_layout.h"
 
-#include "../../../../../ui/views/window/dialog_client_view.cc"
+#include "src/ui/views/window/dialog_client_view.cc"
 
 namespace views {
 

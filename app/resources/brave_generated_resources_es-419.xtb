@@ -36,6 +36,8 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="7017590444693657895">No permitir que ningún sitio acceda a la API de proveedor de Ethereum</translation>
 <translation id="8988939298652262600">Brave no comprueba la seguridad de las extensiones. Instala esta extensión solo si confías en el desarrollador.</translation>
 <translation id="8081858229109418493">Ícono y nombre de perfil</translation>
+<translation id="6438096877646138757">Sitios que borran las cookies cuando los cierras</translation>
+<translation id="2988792685798128092">Borrar al cerrar el sitio</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
 <translation id="1692470335103807198">Obtener más temas</translation>
 <translation id="2906510232093002459">Imágenes predeterminadas de Brave</translation>
@@ -55,7 +57,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente sitios web que siguen las especificaciones OpenSearch</translation>
 <translation id="6821903322090655051">Las Brave Rewards están deshabilitadas</translation>
-<translation id="9184430019924125685">Haga clic aquí para obtener más información</translation>
+<translation id="413570371620795359">Abra el panel de recompensas para habilitarlas y comenzar</translation>
 <translation id="3849957491997306859">Detectar automáticamente</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
@@ -69,7 +71,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="7286722244752781970">Tiempo mínimo en una página antes de registrar una visita</translation>
 <translation id="4424486208397124985">Visitas mínimas para la relevancia de un publicador</translation>
 <translation id="6248554379744796526">Mostrar sitios no verificados en la lista</translation>
-<translation id="3241299447027267831">Permitir contribuciones a videos</translation>
+<translation id="5510618543889994434">Permitir contribuciones para videos</translation>
 <translation id="924777189963477634">Al activar las contribuciones automáticas, acepta las <ph name="BEGIN_LINK_TOS"/>Condiciones del servicio<ph name="END_LINK_TOS"/> y la <ph name="BEGIN_LINK_PP"/>Política de privacidad<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Botones de propinas</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2414886740292270097">Oscuro</translation>
 <translation id="1360441190790440400">Igual a Linux</translation>
 <translation id="1336940801687497203">Igual a Windows</translation>
+<translation id="5919209812221905840">Controlador predeterminado de protocolo de Microsoft Edge</translation>
+<translation id="5239541974656019812">Haz que Brave sea el controlador de protocolo de Microsoft Edge</translation>
+<translation id="7136694880210472378">Configurar como predeterminado</translation>
+<translation id="1751388324499810661">Brave es el controlador predeterminado de protocolo de Microsoft Edge</translation>
 <translation id="8721331068159819483">Igual a macOS</translation>
 <translation id="2896916411183256228">Usa WebTorrnet para mostrar torrents directamente en el navegador. Admite archivos torrent y enlaces magnéticos.</translation>
 <translation id="8488282162676695335">Billetera de Brave</translation>
@@ -425,7 +431,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="2556708692502648323">Redes de billeteras</translation>
 <translation id="1330032157352961756">El ID de la nueva cadena</translation>
-<translation id="9053905035135220650">Una cadena hexadecimal con el prefijo 0x</translation>
+<translation id="3423620355610881890">Un número decimal positivo.</translation>
 <translation id="726121047592132939">El nombre de la nueva cadena</translation>
 <translation id="1034112277864078119">Introduzca el nombre de la cadena</translation>
 <translation id="4672314527143443556">Nombre de la divisa de la cadena</translation>
@@ -439,7 +445,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3047726704186619366">URL de los íconos</translation>
 <translation id="2487558607408469181">URL de exploradores de bloques</translation>
 <translation id="6301398959353668507">Este campo no puede quedar en blanco.</translation>
-<translation id="4514843126085243862">Formato no válido; el ID de la cadena es una cadena hexadecimal con el prefijo 0x</translation>
+<translation id="7504462451153306677">Formato inválido; el ID de cadena es un número positivo.</translation>
 <translation id="8325036459845654666">Ya se ha agregado esta red.</translation>
 <translation id="650071759190249039">Error interno. No ha sido posible agregar la red.</translation>
 <translation id="868529041590572443">Introduzca toda la información relativa a la divisa nativa</translation>

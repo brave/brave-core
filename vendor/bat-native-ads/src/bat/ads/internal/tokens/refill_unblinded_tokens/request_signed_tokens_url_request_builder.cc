@@ -30,7 +30,7 @@ RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
 RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
     default;
 
-// POST /v1/confirmation/token/{payment_id}
+// POST /v2/confirmation/token/{payment_id}
 
 mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
@@ -47,7 +47,7 @@ mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/confirmation/token/%s",
+  return base::StringPrintf("%s/v2/confirmation/token/%s",
                             confirmations::server::GetHost().c_str(),
                             wallet_.id.c_str());
 }

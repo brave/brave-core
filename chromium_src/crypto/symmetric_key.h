@@ -11,7 +11,7 @@
       Algorithm algorithm, const std::string& password,                     \
       const std::string& salt, size_t iterations, size_t key_size_in_bits); \
   static std::unique_ptr<SymmetricKey> DeriveKeyFromPasswordUsingPbkdf2
-#include "../../../crypto/symmetric_key.h"
+#include "src/crypto/symmetric_key.h"
 #undef DeriveKeyFromPasswordUsingPbkdf2
 
 #endif  // BRAVE_CHROMIUM_SRC_CRYPTO_SYMMETRIC_KEY_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../constants/types'
 import { HardwareVendor } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult, HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
 
@@ -15,7 +15,7 @@ export abstract class HardwareKeyring {
 }
 
 export abstract class TrezorKeyring extends HardwareKeyring {
-  abstract signTransaction (path: string, txInfo: TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult>
+  abstract signTransaction (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult>
   abstract signPersonalMessage (path: string, message: string): Promise<SignHardwareMessageOperationResult>
 }
 

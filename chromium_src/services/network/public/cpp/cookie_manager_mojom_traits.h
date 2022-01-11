@@ -15,7 +15,7 @@
 
 #define CookieOptions CookieOptions_ChromiumImpl
 
-#include "../../../../../../services/network/public/cpp/cookie_manager_mojom_traits.h"
+#include "src/services/network/public/cpp/cookie_manager_mojom_traits.h"
 
 #undef CookieOptions
 

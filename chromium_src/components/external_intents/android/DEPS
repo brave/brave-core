@@ -1,5 +1,4 @@
 include_rules = [
-  "+components/external_intents/android",
   "+components/navigation_interception",
   "+content/public/browser",
   # from brave/components/external_intents/android/BUILD.gn

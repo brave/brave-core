@@ -19,7 +19,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/bundle.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_version.h"
+#include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/server/ads_server_util.h"
@@ -64,7 +64,7 @@ void AdServer::Fetch() {
   DCHECK(!is_processing_);
 
   BLOG(1, "GetCatalog");
-  BLOG(2, "GET /v" << kCurrentCatalogVersion << "/catalog");
+  BLOG(2, "GET /v" << kCatalogVersion << "/catalog");
 
   is_processing_ = true;
 
@@ -150,7 +150,7 @@ void AdServer::FetchAfterDelay() {
       g_is_debug ? kDebugCatalogPing
                  : AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
 
-  const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);
+  const base::TimeDelta delay = base::Seconds(ping);
 
   const base::Time time = timer_.StartWithPrivacy(
       delay, base::BindOnce(&AdServer::Fetch, base::Unretained(this)));
@@ -160,7 +160,7 @@ void AdServer::FetchAfterDelay() {
 
 void AdServer::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&AdServer::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(time));

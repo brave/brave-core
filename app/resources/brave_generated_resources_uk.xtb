@@ -35,6 +35,8 @@
 <translation id="7017590444693657895">Блокування доступу для сайтів до API постачальника Ethereum</translation>
 <translation id="8988939298652262600">Brave не перевіряє розширення на предмет безпеки. Встановлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
 <translation id="8081858229109418493">Ім'я та іконка профіля</translation>
+<translation id="6438096877646138757">Сайти, що видаляють файли cookie, коли ви їх закриваєте</translation>
+<translation id="2988792685798128092">Видалення за закриття сайту</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
 <translation id="1692470335103807198">Отримати більше тем</translation>
 <translation id="2906510232093002459">Типові зображення Brave</translation>
@@ -54,7 +56,7 @@
 <translation id="6285118765755298263">Індексування інших пошукових систем</translation>
 <translation id="919715748352669592">Автоматична індексація вебсайтів, які відповідають специфікації OpenSearch.</translation>
 <translation id="6821903322090655051">Винагороди Brave вимкнено</translation>
-<translation id="9184430019924125685">Натисніть тут, щоб дізнатися більше</translation>
+<translation id="413570371620795359">Відкрийте панель «Нагороди», щоб увімкнути й почати роботу</translation>
 <translation id="3849957491997306859">Визначено автоматично</translation>
 <translation id="8798099450830957504">За умовчанням</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
@@ -68,7 +70,7 @@
 <translation id="7286722244752781970">Мінімальний час на сторінці перед записом відвідування</translation>
 <translation id="4424486208397124985">Мінімальна кількість відвідувань для релевантності видавця</translation>
 <translation id="6248554379744796526">Показувати в списку не перевірені сайти</translation>
-<translation id="3241299447027267831">Дозволити внески у відео</translation>
+<translation id="5510618543889994434">Дозволити внески у відео</translation>
 <translation id="924777189963477634">Увімкнувши автоматичні внески, ви погоджуєтеся з <ph name="BEGIN_LINK_TOS"/>Умовами використання<ph name="END_LINK_TOS"/> й <ph name="BEGIN_LINK_PP"/>Політикою конфіденційності<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Кнопки підказок</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -207,6 +209,10 @@
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1360441190790440400">Така ж, як Linux</translation>
 <translation id="1336940801687497203">Такаж як Windows</translation>
+<translation id="5919209812221905840">Обробник протоколу microsoft-edge за замовчуванням</translation>
+<translation id="5239541974656019812">Зробити Brave обробником протоколу microsoft-edge</translation>
+<translation id="7136694880210472378">Установити за умовчанням</translation>
+<translation id="1751388324499810661">Brave є обробником протоколу microsoft-edge за замовчуванням</translation>
 <translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
@@ -424,7 +430,7 @@
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="2556708692502648323">Мережі гаманця</translation>
 <translation id="1330032157352961756">Ідентифікатор нового ланцюга</translation>
-<translation id="9053905035135220650">Шістнадцятковий рядок із префіксом 0x</translation>
+<translation id="3423620355610881890">Додатне десяткове число</translation>
 <translation id="726121047592132939">Назва нового ланцюга</translation>
 <translation id="1034112277864078119">Уведіть назву ланцюга</translation>
 <translation id="4672314527143443556">Назва валюти ланцюга</translation>
@@ -438,7 +444,7 @@
 <translation id="3047726704186619366">URL-адреси значків</translation>
 <translation id="2487558607408469181">URL-адреси диспетчера блоків</translation>
 <translation id="6301398959353668507">Це поле не може бути порожнім.</translation>
-<translation id="4514843126085243862">Недійсний формат, ідентифікатором ланцюга є шістнадцятковий рядок з префіксом 0x</translation>
+<translation id="7504462451153306677">Недійсний формат, ідентифікатором ланцюга є додатне число</translation>
 <translation id="8325036459845654666">Мережу вже додано.</translation>
 <translation id="650071759190249039">Внутрішня помилка, не вдається додати мережу.</translation>
 <translation id="868529041590572443">Уведіть усю інформацію про рідну валюту</translation>

@@ -11,13 +11,13 @@
 #include "base/bind.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -66,10 +66,10 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
-  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
+  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &service,
                                          &nonce_tracker);
 
   EthTxStateManager::TxMeta meta;
@@ -92,10 +92,10 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
 TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   EthAddress addr =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
-  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
+  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &service,
                                          &nonce_tracker);
   pending_tx_tracker.network_nonce_map_[addr.ToChecksumAddress()] =
       uint256_t(3);
@@ -123,10 +123,10 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
-  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
+  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &service,
                                          &nonce_tracker);
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -142,10 +142,10 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EthAddress addr2 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
-  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
-  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
+  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
+  EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &service,
                                          &nonce_tracker);
   base::RunLoop().RunUntilIdle();
   EthTxStateManager::TxMeta meta;

@@ -36,6 +36,8 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7017590444693657895">Zablokovat přístup webů k API rozhraní poskytovatele Etherea</translation>
 <translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
 <translation id="8081858229109418493">Název profilu a ikona</translation>
+<translation id="6438096877646138757">Stránky, u kterých se při zavření vymažou soubory cookie</translation>
+<translation id="2988792685798128092">Vymazat při zavření stránky</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
@@ -55,7 +57,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="6821903322090655051">Odměny Brave jsou vypnuté</translation>
-<translation id="9184430019924125685">Pro více informací klikněte zde</translation>
+<translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="3849957491997306859">Automatické rozpoznání</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="4176463684765177261">Zakázáno</translation>
@@ -69,7 +71,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7286722244752781970">Minimální doba přítomnosti na stránce před započítáním návštěvy</translation>
 <translation id="4424486208397124985">Minimální počet návštěv pro relevanci autora</translation>
 <translation id="6248554379744796526">Zobrazit neověřené stránky v seznamu</translation>
-<translation id="3241299447027267831">Povolit příspěvky k videím</translation>
+<translation id="5510618543889994434">Povolit příspěvky k videím</translation>
 <translation id="924777189963477634">Zapnutím funkce automatického přispívání souhlasíte s <ph name="BEGIN_LINK_TOS"/>Podmínkami služby<ph name="END_LINK_TOS"/> a <ph name="BEGIN_LINK_PP"/>Zásadami ochrany osobních údajů<ph name="END_LINK_PP"/></translation>
 <translation id="5733490796524078528">Tlačítka tipů</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2414886740292270097">Tmavé</translation>
 <translation id="1360441190790440400">Stejné jako u Linuxu</translation>
 <translation id="1336940801687497203">Stejná jako u Windows</translation>
+<translation id="5919209812221905840">Výchozí nástroj pro správu protokolu microsoft-edge</translation>
+<translation id="5239541974656019812">Udělejte z Brave nástroj pro správu protokolu microsoft-edge</translation>
+<translation id="7136694880210472378">Nastavit jako výchozí</translation>
+<translation id="1751388324499810661">Brave je výchozí nástroj pro správu protokolu microsoft-edge</translation>
 <translation id="8721331068159819483">Stejné jako macOS</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
@@ -425,7 +431,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2653659639078652383">Odeslat</translation>
 <translation id="2556708692502648323">Sítě peněženek</translation>
 <translation id="1330032157352961756">ID nového řetězce</translation>
-<translation id="9053905035135220650">Hexadecimální řetězec s předponou 0x</translation>
+<translation id="3423620355610881890">Kladné desetinné číslo</translation>
 <translation id="726121047592132939">Název nového řetězce</translation>
 <translation id="1034112277864078119">Zadejte název řetězce</translation>
 <translation id="4672314527143443556">Název měny řetězce</translation>
@@ -439,7 +445,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3047726704186619366">URL adresy ikon</translation>
 <translation id="2487558607408469181">Blokování URL adres průzkumníka</translation>
 <translation id="6301398959353668507">Toto pole nesmí být prázdné.</translation>
-<translation id="4514843126085243862">Nesprávný formát, ID řetězce je hexadecimální řada s předponou 0x</translation>
+<translation id="7504462451153306677">Nesprávný formát, ID řetězce je kladné číslo</translation>
 <translation id="8325036459845654666">Tato síť již byla přidána.</translation>
 <translation id="650071759190249039">Interní chyba, nelze přidat síť.</translation>
 <translation id="868529041590572443">Vyplňte všechny informace o domácí měně</translation>

@@ -13,7 +13,8 @@ import {
   AlertIcon,
   RecoveryBubble,
   RecoveryBubbleText,
-  RecoveryPhraseContainer
+  RecoveryPhraseContainer,
+  BigCheckMark
 } from './style'
 import { Tooltip } from '../../../shared'
 import { NavButton } from '../../../extension'
@@ -25,11 +26,12 @@ export interface Props {
   isRecoveryTermsAccepted: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
   recoverPhrase: string[]
+  isRecoverPhraseCopied: boolean
   onCopy: () => void
 }
 
 function OnboardingBackup (props: Props) {
-  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, onCopy } = props
+  const { onSubmit, isRecoveryTermsAccepted, onSubmitTerms, recoverPhrase, isRecoverPhraseCopied, onCopy } = props
 
   return (
     <StyledWrapper>
@@ -43,14 +45,17 @@ function OnboardingBackup (props: Props) {
         </DisclaimerColumn>
       </WarningBox>
       <RecoveryPhraseContainer>
-        {recoverPhrase.map((word) =>
-          <RecoveryBubble key={word}>
-            <RecoveryBubbleText>{recoverPhrase.indexOf(word) + 1}. {word}</RecoveryBubbleText>
+        {recoverPhrase.map((word, index) =>
+          <RecoveryBubble key={index}>
+            <RecoveryBubbleText>{index + 1}. {word}</RecoveryBubbleText>
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
       <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
-        <CopyButton onClick={onCopy}>{getLocale('braveWalletButtonCopy')}</CopyButton>
+        <CopyButton onClick={onCopy}>
+          {isRecoverPhraseCopied && <BigCheckMark />}
+          {isRecoverPhraseCopied ? getLocale('braveWalletButtonCopied') : getLocale('braveWalletButtonCopy')}
+        </CopyButton>
       </Tooltip>
       <TermsRow>
         <Checkbox value={{ backedUp: isRecoveryTermsAccepted }} onChange={onSubmitTerms}>

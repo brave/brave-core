@@ -49,7 +49,7 @@
             android:textSize="14sp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="@color/wallet_edittext_outline_color" />
+            android:textColorHint="@color/brave_theme_hint_text" />
 
         <TextView
             android:id="@+id/import_account_title"
@@ -78,7 +78,7 @@
                 android:layout_height="200dp"
                 android:gravity="top"
                 android:hint="@string/import_account_text"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:importantForAutofill="no"
                 android:paddingEnd="18dp"
                 android:paddingStart="18dp"
@@ -88,7 +88,7 @@
                 android:backgroundTint="@android:color/transparent"
                 android:textSize="14sp"
                 android:textColor="@color/wallet_text_color"
-                android:textColorHint="@color/wallet_edittext_outline_color" />
+                android:textColorHint="@color/brave_theme_hint_text" />
 
             <View
                 android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                 android:textSize="14sp"
                 android:inputType="textPassword"
                 android:textColor="@color/wallet_text_color"
-                android:textColorHint="@color/wallet_edittext_outline_color"
+                android:textColorHint="@color/brave_theme_hint_text"
                 tools:ignore="TextFields" />
 
         </LinearLayout>

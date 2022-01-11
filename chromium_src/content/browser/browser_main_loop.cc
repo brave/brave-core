@@ -7,4 +7,4 @@
 #include "brave/browser/brave_browser_main_loop.h"
 #include "brave/browser/brave_browser_main_loop.cc"
 
-#include "../../../../content/browser/browser_main_loop.cc"
+#include "src/content/browser/browser_main_loop.cc"

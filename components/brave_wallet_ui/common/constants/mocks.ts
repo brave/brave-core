@@ -4,16 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  AssetPrice,
-  ERCToken,
-  EthereumChain,
-  TransactionInfo,
-  TransactionStatus,
-  TransactionType,
+  BraveWallet,
   WalletAccountType
 } from '../../constants/types'
 
-export const getMockedTransactionInfo = (): TransactionInfo => {
+export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   return {
     id: '1',
     fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
@@ -31,8 +26,8 @@ export const getMockedTransactionInfo = (): TransactionInfo => {
       maxPriorityFeePerGas: '',
       maxFeePerGas: ''
     },
-    txStatus: TransactionStatus.Approved,
-    txType: TransactionType.Other,
+    txStatus: BraveWallet.TransactionStatus.Approved,
+    txType: BraveWallet.TransactionType.Other,
     txParams: [],
     txArgs: [],
     createdTime: { microseconds: 0 },
@@ -41,7 +36,7 @@ export const getMockedTransactionInfo = (): TransactionInfo => {
   }
 }
 
-export const mockNetwork: EthereumChain = {
+export const mockNetwork: BraveWallet.EthereumChain = {
   chainId: '0x1',
   chainName: 'Ethereum Main Net',
   rpcUrls: ['https://mainnet.infura.io/v3/'],
@@ -53,7 +48,7 @@ export const mockNetwork: EthereumChain = {
   isEip1559: true
 }
 
-export const mockERC20Token: ERCToken = {
+export const mockERC20Token: BraveWallet.BlockchainToken = {
   contractAddress: 'mockContractAddress',
   name: 'Dog Coin',
   symbol: 'DOG',
@@ -69,14 +64,13 @@ export const mockAccount: WalletAccountType = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
-  balance: '123.456',
-  fiatBalance: '17.34',
+  balance: '123456',
   asset: 'mockAsset', // FIXME: This is probably a useless field
   accountType: 'Primary',
   tokens: []
 }
 
-export const mockAssetPrices: AssetPrice[] = [
+export const mockAssetPrices: BraveWallet.AssetPrice[] = [
   {
     fromAsset: 'ETH',
     price: '4000',

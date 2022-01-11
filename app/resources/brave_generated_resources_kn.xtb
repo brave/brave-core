@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">ಎಥೇರಿಯಮ್ ಒದಗಿಸುವವರ API ಪ್ರವೇಶಿಸದಂತೆ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="8988939298652262600">ಸುರಕ್ಷತೆ ಹಾಗೂ ರಕ್ಷಣೆಗಾಗಿ ವಿಸ್ತರಣೆಗಳನ್ನು Brave ಪರಿಶೀಲಿಸುವುದಿಲ್ಲ. ನೀವು ಡೆವಲಪರ್ ಮೇಲೆ ನಂಬಿಕೆ ಹೊಂದಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಈ ವಿಸ್ತರಣೆಯನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.</translation>
 <translation id="8081858229109418493">ಪ್ರೊಫೈಲ್ ಹೆಸರು ಮತ್ತು ಐಕಾನ್</translation>
+<translation id="6438096877646138757">ನೀವು ಅವುಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಕುಕೀಗಳನ್ನು ಕ್ಲಿಯರ್ ಮಾಡುವ ಸೈಟ್‌ಗಳು</translation>
+<translation id="2988792685798128092">ಸೈಟ್ ಮುಚ್ಚಿದಾಗ ಕ್ಲಿಯರ್ ಮಾಡಿ</translation>
 <translation id="2044383478723007273">Brave ಬಣ್ಣಗಳು</translation>
 <translation id="1692470335103807198">ಹೆಚ್ಚು ಥೀಮ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="2906510232093002459">Brave ಡೀಫಾಲ್ಟ್ ಚಿತ್ರಗಳು</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">ಇತರ ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಇಂಡೆಕ್ಸ್ ಮಾಡಿ</translation>
 <translation id="919715748352669592">OpenSearch ನಿರ್ದಿಷ್ಟತೆಯನ್ನು ಅನುಸರಣೆ ಮಾಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಂಡೆಕ್ಸ್ ಮಾಡುತ್ತದೆ.</translation>
 <translation id="6821903322090655051">Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
-<translation id="9184430019924125685">ಹೆಚ್ಚು ತಿಳಿಯಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
+<translation id="413570371620795359">ಸಕ್ರಿಯಗೊಳಿಸಲು ಮತ್ತು ಪ್ರಾರಂಭಿಸಲು ಬಹುಮಾನಗಳ ಫಲಕವನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="3849957491997306859">ಸ್ವಯಂ-ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</translation>
 <translation id="8798099450830957504">ಡಿಫಾಲ್ಟ್</translation>
 <translation id="4176463684765177261">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">ಭೇಟಿಗೆ ಲಾಗ್ ಮಾಡುವುದಕ್ಕೂ ಮುಂಚಿನ ಕನಿಷ್ಠ ಪುಟದ ಸಮಯ</translation>
 <translation id="4424486208397124985">ಪ್ರಕಾಶಕರ ಪ್ರಸ್ತುತತೆಗೆ ಕನಿಷ್ಠ ಭೇಟಿಗಳು</translation>
 <translation id="6248554379744796526">ಪಟ್ಟಿಯಲ್ಲಿ ಪರಿಶೀಲಿಸದ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="3241299447027267831">ವೀಡಿಯೊಗಳಿಗೆ ಕೊಡುಗೆಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
+<translation id="5510618543889994434">ವೀಡಿಯೊಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡಲು ಅನುಮತಿಸಿ</translation>
 <translation id="924777189963477634">ಸ್ವಯಂ-ಕೊಡುಗೆಯನ್ನು ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK_TOS"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK_TOS"/> and <ph name="BEGIN_LINK_PP"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK_PP"/>.ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="5733490796524078528">ಸಲಹೆ ಬಟನ್‌ಗಳು</translation>
 <translation id="3905400818082450708">ರೆಡ್ಡಿಟ್</translation>
@@ -208,6 +210,10 @@
 <translation id="2414886740292270097">ಕಪ್ಪು</translation>
 <translation id="1360441190790440400">ಲಿನಕ್ಸ್ ರೀತಿ</translation>
 <translation id="1336940801687497203">ವಿಂಡೋಸ್ ರೀತಿ</translation>
+<translation id="5919209812221905840">ಡೀಫಾಲ್ಟ್ microsoft-edge ಪ್ರೋಟೋಕಾಲ್ ಹ್ಯಾಂಡ್ಲರ್</translation>
+<translation id="5239541974656019812">Brave ಅನ್ನು microsoft-edge ಪ್ರೋಟೋಕಾಲ್ ಹ್ಯಾಂಡ್ಲರ್ ಆಗಿ ಮಾಡಿ</translation>
+<translation id="7136694880210472378">ಡಿಫಾಲ್ಟ್ ಮಾಡಿ</translation>
+<translation id="1751388324499810661">Brave ಎನ್ನುವುದು ಡೀಫಾಲ್ಟ್ microsoft-edge ಪ್ರೋಟೋಕಾಲ್ ಹ್ಯಾಂಡ್ಲರ್ ಆಗಿದೆ</translation>
 <translation id="8721331068159819483">macOS ನ ರೀತಿಯಲ್ಲಿ</translation>
 <translation id="2896916411183256228">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೇರವಾಗಿ torrent ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು WebTorrent ಅನ್ನು ಬಳಸುತ್ತದೆ. torrent ಫೈಲ್‌ಗಳು ಮತ್ತು ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
 <translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
@@ -425,7 +431,7 @@
 <translation id="2653659639078652383">ಸಲ್ಲಿಸು</translation>
 <translation id="2556708692502648323">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="1330032157352961756">ಹೊಸ ಚೈನ್‌ನ ಐಡಿ</translation>
-<translation id="9053905035135220650">0x-ಪೂರ್ವಪ್ರತ್ಯಯದ ಹೆಕ್ಸಾಡೆಸಿಮಲ್ ಸ್ಟ್ರಿಂಗ್</translation>
+<translation id="3423620355610881890">ಧನಾತ್ಮಕ ದಶಮಾಂಶ ಸಂಖ್ಯೆ</translation>
 <translation id="726121047592132939">ಹೊಸ ಚೈನ್‌ನ ಹೆಸರು</translation>
 <translation id="1034112277864078119">ಚೈನ್ ಹೆಸರು ಹೆಸರು</translation>
 <translation id="4672314527143443556">ಚೈನ್‌ನ ಕರೆನ್ಸಿ ಹೆಸರು</translation>
@@ -439,7 +445,7 @@
 <translation id="3047726704186619366">ಐಕಾನ್ URLಗಳು</translation>
 <translation id="2487558607408469181">ಎಕ್ಸ್‌ಪ್ಲೋರರ್ URLಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="6301398959353668507">ಈ ಕ್ಷೇತ್ರವು ಖಾಲಿಯಾಗಿರುವಂತಿಲ್ಲ.</translation>
-<translation id="4514843126085243862">ಅಮಾನ್ಯ ಫಾರ್ಮ್ಯಾಟ್, ಚೈನ್ ಐಡಿ 0x-ಪೂರ್ವಪ್ರತ್ಯಯದ ಹೆಕ್ಸಾಡಿಸಿಮಲ್ ಸ್ಟ್ರಿಂಗ್ ಆಗಿದೆ</translation>
+<translation id="7504462451153306677">ಅಮಾನ್ಯ ಫಾರ್ಮ್ಯಾಟ್, ಚೈನ್ ಐಡಿಯು ಧನಾತ್ಮಕ ಸಂಖ್ಯೆಯಾಗಿದೆ</translation>
 <translation id="8325036459845654666">ಈ ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಈಗಾಗಲೇ ಸೇರಿಸಲಾಗಿದೆ.</translation>
 <translation id="650071759190249039">ಆಂತರಿಕ ದೋಷ, ನೆಟ್‌ವರ್ಕ್ ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
 <translation id="868529041590572443">ಮೂಲ ಕರೆನ್ಸಿ ಕುರಿತು ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಭರ್ತಿ ಮಾಡಿ</translation>

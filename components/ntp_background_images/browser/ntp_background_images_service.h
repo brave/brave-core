@@ -69,13 +69,14 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  std::vector<std::string> GetTopSitesFaviconList() const;
   void CheckNTPSIComponentUpdateIfNeeded();
 
  private:
   friend class TestNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           MultipleCampaignsTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
@@ -132,7 +133,6 @@ class NTPBackgroundImagesService {
   bool IsValidSuperReferralComponentInfo(
       const base::Value& component_info) const;
 
-  void CacheTopSitesFaviconList();
   void CheckImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
@@ -148,7 +148,6 @@ class NTPBackgroundImagesService {
   base::Time last_update_check_time_;
   base::RepeatingTimer si_update_check_timer_;
   base::RepeatingClosure si_update_check_callback_;
-  std::vector<std::string> top_site_favicon_list_;
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;
   PrefService* local_pref_;

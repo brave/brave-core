@@ -16,7 +16,22 @@
         android:paddingTop="30dp"
         android:paddingEnd="50dp"
         android:paddingBottom="30dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/news_time_color" />
 
+    <android.widget.Button
+        android:id="@+id/share_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:textSize="15sp"
+        android:textAllCaps="false"
+        android:text="@string/brave_news_share"
+        android:textColor="@color/news_text_color" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -25,7 +40,7 @@
         android:paddingTop="30dp"
         android:paddingEnd="50dp" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/new_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +60,7 @@
         android:layout_height="1dp"
         android:background="@color/news_time_color" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/new_private_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +79,7 @@
         android:layout_height="1dp"
         android:background="@color/news_time_color" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/disable_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

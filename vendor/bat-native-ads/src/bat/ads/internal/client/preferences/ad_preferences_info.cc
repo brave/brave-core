@@ -31,45 +31,43 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  for (const auto& ad : document["filtered_ads"].GetArray()) {
-    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return false;
+  for (const auto& advertiser : document["filtered_advertisers"].GetArray()) {
+    if (!advertiser.HasMember("id") || advertiser["id"].IsString()) {
+      continue;
     }
 
-    FilteredAdInfo filtered_ad;
-    filtered_ad.creative_instance_id = ad["uuid"].GetString();
-    filtered_ad.creative_set_id = ad["creative_set_id"].GetString();
-    filtered_ads.push_back(filtered_ad);
+    FilteredAdvertiserInfo filtered_advertiser;
+    filtered_advertiser.id = advertiser["id"].GetString();
+    filtered_advertisers.push_back(filtered_advertiser);
   }
 
-  for (const auto& ad : document["filtered_categories"].GetArray()) {
-    if (!ad["name"].IsString()) {
-      return false;
+  for (const auto& category : document["filtered_categories"].GetArray()) {
+    if (!category.HasMember("name") || category["name"].IsString()) {
+      continue;
     }
 
     FilteredCategoryInfo filtered_category;
-    filtered_category.name = ad["name"].GetString();
+    filtered_category.name = category["name"].GetString();
     filtered_categories.push_back(filtered_category);
   }
 
   for (const auto& ad : document["saved_ads"].GetArray()) {
-    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return false;
+    if (!ad.HasMember("creative_instance_id") ||
+        !ad["creative_instance_id"].IsString()) {
+      continue;
     }
 
     SavedAdInfo saved_ad;
-    saved_ad.creative_instance_id = ad["uuid"].GetString();
-    saved_ad.creative_set_id = ad["creative_set_id"].GetString();
+    saved_ad.creative_instance_id = ad["creative_instance_id"].GetString();
     saved_ads.push_back(saved_ad);
   }
 
   for (const auto& ad : document["flagged_ads"].GetArray()) {
-    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return false;
+    if (!ad.HasMember("creative_set_id") || !ad["creative_set_id"].IsString()) {
+      continue;
     }
 
     FlaggedAdInfo flagged_ad;
-    flagged_ad.creative_instance_id = ad["uuid"].GetString();
     flagged_ad.creative_set_id = ad["creative_set_id"].GetString();
     flagged_ads.push_back(flagged_ad);
   }
@@ -80,16 +78,13 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {
   writer->StartObject();
 
-  writer->String("filtered_ads");
+  writer->String("filtered_advertisers");
   writer->StartArray();
-  for (const auto& ad : info.filtered_ads) {
+  for (const auto& advertiser : info.filtered_advertisers) {
     writer->StartObject();
 
-    writer->String("uuid");
-    writer->String(ad.creative_instance_id.c_str());
-
-    writer->String("creative_set_id");
-    writer->String(ad.creative_set_id.c_str());
+    writer->String("id");
+    writer->String(advertiser.id.c_str());
 
     writer->EndObject();
   }
@@ -112,11 +107,8 @@ void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {
   for (const auto& ad : info.saved_ads) {
     writer->StartObject();
 
-    writer->String("uuid");
+    writer->String("creative_instance_id");
     writer->String(ad.creative_instance_id.c_str());
-
-    writer->String("creative_set_id");
-    writer->String(ad.creative_set_id.c_str());
 
     writer->EndObject();
   }
@@ -126,9 +118,6 @@ void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {
   writer->StartArray();
   for (const auto& ad : info.flagged_ads) {
     writer->StartObject();
-
-    writer->String("uuid");
-    writer->String(ad.creative_instance_id.c_str());
 
     writer->String("creative_set_id");
     writer->String(ad.creative_set_id.c_str());

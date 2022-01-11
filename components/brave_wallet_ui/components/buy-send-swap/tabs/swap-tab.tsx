@@ -7,7 +7,7 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  EthereumChain,
+  BraveWallet,
   SwapValidationErrorType
 } from '../../../constants/types'
 import {
@@ -18,11 +18,11 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: EthereumChain[]
+  networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -39,7 +39,7 @@ export interface Props {
   onCustomSlippageToleranceChange: (value: string) => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectSwapAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
@@ -50,6 +50,8 @@ export interface Props {
   onSetToAmount: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
   onQuoteRefresh: () => void
+  onAddNetwork: () => void
+  onAddAsset: () => void
 }
 
 function SwapTab (props: Props) {
@@ -86,7 +88,9 @@ function SwapTab (props: Props) {
     onSetFromAmount,
     onSetToAmount,
     onSelectPresetAmount,
-    onQuoteRefresh
+    onQuoteRefresh,
+    onAddNetwork,
+    onAddAsset
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
@@ -101,7 +105,7 @@ function SwapTab (props: Props) {
     }
   }
 
-  const onClickSelectNetwork = (network: EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     onSelectNetwork(network)
     setSwapView('swap')
   }
@@ -186,6 +190,8 @@ function SwapTab (props: Props) {
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectAsset}
           selectedView={swapView}
+          onAddNetwork={onAddNetwork}
+          onAddAsset={onAddAsset}
         />
       }
     </>

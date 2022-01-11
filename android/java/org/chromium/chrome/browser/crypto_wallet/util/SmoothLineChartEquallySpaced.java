@@ -15,6 +15,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Shader;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -36,6 +37,9 @@ public class SmoothLineChartEquallySpaced extends View {
     private static final int STROKE_SIZE = 2;
     private static final float SMOOTHNESS = 0.35f; // the higher the smoother, but don't go over 0.5
 
+    private static final int CANVAS_TEXT_START_Y = 35;
+    private static final int CANVAS_TEXT_PADDING_Y = 10;
+
     private final Paint mPaint;
     private final Path mPath;
     private final float mCircleSize;
@@ -47,6 +51,7 @@ public class SmoothLineChartEquallySpaced extends View {
     private float mMinY;
     private float mMaxY;
     private float mCurrentLineX;
+    private boolean mNoDrawText;
     private int[] colors;
     private TextView mPrice;
 
@@ -125,9 +130,14 @@ public class SmoothLineChartEquallySpaced extends View {
     }
 
     public void drawLine(float x, TextView price) {
+        mNoDrawText = false;
         mPrice = price;
         mCurrentLineX = x;
         invalidate();
+    }
+
+    public void setNoDrawText(boolean noDraw) {
+        mNoDrawText = noDraw;
     }
 
     public void setColors(int[] colors) {
@@ -209,7 +219,8 @@ public class SmoothLineChartEquallySpaced extends View {
             paint.setColor(getResources().getColor(R.color.wallet_text_color));
 
             paint.setStrokeWidth(2f);
-            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, getHeight() - 10, paint);
+            canvas.drawLine(mCurrentLineX, CANVAS_TEXT_START_Y + CANVAS_TEXT_PADDING_Y,
+                    mCurrentLineX, getHeight() - mBorder - mStrokeSize / 2, paint);
             float possibleValue =
                     mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
             if (possibleValue < 0) {
@@ -217,14 +228,16 @@ public class SmoothLineChartEquallySpaced extends View {
             } else if (possibleValue >= mDates.length) {
                 possibleValue = mDates.length - 1;
             }
-            Paint paintText = new Paint();
+            TextPaint paintText = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             paintText.setColor(getResources().getColor(R.color.wallet_text_color));
             paintText.setTextSize(35);
             float textX = mCurrentLineX - 150;
             if (textX < 0) {
                 textX = mCurrentLineX;
             }
-            canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX, 35, paintText);
+            if (!mNoDrawText)
+                canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX,
+                        CANVAS_TEXT_START_Y, paintText);
             if (mPrice != null) {
                 DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
                 mPrice.setText("$" + decimalFormat.format(mValues[(int) possibleValue]));

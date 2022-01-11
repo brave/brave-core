@@ -9,8 +9,7 @@
 
 namespace {
 
-constexpr base::TimeDelta kJavascriptCookieExpiration =
-    base::TimeDelta::FromDays(7);
+constexpr base::TimeDelta kJavascriptCookieExpiration = base::Days(7);
 
 base::Time BraveCanonExpiration(const base::Time& current) {
   // creation time is always now for new JS cookies
@@ -20,5 +19,5 @@ base::Time BraveCanonExpiration(const base::Time& current) {
 }  // namespace
 
 #define BRAVE_TO_CANONICAL_COOKIE expires = BraveCanonExpiration(expires);
-#include "../../../../../../../third_party/blink/renderer/modules/cookie_store/cookie_store.cc"
+#include "src/third_party/blink/renderer/modules/cookie_store/cookie_store.cc"
 #undef BRAVE_TO_CANONICAL_COOKIE

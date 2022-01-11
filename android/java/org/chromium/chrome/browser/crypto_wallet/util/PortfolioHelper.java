@@ -11,12 +11,14 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -28,13 +30,13 @@ import java.util.Locale;
 public class PortfolioHelper {
     private static String TAG = "PortfolioHelper";
     private BraveWalletService mBraveWalletService;
-    private AssetRatioController mAssetRatioController;
-    private EthJsonRpcController mEthJsonRpcController;
+    private AssetRatioService mAssetRatioService;
+    private JsonRpcService mJsonRpcService;
     private String mChainId;
     private AccountInfo[] mAccountInfos;
 
     // Data supplied as result
-    private ErcToken[] mUserAssets; // aka selected assets
+    private BlockchainToken[] mUserAssets; // aka selected assets
     private Double mTotalFiatSum;
     private HashMap<String, Double> mPerTokenFiatSum;
     private HashMap<String, Double> mPerTokenCryptoSum;
@@ -42,14 +44,14 @@ public class PortfolioHelper {
     private int mFiatHistoryTimeframe;
 
     public PortfolioHelper(BraveWalletService braveWalletService,
-            AssetRatioController assetRatioController, EthJsonRpcController ethJsonRpcController,
+            AssetRatioService assetRatioService, JsonRpcService jsonRpcService,
             AccountInfo[] accountInfos) {
         assert braveWalletService != null;
-        assert assetRatioController != null;
-        assert ethJsonRpcController != null;
+        assert assetRatioService != null;
+        assert jsonRpcService != null;
         mBraveWalletService = braveWalletService;
-        mAssetRatioController = assetRatioController;
-        mEthJsonRpcController = ethJsonRpcController;
+        mAssetRatioService = assetRatioService;
+        mJsonRpcService = jsonRpcService;
         mAccountInfos = accountInfos;
     }
 
@@ -62,7 +64,7 @@ public class PortfolioHelper {
         mFiatHistoryTimeframe = timeframe;
     }
 
-    public ErcToken[] getUserAssets() {
+    public BlockchainToken[] getUserAssets() {
         return mUserAssets;
     }
 
@@ -106,7 +108,7 @@ public class PortfolioHelper {
     public void calculateBalances(Runnable runWhenDone) {
         resetResultData();
 
-        mBraveWalletService.getUserAssets(mChainId, (userAssets) -> {
+        TokenUtils.getUserAssetsFiltered(mBraveWalletService, mChainId, (userAssets) -> {
             mUserAssets = userAssets;
             HashMap<String, Double> tokenToUsdRatios = new HashMap<String, Double>();
 
@@ -114,7 +116,7 @@ public class PortfolioHelper {
                     new AsyncUtils.MultiResponseHandler(mUserAssets.length);
             ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
                     new ArrayList<AsyncUtils.GetPriceResponseContext>();
-            for (ErcToken userAsset : mUserAssets) {
+            for (BlockchainToken userAsset : mUserAssets) {
                 String[] fromAssets =
                         new String[] {userAsset.symbol.toLowerCase(Locale.getDefault())};
                 String[] toAssets = new String[] {"usd"};
@@ -125,7 +127,7 @@ public class PortfolioHelper {
 
                 pricesContexts.add(priceContext);
 
-                mAssetRatioController.getPrice(
+                mAssetRatioService.getPrice(
                         fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
             }
 
@@ -158,14 +160,14 @@ public class PortfolioHelper {
 
                 // Tokens balances
                 for (AccountInfo accountInfo : mAccountInfos) {
-                    for (ErcToken userAsset : mUserAssets) {
+                    for (BlockchainToken userAsset : mUserAssets) {
                         if (userAsset.contractAddress.isEmpty()) {
                             AsyncUtils.GetBalanceResponseContext context =
                                     new AsyncUtils.GetBalanceResponseContext(
                                             balancesMultiResponse.singleResponseComplete);
                             context.userAsset = userAsset;
                             contexts.add(context);
-                            mEthJsonRpcController.getBalance(accountInfo.address, context);
+                            mJsonRpcService.getBalance(accountInfo.address, context);
 
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =
@@ -173,7 +175,7 @@ public class PortfolioHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.userAsset = userAsset;
                             contexts.add(context);
-                            mEthJsonRpcController.getErc20TokenBalance(
+                            mJsonRpcService.getErc20TokenBalance(
                                     Utils.getContractAddress(
                                             mChainId, userAsset.symbol, userAsset.contractAddress),
                                     accountInfo.address, context);
@@ -191,8 +193,9 @@ public class PortfolioHelper {
                         int decimals =
                                 (context.userAsset.decimals != 0) ? context.userAsset.decimals : 18;
 
-                        Double thisBalanceCryptoPart =
-                                context.success ? fromHexWei(context.balance, decimals) : 0.0d;
+                        Double thisBalanceCryptoPart = (context.error == ProviderError.SUCCESS)
+                                ? fromHexWei(context.balance, decimals)
+                                : 0.0d;
 
                         Double thisBalanceFiatPart = usdPerThisToken * thisBalanceCryptoPart;
 
@@ -217,7 +220,7 @@ public class PortfolioHelper {
     }
 
     private void resetResultData() {
-        mUserAssets = new ErcToken[0];
+        mUserAssets = new BlockchainToken[0];
         mTotalFiatSum = 0.0d;
         mPerTokenFiatSum = new HashMap<String, Double>();
         mPerTokenCryptoSum = new HashMap<String, Double>();
@@ -249,7 +252,7 @@ public class PortfolioHelper {
         ArrayList<AsyncUtils.GetPriceHistoryResponseContext> pricesHistoryContexts =
                 new ArrayList<AsyncUtils.GetPriceHistoryResponseContext>();
 
-        for (ErcToken userAsset : mUserAssets) {
+        for (BlockchainToken userAsset : mUserAssets) {
             AsyncUtils.GetPriceHistoryResponseContext priceHistoryContext =
                     new AsyncUtils.GetPriceHistoryResponseContext(
                             historyMultiResponse.singleResponseComplete);
@@ -257,8 +260,8 @@ public class PortfolioHelper {
             priceHistoryContext.userAsset = userAsset;
             pricesHistoryContexts.add(priceHistoryContext);
 
-            mAssetRatioController.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
-                    mFiatHistoryTimeframe, priceHistoryContext);
+            mAssetRatioService.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
+                    "usd", mFiatHistoryTimeframe, priceHistoryContext);
         }
 
         historyMultiResponse.setWhenAllCompletedAction(() -> {

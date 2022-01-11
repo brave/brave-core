@@ -11,8 +11,8 @@ export const root = styled.div`
   color: var(--brave-palette-neutral600);
   font-size: 14px;
   line-height: 18px;
-  margin-top: 13px;
-  padding: 24px 30px;
+  margin-top: 12px;
+  padding: 22px 30px;
   display: flex;
   justify-content: flex-end;
   align-items: center;

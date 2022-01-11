@@ -5,6 +5,7 @@
 
 #include "bat/ads/category_content_info.h"
 
+#include "base/values.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
@@ -18,11 +19,42 @@ CategoryContentInfo::CategoryContentInfo(const CategoryContentInfo& info) =
 CategoryContentInfo::~CategoryContentInfo() = default;
 
 bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {
-  return category == rhs.category && opt_action == rhs.opt_action;
+  return category == rhs.category && opt_action_type == rhs.opt_action_type;
 }
 
 bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
   return !(*this == rhs);
+}
+
+base::DictionaryValue CategoryContentInfo::ToValue() const {
+  base::DictionaryValue dictionary;
+
+  dictionary.SetKey("category", base::Value(category));
+  dictionary.SetKey("optAction",
+                    base::Value(static_cast<int>(opt_action_type)));
+
+  return dictionary;
+}
+
+bool CategoryContentInfo::FromValue(const base::Value& value) {
+  const base::DictionaryValue* dictionary = nullptr;
+  if (!(&value)->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  const std::string* category_value = dictionary->FindStringKey("category");
+  if (category_value) {
+    category = *category_value;
+  }
+
+  const absl::optional<int> opt_action_type_optional =
+      dictionary->FindIntKey("optAction");
+  if (opt_action_type_optional) {
+    opt_action_type = static_cast<CategoryContentOptActionType>(
+        opt_action_type_optional.value());
+  }
+
+  return true;
 }
 
 std::string CategoryContentInfo::ToJson() const {
@@ -45,21 +77,21 @@ bool CategoryContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("opt_action")) {
-    opt_action =
-        static_cast<CategoryContentActionType>(document["opt_action"].GetInt());
+    opt_action_type = static_cast<CategoryContentOptActionType>(
+        document["opt_action"].GetInt());
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const CategoryContentInfo& content) {
+void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info) {
   writer->StartObject();
 
   writer->String("category");
-  writer->String(content.category.c_str());
+  writer->String(info.category.c_str());
 
   writer->String("opt_action");
-  writer->Int(static_cast<int>(content.opt_action));
+  writer->Int(static_cast<int>(info.opt_action_type));
 
   writer->EndObject();
 }

@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_SOCKET_SOCKS5_CLIENT_SOCKET_H_
 #define BRAVE_CHROMIUM_SRC_NET_SOCKET_SOCKS5_CLIENT_SOCKET_H_
 
-#include "../../../../net/socket/socks5_client_socket.h"
+#include "src/net/socket/socks5_client_socket.h"
 
 #include <memory>
 #include <string>

@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
@@ -65,11 +65,9 @@ void IpfsLinkImportWorker::DownloadLinkContent(const GURL& url) {
 void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
   int error_code = url_loader_->NetError();
   int response_code = -1;
-  int64_t content_length = -1;
   std::string mime_type = kLinkMimeType;
   if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers) {
     response_code = url_loader_->ResponseInfo()->headers->response_code();
-    content_length = url_loader_->ResponseInfo()->headers->GetContentLength();
     url_loader_->ResponseInfo()->headers->GetMimeType(&mime_type);
   }
   bool success =

@@ -11,6 +11,11 @@
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
+
 namespace ads {
 
 struct ADS_EXPORT CategoryContentInfo final {
@@ -21,11 +26,15 @@ struct ADS_EXPORT CategoryContentInfo final {
   bool operator==(const CategoryContentInfo& rhs) const;
   bool operator!=(const CategoryContentInfo& rhs) const;
 
+  base::DictionaryValue ToValue() const;
+  bool FromValue(const base::Value& value);
+
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   std::string category;
-  CategoryContentActionType opt_action = CategoryContentActionType::kNone;
+  CategoryContentOptActionType opt_action_type =
+      CategoryContentOptActionType::kNone;
 };
 
 }  // namespace ads

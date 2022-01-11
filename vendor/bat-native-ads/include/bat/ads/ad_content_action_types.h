@@ -8,7 +8,7 @@
 
 namespace ads {
 
-enum class AdContentActionType { kNeutral = 0, kThumbsUp, kThumbsDown };
+enum class AdContentLikeActionType { kNeutral = 0, kThumbsUp, kThumbsDown };
 
 }  // namespace ads
 

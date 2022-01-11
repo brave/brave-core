@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace {
 const char kRequestJsonRPC[] = "2.0";
@@ -18,7 +19,7 @@ const char kRequestJsonRPC[] = "2.0";
 namespace brave_wallet {
 
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
-    ProviderErrors code,
+    mojom::ProviderError code,
     const std::string& message) {
   std::string formed_response;
   std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
@@ -29,26 +30,26 @@ std::unique_ptr<base::Value> GetProviderErrorDictionary(
 
 std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
-    const std::string& controller_response,
+    const std::string& service_response,
     bool* reject) {
   DCHECK(reject);
   *reject = true;
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          controller_response, base::JSONParserOptions::JSON_PARSE_RFC);
+          service_response, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& response = value_with_error.value;
 
   if (http_code != 200) {
-    ProviderErrors code = ProviderErrors::kUnsupportedMethod;
+    mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
     std::string message =
         "HTTP Status code: " + base::NumberToString(http_code);
     return GetProviderErrorDictionary(code, message);
   }
 
   if (!response) {
-    ProviderErrors code = ProviderErrors::kUnsupportedMethod;
+    mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
     std::string message =
-        "Invalid response, could not parse JSON: " + controller_response;
+        "Invalid response, could not parse JSON: " + service_response;
 
     return GetProviderErrorDictionary(code, message);
   }

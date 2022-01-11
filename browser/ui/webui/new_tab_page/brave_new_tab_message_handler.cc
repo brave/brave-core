@@ -27,7 +27,6 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -44,7 +43,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
-using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::
@@ -177,7 +175,7 @@ bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
   // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
-  base::Time talk_prompt_trigger_time = now - base::TimeDelta::FromDays(3);
+  base::Time talk_prompt_trigger_time = now - base::Days(3);
   return (time_first_run <= talk_prompt_trigger_time);
 }
 
@@ -200,8 +198,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   }
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
-                     base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
-                         is_ads_supported_locale_);
+                     is_ads_supported_locale_);
   source->AddBoolean("braveTalkPromptAllowed",
                      BraveNewTabMessageHandler::CanPromptBraveTalk());
 

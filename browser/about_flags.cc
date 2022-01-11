@@ -59,11 +59,11 @@ using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
+using brave_shields::features::kBraveDomainBlock1PES;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using brave_shields::features::kCosmeticFilteringSyncLoad;
 
 using debounce::features::kBraveDebounce;
-using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
@@ -130,6 +130,15 @@ constexpr char kBraveDomainBlockName[] = "Enable domain blocking";
 constexpr char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";
 
+constexpr char kBraveDomainBlock1PESName[] =
+    "Enable domain blocking using First Party Ephemeral Storage";
+constexpr char kBraveDomainBlock1PESDescription[] =
+    "When visiting a blocked domain, Brave will try to enable Ephemeral "
+    "Storage for a first party context, meaning neither cookies nor "
+    "localStorage data will be persisted after a website is closed. Ephemeral "
+    "Storage will be auto-enabled only if no data was previously stored for a "
+    "website";
+
 constexpr char kBraveDebounceName[] = "Enable debouncing";
 constexpr char kBraveDebounceDescription[] =
     "Enable support for skipping top-level redirect tracking URLs";
@@ -146,11 +155,6 @@ constexpr char kCosmeticFilteringSyncLoadDescription[] =
 
 constexpr char kBraveIpfsName[] = "Enable IPFS";
 constexpr char kBraveIpfsDescription[] = "Enable native support of IPFS.";
-
-constexpr char kBraveNTPBrandedWallpaperName[] =
-    "New Tab Page Branded Wallpapers";
-constexpr char kBraveNTPBrandedWallpaperDescription[] =
-    "Allow New Tab Page Branded Wallpapers and user preference.";
 
 constexpr char kBraveNTPBrandedWallpaperDemoName[] =
     "New Tab Page Demo Branded Wallpaper";
@@ -181,6 +185,10 @@ constexpr char kBraveSyncDescription[] =
 constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
 constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
 
+constexpr char kBraveShieldsV2Name[] = "Enable Brave Shields v2";
+constexpr char kBraveShieldsV2Description[] =
+    "Major UX/UI overhaul of Brave Shields";
+
 constexpr char kBraveDecentralizedDnsName[] = "Enable decentralized DNS";
 constexpr char kBraveDecentralizedDnsDescription[] =
     "Enable decentralized DNS support, such as Unstoppable Domains and "
@@ -197,9 +205,9 @@ constexpr char kBraveEphemeralStorageKeepAliveDescription[] =
     "tabs for that origin are closed";
 
 constexpr char kBraveFirstPartyEphemeralStorageName[] =
-    "First Party Ephemeral Storage";
+    "Enable First Party Ephemeral Storage";
 constexpr char kBraveFirstPartyEphemeralStorageDescription[] =
-    "Enable support for first party ephemeral storage using SESSION ONLY "
+    "Enable support for First Party Ephemeral Storage using SESSION_ONLY "
     "cookie setting";
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
@@ -232,6 +240,11 @@ constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
 
+constexpr char kBraveWalletFilecoinName[] =
+    "Enable Brave Wallet Filecoin support";
+constexpr char kBraveWalletFilecoinDescription[] =
+    "Filecoin support for native Brave Wallet";
+
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
     "Brave News is completely private and includes anonymized ads matched on "
@@ -255,11 +268,29 @@ constexpr char kBraveTranslateGoDescription[] =
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
 
-// A blink feature.
+constexpr char kTabAudioIconInteractiveName[] =
+    "Interactive Tab audio indicator";
+constexpr char kTabAudioIconInteractiveDescription[] =
+    "Enable the Tab audio indicator to also be a button which can mute and "
+    "unmute the Tab.";
+
+// Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
 constexpr char kFileSystemAccessAPIDescription[] =
     "Enables the File System Access API, giving websites access to the file "
     "system";
+
+constexpr char kNavigatorConnectionAttributeName[] =
+    "Enable navigator.connection attribute";
+constexpr char kNavigatorConnectionAttributeDescription[] =
+    "Enables the navigator.connection API. Enabling this API will allow sites "
+    "to learn information about your network and internet connection. Trackers "
+    "can use this information to fingerprint your browser, or to infer when "
+    "you are traveling or at home.";
+
+constexpr char kRestrictWebSocketsPoolName[] = "Restrict WebSockets pool";
+constexpr char kRestrictWebSocketsPoolDescription[] =
+    "Limits simultaneous active WebSockets connections per eTLD+1";
 
 }  // namespace
 
@@ -327,7 +358,12 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kNativeBraveWalletName,                              \
      flag_descriptions::kNativeBraveWalletDescription,                       \
      kOsDesktop | flags_ui::kOsAndroid,                                      \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},
+     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)}, \
+    {"brave-wallet-filecoin",                                                \
+     flag_descriptions::kBraveWalletFilecoinName,                            \
+     flag_descriptions::kBraveWalletFilecoinDescription,                     \
+     kOsDesktop | flags_ui::kOsAndroid,                                      \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \
@@ -370,15 +406,22 @@ constexpr char kFileSystemAccessAPIDescription[] =
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
+#if !defined(OS_ANDROID)
+#define BRAVE_SHIELDS_V2_FEATURE_ENTRIES                            \
+    {"brave-shields-v2",                                            \
+     flag_descriptions::kBraveShieldsV2Name,                        \
+     flag_descriptions::kBraveShieldsV2Description,                 \
+     kOsDesktop,                                                    \
+     FEATURE_VALUE_TYPE(brave_shields::features::kBraveShieldsPanelV2)},
+#else
+#define BRAVE_SHIELDS_V2_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},       \
-    {"brave-ntp-branded-wallpaper",                                         \
-     flag_descriptions::kBraveNTPBrandedWallpaperName,                      \
-     flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,       \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaper)},                        \
     {"brave-ntp-branded-wallpaper-demo",                                    \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                  \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,   \
@@ -419,6 +462,10 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kBraveDomainBlockName,                              \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(kBraveDomainBlock)},                                \
+    {"brave-domain-block-1pes",                                             \
+     flag_descriptions::kBraveDomainBlock1PESName,                          \
+     flag_descriptions::kBraveDomainBlock1PESDescription, kOsAll,           \
+     FEATURE_VALUE_TYPE(kBraveDomainBlock1PES)},                            \
     {"brave-debounce",                                                      \
         flag_descriptions::kBraveDebounceName,                              \
         flag_descriptions::kBraveDebounceDescription, kOsAll,               \
@@ -473,6 +520,19 @@ constexpr char kFileSystemAccessAPIDescription[] =
       flag_descriptions::kFileSystemAccessAPIName,                          \
       flag_descriptions::kFileSystemAccessAPIDescription, kOsDesktop,       \
       FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI)},           \
+    {"navigator-connection-attribute",                                      \
+      flag_descriptions::kNavigatorConnectionAttributeName,                 \
+      flag_descriptions::kNavigatorConnectionAttributeDescription, kOsAll,  \
+      FEATURE_VALUE_TYPE(blink::features::kNavigatorConnectionAttribute)},  \
+    {"restrict-websockets-pool",                                            \
+      flag_descriptions::kRestrictWebSocketsPoolName,                       \
+      flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
+      FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
+    {"tab-audio-icon-interactive",                                          \
+      flag_descriptions::kTabAudioIconInteractiveName,                      \
+      flag_descriptions::kTabAudioIconInteractiveDescription,               \
+      kOsDesktop,                                                           \
+      FEATURE_VALUE_TYPE(features::kTabAudioIconInteractive)},              \
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
@@ -482,4 +542,5 @@ constexpr char kFileSystemAccessAPIDescription[] =
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     SIDEBAR_FEATURE_ENTRIES                                                 \
     SPEEDREADER_FEATURE_ENTRIES                                             \
+    BRAVE_SHIELDS_V2_FEATURE_ENTRIES                                        \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES

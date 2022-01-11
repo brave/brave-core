@@ -164,8 +164,8 @@
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="7954950242989581218">Surfa säkert och tryggt</translation>
 <translation id="2188651882929633653">Brave Shields blockerar de läskiga sakerna som försöker spåra dig över nätet — inklusive de flesta annonser. Sätt Shields till “nere” om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A"/>fullständigt privat produktanalys<ph name="END_LINK_P3A"/> för att uppskatta den totala användningen av vissa funktioner. Du kan stänga av detta i <ph name="BEGIN_LINK_P3A_SETTINGS"/>Inställningar<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="1919345977826869612">Annonser</translation>
-<translation id="6769094341455418696">Tjäna [[currency]] genom att titta på Brave Ads. Annonserna som visas baseras på dina intressen, vilka härleds från ditt surfbeteende. Inga personuppgifter eller surfhistorik lämnar någonsin din webbläsare.</translation>
+<translation id="4851215387785619212">Braves privata annonser</translation>
+<translation id="3114984266384096064">Tjäna [[currency]] genom att titta på Brave Private Ads. Annonserna som visas baseras på dina intressen, vilka härleds från ditt surfbeteende. Inga personuppgifter eller surfhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="3742599705619405136">Ett automatiskt sätt att stödja utgivare och contentskapare. Ställ in en månatlig betalning och surfa som vanligt. De Braveverifierade webbplatserna du besöker kommer att ta emot dina bidrag automatiskt, baserat på din uppmärksamhet som den mätts av Brave.</translation>
 <translation id="3325399124634342726">Nuvarande förtjänster denna månad (beräknat)</translation>
@@ -259,6 +259,8 @@
 <translation id="4530453398914580957">Fel: Väntande konto</translation>
 <translation id="2388470740942086608">Ditt konto på Uphold är begränsat för närvarande.</translation>
 <translation id="3605236342612716051">Fel: Begränsat konto</translation>
+<translation id="7147519373526655987">Ett problem uppstod när webbläsarens begäran om att koppla din Brave Rewards-plånbok till<ph name="PROVIDER"/>-kontot skulle verifieras. Du kan <ph name="BEGIN_LINK"/>kontakta supporten<ph name="END_LINK"/> för mer hjälp.</translation>
+<translation id="1316066811927496401">Fel: Begäran kunde inte verifieras</translation>
 <translation id="1737873393693460829">Genom att aktivera [[title]] godkänner du <ph name="BEGIN_LINK1"/>Användarvillkoren<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>Integritetspolicyn<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028">Din <ph name="AMOUNT"/> utbetalning börjar behandlas om <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Det kan ta några dagar innan utbetalningen bearbetas och din BAT kommer fram.</translation>
@@ -314,6 +316,7 @@
 <translation id="5323604113525002127">Vi visar de sista [[numberOfLines]] raderna i loggen. Om du vill ha hela loggen kan du ladda ner den ovan.</translation>
 <translation id="7168491065836975228">Rewards internt</translation>
 <translation id="758790787422117549">Persona-ID</translation>
+<translation id="1919345977826869612">Annonser</translation>
 <translation id="3671566813999349838">Belopp</translation>
 <translation id="751223241692981112">Tagen</translation>
 <translation id="3913089081619091801">Gör anspråk på ID</translation>
@@ -589,8 +592,7 @@
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
 <translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
-<translation id="2383784987664887340">Med Gemini kan du enkelt handla, lagra och tjäna 3,49 % APY på din BAT. Verifiera och länka din Brave Rewards-plånbok med Gemini nu!</translation>
-<translation id="2237374144728570574">* Gemini Earn APY från och med den 15 september 2021</translation>
+<translation id="3066983737886188034">Med Gemini kan du enkelt handla, lagra och tjäna ränta på din BAT. Verifiera och länka din Brave Belöningar-plånbok med Gemini nu!</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
@@ -776,6 +778,8 @@
 <translation id="2659764755126740206">Gå till mitt <ph name="PROVIDER"/>-konto</translation>
 <translation id="2389181429986654814">Gå till <ph name="PROVIDER"/> för att slutföra verifieringen</translation>
 <translation id="7793632266654336758">Slutför identitetsverifieringen för att börja ta emot belöningar.</translation>
+<translation id="2394961582378297792">Utloggad</translation>
+<translation id="5511950864417840431">Logga ut från <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Beräknade intäkter</translation>
 <translation id="7577100371127227294">Månatliga dricks</translation>
 <translation id="5894023780213944778">Min plånbok</translation>
@@ -811,6 +815,7 @@
 <translation id="9161147058107529840">Förväntad enkel objektparameter.</translation>
 <translation id="1875861420974447980">Detta kedje-ID används för närvarande</translation>
 <translation id="167698752210114155">Ett internt fel har inträffat</translation>
+<translation id="1680597601664421644">Snabbtangenten som importeras är inte giltig för Brave Wallet</translation>
 <translation id="4641919696349069826">En begäran pågår redan</translation>
 <translation id="872806943696014633">Transaktionsdata saknas</translation>
 <translation id="4805410229033541409">"från" är inte behörig att skicka transaktioner</translation>
@@ -864,6 +869,7 @@
 <translation id="629730747756840877">Konto</translation>
 <translation id="3891414008432200754">Pris</translation>
 <translation id="2267753748892043616">Lägg till konto</translation>
+<translation id="5061574358754621254">Prisdata från CoinGecko</translation>
 <translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="7020187418439030877"><ph name="NETWORK"/> stöds inte</translation>
@@ -871,12 +877,15 @@
 <translation id="632241521608275119">Tolererade transaktionskostnader</translation>
 <translation id="4500473291496079954">Löper ut om</translation>
 <translation id="8093033115658137576">0x adresser eller url</translation>
+<translation id="2860280209982026951">Brave använder <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
+<translation id="151946611346774041">0x kommer att behandla Ethereum-adressen och IP-numret för att genomföra en transaktion (samt att hämta kurser). 0x kommer ENDAST att använda dessa data till att hantera transaktioner.</translation>
+<translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
+<translation id="2704606927547763573">Kopierat</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
 <translation id="8303434745767477417">Håll kryptotillgångar i din förvaring. Spåra portföljprestanda och interagera med web 3 DApps. Handla, investera, låna och låna med DeFi. Okej från Brave sekretesswebbläsare. Inga tillägg, ingen hämtning krävs.</translation>
 <translation id="6972754398087986839">Komma igång</translation>
 <translation id="375882617301124395">Säkerhetskopiera din kryptoplånbok</translation>
-<translation id="1078873179929044999">I nästa steg kommer du att se en återställningsfras på 12 ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
 <translation id="5024543173656851695">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsnyckel.</translation>
 <translation id="3933122286596948824">Din återställningsfras</translation>
 <translation id="5077747669435508720">Skriv ner eller kopiera dessa ord i exakt ordning som visas nedan och spara dem någonstans säkert. Din återställningsfras är det enda sättet att återfå kontotillgång vid glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånbok.</translation>
@@ -938,6 +947,7 @@
 <translation id="6151024411349343484">Testa att byta HD-sökväg (ovan) om du inte hittar det konto du letar efter.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
+<translation id="4549853322523631092">Inga resultat hittades.</translation>
 <translation id="5149944858285555235">Okänt fel, anslut din maskinvaruplånbok igen och försök igen.</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="9220525904950070496">Ta bort konto</translation>
@@ -1018,6 +1028,8 @@
 <translation id="4709524402122994378">transaktioner</translation>
 <translation id="523862956770478816">Webbplatsbehörigheter</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> konton anslutna</translation>
+<translation id="4305817255990598646">Växla</translation>
+<translation id="3890989020011724401">Nytt konto</translation>
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1042,13 +1054,24 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> frånkopplad</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="1178198982208000092">Anslut din <ph name="DEVICE_NAME"/></translation>
-<translation id="3301417531330431881">Maskinvaruplånbok kräver transaktionsbekräftelse. <ph name="DEVICE_NAME"/></translation>
+<translation id="4358411489835404360">Hårdvaruplånboken kräver att du bekräftar på enheten. <ph name="DEVICE_NAME"/></translation>
+<translation id="3087887714936696603">Hårdvaruplånboken kräver att Ethereum-appen är öppen på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">skickat</translation>
 <translation id="5013754027092416509">mottagen</translation>
 <translation id="5867988533873716616">Block explorer URL är inte tillgänglig.</translation>
 <translation id="4255623233927788178">Visa på block explorer</translation>
+<translation id="7148658188569580292">Snabba upp transaktion</translation>
+<translation id="1198263951134066686">Avbryt transaktion</translation>
+<translation id="3562548974839822204">Försök utföra transaktion igen</translation>
 <translation id="6383204195803840504">Transaktioner visas här</translation>
+<translation id="6079696972035130497">Obegränsat</translation>
 <translation id="2916401020782528840">Transaktionen hittades inte</translation>
+<translation id="2833661570529295305">Inte godkänd</translation>
+<translation id="8034530868111548216">Godkänt</translation>
+<translation id="6015436276085482001">Nekad</translation>
+<translation id="6666273175654835609">Inskickat</translation>
+<translation id="2331676293859649642">Bekräftat</translation>
+<translation id="1165039591588034296">Fel</translation>
 <translation id="8941851657764077659">Max prioritetsavgift</translation>
 <translation id="8047527352810290817">Redigera gas</translation>
 <translation id="9091334651803050473">Även om det inte är en garanti kommer gruvarbetare sannolikt att prioritera din transaktion om du betalar en högre avgift.</translation>
@@ -1070,6 +1093,10 @@
 <translation id="749944179568745958">Inte en giltig ETH-adress</translation>
 <translation id="882486206986535424">Inte en giltig adress</translation>
 <translation id="6825399159373612149">Domän <ph name="DOMAIN_NAME"/> är inte registrerad</translation>
+<translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
+<translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
+<translation id="5517732667776806421">Information om kontrollsumma saknas</translation>
+<translation id="4006711930669471508">Ogiltig information om kontrollsumma</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="1118876217803190221">Otillräcklig balans</translation>
@@ -1080,6 +1107,7 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Plånboken måste låsas upp först</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> är inte en giltig adress</translation>
+<translation id="1470129769517088397"><ph name="ADDRESS"/> är inte det aktuella nätverket</translation>
 <translation id="7340805872138998391">Det gick inte att låsa upp enheten, försök att ansluta igen</translation>
 <translation id="1984410139271779110">Internt fel, okänt schema</translation>
 <translation id="8682200134223578011">godkänt</translation>
@@ -1088,8 +1116,18 @@
 <translation id="4287068151777838754">JSON-data är inte väntad</translation>
 <translation id="3282936527763045737">Lösenordet är inte rätt</translation>
 <translation id="1119447706177454957">Internt fel</translation>
-<translation id="3327639091470204775">Internt fel, kunde inte skapa iframe-bro</translation>
+<translation id="3327639091470204775">Det gick inte att ansluta till Trezor-bryggan</translation>
 <translation id="6672377693827764095">Internt fel, kunde inte hämta konton</translation>
+<translation id="6889920539620318793">Ange som aktiv</translation>
+<translation id="8933250418452564886">Det gick inte att hitta hårdvarutransaktionen, försök igen</translation>
+<translation id="5999974802900788338">Tog emot fel från hårdvaruenheten, du behöver troligtvis bekräfta transaktionen på enheten</translation>
+<translation id="8523768065044261559">Ett fel inträffade när transaktionen bearbetades, försök igen</translation>
+<translation id="971552837551838642">Fel vid signering av meddelande, försök igen</translation>
+<translation id="8273603707418703324">Fel vid signering av meddelande, okänd nyckelring begärd, försök igen</translation>
+<translation id="5265455943786954050">Trezor-kommandot körs redan</translation>
+<translation id="7017116822583380542">Trezor-bryggan är inte redo</translation>
+<translation id="3378339846292573874">Lägg till föreslagen token</translation>
+<translation id="2322227405137827074">Vill du importera denna token?</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1098,13 +1136,36 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
+<translation id="8458987127502506209">Aktivera Brave Sköld</translation>
+<translation id="640898327002833127">Brave Sköld <ph name="LINK_BEFORE"/>AKTIVERA<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Om den här webbplatsen inte verkar fungera kan du prova att inaktivera Brave Sköld. Detta kan minska Braves integritetsskydd.</translation>
+<translation id="8377155647357436161">Spårare, annonser och mer blockeras <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="5416893287862792505">Avancerade inställningar</translation>
+<translation id="1299672573512347813">Dessa inställningar påverkar webbkompatibiliteten på den här webbplatsen.</translation>
+<translation id="9204041448536398473">Globala Sköld-inställningar</translation>
+<translation id="7637771346619326580">Ändra global standard för Sköld</translation>
+<translation id="3520486481604057261">Anpassa Adblock-listor</translation>
+<translation id="3146531623184244174">Anslutningar uppgraderade till HTTPS</translation>
+<translation id="131231380815754440">Aktivera HTTPS</translation>
+<translation id="7461425058443653485">Script blockerade</translation>
+<translation id="3246600097575692802">Aktivera blockerade skript</translation>
+<translation id="3603525299146223354">Spårare och annonser</translation>
+<translation id="1146309636943354181">Spårare och annonser blockade (standard)</translation>
+<translation id="5973258875089964805">Spårare och annonser blockade (aggressivt)</translation>
+<translation id="5544888475837817215">Tillåt alla spårare och annonser</translation>
+<translation id="6203697265754637264">Kakor för flera webbplatser blockerade</translation>
+<translation id="4627427111733173920">Kakor blockerades</translation>
+<translation id="7855168553463825937">Alla cookies godkända</translation>
+<translation id="8366221601425141146">Fingeravtryck blockerat</translation>
+<translation id="5582686930349810484">Fingeravtrycksläsning hindrad (standard)</translation>
+<translation id="6696441392507885865">Fingeravtryck blockerade (strikt, kan göra att webbplatser inte fungerar)</translation>
+<translation id="5882733945883311404">Tillåt alla fingeravtryck</translation>
 <translation id="1742469581923031760">Ansluter…</translation>
 <translation id="1287487756047817908">Kopplar från…</translation>
 <translation id="2325196879156848326">Anslutningen misslyckades</translation>
 <translation id="745054660363064771">Kan inte ansluta till servern</translation>
 <translation id="3936826714240735937">Välj en annan server</translation>
 <translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunde inte ansluta till <ph name="REGION_NAME"/> servern. Du kan försöka igen eller välja en annan</translation>
-<translation id="1664949222596149258">Köp för <ph name="PRODUCE_PRICE"/></translation>
 <translation id="1024255913009642477">Redan köpt VPN?</translation>
 <translation id="8814357473522731680">Drivs av</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
@@ -1116,6 +1177,7 @@
 <translation id="3181339219453722970">Välj din VPN-plats</translation>
 <translation id="1751947227857853925">Snabb och obegränsad upp till 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 support</translation>
+<translation id="8463313539532697053">Ett ögonblick medan inläsning sker…</translation>
 <translation id="7586151660465233733">Fler marknader på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Visa marknader och handla krypto på FTX</translation>
 <translation id="5963745988819586370">Marknader</translation>

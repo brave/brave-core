@@ -11,7 +11,7 @@
 #define GetAppShortcutsSubdirName GetAppShortcutsSubdirName_UnUsed
 #endif
 
-#include "../../../../chrome/browser/shell_integration.cc"  // NOLINT
+#include "src/chrome/browser/shell_integration.cc"
 
 #if !defined(OS_WIN)
 #undef GetAppShortcutsSubdirName

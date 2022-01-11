@@ -26,5 +26,5 @@ std::u16string BraveCreateTitleLabel() {
       render_frame_host->GetLastCommittedOrigin()) \
       ? BraveCreateTitleLabel()                    \
       : CreateExtensionAwareChooserTitle
-#include "../../../../../../chrome/browser/ui/hid/hid_chooser_controller.cc"
+#include "src/chrome/browser/ui/hid/hid_chooser_controller.cc"
 #undef CreateExtensionAwareChooserTitle

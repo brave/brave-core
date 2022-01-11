@@ -7,7 +7,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   SelectWrapper,
   SelectScrollSearchContainer
-} from '../../buy-send-swap/shared-styles'
+} from '../shared-styles'
 
 export interface Props {
   accounts: UserAccountType[]
@@ -41,7 +41,7 @@ function SelectAccountWithHeader (props: Props) {
       <Header
         title={getLocale('braveWalletSelectAccount')}
         onBack={onBack}
-        onAddAccount={onAddAccount}
+        onClickAdd={onAddAccount}
         hasAddButton={hasAddButton}
       />
       <SearchBar placeholder={getLocale('braveWalletSearchAccount')} action={filterAccountList} />

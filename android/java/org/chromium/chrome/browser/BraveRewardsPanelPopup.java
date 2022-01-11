@@ -121,8 +121,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final int REWARDS_NOTIFICATION_NO_INTERNET = 1000;
     private static final String REWARDS_NOTIFICATION_NO_INTERNET_ID = "29d835c2-5752-4152-93c3-8a1ded9dd4ec";
     private static final int REWARDS_PROMOTION_CLAIM_ERROR = REWARDS_NOTIFICATION_NO_INTERNET + 1;
-    private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID = "rewards_promotion_claim_error_id";
-    //
+    private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID =
+            "rewards_promotion_claim_error_id";
 
     // Auto contribute results
     private static final String AUTO_CONTRIBUTE_SUCCESS = "0";
@@ -327,7 +327,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             btRewardsSettings.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             }));
@@ -526,7 +527,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 if (mBraveActivity != null)
-                    mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
             }
         }));
 
@@ -634,7 +636,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 showBraveRewardsOnboarding(root, false);
             }
         }));
-        Button btnBraveRewards = root.findViewById(R.id.btn_brave_rewards);
+        TextView btnBraveRewards = root.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -642,14 +644,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 showBraveRewardsOnboarding(root, true);
-            }
-        }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                braveRewardsOnboardingModalView.setVisibility(View.GONE);
             }
         }));
     }
@@ -1354,7 +1348,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                     assert (BraveReflectionUtil.EqualTypes(
                             mActivity.getClass(), BraveActivity.class));
                     BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
-                            BraveActivity.REWARDS_SETTINGS_URL);
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             });
@@ -1636,7 +1630,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         // mBraveRewardsNativeWorker.GetExternalWallet();
     }
 
-
     /**
      * OnRecurringDonationUpdated is fired after a publisher was added or removed to/from
      * recurrent donation list
@@ -1682,7 +1675,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             if (mBraveRewardsNativeWorker != null) {
                 BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (balance_obj != null) {
-                    walletBalance = balance_obj.mTotal;
+                    walletBalance = balance_obj.getTotal();
                 }
 
                 if (walletBalance > 0 && braveRewardsWelcomeView != null) {
@@ -1703,7 +1696,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
                 btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
                 if (mExternalWallet != null
-                        && mExternalWallet.getType().equals(BraveUphold.BITFLYER)) {
+                        && mExternalWallet.getType().equals(BraveWalletProvider.BITFLYER)) {
                     btnVerifyWallet.setVisibility(View.INVISIBLE);
                 }
             }
@@ -1749,7 +1742,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
-                rightDrawable = R.drawable.disclosure;
+                rightDrawable = R.drawable.ic_wallet_arrow;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
@@ -1821,7 +1814,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
         BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
         if (balance_obj != null) {
-            walletBalance = balance_obj.mTotal;
+            walletBalance = balance_obj.getTotal();
         }
 
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
@@ -1833,7 +1826,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.PENDING:
                 case BraveRewardsExternalWallet.VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
@@ -1848,7 +1841,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
@@ -1910,6 +1903,12 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         SetVerifyWalletControl(walletStatus);
     }
 
+    @Override
+    public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
+            int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
+        // TODO: Implement
+    }
+
     /**
      *  Show the "promotion claim failed" error message.
      *  Succesful claims are dismissed by a notification.
@@ -1947,7 +1946,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         }));
         if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED) {
+                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
+                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
             verified_text = root.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.bat_verified, 0, 0, 0);

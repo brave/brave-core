@@ -12,17 +12,21 @@
 #import "ads_client_ios.h"
 #include "base/base64.h"
 #include "base/logging.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
+#include "bat/ads/ad_content_action_types.h"
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_history_filter_types.h"
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/database.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
@@ -654,13 +658,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType));
 }
 
-- (void)reconcileAdRewards {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->ReconcileAdRewards();
-}
-
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
                                          double estimatedEarnings,
                                          NSDate* nextPaymentDate))completion {
@@ -685,23 +682,27 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-              creativeSetID:(NSString*)creativeSetID {
+               advertiserId:(NSString*)advertiserId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->ToggleAdThumbUp(base::SysNSStringToUTF8(creativeInstanceId),
-                       base::SysNSStringToUTF8(creativeSetID),
-                       ads::AdContentActionType::kThumbsUp);
+  ads::AdContentInfo info;
+  info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  info.type = ads::AdType::kAdNotification;
+  ads->ToggleAdThumbUp(info.ToJson());
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                creativeSetID:(NSString*)creativeSetID {
+                 advertiserId:(NSString*)advertiserId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->ToggleAdThumbDown(base::SysNSStringToUTF8(creativeInstanceId),
-                         base::SysNSStringToUTF8(creativeSetID),
-                         ads::AdContentActionType::kThumbsDown);
+  ads::AdContentInfo info;
+  info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  info.type = ads::AdType::kAdNotification;
+  ads->ToggleAdThumbDown(info.ToJson());
 }
 
 #pragma mark - Configuration

@@ -10,6 +10,7 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -40,15 +41,45 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
-        {"/v8/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}}};
+        {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
+        {// Get issuers request
+         R"(/v1/issuers/)",
+         {{net::HTTP_OK, R"(
+        {
+          "ping": 7200000,
+          "issuers": [
+            {
+              "name": "confirmations",
+              "publicKeys": [
+                {
+                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                  "associatedValue": ""
+                }
+              ]
+            },
+            {
+              "name": "payments",
+              "publicKeys": [
+                {
+                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+                  "associatedValue": "0.0"
+                },
+                {
+                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                  "associatedValue": "0.1"
+                }
+              ]
+            }
+          ]
+        }
+        )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
 
     InitializeAds();
-  }
-
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
   }
 
   void Save(const CreativeInlineContentAdList& creative_ads) {
@@ -66,7 +97,7 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
@@ -74,12 +105,15 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   Save(creative_ads);
 
   // Act
-  const InlineContentAdInfo expected_ad = BuildInlineContentAd(creative_ad);
-
   ad_serving_->MaybeServeAd(
       "200x100",
-      [&expected_ad](const bool success, const std::string& dimensions,
+      [&creative_ad](const bool success, const std::string& dimensions,
                      const InlineContentAdInfo& ad) {
+        ASSERT_TRUE(success);
+
+        InlineContentAdInfo expected_ad = BuildInlineContentAd(creative_ad);
+        expected_ad.uuid = ad.uuid;
+
         EXPECT_EQ(expected_ad, ad);
       });
 
@@ -88,7 +122,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
   // Arrange
-  RecordUserActivityEvents();
+  ForceUserActivityFrequencyCapPermission();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();

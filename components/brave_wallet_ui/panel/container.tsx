@@ -15,7 +15,10 @@ import {
   AllowAddChangeNetworkPanel,
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
-  SitePermissions
+  SitePermissions,
+  AddSuggestedTokenPanel,
+  TransactionsPanel,
+  TransactionDetailPanel
 } from '../components/extension'
 import {
   Send,
@@ -39,8 +42,8 @@ import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import {
-  AppItem,
   AppsListType,
+  BraveWallet,
   WalletState,
   PanelState,
   PanelTypes,
@@ -48,18 +51,18 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain,
   ToOrFromType,
   WalletOrigin
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import { BuyAssetUrl } from '../utils/buy-asset-url'
+import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
+  getBuyAssets,
+  getChecksumEthAddress,
   getERC20Allowance
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
@@ -102,7 +105,9 @@ function Container (props: Props) {
     gasEstimates,
     connectedAccounts,
     activeOrigin,
-    pendingTransactions
+    pendingTransactions,
+    defaultCurrencies,
+    transactions
   } = props.wallet
 
   const {
@@ -113,7 +118,8 @@ function Container (props: Props) {
     swapQuote,
     swapError,
     signMessageData,
-    switchChainRequest
+    switchChainRequest,
+    suggestedToken
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -122,15 +128,26 @@ function Container (props: Props) {
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
+  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>()
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
     assetOptions,
     userVisibleTokenOptions,
-    sendAssetOptions
-  } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
+    sendAssetOptions,
+    buyAssetOptions,
+    panelUserAssetList
+  } = useAssets(
+    accounts,
+    selectedAccount,
+    props.wallet.fullTokenList,
+    props.wallet.userVisibleTokensInfo,
+    transactionSpotPrices,
+    getBuyAssets
+  )
+
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(buyAssetOptions[0])
 
   const {
     exchangeRate,
@@ -179,10 +196,12 @@ function Container (props: Props) {
     toAddressOrUrl,
     toAddress,
     addressError,
+    addressWarning,
     selectedSendAsset
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
+    getChecksumEthAddress,
     sendAssetOptions,
     selectedAccount,
     props.walletActions.sendERC20Transfer,
@@ -195,10 +214,10 @@ function Container (props: Props) {
     setSelectedAccounts([selectedAccount])
   }, [selectedAccount])
 
-  const getSelectedAccountBalance = useBalance(selectedAccount)
-  const { assetBalance: sendAssetBalance } = getSelectedAccountBalance(selectedSendAsset)
-  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
-  const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
+  const getSelectedAccountBalance = useBalance(selectedNetwork)
+  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset?.asset)
+  const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset?.asset)
+  const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset?.asset)
 
   const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
@@ -207,14 +226,15 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
-    if (url) {
-      chrome.tabs.create({ url: url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-        }
+    GetBuyOrFaucetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
       })
-    }
+      .catch(e => console.error(e))
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
@@ -315,7 +335,7 @@ function Container (props: Props) {
   const onSetup = () => {
     props.walletPanelActions.setupWallet()
   }
-  const addToFavorites = (app: AppItem) => {
+  const addToFavorites = (app: BraveWallet.AppItem) => {
     props.walletActions.addFavoriteApp(app)
   }
 
@@ -331,7 +351,7 @@ function Container (props: Props) {
     props.walletPanelActions.openWalletApps()
   }
 
-  const removeFromFavorites = (app: AppItem) => {
+  const removeFromFavorites = (app: BraveWallet.AppItem) => {
     props.walletActions.removeFavoriteApp(app)
   }
 
@@ -344,7 +364,7 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
-  const onSelectNetwork = (network: EthereumChain) => () => {
+  const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
     props.walletActions.selectNetwork(network)
     props.walletPanelActions.navigateTo('main')
   }
@@ -412,7 +432,7 @@ function Container (props: Props) {
     props.walletActions.rejectAllTransactions()
   }
 
-  const onQueueNextTransction = () => {
+  const onQueueNextTransaction = () => {
     props.walletActions.queueNextTransaction()
   }
   const retryHardwareOperation = () => {
@@ -446,12 +466,77 @@ function Container (props: Props) {
     props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
   }
 
-  const removeSitePermission = (origin: string, address: string) => {
+  const removeSitePermission = (origin: string, address: string, connectedAccounts: WalletAccountType[]) => {
     props.walletActions.removeSitePermission({ origin: origin, account: address })
+    if (connectedAccounts.length !== 0) {
+      props.walletActions.selectAccount(connectedAccounts[0])
+    }
+  }
+
+  const addSitePermission = (origin: string, account: WalletAccountType) => {
+    props.walletActions.addSitePermission({ origin: origin, account: account.address })
+    props.walletActions.selectAccount(account)
+  }
+
+  const onSwitchAccount = (account: WalletAccountType) => {
+    props.walletActions.selectAccount(account)
   }
 
   const onAddAccount = () => {
     props.walletPanelActions.expandWalletAccounts()
+  }
+
+  const onAddAsset = () => {
+    props.walletPanelActions.expandWalletAddAsset()
+  }
+
+  const onAddSuggestedToken = () => {
+    if (!suggestedToken) {
+      return
+    }
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedToken.contractAddress })
+  }
+
+  const onCancelAddSuggestedToken = () => {
+    if (!suggestedToken) {
+      return
+    }
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedToken.contractAddress })
+  }
+
+  const onAddNetwork = () => {
+    props.walletActions.expandWalletNetworks()
+  }
+
+  const onClickInstructions = () => {
+    const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'
+
+    chrome.tabs.create({ url }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
+  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    setSelectedTransaction(transaction)
+    props.walletPanelActions.navigateTo('transactionDetails')
+  }
+
+  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.retryTransaction(transaction)
+  }
+
+  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.speedupTransaction(transaction)
+  }
+
+  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletActions.cancelTransaction(transaction)
+  }
+
+  const onGoBackToTransactions = () => {
+    props.walletPanelActions.navigateTo('transactions')
   }
 
   const isConnectedToSite = React.useMemo((): boolean => {
@@ -493,7 +578,7 @@ function Container (props: Props) {
   }
 
   if ((selectedPendingTransaction || signMessageData.length) &&
-      selectedPanel === 'connectHardwareWallet') {
+    selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
@@ -502,6 +587,7 @@ function Container (props: Props) {
             walletName={selectedAccount.name}
             hardwareWalletCode={props.panel.hardwareWalletCode}
             retryCallable={retryHardwareOperation}
+            onClickInstructions={onClickInstructions}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
@@ -513,11 +599,12 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <ConfirmTransactionPanel
+            defaultCurrencies={defaultCurrencies}
             siteURL={activeOrigin}
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
             onRejectAllTransactions={onRejectAllTransactions}
-            onQueueNextTransction={onQueueNextTransction}
+            onQueueNextTransaction={onQueueNextTransaction}
             transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
             transactionsQueueLength={pendingTransactions.length}
             accounts={accounts}
@@ -537,6 +624,21 @@ function Container (props: Props) {
     )
   }
 
+  if (selectedPanel === 'addSuggestedToken') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <AddSuggestedTokenPanel
+            onCancel={onCancelAddSuggestedToken}
+            onAddToken={onAddSuggestedToken}
+            token={suggestedToken}
+            selectedNetwork={selectedNetwork}
+          />
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
   if (selectedPanel === 'addEthereumChain') {
     return (
       <PanelWrapper isLonger={true}>
@@ -547,7 +649,6 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             networkPayload={networkPayload}
             panelType='add'
           />
@@ -566,7 +667,6 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
             onLearnMore={onNetworkLearnMore}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             networkPayload={GetNetworkInfo(switchChainRequest.chainId, networkList)}
             panelType='change'
           />
@@ -596,7 +696,7 @@ function Container (props: Props) {
   if (showSelectAsset) {
     let assets: AccountAssetOptionType[]
     if (selectedPanel === 'buy') {
-      assets = WyreAccountAssetOptions
+      assets = buyAssetOptions
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
     } else { // swap
@@ -609,6 +709,7 @@ function Container (props: Props) {
             assets={assets}
             onSelectAsset={onSelectAsset}
             onBack={onHideSelectAsset}
+            onAddAsset={onAddAsset}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -624,6 +725,8 @@ function Container (props: Props) {
             networks={networkList}
             onBack={onReturnToMain}
             onSelectNetwork={onSelectNetwork}
+            onAddNetwork={onAddNetwork}
+            hasAddButton={true}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -712,6 +815,7 @@ function Container (props: Props) {
                 selectedAssetAmount={sendAmount}
                 selectedAssetBalance={sendAssetBalance}
                 addressError={addressError}
+                addressWarning={addressWarning}
                 toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
               />
@@ -733,6 +837,7 @@ function Container (props: Props) {
           >
             <SendWrapper>
               <Buy
+                defaultCurrencies={defaultCurrencies}
                 onChangeBuyView={onChangeSendView}
                 onInputChange={onSetBuyAmount}
                 onSubmit={onSubmitBuy}
@@ -792,6 +897,54 @@ function Container (props: Props) {
     )
   }
 
+  if (selectedPanel === 'transactionDetails' && selectedTransaction) {
+    return (
+      <PanelWrapper isLonger={false}>
+        <SelectContainer>
+          <TransactionDetailPanel
+            onCancelTransaction={onCancelTransaction}
+            onRetryTransaction={onRetryTransaction}
+            onSpeedupTransaction={onSpeedupTransaction}
+            onBack={onGoBackToTransactions}
+            accounts={accounts}
+            defaultCurrencies={defaultCurrencies}
+            selectedNetwork={selectedNetwork}
+            transaction={selectedTransaction}
+            transactionSpotPrices={transactionSpotPrices}
+            visibleTokens={userVisibleTokenOptions}
+          />
+        </SelectContainer>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'transactions') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <ScrollContainer>
+              <TransactionsPanel
+                accounts={accounts}
+                defaultCurrencies={defaultCurrencies}
+                onSelectTransaction={onSelectTransaction}
+                selectedNetwork={selectedNetwork}
+                selectedAccount={selectedAccount}
+                visibleTokens={userVisibleTokenOptions}
+                transactionSpotPrices={transactionSpotPrices}
+                transactions={transactions}
+              />
+            </ScrollContainer>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
   if (selectedPanel === 'sitePermissions') {
     return (
       <PanelWrapper isLonger={false}>
@@ -802,9 +955,14 @@ function Container (props: Props) {
             useSearch={false}
           >
             <SitePermissions
+              accounts={accounts}
               connectedAccounts={connectedAccounts}
+              onConnect={addSitePermission}
               onDisconnect={removeSitePermission}
+              onSwitchAccount={onSwitchAccount}
+              selectedAccount={selectedAccount}
               siteURL={activeOrigin}
+              onAddAccount={onAddAccount}
             />
           </Panel>
         </StyledExtensionWrapper>
@@ -815,6 +973,8 @@ function Container (props: Props) {
   return (
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
+        defaultCurrencies={defaultCurrencies}
+        spotPrices={transactionSpotPrices}
         selectedAccount={selectedAccount}
         selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}
@@ -822,6 +982,7 @@ function Container (props: Props) {
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
         activeOrigin={activeOrigin}
+        userAssetList={panelUserAssetList}
       />
     </PanelWrapper>
   )

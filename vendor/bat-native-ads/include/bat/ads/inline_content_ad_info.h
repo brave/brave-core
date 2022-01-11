@@ -11,6 +11,11 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
+
 namespace ads {
 
 struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
@@ -22,6 +27,9 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   bool operator!=(const InlineContentAdInfo& rhs) const;
 
   bool IsValid() const;
+
+  base::DictionaryValue ToValue() const;
+  bool FromValue(const base::Value& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

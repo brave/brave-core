@@ -18,10 +18,10 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -49,10 +49,10 @@ static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
 
 absl::optional<base::Version> last_installed_wallet_version;
 
-std::vector<mojom::ERCTokenPtr> TokenListReady(
+std::vector<mojom::BlockchainTokenPtr> TokenListReady(
     const base::FilePath& install_dir,
     base::Value manifest) {
-  std::vector<mojom::ERCTokenPtr> erc_tokens;
+  std::vector<mojom::BlockchainTokenPtr> blockchain_tokens;
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
@@ -61,7 +61,7 @@ std::vector<mojom::ERCTokenPtr> TokenListReady(
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
-    return erc_tokens;
+    return blockchain_tokens;
   }
 
   const base::FilePath token_list_json_path =
@@ -71,16 +71,18 @@ std::vector<mojom::ERCTokenPtr> TokenListReady(
     LOG(ERROR) << "Can't read token list file.";
   }
 
-  if (!ParseTokenList(token_list_json, &erc_tokens)) {
+  if (!ParseTokenList(token_list_json, &blockchain_tokens)) {
     LOG(ERROR) << "Can't parse token list.";
-    erc_tokens.clear();
+    blockchain_tokens.clear();
   }
 
-  return erc_tokens;
+  return blockchain_tokens;
 }
 
-void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr> erc_tokens) {
-  ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
+void UpdateTokenRegistry(
+    std::vector<mojom::BlockchainTokenPtr> blockchain_tokens) {
+  BlockchainRegistry::GetInstance()->UpdateTokenList(
+      std::move(blockchain_tokens));
 }
 
 }  // namespace

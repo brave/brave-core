@@ -7,24 +7,19 @@ import { createReducer } from 'redux-act'
 import {
   AccountInfo,
   AccountTransactions,
-  AssetPriceTimeframe,
-  DefaultWallet,
-  EthereumChain,
-  GasEstimation1559,
+  BraveWallet,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
-  GetERC20TokenBalanceAndPriceReturnInfo,
-  GetNativeAssetBalancesPriceReturnInfo,
+  GetBlockchainTokenBalanceReturnInfo,
+  GetNativeAssetBalancesReturnInfo,
   GetPriceHistoryReturnInfo,
-  MAINNET_CHAIN_ID,
   PortfolioTokenHistoryAndInfo,
-  ERCToken,
-  TransactionInfo,
-  TransactionStatus,
   WalletAccountType,
   WalletState,
   WalletInfoBase,
-  WalletInfo
+  WalletInfo,
+  DefaultCurrencies,
+  GetPriceReturnInfo
 } from '../../constants/types'
 import {
   ActiveOriginChanged,
@@ -38,6 +33,7 @@ import { mojoTimeDeltaToJSDate } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
 import { sortTransactionByDate } from '../../utils/tx-utils'
+import { normalizeNumericValue } from '../../utils/bn-utils'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -48,7 +44,7 @@ const defaultState: WalletState = {
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
-    chainId: MAINNET_CHAIN_ID,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
@@ -57,7 +53,7 @@ const defaultState: WalletState = {
     symbolName: 'Ethereum',
     decimals: 18,
     isEip1559: true
-  } as EthereumChain,
+  } as BraveWallet.EthereumChain,
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},
@@ -67,15 +63,19 @@ const defaultState: WalletState = {
   portfolioPriceHistory: [],
   selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
-  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
+  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: DefaultWallet.BraveWalletPreferExtension,
+  defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: '',
   gasEstimates: undefined,
   connectedAccounts: [],
-  isMetaMaskInstalled: false
+  isMetaMaskInstalled: false,
+  defaultCurrencies: {
+    fiat: '',
+    crypto: ''
+  }
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -94,7 +94,6 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
       name: info.name,
       address: info.address,
       balance: '',
-      fiatBalance: '',
       asset: 'eth',
       accountType: getAccountType(info),
       deviceId: info.hardware ? info.hardware.deviceId : '',
@@ -130,7 +129,7 @@ reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccount
   }
 })
 
-reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
+reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.EthereumChain) => {
   return {
     ...state,
     isFetchingPortfolioPriceHistory: true,
@@ -138,7 +137,7 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: ERCToken[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: BraveWallet.BlockchainToken[]) => {
   return {
     ...state,
     userVisibleTokensInfo: payload
@@ -159,15 +158,12 @@ reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensRet
   }
 })
 
-reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNativeAssetBalancesPriceReturnInfo) => {
+reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNativeAssetBalancesReturnInfo) => {
   let accounts: WalletAccountType[] = [...state.accounts]
 
   accounts.forEach((account, index) => {
-    if (payload.balances[index].success) {
-      accounts[index].balance = payload.balances[index].balance
-      accounts[index].fiatBalance = payload.usdPrice !== ''
-        ? formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.usdPrice).toString()
-        : ''
+    if (payload.balances[index].error === BraveWallet.ProviderError.kSuccess) {
+      accounts[index].balance = normalizeNumericValue(payload.balances[index].balance)
     }
   })
   return {
@@ -176,55 +172,45 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
   }
 })
 
-reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userTokens: ERCToken[] = state.userVisibleTokensInfo
+reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetBlockchainTokenBalanceReturnInfo) => {
+  const userTokens: BraveWallet.BlockchainToken[] = state.userVisibleTokensInfo
   const userVisibleTokensInfo = userTokens.map((token) => {
     return {
       ...token,
       logo: `chrome://erc-token-images/${token.logo}`
     }
   })
-  const prices = payload.prices
-  const findTokenPrice = (symbol: string) => {
-    if (prices.success) {
-      return prices.values.find((value) => value.fromAsset === symbol.toLowerCase())?.price ?? ''
-    } else {
-      return ''
-    }
-  }
+
   let accounts: WalletAccountType[] = [...state.accounts]
   accounts.forEach((account, accountIndex) => {
     payload.balances[accountIndex].forEach((info, tokenIndex) => {
       let assetBalance = ''
-      let fiatBalance = ''
 
       if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
         assetBalance = account.balance
-        fiatBalance = account.fiatBalance
-      } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
+      } else if (info.error === BraveWallet.ProviderError.kSuccess && userVisibleTokensInfo[tokenIndex].isErc721) {
         assetBalance = info.balance
-        fiatBalance = '' // TODO: support estimated market value.
-      } else if (info.success) {
-        const tokenPrice = findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol)
+      } else if (info.error === BraveWallet.ProviderError.kSuccess) {
         assetBalance = info.balance
-        fiatBalance = tokenPrice !== ''
-          ? formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
-          : ''
       } else if (account.tokens[tokenIndex]) {
         assetBalance = account.tokens[tokenIndex].assetBalance
-        fiatBalance = account.tokens[tokenIndex].fiatBalance
       }
       account.tokens.splice(tokenIndex, 1, {
         asset: userVisibleTokensInfo[tokenIndex],
-        assetBalance,
-        fiatBalance
+        assetBalance: normalizeNumericValue(assetBalance)
       })
     })
   })
   return {
     ...state,
-    transactionSpotPrices: prices.values,
     accounts
+  }
+})
+
+reducer.on(WalletActions.pricesUpdated, (state: WalletState, payload: GetPriceReturnInfo) => {
+  return {
+    ...state,
+    transactionSpotPrices: payload.success ? payload.values : state.transactionSpotPrices
   }
 })
 
@@ -263,7 +249,7 @@ reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: Por
   }
 })
 
-reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPriceTimeframe) => {
+reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: BraveWallet.AssetPriceTimeframe) => {
   return {
     ...state,
     isFetchingPortfolioPriceHistory: true,
@@ -291,7 +277,7 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
   const newState = { ...state }
 
   const index = state.pendingTransactions.findIndex(
-    (tx: TransactionInfo) => tx.id === payload.txInfo.id)
+    (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id)
   if (index !== -1) {
     newState.pendingTransactions[index] = payload.txInfo
   }
@@ -305,8 +291,8 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
 
 reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload: TransactionStatusChanged) => {
   const newPendingTransactions = state.pendingTransactions
-    .filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
-    .concat(payload.txInfo.txStatus === TransactionStatus.Unapproved ? [payload.txInfo] : [])
+    .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
+    .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
@@ -335,7 +321,7 @@ reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload:
 reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions) => {
   const { selectedAccount } = state
   const newPendingTransactions = selectedAccount
-    ? payload[selectedAccount.address].filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved) : []
+    ? payload[selectedAccount.address].filter((tx: BraveWallet.TransactionInfo) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved) : []
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
@@ -354,7 +340,7 @@ reducer.on(WalletActions.addUserAssetError, (state: any, payload: boolean) => {
   }
 })
 
-reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: DefaultWallet) => {
+reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: BraveWallet.DefaultWallet) => {
   return {
     ...state,
     defaultWallet: payload
@@ -373,7 +359,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
     network => network.chainId === payload.chainId
   ) || state.selectedNetwork
 
-  const updatedNetwork: EthereumChain = {
+  const updatedNetwork: BraveWallet.EthereumChain = {
     ...selectedNetwork,
     isEip1559: payload.isEip1559
   }
@@ -387,7 +373,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
   }
 })
 
-reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation1559) => {
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: BraveWallet.GasEstimation1559) => {
   return {
     ...state,
     gasEstimates: payload
@@ -403,7 +389,7 @@ reducer.on(WalletActions.setSitePermissions, (state: any, payload: SitePermissio
 
 reducer.on(WalletActions.queueNextTransaction, (state: any) => {
   const pendingTransactions = state.pendingTransactions
-  const index = pendingTransactions.findIndex((tx: TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
+  const index = pendingTransactions.findIndex((tx: BraveWallet.TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
   let newPendingTransaction = pendingTransactions[index]
   if (pendingTransactions.length === index) {
     newPendingTransaction = pendingTransactions[0]
@@ -431,6 +417,13 @@ reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: WalletInfoBas
   return {
     ...state,
     accounts: updatedAccounts
+  }
+})
+
+reducer.on(WalletActions.defaultCurrenciesUpdated, (state: any, payload: DefaultCurrencies) => {
+  return {
+    ...state,
+    defaultCurrencies: payload
   }
 })
 

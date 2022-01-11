@@ -6,9 +6,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape android:shape="rectangle"  >
-            <corners android:radius="28dip" />
-            <stroke android:width="1dip" android:color="@android:color/white" />
-            <solid android:color="#4c57d3"/>
+            <corners android:radius="48dp" />
+            <solid android:color="#3DFFFFFF"/>
         </shape>
     </item>
 </selector>

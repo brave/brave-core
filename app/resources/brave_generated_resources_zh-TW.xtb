@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">禁止網站存取以太坊提供者 API</translation>
 <translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
 <translation id="8081858229109418493">設定檔名稱和圖示</translation>
+<translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
+<translation id="2988792685798128092">網站關閉時清除</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="6821903322090655051">Brave 獎勵已停用</translation>
-<translation id="9184430019924125685">按這裡了解詳情</translation>
+<translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="3849957491997306859">自動偵測</translation>
 <translation id="8798099450830957504">預設</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
 <translation id="4424486208397124985">攸關發布者的最低瀏覽數</translation>
 <translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
-<translation id="3241299447027267831">允許對影片捐獻</translation>
+<translation id="5510618543889994434">允許對影片捐獻</translation>
 <translation id="924777189963477634">開啟自動捐獻即表示您同意<ph name="BEGIN_LINK_TOS"/>服務條款<ph name="END_LINK_TOS"/>與<ph name="BEGIN_LINK_PP"/>隱私政策<ph name="END_LINK_PP"/>。</translation>
 <translation id="5733490796524078528">打賞按鈕</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">與 Linux 相同</translation>
 <translation id="1336940801687497203">與 Windows 相同</translation>
+<translation id="5919209812221905840">預設的 Microsoft Edge 通訊協定處理常式</translation>
+<translation id="5239541974656019812">將 Brave 設為 Microsoft Edge 通訊協定處理常式</translation>
+<translation id="7136694880210472378">設為預設</translation>
+<translation id="1751388324499810661">Brave 是預設的 Microsoft Edge 通訊協定處理常式</translation>
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
@@ -425,7 +431,7 @@
 <translation id="2653659639078652383">提交</translation>
 <translation id="2556708692502648323">錢包網路</translation>
 <translation id="1330032157352961756">新鏈 ID</translation>
-<translation id="9053905035135220650">字首為 0x 的十六進位字串</translation>
+<translation id="3423620355610881890">十進位正數</translation>
 <translation id="726121047592132939">新鏈名稱</translation>
 <translation id="1034112277864078119">輸入鏈名稱</translation>
 <translation id="4672314527143443556">鏈的貨幣名稱</translation>
@@ -439,7 +445,7 @@
 <translation id="3047726704186619366">圖示 URL</translation>
 <translation id="2487558607408469181">區塊瀏覽器 URL</translation>
 <translation id="6301398959353668507">這個欄位不能留空。</translation>
-<translation id="4514843126085243862">格式無效，鏈 id 是一個字首為 0x 的十六進位字串</translation>
+<translation id="7504462451153306677">格式無效，區塊鏈 ID 必須是正數。</translation>
 <translation id="8325036459845654666">此網路已新增。</translation>
 <translation id="650071759190249039">內部錯誤，無法新增網路。</translation>
 <translation id="868529041590572443">請填寫關於原生貨幣的所有資訊</translation>

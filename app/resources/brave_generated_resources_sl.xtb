@@ -36,6 +36,8 @@
 <translation id="7017590444693657895">Blokirajte dostop do API -ja ponudnika Ethereum</translation>
 <translation id="8988939298652262600">Brave ne vrši pregledov razširitev zaradi varnosti in zaščite. To razširitev namestite samo, če zaupate razvijalcu.</translation>
 <translation id="8081858229109418493">Profilno ime in ikona</translation>
+<translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
+<translation id="2988792685798128092">Počisti po zaprtju spletnega mesta</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="1692470335103807198">Pridobi več tem</translation>
 <translation id="2906510232093002459">Privzete slike brskalnika Brave</translation>
@@ -55,7 +57,7 @@
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
 <translation id="6821903322090655051">Nagrade Brave so onemogočene</translation>
-<translation id="9184430019924125685">Kliknite tukaj, če želite izvedeti več</translation>
+<translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
 <translation id="3849957491997306859">Samodejno zaznano</translation>
 <translation id="8798099450830957504">Privzeto</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
@@ -69,7 +71,7 @@
 <translation id="7286722244752781970">Čas, ki ga mora obiskovalec preživeti na strani, da je zabeležen obisk</translation>
 <translation id="4424486208397124985">Najmanjše število obiskov za relevantnost osebe, ki objavi vsebino</translation>
 <translation id="6248554379744796526">Prikaži nepreverjene strani na seznamu</translation>
-<translation id="3241299447027267831">Dovoli prispevke za videoposnetke</translation>
+<translation id="5510618543889994434">Dovoli prispevke za videoposnetke</translation>
 <translation id="924777189963477634">Z vklopom samodejnega prispevka se strinjate s <ph name="BEGIN_LINK_TOS"/>Pogoji storitev<ph name="END_LINK_TOS"/> in <ph name="BEGIN_LINK_PP"/>Politiko zasebnosti<ph name="END_LINK_PP"/>.</translation>
 <translation id="5733490796524078528">Gumbi za prispevke</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -208,6 +210,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="2414886740292270097">Temno</translation>
 <translation id="1360441190790440400">Enako kot Linux</translation>
 <translation id="1336940801687497203">Enako kot Windows</translation>
+<translation id="5919209812221905840">Privzeti obdelovalec protokola microsoft-edge</translation>
+<translation id="5239541974656019812">Naj postane Brave upravljavec protokolov microsoft-edge</translation>
+<translation id="7136694880210472378">Nastavi za privzeto</translation>
+<translation id="1751388324499810661">Brave je privzeti obdelovalec protokolov microsoft-edge</translation>
 <translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="8488282162676695335">Denarnica Brave</translation>
@@ -425,7 +431,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2653659639078652383">Pošlji</translation>
 <translation id="2556708692502648323">Omrežja denarnice</translation>
 <translation id="1330032157352961756">ID nove verige</translation>
-<translation id="9053905035135220650">Šestnajstiški niz s predpono 0x</translation>
+<translation id="3423620355610881890">Pozitivno decimalno število</translation>
 <translation id="726121047592132939">Ime nove verige</translation>
 <translation id="1034112277864078119">Vnesite ime verige</translation>
 <translation id="4672314527143443556">Ime valute verige</translation>
@@ -439,7 +445,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="3047726704186619366">URL-ji ikon</translation>
 <translation id="2487558607408469181">URL-ji raziskovalca blokov</translation>
 <translation id="6301398959353668507">To polje ne sme biti prazno.</translation>
-<translation id="4514843126085243862">Neveljavna oblika, ID verige je šestnajstiški niz s predpono 0x</translation>
+<translation id="7504462451153306677">Neveljavna oblika, ID verige je pozitivno število</translation>
 <translation id="8325036459845654666">To omrežje je že dodano.</translation>
 <translation id="650071759190249039">Notranja napaka, ni mogoče dodati omrežja.</translation>
 <translation id="868529041590572443">Prosimo, izpolnite vse podatke o domači valuti</translation>

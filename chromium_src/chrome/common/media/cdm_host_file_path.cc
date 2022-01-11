@@ -24,4 +24,4 @@
 
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
-#include "../../../../../chrome/common/media/cdm_host_file_path.cc"  // NOLINT
+#include "src/chrome/common/media/cdm_host_file_path.cc"

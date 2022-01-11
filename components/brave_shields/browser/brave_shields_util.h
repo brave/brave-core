@@ -32,6 +32,17 @@ enum ControlType {
   AGGRESSIVE
 };
 
+// List of possible blocking modes when accessing blocked websites.
+enum class DomainBlockingType {
+  // Don't block a website, open as is.
+  kNone,
+  // Proceed to a website, but use Ephemeral Storage for privacy-sensitive data
+  // (cookies, etc.).
+  k1PES,
+  // Show an interstitial before proceeding to as website.
+  kAggressive,
+};
+
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
@@ -61,7 +72,8 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,

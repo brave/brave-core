@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
 import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
-import { NavTypes, TopTabNavTypes, AssetPriceTimeframe } from '../constants/types'
+import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
@@ -10,6 +10,7 @@ import './locale'
 import {
   recoveryPhrase
 } from './mock-data/user-accounts'
+import { isStrongPassword } from '../utils/password-utils'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -43,7 +44,7 @@ _DesktopSideNav.story = {
 export const _DesktopTopTabNav = () => {
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
 
-  const navigateTo = (path: TopTabNavTypes) => {
+  const onSelectTab = (path: TopTabNavTypes) => {
     setSelectedTab(path)
   }
 
@@ -52,7 +53,7 @@ export const _DesktopTopTabNav = () => {
       <TopTabNav
         tabList={TopNavOptions()}
         selectedTab={selectedTab}
-        onSubmit={navigateTo}
+        onSelectTab={onSelectTab}
       />
     </DesktopComponentWrapperRow>
   )
@@ -63,9 +64,9 @@ _DesktopTopTabNav.story = {
 }
 
 export const _LineChartControls = () => {
-  const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
+  const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
 
-  const changeTimline = (path: AssetPriceTimeframe) => {
+  const changeTimline = (path: BraveWallet.AssetPriceTimeframe) => {
     setSelectedTimeline(path)
   }
   return (
@@ -100,10 +101,15 @@ export const _Onboarding = () => {
     // Does nothing here
   }
 
+  const checkIsStrongPassword = async (value: string) => {
+    return isStrongPassword.test(value)
+  }
+
   return (
     <WalletPageLayout>
       <WalletSubViewLayout>
         <Onboarding
+          checkIsStrongPassword={checkIsStrongPassword}
           importError={{ hasError: false }}
           recoveryPhrase={recoveryPhrase}
           onSubmit={complete}

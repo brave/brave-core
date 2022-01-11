@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,23 +14,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,13 +43,15 @@ import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.ErcToken;
-import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
-import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -67,20 +67,15 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,19 +87,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
 public class Utils {
-    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^"
-            + "(?=.*[0-9])" + // at least 1 digit
-            "(?=.*[a-zA-Z])" + // any letter
-            "(?=.*[$&+,:;=?@#|'<>.^*()%!-])" + // at least 1 special character
-            "(?=\\S+$)" + // no white spaces
-            ".{7,}" + // at least 7 characters
-            "$");
-
     public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
     public static int ONBOARDING_ACTION = 2;
     public static int UNLOCK_WALLET_ACTION = 3;
@@ -117,6 +105,7 @@ public class Utils {
     public static final int ACCOUNT_REQUEST_CODE = 2;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
+    public static final String DEX_AGGREGATOR_URL = "https://0x.org/";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
@@ -127,6 +116,8 @@ public class Utils {
     public static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
+    public static final String CHAIN_ID = "chainId";
+    private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -141,12 +132,19 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    public static void saveTextToClipboard(Context context, String textToCopy, int textToShow) {
+    public static void saveTextToClipboard(
+            Context context, String textToCopy, int textToShow, boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        if (textToShow != -1) {
+            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        }
+        if (!scheduleClear) {
+            return;
+        }
+        clearClipboard(textToCopy, CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -157,72 +155,22 @@ public class Utils {
             return pasteData;
         } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
             return pasteData;
-        } else {
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            return item.getText().toString();
         }
+        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+
+        return item.getText().toString();
     }
 
-    public static void LaunchBackupFilePicker(
-            AsyncInitializationActivity activity, WindowAndroid.IntentCallback callback) {
-        // Check if READ_EXTERNAL_STORAGE permission is granted.
-        String storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
-        WindowAndroid window = activity.getWindowAndroid();
-        assert window != null;
-        if (!window.hasPermission(storagePermission)) {
-            String[] requestPermissions = new String[] {storagePermission};
-            window.requestPermissions(requestPermissions, (permissions, grantResults) -> {
-                assert permissions.length == 1 && grantResults.length == 1;
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    onFileNotSelected();
-                }
-            });
-        }
-
-        // Create file intent
-        Intent createDocumentIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        createDocumentIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        createDocumentIntent.setType("text/*");
-        createDocumentIntent.putExtra(Intent.EXTRA_TITLE, "wallet-phrase.txt");
-
-        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
-        chooser.putExtra(Intent.EXTRA_INTENT, createDocumentIntent);
-
-        if (!window.showIntent(chooser, callback, null)) {
-            onFileNotSelected();
-        }
-    }
-
-    public static void writeTextToFile(Uri uri, String textToSave) {
-        AssetFileDescriptor assetFileDescriptor;
-        Context context = ContextUtils.getApplicationContext();
-        FileOutputStream outputStream;
-        try {
-            assetFileDescriptor = context.getContentResolver().openAssetFileDescriptor(uri, "wt");
-            if (assetFileDescriptor != null) {
-                outputStream = assetFileDescriptor.createOutputStream();
-                if (outputStream != null) {
-                    outputStream.write(textToSave.getBytes(Charset.forName("UTF-8")));
-                    outputStream.close();
+    public static void clearClipboard(String textToCompare, int delay) {
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
+                if (textToCompare.equals(clipboardText)) {
+                    saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
                 }
             }
-        } catch (FileNotFoundException e) {
-            Log.e("wallet_Utils", "File URI not found", e);
-        } catch (IOException e) {
-            Log.e("wallet_Utils", "Problem creating output stream from URI", e);
-        }
-    }
-
-    public static void onFileSaved() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_has_been_saved,
-                     Toast.LENGTH_SHORT)
-                .show();
-    }
-
-    public static void onFileNotSelected() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_file_not_saved,
-                     Toast.LENGTH_SHORT)
-                .show();
+        }, delay);
     }
 
     public static boolean shouldShowCryptoOnboarding() {
@@ -240,7 +188,8 @@ public class Utils {
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        View focusedView = activity.getCurrentFocus();
+        if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
     public static void openBuySendSwapActivity(
@@ -251,10 +200,12 @@ public class Utils {
         activity.startActivity(buySendSwapActivityIntent);
     }
 
-    public static void openAssetDetailsActivity(Activity activity, String assetSymbol,
-            String assetName, String contractAddress, String assetLogo, int assetDecimals) {
+    public static void openAssetDetailsActivity(Activity activity, String chainId,
+            String assetSymbol, String assetName, String contractAddress, String assetLogo,
+            int assetDecimals) {
         assert activity != null;
         Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
+        assetDetailIntent.putExtra(CHAIN_ID, chainId);
         assetDetailIntent.putExtra(ASSET_SYMBOL, assetSymbol);
         assetDetailIntent.putExtra(ASSET_NAME, assetName);
         assetDetailIntent.putExtra(ASSET_LOGO, assetLogo);
@@ -291,17 +242,6 @@ public class Utils {
         }
 
         return categories.toArray(new String[0]);
-    }
-
-    public static List<String> getSlippageToleranceList(Activity activity) {
-        List<String> categories = new ArrayList<String>();
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_05).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_1).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_15).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_3).toString());
-        categories.add(activity.getText(R.string.crypto_wallet_tolerance_6).toString());
-
-        return categories;
     }
 
     public static CharSequence getNetworkText(Activity activity, String chain_id) {
@@ -548,16 +488,26 @@ public class Utils {
     }
 
     public static byte[] hexStrToNumberArray(String value) {
+        if (value == null) {
+            return new byte[0];
+        }
+
         if (value.startsWith("0x")) {
             value = value.substring(2);
         }
-        if (value.isEmpty()) {
+
+        if (value.length() < 2 || (value.length() % 2 != 0)) {
             return new byte[0];
         }
 
         byte[] data = new byte[value.length() / 2];
-        for (int n = 0; n < value.length(); n += 2) {
-            data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+
+        try {
+            for (int n = 0; n < value.length(); n += 2) {
+                data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+            }
+        } catch (NumberFormatException ex) {
+            return new byte[0];
         }
 
         return data;
@@ -573,6 +523,25 @@ public class Utils {
         }
 
         return res;
+    }
+
+    public static String maybeHexStrToUpperCase(String value) {
+        if (value == null) {
+            return "";
+        }
+        String prefix = "0x";
+        boolean hasPrefix = false;
+        if (value.startsWith(prefix)) {
+            hasPrefix = true;
+            value = value.substring(2);
+        }
+
+        value = value.toUpperCase(Locale.getDefault());
+
+        if (hasPrefix)
+            return prefix + value;
+        else
+            return value;
     }
 
     public static TxData getTxData(
@@ -720,6 +689,44 @@ public class Utils {
         return overlayBitmap;
     }
 
+    public static void setBlockiesBitmapCustomAsset(ExecutorService executor, Handler handler,
+            ImageView iconImg, String source, String symbol, float scale, TextView textView,
+            Context context, boolean drawCaratDown, float scaleDown) {
+        executor.execute(() -> {
+            final Bitmap bitmap =
+                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true), scaleDown),
+                            symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
+            handler.post(() -> {
+                if (iconImg != null) {
+                    iconImg.setImageBitmap(bitmap);
+                } else if (textView != null) {
+                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            new BitmapDrawable(context.getResources(), bitmap), null,
+                            drawCaratDown ? ApiCompatibilityUtils.getDrawable(
+                                    context.getResources(), R.drawable.ic_carat_down)
+                                          : null,
+                            null);
+                }
+            });
+        });
+    }
+
+    public static Bitmap drawTextToBitmap(
+            Bitmap bitmap, String text, float scale, float scaleDown) {
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0xFF3D3D3D);
+        paint.setTextSize((int) (24 * scale * scaleDown));
+
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        int x = (bitmap.getWidth() - bounds.width()) / 2;
+        int y = (bitmap.getHeight() + bounds.height()) / 2;
+        canvas.drawText(text, x, y, paint);
+
+        return bitmap;
+    }
+
     public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
@@ -847,8 +854,8 @@ public class Utils {
         }
     }
 
-    public static ErcToken createEthereumErcToken() {
-        ErcToken eth = new ErcToken();
+    public static BlockchainToken createEthereumBlockchainToken() {
+        BlockchainToken eth = new BlockchainToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
@@ -857,8 +864,8 @@ public class Utils {
         return eth;
     }
 
-    public static ErcToken[] fixupTokensRegistry(ErcToken[] tokens, String chainId) {
-        for (ErcToken token : tokens) {
+    public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
+        for (BlockchainToken token : tokens) {
             token.contractAddress =
                     getContractAddress(chainId, token.symbol, token.contractAddress);
         }
@@ -877,13 +884,13 @@ public class Utils {
     }
 
     public static void openTransaction(
-            TransactionInfo txInfo, EthJsonRpcController ethJsonRpcController, Activity activity) {
+            TransactionInfo txInfo, JsonRpcService jsonRpcService, Activity activity) {
         if (txInfo == null || txInfo.txHash == null || txInfo.txHash.isEmpty()) {
             return;
         }
-        assert ethJsonRpcController != null;
-        ethJsonRpcController.getChainId(chainId -> {
-            ethJsonRpcController.getAllNetworks(networks -> {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(chainId -> {
+            jsonRpcService.getAllNetworks(networks -> {
                 for (EthereumChain network : networks) {
                     if (!chainId.equals(network.chainId)) {
                         continue;
@@ -904,81 +911,81 @@ public class Utils {
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
-            AssetRatioController assetRatioController, EthTxController ethTxController,
-            ErcTokenRegistry ercTokenRegistry, String assetSymbol, String contractAddress,
-            int assetDecimals, RecyclerView rvTransactions, OnWalletListItemClick callback,
-            Context context, String chainId) {
-        assert assetRatioController != null;
+            AssetRatioService assetRatioService, EthTxService ethTxService,
+            BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
+            String assetSymbol, String contractAddress, int assetDecimals,
+            RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
+            String chainId) {
+        assert assetRatioService != null;
         String[] assets = {"eth"};
         String[] toCurr = {"usd"};
-        assetRatioController.getPrice(
-                assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                    String tempPrice = "0";
-                    if (values.length != 0) {
-                        tempPrice = values[0].price;
-                    }
-                    if ((assetSymbol == null && assetDecimals == 0)
-                            || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+            String tempPrice = "0";
+            if (values.length != 0) {
+                tempPrice = values[0].price;
+            }
+            if ((assetSymbol == null && assetDecimals == 0)
+                    || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
+                try {
+                    fetchTransactions(accountInfos, Double.valueOf(tempPrice),
+                            Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
+                            contractAddress, rvTransactions, callback, context, assetSymbol,
+                            assetDecimals, chainId, assetRatioService, braveWalletService);
+                } catch (NumberFormatException exc) {
+                }
+
+                return;
+            }
+            final String ethPrice = tempPrice;
+            assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
+            toCurr[0] = "usd";
+            assetRatioService.getPrice(
+                    assets, toCurr, AssetPriceTimeframe.LIVE, (successAsset, valuesAsset) -> {
+                        String tempPriceAsset = "0";
+                        if (valuesAsset.length != 0) {
+                            tempPriceAsset = valuesAsset[0].price;
+                        }
                         try {
-                            fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                                    Double.valueOf(tempPrice), ethTxController, ercTokenRegistry,
-                                    contractAddress, rvTransactions, callback, context, assetSymbol,
-                                    assetDecimals, chainId, assetRatioController);
+                            fetchTransactions(accountInfos, Double.valueOf(ethPrice),
+                                    Double.valueOf(tempPriceAsset), ethTxService,
+                                    blockchainRegistry, contractAddress, rvTransactions, callback,
+                                    context, assetSymbol, assetDecimals, chainId, assetRatioService,
+                                    braveWalletService);
                         } catch (NumberFormatException exc) {
                         }
-
-                        return;
-                    }
-                    final String ethPrice = tempPrice;
-                    assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
-                    toCurr[0] = "usd";
-                    assetRatioController.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
-                            (successAsset, valuesAsset) -> {
-                                String tempPriceAsset = "0";
-                                if (valuesAsset.length != 0) {
-                                    tempPriceAsset = valuesAsset[0].price;
-                                }
-                                try {
-                                    fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                            Double.valueOf(tempPriceAsset), ethTxController,
-                                            ercTokenRegistry, contractAddress, rvTransactions,
-                                            callback, context, assetSymbol, assetDecimals, chainId,
-                                            assetRatioController);
-                                } catch (NumberFormatException exc) {
-                                }
-                            });
-                });
+                    });
+        });
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, EthTxController ethTxController, ErcTokenRegistry ercTokenRegistry,
+            double assetPrice, EthTxService ethTxService, BlockchainRegistry blockchainRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
-            AssetRatioController assetRatioController) {
-        assert ethTxController != null;
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
+        assert ethTxService != null;
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(ethTxController, accountInfos, true, contractAddress);
+                new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
             if (assetSymbol != null && assetDecimals != 0) {
                 workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                         context, assetSymbol, assetDecimals, pendingTxInfos, null, null, null);
             } else {
-                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, ercTokenRegistry,
+                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, blockchainRegistry,
                         rvTransactions, callback, context, pendingTxInfos, chainId,
-                        assetRatioController);
+                        assetRatioService, braveWalletService);
             }
         });
     }
 
     private static void fetchAssetsPricesDecimals(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, ErcTokenRegistry ercTokenRegistry, RecyclerView rvTransactions,
+            double assetPrice, BlockchainRegistry blockchainRegistry, RecyclerView rvTransactions,
             OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
-            AssetRatioController assetRatioController) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
         assert chainId != null;
-        assert ercTokenRegistry != null;
-        ercTokenRegistry.getAllTokens(tokens -> {
+        assert blockchainRegistry != null;
+        TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId, tokens -> {
             HashMap<String, String> assets = new HashMap<String, String>();
             HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
             for (String accountName : pendingTxInfos.keySet()) {
@@ -986,7 +993,7 @@ public class Utils {
                 for (TransactionInfo txInfo : txInfos) {
                     if (txInfo.txType == TransactionType.ERC20_TRANSFER
                             || txInfo.txType == TransactionType.ERC20_APPROVE) {
-                        for (ErcToken token : tokens) {
+                        for (BlockchainToken token : tokens) {
                             // Replace USDC and DAI contract addresses for Ropsten network
                             token.contractAddress = getContractAddress(
                                     chainId, token.symbol, token.contractAddress);
@@ -1011,7 +1018,7 @@ public class Utils {
                 }
             }
             fetchAssetsPrices(accountInfos, ethPrice, assetPrice, rvTransactions, callback, context,
-                    pendingTxInfos, assets, assetsDecimals, assetRatioController);
+                    pendingTxInfos, assets, assetsDecimals, assetRatioService);
         });
     }
 
@@ -1019,9 +1026,9 @@ public class Utils {
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, HashMap<String, TransactionInfo[]> pendingTxInfos,
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
-            AssetRatioController assetRatioController) {
+            AssetRatioService assetRatioService) {
         AssetsPricesHelper assetsPricesHelper =
-                new AssetsPricesHelper(assetRatioController, new HashSet<String>(assets.values()));
+                new AssetsPricesHelper(assetRatioService, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
             workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
                     context, "", 0, pendingTxInfos, assets, assetsDecimals,
@@ -1174,5 +1181,12 @@ public class Utils {
         walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
         rvTransactions.setAdapter(walletCoinAdapter);
         rvTransactions.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    public static void warnWhenError(
+            String tag, String apiName, Integer error, String errorMessage) {
+        if (error != ProviderError.SUCCESS) {
+            Log.d(tag, apiName + ": " + error + " - " + errorMessage);
+        }
     }
 }

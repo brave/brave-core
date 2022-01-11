@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
-import { TransactionInfo, TREZOR_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
@@ -20,8 +20,8 @@ import {
   SignTransactionResponse,
   SignMessageResponse,
   TrezorGetAccountsResponse
-} from '../trezor/trezor-messages'
-import { sendTrezorCommand, closeTrezorBridge } from '../trezor/trezor-bridge-transport'
+} from './trezor-messages'
+import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
@@ -39,7 +39,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
   protected deviceId: string
 
   type = (): HardwareVendor => {
-    return TREZOR_HARDWARE_VENDOR
+    return BraveWallet.TREZOR_HARDWARE_VENDOR
   }
 
   isUnlocked = (): boolean => {
@@ -90,7 +90,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
     return this.getAccountsFromDevice(paths, addZeroPath)
   }
 
-  signTransaction = async (path: string, txInfo: TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -159,7 +159,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
     return ''
   }
 
-  private prepareTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private prepareTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
     const isEIP1559Transaction = txInfo.txData.maxPriorityFeePerGas !== '' && txInfo.txData.maxFeePerGas !== ''
     if (isEIP1559Transaction) {
       return this.createEIP1559TransactionPayload(path, txInfo, chainId)
@@ -167,7 +167,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
     return this.createLegacyTransactionPayload(path, txInfo, chainId)
   }
 
-  private createEIP1559TransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private createEIP1559TransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
     return {
       path: path,
       transaction: {
@@ -183,7 +183,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
     }
   }
 
-  private createLegacyTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+  private createLegacyTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
     return {
       path: path,
       transaction: {

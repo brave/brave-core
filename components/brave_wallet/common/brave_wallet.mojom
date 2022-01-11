@@ -20,6 +20,36 @@ interface EventsListener {
   AccountsChangedEvent(array<string> accounts);
 };
 
+// https://eips.ethereum.org/EIPS/eip-1193#provider-errors
+// https://eips.ethereum.org/EIPS/eip-1474#error-codes
+enum ProviderError {
+  kSuccess = 0,                  // No error
+  kUserRejectedRequest = 4001,   // User rejected the request
+  kUnauthorized = 4100,          // The requested account and/or method has not
+                                 // been authorized by the user
+  kUnsupportedMethod = 4200,     // The requested method is not supported by this
+                                 // Ethereum provider
+  kDisconnected = 4900,          // The provider is disconnected from all chains
+  kChainDisconnected = 4901,     // The provider is disconnected from the
+                                 // specified chain
+  kUnknownChain = 4902,          // The provider doesn't know this chain
+
+  kParsingError = -32700,        //Parse error - Invalid JSON
+  kInvalidRequest = -32600,      // JSON is not a valid request object
+  kMethodNotFound = -32601,      // Method does not exist
+  kInvalidParams = -32602,       // Invalid method parameters
+  kInternalError = -32603,       // Internal JSON RPC error
+  kInvalidInput = -32000,        // Missing or invalid parameters
+  kResourceNotFound = -32001,    // Requested resource not found
+  kResourceUnavailable = -32002, // Requested resource not available
+  kTransactionRejected = -32003, // Transaction creation failed
+  kMethodNotSupported = -32004,  // Method is not implemented
+  kLimitExceeded = -32005,       // Request exceeds defined limit
+  kVersionNotSupported = -32006, // Version of JSON-RPC protocol is not supported
+
+  kUnknown = -1                 // Unknown error
+};
+
 // There is one BraveWalletProvider per renderer, the renderer communicates
 // with this for window.ethereum usage.
 interface BraveWalletProvider {
@@ -30,23 +60,25 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  RequestEthereumPermissions() => (bool success, array<string> accounts);
+  RequestEthereumPermissions() => (array<string> accounts, ProviderError error, string message);
 
   // Used for wallet_addEthereumChain method requests
-  AddEthereumChain(string json_payload) => (int32 error, string message);
+  AddEthereumChain(string json_payload) => (ProviderError error, string message);
 
   // Used for wallet_switchEthereumChain method requests
-  SwitchEthereumChain(string chain_id) => (int32 error, string message);
+  SwitchEthereumChain(string chain_id) => (ProviderError error, string message);
 
   // Used for eth_sendTransaction method requests without 1559 gas data
-  AddAndApproveTransaction(TxData tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApproveTransaction(TxData tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
 
   // Used for eth_sendTransaction method requests with 1559 gas data
-  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
 
   // Used for eth_sign and personal_sign
-  // error will be 0 when success
-  SignMessage(string address, string message) => (string signature, int32 error, string error_message);
+  SignMessage(string address, string message) => (string signature, ProviderError error, string error_message);
+
+  // Used for personal_ecRecover
+  RecoverAddress(string message, string signature) => (string address, ProviderError error, string error_message);
 
   // Used for eth_signTypedData
   // message is for displaying the sign request to users
@@ -54,7 +86,7 @@ interface BraveWalletProvider {
   // domain is the domain separator defined in eip712
   SignTypedMessage(string address, string message, string message_to_sign,
                    mojo_base.mojom.DictionaryValue domain)
-    => (string signature, int32 error, string error_message);
+    => (string signature, ProviderError error, string error_message);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -63,11 +95,19 @@ interface BraveWalletProvider {
   GetNetworkAndDefaultKeyringInfo() => (EthereumChain network,
                                         KeyringInfo keyring_info);
 
-  // Used for eth_accounts method requests
-  GetAllowedAccounts() => (bool success, array<string> accounts);
+  // Used for eth_accounts method requests and as part of RequestEthereumPermissions
+  GetAllowedAccounts(bool include_accounts_when_locked) => (array<string> accounts, ProviderError error, string message);
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+
+  // Used for wallet_watchAsset.
+  // It will prompt an UI for user to confirm, and add the token into user's
+  // visible asset list if user approves.
+  // Note that we will use the token data from BlockchainRegistry (for
+  // mainnet) or from user asset list if there is an existing token with the
+  // same contract address, instead of the token data in the request.
+  AddSuggestToken(BlockchainToken token) => (bool approved, ProviderError error, string error_message);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -76,12 +116,12 @@ interface PanelHandlerFactory {
   CreatePanelHandler(pending_remote<Page> page,
                      pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
-                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                     pending_receiver<SwapController> swap_controller,
-                     pending_receiver<AssetRatioController> asset_ratio_controller,
-                     pending_receiver<KeyringController> keyring_controller,
-                     pending_receiver<ERCTokenRegistry> erc_token_registry,
-                     pending_receiver<EthTxController> eth_tx_controller,
+                     pending_receiver<JsonRpcService> json_rpc_service,
+                     pending_receiver<SwapService> swap_service,
+                     pending_receiver<AssetRatioService> asset_ratio_service,
+                     pending_receiver<KeyringService> keyring_service,
+                     pending_receiver<BlockchainRegistry> blockchain_registry,
+                     pending_receiver<EthTxService> eth_tx_service,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -90,12 +130,12 @@ interface PageHandlerFactory {
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
-                    pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
-                    pending_receiver<SwapController> swap_controller,
-                    pending_receiver<AssetRatioController> asset_ratio_controller,
-                    pending_receiver<KeyringController> keyring_controller,
-                    pending_receiver<ERCTokenRegistry> erc_token_registry,
-                    pending_receiver<EthTxController> eth_tx_controller,
+                    pending_receiver<JsonRpcService> json_rpc_service,
+                    pending_receiver<SwapService> swap_service,
+                    pending_receiver<AssetRatioService> asset_ratio_service,
+                    pending_receiver<KeyringService> keyring_service,
+                    pending_receiver<BlockchainRegistry> blockchain_registry,
+                    pending_receiver<EthTxService> eth_tx_service,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
@@ -182,6 +222,14 @@ struct SwapResponse {
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
+const string kFilecoinTestnet = "t";
+const string kFilecoinMainnet = "f";
+
+enum FilecoinAddressProtocol {
+  SECP256K1 = 1, // Represents the address SECP256K1 protocol
+  BLS = 3 // Represents the address BLS protocol
+};
+
 struct HardwareWalletAccount {
   string address;
   string derivation_path;
@@ -225,7 +273,7 @@ interface WalletHandler {
   RemoveFavoriteApp(AppItem appItem);
 };
 
-struct ERCToken {
+struct BlockchainToken {
   string contract_address;
   string name;
   string logo;
@@ -241,12 +289,15 @@ struct ERCToken {
 interface Page {
 };
 
-interface KeyringControllerObserver {
+interface KeyringServiceObserver {
   // Fired when a keyring is created
   KeyringCreated();
 
   // Fired when a keyring is restored
   KeyringRestored();
+
+  // Fired when a keyring is reset
+  KeyringReset();
 
   // Fired when a keyring is locked
   Locked();
@@ -268,18 +319,18 @@ interface KeyringControllerObserver {
 };
 
 // List of tokens and coins that are supported.
-interface ERCTokenRegistry {
+interface BlockchainRegistry {
   // Obtains token information by a contract lookup
-  GetTokenByContract(string contract) => (ERCToken? token);
+  GetTokenByContract(string contract) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string symbol) => (ERCToken? token);
+  GetTokenBySymbol(string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens() => (array<ERCToken> tokens);
+  GetAllTokens() => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Buy UI
-  GetBuyTokens() => (array<ERCToken> tokens);
+  GetBuyTokens() => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets
   GetBuyUrl(string address, string symbol, string amount) => (string url);
@@ -287,7 +338,7 @@ interface ERCTokenRegistry {
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
 // and signing.
-interface KeyringController {
+interface KeyringService {
   // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string mnemonic);
 
@@ -320,6 +371,12 @@ interface KeyringController {
   ImportAccount(string accountName, string privateKey)
     => (bool success, string address);
 
+  ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)
+    => (bool success, string address);
+
+  ImportFilecoinBLSAccount(string accountName, string privateKey, string publicKey, string network)
+    => (bool success, string address);
+
   // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
@@ -340,11 +397,11 @@ interface KeyringController {
   // Obtains the keyring information
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
 
-  // Resets the keyring and all preferences
-  Reset();
+  // Obtains the keyring information
+  GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
 
-  // Adds a KeyringControllerObserver
-  AddObserver(pending_remote<KeyringControllerObserver> observer);
+  // Adds a KeyringServiceObserver
+  AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
@@ -384,10 +441,18 @@ interface KeyringController {
   // - At least 7 characters
   // - At least one non-alphanumeric character
   IsStrongPassword(string password) => (bool result);
+
+  // Get the checksume'd EthAddress for the specified address
+  GetChecksumEthAddress(string address) => (string checksum_address);
+
+  // Obtains if there's a pending unlock request
+  // Note that there is no need for an API to notify unlocked
+  // because the KeyringServiceObserver Unlocked event can be used for that.
+  HasPendingUnlockRequest() => (bool pending);
 };
 
 // Used for cryptocurrency prices over time.
-interface AssetRatioController {
+interface AssetRatioService {
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
   // change as well.
@@ -395,17 +460,21 @@ interface AssetRatioController {
       (bool success, array<AssetPrice> values);
 
   // Obtains the price history for a specific asset
-  GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
-      (bool success, array<AssetTimePrice> values);
+  GetPriceHistory(string asset, string vs_asset,
+      AssetPriceTimeframe timeframe) =>
+          (bool success, array<AssetTimePrice> values);
 
   // Gas estimation APIs
   GetEstimatedTime(string gas_price /* decimal string in wei */) =>
       (bool success, string seconds);
   GetGasOracle() => (GasEstimation1559? estimation);
+
+  // Obtain token info via contract address through etherscan API.
+  GetTokenInfo(string contract_address) => (BlockchainToken? token);
 };
 
 // Implements swapping related functionality through the 0x API.
-interface SwapController {
+interface SwapService {
   // Obtains a price quote for a swap
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
@@ -415,7 +484,7 @@ interface SwapController {
       (bool success, SwapResponse? response, string? error_response);
 };
 
-interface EthJsonRpcControllerObserver {
+interface JsonRpcServiceObserver {
   // Fired when the selected network changes
   ChainChangedEvent(string chain_id);
 
@@ -479,7 +548,7 @@ struct SwitchChainRequest {
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
-interface EthJsonRpcController {
+interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
@@ -504,38 +573,38 @@ interface EthJsonRpcController {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address) => (bool success, string balance);
+  GetBalance(string address) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
-                       string address) => (bool success, string balance);
+                       string address) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
-                         string owner_address, string spender_address) => (bool success, string allowance);
+                         string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
 
   // ENS lookups
-  EnsGetEthAddr(string domain) => (bool success, string address);
+  EnsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 
   // Unstoppable Domains lookups
-  UnstoppableDomainsGetEthAddr(string domain) => (bool success, string address);
+  UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
-  // Adds an observer for the events of EthJsonRpcController
-  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  // Adds an observer for the events of JsonRpcService
+  AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 
   // Sets a custom network for testing
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, string token_id) => (bool success, string owner_address);
+  GetERC721OwnerOf(string contract, string token_id) => (string owner_address, ProviderError error, string error_message);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
-  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (bool success, string balance);
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (string balance, ProviderError error, string error_message);
 };
 
 enum TransactionStatus {
@@ -570,7 +639,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
 };
 
-interface EthTxControllerObserver {
+interface EthTxServiceObserver {
   // Fired when a new unapproved transaction is encountered
   OnNewUnapprovedTx(TransactionInfo tx_info);
 
@@ -584,7 +653,7 @@ interface EthTxControllerObserver {
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
-interface EthTxController {
+interface EthTxService {
   // Used to add a transaction
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
 
@@ -601,6 +670,7 @@ interface EthTxController {
   SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
   SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
   SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
+  SetNonceForUnapprovedTransaction(string tx_meta_id, string nonce) => (bool success);
 
   // Used for creating transaction data
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
@@ -608,11 +678,11 @@ interface EthTxController {
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
 
   // Obtains a list of all transactions from an address.
-  // This returns different data depending on which network is currently selected in EthJsonRpcController
+  // This returns different data depending on which network is currently selected in JsonRpcService
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
 
-  // Adds an observer for EthTxController
-  AddObserver(pending_remote<EthTxControllerObserver> observer);
+  // Adds an observer for EthTxService
+  AddObserver(pending_remote<EthTxServiceObserver> observer);
 
   // Used to speed-up or cancel a transaction
   SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
@@ -622,6 +692,9 @@ interface EthTxController {
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
   GetTransactionMessageToSign(string tx_meta_id) => (string? message);
   ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
+
+  // Resets the keyring and the related preferences
+  Reset();
 };
 
 interface BraveWalletServiceObserver {
@@ -647,6 +720,15 @@ struct SignMessageRequest {
   string message;
 };
 
+enum ExternalWalletType {
+  CryptoWallets,
+  MetaMask
+};
+
+struct AddSuggestTokenRequest {
+  BlockchainToken token;
+};
+
 // For default wallet setting, user assets, permission checks, importing
 // functionality and much more.
 interface BraveWalletService {
@@ -654,30 +736,34 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
   // Obtains the user assets for the specified chain ID
-  GetUserAssets(string chain_id) => (array<ERCToken> tokens);
+  GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
 
-  // Adds a user asset for the specified chain ID
-  AddUserAsset(ERCToken token, string chain_id) => (bool success);
+  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  AddUserAsset(BlockchainToken token, string chain_id) => (bool success);
 
-  // Removes a user asset for the specified chain ID
-  RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
+  // Removes a user asset from the user asset list pref for the specified chain
+  // ID. This asset could be a token from BlockchainRegistry or a custom token.
+  RemoveUserAsset(BlockchainToken token, string chain_id) => (bool success);
 
-  // Sets whether or not an asset is visible for the specified chain ID
-  SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
+  // Sets whether or not an asset is visible for the specified chain ID.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  SetUserAssetVisible(BlockchainToken token, string chain_id, bool visible) => (bool success);
 
-  // Checks if the deprecated Crypto Wallets extension is installed
-  IsCryptoWalletsInstalled() => (bool installed);
+  // Check if the external wallet is installed (Only check installation state
+  // regardless of internal state)
+  IsExternalWalletInstalled(ExternalWalletType type) => (bool installed);
 
-  // Checks if MetaMask is installed (Used for knowing to present import UI)
-  IsMetaMaskInstalled() => (bool installed);
+  // Check if the external wallet is initialized (Used for knowing for knowing
+  // to present UI). If a external wallet is not installed, hence it is not
+  // initialized.
+  IsExternalWalletInitialized(ExternalWalletType type) => (bool initialized);
 
-  // Imports from Crypto Wallets
-  ImportFromCryptoWallets(string password, string newPassword) => (bool success,
-      string? errorMessage);
-
-  // Imports from MetaMask
-  ImportFromMetaMask(string password, string newPassword) => (bool success,
-      string? errorMessage);
+  // Import from the external wallet
+  ImportFromExternalWallet(ExternalWalletType type,
+                           string password,
+                           string newPassword)
+    => (bool success, string? errorMessage);
 
   // Obtains the default wallet setting
   GetDefaultWallet() => (DefaultWallet default_wallet);
@@ -697,6 +783,9 @@ interface BraveWalletService {
   // Sets the default base cryptocurrency
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
+  // Adds the Ethereum permission for the account
+  AddEthereumPermission(string origin, string account) => (bool success);
+
   // Checks if the Ethereum permission is allowed for the origin on the account
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
 
@@ -711,6 +800,16 @@ interface BraveWalletService {
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
+
+  // Used for UI notifying native when the user apprrove/reject add suggest
+  // token requests.
+  NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
+  // Obtain the pending add suggest token requests for current chain, will be
+  // cleared when user switch networks.
+  GetPendingAddSuggestTokenRequests() => (array<AddSuggestTokenRequest> requests);
+
+  // Resets the keyring and the related preferences
+  Reset();
 };
 
 enum DefaultWallet {

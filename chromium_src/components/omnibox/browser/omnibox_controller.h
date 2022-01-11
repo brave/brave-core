@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_CONTROLLER_H_
 
 #define StartAutocomplete virtual StartAutocomplete
-#include "../../../../../components/omnibox/browser/omnibox_controller.h"  // NOLINT
+#include "src/components/omnibox/browser/omnibox_controller.h"
 #undef StartAutocomplete
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_CONTROLLER_H_
