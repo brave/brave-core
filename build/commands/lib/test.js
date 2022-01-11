@@ -1,3 +1,4 @@
+const fs = require('fs-extra')
 const path = require('path')
 
 const config = require('../lib/config')
@@ -18,6 +19,38 @@ const getTestsToRun = (config, suite) => {
     }
   }
   return testsToRun
+}
+
+// Returns a list of paths to files containing all the filters that would apply
+// to the current test suite, as long as such files exist in the filesystem.
+//
+// For instance, for Windows 64-bit and assuming all the filters files exist
+// in the filesystem, this method would return paths to the following files:
+//   - unit-tests.filter              -> Base filters
+//   - unit_tests-windows.filters:    -> Platform specific
+//   - unit_tests-windows-x86.filters -> Platform & Architecture specific
+const getApplicableFilters = (suite) => {
+  let filterFilePaths = []
+
+  let targetPlatform = process.platform
+  if (targetPlatform === "win32") {
+    targetPlatform = "windows"
+  } else if (targetPlatform === "darwin") {
+    targetPlatform = "macos"
+  }
+
+  let possibleFilters = [
+    suite,
+    [suite, targetPlatform].join('-'),
+    [suite, targetPlatform, config.targetArch].join('-'),
+  ]
+  possibleFilters.forEach(filterName => {
+    let filterFilePath = path.join(config.braveCoreDir, 'test', 'filters',  `${filterName}.filter`)
+    if (fs.existsSync(filterFilePath))
+      filterFilePaths.push(filterFilePath)
+  });
+
+  return filterFilePaths
 }
 
 const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options) => {
@@ -75,6 +108,17 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     config.buildTarget = suite
   }
   util.buildTarget()
+
+  // Filter out upstream tests that are known to fail for Brave
+  let upstreamTestSuites = [
+    'unit_tests',
+    'browser_tests',
+  ]
+  if (upstreamTestSuites.includes(suite)) {
+    let filterFilePaths = getApplicableFilters(suite)
+    if (filterFilePaths.length > 0)
+      braveArgs.push(`--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
+  }
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
