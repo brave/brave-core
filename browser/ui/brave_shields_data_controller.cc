@@ -25,6 +25,9 @@ void BraveShieldsDataController::ClearAllResourcesList() {
   resource_list_http_redirects_.clear();
   resource_list_blocked_js_.clear();
   resource_list_blocked_fingerprints_.clear();
+
+  for (Observer& obs : observer_list_)
+    obs.OnResourcesChanged();
 }
 
 void BraveShieldsDataController::AddObserver(Observer* obs) {
@@ -49,7 +52,11 @@ int BraveShieldsDataController::GetTotalBlockedCount() {
 bool BraveShieldsDataController::GetIsBraveShieldsEnabled() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
       web_contents()->GetBrowserContext());
-  return brave_shields::GetBraveShieldsEnabled(map, web_contents()->GetURL());
+  return brave_shields::GetBraveShieldsEnabled(map, GetCurrentSiteURL());
+}
+
+GURL BraveShieldsDataController::GetCurrentSiteURL() {
+  return web_contents()->GetURL();
 }
 
 void BraveShieldsDataController::HandleItemBlocked(
@@ -68,7 +75,7 @@ void BraveShieldsDataController::HandleItemBlocked(
   }
 
   for (Observer& obs : observer_list_)
-    obs.OnResourcesCountChange(GetTotalBlockedCount());
+    obs.OnResourcesChanged();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsDataController);

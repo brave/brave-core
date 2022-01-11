@@ -4,16 +4,18 @@ import * as S from './style'
 import { FabulouslyLargeToggle } from '../../../../../web-components/toggle'
 import AdvancedControlsContent from '../advanced-controls-content'
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { useGetShieldsData } from './hooks'
 
 function MainPanel () {
   const [isExpanded, setIsExpanded] = React.useState(false)
   const braveShieldsUp = splitStringForTag(getLocale('braveShieldsUp'))
   const braveShieldsBlockedNote = splitStringForTag(getLocale('braveShieldsBlockedNote'))
+  const { siteBlockInfo } = useGetShieldsData()
 
   return (
     <S.Box>
       <S.PanelHeader>
-        <S.SiteTitle>brave.com</S.SiteTitle>
+        <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
       </S.PanelHeader>
       <S.ToggleBox>
         <FabulouslyLargeToggle
@@ -26,7 +28,7 @@ function MainPanel () {
           {braveShieldsUp.afterTag}
         </S.StatusText>
         <S.BlockCountBox>
-          <S.BlockCount>21</S.BlockCount>
+          <S.BlockCount>{siteBlockInfo?.totalBlockedResources}</S.BlockCount>
           <S.BlockNote>
             {braveShieldsBlockedNote.beforeTag}
             <a href="#">{braveShieldsBlockedNote.duringTag}</a>
