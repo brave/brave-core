@@ -2179,9 +2179,6 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
       Lock
     </message>
-    <message name="IDS_BRAVE_WALLET_SETTINGS_PRIVACY_SECTION" desc="Title for privacy sectio of Brave Wallet Settings. [CHAR-LIMIT=27]">
-      Privacy
-    </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
       Automatically lock Brave Wallet
     </message>
@@ -2780,6 +2777,78 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="Title for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
         Show autocomplete in address bar
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORKS_TITLE" desc="Brave wallet networks pref title text">
+      Networks
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORKS_SUMMARY" desc="Brave wallet networks pref summary text">
+      Wallet networks customization
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK" desc="Brave wallet networks pref add network button text">
+      Add network
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_ID" desc="Brave wallet networks pref add network field name">
+      The id of new chain
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_ID_ERROR" desc="Brave wallet networks pref add network field name error msg">
+      Invalid format, the chain ID is a positive number
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_ID_HINT" desc="Brave wallet networks pref add network field hint">
+      A positive decimal number
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_NAME" desc="Brave wallet networks pref add network field name">
+      The name of new chain
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_NAME_HINT" desc="Brave wallet networks pref add network field hint">
+      Enter chain name
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_EMPTY_ERROR" desc="Brave wallet networks pref add network field name error msg">
+      The field cannot be empty
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_NAME" desc="Brave wallet networks pref add network field name">
+      Chain's currency name
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_NAME_HINT" desc="Brave wallet networks pref add network field hint">
+      Enter currency name
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_SYMBOL" desc="Brave wallet networks pref add network field name">
+      Chain's currency symbol
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_SYMBOL_HINT" desc="Brave wallet networks pref add network field hint">
+      Enter currency symbol
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_DECIMALS" desc="Brave wallet networks pref add network field name">
+      Chain's currency decimals
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_DECIMALS_ERROR" desc="Brave wallet networks pref add network field error">
+      Invalid format, the currency decimals is a positive number
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_CHAIN_CURRENCY_DECIMALS_HINT" desc="Brave wallet networks pref add network field hint">
+      Enter currency decimals
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_RPC_URLS" desc="Brave wallet networks pref add network field name" translateable="false">
+      RPC URLs
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_ICON_URLS" desc="Brave wallet networks pref add network field name">
+      Icon URLs
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_BLOCK_EXPLORER_URLS" desc="Brave wallet networks pref add network field name">
+      Block explorer URLs
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_URLS_HINT" desc="Brave wallet networks pref add network field hint">
+      Enter URL
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_URLS_ERROR" desc="Brave wallet networks pref add network field error">
+      Invalid address
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_ADD" desc="Brave wallet networks pref add network add button">
+      Add
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_SET_AS_ACTIVE" desc="Brave wallet networks pref add network set as active message">
+      Set as active
+    </message>
+    <message name="IDS_BRAVE_WALLET_ADD_NETWORK_SUBMIT" desc="Brave wallet networks pref add network submit button">
+      Submit
     </message>
     </messages>
   </release>

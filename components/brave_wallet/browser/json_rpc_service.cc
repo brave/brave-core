@@ -168,8 +168,16 @@ void JsonRpcService::GetPendingChainRequests(
 }
 
 void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
-                                      const GURL& origin,
                                       AddEthereumChainCallback callback) {
+  auto chain_id = chain->chain_id;
+  AddCustomNetwork(prefs_, std::move(chain));
+  std::move(callback).Run(chain_id, true);
+}
+
+void JsonRpcService::AddEthereumChainForOrigin(
+    mojom::EthereumChainPtr chain,
+    const GURL& origin,
+    AddEthereumChainCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
@@ -197,6 +205,12 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
                : l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
   FirePendingRequestCompleted(chain_id, error);
   add_chain_pending_requests_.erase(chain_id);
+}
+
+void JsonRpcService::RemoveEthereumChain(const std::string& chain_id,
+                                         RemoveEthereumChainCallback callback) {
+  RemoveCustomNetwork(prefs_, chain_id);
+  std::move(callback).Run(true);
 }
 
 bool JsonRpcService::SetNetwork(const std::string& chain_id) {

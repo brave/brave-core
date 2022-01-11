@@ -550,8 +550,10 @@ struct SwitchChainRequest {
 // network.
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
-  AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
+  AddEthereumChain(EthereumChain chain) => (string chain_id, bool accepted);
+  AddEthereumChainForOrigin(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
+  RemoveEthereumChain(string chain_id) => (bool success);
   GetPendingChainRequests() => (array<EthereumChain> networks);
 
   // This is used for UI notifying native when the user approves or

@@ -96,6 +96,9 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 // Append chain value to kBraveWalletCustomNetworks list pref.
 void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
 
+void RemoveCustomNetwork(PrefService* prefs,
+                         const std::string& chain_id_to_remove);
+
 // Get a specific chain from all chains.
 mojom::EthereumChainPtr GetChain(PrefService* prefs,
                                  const std::string& chain_id);

@@ -28,14 +28,7 @@ namespace {
 
 void RemoveEthereumChain(PrefService* prefs,
                          const std::string& chain_id_to_remove) {
-  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::ListValue* list = update.Get();
-  list->EraseListValueIf([&](const base::Value& v) {
-    auto* chain_id_value = v.FindStringKey("chainId");
-    if (!chain_id_value)
-      return false;
-    return *chain_id_value == chain_id_to_remove;
-  });
+  brave_wallet::RemoveCustomNetwork(prefs, chain_id_to_remove);
 }
 
 bool AddEthereumChain(PrefService* prefs,
