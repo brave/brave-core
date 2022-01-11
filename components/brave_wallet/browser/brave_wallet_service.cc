@@ -715,7 +715,8 @@ void BraveWalletService::AddSuggestTokenRequest(
                    request->token->is_erc721, chain_id);
 
   if (!token && chain_id == mojom::kMainnetChainId)
-    token = BlockchainRegistry::GetInstance()->GetTokenByContract(addr);
+    token = BlockchainRegistry::GetInstance()->GetTokenByContract(
+        mojom::kMainnetChainId, addr);
 
   if (token)
     request->token = std::move(token);

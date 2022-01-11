@@ -32,16 +32,22 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void UpdateTokenList(
       std::vector<mojom::BlockchainTokenPtr> blockchain_tokens);
 
-  mojom::BlockchainTokenPtr GetTokenByContract(const std::string& contract);
+  mojom::BlockchainTokenPtr GetTokenByContract(const std::string& chain_id,
+                                               const std::string& contract);
 
   // BlockchainRegistry interface methods
-  void GetTokenByContract(const std::string& contract,
+  void GetTokenByContract(const std::string& chain_id,
+                          const std::string& contract,
                           GetTokenByContractCallback callback) override;
-  void GetTokenBySymbol(const std::string& symbol,
+  void GetTokenBySymbol(const std::string& chain_id,
+                        const std::string& symbol,
                         GetTokenBySymbolCallback callback) override;
-  void GetAllTokens(GetAllTokensCallback callback) override;
-  void GetBuyTokens(GetBuyTokensCallback callback) override;
-  void GetBuyUrl(const std::string& address,
+  void GetAllTokens(const std::string& chain_id,
+                    GetAllTokensCallback callback) override;
+  void GetBuyTokens(const std::string& chain_id,
+                    GetBuyTokensCallback callback) override;
+  void GetBuyUrl(const std::string& chain_id,
+                 const std::string& address,
                  const std::string& symbol,
                  const std::string& amount,
                  GetBuyUrlCallback callback) override;
