@@ -101,9 +101,6 @@
 		0A918DCD252C81FA00496088 /* BraveVPNRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A918DCC252C81FA00496088 /* BraveVPNRegionPickerViewController.swift */; };
 		0A93F1802264C2D200A3571B /* FolderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */; };
 		0A93F1892264C72000A3571B /* BookmarkFormFieldsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */; };
-		0AA21E4A2302C4CC00358988 /* webauth_verify_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E472302C4CC00358988 /* webauth_verify_key.json */; };
-		0AA21E4B2302C4CC00358988 /* webauth_insert_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E482302C4CC00358988 /* webauth_insert_key.json */; };
-		0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E492302C4CC00358988 /* webauth_touch_key.json */; };
 		0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */ = {isa = PBXBuildFile; fileRef = 0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */; };
 		0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4FC382109D685000B173A /* CRUDProtocols.swift */; };
 		0AAAAC972249174A009A8763 /* SyncAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAAAC962249174A009A8763 /* SyncAlerts.swift */; };
@@ -487,7 +484,6 @@
 		27F3AEF4271DDE0C00F75B7F /* OpenWalletURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
-		27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 27F4798B25AF94B0004922E4 /* YubiKit */; };
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
 		27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */; };
 		27FCA8E3244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */; };
@@ -1231,13 +1227,6 @@
 		F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84B21EF1A0910F600AAB793 /* Images.xcassets */; };
 		F91785DB255F38D6002976F2 /* WKWebViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91785DA255F38D6002976F2 /* WKWebViewExtensions.swift */; };
 		F926074B25B230EC000E659A /* gpc.js in Resources */ = {isa = PBXBuildFile; fileRef = F926074A25B230EC000E659A /* gpc.js */; };
-		F930CDAC227000F200A23FE1 /* U2F.js in Resources */ = {isa = PBXBuildFile; fileRef = F930CDAB227000F200A23FE1 /* U2F.js */; };
-		F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */; };
-		F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */; };
-		F930CDC9227006D600A23FE1 /* WebAuthnRegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */; };
-		F930CDD12270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */; };
-		F930CDD72270F14300A23FE1 /* WebAuthnUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */; };
-		F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F939FBFD22A596B900D9CD3F /* U2FTests.swift */; };
 		F9488EB32589899800A72C84 /* RewardsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 276E7A2E22F21A7700939424 /* RewardsReporting.js */; };
 		F9488F1D258EFE9800A72C84 /* WKWebViewExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9488F12258D6B9800A72C84 /* WKWebViewExtensionsTest.swift */; };
 		F95ED17E25A95426001A432D /* UserScriptManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95ED17D25A95426001A432D /* UserScriptManagerTest.swift */; };
@@ -1245,11 +1234,9 @@
 		F979BE3025BCC54E009B6ACF /* AllFramesAtDocumentEnd.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE2C25BCC54D009B6ACF /* AllFramesAtDocumentEnd.js */; };
 		F979BE3125BCC54E009B6ACF /* AllFramesAtDocumentStartSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE2D25BCC54E009B6ACF /* AllFramesAtDocumentStartSandboxed.js */; };
 		F979BE3225BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE2E25BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js */; };
-		F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */ = {isa = PBXBuildFile; fileRef = F99505FE22937E3900CC6543 /* U2F-low-level.js */; };
 		F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */ = {isa = PBXBuildFile; fileRef = F9B23EE123F61173000EB3D8 /* PaymentRequest.js */; };
 		F9B23EE523F613E8000EB3D8 /* PaymentRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B23EE423F613E8000EB3D8 /* PaymentRequestExtension.swift */; };
 		F9BD7D9926C6E77600344FE7 /* upgrade-http.json in Resources */ = {isa = PBXBuildFile; fileRef = F9BD7D9826C6E77600344FE7 /* upgrade-http.json */; };
-		F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */; };
 		F9E0F38B25772E57003A6A30 /* ReaderMode.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F38A25772E57003A6A30 /* ReaderMode.js */; };
 		F9E0F3A8257739B1003A6A30 /* TrackingProtectionStats.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3A7257739B1003A6A30 /* TrackingProtectionStats.js */; };
 		F9E0F3B4257878C1003A6A30 /* PrintHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3B3257878C1003A6A30 /* PrintHandler.js */; };
@@ -1756,9 +1743,6 @@
 		0A918DCC252C81FA00496088 /* BraveVPNRegionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveVPNRegionPickerViewController.swift; sourceTree = "<group>"; };
 		0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailsView.swift; sourceTree = "<group>"; };
 		0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFormFieldsProtocol.swift; sourceTree = "<group>"; };
-		0AA21E472302C4CC00358988 /* webauth_verify_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_verify_key.json; sourceTree = "<group>"; };
-		0AA21E482302C4CC00358988 /* webauth_insert_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_insert_key.json; sourceTree = "<group>"; };
-		0AA21E492302C4CC00358988 /* webauth_touch_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_touch_key.json; sourceTree = "<group>"; };
 		0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ABPFilterParserData.dat; sourceTree = "<group>"; };
 		0AA4FC382109D685000B173A /* CRUDProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDProtocols.swift; sourceTree = "<group>"; };
 		0AAAAC962249174A009A8763 /* SyncAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAlerts.swift; sourceTree = "<group>"; };
@@ -3194,13 +3178,6 @@
 		F91EAD56256C90720056C8CC /* BraveGetUA.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = BraveGetUA.js; sourceTree = "<group>"; };
 		F926074A25B230EC000E659A /* gpc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = gpc.js; sourceTree = "<group>"; };
 		F926647A234D4EF400359492 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
-		F930CDAB227000F200A23FE1 /* U2F.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = U2F.js; sourceTree = "<group>"; };
-		F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FExtensions.swift; sourceTree = "<group>"; };
-		F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnClientData.swift; sourceTree = "<group>"; };
-		F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnRegisterRequest.swift; sourceTree = "<group>"; };
-		F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnAuthenticateRequest.swift; sourceTree = "<group>"; };
-		F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnUtils.swift; sourceTree = "<group>"; };
-		F939FBFD22A596B900D9CD3F /* U2FTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FTests.swift; sourceTree = "<group>"; };
 		F9488F12258D6B9800A72C84 /* WKWebViewExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewExtensionsTest.swift; sourceTree = "<group>"; };
 		F95ED17D25A95426001A432D /* UserScriptManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScriptManagerTest.swift; sourceTree = "<group>"; };
 		F9616E6A240EE43F00667C2D /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
@@ -3208,11 +3185,9 @@
 		F979BE2C25BCC54D009B6ACF /* AllFramesAtDocumentEnd.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AllFramesAtDocumentEnd.js; sourceTree = "<group>"; };
 		F979BE2D25BCC54E009B6ACF /* AllFramesAtDocumentStartSandboxed.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AllFramesAtDocumentStartSandboxed.js; sourceTree = "<group>"; };
 		F979BE2E25BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AllFramesAtDocumentEndSandboxed.js; sourceTree = "<group>"; };
-		F99505FE22937E3900CC6543 /* U2F-low-level.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "U2F-low-level.js"; sourceTree = "<group>"; };
 		F9B23EE123F61173000EB3D8 /* PaymentRequest.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = PaymentRequest.js; sourceTree = "<group>"; };
 		F9B23EE423F613E8000EB3D8 /* PaymentRequestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequestExtension.swift; sourceTree = "<group>"; };
 		F9BD7D9826C6E77600344FE7 /* upgrade-http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upgrade-http.json"; sourceTree = "<group>"; };
-		F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneObserver.swift; sourceTree = "<group>"; };
 		F9E0F38A25772E57003A6A30 /* ReaderMode.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ReaderMode.js; sourceTree = "<group>"; };
 		F9E0F3A7257739B1003A6A30 /* TrackingProtectionStats.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TrackingProtectionStats.js; sourceTree = "<group>"; };
 		F9E0F3B3257878C1003A6A30 /* PrintHandler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = PrintHandler.js; sourceTree = "<group>"; };
@@ -3261,7 +3236,6 @@
 				277568F125ACF92400C129AF /* XCGLogger in Frameworks */,
 				27756B0F25AD08FA00C129AF /* SDWebImage in Frameworks */,
 				277568F925ACF92400C129AF /* SwiftKeychainWrapper in Frameworks */,
-				27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */,
 				2F5B27D72698DBA8002BF5CF /* OrderedCollections in Frameworks */,
 				277309E02721DE2E007643F6 /* BigNumber in Frameworks */,
 				277568F325ACF92400C129AF /* Fuzi in Frameworks */,
@@ -3647,16 +3621,6 @@
 				0A7B5D712269E7AD00AADF22 /* BookmarkEditMode.swift */,
 			);
 			path = Bookmarks;
-			sourceTree = "<group>";
-		};
-		0AA21E4D2302C94800358988 /* Lottie_Assets */ = {
-			isa = PBXGroup;
-			children = (
-				0AA21E482302C4CC00358988 /* webauth_insert_key.json */,
-				0AA21E492302C4CC00358988 /* webauth_touch_key.json */,
-				0AA21E472302C4CC00358988 /* webauth_verify_key.json */,
-			);
-			path = Lottie_Assets;
 			sourceTree = "<group>";
 		};
 		0AADC4BB20D2A4F700FDE368 /* Favorites */ = {
@@ -5944,11 +5908,9 @@
 				595E0EDA21CAD97C00813D49 /* CookieControl.js */,
 				0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */,
 				449AC16E26D9008D00A53F33 /* BraveTalkHelper.js */,
-				F99505FE22937E3900CC6543 /* U2F-low-level.js */,
 				5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */,
 				5E4845BF22DE381200372022 /* WindowRenderHelper.js */,
 				5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */,
-				F930CDAB227000F200A23FE1 /* U2F.js */,
 				F9B23EE123F61173000EB3D8 /* PaymentRequest.js */,
 				5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */,
 				0A64384D24FD4E43000E80A3 /* ArchiveIsCompat.js */,
@@ -6407,7 +6369,6 @@
 				39A359BD1BFCCE7B006B9E87 /* Helpers */,
 				0A4BEFCD221E11440005551A /* Networking */,
 				0A0D3D2F21A4BC1F00BEE65B /* WebFilters */,
-				F930CDB02270029B00A23FE1 /* WebAuthN */,
 				E65075551E37F714006961AC /* Utils */,
 				74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */,
 			);
@@ -6441,7 +6402,6 @@
 				0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */,
 				59350AFA22612D95004D7445 /* DisplayTextFieldTest.swift */,
 				5953AAEE2226E9D800A92DE1 /* HttpCookieExtensionTest.swift */,
-				F939FBFD22A596B900D9CD3F /* U2FTests.swift */,
 				5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */,
 				E61453BD1B750A1700C3F9D7 /* RollingFileLoggerTests.swift */,
 				0A66550B23E9E04F0047EF2A /* UserAgentTests.swift */,
@@ -6575,20 +6535,6 @@
 				E4B7B75F1A793CF20022C5E0 /* FiraSans-UltraLight.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		F930CDB02270029B00A23FE1 /* WebAuthN */ = {
-			isa = PBXGroup;
-			children = (
-				0AA21E4D2302C94800358988 /* Lottie_Assets */,
-				F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */,
-				F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */,
-				F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */,
-				F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */,
-				F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */,
-				F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */,
-			);
-			path = WebAuthN;
 			sourceTree = "<group>";
 		};
 		F9488E9E2589895500A72C84 /* AtDocumentStart */ = {
@@ -6858,7 +6804,6 @@
 				277568F625ACF92400C129AF /* Lottie */,
 				277568F825ACF92400C129AF /* SwiftKeychainWrapper */,
 				27756B0E25AD08FA00C129AF /* SDWebImage */,
-				27F4798B25AF94B0004922E4 /* YubiKit */,
 				27B68E5C25C88CA7002D0826 /* FeedKit */,
 				277046C12684CD2A001CB097 /* PanModal */,
 				2F5B27D62698DBA8002BF5CF /* OrderedCollections */,
@@ -7323,7 +7268,6 @@
 				2775688525ACF76100C129AF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2775689A25ACF7B500C129AF /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				27756B0D25AD08FA00C129AF /* XCRemoteSwiftPackageReference "SDWebImage" */,
-				27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */,
 				27B68E5B25C88CA7002D0826 /* XCRemoteSwiftPackageReference "FeedKit" */,
 				277046C02684CD1E001CB097 /* XCRemoteSwiftPackageReference "PanModal" */,
 				2FCE87D3264195EC00B98D7E /* XCRemoteSwiftPackageReference "swift-collections" */,
@@ -7613,7 +7557,7 @@
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
-				0AA21E4B2302C4CC00358988 /* webauth_insert_key.json in Resources */,
+				0A0D3D3E21A4BE6C00BEE65B /* simple_malware.txt in Resources */,
 				5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */,
 				F35B8D2B1D6380EA008E3D61 /* SessionRestore.html in Resources */,
 				5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */,
@@ -7625,7 +7569,6 @@
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
 				4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */,
-				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
 				449AC16F26D9008D00A53F33 /* BraveTalkHelper.js in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				CA9C9AEC27455D5400D018EF /* Carret.png in Resources */,
@@ -7659,7 +7602,6 @@
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
 				0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */,
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
-				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
 				4481F23826CBD27B00658EAC /* GlobalSignRootCA_R6.cer in Resources */,
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
 				F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */,
@@ -7700,13 +7642,11 @@
 				F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
 				2F676FAD260BA4860048A1DB /* blocking-summary.json in Resources */,
-				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
 				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */,
 				5EE4CF5B2540868E00BC4509 /* Bookmarks.html in Resources */,
-				0AA21E4A2302C4CC00358988 /* webauth_verify_key.json in Resources */,
 				F9BD7D9926C6E77600344FE7 /* upgrade-http.json in Resources */,
 				F9E0F3BF25787E2C003A6A30 /* __firefox__.js in Resources */,
 				279C75C821A5B37D001CD1CB /* FingerprintingProtection.js in Resources */,
@@ -8494,7 +8434,6 @@
 				4422D55821BFFB7F00BF1855 /* unicode_casefold.cc in Sources */,
 				C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */,
 				2FCEED8526EAAB6C00892699 /* HistoryAPIExtensions.swift in Sources */,
-				F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */,
 				CA19C774275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift in Sources */,
 				44A58CEA26947100005C0879 /* BraveSearchDebugMenuFixture.swift in Sources */,
 				277C5B21254CAD790032DEF2 /* BraveRewardsExtensions.swift in Sources */,
@@ -8545,7 +8484,6 @@
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */,
 				0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */,
-				F930CDD12270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift in Sources */,
 				E653422D1C5944F90039DD9E /* BrowserPrompts.swift in Sources */,
 				0A55E53224349FE70069F06A /* EnableVPNSettingHeader.swift in Sources */,
 				4422D43621BFD29E00BF1855 /* NSFileManager+Tar.m in Sources */,
@@ -8664,7 +8602,6 @@
 				5D24AF8221BA459000F9506A /* BlocklistName.swift in Sources */,
 				277223762469E7290059A7EB /* LargeFaviconView.swift in Sources */,
 				D3FEC38D1AC4B42F00494F45 /* AutocompleteTextField.swift in Sources */,
-				F930CDC9227006D600A23FE1 /* WebAuthnRegisterRequest.swift in Sources */,
 				0BD19A671A25309B0084FBA7 /* NSUserDefaultsPrefs.swift in Sources */,
 				27448522245A1A1C001920B5 /* FavoritesViewController.swift in Sources */,
 				CA2202B027194D26002D3582 /* InterstitialPageHandler.swift in Sources */,
@@ -8695,7 +8632,6 @@
 				4457123F26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */,
-				F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */,
 				4422D50421BFFB7600BF1855 /* memtable.cc in Sources */,
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
 				2FD0E3D62577F327000C773B /* SearchSuggestionCell.swift in Sources */,
@@ -8706,7 +8642,6 @@
 				2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */,
 				2FA5A7582649CD9200740035 /* HistoryServiceStateObserver.swift in Sources */,
 				0A43293021B1C7F50041625B /* AdBlockStats.swift in Sources */,
-				F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */,
 				0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */,
 				274398F824E71E9800E79605 /* URLString.swift in Sources */,
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
@@ -8764,7 +8699,6 @@
 				4422D4BC21BFFB7600BF1855 /* testharness.cc in Sources */,
 				3BE7275D1CCFE8B60099189F /* CustomSearchHandler.swift in Sources */,
 				CABFA8F62728651C00B73E97 /* WelcomeViewController.swift in Sources */,
-				F930CDD72270F14300A23FE1 /* WebAuthnUtils.swift in Sources */,
 				27953F7723F5DF5D00B4B595 /* AboutShieldsViewController.swift in Sources */,
 				0A1E84442190A57F0042F782 /* SyncCameraView.swift in Sources */,
 				A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */,
@@ -8836,7 +8770,6 @@
 				0A66550C23E9E04F0047EF2A /* UserAgentTests.swift in Sources */,
 				2FDB10931A9FBEC5006CF312 /* PrefsTests.swift in Sources */,
 				D8EFFA261FF702A8001D3A09 /* NavigationRouterTests.swift in Sources */,
-				F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */,
 				27C5AE2E25D72B0A00B8F50E /* OPMLParsingTests.swift in Sources */,
 				0A4BEFD6221E13830005551A /* ContentBlockerTests.swift in Sources */,
 				0A2BFB3425F2754600719AA9 /* NTPDownloaderTests.swift in Sources */,
@@ -11002,7 +10935,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -11671,7 +11603,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -13906,7 +13837,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -14219,7 +14149,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -14453,7 +14382,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -14728,7 +14656,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/**",
-					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
 					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
@@ -15108,14 +15035,6 @@
 				minimumVersion = 9.1.2;
 			};
 		};
-		27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Yubico/yubikit-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.0;
-			};
-		};
 		2FCE87D3264195EC00B98D7E /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections";
@@ -15201,11 +15120,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 27B68E5B25C88CA7002D0826 /* XCRemoteSwiftPackageReference "FeedKit" */;
 			productName = FeedKit;
-		};
-		27F4798B25AF94B0004922E4 /* YubiKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */;
-			productName = YubiKit;
 		};
 		2F5B27D62698DBA8002BF5CF /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;

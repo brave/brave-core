@@ -578,7 +578,6 @@ class TabSessionTests: XCTestCase {
         for tab in self.tabManager.allTabs {
             // include all scripts
             tab.userScriptManager?.isFingerprintingProtectionEnabled = true
-            tab.userScriptManager?.isU2FEnabled = true
             tab.userScriptManager?.isCookieBlockingEnabled = true
                         
             group.enter()

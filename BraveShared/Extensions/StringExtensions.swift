@@ -28,4 +28,9 @@ extension String {
         }
         return words
     }
+    
+    /// Encode a String to Base64
+    public func toBase64() -> String {
+        return Data(self.utf8).base64EncodedString()
+    }
 }
