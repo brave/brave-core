@@ -21,20 +21,27 @@ const Feature kTestControlDisabledFeature{"TestControlDisabledFeature",
                                           FEATURE_DISABLED_BY_DEFAULT};
 
 const Feature kTestEnabledButOverridenFeature{"TestEnabledButOverridenFeature",
-                                              FEATURE_DISABLED_BY_DEFAULT};
+                                              FEATURE_ENABLED_BY_DEFAULT};
 const Feature kTestDisabledButOverridenFeature{
-    "TestDisabledButOverridenFeature", FEATURE_ENABLED_BY_DEFAULT};
+    "TestDisabledButOverridenFeature", FEATURE_DISABLED_BY_DEFAULT};
 
 constexpr Feature kTestConstexprEnabledButOverridenFeature{
-    "TestConstexprEnabledButOverridenFeature", FEATURE_DISABLED_BY_DEFAULT};
+    "TestConstexprEnabledButOverridenFeature", FEATURE_ENABLED_BY_DEFAULT};
 constexpr Feature kTestConstexprDisabledButOverridenFeature{
-    "TestConstexprDisabledButOverridenFeature", FEATURE_ENABLED_BY_DEFAULT};
+    "TestConstexprDisabledButOverridenFeature", FEATURE_DISABLED_BY_DEFAULT};
+
+const Feature kTestEnabledButOverridenFeatureWithSameState{
+    "TestEnabledButOverridenFeatureWithSameState", FEATURE_ENABLED_BY_DEFAULT};
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
     {kTestDisabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
     {kTestConstexprEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
     {kTestConstexprDisabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
+
+    // Override, but keep the same state as `default_state`. We should properly
+    // return false from IsFeatureOverridden in this case.
+    {kTestEnabledButOverridenFeatureWithSameState, FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 }  // namespace
@@ -43,23 +50,30 @@ TEST(FeatureOverrideTest, OverridesTest) {
   struct TestCase {
     const Feature& feature;
     const bool is_enabled;
+    const bool is_overridden;
   };
   const TestCase kTestCases[] = {
       // Untouched features.
-      {kTestControlEnabledFeature, true},
-      {kTestControlDisabledFeature, false},
+      {kTestControlEnabledFeature, true, false},
+      {kTestControlDisabledFeature, false, false},
 
       // Overridden features.
-      {kTestEnabledButOverridenFeature, false},
-      {kTestDisabledButOverridenFeature, true},
+      {kTestEnabledButOverridenFeature, false, true},
+      {kTestDisabledButOverridenFeature, true, true},
 
       // Overridden constexpr features.
-      {kTestConstexprEnabledButOverridenFeature, false},
-      {kTestConstexprDisabledButOverridenFeature, true},
+      {kTestConstexprEnabledButOverridenFeature, false, true},
+      {kTestConstexprDisabledButOverridenFeature, true, true},
+
+      // Overridden but with the same state.
+      {kTestEnabledButOverridenFeatureWithSameState, true, false},
   };
   for (const auto& test_case : kTestCases) {
-    EXPECT_EQ(test_case.is_enabled, FeatureList::IsEnabled(test_case.feature))
-        << test_case.feature.name;
+    SCOPED_TRACE(testing::Message() << test_case.feature.name);
+    EXPECT_EQ(test_case.is_enabled, FeatureList::IsEnabled(test_case.feature));
+    EXPECT_EQ(test_case.is_overridden,
+              FeatureList::GetInstance()->IsFeatureOverridden(
+                  test_case.feature.name));
   }
 }
 
