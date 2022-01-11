@@ -121,9 +121,12 @@ extension BrowserViewController {
                 vc.toolbarUrlActionsDelegate = self
                 menuController.pushInnerMenu(vc)
             }
-            MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: Strings.downloadsMenuItem) { [unowned self, unowned menuController] in
-                let vc = DownloadsPanel(profile: self.profile)
-                menuController.pushInnerMenu(vc)
+            MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: Strings.downloadsMenuItem) { [unowned self] in
+                FileManager.default.openBraveDownloadsFolder { success in
+                    if !success {
+                        self.displayOpenDownloadsError()
+                    }
+                }
             }
             if isShownOnWebPage {
                 MenuItemButton(

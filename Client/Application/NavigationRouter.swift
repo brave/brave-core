@@ -117,7 +117,11 @@ enum NavigationPath: Equatable {
         case .history:
             bvc.navigationHelper.openHistory()
         case .downloads:
-            bvc.navigationHelper.openDownloads()
+            bvc.navigationHelper.openDownloads() { success in
+                if !success {
+                    bvc.displayOpenDownloadsError()
+                }
+            }
         case .playlist:
             bvc.navigationHelper.openPlaylist()
         @unknown default:
