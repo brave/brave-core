@@ -11,13 +11,13 @@ import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export { TimeDelta }
 
 export interface WalletAccountType {
   id: string
   name: string
   address: string
   balance: string
-  fiatBalance: string
   asset: string
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   tokens: AccountAssetOptionType[]
@@ -40,19 +40,16 @@ export interface AssetOptionType {
 export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number
-  fiatBalance: number
 }
 
 export interface AccountAssetOptionType {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
-  fiatBalance: string
 }
 
 export interface UserWalletObject {
   name: string
   address: string
-  fiatBalance: string
   assetBalance: number
 }
 
@@ -320,18 +317,12 @@ export interface GetAllTokensReturnInfo {
   tokens: BraveWallet.BlockchainToken[]
 }
 
-export type GetBalanceReturnInfo = BraveWallet.JsonRpcService_GetBalance_ResponseParams
-
-export interface GetNativeAssetBalancesPriceReturnInfo {
-  fiatPrice: string
-  balances: GetBalanceReturnInfo[]
+export interface GetNativeAssetBalancesReturnInfo {
+  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[]
 }
 
-export type GetBlockchainTokenBalanceReturnInfo = BraveWallet.JsonRpcService_GetERC20TokenBalance_ResponseParams
-
-export interface GetERC20TokenBalanceAndPriceReturnInfo {
-  balances: GetBlockchainTokenBalanceReturnInfo[][]
-  prices: GetPriceReturnInfo
+export interface GetBlockchainTokenBalanceReturnInfo {
+  balances: BraveWallet.JsonRpcService_GetERC20TokenBalance_ResponseParams[][]
 }
 
 export interface GetFlattenedAccountBalancesReturnInfo {

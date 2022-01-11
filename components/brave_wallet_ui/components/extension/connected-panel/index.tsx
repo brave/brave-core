@@ -41,7 +41,7 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer, usePricing } from '../../../common/hooks'
 
 import {
   WalletAccountType,
@@ -58,6 +58,7 @@ import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
   selectedNetwork: BraveWallet.EthereumChain
   isConnected: boolean
@@ -71,6 +72,7 @@ export interface Props {
 
 const ConnectedPanel = (props: Props) => {
   const {
+    spotPrices,
     onLockWallet,
     onOpenSettings,
     isConnected,
@@ -140,11 +142,17 @@ const ConnectedPanel = (props: Props) => {
     return !SwapSupportedChains.includes(selectedNetwork.chainId)
   }, [SwapSupportedChains, selectedNetwork])
 
-  const formatedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
+  const formattedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
 
-  const formatedAssetBalanceWithDecimals = selectedAccount.balance
-    ? formatTokenAmountWithCommasAndDecimals(formatedAssetBalance, selectedNetwork.symbol)
+  const formattedAssetBalanceWithDecimals = selectedAccount.balance
+    ? formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, selectedNetwork.symbol)
     : ''
+
+  const { computeFiatAmount } = usePricing(spotPrices)
+
+  const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
+    selectedAccount.balance, selectedNetwork.symbol, selectedNetwork.decimals
+  ), [computeFiatAmount, selectedNetwork, selectedAccount])
 
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
@@ -198,18 +206,18 @@ const ConnectedPanel = (props: Props) => {
             </Tooltip>
           </BalanceColumn>
           <BalanceColumn>
-            <AssetBalanceText>{formatedAssetBalanceWithDecimals}</AssetBalanceText>
-            <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccount.fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+            <AssetBalanceText>{formattedAssetBalanceWithDecimals}</AssetBalanceText>
+            <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccountFiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
           </BalanceColumn>
         </CenterColumn>
         <AssetContainer isScrolled={isScrolled}>
           {userAssetList?.map((asset) =>
             <PortfolioAssetItem
+              spotPrices={spotPrices}
               defaultCurrencies={defaultCurrencies}
               action={onClickAsset(asset.asset.symbol)}
               key={asset.asset.contractAddress}
               assetBalance={asset.assetBalance}
-              fiatBalance={asset.fiatBalance}
               token={asset.asset}
               isPanel={true}
             />

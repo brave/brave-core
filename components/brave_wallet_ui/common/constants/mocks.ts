@@ -64,8 +64,7 @@ export const mockAccount: WalletAccountType = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
-  balance: '123.456',
-  fiatBalance: '17.34',
+  balance: '123456',
   asset: 'mockAsset', // FIXME: This is probably a useless field
   accountType: 'Primary',
   tokens: []

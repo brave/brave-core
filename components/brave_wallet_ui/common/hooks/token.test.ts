@@ -3,11 +3,11 @@ import {
   mockERC20Token,
   mockNetwork
 } from '../constants/mocks'
-import { FindBlockchainTokenInfoReturnInfo } from '../../constants/types'
+import { GetBlockchainTokenInfoReturnInfo } from '../../constants/types'
 import useTokenInfo from './token'
 
 const findBlockchainTokenInfo = async (address: string) => {
-  return await { token: null } as FindBlockchainTokenInfoReturnInfo
+  return { token: null } as GetBlockchainTokenInfoReturnInfo
 }
 
 describe('useTokenInfo hook', () => {

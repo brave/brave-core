@@ -6,7 +6,6 @@
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { formatBalance } from '../../utils/format-balances'
 import {
   AccountTransactions,
   BraveWallet,
@@ -15,8 +14,12 @@ import {
   GetBlockchainTokenInfoReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
+
+// Utils
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { GetTokenParam, GetFlattenedAccountBalances } from '../../utils/api-utils'
+import { normalizeNumericValue } from '../../utils/bn-utils'
+
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -63,10 +66,10 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const service = getAPIProxy().jsonRpcService
-    const result = await service.getBalance(address)
+    const { jsonRpcService } = getAPIProxy()
+    const result = await jsonRpcService.getBalance(address)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(formatBalance(result.balance, 18))
+      resolve(normalizeNumericValue(result.balance))
     } else {
       reject()
     }
@@ -124,10 +127,8 @@ export async function getBuyAssets () {
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
+    const { braveWalletService, jsonRpcService } = getAPIProxy()
     const { wallet: { accounts } } = getState()
-
-    const { braveWalletService, jsonRpcService } = apiProxy
 
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
@@ -151,11 +152,9 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       const balanceInfo = await jsonRpcService.getBalance(account.address)
       return balanceInfo
     }))
-    const balancesAndPrice = {
-      fiatPrice: '',
+    await dispatch(WalletActions.nativeAssetBalancesUpdated({
       balances: getBalanceReturnInfos
-    }
-    await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
+    }))
 
     const getBlockchainTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
@@ -166,39 +165,23 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       }))
     }))
 
-    const tokenBalancesAndPrices = {
-      balances: getBlockchainTokenBalanceReturnInfos,
-      prices: { success: true, values: [] }
-    }
-    await dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
+    await dispatch(WalletActions.tokenBalancesUpdated({
+      balances: getBlockchainTokenBalanceReturnInfos
+    }))
   }
 }
 
 export function refreshPrices () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
+    const { assetRatioService } = getAPIProxy()
     const { wallet: { accounts, selectedPortfolioTimeline, selectedNetwork, userVisibleTokensInfo, defaultCurrencies } } = getState()
-    const { assetRatioService } = apiProxy
+
     const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
-    // Update ETH Balances
+    // Fetch native asset (ETH) price
     const getNativeAssetPrice = await assetRatioService.getPrice([selectedNetwork.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
     const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
-    const getBalanceReturnInfos = accounts.map((account) => {
-      const balanceInfo = {
-        error: BraveWallet.ProviderError.kSuccess,
-        errorMessage: '',
-        balance: account.balance
-      }
-      return balanceInfo
-    })
-    const balancesAndPrice = {
-      fiatPrice: nativeAssetPrice,
-      balances: getBalanceReturnInfos
-    }
 
-    await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
-
-    // Update Token Balances
+    // Update Token Prices
     if (!userVisibleTokensInfo) {
       return
     }
@@ -223,23 +206,18 @@ export function refreshPrices () {
       return price.success ? tokenPrice : emptyPrice
     }))
 
-    const getBlockchainTokenBalanceReturnInfos = accounts.map((account) => {
-      return account.tokens.map((token) => {
-        const balanceInfo = {
-          error: BraveWallet.ProviderError.kSuccess,
-          errorMessage: '',
-          balance: token.assetBalance
-        }
-        return balanceInfo
-      })
-    })
-
-    const tokenBalancesAndPrices = {
-      balances: getBlockchainTokenBalanceReturnInfos,
-      prices: { success: true, values: getTokenPrices }
-    }
-
-    await dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
+    await dispatch(WalletActions.pricesUpdated({
+      success: true,
+      values: [
+        {
+          fromAsset: selectedNetwork.symbol.toLowerCase(),
+          toAsset: defaultFiatCurrency,
+          price: nativeAssetPrice,
+          assetTimeframeChange: ''
+        },
+        ...getTokenPrices
+      ]
+    }))
   }
 }
 

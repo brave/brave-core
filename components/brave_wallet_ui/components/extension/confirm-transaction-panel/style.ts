@@ -74,7 +74,7 @@ export const NetworkText = styled.span`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const TransactionAmmountBig = styled.span`
+export const TransactionAmountBig = styled.span`
   font-family: Poppins;
   font-size: 18px;
   line-height: 22px;

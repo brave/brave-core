@@ -143,6 +143,7 @@ function Container (props: Props) {
     selectedAccount,
     props.wallet.fullTokenList,
     props.wallet.userVisibleTokensInfo,
+    transactionSpotPrices,
     getBuyAssets
   )
 
@@ -213,10 +214,10 @@ function Container (props: Props) {
     setSelectedAccounts([selectedAccount])
   }, [selectedAccount])
 
-  const getSelectedAccountBalance = useBalance(selectedAccount)
-  const { assetBalance: sendAssetBalance } = getSelectedAccountBalance(selectedSendAsset)
-  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
-  const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
+  const getSelectedAccountBalance = useBalance(selectedNetwork)
+  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset?.asset)
+  const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset?.asset)
+  const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset?.asset)
 
   const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
@@ -431,7 +432,7 @@ function Container (props: Props) {
     props.walletActions.rejectAllTransactions()
   }
 
-  const onQueueNextTransction = () => {
+  const onQueueNextTransaction = () => {
     props.walletActions.queueNextTransaction()
   }
   const retryHardwareOperation = () => {
@@ -603,7 +604,7 @@ function Container (props: Props) {
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
             onRejectAllTransactions={onRejectAllTransactions}
-            onQueueNextTransction={onQueueNextTransction}
+            onQueueNextTransaction={onQueueNextTransaction}
             transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
             transactionsQueueLength={pendingTransactions.length}
             accounts={accounts}
@@ -973,6 +974,7 @@ function Container (props: Props) {
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
         defaultCurrencies={defaultCurrencies}
+        spotPrices={transactionSpotPrices}
         selectedAccount={selectedAccount}
         selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}

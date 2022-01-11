@@ -29,8 +29,8 @@ import {
   WalletAccountType,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
-  GetNativeAssetBalancesPriceReturnInfo,
-  GetERC20TokenBalanceAndPriceReturnInfo,
+  GetNativeAssetBalancesReturnInfo,
+  GetBlockchainTokenBalanceReturnInfo,
   PortfolioTokenHistoryAndInfo,
   SendTransactionParams,
   ER20TransferParams,
@@ -39,7 +39,8 @@ import {
   ApproveERC20Params,
   WalletInfoBase,
   WalletInfo,
-  DefaultCurrencies
+  DefaultCurrencies,
+  GetPriceReturnInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -71,8 +72,9 @@ export const accountsChanged = createAction('accountsChanged')
 export const selectedAccountChanged = createAction('selectedAccountChanged')
 export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
-export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesPriceReturnInfo>('nativeAssetBalancesUpdated')
-export const tokenBalancesUpdated = createAction<GetERC20TokenBalanceAndPriceReturnInfo>('tokenBalancesUpdated')
+export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesReturnInfo>('nativeAssetBalancesUpdated')
+export const tokenBalancesUpdated = createAction<GetBlockchainTokenBalanceReturnInfo>('tokenBalancesUpdated')
+export const pricesUpdated = createAction<GetPriceReturnInfo>('tokenBalancesUpdated')
 export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAndInfo[][]>('portfolioPriceHistoryUpdated')
 export const selectPortfolioTimeline = createAction<BraveWallet.AssetPriceTimeframe>('selectPortfolioTimeline')
 export const portfolioTimelineUpdated = createAction<BraveWallet.AssetPriceTimeframe>('portfolioTimelineUpdated')

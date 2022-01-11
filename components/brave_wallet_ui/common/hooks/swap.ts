@@ -21,8 +21,8 @@ import {
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { ETH, RopstenSwapAssetOptions } from '../../options/asset-options'
-import { formatInputValue, toWei, toWeiHex } from '../../utils/format-balances'
+import { RopstenSwapAssetOptions } from '../../options/asset-options'
+import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import useBalance from './balance'
@@ -84,9 +84,9 @@ export default function useSwap (
       .catch(e => console.log(e))
   }, [fromAsset, quote, selectedAccount])
 
-  const getBalance = useBalance(selectedAccount)
-  const { assetBalance: fromAssetBalance } = getBalance(fromAsset)
-  const { assetBalance: ethBalance } = getBalance(ETH)
+  const getBalance = useBalance(selectedNetwork)
+  const fromAssetBalance = getBalance(selectedAccount, fromAsset?.asset)
+  const ethBalance = getBalance(selectedAccount)
 
   const feesBN = React.useMemo(() => {
     if (!quote) {
@@ -103,12 +103,10 @@ export default function useSwap (
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
     const fromAmountWei = toWei(fromAmount, fromAsset.asset.decimals)
-    const fromAssetBalanceWei = toWei(fromAssetBalance, fromAsset.asset.decimals)
-    const ethBalanceWei = toWei(ethBalance, ETH.asset.decimals)
 
     const amountBN = new BigNumber(fromAmountWei)
-    const balanceBN = new BigNumber(fromAssetBalanceWei)
-    const ethBalanceBN = new BigNumber(ethBalanceWei)
+    const balanceBN = new BigNumber(fromAssetBalance)
+    const ethBalanceBN = new BigNumber(ethBalance)
 
     if (amountBN.gt(balanceBN)) {
       return 'insufficientBalance'
@@ -118,7 +116,7 @@ export default function useSwap (
       return 'insufficientEthBalance'
     }
 
-    if (fromAsset.asset.symbol === ETH.asset.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
+    if (fromAsset.asset.symbol === selectedNetwork.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
       return 'insufficientEthBalance'
     }
 
@@ -410,13 +408,15 @@ export default function useSwap (
     }
 
     if (swapValidationError === 'insufficientAllowance' && allowance) {
-      const fromAssetBalanceWeiHex = toWeiHex(fromAssetBalance, fromAsset.asset.decimals)
+      const allowanceHex = !fromAssetBalance
+        ? toWeiHex(fromAmount, fromAsset.asset.decimals)
+        : toHex(fromAssetBalance)
 
       approveERC20Allowance({
         from: selectedAccount.address,
         contractAddress: fromAsset.asset.contractAddress,
         spenderAddress: quote.allowanceTarget,
-        allowance: fromAssetBalanceWeiHex
+        allowance: allowanceHex
       })
 
       return

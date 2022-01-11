@@ -20,19 +20,16 @@ describe('usePreset hook', () => {
         ...mockAccount,
         tokens: [{
           asset: mockERC20Token,
-          assetBalance: balance,
-          fiatBalance: '0'
+          assetBalance: balance
         }]
       },
       {
         asset: mockERC20Token,
-        assetBalance: 'mockBalance',
-        fiatBalance: 'mockBalance'
+        assetBalance: 'mockBalance'
       },
       {
         asset: mockERC20Token,
-        assetBalance: 'mockBalance',
-        fiatBalance: 'mockBalance'
+        assetBalance: 'mockBalance'
       },
       mockFunc,
       jest.fn()
