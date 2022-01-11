@@ -35,6 +35,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -176,8 +177,12 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
         jsonRpcService.getChainId(chainId -> {
-            TextView networkName = view.findViewById(R.id.network_name);
-            networkName.setText(Utils.getNetworkText(getActivity(), chainId).toString());
+            jsonRpcService.getAllNetworks(chains -> {
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                TextView networkName = view.findViewById(R.id.network_name);
+                networkName.setText(
+                        Utils.getNetworkText(getActivity(), chainId, customNetworks).toString());
+            });
             TextView txType = view.findViewById(R.id.tx_type);
             txType.setText(getResources().getString(R.string.send));
             if (mTxInfo.txType == TransactionType.ERC20_TRANSFER

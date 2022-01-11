@@ -36,6 +36,14 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BraveWalletNetworksPreference mNetworksAddPref =
+                (BraveWalletNetworksPreference) findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
+        mNetworksAddPref.destroy();
+    }
+
+    @Override
     public void setSettingsLauncher(SettingsLauncher settingsLauncher) {
         mSettingsLauncher = settingsLauncher;
     }

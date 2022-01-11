@@ -220,7 +220,45 @@ public class Utils {
         activity.startActivity(assetDetailIntent);
     }
 
-    public static String[] getNetworksList(Activity activity) {
+    public static EthereumChain[] getCustomNetworks(EthereumChain[] chains) {
+        List<EthereumChain> al = new ArrayList<EthereumChain>();
+        for (EthereumChain chain : chains) {
+            switch (chain.chainId) {
+                case BraveWalletConstants.RINKEBY_CHAIN_ID:
+                case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+                case BraveWalletConstants.GOERLI_CHAIN_ID:
+                case BraveWalletConstants.KOVAN_CHAIN_ID:
+                case BraveWalletConstants.LOCALHOST_CHAIN_ID:
+                case BraveWalletConstants.MAINNET_CHAIN_ID:
+                    continue;
+                default:
+                    al.add(chain);
+            }
+        }
+
+        EthereumChain[] arr = new EthereumChain[al.size()];
+        arr = al.toArray(arr);
+
+        return arr;
+    }
+
+    public static boolean isCustomNetwork(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+            case BraveWalletConstants.LOCALHOST_CHAIN_ID:
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+                return false;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    public static String[] getNetworksList(Activity activity, EthereumChain[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
@@ -231,11 +269,15 @@ public class Utils {
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
         }
+        for (EthereumChain chain : customNetworks) {
+            categories.add(chain.chainName);
+        }
 
         return categories.toArray(new String[0]);
     }
 
-    public static String[] getNetworksAbbrevList(Activity activity) {
+    public static String[] getNetworksAbbrevList(
+            Activity activity, EthereumChain[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet_short).toString());
         categories.add(activity.getText(R.string.rinkeby_short).toString());
@@ -246,11 +288,15 @@ public class Utils {
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
         }
+        for (EthereumChain chain : customNetworks) {
+            categories.add(chain.chainName);
+        }
 
         return categories.toArray(new String[0]);
     }
 
-    public static CharSequence getNetworkText(Activity activity, String chain_id) {
+    public static CharSequence getNetworkText(
+            Activity activity, String chain_id, EthereumChain[] customNetworks) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
         switch (chain_id) {
             case BraveWalletConstants.RINKEBY_CHAIN_ID:
@@ -269,8 +315,15 @@ public class Utils {
                 strNetwork = activity.getText(R.string.localhost);
                 break;
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            default:
                 strNetwork = activity.getText(R.string.mainnet);
+                break;
+            default:
+                for (EthereumChain chain : customNetworks) {
+                    if (chain_id.equals(chain.chainId)) {
+                        strNetwork = chain.chainName;
+                        break;
+                    }
+                }
         }
 
         return strNetwork;
@@ -318,18 +371,25 @@ public class Utils {
         }
     }
 
-    public static String getNetworkConst(Activity activity, String network) {
+    public static String getNetworkConst(
+            Activity activity, String network, EthereumChain[] customNetworks) {
         String networkConst = BraveWalletConstants.MAINNET_CHAIN_ID;
         if (network.equals(activity.getText(R.string.rinkeby).toString())) {
-            networkConst = BraveWalletConstants.RINKEBY_CHAIN_ID;
+            return BraveWalletConstants.RINKEBY_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
-            networkConst = BraveWalletConstants.ROPSTEN_CHAIN_ID;
+            return BraveWalletConstants.ROPSTEN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.goerli).toString())) {
-            networkConst = BraveWalletConstants.GOERLI_CHAIN_ID;
+            return BraveWalletConstants.GOERLI_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.kovan).toString())) {
-            networkConst = BraveWalletConstants.KOVAN_CHAIN_ID;
+            return BraveWalletConstants.KOVAN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.localhost).toString())) {
-            networkConst = BraveWalletConstants.LOCALHOST_CHAIN_ID;
+            return BraveWalletConstants.LOCALHOST_CHAIN_ID;
+        }
+
+        for (EthereumChain chain : customNetworks) {
+            if (network.equals(chain.chainName)) {
+                return chain.chainId;
+            }
         }
 
         return networkConst;

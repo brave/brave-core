@@ -19,6 +19,7 @@ import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.components.browser_ui.widget.TintedDrawable;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -62,9 +63,7 @@ public class BraveWalletNetworksPreference extends Preference
         updateNetworksList();
     }
 
-    @Override
-    protected void onPrepareForRemoval() {
-        super.onPrepareForRemoval();
+    public void destroy() {
         mJsonRpcService.close();
     }
 
@@ -123,33 +122,11 @@ public class BraveWalletNetworksPreference extends Preference
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(chainId -> {
             mJsonRpcService.getAllNetworks(chains -> {
-                mAdapter.setDisplayedNetworks(chainId, getCustomNetworks(chains));
+                mAdapter.setDisplayedNetworks(chainId, Utils.getCustomNetworks(chains));
                 if (mRecyclerView.getAdapter() != mAdapter) {
                     mRecyclerView.setAdapter(mAdapter);
                 }
             });
         });
-    }
-
-    private EthereumChain[] getCustomNetworks(EthereumChain[] chains) {
-        List<EthereumChain> al = new ArrayList<EthereumChain>();
-        for (EthereumChain chain : chains) {
-            switch (chain.chainId) {
-                case BraveWalletConstants.RINKEBY_CHAIN_ID:
-                case BraveWalletConstants.ROPSTEN_CHAIN_ID:
-                case BraveWalletConstants.GOERLI_CHAIN_ID:
-                case BraveWalletConstants.KOVAN_CHAIN_ID:
-                case BraveWalletConstants.LOCALHOST_CHAIN_ID:
-                case BraveWalletConstants.MAINNET_CHAIN_ID:
-                    continue;
-                default:
-                    al.add(chain);
-            }
-        }
-
-        EthereumChain[] arr = new EthereumChain[al.size()];
-        arr = al.toArray(arr);
-
-        return arr;
     }
 }

@@ -238,8 +238,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         fromValueText.setHint("0");
 
         TextView fromBalanceText = findViewById(R.id.from_balance_text);
-        TextView fromAssetText = findViewById(R.id.from_asset_text);
-
         TextView toBalanceText = findViewById(R.id.to_balance_text);
         TextView toAssetText = findViewById(R.id.to_asset_text);
 
@@ -306,28 +304,31 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
-            final String chainId = Utils.getNetworkConst(this, item);
+            mJsonRpcService.getAllNetworks(chains -> {
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                final String chainId = Utils.getNetworkConst(this, item, customNetworks);
 
-            if (mActivityType == ActivityType.BUY) {
-                adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
-            }
+                if (mActivityType == ActivityType.BUY) {
+                    adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
+                }
 
-            if (mJsonRpcService != null) {
-                mJsonRpcService.setNetwork(chainId, (success) -> {
-                    if (!success) {
-                        Log.e(TAG, "Could not set network");
-                    }
-                    mCurrentChainId = chainId;
-                });
-            }
-            updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                  mAccountSpinner.getSelectedItemPosition()),
-                    true);
-            if (mActivityType == ActivityType.SWAP) {
+                if (mJsonRpcService != null) {
+                    mJsonRpcService.setNetwork(chainId, (success) -> {
+                        if (!success) {
+                            Log.e(TAG, "Could not set network");
+                        }
+                        mCurrentChainId = chainId;
+                    });
+                }
                 updateBalance(mCustomAccountAdapter.getTitleAtPosition(
                                       mAccountSpinner.getSelectedItemPosition()),
-                        false);
-            }
+                        true);
+                if (mActivityType == ActivityType.SWAP) {
+                    updateBalance(mCustomAccountAdapter.getTitleAtPosition(
+                                          mAccountSpinner.getSelectedItemPosition()),
+                            false);
+                }
+            });
         } else if (parent.getId() == R.id.accounts_spinner) {
             updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), true);
             if (mActivityType == ActivityType.SWAP) {
@@ -673,8 +674,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
     }
 
-    private int getIndexOf(Spinner spinner, String chainId) {
-        String strNetwork = Utils.getNetworkText(this, chainId).toString();
+    private int getIndexOf(Spinner spinner, String chainId, EthereumChain[] customNetworks) {
+        String strNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
                 return i;
@@ -1633,11 +1634,28 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 mCurrentChainId = chainId;
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);
-                // Creating adapter for spinner
-                NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(
-                        this, Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
-                spinner.setAdapter(dataAdapter);
-                spinner.setSelection(getIndexOf(spinner, chainId));
+                mJsonRpcService.getAllNetworks(chains -> {
+                    EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                    // Creating adapter for spinner
+                    NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
+                            Utils.getNetworksList(this, customNetworks),
+                            Utils.getNetworksAbbrevList(this, customNetworks));
+                    spinner.setAdapter(dataAdapter);
+                    spinner.setSelection(getIndexOf(spinner, chainId, customNetworks));
+
+                    for (EthereumChain chain : chains) {
+                        if (chainId.equals(chain.chainId)) {
+                            TextView fromAssetText = findViewById(R.id.from_asset_text);
+                            if (Utils.isCustomNetwork(chainId)) {
+                                Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
+                                        chain.symbol, getResources().getDisplayMetrics().density,
+                                        fromAssetText, this, true, (float) 0.5);
+                            }
+                            fromAssetText.setText(chain.symbol);
+                            break;
+                        }
+                    }
+                });
             });
         }
         if (mKeyringService != null) {

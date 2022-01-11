@@ -139,10 +139,14 @@ public class BraveWalletActivity extends AsyncInitializationActivity
         }
 
         mSwapButton.setOnClickListener(v -> {
-            SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
-                    SwapBottomSheetDialogFragment.newInstance();
-            swapBottomSheetDialogFragment.show(
-                    getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+            assert mJsonRpcService != null;
+            mJsonRpcService.getChainId(chainId -> {
+                SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
+                        SwapBottomSheetDialogFragment.newInstance();
+                swapBottomSheetDialogFragment.setChainId(chainId);
+                swapBottomSheetDialogFragment.show(
+                        getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
         });
 
         mCryptoLayout = findViewById(R.id.crypto_layout);

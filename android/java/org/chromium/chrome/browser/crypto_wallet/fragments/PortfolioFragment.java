@@ -36,6 +36,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -140,26 +141,34 @@ public class PortfolioFragment extends Fragment
         });
 
         // Creating adapter for spinner
-        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
-                Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
-        mSpinner.setAdapter(dataAdapter);
-        updateNetwork();
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        assert jsonRpcService != null;
+        jsonRpcService.getAllNetworks(chains -> {
+            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+            NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
+                    Utils.getNetworksList(getActivity(), customNetworks),
+                    Utils.getNetworksAbbrevList(getActivity(), customNetworks));
+            mSpinner.setAdapter(dataAdapter);
+            updateNetwork();
+        });
 
         return view;
     }
 
     private void updateNetwork() {
         JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService != null) {
-            jsonRpcService.getChainId(chain_id -> {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(chain_id -> {
+            jsonRpcService.getAllNetworks(chains -> {
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainName = mSpinner.getSelectedItem().toString();
-                String chainId = Utils.getNetworkConst(getActivity(), chainName);
+                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
                 if (chainId.equals(chain_id)) {
                     return;
                 }
-                mSpinner.setSelection(getIndexOf(mSpinner, chain_id));
+                mSpinner.setSelection(getIndexOf(mSpinner, chain_id, customNetworks));
             });
-        }
+        });
     }
 
     @Override
@@ -168,8 +177,9 @@ public class PortfolioFragment extends Fragment
         updateNetwork();
     }
 
-    private int getIndexOf(Spinner spinner, String chain_id) {
-        String strNetwork = Utils.getNetworkText(getActivity(), chain_id).toString();
+    private int getIndexOf(Spinner spinner, String chain_id, EthereumChain[] customNetworks) {
+        String strNetwork =
+                Utils.getNetworkText(getActivity(), chain_id, customNetworks).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
                 return i;
@@ -184,12 +194,16 @@ public class PortfolioFragment extends Fragment
         String item = parent.getItemAtPosition(position).toString();
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService != null) {
-            jsonRpcService.setNetwork(Utils.getNetworkConst(getActivity(), item), (success) -> {
-                if (!success) {
-                    Log.e(TAG, "Could not set network");
-                    return;
-                }
-                updatePortfolioGetPendingTx(true);
+            jsonRpcService.getAllNetworks(chains -> {
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                jsonRpcService.setNetwork(
+                        Utils.getNetworkConst(getActivity(), item, customNetworks), (success) -> {
+                            if (!success) {
+                                Log.e(TAG, "Could not set network");
+                                return;
+                            }
+                            updatePortfolioGetPendingTx(true);
+                        });
             });
         }
     }
@@ -204,26 +218,31 @@ public class PortfolioFragment extends Fragment
 
         TextView editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
-            String chainName = mSpinner.getSelectedItem().toString();
-            String chainId = Utils.getNetworkConst(getActivity(), chainName);
+            JsonRpcService jsonRpcService = getJsonRpcService();
+            assert jsonRpcService != null;
+            jsonRpcService.getAllNetworks(chains -> {
+                String chainName = mSpinner.getSelectedItem().toString();
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
 
-            EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
-                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                            WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
+                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                                WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
 
-            bottomSheetDialogFragment.setChainId(chainId);
-            bottomSheetDialogFragment.setDismissListener(
-                    new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
-                        @Override
-                        public void onDismiss(Boolean isAssetsListChanged) {
-                            if (isAssetsListChanged != null && isAssetsListChanged) {
-                                updatePortfolioGetPendingTx(false);
+                bottomSheetDialogFragment.setChainId(chainId);
+                bottomSheetDialogFragment.setDismissListener(
+                        new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
+                            @Override
+                            public void onDismiss(Boolean isAssetsListChanged) {
+                                if (isAssetsListChanged != null && isAssetsListChanged) {
+                                    updatePortfolioGetPendingTx(false);
+                                }
                             }
-                        }
-                    });
+                        });
 
-            bottomSheetDialogFragment.show(
-                    getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+                bottomSheetDialogFragment.show(getFragmentManager(),
+                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
         });
 
         RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
@@ -280,10 +299,15 @@ public class PortfolioFragment extends Fragment
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        String chainName = mSpinner.getSelectedItem().toString();
-        String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
-                asset.contractAddress, asset.logo, asset.decimals);
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        assert jsonRpcService != null;
+        jsonRpcService.getAllNetworks(chains -> {
+            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+            String chainName = mSpinner.getSelectedItem().toString();
+            String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
+            Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
+                    asset.contractAddress, asset.logo, asset.decimals);
+        });
     }
 
     private AssetRatioService getAssetRatioService() {
@@ -372,37 +396,41 @@ public class PortfolioFragment extends Fragment
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
         keyringService.getDefaultKeyringInfo(keyringInfo -> {
-            AccountInfo[] accountInfos = new AccountInfo[] {};
-            if (keyringInfo != null) {
-                accountInfos = keyringInfo.accountInfos;
-            }
+            JsonRpcService jsonRpcService = getJsonRpcService();
+            assert jsonRpcService != null;
+            jsonRpcService.getAllNetworks(chains -> {
+                AccountInfo[] accountInfos = new AccountInfo[] {};
+                if (keyringInfo != null) {
+                    accountInfos = keyringInfo.accountInfos;
+                }
 
-            if (mPortfolioHelper == null) {
-                mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioService(), getJsonRpcService(), accountInfos);
-            }
+                if (mPortfolioHelper == null) {
+                    mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                            getAssetRatioService(), getJsonRpcService(), accountInfos);
+                }
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                String chainName = mSpinner.getSelectedItem().toString();
+                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
+                mPortfolioHelper.setChainId(chainId);
+                mPortfolioHelper.calculateBalances(() -> {
+                    final String fiatSumString = String.format(
+                            Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
+                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                        mFiatSumString = fiatSumString;
+                        mBalance.setText(mFiatSumString);
+                        mBalance.invalidate();
 
-            String chainName = mSpinner.getSelectedItem().toString();
-            String chainId = Utils.getNetworkConst(getActivity(), chainName);
-            mPortfolioHelper.setChainId(chainId);
-            mPortfolioHelper.calculateBalances(() -> {
-                final String fiatSumString = String.format(
-                        Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                    mFiatSumString = fiatSumString;
-                    mBalance.setText(mFiatSumString);
-                    mBalance.invalidate();
+                        setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                mPortfolioHelper.getPerTokenCryptoSum(),
+                                mPortfolioHelper.getPerTokenFiatSum());
 
-                    setUpCoinList(mPortfolioHelper.getUserAssets(),
-                            mPortfolioHelper.getPerTokenCryptoSum(),
-                            mPortfolioHelper.getPerTokenFiatSum());
-
-                    updatePortfolioGraph();
+                        updatePortfolioGraph();
+                    });
                 });
+                if (getPendingTx) {
+                    getPendingTx(accountInfos);
+                }
             });
-            if (getPendingTx) {
-                getPendingTx(accountInfos);
-            }
         });
     }
 

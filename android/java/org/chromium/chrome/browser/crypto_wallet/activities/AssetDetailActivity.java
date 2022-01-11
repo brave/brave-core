@@ -155,6 +155,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                         BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
             }
         });
+        if (!Utils.isCustomNetwork(mChainId)) {
+            btnBuy.setVisibility(View.VISIBLE);
+            btnSwap.setVisibility(View.VISIBLE);
+        } else {
+            btnBuy.setVisibility(View.GONE);
+            btnSwap.setVisibility(View.GONE);
+        }
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
