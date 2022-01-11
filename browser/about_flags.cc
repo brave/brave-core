@@ -428,7 +428,14 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
 #define BRAVE_SHIELDS_V2_FEATURE_ENTRIES
 #endif
 
+#if defined(OS_ANDROID)
+#define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES_TRAILING_COMMA ,
+#else
+#define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES_TRAILING_COMMA
+#endif  // defined(OS_ANDROID)
+
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
+    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES_TRAILING_COMMA                        \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
