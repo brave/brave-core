@@ -30,7 +30,6 @@ class FetchOrderCredentialsCallbackState {
   FetchOrderCredentialsCallbackState();
   ~FetchOrderCredentialsCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
-  std::string order_id;
 };
 
 class PrepareCredentialsPresentationCallbackState {
@@ -38,8 +37,6 @@ class PrepareCredentialsPresentationCallbackState {
   PrepareCredentialsPresentationCallbackState();
   ~PrepareCredentialsPresentationCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
-  std::string domain;
-  PrefService* prefs;
 };
 
 class CredentialSummaryCallbackState {
@@ -47,8 +44,6 @@ class CredentialSummaryCallbackState {
   CredentialSummaryCallbackState();
   ~CredentialSummaryCallbackState();
   base::OnceCallback<void(const std::string&)> cb;
-  std::string domain;
-  PrefService* prefs;
 };
 
 class RefreshOrderCallbackState {

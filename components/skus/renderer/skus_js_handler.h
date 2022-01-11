@@ -34,12 +34,12 @@ namespace skus {
 //
 // TODO(bsclifton): trying to cleanup the gin.
 // Looking at chrome/renderer/net/net_error_page_controller.h as an example
-class SkusPageController {
+class SkusJSHandler {
  public:
-  explicit SkusPageController(content::RenderFrame* render_frame);
-  SkusPageController(const SkusPageController&) = delete;
-  SkusPageController& operator=(const SkusPageController&) = delete;
-  ~SkusPageController();
+  explicit SkusJSHandler(content::RenderFrame* render_frame);
+  SkusJSHandler(const SkusJSHandler&) = delete;
+  SkusJSHandler& operator=(const SkusJSHandler&) = delete;
+  ~SkusJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   void ResetRemote(content::RenderFrame* render_frame);

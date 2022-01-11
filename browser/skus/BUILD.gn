@@ -13,6 +13,7 @@ source_set("skus") {
     "//base",
     "//brave/browser/profiles:util",
     "//brave/components/skus/browser",
+    "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",

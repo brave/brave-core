@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/skus/renderer/skus_page_controller.h"
+#include "brave/components/skus/renderer/skus_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "v8/include/v8.h"
@@ -42,7 +42,7 @@ class SkusRenderFrameObserver : public content::RenderFrameObserver {
   bool IsAllowed();
 
   // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<SkusPageController> native_javascript_handle_;
+  std::unique_ptr<SkusJSHandler> native_javascript_handle_;
   int32_t world_id_;
 };
 

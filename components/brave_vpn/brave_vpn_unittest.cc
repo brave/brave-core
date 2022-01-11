@@ -13,8 +13,10 @@
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/skus_sdk_context_impl.h"
-#include "brave/components/skus/browser/skus_sdk_service.h"
+#include "brave/components/skus/browser/skus_context_impl.h"
+#include "brave/components/skus/browser/skus_service.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -26,15 +28,18 @@ class BraveVPNServiceTest : public testing::Test {
  public:
   BraveVPNServiceTest() {
     scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+    scoped_feature_list_.InitAndEnableFeature(skus::features::kSkusFeature);
   }
 
   void SetUp() override {
-    skus::SkusSdkContextImpl::RegisterProfilePrefs(pref_service_.registry());
+    skus::RegisterProfilePrefs(pref_service_.registry());
     brave_vpn::prefs::RegisterProfilePrefs(pref_service_.registry());
     auto url_loader_factory =
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>();
     skus_service_ =
-        std::make_unique<SkusSdkService>(&pref_service_, url_loader_factory);
+        std::make_unique<skus::SkusService>(&pref_service_, url_loader_factory);
+
+    // TODO(bsclifton): need to fix this to pass a pending remote
     service_ = std::make_unique<BraveVpnServiceDesktop>(
         url_loader_factory, &pref_service_, skus_service_.get());
   }
@@ -202,7 +207,7 @@ class BraveVPNServiceTest : public testing::Test {
   std::unique_ptr<BraveVpnServiceDesktop> service_;
 
  private:
-  std::unique_ptr<SkusSdkService> skus_service_;
+  std::unique_ptr<skus::SkusService> skus_service_;
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {

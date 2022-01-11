@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/skus/renderer/skus_page_controller.h"
+#include "brave/components/skus/renderer/skus_js_handler.h"
 
 #include <utility>
 
@@ -24,12 +24,12 @@
 
 namespace skus {
 
-SkusPageController::SkusPageController(content::RenderFrame* render_frame)
+SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
     : render_frame_(render_frame) {}
 
-SkusPageController::~SkusPageController() = default;
+SkusJSHandler::~SkusJSHandler() = default;
 
-bool SkusPageController::EnsureConnected() {
+bool SkusJSHandler::EnsureConnected() {
   if (!skus_service_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
@@ -38,8 +38,7 @@ bool SkusPageController::EnsureConnected() {
   return skus_service_.is_bound();
 }
 
-void SkusPageController::AddJavaScriptObjectToFrame(
-    v8::Local<v8::Context> context) {
+void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   if (context.IsEmpty())
@@ -50,14 +49,14 @@ void SkusPageController::AddJavaScriptObjectToFrame(
   BindFunctionsToObject(isolate, context);
 }
 
-void SkusPageController::ResetRemote(content::RenderFrame* render_frame) {
+void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
   skus_service_.reset();
   EnsureConnected();
 }
 
-void SkusPageController::BindFunctionsToObject(v8::Isolate* isolate,
-                                               v8::Local<v8::Context> context) {
+void SkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
+                                          v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
 
   // window.chrome
@@ -89,30 +88,29 @@ void SkusPageController::BindFunctionsToObject(v8::Isolate* isolate,
 
   // window.chrome.braveSkus.refresh_order
   BindFunctionToObject(isolate, skus_obj, "refresh_order",
-                       base::BindRepeating(&SkusPageController::RefreshOrder,
+                       base::BindRepeating(&SkusJSHandler::RefreshOrder,
                                            base::Unretained(this), isolate));
 
   // window.chrome.braveSkus.fetch_order_credentials
   BindFunctionToObject(
       isolate, skus_obj, "fetch_order_credentials",
-      base::BindRepeating(&SkusPageController::FetchOrderCredentials,
+      base::BindRepeating(&SkusJSHandler::FetchOrderCredentials,
                           base::Unretained(this), isolate));
 
   // window.chrome.braveSkus.prepare_credentials_presentation
   BindFunctionToObject(
       isolate, skus_obj, "prepare_credentials_presentation",
-      base::BindRepeating(&SkusPageController::PrepareCredentialsPresentation,
+      base::BindRepeating(&SkusJSHandler::PrepareCredentialsPresentation,
                           base::Unretained(this), isolate));
 
   // window.chrome.braveSkus.credential_summary
-  BindFunctionToObject(
-      isolate, skus_obj, "credential_summary",
-      base::BindRepeating(&SkusPageController::CredentialSummary,
-                          base::Unretained(this), isolate));
+  BindFunctionToObject(isolate, skus_obj, "credential_summary",
+                       base::BindRepeating(&SkusJSHandler::CredentialSummary,
+                                           base::Unretained(this), isolate));
 }
 
 template <typename Sig>
-void SkusPageController::BindFunctionToObject(
+void SkusJSHandler::BindFunctionToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Object> javascript_object,
     const std::string& name,
@@ -127,8 +125,8 @@ void SkusPageController::BindFunctionToObject(
 }
 
 // window.chrome.braveSkus.refresh_order
-v8::Local<v8::Promise> SkusPageController::RefreshOrder(v8::Isolate* isolate,
-                                                        std::string order_id) {
+v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
+                                                   std::string order_id) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -145,14 +143,14 @@ v8::Local<v8::Promise> SkusPageController::RefreshOrder(v8::Isolate* isolate,
 
   skus_service_->RefreshOrder(
       order_id,
-      base::BindOnce(&SkusPageController::OnRefreshOrder,
-                     base::Unretained(this), std::move(promise_resolver),
-                     isolate, std::move(context_old)));
+      base::BindOnce(&SkusJSHandler::OnRefreshOrder, base::Unretained(this),
+                     std::move(promise_resolver), isolate,
+                     std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void SkusPageController::OnRefreshOrder(
+void SkusJSHandler::OnRefreshOrder(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
@@ -193,7 +191,7 @@ void SkusPageController::OnRefreshOrder(
 }
 
 // window.chrome.braveSkus.fetch_order_credentials
-v8::Local<v8::Promise> SkusPageController::FetchOrderCredentials(
+v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
     v8::Isolate* isolate,
     std::string order_id) {
   if (!EnsureConnected())
@@ -212,14 +210,14 @@ v8::Local<v8::Promise> SkusPageController::FetchOrderCredentials(
 
   skus_service_->FetchOrderCredentials(
       order_id,
-      base::BindOnce(&SkusPageController::OnFetchOrderCredentials,
+      base::BindOnce(&SkusJSHandler::OnFetchOrderCredentials,
                      base::Unretained(this), std::move(promise_resolver),
                      isolate, std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void SkusPageController::OnFetchOrderCredentials(
+void SkusJSHandler::OnFetchOrderCredentials(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
@@ -238,7 +236,7 @@ void SkusPageController::OnFetchOrderCredentials(
 }
 
 // window.chrome.braveSkus.prepare_credentials_presentation
-v8::Local<v8::Promise> SkusPageController::PrepareCredentialsPresentation(
+v8::Local<v8::Promise> SkusJSHandler::PrepareCredentialsPresentation(
     v8::Isolate* isolate,
     std::string domain,
     std::string path) {
@@ -258,14 +256,14 @@ v8::Local<v8::Promise> SkusPageController::PrepareCredentialsPresentation(
 
   skus_service_->PrepareCredentialsPresentation(
       domain, path,
-      base::BindOnce(&SkusPageController::OnPrepareCredentialsPresentation,
+      base::BindOnce(&SkusJSHandler::OnPrepareCredentialsPresentation,
                      base::Unretained(this), std::move(promise_resolver),
                      isolate, std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void SkusPageController::OnPrepareCredentialsPresentation(
+void SkusJSHandler::OnPrepareCredentialsPresentation(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
@@ -284,9 +282,8 @@ void SkusPageController::OnPrepareCredentialsPresentation(
 }
 
 // window.chrome.braveSkus.credential_summary
-v8::Local<v8::Promise> SkusPageController::CredentialSummary(
-    v8::Isolate* isolate,
-    std::string domain) {
+v8::Local<v8::Promise> SkusJSHandler::CredentialSummary(v8::Isolate* isolate,
+                                                        std::string domain) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -303,14 +300,14 @@ v8::Local<v8::Promise> SkusPageController::CredentialSummary(
 
   skus_service_->CredentialSummary(
       domain,
-      base::BindOnce(&SkusPageController::OnCredentialSummary,
+      base::BindOnce(&SkusJSHandler::OnCredentialSummary,
                      base::Unretained(this), std::move(promise_resolver),
                      isolate, std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void SkusPageController::OnCredentialSummary(
+void SkusJSHandler::OnCredentialSummary(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,

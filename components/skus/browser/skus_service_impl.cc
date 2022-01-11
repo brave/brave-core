@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/skus/browser/skus_service.h"
+#include "brave/components/skus/browser/skus_service_impl.h"
 
 #include <utility>
 
@@ -12,7 +12,6 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
-#include "brave/components/skus/browser/rs/cxx/src/shim.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
@@ -52,27 +51,8 @@ void OnPrepareCredentialsPresentation(
 void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
                          skus::SkusResult result,
                          rust::cxxbridge1::Str summary) {
-  std::string summary_string = static_cast<std::string>(summary);
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
-  if (records_v && callback_state->prefs) {
-    if (callback_state->domain == "vpn.brave.com" ||
-        callback_state->domain == "vpn.bravesoftware.com" ||
-        callback_state->domain == "vpn.brave.software") {
-      const base::Value* active = records_v->FindKey("active");
-      if (active) {
-        bool has_credential = active && active->is_bool() && active->GetBool();
-        callback_state->prefs->SetBoolean(skus::prefs::kSkusVPNHasCredential,
-                                          has_credential);
-      }
-    }
-  }
-
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run(summary_string);
+    std::move(callback_state->cb).Run(static_cast<std::string>(summary));
   }
   delete callback_state;
 }
@@ -81,7 +61,7 @@ void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
 
 namespace skus {
 
-SkusService::SkusService(
+SkusServiceImpl::SkusServiceImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : context_(
@@ -89,19 +69,21 @@ SkusService::SkusService(
       sdk_(initialize_sdk(std::move(context_), skus::GetEnvironment())),
       prefs_(prefs) {}
 
-SkusService::~SkusService() {}
+SkusServiceImpl::~SkusServiceImpl() {}
 
-mojo::PendingRemote<mojom::SkusService> SkusService::MakeRemote() {
+void SkusServiceImpl::Shutdown() {}
+
+mojo::PendingRemote<mojom::SkusService> SkusServiceImpl::MakeRemote() {
   mojo::PendingRemote<mojom::SkusService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void SkusService::Bind(mojo::PendingReceiver<mojom::SkusService> receiver) {
+void SkusServiceImpl::Bind(mojo::PendingReceiver<mojom::SkusService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void SkusService::RefreshOrder(
+void SkusServiceImpl::RefreshOrder(
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
@@ -111,42 +93,65 @@ void SkusService::RefreshOrder(
   sdk_->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
 }
 
-void SkusService::FetchOrderCredentials(
+void SkusServiceImpl::FetchOrderCredentials(
     const std::string& order_id,
     mojom::SkusService::FetchOrderCredentialsCallback callback) {
   std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
       new skus::FetchOrderCredentialsCallbackState);
   cbs->cb = std::move(callback);
-  cbs->order_id = order_id;
 
   sdk_->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
                                 order_id);
 }
 
-void SkusService::PrepareCredentialsPresentation(
+void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
   std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs(
       new skus::PrepareCredentialsPresentationCallbackState);
   cbs->cb = std::move(callback);
-  cbs->domain = domain;
-  cbs->prefs = prefs_;
 
   sdk_->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
                                          std::move(cbs), domain, path);
 }
 
-void SkusService::CredentialSummary(
+void SkusServiceImpl::CredentialSummary(
     const std::string& domain,
     mojom::SkusService::CredentialSummaryCallback callback) {
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
-  cbs->cb = std::move(callback);
-  cbs->domain = domain;
-  cbs->prefs = prefs_;
+  cbs->cb =
+      base::BindOnce(&SkusServiceImpl::OnCredentialSummary,
+                     weak_factory_.GetWeakPtr(), domain, std::move(callback));
 
-  sdk_->credential_summary(OnCredentialSummary, std::move(cbs), domain);
+  sdk_->credential_summary(::OnCredentialSummary, std::move(cbs), domain);
+}
+
+void SkusServiceImpl::OnCredentialSummary(
+    const std::string& domain,
+    mojom::SkusService::CredentialSummaryCallback callback,
+    const std::string& summary_string) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+
+  // TODO(bsclifton): pull out to a separate method
+  if (records_v && prefs_) {
+    if (domain == "vpn.brave.com" || domain == "vpn.bravesoftware.com" ||
+        domain == "vpn.brave.software") {
+      const base::Value* active = records_v->FindKey("active");
+      if (active) {
+        bool has_credential = active && active->is_bool() && active->GetBool();
+        prefs_->SetBoolean(skus::prefs::kSkusVPNHasCredential, has_credential);
+      }
+    }
+  }
+
+  if (callback) {
+    std::move(callback).Run(summary_string);
+  }
 }
 
 }  // namespace skus

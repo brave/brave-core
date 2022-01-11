@@ -24,7 +24,7 @@ rust_cxx("cxx") {
 }
 
 source_set("shim") {
-  visibility = [ ":*" ]
+  visibility = [ ":*", "//brave/components/skus/browser" ]
   sources = [ "src/shim.h" ]
 
   deps = [

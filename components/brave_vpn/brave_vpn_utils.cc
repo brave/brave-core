@@ -9,11 +9,13 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled() {
-  return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN);
+  return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN) &&
+         base::FeatureList::IsEnabled(skus::features::kSkusFeature);
 }
 
 std::string GetManageUrl() {

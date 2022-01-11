@@ -5,8 +5,11 @@
 
 #include "brave/browser/skus/skus_service_factory.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_service_impl.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -23,23 +26,20 @@ SkusServiceFactory* SkusServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  return static_cast<skus::SkusService*>(
+  if (!context || !base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    return mojo::PendingRemote<mojom::SkusService>();
+  }
+
+  return static_cast<skus::SkusServiceImpl*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
-}
-
-// static
-SkusService* SkusServiceFactory::GetForContextPrivate(
-    content::BrowserContext* context) {
-  return static_cast<skus::SkusService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
 void SkusServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
-  auto* service = static_cast<skus::SkusService*>(
+  auto* service = static_cast<skus::SkusServiceImpl*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
   if (service) {
     service->Bind(std::move(receiver));
@@ -55,12 +55,17 @@ SkusServiceFactory::~SkusServiceFactory() = default;
 
 KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  // Return null if feature is disabled
+  if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    return nullptr;
+  }
+
   // Skus functionality not supported in private / Tor / guest windows
   if (!brave::IsRegularProfile(context)) {
     return nullptr;
   }
 
-  return new skus::SkusService(
+  return new skus::SkusServiceImpl(
       Profile::FromBrowserContext(context)->GetPrefs(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess());
@@ -68,8 +73,7 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
 
 void SkusServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(prefs::kSkusState);
-  registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
+  skus::RegisterProfilePrefs(registry);
 }
 
 }  // namespace skus

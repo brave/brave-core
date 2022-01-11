@@ -8,6 +8,10 @@
 
 #include <string>
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace skus {
 
 constexpr char kEnvProduction[] = "production";
@@ -16,6 +20,7 @@ constexpr char kEnvDevelopment[] = "development";
 
 std::string GetEnvironment();
 std::string GetDomain(std::string prefix);
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 }  // namespace skus
 

@@ -5,9 +5,13 @@
 
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
+#include "base/feature_list.h"
 #include "brave/components/skus/browser/skus_service.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/web/public/browser_state.h"
@@ -39,6 +43,11 @@ SkusServiceFactory::~SkusServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
+  // Return null if feature is disabled
+  if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    return nullptr;
+  }
+
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   if (browser_state->IsOffTheRecord()) {
     return nullptr;
@@ -46,6 +55,11 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<SkusService> sku_service(new SkusService(
       browser_state->GetPrefs(), browser_state->GetSharedURLLoaderFactory()));
   return sku_service;
+}
+
+void SkusServiceFactory::RegisterBrowserStatePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  skus::RegisterProfilePrefs(registry);
 }
 
 bool SkusServiceFactory::ServiceIsNULLWhileTesting() const {

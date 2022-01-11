@@ -9,8 +9,8 @@
 namespace skus {
 namespace prefs {
 
-constexpr char kSkusState[] = "skus.state";
-constexpr char kSkusVPNHasCredential[] = "skus.credential.has_vpn";
+extern const char kSkusState[];
+extern const char kSkusVPNHasCredential[];
 
 }  // namespace prefs
 }  // namespace skus

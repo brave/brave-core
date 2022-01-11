@@ -5,8 +5,8 @@
 
 source_set("renderer") {
   sources = [
-    "skus_page_controller.cc",
-    "skus_page_controller.h",
+    "skus_js_handler.cc",
+    "skus_js_handler.h",
     "skus_render_frame_observer.cc",
     "skus_render_frame_observer.h",
   ]

@@ -5,11 +5,12 @@
 
 static_library("browser") {
   sources = [
+    "pref_names.cc",
     "pref_names.h",
     "skus_context_impl.cc",
     "skus_context_impl.h",
-    "skus_service.cc",
-    "skus_service.h",
+    "skus_service_impl.cc",
+    "skus_service_impl.h",
     "skus_url_loader_impl.cc",
     "skus_url_loader_impl.h",
     "skus_utils.cc",
@@ -17,10 +18,11 @@ static_library("browser") {
     "switches.h",
   ]
 
-  public_deps = [ "rs/cxx" ]
+  public_deps = [ "rs/cxx", "rs/cxx:shim" ]
 
   deps = [
     "//base",
+    "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
     "//components/pref_registry",

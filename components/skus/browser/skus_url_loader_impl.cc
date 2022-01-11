@@ -27,6 +27,7 @@ void SkusUrlLoaderImpl::BeginFetch(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
+  DCHECK(!simple_url_loader_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(static_cast<std::string>(req.url));
   resource_request->method = static_cast<std::string>(req.method);
@@ -59,7 +60,7 @@ SkusUrlLoaderImpl::GetNetworkTrafficAnnotationTag() {
         description:
           "Call the SKU SDK implementation provided by the caller"
         trigger:
-          "Any Brave webpage using SKU SDK where window.brave.sku.*"
+          "Any Brave webpage using SKU SDK where window.chrome.braveSkus.*"
           "methods are called; ex: fetch_order / fetch_order_credentials"
         data: "JSON data comprising an order."
         destination: OTHER

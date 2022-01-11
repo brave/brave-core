@@ -34,8 +34,7 @@ void SkusRenderFrameObserver::DidCreateScriptContext(
     return;
 
   if (!native_javascript_handle_) {
-    native_javascript_handle_ =
-        std::make_unique<SkusPageController>(render_frame());
+    native_javascript_handle_ = std::make_unique<SkusJSHandler>(render_frame());
   } else {
     native_javascript_handle_->ResetRemote(render_frame());
   }
