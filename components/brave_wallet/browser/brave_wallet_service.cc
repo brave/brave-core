@@ -704,20 +704,16 @@ void BraveWalletService::AddSuggestTokenRequest(
   const std::string chain_id = GetCurrentChainId(prefs_);
 
   // Priority of token source:
-  //   Mainnet:
   //     1. User asset list
   //     2. BlockchainRegistry
   //     3. wallet_watchAsset request
-  //   Others:
-  //     1. User asset list
-  //     2. wallet_watchAsset request
   mojom::BlockchainTokenPtr token =
       GetUserAsset(request->token->contract_address, request->token->token_id,
                    request->token->is_erc721, chain_id);
 
-  if (!token && chain_id == mojom::kMainnetChainId)
-    token = BlockchainRegistry::GetInstance()->GetTokenByContract(
-        mojom::kMainnetChainId, addr);
+  if (!token)
+    token =
+        BlockchainRegistry::GetInstance()->GetTokenByContract(chain_id, addr);
 
   if (token)
     request->token = std::move(token);
