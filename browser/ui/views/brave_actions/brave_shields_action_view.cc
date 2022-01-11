@@ -101,16 +101,16 @@ BraveShieldsActionView::GetImageSource() {
   std::string badge_text;
 
   if (web_contents) {
-    auto* shields_data_ctrlr =
+    auto* shields_data_controller =
         brave_shields::BraveShieldsDataController::FromWebContents(
             web_contents);
-    int count = shields_data_ctrlr->GetTotalBlockedCount();
+    int count = shields_data_controller->GetTotalBlockedCount();
 
     if (count > 0) {
       badge_text = count > 99 ? "99+" : std::to_string(count);
     }
 
-    is_enabled = shields_data_ctrlr->GetIsBraveShieldsEnabled();
+    is_enabled = shields_data_controller->GetBraveShieldsEnabled();
 
     if (!badge_text.empty()) {
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(

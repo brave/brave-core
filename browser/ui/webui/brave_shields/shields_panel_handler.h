@@ -18,23 +18,23 @@ namespace content {
 class WebUI;
 }  // namespace content
 
-class ShieldsPanelHandler : public brave_shields_panel::mojom::PanelHandler {
+class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  public:
   ShieldsPanelHandler(
-      mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler> receiver,
+      mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
       ui::MojoBubbleWebUIController* webui_controller);
 
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
   ShieldsPanelHandler& operator=(const ShieldsPanelHandler&) = delete;
   ~ShieldsPanelHandler() override;
 
-  // brave_shields_panel::mojom::PanelHandler:
+  // brave_shields::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
   void OpenURL(const GURL& url) override;
 
  private:
-  mojo::Receiver<brave_shields_panel::mojom::PanelHandler> receiver_;
+  mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
 };
 

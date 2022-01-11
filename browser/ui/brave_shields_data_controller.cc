@@ -9,8 +9,10 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/navigation_handle.h"
 
 namespace brave_shields {
 
@@ -19,6 +21,14 @@ BraveShieldsDataController::~BraveShieldsDataController() = default;
 BraveShieldsDataController::BraveShieldsDataController(
     content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
+
+void BraveShieldsDataController::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted() &&
+      !navigation_handle->IsSameDocument()) {
+    ClearAllResourcesList();
+  }
+}
 
 void BraveShieldsDataController::ClearAllResourcesList() {
   resource_list_blocked_ads_.clear();
@@ -49,14 +59,64 @@ int BraveShieldsDataController::GetTotalBlockedCount() {
           resource_list_blocked_fingerprints_.size());
 }
 
-bool BraveShieldsDataController::GetIsBraveShieldsEnabled() {
+bool BraveShieldsDataController::GetBraveShieldsEnabled() {
   auto* map = HostContentSettingsMapFactory::GetForProfile(
       web_contents()->GetBrowserContext());
   return brave_shields::GetBraveShieldsEnabled(map, GetCurrentSiteURL());
 }
 
 GURL BraveShieldsDataController::GetCurrentSiteURL() {
-  return web_contents()->GetURL();
+  return web_contents()->GetLastCommittedURL();
+}
+
+AdBlockMode BraveShieldsDataController::GetAdBlockMode() {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(
+      web_contents()->GetBrowserContext());
+
+  ControlType control_type_ad =
+      brave_shields::GetAdControlType(map, GetCurrentSiteURL());
+
+  ControlType control_type_cosmetic =
+      brave_shields::GetCosmeticFilteringControlType(map, GetCurrentSiteURL());
+
+  if (control_type_ad == ControlType::ALLOW) {
+    return AdBlockMode::ALLOW;
+  }
+
+  if (control_type_cosmetic == ControlType::BLOCK) {
+    return AdBlockMode::AGGRESSIVE;
+  } else {
+    return AdBlockMode::STANDARD;
+  }
+}
+
+void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(
+      web_contents()->GetBrowserContext());
+
+  ControlType control_type_ad;
+  ControlType control_type_cosmetic;
+
+  if (mode == AdBlockMode::ALLOW) {
+    control_type_ad = ControlType::ALLOW;
+  } else {
+    control_type_ad = ControlType::BLOCK;
+  }
+
+  if (mode == AdBlockMode::AGGRESSIVE) {
+    control_type_cosmetic = ControlType::BLOCK;  // aggressive
+  } else {
+    control_type_cosmetic = ControlType::BLOCK_THIRD_PARTY;  // standard
+  }
+
+  brave_shields::SetAdControlType(map, control_type_ad, GetCurrentSiteURL(),
+                                  g_browser_process->local_state());
+
+  brave_shields::SetCosmeticFilteringControlType(
+      map, control_type_cosmetic, GetCurrentSiteURL(),
+      g_browser_process->local_state());
+
+  web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
 void BraveShieldsDataController::HandleItemBlocked(

@@ -18,26 +18,26 @@ class MojoBubbleWebUIController;
 }  // namespace ui
 
 using brave_shields::BraveShieldsDataController;
-using brave_shields_panel::mojom::SiteBlockInfo;
+using brave_shields::mojom::SiteBlockInfo;
 
-class ShieldsDataHandler : public brave_shields_panel::mojom::DataHandler,
+class ShieldsDataHandler : public brave_shields::mojom::DataHandler,
                            public BraveShieldsDataController::Observer,
                            public TabStripModelObserver {
  public:
-  ShieldsDataHandler(
-      mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
-          data_handler_receiver,
-      ui::MojoBubbleWebUIController* webui_controller);
+  ShieldsDataHandler(mojo::PendingReceiver<brave_shields::mojom::DataHandler>
+                         data_handler_receiver,
+                     ui::MojoBubbleWebUIController* webui_controller);
 
   ShieldsDataHandler(const ShieldsDataHandler&) = delete;
   ShieldsDataHandler& operator=(const ShieldsDataHandler&) = delete;
   ~ShieldsDataHandler() override;
 
   // mojom::DataHandler
-  void RegisterUIHandler(
-      mojo::PendingRemote<brave_shields_panel::mojom::UIHandler>
-          ui_handler_receiver) override;
+  void RegisterUIHandler(mojo::PendingRemote<brave_shields::mojom::UIHandler>
+                             ui_handler_receiver) override;
   void GetSiteBlockInfo(GetSiteBlockInfoCallback callback) override;
+  void GetAdBlockMode(GetAdBlockModeCallback callback) override;
+  void SetAdBlockMode(AdBlockMode callback) override;
 
  private:
   BraveShieldsDataController* GetActiveShieldsDataController();
@@ -51,9 +51,8 @@ class ShieldsDataHandler : public brave_shields_panel::mojom::DataHandler,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  mojo::Receiver<brave_shields_panel::mojom::DataHandler>
-      data_handler_receiver_;
-  mojo::Remote<brave_shields_panel::mojom::UIHandler> ui_handler_remote_;
+  mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
+  mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
   ui::MojoBubbleWebUIController* const webui_controller_;
   SiteBlockInfo site_block_info_;
 };

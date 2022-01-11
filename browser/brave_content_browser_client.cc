@@ -470,7 +470,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        brave_shields_panel::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+        brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
