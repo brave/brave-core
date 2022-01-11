@@ -143,3 +143,32 @@ extension FileManager.SearchPathDirectory {
         return FileManager.default.urls(for: self, in: .userDomainMask).first
     }
 }
+
+extension FileManager {
+    
+    /// Navigates to download Folder inside the application's folder
+    func openBraveDownloadsFolder(_ completion: @escaping (Bool) -> Void) {
+        do {
+            guard var downloadsPathComponents = URLComponents(
+                url: try FileManager.default.downloadsPath(),
+                resolvingAgainstBaseURL: false) else {
+                    completion(false)
+                    return
+            }
+            
+            downloadsPathComponents.scheme = "shareddocuments"
+            
+            guard let braveFolderURL = downloadsPathComponents.url else {
+                completion(false)
+                return
+            }
+            
+            UIApplication.shared.open(braveFolderURL) { success in
+                completion(success)
+            }
+        } catch {
+            completion(false)
+            log.error("Unable to get downloads path: \(error.localizedDescription)")
+        }
+    }
+}
