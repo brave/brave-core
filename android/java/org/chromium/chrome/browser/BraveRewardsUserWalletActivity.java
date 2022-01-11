@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity {
-    public static final String DISCONNECT_WALLET_URL = "chrome://rewards/#disconnect-wallet";
+    public static final String DISCONNECT_WALLET_URL = "brave://rewards/#disconnect-wallet";
 
     private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
     private String walletTypeString;
