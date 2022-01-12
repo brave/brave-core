@@ -192,7 +192,8 @@ public class AccountDetailActivity extends AsyncInitializationActivity
                     accountInfos[0] = accountInfo;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
                             mBlockchainRegistry, mBraveWalletService, null, null, 0,
-                            findViewById(R.id.rv_transactions), this, this, chainId);
+                            findViewById(R.id.rv_transactions), this, this, chainId,
+                            mJsonRpcService);
                     break;
                 }
             }

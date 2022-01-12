@@ -2470,10 +2470,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       $<ph name="AMOUNT">%1$s<ex>3.08</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_GAS_FEE_AMOUNT" desc="Gas fee ETH" translateable="false">
-      <ph name="AMOUNT">%1$s<ex>0.0000015</ex></ph> ETH
+      <ph name="AMOUNT">%1$s<ex>0.0000015</ex></ph> <ph name="CHAIN_ASSET">%2$s<ex>ETH</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_TOTAL_AMOUNT" desc="amount asset + amount gas fee" translateable="false">
-      <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> ETH
+      <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> <ph name="CHAIN_ASSET">%4$s<ex>ETH</ex></ph>
     </message>
     <message name="IDS_GAS_PRICE" desc="Brave crypto wallet gas limit edit box">
       Gas Price (Gwei)
@@ -2596,7 +2596,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Error
     </message>
     <message name="IDS_WALLET_TX_FEE" desc="Brave wallet tx fee">
-      Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> ETH ($<ph name="FIAT_VALUE">%2$s<ex>101.22</ex></ph>)
+      Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> <ph name="CHAIN_ASSET">%2$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%3$s<ex>101.22</ex></ph>)
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_1" desc="Dormant users engagement notification text">
       Are you using the fastest web browser?
