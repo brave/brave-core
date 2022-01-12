@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.34](https://github.com/brave/brave-ios/releases/tag/v1.34)
+
+- Added support for initial set of Brave Widgets. ([#4329](https://github.com/brave/brave-ios/issues/4329))
+- Removed Canvas Fingerprinting protection. ([#4522](https://github.com/brave/brave-ios/issues/4522))
+- Implemented "Login & Passwords" feature for managing saved credentials. ([#4112](https://github.com/brave/brave-ios/issues/4112))
+- [Security] Fixed reader mode issue as reported on HackerOne by nishimunea. ([#4772](https://github.com/brave/brave-ios/issues/4772))
+- [Security] Fixed message token handling as reported on HackerOne by nishimunea. ([#4775](https://github.com/brave/brave-ios/issues/4775))
+- [Security] Added "no-referrer" for content for all internal pages as reported on HackerOne by nishimunea. ([#4784](https://github.com/brave/brave-ios/issues/4784))
+- Fixed Wallet page indicator width on portfolio screen. ([#4586](https://github.com/brave/brave-ios/issues/4586))
+
+## [1.33](https://github.com/brave/brave-ios/releases/tag/v1.33)
+
+- Added first steps of Brave Wallet (Dapps and EVM support in future releases).([#4837](https://github.com/brave/brave-ios/issues/4837))
+- Implemented drag-and-drop option to rearrange favorites on New Tab Page. ([#3713](https://github.com/brave/brave-ios/issues/3713))
+- Improved auto-fill of saved credentials on websites. ([#4113](https://github.com/brave/brave-ios/issues/4113))
+- Implemented time-limited sync QR codes. ([#4534](https://github.com/brave/brave-ios/issues/4534))
+- Fixed last active tab not being focused when closing and relaunching the browser. ([#736](https://github.com/brave/brave-ios/issues/736))
+- Fixed searching on opened PDF's within Brave not working in certain cases. ([#3312](https://github.com/brave/brave-ios/issues/3312))
+- Fixed PDF tab from showing blank when opening tab-tray and re-selecting the PDF tab. ([#3534](https://github.com/brave/brave-ios/issues/3534))
+- Fixed auto-fill issue on certain Japanese websites. ([#4483](https://github.com/brave/brave-ios/issues/4483))
+- Disabled Brave Shields from opening on new tab page. ([#4660](https://github.com/brave/brave-ios/issues/4660))
+
 ## [1.32.3](https://github.com/brave/brave-ios/releases/tag/v1.32.3)
 
 - Replaced Brave's HTTPSE with Apple's HTTPS upgrades in WKWebView and removed Brave HTTPSE setting from shields, still available as an option in global settings. ([#4335](https://github.com/brave/brave-ios/issues/4335))
