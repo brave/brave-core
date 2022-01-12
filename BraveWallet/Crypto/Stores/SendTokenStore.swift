@@ -64,13 +64,15 @@ public class SendTokenStore: ObservableObject {
     rpcController: BraveWalletEthJsonRpcController,
     walletService: BraveWalletBraveWalletService,
     transactionController: BraveWalletEthTxController,
-    tokenRegistery: BraveWalletERCTokenRegistry
+    tokenRegistery: BraveWalletERCTokenRegistry,
+    prefilledToken: BraveWallet.ERCToken?
   ) {
     self.keyringController = keyringController
     self.rpcController = rpcController
     self.walletService = walletService
     self.transactionController = transactionController
     self.tokenRegistery = tokenRegistery
+    self.selectedSendToken = prefilledToken
     
     self.keyringController.add(self)
     self.rpcController.add(self)

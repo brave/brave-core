@@ -9,14 +9,15 @@ import BraveCore
 
 class SendSwapStoreTests: XCTestCase {
     
-    func testDefaultSellBuyTokensOnMainnet() {
+    func testDefaultSellBuyTokensOnMainnetWithoutPrefilledToken() {
         let store = SwapTokenStore(
             keyringController: TestKeyringController(),
             tokenRegistry: TestTokenRegistry(),
             rpcController: TestEthJsonRpcController(),
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "default-sell-buy-token-on-main")
         XCTAssertNil(store.selectedFromToken)
@@ -32,7 +33,33 @@ class SendSwapStoreTests: XCTestCase {
         }
     }
     
-    func testDefaultSellBuyTokensOnRopsten() {
+    func testDefaultSellBuyTokensOnMainnetWithPrefilledToken() {
+        let batToken: BraveWallet.ERCToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "")
+        let store = SwapTokenStore(
+            keyringController: TestKeyringController(),
+            tokenRegistry: TestTokenRegistry(),
+            rpcController: TestEthJsonRpcController(),
+            assetRatioController: TestAssetRatioController(),
+            swapController: TestSwapController(),
+            transactionController: TestEthTxController(),
+            prefilledToken: batToken
+        )
+        let ex = expectation(description: "default-sell-buy-token-on-main")
+        XCTAssertNotNil(store.selectedFromToken)
+        XCTAssertNil(store.selectedToToken)
+        let testAccountInfo: BraveWallet.AccountInfo = .init()
+        store.prepare(with: testAccountInfo) {
+            defer { ex.fulfill() }
+            XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), batToken.symbol.lowercased())
+            XCTAssertNotNil(store.selectedToToken)
+            XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), batToken.symbol.lowercased())
+        }
+        waitForExpectations(timeout: 3) { error in
+            XCTAssertNil(error)
+        }
+    }
+    
+    func testDefaultSellBuyTokensOnRopstenWithoutPrefilledToken() {
         let rpcController = TestEthJsonRpcController()
         let store = SwapTokenStore(
             keyringController: TestKeyringController(),
@@ -40,7 +67,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: rpcController,
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "default-sell-buy-token-on-ropsten")
         XCTAssertNil(store.selectedFromToken)
@@ -60,6 +88,37 @@ class SendSwapStoreTests: XCTestCase {
         }
     }
     
+    func testDefaultSellBuyTokensOnRopstenWithPrefilledToken() {
+        let daiToken: BraveWallet.ERCToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "")
+        let rpcController = TestEthJsonRpcController()
+        let store = SwapTokenStore(
+            keyringController: TestKeyringController(),
+            tokenRegistry: TestTokenRegistry(),
+            rpcController: rpcController,
+            assetRatioController: TestAssetRatioController(),
+            swapController: TestSwapController(),
+            transactionController: TestEthTxController(),
+            prefilledToken: daiToken
+        )
+        let ex = expectation(description: "default-sell-buy-token-on-ropsten")
+        XCTAssertNotNil(store.selectedFromToken)
+        XCTAssertNil(store.selectedToToken)
+        
+        rpcController.setNetwork(BraveWallet.RopstenChainId) { success in
+            XCTAssertTrue(success)
+            let testAccountInfo: BraveWallet.AccountInfo = .init()
+            store.prepare(with: testAccountInfo) {
+                defer { ex.fulfill() }
+                XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), daiToken.symbol.lowercased())
+                XCTAssertNotNil(store.selectedToToken)
+                XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), daiToken.symbol.lowercased())
+            }
+        }
+        waitForExpectations(timeout: 3) { error in
+            XCTAssertNil(error)
+        }
+    }
+    
     func testFetchPriceQuote() {
         let store = SwapTokenStore(
             keyringController: TestKeyringController(),
@@ -67,7 +126,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: TestEthJsonRpcController(),
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "fetch-price-quote")
         store.setUpTest()
@@ -88,7 +148,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: TestEthJsonRpcController(),
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "make-erc20-eip1559-swap-transaction")
         store.setUpTest()
@@ -112,7 +173,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: rpcController,
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "make-erc20-swap-transaction")
         store.setUpTest()
@@ -139,7 +201,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: TestEthJsonRpcController(),
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "make-eth-swap-eip1559-transaction")
         store.setUpTest()
@@ -163,7 +226,8 @@ class SendSwapStoreTests: XCTestCase {
             rpcController: rpcController,
             assetRatioController: TestAssetRatioController(),
             swapController: TestSwapController(),
-            transactionController: TestEthTxController()
+            transactionController: TestEthTxController(),
+            prefilledToken: nil
         )
         let ex = expectation(description: "make-eth-swap-eip1559-transaction")
         store.setUpTest()

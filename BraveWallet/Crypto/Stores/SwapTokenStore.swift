@@ -113,6 +113,8 @@ public class SwapTokenStore: ObservableObject {
   }
   private var updatingPriceQuote = false
   private var timer: Timer?
+  private let batSymbol = "BAT"
+  private let daiSymbol = "DAI"
   
   enum SwapParamsBase {
     // calculating based on sell asset amount
@@ -140,7 +142,8 @@ public class SwapTokenStore: ObservableObject {
     rpcController: BraveWalletEthJsonRpcController,
     assetRatioController: BraveWalletAssetRatioController,
     swapController: BraveWalletSwapController,
-    transactionController: BraveWalletEthTxController
+    transactionController: BraveWalletEthTxController,
+    prefilledToken: BraveWallet.ERCToken?
   ) {
     self.keyringController = keyringController
     self.tokenRegistry = tokenRegistry
@@ -148,6 +151,7 @@ public class SwapTokenStore: ObservableObject {
     self.assetRatioController = assetRatioController
     self.swapController = swapController
     self.transactionController = transactionController
+    self.selectedFromToken = prefilledToken
     
     self.keyringController.add(self)
     self.rpcController.add(self)
@@ -561,9 +565,17 @@ public class SwapTokenStore: ObservableObject {
         }
       } else {
         if chainId == BraveWallet.MainnetChainId {
-          selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == "BAT" })
+          if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == batSymbol.uppercased() {
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != batSymbol.uppercased() })
+          } else {
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == batSymbol.uppercased() })
+          }
         } else if chainId == BraveWallet.RopstenChainId {
-          selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == "DAI" })
+          if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == daiSymbol.uppercased() {
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != daiSymbol.uppercased() })
+          } else {
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == daiSymbol.uppercased() })
+          }
         }
         completion?()
       }

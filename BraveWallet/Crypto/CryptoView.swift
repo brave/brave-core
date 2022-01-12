@@ -111,24 +111,24 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     .background(
       Color.clear
         .sheet(item: $cryptoStore.buySendSwapDestination) { action in
-          switch action {
+          switch action.kind {
           case .buy:
             BuyTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              buyTokenStore: cryptoStore.openBuyTokenStore()
+              buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken)
             )
           case .send:
             SendTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              sendTokenStore: cryptoStore.openSendTokenStore()
+              sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken)
             )
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
               ethNetworkStore: cryptoStore.networkStore,
-              swapTokensStore: cryptoStore.openSwapTokenStore()
+              swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken)
             )
           }
         }

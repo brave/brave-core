@@ -66,20 +66,21 @@ public class CryptoStore: ObservableObject {
   }
   
   private var buyTokenStore: BuyTokenStore?
-  func openBuyTokenStore() -> BuyTokenStore {
+  func openBuyTokenStore(_ prefilledToken: BraveWallet.ERCToken?) -> BuyTokenStore {
     if let store = buyTokenStore {
       return store
     }
     let store = BuyTokenStore(
       tokenRegistry: tokenRegistry,
-      rpcController: rpcController
+      rpcController: rpcController,
+      prefilledToken: prefilledToken
     )
     buyTokenStore = store
     return store
   }
   
   private var sendTokenStore: SendTokenStore?
-  func openSendTokenStore() -> SendTokenStore {
+  func openSendTokenStore(_ prefilledToken: BraveWallet.ERCToken?) -> SendTokenStore {
     if let store = sendTokenStore {
       return store
     }
@@ -88,14 +89,15 @@ public class CryptoStore: ObservableObject {
       rpcController: rpcController,
       walletService: walletService,
       transactionController: transactionController,
-      tokenRegistery: tokenRegistry
+      tokenRegistery: tokenRegistry,
+      prefilledToken: prefilledToken
     )
     sendTokenStore = store
     return store
   }
   
   private var swapTokenStore: SwapTokenStore?
-  func openSwapTokenStore() -> SwapTokenStore {
+  func openSwapTokenStore(_ prefilledToken: BraveWallet.ERCToken?) -> SwapTokenStore {
     if let store = swapTokenStore {
       return store
     }
@@ -105,7 +107,8 @@ public class CryptoStore: ObservableObject {
       rpcController: rpcController,
       assetRatioController: assetRatioController,
       swapController: swapController,
-      transactionController: transactionController
+      transactionController: transactionController,
+      prefilledToken: prefilledToken
     )
     swapTokenStore = store
     return store
@@ -121,6 +124,7 @@ public class CryptoStore: ObservableObject {
       keyringController: keyringController,
       rpcController: rpcController,
       txController: transactionController,
+      tokenRegistry: tokenRegistry,
       token: token
     )
     assetDetailStore = store

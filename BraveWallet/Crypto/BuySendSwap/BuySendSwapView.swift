@@ -8,17 +8,19 @@ import struct Shared.Strings
 
 struct BuySendSwapView: View {
   var action: (BuySendSwapDestination) -> Void
-  
+  var destinations = [BuySendSwapDestination(kind: .buy),
+                      BuySendSwapDestination(kind: .send),
+                      BuySendSwapDestination(kind: .swap)]
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      ForEach(BuySendSwapDestination.allCases, id: \.self) { action in
-        Button(action: { self.action(action) }) {
+      ForEach(destinations, id: \.self) { destination in
+        Button(action: { self.action(destination) }) {
           VStack(alignment: .leading, spacing: 3) {
-            Text(action.localizedTitle)
+            Text(destination.kind.localizedTitle)
               .foregroundColor(Color(.bravePrimary))
               .font(.headline)
               .multilineTextAlignment(.leading)
-            Text(action.localizedDescription)
+            Text(destination.kind.localizedDescription)
               .foregroundColor(Color(.braveLabel))
               .font(.footnote)
               .multilineTextAlignment(.leading)
@@ -26,7 +28,7 @@ struct BuySendSwapView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding([.leading, .trailing], 20)
         }
-        if action != BuySendSwapDestination.allCases.last {
+        if destination != destinations.last {
           Divider()
             .padding(.leading, 20)
         }
