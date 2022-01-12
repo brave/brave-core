@@ -7,7 +7,9 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -33,6 +35,8 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     private EditText passwordEdittext;
     private EditText retypePasswordEdittext;
     private CheckBox showRecoveryPhraseCheckbox;
+    private CheckBox restoreLegacyWalletCheckbox;
+    private boolean isLegacyWalletRestoreEnable;
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
@@ -56,6 +60,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         passwordEdittext = view.findViewById(R.id.restore_wallet_password);
         retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
         showRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
+        restoreLegacyWalletCheckbox = view.findViewById(R.id.restore_legacy_wallet_checkbox);
 
         ImageView restoreWalletCopyImage = view.findViewById(R.id.restore_wallet_copy_image);
         assert getActivity() != null;
@@ -71,6 +76,30 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                         PasswordTransformationMethod.getInstance());
             }
         });
+
+        recoveryPhraseText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String recoveryPhrase = charSequence.toString().trim();
+
+                // validate recoveryPhrase contains only string. not JSON and length is 24
+                if (recoveryPhrase.matches("[a-zA-Z\\s]+")
+                        && recoveryPhrase.split("\\s+").length == 24) {
+                    restoreLegacyWalletCheckbox.setVisibility(View.VISIBLE);
+                } else {
+                    restoreLegacyWalletCheckbox.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        restoreLegacyWalletCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> { isLegacyWalletRestoreEnable = isChecked; });
 
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(v -> {
@@ -101,7 +130,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             KeyringService keyringService = getKeyringService();
             assert keyringService != null;
             keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                    passwordInput, false, result -> {
+                    passwordInput, isLegacyWalletRestoreEnable, result -> {
                         if (result) {
                             Utils.hideKeyboard(getActivity());
                             onNextPage.gotoNextPage(true);
@@ -125,5 +154,6 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         passwordEdittext.getText().clear();
         retypePasswordEdittext.getText().clear();
         showRecoveryPhraseCheckbox.setChecked(false);
+        restoreLegacyWalletCheckbox.setChecked(false);
     }
 }
