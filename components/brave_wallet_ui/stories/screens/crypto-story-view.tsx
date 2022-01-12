@@ -349,6 +349,7 @@ const CryptoStoryView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
+          selectedNetwork={selectedNetwork}
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}

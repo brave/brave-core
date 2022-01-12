@@ -365,6 +365,7 @@ const CryptoView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
+          selectedNetwork={selectedNetwork}
           onClose={onCloseAddModal}
           onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
