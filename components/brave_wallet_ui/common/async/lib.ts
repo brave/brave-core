@@ -186,7 +186,7 @@ export function refreshPrices () {
       return
     }
 
-    const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts).map(async (token) => {
+    const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts, userVisibleTokensInfo).map(async (token) => {
       const emptyPrice = {
         fromAsset: token.token.symbol,
         toAsset: defaultFiatCurrency,
@@ -226,25 +226,32 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, selectedNetwork } } = getState()
+    const { wallet: { accounts, defaultCurrencies, selectedNetwork, userVisibleTokensInfo } } = getState()
 
     // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
-    const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts).filter((t) => !t.token.isErc721 && t.balance > 0).map(async (token) => {
-      return {
-        contractAddress: token.token.contractAddress,
+    const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts, userVisibleTokensInfo)
+      .filter(({ token, balance }) => !token.isErc721 && balance > 0)
+      .map(async ({ token }) => ({
+        contractAddress: token.contractAddress,
         history: await assetRatioService.getPriceHistory(
-          GetTokenParam(selectedNetwork, token.token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+          GetTokenParam(selectedNetwork, token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
         )
-      }
-    }))
+      }))
+    )
 
     const priceHistoryWithBalances = accounts.map((account) => {
-      return (account.tokens.filter((t) => !t.asset.isErc721).map((token) => {
+      return userVisibleTokensInfo
+        .filter((token) => !token.isErc721)
+        .map((token) => {
+          const balance = token.contractAddress
+            ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
+            : account.balance
         return {
-          token: token,
-          history: priceHistory.find((t) => token.asset.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+          token,
+          balance: balance || '0',
+          history: priceHistory.find((t) => token.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
         }
-      }))
+      })
     })
 
     dispatch(WalletActions.portfolioPriceHistoryUpdated(priceHistoryWithBalances))

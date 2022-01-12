@@ -50,7 +50,6 @@ import {
   WalletPanelState,
   WalletAccountType,
   BuySendSwapViewTypes,
-  AccountAssetOptionType,
   ToOrFromType,
   WalletOrigin
 } from '../constants/types'
@@ -107,7 +106,8 @@ function Container (props: Props) {
     activeOrigin,
     pendingTransactions,
     defaultCurrencies,
-    transactions
+    transactions,
+    userVisibleTokensInfo
   } = props.wallet
 
   const {
@@ -134,20 +134,20 @@ function Container (props: Props) {
 
   const {
     assetOptions,
-    userVisibleTokenOptions,
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
   } = useAssets(
     accounts,
     selectedAccount,
+    selectedNetwork,
     props.wallet.fullTokenList,
-    props.wallet.userVisibleTokensInfo,
+    userVisibleTokensInfo,
     transactionSpotPrices,
     getBuyAssets
   )
 
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(buyAssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
   const {
     exchangeRate,
@@ -215,11 +215,11 @@ function Container (props: Props) {
   }, [selectedAccount])
 
   const getSelectedAccountBalance = useBalance(selectedNetwork)
-  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset?.asset)
-  const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset?.asset)
-  const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset?.asset)
+  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
+  const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset)
+  const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, selectedNetwork, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -257,7 +257,7 @@ function Container (props: Props) {
     setShowSelectAsset(false)
   }
 
-  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
+  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
     } else if (selectedPanel === 'swap') {
@@ -611,7 +611,7 @@ function Container (props: Props) {
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokenOptions}
+            visibleTokens={userVisibleTokensInfo}
             refreshGasEstimates={props.walletActions.refreshGasEstimates}
             getERC20Allowance={getERC20Allowance}
             updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
@@ -694,7 +694,7 @@ function Container (props: Props) {
   }
 
   if (showSelectAsset) {
-    let assets: AccountAssetOptionType[]
+    let assets: BraveWallet.BlockchainToken[]
     if (selectedPanel === 'buy') {
       assets = buyAssetOptions
     } else if (selectedPanel === 'send') {
@@ -911,7 +911,7 @@ function Container (props: Props) {
             selectedNetwork={selectedNetwork}
             transaction={selectedTransaction}
             transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokenOptions}
+            visibleTokens={userVisibleTokensInfo}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -934,7 +934,7 @@ function Container (props: Props) {
                 onSelectTransaction={onSelectTransaction}
                 selectedNetwork={selectedNetwork}
                 selectedAccount={selectedAccount}
-                visibleTokens={userVisibleTokenOptions}
+                visibleTokens={userVisibleTokensInfo}
                 transactionSpotPrices={transactionSpotPrices}
                 transactions={transactions}
               />

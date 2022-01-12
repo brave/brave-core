@@ -453,8 +453,8 @@ export const fetchSwapQuoteFactory = (
     takerAddress: accountAddress,
     sellAmount: fromAssetAmount || '',
     buyAmount: toAssetAmount || '',
-    buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
-    sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
+    buyToken: toAsset.contractAddress || toAsset.symbol,
+    sellToken: fromAsset.contractAddress || fromAsset.symbol,
     slippagePercentage: slippageTolerance.slippage / 100,
     gasPrice: ''
   }

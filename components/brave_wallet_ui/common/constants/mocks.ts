@@ -65,9 +65,8 @@ export const mockAccount: WalletAccountType = {
   name: 'mockAccountName',
   address: 'mockAddress',
   balance: '123456',
-  asset: 'mockAsset', // FIXME: This is probably a useless field
   accountType: 'Primary',
-  tokens: []
+  tokenBalanceRegistry: {}
 }
 
 export const mockAssetPrices: BraveWallet.AssetPrice[] = [

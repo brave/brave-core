@@ -5,40 +5,50 @@ import { mockAccount } from '../common/constants/mocks'
 
 describe('Check token param', () => {
   test('Value should return contract address', () => {
-    expect(GetTokenParam(mockNetworks[0], AccountAssetOptions[1].asset)).toEqual('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
+    expect(GetTokenParam(mockNetworks[0], AccountAssetOptions[1])).toEqual('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
   })
   test('Value should return symbol', () => {
-    expect(GetTokenParam(mockNetworks[1], AccountAssetOptions[1].asset)).toEqual('bat')
+    expect(GetTokenParam(mockNetworks[1], AccountAssetOptions[1])).toEqual('bat')
   })
 })
 
+const mockUserVisibleTokenOptions = [
+  AccountAssetOptions[0],
+  AccountAssetOptions[1]
+]
 const mockAccounts = [
   {
     ...mockAccount,
-    tokens: [{ ...AccountAssetOptions[0], assetBalance: '0x350082652bcfb2e' }, AccountAssetOptions[1]]
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '238699740940532526',
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+    }
   },
   {
     ...mockAccount,
-    tokens: [{ ...AccountAssetOptions[0], assetBalance: '0x11e40b7737cd000' }, AccountAssetOptions[1]]
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '80573000000000000',
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+    }
   }
 ]
 
 const expectedResult = [
   {
-    balance: 0.31930000000000003,
-    token: AccountAssetOptions[0].asset
+    balance: 319272740940532500,
+    token: AccountAssetOptions[0]
   },
   {
     balance: 0,
-    token: AccountAssetOptions[1].asset
+    token: AccountAssetOptions[1]
   }
 ]
 
 describe('Check Flattened Account Balances', () => {
   test('Value should return an Empty Array', () => {
-    expect(GetFlattenedAccountBalances([])).toEqual([])
+    expect(GetFlattenedAccountBalances([], mockUserVisibleTokenOptions)).toEqual([])
   })
   test('Value should return a Flattened Account Balance List', () => {
-    expect(GetFlattenedAccountBalances(mockAccounts)).toEqual(expectedResult)
+    expect(GetFlattenedAccountBalances(mockAccounts, mockUserVisibleTokenOptions)).toEqual(expectedResult)
   })
 })

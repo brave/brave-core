@@ -2,7 +2,7 @@ import * as React from 'react'
 import Fuse from 'fuse.js'
 
 import SelectAssetItem from '../select-asset-item'
-import { AccountAssetOptionType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { SearchBar } from '../../shared'
 import Header from '../select-header'
 import { getLocale } from '../../../../common/locale'
@@ -15,9 +15,9 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  assets: AccountAssetOptionType[]
+  assets: BraveWallet.BlockchainToken[]
   onAddAsset: () => void
-  onSelectAsset: (asset: AccountAssetOptionType) => () => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken) => () => void
   onBack: () => void
 }
 
@@ -41,19 +41,19 @@ function SelectAsset (props: Props) {
     ]
   }), [assets])
 
-  const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(assets)
+  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(assets)
 
   const filterAssetList = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
       setFilteredAssetList(assets)
     } else {
-      const filteredList = fuse.search(search).map((result: Fuse.FuseResult<AccountAssetOptionType>) => result.item)
+      const filteredList = fuse.search(search).map((result: Fuse.FuseResult<BraveWallet.BlockchainToken>) => result.item)
       setFilteredAssetList(filteredList)
     }
   }, [fuse, assets])
 
-  const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
+  const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.isErc721), [filteredAssetList])
 
   return (
     <SelectWrapper>
@@ -67,9 +67,9 @@ function SelectAsset (props: Props) {
       <SelectScrollSearchContainer>
         {
           // Temp filtering out erc721 tokens, sending will be handled in a different PR
-          filteredAssetList.filter((token) => !token.asset.isErc721).map((asset: AccountAssetOptionType) =>
+          filteredAssetList.filter((token) => !token.isErc721).map((asset: BraveWallet.BlockchainToken) =>
             <SelectAssetItem
-              key={asset.asset.contractAddress}
+              key={asset.contractAddress}
               asset={asset}
               onSelectAsset={onSelectAsset(asset)}
             />
@@ -80,9 +80,9 @@ function SelectAsset (props: Props) {
             <DivderTextWrapper>
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
             </DivderTextWrapper>
-            {erc271Tokens.map((asset: AccountAssetOptionType) =>
+            {erc271Tokens.map((asset: BraveWallet.BlockchainToken) =>
               <SelectAssetItem
-                key={asset.asset.contractAddress}
+                key={asset.contractAddress}
                 asset={asset}
                 onSelectAsset={onSelectAsset(asset)}
               />

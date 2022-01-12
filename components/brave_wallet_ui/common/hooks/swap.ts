@@ -8,7 +8,6 @@ import { SimpleActionCreator } from 'redux-act'
 import BigNumber from 'bignumber.js'
 
 import {
-  AccountAssetOptionType,
   BraveWallet,
   ExpirationPresetObjectType,
   OrderTypes,
@@ -32,7 +31,7 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 export default function useSwap (
   selectedAccount: WalletAccountType,
   selectedNetwork: BraveWallet.EthereumChain,
-  assetOptions: AccountAssetOptionType[],
+  assetOptions: BraveWallet.BlockchainToken[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
@@ -49,14 +48,14 @@ export default function useSwap (
 
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
-  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(swapAssetOptions[0])
+  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
   const [toAmount, setToAmount] = React.useState('')
-  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(swapAssetOptions[1])
-  const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(swapAssetOptions)
+  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[1])
+  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapAssetOptions)
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -67,7 +66,7 @@ export default function useSwap (
   }, [swapAssetOptions])
 
   React.useEffect(() => {
-    if (!fromAsset.asset.isErc20) {
+    if (!fromAsset.isErc20) {
       setAllowance(undefined)
       return
     }
@@ -79,13 +78,13 @@ export default function useSwap (
 
     const { allowanceTarget } = quote
 
-    getERC20Allowance(fromAsset.asset.contractAddress, selectedAccount.address, allowanceTarget)
+    getERC20Allowance(fromAsset.contractAddress, selectedAccount.address, allowanceTarget)
       .then(value => setAllowance(value))
       .catch(e => console.log(e))
   }, [fromAsset, quote, selectedAccount])
 
   const getBalance = useBalance(selectedNetwork)
-  const fromAssetBalance = getBalance(selectedAccount, fromAsset?.asset)
+  const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const ethBalance = getBalance(selectedAccount)
 
   const feesBN = React.useMemo(() => {
@@ -102,7 +101,7 @@ export default function useSwap (
   }, [quote])
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
-    const fromAmountWei = toWei(fromAmount, fromAsset.asset.decimals)
+    const fromAmountWei = toWei(fromAmount, fromAsset.decimals)
 
     const amountBN = new BigNumber(fromAmountWei)
     const balanceBN = new BigNumber(fromAssetBalance)
@@ -116,7 +115,7 @@ export default function useSwap (
       return 'insufficientEthBalance'
     }
 
-    if (fromAsset.asset.symbol === selectedNetwork.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
+    if (fromAsset.symbol === selectedNetwork.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
       return 'insufficientEthBalance'
     }
 
@@ -156,8 +155,8 @@ export default function useSwap (
 
     const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
 
-    setFromAmount(formatInputValue(sellAmount, fromAsset.asset.decimals))
-    setToAmount(formatInputValue(buyAmount, toAsset.asset.decimals))
+    setFromAmount(formatInputValue(sellAmount, fromAsset.decimals))
+    setToAmount(formatInputValue(buyAmount, toAsset.decimals))
 
     /**
      * Price computation block
@@ -201,8 +200,8 @@ export default function useSwap (
   const onSwapParamsChange = React.useCallback((
     overrides: {
       toOrFrom: ToOrFromType
-      fromAsset?: AccountAssetOptionType
-      toAsset?: AccountAssetOptionType
+      fromAsset?: BraveWallet.BlockchainToken
+      toAsset?: BraveWallet.BlockchainToken
       amount?: string
       slippageTolerance?: SlippagePresetObjectType
     },
@@ -243,7 +242,7 @@ export default function useSwap (
     if (overrides.toOrFrom === 'from') {
       fromAmountWei = toWei(
         overrides.amount ?? state.fromAmount,
-        fromAssetNext.asset.decimals
+        fromAssetNext.decimals
       )
     }
 
@@ -266,12 +265,12 @@ export default function useSwap (
       if (overrides.toAsset === undefined) {
         toAmountWei = toWei(
           overrides.amount ?? state.toAmount,
-          toAssetNext.asset.decimals
+          toAssetNext.decimals
         )
       } else {
         fromAmountWei = toWei(
           state.fromAmount,
-          fromAssetNext.asset.decimals
+          fromAssetNext.decimals
         )
       }
     }
@@ -409,12 +408,12 @@ export default function useSwap (
 
     if (swapValidationError === 'insufficientAllowance' && allowance) {
       const allowanceHex = !fromAssetBalance
-        ? toWeiHex(fromAmount, fromAsset.asset.decimals)
+        ? toWeiHex(fromAmount, fromAsset.decimals)
         : toHex(fromAssetBalance)
 
       approveERC20Allowance({
         from: selectedAccount.address,
-        contractAddress: fromAsset.asset.contractAddress,
+        contractAddress: fromAsset.contractAddress,
         spenderAddress: quote.allowanceTarget,
         allowance: allowanceHex
       })
@@ -433,11 +432,11 @@ export default function useSwap (
     isLoading ||
     quote === undefined ||
     (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
-    toWei(toAmount, toAsset.asset.decimals) === '0' ||
-    toWei(fromAmount, fromAsset.asset.decimals) === '0'
+    toWei(toAmount, toAsset.decimals) === '0' ||
+    toWei(fromAmount, fromAsset.decimals) === '0'
   ), [toAmount, fromAmount, toAsset, fromAsset, quote, swapValidationError, isLoading])
 
-  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -466,7 +465,7 @@ export default function useSwap (
     }
   }
 
-  const onFilterAssetList = (asset: AccountAssetOptionType) => {
+  const onFilterAssetList = (asset: BraveWallet.BlockchainToken) => {
     const newList = swapAssetOptions.filter((assets) => assets !== asset)
     setFilteredAssetList(newList)
   }

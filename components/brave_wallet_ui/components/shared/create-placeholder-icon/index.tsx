@@ -57,7 +57,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         marginLeft={marginLeft ?? 0}
         marginRight={marginRight ?? 0}
       >
-        <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.asset.logo : selectedAsset?.logo} />
+        <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.logo : selectedAsset?.logo} />
       </IconWrapper>
     )
   }

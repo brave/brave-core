@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AccountAssetOptionType,
+  BraveWallet,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -55,7 +55,7 @@ export interface Props {
   autoFocus?: boolean
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
-  selectedAsset?: AccountAssetOptionType
+  selectedAsset?: BraveWallet.BlockchainToken
   selectedAssetInputAmount?: string
   addressError?: string
   addressWarning?: string
@@ -157,9 +157,9 @@ function SwapInputComponent (props: Props) {
         return getLocale('braveWalletBuy')
       case 'exchange':
         if (orderType === 'market') {
-          return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.symbol}`
         } else {
-          return `${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.symbol}`
         }
       case 'selector':
         if (orderType === 'market') {
@@ -220,7 +220,7 @@ function SwapInputComponent (props: Props) {
 
   const formattedAssetBalance = selectedAssetBalance
     ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(
-        formatBalance(selectedAssetBalance, selectedAsset?.asset.decimals ?? 18)
+        formatBalance(selectedAssetBalance, selectedAsset?.decimals ?? 18)
       )
     : ''
 
@@ -228,7 +228,7 @@ function SwapInputComponent (props: Props) {
     <BubbleContainer>
       {componentType !== 'selector' &&
         <>
-          {!selectedAsset?.asset.isErc721 &&
+          {!selectedAsset?.isErc721 &&
             <Row>
               <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
 
@@ -251,7 +251,7 @@ function SwapInputComponent (props: Props) {
             {componentType === 'buyAmount' &&
               <AssetTicker>{CurrencySymbols[defaultCurrencies?.fiat ?? 'USD']}</AssetTicker>
             }
-            {!selectedAsset?.asset.isErc721 &&
+            {!selectedAsset?.isErc721 &&
               <Input
                 componentType={componentType}
                 type={componentType === 'toAddress' ? 'text' : 'number'}
@@ -274,16 +274,16 @@ function SwapInputComponent (props: Props) {
               </RefreshButton>
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
-              <AssetButton isERC721={selectedAsset?.asset.isErc721} onClick={onShowSelection}>
+              <AssetButton isERC721={selectedAsset?.isErc721} onClick={onShowSelection}>
                 <ButtonLeftSide>
-                  <AssetIconWithPlaceholder selectedAsset={selectedAsset?.asset} />
-                  <AssetTicker>{selectedAsset?.asset.symbol} {selectedAsset?.asset.isErc721 ? hexToNumber(selectedAsset?.asset.tokenId ?? '') : ''}</AssetTicker>
+                  <AssetIconWithPlaceholder selectedAsset={selectedAsset} />
+                  <AssetTicker>{selectedAsset?.symbol} {selectedAsset?.isErc721 ? hexToNumber(selectedAsset?.tokenId ?? '') : ''}</AssetTicker>
                 </ButtonLeftSide>
                 <CaratDownIcon />
               </AssetButton>
             }
           </Row>
-          {componentType === 'fromAmount' && !selectedAsset?.asset.isErc721 &&
+          {componentType === 'fromAmount' && !selectedAsset?.isErc721 &&
             <PresetRow>
               {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton

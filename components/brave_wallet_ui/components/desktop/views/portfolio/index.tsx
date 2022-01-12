@@ -6,7 +6,7 @@ import {
   AccountTransactions,
   BraveWallet,
   WalletAccountType,
-  AccountAssetOptionType,
+  UserAssetInfoType,
   DefaultCurrencies,
   AddAccountNavTypes
 } from '../../../../constants/types'
@@ -85,7 +85,7 @@ export interface Props {
   addUserAssetError: boolean
   selectedNetwork: BraveWallet.EthereumChain
   networkList: BraveWallet.EthereumChain[]
-  userAssetList: AccountAssetOptionType[]
+  userAssetList: UserAssetInfoType[]
   accounts: WalletAccountType[]
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
@@ -148,14 +148,14 @@ const Portfolio = (props: Props) => {
     foundTokenInfoByContractAddress
   } = props
 
-  const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
+  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
-  const getAccountBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(selectedNetwork)
 
   const toggleShowNetworkDropdown = () => {
     setShowNetworkDropdown(!showNetworkDropdown)
@@ -350,7 +350,7 @@ const Portfolio = (props: Props) => {
               assetDecimals={selectedAsset.decimals}
               name={account.name}
               address={account.address}
-              assetBalance={getAccountBalance(account, selectedAsset)}
+              assetBalance={getBalance(account, selectedAsset)}
               selectedNetwork={selectedNetwork}
             />
           )}

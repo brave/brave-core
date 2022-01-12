@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { AccountAssetOptionType } from '../../../constants/types'
+
+import { BraveWallet } from '../../../constants/types'
 import { withPlaceholderIcon } from '../../shared'
 import { hexToNumber } from '../../../utils/format-balances'
 
@@ -13,7 +14,7 @@ import {
 } from './style'
 
 export interface Props {
-  asset: AccountAssetOptionType
+  asset: BraveWallet.BlockchainToken
   onSelectAsset: () => void
 }
 
@@ -26,10 +27,10 @@ function SelectAssetItem (props: Props) {
 
   return (
     <StyledWrapper onClick={onSelectAsset}>
-      <AssetIconWithPlaceholder selectedAsset={asset.asset} />
+      <AssetIconWithPlaceholder selectedAsset={asset} />
       <AssetAndBalance>
-        <AssetName>{asset.asset.name} {asset.asset.isErc721 ? hexToNumber(asset.asset.tokenId ?? '') : ''}</AssetName>
-        <AssetBalance>{asset.asset.symbol}</AssetBalance>
+        <AssetName>{asset.name} {asset.isErc721 ? hexToNumber(asset.tokenId ?? '') : ''}</AssetName>
+        <AssetBalance>{asset.symbol}</AssetBalance>
       </AssetAndBalance>
     </StyledWrapper>
   )

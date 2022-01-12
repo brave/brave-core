@@ -28,7 +28,6 @@ import {
   WalletAccountType,
   PanelTypes,
   AppsListType,
-  AccountAssetOptionType,
   BuySendSwapViewTypes
 } from '../constants/types'
 import {
@@ -64,28 +63,25 @@ const accounts: WalletAccountType[] = [
     id: '1',
     name: 'Account 1',
     address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-    balance: '0.31178',
-    asset: 'eth',
+    balance: '311780000000000000',
     accountType: 'Primary',
-    tokens: []
+    tokenBalanceRegistry: {}
   },
   {
     id: '2',
     name: 'Account 2',
     address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
-    balance: '0.31178',
-    asset: 'eth',
+    balance: '311780000000000000',
     accountType: 'Primary',
-    tokens: []
+    tokenBalanceRegistry: {}
   },
   {
     id: '3',
     name: 'Account 3',
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    balance: '0.31178',
-    asset: 'eth',
+    balance: '311780000000000000',
     accountType: 'Primary',
-    tokens: []
+    tokenBalanceRegistry: {}
   }
 ]
 
@@ -323,9 +319,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       name: 'Account 1',
       address: '1',
       balance: '0.31178',
-      asset: 'eth',
       accountType: 'Primary',
-      tokens: []
+      tokenBalanceRegistry: {}
     }
   ]
   const transactionList = {
@@ -345,8 +340,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.EthereumChain>(mockNetworks[0])
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
-  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
@@ -358,7 +353,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSubmitBuy = () => {
-    alert(`Buy ${selectedWyreAsset.asset.symbol} asset`)
+    alert(`Buy ${selectedWyreAsset.symbol} asset`)
   }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
@@ -389,7 +384,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setShowSelectAsset(false)
   }
 
-  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
+  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
     } else {

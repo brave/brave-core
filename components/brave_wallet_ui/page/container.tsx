@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -16,25 +16,18 @@ import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
 
-import { WalletWidgetStandIn, OnboardingWrapper } from '../stories/style'
+import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
+import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import {
-  // SideNav,
-  WalletPageLayout,
-  WalletSubViewLayout,
-  CryptoView,
-  LockScreen,
-  OnboardingRestore
-} from '../components/desktop'
-import {
+  UserAssetInfoType,
   BraveWallet,
-  WalletState,
+  BuySendSwapTypes,
   PageState,
-  WalletPageState,
-  AccountAssetOptionType,
-  WalletAccountType,
   UpdateAccountNamePayloadType,
+  WalletAccountType,
+  WalletPageState,
   WalletRoutes,
-  BuySendSwapTypes
+  WalletState
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -52,24 +45,16 @@ import {
   findENSAddress,
   findUnstoppableDomainAddress,
   getBalance,
+  getBlockchainTokenInfo,
+  getBuyAssets,
   getChecksumEthAddress,
   getERC20Allowance,
-  onConnectHardwareWallet,
   isStrongPassword,
-  getBlockchainTokenInfo,
-  getBuyAssets
+  onConnectHardwareWallet
 } from '../common/async/lib'
 
 // Hooks
-import {
-  useSwap,
-  useAssets,
-  useBalance,
-  useSend,
-  usePreset,
-  useTokenInfo,
-  usePricing
-} from '../common/hooks'
+import { useAssets, useBalance, usePreset, usePricing, useSend, useSwap, useTokenInfo } from '../common/hooks'
 
 type Props = {
   wallet: WalletState
@@ -100,7 +85,9 @@ function Container (props: Props) {
     addUserAssetError,
     defaultWallet,
     isMetaMaskInstalled,
-    defaultCurrencies
+    defaultCurrencies,
+    fullTokenList,
+    userVisibleTokensInfo
   } = props.wallet
 
   // Page Props
@@ -130,16 +117,15 @@ function Container (props: Props) {
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const {
-    tokenOptions,
     assetOptions,
-    userVisibleTokenOptions,
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
     accounts,
     selectedAccount,
-    props.wallet.fullTokenList,
-    props.wallet.userVisibleTokensInfo,
+    selectedNetwork,
+    fullTokenList,
+    userVisibleTokensInfo,
     transactionSpotPrices,
     getBuyAssets
   )
@@ -147,7 +133,7 @@ function Container (props: Props) {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokenOptions, tokenOptions, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
 
   const {
     exchangeRate,
@@ -210,11 +196,11 @@ function Container (props: Props) {
 
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
   const getAccountBalance = useBalance(selectedNetwork)
-  const sendAssetBalance = getAccountBalance(selectedAccount, selectedSendAsset?.asset)
-  const fromAssetBalance = getAccountBalance(selectedAccount, fromAsset?.asset)
-  const toAssetBalance = getAccountBalance(selectedAccount, toAsset?.asset)
+  const sendAssetBalance = getAccountBalance(selectedAccount, selectedSendAsset)
+  const fromAssetBalance = getAccountBalance(selectedAccount, fromAsset)
+  const toAssetBalance = getAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, selectedNetwork, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -308,11 +294,11 @@ function Container (props: Props) {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    return userVisibleTokenOptions.map((asset) => ({
+    return userVisibleTokensInfo.map((asset) => ({
       asset: asset,
       assetBalance: fullAssetBalance(asset)
-    }) as AccountAssetOptionType)
-  }, [userVisibleTokenOptions, fullAssetBalance])
+    }) as UserAssetInfoType)
+  }, [userVisibleTokensInfo, fullAssetBalance])
 
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
@@ -349,13 +335,12 @@ function Container (props: Props) {
   }
 
   const formattedPriceHistory = React.useMemo(() => {
-    const formatted = selectedAssetPriceHistory.map((obj) => {
+    return selectedAssetPriceHistory.map((obj) => {
       return {
         date: mojoTimeDeltaToJSDate(obj.date),
         close: Number(obj.price)
       }
     })
-    return formatted
   }, [selectedAssetPriceHistory])
 
   const onShowAddModal = () => {
@@ -373,7 +358,7 @@ function Container (props: Props) {
     }
   }
 
-  const onSubmitBuy = (asset: AccountAssetOptionType) => {
+  const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
     GetBuyOrFaucetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
       .then(url => window.open(url, '_blank'))
       .catch(e => console.error(e))
@@ -480,7 +465,7 @@ function Container (props: Props) {
 
   const onShowVisibleAssetsModal = (showModal: boolean) => {
     if (showModal) {
-      if (tokenOptions.length === 0) {
+      if (fullTokenList.length === 0) {
         fetchFullTokenList()
       }
       history.push(`${WalletRoutes.AddAssetModal}`)
@@ -492,7 +477,7 @@ function Container (props: Props) {
 
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
-    const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
+    const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
       return `${WalletRoutes.Portfolio}/${token.symbol}`
     })
     // Creates a list of Accepted Account Routes
@@ -532,7 +517,7 @@ function Container (props: Props) {
     hasInitialized,
     setupStillInProgress,
     selectedAsset,
-    userVisibleTokenOptions,
+    userVisibleTokensInfo,
     accounts
   ])
 
@@ -618,7 +603,7 @@ function Container (props: Props) {
                 selectedPortfolioTimeline={selectedPortfolioTimeline}
                 transactions={transactions}
                 userAssetList={userAssetList}
-                fullAssetList={tokenOptions}
+                fullAssetList={fullTokenList}
                 onConnectHardwareWallet={onConnectHardwareWallet}
                 onCreateAccount={onCreateAccount}
                 onImportAccount={onImportAccount}
@@ -639,7 +624,7 @@ function Container (props: Props) {
                 hasImportError={importAccountError}
                 onAddHardwareAccounts={onAddHardwareAccounts}
                 transactionSpotPrices={transactionSpotPrices}
-                userVisibleTokensInfo={userVisibleTokenOptions}
+                userVisibleTokensInfo={userVisibleTokensInfo}
                 getBalance={getBalance}
                 onAddUserAsset={onAddUserAsset}
                 onSetUserAssetVisible={onSetUserAssetVisible}

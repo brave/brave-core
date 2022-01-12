@@ -41,7 +41,7 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
+import { useBalance, useExplorer, usePricing } from '../../../common/hooks'
 
 import {
   WalletAccountType,
@@ -51,8 +51,7 @@ import {
   SwapSupportedChains,
   WalletOrigin,
   DefaultCurrencies,
-  WalletRoutes,
-  AccountAssetOptionType
+  WalletRoutes
 } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
@@ -64,7 +63,7 @@ export interface Props {
   isConnected: boolean
   activeOrigin: string
   defaultCurrencies: DefaultCurrencies
-  userAssetList: AccountAssetOptionType[]
+  userAssetList: BraveWallet.BlockchainToken[]
   navAction: (path: PanelTypes) => void
   onLockWallet: () => void
   onOpenSettings: () => void
@@ -85,6 +84,8 @@ const ConnectedPanel = (props: Props) => {
   } = props
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [isScrolled, setIsScrolled] = React.useState<boolean>(false)
+
+  const getBalance = useBalance(selectedNetwork)
 
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
 
@@ -215,10 +216,10 @@ const ConnectedPanel = (props: Props) => {
             <PortfolioAssetItem
               spotPrices={spotPrices}
               defaultCurrencies={defaultCurrencies}
-              action={onClickAsset(asset.asset.symbol)}
-              key={asset.asset.contractAddress}
-              assetBalance={asset.assetBalance}
-              token={asset.asset}
+              action={onClickAsset(asset.symbol)}
+              key={asset.contractAddress}
+              assetBalance={getBalance(selectedAccount, asset)}
+              token={asset}
               isPanel={true}
             />
           )}
