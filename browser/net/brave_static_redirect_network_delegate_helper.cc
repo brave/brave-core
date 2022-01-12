@@ -129,28 +129,28 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
 
   if (crlSet_pattern1.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets.brave.com");
+    replacements.SetHostStr("crlsets.bravesoftware.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
   if (crlSet_pattern2.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets.brave.com");
+    replacements.SetHostStr("crlsets.bravesoftware.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
   if (crlSet_pattern3.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets.brave.com");
+    replacements.SetHostStr("crlsets.bravesoftware.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
   if (crlSet_pattern4.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets.brave.com");
+    replacements.SetHostStr("crlsets.bravesoftware.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
