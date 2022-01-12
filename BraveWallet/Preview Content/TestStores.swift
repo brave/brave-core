@@ -59,7 +59,8 @@ extension BuyTokenStore {
   static var previewStore: BuyTokenStore {
     .init(
       tokenRegistry: TestTokenRegistry(),
-      rpcController: TestEthJsonRpcController()
+      rpcController: TestEthJsonRpcController(),
+      prefilledToken: .eth
     )
   }
 }
@@ -71,7 +72,8 @@ extension SendTokenStore {
       rpcController: TestEthJsonRpcController(),
       walletService: TestBraveWalletService(),
       transactionController: TestEthTxController(),
-      tokenRegistery: TestTokenRegistry()
+      tokenRegistery: TestTokenRegistry(),
+      prefilledToken: .eth
     )
   }
 }
@@ -83,6 +85,7 @@ extension AssetDetailStore {
       keyringController: TestKeyringController(),
       rpcController: TestEthJsonRpcController(),
       txController: TestEthTxController(),
+      tokenRegistry: TestTokenRegistry(),
       token: .eth
     )
   }
@@ -96,7 +99,8 @@ extension SwapTokenStore {
       rpcController: TestEthJsonRpcController(),
       assetRatioController: TestAssetRatioController(),
       swapController: TestSwapController(),
-      transactionController: TestEthTxController()
+      transactionController: TestEthTxController(),
+      prefilledToken: nil
     )
   }
 }

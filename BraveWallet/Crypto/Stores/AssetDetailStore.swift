@@ -37,6 +37,7 @@ class AssetDetailStore: ObservableObject {
   @Published private(set) var isLoadingAccountBalances: Bool = false
   @Published private(set) var accounts: [AccountAssetViewModel] = []
   @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
+  @Published private(set) var isBuySupported: Bool = true
   
   private(set) var assetPriceValue: Double = 0.0
   
@@ -44,6 +45,7 @@ class AssetDetailStore: ObservableObject {
   private let keyringController: BraveWalletKeyringController
   private let rpcController: BraveWalletEthJsonRpcController
   private let txController: BraveWalletEthTxController
+  private let tokenRegistry: BraveWalletERCTokenRegistry
   
   let token: BraveWallet.ERCToken
   
@@ -52,12 +54,14 @@ class AssetDetailStore: ObservableObject {
     keyringController: BraveWalletKeyringController,
     rpcController: BraveWalletEthJsonRpcController,
     txController: BraveWalletEthTxController,
+    tokenRegistry: BraveWalletERCTokenRegistry,
     token: BraveWallet.ERCToken
   ) {
     self.assetRatioController = assetRatioController
     self.keyringController = keyringController
     self.rpcController = rpcController
     self.txController = txController
+    self.tokenRegistry = tokenRegistry
     self.token = token
     
     self.keyringController.add(self)
@@ -79,6 +83,10 @@ class AssetDetailStore: ObservableObject {
   func update() {
     isLoadingPrice = true
     isLoadingChart = true
+    
+    tokenRegistry.buyTokens { [self] tokens in
+      isBuySupported = tokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
+    }
     
     keyringController.defaultKeyringInfo { [self] keyring in
       accounts = keyring.accountInfos.map {

@@ -143,13 +143,36 @@ struct AssetDetailHeaderView: View {
       Divider()
         .padding(.bottom)
       HStack {
-        Button(action: { buySendSwapDestination = .buy }) {
-          Text(Strings.Wallet.buy)
+        if assetDetailStore.isBuySupported {
+          Button(
+            action: {
+              buySendSwapDestination = BuySendSwapDestination(
+                kind: .buy,
+                initialToken: assetDetailStore.token
+              )
+            }
+          ) {
+            Text(Strings.Wallet.buy)
+          }
         }
-        Button(action: { buySendSwapDestination = .send }) {
+        Button(
+          action: {
+            buySendSwapDestination = BuySendSwapDestination(
+              kind: .send,
+              initialToken: assetDetailStore.token
+            )
+          }
+        ) {
           Text(Strings.Wallet.send)
         }
-        Button(action: { buySendSwapDestination = .swap }) {
+        Button(
+          action: {
+            buySendSwapDestination = BuySendSwapDestination(
+              kind: .swap,
+              initialToken: assetDetailStore.token
+            )
+          }
+        ) {
           Text(Strings.Wallet.swap)
         }
       }

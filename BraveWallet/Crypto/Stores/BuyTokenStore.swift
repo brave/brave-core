@@ -23,10 +23,12 @@ public class BuyTokenStore: ObservableObject {
   
   public init(
     tokenRegistry: BraveWalletERCTokenRegistry,
-    rpcController: BraveWalletEthJsonRpcController
+    rpcController: BraveWalletEthJsonRpcController,
+    prefilledToken: BraveWallet.ERCToken?
   ) {
     self.tokenRegistry = tokenRegistry
     self.rpcController = rpcController
+    self.selectedBuyToken = prefilledToken
   }
   
   func fetchBuyUrl(account: BraveWallet.AccountInfo, amount: String, completion: @escaping (_ url: String?) -> Void) {
