@@ -12,6 +12,7 @@
     android:layout_marginStart="0dp"
     android:paddingStart="@dimen/draggable_list_item_padding"
     android:paddingEnd="@dimen/draggable_list_item_padding"
+    android:animateLayoutChanges="true"
     style="@style/ListItemContainer">
 
     <LinearLayout

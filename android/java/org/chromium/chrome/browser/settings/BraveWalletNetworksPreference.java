@@ -14,7 +14,6 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.chrome.R;
@@ -23,9 +22,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.components.browser_ui.widget.TintedDrawable;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkListBaseAdapter.ItemClickListener,

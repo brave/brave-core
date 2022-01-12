@@ -12,8 +12,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityManager.AccessibilityStateChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

@@ -77,6 +77,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 for (EthereumChain chain : networks) {
                     if (chain.chainId.equals(mChainId)) {
                         fillControls(chain, view);
+                        break;
                     }
                 }
             });

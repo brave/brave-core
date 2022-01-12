@@ -593,7 +593,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -651,7 +651,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainRejected) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -677,7 +677,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -695,7 +695,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
 
   bool second_callback_is_called = false;
   bool second_expected = false;
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain2.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
                                      const std::string& chain_id, bool added) {
@@ -710,7 +710,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   // same chain, other origin
   bool third_callback_is_called = false;
   bool third_expected = false;
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://others.com"),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
                                      const std::string& chain_id, bool added) {
