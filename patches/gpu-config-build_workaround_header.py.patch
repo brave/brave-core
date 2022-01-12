@@ -1,0 +1,13 @@
+diff --git a/gpu/config/build_workaround_header.py b/gpu/config/build_workaround_header.py
+index b8558326ade09754ccafb3e080ee366164c13e5f..a30302e4d6e37650e2e581f1a0ce076eee9c1393 100755
+--- a/gpu/config/build_workaround_header.py
++++ b/gpu/config/build_workaround_header.py
+@@ -16,7 +16,7 @@ _LICENSE = """// Copyright 2018 The Chromium Authors. All rights reserved.
+ """
+ 
+ _DO_NOT_EDIT_WARNING = ("// This file is auto-generated from\n" +
+-  "//    " + __file__ + "\n" +
++  "//    gpu/config/build_workaround_header.py\n" +
+   "// DO NOT EDIT!\n\n")
+ 
+ def merge_files_into_workarounds(files):
