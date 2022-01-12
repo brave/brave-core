@@ -141,7 +141,7 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT" desc="Add account modal create account header title">Create <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_IMPORT_ACCOUNT" desc="Add account modal import account header title">Import <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TITLE" desc="Add account modal create account title">Select one of the following account types</message>
-  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ETHEREUM_DESCRIPTION" desc="Add account modal create account Ethereum description">Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ETHEREUM_DESCRIPTION" desc="Add account modal create account Ethereum description">Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">Supports SLP compatible assets on the Solana blockchain</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION" desc="Add account modal create account Filecoin description">Store FIL asset</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
