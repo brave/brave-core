@@ -170,7 +170,7 @@ provideStrings({
   braveWalletCreateAccountButton: 'Create account',
   braveWalletCreateAccountImportAccount: 'Import $1 account',
   braveWalletCreateAccountTitle: 'Select one of the following account types',
-  braveWalletCreateAccountEthereumDescription: 'Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
+  braveWalletCreateAccountEthereumDescription: 'Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription: 'Supports SLP compatible assets on the Solana blockchain',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
 

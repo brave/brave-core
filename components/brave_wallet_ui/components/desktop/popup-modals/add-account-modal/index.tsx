@@ -69,7 +69,7 @@ const AddAccountModal = (props: Props) => {
   const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
-  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
+  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(CreateAccountOptions()[0])
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
 
   const importError = React.useMemo(() => {
