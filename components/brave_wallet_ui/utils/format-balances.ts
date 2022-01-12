@@ -74,9 +74,9 @@ export const toHex = (value: string) => {
   return '0x' + numberValue.toString(16)
 }
 
-export const hexToNumber = (value: string) => {
+export const hexToNumber = (value: string, hideSymbol?: boolean) => {
   if (value) {
-    return '#' + parseInt(value, 16)
+    return hideSymbol ? parseInt(value, 16) : '#' + parseInt(value, 16)
   }
   return ''
 }

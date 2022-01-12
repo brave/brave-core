@@ -61,6 +61,7 @@ provideStrings({
   // Portfolio SubView
   braveWalletAccounts: 'Accounts',
   braveWalletAccount: 'Account',
+  braveWalletOwner: 'Owner',
   braveWalletTransactions: 'Transactions',
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
@@ -432,5 +433,10 @@ provideStrings({
   braveWalletTransactionStatusRejected: 'Rejected',
   braveWalletTransactionStatusSubmitted: 'Submitted',
   braveWalletTransactionStatusConfirmed: 'Confirmed',
-  braveWalletTransactionStatusError: 'Error'
+  braveWalletTransactionStatusError: 'Error',
+
+  // NFT Details Page
+  braveWalletNFTDetailBlockchain: 'Blockchain',
+  braveWalletNFTDetailTokenStandard: 'Token standard',
+  braveWalletNFTDetailTokenID: 'Token ID'
 })

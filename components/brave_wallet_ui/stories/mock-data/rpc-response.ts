@@ -27,6 +27,12 @@ export const mockRPCResponse: RPCResponseType[] = [
         name: 'Bitcoin',
         symbol: 'BTC',
         balance: 0.00269
+      },
+      {
+        id: '7',
+        name: 'AcclimatedMoonCats',
+        symbol: 'AMC',
+        balance: 1
       }
     ],
     transactions: [

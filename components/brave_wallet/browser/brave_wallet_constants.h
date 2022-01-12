@@ -110,6 +110,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBalance", IDS_BRAVE_WALLET_BALANCE},
     {"braveWalletAccounts", IDS_BRAVE_WALLET_ACCOUNTS},
     {"braveWalletAccount", IDS_BRAVE_WALLET_ACCOUNT},
+    {"braveWalletOwner", IDS_BRAVE_WALLET_OWNER},
     {"braveWalletTransactions", IDS_BRAVE_WALLET_TRANSACTIONS},
     {"braveWalletPrice", IDS_BRAVE_WALLET_PRICE},
     {"braveWalletBack", IDS_BRAVE_WALLET_BACK},
@@ -569,7 +570,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddSuggestedTokenTitle",
      IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE},
     {"braveWalletAddSuggestedTokenDescription",
-     IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION}};
+     IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION},
+    {"braveWalletNFTDetailBlockchain", IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN},
+    {"braveWalletNFTDetailTokenStandard",
+     IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD},
+    {"braveWalletNFTDetailTokenID", IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";
