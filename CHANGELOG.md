@@ -3,7 +3,7 @@
 ## [1.34](https://github.com/brave/brave-ios/releases/tag/v1.34)
 
 - Added support for initial set of Brave Widgets. ([#4329](https://github.com/brave/brave-ios/issues/4329))
-- Removed Canvas Fingerprinting protection. ([#4522](https://github.com/brave/brave-ios/issues/4522))
+- Removed older Canvas Fingerprinting protection implementation which was causing web compat issues. ([#4522](https://github.com/brave/brave-ios/issues/4522))
 - Implemented "Login & Passwords" feature for managing saved credentials. ([#4112](https://github.com/brave/brave-ios/issues/4112))
 - [Security] Fixed reader mode issue as reported on HackerOne by nishimunea. ([#4772](https://github.com/brave/brave-ios/issues/4772))
 - [Security] Fixed message token handling as reported on HackerOne by nishimunea. ([#4775](https://github.com/brave/brave-ios/issues/4775))
