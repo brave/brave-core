@@ -138,12 +138,11 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->browser_context = profile();
   request_info->ipfs_gateway_url = GetPublicGateway();
-  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
-      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
+  request_info->initiator_url =
+      GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = true;
-  request_info->tab_origin =
-      GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  request_info->tab_origin = GURL("https://cloudflare-ipfs.com/");
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());

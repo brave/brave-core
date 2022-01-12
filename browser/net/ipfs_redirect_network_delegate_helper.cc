@@ -67,8 +67,8 @@ int OnHeadersReceived_IPFSRedirectWork(
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
       !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host()) &&
-      // Do not redirect if the page is not ipfs/ipns
-      IsIPFSScheme(ctx->tab_origin)) {
+      // Do not redirect if the frame is not ipfs/ipns
+      IsIPFSScheme(ctx->initiator_url)) {
     GURL::Replacements replacements;
     replacements.SetPathStr(ipfs_path);
     GURL new_url = ctx->ipfs_gateway_url.ReplaceComponents(replacements);
