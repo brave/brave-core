@@ -214,7 +214,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGvt1) {
       "http://redirector.gvt1.com/edgedl/release2/"
       "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
   const GURL expected_url(
-      "https://redirector.brave.com/edgedl/release2/"
+      "https://redirector.bravesoftware.com/edgedl/release2/"
       "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -229,7 +229,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGoogleDl) {
       "http://dl.google.com/release2/"
       "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
   const GURL expected_url(
-      "https://redirector.brave.com/release2/"
+      "https://redirector.bravesoftware.com/release2/"
       "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);

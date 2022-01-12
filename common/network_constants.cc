@@ -19,7 +19,7 @@ const char kBraveReferralsActivityPath[] = "/promo/activity";
 
 const char kBraveSafeBrowsing2Proxy[] = "safebrowsing2.brave.com";
 const char kBraveSafeBrowsingSslProxy[] = "sb-ssl.brave.com";
-const char kBraveRedirectorProxy[] = "redirector.brave.com";
+const char kBraveRedirectorProxy[] = "redirector.bravesoftware.com";
 const char kBraveClients4Proxy[] = "clients4.brave.com";
 const char kBraveStaticProxy[] = "static1.brave.com";
 

@@ -70,7 +70,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
     "https://brave-core-ext.s3.brave.com/",
     "https://go-updater.brave.com/",
     "https://p3a.brave.com/",
-    "https://redirector.brave.com/",
+    "https://redirector.bravesoftware.com/",
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
     "https://static1.brave.com/",
