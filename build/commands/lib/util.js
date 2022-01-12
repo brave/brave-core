@@ -6,6 +6,7 @@ const fs = require('fs-extra')
 const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
+const assert = require('assert')
 
 const runGClient = (args, options = {}) => {
   if (config.gClientVerbose) args.push('--verbose')
@@ -578,12 +579,16 @@ const util = {
     ]
 
     if (config.use_goma) {
+      const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
+      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
+      options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
       const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
       if (gomaLoginInfo.status !== 0) {
         console.log('Login required for using Goma. This is only needed once')
         util.run('goma_auth', ['login'], options)
       }
       util.run('goma_ctl', ['ensure_start'], options)
+      util.run('goma_ctl', ['update_hook'], options)
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
@@ -754,6 +759,12 @@ const util = {
       }
     })
     return filelist
+  },
+
+  appendExeIfWin32: (input) => {
+    if (process.platform === 'win32')
+      input += '.exe'
+    return input
   }
 }
 

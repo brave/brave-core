@@ -631,6 +631,16 @@ Config.prototype.update = function (options) {
 
   if (options.use_goma) {
     this.use_goma = true
+    if (process.env.GOMA_DIR !== undefined) {
+      this.gomaDir = process.env.GOMA_DIR
+    } else {
+      const build_goma_dir = path.join(this.srcDir, 'build', 'goma')
+      if (fs.existsSync(build_goma_dir)) {
+        this.gomaDir = build_goma_dir
+      } else {
+        this.gomaDir = path.join(this.depotToolsDir, '.cipd_bin')
+      }
+    }
   } else {
     this.use_goma = false
   }
@@ -891,7 +901,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     }
 
     if (this.use_goma && this.gomaServerHost) {
-      env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
+      env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
       env.GOMA_SERVER_HOST = this.gomaServerHost
       // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
       // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)
