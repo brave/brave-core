@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 4ab8f6b60d02139c54fd67231c36c720ae306927..6ffe19fa5c63ccc10f91bc9cf2da8400c0355dc2 100644
+index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12007f38b6 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -79,6 +79,8 @@ if (enable_swiftshader) {
@@ -19,7 +19,15 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..6ffe19fa5c63ccc10f91bc9cf2da8400
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -280,6 +283,7 @@ copy("common_packaging_files") {
+@@ -189,6 +192,7 @@ strip_binary("strip_chrome_crashpad_handler") {
+ strip_binary("strip_chrome_sandbox") {
+   binary_input = "$root_out_dir/chrome_sandbox"
+   deps = [ "//sandbox/linux:chrome_sandbox" ]
++  binary_input = "$root_out_dir/brave_sandbox" symbol_output = "$root_out_dir/brave_sandbox.debug" stripped_binary_output = "$root_out_dir/brave_sandbox.stripped" deps += strip_chrome_sandbox_deps
+ }
+ 
+ strip_binary("strip_libEGL_shlib") {
+@@ -280,6 +284,7 @@ copy("common_packaging_files") {
    }
  
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
@@ -27,7 +35,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..6ffe19fa5c63ccc10f91bc9cf2da8400
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -378,6 +382,7 @@ group("installer_deps") {
+@@ -378,6 +383,7 @@ group("installer_deps") {
      "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -35,7 +43,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..6ffe19fa5c63ccc10f91bc9cf2da8400
    if (enable_nacl) {
      public_deps += [
        ":strip_nacl_helper",
-@@ -429,6 +434,9 @@ group("installer_deps") {
+@@ -429,6 +435,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -45,7 +53,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..6ffe19fa5c63ccc10f91bc9cf2da8400
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -592,3 +600,6 @@ linux_package("beta") {
+@@ -592,3 +601,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }
