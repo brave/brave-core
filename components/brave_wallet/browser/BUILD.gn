@@ -77,6 +77,8 @@ static_library("browser") {
     "rlp_decode.h",
     "rlp_encode.cc",
     "rlp_encode.h",
+    "solana_requests.cc",
+    "solana_requests.h",
     "swap_response_parser.cc",
     "swap_response_parser.h",
     "swap_service.cc",

@@ -12,6 +12,8 @@
 
 namespace brave_wallet {
 
+namespace eth {
+
 std::string web3_clientVersion() {
   return GetJsonRpcNoParams("web3_clientVersion");
 }
@@ -323,5 +325,7 @@ std::string eth_getLogs(const std::string& from_block_quantity_tag,
   base::Value dictionary = GetJsonRpcDictionary("eth_getLogs", &params);
   return GetJSON(dictionary);
 }
+
+}  // namespace eth
 
 }  // namespace brave_wallet
