@@ -27,6 +27,9 @@ namespace de_amp {
 namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;
+static const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
+static const char kFindCanonicalLinkPattern[] =
+    "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
 
 }  // namespace
 
@@ -196,9 +199,6 @@ void DeAmpURLLoader::ResumeReadingBodyFromNet() {
 bool FindCanonicalLinkIfAMP(std::string body, std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
-  const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
-  const char kFindCanonicalLinkPattern[] =
-      "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
   static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,
                                                             opt);
   static const base::NoDestructor<re2::RE2> kFindCanonicalLinkRegex(

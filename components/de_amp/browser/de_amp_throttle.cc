@@ -44,7 +44,6 @@ void DeAmpThrottle::WillProcessResponse(
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
   VLOG(2) << "deamp throttling: " << response_url;
-  // Pause the response until De-Amping is done.
   *defer = true;
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;

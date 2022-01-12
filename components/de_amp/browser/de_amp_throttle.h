@@ -10,17 +10,16 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/single_thread_task_runner.h"
+#include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
-#include "content/public/browser/web_contents.h"
 
 class HostContentSettingsMap;
 
 namespace de_amp {
 
-// Throttle for AMP HTML sniffing.
-// If AMP page, redirect request to non-AMP page.
+// Throttle for AMP HTML detection.
+// If AMP page, redirect request to non-AMP canonical link.
 class DeAmpThrottle : public blink::URLLoaderThrottle {
  public:
   explicit DeAmpThrottle(
