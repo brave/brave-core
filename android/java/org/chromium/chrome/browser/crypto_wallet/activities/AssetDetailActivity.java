@@ -155,6 +155,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                         BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
             }
         });
+        if (!Utils.isCustomNetwork(mChainId)) {
+            btnBuy.setVisibility(View.VISIBLE);
+            btnSwap.setVisibility(View.VISIBLE);
+        } else {
+            btnBuy.setVisibility(View.GONE);
+            btnSwap.setVisibility(View.GONE);
+        }
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
@@ -228,7 +235,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
                             null, null, mAssetSymbol, mContractAddress, mAssetDecimals,
-                            findViewById(R.id.rv_transactions), this, this, null);
+                            findViewById(R.id.rv_transactions), this, this, mChainId,
+                            mJsonRpcService);
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(

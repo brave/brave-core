@@ -35,6 +35,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -63,6 +64,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private ApprovedTxObserver mApprovedTxObserver;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private String mChainSymbol;
+    private int mChainDecimals;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             TransactionInfo txInfo, String accountName) {
@@ -76,6 +79,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mApproved = false;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
+        mChainSymbol = "ETH";
+        mChainDecimals = 18;
     }
 
     public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
@@ -176,45 +181,62 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
         jsonRpcService.getChainId(chainId -> {
-            TextView networkName = view.findViewById(R.id.network_name);
-            networkName.setText(Utils.getNetworkText(getActivity(), chainId).toString());
-            TextView txType = view.findViewById(R.id.tx_type);
-            txType.setText(getResources().getString(R.string.send));
-            if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
-                    || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
-                assert blockchainRegistry != null;
-                TokenUtils.getAllTokensFiltered(
-                        getBraveWalletService(), blockchainRegistry, chainId, tokens -> {
-                            for (BlockchainToken token : tokens) {
-                                // Replace USDC and DAI contract addresses for Ropsten network
-                                token.contractAddress = Utils.getContractAddress(
-                                        chainId, token.symbol, token.contractAddress);
-                                String symbol = token.symbol;
-                                int decimals = token.decimals;
-                                if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                                    txType.setText(String.format(
-                                            getResources().getString(R.string.activate_erc20),
-                                            symbol));
-                                    symbol = "ETH";
-                                    decimals = 18;
-                                }
-                                if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                                .equals(mTxInfo.txData.baseData.to.toLowerCase(
-                                                        Locale.getDefault()))) {
-                                    fillAssetDependentControls(symbol, view, decimals);
-                                    break;
-                                }
-                            }
-                        });
-            } else {
-                if (mTxInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
-                                .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
-                                        Locale.getDefault()))) {
-                    txType.setText(getResources().getString(R.string.swap));
+            jsonRpcService.getAllNetworks(chains -> {
+                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                TextView networkName = view.findViewById(R.id.network_name);
+                networkName.setText(
+                        Utils.getNetworkText(getActivity(), chainId, customNetworks).toString());
+                String chainSymbol = "ETH";
+                int chainDecimals = 18;
+                for (EthereumChain chain : chains) {
+                    if (chainId.equals(chain.chainId)) {
+                        if (Utils.isCustomNetwork(chainId)) {
+                            chainSymbol = chain.symbol;
+                            chainDecimals = chain.decimals;
+                            break;
+                        }
+                    }
                 }
-                fillAssetDependentControls("ETH", view, 18);
-            }
+                mChainSymbol = chainSymbol;
+                mChainDecimals = chainDecimals;
+                TextView txType = view.findViewById(R.id.tx_type);
+                txType.setText(getResources().getString(R.string.send));
+                if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
+                        || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
+                    BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
+                    assert blockchainRegistry != null;
+                    TokenUtils.getAllTokensFiltered(
+                            getBraveWalletService(), blockchainRegistry, chainId, tokens -> {
+                                for (BlockchainToken token : tokens) {
+                                    // Replace USDC and DAI contract addresses for Ropsten network
+                                    token.contractAddress = Utils.getContractAddress(
+                                            chainId, token.symbol, token.contractAddress);
+                                    String symbol = token.symbol;
+                                    int decimals = token.decimals;
+                                    if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
+                                        txType.setText(String.format(
+                                                getResources().getString(R.string.activate_erc20),
+                                                symbol));
+                                        symbol = mChainSymbol;
+                                        decimals = mChainDecimals;
+                                    }
+                                    if (token.contractAddress.toLowerCase(Locale.getDefault())
+                                                    .equals(mTxInfo.txData.baseData.to.toLowerCase(
+                                                            Locale.getDefault()))) {
+                                        fillAssetDependentControls(symbol, view, decimals);
+                                        break;
+                                    }
+                                }
+                            });
+                } else {
+                    if (mTxInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
+                                    .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
+                                            Locale.getDefault()))) {
+                        txType.setText(getResources().getString(R.string.swap));
+                    }
+                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
+                }
+            });
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mTxInfo.fromAddress, true);
@@ -276,7 +298,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                             String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
                     ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
                     ApproveTxFragmentPageAdapter adapter = new ApproveTxFragmentPageAdapter(
-                            getChildFragmentManager(), mTxInfo, asset, mTotalPrice, getActivity());
+                            getChildFragmentManager(), mTxInfo, asset, decimals, mChainSymbol,
+                            mChainDecimals, mTotalPrice, getActivity());
                     viewPager.setAdapter(adapter);
                     viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
                     TabLayout tabLayout = view.findViewById(R.id.tabs);

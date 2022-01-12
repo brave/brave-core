@@ -141,7 +141,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
   chain_callbacks_[chain->chain_id] = std::move(callback);
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&BraveWalletProviderImpl::OnAddEthereumChain,
                      weak_factory_.GetWeakPtr()));
