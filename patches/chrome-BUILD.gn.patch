@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 9e2c48f5bc73375d95cb51e1793b6167fe3fd5fb..eba7bcd8ec2719b301e073545f58a5612114dcfc 100644
+index 9e2c48f5bc73375d95cb51e1793b6167fe3fd5fb..10ab6d92c9cd6fb1f47b334e3d56952775430e6f 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
@@ -69,7 +69,7 @@ index 9e2c48f5bc73375d95cb51e1793b6167fe3fd5fb..eba7bcd8ec2719b301e073545f58a561
        }
  
        extra_substitutions = [
-@@ -1171,6 +1178,7 @@ if (is_win) {
+@@ -1164,6 +1171,7 @@ if (is_win) {
        chrome_dylib_version,
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
