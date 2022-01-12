@@ -20,6 +20,8 @@
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/solana_requests.h"
+#include "brave/components/brave_wallet/browser/solana_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -1265,6 +1267,76 @@ void JsonRpcService::Reset() {
              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   }
   switch_chain_callbacks_.clear();
+}
+
+void JsonRpcService::GetSolanaBalance(const std::string& pubkey,
+                                      GetSolanaBalanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(solana::getBalance(pubkey), true,
+                 std::move(internal_callback));
+}
+
+void JsonRpcService::GetSPLTokenAccountBalance(
+    const std::string& pubkey,
+    GetSPLTokenAccountBalanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSPLTokenAccountBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(solana::getTokenAccountBalance(pubkey), true,
+                 std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaBalance(
+    GetSolanaBalanceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        0u, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  uint64_t balance = 0;
+  if (!solana::ParseGetBalance(body, &balance)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(0u, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(balance, mojom::SolanaProviderError::kSuccess, "");
+}
+
+void JsonRpcService::OnGetSPLTokenAccountBalance(
+    GetSPLTokenAccountBalanceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", 0u, "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::string amount, ui_amount_string;
+  uint8_t decimals = 0;
+  if (!solana::ParseGetTokenAccountBalance(body, &amount, &decimals,
+                                           &ui_amount_string)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run("", 0u, "", error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(amount, decimals, ui_amount_string,
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet
