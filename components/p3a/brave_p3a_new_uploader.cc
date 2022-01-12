@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -22,7 +21,7 @@ namespace {
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
     base::StringPiece upload_type) {
   if (upload_type == "p3a") {
-    return net::DefineNetworkTrafficAnnotation("metrics_report_uma", R"(
+    return net::DefineNetworkTrafficAnnotation("p3a", R"(
         semantics {
           sender: "Brave Privacy-Preserving Product Analytics Uploader"
           description:
@@ -32,7 +31,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
             "Reports are automatically generated on startup and at intervals "
             "while Brave is running."
           data:
-            "A protocol buffer with anonymized and encrypted usage data."
+            "A json document with anonymized usage data."
           destination: WEBSITE
         }
         policy {
@@ -44,17 +43,18 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
         })");
   }
   DCHECK_EQ(upload_type, "p2a");
-  return net::DefineNetworkTrafficAnnotation("metrics_report_uma", R"(
+  return net::DefineNetworkTrafficAnnotation("p2a", R"(
       semantics {
         sender: "Brave Privacy-Preserving Ad Analytics Uploader"
         description:
           "Report of anonymized usage statistics. For more info, see "
-          "https://brave.com/P2A"
+          "https://github.com/brave/brave-browser/wiki/"
+          "Randomized-Response-for-Private-Advertising-Analytics"
         trigger:
           "Reports are automatically generated on startup and at intervals "
           "while Brave is running."
         data:
-          "A protocol buffer with anonymized and encrypted usage data."
+          "A json document with anonymized usage data."
         destination: WEBSITE
       }
       policy {
@@ -96,8 +96,7 @@ void BraveP3ANewUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->method = "POST";
 
   url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request),
-      GetNetworkTrafficAnnotation(upload_type));
+      std::move(resource_request), GetNetworkTrafficAnnotation(upload_type));
   url_loader_->AttachStringForUpload(compressed_log_data, "application/json");
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(

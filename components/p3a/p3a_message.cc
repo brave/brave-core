@@ -67,7 +67,7 @@ void GenerateP3AMessage(uint64_t metric_hash,
   p3a_message->set_p3a_info(data, kDataLength);
 }
 
-base::Value GenerateP3AJsonMessage(uint64_t metric_hash,
+base::Value GenerateP3AMessageDict(uint64_t metric_hash,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta) {
   base::Value result(base::Value::Type::DICTIONARY);

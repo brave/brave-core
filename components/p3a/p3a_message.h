@@ -40,7 +40,7 @@ void GenerateP3AMessage(uint64_t metric_hash,
                         const MessageMetainfo& meta,
                         brave_pyxis::RawP3AValue* p3a_message);
 
-base::Value GenerateP3AJsonMessage(uint64_t metric_hash,
+base::Value GenerateP3AMessageDict(uint64_t metric_hash,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
 

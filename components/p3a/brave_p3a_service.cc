@@ -27,9 +27,9 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
-#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
@@ -303,9 +303,9 @@ void BraveP3AService::Init(
   }
 }
 
-BraveP3ALogStore::LogForJsonMigration
-BraveP3AService::Serialize(base::StringPiece histogram_name,
-                           uint64_t value) {
+BraveP3ALogStore::LogForJsonMigration BraveP3AService::Serialize(
+    base::StringPiece histogram_name,
+    uint64_t value) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
@@ -317,17 +317,13 @@ BraveP3AService::Serialize(base::StringPiece histogram_name,
   brave_pyxis::RawP3AValue message;
   GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
 
-  base::Value p3a_json_value = GenerateP3AJsonMessage(histogram_name_hash,
-                                                      value,
-                                                      message_meta_);
+  base::Value p3a_json_value =
+      GenerateP3AMessageDict(histogram_name_hash, value, message_meta_);
   std::string p3a_json_message;
   const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
   DCHECK(ok);
 
-  return {
-    message.SerializeAsString(),
-    p3a_json_message
-  };
+  return {message.SerializeAsString(), p3a_json_message};
 }
 
 bool
@@ -537,9 +533,8 @@ void BraveP3AService::DoRotation() {
 
 void BraveP3AService::UpdateRotationTimer() {
   base::Time now = base::Time::Now();
-  base::Time next_rotation = rotation_interval_.is_zero()
-                                 ? NextMonday(now)
-                                 : now + rotation_interval_;
+  base::Time next_rotation =
+      rotation_interval_.is_zero() ? NextMonday(now) : now + rotation_interval_;
   if (now >= next_rotation) {
     // Should never happen, but let's stay on the safe side.
     NOTREACHED();
