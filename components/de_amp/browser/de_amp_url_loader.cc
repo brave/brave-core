@@ -1,4 +1,4 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -27,7 +27,11 @@ namespace de_amp {
 namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;
+// Check for "amp" or "⚡" in <html> tag
+// https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
 static const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
+// Look for canonical link
+// https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 static const char kFindCanonicalLinkPattern[] =
     "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
 
@@ -195,6 +199,10 @@ void DeAmpURLLoader::ResumeReadingBodyFromNet() {
   source_url_loader_->ResumeReadingBodyFromNet();
 }
 
+bool CheckCanonicalLink(GURL canonical_link) {
+  return canonical_link.SchemeIsHTTPOrHTTPS();
+}
+
 // If AMP page, find canonical link
 bool FindCanonicalLinkIfAMP(std::string body, std::string* canonical_link) {
   RE2::Options opt;
@@ -243,7 +251,12 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 
   if (FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
-    VLOG(2) << __func__ << " " << canonical_url;
+    if (!CheckCanonicalLink(canonical_url)) {
+      VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
+      CompleteLoading(std::move(buffered_body_));
+      return;
+    }
+    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
     contents_->GetController().LoadURL(canonical_url, content::Referrer(),
                                        ui::PAGE_TRANSITION_CLIENT_REDIRECT,
                                        std::string());
