@@ -240,13 +240,12 @@ void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
     return;
   }
 
-  if (!HasIssuersChanged(issuers)) {
-    return;
+  if (HasIssuersChanged(issuers)) {
+    BLOG(1, "Updated issuers");
+    SetIssuers(issuers);
+  } else {
+    BLOG(1, "Issuers already up to date");
   }
-
-  BLOG(1, "Updated issuers");
-
-  SetIssuers(issuers);
 
   TopUpUnblindedTokens();
 }
