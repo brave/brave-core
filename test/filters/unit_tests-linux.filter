@@ -1,0 +1,7 @@
+-ChromeBrowsingDataRemoverDelegateTest.*
+-ChromePaths.*
+-Chromium/ChannelInfoTest.*
+-ExtensionServiceTest.*
+-MediaFileSystemRegistryTest.*
+-ShellIntegrationTest.*
+-WebAppShortcutLinuxTest.*
