@@ -298,6 +298,7 @@
 		2748625D25AD309800BC40AA /* sqlcipher.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; };
 		2748626925AD30A500BC40AA /* sqlcipher.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; };
 		2748626A25AD30A500BC40AA /* sqlcipher.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		274AD90A278D455500FDF4D8 /* ManageWebsiteDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274AD909278D455500FDF4D8 /* ManageWebsiteDataView.swift */; };
 		275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
 		2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */; };
@@ -1938,6 +1939,7 @@
 		2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsShareController.swift; sourceTree = "<group>"; };
 		2746D28224A4FB7400E38852 /* RewardsInternalsSharable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsSharable.swift; sourceTree = "<group>"; };
 		2748625C25AD308A00BC40AA /* sqlcipher.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = sqlcipher.xcframework; sourceTree = "<group>"; };
+		274AD909278D455500FDF4D8 /* ManageWebsiteDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWebsiteDataView.swift; sourceTree = "<group>"; };
 		275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsView.swift; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
@@ -4782,6 +4784,7 @@
 				2F12A175260A3B17005A8C2B /* ShortcutSettingsViewController.swift */,
 				272B862A270BD96F005ED304 /* SandboxInspectorView.swift */,
 				2F1A8359274C35340089A8A9 /* RetentionPreferencesDebugMenuViewController.swift */,
+				274AD909278D455500FDF4D8 /* ManageWebsiteDataView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -8400,6 +8403,7 @@
 				27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */,
 				0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */,
 				D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */,
+				274AD90A278D455500FDF4D8 /* ManageWebsiteDataView.swift in Sources */,
 				27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */,
 				27FD3F7825C8B0E700696156 /* BraveNewsAddSourceResultsViewController.swift in Sources */,
 				27E0652824CB6AE300134946 /* BraveNewsErrorView.swift in Sources */,

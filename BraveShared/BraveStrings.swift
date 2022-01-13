@@ -3396,3 +3396,67 @@ extension Strings {
             comment: "Description for Brave Shields single stat widget on 'add widget' screen.")
     }
 }
+
+// MARK: - ManageWebsiteData
+extension Strings {
+    public static let manageWebsiteDataTitle = NSLocalizedString(
+        "websiteData.manageWebsiteDataTitle",
+        bundle: .braveShared,
+        value: "Manage Website Data",
+        comment: "A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited"
+    )
+    public static let loadingWebsiteData = NSLocalizedString(
+        "websiteData.loadingWebsiteData",
+        bundle: .braveShared,
+        value: "Loading website data…",
+        comment: "A message displayed to users while the system fetches all website data to display."
+    )
+    public static let dataRecordCookies = NSLocalizedString(
+        "websiteData.dataRecordCookies",
+        bundle: .braveShared,
+        value: "Cookies",
+        comment: "The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies)"
+    )
+    public static let dataRecordCache = NSLocalizedString(
+        "websiteData.dataRecordCache",
+        bundle: .braveShared,
+        value: "Cache",
+        comment: "Temporary data that is stored on the users device to speed up future requests and interactions."
+    )
+    public static let dataRecordLocalStorage = NSLocalizedString(
+        "websiteData.dataRecordLocalStorage",
+        bundle: .braveShared,
+        value: "Local storage",
+        comment: "A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods."
+    )
+    public static let dataRecordDatabases = NSLocalizedString(
+        "websiteData.dataRecordDatabases",
+        bundle: .braveShared,
+        value: "Databases",
+        comment: "Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.)"
+    )
+    public static let removeDataRecord = NSLocalizedString(
+        "websiteData.removeDataRecord",
+        bundle: .braveShared,
+        value: "Remove",
+        comment: "Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list"
+    )
+    public static let removeSelectedDataRecord = NSLocalizedString(
+        "websiteData.removeSelectedDataRecord",
+        bundle: .braveShared,
+        value: "Remove %ld items",
+        comment: "Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list"
+    )
+    public static let removeAllDataRecords = NSLocalizedString(
+        "websiteData.removeAllDataRecords",
+        bundle: .braveShared,
+        value: "Remove All",
+        comment: "Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list"
+    )
+    public static let noSavedWebsiteData = NSLocalizedString(
+        "websiteData.noSavedWebsiteData",
+        bundle: .braveShared,
+        value: "No Saved Website Data",
+        comment: "Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device."
+    )
+}
