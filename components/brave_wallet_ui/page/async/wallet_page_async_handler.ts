@@ -27,7 +27,8 @@ import {
   ImportFilecoinAccountPayloadType
 } from '../constants/action_types'
 import {
-  findHardwareAccountInfo, getKeyringIdFromAddress
+  findHardwareAccountInfo,
+  getKeyringIdFromAddress
 } from '../../common/async/lib'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
