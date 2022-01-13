@@ -13,7 +13,6 @@ export const HeaderTitle = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
-  text-transform: capitalize;
 `
 
 export const HeaderWrapper = styled.div<StyleProps>`

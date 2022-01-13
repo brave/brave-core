@@ -6,7 +6,7 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 // Styled Components
 import {
   StyledWrapper,
-  LightningBoltIcon,
+  TransactionsIcon,
   NavButton,
   NavButtonText,
   NavDivider,
@@ -58,7 +58,7 @@ function ConnectedBottomNav (props: Props) {
         </PanelTooltip>
         <NavDivider />
         <TransactionsButton onClick={navigate('transactions')}>
-          <LightningBoltIcon />
+          <TransactionsIcon />
         </TransactionsButton>
       </NavOutline>
     </StyledWrapper>
