@@ -322,6 +322,17 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
     }
+  } else {
+    if (process.platform === 'darwin' && !this.isAsan()) {
+      // Currently we're using is_official_build mode a lot, even in PR builds on CI.
+      // This enables dSYMs by default, which slows down linking, but most importantly
+      // it disables relocatable compilation on MacOS (aka 'zero goma cachehits' style).
+      //
+      // Don't create dSYMs in non-true-Release builds and don't strip debug info.
+      // See //build/config/apple/symbols.gni for additional details.
+      args.enable_dsyms = false
+      args.enable_stripping = false
+    }
   }
 
   if (process.platform === 'win32' && this.build_omaha) {
