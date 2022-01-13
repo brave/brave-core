@@ -26,7 +26,13 @@
 
 namespace {
 const char kClientHints[] = "/ch.html";
+const char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
+const char KClientHintsMetaHTTPEquivAcceptCH[] =
+    "/ch-meta-http-equiv-accept-ch.html";
+const char KClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
+
 const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
+    // Individual hints features
     blink::features::kClientHintsDeviceMemory,
     blink::features::kClientHintsDeviceMemory_DEPRECATED,
     blink::features::kClientHintsDPR,
@@ -37,8 +43,14 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsViewportWidth_DEPRECATED,
     blink::features::kPrefersColorSchemeClientHintHeader,
     blink::features::kUserAgentClientHint,
+    blink::features::kUserAgentClientHintFullVersionList,
     blink::features::kViewportHeightClientHintHeader,
+    // Client hints features
+    blink::features::kClientHintsMetaHTTPEquivAcceptCH,
+    blink::features::kClientHintsMetaNameAcceptCH,
+    blink::features::kClientHintThirdPartyDelegation,
 };
+
 }  // namespace
 
 class ClientHintsBrowserTest : public InProcessBrowserTest,
@@ -59,6 +71,12 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     EXPECT_TRUE(https_server_.Start());
 
     client_hints_url_ = https_server_.GetURL(kClientHints);
+    client_hints_delegation_merge_url_ =
+        https_server_.GetURL(kClientHintsDelegationMerge);
+    client_hints_meta_http_equiv_accept_ch_url_ =
+        https_server_.GetURL(KClientHintsMetaHTTPEquivAcceptCH);
+    client_hints_meta_name_accept_ch_url_ =
+        https_server_.GetURL(KClientHintsMetaNameAcceptCH);
   }
 
   ClientHintsBrowserTest(const ClientHintsBrowserTest&) = delete;
@@ -94,8 +112,23 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
   const GURL& client_hints_url() const { return client_hints_url_; }
 
+  const GURL& client_hints_delegation_merge_url() const {
+    return client_hints_delegation_merge_url_;
+  }
+
+  const GURL& client_hints_meta_http_equiv_accept_ch_url() const {
+    return client_hints_meta_http_equiv_accept_ch_url_;
+  }
+  const GURL& client_hints_meta_name_accept_ch_url() const {
+    return client_hints_meta_name_accept_ch_url_;
+  }
+
   size_t count_client_hints_headers_seen() const {
     return count_client_hints_headers_seen_;
+  }
+
+  void reset_client_hints_headers_seen_count() {
+    count_client_hints_headers_seen_ = 0;
   }
 
  private:
@@ -109,6 +142,9 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   }
 
   net::EmbeddedTestServer https_server_;
+  GURL client_hints_delegation_merge_url_;
+  GURL client_hints_meta_http_equiv_accept_ch_url_;
+  GURL client_hints_meta_name_accept_ch_url_;
   GURL client_hints_url_;
   size_t count_client_hints_headers_seen_;
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -120,6 +156,21 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
               base::FeatureList::IsEnabled(feature));
   }
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), client_hints_url()));
+  EXPECT_EQ(0u, count_client_hints_headers_seen());
+
+  reset_client_hints_headers_seen_count();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), client_hints_meta_http_equiv_accept_ch_url()));
+  EXPECT_EQ(0u, count_client_hints_headers_seen());
+
+  reset_client_hints_headers_seen_count();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), client_hints_meta_name_accept_ch_url()));
+  EXPECT_EQ(0u, count_client_hints_headers_seen());
+
+  reset_client_hints_headers_seen_count();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), client_hints_delegation_merge_url()));
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 }
 
