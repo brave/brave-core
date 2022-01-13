@@ -1047,7 +1047,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
             // Set active tab
-            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER);
+            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER, false);
             return tab;
         } else {
             return null;
