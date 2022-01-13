@@ -1965,6 +1965,15 @@ Are you sure you want to do this?
     <message name="IDS_ENTER_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Enter your recovery phrase
     </message>
+    <message name="IDS_ACCESSIBILITY_RESTORE_WALLET_COPY_IMAGE" desc="Brave Wallet onboarding past image accessibility text">
+      Paste
+    </message>
+    <message name="IDS_RESTORE_WALLET_NEW_PASSWORD_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
+      New Password
+    </message>
+    <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
+      I'm restoring from legacy Brave Crypto Wallet
+    </message>
     <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Verify recovery phrase
     </message>
