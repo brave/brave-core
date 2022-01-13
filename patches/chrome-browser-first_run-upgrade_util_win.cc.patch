@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index b350a01b3bd4a8caab918f6a068e286ac8a40bd3..34c1847c3878c96f9d65d2a54651954a6ca7d53a 100644
+index 0d0593f022998f728aac933840f35bd1726e29af..2808fbf058ab9d7ed218fc4b9a83b2e299d1f30c 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -44,7 +44,7 @@
@@ -17,6 +17,6 @@ index b350a01b3bd4a8caab918f6a068e286ac8a40bd3..34c1847c3878c96f9d65d2a54651954a
  bool InvokeGoogleUpdateForRename() {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
+   // This has been identified as very slow on some startups. Detailed trace
+   // events below try to shine a light on each steps. crbug.com/1252004
    TRACE_EVENT0("startup", "upgrade_util::InvokeGoogleUpdateForRename");
- 
-   Microsoft::WRL::ComPtr<IProcessLauncher> ipl;
