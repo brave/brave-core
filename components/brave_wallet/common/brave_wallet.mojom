@@ -540,7 +540,7 @@ const string kSolanaDevnet = "solana:0x67";
 
 enum CoinType {
   ETH = 60,
-  FILECOIN = 461
+  FIL = 461
 };
 
 struct EthereumChain {

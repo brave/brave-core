@@ -12,7 +12,7 @@ export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
 export function getCoinName (coin: BraveWallet.CoinType) {
   switch (coin) {
-    case BraveWallet.CoinType.FILECOIN:
+    case BraveWallet.CoinType.FIL:
       return 'Filecoin'
     case BraveWallet.CoinType.ETH:
       return 'Ethereum'

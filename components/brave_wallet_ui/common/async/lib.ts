@@ -127,7 +127,7 @@ export async function getBuyAssets () {
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
-  if (coin === BraveWallet.CoinType.FILECOIN) {
+  if (coin === BraveWallet.CoinType.FIL) {
     return BraveWallet.FILECOIN_KEYRING_ID
   }
   assert(coin === BraveWallet.CoinType.ETH)

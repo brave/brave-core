@@ -372,7 +372,7 @@ void JsonRpcService::GetBalance(const std::string& address,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
     return Request(eth_getBalance(address, "latest"), true,
                    std::move(internal_callback));
-  } else if (coin == mojom::CoinType::FILECOIN) {
+  } else if (coin == mojom::CoinType::FIL) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnFilGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));

@@ -130,7 +130,7 @@ std::string GetKeyringId(HDKeyring::Type type) {
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
-    return mojom::CoinType::FILECOIN;
+    return mojom::CoinType::FIL;
   }
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
   return mojom::CoinType::ETH;
@@ -828,7 +828,7 @@ KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
-                           mojom::CoinType::FILECOIN);
+                           mojom::CoinType::FIL);
   SetImportedAccountForKeyring(prefs_, info, mojom::kFilecoinKeyringId);
 
   NotifyAccountsChanged();
@@ -860,7 +860,7 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
-                           mojom::CoinType::FILECOIN);
+                           mojom::CoinType::FIL);
   SetImportedAccountForKeyring(prefs_, info, mojom::kFilecoinKeyringId);
 
   NotifyAccountsChanged();
