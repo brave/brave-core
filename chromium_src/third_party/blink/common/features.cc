@@ -17,6 +17,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
 
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
