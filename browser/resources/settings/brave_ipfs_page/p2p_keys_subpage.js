@@ -91,6 +91,7 @@ Polymer({
       this.updateKeys();
     })
     window.addEventListener('load', this.onLoad_.bind(this));
+    this.browserProxy_.notifyIpfsNodeStatus();
   },
   onLoad_: function() {
     this.updateKeys();
