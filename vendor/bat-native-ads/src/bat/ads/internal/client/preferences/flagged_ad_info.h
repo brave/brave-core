@@ -18,7 +18,6 @@ struct FlaggedAdInfo final {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  std::string creative_instance_id;
   std::string creative_set_id;
 };
 
