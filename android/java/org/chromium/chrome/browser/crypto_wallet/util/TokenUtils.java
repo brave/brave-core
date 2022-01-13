@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -46,35 +47,38 @@ public class TokenUtils {
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
             BlockchainRegistry blockchainRegistry, String chainId,
             BlockchainRegistry.GetAllTokensResponse callback) {
-        blockchainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
-            braveWalletService.getUserAssets(chainId, (BlockchainToken[] userTokens) -> {
-                BlockchainToken[] filteredTokens =
-                        filterOut(concatenateTwoArrays(tokens, userTokens), true);
-                callback.call(filteredTokens);
-            });
-        });
+        blockchainRegistry.getAllTokens(
+                BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
+                    braveWalletService.getUserAssets(chainId, (BlockchainToken[] userTokens) -> {
+                        BlockchainToken[] filteredTokens =
+                                filterOut(concatenateTwoArrays(tokens, userTokens), true);
+                        callback.call(filteredTokens);
+                    });
+                });
     }
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
             BlockchainRegistry.GetAllTokensResponse callback) {
-        blockchainRegistry.getBuyTokens((BlockchainToken[] tokens) -> {
-            BlockchainToken[] filteredTokens = filterOut(tokens, true);
-            callback.call(filteredTokens);
-        });
+        blockchainRegistry.getBuyTokens(
+                BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
+                    BlockchainToken[] filteredTokens = filterOut(tokens, true);
+                    callback.call(filteredTokens);
+                });
     }
 
     public static void isCustomToken(BlockchainToken token, BlockchainRegistry blockchainRegistry,
             org.chromium.mojo.bindings.Callbacks.Callback1<Boolean> callback) {
-        blockchainRegistry.getAllTokens((BlockchainToken[] tokens) -> {
-            boolean isCustom = true;
-            for (BlockchainToken tokenFromAll : tokens) {
-                if (token.contractAddress.equals(tokenFromAll.contractAddress)) {
-                    isCustom = false;
-                    break;
-                }
-            }
-            callback.call(isCustom);
-        });
+        blockchainRegistry.getAllTokens(
+                BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
+                    boolean isCustom = true;
+                    for (BlockchainToken tokenFromAll : tokens) {
+                        if (token.contractAddress.equals(tokenFromAll.contractAddress)) {
+                            isCustom = false;
+                            break;
+                        }
+                    }
+                    callback.call(isCustom);
+                });
     }
 
     private static BlockchainToken[] concatenateTwoArrays(

@@ -62,6 +62,36 @@ const char token_list_json[] = R"(
    }
   })";
 
+const char ropsten_list_json[] = R"(
+  {
+   "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+    "name": "USD Coin",
+    "logo": "usdc.png",
+    "erc20": true,
+    "erc721": false,
+    "symbol": "USDC",
+    "decimals": 6,
+    "chainId": "0x2a"
+   },
+   "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
+     "name": "Crypto Kitties",
+     "logo": "CryptoKitties-Kitty-13733.svg",
+     "erc20": false,
+     "erc721": true,
+     "symbol": "CK",
+     "decimals": 0,
+     "chainId": "0x2a"
+   },
+   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+     "name": "Uniswap",
+     "logo": "uni.svg",
+     "erc20": true,
+     "symbol": "UNI",
+     "decimals": 18,
+     "chainId": "0x2a"
+   }
+  })";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -155,14 +185,15 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_->AddObserver(observer_->GetReceiver());
 
     auto* registry = BlockchainRegistry::GetInstance();
-    std::vector<mojom::BlockchainTokenPtr> input_blockchain_tokens;
-    ASSERT_TRUE(ParseTokenList(token_list_json, &input_blockchain_tokens));
-    registry->UpdateTokenList(std::move(input_blockchain_tokens));
+    TokenListMap token_list_map;
+    ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
+    ASSERT_TRUE(ParseTokenList(ropsten_list_json, &token_list_map));
+    registry->UpdateTokenList(std::move(token_list_map));
 
     bool callback_called = false;
     mojom::BlockchainTokenPtr token1;
     GetRegistry()->GetTokenByContract(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        mojom::kMainnetChainId, "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           token1_ = std::move(token);
           callback_called = true;
@@ -174,7 +205,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     callback_called = false;
     mojom::BlockchainTokenPtr token2;
     GetRegistry()->GetTokenByContract(
-        "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+        mojom::kMainnetChainId, "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           token2_ = std::move(token);
           callback_called = true;
@@ -186,7 +217,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     callback_called = false;
     mojom::BlockchainTokenPtr erc721_token;
     GetRegistry()->GetTokenByContract(
-        "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+        mojom::kMainnetChainId, "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
         base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
           erc721_token_ = std::move(token);
           callback_called = true;
@@ -1023,8 +1054,9 @@ TEST_F(BraveWalletServiceUnitTest,
       {"https://url1.com"}, "TC", "Test Coin", 11, false);
   AddCustomNetwork(GetPrefs(), chain.Clone());
 
-  auto native_asset = mojom::BlockchainToken::New(
-      "", "Test Coin", "https://url1.com", false, false, "TC", 11, true, "");
+  auto native_asset =
+      mojom::BlockchainToken::New("", "Test Coin", "https://url1.com", false,
+                                  false, "TC", 11, true, "", "");
 
   bool success = false;
   bool callback_called = false;
@@ -1358,161 +1390,144 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
-  std::string chain_id = GetCurrentChainId(GetPrefs());
-  ASSERT_EQ(chain_id, mojom::kMainnetChainId);
+  std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
+                                        mojom::kKovanChainId};
+  for (const std::string& chain_id : chain_ids) {
+    json_rpc_service_->SetNetwork(chain_id);
+    mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
+        mojom::BlockchainToken::New(
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
+            "usdc.png", true, false, "USDC", 6, true, "", "");
+    ASSERT_EQ(usdc_from_blockchain_registry,
+              GetRegistry()->GetTokenByContract(
+                  chain_id, "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
+    mojom::BlockchainTokenPtr usdc_from_user_assets =
+        mojom::BlockchainToken::New(
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true,
+            false, "USDC", 6, true, "", "");
+    ASSERT_TRUE(
+        service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
 
-  mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
-      mojom::BlockchainToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F",
-                                  "USD Coin", "usdc.png", true, false, "USDC",
-                                  6, true, "");
-  ASSERT_EQ(usdc_from_blockchain_registry,
-            GetRegistry()->GetTokenByContract(
-                "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
-  mojom::BlockchainTokenPtr usdc_from_user_assets = mojom::BlockchainToken::New(
-      "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true, false,
-      "USDC", 6, true, "");
-  ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
+    mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false,
+        "USDC", 6, true, "", "");
 
-  mojom::BlockchainTokenPtr usdc_from_request =
-      mojom::BlockchainToken::New("0x6B175474E89094C44Da98b954EedeAC495271d0F",
-                                  "USDC", "", true, false, "USDC", 6, true, "");
+    mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
+        "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
+        "COLOR", 18, true, "", "");
 
-  mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
-      "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      "COLOR", 18, true, "");
+    // Case 1: Suggested token does not exist (no entry with the same contract
+    // address) in BlockchainRegistry nor user assets.
+    // Token should be in user asset list and is visible, and the data should be
+    // the same as the one in the request.
+    AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
+    auto token = service_->GetUserAsset(custom_token->contract_address,
+                                        custom_token->token_id,
+                                        custom_token->is_erc721, chain_id);
+    EXPECT_EQ(token, custom_token);
 
-  // Case 1: Suggested token does not exist (no entry with the same contract
-  // address) in BlockchainRegistry nor user assets. Current network is mainnet.
-  // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in the request.
-  AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
-  auto token = service_->GetUserAsset(custom_token->contract_address,
-                                      custom_token->token_id,
-                                      custom_token->is_erc721, chain_id);
-  EXPECT_EQ(token, custom_token);
+    // Case 2: Suggested token exists (has an entry with the same contract
+    // address) in BlockchainRegistry and user asset list and is visible.
+    // Token should be in user asset list and is visible, and the data should be
+    // the same as the one in the user asset list.
+    AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
+                    true);
+    token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                   usdc_from_user_assets->token_id,
+                                   usdc_from_user_assets->is_erc721, chain_id);
+    EXPECT_EQ(token, usdc_from_user_assets);
 
-  // Case 2: Suggested token exists (has an entry with the same contract
-  // address) in BlockchainRegistry and user asset list and is visible. Current
-  // network is mainnet.
-  // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in the user asset list.
-  AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
-                  true);
-  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
-                                 usdc_from_user_assets->token_id,
-                                 usdc_from_user_assets->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_user_assets);
+    // Case 3: Suggested token exists in BlockchainRegistry and user asset list
+    // but is not visible. Token should be in user
+    // asset list and is visible, and the data should be the same as the one in
+    // the user asset list.
+    ASSERT_TRUE(service_->SetUserAssetVisible(usdc_from_user_assets.Clone(),
+                                              chain_id, false));
+    token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                   usdc_from_user_assets->token_id,
+                                   usdc_from_user_assets->is_erc721, chain_id);
+    AddSuggestToken(usdc_from_request.Clone(), token.Clone(), true);
+    token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
+                                   usdc_from_user_assets->token_id,
+                                   usdc_from_user_assets->is_erc721, chain_id);
+    EXPECT_EQ(token, usdc_from_user_assets);
 
-  // Case 3: Suggested token exists in BlockchainRegistry and user asset list
-  // but is not visible. Current network is mainnet. Token should be in user
-  // asset list and is visible, and the data should be the same as the one in
-  // the user asset list.
-  ASSERT_TRUE(service_->SetUserAssetVisible(usdc_from_user_assets.Clone(),
-                                            chain_id, false));
-  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
-                                 usdc_from_user_assets->token_id,
-                                 usdc_from_user_assets->is_erc721, chain_id);
-  AddSuggestToken(usdc_from_request.Clone(), token.Clone(), true);
-  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
-                                 usdc_from_user_assets->token_id,
-                                 usdc_from_user_assets->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_user_assets);
+    // Case 4: Suggested token exists in BlockchainRegistry but not in user
+    // asset list. Token should be in user asset list and is visible, and the
+    // data should be the same as the one in BlockchainRegistry.
+    ASSERT_TRUE(
+        service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
+    AddSuggestToken(usdc_from_request.Clone(),
+                    usdc_from_blockchain_registry.Clone(), true);
+    token = service_->GetUserAsset(
+        usdc_from_blockchain_registry->contract_address,
+        usdc_from_blockchain_registry->token_id,
+        usdc_from_blockchain_registry->is_erc721, chain_id);
+    EXPECT_EQ(token, usdc_from_blockchain_registry);
 
-  // Case 4: Suggested token exists in BlockchainRegistry but not in user asset
-  // list. Current network is mainnet.
-  // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in BlockchainRegistry.
-  ASSERT_TRUE(
-      service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
-  AddSuggestToken(usdc_from_request.Clone(),
-                  usdc_from_blockchain_registry.Clone(), true);
-  token = service_->GetUserAsset(
-      usdc_from_blockchain_registry->contract_address,
-      usdc_from_blockchain_registry->token_id,
-      usdc_from_blockchain_registry->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_blockchain_registry);
+    mojom::BlockchainTokenPtr usdt_from_user_assets =
+        mojom::BlockchainToken::New(
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
+            true, false, "USDT", 6, true, "", "");
+    ASSERT_TRUE(
+        service_->AddUserAsset(usdt_from_user_assets.Clone(), chain_id));
 
-  mojom::BlockchainTokenPtr usdt_from_user_assets = mojom::BlockchainToken::New(
-      "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png", true,
-      false, "USDT", 6, true, "");
-  ASSERT_TRUE(service_->AddUserAsset(usdt_from_user_assets.Clone(), chain_id));
+    mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
+        "USDT", 18, true, "", "");
+    // Case 5: Suggested token exists in user asset list and is visible, does
+    // not exist in BlockchainRegistry. Token should be in user asset list and
+    // is visible, and the data should be the same as the one in user asset
+    // list.
+    AddSuggestToken(usdt_from_request.Clone(), usdt_from_user_assets.Clone(),
+                    true);
+    token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                   usdt_from_user_assets->token_id,
+                                   usdt_from_user_assets->is_erc721, chain_id);
+    EXPECT_EQ(token, usdt_from_user_assets);
 
-  mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
-      "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
-      "USDT", 18, true, "");
-  // Case 5: Suggested token exists in user asset list and is visible, does not
-  // exist in BlockchainRegistry.
-  // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in user asset list.
-  AddSuggestToken(usdt_from_request.Clone(), usdt_from_user_assets.Clone(),
-                  true);
-  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
-                                 usdt_from_user_assets->token_id,
-                                 usdt_from_user_assets->is_erc721, chain_id);
-  EXPECT_EQ(token, usdt_from_user_assets);
+    // Case 6: Suggested token exists in user asset list but is not visible,
+    // does not exist in BlockchainRegistry. Token should be in user asset list
+    // and is visible, and the data should be the same as the one in user asset
+    // list.
+    ASSERT_TRUE(service_->SetUserAssetVisible(usdt_from_user_assets.Clone(),
+                                              chain_id, false));
+    token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                   usdt_from_user_assets->token_id,
+                                   usdt_from_user_assets->is_erc721, chain_id);
+    AddSuggestToken(usdt_from_request.Clone(), token.Clone(), true);
+    token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
+                                   usdt_from_user_assets->token_id,
+                                   usdt_from_user_assets->is_erc721, chain_id);
+    EXPECT_EQ(token, usdt_from_user_assets);
 
-  // Case 6: Suggested token exists in user asset list but is not visible, does
-  // not exist in BlockchainRegistry.
-  // Token should be in user asset list and is visible, and the data should be
-  // the same as the one in user asset list.
-  ASSERT_TRUE(service_->SetUserAssetVisible(usdt_from_user_assets.Clone(),
-                                            chain_id, false));
-  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
-                                 usdt_from_user_assets->token_id,
-                                 usdt_from_user_assets->is_erc721, chain_id);
-  AddSuggestToken(usdt_from_request.Clone(), token.Clone(), true);
-  token = service_->GetUserAsset(usdt_from_user_assets->contract_address,
-                                 usdt_from_user_assets->token_id,
-                                 usdt_from_user_assets->is_erc721, chain_id);
-  EXPECT_EQ(token, usdt_from_user_assets);
+    // Call AddSuggestTokenRequest and switch network without
+    // NotifyAddSuggestTokenRequestsProcessed being called should clear out the
+    // pending request and AddSuggestTokenRequestCallback should be run with
+    // kUserRejectedRequest error.
+    mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
+        "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
+        false, "BUSD", 18, true, "", "");
+    AddSuggestToken(busd.Clone(), busd.Clone(), false,
+                    true /* run_switch_network */);
 
-  // Call AddSuggestTokenRequest and switch network without
-  // NotifyAddSuggestTokenRequestsProcessed being called should clear out the
-  // pending request and AddSuggestTokenRequestCallback should be run with
-  // kUserRejectedRequest error.
-  mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
-      "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
-      false, "BUSD", 18, true, "");
-  AddSuggestToken(busd.Clone(), busd.Clone(), false,
-                  true /* run_switch_network */);
-
-  // Test on networks that's not mainnet.
-  chain_id = GetCurrentChainId(GetPrefs());
-  ASSERT_NE(chain_id, mojom::kMainnetChainId);
-
-  // If suggested token exists in BlockchainRegistry and user asset, should
-  // use the user asset one.
-  ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone(), chain_id));
-  AddSuggestToken(usdc_from_request.Clone(), usdc_from_user_assets.Clone(),
-                  true);
-  token = service_->GetUserAsset(usdc_from_user_assets->contract_address,
-                                 usdc_from_user_assets->token_id,
-                                 usdc_from_user_assets->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_user_assets);
-
-  // If suggested token exists in BlockchainRegistry and not in user asset,
-  // should use the token from the original request.
-  ASSERT_TRUE(
-      service_->RemoveUserAsset(usdc_from_user_assets.Clone(), chain_id));
-  AddSuggestToken(usdc_from_request.Clone(), usdc_from_request.Clone(), true);
-  token = service_->GetUserAsset(usdc_from_request->contract_address,
-                                 usdc_from_request->token_id,
-                                 usdc_from_request->is_erc721, chain_id);
-  EXPECT_EQ(token, usdc_from_request);
-
-  // Test reject request.
-  ASSERT_TRUE(service_->RemoveUserAsset(usdc_from_request.Clone(), chain_id));
-  AddSuggestToken(usdc_from_request.Clone(), usdc_from_request.Clone(), false);
-  token = service_->GetUserAsset(usdc_from_request->contract_address,
-                                 usdc_from_request->token_id,
-                                 usdc_from_request->is_erc721, chain_id);
-  EXPECT_FALSE(token);
+    // Test reject request.
+    mojom::BlockchainTokenPtr brb_from_request = mojom::BlockchainToken::New(
+        "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", true, false,
+        "BRB", 6, true, "", "");
+    ASSERT_TRUE(service_->RemoveUserAsset(brb_from_request.Clone(), chain_id));
+    AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
+    token = service_->GetUserAsset(brb_from_request->contract_address,
+                                   brb_from_request->token_id,
+                                   brb_from_request->is_erc721, chain_id);
+    EXPECT_FALSE(token);
+  }
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
-      true, false, "USDC", 6, true, "");
+      true, false, "USDC", 6, true, "", "");
   ASSERT_TRUE(service_->AddUserAsset(usdc.Clone(), mojom::kRopstenChainId));
   EXPECT_EQ(usdc,
             service_->GetUserAsset(usdc->contract_address, usdc->token_id,
@@ -1559,7 +1574,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
           [](bool, const std::string&, const std::string&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      "COLOR", 18, true, "");
+      "COLOR", 18, true, "", "");
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
   service_->Reset();

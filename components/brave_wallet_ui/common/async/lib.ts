@@ -117,12 +117,12 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
 
 export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyUrl(address, symbol, amount)).url
+  return (await blockchainRegistry.getBuyUrl(BraveWallet.MAINNET_CHAIN_ID, address, symbol, amount)).url
 }
 
 export async function getBuyAssets () {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyTokens()).tokens
+  return (await blockchainRegistry.getBuyTokens(BraveWallet.MAINNET_CHAIN_ID)).tokens
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
@@ -142,7 +142,8 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
       visible: false,
-      tokenId: ''
+      tokenId: '',
+      coingeckoId: ''
     }
 
     const visibleTokens: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens

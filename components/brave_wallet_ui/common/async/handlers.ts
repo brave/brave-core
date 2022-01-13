@@ -237,7 +237,7 @@ handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
   const blockchainRegistry = getAPIProxy().blockchainRegistry
-  const fullList = await blockchainRegistry.getAllTokens()
+  const fullList = await blockchainRegistry.getAllTokens(BraveWallet.MAINNET_CHAIN_ID)
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 

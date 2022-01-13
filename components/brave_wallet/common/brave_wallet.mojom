@@ -283,6 +283,7 @@ struct BlockchainToken {
   int32 decimals;
   bool visible = true;
   string token_id = "";  // Non-empty for ERC721 tokens.
+  string coingecko_id = "";
 };
 
 // WebUI-side handler for requests from the browser.
@@ -321,19 +322,19 @@ interface KeyringServiceObserver {
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
   // Obtains token information by a contract lookup
-  GetTokenByContract(string contract) => (BlockchainToken? token);
+  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens() => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Buy UI
-  GetBuyTokens() => (array<BlockchainToken> tokens);
+  GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets
-  GetBuyUrl(string address, string symbol, string amount) => (string url);
+  GetBuyUrl(string chain_id, string address, string symbol, string amount) => (string url);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -528,6 +529,9 @@ const string kRopstenChainId = "0x3";
 const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
+const string kSolanaMainnet = "solana:0x65";
+const string kSolanaTestnet = "solana:0x66";
+const string kSolanaDevnet = "solana:0x67";
 
 struct EthereumChain {
   string chain_id;

@@ -506,22 +506,24 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     || swapFromAssetSymbol.equals(eth.symbol)) { // default swap from ETH
                 updateBuySendAsset(eth.symbol, eth);
             } else {
-                mBlockchainRegistry.getTokenBySymbol(swapFromAssetSymbol, token -> {
-                    if (token != null) {
-                        updateBuySendAsset(token.symbol, token);
-                    }
-                });
+                mBlockchainRegistry.getTokenBySymbol(
+                        BraveWalletConstants.MAINNET_CHAIN_ID, swapFromAssetSymbol, token -> {
+                            if (token != null) {
+                                updateBuySendAsset(token.symbol, token);
+                            }
+                        });
             }
 
             // Swap to
             if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
                 updateSwapToAsset(eth.symbol, eth);
             } else {
-                mBlockchainRegistry.getTokenBySymbol(swapToAsset, token -> {
-                    if (token != null) {
-                        updateSwapToAsset(token.symbol, token);
-                    }
-                });
+                mBlockchainRegistry.getTokenBySymbol(
+                        BraveWalletConstants.MAINNET_CHAIN_ID, swapToAsset, token -> {
+                            if (token != null) {
+                                updateSwapToAsset(token.symbol, token);
+                            }
+                        });
             }
         }
     }
@@ -969,10 +971,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
                     assert mBlockchainRegistry != null;
                     String asset = assetFromDropDown.getText().toString();
-                    mBlockchainRegistry.getBuyUrl(from, asset, value, url -> {
-                        TabUtils.openUrlInNewTab(false, url);
-                        TabUtils.bringChromeTabbedActivityToTheTop(this);
-                    });
+                    mBlockchainRegistry.getBuyUrl(
+                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value, url -> {
+                                TabUtils.openUrlInNewTab(false, url);
+                                TabUtils.bringChromeTabbedActivityToTheTop(this);
+                            });
                 } else {
                     String url = getPerNetworkUiInfo(mCurrentChainId).linkUrl;
                     if (url != null && !url.isEmpty()) {

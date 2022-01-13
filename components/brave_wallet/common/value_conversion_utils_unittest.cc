@@ -148,13 +148,14 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_erc721": false,
       "decimals": 18,
       "visible": true,
-      "token_id": ""
+      "token_id": "",
+      "coingecko_id": ""
   })");
   ASSERT_TRUE(json_value);
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-      "bat.png", true, false, "BAT", 18, true, "");
+      "bat.png", true, false, "BAT", 18, true, "", "");
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value.value());
   EXPECT_EQ(token, expected_token);
@@ -168,6 +169,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   base::Value optional_value = json_value.value().Clone();
   optional_value.RemoveKey("logo");
   optional_value.RemoveKey("token_id");
+  optional_value.RemoveKey("coingecko_id");
   expected_token->logo = "";
   token = ValueToBlockchainToken(optional_value);
   EXPECT_EQ(token, expected_token);
