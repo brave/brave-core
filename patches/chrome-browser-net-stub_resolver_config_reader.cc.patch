@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/net/stub_resolver_config_reader.cc b/chrome/browser/net/stub_resolver_config_reader.cc
-index fa75cd46897d9b47d183b0d8b84c30dceb4196e8..9870ef7b94cbc7ad74e9a5a5503381cbd180a18c 100644
+index d6651d95817d4882c8f9f9532d9f72fa9532e475..992ad38afea12c2623c0215b45b9b0d307d8c8e6 100644
 --- a/chrome/browser/net/stub_resolver_config_reader.cc
 +++ b/chrome/browser/net/stub_resolver_config_reader.cc
-@@ -366,6 +366,7 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(
+@@ -367,6 +367,7 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(
  
    std::string doh_templates =
        local_state_->GetString(prefs::kDnsOverHttpsTemplates);
 +  BRAVE_GET_AND_UPDATE_CONFIGURATION
-   std::string server_method;
    std::vector<net::DnsOverHttpsServerConfig> dns_over_https_servers;
-   absl::optional<std::vector<network::mojom::DnsOverHttpsServerPtr>>
+   if (!doh_templates.empty() && secure_dns_mode != net::SecureDnsMode::kOff) {
+     for (base::StringPiece server_template :
