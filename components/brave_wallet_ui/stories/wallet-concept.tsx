@@ -599,7 +599,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         name: 'Ledger 1',
         hardwareVendor: 'Ledger',
         deviceId: 'device1',
-        coin: BraveWallet.BraveCoins.ETH
+        coin: BraveWallet.CoinType.ETH
       })))
     })
   }

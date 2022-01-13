@@ -44,13 +44,13 @@
  *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/1'/0/0",
  *              "hardware_vendor": "ledger",
- *              "coin": "ETH"
+ *              "coin": 0 // Enum mojom::CoinType
  *           },
  *           "0x264Ef...6b8F1": {
  *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/2'/0/0",
  *              "hardware_vendor": "ledger",
- *              "coin": "ETH"
+ *              "coin": 0 // Enum mojom::CoinType
  *            }
  *        },
  *        device_name: "Ledger 123"
@@ -67,7 +67,7 @@
  *           "account_address": "t3vmv....ughsa",
  *           "account_name": "Filecoin",
  *           "encrypted_private_key": "9/Xb...X4IL",
- *           "coin": "FIL"
+ *           "coin": 1 // Enum mojom::CoinType
  *       }
  *     ],
  *   "password_encryptor_nonce": "xxx"
@@ -80,7 +80,7 @@
  *         "m/44'/60'/0'/0/0": {
  *               "account_name": "account 1",
  *               ...
- *               "coin": "ETH"
+ *               "coin": 0 // Enum mojom::CoinType
  *          },
  *          "m/44'/60'/0'/0/1": {
  *               "account_name": "account 2",
@@ -117,7 +117,7 @@ const char kHardwareVendor[] = "hardware_vendor";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
-const char kCoinName[] = "coin_name";
+const char kCoinType[] = "coin_type";
 const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 const char kHardwareKeyrings[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
@@ -128,12 +128,12 @@ std::string GetKeyringId(HDKeyring::Type type) {
   return mojom::kDefaultKeyringId;
 }
 
-mojom::BraveCoins GetCoinForKeyring(const std::string& keyring_id) {
+mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
-    return mojom::BraveCoins::FILECOIN;
+    return mojom::CoinType::FILECOIN;
   }
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
-  return mojom::BraveCoins::ETH;
+  return mojom::CoinType::ETH;
 }
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
@@ -167,10 +167,10 @@ void SerializeHardwareAccounts(const std::string& device_id,
     if (derivation_path_value)
       derivation_path = *derivation_path_value;
 
-    mojom::BraveCoins coin = mojom::BraveCoins::ETH;
-    auto coin_name_value = account.second.FindIntKey(kCoinName);
+    mojom::CoinType coin = mojom::CoinType::ETH;
+    auto coin_name_value = account.second.FindIntKey(kCoinType);
     if (coin_name_value) {
-      coin = static_cast<mojom::BraveCoins>(*coin_name_value);
+      coin = static_cast<mojom::CoinType>(*coin_name_value);
     }
 
     accounts->push_back(mojom::AccountInfo::New(
@@ -212,7 +212,7 @@ KeyringService::ImportedAccountInfo::ImportedAccountInfo(
     const std::string& input_account_name,
     const std::string& input_account_address,
     const std::string& input_encrypted_private_key,
-    mojom::BraveCoins input_coin)
+    mojom::CoinType input_coin)
     : account_name(input_account_name),
       account_address(input_account_address),
       encrypted_private_key(input_encrypted_private_key),
@@ -427,7 +427,7 @@ void KeyringService::SetImportedAccountForKeyring(
   imported_account.SetStringKey(kAccountAddress, info.account_address);
   imported_account.SetStringKey(kEncryptedPrivateKey,
                                 info.encrypted_private_key);
-  imported_account.SetIntKey(kCoinName, static_cast<int>(info.coin));
+  imported_account.SetIntKey(kCoinType, static_cast<int>(info.coin));
 
   base::Value imported_accounts(base::Value::Type::LIST);
   const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
@@ -458,10 +458,10 @@ KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
       VLOG(0) << __func__ << "Imported accounts corruppted";
       continue;
     }
-    mojom::BraveCoins coin = GetCoinForKeyring(id);
-    auto coin_name_value = imported_account.FindIntKey(kCoinName);
+    mojom::CoinType coin = GetCoinForKeyring(id);
+    auto coin_name_value = imported_account.FindIntKey(kCoinType);
     if (coin_name_value) {
-      coin = static_cast<mojom::BraveCoins>(*coin_name_value);
+      coin = static_cast<mojom::CoinType>(*coin_name_value);
     }
 
     result.push_back(ImportedAccountInfo(*account_name, *account_address,
@@ -828,7 +828,7 @@ KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
-                           mojom::BraveCoins::FILECOIN);
+                           mojom::CoinType::FILECOIN);
   SetImportedAccountForKeyring(prefs_, info, mojom::kFilecoinKeyringId);
 
   NotifyAccountsChanged();
@@ -860,7 +860,7 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
-                           mojom::BraveCoins::FILECOIN);
+                           mojom::CoinType::FILECOIN);
   SetImportedAccountForKeyring(prefs_, info, mojom::kFilecoinKeyringId);
 
   NotifyAccountsChanged();
@@ -1042,7 +1042,7 @@ absl::optional<std::string> KeyringService::ImportAccountForDefaultKeyring(
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_private_key),
-                           mojom::BraveCoins::ETH);
+                           mojom::CoinType::ETH);
   SetImportedAccountForKeyring(prefs_, info, mojom::kDefaultKeyringId);
 
   NotifyAccountsChanged();

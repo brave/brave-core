@@ -40,7 +40,7 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.BraveCoins.ETH
+          'coin': BraveWallet.CoinType.ETH
         },
         {
           'address': 'address for m/44\'/60\'/1\'/0/0',
@@ -48,7 +48,7 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.BraveCoins.ETH
+          'coin': BraveWallet.CoinType.ETH
         }],
       success: true
     }
@@ -65,7 +65,7 @@ test('Extracting accounts from legacy device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.BraveCoins.ETH
+          'coin': BraveWallet.CoinType.ETH
         },
         {
           'address': 'address for m/44\'/60\'/1\'/0',
@@ -73,7 +73,7 @@ test('Extracting accounts from legacy device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.BraveCoins.ETH
+          'coin': BraveWallet.CoinType.ETH
         }],
       success: true
     }

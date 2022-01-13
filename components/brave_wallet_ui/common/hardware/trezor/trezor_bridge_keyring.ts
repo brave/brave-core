@@ -42,8 +42,8 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
     return BraveWallet.TREZOR_HARDWARE_VENDOR
   }
 
-  coin = (): BraveWallet.BraveCoins => {
-    return BraveWallet.BraveCoins.ETH
+  coin = (): BraveWallet.CoinType => {
+    return BraveWallet.CoinType.ETH
   }
 
   isUnlocked = (): boolean => {

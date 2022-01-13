@@ -1758,13 +1758,13 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::BraveCoins::ETH));
+      mojom::CoinType::ETH));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger", "device1",
-      mojom::BraveCoins::ETH));
+      mojom::CoinType::ETH));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger", "device2",
-      mojom::BraveCoins::ETH));
+      mojom::CoinType::ETH));
 
   EXPECT_FALSE(observer.AccountsChangedFired());
   service.AddHardwareAccounts(std::move(new_accounts));
@@ -2010,7 +2010,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   std::string hardware_account = "0x1111111111111111111111111111111111111111";
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::BraveCoins::ETH));
+      mojom::CoinType::ETH));
   AddHardwareAccount(&service, std::move(new_accounts));
   EXPECT_TRUE(SetSelectedAccount(&service, &observer, hardware_account));
   observer.Reset();
@@ -2143,13 +2143,13 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
     const char* name;
     const char* vendor;
     const char* device_id;
-    mojom::BraveCoins coin;
+    mojom::CoinType coin;
   } hardware_accounts[] = {{"0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger",
-                            "device1", mojom::BraveCoins::ETH},
+                            "device1", mojom::CoinType::ETH},
                            {"0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger",
-                            "device1", mojom::BraveCoins::ETH},
+                            "device1", mojom::CoinType::ETH},
                            {"0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger",
-                            "device2", mojom::BraveCoins::ETH}};
+                            "device2", mojom::CoinType::ETH}};
 
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   for (const auto& it : hardware_accounts) {

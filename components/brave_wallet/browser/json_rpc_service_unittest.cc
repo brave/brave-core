@@ -774,7 +774,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   SetInterceptor("eth_getBalance", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}");
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::BraveCoins::ETH,
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0xb539d5"));
   base::RunLoop().RunUntilIdle();
@@ -783,7 +783,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::BraveCoins::ETH,
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -793,7 +793,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::BraveCoins::ETH,
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -803,7 +803,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::BraveCoins::ETH,
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));

@@ -68,7 +68,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
-    const result = await jsonRpcService.getBalance(address, BraveWallet.BraveCoins.ETH)
+    const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(normalizeNumericValue(result.balance))
     } else {
@@ -126,11 +126,11 @@ export async function getBuyAssets () {
   return (await blockchainRegistry.getBuyTokens(BraveWallet.MAINNET_CHAIN_ID)).tokens
 }
 
-export function getKeyringIdFromCoin (coin: BraveWallet.BraveCoins): BraveKeyrings {
-  if (coin === BraveWallet.BraveCoins.FILECOIN) {
+export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
+  if (coin === BraveWallet.CoinType.FILECOIN) {
     return BraveWallet.FILECOIN_KEYRING_ID
   }
-  assert(coin === BraveWallet.BraveCoins.ETH)
+  assert(coin === BraveWallet.CoinType.ETH)
   return BraveWallet.DEFAULT_KEYRING_ID
 }
 
@@ -142,7 +142,7 @@ export async function getKeyringIdFromAddress (address: string): Promise<string>
       return getKeyringIdFromCoin(account.coin)
     }
   }
-  return getKeyringIdFromCoin(BraveWallet.BraveCoins.ETH)
+  return getKeyringIdFromCoin(BraveWallet.CoinType.ETH)
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
@@ -170,7 +170,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const balanceInfo = await jsonRpcService.getBalance(account.address, BraveWallet.BraveCoins.ETH)
+      const balanceInfo = await jsonRpcService.getBalance(account.address, BraveWallet.CoinType.ETH)
       return balanceInfo
     }))
     await dispatch(WalletActions.nativeAssetBalancesUpdated({

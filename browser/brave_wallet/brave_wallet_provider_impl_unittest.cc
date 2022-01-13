@@ -224,7 +224,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-        mojom::BraveCoins::ETH));
+        mojom::CoinType::ETH));
 
     keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }

@@ -31,8 +31,8 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
   private app?: Eth
   private deviceId: string
 
-  coin = (): BraveWallet.BraveCoins => {
-    return BraveWallet.BraveCoins.ETH
+  coin = (): BraveWallet.CoinType => {
+    return BraveWallet.CoinType.ETH
   }
 
   type = (): HardwareVendor => {

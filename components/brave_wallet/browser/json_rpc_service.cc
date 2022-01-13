@@ -364,15 +364,15 @@ void JsonRpcService::OnGetBlockNumber(
 }
 
 void JsonRpcService::GetBalance(const std::string& address,
-                                mojom::BraveCoins coin,
+                                mojom::CoinType coin,
                                 JsonRpcService::GetBalanceCallback callback) {
-  if (coin == mojom::BraveCoins::ETH) {
+  if (coin == mojom::CoinType::ETH) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnEthGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
     return Request(eth_getBalance(address, "latest"), true,
                    std::move(internal_callback));
-  } else if (coin == mojom::BraveCoins::FILECOIN) {
+  } else if (coin == mojom::CoinType::FILECOIN) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnFilGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));

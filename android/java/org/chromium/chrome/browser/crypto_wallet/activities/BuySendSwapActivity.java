@@ -49,9 +49,9 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveCoins;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
 import org.chromium.brave_wallet.mojom.EthereumChain;
@@ -551,7 +551,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assert mJsonRpcService != null;
         mJsonRpcService.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                BraveCoins.ETH, (balance, error, errorMessage) -> {
+                CoinType.ETH, (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
                     if (error == ProviderError.SUCCESS) {
                         double currentBalance = Utils.fromHexWei(balance, 18);
@@ -628,7 +628,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             blockchainToken = mCurrentSwapToBlockchainToken;
         }
         if (blockchainToken == null || blockchainToken.contractAddress.isEmpty()) {
-            mJsonRpcService.getBalance(address, BraveCoins.ETH, (balance, error, errorMessage) -> {
+            mJsonRpcService.getBalance(address, CoinType.ETH, (balance, error, errorMessage) -> {
                 warnWhenError(TAG, "getBalance", error, errorMessage);
                 if (error != ProviderError.SUCCESS) {
                     return;

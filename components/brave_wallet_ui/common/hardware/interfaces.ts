@@ -8,7 +8,7 @@ import { HardwareVendor } from '../api/hardware_keyrings'
 import { HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
 
 export abstract class HardwareKeyring {
-  abstract coin (): BraveWallet.BraveCoins
+  abstract coin (): BraveWallet.CoinType
   abstract type (): HardwareVendor
   abstract isUnlocked (): boolean
   abstract unlock (): Promise<HardwareOperationResult>

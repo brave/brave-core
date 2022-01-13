@@ -70,7 +70,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                RequestCallback callback) override;
 
   void GetBalance(const std::string& address,
-                  mojom::BraveCoins coin,
+                  mojom::CoinType coin,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =

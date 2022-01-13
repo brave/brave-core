@@ -239,7 +239,7 @@ struct HardwareWalletAccount {
   string name;
   string hardware_vendor;
   string device_id;
-  BraveCoins coin;
+  CoinType coin;
 };
 
 struct HardwareInfo {
@@ -253,7 +253,7 @@ struct AccountInfo {
   string name;
   bool is_imported;
   HardwareInfo? hardware;
-  BraveCoins coin;
+  CoinType coin;
 };
 
 struct KeyringInfo {
@@ -538,7 +538,7 @@ const string kSolanaMainnet = "solana:0x65";
 const string kSolanaTestnet = "solana:0x66";
 const string kSolanaDevnet = "solana:0x67";
 
-enum BraveCoins {
+enum CoinType {
   ETH = 1,
   FILECOIN = 2
 };
@@ -589,7 +589,7 @@ interface JsonRpcService {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address, BraveCoins coin) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,

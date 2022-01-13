@@ -82,13 +82,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
     ImportedAccountInfo(const std::string& account_name,
                         const std::string& account_address,
                         const std::string& encrypted_private_key,
-                        mojom::BraveCoins coin);
+                        mojom::CoinType coin);
     ~ImportedAccountInfo();
     ImportedAccountInfo(const ImportedAccountInfo& other);
     std::string account_name;
     std::string account_address;
     std::string encrypted_private_key;
-    mojom::BraveCoins coin;
+    mojom::CoinType coin;
   };
   static void SetImportedAccountForKeyring(PrefService* prefs,
                                            const ImportedAccountInfo& info,
