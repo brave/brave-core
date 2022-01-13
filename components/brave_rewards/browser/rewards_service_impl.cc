@@ -397,7 +397,7 @@ void RewardsServiceImpl::Init(
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
-      prefs::kHideButton,
+      prefs::kShowButton,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
@@ -1393,19 +1393,19 @@ void RewardsServiceImpl::EnableGreaseLion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
 
-  const bool hide_button = profile_->GetPrefs()->GetBoolean(prefs::kHideButton);
+  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
   greaselion_service_->SetFeatureEnabled(
       greaselion::TWITTER_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          !hide_button);
+          show_button);
   greaselion_service_->SetFeatureEnabled(
       greaselion::REDDIT_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          !hide_button);
+          show_button);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          !hide_button);
+          show_button);
 }
 
 void RewardsServiceImpl::OnRulesReady(

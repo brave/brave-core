@@ -155,6 +155,9 @@ void RegisterProfilePrefsForMigration(
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
   // Added 05/2021
   registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
+
+  // Added 01/2022
+  registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -167,7 +170,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
+  registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);
 
