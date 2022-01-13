@@ -44,13 +44,13 @@
  *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/1'/0/0",
  *              "hardware_vendor": "ledger",
- *              "coin": 0 // Enum mojom::CoinType
+ *              "coin": 60 // Enum mojom::CoinType
  *           },
  *           "0x264Ef...6b8F1": {
  *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/2'/0/0",
  *              "hardware_vendor": "ledger",
- *              "coin": 0 // Enum mojom::CoinType
+ *              "coin": 60 // Enum mojom::CoinType
  *            }
  *        },
  *        device_name: "Ledger 123"
@@ -67,7 +67,7 @@
  *           "account_address": "t3vmv....ughsa",
  *           "account_name": "Filecoin",
  *           "encrypted_private_key": "9/Xb...X4IL",
- *           "coin": 1 // Enum mojom::CoinType
+ *           "coin": 461 // Enum mojom::CoinType
  *       }
  *     ],
  *   "password_encryptor_nonce": "xxx"
@@ -80,7 +80,7 @@
  *         "m/44'/60'/0'/0/0": {
  *               "account_name": "account 1",
  *               ...
- *               "coin": 0 // Enum mojom::CoinType
+ *               "coin": 60 // Enum mojom::CoinType
  *          },
  *          "m/44'/60'/0'/0/1": {
  *               "account_name": "account 2",
