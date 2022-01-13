@@ -19,6 +19,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kHandwritingRecognitionWebPlatformApiFinch,
      base::FEATURE_DISABLED_BY_DEFAULT},
