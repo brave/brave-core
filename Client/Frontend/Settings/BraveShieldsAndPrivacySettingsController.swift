@@ -8,6 +8,7 @@ import Static
 import Shared
 import BraveShared
 import BraveCore
+import class SwiftUI.UIHostingController
 
 private let log = Logger.browserLogger
 
@@ -38,6 +39,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         dataSource.sections = [
             shieldsSection,
             clearPrivateDataSection,
+            manageWebsiteDataSection,
             otherSettingsSection
         ]
     }
@@ -153,6 +155,22 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                 Row(text: Strings.clearDataNow, selection: { [unowned self] in
                     self.tappedClearPrivateData()
                 }, cellClass: CenteredButtonCell.self)
+            ]
+        )
+    }()
+    
+    private lazy var manageWebsiteDataSection: Section = {
+        return Section(
+            rows: [
+                Row(text: Strings.manageWebsiteDataTitle, selection: { [unowned self] in
+                    var view = ManageWebsiteDataView(onDismiss: { [weak self] in
+                        self?.dismiss(animated: true, completion: nil)
+                    })
+                    let controller = UIHostingController(rootView: view)
+                    // pushing SwiftUI with navigation/toolbars inside the PanModal is buggy…
+                    // presenting over context is also buggy (eats swipe gestures)
+                    self.present(controller, animated: true)
+                }, accessory: .disclosureIndicator)
             ]
         )
     }()
