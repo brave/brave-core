@@ -616,6 +616,7 @@ function Container (props: Props) {
             getERC20Allowance={getERC20Allowance}
             updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
             updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}
+            updateUnapprovedTransactionNonce={props.walletActions.updateUnapprovedTransactionNonce}
             gasEstimates={gasEstimates}
             fullTokenList={props.wallet.fullTokenList}
           />

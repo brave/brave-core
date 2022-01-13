@@ -391,6 +391,11 @@ provideStrings({
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
 
+  // Advanced transaction settings
+  braveWalletAdvancedTransactionSettings: 'Advanced settings',
+  braveWalletEditNonce: 'Nonce',
+  braveWalletEditNonceInfo: 'The nonce value will be auto-determined if this field is not specified.',
+
   // Edit permissions
   braveWalletEditPermissionsTitle: 'Edit permissions',
   braveWalletEditPermissionsDescription: 'Spend limit permission allows $1 to withdraw and spend up to the following amount:',

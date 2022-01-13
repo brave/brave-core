@@ -18,7 +18,8 @@ import {
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType,
-  TransactionStatusChanged
+  TransactionStatusChanged,
+  UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -587,6 +588,19 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), as
       'Failed to update unapproved transaction: ' +
       `id=${payload.txMetaId} ` +
       `allowance=${payload.allowance}`
+    )
+  }
+})
+
+handler.on(WalletActions.updateUnapprovedTransactionNonce.getType(), async (store: Store, payload: UpdateUnapprovedTransactionNonceType) => {
+  const { ethTxService } = getAPIProxy()
+
+  const result = await ethTxService.setNonceForUnapprovedTransaction(payload.txMetaId, payload.nonce)
+  if (!result.success) {
+    console.error(
+      'Failed to update unapproved transaction: ' +
+      `id=${payload.txMetaId} ` +
+      `nonce=${payload.nonce}`
     )
   }
 })
