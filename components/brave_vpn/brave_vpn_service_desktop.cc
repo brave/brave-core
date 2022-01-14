@@ -145,11 +145,11 @@ void BraveVpnServiceDesktop::ScheduleFetchRegionDataIfNeeded() {
 }
 
 void BraveVpnServiceDesktop::Shutdown() {
-  skus_service_.reset();
   BraveVpnService::Shutdown();
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  skus_service_.reset();
   observed_.Reset();
   receivers_.Clear();
   observers_.Clear();

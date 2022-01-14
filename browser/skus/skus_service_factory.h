@@ -11,8 +11,6 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
-class BraveVpnServiceFactory;
-
 namespace skus {
 
 class SkusServiceFactory : public BrowserContextKeyedServiceFactory {
@@ -29,7 +27,6 @@ class SkusServiceFactory : public BrowserContextKeyedServiceFactory {
 
  private:
   friend struct base::DefaultSingletonTraits<SkusServiceFactory>;
-  friend BraveVpnServiceFactory;
 
   SkusServiceFactory();
   ~SkusServiceFactory() override;

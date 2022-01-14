@@ -26,13 +26,11 @@ SkusServiceFactory* SkusServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!context || !base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+  auto* instance = GetInstance()->GetServiceForBrowserContext(context, true);
+  if (!instance) {
     return mojo::PendingRemote<mojom::SkusService>();
   }
-
-  return static_cast<skus::SkusServiceImpl*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+  return static_cast<skus::SkusServiceImpl*>(instance)->MakeRemote();
 }
 
 // static

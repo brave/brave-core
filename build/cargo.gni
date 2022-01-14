@@ -17,13 +17,13 @@ declare_args() {
   rustup_path = rebase_path("//brave/build/rustup")
 }
 
-lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
-lib_output_path =
-    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+rust_lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
+rust_lib_output_path =
+    "$rust_lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
 
 template("rust_ffi") {
   source_set(target_name) {
-    libs = [ lib_output_path ]
+    libs = [ rust_lib_output_path ]
 
     if (is_mac) {
       frameworks = [ "Security.framework" ]

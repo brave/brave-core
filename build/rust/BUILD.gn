@@ -12,8 +12,8 @@ cargo_build("rust_lib") {
     "lib.rs",
   ]
 
-  build_path = lib_build_path
-  output = lib_output_path
+  build_path = rust_lib_build_path
+  output = rust_lib_output_path
   manifest_path = "Cargo.toml"
 
   # ensure that we rebuild when the dependent crates change
@@ -33,14 +33,14 @@ if (is_mac) {
 
     inputs = [
       "//brave/build/rust/generate_unexport_list.py",
-      lib_output_path,
+      rust_lib_output_path,
     ]
 
     outputs = [ unexport_list_path ]
 
     args = [
       "--bin_path=" + mac_bin_path,
-      "--input=" + rebase_path(lib_output_path, root_build_dir),
+      "--input=" + rebase_path(rust_lib_output_path, root_build_dir),
       "--output=" + rebase_path(unexport_list_path, root_build_dir),
     ]
 
