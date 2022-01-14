@@ -593,6 +593,10 @@ const util = {
     }
 
     util.run('autoninja', ninjaOpts, options)
+
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['stat'], options)
+    }
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
