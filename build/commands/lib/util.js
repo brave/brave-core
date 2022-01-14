@@ -559,14 +559,18 @@ const util = {
     }
   },
 
-  buildTarget: (options = config.defaultOptions) => {
-    console.log('building ' + config.buildTarget + '...')
+  generateNinjaFiles: (options = config.defaultOptions) => {
+    console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
     util.runGnGen(options)
+  },
+
+  buildTarget: (options = config.defaultOptions) => {
+    console.log('building ' + config.buildTarget + '...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)

@@ -70,10 +70,11 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
-    util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
+    config.buildTarget = 'brave/test:' + suite
   } else {
-    util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)
+    config.buildTarget = suite
   }
+  util.buildTarget()
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
