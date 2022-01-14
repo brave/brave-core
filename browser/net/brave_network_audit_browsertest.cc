@@ -274,6 +274,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
+  // Load the NTP to check requests made from the JS widgets.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab")));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
   // Load a simple HTML page from the test server.
   GURL simple_url(embedded_test_server()->GetURL("/simple.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
