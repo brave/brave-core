@@ -33,6 +33,7 @@ struct User {
   std::string member_id;
   UserStatus status;
   bool bat_not_allowed;
+  bool customer_due_diligence_required;
 
   User();
   ~User();

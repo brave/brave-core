@@ -112,6 +112,16 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::CONTINUE);
   }
 
+  if (user.customer_due_diligence_required) {
+    BLOG(0, "Customer due diligence is required for the user!");
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
+    ledger_->uphold()->DisconnectWallet(
+        uphold_wallet->status == type::WalletStatus::VERIFIED
+            ? ledger::notifications::kWalletDisconnected
+            : "");
+    return callback(type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED);
+  }
+
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
