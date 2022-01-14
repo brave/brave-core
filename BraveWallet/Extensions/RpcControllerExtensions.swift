@@ -32,23 +32,23 @@ extension BraveWalletEthJsonRpcController {
         completion(nil)
       }
     }
-    // This will probably need to be changed to check if its native chain rather than ETH
-    // https://github.com/brave/brave-ios/issues/4429
-    if token.isETH {
-      balance(account.address, completion: convert)
-    } else if token.isErc20 {
-      chainId { [self] chainId in
+    network { [self] network in
+      if token.symbol == network.symbol {
+        balance(account.address, completion: convert)
+      } else if token.isErc20 {
         erc20TokenBalance(
-          token.contractAddress(in: chainId),
+          token.contractAddress(in: network),
           address: account.address,
           completion: convert
         )
+      } else if token.isErc721 {
+        erc721TokenBalance(token.contractAddress,
+                           tokenId: token.tokenId,
+                           accountAddress: account.address,
+                           completion: convert)
+      } else {
+        completion(nil)
       }
-    } else if token.isErc721 {
-      erc721TokenBalance(token.contractAddress, tokenId: token.tokenId, accountAddress: account.address,
-                         completion: convert)
-    } else {
-      completion(nil)
     }
   }
 }

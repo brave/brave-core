@@ -29,15 +29,16 @@ class SendTokenStoreTests: XCTestCase {
             walletService: TestBraveWalletService(),
             transactionController: TestEthTxController(),
             tokenRegistery: TestTokenRegistry(),
-            prefilledToken: .eth
+            prefilledToken: .previewToken
         )
-        XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.ERCToken.eth.symbol.lowercased())
+        XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.ERCToken.previewToken.symbol.lowercased())
     }
     
     func testFetchAssets() {
+        let testRpcController = TestEthJsonRpcController()
         let store = SendTokenStore(
             keyringController: TestKeyringController(),
-            rpcController: TestEthJsonRpcController(),
+            rpcController: testRpcController,
             walletService: TestBraveWalletService(),
             transactionController: TestEthTxController(),
             tokenRegistery: TestTokenRegistry(),
@@ -51,7 +52,9 @@ class SendTokenStoreTests: XCTestCase {
                 XCTFail("Token was nil")
                 return
             }
-            XCTAssert(token.isETH) // Should end up showing ETH as the default asset
+            testRpcController.network { network in
+                XCTAssertEqual(token.symbol, network.symbol)
+            }
         }.store(in: &cancellables)
         store.fetchAssets()
         waitForExpectations(timeout: 3) { error in
@@ -66,7 +69,7 @@ class SendTokenStoreTests: XCTestCase {
             walletService: TestBraveWalletService(),
             transactionController: TestEthTxController(),
             tokenRegistery: TestTokenRegistry(),
-            prefilledToken: .eth
+            prefilledToken: .previewToken
         )
         store.setUpTest()
         let ex = expectation(description: "send-eth-eip1559-transaction")
@@ -87,7 +90,7 @@ class SendTokenStoreTests: XCTestCase {
             walletService: TestBraveWalletService(),
             transactionController: TestEthTxController(),
             tokenRegistery: TestTokenRegistry(),
-            prefilledToken: .eth
+            prefilledToken: .previewToken
         )
         store.setUpTest()
         
@@ -135,7 +138,7 @@ class SendTokenStoreTests: XCTestCase {
             walletService: TestBraveWalletService(),
             transactionController: TestEthTxController(),
             tokenRegistery: TestTokenRegistry(),
-            prefilledToken: .eth
+            prefilledToken: .previewToken
         )
         store.setUpTest()
         

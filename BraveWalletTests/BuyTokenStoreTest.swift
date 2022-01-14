@@ -22,9 +22,9 @@ class BuyTokenStoreTests: XCTestCase {
         store = BuyTokenStore(
             tokenRegistry: TestTokenRegistry(),
             rpcController: TestEthJsonRpcController(),
-            prefilledToken: .eth
+            prefilledToken: .previewToken
         )
-        XCTAssertEqual(store.selectedBuyToken?.symbol.lowercased(), BraveWallet.ERCToken.eth.symbol.lowercased())
+        XCTAssertEqual(store.selectedBuyToken?.symbol.lowercased(), BraveWallet.ERCToken.previewToken.symbol.lowercased())
     }
     
 }

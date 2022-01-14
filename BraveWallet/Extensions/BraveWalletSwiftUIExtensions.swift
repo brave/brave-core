@@ -24,19 +24,28 @@ extension BraveWallet.EthereumChain: Identifiable {
   public var id: String {
     chainId
   }
+  
+  public var nativeToken: BraveWallet.ERCToken {
+    .init(contractAddress: "",
+          name: symbolName,
+          logo: iconUrls.first ?? "",
+          isErc20: false,
+          isErc721: false,
+          symbol: symbol,
+          decimals: decimals,
+          visible: false,
+          tokenId: ""
+    )
+  }
 }
 
 extension BraveWallet.ERCToken: Identifiable {
   public var id: String {
     symbol.lowercased()
   }
-  /// Whether or not this ERCToken is actually ETH
-  public var isETH: Bool {
-    contractAddress.isEmpty && symbol.lowercased() == "eth"
-  }
   
-  public func contractAddress(in chainId: String) -> String {
-    if chainId == BraveWallet.RopstenChainId {
+  public func contractAddress(in network: BraveWallet.EthereumChain) -> String {
+    if network.chainId == BraveWallet.RopstenChainId {
       switch symbol.uppercased() {
       case "ETH": return BraveWallet.ethSwapAddress
       case "DAI" : return BraveWallet.daiSwapAddress
@@ -44,7 +53,10 @@ extension BraveWallet.ERCToken: Identifiable {
       default: return contractAddress
       }
     } else {
-      return isETH ? BraveWallet.ethSwapAddress : contractAddress
+      // ETH special swap address in Ropsten network
+      // Only checking token.symbol with selected network.symbol is sufficient
+      // since there is no swap support for custom networks.
+      return symbol == network.symbol ? BraveWallet.ethSwapAddress : contractAddress
     }
   }
 }

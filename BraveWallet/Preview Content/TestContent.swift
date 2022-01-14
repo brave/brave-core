@@ -8,6 +8,20 @@ import BraveCore
 
 #if DEBUG
 
+extension BraveWallet.ERCToken {
+  static let previewToken: BraveWallet.ERCToken = .init(
+    contractAddress: "",
+    name: "Ethereum",
+    logo: "",
+    isErc20: false,
+    isErc721: false,
+    symbol: "ETH",
+    decimals: 18,
+    visible: false,
+    tokenId: ""
+  )
+}
+
 extension BraveWallet.AccountInfo {
   static var previewAccount: BraveWallet.AccountInfo {
     let account = BraveWallet.AccountInfo()

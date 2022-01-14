@@ -29,27 +29,33 @@ struct AssetIconView: View {
       )
   }
   
-  private var image: Image? {
-    if token.isETH {
-      // Use bundled ETH icon
-      return Image("eth-icon")
+  private var localImage: Image? {
+    for logo in [token.logo, token.symbol.lowercased()] {
+      if let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
+         case let imageURL = baseURL.appendingPathComponent(logo),
+         let image = UIImage(contentsOfFile: imageURL.path) {
+        return Image(uiImage: image)
+      }
     }
-    guard let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
-          case let imageURL = baseURL.appendingPathComponent(token.logo),
-          let image = UIImage(contentsOfFile: imageURL.path) else {
-            return nil
-          }
-    return Image(uiImage: image)
+    return nil
   }
   
   var body: some View {
     Group {
-      if let image = image {
+      if let image = localImage {
         image
           .resizable()
           .aspectRatio(contentMode: .fit)
       } else {
-        fallbackMonogram
+        WebImageReader(url: URL(string: token.logo)) { image, isFinished in
+          if let image = image {
+            Image(uiImage: image)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+          } else {
+            fallbackMonogram
+          }
+        }
       }
     }
     .frame(width: length, height: length)
@@ -59,7 +65,7 @@ struct AssetIconView: View {
 
 struct AssetIconView_Previews: PreviewProvider {
   static var previews: some View {
-    AssetIconView(token: .eth)
+    AssetIconView(token: .previewToken)
       .previewLayout(.sizeThatFits)
       .padding()
       .previewSizeCategories()
