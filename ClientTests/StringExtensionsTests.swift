@@ -85,4 +85,10 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("https://https://test".withSecureUrlScheme, "https://test")
         XCTAssertEqual("https://http://test".withSecureUrlScheme, "https://test")
     }
+    
+    func testUnquotedIfNecessary() {
+        XCTAssertEqual("\"test\"".unquotedIfNecessary, "test")
+        XCTAssertEqual("'test'".unquotedIfNecessary, "test")
+        XCTAssertEqual("test".unquotedIfNecessary, "test")
+    }
 }
