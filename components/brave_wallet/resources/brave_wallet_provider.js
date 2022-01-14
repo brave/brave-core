@@ -15,8 +15,24 @@
       BraveWeb3ProviderEventEmitter.removeListener
   window.ethereum.removeAllListeners =
       BraveWeb3ProviderEventEmitter.removeAllListeners
-  // For webcompat
   window.ethereum.isMetaMask = true
+  Object.defineProperty(window, 'ethereum', {
+    value: new Proxy(window.ethereum, {
+      get: (...args) => {
+        return Reflect.get(...args)
+      },
+      set: (...args) => {
+        return Reflect.set(...args)
+      },
+      deleteProperty: (target, prop) => {
+        return true
+      }
+    }),
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  })
+
   var alreadyLogged = false
   var logweb3Warning = () => {
     if (!alreadyLogged) {
