@@ -70,9 +70,14 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
-    util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
+    config.buildTarget = 'brave/test:' + suite
   } else {
-    util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)
+    config.buildTarget = suite
+  }
+  if (config.use_goma) {
+    util.buildTarget()
+  } else {
+    util.run('autoninja', ['-C', config.outputDir, config.buildTarget], config.defaultOptions)
   }
 
   if (config.targetOS === 'ios') {

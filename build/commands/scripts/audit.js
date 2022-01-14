@@ -20,4 +20,4 @@ let ninjaOpts = [
   '-C', outputDir, 'brave:audit_deps',
   ...config.extraNinjaOpts
 ]
-util.run('ninja', ninjaOpts, options)
+util.run('autoninja', ninjaOpts, options)

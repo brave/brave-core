@@ -584,10 +584,19 @@ const util = {
         util.run('goma_auth', ['login'], options)
       }
       util.run('goma_ctl', ['ensure_start'], options)
-      ninjaOpts.push('-j', config.gomaJValue)
+      util.run('goma_ctl', ['update_hook'], options)
+    }
+
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['showflags'], options)
+      util.run('goma_ctl', ['stat'], options)
     }
 
     util.run('autoninja', ninjaOpts, options)
+
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['stat'], options)
+    }
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
