@@ -74,6 +74,9 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
   } else {
     config.buildTarget = suite
   }
+  // TEMPORARY TEST
+  config.use_goma = process.platform !== 'darwin'
+  // ^^ REMOVE THIS ^^
   if (config.use_goma) {
     util.buildTarget()
   } else {
