@@ -10,7 +10,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/common/channel_info.h"
-#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
@@ -67,7 +66,9 @@ int OnHeadersReceived_IPFSRedirectWork(
   if (ctx->ipfs_auto_fallback && !api_gateway && response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
-      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {
+      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host()) &&
+      // Do not redirect if the frame is not ipfs/ipns
+      IsIPFSScheme(ctx->initiator_url)) {
     GURL::Replacements replacements;
     replacements.SetPathStr(ipfs_path);
     GURL new_url = ctx->ipfs_gateway_url.ReplaceComponents(replacements);
