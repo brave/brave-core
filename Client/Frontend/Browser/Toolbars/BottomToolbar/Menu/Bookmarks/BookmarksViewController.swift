@@ -39,15 +39,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         $0.target = self
         $0.action = #selector(importExportAction(_:))
     }
-    
-    private let spinner = UIActivityIndicatorView().then {
-        $0.snp.makeConstraints { make in
-            make.size.equalTo(24)
-        }
-        $0.hidesWhenStopped = true
-        $0.isHidden = true
-    }
-    
+
     private var leftToolbarItems: [UIBarButtonItem?] {
         var items: [UIBarButtonItem?] = [.fixedSpace(5)]
         if currentFolder == nil {
@@ -63,23 +55,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         }
         
         return items
-    }
-    
-    private var isLoading = false {
-        didSet {
-            if isLoading {
-                view.addSubview(spinner)
-                spinner.snp.makeConstraints {
-                    $0.center.equalTo(view.snp.center)
-                }
-                
-                spinner.startAnimating()
-                spinner.isHidden = false
-            } else {
-                spinner.stopAnimating()
-                spinner.removeFromSuperview()
-            }
-        }
     }
     
     private weak var addBookmarksFolderOkAction: UIAlertAction?
@@ -186,6 +161,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             $0.register(BookmarkTableViewCell.self,
                            forCellReuseIdentifier: String(describing: BookmarkTableViewCell.self))
         }
+        
+        definesPresentationContext = true
     }
     
     override func accessibilityPerformEscape() -> Bool {

@@ -13,7 +13,7 @@ protocol TabTrayDelegate: AnyObject {
     func tabOrderChanged()
 }
 
-class TabTrayController: UIViewController {
+class TabTrayController: LoadingViewController {
     
     var tabTrayView: View {
         return view as! View // swiftlint:disable:this force_cast
@@ -49,6 +49,13 @@ class TabTrayController: UIViewController {
         }
     }
     
+    private var searchTabTrayTimer: Timer?
+    private var isTabTrayBeingSearched = false
+    private let tabTraySearchController = UISearchController(searchResultsController: nil)
+    private var tabTraySearchQuery = ""
+    
+    private lazy var emptyStateOverlayView: UIView = EmptyStateOverlayView(description: Strings.noSearchResultsfound)
+
     init(tabManager: TabManager) {
         self.tabManager = tabManager
         super.init(nibName: nil, bundle: nil)
@@ -69,11 +76,32 @@ class TabTrayController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        definesPresentationContext = true
+
+        let searchBarView = TabTraySearchBar(searchBar: tabTraySearchController.searchBar).then {
+            $0.searchBar.autocapitalizationType = .none
+            $0.searchBar.autocorrectionType = .no
+            $0.searchBar.placeholder = Strings.tabTraySearchBarTitle
+        }
+        
+        tabTraySearchController.do {
+            $0.searchResultsUpdater = self
+            $0.obscuresBackgroundDuringPresentation = false
+            $0.delegate = self
+            // Don't hide the navigation bar because the search bar is in it.
+            $0.hidesNavigationBarDuringPresentation = false
+        }
+        
+        navigationItem.do {
+            // Place the search bar in the navigation item's title view.
+            $0.titleView = searchBarView
+            $0.hidesSearchBarWhenScrolling = true
+        }
+        
         tabManager.addDelegate(self)
         
         tabTrayView.collectionView.do {
             $0.register(TabCell.self, forCellWithReuseIdentifier: TabCell.identifier)
-            
             $0.dataSource = dataSource
             $0.delegate = self
             $0.dragDelegate = self
@@ -88,6 +116,14 @@ class TabTrayController: UIViewController {
             $0.newTabButton.addTarget(self, action: #selector(newTabAction), for: .touchUpInside)
             $0.privateModeButton.addTarget(self, action: #selector(togglePrivateModeAction), for: .touchUpInside)
         }
+        
+        navigationController?.isToolbarHidden = false
+        
+        toolbarItems = [UIBarButtonItem(customView: tabTrayView.privateModeButton),
+                        UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+                        UIBarButtonItem(customView: tabTrayView.newTabButton),
+                        UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+                        UIBarButtonItem(customView: tabTrayView.doneButton)]
     }
     
     private var initialScrollCompleted = false
@@ -110,11 +146,13 @@ class TabTrayController: UIViewController {
     
     // MARK: Snapshot handling
     
-    private func applySnapshot() {
+    private func applySnapshot(for query: String? = nil) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(tabManager.tabsForCurrentMode)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        snapshot.appendItems(tabManager.tabsForCurrentMode(for: query))
+        dataSource.apply(snapshot, animatingDifferences: true) { [unowned self] in
+            self.updateEmptyPanelState()
+        }
     }
     
     /// Reload the data source even if no changes are present. Use with caution.
@@ -148,19 +186,22 @@ class TabTrayController: UIViewController {
     // MARK: - Actions
     
     @objc func doneAction() {
+        tabTraySearchController.isActive = false
+
         dismiss(animated: true)
     }
     
     @objc func newTabAction() {
-        let isPrivateModeInfoShowing = tabTrayView.isPrivateModeInfoShowing
-        
+        tabTraySearchController.isActive = false
+                
         if privateMode {
             tabTrayView.hidePrivateModeInfo()
+            navigationController?.setNavigationBarHidden(false, animated: false)
         }
         
         // If private mode info is showing it means we already added one tab.
         // So when user taps on the 'new tab' button we do nothing, only dismiss the view.
-        if isPrivateModeInfoShowing {
+        if tabTrayView.isPrivateModeInfoShowing {
             dismiss(animated: true)
         } else {
             tabManager.addTabAndSelect(isPrivate: privateMode)
@@ -168,6 +209,8 @@ class TabTrayController: UIViewController {
     }
     
     @objc func togglePrivateModeAction() {
+        tabTraySearchController.isActive = false
+
         tabManager.willSwitchTabMode(leavingPBM: privateMode)
         privateMode.toggle()
         // When we switch from Private => Regular make sure we reset _selectedIndex, fix for bug #888
@@ -183,9 +226,12 @@ class TabTrayController: UIViewController {
             // So when you dismiss the modal, correct tab and url is showed.
             tabManager.selectTab(tabManager.tabsForCurrentMode.first)
         }
+        
+        // Disable Search when Private mode info is on
+        navigationController?.setNavigationBarHidden(privateMode, animated: false)
     }
     
-    func remove(tab: Tab) {
+    private func remove(tab: Tab) {
         tabManager.removeTab(tab)
         applySnapshot()
     }
@@ -194,9 +240,28 @@ class TabTrayController: UIViewController {
         tabManager.removeTabsWithUndoToast(tabManager.tabsForCurrentMode)
         applySnapshot()
     }
+        
+    private func updateEmptyPanelState() {
+        if dataSource.snapshot().numberOfItems == 0, isTabTrayBeingSearched {
+            showEmptyPanelState()
+        } else {
+            emptyStateOverlayView.removeFromSuperview()
+        }
+    }
+    
+    private func showEmptyPanelState() {
+        if emptyStateOverlayView.superview == nil {
+            view.addSubview(emptyStateOverlayView)
+            view.bringSubviewToFront(emptyStateOverlayView)
+            emptyStateOverlayView.snp.makeConstraints {
+                $0.edges.equalTo(tabTrayView.collectionView)
+            }
+        }
+    }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: UICollectionViewDelegate
+
 extension TabTrayController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let tab = dataSource.itemIdentifier(for: indexPath) else { return }
@@ -205,7 +270,8 @@ extension TabTrayController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - TabManagerDelegate
+// MARK: TabManagerDelegate
+
 extension TabTrayController: TabManagerDelegate {
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
         applySnapshot()
@@ -236,9 +302,8 @@ extension TabTrayController: TabManagerDelegate {
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) { }
 }
 
-// MARK: - Drag and Drop
-
 // MARK: UICollectionViewDragDelegate
+
 extension TabTrayController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         
@@ -253,6 +318,7 @@ extension TabTrayController: UICollectionViewDragDelegate {
 }
 
 // MARK: UICollectionViewDropDelegate
+
 extension TabTrayController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         performDropWith coordinator: UICollectionViewDropCoordinator) {
@@ -283,7 +349,7 @@ extension TabTrayController: UICollectionViewDropDelegate {
     }
 }
 
-// MARK: - UIScrollViewAccessibilityDelegate
+// MARK: UIScrollViewAccessibilityDelegate
 
 extension TabTrayController: UIScrollViewAccessibilityDelegate {
     func accessibilityScrollStatus(for scrollView: UIScrollView) -> String? {
@@ -320,5 +386,81 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
         } else {
             return String(format: Strings.tabTrayMultiTabPositionFormatVoiceOverText, NSNumber(value: firstTabRow as Int), NSNumber(value: lastTabRow), NSNumber(value: tabCount))
         }
+    }
+}
+
+// MARK: UISearchResultUpdating
+
+extension TabTrayController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text else { return }
+
+        invalidateSearchTimer()
+        
+        searchTabTrayTimer =
+            Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(fetchSearchResults(timer:)), userInfo: query, repeats: false)
+    }
+    
+    @objc private func fetchSearchResults(timer: Timer) {
+        guard let query = timer.userInfo as? String else {
+            tabTraySearchQuery = ""
+            return
+        }
+        
+        tabTraySearchQuery = query
+        applySnapshot(for: tabTraySearchQuery)
+    }
+    
+    private func invalidateSearchTimer() {
+        if searchTabTrayTimer != nil {
+            searchTabTrayTimer?.invalidate()
+            searchTabTrayTimer = nil
+        }
+    }
+}
+
+// MARK: UISearchControllerDelegate
+
+extension TabTrayController: UISearchControllerDelegate {
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        isTabTrayBeingSearched = true
+        tabTraySearchQuery = ""
+        tabTrayView.collectionView.reloadData()
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        invalidateSearchTimer()
+        isTabTrayBeingSearched = false
+        tabTrayView.collectionView.reloadData()
+    }
+}
+
+// MARK: TabTraySearchBar
+
+class TabTraySearchBar: UIView {
+    let searchBar: UISearchBar
+    
+    init(searchBar: UISearchBar) {
+        self.searchBar = searchBar
+        super .init(frame: .zero)
+        addSubview(searchBar)
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        searchBar.frame = bounds
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        // This is done to adjust the frame of a UISearchBar inside of UISearchController
+        // Adjusting the bar frame directly doesnt work so had to create a custom view with UISearchBar
+        .init(width: size.width - 20, height: size.height)
     }
 }

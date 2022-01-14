@@ -20,29 +20,6 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             : Strings.History.historyEmptyStateTitle,
         icon: #imageLiteral(resourceName: "emptyHistory"))
 
-    private let spinner = UIActivityIndicatorView().then {
-        $0.snp.makeConstraints { make in
-            make.size.equalTo(24)
-        }
-        $0.hidesWhenStopped = true
-        $0.isHidden = true
-    }
-    
-    private var isLoading: Bool = false {
-        didSet {
-            if isLoading {
-                self.view.addSubview(spinner)
-                self.spinner.snp.makeConstraints {
-                    $0.center.equalTo(view.snp.center)
-                }
-                self.spinner.startAnimating()
-            } else {
-                self.spinner.stopAnimating()
-                self.spinner.removeFromSuperview()
-            }
-        }
-    }
-
     private let historyAPI: BraveHistoryAPI
     
     var historyFRC: HistoryV2FetchResultsController?

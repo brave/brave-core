@@ -14,6 +14,10 @@ extension TabTrayController {
         private struct UX {
             static let regularCellHeight = 192.0
             static let largeCellHeight = 256.0
+            static let itemInset = 6.0
+            static let sectionInset = 4.0
+            static let buttonEdgeInset = 10.0
+            static let buttonStackLayoutMargin = 16.0
         }
         
         private func generateLayout(numberOfColumns: Int,
@@ -22,7 +26,7 @@ extension TabTrayController {
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = .init(top: 6, leading: 6, bottom: 6, trailing: 6)
+            item.contentInsets = .init(top: UX.itemInset, leading: UX.itemInset, bottom: UX.itemInset, trailing: UX.itemInset)
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -33,6 +37,7 @@ extension TabTrayController {
                 count: numberOfColumns)
             
             let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = .init(top: UX.sectionInset, leading: UX.sectionInset, bottom: UX.sectionInset, trailing: UX.sectionInset)
             let layout = UICollectionViewCompositionalLayout(section: section)
             return layout
         }
@@ -47,7 +52,7 @@ extension TabTrayController {
             $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
             $0.accessibilityIdentifier = "TabTrayController.addTabButton"
             $0.tintColor = .braveLabel
-            $0.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 10)
+            $0.contentEdgeInsets = .init(top: 0, left: UX.buttonEdgeInset, bottom: 0, right: UX.buttonEdgeInset)
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         }
         
@@ -65,7 +70,6 @@ extension TabTrayController {
         let privateModeButton = PrivateModeButton().then {
             $0.titleLabel?.font = .preferredFont(forTextStyle: .body)
             $0.titleLabel?.adjustsFontForContentSizeCategory = true
-            $0.titleLabel?.adjustsFontSizeToFitWidth = true
             $0.contentHorizontalAlignment = .left
             $0.setTitle(Strings.private, for: .normal)
             $0.tintColor = .braveLabel
@@ -85,39 +89,22 @@ extension TabTrayController {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
-            backgroundColor = .secondaryBraveBackground
+            backgroundColor = .braveBackground
             accessibilityLabel = Strings.tabTrayAccessibilityLabel
-            
-            let buttonsStackView = UIStackView().then {
-                $0.distribution = .equalSpacing
-                $0.addStackViewItems(
-                    .view(privateModeButton),
-                    .view(newTabButton),
-                    .view(doneButton)
-                )
-                $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-                $0.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-                $0.isLayoutMarginsRelativeArrangement = true
-            }
             
             let stackView = UIStackView().then {
                 $0.axis = .vertical
                 $0.spacing = 0
                 $0.addStackViewItems(
                     .view(privateModeInfo),
-                    .view(collectionView),
-                    .customSpace(4),
-                    .view(buttonsStackView))
+                    .view(collectionView))
                 $0.isAccessibilityElement = false
-            }
-            
-            privateModeButton.snp.makeConstraints {
-                $0.width.equalTo(doneButton.snp.width)
             }
             
             addSubview(stackView)
             stackView.snp.makeConstraints {
-                $0.edges.equalTo(self.safeArea.edges).inset(8)
+                $0.top.left.right.equalToSuperview()
+                $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
             }
             
             privateModeInfo.isHidden = true
