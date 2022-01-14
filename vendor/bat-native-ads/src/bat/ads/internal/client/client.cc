@@ -238,10 +238,10 @@ AdContentLikeActionType Client::ToggleAdThumbDown(
   return like_action_type;
 }
 
-AdContentLikeActionType Client::GetAdContentLikeActionTypeForSegment(
-    const std::string& segment) {
+AdContentLikeActionType Client::GetAdContentLikeActionTypeForAdvertiser(
+    const std::string& advertiser_id) {
   for (const auto& element : client_->ads_shown_history) {
-    if (element.category_content.category == segment) {
+    if (element.ad_content.advertiser_id == advertiser_id) {
       return element.ad_content.like_action_type;
     }
   }
