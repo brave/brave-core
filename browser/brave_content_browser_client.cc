@@ -472,7 +472,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
 
-  map->Add<skus::mojom::SkusService>(base::BindRepeating(&MaybeBindSkusSdkImpl));
+  map->Add<skus::mojom::SkusService>(
+      base::BindRepeating(&MaybeBindSkusSdkImpl));
 
 #if !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<

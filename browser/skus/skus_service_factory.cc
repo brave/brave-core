@@ -5,6 +5,8 @@
 
 #include "brave/browser/skus/skus_service_factory.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/skus/browser/skus_service_impl.h"

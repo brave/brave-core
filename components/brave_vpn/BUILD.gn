@@ -116,6 +116,7 @@ source_set("unit_tests") {
       "//base",
       "//brave/components/skus/browser",
       "//brave/components/skus/common",
+      "//brave/components/skus/common:mojom",
       "//components/prefs:test_support",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",

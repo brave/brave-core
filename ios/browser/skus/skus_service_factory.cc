@@ -6,7 +6,7 @@
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
 #include "base/feature_list.h"
-#include "brave/components/skus/browser/skus_service.h"
+#include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -26,7 +26,7 @@ mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForBrowserState(
   if (!service) {
     return mojo::PendingRemote<mojom::SkusService>();
   }
-  return static_cast<skus::SkusService*>(service)->MakeRemote();
+  return static_cast<skus::SkusServiceImpl*>(service)->MakeRemote();
 }
 
 // static
@@ -52,7 +52,7 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   if (browser_state->IsOffTheRecord()) {
     return nullptr;
   }
-  std::unique_ptr<SkusService> sku_service(new SkusService(
+  std::unique_ptr<skus::SkusServiceImpl> sku_service(new skus::SkusServiceImpl(
       browser_state->GetPrefs(), browser_state->GetSharedURLLoaderFactory()));
   return sku_service;
 }

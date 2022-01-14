@@ -6,6 +6,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/features.h"
+#include "brave/components/skus/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
@@ -14,7 +15,8 @@
 class BraveVPNPanelControllerTest : public DialogBrowserTest {
  public:
   BraveVPNPanelControllerTest() {
-    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+    scoped_feature_list_.InitWithFeatures(
+        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
   }
 
   ~BraveVPNPanelControllerTest() override = default;
