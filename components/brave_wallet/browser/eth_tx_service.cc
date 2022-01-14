@@ -828,13 +828,16 @@ void EthTxService::SetNonceForUnapprovedTransaction(
     return;
   }
 
-  uint256_t nonce_uint;
-  if (!HexValueToUint256(nonce, &nonce_uint)) {
-    std::move(callback).Run(false);
-    return;
+  if (nonce.empty()) {
+    tx_meta->tx->set_nonce(absl::nullopt);
+  } else {
+    uint256_t nonce_uint;
+    if (!HexValueToUint256(nonce, &nonce_uint)) {
+      std::move(callback).Run(false);
+      return;
+    }
+    tx_meta->tx->set_nonce(nonce_uint);
   }
-
-  tx_meta->tx->set_nonce(nonce_uint);
   tx_state_manager_->AddOrUpdateTx(*tx_meta);
   NotifyUnapprovedTxUpdated(tx_meta.get());
   std::move(callback).Run(true);

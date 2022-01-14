@@ -147,6 +147,7 @@ class TestEthTxServiceObserver
   mojo::PendingRemote<brave_wallet::mojom::EthTxServiceObserver> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
+  void SetExpectedNonce(const std::string& nonce) { expected_nonce_ = nonce; }
 
  private:
   std::string expected_nonce_;
@@ -759,7 +760,7 @@ TEST_F(EthTxServiceUnitTest, SetNonceForUnapprovedTransaction) {
   TestEthTxServiceObserver observer("0x3", "0x11", "0x22");
   eth_tx_service_->AddObserver(observer.GetReceiver());
 
-  // Change the data
+  // Change the nonce
   base::RunLoop run_loop3;
   eth_tx_service_->SetNonceForUnapprovedTransaction(
       tx_meta_id, "0x3", base::BindLambdaForTesting([&](bool success) {
@@ -775,6 +776,24 @@ TEST_F(EthTxServiceUnitTest, SetNonceForUnapprovedTransaction) {
   tx_meta = eth_tx_service_->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx->nonce(), 3ULL);
+
+  // Change the nonce back to blank
+  observer.SetExpectedNonce("");
+  base::RunLoop run_loop4;
+  eth_tx_service_->SetNonceForUnapprovedTransaction(
+      tx_meta_id, "", base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        run_loop4.Quit();
+      }));
+  run_loop4.Run();
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.TxUpdated());
+
+  // Get the updated TX.
+  tx_meta = eth_tx_service_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->nonce(), absl::nullopt);
 }
 
 TEST_F(EthTxServiceUnitTest, ValidateTxData) {
