@@ -32,7 +32,6 @@ mojom_wrappers("wallet_mojom_wrappers") {
   mojom_target = "//brave/components/brave_wallet/common:mojom"
   mojom_file = "//brave/components/brave_wallet/common/brave_wallet.mojom"
   exclude_types = [
-    "BraveWalletProvider",
     "PageHandlerFactory",
     "PanelHandlerFactory",
   ]
