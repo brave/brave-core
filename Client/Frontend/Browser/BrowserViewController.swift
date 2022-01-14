@@ -1972,7 +1972,7 @@ extension BrowserViewController: TabDelegate {
         let noImageModeHelper = NoImageModeHelper(tab: tab)
         tab.addContentScript(noImageModeHelper, name: NoImageModeHelper.name())
         
-        let printHelper = PrintHelper(tab: tab)
+        let printHelper = PrintHelper(browserController: self, tab: tab)
         tab.addContentScript(printHelper, name: PrintHelper.name(), sandboxed: false)
 
         let customSearchHelper = CustomSearchHelper(tab: tab)
