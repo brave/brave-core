@@ -833,6 +833,11 @@ interface BraveWalletServiceObserver {
   OnNetworkListChanged();
 };
 
+interface BraveWalletServiceDappObserver {
+  OnShowPanel();
+  OnShowWalletOnboarding();
+};
+
 struct SignMessageRequest {
   int32 id;
   string address;
@@ -858,6 +863,9 @@ struct AddSuggestTokenRequest {
 interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
+
+  // Adds a Dapp observer for BraveWalletService. Used on mobile only for now
+  AddDappObserver(pending_remote<BraveWalletServiceDappObserver> observer);
 
   // Obtains the user assets for the specified chain ID
   GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
