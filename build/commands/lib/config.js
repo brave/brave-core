@@ -879,6 +879,15 @@ Config.prototype.update = function (options) {
   if (options.target) {
     this.buildTarget = options.target
   }
+
+  if (this.use_goma && this.gomaServerHost) {
+    if (!this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
+      this.extraNinjaOpts.push('-j', this.gomaJValue)
+      console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
+    } else {
+      console.log('using goma with manual j value at ' + this.gomaServerHost)
+    }
+  }
 }
 
 Config.prototype.getCachePath = function () {
@@ -914,9 +923,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     if (this.use_goma && this.gomaServerHost) {
       env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
       env.GOMA_SERVER_HOST = this.gomaServerHost
-      // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
-      // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)
-      console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
