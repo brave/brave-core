@@ -1,13 +1,12 @@
 diff --git a/third_party/blink/renderer/core/css/offscreen_font_selector.h b/third_party/blink/renderer/core/css/offscreen_font_selector.h
-index 630ad8fe392fda9f13b8b071f8f6da3fc80bd15e..67dff8bb4e1108868dfb5f3193920988da3a568f 100644
+index 4bc60a8b330419f3587052534232509c0affff5d..6682758391ad58c158d601a99a17d5e37dbe8512 100644
 --- a/third_party/blink/renderer/core/css/offscreen_font_selector.h
 +++ b/third_party/blink/renderer/core/css/offscreen_font_selector.h
-@@ -90,6 +90,8 @@ class CORE_EXPORT OffscreenFontSelector : public FontSelector {
-       const FontDescription&,
-       const AtomicString& passed_family) override;
+@@ -87,6 +87,7 @@ class CORE_EXPORT OffscreenFontSelector : public CSSFontSelectorBase {
  
-+  bool AllowFontFamily(const AtomicString& family) override;
-+
-   ExecutionContext* GetExecutionContext() const override {
-     return worker_ ? worker_->GetExecutionContext() : nullptr;
-   }
+   void Trace(Visitor*) const override;
+ 
++  BRAVE_OFFSCREEN_FONT_SELECTOR_H
+  protected:
+   UseCounter* GetUseCounter() override;
+   void DispatchInvalidationCallbacks();

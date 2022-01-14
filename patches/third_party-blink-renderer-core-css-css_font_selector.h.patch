@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/css/css_font_selector.h b/third_party/blink/renderer/core/css/css_font_selector.h
-index bee4428dd0cf1316f724f8ec6a9a1dde653719fe..fbee03cee8cd2b15af4b814bb3ffef2d4e1933be 100644
+index 1233474eff0e207fd90b695309e5c88a5cd94f0c..515b37ae666f20a34aa7a01f21ef09e9144a81e2 100644
 --- a/third_party/blink/renderer/core/css/css_font_selector.h
 +++ b/third_party/blink/renderer/core/css/css_font_selector.h
-@@ -93,6 +93,7 @@ class CORE_EXPORT CSSFontSelector : public FontSelector {
-                     const FontDataForRangeSet&) override;
-   bool IsPlatformFamilyMatchAvailable(const FontDescription&,
-                                       const AtomicString& family) override;
-+  bool AllowFontFamily(const AtomicString& family) override;
+@@ -113,6 +113,7 @@ class CORE_EXPORT CSSFontSelector : public CSSFontSelectorBase {
  
-   void FontFaceInvalidated(FontInvalidationReason) override;
+   void Trace(Visitor*) const override;
  
++  BRAVE_CSS_FONT_SELECTOR_H
+  protected:
+   UseCounter* GetUseCounter() override;
+   void DispatchInvalidationCallbacks(FontInvalidationReason);
