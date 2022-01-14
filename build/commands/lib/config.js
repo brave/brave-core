@@ -928,6 +928,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
+    if (this.isCI) {
+      env.NINJA_SUMMARIZE_BUILD = 1
+    }
+
     if (process.platform === 'linux') {
       env.LLVM_DOWNLOAD_GOLD_PLUGIN = '1'
     }

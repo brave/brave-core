@@ -592,6 +592,11 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['showflags'], options)
+      util.run('goma_ctl', ['stat'], options)
+    }
+
     util.run('autoninja', ninjaOpts, options)
 
     if (config.isCI && config.use_goma) {
