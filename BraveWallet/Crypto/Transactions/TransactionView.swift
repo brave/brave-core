@@ -215,7 +215,7 @@ struct Transaction_Previews: PreviewProvider {
         info: .previewConfirmedSend,
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
-        visibleTokens: [.eth],
+        visibleTokens: [.previewToken],
         displayAccountCreator: false,
         assetRatios: ["eth": 4576.36]
       )
@@ -223,7 +223,7 @@ struct Transaction_Previews: PreviewProvider {
         info: .previewConfirmedSwap,
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
-        visibleTokens: [.eth],
+        visibleTokens: [.previewToken],
         displayAccountCreator: true,
         assetRatios: ["eth": 4576.36]
       )
@@ -231,7 +231,7 @@ struct Transaction_Previews: PreviewProvider {
         info: .previewConfirmedERC20Approve,
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
-        visibleTokens: [.eth],
+        visibleTokens: [.previewToken],
         displayAccountCreator: false,
         assetRatios: ["eth": 4576.36]
       )

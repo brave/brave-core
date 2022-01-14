@@ -83,9 +83,9 @@ public class SendTokenStore: ObservableObject {
   }
   
   func fetchAssets() {
-    rpcController.chainId { [weak self] chainId in
+    rpcController.network { [weak self] network in
       guard let self = self else { return }
-      self.walletService.userAssets(chainId) { tokens in
+      self.walletService.userAssets(network.chainId) { tokens in
         self.userAssets = tokens
         
         if let selectedToken = self.selectedSendToken {
@@ -98,11 +98,11 @@ public class SendTokenStore: ObservableObject {
           self.selectedSendToken = tokens.first
         }
       }
-    }
-    
-    // store tokens in `allTokens` for address validation
-    tokenRegistery.allTokens { [weak self] tokens in
-      self?.allTokens = tokens + [.eth]
+      
+      // store tokens in `allTokens` for address validation
+      self.tokenRegistery.allTokens { tokens in
+        self.allTokens = tokens + [network.nativeToken]
+      }
     }
   }
   
@@ -142,37 +142,39 @@ public class SendTokenStore: ObservableObject {
         selectedSendTokenBalance = decimal
       }
       
-      // Get balance for ETH token
-      if token.isETH {
-        self.rpcController.balance(accountAddress) { success, balance in
-          guard success else {
-            self.selectedSendTokenBalance = nil
-            return
+      self.rpcController.network { network in
+        // Get balance for ETH token
+        if token.symbol == network.symbol {
+          self.rpcController.balance(accountAddress) { success, balance in
+            guard success else {
+              self.selectedSendTokenBalance = nil
+              return
+            }
+            updateBalance(success, balance)
           }
-          updateBalance(success, balance)
         }
-      }
-      // Get balance for erc20 token
-      else if token.isErc20 {
-        self.rpcController.erc20TokenBalance(token.contractAddress,
-                                        address: accountAddress) { success, balance in
-          guard success else {
-            self.selectedSendTokenBalance = nil
-            return
+        // Get balance for erc20 token
+        else if token.isErc20 {
+          self.rpcController.erc20TokenBalance(token.contractAddress,
+                                          address: accountAddress) { success, balance in
+            guard success else {
+              self.selectedSendTokenBalance = nil
+              return
+            }
+            updateBalance(success, balance)
           }
-          updateBalance(success, balance)
         }
-      }
-      // Get balance for erc721 token
-      else if token.isErc721 {
-        self.rpcController.erc721TokenBalance(token.contractAddress,
-                                              tokenId: token.id,
-                                              accountAddress: accountAddress) { success, balance in
-          guard success else {
-            self.selectedSendTokenBalance = nil
-            return
+        // Get balance for erc721 token
+        else if token.isErc721 {
+          self.rpcController.erc721TokenBalance(token.contractAddress,
+                                                tokenId: token.id,
+                                                accountAddress: accountAddress) { success, balance in
+            guard success else {
+              self.selectedSendTokenBalance = nil
+              return
+            }
+            updateBalance(success, balance)
           }
-          updateBalance(success, balance)
         }
       }
     }
@@ -223,7 +225,7 @@ public class SendTokenStore: ObservableObject {
     rpcController.network { [weak self] network in
       guard let self = self else { return }
 
-      if token.isETH {
+      if token.symbol == network.symbol {
         let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
         if network.isEip1559 {
           self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in

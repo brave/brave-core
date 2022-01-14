@@ -57,7 +57,11 @@ struct SendTokenView: View {
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoFromTitle))
         ) {
-          NavigationLink(destination: SendTokenSearchView(sendTokenStore: sendTokenStore)) {
+          NavigationLink(destination:
+                          SendTokenSearchView(sendTokenStore: sendTokenStore,
+                                              network: networkStore.selectedChain
+                                             )
+          ) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
                 AssetIconView(token: token, length: 26)

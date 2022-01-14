@@ -18,7 +18,7 @@ struct AssetSearchView: View {
   
   var body: some View {
     NavigationView {
-      TokenList(tokens: allTokens.filter({ $0.isErc20 || $0.isETH })) { token in
+      TokenList(tokens: allTokens.filter({ $0.isErc20 || $0.symbol == cryptoStore.networkStore.selectedChain.symbol })) { token in
         NavigationLink(
           destination: AssetDetailView(
             assetDetailStore: cryptoStore.assetDetailStore(for: token),

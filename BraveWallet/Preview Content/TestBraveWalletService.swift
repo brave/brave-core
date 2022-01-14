@@ -11,8 +11,8 @@ import BraveCore
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
 class TestBraveWalletService: BraveWalletBraveWalletService {
   private var assets: [String: [BraveWallet.ERCToken]] = [
-    BraveWallet.MainnetChainId: [.eth],
-    BraveWallet.RopstenChainId: [.eth],
+    BraveWallet.MainnetChainId: [.previewToken],
+    BraveWallet.RopstenChainId: [.previewToken],
   ]
   private var defaultCurrency = "usd"
   private var defaultCryptocurrency = "eth"

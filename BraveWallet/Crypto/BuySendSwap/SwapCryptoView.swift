@@ -230,7 +230,7 @@ struct SwapCryptoView: View {
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
     ) {
-      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken)) {
+      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: ethNetworkStore.selectedChain)) {
         HStack {
           if let token = swapTokensStore.selectedFromToken {
             AssetIconView(token: token, length: 26)
@@ -273,7 +273,7 @@ struct SwapCryptoView: View {
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
       NavigationLink(
-        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken)
+        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: ethNetworkStore.selectedChain)
       ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
