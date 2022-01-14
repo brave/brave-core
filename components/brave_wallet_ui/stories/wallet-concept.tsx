@@ -598,7 +598,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         derivationPath: makeDerivationPath(i + opts.startIndex),
         name: 'Ledger 1',
         hardwareVendor: 'Ledger',
-        deviceId: 'device1'
+        deviceId: 'device1',
+        coin: BraveWallet.CoinType.ETH
       })))
     })
   }

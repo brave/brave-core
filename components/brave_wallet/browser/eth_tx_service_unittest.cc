@@ -257,7 +257,9 @@ class EthTxServiceUnitTest : public testing::Test {
   }
 
   std::string from() {
-    return keyring_service_->default_keyring_->GetAddress(0);
+    return keyring_service_
+        ->GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
+        ->GetAddress(0);
   }
 
   EthTxService* eth_tx_service() { return eth_tx_service_.get(); }

@@ -22,6 +22,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -182,7 +183,7 @@ public class AccountDetailActivity extends AsyncInitializationActivity
 
     private void fetchAccountInfo(String chainId) {
         assert mKeyringService != null;
-        mKeyringService.getDefaultKeyringInfo(keyringInfo -> {
+        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             if (keyringInfo == null) {
                 return;
             }

@@ -182,9 +182,11 @@ void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
 void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback,
     mojom::EthereumChainPtr chain) {
-  keyring_service_->GetDefaultKeyringInfo(base::BindOnce(
-      &BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
-      weak_factory_.GetWeakPtr(), std::move(callback), std::move(chain)));
+  keyring_service_->GetKeyringInfo(
+      mojom::kDefaultKeyringId,
+      base::BindOnce(
+          &BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
+          weak_factory_.GetWeakPtr(), std::move(callback), std::move(chain)));
 }
 
 void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(

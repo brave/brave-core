@@ -70,6 +70,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                RequestCallback callback) override;
 
   void GetBalance(const std::string& address,
+                  mojom::CoinType coin,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
@@ -226,10 +227,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-  void OnGetBalance(GetBalanceCallback callback,
-                    const int status,
-                    const std::string& body,
-                    const base::flat_map<std::string, std::string>& headers);
+  void OnEthGetBalance(GetBalanceCallback callback,
+                       const int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
+  void OnFilGetBalance(GetBalanceCallback callback,
+                       const int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
+
   void OnGetTransactionCount(
       GetTxCountCallback callback,
       const int status,

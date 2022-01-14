@@ -313,18 +313,20 @@ test('Extract accounts from unlocked device returned success', () => {
     .resolves.toStrictEqual({
           payload: [
           {
-          'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
-                  'derivationPath': 'm/44\'/60\'/0\'/0/0',
-                  'deviceId': '5454545',
-                  'hardwareVendor': 'Trezor',
-                  'name': 'Trezor'
+            'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
+            'derivationPath': 'm/44\'/60\'/0\'/0/0',
+            'deviceId': '5454545',
+            'hardwareVendor': 'Trezor',
+            'name': 'Trezor',
+            'coin': BraveWallet.CoinType.ETH
           },
-                {
-          'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-                  'derivationPath': 'm/44\'/60\'/0\'/0/1',
-                  'deviceId': '5454545',
-                  'hardwareVendor': 'Trezor',
-                  'name': 'Trezor'
+          {
+            'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
+            'derivationPath': 'm/44\'/60\'/0\'/0/1',
+            'deviceId': '5454545',
+            'hardwareVendor': 'Trezor',
+            'name': 'Trezor',
+            'coin': BraveWallet.CoinType.ETH
           }],
           success: true
     })
@@ -352,10 +354,11 @@ test('Extracting accounts from unlocked device returned success without zero ind
       payload: [
       {
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-              'derivationPath': 'm/44\'/60\'/0\'/0/1',
-              'deviceId': '5454545',
-              'hardwareVendor': 'Trezor',
-              'name': 'Trezor'
+        'derivationPath': 'm/44\'/60\'/0\'/0/1',
+        'deviceId': '5454545',
+        'hardwareVendor': 'Trezor',
+        'name': 'Trezor',
+        'coin': BraveWallet.CoinType.ETH
       }],
       success: true
     })

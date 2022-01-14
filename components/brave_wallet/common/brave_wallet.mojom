@@ -225,6 +225,9 @@ const string kTrezorHardwareVendor = "Trezor";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+const string kFilecoinKeyringId = "filecoin";
+const string kDefaultKeyringId = "default";
+
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
   BLS = 3 // Represents the address BLS protocol
@@ -236,6 +239,7 @@ struct HardwareWalletAccount {
   string name;
   string hardware_vendor;
   string device_id;
+  CoinType coin;
 };
 
 struct HardwareInfo {
@@ -249,9 +253,11 @@ struct AccountInfo {
   string name;
   bool is_imported;
   HardwareInfo? hardware;
+  CoinType coin;
 };
 
 struct KeyringInfo {
+  string id;
   bool is_default_keyring_created;
   bool is_locked;
   bool is_backed_up;
@@ -396,8 +402,7 @@ interface KeyringService {
   NotifyWalletBackupComplete();
 
   // Obtains the keyring information
-  GetDefaultKeyringInfo() => (KeyringInfo keyring);
-
+  GetKeyringsInfo(array<string> keyrings) => (array<KeyringInfo> keyrings);
   // Obtains the keyring information
   GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
 
@@ -405,10 +410,10 @@ interface KeyringService {
   AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
-  SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+  SetKeyringDerivedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for an imported account
-  SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+  SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
   SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
@@ -533,6 +538,11 @@ const string kSolanaMainnet = "solana:0x65";
 const string kSolanaTestnet = "solana:0x66";
 const string kSolanaDevnet = "solana:0x67";
 
+enum CoinType {
+  ETH = 60,
+  FIL = 461
+};
+
 struct EthereumChain {
   string chain_id;
   string chain_name;
@@ -579,7 +589,7 @@ interface JsonRpcService {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,

@@ -88,6 +88,18 @@ std::string FilecoinKeyring::ImportFilecoinSECP256K1Account(
   return address;
 }
 
+void FilecoinKeyring::ImportFilecoinAccount(
+    const std::vector<uint8_t>& input_key,
+    const std::string& address) {
+  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(input_key);
+  if (!hd_key)
+    return;
+  if (!AddImportedAddress(address, std::move(hd_key))) {
+    return;
+  }
+  return;
+}
+
 std::string FilecoinKeyring::GetAddressInternal(
     const std::vector<uint8_t>& payload,
     int protocol_index) const {
