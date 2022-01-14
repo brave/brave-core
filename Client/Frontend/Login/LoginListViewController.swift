@@ -42,9 +42,8 @@ class LoginListViewController: LoginAuthViewController {
     private var loginEntries = [Login]()
     private var isFetchingLoginEntries = false
     private var searchLoginTimer: Timer?
-
     private let searchController = UISearchController(searchResultsController: nil)
-    private let emptyLoginView = LoginEmptyView()
+    private let emptyLoginView = EmptyStateOverlayView(description: Strings.Login.loginListEmptyScreenTitle)
     
     // MARK: Lifecycle
     
@@ -194,7 +193,7 @@ extension LoginListViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.saveLoginsRowIdentifier, for: indexPath).then {
                 $0.textLabel?.text = Strings.saveLogins
                 $0.separatorInset = .zero
-                $0.accessoryView = toggle
+                $0.accessoryView =  searchController.isActive ? nil : toggle
                 $0.selectionStyle = .none
             }
             
