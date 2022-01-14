@@ -32,7 +32,7 @@
     Logged out
   </message>
   <message name="IDS_REWARDS_WALLET_DISCONNECT_LINK" desc="">
-    Log out from <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+    Disconnect from <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
   </message>
   <message name="IDS_REWARDS_WALLET_ESTIMATED_EARNINGS" desc="">
     Estimated Earnings

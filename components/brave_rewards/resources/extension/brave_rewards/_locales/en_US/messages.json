@@ -213,7 +213,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Log out from $provider$",
+    "message": "Disconnect from $provider$",
     "description": "",
     "placeholders": {
       "provider": {
