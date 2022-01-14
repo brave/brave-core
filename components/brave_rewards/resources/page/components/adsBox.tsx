@@ -441,7 +441,10 @@ class AdsBox extends React.Component<Props, State> {
           </style.PaymentStatus>
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
-              value={earningsThisMonth.toFixed(3)}
+              value={new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3
+              }).format(earningsThisMonth)}
               converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </List>
