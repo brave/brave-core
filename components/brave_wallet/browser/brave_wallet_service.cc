@@ -622,6 +622,23 @@ void BraveWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+void BraveWalletService::AddDappObserver(
+    ::mojo::PendingRemote<mojom::BraveWalletServiceDappObserver> observer) {
+  dappObservers_.Add(std::move(observer));
+}
+
+void BraveWalletService::ShowPanel() {
+  for (const auto& observer : dappObservers_) {
+    observer->OnShowPanel();
+  }
+}
+
+void BraveWalletService::ShowWalletOnboarding() {
+  for (const auto& observer : dappObservers_) {
+    observer->OnShowWalletOnboarding();
+  }
+}
+
 void BraveWalletService::OnActiveOriginChanged(const std::string& origin) {
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin);

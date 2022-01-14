@@ -88,14 +88,10 @@ void BraveRendererUpdater::UpdateRenderer(
       brave_wallet_web3_provider_.GetValue());
 
   bool brave_use_native_wallet =
-#if defined(OS_ANDROID)
-      false;
-#else
       (default_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
        default_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
-#endif
 
   bool allow_overwrite_window_ethereum =
       default_wallet ==
