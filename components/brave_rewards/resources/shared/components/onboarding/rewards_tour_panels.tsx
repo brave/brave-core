@@ -99,7 +99,9 @@ function panelComplete (locale: Locale) {
 }
 
 export function getTourPanels (props: RewardsTourProps): TourPanelFunction[] {
-  const canAutoContribute = props.autoContributeAmountOptions.length > 0
+  const canAutoContribute = (
+    props.autoContributeAmountOptions.length > 0 &&
+    props.externalWalletProvider !== 'bitflyer')
 
   return [
     panelWelcome,
@@ -144,7 +146,9 @@ export function getVerifyWalletPanel (
             formatMessage(getString('onboardingPanelBitflyerLearnMore'), {
               tags: {
                 $1: (content) => (
-                  <NewTabLink key='learn-more' href='https://brave.com/ja/users-bitflyer/'>
+                  <NewTabLink
+                    key='learn-more'
+                    href='https://brave.com/ja/users-bitflyer/'>
                     {content}
                   </NewTabLink>
                 )
