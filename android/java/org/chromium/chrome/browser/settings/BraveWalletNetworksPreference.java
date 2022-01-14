@@ -19,6 +19,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.components.browser_ui.widget.TintedDrawable;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -31,9 +32,11 @@ public class BraveWalletNetworksPreference extends Preference
     private NetworkListBaseAdapter mAdapter;
     private BraveWalletAddNetworksFragment.Launcher mLauncher;
     private JsonRpcService mJsonRpcService;
+    private Context mContext;
 
     public BraveWalletNetworksPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         mAdapter = new NetworkListBaseAdapter(context, this);
     }
 
@@ -45,8 +48,8 @@ public class BraveWalletNetworksPreference extends Preference
 
         mbtAddNetwork = (TextView) holder.findViewById(R.id.add_network);
         mbtAddNetwork.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                TintedDrawable.constructTintedDrawable(
-                        getContext(), R.drawable.plus, R.color.default_control_color_active),
+                TintedDrawable.constructTintedDrawable(getContext(), R.drawable.plus,
+                        SemanticColorUtils.getDefaultControlColorActive(mContext)),
                 null, null, null);
         mbtAddNetwork.setOnClickListener(view -> { mLauncher.launchAddNetwork(""); });
         mLauncher.setRefresher(this);
