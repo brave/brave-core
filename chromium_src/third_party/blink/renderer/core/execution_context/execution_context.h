@@ -11,8 +11,8 @@
 #include <random>
 
 #include "base/callback.h"
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "base/containers/flat_set.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
 namespace blink {
 class WebContentSettingsClient;
