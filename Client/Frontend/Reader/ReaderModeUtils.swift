@@ -33,7 +33,7 @@ struct ReaderModeUtils {
     }
 }
 
-private extension String {
+extension String {
     var unquotedIfNecessary: String {
         var str = self
         if str.first == "\"" || str.first == "'" {
