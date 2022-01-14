@@ -66,6 +66,9 @@ class BraveWalletService : public KeyedService,
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
                        observer) override;
+  void AddDappObserver(
+      ::mojo::PendingRemote<mojom::BraveWalletServiceDappObserver> observer)
+      override;
 
   void GetUserAssets(const std::string& chain_id,
                      GetUserAssetsCallback callback) override;
@@ -147,6 +150,9 @@ class BraveWalletService : public KeyedService,
       base::Value id);
 
   void RemovePrefListenersForTests();
+  // Calls BraveWalletServiceDappObserver
+  void ShowPanel();
+  void ShowWalletOnboarding();
 
  private:
   friend class BraveWalletProviderImplUnitTest;
@@ -212,6 +218,7 @@ class BraveWalletService : public KeyedService,
       add_get_encryption_public_key_callbacks_;
   base::flat_map<GURL, base::Value> get_encryption_public_key_ids_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
+  mojo::RemoteSet<mojom::BraveWalletServiceDappObserver> dappObservers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
