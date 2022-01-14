@@ -586,12 +586,19 @@ const util = {
       const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
-      const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
-      if (gomaLoginInfo.status !== 0) {
-        console.log('Login required for using Goma. This is only needed once')
-        util.run('goma_auth', ['login'], options)
+
+      options.env.GOMACTL_SKIP_AUTH = 1
+      const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
+      delete options.env.GOMACTL_SKIP_AUTH
+
+      if (gomaStartInfo.status !== 0) {
+        const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
+        if (gomaLoginInfo.status !== 0) {
+          console.log('Login required for using Goma. This is only needed once')
+          util.run('goma_auth', ['login'], options)
+        }
+        util.run('goma_ctl', ['ensure_start'], options)
       }
-      util.run('goma_ctl', ['ensure_start'], options)
       util.run('goma_ctl', ['update_hook'], options)
     }
 
