@@ -16,7 +16,7 @@ extension TabTrayController {
             static let largeCellHeight = 256.0
         }
         
-        private func generateLayout(numberOfColumns: Int = 2,
+        private func generateLayout(numberOfColumns: Int,
                                     cellHeight: CGFloat = UX.regularCellHeight) -> UICollectionViewLayout {
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -37,7 +37,7 @@ extension TabTrayController {
             return layout
         }
         
-        lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout()).then {
+        lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(numberOfColumns: numberOfColumns)).then {
             $0.setContentHuggingPriority(.defaultLow, for: .vertical)
             $0.backgroundColor = .secondaryBraveBackground
         }
