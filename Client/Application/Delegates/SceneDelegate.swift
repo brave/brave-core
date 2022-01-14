@@ -103,6 +103,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if !connectionOptions.urlContexts.isEmpty {
             self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
         }
+        
+        if let shortcutItem = connectionOptions.shortcutItem {
+            QuickActions.sharedInstance.launchedShortcutItem = shortcutItem
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
