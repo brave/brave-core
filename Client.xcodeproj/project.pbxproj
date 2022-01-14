@@ -383,6 +383,7 @@
 		27829E752549FF13007CF0B2 /* WalletTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27829E742549FF13007CF0B2 /* WalletTransferViewController.swift */; };
 		27829E842549FF9D007CF0B2 /* WalletTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27829E832549FF9D007CF0B2 /* WalletTransferView.swift */; };
 		2784874524DC658C0004F03C /* BraveNewsEmptyFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2784874424DC658C0004F03C /* BraveNewsEmptyFeedView.swift */; };
+		2788E9CE2786421F0093FBE8 /* TabTrayAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2788E9CD2786421F0093FBE8 /* TabTrayAnimation.swift */; };
 		278C467823EDF0060083347F /* SimpleShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C467723EDF0060083347F /* SimpleShieldsView.swift */; };
 		278C467B23EDF0940083347F /* ShieldsSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C467A23EDF0940083347F /* ShieldsSwitch.swift */; };
 		278C467C23EE2B450083347F /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBA234CC7EF009DAC37 /* UIStackViewExtensions.swift */; };
@@ -2120,6 +2121,7 @@
 		27829E742549FF13007CF0B2 /* WalletTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewController.swift; sourceTree = "<group>"; };
 		27829E832549FF9D007CF0B2 /* WalletTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferView.swift; sourceTree = "<group>"; };
 		2784874424DC658C0004F03C /* BraveNewsEmptyFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsEmptyFeedView.swift; sourceTree = "<group>"; };
+		2788E9CD2786421F0093FBE8 /* TabTrayAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayAnimation.swift; sourceTree = "<group>"; };
 		278C467723EDF0060083347F /* SimpleShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleShieldsView.swift; sourceTree = "<group>"; };
 		278C467A23EDF0940083347F /* ShieldsSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsSwitch.swift; sourceTree = "<group>"; };
 		278C468623F1E6270083347F /* BraveUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4654,6 +4656,7 @@
 				44514A5E269745FD004CBF73 /* TabTrayController.swift */,
 				44514A6B26974917004CBF73 /* TabTrayView.swift */,
 				44C2364426A05714005A573D /* TabTrayPrivateModeInfoView.swift */,
+				2788E9CD2786421F0093FBE8 /* TabTrayAnimation.swift */,
 			);
 			path = "Tab Tray";
 			sourceTree = "<group>";
@@ -8622,6 +8625,7 @@
 				D31F95E91AC226CB005C9F3B /* ScreenshotHelper.swift in Sources */,
 				CA8D5C1226D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift in Sources */,
 				D3968F251A38FE8500CEFD3B /* TabManager.swift in Sources */,
+				2788E9CE2786421F0093FBE8 /* TabTrayAnimation.swift in Sources */,
 				5E6683A923D61CF7005B3A6C /* NTPDownloader.swift in Sources */,
 				2816F0001B33E05400522243 /* UIConstants.swift in Sources */,
 				CA8D5C1026D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift in Sources */,

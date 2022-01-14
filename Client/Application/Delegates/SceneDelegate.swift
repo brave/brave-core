@@ -35,7 +35,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Migration.postCoreDataInitMigrations()
         
         Preferences.General.themeNormalMode.objectWillChange
-            .merge(with: PrivateBrowsingManager.shared.objectWillChange)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateTheme()
+            }
+            .store(in: &cancellables)
+        
+        PrivateBrowsingManager.shared.$isPrivateBrowsing
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateTheme()
