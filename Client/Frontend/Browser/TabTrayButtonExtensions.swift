@@ -27,7 +27,7 @@ class PrivateModeButton: InsetButton {
         accessibilityLabel = Strings.tabPrivateModeToggleAccessibilityLabel
         accessibilityHint = Strings.tabPrivateModeToggleAccessibilityHint
         
-        titleEdgeInsets = UIEdgeInsets(top: -3, left: 6, bottom: -3, right: 6)
+        contentEdgeInsets = UIEdgeInsets(top: 3, left: 6, bottom: 3, right: 6)
         layer.cornerRadius = 4.0
         layer.cornerCurve = .continuous
         

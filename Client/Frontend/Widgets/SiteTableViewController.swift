@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import Shared
 import Storage
 
 struct SiteTableViewControllerUX {
@@ -47,7 +48,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
  * Provides base shared functionality for site rows and headers.
  */
 @objcMembers
-class SiteTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITableViewDataSource {
     fileprivate let CellIdentifier = "CellIdentifier"
     fileprivate let HeaderIdentifier = "HeaderIdentifier"
     var profile: Profile! {
@@ -124,5 +125,31 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         true
+    }
+}
+
+class LoadingViewController: UIViewController {
+    
+    let spinner = UIActivityIndicatorView().then {
+        $0.snp.makeConstraints { make in
+            make.size.equalTo(24)
+        }
+        $0.hidesWhenStopped = true
+        $0.isHidden = true
+    }
+    
+    var isLoading: Bool = false {
+        didSet {
+            if isLoading {
+                view.addSubview(spinner)
+                spinner.snp.makeConstraints {
+                    $0.center.equalTo(view.snp.center)
+                }
+                spinner.startAnimating()
+            } else {
+                spinner.stopAnimating()
+                spinner.removeFromSuperview()
+            }
+        }
     }
 }

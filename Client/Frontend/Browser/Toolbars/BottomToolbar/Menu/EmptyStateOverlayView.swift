@@ -14,7 +14,7 @@ class EmptyStateOverlayView: UIView {
     
     private let informationLabel = UILabel().then {
         $0.textAlignment = .center
-        $0.font = DynamicFontHelper.defaultHelper.DeviceFontLight
+        $0.font = .preferredFont(for: .title3, weight: .light)
         $0.textColor = .braveLabel
         $0.numberOfLines = 0
         $0.adjustsFontSizeToFitWidth = true
@@ -49,7 +49,7 @@ class EmptyStateOverlayView: UIView {
         informationLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(logoImageView.snp.bottom).offset(15)
-            make.width.equalTo(170)
+            make.left.right.equalToSuperview().inset(15)
         }
     }
     
