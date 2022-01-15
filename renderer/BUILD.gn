@@ -18,6 +18,7 @@ source_set("renderer") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/renderer",
     "//brave/components/cosmetic_filters/renderer",
+    "//brave/components/skus/renderer",
     "//brave/renderer/brave_wallet/",
     "//v8",
   ]

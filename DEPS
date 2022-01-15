@@ -35,14 +35,16 @@ hooks = [
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_android',
-    'action': ['vpython3', 'script/download_rust_deps.py', '--platform', 'android'],
+    'action': ['vpython3', 'script/download_rust_deps.py',
+        '--platform', 'android'],
   },
   {
     # Download rust deps if necessary for iOS
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_ios',
-    'action': ['vpython3', 'script/download_rust_deps.py', '--platform', 'ios'],
+    'action': ['vpython3', 'script/download_rust_deps.py',
+        '--platform', 'ios'],
   },
   {
     # Download rust deps if necessary for Windows, Linux, and macOS

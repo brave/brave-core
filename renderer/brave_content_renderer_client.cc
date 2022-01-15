@@ -11,16 +11,18 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/components/skus/common/features.h"
+#include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
+#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "url/gurl.h"
-#include "brave/components/brave_wallet/common/features.h"
-#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
@@ -78,6 +80,11 @@ void BraveContentRendererClient::RenderFrameCreated(
   if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {
     new brave_ads::BraveAdsRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
+  }
+
+  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    new skus::SkusRenderFrameObserver(render_frame,
+                                      content::ISOLATED_WORLD_ID_GLOBAL);
   }
 }
 

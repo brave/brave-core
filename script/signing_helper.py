@@ -88,18 +88,6 @@ def AddBravePartsForSigning(parts, config):
         CodeSignOptions.HARDENED_RUNTIME + CodeSignOptions.RESTRICT +
         CodeSignOptions.LIBRARY_VALIDATION + CodeSignOptions.KILL)
 
-    # Add libs
-    brave_dylibs = (
-        'libbrave_rust.dylib',
-    )
-    for library in brave_dylibs:
-        library_basename = os.path.basename(library)
-        parts[library_basename] = CodeSignedProduct(
-            '{.framework_dir}/Libraries/{library}'.format(
-                config, library=library),
-            library_basename.replace('.dylib', ''),
-            verify_options=VerifyOptions.DEEP)
-
     # Add Sparkle
     if not development:
         # Add Sparkle binaries
