@@ -15,7 +15,7 @@
 namespace ftx {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, true);
+  registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, false);
   registry->RegisterStringPref(kFTXAccessToken, "");
   const std::string country_code = brave_l10n::GetCountryCode(
       brave_l10n::LocaleHelper::GetInstance()->GetLocale());
