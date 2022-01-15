@@ -32,6 +32,7 @@ import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
+import("//brave/build/rust/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
@@ -110,6 +111,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/profiles",
   "//brave/browser/renderer_context_menu",
   "//brave/browser/search",
+  "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
@@ -153,7 +155,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a:buildflags",
   "//brave/components/resources",
   "//brave/components/sidebar/buildflags",
-  "//brave/components/skus/browser",
+  "//brave/components/skus/common",
   "//brave/components/speedreader:buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/translate/core/common:buildflags",
@@ -348,6 +350,29 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
+
+if (is_mac) {
+  brave_chrome_framework_public_deps = [
+    "//brave:framework_bundle_data",
+
+    # TODO(bridiver) - this doesn't have to be a public dep
+    "//brave/build/rust:generate_unexport_list",
+  ]
+  brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
+  brave_chrome_framework_contents = [ "Frameworks" ]
+  brave_chrome_framework_ldflags = [
+    # prevent export of all rust symbols
+    "-Wl,-unexported_symbols_list," +
+        rebase_path(unexport_list_path, root_build_dir),
+  ]
+  if (!is_component_build && !use_lld) {
+    brave_chrome_framework_ldflags += [
+      # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
+      # Supposedly this bug was fixed, but it's still happening for us
+      "-Wl,-no_compact_unwind",
+    ]
+  }
+}
 
 brave_chrome_browser_defines = []
 

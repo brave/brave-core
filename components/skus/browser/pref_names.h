@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_
 
-namespace brave_rewards {
+namespace skus {
 namespace prefs {
 
-constexpr char kSkusDictionary[] = "skus.dictionary";
-constexpr char kSkusVPNCredential[] = "skus.credential.vpn";
+extern const char kSkusState[];
+extern const char kSkusVPNHasCredential[];
 
 }  // namespace prefs
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_PREF_NAMES_H_

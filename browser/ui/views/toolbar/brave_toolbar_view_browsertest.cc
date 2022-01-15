@@ -7,6 +7,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
@@ -50,7 +51,8 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
  public:
   BraveToolbarViewTest() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+    scoped_feature_list_.InitWithFeatures(
+        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
 #endif
   }
   ~BraveToolbarViewTest() override = default;

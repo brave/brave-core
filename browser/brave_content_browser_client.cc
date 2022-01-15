@@ -32,6 +32,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -60,6 +61,7 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -322,6 +324,13 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+void MaybeBindSkusSdkImpl(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -462,6 +471,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
+
+  map->Add<skus::mojom::SkusService>(
+      base::BindRepeating(&MaybeBindSkusSdkImpl));
+
 #if !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);

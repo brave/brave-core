@@ -1,81 +1,67 @@
 import("//brave/build/cargo.gni")
 
-lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
-lib_output_path =
-    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+if (is_mac) {
+  import("//build/config/mac/mac_sdk.gni")
+}
 
-# TODO(bridiver) - selectively include these libraries based on buildflags, but
-# in order to do that we have to dynamically create the brave rust lib
 cargo_build("rust_lib") {
   visibility = [ ":*" ]
   inputs = [
+    "Cargo.lock",
     "Cargo.toml",
     "lib.rs",
   ]
 
-  build_path = lib_build_path
-  output = lib_output_path
+  build_path = rust_lib_build_path
+  output = rust_lib_output_path
   manifest_path = "Cargo.toml"
 
+  # ensure that we rebuild when the dependent crates change
+  # TODO(bridiver) - selectively include these libraries based on buildflags,
+  # but in order to do that we have to dynamically create the brave rust lib
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
+    "//brave/components/skus/browser/rs:rust_lib",
     "//brave/components/speedreader/rust/lib",
   ]
 }
 
-brave_ffi_deps = [
-  "//brave/components/adblock_rust_ffi:rust_ffi",
-  "//brave/components/challenge_bypass_ristretto:rust_ffi",
-  "//brave/components/speedreader/rust/ffi:rust_ffi",
-]
-
-brave_rust_deps = brave_ffi_deps + [ ":rust_lib" ]
-
 if (is_mac) {
-  shared_library("brave_rust") {
-    visibility = [ ":*" ]
-    deps = brave_rust_deps
+  action("generate_unexport_list") {
+    script = "//brave/build/rust/generate_unexport_list.py"
 
-    public_deps = brave_ffi_deps
+    inputs = [
+      "//brave/build/rust/generate_unexport_list.py",
+      rust_lib_output_path,
+    ]
 
-    ldflags =
-        [ "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib" ]
-  }
+    outputs = [ unexport_list_path ]
 
-  # This is just a hack so @loader_path/Libraries/lib$target_name.dylib
-  # works for the test executables
-  copy("copy_rust_lib") {
-    visibility = [ ":*" ]
-    sources = [ "$root_out_dir/libbrave_rust.dylib" ]
-    outputs = [ "$root_out_dir/Libraries/{{source_file_part}}" ]
+    args = [
+      "--bin_path=" + mac_bin_path,
+      "--input=" + rebase_path(rust_lib_output_path, root_build_dir),
+      "--output=" + rebase_path(unexport_list_path, root_build_dir),
+    ]
 
-    public_deps = [ ":brave_rust" ]
-  }
-
-  bundle_data("bundle_rust_lib") {
-    visibility = [ ":*" ]
-    sources = [ "$root_out_dir/Libraries/libbrave_rust.dylib" ]
-    outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
-
-    public_deps = [ ":copy_rust_lib" ]
-  }
-} else {
-  config("external_config") {
-    libs = [ lib_output_path ]
-  }
-
-  group("brave_rust") {
-    public_configs = [ ":external_config" ]
-    visibility = [ ":*" ]
-    deps = brave_rust_deps
-    public_deps = brave_ffi_deps
+    deps = [ ":rust_lib" ]
   }
 }
 
-group("rust") {
-  public_deps = [ ":brave_rust" ]
-  if (is_mac) {
-    deps = [ ":bundle_rust_lib" ]
-  }
+# The required config for cxx-generated bindings because Chromium C++ is built
+# with -fno-exceptions.
+config("cxx_cppconfig") {
+  defines = [ "RUST_CXX_NO_EXCEPTIONS" ]
+}
+
+# The required dependencies for cxx-generated bindings, that must be included
+# on the C++ side.
+source_set("cxx_cppdeps") {
+  sources = [
+    "//third_party/rust/cxx/v1/crate/include/cxx.h",
+    "//third_party/rust/cxx/v1/crate/src/cxx.cc",
+  ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  public_configs = [ ":cxx_cppconfig" ]
 }
