@@ -12,6 +12,7 @@ import {
   ETHIconUrl,
   ZRXIconUrl
 } from '../assets/asset-icons'
+import MoonCatIcon from '../assets/png-icons/mooncat.png'
 
 export const ETH = {
   contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -139,6 +140,18 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
+    coingeckoId: ''
+  },
+  {
+    contractAddress: '7',
+    name: 'AcclimatedMoonCats',
+    symbol: 'AMC',
+    logo: MoonCatIcon,
+    isErc20: false,
+    isErc721: true,
+    decimals: 0,
+    visible: true,
+    tokenId: '0x42a5',
     coingeckoId: ''
   }
 ]

@@ -67,6 +67,7 @@
   <message name="IDS_BRAVE_WALLET_BALANCE" desc="Portfolio Balance title">Balance</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS" desc="Accounts subview button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT" desc="Account subview title">Account</message>
+  <message name="IDS_BRAVE_WALLET_OWNER" desc="Account subview NFT title">Owner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS" desc="Portfolio Transactions title">Transactions</message>
   <message name="IDS_BRAVE_WALLET_PRICE" desc="Portfolio Price title">Price</message>
   <message name="IDS_BRAVE_WALLET_BACK" desc="General back button">Back</message>
@@ -386,4 +387,7 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR" desc="Error when Trezor bridge is not ready">Trezor bridge is not ready</message>
   <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE" desc="Add Suggested Token Panel Title">Add suggested token</message>
   <message name="IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION" desc="Add Suggested Token Panel Description">Would you like to import this token?</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category">Blockchain</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category">Token standard</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
 </grit-part>

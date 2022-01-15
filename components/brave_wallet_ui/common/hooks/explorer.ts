@@ -7,17 +7,18 @@ import * as React from 'react'
 
 import { getLocale } from '../../../common/locale'
 import { BraveWallet, BlockExplorerUrlTypes } from '../../constants/types'
+import { hexToNumber } from '../../utils/format-balances'
 
 export default function useExplorer (network: BraveWallet.EthereumChain) {
   return React.useCallback(
-    (type: BlockExplorerUrlTypes, value?: string) => () => {
+    (type: BlockExplorerUrlTypes, value?: string, id?: string) => () => {
       const explorerURL = network.blockExplorerUrls[0]
       if (!explorerURL || !value) {
         alert(getLocale('braveWalletTransactionExplorerMissing'))
         return
       }
 
-      const url = `${explorerURL}/${type}/${value}`
+      const url = type === 'contract' ? `${explorerURL}/${value}?a=${hexToNumber(id ?? '', true)}` : `${explorerURL}/${type}/${value}`
 
       if (!chrome.tabs) {
         window.open(url, '_blank')
