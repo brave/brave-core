@@ -352,9 +352,6 @@ Config.prototype.buildArgs = function () {
     if (!this.isOfficialBuild()) {
       args.use_icf = false
     }
-    if (this.targetOS !== 'ios') {
-      args.use_allocator = "none"
-    }
     if (this.use_goma && this.gomaServerHost) {
       args.use_system_xcode = false
     }
