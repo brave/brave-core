@@ -95,5 +95,13 @@ custom_rules:
     capture_group: 0
     message: "Using `evaluateJavaScript` directly is not allowed. Use `evaluateSafeJavaScript` instead."
     severity: error
+  swiftui_previews_guard:
+    included: ".*\\.swift"
+    excluded: ".*Test\\.swift"
+    name: "SwiftUI Previews Guard"
+    regex: "(?<!#if DEBUG\n)(^struct [^\n:]+: PreviewProvider)"
+    capture_group: 1
+    message: "SwiftUI Previews should be enclosed within an #if DEBUG…#endif guard"
+    severity: error
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle)

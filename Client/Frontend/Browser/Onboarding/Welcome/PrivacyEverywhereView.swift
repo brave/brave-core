@@ -52,6 +52,7 @@ struct PrivacyEverywhereView: View {
     }
 }
 
+#if DEBUG
 struct PrivacyEverywhereView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -67,3 +68,4 @@ struct PrivacyEverywhereView_Previews: PreviewProvider {
         }
     }
 }
+#endif

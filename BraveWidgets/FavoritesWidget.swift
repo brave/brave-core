@@ -176,6 +176,7 @@ private struct FavoritesGridView: View {
 
 // MARK: - Preview
 
+#if DEBUG
 struct FavoritesView_Previews: PreviewProvider {
     static var previews: some View {
         FavoritesView(entry: .init(date: Date(), favorites: []))
@@ -188,3 +189,4 @@ struct FavoritesView_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemLarge))
     }
 }
+#endif

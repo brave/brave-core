@@ -44,6 +44,7 @@ struct PlaylistOnboardingView: View {
     }
 }
 
+#if DEBUG
 struct PlaylistOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -56,6 +57,7 @@ struct PlaylistOnboardingView_Previews: PreviewProvider {
         }
     }
 }
+#endif
 
 class PlaylistOnboardingViewController: UIHostingController<PlaylistOnboardingView> & PopoverContentComponent {
     

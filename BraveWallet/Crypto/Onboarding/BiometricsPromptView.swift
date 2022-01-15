@@ -35,8 +35,10 @@ struct BiometricsPromptView: UIViewControllerRepresentable {
   }
 }
 
+#if DEBUG
 struct BiometricsPromptView_Previews: PreviewProvider {
   static var previews: some View {
     BiometricsPromptView(isPresented: .constant(true), action: { _, _ in false })
   }
 }
+#endif

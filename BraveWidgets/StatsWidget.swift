@@ -105,6 +105,8 @@ private struct StatsView: View {
 }
 
 // MARK: - Previews
+
+#if DEBUG
 struct StatsWidget_Previews: PreviewProvider {
     static var stats: [StatData] {
         let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
@@ -119,3 +121,4 @@ struct StatsWidget_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
+#endif

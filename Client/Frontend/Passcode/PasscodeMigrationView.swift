@@ -107,6 +107,7 @@ private struct PasscodeMigrationView: View {
     }
 }
 
+#if DEBUG
 struct PasscodeMigrationView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -129,3 +130,4 @@ struct PasscodeMigrationView_Previews: PreviewProvider {
         }
     }
 }
+#endif

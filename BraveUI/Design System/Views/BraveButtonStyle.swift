@@ -89,6 +89,7 @@ public struct BraveOutlineButtonStyle: ButtonStyle {
   }
 }
 
+#if DEBUG
 struct BraveButtonStyle_Previews: PreviewProvider {
   static let defaultSizes: [BraveButtonSize] = [
     .small, .normal, .large
@@ -128,3 +129,4 @@ struct BraveButtonStyle_Previews: PreviewProvider {
     .previewLayout(.sizeThatFits)
   }
 }
+#endif
