@@ -79,6 +79,11 @@ export type UpdateUnapprovedTransactionSpendAllowanceType = {
   allowance: string
 }
 
+export type UpdateUnapprovedTransactionNonceType = {
+  txMetaId: string
+  nonce: string
+}
+
 export type DefaultWalletChanged = {
   defaultWallet: BraveWallet.DefaultWallet
 }

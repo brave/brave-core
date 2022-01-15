@@ -45,6 +45,7 @@ interface ParsedTransactionFees {
 interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
+  nonce: string
   createdTime: TimeDelta
   status: BraveWallet.TransactionStatus
   sender: string
@@ -159,7 +160,7 @@ export function useTransactionParser (
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
     const { txArgs, txData, fromAddress, txType } = transactionInfo
     const { baseData } = txData
-    const { value, to } = baseData
+    const { value, to, nonce } = baseData
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = findToken(to)
     const accountNativeBalance = getBalance(account)
@@ -181,6 +182,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -217,6 +219,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress, // The caller, which may not be the owner
@@ -251,6 +254,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,
@@ -284,6 +288,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          nonce,
           createdTime: transactionInfo.createdTime,
           status: transactionInfo.txStatus,
           sender: fromAddress,

@@ -32,6 +32,7 @@ import {
 } from '../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionNonceType,
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
@@ -145,6 +146,10 @@ export const _ConfirmTransaction = () => {
     alert('Updated spending allowance')
   }
 
+  const updateUnapprovedTransactionNonce = (payload: UpdateUnapprovedTransactionNonceType) => {
+    alert('Updated nonce')
+  }
+
   const getERC20Allowance = (recipient: string, sender: string, approvalTarget: string) => {
     return Promise.resolve('0x15ddf09c97b0000')
   }
@@ -183,6 +188,7 @@ export const _ConfirmTransaction = () => {
         refreshGasEstimates={refreshGasEstimates}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
         updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
+        updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
         getERC20Allowance={getERC20Allowance}
         fullTokenList={NewAssetOptions}
       />
