@@ -108,8 +108,6 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean("showBraveTalk",
                        prefs->GetBoolean(kNewTabPageShowBraveTalk));
   pref_data.SetBoolean("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
-  pref_data.SetBoolean("widgetVisibilityMigrated",
-                       prefs->GetBoolean(kNewTabPageWidgetVisibilityMigrated));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   pref_data.SetBoolean(
       "showCryptoDotCom",
@@ -500,10 +498,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
-  } else if (settingsKeyInput == "saveWidgetVisibilityMigrated") {
-    // This prefs is set to true once.
-    DCHECK(settingsValueBool);
-    settingsKey = kNewTabPageWidgetVisibilityMigrated;
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showCryptoDotCom") {
     settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;

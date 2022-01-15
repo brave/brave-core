@@ -313,11 +313,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
+  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, false);
-  registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
+  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
-  registry->RegisterBooleanPref(kNewTabPageWidgetVisibilityMigrated, false);
 
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,

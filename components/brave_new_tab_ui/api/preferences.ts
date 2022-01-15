@@ -22,10 +22,6 @@ function sendSavePref (key: string, value: any) {
   chrome.send('saveNewTabPagePref', [key, value])
 }
 
-export function saveWidgetVisibilityMigrated (): void {
-  sendSavePref('saveWidgetVisibilityMigrated', true)
-}
-
 export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
 }

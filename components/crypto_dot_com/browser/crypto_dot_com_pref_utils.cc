@@ -11,7 +11,7 @@
 namespace crypto_dot_com {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, true);
+  registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, false);
   registry->RegisterBooleanPref(kCryptoDotComHasBoughtCrypto, false);
   registry->RegisterBooleanPref(kCryptoDotComHasInteracted, false);
 }
