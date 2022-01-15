@@ -201,6 +201,7 @@ private struct ShortcutsView: View {
 
 // MARK: - Previews
 
+#if DEBUG
 struct ShortcutsWidget_Previews: PreviewProvider {
     static var previews: some View {
         ShortcutsView(slots: [.newTab, .newPrivateTab, .bookmarks])
@@ -211,3 +212,4 @@ struct ShortcutsWidget_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
+#endif

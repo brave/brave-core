@@ -48,6 +48,7 @@ struct BlockieGroup: View {
   }
 }
 
+#if DEBUG
 struct BlockieGroup_Previews: PreviewProvider {
   static var previews: some View {
     ZStack {
@@ -76,3 +77,4 @@ struct BlockieGroup_Previews: PreviewProvider {
       .previewSizeCategories()
   }
 }
+#endif

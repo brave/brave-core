@@ -63,6 +63,7 @@ struct AssetIconView: View {
   }
 }
 
+#if DEBUG
 struct AssetIconView_Previews: PreviewProvider {
   static var previews: some View {
     AssetIconView(token: .previewToken)
@@ -85,3 +86,4 @@ struct AssetIconView_Previews: PreviewProvider {
       .previewSizeCategories()
   }
 }
+#endif

@@ -99,6 +99,7 @@ public struct PopupView<Content: View>: View {
   }
 }
 
+#if DEBUG
 struct PopupPreviews: PreviewProvider {
   static var previews: some View {
     Group {
@@ -123,3 +124,4 @@ struct PopupPreviews: PreviewProvider {
     }
   }
 }
+#endif

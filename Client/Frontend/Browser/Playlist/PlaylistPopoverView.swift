@@ -136,6 +136,7 @@ struct PlaylistPopoverView: View {
     }
 }
 
+#if DEBUG
 struct PlaylistPopoverView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -146,6 +147,7 @@ struct PlaylistPopoverView_Previews: PreviewProvider {
         }
     }
 }
+#endif
 
 class PlaylistPopoverViewController: UIHostingController<PlaylistPopoverView> & PopoverContentComponent {
     

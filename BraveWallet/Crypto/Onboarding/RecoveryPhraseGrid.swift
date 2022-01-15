@@ -46,6 +46,7 @@ struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {
   }
 }
 
+#if DEBUG
 struct RecoveryPhraseGrid_Previews: PreviewProvider {
   static let data: [String] = [
     "Tomato", "Green", "Velvet", "Span",
@@ -71,3 +72,4 @@ struct RecoveryPhraseGrid_Previews: PreviewProvider {
     .previewLayout(.sizeThatFits)
   }
 }
+#endif

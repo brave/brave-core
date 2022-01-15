@@ -112,6 +112,7 @@ struct Blockie: View {
   }
 }
 
+#if DEBUG
 struct BlockiesPreview: PreviewProvider {
   static var previews: some View {
     ZStack {
@@ -128,3 +129,4 @@ struct BlockiesPreview: PreviewProvider {
     .previewLayout(.sizeThatFits)
   }
 }
+#endif

@@ -79,6 +79,7 @@ struct PlaylistMenuButton: View {
     }
 }
 
+#if DEBUG
 struct PlaylistMenuButton_Previews: PreviewProvider {
     struct InteractivePreview: View {
         @State var isAdded: Bool = false
@@ -103,3 +104,4 @@ struct PlaylistMenuButton_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
     }
 }
+#endif

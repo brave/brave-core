@@ -79,6 +79,7 @@ private struct StatView: View {
 
 // MARK: - Previews
 
+#if DEBUG
 struct SingleStatWidget_Previews: PreviewProvider {
     static var previews: some View {
         StatView(entry: StatEntry(date: Date(), statData: .init(name: "Ads & Trackers Blocked", value: "100k", color: UIColor.braveOrange)))
@@ -88,3 +89,4 @@ struct SingleStatWidget_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
+#endif
