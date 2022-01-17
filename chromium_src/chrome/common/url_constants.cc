@@ -207,6 +207,8 @@ const char kSyncLearnMoreURL[] =
 const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
 #endif
 
+const char kSyncTrustedVaultLearnMoreURL[] = "https://support.brave.com/";
+
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
