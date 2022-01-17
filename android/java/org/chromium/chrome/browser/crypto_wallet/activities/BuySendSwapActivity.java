@@ -102,9 +102,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BuySendSwapActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
-                   BarcodeTracker.BarcodeGraphicTrackerCallback, KeyringServiceObserver,
+public class BuySendSwapActivity extends BraveWalletBaseActivity
+        implements AdapterView.OnItemSelectedListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
                    ApprovedTxObserver {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
@@ -147,50 +146,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
     }
 
-    private class EthTxServiceObserverImpl implements EthTxServiceObserver {
-        private BuySendSwapActivity mParentActivity;
-
-        public EthTxServiceObserverImpl(BuySendSwapActivity parentActivity) {
-            mParentActivity = parentActivity;
-        }
-
-        @Override
-        public void onNewUnapprovedTx(TransactionInfo txInfo) {
-            assert mParentActivity != null;
-            mParentActivity.showApproveTransactionDialog(txInfo);
-        }
-
-        @Override
-        public void onTransactionStatusChanged(TransactionInfo txInfo) {
-            if (txInfo.id.equals(mParentActivity.mActivateAllowanceTxId)
-                    && txInfo.txStatus == TransactionStatus.SUBMITTED) {
-                mParentActivity.mActivateAllowanceTxId = "";
-                mParentActivity.showSwapButtonText();
-            }
-        }
-
-        @Override
-        public void onUnapprovedTxUpdated(TransactionInfo txInfo) {}
-
-        @Override
-        public void close() {}
-
-        @Override
-        public void onConnectionError(MojoException e) {}
-    }
-
     public String mActivateAllowanceTxId;
 
-    private BlockchainRegistry mBlockchainRegistry;
-    private JsonRpcService mJsonRpcService;
-    private EthTxService mEthTxService;
-    private KeyringService mKeyringService;
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
     private double mConvertedFromBalance;
     private double mConvertedToBalance;
-    private EthTxServiceObserverImpl mEthTxServiceObserver;
-    private AssetRatioService mAssetRatioService;
     private BlockchainToken mCurrentBlockchainToken;
     private BlockchainToken mCurrentSwapToBlockchainToken;
     private SwapService mSwapService;
@@ -199,21 +160,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private String mCurrentChainId;
     private String mAllowanceTarget;
     private Spinner mAccountSpinner;
-    private BraveWalletService mBraveWalletService;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroy() {
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mEthTxService.close();
         mSwapService.close();
-        mBraveWalletService.close();
+        super.onDestroy();
     }
 
     @Override
@@ -1028,14 +982,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (mCameraSourcePreview != null) {
@@ -1347,7 +1293,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         txData1559, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in
-                            // EthTxServiceObserverImpl
+                            // EthTxServiceObserver
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToValidationResult(error_message, false);
@@ -1357,7 +1303,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         data, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in
-                            // EthTxServiceObserverImpl
+                            // EthTxServiceObserver
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToValidationResult(error_message, false);
@@ -1503,105 +1449,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         btnBuySendSwap.setEnabled(enable);
     }
 
-    public BlockchainRegistry getBlockchainRegistry() {
-        return mBlockchainRegistry;
-    }
-
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mEthTxService.close();
+        super.onConnectionError(e);
         mSwapService.close();
-        mBraveWalletService.close();
 
-        mBlockchainRegistry = null;
-        mJsonRpcService = null;
-        mEthTxService = null;
-        mKeyringService = null;
-        mAssetRatioService = null;
         mSwapService = null;
-        mBraveWalletService = null;
-        InitAssetRatioService();
-        InitBlockchainRegistry();
-        InitJsonRpcService();
-        InitEthTxService();
-        InitKeyringService();
         InitSwapService();
-        InitBraveWalletService();
-    }
-
-    public AssetRatioService getAssetRatioService() {
-        return mAssetRatioService;
-    }
-
-    public EthTxService getEthTxService() {
-        return mEthTxService;
-    }
-
-    public JsonRpcService getJsonRpcService() {
-        return mJsonRpcService;
-    }
-
-    public BraveWalletService getBraveWalletService() {
-        return mBraveWalletService;
-    }
-
-    public KeyringService getKeyringService() {
-        return mKeyringService;
-    }
-
-    private void InitBraveWalletService() {
-        if (mBraveWalletService != null) {
-            return;
-        }
-
-        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
-    }
-
-    private void InitAssetRatioService() {
-        if (mAssetRatioService != null) {
-            return;
-        }
-
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
-    }
-
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    private void InitBlockchainRegistry() {
-        if (mBlockchainRegistry != null) {
-            return;
-        }
-
-        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
-    }
-
-    private void InitJsonRpcService() {
-        if (mJsonRpcService != null) {
-            return;
-        }
-
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
-    }
-
-    private void InitEthTxService() {
-        if (mEthTxService != null) {
-            return;
-        }
-
-        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
-        mEthTxServiceObserver = new EthTxServiceObserverImpl(this);
-        mEthTxService.addObserver(mEthTxServiceObserver);
     }
 
     private void InitSwapService() {
@@ -1613,25 +1467,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitBlockchainRegistry();
-        InitJsonRpcService();
-        InitEthTxService();
-        InitKeyringService();
-        InitAssetRatioService();
         InitSwapService();
-        InitBraveWalletService();
 
         if (mJsonRpcService != null) {
             mJsonRpcService.getChainId(chainId -> {
@@ -1690,12 +1528,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
+    public void onNewUnapprovedTx(TransactionInfo txInfo) {
+        showApproveTransactionDialog(txInfo);
     }
 
     @Override
-    public void locked() {
-        finish();
+    public void onTransactionStatusChanged(TransactionInfo txInfo) {
+        if (txInfo.id.equals(mActivateAllowanceTxId)
+                && txInfo.txStatus == TransactionStatus.SUBMITTED) {
+            mActivateAllowanceTxId = "";
+            showSwapButtonText();
+        }
     }
 }

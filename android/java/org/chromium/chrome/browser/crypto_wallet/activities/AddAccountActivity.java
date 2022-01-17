@@ -40,14 +40,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddAccountActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, KeyringServiceObserver {
+public class AddAccountActivity extends BraveWalletBaseActivity {
     private String mAddress;
     private String mName;
     private boolean mIsUpdate;
     private boolean mIsImported;
     private EditText mPrivateKeyControl;
-    private KeyringService mKeyringService;
     private EditText mAddAccountText;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
 
@@ -189,50 +187,6 @@ public class AddAccountActivity extends AsyncInitializationActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mKeyringService.close();
-    }
-
-    @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mKeyringService = null;
-        InitKeyringService();
-    }
-
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    public KeyringService getKeyringService() {
-        return mKeyringService;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         if (getIntent() != null) {
@@ -249,7 +203,6 @@ public class AddAccountActivity extends AsyncInitializationActivity
             findViewById(R.id.import_account_layout).setVisibility(View.GONE);
             findViewById(R.id.import_account_title).setVisibility(View.GONE);
         }
-        InitKeyringService();
         if (mIsUpdate) {
             return;
         }
@@ -274,11 +227,6 @@ public class AddAccountActivity extends AsyncInitializationActivity
         }
 
         return accountName;
-    }
-
-    @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
     }
 
     @Override
@@ -309,10 +257,5 @@ public class AddAccountActivity extends AsyncInitializationActivity
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void locked() {
-        finish();
     }
 }

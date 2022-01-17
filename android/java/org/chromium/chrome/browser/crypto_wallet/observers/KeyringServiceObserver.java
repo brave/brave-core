@@ -5,11 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.mojo.system.MojoException;
-
 public interface KeyringServiceObserver
-        extends org.chromium.brave_wallet.mojom.KeyringServiceObserver {
+        extends org.chromium.brave_wallet.mojom.KeyringServiceObserver, WalletMojoObserverBase {
     @Override
     default void keyringCreated() {}
 
@@ -36,10 +33,4 @@ public interface KeyringServiceObserver
 
     @Override
     default void selectedAccountChanged() {}
-
-    @Override
-    default void close() {}
-
-    @Override
-    default void onConnectionError(MojoException e) {}
 }

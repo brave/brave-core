@@ -58,13 +58,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AssetDetailActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, OnWalletListItemClick, KeyringServiceObserver {
+public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWalletListItemClick {
     private SmoothLineChartEquallySpaced chartES;
-    private AssetRatioService mAssetRatioService;
-    private KeyringService mKeyringService;
-    private EthTxService mEthTxService;
-    private JsonRpcService mJsonRpcService;
     private int checkedTimeframeType;
     private String mAssetSymbol;
     private String mAssetName;
@@ -74,23 +69,6 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private String mChainId;
     private ExecutorService mExecutor;
     private Handler mHandler;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mEthTxService.close();
-        mJsonRpcService.close();
-    }
-
-    @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
 
     @Override
     protected void triggerLayoutInflation() {
@@ -283,74 +261,12 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitAssetRatioService();
-        InitKeyringService();
-        InitEthTxService();
-        InitJsonRpcService();
+
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         setUpAccountList();
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mEthTxService.close();
-        mJsonRpcService.close();
-
-        mAssetRatioService = null;
-        InitAssetRatioService();
-
-        mKeyringService = null;
-        InitKeyringService();
-
-        mEthTxService = null;
-        InitEthTxService();
-
-        mJsonRpcService = null;
-        InitJsonRpcService();
-    }
-
-    private void InitAssetRatioService() {
-        if (mAssetRatioService != null) {
-            return;
-        }
-
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
-    }
-
-    private void InitEthTxService() {
-        if (mEthTxService != null) {
-            return;
-        }
-
-        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
-    }
-
-    private void InitJsonRpcService() {
-        if (mJsonRpcService != null) {
-            return;
-        }
-
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
-    }
-
-    @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
     }
 
     @Override
@@ -369,27 +285,6 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         Utils.openTransaction(txInfo, mJsonRpcService, this);
     }
 
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    public KeyringService getKeyringService() {
-        return mKeyringService;
-    }
-
-    private AssetRatioService getAssetRatioService() {
-        return mAssetRatioService;
-    }
-
-    private JsonRpcService getJsonRpcService() {
-        return mJsonRpcService;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -399,10 +294,5 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 setUpAccountList();
             }
         }
-    }
-
-    @Override
-    public void locked() {
-        finish();
     }
 }

@@ -76,8 +76,7 @@ import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BraveWalletActivity extends AsyncInitializationActivity
-        implements OnNextPage, ConnectionErrorHandler, KeyringServiceObserver {
+public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
     private Toolbar mToolbar;
 
     private View mCryptoLayout;
@@ -87,12 +86,6 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     private ViewPager cryptoWalletOnboardingViewPager;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
-    private KeyringService mKeyringService;
-    private BlockchainRegistry mBlockchainRegistry;
-    private JsonRpcService mJsonRpcService;
-    private EthTxService mEthTxService;
-    private AssetRatioService mAssetRatioService;
-    private BraveWalletService mBraveWalletService;
     private boolean mShowBiometricPrompt;
 
     @Override
@@ -193,118 +186,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mEthTxService.close();
-        mBraveWalletService.close();
-
-        mKeyringService = null;
-        mBlockchainRegistry = null;
-        mJsonRpcService = null;
-        mEthTxService = null;
-        mAssetRatioService = null;
-        mBraveWalletService = null;
-        InitKeyringService();
-        InitBlockchainRegistry();
-        InitJsonRpcService();
-        InitEthTxService();
-        InitAssetRatioService();
-        InitBraveWalletService();
-    }
-
-    private void InitEthTxService() {
-        if (mEthTxService != null) {
-            return;
-        }
-
-        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
-    }
-
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    private void InitBlockchainRegistry() {
-        if (mBlockchainRegistry != null) {
-            return;
-        }
-
-        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
-    }
-
-    private void InitJsonRpcService() {
-        if (mJsonRpcService != null) {
-            return;
-        }
-
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
-    }
-
-    private void InitAssetRatioService() {
-        if (mAssetRatioService != null) {
-            return;
-        }
-
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
-    }
-
-    private void InitBraveWalletService() {
-        if (mBraveWalletService != null) {
-            return;
-        }
-
-        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
-    }
-
-    public KeyringService getKeyringService() {
-        return mKeyringService;
-    }
-
-    public BlockchainRegistry getBlockchainRegistry() {
-        return mBlockchainRegistry;
-    }
-
-    public JsonRpcService getJsonRpcService() {
-        return mJsonRpcService;
-    }
-
-    public EthTxService getEthTxService() {
-        return mEthTxService;
-    }
-
-    public AssetRatioService getAssetRatioService() {
-        return mAssetRatioService;
-    }
-
-    public BraveWalletService getBraveWalletService() {
-        return mBraveWalletService;
-    }
-
-    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InitKeyringService();
-        InitBlockchainRegistry();
-        InitJsonRpcService();
-        InitEthTxService();
-        InitAssetRatioService();
-        InitBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_FIRST_PAGE_ACTION);
         } else if (mKeyringService != null) {
@@ -320,19 +203,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity
 
     @Override
     public void onDestroy() {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mEthTxService.close();
-        mBraveWalletService.close();
         mModalDialogManager.destroy();
         super.onDestroy();
-    }
-
-    @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
     }
 
     @Override

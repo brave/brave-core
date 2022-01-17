@@ -53,32 +53,14 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AccountDetailActivity extends AsyncInitializationActivity
-        implements OnWalletListItemClick, ConnectionErrorHandler, KeyringServiceObserver {
+public class AccountDetailActivity
+        extends BraveWalletBaseActivity implements OnWalletListItemClick {
     private String mAddress;
     private String mName;
     private boolean mIsImported;
     private TextView mAccountText;
     private ExecutorService mExecutor;
     private Handler mHandler;
-
-    private BlockchainRegistry mBlockchainRegistry;
-    private EthTxService mEthTxService;
-    private JsonRpcService mJsonRpcService;
-    private AssetRatioService mAssetRatioService;
-    private BraveWalletService mBraveWalletService;
-    private KeyringService mKeyringService;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mAssetRatioService.close();
-        mJsonRpcService.close();
-        mBraveWalletService.close();
-        mKeyringService.close();
-        mEthTxService.close();
-        mBlockchainRegistry.close();
-    }
 
     @Override
     protected void triggerLayoutInflation() {
@@ -217,23 +199,11 @@ public class AccountDetailActivity extends AsyncInitializationActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        InitJsonRpcService();
-        InitAssetRatioService();
-        InitBraveWalletService();
-        InitKeyringService();
-        InitEthTxService();
-        InitBlockchainRegistry();
-
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(chainId -> {
             setUpAssetList(chainId);
             fetchAccountInfo(chainId);
         });
-    }
-
-    @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
     }
 
     @Override
@@ -271,107 +241,11 @@ public class AccountDetailActivity extends AsyncInitializationActivity
         finish();
     }
 
-    @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
-
     private AccountInfo getThisAccountInfo() {
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.address = mAddress;
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
         return accountInfo;
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mJsonRpcService.close();
-        mAssetRatioService.close();
-        mBraveWalletService.close();
-        mKeyringService.close();
-        mEthTxService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService = null;
-        mAssetRatioService = null;
-        mBraveWalletService = null;
-        mKeyringService = null;
-        mEthTxService = null;
-        mBlockchainRegistry = null;
-        InitJsonRpcService();
-        InitAssetRatioService();
-        InitBraveWalletService();
-        InitKeyringService();
-        InitBlockchainRegistry();
-        InitEthTxService();
-    }
-
-    private void InitBlockchainRegistry() {
-        if (mBlockchainRegistry != null) {
-            return;
-        }
-
-        mBlockchainRegistry = BlockchainRegistryFactory.getInstance().getBlockchainRegistry(this);
-    }
-
-    private void InitEthTxService() {
-        if (mEthTxService != null) {
-            return;
-        }
-
-        mEthTxService = EthTxServiceFactory.getInstance().getEthTxService(this);
-    }
-
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    private void InitJsonRpcService() {
-        if (mJsonRpcService != null) {
-            return;
-        }
-
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
-    }
-
-    private void InitAssetRatioService() {
-        if (mAssetRatioService != null) {
-            return;
-        }
-
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
-    }
-
-    private void InitBraveWalletService() {
-        if (mBraveWalletService != null) {
-            return;
-        }
-
-        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
-    }
-
-    public JsonRpcService getJsonRpcService() {
-        return mJsonRpcService;
-    }
-
-    public AssetRatioService getAssetRatioService() {
-        return mAssetRatioService;
-    }
-
-    public BraveWalletService getBraveWalletService() {
-        return mBraveWalletService;
-    }
-
-    @Override
-    public void locked() {
-        finish();
     }
 }
