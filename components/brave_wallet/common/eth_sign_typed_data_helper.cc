@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 
 namespace brave_wallet {
 
@@ -242,36 +243,49 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
 
     absl::optional<double> value_double = value.GetIfDouble();
-    if (!value_double) {
-      const std::string* value_str = value.GetIfString();
-      if (!value_str)
+    const std::string* value_str = value.GetIfString();
+    uint256_t encoded_value;
+    if (value_double) {
+      encoded_value = (uint256_t)(uint64_t)*value_double;
+      if (encoded_value > kMaxSafeInteger)
         return absl::nullopt;
-      double val;
-      if (!base::StringToDouble(*value_str, &val))
+    } else if (value_str) {
+      if (!HexValueToUint256(*value_str, &encoded_value) &&
+          !Base10ValueToUint256(*value_str, &encoded_value))
         return absl::nullopt;
-      value_double = val;
+    } else {
+      return absl::nullopt;
     }
 
     // check if value excceeds type bound
     switch (type_check) {
       case 8:
-        if (*value_double > std::numeric_limits<uint8_t>::max())
+        if (encoded_value > std::numeric_limits<uint8_t>::max())
           return absl::nullopt;
         break;
       case 16:
-        if (*value_double > std::numeric_limits<uint16_t>::max())
+        if (encoded_value > std::numeric_limits<uint16_t>::max())
           return absl::nullopt;
         break;
       case 32:
-        if (*value_double > std::numeric_limits<uint32_t>::max())
+        if (encoded_value > std::numeric_limits<uint32_t>::max())
+          return absl::nullopt;
+        break;
+      case 64:
+        if (encoded_value > std::numeric_limits<uint64_t>::max())
+          return absl::nullopt;
+        break;
+      case 128:
+        if (encoded_value > std::numeric_limits<uint128_t>::max())
+          return absl::nullopt;
+        break;
+      case 256:
+        if (encoded_value > std::numeric_limits<uint256_t>::max())
           return absl::nullopt;
         break;
       default:
-        if (*value_double > kMaxSafeInteger)
-          return absl::nullopt;
-        break;
+        return absl::nullopt;
     }
-    uint256_t encoded_value = (uint256_t)(uint64_t)*value_double;
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back((encoded_value >> i) & 0xFF);
     }
@@ -282,36 +296,55 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         type_check > 256)
       return absl::nullopt;
     absl::optional<double> value_double = value.GetIfDouble();
-    if (!value_double) {
-      const std::string* value_str = value.GetIfString();
-      if (!value_str)
+    const std::string* value_str = value.GetIfString();
+    int256_t encoded_value = 0;
+    if (value_double) {
+      encoded_value = (int256_t)(int64_t)*value_double;
+      if (encoded_value > kMaxSafeInteger)
         return absl::nullopt;
-      double val;
-      if (!base::StringToDouble(*value_str, &val))
+    } else if (value_str) {
+      if (!HexValueToInt256(*value_str, &encoded_value) &&
+          !Base10ValueToInt256(*value_str, &encoded_value))
         return absl::nullopt;
-      value_double = val;
+    } else {
+      return absl::nullopt;
     }
 
     // check if value excceeds type bound
     switch (type_check) {
       case 8:
-        if (*value_double > std::numeric_limits<int8_t>::max())
+        if (encoded_value > std::numeric_limits<int8_t>::max() ||
+            encoded_value < std::numeric_limits<int8_t>::min())
           return absl::nullopt;
         break;
       case 16:
-        if (*value_double > std::numeric_limits<int16_t>::max())
+        if (encoded_value > std::numeric_limits<int16_t>::max() ||
+            encoded_value < std::numeric_limits<int16_t>::min())
           return absl::nullopt;
         break;
       case 32:
-        if (*value_double > std::numeric_limits<int32_t>::max())
+        if (encoded_value > std::numeric_limits<int32_t>::max() ||
+            encoded_value < std::numeric_limits<int32_t>::min())
+          return absl::nullopt;
+        break;
+      case 64:
+        if (encoded_value > std::numeric_limits<int64_t>::max() ||
+            encoded_value < std::numeric_limits<int64_t>::min())
+          return absl::nullopt;
+        break;
+      case 128:
+        if (encoded_value > std::numeric_limits<int128_t>::max() ||
+            encoded_value < std::numeric_limits<int128_t>::min())
+          return absl::nullopt;
+        break;
+      case 256:
+        if (encoded_value > std::numeric_limits<int256_t>::max() ||
+            encoded_value < std::numeric_limits<int256_t>::min())
           return absl::nullopt;
         break;
       default:
-        if (*value_double > kMaxSafeInteger)
-          return absl::nullopt;
-        break;
+        return absl::nullopt;
     }
-    int256_t encoded_value = (int256_t)(int64_t)*value_double;
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back((encoded_value >> i) & 0xFF);
     }
