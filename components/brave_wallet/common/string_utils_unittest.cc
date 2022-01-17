@@ -42,6 +42,11 @@ TEST(StringUtilsUnitTest, Base10ValueToUint256) {
                            &out));
   ASSERT_TRUE(out == (uint256_t)expected_val);
 
+  // Should return false when out of bounds
+  ASSERT_FALSE(
+      Base10ValueToUint256("115792089237316195423570985008687907853269984665640"
+                           "564039457584007913129639936",
+                           &out));
   ASSERT_FALSE(Base10ValueToUint256("0xB", &out));
 
   // Check padded values too

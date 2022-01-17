@@ -109,9 +109,14 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
     return false;
   }
   *out = 0;
+  uint256_t last_val = 0;  // Used to check overflows
   for (char c : hex_input.substr(2)) {
     (*out) <<= 4;
     (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
+    if (last_val > *out) {
+      return false;
+    }
+    last_val = *out;
   }
   return true;
 }

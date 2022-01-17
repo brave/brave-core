@@ -28,10 +28,15 @@ bool Base10ValueToUint256(const std::string& input, uint256_t* out) {
   if (!IsValidBase10String(input))
     return false;
   *out = 0;
+  uint256_t last_val = 0;  // Used to check overflows
   for (char c : input) {
     (*out) *= 10;
     // We can use this because we know the input string is 0-9 digits only
     (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
+    if (last_val > *out) {
+      return false;
+    }
+    last_val = *out;
   }
   return true;
 }

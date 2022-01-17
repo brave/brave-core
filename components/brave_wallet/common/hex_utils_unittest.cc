@@ -87,11 +87,19 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
   ASSERT_EQ(out, (uint256_t)4660);
   ASSERT_TRUE(HexValueToUint256("0xB", &out));
   ASSERT_EQ(out, (uint256_t)11);
-  uint256_t expected_val = 102400000000000;
-  // "10240000000000000000000000"
-  expected_val *= static_cast<uint256_t>(100000000000);
-  ASSERT_TRUE(HexValueToUint256("0x878678326eac900000000", &out));
+
+  // Max uint256 value can be represented
+  uint256_t expected_val = std::numeric_limits<uint256_t>::max();
+  ASSERT_TRUE(HexValueToUint256(
+      "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
   ASSERT_TRUE(out == (uint256_t)expected_val);
+
+  // Should return false when out of bounds
+  ASSERT_FALSE(HexValueToUint256(
+      "0x10000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+
   // Check padded values too
   ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
   ASSERT_EQ(out, (uint256_t)240);
