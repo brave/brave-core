@@ -9,13 +9,11 @@
 #define BRAVE_GET_GUEST_VIEW_DEFAULT_CONTENT_SETTING_RULES                    \
   rules->fingerprinting_rules.push_back(ContentSettingPatternSource(          \
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
-      base::Value::FromUniquePtrValue(                                        \
-          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),    \
+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),         \
       std::string(), incognito));                                             \
   rules->brave_shields_rules.push_back(ContentSettingPatternSource(           \
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
-      base::Value::FromUniquePtrValue(                                        \
-          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),    \
+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),         \
       std::string(), incognito));
 
 #include "src/chrome/browser/profiles/renderer_updater.cc"
