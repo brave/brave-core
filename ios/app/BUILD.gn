@@ -54,10 +54,12 @@ source_set("app") {
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/history",
     "//ios/chrome/browser/sync",
+    "//ios/chrome/browser/ui/webui:webui_internal",
     "//ios/chrome/browser/undo",
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser",
     "//ios/web/public/init",
+    "//ios/web/public/webui",
 
     # Use the provider API controlled by args.gn.
     ios_provider_target,
