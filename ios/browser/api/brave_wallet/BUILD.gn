@@ -16,7 +16,14 @@ config("mojom_header_config") {
 }
 
 source_set("brave_wallet") {
+  configs += [
+    ":mojom_header_config",
+    "//build/config/compiler:enable_arc",
+  ]
   sources = [
+    "brave_wallet_provider_delegate_ios+private.h",
+    "brave_wallet_provider_delegate_ios.h",
+    "brave_wallet_provider_delegate_ios.mm",
     "token_registry_utils.h",
     "token_registry_utils.mm",
   ]
@@ -25,6 +32,7 @@ source_set("brave_wallet") {
     "//base",
     "//brave/components/brave_wallet/browser",
     "//ios/chrome/browser",
+    "//net",
   ]
 }
 

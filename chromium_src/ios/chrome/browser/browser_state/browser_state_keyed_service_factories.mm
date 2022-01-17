@@ -37,6 +37,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ios::BookmarkUndoServiceFactory::GetInstance();
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();
+  ios::HostContentSettingsMapFactory::GetInstance();
   ios::TemplateURLServiceFactory::GetInstance();
   ios::WebDataServiceFactory::GetInstance();
   ios::WebHistoryServiceFactory::GetInstance();
