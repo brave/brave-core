@@ -84,7 +84,7 @@ class SearchAccelerator extends ChromeImageButton
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, boolean useLight) {
+    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
         ApiCompatibilityUtils.setImageTintList(this, tint);
         updateBackground();
     }
@@ -99,8 +99,7 @@ class SearchAccelerator extends ChromeImageButton
 
         mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
                                            mContext, mThemeColorProvider.getThemeColor(),
-                                           mIncognitoStateProvider.isIncognitoSelected()
-                                                   && mThemeColorProvider.useLight()),
+                                           mIncognitoStateProvider.isIncognitoSelected()),
                 PorterDuff.Mode.SRC_IN);
     }
 }
