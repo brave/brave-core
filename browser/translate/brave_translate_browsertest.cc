@@ -409,6 +409,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
     // RunUtilIdle() to wait for it.
     base::RunLoop().RunUntilIdle();
 
+    // Close the bubble to avoid reusing an existing bubble.
+    TranslateBubbleView::CloseCurrentBubble();
+
     // Check no bad flags infobar is shown (about the different translate
     // script/origin).
     EXPECT_TRUE(HasNoBadFlagsInfobar());
