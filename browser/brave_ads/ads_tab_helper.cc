@@ -148,13 +148,12 @@ void AdsTabHelper::DidFinishNavigation(
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
-    content::RenderFrameHost* render_frame_host) {
+void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!should_process_) {
     return;
   }
 
-  RunIsolatedJavaScript(render_frame_host);
+  RunIsolatedJavaScript(web_contents()->GetMainFrame());
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
