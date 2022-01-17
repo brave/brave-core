@@ -49,16 +49,17 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 
 }  // namespace web
 
-@protocol CRWebViewPrivate<NSObject>
+@protocol CRWebViewPrivate <NSObject>
 - (void)setWebView:(WKWebView*)webView;
 @end
 
-@interface BraveSyncInternalsController ()<CRWWebStateDelegate, CRWWebStateObserver> {
+@interface BraveSyncInternalsController () <CRWWebStateDelegate,
+                                            CRWWebStateObserver> {
   ChromeBrowserState* _chromeBrowserState;
   std::unique_ptr<web::WebState> _webState;
   std::unique_ptr<web::WebStateObserverBridge> _webStateObserver;
   std::unique_ptr<web::WebStateDelegateBridge> _webStateDelegate;
-  
+
   WKWebView* _webView;
   CRWWebController* _webController;
 }
@@ -77,7 +78,8 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
     _webStateDelegate = std::make_unique<web::WebStateDelegateBridge>(self);
     _webState->SetDelegate(_webStateDelegate.get());
 
-    _webController = static_cast<web::WebStateImpl*>(_webState.get())->GetWebController();
+    _webController =
+        static_cast<web::WebStateImpl*>(_webState.get())->GetWebController();
     _webView = [_webController ensureWebViewCreated];
   }
   return self;
@@ -94,17 +96,17 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 }
 
 - (void)loadView {
-    self.view = [_webController view];
+  self.view = [_webController view];
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self loadURL:[NSString stringWithFormat:@"%s/%s", kChromeUIScheme,
-                                             kChromeUISyncInternalsHost]];
+  [super viewDidLoad];
+
+  [self loadURL:[NSString stringWithFormat:@"%s/%s", kChromeUIScheme,
+                                           kChromeUISyncInternalsHost]];
 }
 
-- (void)loadURL:(NSString *)urlString {
+- (void)loadURL:(NSString*)urlString {
   GURL url = net::GURLWithNSURL([NSURL URLWithString:urlString]);
   web::NavigationManager::WebLoadParams params(url);
   params.transition_type = ui::PAGE_TRANSITION_TYPED;
@@ -114,8 +116,8 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 /**
     EVERYTHING below this line is NOT exported or used yet.
     It's too beta and requires a lot of refactoring of iOS code.
-    Once we have a better way to integrate external WKWebView's, we can uncomment it and test it out.
-    Until then, it's best we don't use it.
+    Once we have a better way to integrate external WKWebView's, we can
+   uncomment it and test it out. Until then, it's best we don't use it.
         - Brandon T.
 */
 
@@ -128,25 +130,30 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 //}
 //
 //- (void)setCustomWebView:(WKWebView*)webView {
-//  if ([_webController respondsToSelector:NSSelectorFromString(@"setWebView:")]) {
+//  if ([_webController
+//  respondsToSelector:NSSelectorFromString(@"setWebView:")]) {
 //    [((id<CRWebViewPrivate>)_webController) setWebView:webView];
 //  }
 //}
 
 //- (void)setCustomWebView:(WKWebView*)webView {
 //  web::WebState::CreateParams webStateCreateParams(_chromeBrowserState);
-//  std::unique_ptr<web::WebState> webState = web::WebState::Create(webStateCreateParams);
+//  std::unique_ptr<web::WebState> webState =
+//  web::WebState::Create(webStateCreateParams);
 //
-//  std::unique_ptr<web::WebStateObserverBridge> webStateObserver = std::make_unique<web::WebStateObserverBridge>(self);
+//  std::unique_ptr<web::WebStateObserverBridge> webStateObserver =
+//  std::make_unique<web::WebStateObserverBridge>(self);
 //  webState->AddObserver(_webStateObserver.get());
 //
-//  std::unique_ptr<web::WebStateDelegateBridge> webStateDelegate = std::make_unique<web::WebStateDelegateBridge>(self);
+//  std::unique_ptr<web::WebStateDelegateBridge> webStateDelegate =
+//  std::make_unique<web::WebStateDelegateBridge>(self);
 //  webState->SetDelegate(webStateDelegate.get());
 //
 //  web::WKWebViewConfigurationProvider& config_provider =
 //        web::WKWebViewConfigurationProvider::FromBrowserState(_chromeBrowserState);
 //
-//  web::WebStateImpl* webStateImpl = static_cast<web::WebStateImpl*>(webState.get());
+//  web::WebStateImpl* webStateImpl =
+//  static_cast<web::WebStateImpl*>(webState.get());
 //  web::WebViewWebStateMap::FromBrowserState(
 //      webStateImpl->GetBrowserState())
 //      ->SetAssociatedWebViewForWebState(webView, webStateImpl);
@@ -160,7 +167,8 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 //    webStateImpl->ClearWebUI();
 //    webStateImpl->CreateWebUI(GURL("chrome://sync-internals"));
 //
-//    GURL url = net::GURLWithNSURL([NSURL URLWithString:@"chrome://sync-internals"]);
+//    GURL url = net::GURLWithNSURL([NSURL
+//    URLWithString:@"chrome://sync-internals"]);
 //    web::NavigationManager::WebLoadParams params(url);
 //    params.transition_type = ui::PAGE_TRANSITION_TYPED;
 //    _webState->GetNavigationManager()->LoadURLWithParams(params);
@@ -189,8 +197,8 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 
 - (void)webState:(web::WebState*)webView
     contextMenuConfigurationForParams:(const web::ContextMenuParams&)params
-                    completionHandler:
-                        (void (^)(UIContextMenuConfiguration*))completionHandler {
+                    completionHandler:(void (^)(UIContextMenuConfiguration*))
+                                          completionHandler {
   completionHandler(nil);
 }
 

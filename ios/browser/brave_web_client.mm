@@ -60,6 +60,4 @@ base::RefCountedMemory* BraveWebClient::GetDataResourceBytes(
 }
 
 void BraveWebClient::GetAdditionalWebUISchemes(
-    std::vector<std::string>* additional_schemes) {
-    
-}
+    std::vector<std::string>* additional_schemes) {}

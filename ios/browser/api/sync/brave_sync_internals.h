@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface BraveSyncInternalsController: UIViewController
+@interface BraveSyncInternalsController : UIViewController
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
