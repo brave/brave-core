@@ -2874,6 +2874,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly contribution text">
       Change amount
     </message>
+    <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
+      Access Brave Wallet
+    </message>
     </messages>
   </release>
 </grit>

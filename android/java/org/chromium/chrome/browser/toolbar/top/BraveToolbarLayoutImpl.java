@@ -126,10 +126,13 @@ import org.chromium.url.GURL;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
@@ -146,6 +149,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
     private HomeButton mHomeButton;
+    private FrameLayout mWalletLayout;
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
@@ -168,6 +172,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
+
+    private final Set<Integer> mTabsWithWalletIcon =
+            Collections.synchronizedSet(new HashSet<Integer>());
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -199,6 +206,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
+        mWalletLayout = (FrameLayout) findViewById(R.id.brave_wallet_button_layout);
         mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
         mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
         mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
@@ -421,6 +429,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             public void onDestroyed(Tab tab) {
                 mBraveShieldsHandler.removeStat(tab.getId());
+                mTabsWithWalletIcon.remove(tab.getId());
             }
         };
 
@@ -431,6 +440,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
                             tab.getId(), tab.getUrl().getSpec());
+                    showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
                 }
             }
         };
@@ -842,6 +852,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public void showWalletIcon(boolean show) {
+        assert mWalletLayout != null;
+        if (mWalletLayout == null) {
+            return;
+        }
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (currentTab == null) {
+            return;
+        }
+        if (show) {
+            mWalletLayout.setVisibility(View.VISIBLE);
+            mTabsWithWalletIcon.add(currentTab.getId());
+        } else {
+            mWalletLayout.setVisibility(View.GONE);
+            mTabsWithWalletIcon.remove(currentTab.getId());
+        }
+    }
+
     public void hideRewardsOnboardingIcon() {
         if (mBraveRewardsOnboardingIcon != null) {
             mBraveRewardsOnboardingIcon.setVisibility(View.GONE);
@@ -1018,6 +1046,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mRewardsLayout != null) {
             mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
+        if (mWalletLayout != null) {
+            mWalletLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
     }
 
     @Override
@@ -1032,8 +1063,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         int rewardsLen = (mRewardsLayout == null || mRewardsLayout.getVisibility() == View.GONE)
                 ? 0
                 : mRewardsLayout.getWidth();
+        int walletLen = (mWalletLayout == null || mWalletLayout.getVisibility() == View.GONE)
+                ? 0
+                : mWalletLayout.getWidth();
+
         return toolbarButtonsContainer.getMeasuredWidth() - mShieldsLayout.getWidth() - rewardsLen
-                + params.getMarginEnd();
+                - walletLen + params.getMarginEnd();
     }
 
     /**
@@ -1293,6 +1328,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
             mShieldsLayoutIsColorBackground = true;
         }
+        mWalletLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getContext(), false));
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 

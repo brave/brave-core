@@ -339,7 +339,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     @Override
-    public void onShowPanel() {}
+    public void onShowPanel() {
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.showWalletIcon(true);
+        }
+    }
 
     @Override
     public void onShowWalletOnboarding() {
