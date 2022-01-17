@@ -39,7 +39,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
   ad.target_url = "https://brave.com";
 
   // Act
-  const AdHistoryInfo ad_history =
+  const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, ConfirmationType::kViewed, "title", "description");
 
   // Assert

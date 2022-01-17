@@ -64,8 +64,8 @@ class Client final {
 
   AdContentLikeActionType ToggleAdThumbUp(const AdContentInfo& ad_content);
   AdContentLikeActionType ToggleAdThumbDown(const AdContentInfo& ad_content);
-  AdContentLikeActionType GetAdContentLikeActionTypeForSegment(
-      const std::string& segment);
+  AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
+      const std::string& advertiser_id);
 
   CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
