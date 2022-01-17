@@ -17,6 +17,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
+#include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
@@ -199,6 +200,11 @@
 
 - (void)deleteDevice:(NSString*)guid {
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
+}
+
+- (BraveSyncInternalsView*)createSyncInternalsView {
+  return
+      [[BraveSyncInternalsView alloc] initWithBrowserState:_chromeBrowserState];
 }
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {

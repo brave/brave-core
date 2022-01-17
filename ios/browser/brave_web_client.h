@@ -23,12 +23,18 @@ class BraveWebClient : public web::WebClient {
   void SetUserAgent(const std::string& user_agent);
 
   // WebClient implementation.
+  void AddAdditionalSchemes(Schemes* schemes) const override;
+  bool IsAppSpecificURL(const GURL& url) const override;
+
   std::unique_ptr<web::WebMainParts> CreateWebMainParts() override;
   std::string GetUserAgent(web::UserAgentType type) const override;
   base::StringPiece GetDataResource(
       int resource_id,
       ui::ResourceScaleFactor scale_factor) const override;
   base::RefCountedMemory* GetDataResourceBytes(int resource_id) const override;
+
+  void GetAdditionalWebUISchemes(
+      std::vector<std::string>* additional_schemes) override;
 
  private:
   BraveWebMainParts* web_main_parts_;

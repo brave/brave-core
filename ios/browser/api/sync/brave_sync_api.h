@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BraveSyncInternalsView;
+
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
@@ -37,6 +39,8 @@ OBJC_EXPORT
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString*)getDeviceListJSON;
+
+- (BraveSyncInternalsView*)createSyncInternalsView;
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged;
