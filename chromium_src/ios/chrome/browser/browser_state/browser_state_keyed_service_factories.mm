@@ -7,6 +7,7 @@
 
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"

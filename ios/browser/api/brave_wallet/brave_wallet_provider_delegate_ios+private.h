@@ -10,6 +10,8 @@
 
 @protocol BraveWalletProviderDelegate;
 
+namespace brave_wallet {
+
 class BraveWalletProviderDelegateBridge
     : public brave_wallet::BraveWalletProviderDelegate {
  public:
@@ -27,5 +29,7 @@ class BraveWalletProviderDelegateBridge
   void GetAllowedAccounts(bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback) override;
 };
+
+}  // namespace brave_wallet
 
 #endif  // BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_

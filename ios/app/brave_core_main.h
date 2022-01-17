@@ -13,6 +13,8 @@
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @protocol BraveWalletBlockchainRegistry;
+@protocol BraveWalletBraveWalletProvider;
+@protocol BraveWalletProviderDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,6 +47,10 @@ OBJC_EXPORT
 - (void)scheduleLowPriorityStartupTasks;
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
+
+- (nullable id<BraveWalletBraveWalletProvider>)
+    walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+             isPrivateBrowsing:(bool)isPrivateBrowsing;
 
 @end
 

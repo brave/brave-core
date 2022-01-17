@@ -5,7 +5,6 @@
 
 #include "base_value_util.h"
 
-#import <CoreFoundation/CoreFoundation.h>
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
 

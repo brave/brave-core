@@ -9,6 +9,8 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "net/base/mac/url_conversions.h"
 
+namespace brave_wallet {
+
 void BraveWalletProviderDelegateBridge::ShowPanel() {
   [bridge_ showPanel];
 }
@@ -62,3 +64,5 @@ void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
   [bridge_ getAllowedAccounts:include_accounts_when_locked
                    completion:completion];
 }
+
+}  // namespace brave_wallet

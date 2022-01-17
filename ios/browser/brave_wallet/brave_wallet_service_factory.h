@@ -22,10 +22,14 @@ class BrowserState;
 
 namespace brave_wallet {
 
+class BraveWalletService;
+
 class BraveWalletServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojo::PendingRemote<mojom::BraveWalletService> GetForBrowserState(
+      ChromeBrowserState* browser_state);
+  static BraveWalletService* GetServiceForState(
       ChromeBrowserState* browser_state);
 
   static BraveWalletServiceFactory* GetInstance();

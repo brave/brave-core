@@ -31,6 +31,13 @@ BraveWalletServiceFactory::GetForBrowserState(
 }
 
 // static
+BraveWalletService* BraveWalletServiceFactory::GetServiceForState(
+    ChromeBrowserState* browser_state) {
+  return static_cast<BraveWalletService*>(
+      GetInstance()->GetServiceForBrowserState(browser_state, true));
+}
+
+// static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
   return base::Singleton<BraveWalletServiceFactory>::get();
 }
